@@ -1,0 +1,47 @@
+
+using CLLibrary;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class CanvasManager : Singleton<CanvasManager>
+{
+    public RectTransform GhostHolder;
+    public Button CharacterButton;
+    public Button BattleButton;
+
+    public CharacterPanel CharacterPanel;
+    public BattlePanel BattlePanel;
+
+    private Panel _currentPanel;
+
+    public override void DidAwake()
+    {
+        base.DidAwake();
+
+        CharacterButton.onClick.AddListener(OpenCharacterPanel);
+        BattleButton.onClick.AddListener(OpenBattlePanel);
+    }
+
+    private void OpenCharacterPanel()
+    {
+        if(_currentPanel != null)
+            _currentPanel.gameObject.SetActive(false);
+        _currentPanel = CharacterPanel;
+        _currentPanel.gameObject.SetActive(true);
+        _currentPanel.Configure();
+    }
+
+    private void OpenBattlePanel()
+    {
+        if(_currentPanel != null)
+            _currentPanel.gameObject.SetActive(false);
+        _currentPanel = BattlePanel;
+        _currentPanel.gameObject.SetActive(true);
+        _currentPanel.Configure();
+    }
+
+    public void Configure()
+    {
+        _currentPanel.Configure();
+    }
+}
