@@ -78,9 +78,16 @@ public class HeroChipView : RunChipView, IPointerDownHandler, IBeginDragHandler,
             return;
         }
 
-        if (drop.IndexPath._str == "TryGetHeroChip")
+        if (drop.IndexPath._str == IndexPath._str)
         {
-            // swap
+            if (IndexPath._str == "GetHeroNeiGong")
+            {
+                RunManager.SwapNeiGong(drop.IndexPath, IndexPath);
+            }
+            else if (IndexPath._str == "GetHeroWaiGong")
+            {
+                RunManager.SwapWaiGong(drop.IndexPath, IndexPath);
+            }
             return;
         }
     }

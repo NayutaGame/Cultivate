@@ -64,4 +64,14 @@ public class Hero
     {
         _equippedWaiGong[atIndex] = tile;
     }
+
+    public void SwapNeiGong(int from, int to)
+    {
+        (_equippedNeiGong[from], _equippedNeiGong[to]) = (_equippedNeiGong[to], _equippedNeiGong[from]);
+    }
+
+    public void SwapWaiGong(int from, int to)
+    {
+        (_equippedWaiGong[from], _equippedWaiGong[to]) = (_equippedWaiGong[to], _equippedWaiGong[from]);
+    }
 }

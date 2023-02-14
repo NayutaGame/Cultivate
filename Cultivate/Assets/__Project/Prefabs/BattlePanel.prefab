@@ -1238,6 +1238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AcquiredPoolView: {fileID: 597817040770909037}
   SkillEditor: {fileID: 498366074453084083}
+  BattleButton: {fileID: 7056146703595295696}
+  EscapeButton: {fileID: 7056146702831931954}
 --- !u!1 &7056146704408729590
 GameObject:
   m_ObjectHideFlags: 0

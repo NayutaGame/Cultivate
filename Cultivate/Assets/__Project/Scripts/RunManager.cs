@@ -166,7 +166,6 @@ public class RunManager : Singleton<RunManager>
     private bool CanEquipNeiGong(int acquiredIndex, int neiGongIndex)
     {
         RunChip runChip = _danTian.TryGetAcquiredChip(acquiredIndex);
-        Debug.Log($"neigong runChip._entry.GetType() = {runChip._entry.GetType()}, flag = {runChip._entry.GetType() == typeof(NeigongEntry)}");
         return runChip._entry.GetType() == typeof(NeigongEntry);
     }
 
@@ -197,5 +196,15 @@ public class RunManager : Singleton<RunManager>
         Tile t = _danTian.TryGetAcquiredTile(acquiredIndex);
         _hero.TryRemoveWaiGongTile(t);
         _hero.EquipWaiGong(t, waiGongIndex);
+    }
+
+    public static void SwapNeiGong(IndexPath from, IndexPath to)
+    {
+        Instance._hero.SwapNeiGong(from._ints[0], to._ints[0]);
+    }
+
+    public static void SwapWaiGong(IndexPath from, IndexPath to)
+    {
+        Instance._hero.SwapWaiGong(from._ints[0], to._ints[0]);
     }
 }

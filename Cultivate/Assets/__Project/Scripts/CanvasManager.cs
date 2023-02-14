@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class CanvasManager : Singleton<CanvasManager>
 {
+    public GameObject RunCanvas;
+    public GameObject StageCanvas;
+
     public RectTransform GhostHolder;
     public Button CharacterButton;
     public Button BattleButton;
