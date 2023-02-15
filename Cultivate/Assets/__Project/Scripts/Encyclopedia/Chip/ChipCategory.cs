@@ -45,19 +45,25 @@ public class ChipCategory : Category<ChipEntry>
             new WaigongEntry("神皇印", "若使用相同的灵气释放，则下回合开始时，自身【蓄势】层数翻倍。否则，本回合【护罩】抵挡的伤害等量转化为【蓄势】。"),
             new WaigongEntry("覆体印", "消散所有金系灵气，每消散一点获得【减伤】*1"),
 
-            new WaigongEntry("钢刀落", "消耗2灵气，攻击12", 2, () =>
-            {
-                // StageManager.AttackProcedure();
-            }),
+            new WaigongEntry("聚气术", "1灵气",
+                execute: () =>
+                {
+                    // StageManager.ManaProcedure();
+                }),
+            new WaigongEntry("钢刀落", "12攻", 2,
+                execute:() =>
+                {
+                    // StageManager.AttackProcedure();
+                }),
             new WaigongEntry("金钟罩", "6护甲"),
             new WaigongEntry("寒冰术", "1灵气，3减甲"),
             new WaigongEntry("再生术", "2再生"),
-            new WaigongEntry("硬化术", "消耗1灵气，1格挡"),
-            new WaigongEntry("吸血镖", "攻击4，吸血"),
-            new WaigongEntry("火吐息", "1灵气，攻击3"),
-            new WaigongEntry("迷踪步", "消耗1灵气，1闪避"),
+            new WaigongEntry("硬化术", "1格挡", 1),
+            new WaigongEntry("吸血镖", "4攻，吸血"),
+            new WaigongEntry("火吐息", "1灵气，3攻"),
+            new WaigongEntry("迷踪步", "1闪避", 1),
             new WaigongEntry("蓄力术", "2灵气"),
-            new WaigongEntry("土龙击", "攻击3，3护甲"),
+            new WaigongEntry("土龙击", "3攻，3护甲"),
         };
     }
 }

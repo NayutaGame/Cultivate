@@ -10,11 +10,12 @@ public class RunManager : Singleton<RunManager>
     public static readonly int NeiGongLimit = 4;
     public static readonly int WaiGongLimit = 12;
 
-    private Status _status;
     private DanTian _danTian;
     private Inventory _inventory;
-    private Hero _hero;
-    private Enemy _enemy;
+    private RunHero _hero;
+    public RunHero Hero => _hero;
+    private RunEnemy _enemy;
+    public RunEnemy Enemy => _enemy;
 
     private Dictionary<string, Func<IndexPath, object>> _funcList;
 
@@ -22,7 +23,6 @@ public class RunManager : Singleton<RunManager>
     {
         base.DidAwake();
 
-        _status = new Status();
         _danTian = new DanTian();
         _inventory = new Inventory();
         _inventory.Add(new RunChip("冰心决"));
@@ -34,8 +34,8 @@ public class RunManager : Singleton<RunManager>
         _inventory.Add(new RunChip("三山印", 7));
         _inventory.Add(new RunChip("上清印", 5));
 
-        _hero = new Hero();
-        _enemy = new Enemy(new RunChip[]
+        _hero = new RunHero();
+        _enemy = new RunEnemy(40, new RunChip[]
         {
             new ("冰心决"),
             null,
@@ -78,7 +78,7 @@ public class RunManager : Singleton<RunManager>
     private object GetTileXY(IndexPath indexPath) => _danTian.GetTileXY(indexPath._ints[0], indexPath._ints[1]);
     private object TryGetRunChip(IndexPath indexPath) => _inventory.TryGetRunChip(indexPath._ints[0]);
     private object GetRunChipCount(IndexPath indexPath) => _inventory.GetRunChipCount();
-    private object GetStatusString(IndexPath indexPath) => $"命元：{_status.MingYuan}\n悟性：{_status.WuXing}\n修为：{_status.XiuWei}\n气血：{_status.Health}\n初始灵力：{_status.Mana}";
+    private object GetStatusString(IndexPath indexPath) => $"命元：{_hero.MingYuan}\n悟性：{_hero.WuXing}\n修为：{_hero.XiuWei}\n气血：{_hero.Health}\n初始灵力：{_hero.Mana}";
     private object GetAcquiredChipCount(IndexPath indexPath) => _danTian.GetAcquiredChipCount();
     private object TryGetAcquiredChip(IndexPath indexPath) => _danTian.TryGetAcquiredChip(indexPath._ints[0]);
     private object GetHeroNeiGong(IndexPath indexPath) => _hero.GetNeiGong(indexPath._ints[0]);
