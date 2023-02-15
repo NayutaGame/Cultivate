@@ -46,12 +46,12 @@ public class ChipCategory : Category<ChipEntry>
             new WaigongEntry("覆体印", "消散所有金系灵气，每消散一点获得【减伤】*1"),
 
             new WaigongEntry("聚气术", "1灵气",
-                execute: () =>
+                execute: (seq, src, tgt) =>
                 {
                     // StageManager.ManaProcedure();
                 }),
             new WaigongEntry("钢刀落", "12攻", 2,
-                execute:() =>
+                execute: (seq, src, tgt) =>
                 {
                     // StageManager.AttackProcedure();
                 }),
@@ -63,7 +63,12 @@ public class ChipCategory : Category<ChipEntry>
             new WaigongEntry("火吐息", "1灵气，3攻"),
             new WaigongEntry("迷踪步", "1闪避", 1),
             new WaigongEntry("蓄力术", "2灵气"),
-            new WaigongEntry("土龙击", "3攻，3护甲"),
+            new WaigongEntry("土龙击", "3攻，3护甲",
+                execute: (seq, src, tgt) =>
+                {
+                    StageManager.Instance.AttackProcedure(new AttackDetails(seq, src, tgt, 3));
+                    // StageManager.Instance.ArmorProcedure(seq);
+                }),
         };
     }
 }

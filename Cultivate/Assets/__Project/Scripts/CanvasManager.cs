@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CanvasManager : Singleton<CanvasManager>
 {
     public GameObject RunCanvas;
-    public GameObject StageCanvas;
+    public StageCanvas StageCanvas;
 
     public RectTransform GhostHolder;
     public Button CharacterButton;

@@ -7,6 +7,8 @@ using UnityEngine;
 public class AppManager : Singleton<AppManager>
 {
     private AppSM _sm;
+    public RunManager RunManager;
+    public StageManager StageManager;
 
     public override void DidAwake()
     {
