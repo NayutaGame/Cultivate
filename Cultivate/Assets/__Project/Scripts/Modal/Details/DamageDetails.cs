@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using DG.Tweening;
 using UnityEngine;
 
 public class DamageDetails
 {
-    public Sequence Seq;
+    public StringBuilder Seq;
     public StageEntity Src;
     public StageEntity Tgt;
     public int Value;
 
-    public DamageDetails(Sequence seq, StageEntity src, StageEntity tgt, int value)
+    public DamageDetails(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
     {
         Seq = seq;
         Src = src;

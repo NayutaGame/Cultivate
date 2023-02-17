@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Sequence = DG.Tweening.Sequence;
 
 public class StageManager : CLLibrary.Singleton<StageManager>
@@ -25,6 +27,8 @@ public class StageManager : CLLibrary.Singleton<StageManager>
     //
     // public static FuncQueue<BuffDetails> AnyBuffed = new();
 
+    public void AttackProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
+        => AttackProcedure(new AttackDetails(seq, src, tgt, value));
     public void AttackProcedure
         (AttackDetails d
             // Action<DamageDetails> damaged = null,
@@ -60,14 +64,14 @@ public class StageManager : CLLibrary.Singleton<StageManager>
 
         // 结算护甲
         (d.Value, tgt.Armor) = Numeric.Negate(d.Value, tgt.Armor);
-        if (d.Value >= 0)
+        if (d.Value == 0)
         {
             // undamage?.Invoke();
             return;
         }
 
         // 伤害Procedure
-        DamageProcedure(new DamageDetails(d.Seq, d.Src, d.Tgt, d.Value));
+        DamageProcedure(d.Seq, d.Src, d.Tgt, d.Value);
 
         tgt.Attacked(d);
 
@@ -81,12 +85,14 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         //     AnyKill(attackDetails);
         // }
 
-        d.Seq.Append(src.Slot().GetAttackTween())
-            .Join(tgt.Slot().GetAttackedTween())
-            .AppendInterval(0.5f);
+        // d.Seq.Append(src.Slot().GetAttackTween())
+        //     .Join(tgt.Slot().GetAttackedTween())
+        //     .AppendInterval(0.5f);
     }
 
-    public static void DamageProcedure
+    public void DamageProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
+        => DamageProcedure(new DamageDetails(seq, src, tgt, value));
+    public void DamageProcedure
         (DamageDetails d
             // Action<DamageDetails> damaged = null, Action undamage = null
             )
@@ -160,7 +166,7 @@ public class StageManager : CLLibrary.Singleton<StageManager>
     //     target.Damaged(blademailDamageDetails);
     // }
     //
-    public static void HealProcedure(HealDetails d)
+    public void HealProcedure(HealDetails d)
     {
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
@@ -170,11 +176,11 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         tgt.Healed(d);
     }
 
-    public static void BuffProcedure(Sequence seq, StageEntity src, StageEntity tgt, string buffName, int stack = 1, bool recursive = true)
+    public void BuffProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, string buffName, int stack = 1, bool recursive = true)
         => BuffProcedure(seq, src, tgt, Encyclopedia.BuffCategory.Find(buffName), stack, recursive);
-    public static void BuffProcedure(Sequence seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
+    public void BuffProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
         => BuffProcedure(new BuffDetails(seq, src, tgt, buffEntry, stack, recursive));
-    public static void BuffProcedure(BuffDetails buffDetails)
+    public void BuffProcedure(BuffDetails buffDetails)
     {
         // buffDetails = CleanProcedure(buffDetails);
 
@@ -186,6 +192,15 @@ public class StageManager : CLLibrary.Singleton<StageManager>
 
         if (buffDetails._canceled) return;
         buffDetails = buffDetails.Tgt.Buffed.Evaluate(buffDetails);
+    }
+
+    public void ArmorProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
+        => ArmorProcedure(new ArmorDetails(seq, src, tgt, value));
+    public void ArmorProcedure(ArmorDetails d)
+    {
+        // d.Src.Armor(d);
+        d.Tgt.Armor += d.Value;
+        // d.Tgt.Armored(d);
     }
 
     // private static BuffDetails CleanProcedure(BuffDetails d)
@@ -237,15 +252,12 @@ public class StageManager : CLLibrary.Singleton<StageManager>
     {
         base.DidAwake();
 
-        _hero = new StageHero(RunManager.Instance.Hero);
-        _enemy = new StageEnemy(RunManager.Instance.Enemy);
-
         _funcList = new()
         {
-            { "GetHeroStageNeiGong",       GetHeroStageNeiGong },
-            { "GetHeroStageWaiGong",       GetHeroStageWaiGong },
-            { "GetEnemyStageNeiGong",      GetEnemyStageNeiGong },
-            { "GetEnemyStageWaiGong",      GetEnemyStageWaiGong },
+            { "TryGetHeroStageNeiGong",    TryGetHeroStageNeiGong },
+            { "TryGetHeroStageWaiGong",    TryGetHeroStageWaiGong },
+            { "TryGetEnemyStageNeiGong",   TryGetEnemyStageNeiGong },
+            { "TryGetEnemyStageWaiGong",   TryGetEnemyStageWaiGong },
             { "TryGetHeroBuff",            TryGetHeroBuff },
             { "TryGetEnemyBuff",           TryGetEnemyBuff },
         };
@@ -253,10 +265,10 @@ public class StageManager : CLLibrary.Singleton<StageManager>
 
     public static T Get<T>(IndexPath indexPath) => (T) Instance._funcList[indexPath._str](indexPath);
     public static T Get<T>(string funcName) => Get<T>(new IndexPath(funcName));
-    private object GetHeroStageNeiGong(IndexPath indexPath) => _hero._neiGongList[indexPath._ints[0]];
-    private object GetHeroStageWaiGong(IndexPath indexPath) => _hero._waiGongList[indexPath._ints[0]];
-    private object GetEnemyStageNeiGong(IndexPath indexPath) => _enemy._neiGongList[indexPath._ints[0]];
-    private object GetEnemyStageWaiGong(IndexPath indexPath) => _enemy._waiGongList[indexPath._ints[0]];
+    private object TryGetHeroStageNeiGong(IndexPath indexPath) => _hero.TryGetNeiGong(indexPath._ints[0]);
+    private object TryGetHeroStageWaiGong(IndexPath indexPath) => _hero.TryGetWaiGong(indexPath._ints[0]);
+    private object TryGetEnemyStageNeiGong(IndexPath indexPath) => _enemy.TryGetNeiGong(indexPath._ints[0]);
+    private object TryGetEnemyStageWaiGong(IndexPath indexPath) => _enemy.TryGetWaiGong(indexPath._ints[0]);
     private object TryGetHeroBuff(IndexPath indexPath) => _hero.TryGetBuff(indexPath._ints[0]);
     private object TryGetEnemyBuff(IndexPath indexPath) => _enemy.TryGetBuff(indexPath._ints[0]);
 
@@ -273,13 +285,17 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         _hero = new StageHero(RunManager.Instance.Hero);
         _enemy = new StageEnemy(RunManager.Instance.Enemy);
 
-        Sequence seq = DOTween.Sequence()
-            .SetAutoKill()
-            .OnComplete(() =>
-            {
-                Debug.Log("Animation is finished");
-                // after animation is finished, exit
-            });
+        CanvasManager.Instance.StageCanvas.Refresh();
+
+        // Sequence seq = DOTween.Sequence()
+        //     .SetAutoKill()
+        //     .OnComplete(() =>
+        //     {
+        //         Debug.Log("Animation is finished");
+        //         // after animation is finished, exit
+        //     });
+
+        StringBuilder seq = new StringBuilder();
 
         Simulate(seq);
 
@@ -300,10 +316,13 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         // accelerating
         // skip animation
 
-        seq.Restart();
+        Debug.Log(seq.ToString());
+        // seq.Restart();
+
+        AppManager.Pop();
     }
 
-    private void Simulate(Sequence seq)
+    private void Simulate(StringBuilder seq)
     {
         bool heroTurn = true;
 
@@ -313,15 +332,63 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         {
             if (heroTurn)
             {
-                _hero.Execute(seq, _hero, _enemy);
+                _hero.Execute(seq);
             }
             else
             {
-                _enemy.Execute(seq, _enemy, _hero);
+                _enemy.Execute(seq);
             }
+
+            if (TryCommit(seq, heroTurn))
+                return;
 
             heroTurn = !heroTurn;
         }
+
+        ForceCommit(seq);
+    }
+
+    public bool TryCommit(StringBuilder seq, bool heroTurn)
+    {
+        if (heroTurn)
+        {
+            if (_hero.Hp <= 0)
+            {
+                seq.Append($"玩家失败\n");
+                return true;
+            }
+
+            if (_enemy.Hp <= 0)
+            {
+                seq.Append($"玩家胜利\n");
+                return true;
+            }
+        }
+        else
+        {
+            if (_enemy.Hp <= 0)
+            {
+                seq.Append($"玩家胜利\n");
+                return true;
+            }
+            if (_hero.Hp <= 0)
+            {
+                seq.Append($"玩家失败\n");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void ForceCommit(StringBuilder seq)
+    {
+        if (_hero.Hp > _enemy.Hp)
+        {
+            seq.Append($"玩家胜利\n");
+            return;
+        }
+        seq.Append($"玩家失败\n");
     }
 
     public void Exit()

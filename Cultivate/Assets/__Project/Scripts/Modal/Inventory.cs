@@ -51,4 +51,19 @@ public class Inventory
         _chips[to].Level += 1;
         RemoveAt(from);
     }
+
+    public void RefreshChip()
+    {
+        _chips.RemoveAll(item => true);
+        foreach (var chip in Encyclopedia.ChipCategory.Traversal)
+        {
+            _chips.Add(new RunChip(chip));
+        }
+    }
+
+    public void UpgradeFirstChip()
+    {
+        if (_chips[0] != null)
+            _chips[0].Level += 1;
+    }
 }

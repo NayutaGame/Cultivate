@@ -1,9 +1,11 @@
 using System;
+using System.Text;
 using DG.Tweening;
+using UnityEngine;
 
 public class BuffDetails
 {
-    public Sequence Seq;
+    public StringBuilder Seq;
     public StageEntity Src;
     public StageEntity Tgt;
     public BuffEntry _buffEntry;
@@ -13,7 +15,7 @@ public class BuffDetails
 
     public Action<int> Clean;
 
-    public BuffDetails(Sequence seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true, bool canceled = false)
+    public BuffDetails(StringBuilder seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true, bool canceled = false)
     {
         Seq = seq;
         Src = src;

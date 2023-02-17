@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using DG.Tweening;
 using UnityEngine;
 using CLLibrary;
@@ -86,21 +87,36 @@ public abstract class StageEntity
     }
 
     public StageNeiGong[] _neiGongList;
+    public StageNeiGong TryGetNeiGong(int i)
+    {
+        if (i < _neiGongList.Length)
+            return _neiGongList[i];
+        return null;
+    }
+
     public StageWaiGong[] _waiGongList;
+    public StageWaiGong TryGetWaiGong(int i)
+    {
+        if (i < _waiGongList.Length)
+            return _waiGongList[i];
+        return null;
+    }
+
     public int _p;
 
-    public void Execute(Sequence seq, StageEntity src, StageEntity tgt)
+    public void Execute(StringBuilder seq)
     {
         StartTurn();
         StageWaiGong chip = _waiGongList[_p];
-        chip.Execute(seq, src, tgt);
+        chip.Execute(seq, this);
         _p = (_p + 1) % _waiGongList.Length;
         EndTurn();
     }
 
-    // public abstract string GetName();
     // public abstract GameObject GetPrefab();
+    public abstract string GetName();
     public abstract EntitySlot Slot();
+    public abstract StageEntity Opponent();
 
     // private bool _canLaststand;
     // public bool CanLaststand { get => _canLaststand; set => _canLaststand = value; }

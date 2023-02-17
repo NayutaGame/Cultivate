@@ -9,6 +9,7 @@ public class StageEnemy : StageEntity
     public StageEnemy(RunEnemy runEnemy)
     {
         _runEnemy = runEnemy;
+        MaxHp = _runEnemy.Health;
         Hp = _runEnemy.Health;
         Armor = 0;
 
@@ -26,5 +27,7 @@ public class StageEnemy : StageEntity
         _p = 0;
     }
 
+    public override string GetName() => "        敌人";
     public override EntitySlot Slot() => StageManager.Instance._enemySlot;
+    public override StageEntity Opponent() => StageManager.Instance._hero;
 }

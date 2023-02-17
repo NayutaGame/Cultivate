@@ -10,9 +10,10 @@ public class RunChip
 
     public string GetName() => _entry.Name;
 
-    public RunChip(string entryName, int level = 0)
+    public RunChip(string entryName, int level = 0) : this(Encyclopedia.ChipCategory.Find(entryName), level) { }
+    public RunChip(ChipEntry entry, int level = 0)
     {
-        _entry = Encyclopedia.ChipCategory.Find(entryName);
+        _entry = entry;
         Level = level;
     }
 

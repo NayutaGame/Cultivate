@@ -8,7 +8,7 @@ public class BuffCategory : Category<BuffEntry>
     {
         _list = new()
         {
-
+            new ("灵气", "可以消耗灵气使用技能", BuffStackRule.Add, true),
         };
     }
 }

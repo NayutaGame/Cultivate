@@ -9,6 +9,7 @@ public class StageHero : StageEntity
     public StageHero(RunHero runHero)
     {
         _runHero = runHero;
+        MaxHp = _runHero.Health;
         Hp = _runHero.Health;
         Armor = 0;
 
@@ -26,5 +27,7 @@ public class StageHero : StageEntity
         _p = 0;
     }
 
+    public override string GetName() => "玩家";
     public override EntitySlot Slot() => StageManager.Instance._heroSlot;
+    public override StageEntity Opponent() => StageManager.Instance._enemy;
 }

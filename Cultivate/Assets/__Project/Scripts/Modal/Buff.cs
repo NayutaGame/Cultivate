@@ -10,6 +10,8 @@ public class Buff
     private BuffEntry _buffEntry;
     public BuffEntry BuffEntry => _buffEntry;
 
+    public string GetName() => _buffEntry.Name;
+
     private int _stack;
     public int Stack
     {

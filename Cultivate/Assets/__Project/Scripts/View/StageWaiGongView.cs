@@ -13,12 +13,12 @@ public class StageWaiGongView : MonoBehaviour
     public void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
-        Refresh();
     }
 
     public void Refresh()
     {
         StageWaiGong chip = StageManager.Get<StageWaiGong>(IndexPath);
-        InfoText.text = $"{chip.GetName()}[{chip.Level}]";
+
+        InfoText.text = chip == null ? "" : $"{chip.GetName()}[{chip.Level}]";
     }
 }

@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using DG.Tweening;
 using UnityEngine;
 
 public class StageWaiGong
 {
     private RunChip _runChip;
-    private Action<Sequence, StageEntity, StageEntity> _execute;
+    private Action<StringBuilder, StageEntity> _execute;
 
     public StageWaiGong(RunChip runChip)
     {
@@ -37,5 +38,5 @@ public class StageWaiGong
             return _runChip.Level;
         }
     }
-    public void Execute(Sequence seq, StageEntity src, StageEntity tgt) => _execute(seq, src, tgt);
+    public void Execute(StringBuilder seq, StageEntity caster) => _execute(seq, caster);
 }

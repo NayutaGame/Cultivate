@@ -9,7 +9,6 @@ public class AppStageS : AppS
         base.Enter();
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(true);
-        CanvasManager.Instance.StageCanvas.Refresh();
         StageManager.Instance.Enter();
     }
 

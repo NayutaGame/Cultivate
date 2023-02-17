@@ -37,32 +37,34 @@ public class StageCanvas : Singleton<StageCanvas>
 
     public void Configure()
     {
-        _heroNeiGongViews = new StageNeiGongView[StageManager.Instance.GetHeroNeiGongCount()];
+        // StageManager.Instance.GetHeroNeiGongCount()
+        // StageManager.Instance.GetHeroWaiGongCount()
+        _heroNeiGongViews = new StageNeiGongView[RunManager.NeiGongLimit];
         for (int i = 0; i < HeroNeiGongContainerTransform.childCount; i++)
         {
             _heroNeiGongViews[i] = HeroNeiGongContainerTransform.GetChild(i).GetComponent<StageNeiGongView>();
-            _heroNeiGongViews[i].Configure(new IndexPath("GetHeroStageNeiGong", i));
+            _heroNeiGongViews[i].Configure(new IndexPath("TryGetHeroStageNeiGong", i));
         }
 
-        _heroWaiGongViews = new StageWaiGongView[StageManager.Instance.GetHeroWaiGongCount()];
+        _heroWaiGongViews = new StageWaiGongView[RunManager.WaiGongLimit];
         for (int i = 0; i < HeroWaiGongContainerTransform.childCount; i++)
         {
             _heroWaiGongViews[i] = HeroWaiGongContainerTransform.GetChild(i).GetComponent<StageWaiGongView>();
-            _heroWaiGongViews[i].Configure(new IndexPath("GetHeroStageWaiGong", i));
+            _heroWaiGongViews[i].Configure(new IndexPath("TryGetHeroStageWaiGong", i));
         }
 
-        _enemyNeiGongViews = new StageNeiGongView[StageManager.Instance.GetEnemyNeiGongCount()];
+        _enemyNeiGongViews = new StageNeiGongView[RunManager.NeiGongLimit];
         for (int i = 0; i < EnemyNeiGongContainerTransform.childCount; i++)
         {
             _enemyNeiGongViews[i] = EnemyNeiGongContainerTransform.GetChild(i).GetComponent<StageNeiGongView>();
-            _enemyNeiGongViews[i].Configure(new IndexPath("GetEnemyStageNeiGong", i));
+            _enemyNeiGongViews[i].Configure(new IndexPath("TryGetEnemyStageNeiGong", i));
         }
 
-        _enemyWaiGongViews = new StageWaiGongView[StageManager.Instance.GetEnemyWaiGongCount()];
+        _enemyWaiGongViews = new StageWaiGongView[RunManager.WaiGongLimit];
         for (int i = 0; i < EnemyWaiGongContainerTransform.childCount; i++)
         {
             _enemyWaiGongViews[i] = EnemyWaiGongContainerTransform.GetChild(i).GetComponent<StageWaiGongView>();
-            _enemyWaiGongViews[i].Configure(new IndexPath("GetEnemyStageWaiGong", i));
+            _enemyWaiGongViews[i].Configure(new IndexPath("TryGetEnemyStageWaiGong", i));
         }
 
         _heroBuffViews = new List<BuffView>();

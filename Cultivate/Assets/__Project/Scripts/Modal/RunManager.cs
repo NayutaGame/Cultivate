@@ -25,35 +25,27 @@ public class RunManager : Singleton<RunManager>
 
         _danTian = new DanTian();
         _inventory = new Inventory();
-        _inventory.Add(new RunChip("冰心决"));
-        _inventory.Add(new RunChip("飞云劲", 2));
-        _inventory.Add(new RunChip("紫微印", 3));
-        _inventory.Add(new RunChip("善水印", 4));
-        _inventory.Add(new RunChip("上清印", 5));
-        _inventory.Add(new RunChip("火铃印", 6));
-        _inventory.Add(new RunChip("三山印", 7));
-        _inventory.Add(new RunChip("上清印", 5));
 
         _hero = new RunHero();
         _enemy = new RunEnemy(40, new RunChip[]
         {
-            new ("冰心决"),
+            null,
             null,
             null,
             null,
         },
         new RunChip[]
         {
-            new ("土龙击", 3),
-            new ("紫微印", 3),
-            new ("善水印", 4),
-            new ("上清印", 5),
-            new ("火铃印", 6),
-            new ("三山印", 7),
-            new ("上清印", 3),
-            new ("上清印", 2),
-            new ("上清印", 2),
-            new ("上清印", 3),
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
             null,
             null,
         });
@@ -206,5 +198,15 @@ public class RunManager : Singleton<RunManager>
     public static void SwapWaiGong(IndexPath from, IndexPath to)
     {
         Instance._hero.SwapWaiGong(from._ints[0], to._ints[0]);
+    }
+
+    public void RefreshChip()
+    {
+        _inventory.RefreshChip();
+    }
+
+    public void UpgradeFirstChip()
+    {
+        _inventory.UpgradeFirstChip();
     }
 }

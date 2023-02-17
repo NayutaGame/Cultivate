@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryView : MonoBehaviour
 {
     public Transform Container;
     public GameObject Prefab;
 
+    public Button RefreshChipButton;
+    public Button UpgradeFirstChipButton;
+
     private List<RunChipView> _views;
 
     public void Configure()
     {
         _views = new List<RunChipView>();
+        RefreshChipButton.onClick.AddListener(RefreshChip);
+        UpgradeFirstChipButton.onClick.AddListener(UpgradeFirstChip);
     }
 
     public void Refresh()
@@ -36,5 +42,17 @@ public class InventoryView : MonoBehaviour
             _views.Add(v);
             v.Configure(new IndexPath("TryGetRunChip", i));
         }
+    }
+
+    public void RefreshChip()
+    {
+        RunManager.Instance.RefreshChip();
+        Refresh();
+    }
+
+    public void UpgradeFirstChip()
+    {
+        RunManager.Instance.UpgradeFirstChip();
+        Refresh();
     }
 }
