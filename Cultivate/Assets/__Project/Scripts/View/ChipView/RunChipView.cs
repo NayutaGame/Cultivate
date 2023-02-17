@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[SelectionBase]
 public class RunChipView : MonoBehaviour
 {
     protected RectTransform _transform;
@@ -23,7 +24,6 @@ public class RunChipView : MonoBehaviour
     public void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
-        Refresh();
     }
 
     public virtual void Refresh() { }

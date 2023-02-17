@@ -1,21 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-public class StatusView : MonoBehaviour
+public class BuffView : MonoBehaviour
 {
-    public TMP_Text StatusText;
-
     private IndexPath _indexPath;
+    public IndexPath IndexPath => _indexPath;
 
     public void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
     }
 
-    public void Refresh()
+    public virtual void Refresh()
     {
-        StatusText.text = RunManager.Get<string>(_indexPath);
+
     }
 }

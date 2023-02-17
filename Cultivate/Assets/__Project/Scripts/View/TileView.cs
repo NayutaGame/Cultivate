@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[SelectionBase]
 public class TileView : MonoBehaviour, IDropHandler
 {
     public TMP_Text InfoText;
@@ -15,6 +16,10 @@ public class TileView : MonoBehaviour, IDropHandler
     public void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
+    }
+
+    public void Refresh()
+    {
         Tile tile = RunManager.Get<Tile>(_indexPath);
         RunChip runChip = tile.RunChip;
 

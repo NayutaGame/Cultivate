@@ -1576,8 +1576,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a03641e2fb2ef94693c6edbf45cab43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ContentTransform: {fileID: 7056146703687857991}
-  AcquiredChipPrefab: {fileID: 4730905039607144230, guid: cbe81a2fe12f4474497bed2b3980e01a, type: 3}
+  Container: {fileID: 7056146703687857991}
+  Prefab: {fileID: 4730905039607144230, guid: cbe81a2fe12f4474497bed2b3980e01a, type: 3}
 --- !u!1 &7056146704617154031
 GameObject:
   m_ObjectHideFlags: 0

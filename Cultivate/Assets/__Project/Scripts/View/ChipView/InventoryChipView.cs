@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -39,7 +40,7 @@ public class InventoryChipView : RunChipView, IPointerDownHandler, IBeginDragHan
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
 
-        CanvasManager.Instance.Configure();
+        CanvasManager.Instance.Refresh();
     }
 
     public void OnDrag(PointerEventData eventData)

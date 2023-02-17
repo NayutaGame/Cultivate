@@ -1,34 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
 public class InventoryView : MonoBehaviour
 {
-    public Transform ContentTransform;
-    public GameObject InventoryChipPrefab;
+    public Transform Container;
+    public GameObject Prefab;
+
+    private List<RunChipView> _views;
 
     public void Configure()
     {
+        _views = new List<RunChipView>();
+    }
+
+    public void Refresh()
+    {
         PopulateList();
+        foreach(var view in _views) view.Refresh();
     }
 
     private void PopulateList()
     {
-        int current = ContentTransform.childCount;
+        int current = Container.childCount;
         int need = RunManager.Get<int>("GetRunChipCount");
 
-        if (need > current)
-        {
-            int compensate = need - current;
-            for (int i = 0; i < compensate; i++)
-            {
-                Instantiate(InventoryChipPrefab, ContentTransform);
-            }
-        }
+        (need, _) = Numeric.Negate(need, current);
+        if (need <= 0) return;
 
-        for (int i = 0; i < ContentTransform.childCount; i++)
+        int length = Container.childCount;
+        for (int i = length; i < need + length; i++)
         {
-            RunChipView v = ContentTransform.GetChild(i).GetComponent<RunChipView>();
+            RunChipView v = Instantiate(Prefab, Container).GetComponent<RunChipView>();
+            _views.Add(v);
             v.Configure(new IndexPath("TryGetRunChip", i));
         }
     }

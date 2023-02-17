@@ -24,4 +24,9 @@ public class DanTianView : MonoBehaviour
             }
         }
     }
+
+    public void Refresh()
+    {
+        foreach(var view in _tileViews) if(view != null) view.Refresh();
+    }
 }

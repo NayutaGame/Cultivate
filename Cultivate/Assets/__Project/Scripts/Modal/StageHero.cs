@@ -9,7 +9,7 @@ public class StageHero : StageEntity
     public StageHero(RunHero runHero)
     {
         _runHero = runHero;
-        Health = _runHero.Health;
+        Hp = _runHero.Health;
         Armor = 0;
 
         _neiGongList = new StageNeiGong[_runHero.NeiGongCount];

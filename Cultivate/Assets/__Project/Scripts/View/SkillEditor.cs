@@ -22,6 +22,14 @@ public class SkillEditor : MonoBehaviour
         ConfigureList(ref _enemyWaiGongViews, RunManager.WaiGongLimit, EnemyWaiGongTransform, "GetEnemyWaiGong");
     }
 
+    public void Refresh()
+    {
+        foreach(var view in _heroNeiGongViews) view.Refresh();
+        foreach(var view in _heroWaiGongViews) view.Refresh();
+        foreach(var view in _enemyNeiGongViews) view.Refresh();
+        foreach(var view in _enemyWaiGongViews) view.Refresh();
+    }
+
     private void ConfigureList(ref RunChipView[] views, int limit, Transform parentTransform, string indexPathString)
     {
         views = new RunChipView[limit];

@@ -39,7 +39,7 @@ public class AcquiredChipView : RunChipView, IPointerDownHandler, IBeginDragHand
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
 
-        CanvasManager.Instance.Configure();
+        CanvasManager.Instance.Refresh();
     }
 
     public void OnDrag(PointerEventData eventData)

@@ -1,11 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
+using Sequence = DG.Tweening.Sequence;
 
-public class StageManager : Singleton<StageManager>
+public class StageManager : CLLibrary.Singleton<StageManager>
 {
     private readonly int MAX_ACTION_COUNT = 128;
 
@@ -59,7 +59,7 @@ public class StageManager : Singleton<StageManager>
         // }
 
         // 结算护甲
-        Negate(ref d.Value, ref tgt.Armor);
+        (d.Value, tgt.Armor) = Numeric.Negate(d.Value, tgt.Armor);
         if (d.Value >= 0)
         {
             // undamage?.Invoke();
@@ -119,7 +119,11 @@ public class StageManager : Singleton<StageManager>
         // 如果击伤
         // damaged?.Invoke(damageDetails);
 
+        // 结算吸血
+
+
         src.Damage(d);
+        tgt.Hp -= d.Value;
         tgt.Damaged(d);
 
         // 结算反伤
@@ -156,88 +160,70 @@ public class StageManager : Singleton<StageManager>
     //     target.Damaged(blademailDamageDetails);
     // }
     //
-    // public static void HealProcedure
-    //     (Entity source, Entity target, ref Sequence sequence, float magnification = 0)
-    // {
-    //     int power = (int)Mathf.Max(0, source.GetFinalPower() * (1 + magnification));
-    //     HealDetails healDetails = new HealDetails(source, target, power);
-    //
-    //     target.SetCurrHP(target.GetCurrHP() + healDetails._power);
-    //
-    //     source.Heal(healDetails);
-    //     AnyHeal(healDetails);
-    //     target.Healed(healDetails);
-    //     AnyHealed(healDetails);
-    // }
-    //
-    // public static void BuffProcedure(Entity source, Entity target, string buffName, int stack = 1, bool recursive = true)
-    //     => BuffProcedure(source, target, Encyclopedia.BuffCategory.Find(buffName), stack, recursive);
-    // public static void BuffProcedure(Entity source, Entity target, BuffEntry buffEntry, int stack = 1, bool recursive = true)
-    //     => BuffProcedure(new BuffDetails(source, target, buffEntry, stack, recursive));
-    // public static void BuffProcedure(BuffDetails buffDetails)
-    // {
-    //     if (buffDetails._canceled) return;
-    //     buffDetails = CleanProcedure(buffDetails);
-    //
-    //     if (buffDetails._canceled) return;
-    //     buffDetails = buffDetails._source.Buff.Evaluate(buffDetails);
-    //
-    //     if (buffDetails._canceled) return;
-    //     buffDetails = AnyBuff.Evaluate(buffDetails);
-    //
-    //     if (buffDetails._canceled) return;
-    //     buffDetails.Core();
-    //
-    //     if (buffDetails._canceled) return;
-    //     buffDetails = buffDetails._target.Buffed.Evaluate(buffDetails);
-    //
-    //     if (buffDetails._canceled) return;
-    //     buffDetails = AnyBuffed.Evaluate(buffDetails);
-    // }
-    //
+    public static void HealProcedure(HealDetails d)
+    {
+        StageEntity src = d.Src;
+        StageEntity tgt = d.Tgt;
+
+        src.Heal(d);
+        tgt.Hp += d.Value;
+        tgt.Healed(d);
+    }
+
+    public static void BuffProcedure(Sequence seq, StageEntity src, StageEntity tgt, string buffName, int stack = 1, bool recursive = true)
+        => BuffProcedure(seq, src, tgt, Encyclopedia.BuffCategory.Find(buffName), stack, recursive);
+    public static void BuffProcedure(Sequence seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => BuffProcedure(new BuffDetails(seq, src, tgt, buffEntry, stack, recursive));
+    public static void BuffProcedure(BuffDetails buffDetails)
+    {
+        // buffDetails = CleanProcedure(buffDetails);
+
+        if (buffDetails._canceled) return;
+        buffDetails = buffDetails.Src.Buff.Evaluate(buffDetails);
+
+        if (buffDetails._canceled) return;
+        buffDetails.Core();
+
+        if (buffDetails._canceled) return;
+        buffDetails = buffDetails.Tgt.Buffed.Evaluate(buffDetails);
+    }
+
     // private static BuffDetails CleanProcedure(BuffDetails d)
     // {
     //     if (d._canceled) return d;
     //     if (d._buffEntry.Friendly) return d;
     //
-    //     bool shouldCancel = d._target.CleanStack >= d._stack;
-    //     int toClean = Mathf.Min(d._stack, d._target.CleanStack);
+    //     bool shouldCancel = d.Tgt.CleanStack >= d._stack;
+    //     int toClean = Mathf.Min(d._stack, d.Tgt.CleanStack);
     //
     //     if (shouldCancel)
     //     {
     //         d._stack = 0;
-    //         d._target.Clean(toClean);
+    //         d.Tgt.Clean(toClean);
     //         d._canceled = true;
     //         return d;
     //     }
     //     else
     //     {
     //         d._stack -= toClean;
-    //         d._target.Clean(toClean);
+    //         d.Tgt.Clean(toClean);
     //         return d;
     //     }
     // }
     //
-    // public static void DispelProcedure(Entity entity, int stack)
+    // public static void DispelProcedure(StageEntity entity, int stack)
     // {
     //     while (stack > 0 && entity.FindBuff(b => !b.Friendly) is { } buff)
     //     {
-    //         (buff.Stack, stack) = Negate(buff.Stack, stack);
+    //         Negate(ref buff.Stack, ref stack);
     //     }
     // }
     //
-    // public static void LoseHpProcedure(Entity entity, int amount)
+    // public static void LoseHpProcedure(StageEntity entity, int amount)
     // {
     //     entity.SetCurrHP(entity.GetCurrHP() - amount);
     //     entity.LoseHp();
     // }
-
-    private static void Negate(ref int i0, ref int i1)
-    {
-        int min = Mathf.Min(i0, i1);
-        i0 -= min;
-        i1 -= min;
-    }
 
     public StageHero _hero;
     public StageEnemy _enemy;
@@ -260,6 +246,8 @@ public class StageManager : Singleton<StageManager>
             { "GetHeroStageWaiGong",       GetHeroStageWaiGong },
             { "GetEnemyStageNeiGong",      GetEnemyStageNeiGong },
             { "GetEnemyStageWaiGong",      GetEnemyStageWaiGong },
+            { "TryGetHeroBuff",            TryGetHeroBuff },
+            { "TryGetEnemyBuff",           TryGetEnemyBuff },
         };
     }
 
@@ -269,11 +257,16 @@ public class StageManager : Singleton<StageManager>
     private object GetHeroStageWaiGong(IndexPath indexPath) => _hero._waiGongList[indexPath._ints[0]];
     private object GetEnemyStageNeiGong(IndexPath indexPath) => _enemy._neiGongList[indexPath._ints[0]];
     private object GetEnemyStageWaiGong(IndexPath indexPath) => _enemy._waiGongList[indexPath._ints[0]];
+    private object TryGetHeroBuff(IndexPath indexPath) => _hero.TryGetBuff(indexPath._ints[0]);
+    private object TryGetEnemyBuff(IndexPath indexPath) => _enemy.TryGetBuff(indexPath._ints[0]);
 
     public int GetHeroNeiGongCount() => _hero._neiGongList.Length;
     public int GetHeroWaiGongCount() => _hero._waiGongList.Length;
     public int GetEnemyNeiGongCount() => _enemy._neiGongList.Length;
     public int GetEnemyWaiGongCount() => _enemy._waiGongList.Length;
+
+    public int GetHeroBuffCount() => _hero.GetBuffCount();
+    public int GetEnemyBuffCount() => _enemy.GetBuffCount();
 
     public void Enter()
     {
@@ -291,9 +284,9 @@ public class StageManager : Singleton<StageManager>
         Simulate(seq);
 
         // config the scene
-        StageCanvas.Instance.SetHeroHealth(_hero.Health);
+        StageCanvas.Instance.SetHeroHealth(_hero.Hp);
         StageCanvas.Instance.SetHeroArmor(0);
-        StageCanvas.Instance.SetEnemyHealth(_enemy.Health);
+        StageCanvas.Instance.SetEnemyHealth(_enemy.Hp);
         StageCanvas.Instance.SetEnemyArmor(0);
 
         // animation

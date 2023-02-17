@@ -20,6 +20,12 @@ public class BattlePanel : Panel
         BattleButton.onClick.AddListener(Battle);
     }
 
+    public override void Refresh()
+    {
+        AcquiredPoolView.Refresh();
+        SkillEditor.Refresh();
+    }
+
     public void Battle()
     {
         AppManager.Push(new AppStageS());

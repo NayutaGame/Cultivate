@@ -13,4 +13,11 @@ public class CharacterPanel : Panel
         DanTianView.Configure();
         InventoryView.Configure();
     }
+
+    public override void Refresh()
+    {
+        StatusView.Refresh();
+        DanTianView.Refresh();
+        InventoryView.Refresh();
+    }
 }

@@ -22,6 +22,13 @@ public class StageCanvas : Singleton<StageCanvas>
     private StageNeiGongView[] _enemyNeiGongViews;
     private StageWaiGongView[] _enemyWaiGongViews;
 
+    public Transform HeroBuffContainerTransform;
+    public Transform EnemyBuffContainerTransform;
+    private List<BuffView> _heroBuffViews;
+    private List<BuffView> _enemyBuffViews;
+
+    public GameObject BuffViewPrefab;
+
     public override void DidAwake()
     {
         base.DidAwake();
@@ -57,6 +64,9 @@ public class StageCanvas : Singleton<StageCanvas>
             _enemyWaiGongViews[i] = EnemyWaiGongContainerTransform.GetChild(i).GetComponent<StageWaiGongView>();
             _enemyWaiGongViews[i].Configure(new IndexPath("GetEnemyStageWaiGong", i));
         }
+
+        _heroBuffViews = new List<BuffView>();
+        _enemyBuffViews = new List<BuffView>();
     }
 
     public void Refresh()
@@ -65,6 +75,50 @@ public class StageCanvas : Singleton<StageCanvas>
         foreach(var view in _heroWaiGongViews) view.Refresh();
         foreach(var view in _enemyNeiGongViews) view.Refresh();
         foreach(var view in _enemyWaiGongViews) view.Refresh();
+
+        PopulateHeroBuffViews();
+        PopulateEnemyBuffViews();
+
+        foreach(var view in _heroBuffViews) view.Refresh();
+        foreach(var view in _enemyBuffViews) view.Refresh();
+    }
+
+    private void PopulateHeroBuffViews()
+    {
+        int current = HeroBuffContainerTransform.childCount;
+        int need = StageManager.Instance.GetHeroBuffCount();
+
+        (need, _) = Numeric.Negate(need, current);
+
+        if (need <= 0) return;
+
+        int length = HeroBuffContainerTransform.childCount;
+
+        for (int i = length; i < need + length; i++)
+        {
+            BuffView v = Instantiate(BuffViewPrefab, HeroBuffContainerTransform).GetComponent<BuffView>();
+            _heroBuffViews.Add(v);
+            v.Configure(new IndexPath("TryGetHeroBuff", i));
+        }
+    }
+
+    private void PopulateEnemyBuffViews()
+    {
+        int current = EnemyBuffContainerTransform.childCount;
+        int need = StageManager.Instance.GetEnemyBuffCount();
+
+        (need, _) = Numeric.Negate(need, current);
+
+        if (need <= 0) return;
+
+        int length = EnemyBuffContainerTransform.childCount;
+
+        for (int i = length; i < need + length; i++)
+        {
+            BuffView v = Instantiate(BuffViewPrefab, EnemyBuffContainerTransform).GetComponent<BuffView>();
+            _heroBuffViews.Add(v);
+            v.Configure(new IndexPath("TryGetEnemyBuff", i));
+        }
     }
 
     public void SetHeroHealth(int value)

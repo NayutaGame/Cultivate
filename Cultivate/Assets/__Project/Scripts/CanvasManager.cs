@@ -31,7 +31,7 @@ public class CanvasManager : Singleton<CanvasManager>
             _currentPanel.gameObject.SetActive(false);
         _currentPanel = CharacterPanel;
         _currentPanel.gameObject.SetActive(true);
-        _currentPanel.Configure();
+        _currentPanel.Refresh();
     }
 
     private void OpenBattlePanel()
@@ -40,11 +40,16 @@ public class CanvasManager : Singleton<CanvasManager>
             _currentPanel.gameObject.SetActive(false);
         _currentPanel = BattlePanel;
         _currentPanel.gameObject.SetActive(true);
-        _currentPanel.Configure();
+        _currentPanel.Refresh();
     }
 
     public void Configure()
     {
         _currentPanel.Configure();
+    }
+
+    public void Refresh()
+    {
+        _currentPanel.Refresh();
     }
 }

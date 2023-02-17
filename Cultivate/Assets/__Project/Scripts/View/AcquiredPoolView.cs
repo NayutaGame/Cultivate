@@ -1,34 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
 public class AcquiredPoolView : MonoBehaviour
 {
-    public Transform ContentTransform;
-    public GameObject AcquiredChipPrefab;
+    public Transform Container;
+    public GameObject Prefab;
+
+    private List<AcquiredChipView> _views;
 
     public void Configure()
     {
+        _views = new List<AcquiredChipView>();
+    }
+
+    public void Refresh()
+    {
         PopulateList();
+        foreach(var view in _views) view.Refresh();
     }
 
     private void PopulateList()
     {
-        int current = ContentTransform.childCount;
+        int current = Container.childCount;
         int need = RunManager.Get<int>("GetAcquiredChipCount");
 
-        if (need > current)
-        {
-            int compensate = need - current;
-            for (int i = 0; i < compensate; i++)
-            {
-                Instantiate(AcquiredChipPrefab, ContentTransform);
-            }
-        }
+        (need, _) = Numeric.Negate(need, current);
+        if (need <= 0) return;
 
-        for (int i = 0; i < ContentTransform.childCount; i++)
+        int length = Container.childCount;
+        for (int i = length; i < need + length; i++)
         {
-            RunChipView v = ContentTransform.GetChild(i).GetComponent<RunChipView>();
+            AcquiredChipView v = Instantiate(Prefab, Container).GetComponent<AcquiredChipView>();
+            _views.Add(v);
             v.Configure(new IndexPath("TryGetAcquiredChip", i));
         }
     }
