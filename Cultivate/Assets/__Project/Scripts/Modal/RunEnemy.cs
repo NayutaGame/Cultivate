@@ -19,5 +19,7 @@ public class RunEnemy
     }
 
     public RunChip GetNeiGong(int i) => _equippedNeiGong[i];
+    public void SetNeiGong(int i, RunChip neiGong) => _equippedNeiGong[i] = neiGong;
     public RunChip GetWaiGong(int i) => _equippedWaiGong[i];
+    public void SetWaiGong(int i, RunChip waiGong) => _equippedWaiGong[i] = waiGong;
 }

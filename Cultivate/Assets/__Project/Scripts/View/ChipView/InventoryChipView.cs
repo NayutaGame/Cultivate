@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryChipView : RunChipView, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
+public class InventoryChipView : RunChipView
 {
     public override void Refresh()
     {
@@ -19,51 +19,22 @@ public class InventoryChipView : RunChipView, IPointerDownHandler, IBeginDragHan
         InfoText.text = $"{chip.GetName()}[{chip.Level}]";
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public override void OnDrop(PointerEventData eventData)
     {
-        _ghostGO = Instantiate(gameObject, CanvasManager.Instance.GhostHolder);
-        _ghostGO.GetComponent<Image>().raycastTarget = false;
-        _ghostTransform = _ghostGO.GetComponent<RectTransform>();
+        if (eventData.pointerDrag == null)
+            return;
 
-        Vector2 size = _transform.parent.GetComponent<GridLayoutGroup>().cellSize;
-
-        _ghostTransform.sizeDelta = size;
-
-        _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        Destroy(_ghostGO);
-        _ghostGO = null;
-        _ghostTransform = null;
-
-        _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
-
-        CanvasManager.Instance.Refresh();
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        _ghostTransform.position = eventData.position;
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        if (eventData.pointerDrag == null) return;
         RunChipView drop = eventData.pointerDrag.GetComponent<RunChipView>();
-        if (drop == null) return;
+        if (drop == null)
+            return;
 
         if (IndexPath.Equals(drop.IndexPath))
-        {
-            Debug.Log("same object");
             return;
-        }
 
         if (drop.IndexPath._str == "TryGetRunChip")
         {
-            if (RunManager.TryUpgradeInventory(drop.IndexPath, IndexPath)) return;
-            if (RunManager.Swap(drop.IndexPath, IndexPath)) return;
+            if (RunManager.Instance.TryUpgradeInventory(drop.IndexPath, IndexPath)) return;
+            if (RunManager.Instance.Swap(drop.IndexPath, IndexPath)) return;
         }
     }
 }

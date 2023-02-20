@@ -146,7 +146,6 @@ GameObject:
   - component: {fileID: 6452065672785603730}
   - component: {fileID: 6361871301536584980}
   - component: {fileID: 3022393418496761076}
-  - component: {fileID: -5965253103237193057}
   m_Layer: 5
   m_Name: RunChipView
   m_TagString: Untagged
@@ -213,16 +212,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-5965253103237193057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4730905039607144230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49e83fbbafcc5f94997d4e27b9a160dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InfoText: {fileID: 8836575341314080864}

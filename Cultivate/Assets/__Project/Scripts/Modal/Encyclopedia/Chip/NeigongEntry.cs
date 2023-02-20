@@ -9,4 +9,6 @@ public class NeigongEntry : ChipEntry
     public NeigongEntry(string name, string description) : base(name, description)
     {
     }
+
+    public override bool IsNeiGong => true;
 }

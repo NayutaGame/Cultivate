@@ -28,4 +28,6 @@ public class WaigongEntry : ChipEntry
             _execute(seq, caster);
         }
     }
+
+    public override bool IsWaiGong => true;
 }

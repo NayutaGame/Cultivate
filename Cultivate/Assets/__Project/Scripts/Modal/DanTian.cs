@@ -8,7 +8,6 @@ public class DanTian
     public static readonly int WIDTH = 2 * RADIUS + 1;
 
     private Tile[] _tiles;
-    private List<Tile> _acquired;
 
     public Tile this[int q, int r]
     {
@@ -67,37 +66,5 @@ public class DanTian
                 }
             }
         }
-
-        _acquired = new List<Tile>();
-    }
-
-    public void Acquire(RunChip runChip, Tile atTile)
-    {
-        atTile.RunChip = runChip;
-        _acquired.Add(atTile);
-    }
-
-    public int GetAcquiredChipCount()
-    {
-        return _acquired.Count;
-    }
-
-    public Tile TryGetAcquiredTile(int i)
-    {
-        if (i < _acquired.Count)
-            return _acquired[i];
-        return null;
-    }
-
-    public RunChip TryGetAcquiredChip(int i)
-    {
-        if(i < _acquired.Count)
-            return _acquired[i].RunChip;
-        return null;
-    }
-
-    public void SwapAcquired(int from, int to)
-    {
-        (_acquired[from], _acquired[to]) = (_acquired[to], _acquired[from]);
     }
 }

@@ -21,7 +21,7 @@ public class TileView : MonoBehaviour, IDropHandler
     public void Refresh()
     {
         Tile tile = RunManager.Get<Tile>(_indexPath);
-        RunChip runChip = tile.RunChip;
+        RunChip runChip = tile.Chip;
 
         if (runChip == null)
         {
@@ -42,7 +42,7 @@ public class TileView : MonoBehaviour, IDropHandler
         RunChipView drop = eventData.pointerDrag.GetComponent<RunChipView>();
         if (drop == null) return;
 
-        if (RunManager.TryUpgradeDanTian(drop.IndexPath, _indexPath)) return;
-        if (RunManager.TryApply(drop.IndexPath, _indexPath)) return;
+        if (RunManager.Instance.TryUpgradeDanTian(drop.IndexPath, _indexPath)) return;
+        if (RunManager.Instance.TryApply(drop.IndexPath, _indexPath)) return;
     }
 }

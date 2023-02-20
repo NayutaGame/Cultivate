@@ -6,7 +6,7 @@ public class Tile
     public readonly int _q;
     public readonly int _r;
 
-    public RunChip RunChip;
+    public AcquiredChip Chip;
 
     public Tile(int q, int r)
     {

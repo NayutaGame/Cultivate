@@ -23,4 +23,7 @@ public class RunChip
         // Level max case
         return c1._entry == c2._entry && c1.Level == c2.Level;
     }
+
+    public bool IsNeiGong => _entry.IsNeiGong;
+    public bool IsWaiGong => _entry.IsWaiGong;
 }

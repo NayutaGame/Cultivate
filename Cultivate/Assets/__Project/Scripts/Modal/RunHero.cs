@@ -15,10 +15,23 @@ public class RunHero
     // 遁速
     // 心境
 
-    private Tile[] _equippedNeiGong;
+    private List<AcquiredChip> _unequipped;
+    public int UnequippedCount => _unequipped.Count;
+    public AcquiredChip TryGetUnequipped(int i)
+    {
+        if (i >= _unequipped.Count)
+            return null;
+        return _unequipped[i];
+    }
+    public void AddAcquiredChip(AcquiredChip acquiredChip) => _unequipped.Add(acquiredChip);
+
+    private AcquiredChip[] _equippedNeiGong;
     public int NeiGongCount => RunManager.NeiGongLimit;
-    private Tile[] _equippedWaiGong;
+    public AcquiredChip GetNeiGong(int i) => _equippedNeiGong[i];
+
+    private AcquiredChip[] _equippedWaiGong;
     public int WaiGongCount => RunManager.WaiGongLimit;
+    public AcquiredChip GetWaiGong(int i) => _equippedWaiGong[i];
 
     public RunHero(int mingYuan = 100, int wuXing = 0, int xiuWei = 0, int health = 40, int mana = 0)
     {
@@ -28,60 +41,14 @@ public class RunHero
         Health = health;
         Mana = mana;
 
-        _equippedNeiGong = new Tile[RunManager.NeiGongLimit];
-        _equippedWaiGong = new Tile[RunManager.WaiGongLimit];
+        _unequipped = new List<AcquiredChip>();
+        _equippedNeiGong = new AcquiredChip[RunManager.NeiGongLimit];
+        _equippedWaiGong = new AcquiredChip[RunManager.WaiGongLimit];
     }
 
-    public RunChip GetNeiGong(int i)
+    public void SwapUnequipped(int from, int to)
     {
-        if(_equippedNeiGong[i] == null)
-            return null;
-        return _equippedNeiGong[i].RunChip;
-    }
-
-    public RunChip GetWaiGong(int i)
-    {
-        if(_equippedWaiGong[i] == null)
-            return null;
-        return _equippedWaiGong[i].RunChip;
-    }
-
-    public bool TryRemoveNeiGongTile(Tile tile)
-    {
-        for (int i = 0; i < _equippedNeiGong.Length; i++)
-        {
-            if (tile == _equippedNeiGong[i])
-            {
-                _equippedNeiGong[i] = null;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public void EquipNeiGong(Tile tile, int atIndex)
-    {
-        _equippedNeiGong[atIndex] = tile;
-    }
-
-    public bool TryRemoveWaiGongTile(Tile tile)
-    {
-        for (int i = 0; i < _equippedWaiGong.Length; i++)
-        {
-            if (tile == _equippedWaiGong[i])
-            {
-                _equippedWaiGong[i] = null;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public void EquipWaiGong(Tile tile, int atIndex)
-    {
-        _equippedWaiGong[atIndex] = tile;
+        (_unequipped[from], _unequipped[to]) = (_unequipped[to], _unequipped[from]);
     }
 
     public void SwapNeiGong(int from, int to)
@@ -92,5 +59,41 @@ public class RunHero
     public void SwapWaiGong(int from, int to)
     {
         (_equippedWaiGong[from], _equippedWaiGong[to]) = (_equippedWaiGong[to], _equippedWaiGong[from]);
+    }
+
+    public bool TryEquipNeiGong(int from, int to)
+    {
+        if (!_unequipped[from].IsNeiGong) return false;
+
+        if(_equippedNeiGong[to] != null)
+            UnequipNeiGong(to);
+
+        _equippedNeiGong[to] = _unequipped[from];
+        _unequipped.RemoveAt(from);
+        return true;
+    }
+
+    public bool TryEquipWaiGong(int from, int to)
+    {
+        if (!_unequipped[from].IsWaiGong) return false;
+
+        if(_equippedWaiGong[to] != null)
+            UnequipWaiGong(to);
+
+        _equippedWaiGong[to] = _unequipped[from];
+        _unequipped.RemoveAt(from);
+        return true;
+    }
+
+    public void UnequipNeiGong(int neiGong)
+    {
+        _unequipped.Add(_equippedNeiGong[neiGong]);
+        _equippedNeiGong[neiGong] = null;
+    }
+
+    public void UnequipWaiGong(int waiGong)
+    {
+        _unequipped.Add(_equippedWaiGong[waiGong]);
+        _equippedWaiGong[waiGong] = null;
     }
 }
