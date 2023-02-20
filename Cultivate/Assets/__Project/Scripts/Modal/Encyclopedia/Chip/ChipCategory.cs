@@ -72,7 +72,7 @@ public class ChipCategory : Category<ChipEntry>
                 {
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 3);
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, 3);
-                    seq.Append($"{caster.GetName()}使用了钢刀落 对手生命[护甲]变成了${caster.Opponent().Hp}[{caster.Opponent().Armor}] 自己护甲变成了[{caster.Armor}]\n");
+                    seq.Append($"{caster.GetName()}使用了土龙击 对手生命[护甲]变成了${caster.Opponent().Hp}[{caster.Opponent().Armor}] 自己护甲变成了[{caster.Armor}]\n");
                 }),
         };
     }

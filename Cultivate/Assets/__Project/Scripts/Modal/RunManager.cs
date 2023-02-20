@@ -54,9 +54,7 @@ public class RunManager : Singleton<RunManager>
         {
             { "GetTileXY",            GetTileXY       },
             { "TryGetRunChip",        TryGetRunChip   },
-            { "GetRunChipCount",      GetRunChipCount },
             { "GetStatusString",      GetStatusString },
-            { "GetAcquiredChipCount", GetAcquiredChipCount },
             { "TryGetAcquiredChip",   TryGetAcquiredChip },
             { "GetHeroNeiGong",       GetHeroNeiGong },
             { "GetHeroWaiGong",       GetHeroWaiGong },
@@ -69,14 +67,15 @@ public class RunManager : Singleton<RunManager>
     public static T Get<T>(string funcName) => Get<T>(new IndexPath(funcName));
     private object GetTileXY(IndexPath indexPath) => _danTian.GetTileXY(indexPath._ints[0], indexPath._ints[1]);
     private object TryGetRunChip(IndexPath indexPath) => _inventory.TryGetRunChip(indexPath._ints[0]);
-    private object GetRunChipCount(IndexPath indexPath) => _inventory.GetRunChipCount();
     private object GetStatusString(IndexPath indexPath) => $"命元：{_hero.MingYuan}\n悟性：{_hero.WuXing}\n修为：{_hero.XiuWei}\n气血：{_hero.Health}\n初始灵力：{_hero.Mana}";
-    private object GetAcquiredChipCount(IndexPath indexPath) => _danTian.GetAcquiredChipCount();
     private object TryGetAcquiredChip(IndexPath indexPath) => _danTian.TryGetAcquiredChip(indexPath._ints[0]);
     private object GetHeroNeiGong(IndexPath indexPath) => _hero.GetNeiGong(indexPath._ints[0]);
     private object GetHeroWaiGong(IndexPath indexPath) => _hero.GetWaiGong(indexPath._ints[0]);
     private object GetEnemyNeiGong(IndexPath indexPath) => _enemy.GetNeiGong(indexPath._ints[0]);
     private object GetEnemyWaiGong(IndexPath indexPath) => _enemy.GetWaiGong(indexPath._ints[0]);
+
+    public int GetRunChipCount() => _inventory.GetRunChipCount();
+    public int GetAcquiredChipCount() => _danTian.GetAcquiredChipCount();
 
     public static bool Swap(IndexPath from, IndexPath to)
     {

@@ -30,7 +30,7 @@ public class InventoryView : MonoBehaviour
     private void PopulateList()
     {
         int current = Container.childCount;
-        int need = RunManager.Get<int>("GetRunChipCount");
+        int need = RunManager.Instance.GetRunChipCount();
 
         (need, _) = Numeric.Negate(need, current);
         if (need <= 0) return;

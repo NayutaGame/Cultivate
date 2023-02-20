@@ -24,7 +24,7 @@ public class AcquiredPoolView : MonoBehaviour
     private void PopulateList()
     {
         int current = Container.childCount;
-        int need = RunManager.Get<int>("GetAcquiredChipCount");
+        int need = RunManager.Instance.GetAcquiredChipCount();
 
         (need, _) = Numeric.Negate(need, current);
         if (need <= 0) return;
