@@ -36,13 +36,13 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-Roguelike/.idea/
-Roguelike/.vsconfig
-Roguelike/Logs/
+Cultivate/.idea/
+Cultivate/.vsconfig
+Cultivate/Logs/
 
-Roguelike/Assets/FMODStudioCache.asset
-Roguelike/Assets/FMODStudioCache.asset.meta
-Roguelike/fmod.log
-Roguelike/fmod_editor.log
-Roguelike/Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset
-Roguelike/Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset.meta
+Cultivate/Assets/FMODStudioCache.asset
+Cultivate/Assets/FMODStudioCache.asset.meta
+Cultivate/fmod.log
+Cultivate/fmod_editor.log
+Cultivate/Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset
+Cultivate/Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset.meta
