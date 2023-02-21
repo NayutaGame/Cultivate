@@ -45,6 +45,12 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         // }
 
         src.Attack(d);
+        tgt.Attacked(d);
+        if (d.Cancel)
+        {
+            d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+            return;
+        }
 
         // if (source.IsDead() || target.IsDead())
         // {
@@ -64,16 +70,17 @@ public class StageManager : CLLibrary.Singleton<StageManager>
 
         // 结算护甲
         (d.Value, tgt.Armor) = Numeric.Negate(d.Value, tgt.Armor);
+
         if (d.Value == 0)
         {
             // undamage?.Invoke();
+            d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
             return;
         }
 
         // 伤害Procedure
         DamageProcedure(d.Seq, d.Src, d.Tgt, d.Value);
 
-        tgt.Attacked(d);
 
         // if (target.IsDead())
         // {
@@ -88,6 +95,7 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         // d.Seq.Append(src.Slot().GetAttackTween())
         //     .Join(tgt.Slot().GetAttackedTween())
         //     .AppendInterval(0.5f);
+        d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
     }
 
     public void DamageProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
@@ -129,8 +137,13 @@ public class StageManager : CLLibrary.Singleton<StageManager>
 
 
         src.Damage(d);
-        tgt.Hp -= d.Value;
         tgt.Damaged(d);
+
+        if (d.Cancel)
+        {
+            return;
+        }
+        tgt.Hp -= d.Value;
 
         // 结算反伤
         // int blademailDamage = (int)(hpLose * target.GetFinalBlademail());
@@ -172,25 +185,26 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         StageEntity tgt = d.Tgt;
 
         src.Heal(d);
-        tgt.Hp += d.Value;
         tgt.Healed(d);
+
+        tgt.Hp += d.Value;
     }
 
     public void BuffProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, string buffName, int stack = 1, bool recursive = true)
-        => BuffProcedure(seq, src, tgt, Encyclopedia.BuffCategory.Find(buffName), stack, recursive);
+        => BuffProcedure(seq, src, tgt, Encyclopedia.BuffCategory[buffName], stack, recursive);
     public void BuffProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
         => BuffProcedure(new BuffDetails(seq, src, tgt, buffEntry, stack, recursive));
     public void BuffProcedure(BuffDetails buffDetails)
     {
         // buffDetails = CleanProcedure(buffDetails);
 
-        if (buffDetails._canceled) return;
+        if (buffDetails.Cancel) return;
         buffDetails = buffDetails.Src.Buff.Evaluate(buffDetails);
 
-        if (buffDetails._canceled) return;
+        if (buffDetails.Cancel) return;
         buffDetails.Core();
 
-        if (buffDetails._canceled) return;
+        if (buffDetails.Cancel) return;
         buffDetails = buffDetails.Tgt.Buffed.Evaluate(buffDetails);
     }
 
@@ -198,9 +212,13 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         => ArmorProcedure(new ArmorDetails(seq, src, tgt, value));
     public void ArmorProcedure(ArmorDetails d)
     {
-        // d.Src.Armor(d);
+        d.Src._Armor(d);
+        d.Tgt.Armored(d);
+        if (d.Cancel)
+            return;
+
         d.Tgt.Armor += d.Value;
-        // d.Tgt.Armored(d);
+        d.Seq.Append($"    护甲变成了[{d.Src.Armor}]");
     }
 
     // private static BuffDetails CleanProcedure(BuffDetails d)
@@ -325,6 +343,8 @@ public class StageManager : CLLibrary.Singleton<StageManager>
     private void Simulate(StringBuilder seq)
     {
         bool heroTurn = true;
+        _hero._p = -1;
+        _enemy._p = -1;
 
         // register passive chips
 

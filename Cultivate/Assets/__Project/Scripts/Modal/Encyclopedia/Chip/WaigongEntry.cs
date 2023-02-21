@@ -7,12 +7,26 @@ using UnityEngine;
 
 public class WaigongEntry : ChipEntry
 {
-    public readonly int ManaCost;
+    private string[] _descriptions;
+    private int[] _manaCosts;
     public readonly Action<StringBuilder, StageEntity> _execute;
 
-    public WaigongEntry(string name, string description, int manaCost = 0, Action<StringBuilder, StageEntity> execute = null) : base(name, description)
+    public WaigongEntry(string name, string description, int manaCost = 0,
+        Action<StringBuilder, StageEntity> execute = null) : this(name, new[] { description, description, description },
+        new int[] { manaCost, manaCost, manaCost }, execute) { }
+
+    public WaigongEntry(string name, string[] descriptions, int manaCost = 0,
+        Action<StringBuilder, StageEntity> execute = null) : this(name, descriptions,
+        new int[] { manaCost, manaCost, manaCost }, execute) { }
+
+    public WaigongEntry(string name, string description, int[] manaCosts,
+        Action<StringBuilder, StageEntity> execute = null) : this(name, new[] { description, description, description },
+        manaCosts, execute) { }
+
+    public WaigongEntry(string name, string[] descriptions, int[] manaCosts = null, Action<StringBuilder, StageEntity> execute = null) : base(name)
     {
-        ManaCost = manaCost;
+        _descriptions = descriptions;
+        _manaCosts = manaCosts ?? new []{0, 0, 0};
         _execute = execute;
     }
 
@@ -24,8 +38,9 @@ public class WaigongEntry : ChipEntry
         }
         else
         {
-            // Debug.Log($"Executing {Name} => {Description}");
+            seq.Append($"{caster.GetName()}使用了{Name}");
             _execute(seq, caster);
+            seq.Append($"\n");
         }
     }
 

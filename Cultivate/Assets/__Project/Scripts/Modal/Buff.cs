@@ -33,7 +33,7 @@ public class Buff
     public bool Friendly => _buffEntry.Friendly;
 
     public Buff(StageEntity owner, string name, int stack = 1)
-        : this(owner, Encyclopedia.BuffCategory.Find(name), stack) { }
+        : this(owner, Encyclopedia.BuffCategory[name], stack) { }
     public Buff(StageEntity owner, BuffEntry buffEntry, int stack = 1)
     {
         _owner = owner;
@@ -54,6 +54,8 @@ public class Buff
         if (_buffEntry._kill != null) _owner.KillEvent += Kill;
         // if (_buffEntry._heal != null) _owner.HealEvent += Heal;
         // if (_buffEntry._healed != null) _owner.HealedEvent += Healed;
+        if (_buffEntry._armor != null) _owner.ArmorEvent += _Armor;
+        if (_buffEntry._armored != null) _owner.ArmoredEvent += Armored;
         // if (_buffEntry._laststand != null) _owner.LaststandEvent += Laststand;
         // if (_buffEntry._evade != null) _owner.EvadeEvent += Evade;
         // if (_buffEntry._clean != null) _owner.CleanEvent += Clean;
@@ -124,9 +126,9 @@ public class Buff
         _buffEntry._stackChanged(this, _owner);
     }
 
-    public void StartTurn()
+    public void StartTurn(TurnDetails d)
     {
-        _buffEntry._startTurn(this, _owner);
+        _buffEntry._startTurn(this, d);
     }
 
     public void EndTurn()
@@ -142,6 +144,8 @@ public class Buff
     public void Kill(AttackDetails d) => _buffEntry._kill(this, d);
     // public void Heal(HealDetails d) => _buffEntry._heal(this, d);
     // public void Healed(HealDetails d) => _buffEntry._healed(this, d);
+    public void _Armor(ArmorDetails d) => _buffEntry._armor(this, d);
+    public void Armored(ArmorDetails d) => _buffEntry._armored(this, d);
     // public void Laststand(DamageDetails d) => _buffEntry._laststand(this, d);
     // public void Evade(AttackDetails d) => _buffEntry._evade(this, d);
     // public void Clean(int stack) => _buffEntry._clean(this, stack);

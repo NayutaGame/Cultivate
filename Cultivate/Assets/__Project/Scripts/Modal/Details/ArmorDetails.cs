@@ -9,6 +9,7 @@ public class ArmorDetails
     public StageEntity Src;
     public StageEntity Tgt;
     public int Value;
+    public bool Cancel;
 
     public ArmorDetails(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
     {
@@ -16,5 +17,6 @@ public class ArmorDetails
         Src = src;
         Tgt = tgt;
         Value = value;
+        Cancel = false;
     }
 }

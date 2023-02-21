@@ -8,8 +8,8 @@ using CLLibrary;
 
 public abstract class StageEntity
 {
-    public event Action StartTurnEvent;
-    public void StartTurn() => StartTurnEvent?.Invoke();
+    public event Action<TurnDetails> StartTurnEvent;
+    public void StartTurn(TurnDetails d) => StartTurnEvent?.Invoke(d);
 
     public event Action EndTurnEvent;
     public void EndTurn() => EndTurnEvent?.Invoke();
@@ -37,6 +37,13 @@ public abstract class StageEntity
 
     public event Action<HealDetails> HealedEvent;
     public void Healed(HealDetails d) => HealedEvent?.Invoke(d);
+
+    public event Action<ArmorDetails> ArmorEvent;
+    public void _Armor(ArmorDetails d) => ArmorEvent?.Invoke(d);
+
+    public event Action<ArmorDetails> ArmoredEvent;
+    public void Armored(ArmorDetails d) => ArmoredEvent?.Invoke(d);
+
     //
     // public event Action<DamageDetails> LaststandEvent;
     // public void Laststand(DamageDetails d) => LaststandEvent?.Invoke(d);
@@ -106,11 +113,18 @@ public abstract class StageEntity
 
     public void Execute(StringBuilder seq)
     {
-        StartTurn();
-        StageWaiGong chip = _waiGongList[_p];
-        chip.Execute(seq, this);
-        _p = (_p + 1) % _waiGongList.Length;
+        TurnDetails d = new TurnDetails(this);
+        StartTurn(d);
+
+        MoveP();
+        _waiGongList[_p].Execute(seq, this);
+
         EndTurn();
+    }
+
+    private void MoveP()
+    {
+        _p = (_p + 1) % _waiGongList.Length;
     }
 
     // public abstract GameObject GetPrefab();
@@ -173,7 +187,7 @@ public abstract class StageEntity
         LoseHpEvent -= DefaultLoseHp;
     }
 
-    protected virtual void DefaultStartTurn() { } // 比如护甲每回合开始自动减半，可以做在这里，每回合开始不减或者只减20%做在modifier里面
+    protected virtual void DefaultStartTurn(TurnDetails d) { } // 比如护甲每回合开始自动减半，可以做在这里，每回合开始不减或者只减20%做在modifier里面
     protected virtual void DefaultEndTurn() { }
     protected virtual void DefaultDamage(DamageDetails damageDetails) { }
     protected virtual void DefaultDamaged(DamageDetails damageDetails) { }

@@ -10,9 +10,12 @@ public class StageWaiGong
     private RunChip _runChip;
     private Action<StringBuilder, StageEntity> _execute;
 
+    public bool Consumed;
+
     public StageWaiGong(RunChip runChip)
     {
         _runChip = runChip;
+        Consumed = false;
 
         if (_runChip != null)
         {
@@ -20,7 +23,7 @@ public class StageWaiGong
         }
         else
         {
-            _execute = (Encyclopedia.ChipCategory.Find("聚气术") as WaigongEntry).Execute;
+            _execute = (Encyclopedia.ChipCategory["聚气术"] as WaigongEntry).Execute;
         }
     }
 

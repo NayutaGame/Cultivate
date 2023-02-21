@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class XinfaEntry : ChipEntry
 {
-    public XinfaEntry(string name, string description) : base(name, description)
+    private string _description;
+    public string Description;
+
+    public XinfaEntry(string name, string description) : base(name)
     {
+        _description = description;
     }
 }

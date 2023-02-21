@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class BuffEntry : Entry
 {
+    private string _description;
+    public string Description;
+
     // private Sprite _sprite;
     // public Sprite Sprite => _sprite;
 
@@ -20,7 +23,7 @@ public class BuffEntry : Entry
     public Action<Buff, StageEntity, int> _gain;
     public Action<Buff, StageEntity> _lose;
     public Action<Buff, StageEntity> _stackChanged;
-    public Action<Buff, StageEntity> _startTurn;
+    public Action<Buff, TurnDetails> _startTurn;
     public Action<Buff, StageEntity> _endTurn;
     public Action<Buff, AttackDetails> _attack;
     public Action<Buff, AttackDetails> _attacked;
@@ -30,6 +33,8 @@ public class BuffEntry : Entry
     public Action<Buff, AttackDetails> _kill;
     // public Action<Buff, HealDetails> _heal;
     // public Action<Buff, HealDetails> _healed;
+    public Action<Buff, ArmorDetails> _armor;
+    public Action<Buff, ArmorDetails> _armored;
     public Action<Buff, DamageDetails> _laststand;
     public Action<Buff, AttackDetails> _evade;
     public Action<Buff, int> _clean;
@@ -43,7 +48,7 @@ public class BuffEntry : Entry
         Action<Buff, StageEntity, int> gain = null,
         Action<Buff, StageEntity> lose = null,
         Action<Buff, StageEntity> stackChanged = null,
-        Action<Buff, StageEntity> startTurn = null,
+        Action<Buff, TurnDetails> startTurn = null,
         Action<Buff, StageEntity> endTurn = null,
         Action<Buff, AttackDetails> attack = null,
         Action<Buff, AttackDetails> attacked = null,
@@ -53,6 +58,8 @@ public class BuffEntry : Entry
         Action<Buff, AttackDetails> kill = null,
         // Action<Buff, HealDetails> heal = null,
         // Action<Buff, HealDetails> healed = null,
+        Action<Buff, ArmorDetails> armor = null,
+        Action<Buff, ArmorDetails> armored = null,
         Action<Buff, DamageDetails> laststand = null,
         Action<Buff, AttackDetails> evade = null,
         Action<Buff, int> clean = null,
@@ -60,8 +67,9 @@ public class BuffEntry : Entry
         Tuple<int, Func<Buff, BuffDetails, BuffDetails>> anyBuff = null,
         Tuple<int, Func<Buff, BuffDetails, BuffDetails>> buffed = null,
         Tuple<int, Func<Buff, BuffDetails, BuffDetails>> anyBuffed = null
-    ) : base(name, description)
+    ) : base(name)
     {
+        _description = description;
         // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
         _buffStackRule = buffStackRule;
         _friendly = friendly;
@@ -81,6 +89,8 @@ public class BuffEntry : Entry
         _kill = kill;
         // _heal = heal;
         // _healed = healed;
+        _armor = armor;
+        _armored = armored;
         _laststand = laststand;
         _evade = evade;
         _clean = clean;

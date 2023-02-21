@@ -6,7 +6,7 @@ public class ChipCategory : Category<ChipEntry>
 {
     public ChipCategory()
     {
-        _list = new List<ChipEntry>()
+        List = new List<ChipEntry>()
         {
             // new XinfaEntry("龙象吞海决", "水系心法"),
             // new XinfaEntry("魔焰决", "火系心法"),
@@ -45,35 +45,102 @@ public class ChipCategory : Category<ChipEntry>
             // new WaigongEntry("神皇印", "若使用相同的灵气释放，则下回合开始时，自身【蓄势】层数翻倍。否则，本回合【护罩】抵挡的伤害等量转化为【蓄势】。"),
             // new WaigongEntry("覆体印", "消散所有金系灵气，每消散一点获得【减伤】*1"),
 
-            new WaigongEntry("聚气术", "1灵气",
+            new WaigongEntry("聚气术", "灵气+1",
                 execute: (seq, caster) =>
                 {
-                    Buff oldB = caster.FindBuff("灵气");
-                    int oldStack = oldB?.Stack ?? 0;
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气");
-                    Buff b = caster.FindBuff("灵气");
-                    seq.Append($"{caster.GetName()}使用了聚气术 灵气: {oldStack} -> {b.Stack}\n");
                 }),
-            new WaigongEntry("钢刀落", "12攻", 2,
+            // new WaigongEntry("钢刀落", "12攻"),
+            // new WaigongEntry("金钟罩", "护甲+6"),
+            // new WaigongEntry("寒冰术", "灵气+1，敌方护甲-3"),
+            // new WaigongEntry("再生术", "再生+2"),
+            // new WaigongEntry("硬化术", "格挡+1", 1),
+            // new WaigongEntry("吸血镖", "吸血  4攻"),
+            // new WaigongEntry("火吐息", "3攻，灵气+1"),
+            // new WaigongEntry("迷踪步", "闪避+1", 1),
+            // new WaigongEntry("蓄力术", "灵气+2"),
+            // new WaigongEntry("土龙击", "3攻，护甲+3",
+            //     execute: (seq, caster) =>
+            //     {
+            //         StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 3);
+            //         StageManager.Instance.ArmorProcedure(seq, caster, caster, 3);
+            //     }),
+
+            new WaigongEntry("打击", "5攻",
                 execute: (seq, caster) =>
                 {
-                    // StageManager.AttackProcedure();
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
                 }),
-            new WaigongEntry("金钟罩", "6护甲"),
-            new WaigongEntry("寒冰术", "1灵气，3减甲"),
-            new WaigongEntry("再生术", "2再生"),
-            new WaigongEntry("硬化术", "1格挡", 1),
-            new WaigongEntry("吸血镖", "4攻，吸血"),
-            new WaigongEntry("火吐息", "1灵气，3攻"),
-            new WaigongEntry("迷踪步", "1闪避", 1),
-            new WaigongEntry("蓄力术", "2灵气"),
-            new WaigongEntry("土龙击", "3攻，3护甲",
+            new WaigongEntry("铁甲", "护甲+3",
                 execute: (seq, caster) =>
                 {
-                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 3);
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, 3);
-                    seq.Append($"{caster.GetName()}使用了土龙击 对手生命[护甲]变成了${caster.Opponent().Hp}[{caster.Opponent().Armor}] 自己护甲变成了[{caster.Armor}]\n");
                 }),
+            new WaigongEntry("铁傀儡威仪", "护甲+5，2攻",
+                execute: (seq, caster) =>
+                {
+                    StageManager.Instance.ArmorProcedure(seq, caster, caster, 5);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 2);
+                }),
+            new WaigongEntry("铁甲桩", "护甲+4，【免伤】1次",
+                execute: (seq, caster) =>
+                {
+                    StageManager.Instance.ArmorProcedure(seq, caster, caster, 3);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "免伤");
+                }),
+            new WaigongEntry("突围", "消耗所有护甲，【无敌】1回合",
+                execute: (seq, caster) =>
+                {
+                    StageManager.Instance.ArmorProcedure(seq, caster, caster, -caster.Armor);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "无敌");
+                }),
+            new WaigongEntry("铁甲入体", "【格挡】+2",
+                execute: (seq, caster) =>
+                {
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "格挡", 2);
+                }),
+            new WaigongEntry("金傀儡", "护甲+10，下回合无法攻击",
+                execute: (seq, caster) =>
+                {
+                    StageManager.Instance.ArmorProcedure(seq, caster, caster, 10);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "无法攻击", 2);
+                }),
+            new WaigongEntry("活体铠甲", "护甲+2，【无敌】1回合",
+                execute: (seq, caster) =>
+                {
+                    StageManager.Instance.ArmorProcedure(seq, caster, caster, 2);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "无敌");
+                }),
+            new WaigongEntry("金元素爆发", "消耗所有护甲，造成1.5倍伤害",
+                execute: (seq, caster) =>
+                {
+                    int armor = caster.Armor;
+                    StageManager.Instance.ArmorProcedure(seq, caster, caster, -armor);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), Mathf.FloorToInt(1.5f * armor));
+                }),
+            new WaigongEntry("铁甲冲撞", "造成护甲一半的伤害，敌方【晕眩】1回合",
+                execute: (seq, caster) =>
+                {
+                    int armor = caster.Armor;
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), Mathf.FloorToInt(0.5f * armor));
+                    StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "晕眩");
+                }),
+            new WaigongEntry("不动", "消耗，获得【不动】",
+                execute: (seq, caster) =>
+                {
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "不动");
+                }),
+            new WaigongEntry("明", "消耗，获得【明】",
+                execute: (seq, caster) =>
+                {
+                }),
+            new WaigongEntry("觉有情", "消耗，如果有【不动】和【明】，则获得【不动明王】。否则，减少10生命",
+                execute: (seq, caster) =>
+                {
+                }),
+
+
+
         };
     }
 }

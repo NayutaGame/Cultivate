@@ -10,6 +10,7 @@ public class DamageDetails
     public StageEntity Src;
     public StageEntity Tgt;
     public int Value;
+    public bool Cancel;
 
     public DamageDetails(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
     {
@@ -17,5 +18,6 @@ public class DamageDetails
         Src = src;
         Tgt = tgt;
         Value = value;
+        Cancel = false;
     }
 }

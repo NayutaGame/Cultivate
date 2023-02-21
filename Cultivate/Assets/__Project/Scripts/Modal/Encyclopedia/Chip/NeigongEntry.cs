@@ -6,8 +6,12 @@ public class NeigongEntry : ChipEntry
 {
     // events
 
-    public NeigongEntry(string name, string description) : base(name, description)
+    private string _description;
+    public string Description;
+
+    public NeigongEntry(string name, string description) : base(name)
     {
+        _description = description;
     }
 
     public override bool IsNeiGong => true;

@@ -11,11 +11,11 @@ public class BuffDetails
     public BuffEntry _buffEntry;
     public int _stack;
     public bool _recursive;
-    public bool _canceled;
+    public bool Cancel;
 
     public Action<int> Clean;
 
-    public BuffDetails(StringBuilder seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true, bool canceled = false)
+    public BuffDetails(StringBuilder seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true, bool cancel = false)
     {
         Seq = seq;
         Src = src;
@@ -23,12 +23,15 @@ public class BuffDetails
         _buffEntry = buffEntry;
         _stack = stack;
         _recursive = recursive;
-        _canceled = canceled;
+        Cancel = cancel;
     }
 
     public void Core()
     {
         Buff same = Tgt.FindBuff(_buffEntry);
+
+        int oldStack = same?.Stack ?? 0;
+
         if (same != null)
         {
             switch (_buffEntry.BuffStackRule)
@@ -39,11 +42,15 @@ public class BuffDetails
                     Tgt.StackBuff(same, _stack);
                     break;
             }
+
+            Seq.Append($"    {_buffEntry.Name}: {oldStack} -> {same.Stack}");
         }
         else
         {
             Buff buff = new Buff(Tgt, _buffEntry, _stack);
             Tgt.AddBuff(buff);
+
+            Seq.Append($"    {_buffEntry.Name}: 0 -> {buff.Stack}");
         }
     }
 }

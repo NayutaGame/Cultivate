@@ -10,6 +10,7 @@ public class AttackDetails
     public StageEntity Src;
     public StageEntity Tgt;
     public int Value;
+    public bool Cancel;
 
     public AttackDetails(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
     {
@@ -17,5 +18,6 @@ public class AttackDetails
         Src = src;
         Tgt = tgt;
         Value = value;
+        Cancel = false;
     }
 }
