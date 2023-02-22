@@ -23,8 +23,14 @@ public class BuffEntry : Entry
     public Action<Buff, StageEntity, int> _gain;
     public Action<Buff, StageEntity> _lose;
     public Action<Buff, StageEntity> _stackChanged;
-    public Action<Buff, TurnDetails> _startTurn;
+    public Action<Buff, StageEntity> _startStage;
+    public Action<Buff, StageEntity> _endStage;
+    public Action<Buff, StageEntity> _startTurn;
     public Action<Buff, StageEntity> _endTurn;
+    public Action<Buff, StageEntity> _startRound;
+    public Action<Buff, StageEntity> _endRound;
+    public Action<Buff, StageEntity> _startStep;
+    public Action<Buff, StageEntity> _endStep;
     public Action<Buff, AttackDetails> _attack;
     public Action<Buff, AttackDetails> _attacked;
     public Action<Buff, DamageDetails> _damage;
@@ -35,9 +41,9 @@ public class BuffEntry : Entry
     // public Action<Buff, HealDetails> _healed;
     public Action<Buff, ArmorDetails> _armor;
     public Action<Buff, ArmorDetails> _armored;
-    public Action<Buff, DamageDetails> _laststand;
-    public Action<Buff, AttackDetails> _evade;
-    public Action<Buff, int> _clean;
+    // public Action<Buff, DamageDetails> _laststand;
+    // public Action<Buff, AttackDetails> _evade;
+    // public Action<Buff, int> _clean;
     public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _buff;
     public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _anyBuff;
     public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _buffed;
@@ -48,8 +54,14 @@ public class BuffEntry : Entry
         Action<Buff, StageEntity, int> gain = null,
         Action<Buff, StageEntity> lose = null,
         Action<Buff, StageEntity> stackChanged = null,
-        Action<Buff, TurnDetails> startTurn = null,
+        Action<Buff, StageEntity> startStage = null,
+        Action<Buff, StageEntity> endStage = null,
+        Action<Buff, StageEntity> startTurn = null,
         Action<Buff, StageEntity> endTurn = null,
+        Action<Buff, StageEntity> startRound = null,
+        Action<Buff, StageEntity> endRound = null,
+        Action<Buff, StageEntity> startStep = null,
+        Action<Buff, StageEntity> endStep = null,
         Action<Buff, AttackDetails> attack = null,
         Action<Buff, AttackDetails> attacked = null,
         Action<Buff, DamageDetails> damage = null,
@@ -60,9 +72,9 @@ public class BuffEntry : Entry
         // Action<Buff, HealDetails> healed = null,
         Action<Buff, ArmorDetails> armor = null,
         Action<Buff, ArmorDetails> armored = null,
-        Action<Buff, DamageDetails> laststand = null,
-        Action<Buff, AttackDetails> evade = null,
-        Action<Buff, int> clean = null,
+        // Action<Buff, DamageDetails> laststand = null,
+        // Action<Buff, AttackDetails> evade = null,
+        // Action<Buff, int> clean = null,
         Tuple<int, Func<Buff, BuffDetails, BuffDetails>> buff = null,
         Tuple<int, Func<Buff, BuffDetails, BuffDetails>> anyBuff = null,
         Tuple<int, Func<Buff, BuffDetails, BuffDetails>> buffed = null,
@@ -79,8 +91,16 @@ public class BuffEntry : Entry
         _gain = gain;
         _lose = lose;
         _stackChanged = stackChanged;
+
+        _startStage = startStage;
+        _endStage = endStage;
         _startTurn = startTurn;
         _endTurn = endTurn;
+        _startRound = startRound;
+        _endRound = endRound;
+        _startStep = startStep;
+        _endStep = endStep;
+
         _attack = attack;
         _attacked = attacked;
         _damage = damage;
@@ -91,9 +111,9 @@ public class BuffEntry : Entry
         // _healed = healed;
         _armor = armor;
         _armored = armored;
-        _laststand = laststand;
-        _evade = evade;
-        _clean = clean;
+        // _laststand = laststand;
+        // _evade = evade;
+        // _clean = clean;
 
         _buff = buff;
         _anyBuff = anyBuff;

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Sequence = DG.Tweening.Sequence;
 
-public class StageManager : CLLibrary.Singleton<StageManager>
+public class StageManager : Singleton<StageManager>
 {
     private readonly int MAX_ACTION_COUNT = 128;
 
@@ -346,7 +346,10 @@ public class StageManager : CLLibrary.Singleton<StageManager>
         _hero._p = -1;
         _enemy._p = -1;
 
-        // register passive chips
+        _hero.StartStage();
+        _enemy.StartStage();
+
+        // register nei gong
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {

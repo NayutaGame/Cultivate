@@ -5,14 +5,33 @@ using System.Text;
 using DG.Tweening;
 using UnityEngine;
 using CLLibrary;
+using Unity.VisualScripting;
 
 public abstract class StageEntity
 {
-    public event Action<TurnDetails> StartTurnEvent;
-    public void StartTurn(TurnDetails d) => StartTurnEvent?.Invoke(d);
+    public event Action StartStageEvent;
+    public void StartStage() => StartStageEvent?.Invoke();
+
+    public event Action EndStageEvent;
+    public void EndStage() => EndStageEvent?.Invoke();
+
+    public event Action StartTurnEvent;
+    public void StartTurn() => StartTurnEvent?.Invoke();
 
     public event Action EndTurnEvent;
     public void EndTurn() => EndTurnEvent?.Invoke();
+
+    public event Action StartRoundEvent;
+    public void StartRound() => StartRoundEvent?.Invoke();
+
+    public event Action EndRoundEvent;
+    public void EndRound() => EndRoundEvent?.Invoke();
+
+    public event Action StartStepEvent;
+    public void StartStep() => StartStepEvent?.Invoke();
+
+    public event Action EndStepEvent;
+    public void EndStep() => EndStepEvent?.Invoke();
 
     public event Action<AttackDetails> AttackEvent;
     public void Attack(AttackDetails d) => AttackEvent?.Invoke(d);
@@ -113,18 +132,53 @@ public abstract class StageEntity
 
     public void Execute(StringBuilder seq)
     {
-        TurnDetails d = new TurnDetails(this);
-        StartTurn(d);
+        StartTurn();
 
-        MoveP();
-        _waiGongList[_p].Execute(seq, this);
+        Buff skipTurnBuff = FindBuff("跳回合");
+        if (skipTurnBuff is { Stack: > 0 })
+        {
+            skipTurnBuff.Stack -= 1;
+        }
+        else
+        {
+            Swift = false;
+            Step(seq);
+            if (Swift)
+            {
+                Step(seq);
+            }
+        }
 
         EndTurn();
     }
 
     private void MoveP()
     {
-        _p = (_p + 1) % _waiGongList.Length;
+        for (int i = 0; i < _waiGongList.Length; i++)
+        {
+            _p = (_p + 1) % _waiGongList.Length;
+
+            if(_waiGongList[_p].Consumed)
+                continue;
+
+            Buff skipChipBuff = FindBuff("跳卡牌");
+            if (skipChipBuff is { Stack: > 0 })
+            {
+                skipChipBuff.Stack -= 1;
+                continue;
+            }
+
+            return;
+        }
+    }
+
+    private void Step(StringBuilder seq)
+    {
+        StartStep();
+        MoveP();
+        StageWaiGong toExecute = _waiGongList[_p];
+        toExecute.Execute(seq, this);
+        EndStep();
     }
 
     // public abstract GameObject GetPrefab();
@@ -161,6 +215,8 @@ public abstract class StageEntity
     //     return true;
     // }
 
+    public bool Swift;
+
     public StageEntity()
     {
         _buffs = new List<Buff>();
@@ -187,7 +243,7 @@ public abstract class StageEntity
         LoseHpEvent -= DefaultLoseHp;
     }
 
-    protected virtual void DefaultStartTurn(TurnDetails d) { } // 比如护甲每回合开始自动减半，可以做在这里，每回合开始不减或者只减20%做在modifier里面
+    protected virtual void DefaultStartTurn() { } // 比如护甲每回合开始自动减半，可以做在这里，每回合开始不减或者只减20%做在modifier里面
     protected virtual void DefaultEndTurn() { }
     protected virtual void DefaultDamage(DamageDetails damageDetails) { }
     protected virtual void DefaultDamaged(DamageDetails damageDetails) { }

@@ -44,8 +44,15 @@ public class Buff
     public void Register()
     {
         // if (_buffEntry.ModifierLeaf != null) CreateModifierLeaf(_buffEntry.ModifierLeaf);
+        if (_buffEntry._stackChanged != null) StackChangedEvent += StackChanged;
+        if (_buffEntry._startStage != null) _owner.StartStageEvent += StartStage;
+        if (_buffEntry._endStage != null) _owner.EndStageEvent += EndStage;
         if (_buffEntry._startTurn != null) _owner.StartTurnEvent += StartTurn;
         if (_buffEntry._endTurn != null) _owner.EndTurnEvent += EndTurn;
+        if (_buffEntry._startRound != null) _owner.StartRoundEvent += StartRound;
+        if (_buffEntry._endRound != null) _owner.EndRoundEvent += EndRound;
+        if (_buffEntry._startStep != null) _owner.StartStepEvent += StartStep;
+        if (_buffEntry._endStep != null) _owner.EndStageEvent += EndStep;
         if (_buffEntry._attack != null) _owner.AttackEvent += Attack;
         if (_buffEntry._attacked != null) _owner.AttackedEvent += Attacked;
         if (_buffEntry._damage != null) _owner.DamageEvent += Damage;
@@ -59,7 +66,6 @@ public class Buff
         // if (_buffEntry._laststand != null) _owner.LaststandEvent += Laststand;
         // if (_buffEntry._evade != null) _owner.EvadeEvent += Evade;
         // if (_buffEntry._clean != null) _owner.CleanEvent += Clean;
-        if (_buffEntry._stackChanged != null) StackChangedEvent += StackChanged;
 
         if (_buffEntry._buff      != null) _owner.Buff.Add            (_buffEntry._buff.Item1,      _Buff);
         if (_buffEntry._buffed    != null) _owner.Buffed.Add          (_buffEntry._buffed.Item1,    Buffed);
@@ -70,8 +76,15 @@ public class Buff
     public void Unregister()
     {
         // if (_modifierLeaf != null) DestroyModifierLeaf();
+        if (_buffEntry._stackChanged != null) StackChangedEvent -= StackChanged;
+        if (_buffEntry._startStage != null) _owner.StartStageEvent -= StartStage;
+        if (_buffEntry._endStage != null) _owner.EndStageEvent -= EndStage;
         if (_buffEntry._startTurn != null) _owner.StartTurnEvent -= StartTurn;
         if (_buffEntry._endTurn != null) _owner.EndTurnEvent -= EndTurn;
+        if (_buffEntry._startRound != null) _owner.StartRoundEvent -= StartRound;
+        if (_buffEntry._endRound != null) _owner.EndRoundEvent -= EndRound;
+        if (_buffEntry._startStep != null) _owner.StartStepEvent -= StartStep;
+        if (_buffEntry._endStep != null) _owner.EndStageEvent -= EndStep;
         if (_buffEntry._attack != null) _owner.AttackEvent -= Attack;
         if (_buffEntry._attacked != null) _owner.AttackedEvent -= Attacked;
         if (_buffEntry._damage != null) _owner.DamageEvent -= Damage;
@@ -83,7 +96,6 @@ public class Buff
         // if (_buffEntry._laststand != null) _owner.LaststandEvent -= Laststand;
         // if (_buffEntry._evade != null) _owner.EvadeEvent -= Evade;
         // if (_buffEntry._clean != null) _owner.CleanEvent -= Clean;
-        if (_buffEntry._stackChanged != null) StackChangedEvent -= StackChanged;
 
         if (_buffEntry._buff      != null) _owner.Buff.Remove            (_Buff);
         if (_buffEntry._buffed    != null) _owner.Buffed.Remove          (Buffed);
@@ -111,44 +123,32 @@ public class Buff
     //     _modifierLeaf = null;
     // }
 
-    public void Gain(int stack)
-    {
-        _buffEntry._gain?.Invoke(this, _owner, stack);
-    }
+    public void Gain(int stack) => _buffEntry._gain?.Invoke(this, _owner, stack);
+    public void Lose() => _buffEntry._lose?.Invoke(this, _owner);
+    private void StackChanged() => _buffEntry._stackChanged(this, _owner);
 
-    public void Lose()
-    {
-        _buffEntry._lose?.Invoke(this, _owner);
-    }
+    private void StartStage() => _buffEntry._startStage(this, _owner);
+    private void EndStage() => _buffEntry._endStage(this, _owner);
+    private void StartTurn() => _buffEntry._startTurn(this, _owner);
+    private void EndTurn() => _buffEntry._endTurn(this, _owner);
+    private void StartRound() => _buffEntry._startRound(this, _owner);
+    private void EndRound() => _buffEntry._endRound(this, _owner);
+    private void StartStep() => _buffEntry._startStep(this, _owner);
+    private void EndStep() => _buffEntry._endStep(this, _owner);
 
-    public void StackChanged()
-    {
-        _buffEntry._stackChanged(this, _owner);
-    }
-
-    public void StartTurn(TurnDetails d)
-    {
-        _buffEntry._startTurn(this, d);
-    }
-
-    public void EndTurn()
-    {
-        _buffEntry._endTurn(this, _owner);
-    }
-
-    public void Attack(AttackDetails d) => _buffEntry._attack(this, d);
-    public void Attacked(AttackDetails d) => _buffEntry._attacked(this, d);
-    public void Damage(DamageDetails d) => _buffEntry._damage(this, d);
-    public void Damaged(DamageDetails d) => _buffEntry._damaged(this, d);
-    public void Killed(AttackDetails d) => _buffEntry._killed(this, d);
-    public void Kill(AttackDetails d) => _buffEntry._kill(this, d);
-    // public void Heal(HealDetails d) => _buffEntry._heal(this, d);
-    // public void Healed(HealDetails d) => _buffEntry._healed(this, d);
-    public void _Armor(ArmorDetails d) => _buffEntry._armor(this, d);
-    public void Armored(ArmorDetails d) => _buffEntry._armored(this, d);
-    // public void Laststand(DamageDetails d) => _buffEntry._laststand(this, d);
-    // public void Evade(AttackDetails d) => _buffEntry._evade(this, d);
-    // public void Clean(int stack) => _buffEntry._clean(this, stack);
+    private void Attack(AttackDetails d) => _buffEntry._attack(this, d);
+    private void Attacked(AttackDetails d) => _buffEntry._attacked(this, d);
+    private void Damage(DamageDetails d) => _buffEntry._damage(this, d);
+    private void Damaged(DamageDetails d) => _buffEntry._damaged(this, d);
+    private void Killed(AttackDetails d) => _buffEntry._killed(this, d);
+    private void Kill(AttackDetails d) => _buffEntry._kill(this, d);
+    // private void Heal(HealDetails d) => _buffEntry._heal(this, d);
+    // private void Healed(HealDetails d) => _buffEntry._healed(this, d);
+    private void _Armor(ArmorDetails d) => _buffEntry._armor(this, d);
+    private void Armored(ArmorDetails d) => _buffEntry._armored(this, d);
+    // private void Laststand(DamageDetails d) => _buffEntry._laststand(this, d);
+    // private void Evade(AttackDetails d) => _buffEntry._evade(this, d);
+    // private void Clean(int stack) => _buffEntry._clean(this, stack);
 
     public BuffDetails _Buff(BuffDetails d) => _buffEntry._buff.Item2(this, d);
     public BuffDetails AnyBuff(BuffDetails d) => _buffEntry._anyBuff.Item2(this, d);

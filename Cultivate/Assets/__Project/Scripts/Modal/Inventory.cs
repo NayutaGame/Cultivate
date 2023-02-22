@@ -48,7 +48,7 @@ public class Inventory
 
     public void UpgradeInventory(int from, int to)
     {
-        _chips[to].Level += 1;
+        _chips[to].Upgrade();
         RemoveAt(from);
     }
 
@@ -64,6 +64,6 @@ public class Inventory
     public void UpgradeFirstChip()
     {
         if (_chips[0] != null)
-            _chips[0].Level += 1;
+            _chips[0].Upgrade();
     }
 }

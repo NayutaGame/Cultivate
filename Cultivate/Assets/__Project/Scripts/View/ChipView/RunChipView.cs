@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
+public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
+    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected RectTransform _transform;
     protected Image _image;
@@ -45,6 +46,9 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
         _ghostTransform.sizeDelta = size;
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
+
+        CanvasManager.Instance.ChipPreview.Configure(null);
+        CanvasManager.Instance.ChipPreview.Refresh();
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -64,4 +68,24 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
     }
 
     public abstract void OnDrop(PointerEventData eventData);
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        CanvasManager.Instance.ChipPreview.Configure(IndexPath);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        CanvasManager.Instance.ChipPreview.Configure(null);
+        CanvasManager.Instance.ChipPreview.Refresh();
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        CanvasManager.Instance.ChipPreview.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.ChipPreview.Refresh();
+    }
 }

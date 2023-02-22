@@ -342,6 +342,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EntityView: {fileID: 0}
+--- !u!114 &236225392 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6859845357740530789, guid: ab8702c878a227e4a97130deb79a0772, type: 3}
+  m_PrefabInstance: {fileID: 6570500142930501896}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da3d065fe34972419c179ddf409eb2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &341780743 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6570500143271479311, guid: ab8702c878a227e4a97130deb79a0772, type: 3}
@@ -555,6 +566,7 @@ MonoBehaviour:
   RunCanvas: {fileID: 66197337}
   StageCanvas: {fileID: 1688634940}
   GhostHolder: {fileID: 1640318283}
+  ChipPreview: {fileID: 236225392}
   CharacterButton: {fileID: 931590681}
   BattleButton: {fileID: 341780743}
   CharacterPanel: {fileID: 1583257912}

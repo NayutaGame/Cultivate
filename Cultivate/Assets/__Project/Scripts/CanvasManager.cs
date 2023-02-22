@@ -9,6 +9,7 @@ public class CanvasManager : Singleton<CanvasManager>
     public StageCanvas StageCanvas;
 
     public RectTransform GhostHolder;
+    public ChipPreview ChipPreview;
     public Button CharacterButton;
     public Button BattleButton;
 

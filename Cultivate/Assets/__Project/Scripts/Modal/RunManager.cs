@@ -128,7 +128,7 @@ public class RunManager : Singleton<RunManager>
 
     public void UpgradeDanTian(RunChip runChip, Tile tile)
     {
-        tile.Chip.Level += 1;
+        tile.Chip.Upgrade();
         _inventory.Remove(runChip);
     }
 
