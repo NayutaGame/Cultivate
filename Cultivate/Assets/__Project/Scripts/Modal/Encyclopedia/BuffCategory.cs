@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BuffCategory : Category<BuffEntry>
@@ -17,6 +18,7 @@ public class BuffCategory : Category<BuffEntry>
             new ("灵气", "可以消耗灵气使用技能", BuffStackRule.Add, true),
             new ("跳回合", "回合中无法行动", BuffStackRule.Add, false),
             new ("跳卡牌", "行动时跳过下账卡牌", BuffStackRule.Add, false),
+            new ("双发", "下一张牌使用两次", BuffStackRule.Wasted, true),
 
 
 
@@ -78,7 +80,8 @@ public class BuffCategory : Category<BuffEntry>
             new ("受伤反击", "下一回合受到伤害时，对敌方造成伤害", BuffStackRule.Add, true,
                 damaged: (buff, d) =>
                 {
-                    StageManager.Instance.DamageProcedure(new StringBuilder(), d.Tgt, d.Src, buff.Stack);
+                    if (!d.Recursive) return;
+                    StageManager.Instance.DamageProcedure(new StringBuilder(), d.Tgt, d.Src, buff.Stack, false);
                 },
                 startTurn: (buff, owner) =>
                 {

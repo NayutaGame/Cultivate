@@ -10,6 +10,8 @@ public class ChipPreview : MonoBehaviour
 
     public TMP_Text NameText;
     public TMP_Text DescriptionText;
+    public TMP_Text ManaCostText;
+    public TMP_Text JingJieText;
 
     public void Configure(IndexPath indexPath)
     {
@@ -35,6 +37,9 @@ public class ChipPreview : MonoBehaviour
 
         NameText.text = c.GetName();
         DescriptionText.text = c.GetDescription();
+        int manaCost = c.GetManaCost();
+        ManaCostText.text = manaCost == 0 ? "" : manaCost.ToString();
+        JingJieText.text = c.GetJingJie().ToString();
     }
 
     public void UpdateMousePos(Vector2 pos)

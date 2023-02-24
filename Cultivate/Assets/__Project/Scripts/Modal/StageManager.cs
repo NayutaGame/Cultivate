@@ -27,83 +27,81 @@ public class StageManager : Singleton<StageManager>
     //
     // public static FuncQueue<BuffDetails> AnyBuffed = new();
 
-    public void AttackProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
-        => AttackProcedure(new AttackDetails(seq, src, tgt, value));
-    public void AttackProcedure
-        (AttackDetails d
-            // Action<DamageDetails> damaged = null,
-            // Action undamage = null
-            )
+    public void AttackProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value, int times = 1, bool recursive = true,
+        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
+        => AttackProcedure(new AttackDetails(seq, src, tgt, value, times, recursive, damaged, undamaged));
+    public void AttackProcedure(AttackDetails d)
     {
-        StageEntity src = d.Src;
-        StageEntity tgt = d.Tgt;
-
-        // if (source == null || source.IsDead() || target == null || target.IsDead())
-        // {
-        //     sequence.AppendInterval(0.5f);
-        //     return;
-        // }
-
-        src.Attack(d);
-        tgt.Attacked(d);
-        if (d.Cancel)
+        for (int i = 0; i < d.Times; i++)
         {
+            StageEntity src = d.Src;
+            StageEntity tgt = d.Tgt;
+
+            // if (source == null || source.IsDead() || target == null || target.IsDead())
+            // {
+            //     sequence.AppendInterval(0.5f);
+            //     return;
+            // }
+
+            src.Attack(d);
+            tgt.Attacked(d);
+            if (d.Cancel)
+            {
+                d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+                continue;
+            }
+
+            // if (source.IsDead() || target.IsDead())
+            // {
+            //     sequence.AppendInterval(0.5f);
+            //     return;
+            // }
+
+            // 加攻 和 格挡
+            // int power = (int)Mathf.Max(0, source.GetFinalPower() * (1 + magnification) - target.GetBlock());
+
+            // 闪避
+            // if (target.CanEvade)
+            // {
+            //     target.Evade(attackDetails);
+            //     return;
+            // }
+
+            // 结算护甲
+            (d.Value, tgt.Armor) = Numeric.Negate(d.Value, tgt.Armor);
+
+            if (d.Value == 0)
+            {
+                // undamage?.Invoke();
+                d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+                continue;
+            }
+
+            // 伤害Procedure
+            DamageProcedure(d.Seq, d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
+
+
+            // if (target.IsDead())
+            // {
+            //     target.Killed(attackDetails);
+            //     AnyKilled(attackDetails);
+            //
+            //     kill?.Invoke();
+            //     source.Kill(attackDetails);
+            //     AnyKill(attackDetails);
+            // }
+
+            // d.Seq.Append(src.Slot().GetAttackTween())
+            //     .Join(tgt.Slot().GetAttackedTween())
+            //     .AppendInterval(0.5f);
             d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
-            return;
         }
-
-        // if (source.IsDead() || target.IsDead())
-        // {
-        //     sequence.AppendInterval(0.5f);
-        //     return;
-        // }
-
-        // 加攻 和 格挡
-        // int power = (int)Mathf.Max(0, source.GetFinalPower() * (1 + magnification) - target.GetBlock());
-
-        // 闪避
-        // if (target.CanEvade)
-        // {
-        //     target.Evade(attackDetails);
-        //     return;
-        // }
-
-        // 结算护甲
-        (d.Value, tgt.Armor) = Numeric.Negate(d.Value, tgt.Armor);
-
-        if (d.Value == 0)
-        {
-            // undamage?.Invoke();
-            d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
-            return;
-        }
-
-        // 伤害Procedure
-        DamageProcedure(d.Seq, d.Src, d.Tgt, d.Value);
-
-
-        // if (target.IsDead())
-        // {
-        //     target.Killed(attackDetails);
-        //     AnyKilled(attackDetails);
-        //
-        //     kill?.Invoke();
-        //     source.Kill(attackDetails);
-        //     AnyKill(attackDetails);
-        // }
-
-        // d.Seq.Append(src.Slot().GetAttackTween())
-        //     .Join(tgt.Slot().GetAttackedTween())
-        //     .AppendInterval(0.5f);
-        d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
     }
 
-    public void DamageProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
-        => DamageProcedure(new DamageDetails(seq, src, tgt, value));
-    public void DamageProcedure
-        (DamageDetails d
-            // Action<DamageDetails> damaged = null, Action undamage = null
-            )
+    public void DamageProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value, bool recursive = true,
+        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
+        => DamageProcedure(new DamageDetails(seq, src, tgt, value, recursive, damaged, undamaged));
+    public void DamageProcedure(DamageDetails d)
     {
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
@@ -135,50 +133,29 @@ public class StageManager : Singleton<StageManager>
 
         // 结算吸血
 
-
         src.Damage(d);
         tgt.Damaged(d);
 
         if (d.Cancel)
         {
+            d.Undamaged?.Invoke(d);
             return;
         }
+
         tgt.Hp -= d.Value;
 
-        // 结算反伤
-        // int blademailDamage = (int)(hpLose * target.GetFinalBlademail());
-        // if (blademailDamage > 0)
-        // {
-        //     DamageDetails blademailDamageDetails = new DamageDetails(target, source, hpLose);
-        //     BlademailDamageProcedure(target.Slot(), source.Slot(), blademailDamageDetails, ref sequence);
-        // }
+        if (d.Value == 0)
+        {
+            d.Undamaged?.Invoke(d);
+        }
+        else
+        {
+            d.Damaged?.Invoke(d);
+        }
     }
-    //
-    // public static void BlademailDamageProcedure
-    //     (EntitySlot sourceSlot, EntitySlot targetSlot, DamageDetails damageDetails, ref Sequence sequence)
-    // {
-    //     Entity source = damageDetails._source;
-    //     Entity target = damageDetails._target;
-    //     int hpLose = damageDetails._hpLose;
-    //
-    //     int blademailDamage = (int)(hpLose * source.GetFinalBlademail());
-    //
-    //     int shield = target.GetCurrShield();
-    //     if (shield >= blademailDamage)
-    //     {
-    //         target.SetCurrShield(shield - blademailDamage);
-    //         return;
-    //     }
-    //
-    //     target.SetCurrShield(0);
-    //     int blademailHpLose = (int)((blademailDamage - shield) * (1 - target.GetFinalDamageImmune()));
-    //     DamageDetails blademailDamageDetails = new DamageDetails(source, target, blademailHpLose);
-    //     target.SetCurrHP(target.GetCurrHP() - blademailHpLose);
-    //
-    //     source.Damage(blademailDamageDetails);
-    //     target.Damaged(blademailDamageDetails);
-    // }
-    //
+
+    public void HealProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
+        => HealProcedure(new HealDetails(seq, src, tgt, value));
     public void HealProcedure(HealDetails d)
     {
         StageEntity src = d.Src;
@@ -188,6 +165,8 @@ public class StageManager : Singleton<StageManager>
         tgt.Healed(d);
 
         tgt.Hp += d.Value;
+
+        d.Seq.Append($"    生命变成了${tgt.Hp}");
     }
 
     public void BuffProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, string buffName, int stack = 1, bool recursive = true)

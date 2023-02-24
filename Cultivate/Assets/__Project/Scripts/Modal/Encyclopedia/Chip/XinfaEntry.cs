@@ -7,7 +7,7 @@ public class XinfaEntry : ChipEntry
     private string _description;
     public string Description;
 
-    public XinfaEntry(string name, string description) : base(name)
+    public XinfaEntry(string name, JingJie jingJie, string description) : base(name, jingJie)
     {
         _description = description;
     }

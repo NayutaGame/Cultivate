@@ -18,6 +18,19 @@ public class RunChip
         return null;
     }
 
+    public int GetManaCost()
+    {
+        if (_entry is NeigongEntry neigongEntry)
+            return 0;
+
+        if (_entry is WaigongEntry waigongEntry)
+            return waigongEntry.GetManaCost(Level);
+
+        return 0;
+    }
+
+    public JingJie GetJingJie() => _entry.JingJie;
+
     public int Level { get; private set; }
     public int RunUsedTimes { get; protected set; }
     public int RunEquippedTimes { get; protected set; }

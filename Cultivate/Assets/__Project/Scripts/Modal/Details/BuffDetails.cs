@@ -32,7 +32,7 @@ public class BuffDetails
 
         int oldStack = same?.Stack ?? 0;
 
-        if (same != null)
+        if (same != null && _buffEntry.BuffStackRule != BuffStackRule.Individual)
         {
             switch (_buffEntry.BuffStackRule)
             {

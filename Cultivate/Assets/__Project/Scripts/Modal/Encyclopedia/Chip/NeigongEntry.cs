@@ -9,7 +9,7 @@ public class NeigongEntry : ChipEntry
     private string _description;
     public string Description;
 
-    public NeigongEntry(string name, string description) : base(name)
+    public NeigongEntry(string name, JingJie jingJie, string description) : base(name, jingJie)
     {
         _description = description;
     }

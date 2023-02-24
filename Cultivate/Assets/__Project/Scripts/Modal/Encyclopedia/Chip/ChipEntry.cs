@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class ChipEntry : Entry
 {
-    public ChipEntry(string name) : base(name) { }
+    public JingJie JingJie { get; private set; }
+
+    public ChipEntry(string name, JingJie jingJie) : base(name)
+    {
+        JingJie = jingJie;
+    }
 
     public virtual bool IsNeiGong => false;
     public virtual bool IsWaiGong => false;

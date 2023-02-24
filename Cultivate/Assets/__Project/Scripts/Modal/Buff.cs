@@ -52,7 +52,7 @@ public class Buff
         if (_buffEntry._startRound != null) _owner.StartRoundEvent += StartRound;
         if (_buffEntry._endRound != null) _owner.EndRoundEvent += EndRound;
         if (_buffEntry._startStep != null) _owner.StartStepEvent += StartStep;
-        if (_buffEntry._endStep != null) _owner.EndStageEvent += EndStep;
+        if (_buffEntry._endStep != null) _owner.EndStepEvent += EndStep;
         if (_buffEntry._attack != null) _owner.AttackEvent += Attack;
         if (_buffEntry._attacked != null) _owner.AttackedEvent += Attacked;
         if (_buffEntry._damage != null) _owner.DamageEvent += Damage;
@@ -84,7 +84,7 @@ public class Buff
         if (_buffEntry._startRound != null) _owner.StartRoundEvent -= StartRound;
         if (_buffEntry._endRound != null) _owner.EndRoundEvent -= EndRound;
         if (_buffEntry._startStep != null) _owner.StartStepEvent -= StartStep;
-        if (_buffEntry._endStep != null) _owner.EndStageEvent -= EndStep;
+        if (_buffEntry._endStep != null) _owner.EndStepEvent -= EndStep;
         if (_buffEntry._attack != null) _owner.AttackEvent -= Attack;
         if (_buffEntry._attacked != null) _owner.AttackedEvent -= Attacked;
         if (_buffEntry._damage != null) _owner.DamageEvent -= Damage;
@@ -134,7 +134,7 @@ public class Buff
     private void StartRound() => _buffEntry._startRound(this, _owner);
     private void EndRound() => _buffEntry._endRound(this, _owner);
     private void StartStep() => _buffEntry._startStep(this, _owner);
-    private void EndStep() => _buffEntry._endStep(this, _owner);
+    private void EndStep(EndStepDetails d) => _buffEntry._endStep(this, d);
 
     private void Attack(AttackDetails d) => _buffEntry._attack(this, d);
     private void Attacked(AttackDetails d) => _buffEntry._attacked(this, d);

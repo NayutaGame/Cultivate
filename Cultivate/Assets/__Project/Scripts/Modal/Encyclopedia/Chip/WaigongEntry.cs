@@ -10,21 +10,22 @@ public class WaigongEntry : ChipEntry
     private string[] _descriptions;
     public string GetDescription(int level) => _descriptions[level];
     private int[] _manaCosts;
+    public int GetManaCost(int level) => _manaCosts[level];
     public readonly Action<StringBuilder, StageEntity, StageWaiGong> _execute;
 
-    public WaigongEntry(string name, string description, int manaCost = 0,
-        Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : this(name, new[] { description, description, description },
+    public WaigongEntry(string name, JingJie jingJie, string description, int manaCost = 0,
+        Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : this(name, jingJie, new[] { description, description, description },
         new int[] { manaCost, manaCost, manaCost }, execute) { }
 
-    public WaigongEntry(string name, string[] descriptions, int manaCost = 0,
-        Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : this(name, descriptions,
+    public WaigongEntry(string name, JingJie jingJie, string[] descriptions, int manaCost = 0,
+        Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : this(name, jingJie, descriptions,
         new int[] { manaCost, manaCost, manaCost }, execute) { }
 
-    public WaigongEntry(string name, string description, int[] manaCosts,
-        Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : this(name, new[] { description, description, description },
+    public WaigongEntry(string name, JingJie jingJie, string description, int[] manaCosts,
+        Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : this(name, jingJie, new[] { description, description, description },
         manaCosts, execute) { }
 
-    public WaigongEntry(string name, string[] descriptions, int[] manaCosts = null, Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : base(name)
+    public WaigongEntry(string name, JingJie jingJie, string[] descriptions, int[] manaCosts = null, Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : base(name, jingJie)
     {
         _descriptions = descriptions;
         _manaCosts = manaCosts ?? new []{0, 0, 0};

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class StageWaiGong
 {
@@ -11,11 +12,22 @@ public class StageWaiGong
     private Action<StringBuilder, StageEntity, StageWaiGong> _execute;
 
     public bool Consumed;
+    public int GetManaCost()
+    {
+        if (_runChip == null) // 聚气术
+            return 0;
 
+        var entry = _runChip._entry as WaigongEntry;
+        return entry.GetManaCost(Level);
+    }
+
+    // public int RunLevel { get; private set; }
     public int Level { get; private set; }
     public int RunUsedTimes { get; private set; }
     public int RunEquippedTimes { get; private set; }
     public int StageUsedTimes { get; private set; }
+
+    // run powers
 
     private int[] _powers;
     public int GetPower(WuXing wuXing) => _powers[wuXing];
@@ -29,6 +41,7 @@ public class StageWaiGong
         {
             _execute = (_runChip._entry as WaigongEntry).Execute;
             Consumed = false;
+            // RunLevel = _runChip.Level;
             Level = _runChip.Level;
             RunUsedTimes = _runChip.RunUsedTimes;
             RunEquippedTimes = _runChip.RunEquippedTimes + 1;
@@ -44,6 +57,7 @@ public class StageWaiGong
         {
             _execute = (Encyclopedia.ChipCategory["聚气术"] as WaigongEntry).Execute;
             Consumed = false;
+            // RunLevel = 0;
             Level = 0;
             RunUsedTimes = 0;
             RunEquippedTimes = 0;
@@ -56,11 +70,6 @@ public class StageWaiGong
     {
         if (_runChip == null) return "聚气术";
         return _runChip.GetName();
-    }
-
-    public void Upgrade(StringBuilder seq)
-    {
-        Level += 1;
     }
 
     public void Execute(StringBuilder seq, StageEntity caster)

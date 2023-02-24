@@ -30,8 +30,8 @@ public abstract class StageEntity
     public event Action StartStepEvent;
     public void StartStep() => StartStepEvent?.Invoke();
 
-    public event Action EndStepEvent;
-    public void EndStep() => EndStepEvent?.Invoke();
+    public event Action<EndStepDetails> EndStepEvent;
+    public void EndStep(EndStepDetails d) => EndStepEvent?.Invoke(d);
 
     public event Action<AttackDetails> AttackEvent;
     public void Attack(AttackDetails d) => AttackEvent?.Invoke(d);
@@ -152,6 +152,44 @@ public abstract class StageEntity
         EndTurn();
     }
 
+    private void Step(StringBuilder seq)
+    {
+        StartStep();
+        if (!_manaShortage)
+            MoveP();
+        StageWaiGong waiGong = _waiGongList[_p];
+        Buff mana = FindBuff("灵气");
+        int manaCount = mana?.Stack ?? 0;
+        int manaCost = waiGong.GetManaCost();
+
+        if (manaCost - manaCount > 0)
+        {
+            _manaShortage = true;
+            (Encyclopedia.ChipCategory["聚气术"] as WaigongEntry).Execute(seq, this, null);
+            EndStep(new EndStepDetails(seq, this, null));
+            return;
+        }
+
+        _manaShortage = false;
+        if (mana != null)
+        {
+            mana.Stack -= manaCost;
+        }
+
+        Buff b = FindBuff("双发");
+        if (b is { Stack: >= 1 })
+        {
+            b.Stack -= 1;
+            waiGong.Execute(seq, this);
+            waiGong.Execute(seq, this);
+        }
+        else
+        {
+            waiGong.Execute(seq, this);
+        }
+        EndStep(new EndStepDetails(seq, this, waiGong));
+    }
+
     private void MoveP()
     {
         for (int i = 0; i < _waiGongList.Length; i++)
@@ -170,15 +208,6 @@ public abstract class StageEntity
 
             return;
         }
-    }
-
-    private void Step(StringBuilder seq)
-    {
-        StartStep();
-        MoveP();
-        StageWaiGong toExecute = _waiGongList[_p];
-        toExecute.Execute(seq, this);
-        EndStep();
     }
 
     // public abstract GameObject GetPrefab();
@@ -216,10 +245,12 @@ public abstract class StageEntity
     // }
 
     public bool Swift;
+    private bool _manaShortage;
 
     public StageEntity()
     {
         _buffs = new List<Buff>();
+        _manaShortage = false;
         // _modifier = Modifier.Default;
         // _notes = new List<INote>();
 
