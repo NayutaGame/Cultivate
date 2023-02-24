@@ -208,6 +208,16 @@ public class ChipCategory : Category<ChipEntry>
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "受伤反击", 4);
                 }),
 
+
+            new WaigongEntry("查询接口", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) =>
+                {
+                    int anyStack = caster.GetStackOfBuff("灵气");
+                    int mana = caster.GetMana();
+                }),
+
+
+
             /**********************************************************************************************************/
             /*********************************************** 大剑哥 ****************************************************/
             /**********************************************************************************************************/

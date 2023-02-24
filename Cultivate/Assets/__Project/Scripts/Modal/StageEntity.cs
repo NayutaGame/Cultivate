@@ -323,6 +323,37 @@ public abstract class StageEntity
     public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.BuffEntry == buffEntry);
     public Buff FindBuff(Predicate<Buff> pred) => Buffs.FirstObj(pred);
 
+    public int GetStackOfBuff(string name)
+    {
+        Buff b = FindBuff(name);
+        if (b != null)
+        {
+            return b.Stack;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public int GetStackOfBuff(BuffEntry buffEntry)
+    {
+        Buff b = FindBuff(buffEntry);
+        if (b != null)
+        {
+            return b.Stack;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public int GetMana()
+    {
+        return GetStackOfBuff("灵气");
+    }
+
     public int GetBuffCount() => Buffs.Count;
     public Buff TryGetBuff(int i)
     {
