@@ -17,7 +17,7 @@ public class StageWaiGong
         if (_runChip == null) // 聚气术
             return 0;
 
-        var entry = _runChip._entry as WaigongEntry;
+        var entry = _runChip._entry as WaiGongEntry;
         return entry.GetManaCost(Level);
     }
 
@@ -39,7 +39,7 @@ public class StageWaiGong
 
         if (_runChip != null)
         {
-            _execute = (_runChip._entry as WaigongEntry).Execute;
+            _execute = (_runChip._entry as WaiGongEntry).Execute;
             Consumed = false;
             // RunLevel = _runChip.Level;
             Level = _runChip.Level;
@@ -55,7 +55,7 @@ public class StageWaiGong
         }
         else
         {
-            _execute = (Encyclopedia.ChipCategory["聚气术"] as WaigongEntry).Execute;
+            _execute = (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute;
             Consumed = false;
             // RunLevel = 0;
             Level = 0;

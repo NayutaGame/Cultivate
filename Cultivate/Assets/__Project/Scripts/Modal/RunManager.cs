@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CLLibrary;
 using UnityEngine;
@@ -10,7 +11,45 @@ public class RunManager : Singleton<RunManager>
     public static readonly int NeiGongLimit = 4;
     public static readonly int WaiGongLimit = 12;
 
+    public void SetElementProcedure(Tile tile, WuXing wuXing, int value)
+    {
+        tile._elements[wuXing] = value;
+
+        MergeProcedure(tile);
+    }
+
+    public void MergeProcedure(Tile tile)
+    {
+        var eOptional = tile.FirstElement();
+        if (eOptional == null) return;
+
+        WuXing e = eOptional.Value;
+        WuXing prevE = e.Prev;
+
+        List<Tile> adjacents = _danTian.Adjacents(tile, t => t.Chip == null && t.FirstElement() == e).ToList();
+
+        Tile primary = adjacents.MinObj(t => -t._elements[e]);
+        int n = primary._elements[e];
+
+        Tile catalyst = DanTian.Neighbours(tile).FilterObj(t => t.Chip == null && t.FirstElement() == prevE)
+            .MinObj(t => -t._elements[prevE]);
+        int m = catalyst == null ? 0 : catalyst._elements[prevE];
+
+        // TODO: bug fix, 催化没有受到unrevealed的限制
+        bool useCatalyst = m >= n;
+
+        int count = adjacents.Count;
+        if (useCatalyst) count += 1;
+
+        if (count < 3) return;
+
+        adjacents.Do(t => t._elements[e] = 0);
+
+        tile._elements[e] = n + 1;
+    }
+
     private DanTian _danTian;
+    public DanTian DanTian => _danTian;
     private Inventory _inventory;
     private RunHero _hero;
     public RunHero Hero => _hero;
@@ -61,6 +100,8 @@ public class RunManager : Singleton<RunManager>
             { "GetEnemyNeiGong",      GetEnemyNeiGong },
             { "GetEnemyWaiGong",      GetEnemyWaiGong },
         };
+
+        SetRevealedJingJie(JingJie.LianQi);
     }
 
     public static T Get<T>(IndexPath indexPath) => (T) Instance._funcList[indexPath._str](indexPath);
@@ -96,17 +137,47 @@ public class RunManager : Singleton<RunManager>
     public bool CanApply(RunChip runChip, Tile tile)
     {
         if (tile.Chip != null) return false;
-        // Mana Constraint
+        if (!runChip.IsNeiGong && !runChip.IsWaiGong) return false;
         return true;
     }
 
     public void Apply(RunChip runChip, Tile tile)
     {
-        // 修炼case
-
         AcquiredChip newAcquiredChip = new AcquiredChip(runChip, tile);
         tile.Chip = newAcquiredChip;
         _hero.AddAcquiredChip(newAcquiredChip);
+
+        _inventory.Remove(runChip);
+    }
+
+    public bool TryXiuLian(IndexPath from, IndexPath to)
+    {
+        RunChip runChip = (RunChip) Instance.TryGetRunChip(from);
+        Tile tile = (Tile) Instance.GetTileXY(to);
+
+        if (!Instance.CanXiuLian(runChip, tile)) return false;
+        Instance.XiuLian(runChip, tile);
+        return true;
+    }
+
+    public bool CanXiuLian(RunChip runChip, Tile tile)
+    {
+        if (tile.Chip != null) return false;
+
+        if(runChip._entry is XiulianEntry xiuLian)
+        {
+            return xiuLian.CanApply(tile);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void XiuLian(RunChip runChip, Tile tile)
+    {
+        XiulianEntry xiuLian = runChip._entry as XiulianEntry;
+        xiuLian.Apply(tile);
 
         _inventory.Remove(runChip);
     }
@@ -184,6 +255,12 @@ public class RunManager : Singleton<RunManager>
     public void UnequipWaiGong(IndexPath waiGong)
     {
         _hero.UnequipWaiGong(waiGong._ints[0]);
+    }
+
+    public void SetRevealedJingJie(JingJie jingJie)
+    {
+        _hero.JingJie = jingJie;
+        _danTian.SetRevealedJingJie(_hero.JingJie);
     }
 
 

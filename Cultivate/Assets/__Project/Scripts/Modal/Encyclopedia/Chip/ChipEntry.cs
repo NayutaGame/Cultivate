@@ -11,6 +11,8 @@ public class ChipEntry : Entry
         JingJie = jingJie;
     }
 
+    public virtual bool IsXinFa => false;
     public virtual bool IsNeiGong => false;
     public virtual bool IsWaiGong => false;
+    public virtual bool IsXiuLian => false;
 }

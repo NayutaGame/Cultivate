@@ -36,6 +36,14 @@ public struct WuXing : IEquatable<WuXing>
     public static WuXing Huo => _list[3];
     public static WuXing Tu  => _list[4];
 
+    public WuXing Shift(int i)
+    {
+        return _list[(_index + i) % _list.Length];
+    }
+
+    public WuXing Next => Shift(1);
+    public WuXing Prev => Shift(4);
+
     public static IEnumerable<WuXing> Traversal
     {
         get

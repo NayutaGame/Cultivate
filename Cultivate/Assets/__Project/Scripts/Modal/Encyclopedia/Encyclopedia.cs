@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Encyclopedia : Singleton<Encyclopedia>
 {
+    public static TileResourceCategory TileResourceCategory;
     public static ChipCategory ChipCategory;
     public static BuffCategory BuffCategory;
     public static KeywordCategory KeywordCategory;
@@ -16,5 +17,6 @@ public class Encyclopedia : Singleton<Encyclopedia>
         KeywordCategory = new KeywordCategory();
         BuffCategory = new BuffCategory();
         ChipCategory = new ChipCategory();
+        TileResourceCategory = new TileResourceCategory();
     }
 }

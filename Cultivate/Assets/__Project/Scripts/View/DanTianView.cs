@@ -8,7 +8,7 @@ public class DanTianView : MonoBehaviour
 
     public void Configure()
     {
-        _tileViews = new TileView[DanTian.WIDTH * DanTian.WIDTH];
+        _tileViews = new TileView[DanTian.DIAMETER * DanTian.DIAMETER];
 
         for (int y = 0; y < VLayoutTransform.childCount; y++)
         {
@@ -17,9 +17,9 @@ public class DanTianView : MonoBehaviour
             {
                 TileView tileView = rowTransform.GetChild(x).GetComponent<TileView>();
 
-                if(!DanTian.IsInside(x, y)) continue;
+                if(!DanTian.IsInsideXY(x, y)) continue;
 
-                _tileViews[DanTian.WIDTH * y + x] = tileView;
+                _tileViews[DanTian.DIAMETER * y + x] = tileView;
                 tileView.Configure(new IndexPath("GetTileXY", x, y));
             }
         }

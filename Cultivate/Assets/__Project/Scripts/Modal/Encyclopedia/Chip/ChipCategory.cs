@@ -49,7 +49,7 @@ public class ChipCategory : Category<ChipEntry>
             // new WaigongEntry("神皇印", "若使用相同的灵气释放，则下回合开始时，自身【蓄势】层数翻倍。否则，本回合【护罩】抵挡的伤害等量转化为【蓄势】。"),
             // new WaigongEntry("覆体印", "消散所有金系灵气，每消散一点获得【减伤】*1"),
 
-            new WaigongEntry("聚气术", JingJie.LianQi, "灵气+1",
+            new WaiGongEntry("聚气术", JingJie.LianQi, "灵气+1",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气");
@@ -71,112 +71,112 @@ public class ChipCategory : Category<ChipEntry>
             //     }),
 
 
-            new WaigongEntry("打击", JingJie.LianQi, "5攻",
+            new WaiGongEntry("打击", JingJie.LianQi, "5攻",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
                 }),
-            new WaigongEntry("铁甲", JingJie.LianQi, "护甲+3",
+            new WaiGongEntry("铁甲", JingJie.LianQi, "护甲+3",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, 3);
                 }),
-            new WaigongEntry("铁傀儡威仪", JingJie.LianQi, "护甲+5，2攻",
+            new WaiGongEntry("铁傀儡威仪", JingJie.LianQi, "护甲+5，2攻",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, 5);
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 2);
                 }),
-            new WaigongEntry("铁甲桩", JingJie.LianQi, "护甲+4，【免伤】1次",
+            new WaiGongEntry("铁甲桩", JingJie.LianQi, "护甲+4，【免伤】1次",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, 4);
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "免攻");
                 }),
-            new WaigongEntry("突围", JingJie.LianQi, "消耗所有护甲，【无敌】1回合",
+            new WaiGongEntry("突围", JingJie.LianQi, "消耗所有护甲，【无敌】1回合",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, -caster.Armor);
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "无敌");
                 }),
-            new WaigongEntry("铁甲入体", JingJie.LianQi, "【格挡】+2",
+            new WaiGongEntry("铁甲入体", JingJie.LianQi, "【格挡】+2",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "格挡", 2);
                 }),
-            new WaigongEntry("金傀儡", JingJie.LianQi, "护甲+10，下回合无法攻击",
+            new WaiGongEntry("金傀儡", JingJie.LianQi, "护甲+10，下回合无法攻击",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, 10);
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "无法攻击", 2);
                 }),
-            new WaigongEntry("活体铠甲", JingJie.LianQi, "护甲+2，【无敌】1回合",
+            new WaiGongEntry("活体铠甲", JingJie.LianQi, "护甲+2，【无敌】1回合",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, 2);
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "无敌");
                 }),
-            new WaigongEntry("金元素爆发", JingJie.LianQi, "消耗所有护甲，造成1.5倍伤害",
+            new WaiGongEntry("金元素爆发", JingJie.LianQi, "消耗所有护甲，造成1.5倍伤害",
                 execute: (seq, caster, waiGong) =>
                 {
                     int armor = caster.Armor;
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, -armor);
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), Mathf.FloorToInt(1.5f * armor));
                 }),
-            new WaigongEntry("铁甲冲撞", JingJie.LianQi, "造成护甲一半的伤害，敌方【晕眩】1回合",
+            new WaiGongEntry("铁甲冲撞", JingJie.LianQi, "造成护甲一半的伤害，敌方【晕眩】1回合",
                 execute: (seq, caster, waiGong) =>
                 {
                     int armor = caster.Armor;
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), Mathf.FloorToInt(0.5f * armor));
                     StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "晕眩");
                 }),
-            new WaigongEntry("不动", JingJie.LianQi, "消耗，获得【不动】",
+            new WaiGongEntry("不动", JingJie.LianQi, "消耗，获得【不动】",
                 execute: (seq, caster, waiGong) =>
                 {
                     waiGong.Consumed = true;
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "不动");
                 }),
-            new WaigongEntry("明", JingJie.LianQi, "消耗，获得【明】",
+            new WaiGongEntry("明", JingJie.LianQi, "消耗，获得【明】",
                 execute: (seq, caster, waiGong) =>
                 {
                 }),
-            new WaigongEntry("觉有情", JingJie.LianQi, "消耗，如果有【不动】和【明】，则获得【不动明王】。否则，减少10生命",
+            new WaiGongEntry("觉有情", JingJie.LianQi, "消耗，如果有【不动】和【明】，则获得【不动明王】。否则，减少10生命",
                 execute: (seq, caster, waiGong) =>
                 {
                 }),
 
             //
-            new WaigongEntry("跳回合", JingJie.LianQi, "敌方跳过下一回合",
+            new WaiGongEntry("跳回合", JingJie.LianQi, "敌方跳过下一回合",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "跳回合");
                 }),
 
-            new WaigongEntry("跳卡牌", JingJie.LianQi, "敌方跳过下一卡牌",
+            new WaiGongEntry("跳卡牌", JingJie.LianQi, "敌方跳过下一卡牌",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "跳卡牌");
                 }),
 
-            new WaigongEntry("二动", JingJie.LianQi, "再次行动",
+            new WaiGongEntry("二动", JingJie.LianQi, "再次行动",
                 execute: (seq, caster, waiGong) =>
                 {
                     caster.Swift = true;
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, 1);
                 }),
 
-            new WaigongEntry("双发", JingJie.LianQi, "下一张牌使用两次",
+            new WaiGongEntry("双发", JingJie.LianQi, "下一张牌使用两次",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "双发");
                 }),
 
-            new WaigongEntry("蓝太多", JingJie.LianQi, "消耗两点灵气", 2,
+            new WaiGongEntry("蓝太多", JingJie.LianQi, "消耗两点灵气", 2,
                 execute: (seq, caster, waiGong) =>
                 {
                 }),
 
-            new WaigongEntry("吸血", JingJie.LianQi, "4攻，吸血", 0,
+            new WaiGongEntry("吸血", JingJie.LianQi, "4攻，吸血", 0,
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 4, damaged:
@@ -186,34 +186,75 @@ public class ChipCategory : Category<ChipEntry>
             //
 
 
-            new WaigongEntry("单剑", JingJie.LianQi, "7攻",
+            new WaiGongEntry("单剑", JingJie.LianQi, "7攻",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 7);
                 }),
-            new WaigongEntry("双剑", JingJie.LianQi, "4攻x2",
+            new WaiGongEntry("双剑", JingJie.LianQi, "4攻x2",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 4, 2);
                 }),
-            new WaigongEntry("三剑", JingJie.LianQi, "4攻x3",
+            new WaiGongEntry("三剑", JingJie.LianQi, "4攻x3",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 4, 3);
                 }),
-            new WaigongEntry("守剑式", JingJie.LianQi, "护甲+4，【受伤反击】+4",
+            new WaiGongEntry("守剑式", JingJie.LianQi, "护甲+4，【受伤反击】+4",
                 execute: (seq, caster, waiGong) =>
                 {
                     StageManager.Instance.ArmorProcedure(seq, caster, caster, 4);
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "受伤反击", 4);
                 }),
 
-
-            new WaigongEntry("查询接口", JingJie.LianQi, "",
+            new WaiGongEntry("查询接口", JingJie.LianQi, "",
                 execute: (seq, caster, waiGong) =>
                 {
                     int anyStack = caster.GetStackOfBuff("灵气");
                     int mana = caster.GetMana();
+                }),
+
+            new XiulianEntry("金+1", JingJie.LianQi, "对空地释放后，获得1级金",
+                canApply: (Tile tile) => tile.FirstElement() == null,
+                apply: (Tile tile) =>
+                {
+                    RunManager.Instance.SetElementProcedure(tile, WuXing.Jin, 1);
+                }),
+
+            new XiulianEntry("水+1", JingJie.LianQi, "对空地释放后，获得1级水",
+                canApply: (Tile tile) => tile.FirstElement() == null,
+                apply: (Tile tile) =>
+                {
+                    RunManager.Instance.SetElementProcedure(tile, WuXing.Shui, 1);
+                }),
+
+            new XiulianEntry("木+1", JingJie.LianQi, "对空地释放后，获得1级木",
+                canApply: (Tile tile) => tile.FirstElement() == null,
+                apply: (Tile tile) =>
+                {
+                    RunManager.Instance.SetElementProcedure(tile, WuXing.Mu, 1);
+                }),
+
+            new XiulianEntry("火+1", JingJie.LianQi, "对空地释放后，获得1级火",
+                canApply: (Tile tile) => tile.FirstElement() == null,
+                apply: (Tile tile) =>
+                {
+                    RunManager.Instance.SetElementProcedure(tile, WuXing.Huo, 1);
+                }),
+
+            new XiulianEntry("土+1", JingJie.LianQi, "对空地释放后，获得1级土",
+                canApply: (Tile tile) => tile.FirstElement() == null,
+                apply: (Tile tile) =>
+                {
+                    RunManager.Instance.SetElementProcedure(tile, WuXing.Tu, 1);
+                }),
+
+            new XiulianEntry("擦除", JingJie.LianQi, "使格子没有元素",
+                canApply: (Tile tile) => tile.FirstElement() != null,
+                apply: (Tile tile) =>
+                {
+                    RunManager.Instance.SetElementProcedure(tile, tile.FirstElement().Value, 0);
                 }),
 
 

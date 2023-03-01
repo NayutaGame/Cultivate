@@ -10,6 +10,8 @@ public class RunHero
     public int Health { get; private set; }
     public int Mana { get; private set; }
 
+    public JingJie JingJie;
+
     // 灵根
     // 神识
     // 遁速
@@ -40,6 +42,8 @@ public class RunHero
         XiuWei = xiuWei;
         Health = health;
         Mana = mana;
+
+        JingJie = JingJie.LianQi;
 
         _unequipped = new List<AcquiredChip>();
         _equippedNeiGong = new AcquiredChip[RunManager.NeiGongLimit];
