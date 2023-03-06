@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Encyclopedia : Singleton<Encyclopedia>
 {
+    public static BuildingCategory BuildingCategory;
+    public static OperationCategory OperationCategory;
+    public static TerrainCategory TerrainCategory;
     public static TileResourceCategory TileResourceCategory;
     public static ChipCategory ChipCategory;
     public static BuffCategory BuffCategory;
@@ -18,5 +21,8 @@ public class Encyclopedia : Singleton<Encyclopedia>
         BuffCategory = new BuffCategory();
         ChipCategory = new ChipCategory();
         TileResourceCategory = new TileResourceCategory();
+        TerrainCategory = new TerrainCategory();
+        OperationCategory = new OperationCategory();
+        BuildingCategory = new BuildingCategory();
     }
 }

@@ -12,4 +12,9 @@ public class RandomManager : Singleton<RandomManager>
             return Random.value;
         }
     }
+
+    public static int Range(int min, int max)
+    {
+        return Random.Range(min, max);
+    }
 }

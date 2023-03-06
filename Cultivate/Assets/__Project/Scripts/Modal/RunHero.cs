@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class RunHero
 {
-    public int MingYuan { get; private set; }
-    public int WuXing { get; private set; }
-    public int XiuWei { get; private set; }
     public int Health { get; private set; }
     public int Mana { get; private set; }
 
@@ -35,11 +32,8 @@ public class RunHero
     public int WaiGongCount => RunManager.WaiGongLimit;
     public AcquiredChip GetWaiGong(int i) => _equippedWaiGong[i];
 
-    public RunHero(int mingYuan = 100, int wuXing = 0, int xiuWei = 0, int health = 40, int mana = 0)
+    public RunHero(int health = 40, int mana = 0)
     {
-        MingYuan = mingYuan;
-        WuXing = wuXing;
-        XiuWei = xiuWei;
         Health = health;
         Mana = mana;
 

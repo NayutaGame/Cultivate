@@ -47,8 +47,8 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
 
-        CanvasManager.Instance.ChipPreview.Configure(null);
-        CanvasManager.Instance.ChipPreview.Refresh();
+        RunCanvas.Instance.ChipPreview.Configure(null);
+        RunCanvas.Instance.ChipPreview.Refresh();
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -59,7 +59,7 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
 
-        CanvasManager.Instance.Refresh();
+        RunCanvas.Instance.Refresh();
     }
 
     public virtual void OnDrag(PointerEventData eventData)
@@ -72,20 +72,20 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        CanvasManager.Instance.ChipPreview.Configure(IndexPath);
+        RunCanvas.Instance.ChipPreview.Configure(IndexPath);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        CanvasManager.Instance.ChipPreview.Configure(null);
-        CanvasManager.Instance.ChipPreview.Refresh();
+        RunCanvas.Instance.ChipPreview.Configure(null);
+        RunCanvas.Instance.ChipPreview.Refresh();
     }
 
     public void OnPointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        CanvasManager.Instance.ChipPreview.UpdateMousePos(eventData.position);
-        CanvasManager.Instance.ChipPreview.Refresh();
+        RunCanvas.Instance.ChipPreview.UpdateMousePos(eventData.position);
+        RunCanvas.Instance.ChipPreview.Refresh();
     }
 }

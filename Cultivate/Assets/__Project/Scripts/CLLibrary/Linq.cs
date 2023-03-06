@@ -110,5 +110,10 @@ namespace CLLibrary
         {
             foreach (T e in enumerable) func(e);
         }
+
+        public static IEnumerable<S> Map<T, S>(this IEnumerable<T> enumerable, Func<T, S> func)
+        {
+            foreach (T e in enumerable) yield return func(e);
+        }
     }
 }

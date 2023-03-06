@@ -13,9 +13,12 @@ public class ChipPreview : MonoBehaviour
     public TMP_Text ManaCostText;
     public TMP_Text JingJieText;
 
+    private RectTransform _rectTransform;
+
     public void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
+        _rectTransform = GetComponent<RectTransform>();
     }
 
     public void Refresh()
@@ -44,10 +47,8 @@ public class ChipPreview : MonoBehaviour
 
     public void UpdateMousePos(Vector2 pos)
     {
-        RectTransform rectTransform = GetComponent<RectTransform>();
-
         Vector2 pivot = new Vector2(Mathf.RoundToInt(pos.x / Screen.width), Mathf.RoundToInt(pos.y / Screen.height));
-        rectTransform.pivot = pivot;
-        rectTransform.position = pos;
+        _rectTransform.pivot = pivot;
+        _rectTransform.position = pos;
     }
 }

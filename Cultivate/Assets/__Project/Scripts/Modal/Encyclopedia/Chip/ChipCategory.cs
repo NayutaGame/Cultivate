@@ -215,48 +215,6 @@ public class ChipCategory : Category<ChipEntry>
                     int mana = caster.GetMana();
                 }),
 
-            new XiulianEntry("金+1", JingJie.LianQi, "对空地释放后，获得1级金",
-                canApply: (Tile tile) => tile.FirstElement() == null,
-                apply: (Tile tile) =>
-                {
-                    RunManager.Instance.SetElementProcedure(tile, WuXing.Jin, 1);
-                }),
-
-            new XiulianEntry("水+1", JingJie.LianQi, "对空地释放后，获得1级水",
-                canApply: (Tile tile) => tile.FirstElement() == null,
-                apply: (Tile tile) =>
-                {
-                    RunManager.Instance.SetElementProcedure(tile, WuXing.Shui, 1);
-                }),
-
-            new XiulianEntry("木+1", JingJie.LianQi, "对空地释放后，获得1级木",
-                canApply: (Tile tile) => tile.FirstElement() == null,
-                apply: (Tile tile) =>
-                {
-                    RunManager.Instance.SetElementProcedure(tile, WuXing.Mu, 1);
-                }),
-
-            new XiulianEntry("火+1", JingJie.LianQi, "对空地释放后，获得1级火",
-                canApply: (Tile tile) => tile.FirstElement() == null,
-                apply: (Tile tile) =>
-                {
-                    RunManager.Instance.SetElementProcedure(tile, WuXing.Huo, 1);
-                }),
-
-            new XiulianEntry("土+1", JingJie.LianQi, "对空地释放后，获得1级土",
-                canApply: (Tile tile) => tile.FirstElement() == null,
-                apply: (Tile tile) =>
-                {
-                    RunManager.Instance.SetElementProcedure(tile, WuXing.Tu, 1);
-                }),
-
-            new XiulianEntry("擦除", JingJie.LianQi, "使格子没有元素",
-                canApply: (Tile tile) => tile.FirstElement() != null,
-                apply: (Tile tile) =>
-                {
-                    RunManager.Instance.SetElementProcedure(tile, tile.FirstElement().Value, 0);
-                }),
-
 
 
             /**********************************************************************************************************/

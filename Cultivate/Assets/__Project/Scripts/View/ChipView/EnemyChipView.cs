@@ -31,9 +31,6 @@ public class EnemyChipView : RunChipView
 
     public override void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null)
-            return;
-
         RunChipView drop = eventData.pointerDrag.GetComponent<RunChipView>();
         if (drop == null)
             return;

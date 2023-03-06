@@ -7,24 +7,24 @@ public class AppRunS : AppS
     public override void Enter()
     {
         base.Enter();
-        CanvasManager.Instance.RunCanvas.SetActive(true);
+        CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
     }
 
     public override void Exit()
     {
         base.Exit();
-        CanvasManager.Instance.RunCanvas.SetActive(false);
+        CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
     }
 
     public override void CEnter()
     {
         base.CEnter();
-        CanvasManager.Instance.RunCanvas.SetActive(false);
+        CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
     }
 
     public override void CExit()
     {
         base.CExit();
-        CanvasManager.Instance.RunCanvas.SetActive(true);
+        CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
     }
 }
