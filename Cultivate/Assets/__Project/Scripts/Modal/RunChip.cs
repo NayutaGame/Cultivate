@@ -50,6 +50,15 @@ public class RunChip
         _powers = new int[] { 0, 0, 0, 0, 0 };
     }
 
+    private RunChip(RunChip prototype)
+    {
+        _entry = prototype._entry;
+        Level = prototype.Level;
+        RunUsedTimes = prototype.RunUsedTimes;
+        RunEquippedTimes = prototype.RunEquippedTimes;
+        _powers = new int[] { 0, 0, 0, 0, 0 };
+    }
+
     public static bool CanUpgrade(RunChip c1, RunChip c2)
     {
         if (c1 == null || c2 == null) return false;
@@ -66,4 +75,9 @@ public class RunChip
     public bool IsNeiGong => _entry.IsNeiGong;
     public bool IsWaiGong => _entry.IsWaiGong;
     public bool IsXiuLian => _entry.IsXiuLian;
+
+    public RunChip Clone()
+    {
+        return new RunChip(this);
+    }
 }

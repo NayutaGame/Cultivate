@@ -12,6 +12,7 @@ public class OperationProduct : Product
         _entry = entry;
     }
 
+    public override bool IsDrag() => _entry.IsDrag;
     public override bool CanDrop(Tile tile)
     {
         if (!_entry.IsDrag)
@@ -35,5 +36,18 @@ public class OperationProduct : Product
     }
 
     public override bool IsClick() => _entry.IsClick;
-    public override bool IsDrag() => _entry.IsDrag;
+    public override bool CanClick()
+    {
+        if (!_entry.IsClick)
+            return false;
+
+        var clickProductEntry = _entry as ClickOperationEntry;
+        return clickProductEntry.CanClick(this);
+    }
+
+    public override void Click()
+    {
+        var clickProductEntry = _entry as ClickOperationEntry;
+        clickProductEntry.Click(this);
+    }
 }

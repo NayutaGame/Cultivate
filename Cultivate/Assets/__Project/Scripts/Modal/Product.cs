@@ -8,8 +8,12 @@ public abstract class Product
 
     public abstract string GetName();
     public abstract int GetCost();
-    public abstract bool IsClick();
+
     public abstract bool IsDrag();
     public abstract bool CanDrop(Tile tile);
     public abstract void Drop(Tile tile);
+
+    public abstract bool IsClick();
+    public abstract bool CanClick();
+    public abstract void Click();
 }

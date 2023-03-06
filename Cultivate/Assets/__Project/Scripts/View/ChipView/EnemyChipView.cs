@@ -10,7 +10,7 @@ public class EnemyChipView : RunChipView
     {
         base.Refresh();
 
-        RunChip chip = RunManager.Get<RunChip>(IndexPath);
+        RunChip chip = RunManager.Get<RunChip>(GetIndexPath());
 
         gameObject.SetActive(true);
         if(chip == null)
@@ -27,17 +27,20 @@ public class EnemyChipView : RunChipView
     public override void OnBeginDrag(PointerEventData eventData)
     {
         eventData.pointerDrag = null;
+
+        RunCanvas.Instance.ChipPreview.Configure(null);
+        RunCanvas.Instance.ChipPreview.Refresh();
     }
 
     public override void OnDrop(PointerEventData eventData)
     {
-        RunChipView drop = eventData.pointerDrag.GetComponent<RunChipView>();
+        IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
         if (drop == null)
             return;
 
-        if (IndexPath.Equals(drop.IndexPath))
+        if (GetIndexPath().Equals(drop.GetIndexPath()))
             return;
 
-        if (RunManager.Instance.TryCopy(drop.IndexPath, IndexPath)) return;
+        if (RunManager.Instance.TryWrite(drop.GetIndexPath(), GetIndexPath())) return;
     }
 }

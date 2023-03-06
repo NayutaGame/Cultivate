@@ -11,10 +11,14 @@ public abstract class OperationEntry : Entry
     private int _cost;
     public int Cost => _cost;
 
-    public OperationEntry(string name, string description, int cost) : base(name)
+    private List<ILock> _locks;
+    public List<ILock> Locks => _locks;
+
+    public OperationEntry(string name, string description, int cost, List<ILock> locks = null) : base(name)
     {
         _description = description;
         _cost = cost;
+        _locks = locks ?? new();
     }
 
     public virtual bool IsClick => false;

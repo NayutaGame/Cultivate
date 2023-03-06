@@ -215,6 +215,27 @@ public class ChipCategory : Category<ChipEntry>
                     int mana = caster.GetMana();
                 }),
 
+            new WaiGongEntry("占位0", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+            new WaiGongEntry("占位1", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+            new WaiGongEntry("占位2", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+            new WaiGongEntry("占位3", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+            new WaiGongEntry("占位4", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+            new WaiGongEntry("占位5", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+            new WaiGongEntry("占位6", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+            new WaiGongEntry("占位7", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+            new WaiGongEntry("占位8", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+            new WaiGongEntry("占位9", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong) => { }),
+
 
 
             /**********************************************************************************************************/

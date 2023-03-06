@@ -16,19 +16,23 @@ public class BuildingProduct : Product
 
     public override int GetCost() => _entry.Cost;
 
-    public override bool IsClick() => false;
-
     public override bool IsDrag() => true;
 
     public override bool CanDrop(Tile tile)
     {
-        return tile.Building == null;
-        // return _entry.CanDrop(this, tile);
+        if (tile.Building != null)
+            return false;
+
+        return _entry.CanDrop(this, tile);
     }
 
     public override void Drop(Tile tile)
     {
         tile.Building = new RunBuilding(_entry);
-        // return _entry.Drop(this, tile);
+        _entry.Drop(this, tile);
     }
+
+    public override bool IsClick() => false;
+    public override bool CanClick() => false;
+    public override void Click() { }
 }

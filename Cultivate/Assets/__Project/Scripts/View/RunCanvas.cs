@@ -9,6 +9,7 @@ public class RunCanvas : Singleton<RunCanvas>
 {
     public ChipPreview ChipPreview;
     public GhostProduct GhostProduct;
+    public GhostChip GhostChip;
     public Button CharacterButton;
     public Button BattleButton;
 

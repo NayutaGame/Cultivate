@@ -13,12 +13,9 @@ public class StageHero : StageEntity
         Hp = _runHero.Health;
         Armor = 0;
 
-        _neiGongList = new StageNeiGong[_runHero.NeiGongCount];
-        for (int i = 0; i < _neiGongList.Length; i++)
-        {
-            _neiGongList[i] = new StageNeiGong(_runHero.GetNeiGong(i));
-        }
-        _waiGongList = new StageWaiGong[_runHero.WaiGongCount];
+        _neiGongList = new StageNeiGong[4];
+
+        _waiGongList = new StageWaiGong[_runHero.WaiGongLimit];
         for (int i = 0; i < _waiGongList.Length; i++)
         {
             _waiGongList[i] = new StageWaiGong(_runHero.GetWaiGong(i));

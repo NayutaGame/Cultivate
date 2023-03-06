@@ -13,12 +13,9 @@ public class StageEnemy : StageEntity
         Hp = _runEnemy.Health;
         Armor = 0;
 
-        _neiGongList = new StageNeiGong[_runEnemy.NeiGongCount];
-        for (int i = 0; i < _neiGongList.Length; i++)
-        {
-            _neiGongList[i] = new StageNeiGong(_runEnemy.GetNeiGong(i));
-        }
-        _waiGongList = new StageWaiGong[_runEnemy.WaiGongCount];
+        _neiGongList = new StageNeiGong[4];
+
+        _waiGongList = new StageWaiGong[_runEnemy.WaiGongLimit];
         for (int i = 0; i < _waiGongList.Length; i++)
         {
             _waiGongList[i] = new StageWaiGong(_runEnemy.GetWaiGong(i));

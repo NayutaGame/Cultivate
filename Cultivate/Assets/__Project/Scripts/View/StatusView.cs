@@ -23,7 +23,7 @@ public class StatusView : MonoBehaviour
 
     public void JingJieChanged(int index)
     {
-        RunManager.Instance.SetJingJie(index);
+        RunManager.Instance.JingJie = index;
         RunCanvas.Instance.Refresh();
     }
 }

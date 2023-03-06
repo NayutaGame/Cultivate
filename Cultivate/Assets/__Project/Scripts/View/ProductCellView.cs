@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ProductCellView : MonoBehaviour, IIndexPath
 {
@@ -26,6 +27,8 @@ public class ProductCellView : MonoBehaviour, IIndexPath
         drag._onBeginDrag = OnBeginDrag;
         drag._onEndDrag = OnEndDrag;
         drag._onDrag = OnDrag;
+
+        Button.GetComponent<Button>().onClick.AddListener(Click);
     }
 
     public virtual void Refresh()
@@ -41,9 +44,8 @@ public class ProductCellView : MonoBehaviour, IIndexPath
         Button.SetActive(product.IsClick());
         Drag.SetActive(product.IsDrag());
 
-
-
         _canAfford = RunManager.Instance.CanAfford(product);
+        Button.GetComponent<Button>().interactable = _canAfford;
         if (_canAfford)
         {
             NameText.color = Color.black;
@@ -52,6 +54,12 @@ public class ProductCellView : MonoBehaviour, IIndexPath
         {
             NameText.color = Color.red;
         }
+    }
+
+    private void Click()
+    {
+        RunManager.Instance.TryClickProduct(_indexPath);
+        RunCanvas.Instance.Refresh();
     }
 
     public void OnPointerDown(PointerEventData eventData) { }

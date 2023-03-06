@@ -6,19 +6,17 @@ using UnityEngine.UI;
 
 [SelectionBase]
 public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
-    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
+    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler, IIndexPath
 {
-    protected RectTransform _transform;
     protected Image _image;
 
     public TMP_Text InfoText;
 
     private IndexPath _indexPath;
-    public IndexPath IndexPath => _indexPath;
+    public IndexPath GetIndexPath() => _indexPath;
 
     private void Awake()
     {
-        _transform = GetComponent<RectTransform>();
         _image = GetComponent<Image>();
     }
 
@@ -31,19 +29,13 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
 
     public void OnPointerDown(PointerEventData eventData) { }
 
-    protected GameObject _ghostGO;
-    protected RectTransform _ghostTransform;
-
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        _ghostGO = Instantiate(gameObject, CanvasManager.Instance.GhostHolder);
-        _ghostGO.GetComponent<Image>().raycastTarget = false;
-        _ghostTransform = _ghostGO.GetComponent<RectTransform>();
+        RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        GridLayoutGroup glg = _transform.parent.GetComponent<GridLayoutGroup>();
-        Vector2 size = glg != null ? glg.cellSize : _ghostTransform.sizeDelta;
-
-        _ghostTransform.sizeDelta = size;
+        RunCanvas.Instance.GhostChip.Configure(_indexPath);
+        RunCanvas.Instance.GhostChip.Refresh();
+        RunCanvas.Instance.Refresh();
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
 
@@ -53,9 +45,11 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        Destroy(_ghostGO);
-        _ghostGO = null;
-        _ghostTransform = null;
+        RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
+
+        RunCanvas.Instance.GhostChip.Configure(null);
+        RunCanvas.Instance.GhostChip.Refresh();
+        RunCanvas.Instance.Refresh();
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
 
@@ -64,7 +58,7 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
 
     public virtual void OnDrag(PointerEventData eventData)
     {
-        _ghostTransform.position = eventData.position;
+        RunCanvas.Instance.GhostChip.UpdateMousePos(eventData.position);
     }
 
     public abstract void OnDrop(PointerEventData eventData);
@@ -72,7 +66,7 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.ChipPreview.Configure(IndexPath);
+        RunCanvas.Instance.ChipPreview.Configure(GetIndexPath());
     }
 
     public void OnPointerExit(PointerEventData eventData)

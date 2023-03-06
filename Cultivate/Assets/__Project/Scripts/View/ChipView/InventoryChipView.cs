@@ -11,7 +11,7 @@ public class InventoryChipView : RunChipView
     {
         base.Refresh();
 
-        RunChip chip = RunManager.Get<RunChip>(IndexPath);
+        RunChip chip = RunManager.Get<RunChip>(GetIndexPath());
 
         gameObject.SetActive(chip != null);
         if (chip == null) return;
@@ -21,20 +21,13 @@ public class InventoryChipView : RunChipView
 
     public override void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null)
-            return;
-
-        RunChipView drop = eventData.pointerDrag.GetComponent<RunChipView>();
+        IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
         if (drop == null)
             return;
 
-        if (IndexPath.Equals(drop.IndexPath))
+        if (GetIndexPath().Equals(drop.GetIndexPath()))
             return;
 
-        if (drop.IndexPath._str == "TryGetRunChip")
-        {
-            if (RunManager.Instance.TryUpgradeInventory(drop.IndexPath, IndexPath)) return;
-            if (RunManager.Instance.Swap(drop.IndexPath, IndexPath)) return;
-        }
+        if (RunManager.Instance.TryDrag(drop.GetIndexPath(), GetIndexPath())) return;
     }
 }

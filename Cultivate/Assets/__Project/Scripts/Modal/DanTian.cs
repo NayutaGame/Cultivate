@@ -181,7 +181,7 @@ public class DanTian
             int q = tile._q + dir.x;
             int r = tile._r + dir.y;
             if(!IsInside(q, r)) continue;
-            yield return RunManager.Instance.DanTian[q, r];
+            yield return this[q, r];
         }
     }
 

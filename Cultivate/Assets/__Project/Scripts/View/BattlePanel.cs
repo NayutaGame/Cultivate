@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BattlePanel : Panel
 {
     // status
-    public AcquiredPoolView AcquiredPoolView;
+    [FormerlySerializedAs("AcquiredPoolView")] public ChipInventoryView chipInventoryView;
     public SkillEditor SkillEditor;
 
     public Button BattleButton;
@@ -15,14 +16,14 @@ public class BattlePanel : Panel
 
     public override void Configure()
     {
-        AcquiredPoolView.Configure();
+        chipInventoryView.Configure();
         SkillEditor.Configure();
         BattleButton.onClick.AddListener(Battle);
     }
 
     public override void Refresh()
     {
-        AcquiredPoolView.Refresh();
+        chipInventoryView.Refresh();
         SkillEditor.Refresh();
     }
 

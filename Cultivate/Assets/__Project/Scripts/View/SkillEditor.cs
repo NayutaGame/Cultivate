@@ -16,17 +16,13 @@ public class SkillEditor : MonoBehaviour
 
     public void Configure()
     {
-        ConfigureList(ref _heroNeiGongViews, RunManager.NeiGongLimit, HeroNeiGongTransform, "GetHeroNeiGong");
         ConfigureList(ref _heroWaiGongViews, RunManager.WaiGongLimit, HeroWaiGongTransform, "GetHeroWaiGong");
-        ConfigureList(ref _enemyNeiGongViews, RunManager.NeiGongLimit, EnemyNeiGongTransform, "GetEnemyNeiGong");
         ConfigureList(ref _enemyWaiGongViews, RunManager.WaiGongLimit, EnemyWaiGongTransform, "GetEnemyWaiGong");
     }
 
     public void Refresh()
     {
-        foreach(var view in _heroNeiGongViews) view.Refresh();
         foreach(var view in _heroWaiGongViews) view.Refresh();
-        foreach(var view in _enemyNeiGongViews) view.Refresh();
         foreach(var view in _enemyWaiGongViews) view.Refresh();
     }
 

@@ -31,8 +31,6 @@ public class Tile
     public WorkerLock WorkerLock;
     public Worker Worker;
 
-    public AcquiredChip Chip;
-
 
 
 

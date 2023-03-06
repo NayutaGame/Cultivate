@@ -36,4 +36,14 @@ public class ProductInventory
     {
         product.Drop(tile);
     }
+
+    public bool CanClick(Product product)
+    {
+        return product.CanClick();
+    }
+
+    public void Click(Product product)
+    {
+        product.Click();
+    }
 }

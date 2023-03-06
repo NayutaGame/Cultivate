@@ -34,6 +34,18 @@ public class OperationCategory : Category<OperationEntry>
                     if (tile.ChanNeng > 0)
                         tile.Terrain.ChanNeng -= 1;
                 }),
+            new ClickOperationEntry("抽卡", "抽卡", 2,
+                canClick: runProduct =>
+                {
+                    return true;
+                },
+                click: runProduct =>
+                {
+                    Debug.Log("此处应有抽卡");
+                },
+                locks: new(){
+                    Encyclopedia.BuildingCategory["金建筑"],
+                }),
         };
     }
 }

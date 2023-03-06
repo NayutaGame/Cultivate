@@ -243,13 +243,13 @@ public class StageManager : Singleton<StageManager>
     public HeroSlot _heroSlot;
     public EnemySlot _enemySlot;
 
-    private Dictionary<string, Func<IndexPath, object>> _funcList;
+    private Dictionary<string, Func<IndexPath, object>> _accessors;
 
     public override void DidAwake()
     {
         base.DidAwake();
 
-        _funcList = new()
+        _accessors = new()
         {
             { "TryGetHeroStageNeiGong",    TryGetHeroStageNeiGong },
             { "TryGetHeroStageWaiGong",    TryGetHeroStageWaiGong },
@@ -260,7 +260,7 @@ public class StageManager : Singleton<StageManager>
         };
     }
 
-    public static T Get<T>(IndexPath indexPath) => (T) Instance._funcList[indexPath._str](indexPath);
+    public static T Get<T>(IndexPath indexPath) => (T) Instance._accessors[indexPath._str](indexPath);
     public static T Get<T>(string funcName) => Get<T>(new IndexPath(funcName));
     private object TryGetHeroStageNeiGong(IndexPath indexPath) => _hero.TryGetNeiGong(indexPath._ints[0]);
     private object TryGetHeroStageWaiGong(IndexPath indexPath) => _hero.TryGetWaiGong(indexPath._ints[0]);

@@ -10,7 +10,7 @@ public class HeroChipView : RunChipView
     {
         base.Refresh();
 
-        AcquiredChip chip = RunManager.Get<AcquiredChip>(IndexPath);
+        RunChip chip = RunManager.Get<RunChip>(GetIndexPath());
 
         gameObject.SetActive(true);
         if(chip == null)
@@ -26,40 +26,13 @@ public class HeroChipView : RunChipView
 
     public override void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null)
-            return;
-
-        RunChipView drop = eventData.pointerDrag.GetComponent<RunChipView>();
+        IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
         if (drop == null)
             return;
 
-        if (IndexPath.Equals(drop.IndexPath))
+        if (GetIndexPath().Equals(drop.GetIndexPath()))
             return;
 
-        if (drop.IndexPath._str == "TryGetUnequipped")
-        {
-            if (IndexPath._str == "GetHeroNeiGong")
-            {
-                RunManager.Instance.TryEquipNeiGong(drop.IndexPath, IndexPath);
-            }
-            else if (IndexPath._str == "GetHeroWaiGong")
-            {
-                RunManager.Instance.TryEquipWaiGong(drop.IndexPath, IndexPath);
-            }
-            return;
-        }
-
-        if (drop.IndexPath._str == IndexPath._str)
-        {
-            if (IndexPath._str == "GetHeroNeiGong")
-            {
-                RunManager.Instance.SwapNeiGong(drop.IndexPath, IndexPath);
-            }
-            else if (IndexPath._str == "GetHeroWaiGong")
-            {
-                RunManager.Instance.SwapWaiGong(drop.IndexPath, IndexPath);
-            }
-            return;
-        }
+        if (RunManager.Instance.TryDrag(drop.GetIndexPath(), GetIndexPath())) return;
     }
 }
