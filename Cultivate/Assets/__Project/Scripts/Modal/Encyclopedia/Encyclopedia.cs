@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class Encyclopedia : Singleton<Encyclopedia>
 {
-    public static OperationCategory OperationCategory;
-    public static BuildingCategory BuildingCategory;
+    public static ProductCategory ProductCategory;
     public static TerrainCategory TerrainCategory;
     public static TileResourceCategory TileResourceCategory;
     public static ChipCategory ChipCategory;
@@ -22,7 +21,6 @@ public class Encyclopedia : Singleton<Encyclopedia>
         ChipCategory = new ChipCategory();
         TileResourceCategory = new TileResourceCategory();
         TerrainCategory = new TerrainCategory();
-        BuildingCategory = new BuildingCategory();
-        OperationCategory = new OperationCategory();
+        ProductCategory = new ProductCategory();
     }
 }

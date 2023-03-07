@@ -26,15 +26,15 @@ namespace CLLibrary
 
         public void Shuffle()
         {
-            List<T> temp = new List<T>(_list);
-            _list.Clear();
-
-            while (temp.Count > 0)
+            List<T> temp = new();
+            while (_list.Count > 0)
             {
-                int r = RandomManager.Range(0, temp.Count);
-                _list.Add(temp[r]);
-                temp.RemoveAt(r);
+                int r = RandomManager.Range(0, _list.Count);
+                temp.Add(_list[r]);
+                _list.RemoveAt(r);
             }
+
+            _list = temp;
         }
 
         public bool TryPopFirst(Predicate<T> pred, out T item)

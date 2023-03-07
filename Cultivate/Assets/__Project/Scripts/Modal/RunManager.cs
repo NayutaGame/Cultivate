@@ -14,6 +14,7 @@ public class RunManager : Singleton<RunManager>
     public static readonly int[] NeiGongLimitFromJingJie = new[] { 0, 1, 2, 3, 4, 4 };
     public static readonly int[] WaiGongLimitFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
 
+    private ChipPool _chipPool;
     private DanTian _danTian;
     private ProductInventory _productInventory;
     private ChipInventory _chipInventory;
@@ -64,6 +65,7 @@ public class RunManager : Singleton<RunManager>
     {
         base.DidAwake();
 
+        _chipPool = new ChipPool();
         _danTian = new DanTian();
         _productInventory = new ProductInventory();
         _chipInventory = new ChipInventory();
@@ -126,6 +128,7 @@ public class RunManager : Singleton<RunManager>
 
         _chanNeng -= product.GetCost();
         _productInventory.Drop(product, tile);
+        _danTian.AutoAssignWorkers();
     }
 
     public bool TryClickProduct(IndexPath clicked)
@@ -150,6 +153,7 @@ public class RunManager : Singleton<RunManager>
 
         _chanNeng -= product.GetCost();
         _productInventory.Click(product);
+        _danTian.AutoAssignWorkers();
     }
 
     public bool CanAfford(Product product)
@@ -238,6 +242,12 @@ public class RunManager : Singleton<RunManager>
         RunChip toWrite = Get<RunChip>(from);
         _enemy.SetWaiGong(to._ints[0], toWrite?.Clone());
         return true;
+    }
+
+    public void DrawChip()
+    {
+        if(_chipPool.TryPopFirst(_jingJie, out ChipEntry chipEntry))
+            _chipInventory.Add(new RunChip(chipEntry));
     }
 
     public void AddTurn()

@@ -6,7 +6,7 @@ public class RunBuilding
 {
     private BuildingEntry _entry;
 
-    public RunBuilding(string entryName) : this(Encyclopedia.BuildingCategory[entryName]) { }
+    public RunBuilding(string entryName) : this(Encyclopedia.ProductCategory[entryName] as BuildingEntry) { }
     public RunBuilding(BuildingEntry entry)
     {
         _entry = entry;

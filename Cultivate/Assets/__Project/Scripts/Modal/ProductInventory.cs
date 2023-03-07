@@ -23,8 +23,7 @@ public class ProductInventory
     public ProductInventory()
     {
         _list = new List<Product>();
-        Encyclopedia.OperationCategory.Traversal.Do(item => _list.Add(new OperationProduct(item)));
-        Encyclopedia.BuildingCategory.Traversal.Do(item => _list.Add(new BuildingProduct(item)));
+        Encyclopedia.ProductCategory.Traversal.Do(entry => _list.Add(new Product(entry)));
     }
 
     public bool CanDrop(Product product, Tile tile)
