@@ -40,6 +40,7 @@ public class RunManager : Singleton<RunManager>
     }
 
     private int _mingYuan;
+    public int MingYuan => _mingYuan;
 
     // 灵根
     // 神识

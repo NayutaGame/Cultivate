@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CreateEnemyDetails
 {
-    private bool IsNormal;
-    private bool IsRare;
-    private bool IsBoss;
+    public bool IsNormal;
+    public bool IsRare;
+    public bool IsBoss;
 }

@@ -185,12 +185,13 @@ public class ChipCategory : Category<ChipEntry>
             //         StageManager.Instance.BuffProcedure(seq, caster, caster, "受伤反击", 4);
             //     }),
             //
-            // new WaiGongEntry("查询接口", JingJie.LianQi, "",
-            //     execute: (seq, caster, waiGong) =>
-            //     {
-            //         int anyStack = caster.GetStackOfBuff("灵气");
-            //         int mana = caster.GetMana();
-            //     }),
+
+            new WaiGongEntry("查询接口", JingJie.LianQi, "",
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    int anyStack = caster.GetStackOfBuff("灵气");
+                    int mana = caster.GetMana();
+                }),
 
             new WaiGongEntry("聚气术", JingJie.LianQi, "灵气+1",
                 execute: (seq, caster, waiGong, recursive) =>
