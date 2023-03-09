@@ -10,22 +10,21 @@ public class EnemyChipView : RunChipView
     {
         base.Refresh();
 
-        RunChip chip = RunManager.Get<RunChip>(GetIndexPath());
+        EnemyChipSlot slot = RunManager.Get<EnemyChipSlot>(GetIndexPath());
 
         gameObject.SetActive(true);
-        if(chip == null)
+        if(slot.Chip == null)
         {
             LevelText.text = "";
             NameText.text = "空";
-            PowerText.text = "";
+            PowerText.text = $"{slot.GetPowerString()}";
             return;
         }
         else
         {
-            LevelText.text = $"{chip.Level}";
-            NameText.text = $"{chip.GetName()}";
-            // PowerText.text = $"{chip.GetPowerString()}";
-            PowerText.text = $"";
+            LevelText.text = $"{slot.Chip.Level}";
+            NameText.text = $"{slot.Chip.GetName()}";
+            PowerText.text = $"{slot.GetPowerString()}";
         }
     }
 

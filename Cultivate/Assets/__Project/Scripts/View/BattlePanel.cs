@@ -16,7 +16,7 @@ public class BattlePanel : Panel
 
     public override void Configure()
     {
-        AcquiredWaiGongInventoryView.Configure(RunManager.Instance.AcquiredWaiGongInventory);
+        AcquiredWaiGongInventoryView.Configure(RunManager.Instance.AcquiredInventory);
         SkillEditor.Configure();
         BattleButton.onClick.AddListener(Battle);
     }

@@ -31,22 +31,22 @@ public class WaiGongEntry : ChipEntry
         {
             AcquiredRunChip acquiredRunChip = new AcquiredRunChip(tile, runChip);
             tile.AcquiredRunChip = acquiredRunChip;
-            RunManager.Instance.AcquiredWaiGongInventory.Add(acquiredRunChip);
+            RunManager.Instance.AcquiredInventory.Add(acquiredRunChip);
             RunManager.Instance.ChipInventory.Remove(runChip);
         },
         canUnplug: acquiredRunChip => true,
         unplug: acquiredRunChip =>
         {
             acquiredRunChip.Tile.AcquiredRunChip = null;
-            int? idx = RunManager.Instance.Hero.FindWaiGongIdx(acquiredRunChip);
+            int? idx = RunManager.Instance.Hero.HeroSlotInventory.FindAcquiredIdx(acquiredRunChip);
             if (idx != null)
             {
-                RunManager.Instance.Hero.SetWaiGong(idx.Value, null);
+                RunManager.Instance.Hero.HeroSlotInventory[idx.Value].AcquiredRunChip = null;
             }
             else
             {
 
-                RunManager.Instance.AcquiredWaiGongInventory.Remove(acquiredRunChip);
+                RunManager.Instance.AcquiredInventory.Remove(acquiredRunChip);
             }
 
             RunManager.Instance.ChipInventory.Add(acquiredRunChip.Chip);

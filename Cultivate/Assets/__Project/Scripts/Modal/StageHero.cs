@@ -15,10 +15,10 @@ public class StageHero : StageEntity
 
         _neiGongList = new StageNeiGong[4];
 
-        _waiGongList = new StageWaiGong[_runHero.WaiGongLimit];
+        _waiGongList = new StageWaiGong[_runHero.HeroSlotInventory.Limit];
         for (int i = 0; i < _waiGongList.Length; i++)
         {
-            _waiGongList[i] = new StageWaiGong(_runHero.GetWaiGong(i).RunChip);
+            _waiGongList[i] = new StageWaiGong(_runHero.HeroSlotInventory[i].AcquiredRunChip.Chip);
         }
 
         _p = 0;

@@ -16,11 +16,11 @@ public class AcquiredWaiGongInventoryView : InventoryView<AcquiredWaiGongView>, 
         if (drop == null)
             return;
 
-        if (drop.GetIndexPath()._str == "TryGetAcquiredWaiGong")
+        if (drop.GetIndexPath()._str == "TryGetAcquired")
         {
             if (RunManager.Instance.AcquiredWaiGongMoveToEnd(drop.GetIndexPath())) return;
         }
-        else if (drop.GetIndexPath()._str == "GetHeroWaiGong")
+        else if (drop.GetIndexPath()._str == "GetHeroSlot")
         {
             if (RunManager.Instance.Unequip(drop.GetIndexPath())) return;
         }

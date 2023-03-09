@@ -48,14 +48,25 @@ public class ChipPreview : MonoBehaviour
             c = acquiredRunChip.Chip;
             PowerText.text = acquiredRunChip.GetPowerString();
         }
-        else if (o is HeroRunChip heroRunChip)
+        else if (o is HeroChipSlot heroChipSlot)
         {
-            c = heroRunChip.RunChip;
-            PowerText.text = heroRunChip.GetPowerString();
+            c = heroChipSlot.RunChip;
+            PowerText.text = heroChipSlot.GetPowerString();
+        }
+        else if (o is EnemyChipSlot enemyChipSlot)
+        {
+            c = enemyChipSlot.Chip;
+            PowerText.text = enemyChipSlot.GetPowerString();
         }
         else
         {
-            throw new Exception("undefined c");
+            throw new Exception($"undefined, o.type = {o.GetType()}");
+        }
+
+        if (c == null)
+        {
+            gameObject.SetActive(false);
+            return;
         }
 
         gameObject.SetActive(true);

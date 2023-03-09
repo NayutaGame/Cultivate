@@ -14,13 +14,15 @@ public class XueWeiEntry : ChipEntry
         {
             AcquiredRunChip acquiredRunChip = new AcquiredRunChip(tile, runChip);
             tile.AcquiredRunChip = acquiredRunChip;
-            RunManager.Instance.AcquiredSlotInventory[slotIndex] = acquiredRunChip;
+            RunManager.Instance.Hero.HeroSlotInventory[slotIndex].XueWei = tile;
+            RunManager.Instance.ChipInventory.Remove(runChip);
         },
         canUnplug: acquiredRunChip => true,
         unplug: acquiredRunChip =>
         {
             acquiredRunChip.Tile.AcquiredRunChip = null;
-            RunManager.Instance.AcquiredSlotInventory[slotIndex] = null;
+            RunManager.Instance.Hero.HeroSlotInventory[slotIndex].XueWei = null;
+            RunManager.Instance.ChipInventory.Add(acquiredRunChip.Chip);
         })
     {
     }

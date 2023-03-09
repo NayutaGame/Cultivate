@@ -42,9 +42,19 @@ public class GhostChip : MonoBehaviour
         {
             c = acquiredRunChip.Chip;
         }
+        else if (o is HeroChipSlot heroRunChip)
+        {
+            c = heroRunChip.RunChip;
+        }
         else
         {
-            throw new Exception("undefined c");
+            throw new Exception($"undefined, o.type = {o.GetType()}");
+        }
+
+        if (c == null)
+        {
+            InfoText.text = "空";
+            return;
         }
 
         InfoText.text = $"{c.GetName()}";

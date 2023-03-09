@@ -43,7 +43,7 @@ MonoBehaviour:
     width: 2560
     height: 1349.3334
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Hierarchy
   m_RootView: {fileID: 5}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_MinSize: {x: 101, y: 123}
   m_MaxSize: {x: 4001, y: 4023}
   vertical: 0
-  controlID: 29458
+  controlID: 76
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 29829
+  controlID: 1732
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 29785
+  controlID: 1723
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -297,7 +297,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 29835
+  controlID: 1773
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -317,8 +317,8 @@ MonoBehaviour:
     y: 0
     width: 648.6666
     height: 572
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -474,23 +474,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 2560
-      height: 1259.3334
-    m_Scale: {x: 0.8745371, y: 0.87453705}
-    m_Translation: {x: 1280, y: 629.6667}
+      width: 1289
+      height: 627.3333
+    m_Scale: {x: 0.43564814, y: 0.43564814}
+    m_Translation: {x: 644.5, y: 313.66666}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -1463.6315
+      x: -1479.4049
       y: -720
-      width: 2927.263
+      width: 2958.8098
       height: 1440
     m_MinimalGUI: 1
-  m_defaultScale: 0.87453705
-  m_LastWindowPixelSize: {x: 3840, y: 1920.5}
+  m_defaultScale: 0.43564814
+  m_LastWindowPixelSize: {x: 1933.5, y: 972.5}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 00000000000000000000
@@ -745,7 +745,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: 1717.5858, y: 1091.7938, z: 57.673355}
     speed: 2
-    m_Value: {x: 1717.5858, y: 1091.7938, z: 57.673355}
+    m_Value: {x: 1857.7184, y: 498.83615, z: 12.131127}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -798,7 +798,7 @@ MonoBehaviour:
   m_Size:
     m_Target: 1143.053
     speed: 2
-    m_Value: 1143.053
+    m_Value: 520.5447
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -949,22 +949,22 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/__Project/Scripts/Modal/RunChips
+    - Assets/__Project/Scripts/View
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/__Project/Scripts/Modal/RunChips
+  - Assets/__Project/Scripts/View
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\86130\Documents\UnityWorkspace\Cultivate\Cultivate
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 9c2b0300
-    m_LastClickedID: 207772
-    m_ExpandedIDs: 00000000f69f0000f89f0000fa9f0000fc9f0000fe9f00000aa0000016a0000000ca9a3bffffff7f
+    m_SelectedIDs: 9ca40000
+    m_LastClickedID: 42140
+    m_ExpandedIDs: 0000000054a4000056a4000058a400005aa400005ca4000080a4000084a400008ea4000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -992,7 +992,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000f69f0000f89f0000fa9f0000fc9f0000fe9f000000ca9a3bffffff7f
+    m_ExpandedIDs: 0000000054a4000056a4000058a400005aa400005ca4000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1019,22 +1019,22 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c623000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: HeroSlotInventory
+      m_OriginalName: HeroSlotInventory
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 102450
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 14}
     m_CreateAssetUtility:

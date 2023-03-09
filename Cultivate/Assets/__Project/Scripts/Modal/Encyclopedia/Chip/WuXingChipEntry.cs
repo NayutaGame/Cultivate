@@ -12,12 +12,14 @@ public class WuXingChipEntry : ChipEntry
         {
             tile.AcquiredRunChip = new AcquiredRunChip(tile, runChip);
             RunManager.Instance.DanTian.Adjacents(tile).Do(t => t.Powers[wuXing] += 1);
+            RunManager.Instance.ChipInventory.Remove(runChip);
         },
         canUnplug: acquiredRunChip => true,
         unplug: acquiredRunchip =>
         {
             acquiredRunchip.Tile.AcquiredRunChip = null;
             RunManager.Instance.DanTian.Adjacents(acquiredRunchip.Tile).Do(t => t.Powers[wuXing] -= 1);
+            RunManager.Instance.ChipInventory.Add(acquiredRunchip.Chip);
         })
     {
     }

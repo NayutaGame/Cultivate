@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class AcquiredWaiGongInventory: Inventory<AcquiredRunChip>
 {
-    public override string GetIndexPathString() => "TryGetAcquiredWaiGong";
+    public override string GetIndexPathString() => "TryGetAcquired";
 }

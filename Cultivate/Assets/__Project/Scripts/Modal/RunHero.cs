@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RunHero
@@ -9,16 +10,11 @@ public class RunHero
     public int Health { get; private set; }
     public int Mana { get; private set; }
 
-    private HeroRunChip[] _waiGongList;
-    public int WaiGongLimit;
-    public HeroRunChip GetWaiGong(int i) => _waiGongList[i];
-    public HeroRunChip SetWaiGong(int i, HeroRunChip runChip) => _waiGongList[i] = runChip;
-
-    public int? FindWaiGongIdx(AcquiredRunChip acquiredRunChip) => _waiGongList.FirstIdx(item => item.AcquiredRunChip == acquiredRunChip);
+    public HeroSlotInventory HeroSlotInventory { get; private set; }
 
     public void SetJingJie(JingJie jingJie)
     {
-        WaiGongLimit = RunManager.WaiGongLimitFromJingJie[jingJie];
+        HeroSlotInventory.SetJingJie(jingJie);
     }
 
     public RunHero(int health = 40, int mana = 0)
@@ -26,13 +22,6 @@ public class RunHero
         Health = health;
         Mana = mana;
 
-        _waiGongList = new HeroRunChip[RunManager.WaiGongLimit];
-
-        WaiGongLimit = RunManager.WaiGongLimit;
-    }
-
-    public void Swap(int from, int to)
-    {
-        (_waiGongList[from], _waiGongList[to]) = (_waiGongList[to], _waiGongList[from]);
+        HeroSlotInventory = new();
     }
 }

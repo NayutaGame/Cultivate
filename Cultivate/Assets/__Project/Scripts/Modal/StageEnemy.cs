@@ -15,10 +15,10 @@ public class StageEnemy : StageEntity
 
         _neiGongList = new StageNeiGong[4];
 
-        _waiGongList = new StageWaiGong[_runEnemy.WaiGongLimit];
+        _waiGongList = new StageWaiGong[_runEnemy.Limit];
         for (int i = 0; i < _waiGongList.Length; i++)
         {
-            _waiGongList[i] = new StageWaiGong(_runEnemy.GetWaiGong(i));
+            _waiGongList[i] = new StageWaiGong(_runEnemy.GetSlot(i).Chip);
         }
 
         _p = 0;

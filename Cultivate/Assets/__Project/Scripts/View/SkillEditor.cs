@@ -16,8 +16,8 @@ public class SkillEditor : MonoBehaviour
 
     public void Configure()
     {
-        ConfigureList(ref _heroWaiGongViews, RunManager.WaiGongLimit, HeroWaiGongTransform, "GetHeroWaiGong");
-        ConfigureList(ref _enemyWaiGongViews, RunManager.WaiGongLimit, EnemyWaiGongTransform, "GetEnemyWaiGong");
+        ConfigureList(ref _heroWaiGongViews, RunManager.WaiGongLimit, HeroWaiGongTransform, "GetHeroSlot");
+        ConfigureList(ref _enemyWaiGongViews, RunManager.WaiGongLimit, EnemyWaiGongTransform, "GetEnemySlot");
     }
 
     public void Refresh()
