@@ -44,5 +44,7 @@ namespace CLLibrary
             _list.Remove(item);
             return true;
         }
+
+        public int Count() => _list.Count;
     }
 }

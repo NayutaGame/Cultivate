@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Encyclopedia : Singleton<Encyclopedia>
 {
+    public static EnemyCategory EnemyCategory;
     public static ProductCategory ProductCategory;
     public static TerrainCategory TerrainCategory;
     public static TileResourceCategory TileResourceCategory;
@@ -22,5 +23,6 @@ public class Encyclopedia : Singleton<Encyclopedia>
         TileResourceCategory = new TileResourceCategory();
         TerrainCategory = new TerrainCategory();
         ProductCategory = new ProductCategory();
+        EnemyCategory = new EnemyCategory();
     }
 }

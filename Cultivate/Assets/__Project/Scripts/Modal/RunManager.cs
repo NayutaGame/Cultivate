@@ -22,6 +22,7 @@ public class RunManager : Singleton<RunManager>
     public ChipInventory ChipInventory { get; private set; }
     public AcquiredWaiGongInventory AcquiredInventory { get; private set; }
     public RunHero Hero { get; private set; }
+    public EnemyPool EnemyPool { get; private set; }
     public RunEnemy Enemy { get; private set; }
 
     private JingJie _jingJie;
@@ -73,7 +74,8 @@ public class RunManager : Singleton<RunManager>
         AcquiredInventory = new();
 
         Hero = new RunHero();
-        Enemy = new RunEnemy();
+        EnemyPool = new ();
+        NextEnemyFromPool();
 
         _accessors = new()
         {
@@ -382,4 +384,21 @@ public class RunManager : Singleton<RunManager>
     //     Instance._chipInventory.UpgradeInventory(fromIndex, toIndex);
     //     return true;
     // }
+
+    public bool NextEnemyFromPool()
+    {
+        if(EnemyPool.Count() == 0)
+            EnemyPool.Populate();
+
+        bool success = EnemyPool.TryPopFirst(out RunEnemy runEnemy);
+        if (success)
+        {
+            Enemy = runEnemy;
+        }
+        else
+        {
+            Enemy = new RunEnemy();
+        }
+        return success;
+    }
 }

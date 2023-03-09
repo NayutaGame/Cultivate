@@ -13,12 +13,14 @@ public class BattlePanel : Panel
 
     public Button BattleButton;
     public Button EscapeButton;
+    public Button NextEnemyButton;
 
     public override void Configure()
     {
         AcquiredWaiGongInventoryView.Configure(RunManager.Instance.AcquiredInventory);
         SkillEditor.Configure();
         BattleButton.onClick.AddListener(Battle);
+        NextEnemyButton.onClick.AddListener(NextEnemy);
     }
 
     public override void Refresh()
@@ -27,8 +29,15 @@ public class BattlePanel : Panel
         SkillEditor.Refresh();
     }
 
-    public void Battle()
+    private void Battle()
     {
         AppManager.Push(new AppStageS());
+    }
+
+    private void NextEnemy()
+    {
+        RunManager.Instance.NextEnemyFromPool();
+        SkillEditor.EnemyHPInputField.text = RunManager.Instance.Enemy.Health.ToString();
+        SkillEditor.Refresh();
     }
 }
