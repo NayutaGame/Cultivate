@@ -2,14 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class StageWaiGong
 {
+    private StageEntity _owner;
     private RunChip _runChip;
-    private Action<StringBuilder, StageEntity, StageWaiGong> _execute;
+    private Action<StringBuilder, StageEntity, StageWaiGong, bool> _execute;
+
+    private int _slotIndex;
+    public int SlotIndex => _slotIndex;
 
     public bool Consumed;
     public int GetManaCost()
@@ -33,9 +38,11 @@ public class StageWaiGong
     public int GetPower(WuXing wuXing) => _powers[wuXing];
     public void SetPower(WuXing wuXing, int value) => _powers[wuXing] = value;
 
-    public StageWaiGong(RunChip runChip)
+    public StageWaiGong(StageEntity owner, RunChip runChip, int[] powers, int slotIndex)
     {
+        _owner = owner;
         _runChip = runChip;
+        _slotIndex = slotIndex;
 
         if (_runChip != null)
         {
@@ -48,10 +55,7 @@ public class StageWaiGong
             StageUsedTimes = 0;
 
             _powers = new int[WuXing.Length];
-            foreach (var wuXing in WuXing.Traversal)
-            {
-                _powers[wuXing] = _runChip.GetPower(wuXing);
-            }
+            WuXing.Traversal.Do(wuXing => _powers[wuXing] = powers[wuXing]);
         }
         else
         {
@@ -62,7 +66,9 @@ public class StageWaiGong
             RunUsedTimes = 0;
             RunEquippedTimes = 0;
             StageUsedTimes = 0;
-            _powers = new int[] { 0, 0, 0, 0, 0 };
+
+            _powers = new int[WuXing.Length];
+            WuXing.Traversal.Do(wuXing => _powers[wuXing] = powers[wuXing]);
         }
     }
 
@@ -72,10 +78,16 @@ public class StageWaiGong
         return _runChip.GetName();
     }
 
-    public void Execute(StringBuilder seq, StageEntity caster)
+    public void Execute(StringBuilder seq, StageEntity caster, bool recursive = true)
     {
-        _execute(seq, caster, this);
+        _execute(seq, caster, this, recursive);
         RunUsedTimes += 1;
         StageUsedTimes += 1;
     }
+
+    public StageWaiGong Next()
+        => _owner._waiGongList[(_slotIndex + 1) % _owner._waiGongList.Length];
+
+    public StageWaiGong Prev()
+        => _owner._waiGongList[(_slotIndex + _owner._waiGongList.Length - 1) % _owner._waiGongList.Length];
 }

@@ -39,24 +39,29 @@ public class ChipPreview : MonoBehaviour
         }
 
         RunChip c;
+        int manaCost;
         if (o is RunChip runChip)
         {
             c = runChip;
+            manaCost = c.GetManaCost();
         }
         else if (o is AcquiredRunChip acquiredRunChip)
         {
             c = acquiredRunChip.Chip;
             PowerText.text = acquiredRunChip.GetPowerString();
+            manaCost = acquiredRunChip.GetManaCost();
         }
         else if (o is HeroChipSlot heroChipSlot)
         {
             c = heroChipSlot.RunChip;
             PowerText.text = heroChipSlot.GetPowerString();
+            manaCost = heroChipSlot.GetManaCost();
         }
         else if (o is EnemyChipSlot enemyChipSlot)
         {
             c = enemyChipSlot.Chip;
             PowerText.text = enemyChipSlot.GetPowerString();
+            manaCost = enemyChipSlot.GetManaCost();
         }
         else
         {
@@ -73,7 +78,6 @@ public class ChipPreview : MonoBehaviour
 
         NameText.text = c.GetName();
         DescriptionText.text = c.GetDescription();
-        int manaCost = c.GetManaCost();
         ManaCostText.text = manaCost == 0 ? "" : manaCost.ToString();
         JingJieText.text = c.GetJingJie().ToString();
     }

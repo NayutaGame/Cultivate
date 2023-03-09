@@ -165,7 +165,7 @@ public abstract class StageEntity
         if (manaCost - manaCount > 0)
         {
             _manaShortage = true;
-            (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute(seq, this, null);
+            (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute(seq, this, null, true);
             EndStep(new EndStepDetails(seq, this, null));
             return;
         }

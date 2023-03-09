@@ -6,13 +6,18 @@ using UnityEngine.EventSystems;
 
 public class EnemyChipView : RunChipView
 {
+    private bool _reveal;
+
     public override void Refresh()
     {
         base.Refresh();
 
         EnemyChipSlot slot = RunManager.Get<EnemyChipSlot>(GetIndexPath());
+        _reveal = slot.IsReveal();
 
-        gameObject.SetActive(true);
+        gameObject.SetActive(_reveal);
+        if (!_reveal) return;
+
         if(slot.Chip == null)
         {
             LevelText.text = "";

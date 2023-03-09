@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
 public class StageHero : StageEntity
@@ -18,7 +19,12 @@ public class StageHero : StageEntity
         _waiGongList = new StageWaiGong[_runHero.HeroSlotInventory.Limit];
         for (int i = 0; i < _waiGongList.Length; i++)
         {
-            _waiGongList[i] = new StageWaiGong(_runHero.HeroSlotInventory[i].AcquiredRunChip.Chip);
+            HeroChipSlot slot = _runHero.HeroSlotInventory[i + _runHero.HeroSlotInventory.Start];
+
+            int[] powers = new int[WuXing.Length];
+            WuXing.Traversal.Do(wuXing => powers[wuXing] = slot.GetPower(wuXing));
+
+            _waiGongList[i] = new StageWaiGong(this, slot.RunChip, powers, i);
         }
 
         _p = 0;

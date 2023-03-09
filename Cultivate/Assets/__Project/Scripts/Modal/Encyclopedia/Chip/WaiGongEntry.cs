@@ -8,16 +8,17 @@ using UnityEngine;
 public class WaiGongEntry : ChipEntry
 {
     private Func<int, int[], int> _manaCost;
+    public int GetManaCost(int level) => GetManaCost(level, new int[] { 0, 0, 0, 0, 0 });
     public int GetManaCost(int level, int[] powers) => _manaCost(level, powers);
 
-    private Action<StringBuilder, StageEntity, StageWaiGong> _execute;
+    private Action<StringBuilder, StageEntity, StageWaiGong, bool> _execute;
 
     public WaiGongEntry(
         string name,
         JingJie jingJie,
         string description,
         int manaCost = 0,
-        Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : this(name, jingJie, description, (level, powers) => manaCost, execute = null)
+        Action<StringBuilder, StageEntity, StageWaiGong, bool> execute = null) : this(name, jingJie, description, (level, powers) => manaCost, execute)
     {}
 
     public WaiGongEntry(
@@ -25,7 +26,7 @@ public class WaiGongEntry : ChipEntry
         JingJie jingJie,
         string description,
         Func<int, int[], int> manaCost,
-        Action<StringBuilder, StageEntity, StageWaiGong> execute = null) : base(name, jingJie, description,
+        Action<StringBuilder, StageEntity, StageWaiGong, bool> execute = null) : base(name, jingJie, description,
         canPlug: (tile, runChip) => tile.AcquiredRunChip == null,
         plug: (tile, runChip) =>
         {
@@ -56,15 +57,12 @@ public class WaiGongEntry : ChipEntry
         _execute = execute ?? DefaultExecute;
     }
 
-    public void Execute(StringBuilder seq, StageEntity caster, StageWaiGong waiGong)
+    public void Execute(StringBuilder seq, StageEntity caster, StageWaiGong waiGong, bool recursive)
     {
         seq.Append($"{caster.GetName()}使用了{Name}");
-        _execute(seq, caster, waiGong);
+        _execute(seq, caster, waiGong, recursive);
         seq.Append($"\n");
     }
 
-    private void DefaultExecute(StringBuilder seq, StageEntity caster, StageWaiGong waiGong)
-    {
-
-    }
+    private void DefaultExecute(StringBuilder seq, StageEntity caster, StageWaiGong waiGong, bool recursive) { }
 }

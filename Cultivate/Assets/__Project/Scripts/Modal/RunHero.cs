@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class RunHero
 {
-    public int Health { get; private set; }
+    public int Health;
     public int Mana { get; private set; }
 
     public HeroSlotInventory HeroSlotInventory { get; private set; }

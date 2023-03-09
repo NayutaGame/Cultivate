@@ -6,11 +6,17 @@ using UnityEngine.UI;
 
 public class HeroChipView : RunChipView
 {
+    private bool _reveal;
+
     public override void Refresh()
     {
         base.Refresh();
 
         HeroChipSlot slot = RunManager.Get<HeroChipSlot>(GetIndexPath());
+        _reveal = slot.IsReveal();
+
+        gameObject.SetActive(_reveal);
+        if (!_reveal) return;
 
         gameObject.SetActive(true);
         if(slot.AcquiredRunChip == null)

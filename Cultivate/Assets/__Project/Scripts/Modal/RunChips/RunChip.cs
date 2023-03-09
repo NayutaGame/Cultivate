@@ -12,7 +12,7 @@ public class RunChip
     public int GetManaCost()
     {
         if (_entry is WaiGongEntry waigongEntry)
-            return waigongEntry.GetManaCost(Level, _powers);
+            return waigongEntry.GetManaCost(Level);
 
         return 0;
     }
@@ -23,16 +23,11 @@ public class RunChip
     public int RunUsedTimes { get; protected set; }
     public int RunEquippedTimes { get; protected set; }
 
-    private int[] _powers;
-    public int GetPower(WuXing wuXing) => _powers[wuXing];
-    public void SetPower(WuXing wuXing, int value) => _powers[wuXing] = value;
-
     public RunChip(string entryName, int level = 0) : this(Encyclopedia.ChipCategory[entryName], level) { }
     public RunChip(ChipEntry entry, int level = 0)
     {
         _entry = entry;
         Level = level;
-        _powers = new int[] { 0, 0, 0, 0, 0 };
     }
 
     private RunChip(RunChip prototype)
@@ -41,7 +36,6 @@ public class RunChip
         Level = prototype.Level;
         RunUsedTimes = prototype.RunUsedTimes;
         RunEquippedTimes = prototype.RunEquippedTimes;
-        _powers = new int[] { 0, 0, 0, 0, 0 };
     }
 
     public static bool CanUpgrade(RunChip c1, RunChip c2)

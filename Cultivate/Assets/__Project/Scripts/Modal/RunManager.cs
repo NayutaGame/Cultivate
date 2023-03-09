@@ -14,6 +14,8 @@ public class RunManager : Singleton<RunManager>
     public static readonly int[] NeiGongLimitFromJingJie = new[] { 0, 1, 2, 3, 4, 4 };
     public static readonly int[] WaiGongLimitFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
 
+    public static readonly int[] WaiGongStartFromJingJie = new[] { 9, 6, 4, 2, 0, 0 };
+
     private ChipPool _chipPool;
     public DanTian DanTian { get; private set; }
     private ProductInventory _productInventory;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using CLLibrary;
 using UnityEngine;
 
 public class HeroChipSlot
@@ -27,6 +28,18 @@ public class HeroChipSlot
         return power;
     }
 
+    public int GetManaCost()
+    {
+        if (AcquiredRunChip?.Chip._entry is WaiGongEntry waigongEntry)
+        {
+            int[] powers = new int[5];
+            WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
+            return waigongEntry.GetManaCost(GetLevel(), powers);
+        }
+
+        return 0;
+    }
+
     public string GetPowerString()
     {
         StringBuilder sb = new();
@@ -37,5 +50,12 @@ public class HeroChipSlot
         }
 
         return sb.ToString();
+    }
+
+    public bool IsReveal()
+    {
+        int start = RunManager.Instance.Hero.HeroSlotInventory.Start;
+        int end = RunManager.Instance.Hero.HeroSlotInventory.Start + RunManager.Instance.Hero.HeroSlotInventory.Limit;
+        return start <= SlotIndex && SlotIndex < end;
     }
 }

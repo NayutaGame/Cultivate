@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class RunEnemy
 {
-    public int Health { get; private set; }
+    public int Health;
 
     private EnemyChipSlot[] _slots;
+    public int Start;
     public int Limit;
 
     public RunEnemy(int health = 40)
@@ -16,11 +17,14 @@ public class RunEnemy
         _slots = new EnemyChipSlot[RunManager.WaiGongLimit];
         for (int i = 0; i < _slots.Length; i++)
             _slots[i] = new EnemyChipSlot(i);
+
+        Start = 0;
         Limit = RunManager.WaiGongLimit;
     }
 
     public void SetJingJie(JingJie jingJie)
     {
+        Start = RunManager.WaiGongStartFromJingJie[jingJie];
         Limit = RunManager.WaiGongLimitFromJingJie[jingJie];
     }
 

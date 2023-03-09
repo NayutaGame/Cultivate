@@ -178,21 +178,6 @@ public class ChipCategory : Category<ChipEntry>
             //             d => StageManager.Instance.HealProcedure(seq, caster, caster, d.Value));
             //     }),
             //
-            new WaiGongEntry("单剑", JingJie.LianQi, "7攻",
-                execute: (seq, caster, waiGong) =>
-                {
-                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 7);
-                }),
-            new WaiGongEntry("双剑", JingJie.LianQi, "4攻x2",
-                execute: (seq, caster, waiGong) =>
-                {
-                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 4, 2);
-                }),
-            new WaiGongEntry("三剑", JingJie.LianQi, "4攻x3",
-                execute: (seq, caster, waiGong) =>
-                {
-                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 4, 3);
-                }),
             // new WaiGongEntry("守剑式", JingJie.LianQi, "护甲+4，【受伤反击】+4",
             //     execute: (seq, caster, waiGong) =>
             //     {
@@ -208,7 +193,7 @@ public class ChipCategory : Category<ChipEntry>
             //     }),
 
             new WaiGongEntry("聚气术", JingJie.LianQi, "灵气+1",
-                execute: (seq, caster, waiGong) =>
+                execute: (seq, caster, waiGong, recursive) =>
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气")),
 
             new WuXingChipEntry("金", "周围金+1", WuXing.Jin),
@@ -235,6 +220,27 @@ public class ChipCategory : Category<ChipEntry>
                 plug: (tile, runChip) => tile.AcquiredRunChip.Chip._entry.Unplug(tile.AcquiredRunChip),
                 canUnplug: acquiredRunChip => false,
                 unplug: acquiredRunChip => { }),
+
+
+
+
+            new WaiGongEntry("水剑", JingJie.LianQi, "3攻, 有【水】时无需灵气",
+                manaCost: (level, powers) => powers[WuXing.Shui] >= 1 ? 0 : 1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 7);
+                }),
+            new WaiGongEntry("火剑", JingJie.LianQi, "5, 有【火】时攻+4",
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), waiGong.GetPower(WuXing.Huo) >= 1 ? 9 : 4);
+                }),
+            new WaiGongEntry("再来一次", JingJie.LianQi, "再使用一次上一张牌",
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    if (!recursive) return;
+                    waiGong.Prev().Execute(seq, caster, false);
+                }),
 
             /**********************************************************************************************************/
             /*********************************************** 大剑哥 ****************************************************/

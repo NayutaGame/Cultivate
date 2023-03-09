@@ -6,6 +6,7 @@ using UnityEngine;
 public class HeroSlotInventory
 {
     private HeroChipSlot[] _slots;
+    public int Start;
     public int Limit;
 
     public HeroChipSlot this[int i]
@@ -21,6 +22,7 @@ public class HeroSlotInventory
 
     public void SetJingJie(JingJie jingJie)
     {
+        Start = RunManager.WaiGongStartFromJingJie[jingJie];
         Limit = RunManager.WaiGongLimitFromJingJie[jingJie];
     }
 
@@ -30,6 +32,7 @@ public class HeroSlotInventory
         for (int i = 0; i < _slots.Length; i++)
             _slots[i] = new HeroChipSlot(i);
 
+        Start = 0;
         Limit = RunManager.WaiGongLimit;
     }
 

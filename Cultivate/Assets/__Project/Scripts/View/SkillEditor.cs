@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SkillEditor : MonoBehaviour
@@ -8,6 +9,9 @@ public class SkillEditor : MonoBehaviour
     public Transform HeroWaiGongTransform;
     public Transform EnemyNeiGongTransform;
     public Transform EnemyWaiGongTransform;
+
+    public TMP_InputField HeroHPInputField;
+    public TMP_InputField EnemyHPInputField;
 
     private RunChipView[] _heroNeiGongViews;
     private RunChipView[] _heroWaiGongViews;
@@ -18,6 +22,11 @@ public class SkillEditor : MonoBehaviour
     {
         ConfigureList(ref _heroWaiGongViews, RunManager.WaiGongLimit, HeroWaiGongTransform, "GetHeroSlot");
         ConfigureList(ref _enemyWaiGongViews, RunManager.WaiGongLimit, EnemyWaiGongTransform, "GetEnemySlot");
+
+        HeroHPInputField.text = RunManager.Instance.Hero.Health.ToString();
+        EnemyHPInputField.text = RunManager.Instance.Enemy.Health.ToString();
+        HeroHPInputField.onEndEdit.AddListener(SetHeroHP);
+        EnemyHPInputField.onEndEdit.AddListener(SetEnemyHP);
     }
 
     public void Refresh()
@@ -35,5 +44,19 @@ public class SkillEditor : MonoBehaviour
             views[i] = view;
             view.Configure(new IndexPath(indexPathString, i));
         }
+    }
+
+    private void SetHeroHP(string hpString)
+    {
+        int hp = int.Parse(hpString);
+        hp = Mathf.Clamp(hp, 1, 9999);
+        RunManager.Instance.Hero.Health = hp;
+    }
+
+    private void SetEnemyHP(string hpString)
+    {
+        int hp = int.Parse(hpString);
+        hp = Mathf.Clamp(hp, 1, 9999);
+        RunManager.Instance.Enemy.Health = hp;
     }
 }
