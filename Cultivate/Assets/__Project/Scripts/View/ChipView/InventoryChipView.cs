@@ -16,7 +16,9 @@ public class InventoryChipView : RunChipView
         gameObject.SetActive(chip != null);
         if (chip == null) return;
 
-        InfoText.text = $"{chip.GetName()}[{chip.Level}]";
+        LevelText.text = $"{chip.Level}";
+        NameText.text = $"{chip.GetName()}";
+        PowerText.text = "";
     }
 
     public override void OnDrop(PointerEventData eventData)
@@ -28,6 +30,6 @@ public class InventoryChipView : RunChipView
         if (GetIndexPath().Equals(drop.GetIndexPath()))
             return;
 
-        if (RunManager.Instance.TryDrag(drop.GetIndexPath(), GetIndexPath())) return;
+        if (RunManager.Instance.InventorySwap(drop.GetIndexPath(), GetIndexPath())) return;
     }
 }

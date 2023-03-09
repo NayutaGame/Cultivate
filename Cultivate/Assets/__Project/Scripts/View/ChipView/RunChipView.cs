@@ -5,27 +5,19 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
-    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler, IIndexPath
+public abstract class RunChipView : ItemView, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
+    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected Image _image;
 
-    public TMP_Text InfoText;
-
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    public TMP_Text LevelText;
+    public TMP_Text NameText;
+    public TMP_Text PowerText;
 
     private void Awake()
     {
         _image = GetComponent<Image>();
     }
-
-    public void Configure(IndexPath indexPath)
-    {
-        _indexPath = indexPath;
-    }
-
-    public virtual void Refresh() { }
 
     public void OnPointerDown(PointerEventData eventData) { }
 
@@ -33,7 +25,7 @@ public abstract class RunChipView : MonoBehaviour, IPointerDownHandler, IBeginDr
     {
         RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        RunCanvas.Instance.GhostChip.Configure(_indexPath);
+        RunCanvas.Instance.GhostChip.Configure(GetIndexPath());
         RunCanvas.Instance.GhostChip.Refresh();
         RunCanvas.Instance.Refresh();
 

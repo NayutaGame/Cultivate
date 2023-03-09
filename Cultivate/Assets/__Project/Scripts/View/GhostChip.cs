@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -25,16 +26,28 @@ public class GhostChip : MonoBehaviour
         if (_indexPath == null)
             return;
 
-        RunChip chip = RunManager.Get<RunChip>(_indexPath);
-        if(chip == null)
+        object o = RunManager.Get<object>(IndexPath);
+        if (o == null)
         {
             InfoText.text = "空";
             return;
         }
+
+        RunChip c;
+        if (o is RunChip runChip)
+        {
+            c = runChip;
+        }
+        else if (o is AcquiredRunChip acquiredRunChip)
+        {
+            c = acquiredRunChip.Chip;
+        }
         else
         {
-            InfoText.text = $"{chip.GetName()}[{chip.Level}]";
+            throw new Exception("undefined c");
         }
+
+        InfoText.text = $"{c.GetName()}";
     }
 
     public void UpdateMousePos(Vector2 pos)

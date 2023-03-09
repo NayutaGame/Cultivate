@@ -16,18 +16,18 @@ public class DanTian
 
     private Tile[] _tiles;
 
-    private int _workerCount;
-    public int WorkerCount
-    {
-        get => _workerCount;
-        set
-        {
-            _workerCount = value;
-            AutoAssignWorkers();
-        }
-    }
-    private List<WorkerLock> _workerLocks;
-    private List<Worker> _workers;
+    // private int _workerCount;
+    // public int WorkerCount
+    // {
+    //     get => _workerCount;
+    //     set
+    //     {
+    //         _workerCount = value;
+    //         AutoAssignWorkers();
+    //     }
+    // }
+    // private List<WorkerLock> _workerLocks;
+    // private List<Worker> _workers;
 
     private Modifier _modifier;
     public Modifier Modifier => _modifier;
@@ -82,8 +82,8 @@ public class DanTian
     public DanTian()
     {
         InitTiles();
-        _workers = new();
-        _workerLocks = new();
+        // _workers = new();
+        // _workerLocks = new();
         _modifier = Modifier.Default;
     }
 
@@ -95,49 +95,49 @@ public class DanTian
             if (IsInside(q, r))
                 this[q, r] = new Tile(q, r);
 
-        Pool<Tile> pool = new Pool<Tile>();
-        pool.Populate(_tiles, t => t != null);
-        pool.Shuffle();
-
-        // distribution
-        // 12 slots, 3 for each ring
-        int slotIndex = 0;
-        for (int distance = 4; distance >= 1; distance--)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                if (!pool.TryPopFirst(toPop => toPop.DistanceToOrigin() == distance, out Tile tile))
-                {
-                    throw new Exception("pool is run out of candidates");
-                }
-
-                tile.SlotIndex = slotIndex;
-                tile.Terrain = new RunTerrain(Encyclopedia.TerrainCategory["空"]);
-                slotIndex++;
-            }
-        }
-
-        // 5 elements, inside ring 2
-        for (int i = 0; i < 5; i++)
-        {
-            if (!pool.TryPopFirst(tile => tile.DistanceToOrigin() <= 2, out Tile tile))
-            {
-                throw new Exception("pool is run out of candidates");
-            }
-
-            tile.Resource = new RunTileResource(Encyclopedia.TileResourceCategory[i]);
-            tile.Terrain = new RunTerrain(Encyclopedia.TerrainCategory["空"]);
-        }
-
-        // 1-yield all the rest
-        while (pool.TryPopFirst(t => true, out Tile tile))
-        {
-            float r = RandomManager.value;
-            tile.Terrain = new RunTerrain(Encyclopedia.TerrainCategory[r < 0.5f ? "修" : "产"]);
-        }
+        // Pool<Tile> pool = new Pool<Tile>();
+        // pool.Populate(_tiles, t => t != null);
+        // pool.Shuffle();
+        //
+        // // distribution
+        // // 12 slots, 3 for each ring
+        // int slotIndex = 0;
+        // for (int distance = 4; distance >= 1; distance--)
+        // {
+        //     for (int i = 0; i < 3; i++)
+        //     {
+        //         if (!pool.TryPopFirst(toPop => toPop.DistanceToOrigin() == distance, out Tile tile))
+        //         {
+        //             throw new Exception("pool is run out of candidates");
+        //         }
+        //
+        //         tile.SlotIndex = slotIndex;
+        //         tile.Terrain = new RunTerrain(Encyclopedia.TerrainCategory["空"]);
+        //         slotIndex++;
+        //     }
+        // }
+        //
+        // // 5 elements, inside ring 2
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     if (!pool.TryPopFirst(tile => tile.DistanceToOrigin() <= 2, out Tile tile))
+        //     {
+        //         throw new Exception("pool is run out of candidates");
+        //     }
+        //
+        //     tile.Resource = new RunTileResource(Encyclopedia.TileResourceCategory[i]);
+        //     tile.Terrain = new RunTerrain(Encyclopedia.TerrainCategory["空"]);
+        // }
+        //
+        // // 1-yield all the rest
+        // while (pool.TryPopFirst(t => true, out Tile tile))
+        // {
+        //     float r = RandomManager.value;
+        //     tile.Terrain = new RunTerrain(Encyclopedia.TerrainCategory[r < 0.5f ? "修" : "产"]);
+        // }
     }
 
-    public IEnumerable<Tile> Adjacents(Tile tile, Func<Tile, bool> pred)
+    public IEnumerable<Tile> Connects(Tile tile, Func<Tile, bool> pred)
     {
         PriorityQueue<Tile, int> frontiers = new();
         _tiles.FilterObj(t => t != null).Do(t =>
@@ -156,7 +156,7 @@ public class DanTian
 
             yield return toSearch;
 
-            foreach (var neighbour in Neighbours(toSearch))
+            foreach (var neighbour in Adjacents(toSearch))
             {
                 if (neighbour.Visited) continue;
                 if (!neighbour.Revealed) continue;
@@ -174,7 +174,7 @@ public class DanTian
         new(-1, 0), new(-1, +1), new(0, +1),
     };
 
-    public IEnumerable<Tile> Neighbours(Tile tile)
+    public IEnumerable<Tile> Adjacents(Tile tile)
     {
         foreach (var dir in DirectionVectors)
         {
@@ -216,84 +216,84 @@ public class DanTian
             }
 
         // set base worker count
-        WorkerCount = WORKER_COUNT[jingJie];
+        // WorkerCount = WORKER_COUNT[jingJie];
     }
 
-    public void AddWorkerLock(Tile tile)
-    {
-        WorkerLock workerLock = new WorkerLock(tile);
-        tile.WorkerLock = workerLock;
-        _workerLocks.Add(workerLock);
-    }
-
-    public void RemoveWorkerLock(Tile tile)
-    {
-        WorkerLock workerLock = tile.WorkerLock;
-        tile.WorkerLock = null;
-        _workerLocks.Remove(workerLock);
-    }
-
-    public void AddWorker(Tile tile)
-    {
-        Worker w = new Worker(tile);
-        _modifier.AddChild(tile.Modifier);
-        tile.Worker = w;
-        _workers.Add(w);
-    }
-
-    public void RemoveAllWorkers()
-    {
-        _workers.Do(w =>
-        {
-            w.Tile.Worker = null;
-            _modifier.RemoveChild(w.Tile.Modifier);
-        });
-        _workers.Clear();
-    }
-
-    public bool TryToggleWorkerLock(Tile tile)
-    {
-        if (tile.WorkerLock != null)
-        {
-            RemoveWorkerLock(tile);
-            AutoAssignWorkers();
-            return true;
-        }
-
-        if (_workerLocks.Count < WorkerCount)
-        {
-            AddWorkerLock(tile);
-            AutoAssignWorkers();
-            return true;
-        }
-
-        // all workers are locked
-        return false;
-    }
-
-    public void AutoAssignWorkers()
-    {
-        RemoveAllWorkers();
-
-        List<Tile> pool = Revealed().ToList();
-        foreach (var l in _workerLocks)
-        {
-            AddWorker(l.Tile);
-            pool.Remove(l.Tile);
-        }
-
-        int xiuWeiFactor = 100; // 10000 100 1
-        int chanNengFactor = 100;
-
-        PriorityQueue<Tile, int> pq = new();
-        pool.Do(t => pq.Enqueue(t, -(t.XiuWei * xiuWeiFactor + t.ChanNeng * chanNengFactor)));
-
-        int assignCount = Mathf.Min(pq.Count, WorkerCount - _workers.Count);
-
-        for (int i = 0; i < assignCount; i++)
-        {
-            Tile t = pq.Dequeue();
-            AddWorker(t);
-        }
-    }
+    // public void AddWorkerLock(Tile tile)
+    // {
+    //     WorkerLock workerLock = new WorkerLock(tile);
+    //     tile.WorkerLock = workerLock;
+    //     _workerLocks.Add(workerLock);
+    // }
+    //
+    // public void RemoveWorkerLock(Tile tile)
+    // {
+    //     WorkerLock workerLock = tile.WorkerLock;
+    //     tile.WorkerLock = null;
+    //     _workerLocks.Remove(workerLock);
+    // }
+    //
+    // public void AddWorker(Tile tile)
+    // {
+    //     Worker w = new Worker(tile);
+    //     _modifier.AddChild(tile.Modifier);
+    //     tile.Worker = w;
+    //     _workers.Add(w);
+    // }
+    //
+    // public void RemoveAllWorkers()
+    // {
+    //     _workers.Do(w =>
+    //     {
+    //         w.Tile.Worker = null;
+    //         _modifier.RemoveChild(w.Tile.Modifier);
+    //     });
+    //     _workers.Clear();
+    // }
+    //
+    // public bool TryToggleWorkerLock(Tile tile)
+    // {
+    //     if (tile.WorkerLock != null)
+    //     {
+    //         RemoveWorkerLock(tile);
+    //         AutoAssignWorkers();
+    //         return true;
+    //     }
+    //
+    //     if (_workerLocks.Count < WorkerCount)
+    //     {
+    //         AddWorkerLock(tile);
+    //         AutoAssignWorkers();
+    //         return true;
+    //     }
+    //
+    //     // all workers are locked
+    //     return false;
+    // }
+    //
+    // public void AutoAssignWorkers()
+    // {
+    //     RemoveAllWorkers();
+    //
+    //     List<Tile> pool = Revealed().ToList();
+    //     foreach (var l in _workerLocks)
+    //     {
+    //         AddWorker(l.Tile);
+    //         pool.Remove(l.Tile);
+    //     }
+    //
+    //     int xiuWeiFactor = 100; // 10000 100 1
+    //     int chanNengFactor = 100;
+    //
+    //     PriorityQueue<Tile, int> pq = new();
+    //     pool.Do(t => pq.Enqueue(t, -(t.XiuWei * xiuWeiFactor + t.ChanNeng * chanNengFactor)));
+    //
+    //     int assignCount = Mathf.Min(pq.Count, WorkerCount - _workers.Count);
+    //
+    //     for (int i = 0; i < assignCount; i++)
+    //     {
+    //         Tile t = pq.Dequeue();
+    //         AddWorker(t);
+    //     }
+    // }
 }

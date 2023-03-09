@@ -7,16 +7,18 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class TileView : MonoBehaviour, IIndexPath, IDropHandler, IPointerClickHandler
+public class TileView : MonoBehaviour, IIndexPath, IDropHandler
 {
     private Image _image;
 
-    public TMP_Text YieldText;
+    // public TMP_Text YieldText;
     public TMP_Text QRText;
     public TMP_Text PrimaryText;
-    public TMP_Text TerrainText;
-    public TMP_Text SlotIndexText;
-    public TMP_Text WorkerLockText;
+    // public TMP_Text TerrainText;
+    // public TMP_Text SlotIndexText;
+    // public TMP_Text WorkerLockText;
+    public TMP_Text PowerText;
+    public TMP_Text LevelText;
 
     private IndexPath _indexPath;
     public IndexPath GetIndexPath() => _indexPath;
@@ -34,43 +36,63 @@ public class TileView : MonoBehaviour, IIndexPath, IDropHandler, IPointerClickHa
         if (!tile.Revealed)
             return;
 
-        StringBuilder sb = new StringBuilder();
-        if (tile.XiuWei > 0)
-            sb.Append($"{tile.XiuWei}修 ");
-        if (tile.ChanNeng > 0)
-            sb.Append($"{tile.ChanNeng}产");
-        YieldText.text = sb.ToString();
-
-        if (tile.Building != null)
+        QRText.text = $"{tile._q}, {tile._r}";
+        if (tile.AcquiredRunChip == null)
         {
-            PrimaryText.text = tile.Building.GetName();
-        }
-        else if (tile.Resource != null)
-        {
-            PrimaryText.text = tile.Resource.GetName();
+            PrimaryText.text = "";
+            LevelText.text = "";
         }
         else
         {
-            PrimaryText.text = "";
+            PrimaryText.text = tile.AcquiredRunChip.GetName();
+            LevelText.text = tile.AcquiredRunChip.Chip.Level.ToString();
         }
 
-        QRText.text = $"{tile._q}, {tile._r}";
-        TerrainText.text = "";
-        SlotIndexText.text = tile.SlotIndex == null ? "" : tile.SlotIndex.Value.ToString();
-        WorkerLockText.text = tile.WorkerLock == null ? "" : "锁";
+        if (tile.AcquiredRunChip == null || !(tile.AcquiredRunChip.Chip._entry is WuXingChipEntry))
+        {
+            PowerText.text = tile.GetPowerString();
+        }
+        else
+        {
+            PowerText.text = "";
+        }
 
-        // color part
-        CharacterPanelState state = RunCanvas.Instance.CharacterPanel._state;
-        if (state is CharacterPanelStateNormal normal)
-        {
-            bool hasWorker = tile.Worker != null;
-            _image.color = !hasWorker ? Color.white : Color.cyan;
-        }
-        else if (state is CharacterPanelStateDragProductCell drag)
-        {
-            bool canDrop = RunManager.Instance.CanDropProduct(drag.Item.GetIndexPath(), _indexPath);
-            _image.color = canDrop ? Color.green : Color.red;
-        }
+        // StringBuilder sb = new StringBuilder();
+        // if (tile.XiuWei > 0)
+        //     sb.Append($"{tile.XiuWei}修 ");
+        // if (tile.ChanNeng > 0)
+        //     sb.Append($"{tile.ChanNeng}产");
+        // YieldText.text = sb.ToString();
+        //
+        // if (tile.Building != null)
+        // {
+        //     PrimaryText.text = tile.Building.GetName();
+        // }
+        // else if (tile.Resource != null)
+        // {
+        //     PrimaryText.text = tile.Resource.GetName();
+        // }
+        // else
+        // {
+        //     PrimaryText.text = "";
+        // }
+        //
+        // TerrainText.text = "";
+        // SlotIndexText.text = tile.SlotIndex == null ? "" : tile.SlotIndex.Value.ToString();
+        // WorkerLockText.text = tile.WorkerLock == null ? "" : "锁";
+        //
+        // // color part
+        // CharacterPanelState state = RunCanvas.Instance.CharacterPanel._state;
+        // if (state is CharacterPanelStateNormal normal)
+        // {
+        //     bool hasWorker = tile.Worker != null;
+        //     _image.color = !hasWorker ? Color.white : Color.cyan;
+        // }
+        // else if (state is CharacterPanelStateDragProductCell drag)
+        // {
+        //     bool canDrop = RunManager.Instance.CanDropProduct(drag.Item.GetIndexPath(), _indexPath);
+        //     _image.color = canDrop ? Color.green : Color.red;
+        // }
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -79,15 +101,14 @@ public class TileView : MonoBehaviour, IIndexPath, IDropHandler, IPointerClickHa
         IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
         if (drop == null) return;
 
-        // if (RunManager.Instance.TryUpgradeDanTian(drop.IndexPath, _indexPath)) return;
-        // if (RunManager.Instance.TryApply(drop.IndexPath, _indexPath)) return;
-        // if (RunManager.Instance.TryXiuLian(drop.IndexPath, _indexPath)) return;
-        if (RunManager.Instance.TryDropProduct(drop.GetIndexPath(), _indexPath)) return;
+        if (RunManager.Instance.TryUpgradeDanTian(drop.GetIndexPath(), _indexPath)) return;
+        if (RunManager.Instance.TryPlug(drop.GetIndexPath(), _indexPath)) return;
+        // if (RunManager.Instance.TryDropProduct(drop.GetIndexPath(), _indexPath)) return;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        RunManager.Instance.TryToggleWorkerLock(eventData.pointerClick.GetComponent<IIndexPath>().GetIndexPath());
-        RunCanvas.Instance.Refresh();
-    }
+    // public void OnPointerClick(PointerEventData eventData)
+    // {
+    //     RunManager.Instance.TryToggleWorkerLock(eventData.pointerClick.GetComponent<IIndexPath>().GetIndexPath());
+    //     RunCanvas.Instance.Refresh();
+    // }
 }

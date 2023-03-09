@@ -15,12 +15,17 @@ public class EnemyChipView : RunChipView
         gameObject.SetActive(true);
         if(chip == null)
         {
-            InfoText.text = "空";
+            LevelText.text = "";
+            NameText.text = "空";
+            PowerText.text = "";
             return;
         }
         else
         {
-            InfoText.text = $"{chip.GetName()}[{chip.Level}]";
+            LevelText.text = $"{chip.Level}";
+            NameText.text = $"{chip.GetName()}";
+            // PowerText.text = $"{chip.GetPowerString()}";
+            PowerText.text = $"";
         }
     }
 

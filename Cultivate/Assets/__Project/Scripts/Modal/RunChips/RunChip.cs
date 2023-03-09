@@ -7,27 +7,12 @@ public class RunChip
     public ChipEntry _entry;
 
     public string GetName() => _entry.Name;
-    public string GetDescription()
-    {
-        if (_entry is NeiGongEntry neigongEntry)
-            return neigongEntry.Description;
-
-        if (_entry is WaiGongEntry waigongEntry)
-            return waigongEntry.GetDescription(Level);
-
-        if (_entry is XiulianEntry xiuLianEntry)
-            return xiuLianEntry.Description;
-
-        return null;
-    }
+    public string GetDescription() => _entry.Description;
 
     public int GetManaCost()
     {
-        if (_entry is NeiGongEntry neigongEntry)
-            return 0;
-
         if (_entry is WaiGongEntry waigongEntry)
-            return waigongEntry.GetManaCost(Level);
+            return waigongEntry.GetManaCost(Level, _powers);
 
         return 0;
     }
@@ -70,11 +55,6 @@ public class RunChip
     {
         Level += 1;
     }
-
-    public bool IsXinFa => _entry.IsXinFa;
-    public bool IsNeiGong => _entry.IsNeiGong;
-    public bool IsWaiGong => _entry.IsWaiGong;
-    public bool IsXiuLian => _entry.IsXiuLian;
 
     public RunChip Clone()
     {

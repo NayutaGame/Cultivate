@@ -18,7 +18,7 @@ public class StageHero : StageEntity
         _waiGongList = new StageWaiGong[_runHero.WaiGongLimit];
         for (int i = 0; i < _waiGongList.Length; i++)
         {
-            _waiGongList[i] = new StageWaiGong(_runHero.GetWaiGong(i));
+            _waiGongList[i] = new StageWaiGong(_runHero.GetWaiGong(i).RunChip);
         }
 
         _p = 0;

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class BattlePanel : Panel
 {
     // status
-    [FormerlySerializedAs("AcquiredPoolView")] public ChipInventoryView chipInventoryView;
+    public AcquiredWaiGongInventoryView AcquiredWaiGongInventoryView;
     public SkillEditor SkillEditor;
 
     public Button BattleButton;
@@ -16,14 +16,14 @@ public class BattlePanel : Panel
 
     public override void Configure()
     {
-        chipInventoryView.Configure();
+        AcquiredWaiGongInventoryView.Configure(RunManager.Instance.AcquiredWaiGongInventory);
         SkillEditor.Configure();
         BattleButton.onClick.AddListener(Battle);
     }
 
     public override void Refresh()
     {
-        chipInventoryView.Refresh();
+        AcquiredWaiGongInventoryView.Refresh();
         SkillEditor.Refresh();
     }
 

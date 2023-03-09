@@ -10,17 +10,21 @@ public class HeroChipView : RunChipView
     {
         base.Refresh();
 
-        RunChip chip = RunManager.Get<RunChip>(GetIndexPath());
+        HeroRunChip heroRunChip = RunManager.Get<HeroRunChip>(GetIndexPath());
 
         gameObject.SetActive(true);
-        if(chip == null)
+        if(heroRunChip == null)
         {
-            InfoText.text = "空";
+            LevelText.text = "";
+            NameText.text = "空";
+            PowerText.text = "";
             return;
         }
         else
         {
-            InfoText.text = $"{chip.GetName()}[{chip.Level}]";
+            LevelText.text = $"{heroRunChip.GetLevel()}";
+            NameText.text = $"{heroRunChip.GetName()}";
+            PowerText.text = $"{heroRunChip.GetPowerString()}";
         }
     }
 

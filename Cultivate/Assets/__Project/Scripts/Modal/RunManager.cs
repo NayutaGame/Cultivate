@@ -15,13 +15,13 @@ public class RunManager : Singleton<RunManager>
     public static readonly int[] WaiGongLimitFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
 
     private ChipPool _chipPool;
-    private DanTian _danTian;
+    public DanTian DanTian { get; private set; }
     private ProductInventory _productInventory;
-    private ChipInventory _chipInventory;
-    private RunHero _hero;
-    public RunHero Hero => _hero;
-    private RunEnemy _enemy;
-    public RunEnemy Enemy => _enemy;
+    public ChipInventory ChipInventory { get; private set; }
+    public AcquiredWaiGongInventory AcquiredWaiGongInventory { get; private set; }
+    public AcquiredSlotInventory AcquiredSlotInventory { get; private set; }
+    public RunHero Hero { get; private set; }
+    public RunEnemy Enemy { get; private set; }
 
     private JingJie _jingJie;
 
@@ -31,9 +31,9 @@ public class RunManager : Singleton<RunManager>
         set
         {
             _jingJie = value;
-            _hero.SetJingJie(_jingJie);
-            _danTian.SetJingJie(_jingJie);
-            _enemy.SetJingJie(_jingJie);
+            Hero.SetJingJie(_jingJie);
+            DanTian.SetJingJie(_jingJie);
+            Enemy.SetJingJie(_jingJie);
         }
     }
 
@@ -66,20 +66,24 @@ public class RunManager : Singleton<RunManager>
         base.DidAwake();
 
         _chipPool = new ChipPool();
-        _danTian = new DanTian();
+        DanTian = new DanTian();
         _productInventory = new ProductInventory();
-        _chipInventory = new ChipInventory();
+        ChipInventory = new ChipInventory();
+        AcquiredWaiGongInventory = new();
+        AcquiredSlotInventory = new();
 
-        _hero = new RunHero();
-        _enemy = new RunEnemy();
+        Hero = new RunHero();
+        Enemy = new RunEnemy();
 
         _accessors = new()
         {
-            { "GetTileXY",            GetTileXY },
-            { "TryGetProduct",        TryGetProduct },
-            { "TryGetRunChip",        TryGetRunChip },
-            { "GetHeroWaiGong",       GetHeroWaiGong },
-            { "GetEnemyWaiGong",      GetEnemyWaiGong },
+            { "GetTileXY",             GetTileXY },
+            // { "TryGetProduct",         TryGetProduct },
+            { "TryGetRunChip",         TryGetRunChip },
+            { "TryGetAcquiredWaiGong", TryGetAcquiredWaiGong },
+            { "GetAcquiredSlot",       GetAcquiredSlot },
+            { "GetHeroWaiGong",        GetHeroWaiGong },
+            { "GetEnemyWaiGong",       GetEnemyWaiGong },
         };
 
         _mingYuan = 100;
@@ -88,166 +92,240 @@ public class RunManager : Singleton<RunManager>
         _chanNeng = 0;
 
         Modifier = Modifier.Default;
-        Modifier.AddChild(_danTian.Modifier);
+        Modifier.AddChild(DanTian.Modifier);
 
         JingJie = JingJie.LianQi;
     }
 
     public static T Get<T>(IndexPath indexPath) => (T) Instance._accessors[indexPath._str](indexPath);
-    private object GetTileXY(IndexPath indexPath) => _danTian.GetTileXY(indexPath._ints[0], indexPath._ints[1]);
-    private object TryGetProduct(IndexPath indexPath) => _productInventory[indexPath._ints[0]];
-    private object TryGetRunChip(IndexPath indexPath) => _chipInventory.TryGetRunChip(indexPath._ints[0]);
-    private object GetHeroWaiGong(IndexPath indexPath) => _hero.GetWaiGong(indexPath._ints[0]);
-    private object GetEnemyWaiGong(IndexPath indexPath) => _enemy.GetWaiGong(indexPath._ints[0]);
+    private object GetTileXY(IndexPath indexPath) => DanTian.GetTileXY(indexPath._ints[0], indexPath._ints[1]);
+    // private object TryGetProduct(IndexPath indexPath) => _productInventory[indexPath._ints[0]];
+    private object TryGetRunChip(IndexPath indexPath) => ChipInventory.TryGet(indexPath._ints[0]);
+    private object TryGetAcquiredWaiGong(IndexPath indexPath) => AcquiredWaiGongInventory.TryGet(indexPath._ints[0]);
+    private object GetAcquiredSlot(IndexPath indexPath) => AcquiredSlotInventory[indexPath._ints[0]];
+    private object GetHeroWaiGong(IndexPath indexPath) => Hero.GetWaiGong(indexPath._ints[0]);
+    private object GetEnemyWaiGong(IndexPath indexPath) => Enemy.GetWaiGong(indexPath._ints[0]);
 
-    public int GetRunChipCount() => _chipInventory.GetRunChipCount();
+    public int GetRunChipCount() => ChipInventory.Count;
     public int GetProductCount() => _productInventory.Count;
-    public string GetStatusString() => $"命元：{_mingYuan}\n气血：{_hero.Health}\n初始灵力：{_hero.Mana}";
+    public string GetStatusString() => $"命元：{_mingYuan}\n气血：{Hero.Health}\n初始灵力：{Hero.Mana}";
 
-    public bool TryDropProduct(IndexPath from, IndexPath to)
+    // public bool TryDropProduct(IndexPath from, IndexPath to)
+    // {
+    //     if (!CanDropProduct(from, to))
+    //         return false;
+    //     DropProduct(from, to);
+    //     return true;
+    // }
+    //
+    // public bool CanDropProduct(IndexPath from, IndexPath to)
+    // {
+    //     Product product = Get<Product>(from);
+    //     Tile tile = Get<Tile>(to);
+    //     if (product == null || tile == null) return false;
+    //
+    //     return _productInventory.CanDrop(product, tile);
+    // }
+    //
+    // public void DropProduct(IndexPath from, IndexPath to)
+    // {
+    //     Product product = Get<Product>(from);
+    //     Tile tile = Get<Tile>(to);
+    //
+    //     _chanNeng -= product.GetCost();
+    //     _productInventory.Drop(product, tile);
+    //     // _danTian.AutoAssignWorkers();
+    // }
+    //
+    // public bool TryClickProduct(IndexPath clicked)
+    // {
+    //     if (!CanClickProduct(clicked))
+    //         return false;
+    //     ClickProduct(clicked);
+    //     return true;
+    // }
+    //
+    // public bool CanClickProduct(IndexPath clicked)
+    // {
+    //     Product product = Get<Product>(clicked);
+    //     if (product == null) return false;
+    //
+    //     return _productInventory.CanClick(product);
+    // }
+    //
+    // public void ClickProduct(IndexPath clicked)
+    // {
+    //     Product product = Get<Product>(clicked);
+    //
+    //     _chanNeng -= product.GetCost();
+    //     _productInventory.Click(product);
+    //     // _danTian.AutoAssignWorkers();
+    // }
+    //
+    // public bool CanAfford(Product product)
+    // {
+    //     if (product.GetCost() > ChanNeng) return false;
+    //
+    //     if (product.IsDrag())
+    //         return null != _danTian.Revealed().FirstObj(product.CanDrop);
+    //
+    //     if (product.IsClick())
+    //         return product.CanClick();
+    //
+    //     return false;
+    // }
+    //
+    // public bool TryToggleWorkerLock(IndexPath pos)
+    // {
+    //     Tile tile = Get<Tile>(pos);
+    //     return _danTian.TryToggleWorkerLock(tile);
+    // }
+    //
+    // public bool TryDrag(IndexPath from, IndexPath to)
+    // {
+    //     bool fromInventory = from._str == "TryGetRunChip";
+    //     bool toInventory = to._str == "TryGetRunChip";
+    //     bool fromHero = from._str == "GetHeroWaiGong";
+    //     bool toHero = to._str == "GetHeroWaiGong";
+    //
+    //     if (fromInventory && toInventory)
+    //     {
+    //         _chipInventory.Swap(from._ints[0], to._ints[0]);
+    //         return true;
+    //     }
+    //     else if (fromHero && toHero)
+    //     {
+    //         _hero.Swap(from._ints[0], to._ints[0]);
+    //         return true;
+    //     }
+    //     else if (fromInventory && toHero)
+    //     {
+    //         RunChip toEquip = _chipInventory[from._ints[0]];
+    //         RunChip toUnequip = _hero.GetWaiGong(to._ints[0]);
+    //
+    //         if (toUnequip == null)
+    //         {
+    //             _hero.SetWaiGong(to._ints[0], toEquip);
+    //             _chipInventory.RemoveAt(from._ints[0]);
+    //         }
+    //         else
+    //         {
+    //             _hero.SetWaiGong(to._ints[0], toEquip);
+    //             _chipInventory[from._ints[0]] = toUnequip;
+    //         }
+    //
+    //         return true;
+    //     }
+    //     else if (fromHero && toInventory)
+    //     {
+    //         RunChip toEquip = _chipInventory[to._ints[0]];
+    //         RunChip toUnequip = _hero.GetWaiGong(from._ints[0]);
+    //
+    //         if (toUnequip == null)
+    //             return false;
+    //
+    //         _hero.SetWaiGong(from._ints[0], toEquip);
+    //         _chipInventory[to._ints[0]] = toUnequip;
+    //         return true;
+    //     }
+    //
+    //     return false;
+    // }
+
+    public bool InventorySwap(IndexPath from, IndexPath to)
     {
-        if (!CanDropProduct(from, to))
-            return false;
-        DropProduct(from, to);
+        ChipInventory.Swap(from._ints[0], to._ints[0]);
         return true;
     }
 
-    public bool CanDropProduct(IndexPath from, IndexPath to)
+    public bool InventoryMoveToEnd(IndexPath indexPath)
     {
-        Product product = Get<Product>(from);
-        Tile tile = Get<Tile>(to);
-        if (product == null || tile == null) return false;
-
-        return _productInventory.CanDrop(product, tile);
-    }
-
-    public void DropProduct(IndexPath from, IndexPath to)
-    {
-        Product product = Get<Product>(from);
-        Tile tile = Get<Tile>(to);
-
-        _chanNeng -= product.GetCost();
-        _productInventory.Drop(product, tile);
-        _danTian.AutoAssignWorkers();
-    }
-
-    public bool TryClickProduct(IndexPath clicked)
-    {
-        if (!CanClickProduct(clicked))
-            return false;
-        ClickProduct(clicked);
+        ChipInventory.MoveToEnd(indexPath._ints[0]);
         return true;
-    }
-
-    public bool CanClickProduct(IndexPath clicked)
-    {
-        Product product = Get<Product>(clicked);
-        if (product == null) return false;
-
-        return _productInventory.CanClick(product);
-    }
-
-    public void ClickProduct(IndexPath clicked)
-    {
-        Product product = Get<Product>(clicked);
-
-        _chanNeng -= product.GetCost();
-        _productInventory.Click(product);
-        _danTian.AutoAssignWorkers();
-    }
-
-    public bool CanAfford(Product product)
-    {
-        if (product.GetCost() > ChanNeng) return false;
-
-        if (product.IsDrag())
-            return null != _danTian.Revealed().FirstObj(product.CanDrop);
-
-        if (product.IsClick())
-            return product.CanClick();
-
-        return false;
-    }
-
-    public bool TryToggleWorkerLock(IndexPath pos)
-    {
-        Tile tile = Get<Tile>(pos);
-        return _danTian.TryToggleWorkerLock(tile);
     }
 
     public bool TryDrag(IndexPath from, IndexPath to)
     {
-        bool fromInventory = from._str == "TryGetRunChip";
-        bool toInventory = to._str == "TryGetRunChip";
+        bool fromAcquired = from._str == "TryGetAcquiredWaiGong";
+        bool toAcquired = to._str == "TryGetAcquiredWaiGong";
         bool fromHero = from._str == "GetHeroWaiGong";
         bool toHero = to._str == "GetHeroWaiGong";
 
-        if (fromInventory && toInventory)
+        if (fromAcquired && toAcquired)
         {
-            _chipInventory.Swap(from._ints[0], to._ints[0]);
+            AcquiredWaiGongInventory.Swap(from._ints[0], to._ints[0]);
             return true;
         }
         else if (fromHero && toHero)
         {
-            _hero.Swap(from._ints[0], to._ints[0]);
+            Hero.Swap(from._ints[0], to._ints[0]);
             return true;
         }
-        else if (fromInventory && toHero)
+        else if (fromAcquired && toHero)
         {
-            RunChip toEquip = _chipInventory[from._ints[0]];
-            RunChip toUnequip = _hero.GetWaiGong(to._ints[0]);
+            AcquiredRunChip acquiredRunChip = AcquiredWaiGongInventory.TryGet(from._ints[0]);
+            HeroRunChip toEquip = new HeroRunChip(to._ints[0], acquiredRunChip);
+            HeroRunChip toUnequip = Hero.GetWaiGong(to._ints[0]);
 
             if (toUnequip == null)
             {
-                _hero.SetWaiGong(to._ints[0], toEquip);
-                _chipInventory.RemoveAt(from._ints[0]);
+                Hero.SetWaiGong(to._ints[0], toEquip);
+                AcquiredWaiGongInventory.RemoveAt(from._ints[0]);
             }
             else
             {
-                _hero.SetWaiGong(to._ints[0], toEquip);
-                _chipInventory[from._ints[0]] = toUnequip;
+                Hero.SetWaiGong(to._ints[0], toEquip);
+                AcquiredWaiGongInventory[from._ints[0]] = toUnequip.AcquiredRunChip;
             }
 
             return true;
         }
-        else if (fromHero && toInventory)
+        else if (fromHero && toAcquired)
         {
-            RunChip toEquip = _chipInventory[to._ints[0]];
-            RunChip toUnequip = _hero.GetWaiGong(from._ints[0]);
+            AcquiredRunChip acquiredRunChip = AcquiredWaiGongInventory.TryGet(to._ints[0]);
+            HeroRunChip toEquip = new HeroRunChip(from._ints[0], acquiredRunChip);
+            HeroRunChip toUnequip = Hero.GetWaiGong(from._ints[0]);
 
             if (toUnequip == null)
                 return false;
 
-            _hero.SetWaiGong(from._ints[0], toEquip);
-            _chipInventory[to._ints[0]] = toUnequip;
+            Hero.SetWaiGong(from._ints[0], toEquip);
+            AcquiredWaiGongInventory[to._ints[0]] = toUnequip.AcquiredRunChip;
             return true;
         }
 
         return false;
     }
 
-    public bool Unequip(IndexPath from)
+    public bool AcquiredWaiGongMoveToEnd(IndexPath indexPath)
     {
-        RunChip toUnequip = _hero.GetWaiGong(from._ints[0]);
-        if (toUnequip == null)
-            return false;
-
-        _hero.SetWaiGong(from._ints[0], null);
-        _chipInventory.Add(toUnequip);
+        AcquiredWaiGongInventory.MoveToEnd(indexPath._ints[0]);
         return true;
     }
 
     public bool TryWrite(IndexPath from, IndexPath to)
     {
-        RunChip toWrite = Get<RunChip>(from);
-        _enemy.SetWaiGong(to._ints[0], toWrite?.Clone());
+        AcquiredRunChip toWrite = Get<AcquiredRunChip>(from);
+        Enemy.SetWaiGong(to._ints[0], toWrite?.Chip.Clone());
+        return true;
+    }
+
+    public bool Unequip(IndexPath indexPath)
+    {
+        HeroRunChip toUnequip = Hero.GetWaiGong(indexPath._ints[0]);
+
+        if (toUnequip == null)
+            return false;
+
+        Hero.SetWaiGong(indexPath._ints[0], null);
+        AcquiredWaiGongInventory.Add(toUnequip.AcquiredRunChip);
         return true;
     }
 
     public void DrawChip()
     {
         if(_chipPool.TryPopFirst(_jingJie, out ChipEntry chipEntry))
-            _chipInventory.Add(new RunChip(chipEntry));
+            ChipInventory.Add(new RunChip(chipEntry));
     }
 
     public void AddTurn()
@@ -269,12 +347,17 @@ public class RunManager : Singleton<RunManager>
 
     public void RefreshChip()
     {
-        _chipInventory.RefreshChip();
+        ChipInventory.RefreshChip();
     }
 
     public void UpgradeFirstChip()
     {
-        _chipInventory.UpgradeFirstChip();
+        ChipInventory.UpgradeFirstChip();
+    }
+
+    public void ClearChip()
+    {
+        ChipInventory.Clear();
     }
 
 
@@ -298,27 +381,37 @@ public class RunManager : Singleton<RunManager>
 
 
 
-    // public bool TryUpgradeDanTian(IndexPath from, IndexPath to)
-    // {
-    //     RunChip runChip = (RunChip) Instance.TryGetRunChip(from);
-    //     Tile tile = (Tile) Instance.GetTileXY(to);
-    //
-    //     if (!Instance.CanUpgradeDanTian(runChip, tile)) return false;
-    //     Instance.UpgradeDanTian(runChip, tile);
-    //     return true;
-    // }
-    //
-    // public bool CanUpgradeDanTian(RunChip runChip, Tile tile)
-    // {
-    //     return RunChip.CanUpgrade(runChip, tile.Chip);
-    // }
-    //
-    // public void UpgradeDanTian(RunChip runChip, Tile tile)
-    // {
-    //     tile.Chip.Upgrade();
-    //     _chipInventory.Remove(runChip);
-    // }
-    //
+    public bool TryUpgradeDanTian(IndexPath from, IndexPath to)
+    {
+        RunChip runChip = Get<RunChip>(from);
+        Tile tile = Get<Tile>(to);
+
+        if (!CanUpgradeDanTian(runChip, tile)) return false;
+        UpgradeDanTian(runChip, tile);
+        return true;
+    }
+
+    public bool CanUpgradeDanTian(RunChip runChip, Tile tile)
+    {
+        return RunChip.CanUpgrade(runChip, tile.AcquiredRunChip?.Chip);
+    }
+
+    public void UpgradeDanTian(RunChip runChip, Tile tile)
+    {
+        tile.AcquiredRunChip.Upgrade();
+        ChipInventory.Remove(runChip);
+    }
+
+    public bool TryPlug(IndexPath from, IndexPath to)
+    {
+        RunChip runChip = Get<RunChip>(from);
+        Tile tile = Get<Tile>(to);
+
+        if (!runChip._entry.CanPlug(tile, runChip)) return false;
+        runChip._entry.Plug(tile, runChip);
+        return true;
+    }
+
     // public bool TryUpgradeInventory(IndexPath from, IndexPath to)
     // {
     //     int fromIndex = from._ints[0];

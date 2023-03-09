@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using CLLibrary;
 using UnityEngine;
 
 public class RunHero
@@ -7,10 +9,12 @@ public class RunHero
     public int Health { get; private set; }
     public int Mana { get; private set; }
 
-    private RunChip[] _waiGongList;
+    private HeroRunChip[] _waiGongList;
     public int WaiGongLimit;
-    public RunChip GetWaiGong(int i) => _waiGongList[i];
-    public RunChip SetWaiGong(int i, RunChip runChip) => _waiGongList[i] = runChip;
+    public HeroRunChip GetWaiGong(int i) => _waiGongList[i];
+    public HeroRunChip SetWaiGong(int i, HeroRunChip runChip) => _waiGongList[i] = runChip;
+
+    public int? FindWaiGongIdx(AcquiredRunChip acquiredRunChip) => _waiGongList.FirstIdx(item => item.AcquiredRunChip == acquiredRunChip);
 
     public void SetJingJie(JingJie jingJie)
     {
@@ -22,7 +26,7 @@ public class RunHero
         Health = health;
         Mana = mana;
 
-        _waiGongList = new RunChip[RunManager.WaiGongLimit];
+        _waiGongList = new HeroRunChip[RunManager.WaiGongLimit];
 
         WaiGongLimit = RunManager.WaiGongLimit;
     }

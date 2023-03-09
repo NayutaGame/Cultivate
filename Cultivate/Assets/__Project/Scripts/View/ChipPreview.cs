@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,10 +9,11 @@ public class ChipPreview : MonoBehaviour
     private IndexPath _indexPath;
     public IndexPath IndexPath => _indexPath;
 
-    public TMP_Text NameText;
-    public TMP_Text DescriptionText;
+    public TMP_Text PowerText;
     public TMP_Text ManaCostText;
     public TMP_Text JingJieText;
+    public TMP_Text NameText;
+    public TMP_Text DescriptionText;
 
     private RectTransform _rectTransform;
 
@@ -29,11 +31,31 @@ public class ChipPreview : MonoBehaviour
             return;
         }
 
-        RunChip c = RunManager.Get<RunChip>(IndexPath);
-        if (c == null)
+        object o = RunManager.Get<object>(IndexPath);
+        if (o == null)
         {
             gameObject.SetActive(false);
             return;
+        }
+
+        RunChip c;
+        if (o is RunChip runChip)
+        {
+            c = runChip;
+        }
+        else if (o is AcquiredRunChip acquiredRunChip)
+        {
+            c = acquiredRunChip.Chip;
+            PowerText.text = acquiredRunChip.GetPowerString();
+        }
+        else if (o is HeroRunChip heroRunChip)
+        {
+            c = heroRunChip.RunChip;
+            PowerText.text = heroRunChip.GetPowerString();
+        }
+        else
+        {
+            throw new Exception("undefined c");
         }
 
         gameObject.SetActive(true);

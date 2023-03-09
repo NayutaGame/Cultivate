@@ -1,5 +1,6 @@
 
 using CLLibrary;
+using UnityEngine.Serialization;
 
 public class CharacterPanel : Panel
 {
@@ -7,15 +8,15 @@ public class CharacterPanel : Panel
 
     public StatusView StatusView;
     public DanTianView DanTianView;
-    // public InventoryView InventoryView;
-    public InspectorView InspectorView;
+    public ChipInventoryView ChipInventoryView;
+    // public InspectorView InspectorView;
 
     public override void Configure()
     {
         StatusView.Configure();
         DanTianView.Configure();
-        // InventoryView.Configure();
-        InspectorView.Configure();
+        ChipInventoryView.Configure(RunManager.Instance.ChipInventory);
+        // InspectorView.Configure();
 
         _state = new CharacterPanelStateNormal();
     }
@@ -24,7 +25,7 @@ public class CharacterPanel : Panel
     {
         StatusView.Refresh();
         DanTianView.Refresh();
-        // InventoryView.Refresh();
-        InspectorView.Refresh();
+        ChipInventoryView.Refresh();
+        // InspectorView.Refresh();
     }
 }

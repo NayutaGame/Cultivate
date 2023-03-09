@@ -5,44 +5,20 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ChipInventoryView : MonoBehaviour, IDropHandler
+public class ChipInventoryView : InventoryView<InventoryChipView>, IDropHandler
 {
-    public Transform Container;
-    public GameObject Prefab;
-
-    private List<RunChipView> _views;
-
     public Button RefreshChipButton;
-    public Button UpgradeFirstChipButton;
+    public Button ClearChipButton;
+    public Button DrawChipButton;
+    public Button UpgradeFirstButton;
 
-    public void Configure()
+    public override void Configure(IInventory inventory)
     {
-        _views = new List<RunChipView>();
+        base.Configure(inventory);
         RefreshChipButton.onClick.AddListener(RefreshChip);
-        UpgradeFirstChipButton.onClick.AddListener(UpgradeFirstChip);
-    }
-
-    public void Refresh()
-    {
-        PopulateList();
-        foreach(var view in _views) view.Refresh();
-    }
-
-    private void PopulateList()
-    {
-        int current = Container.childCount;
-        int need = RunManager.Instance.GetRunChipCount();
-
-        (need, _) = Numeric.Negate(need, current);
-        if (need <= 0) return;
-
-        int length = Container.childCount;
-        for (int i = length; i < need + length; i++)
-        {
-            RunChipView v = Instantiate(Prefab, Container).GetComponent<RunChipView>();
-            _views.Add(v);
-            v.Configure(new IndexPath("TryGetRunChip", i));
-        }
+        ClearChipButton.onClick.AddListener(ClearChip);
+        DrawChipButton.onClick.AddListener(DrawChip);
+        UpgradeFirstButton.onClick.AddListener(UpgradeFirst);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -54,20 +30,31 @@ public class ChipInventoryView : MonoBehaviour, IDropHandler
         if (drop == null)
             return;
 
-        if (drop.GetIndexPath()._str == "GetHeroWaiGong")
+        if (drop.GetIndexPath()._str == "TryGetRunChip")
         {
-            RunManager.Instance.Unequip(drop.GetIndexPath());
-            return;
+            if (RunManager.Instance.InventoryMoveToEnd(drop.GetIndexPath())) return;
         }
     }
 
-    public void RefreshChip()
+    private void RefreshChip()
     {
         RunManager.Instance.RefreshChip();
         Refresh();
     }
 
-    public void UpgradeFirstChip()
+    private void ClearChip()
+    {
+        RunManager.Instance.ClearChip();
+        Refresh();
+    }
+
+    private void DrawChip()
+    {
+        RunManager.Instance.DrawChip();
+        Refresh();
+    }
+
+    private void UpgradeFirst()
     {
         RunManager.Instance.UpgradeFirstChip();
         Refresh();
