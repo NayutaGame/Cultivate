@@ -40,7 +40,7 @@ public class TechInventory : IInventory
             null == locked.Prerequisites.FirstObj(req =>
                 null == _doneList.FirstObj(done => done.Entry == req))).ToList();
 
-        newlyMetList.Do(SetLockToCurrent);
+        newlyMetList.Do(SetLockedToCurrent);
     }
 
     public void SetDone(RunTech toDone)
@@ -63,7 +63,7 @@ public class TechInventory : IInventory
         RefreshStates();
     }
 
-    private void SetLockToCurrent(RunTech locked)
+    private void SetLockedToCurrent(RunTech locked)
     {
         _lockedList.Remove(locked);
         _currentList.Add(locked);

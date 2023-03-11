@@ -541,6 +541,7 @@ GameObject:
   - component: {fileID: 2285693502830612294}
   - component: {fileID: 4809699537994818503}
   - component: {fileID: 5710774719140248844}
+  - component: {fileID: 3343730730369646214}
   m_Layer: 5
   m_Name: TechView
   m_TagString: Untagged
@@ -628,6 +629,21 @@ MonoBehaviour:
   SetDoneButton: {fileID: 5493251439649012687}
   CostText: {fileID: 6754717017152984024}
   DiscountText: {fileID: 5726356986772722787}
+--- !u!114 &3343730730369646214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6020024773167110056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &6573919356381671182
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,5 +8,5 @@ public class CanvasManager : Singleton<CanvasManager>
     public RunCanvas RunCanvas;
     public StageCanvas StageCanvas;
 
-    public RectTransform GhostHolder;
+    // public RectTransform GhostHolder;
 }

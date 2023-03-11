@@ -571,7 +571,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunCanvas: {fileID: 6570500142930501897}
   StageCanvas: {fileID: 1688634940}
-  GhostHolder: {fileID: 0}
 --- !u!1 &882905661
 GameObject:
   m_ObjectHideFlags: 0
