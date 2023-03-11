@@ -16,8 +16,11 @@ public class RunManager : Singleton<RunManager>
 
     public static readonly int[] WaiGongStartFromJingJie = new[] { 9, 6, 4, 2, 0, 0 };
 
+    public static readonly float EUREKA_DISCOUNT_RATE = 0.5f;
+
     private ChipPool _chipPool;
     public DanTian DanTian { get; private set; }
+    public TechInventory TechInventory { get; private set; }
     private ProductInventory _productInventory;
     public ChipInventory ChipInventory { get; private set; }
     public AcquiredWaiGongInventory AcquiredInventory { get; private set; }
@@ -68,19 +71,21 @@ public class RunManager : Singleton<RunManager>
     {
         base.DidAwake();
 
-        _chipPool = new ChipPool();
-        DanTian = new DanTian();
-        _productInventory = new ProductInventory();
-        ChipInventory = new ChipInventory();
+        _chipPool = new();
+        DanTian = new();
+        TechInventory = new();
+        _productInventory = new();
+        ChipInventory = new();
         AcquiredInventory = new();
 
-        Hero = new RunHero();
-        EnemyPool = new ();
+        Hero = new();
+        EnemyPool = new();
         NextEnemyFromPool();
 
         _accessors = new()
         {
             { "GetTileXY",             GetTileXY },
+            { "GetRunTech",            GetRunTech },
             // { "TryGetProduct",         TryGetProduct },
             { "TryGetRunChip",         TryGetRunChip },
             { "TryGetAcquired",        TryGetAcquired },
@@ -101,6 +106,7 @@ public class RunManager : Singleton<RunManager>
 
     public static T Get<T>(IndexPath indexPath) => (T) Instance._accessors[indexPath._str](indexPath);
     private object GetTileXY(IndexPath indexPath) => DanTian.GetTileXY(indexPath._ints[0], indexPath._ints[1]);
+    private object GetRunTech(IndexPath indexPath) => TechInventory[indexPath._ints[0]];
     // private object TryGetProduct(IndexPath indexPath) => _productInventory[indexPath._ints[0]];
     private object TryGetRunChip(IndexPath indexPath) => ChipInventory.TryGet(indexPath._ints[0]);
     private object TryGetAcquired(IndexPath indexPath) => AcquiredInventory.TryGet(indexPath._ints[0]);
@@ -322,6 +328,23 @@ public class RunManager : Singleton<RunManager>
     public void ClearChip()
     {
         ChipInventory.Clear();
+    }
+
+    public bool CanAffordTech(IndexPath indexPath)
+    {
+        RunTech runTech = Get<RunTech>(indexPath);
+        return runTech.GetCost() <= _xiuWei;
+    }
+
+    public bool TrySetDoneTech(IndexPath indexPath)
+    {
+        if (!CanAffordTech(indexPath))
+            return false;
+
+        RunTech runTech = Get<RunTech>(indexPath);
+        _xiuWei -= runTech.GetCost();
+        TechInventory.SetDone(runTech);
+        return true;
     }
 
 

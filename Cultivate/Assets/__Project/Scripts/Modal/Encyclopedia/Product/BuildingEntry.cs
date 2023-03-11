@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingEntry : DragProductEntry, ILock
+public class BuildingEntry : DragProductEntry
 {
     public BuildingEntry(string name, string description, int cost, Func<Product, Tile, bool> canDrop = null, Action<Product, Tile> drop = null) : base(name, description, cost,
             canDrop: (product, tile) =>

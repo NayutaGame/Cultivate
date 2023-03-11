@@ -7,13 +7,20 @@ using UnityEngine.UI;
 
 public class RunCanvas : Singleton<RunCanvas>
 {
+    public Color GreenColor;
+    public Color YellowColor;
+    public Color RedColor;
+
     public ChipPreview ChipPreview;
     public GhostProduct GhostProduct;
     public GhostChip GhostChip;
+
     public Button CharacterButton;
+    public Button TechButton;
     public Button BattleButton;
 
     public CharacterPanel CharacterPanel;
+    public TechTreePanel TechTreePanel;
     public BattlePanel BattlePanel;
 
     private Panel _currentPanel;
@@ -32,6 +39,7 @@ public class RunCanvas : Singleton<RunCanvas>
         base.DidAwake();
 
         CharacterButton.onClick.AddListener(OpenCharacterPanel);
+        TechButton.onClick.AddListener(OpenTechTreePanel);
         BattleButton.onClick.AddListener(OpenBattlePanel);
 
         TurnButton.onClick.AddListener(AddTurn);
@@ -41,20 +49,14 @@ public class RunCanvas : Singleton<RunCanvas>
         Refresh();
     }
 
-    private void OpenCharacterPanel()
+    private void OpenCharacterPanel() => OpenPanel(CharacterPanel);
+    private void OpenTechTreePanel() => OpenPanel(TechTreePanel);
+    private void OpenBattlePanel() => OpenPanel(BattlePanel);
+    private void OpenPanel(Panel panel)
     {
         if(_currentPanel != null)
             _currentPanel.gameObject.SetActive(false);
-        _currentPanel = CharacterPanel;
-        _currentPanel.gameObject.SetActive(true);
-        _currentPanel.Refresh();
-    }
-
-    private void OpenBattlePanel()
-    {
-        if(_currentPanel != null)
-            _currentPanel.gameObject.SetActive(false);
-        _currentPanel = BattlePanel;
+        _currentPanel = panel;
         _currentPanel.gameObject.SetActive(true);
         _currentPanel.Refresh();
     }

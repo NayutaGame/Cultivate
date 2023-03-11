@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using CLLibrary;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Encyclopedia : Singleton<Encyclopedia>
+public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
 {
-    public static EnemyCategory EnemyCategory;
-    public static ProductCategory ProductCategory;
-    public static TerrainCategory TerrainCategory;
-    public static TileResourceCategory TileResourceCategory;
-    public static ChipCategory ChipCategory;
-    public static BuffCategory BuffCategory;
     public static KeywordCategory KeywordCategory;
+    public static BuffCategory BuffCategory;
+    public static ChipCategory ChipCategory;
+    public static TileResourceCategory TileResourceCategory;
+    public static TerrainCategory TerrainCategory;
+    public static ProductCategory ProductCategory;
+    public static EnemyCategory EnemyCategory;
+    public static TechCategory TechCategory;
 
     public override void DidAwake()
     {
@@ -24,5 +25,8 @@ public class Encyclopedia : Singleton<Encyclopedia>
         TerrainCategory = new TerrainCategory();
         ProductCategory = new ProductCategory();
         EnemyCategory = new EnemyCategory();
+        TechCategory = new TechCategory();
+
+        TechCategory.Init();
     }
 }
