@@ -8,6 +8,21 @@ using UnityEngine;
 
 public class RunManager : Singleton<RunManager>
 {
+    public event Action<DefeatDetails> DefeatEvent;
+    public void Defeat(DefeatDetails d) => DefeatEvent?.Invoke(d);
+
+    public event Action<AcquireDetails> AcquireEvent;
+    public void Acquire(AcquireDetails d) => AcquireEvent?.Invoke(d);
+
+    public event Action<BuildDetails> BuildEvent;
+    public void Build(BuildDetails d) => BuildEvent?.Invoke(d);
+
+    public event Action<PowerChangedDetails> PowerChangedEvent;
+    public void PowerChanged(PowerChangedDetails d) => PowerChangedEvent?.Invoke(d);
+
+    public event Action<StatusChangedDetails> StatusChangedEvent;
+    public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
+
     public static readonly int NeiGongLimit = 4;
     public static readonly int WaiGongLimit = 12;
 
@@ -394,8 +409,8 @@ public class RunManager : Singleton<RunManager>
         RunChip runChip = Get<RunChip>(from);
         Tile tile = Get<Tile>(to);
 
-        if (!runChip._entry.CanPlug(tile, runChip)) return false;
-        runChip._entry.Plug(tile, runChip);
+        if (!runChip.CanPlug(tile)) return false;
+        runChip.Plug(tile);
         return true;
     }
 

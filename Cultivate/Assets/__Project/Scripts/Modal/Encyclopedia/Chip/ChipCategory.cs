@@ -217,8 +217,8 @@ public class ChipCategory : Category<ChipEntry>
             new XueWeiEntry("穴位12", "穴位12", 11),
 
             new ChipEntry("拆除", JingJie.LianQi, "拆除",
-                canPlug: (tile, runChip) => tile.AcquiredRunChip != null && tile.AcquiredRunChip.Chip._entry.CanUnplug(tile.AcquiredRunChip),
-                plug: (tile, runChip) => tile.AcquiredRunChip.Chip._entry.Unplug(tile.AcquiredRunChip),
+                canPlug: (tile, runChip) => tile.AcquiredRunChip != null && tile.AcquiredRunChip.CanUnplug(),
+                plug: (tile, runChip) => tile.AcquiredRunChip.Unplug(),
                 canUnplug: acquiredRunChip => false,
                 unplug: acquiredRunChip => { }),
 

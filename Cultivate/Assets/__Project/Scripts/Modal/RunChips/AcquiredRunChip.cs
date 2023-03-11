@@ -37,4 +37,7 @@ public class AcquiredRunChip
     {
         Chip.Upgrade();
     }
+
+    public bool CanUnplug() => Chip._entry.CanUnplug(this);
+    public void Unplug() => Chip._entry.Unplug(this);
 }

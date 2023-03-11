@@ -54,4 +54,7 @@ public class RunChip
     {
         return new RunChip(this);
     }
+
+    public bool CanPlug(Tile tile) => _entry.CanPlug(tile, this);
+    public void Plug(Tile tile) => _entry.Plug(tile, this);
 }
