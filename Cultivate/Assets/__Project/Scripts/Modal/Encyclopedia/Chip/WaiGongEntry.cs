@@ -12,13 +12,16 @@ public class WaiGongEntry : ChipEntry
     public int GetManaCost(int level, int[] powers) => _manaCost(level, powers);
 
     private Action<StringBuilder, StageEntity, StageWaiGong, bool> _execute;
+    public Action<StageEntity, StageWaiGong> _startStage;
 
     public WaiGongEntry(
         string name,
         JingJie jingJie,
         string description,
         int manaCost = 0,
-        Action<StringBuilder, StageEntity, StageWaiGong, bool> execute = null) : this(name, jingJie, description, (level, powers) => manaCost, execute)
+        Action<StringBuilder, StageEntity, StageWaiGong, bool> execute = null,
+        Action<StageEntity, StageWaiGong> startStage = null
+        ) : this(name, jingJie, description, (level, powers) => manaCost, execute, startStage)
     {}
 
     public WaiGongEntry(
@@ -26,7 +29,9 @@ public class WaiGongEntry : ChipEntry
         JingJie jingJie,
         string description,
         Func<int, int[], int> manaCost,
-        Action<StringBuilder, StageEntity, StageWaiGong, bool> execute = null) : base(name, jingJie, description,
+        Action<StringBuilder, StageEntity, StageWaiGong, bool> execute = null,
+        Action<StageEntity, StageWaiGong> startStage = null
+    ) : base(name, jingJie, description,
         canPlug: (tile, runChip) => tile.AcquiredRunChip == null,
         plug: (tile, runChip) =>
         {
@@ -46,7 +51,6 @@ public class WaiGongEntry : ChipEntry
             }
             else
             {
-
                 RunManager.Instance.AcquiredInventory.Remove(acquiredRunChip);
             }
 
@@ -55,6 +59,7 @@ public class WaiGongEntry : ChipEntry
     {
         _manaCost = manaCost;
         _execute = execute ?? DefaultExecute;
+        _startStage = startStage;
     }
 
     public void Execute(StringBuilder seq, StageEntity caster, StageWaiGong waiGong, bool recursive)

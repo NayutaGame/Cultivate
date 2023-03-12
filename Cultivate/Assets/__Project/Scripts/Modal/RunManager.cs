@@ -307,10 +307,28 @@ public class RunManager : Singleton<RunManager>
         return true;
     }
 
-    public void DrawChip()
+    public void DrawWaiGong()
     {
-        if(_chipPool.TryPopFirst(_jingJie, out ChipEntry chipEntry))
+        _chipPool.Shuffle();
+        if(_chipPool.TryPopFirst(c => c is WaiGongEntry && c.JingJie <= _jingJie, out ChipEntry chipEntry))
             ChipInventory.Add(new RunChip(chipEntry));
+        else
+        {
+            Debug.Log("Repopulate");
+            _chipPool.PopulateChips();
+        }
+    }
+
+    public void DrawStone()
+    {
+        _chipPool.Shuffle();
+        if(_chipPool.TryPopFirst(c => c is WuXingChipEntry, out ChipEntry chipEntry))
+            ChipInventory.Add(new RunChip(chipEntry));
+        else
+        {
+            Debug.Log("Repopulate");
+            _chipPool.PopulateChips();
+        }
     }
 
     public void AddTurn()

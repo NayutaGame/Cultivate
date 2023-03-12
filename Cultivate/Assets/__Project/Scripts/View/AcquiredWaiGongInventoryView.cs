@@ -26,27 +26,27 @@ public class AcquiredWaiGongInventoryView : InventoryView<AcquiredWaiGongView>, 
         }
     }
 
-    private void RefreshChip()
-    {
-        RunManager.Instance.RefreshChip();
-        Refresh();
-    }
-
-    private void ClearChip()
-    {
-        RunManager.Instance.ClearChip();
-        Refresh();
-    }
-
-    private void DrawChip()
-    {
-        RunManager.Instance.DrawChip();
-        Refresh();
-    }
-
-    private void UpgradeFirst()
-    {
-        RunManager.Instance.UpgradeFirstChip();
-        Refresh();
-    }
+    // private void RefreshChip()
+    // {
+    //     RunManager.Instance.RefreshChip();
+    //     Refresh();
+    // }
+    //
+    // private void ClearChip()
+    // {
+    //     RunManager.Instance.ClearChip();
+    //     Refresh();
+    // }
+    //
+    // private void DrawChip()
+    // {
+    //     RunManager.Instance.DrawChip();
+    //     Refresh();
+    // }
+    //
+    // private void UpgradeFirst()
+    // {
+    //     RunManager.Instance.UpgradeFirstChip();
+    //     Refresh();
+    // }
 }

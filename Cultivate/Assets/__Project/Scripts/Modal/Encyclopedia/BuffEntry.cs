@@ -17,6 +17,9 @@ public class BuffEntry : Entry
     private bool _friendly;
     public bool Friendly => _friendly;
 
+    private bool _dispellable;
+    public bool Dispellable => _dispellable;
+
     // private ModifierLeaf _modifierLeaf;
     // public ModifierLeaf ModifierLeaf => _modifierLeaf;
 
@@ -37,8 +40,8 @@ public class BuffEntry : Entry
     public Action<Buff, DamageDetails> _damaged;
     public Action<Buff, AttackDetails> _killed;
     public Action<Buff, AttackDetails> _kill;
-    // public Action<Buff, HealDetails> _heal;
-    // public Action<Buff, HealDetails> _healed;
+    public Action<Buff, HealDetails> _heal;
+    public Action<Buff, HealDetails> _healed;
     public Action<Buff, ArmorDetails> _armor;
     public Action<Buff, ArmorDetails> _armored;
     // public Action<Buff, DamageDetails> _laststand;
@@ -49,7 +52,7 @@ public class BuffEntry : Entry
     public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _buffed;
     public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _anyBuffed;
 
-    public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly,
+    public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
         // ModifierLeaf modifierLeaf = null,
         Action<Buff, StageEntity, int> gain = null,
         Action<Buff, StageEntity> lose = null,
@@ -68,8 +71,8 @@ public class BuffEntry : Entry
         Action<Buff, DamageDetails> damaged = null,
         Action<Buff, AttackDetails> killed = null,
         Action<Buff, AttackDetails> kill = null,
-        // Action<Buff, HealDetails> heal = null,
-        // Action<Buff, HealDetails> healed = null,
+        Action<Buff, HealDetails> heal = null,
+        Action<Buff, HealDetails> healed = null,
         Action<Buff, ArmorDetails> armor = null,
         Action<Buff, ArmorDetails> armored = null,
         // Action<Buff, DamageDetails> laststand = null,
@@ -85,6 +88,7 @@ public class BuffEntry : Entry
         // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
         _buffStackRule = buffStackRule;
         _friendly = friendly;
+        _dispellable = dispellable;
 
         // _modifierLeaf = modifierLeaf;
 
@@ -107,8 +111,8 @@ public class BuffEntry : Entry
         _damaged = damaged;
         _killed = killed;
         _kill = kill;
-        // _heal = heal;
-        // _healed = healed;
+        _heal = heal;
+        _healed = healed;
         _armor = armor;
         _armored = armored;
         // _laststand = laststand;

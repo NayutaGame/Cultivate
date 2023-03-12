@@ -9,16 +9,18 @@ public class ChipInventoryView : InventoryView<InventoryChipView>, IDropHandler
 {
     public Button RefreshChipButton;
     public Button ClearChipButton;
-    public Button DrawChipButton;
     public Button UpgradeFirstButton;
+    public Button DrawWaiGongButton;
+    public Button DrawStoneButton;
 
     public override void Configure(IInventory inventory)
     {
         base.Configure(inventory);
         RefreshChipButton.onClick.AddListener(RefreshChip);
         ClearChipButton.onClick.AddListener(ClearChip);
-        DrawChipButton.onClick.AddListener(DrawChip);
         UpgradeFirstButton.onClick.AddListener(UpgradeFirst);
+        DrawWaiGongButton.onClick.AddListener(DrawWaiGong);
+        DrawStoneButton.onClick.AddListener(DrawStone);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -48,15 +50,21 @@ public class ChipInventoryView : InventoryView<InventoryChipView>, IDropHandler
         Refresh();
     }
 
-    private void DrawChip()
-    {
-        RunManager.Instance.DrawChip();
-        Refresh();
-    }
-
     private void UpgradeFirst()
     {
         RunManager.Instance.UpgradeFirstChip();
+        Refresh();
+    }
+
+    private void DrawWaiGong()
+    {
+        RunManager.Instance.DrawWaiGong();
+        Refresh();
+    }
+
+    private void DrawStone()
+    {
+        RunManager.Instance.DrawStone();
         Refresh();
     }
 }

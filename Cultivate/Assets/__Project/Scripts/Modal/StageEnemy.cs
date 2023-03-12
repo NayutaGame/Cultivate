@@ -28,6 +28,13 @@ public class StageEnemy : StageEntity
         }
 
         _p = 0;
+
+        _waiGongList.Do(waiGong => waiGong.Register());
+    }
+
+    ~StageEnemy()
+    {
+        _waiGongList.Do(waiGong => waiGong.Unregister());
     }
 
     public override string GetName() => "        敌人";

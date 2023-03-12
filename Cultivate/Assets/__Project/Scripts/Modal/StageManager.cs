@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CLLibrary;
 using DG.Tweening;
@@ -68,7 +69,9 @@ public class StageManager : Singleton<StageManager>
             // }
 
             // 结算护甲
-            (d.Value, tgt.Armor) = Numeric.Negate(d.Value, tgt.Armor);
+            int negate = Mathf.Min(d.Value, tgt.Armor);
+            d.Value -= negate;
+            ArmorLoseProcedure(d.Seq, d.Tgt, negate);
 
             if (d.Value == 0)
             {
@@ -164,7 +167,11 @@ public class StageManager : Singleton<StageManager>
         src.Heal(d);
         tgt.Healed(d);
 
+        int space = tgt.MaxHp - tgt.Hp;
         tgt.Hp += d.Value;
+
+        int actualHealed = Mathf.Min(space, d.Value);
+        tgt.HealedRecord += actualHealed;
 
         d.Seq.Append($"    生命变成了${tgt.Hp}");
     }
@@ -187,9 +194,9 @@ public class StageManager : Singleton<StageManager>
         buffDetails = buffDetails.Tgt.Buffed.Evaluate(buffDetails);
     }
 
-    public void ArmorProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
-        => ArmorProcedure(new ArmorDetails(seq, src, tgt, value));
-    public void ArmorProcedure(ArmorDetails d)
+    public void ArmorGainProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
+        => ArmorGainProcedure(new ArmorDetails(seq, src, tgt, value));
+    public void ArmorGainProcedure(ArmorDetails d)
     {
         d.Src._Armor(d);
         d.Tgt.Armored(d);
@@ -198,6 +205,12 @@ public class StageManager : Singleton<StageManager>
 
         d.Tgt.Armor += d.Value;
         d.Seq.Append($"    护甲变成了[{d.Src.Armor}]");
+    }
+
+    public void ArmorLoseProcedure(StringBuilder seq, StageEntity tgt, int value)
+    {
+        tgt.Armor -= value;
+        tgt.LostArmorRecord += value;
     }
 
     // private static BuffDetails CleanProcedure(BuffDetails d)
@@ -223,13 +236,17 @@ public class StageManager : Singleton<StageManager>
     //     }
     // }
     //
-    // public static void DispelProcedure(StageEntity entity, int stack)
-    // {
-    //     while (stack > 0 && entity.FindBuff(b => !b.Friendly) is { } buff)
-    //     {
-    //         Negate(ref buff.Stack, ref stack);
-    //     }
-    // }
+
+    public void DispelProcedure(StringBuilder seq, StageEntity entity, int stack, bool targetingFriendly)
+    {
+        List<Buff> buffs = entity.Buffs.FilterObj(b => b.Friendly == targetingFriendly && b.Dispellable).ToList();
+        buffs.Do(b =>
+        {
+            b.Stack -= stack;
+            seq.Append($"{b.GetName()}.Stack 驱散后变成 {b.Stack}");
+        });
+    }
+
     //
     // public static void LoseHpProcedure(StageEntity entity, int amount)
     // {
@@ -325,10 +342,10 @@ public class StageManager : Singleton<StageManager>
         _hero._p = -1;
         _enemy._p = -1;
 
+        // register
+
         _hero.StartStage();
         _enemy.StartStage();
-
-        // register nei gong
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
@@ -385,7 +402,7 @@ public class StageManager : Singleton<StageManager>
 
     public void ForceCommit(StringBuilder seq)
     {
-        if (_hero.Hp > _enemy.Hp)
+        if (_hero.Hp >= _enemy.Hp)
         {
             seq.Append($"玩家胜利\n");
             return;

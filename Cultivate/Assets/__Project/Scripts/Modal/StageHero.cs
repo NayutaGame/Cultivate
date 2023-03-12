@@ -28,6 +28,13 @@ public class StageHero : StageEntity
         }
 
         _p = 0;
+
+        _waiGongList.Do(waiGong => waiGong.Register());
+    }
+
+    ~StageHero()
+    {
+        _waiGongList.Do(waiGong => waiGong.Unregister());
     }
 
     public override string GetName() => "玩家";

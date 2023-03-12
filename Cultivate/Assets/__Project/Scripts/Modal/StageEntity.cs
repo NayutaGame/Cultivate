@@ -90,7 +90,7 @@ public abstract class StageEntity
     public int Hp
     {
         get => _hp;
-        set => _hp = Mathf.Clamp(value, 0, MaxHp);
+        set => _hp = Mathf.Min(value, MaxHp);
         // OnStatsChanged()
     }
 
@@ -132,18 +132,23 @@ public abstract class StageEntity
 
     public void Execute(StringBuilder seq)
     {
+        UltraSwift = false;
+        Swift = false;
         StartTurn();
 
-        Buff skipTurnBuff = FindBuff("跳回合");
-        if (skipTurnBuff is { Stack: > 0 })
+        if (TryConsumeBuff("跳回合"))
         {
-            skipTurnBuff.Stack -= 1;
+
         }
         else
         {
-            Swift = false;
             Step(seq);
-            if (Swift)
+            if (UltraSwift)
+            {
+                Step(seq);
+                Step(seq);
+            }
+            else if (Swift)
             {
                 Step(seq);
             }
@@ -176,10 +181,8 @@ public abstract class StageEntity
             mana.Stack -= manaCost;
         }
 
-        Buff b = FindBuff("双发");
-        if (b is { Stack: >= 1 })
+        if (TryConsumeBuff("双发"))
         {
-            b.Stack -= 1;
             waiGong.Execute(seq, this);
             waiGong.Execute(seq, this);
         }
@@ -199,12 +202,8 @@ public abstract class StageEntity
             if(_waiGongList[_p].Consumed)
                 continue;
 
-            Buff skipChipBuff = FindBuff("跳卡牌");
-            if (skipChipBuff is { Stack: > 0 })
-            {
-                skipChipBuff.Stack -= 1;
+            if(TryConsumeBuff("跳卡牌"))
                 continue;
-            }
 
             return;
         }
@@ -244,13 +243,25 @@ public abstract class StageEntity
     //     return true;
     // }
 
+    public bool UltraSwift;
     public bool Swift;
     private bool _manaShortage;
+
+    public int LostArmorRecord;
+    public int GeneratedManaRecord;
+    public int SelfDamageRecord;
+    public int HealedRecord;
 
     public StageEntity()
     {
         _buffs = new List<Buff>();
         _manaShortage = false;
+
+        LostArmorRecord = 0;
+        GeneratedManaRecord = 0;
+        SelfDamageRecord = 0;
+        HealedRecord = 0;
+
         // _modifier = Modifier.Default;
         // _notes = new List<INote>();
 
@@ -274,7 +285,11 @@ public abstract class StageEntity
         LoseHpEvent -= DefaultLoseHp;
     }
 
-    protected virtual void DefaultStartTurn() { } // 比如护甲每回合开始自动减半，可以做在这里，每回合开始不减或者只减20%做在modifier里面
+    protected virtual void DefaultStartTurn()
+    {
+        StageManager.Instance.ArmorLoseProcedure(new StringBuilder(), this, Armor);
+    }
+
     protected virtual void DefaultEndTurn() { }
     protected virtual void DefaultDamage(DamageDetails damageDetails) { }
     protected virtual void DefaultDamaged(DamageDetails damageDetails) { }
@@ -323,36 +338,35 @@ public abstract class StageEntity
     public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.BuffEntry == buffEntry);
     public Buff FindBuff(Predicate<Buff> pred) => Buffs.FirstObj(pred);
 
-    public int GetStackOfBuff(string name)
+    public int GetStackOfBuff(string name) => FindBuff(name)?.Stack ?? 0;
+    public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
+
+    public bool TryConsumeBuff(string buffName, int stack = 1)
     {
-        Buff b = FindBuff(name);
-        if (b != null)
+        Buff b = FindBuff(buffName);
+        if (b is { Stack: > 0 })
         {
-            return b.Stack;
+            b.Stack -= stack;
+            return true;
         }
-        else
-        {
-            return 0;
-        }
+
+        return false;
     }
 
-    public int GetStackOfBuff(BuffEntry buffEntry)
+    public bool TryConsumeBuff(BuffEntry buffEntry, int stack = 1)
     {
         Buff b = FindBuff(buffEntry);
-        if (b != null)
+        if (b is { Stack: > 0 })
         {
-            return b.Stack;
+            b.Stack -= stack;
+            return true;
         }
-        else
-        {
-            return 0;
-        }
+
+        return false;
     }
 
-    public int GetMana()
-    {
-        return GetStackOfBuff("灵气");
-    }
+    public int GetMana() => GetStackOfBuff("灵气");
+    public bool TryConsumeMana(int stack = 1) => TryConsumeBuff("灵气", stack);
 
     public int GetBuffCount() => Buffs.Count;
     public Buff TryGetBuff(int i)

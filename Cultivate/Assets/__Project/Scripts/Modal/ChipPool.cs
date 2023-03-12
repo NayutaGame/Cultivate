@@ -7,9 +7,13 @@ public class ChipPool : Pool<ChipEntry>
 {
     public ChipPool()
     {
-        for(int i = 0; i < 8; i++)
+        PopulateChips();
+    }
+
+    public void PopulateChips()
+    {
+        for(int i = 0; i < 1; i++)
             Populate(Encyclopedia.ChipCategory.Traversal);
-        Shuffle();
     }
 
     public bool TryPopFirst(JingJie jingJie, out ChipEntry item)

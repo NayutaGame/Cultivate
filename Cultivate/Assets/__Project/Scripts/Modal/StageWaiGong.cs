@@ -34,9 +34,10 @@ public class StageWaiGong
 
     // run powers
 
+    private static readonly string[] PowerBuffNames = new string[] { "临金", "临水", "临木", "临火", "临土" };
+
     private int[] _powers;
-    public int GetPower(WuXing wuXing) => _powers[wuXing];
-    public void SetPower(WuXing wuXing, int value) => _powers[wuXing] = value;
+    public int GetPower(WuXing wuXing) => _powers[wuXing] + _owner.GetStackOfBuff(PowerBuffNames[wuXing]);
 
     public StageWaiGong(StageEntity owner, RunChip runChip, int[] powers, int slotIndex)
     {
@@ -90,4 +91,28 @@ public class StageWaiGong
 
     public StageWaiGong Prev()
         => _owner._waiGongList[(_slotIndex + _owner._waiGongList.Length - 1) % _owner._waiGongList.Length];
+
+    public void Register()
+    {
+        WaiGongEntry entry = _runChip?._entry as WaiGongEntry;
+        if (entry == null) return;
+
+        if (entry._startStage != null) _owner.StartStageEvent += StartStage;
+    }
+
+    public void Unregister()
+    {
+        WaiGongEntry entry = _runChip?._entry as WaiGongEntry;
+        if (entry == null) return;
+
+        if (entry._startStage != null) _owner.StartStageEvent -= StartStage;
+    }
+
+    private void StartStage()
+    {
+        WaiGongEntry entry = _runChip?._entry as WaiGongEntry;
+        if (entry == null) return;
+
+        entry._startStage(_owner, this);
+    }
 }
