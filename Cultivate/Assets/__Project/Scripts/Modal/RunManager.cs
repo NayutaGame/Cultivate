@@ -8,8 +8,18 @@ using UnityEngine;
 
 public class RunManager : Singleton<RunManager>
 {
-    public event Action<DefeatDetails> DefeatEvent;
-    public void Defeat(DefeatDetails d) => DefeatEvent?.Invoke(d);
+    public static readonly int NeiGongLimit = 4;
+    public static readonly int WaiGongLimit = 12;
+
+    public static readonly int[] NeiGongLimitFromJingJie = new[] { 0, 1, 2, 3, 4, 4 };
+    public static readonly int[] WaiGongLimitFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
+
+    public static readonly int[] WaiGongStartFromJingJie = new[] { 9, 6, 4, 2, 0, 0 };
+
+    public static readonly float EUREKA_DISCOUNT_RATE = 0.5f;
+
+    public event Action<StageCommitDetails> StageCommitEvent;
+    public void StageCommit(StageCommitDetails d) => StageCommitEvent?.Invoke(d);
 
     public event Action<AcquireDetails> AcquireEvent;
     public void Acquire(AcquireDetails d) => AcquireEvent?.Invoke(d);
@@ -22,16 +32,6 @@ public class RunManager : Singleton<RunManager>
 
     public event Action<StatusChangedDetails> StatusChangedEvent;
     public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
-
-    public static readonly int NeiGongLimit = 4;
-    public static readonly int WaiGongLimit = 12;
-
-    public static readonly int[] NeiGongLimitFromJingJie = new[] { 0, 1, 2, 3, 4, 4 };
-    public static readonly int[] WaiGongLimitFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
-
-    public static readonly int[] WaiGongStartFromJingJie = new[] { 9, 6, 4, 2, 0, 0 };
-
-    public static readonly float EUREKA_DISCOUNT_RATE = 0.5f;
 
     private ChipPool _chipPool;
     public DanTian DanTian { get; private set; }
@@ -200,6 +200,20 @@ public class RunManager : Singleton<RunManager>
     //     Tile tile = Get<Tile>(pos);
     //     return _danTian.TryToggleWorkerLock(tile);
     // }
+
+    public bool TryPlug(IndexPath from, IndexPath to)
+    {
+        RunChip runChip = Get<RunChip>(from);
+        Tile tile = Get<Tile>(to);
+
+        if (!runChip.CanPlug(tile)) return false;
+        runChip.Plug(tile);
+
+        if (runChip._entry is WaiGongEntry)
+            Acquire(new AcquireDetails(runChip));
+
+        return true;
+    }
 
     public bool InventorySwap(IndexPath from, IndexPath to)
     {
@@ -420,16 +434,6 @@ public class RunManager : Singleton<RunManager>
     {
         tile.AcquiredRunChip.Upgrade();
         ChipInventory.Remove(runChip);
-    }
-
-    public bool TryPlug(IndexPath from, IndexPath to)
-    {
-        RunChip runChip = Get<RunChip>(from);
-        Tile tile = Get<Tile>(to);
-
-        if (!runChip.CanPlug(tile)) return false;
-        runChip.Plug(tile);
-        return true;
     }
 
     // public bool TryUpgradeInventory(IndexPath from, IndexPath to)

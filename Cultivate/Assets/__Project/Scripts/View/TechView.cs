@@ -29,19 +29,29 @@ public class TechView : ItemView
         RunTech runTech = RunManager.Get<RunTech>(GetIndexPath());
 
         NameText.text = runTech.GetName();
-        RewardText.text = runTech.GetRewardString();
-        EurekaText.text = runTech.GetEurekaString();
+
+        if (runTech.HasEureka || runTech.State == RunTech.RunTechState.Done)
+        {
+            EurekaText.text = "";
+        }
+        else
+        {
+            EurekaText.text = runTech.GetEurekaString();
+        }
 
         switch (runTech.State)
         {
             case RunTech.RunTechState.Done:
                 _image.color = RunCanvas.Instance.GreenColor;
+                RewardText.text = "";
                 break;
             case RunTech.RunTechState.Current:
                 _image.color = RunCanvas.Instance.YellowColor;
+                RewardText.text = runTech.GetRewardString();
                 break;
             case RunTech.RunTechState.Locked:
                 _image.color = RunCanvas.Instance.RedColor;
+                RewardText.text = runTech.GetRewardString();
                 break;
         }
 
@@ -51,7 +61,15 @@ public class TechView : ItemView
 
         CostText.text = runTech.GetCost().ToString();
         CostText.color = RunManager.Instance.CanAffordTech(GetIndexPath()) ? Color.black : Color.red;
-        DiscountText.text = runTech.HasEureka ? "已打折" : "";
+
+        if (runTech.HasEureka)
+        {
+            DiscountText.text = "已打折";
+        }
+        else
+        {
+            DiscountText.text = "";
+        }
     }
 
     private void TrySetDone()

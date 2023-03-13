@@ -5,10 +5,15 @@ using UnityEngine;
 
 public class StatusChangedEventDescriptor : EventDescriptor
 {
-    private Func<object, bool> _pred;
+    public Func<StatusChangedDetails, RunTech, bool> _cond;
 
-    public StatusChangedEventDescriptor(Func<object, bool> pred)
+    public override void Register(RunTech runTech)
     {
-        _pred = pred;
+        RunManager.Instance.StatusChangedEvent += runTech.StatusChanged;
+    }
+
+    public override void Unregister(RunTech runTech)
+    {
+        RunManager.Instance.StatusChangedEvent -= runTech.StatusChanged;
     }
 }

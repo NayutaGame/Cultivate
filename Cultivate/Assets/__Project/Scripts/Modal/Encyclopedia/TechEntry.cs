@@ -13,23 +13,30 @@ public class TechEntry : Entry
     private Vector2Int _position;
     public Vector2Int Position => _position;
 
-    private string[] _prerequisiteStrings;
+    private string[] _prerequisiteNames;
     private TechEntry[] _prerequisites;
     public TechEntry[] Prerequisites => _prerequisites;
 
-    public TechEntry(string name, string description, Vector2Int position, int cost, string[] prerequisiteStrings = null, string eurekaEvent = null, string eurekaCondition = null, object[] rewards = null) : base(name)
+    private EventDescriptor _eureka;
+    public EventDescriptor Eureka => _eureka;
+
+    public TechEntry(string name, string description, Vector2Int position, int cost,
+        string[] prerequisiteNames = null,
+        EventDescriptor eureka = null,
+        object[] rewards = null) : base(name)
     {
         _description = description;
         _cost = cost;
         _position = position;
-        _prerequisiteStrings = prerequisiteStrings;
+        _prerequisiteNames = prerequisiteNames;
+        _eureka = eureka;
     }
 
     public void Init()
     {
-        int l = _prerequisiteStrings?.Length ?? 0;
+        int l = _prerequisiteNames?.Length ?? 0;
         _prerequisites = new TechEntry[l];
         for (int i = 0; i < l; i++)
-            _prerequisites[i] = Encyclopedia.TechCategory[_prerequisiteStrings[i]];
+            _prerequisites[i] = Encyclopedia.TechCategory[_prerequisiteNames[i]];
     }
 }

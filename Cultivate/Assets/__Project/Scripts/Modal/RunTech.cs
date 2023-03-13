@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using CLLibrary;
 using Unity.VisualScripting;
 using UnityEditorInternal;
@@ -19,10 +20,17 @@ public class RunTech
         _entry = entry;
         State = RunTechState.Locked;
         _hasEureka = false;
+
+        Register();
+    }
+
+    ~RunTech()
+    {
+        Unregister();
     }
 
     public string GetName() => _entry.Name;
-    public int GetCost() => Mathf.FloorToInt((_hasEureka ? 0f : RunManager.EUREKA_DISCOUNT_RATE) * _entry.Cost);
+    public int GetCost() => Mathf.FloorToInt((_hasEureka ? RunManager.EUREKA_DISCOUNT_RATE : 1) * _entry.Cost);
     public string GetRewardString() => "Reward String";
     public string GetEurekaString() => "Eureka String";
     public Vector2Int GetPosition() => _entry.Position;
@@ -41,5 +49,55 @@ public class RunTech
         Done,
         Current,
         Locked,
+    }
+
+    private void Register()
+    {
+        _entry.Eureka?.Register(this);
+    }
+
+    private void Unregister()
+    {
+        _entry.Eureka?.Unregister(this);
+    }
+
+    public void StageCommit(StageCommitDetails d)
+    {
+        StageCommitEventDescriptor eureka = _entry.Eureka as StageCommitEventDescriptor;
+
+        if (eureka._cond(d, this))
+            _hasEureka = true;
+    }
+
+    public void Acquire(AcquireDetails d)
+    {
+        AcquireEventDescriptor eureka = _entry.Eureka as AcquireEventDescriptor;
+
+        if (eureka._cond(d, this))
+            _hasEureka = true;
+    }
+
+    public void Build(BuildDetails d)
+    {
+        BuildEventDescriptor eureka = _entry.Eureka as BuildEventDescriptor;
+
+        if (eureka._cond(d, this))
+            _hasEureka = true;
+    }
+
+    public void PowerChanged(PowerChangedDetails d)
+    {
+        PowerChangedEventDescriptor eureka = _entry.Eureka as PowerChangedEventDescriptor;
+
+        if (eureka._cond(d, this))
+            _hasEureka = true;
+    }
+
+    public void StatusChanged(StatusChangedDetails d)
+    {
+        StatusChangedEventDescriptor eureka = _entry.Eureka as StatusChangedEventDescriptor;
+
+        if (eureka._cond(d, this))
+            _hasEureka = true;
     }
 }
