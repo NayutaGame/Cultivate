@@ -17,4 +17,8 @@ public class BuildEventDescriptor : EventDescriptor
         RunManager.Instance.BuildEvent -= runTech.Build;
     }
 
+    public BuildEventDescriptor(string description, Func<BuildDetails, RunTech, bool> cond) : base(description)
+    {
+        _cond = cond;
+    }
 }

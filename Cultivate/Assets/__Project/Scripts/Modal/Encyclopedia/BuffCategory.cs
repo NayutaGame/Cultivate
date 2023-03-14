@@ -118,9 +118,9 @@ public class BuffCategory : Category<BuffEntry>
             /*********************************************** Summer68 *************************************************/
             /**********************************************************************************************************/
             new ("蓄力", "下次攻击时攻击力乘二，受到攻击后移除。", BuffStackRule.Add, true, false,
-                attacked: (buff, d) =>
+                damaged: (buff, d) =>
                 {
-                    buff.Stack = 0;
+                        buff.Stack = 0;
                 },
                 attack: (buff, d) =>
                 {
@@ -196,8 +196,8 @@ public class BuffCategory : Category<BuffEntry>
                     StageManager.Instance.HealProcedure(new StringBuilder(), owner, owner, buff.Stack);
                 }),
 
-            new ("蜜糖砒霜", "每次自身治疗是给对方施加1中毒，相邻2木以上时施加2中毒", BuffStackRule.Add, true, false,
-                    heal:(buff,d) =>
+            new ("蜜糖砒霜", "每次自身受到治疗给对方施加1中毒，相邻2木以上时施加2中毒", BuffStackRule.Add, true, false,
+                    healed:(buff,d) =>
                     {
                         StageManager.Instance.BuffProcedure(new StringBuilder(), buff.Owner, buff.Owner.Opponent(), "中毒", buff.Stack);
                     }
@@ -254,7 +254,7 @@ public class BuffCategory : Category<BuffEntry>
                     if(d.Value<0)
                         d.Value =0;
                     buff.Stack=0;
-                }
+                }//
                 ), ***/
             new ("水之守护", "受到攻击时获得当时灵力值的防御", BuffStackRule.Add, true, false,
                     attacked: (buff, d) =>
@@ -268,8 +268,8 @@ public class BuffCategory : Category<BuffEntry>
                     attacked: (buff, d) =>
                 {
                     Buff lq = d.Tgt.FindBuff("灵气");
-                    StageManager.Instance.ArmorGainProcedure(new StringBuilder(), d.Tgt, d.Tgt, lq.Stack);
-                    buff.Stack = 0;
+                    StageManager.Instance.ArmorGainProcedure(new StringBuilder(), d.Tgt, d.Tgt, 2*lq.Stack);
+                    buff.Stack -=1;
                 }
                 ),
             new ("力量", "攻击时攻击提高", BuffStackRule.Add, true, false,

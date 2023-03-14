@@ -16,4 +16,9 @@ public class PowerChangedEventDescriptor : EventDescriptor
     {
         RunManager.Instance.PowerChangedEvent -= runTech.PowerChanged;
     }
+
+    public PowerChangedEventDescriptor(string description, Func<PowerChangedDetails, RunTech, bool> cond) : base(description)
+    {
+        _cond = cond;
+    }
 }

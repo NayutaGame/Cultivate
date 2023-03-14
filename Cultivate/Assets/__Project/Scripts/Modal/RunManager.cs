@@ -321,30 +321,6 @@ public class RunManager : Singleton<RunManager>
         return true;
     }
 
-    public void DrawWaiGong()
-    {
-        _chipPool.Shuffle();
-        if(_chipPool.TryPopFirst(c => c is WaiGongEntry && c.JingJie <= _jingJie, out ChipEntry chipEntry))
-            ChipInventory.Add(new RunChip(chipEntry));
-        else
-        {
-            Debug.Log("Repopulate");
-            _chipPool.PopulateChips();
-        }
-    }
-
-    public void DrawStone()
-    {
-        _chipPool.Shuffle();
-        if(_chipPool.TryPopFirst(c => c is WuXingChipEntry, out ChipEntry chipEntry))
-            ChipInventory.Add(new RunChip(chipEntry));
-        else
-        {
-            Debug.Log("Repopulate");
-            _chipPool.PopulateChips();
-        }
-    }
-
     public void AddTurn()
     {
         _turn += 1;
@@ -352,14 +328,19 @@ public class RunManager : Singleton<RunManager>
         _chanNeng += TurnChanNeng;
     }
 
-    public void AddXiuWei()
+    public void AddXiuWei(int xiuWei = 10)
     {
-        _xiuWei += 10;
+        _xiuWei += xiuWei;
     }
 
-    public void AddChanNeng()
+    public void AddChanNeng(int chanNeng = 10)
     {
-        _chanNeng += 10;
+        _chanNeng += chanNeng;
+    }
+
+    public void AddMingYuan(int mingYuan = 10)
+    {
+        _mingYuan += mingYuan;
     }
 
     public void RefreshChip()
@@ -445,6 +426,53 @@ public class RunManager : Singleton<RunManager>
     //     Instance._chipInventory.UpgradeInventory(fromIndex, toIndex);
     //     return true;
     // }
+
+    public bool TryDrawWaiGong()
+    {
+        _chipPool.Shuffle();
+
+        bool success = _chipPool.TryPopFirst(c => c is WaiGongEntry && c.JingJie <= _jingJie, out ChipEntry chipEntry);
+        if (!success)
+        {
+            _chipPool.PopulateChips();
+            success = _chipPool.TryPopFirst(c => c is WaiGongEntry && c.JingJie <= _jingJie, out chipEntry);
+        }
+
+        ChipInventory.Add(new RunChip(chipEntry));
+        return success;
+    }
+
+    public bool TryDrawStone()
+    {
+        _chipPool.Shuffle();
+
+        bool success = _chipPool.TryPopFirst(c => c is WuXingChipEntry, out ChipEntry chipEntry);
+        if (!success)
+        {
+            _chipPool.PopulateChips();
+            success = _chipPool.TryPopFirst(c => c is WuXingChipEntry, out chipEntry);
+        }
+
+        ChipInventory.Add(new RunChip(chipEntry));
+        return success;
+    }
+
+    public void DrawChip(Predicate<ChipEntry> pred, int count)
+    {
+        _chipPool.Shuffle();
+        for (int i = 0; i < count; i++)
+        {
+            bool success = _chipPool.TryPopFirst(pred, out ChipEntry chipEntry);
+            if (!success)
+            {
+                _chipPool.PopulateChips();
+                _chipPool.Shuffle();
+                success = _chipPool.TryPopFirst(pred, out chipEntry);
+            }
+
+            ChipInventory.Add(new RunChip(chipEntry));
+        }
+    }
 
     public bool NextEnemyFromPool()
     {

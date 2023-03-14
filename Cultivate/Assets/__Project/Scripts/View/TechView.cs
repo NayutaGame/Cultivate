@@ -47,11 +47,11 @@ public class TechView : ItemView
                 break;
             case RunTech.RunTechState.Current:
                 _image.color = RunCanvas.Instance.YellowColor;
-                RewardText.text = runTech.GetRewardString();
+                RewardText.text = runTech.GetRewardsString();
                 break;
             case RunTech.RunTechState.Locked:
                 _image.color = RunCanvas.Instance.RedColor;
-                RewardText.text = runTech.GetRewardString();
+                RewardText.text = runTech.GetRewardsString();
                 break;
         }
 

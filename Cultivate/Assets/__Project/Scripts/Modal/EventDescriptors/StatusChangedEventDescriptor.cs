@@ -16,4 +16,9 @@ public class StatusChangedEventDescriptor : EventDescriptor
     {
         RunManager.Instance.StatusChangedEvent -= runTech.StatusChanged;
     }
+
+    public StatusChangedEventDescriptor(string description, Func<StatusChangedDetails, RunTech, bool> cond) : base(description)
+    {
+        _cond = cond;
+    }
 }

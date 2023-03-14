@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
@@ -17,7 +18,5 @@ public class ChipPool : Pool<ChipEntry>
     }
 
     public bool TryPopFirst(JingJie jingJie, out ChipEntry item)
-    {
-        return TryPopFirst(entry => entry.JingJie <= jingJie, out item);
-    }
+        => TryPopFirst(entry => entry.JingJie <= jingJie, out item);
 }

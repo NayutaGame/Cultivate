@@ -16,12 +16,17 @@ public class TechCategory : Category<TechEntry>
             new("木", "木科技", Vector2Int.one * 2, 10),
             new("火", "火科技", Vector2Int.one * 3, 10),
             new("土", "土科技", Vector2Int.one * 4, 10),
-            new ("八卦", "", new(0, 5), 10),
+            new ("八卦", "", new(0, 5), 10,
+                rewards: new RewardDescriptor[] {
+                    new ResourceRewardDescriptor(10),
+                    new StatusRewardDescriptor(10),
+                    new DrawChipRewardDescriptor("一个外功", e => e is WaiGongEntry),
+                }),
             new ("四象", "", new(1, 5), 10, new string[]{"八卦"}),
             new ("两仪", "", new(2, 5), 10, new string[]{"四象"}),
             new ("太极", "", new(3, 5), 10, new string[]{"两仪"}),
             new("八", "第八科技", new(0, 7), 10,
-                eureka: new AcquireEventDescriptor((d, runTech) =>
+                eureka: new AcquireEventDescriptor("学习任意技能", (d, runTech) =>
                 {
                     return true;
                 })),

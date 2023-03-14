@@ -16,4 +16,9 @@ public class StageCommitEventDescriptor : EventDescriptor
     {
         RunManager.Instance.StageCommitEvent -= runTech.StageCommit;
     }
+
+    public StageCommitEventDescriptor(string description, Func<StageCommitDetails, RunTech, bool> cond) : base(description)
+    {
+        _cond = cond;
+    }
 }

@@ -58,13 +58,13 @@ public class ChipInventoryView : InventoryView<InventoryChipView>, IDropHandler
 
     private void DrawWaiGong()
     {
-        RunManager.Instance.DrawWaiGong();
+        RunManager.Instance.TryDrawWaiGong();
         Refresh();
     }
 
     private void DrawStone()
     {
-        RunManager.Instance.DrawStone();
+        RunManager.Instance.TryDrawStone();
         Refresh();
     }
 }

@@ -197,11 +197,11 @@ public class ChipCategory : Category<ChipEntry>
             new WuXingChipEntry("火", "周围火+1", WuXing.Huo),
             new WuXingChipEntry("土", "周围土+1", WuXing.Tu),
 
-            new WaiGongEntry("火剑", JingJie.LianQi, "5, 有【火】时攻+4",
+            /*new WaiGongEntry("火剑", JingJie.LianQi, "5, 有【火】时攻+4",
                 execute: (seq, caster, waiGong, recursive) =>
                 {
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), waiGong.GetPower(WuXing.Huo) >= 1 ? 9 : 4);
-                }),
+                }),*/
 
             new ChipEntry("拆除", JingJie.LianQi, "拆除",
                 canPlug: (tile, runChip) => tile.AcquiredRunChip != null && tile.AcquiredRunChip.Chip._entry.CanUnplug(tile.AcquiredRunChip),
@@ -222,6 +222,7 @@ public class ChipCategory : Category<ChipEntry>
             // new XueWeiEntry("穴位11", "穴位11", 10),
             // new XueWeiEntry("穴位12", "穴位12", 11),
 
+            /*
             new WaiGongEntry("自动使用", JingJie.LianQi, "自动消耗掉自己", 0,
                 startStage: (caster, waiGong) =>
                     waiGong.Consumed = true),
@@ -299,7 +300,7 @@ public class ChipCategory : Category<ChipEntry>
                 {
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), caster.HealedRecord);
                 }),
-
+            */
             /**********************************************************************************************************/
             /*********************************************** 大剑哥 ****************************************************/
             /**********************************************************************************************************/
@@ -319,10 +320,20 @@ public class ChipCategory : Category<ChipEntry>
                     StageManager.Instance.BuffProcedure(seq, caster, caster, "蓄力", 1);
                 }),
 
-            new WaiGongEntry("挥砍", JingJie.LianQi, "8攻击,每有1【金】+2攻",
+            new WaiGongEntry("挥砍", JingJie.LianQi, "7攻击,每有1【金】+2攻",
                 execute: (seq, caster, waiGong, recursive) =>
                 {
-                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 8+2*waiGong.GetPower(WuXing.Jin) );
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 7+2*waiGong.GetPower(WuXing.Jin) );
+                }),
+            new WaiGongEntry("大力出奇迹", JingJie.LianQi, "8+2*【金】攻击,对手有护甲时为12+3*【金】",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 7+2*waiGong.GetPower(WuXing.Jin) );
+                }),
+            new WaiGongEntry("硬直", JingJie.ZhuJi, "给对手施加2疲劳",
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "疲劳", 2);
                 }),
 
             new WaiGongEntry("强袭", JingJie.ZhuJi, "13攻击,3反伤,每有1【金】+3攻,+1反伤",
@@ -342,7 +353,7 @@ public class ChipCategory : Category<ChipEntry>
             new WaiGongEntry("磨刀", JingJie.ZhuJi, "获得1层磨刀buff（所有牌的【金】相邻数+1）",
                 execute: (seq, caster, waiGong, recursive) =>
                 {
-                    StageManager.Instance.BuffProcedure(seq, caster, caster, "磨刀", 1);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "临金", 1);
 
                 }),//磨刀buff的具体实现
             new WaiGongEntry("堕天", JingJie.JinDan, "20攻击，下俩回合无法攻击,每有1【金】+3攻",
@@ -354,17 +365,21 @@ public class ChipCategory : Category<ChipEntry>
                 }),
 
             new WaiGongEntry("邪灵剑", JingJie.JinDan, "获得时永久减少10命元，获得全局buff嗜血邪剑（当敌人生命值低于10+2*【金】时直接斩杀））",
-                execute: (seq, caster, waiGong, recursive) =>
+                startStage: (caster, waiGong) =>
                 {
-                    StageManager.Instance.BuffProcedure(seq, caster, caster, "邪灵剑", 10+2*waiGong.GetPower(WuXing.Jin));
+                    waiGong.Consumed = true;
+                    //StageManager.Instance.BuffProcedure(seq, caster, caster, "邪灵剑", 10+2*waiGong.GetPower(WuXing.Jin));
+                }),
 
-                }),//全局buff待实现
+
             new WaiGongEntry("丛云剑", JingJie.JinDan, "获得时获得全局buff护主灵刃（下次遭遇致死伤害时仍会保留1血，触发后移除将丛云剑替换为破碎剑刃）",
-                execute: (seq, caster, waiGong, recursive) =>
+                startStage: (caster, waiGong) =>
                 {
-                    StageManager.Instance.BuffProcedure(seq, caster, caster, "丛云剑", 1);
+                    waiGong.Consumed = true;
+                    //StageManager.Instance.BuffProcedure(seq, caster, caster, "丛云剑", 1);
 
                 }),//全局buff待实现
+
             new WaiGongEntry("破碎剑刃", JingJie.JinDan, "每相邻1【金】，造成一次5点攻击伤害",
                 manaCost: (level, powers) => 3,
                 execute: (seq, caster, waiGong, recursive) =>
@@ -375,14 +390,14 @@ public class ChipCategory : Category<ChipEntry>
                     }
 
                 }),
-            new WaiGongEntry("封神剑", JingJie.YuanYing, "对方20%最大生命值攻击，给敌人施加2层疲劳",
+            new WaiGongEntry("封神剑", JingJie.JinDan, "对方20%最大生命值攻击，给敌人施加2层疲劳",
                 execute: (seq, caster, waiGong, recursive) =>
                 {
                     StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(),(int)((StageManager.Instance._enemy.Hp-1)*0.2+1) );
                     StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "疲劳", 2);
 
                 }),
-            new WaiGongEntry("金刚之躯", JingJie.YuanYing, "消耗，获得buff，攻击额外提高3点攻击，防御额外提高3点防御。每有1【金】相邻，额外提高1点攻击，1点防御",
+            new WaiGongEntry("金刚之躯", JingJie.JinDan, "消耗，获得buff，攻击额外提高3点攻击，防御额外提高3点防御。每有1【金】相邻，额外提高1点攻击，1点防御",
                 manaCost: (level, powers) => 2,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
@@ -392,7 +407,7 @@ public class ChipCategory : Category<ChipEntry>
                 }),
 
             //木
-            new WaiGongEntry("叶刃", JingJie.LianQi, "4攻击俩次，每有1【木】攻击+2",
+            new WaiGongEntry("叶刃", JingJie.LianQi, "5攻击俩次，每有1【木】攻击+2",
                 manaCost: (level, powers) => 1,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
@@ -402,18 +417,27 @@ public class ChipCategory : Category<ChipEntry>
 
                 }),
 
-            new WaiGongEntry("藤甲", JingJie.LianQi, "10防御,每有1【木】+3防御",
+            new WaiGongEntry("藤甲", JingJie.LianQi, "8防御,每有1【木】+3防御",
+                manaCost: (level, powers) => 0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster, 9+3*waiGong.GetPower(WuXing.Mu));
+
+                }),
+            new WaiGongEntry("疗伤", JingJie.LianQi, "5治疗,每有1【木】+2治疗",
                 manaCost: (level, powers) => 1,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
 
-                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster, 10+3*waiGong.GetPower(WuXing.Mu));
+                        StageManager.Instance.HealProcedure(seq, caster, caster, 5+2*waiGong.GetPower(WuXing.Mu));
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "治疗计数器",5+2*waiGong.GetPower(WuXing.Mu));
 
                 }),
-            new WaiGongEntry("万物有灵", JingJie.ZhuJi, "每有1【木】+3防御，+3治疗，+1灵力",
+            new WaiGongEntry("万物有灵", JingJie.ZhuJi, "每有1【木】+3防御，+2治疗，+1灵力",
                 execute: (seq, caster, waiGong, recursive) =>
-                {       StageManager.Instance.HealProcedure(seq, caster, caster, 3*waiGong.GetPower(WuXing.Mu));
-                        StageManager.Instance.BuffProcedure(seq, caster, caster, "治疗计数器",3+waiGong.GetPower(WuXing.Mu));
+                {       StageManager.Instance.HealProcedure(seq, caster, caster, 2*waiGong.GetPower(WuXing.Mu));
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "治疗计数器",2*waiGong.GetPower(WuXing.Mu));
                         StageManager.Instance.ArmorGainProcedure(seq, caster, caster, 3*waiGong.GetPower(WuXing.Mu));
 
                         StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",waiGong.GetPower(WuXing.Mu));
@@ -422,8 +446,6 @@ public class ChipCategory : Category<ChipEntry>
                 manaCost: (level, powers) => 1,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
-
-
                         StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "中毒",3+waiGong.GetPower(WuXing.Mu));
                 }),
             new WaiGongEntry("生生不息", JingJie.ZhuJi, "施加生生不息，每回合结束后治疗3，每有1【木】额外治疗1",
@@ -463,7 +485,7 @@ public class ChipCategory : Category<ChipEntry>
 
                 }),
 
-            new WaiGongEntry("寄生", JingJie.YuanYing, "debuff,每次对手获得灵力时偷取1点灵力，1+【木】生命值",
+            new WaiGongEntry("寄生", JingJie.JinDan, "debuff,每次对手获得灵力时偷取1点灵力，1+【木】生命值",
                 manaCost: (level, powers) => 2,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
@@ -472,7 +494,7 @@ public class ChipCategory : Category<ChipEntry>
 
                 }),
 
-            new WaiGongEntry("森罗万象", JingJie.YuanYing, "消耗，随机造成0-你已恢复的生命值总数之间的伤害",
+            new WaiGongEntry("森罗万象", JingJie.JinDan, "消耗，随机造成0-你已恢复的生命值总数之间的伤害",
                 manaCost: (level, powers) => 3,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
@@ -489,32 +511,41 @@ public class ChipCategory : Category<ChipEntry>
                 }),
 
             //水
-            new WaiGongEntry("水刃", JingJie.LianQi, "2灵力，相邻【水】则+5攻",
+            new WaiGongEntry("水刃", JingJie.LianQi, "2灵力，相邻【水】则+4攻",
 
                 execute: (seq, caster, waiGong, recursive) =>
                 {
 
                         if(waiGong.GetPower(WuXing.Shui)>0)
-                            StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(),5);
+                            StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(),4);
 
                         StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",2);
 
                 }),
 
-            new WaiGongEntry("水盾", JingJie.LianQi, "2灵力，相邻【水】则+6防御",
+            new WaiGongEntry("水盾", JingJie.LianQi, "2灵力，相邻【水】则+5防御",
 
                 execute: (seq, caster, waiGong, recursive) =>
                 {
 
                         if(waiGong.GetPower(WuXing.Shui)>0)
-                            StageManager.Instance.ArmorGainProcedure(seq, caster, caster,6);
+                            StageManager.Instance.ArmorGainProcedure(seq, caster, caster,5);
 
                         StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",2);
 
                 }),
 
-            new WaiGongEntry("净化", JingJie.ZhuJi, "净化自身,相邻至少2【水】则不消耗灵力",
-                manaCost: (level, powers) => powers[WuXing.Shui] >= 2 ? 0 : 2,
+            new WaiGongEntry("激流", JingJie.LianQi, "造成12+4*【水】伤害",2,
+
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                        StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(),12+4*waiGong.GetPower(WuXing.Shui));
+
+                }),
+
+            new WaiGongEntry("净化", JingJie.ZhuJi, "净化自身,每相邻1【水】+1灵力",
+                manaCost: (level, powers) =>  0,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
                         caster.Buffs.RemoveAll(bf=>{
@@ -523,11 +554,12 @@ public class ChipCategory : Category<ChipEntry>
                             else
                                 return false;
                         });
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",waiGong.GetPower(WuXing.Shui));
 
                 }),
 
-            new WaiGongEntry("灵气暴涨", JingJie.ZhuJi, "使你的灵力翻倍,相邻至少2【水】则不消耗灵力",
-                manaCost: (level, powers) => powers[WuXing.Shui] >= 2 ? 0 : 2,
+            new WaiGongEntry("灵气暴涨", JingJie.ZhuJi, "使你的灵力翻倍,获得10+2*【水】防御",
+                manaCost: (level, powers) => 1,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
                         Buff mana=caster.FindBuff("灵气");
@@ -537,11 +569,12 @@ public class ChipCategory : Category<ChipEntry>
                             lq=mana.Stack;
                         }
                         StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",lq);
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster,10+3*waiGong.GetPower(WuXing.Shui));
 
                 }),
 
-            new WaiGongEntry("水之守护", JingJie.ZhuJi, "下次受到攻击时获得当时灵力值的防御，相邻至少2【水】则不消耗灵力",
-                manaCost: (level, powers) => powers[WuXing.Shui] >= 2 ? 0 : 2,
+            new WaiGongEntry("水之守护", JingJie.ZhuJi, "下次受到攻击时获得当时灵力值*2的防御.",
+                manaCost: (level, powers) =>  1,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
 
@@ -549,8 +582,8 @@ public class ChipCategory : Category<ChipEntry>
 
                 }),
 
-            new WaiGongEntry("水之抉择", JingJie.JinDan, "相信水的抉择,相邻至少2【水】则不消耗灵力",
-                manaCost: (level, powers) => powers[WuXing.Shui] >= 2 ? 0 : 2,
+            new WaiGongEntry("水之抉择", JingJie.ZhuJi, "相信水的抉择",
+                manaCost: (level, powers) =>  0,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
                         Buff mana=caster.FindBuff("灵气");
@@ -567,7 +600,7 @@ public class ChipCategory : Category<ChipEntry>
                             StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(),lq);
                         }
                         else if((HpPc)>=0.7||caster.Opponent().Armor>0){
-                            StageManager.Instance.BuffProcedure(seq, caster, caster, "力量",2);
+                            StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",4);
                         }
                         else if((HpPc)<=0.3){
                             StageManager.Instance.HealProcedure(seq, caster, caster,lq );
@@ -579,8 +612,8 @@ public class ChipCategory : Category<ChipEntry>
 
                 }),
 
-            new WaiGongEntry("美酒", JingJie.JinDan, "给对手施加混乱3回合,相邻至少2【水】则不消耗灵力",
-                manaCost: (level, powers) => powers[WuXing.Shui] >= 2 ? 0 : 2,
+            new WaiGongEntry("美酒", JingJie.ZhuJi, "给对手施加混乱3回合,相邻【水】则不消耗灵力",
+                manaCost: (level, powers) => powers[WuXing.Shui] >= 1 ? 0 : 1,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
                         StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "混乱",3);
@@ -613,20 +646,28 @@ public class ChipCategory : Category<ChipEntry>
                 }),
 
             //火
-            new WaiGongEntry("火花", JingJie.LianQi, "造成4点不可防御伤害，每有1【火】伤害+2",
+            new WaiGongEntry("火花", JingJie.LianQi, "造成4点不可防御伤害，每有1【火】伤害+1",
                 execute: (seq, caster, waiGong, recursive) =>
                 {
-                        StageManager.Instance.DamageProcedure(seq, caster, caster.Opponent(), 4+2*waiGong.GetPower(WuXing.Huo), false);
+                        StageManager.Instance.DamageProcedure(seq, caster, caster.Opponent(), 4+waiGong.GetPower(WuXing.Huo), false);
 
                 }),
 
-            new WaiGongEntry("香火", JingJie.LianQi, "献祭5，获得1+【火】灵力，5不可防御伤害",
+            new WaiGongEntry("香火", JingJie.LianQi, "献祭5，获得1灵力，8+2*【火】不可防御伤害",
                 execute: (seq, caster, waiGong, recursive) =>
                 {
                         StageManager.Instance.DamageProcedure(seq, caster, caster, 5, false);
                         StageManager.Instance.BuffProcedure(seq, caster, caster, "献祭计数器",5);
-                        StageManager.Instance.DamageProcedure(seq, caster, caster.Opponent(), 5, false);
-                        StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",1+waiGong.GetPower(WuXing.Huo));
+                        StageManager.Instance.DamageProcedure(seq, caster, caster.Opponent(), 8+2*waiGong.GetPower(WuXing.Huo), false);
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",1);
+                }),
+            new WaiGongEntry("烈火冲", JingJie.LianQi, "献祭5，9+2*【火】不可防御伤害",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        caster.Swift = true;
+                        StageManager.Instance.DamageProcedure(seq, caster, caster, 5, false);
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "献祭计数器",5);
+                        StageManager.Instance.DamageProcedure(seq, caster, caster.Opponent(), 7+2*waiGong.GetPower(WuXing.Huo), false);
                 }),
 
             new WaiGongEntry("融化", JingJie.ZhuJi, "移除对方护甲，再造成等量不可防御伤害",
@@ -646,7 +687,7 @@ public class ChipCategory : Category<ChipEntry>
                         StageManager.Instance.DamageProcedure(seq, caster, caster.Opponent(), 15+2*waiGong.GetPower(WuXing.Huo), false);
 
                 }),
-            new WaiGongEntry("燃烧殆尽", JingJie.JinDan, "献祭10,造成你已损失生命值的不可防御伤害",
+            new WaiGongEntry("燃烧殆尽", JingJie.JinDan, "献祭10,造成你已损失生命值的攻击",
                 manaCost: (level, powers) => 2,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
@@ -654,7 +695,7 @@ public class ChipCategory : Category<ChipEntry>
                         StageManager.Instance.DamageProcedure(seq, caster, caster, 10, false);
                         StageManager.Instance.BuffProcedure(seq, caster, caster, "献祭计数器",10);
                         int d=caster.MaxHp-caster.Hp;
-                        StageManager.Instance.DamageProcedure(seq, caster, caster.Opponent(), d, false);
+                        StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), d);
 
                 }),
             new WaiGongEntry("灵魂燃烧", JingJie.JinDan, "献祭15，获得15灵力，你无法再获得灵力",
@@ -689,13 +730,14 @@ public class ChipCategory : Category<ChipEntry>
                         caster.Swift = true;
                         StageManager.Instance.ArmorGainProcedure(seq, caster, caster,3+2*waiGong.GetPower(WuXing.Tu));
                 }),
-            new WaiGongEntry("大地灵气", JingJie.LianQi, "5防御，1灵气,相邻【土】则+2灵气",
+            new WaiGongEntry("大地灵气", JingJie.LianQi, "5+【土】防御，5+【土】攻击,",
                 manaCost: (level, powers) => 0,
                 execute: (seq, caster, waiGong, recursive) =>
                 {
-                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster,5);
-                        StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",waiGong.GetPower(WuXing.Tu)>0?2:1);
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster,5+waiGong.GetPower(WuXing.Tu));
+                        StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(),5+waiGong.GetPower(WuXing.Tu));
                 }),
+
 
             new WaiGongEntry("幸运女神", JingJie.ZhuJi, "投掷俩枚骰子，获得骰子之和的攻击和防御值，如果点数相同，则额外+点数点灵力",
                 manaCost: (level, powers) => 1,
@@ -758,6 +800,9 @@ public class ChipCategory : Category<ChipEntry>
                         waiGong.Consumed = true;
                         StageManager.Instance.BuffProcedure(seq, caster, caster, "重峦叠嶂",5+waiGong.GetPower(WuXing.Tu));
                 }),
+
+            //怪物卡牌
+
 
             /**********************************************************************************************************/
             /*********************************************** End ******************************************************/

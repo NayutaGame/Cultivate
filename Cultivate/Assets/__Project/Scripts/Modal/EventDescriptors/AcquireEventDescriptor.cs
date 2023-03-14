@@ -17,7 +17,7 @@ public class AcquireEventDescriptor : EventDescriptor
         RunManager.Instance.AcquireEvent -= runTech.Acquire;
     }
 
-    public AcquireEventDescriptor(Func<AcquireDetails, RunTech, bool> cond)
+    public AcquireEventDescriptor(string description, Func<AcquireDetails, RunTech, bool> cond) : base(description)
     {
         _cond = cond;
     }
