@@ -1,22 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class ChipPool : Pool<ChipEntry>
+public class ChipPool : AutoPool<ChipEntry>
 {
-    public ChipPool()
+    public ChipPool() : base(Encyclopedia.ChipCategory.Traversal.ToList())
     {
-        PopulateChips();
     }
-
-    public void PopulateChips()
-    {
-        for(int i = 0; i < 1; i++)
-            Populate(Encyclopedia.ChipCategory.Traversal);
-    }
-
-    public bool TryPopFirst(JingJie jingJie, out ChipEntry item)
-        => TryPopFirst(entry => entry.JingJie <= jingJie, out item);
 }

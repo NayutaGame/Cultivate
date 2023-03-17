@@ -4,6 +4,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using UnityEngine.Assertions;
 
 namespace System.Collections.Generic
@@ -27,12 +28,12 @@ namespace System.Collections.Generic
         /// <summary>
         /// Custom comparer used to order the heap.
         /// </summary>
-        private readonly IComparer<TPriority>? _comparer;
+        [CanBeNull] private readonly IComparer<TPriority> _comparer;
 
         /// <summary>
         /// Lazily-initialized collection used to expose the contents of the queue.
         /// </summary>
-        private UnorderedItemsCollection? _unorderedItems;
+        [CanBeNull] private UnorderedItemsCollection _unorderedItems;
 
         /// <summary>
         /// The number of nodes in the heap.
@@ -92,7 +93,7 @@ namespace System.Collections.Generic
         ///  Custom comparer dictating the ordering of elements.
         ///  Uses <see cref="Comparer{T}.Default" /> if the argument is <see langword="null"/>.
         /// </param>
-        public PriorityQueue(IComparer<TPriority>? comparer)
+        public PriorityQueue([CanBeNull] IComparer<TPriority> comparer)
         {
             _nodes = Array.Empty<(TElement, TPriority)>();
             _comparer = InitializeComparer(comparer);
@@ -110,7 +111,7 @@ namespace System.Collections.Generic
         /// <exception cref="ArgumentOutOfRangeException">
         ///  The specified <paramref name="initialCapacity"/> was negative.
         /// </exception>
-        public PriorityQueue(int initialCapacity, IComparer<TPriority>? comparer)
+        public PriorityQueue(int initialCapacity, [CanBeNull] IComparer<TPriority> comparer)
         {
             Assert.IsTrue(initialCapacity >= 0);
 
@@ -152,7 +153,7 @@ namespace System.Collections.Generic
         ///  Constructs the heap using a heapify operation,
         ///  which is generally faster than enqueuing individual elements sequentially.
         /// </remarks>
-        public PriorityQueue(IEnumerable<(TElement Element, TPriority Priority)> items, IComparer<TPriority>? comparer)
+        public PriorityQueue(IEnumerable<(TElement Element, TPriority Priority)> items, [CanBeNull] IComparer<TPriority> comparer)
         {
             Assert.IsTrue(items != null);
 
@@ -811,7 +812,8 @@ namespace System.Collections.Generic
         /// <summary>
         /// Initializes the custom comparer to be used internally by the heap.
         /// </summary>
-        private static IComparer<TPriority>? InitializeComparer(IComparer<TPriority>? comparer)
+        [CanBeNull]
+        private static IComparer<TPriority> InitializeComparer([CanBeNull] IComparer<TPriority> comparer)
         {
             if (typeof(TPriority).IsValueType)
             {

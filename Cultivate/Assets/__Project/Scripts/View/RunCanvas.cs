@@ -17,10 +17,12 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public Button CharacterButton;
     public Button TechButton;
+    public Button MapButton;
     public Button BattleButton;
 
     public CharacterPanel CharacterPanel;
     public TechTreePanel TechTreePanel;
+    public MapPanel MapPanel;
     public BattlePanel BattlePanel;
 
     private Panel _currentPanel;
@@ -40,6 +42,7 @@ public class RunCanvas : Singleton<RunCanvas>
 
         CharacterButton.onClick.AddListener(OpenCharacterPanel);
         TechButton.onClick.AddListener(OpenTechTreePanel);
+        MapButton.onClick.AddListener(OpenMapPanel);
         BattleButton.onClick.AddListener(OpenBattlePanel);
 
         TurnButton.onClick.AddListener(AddTurn);
@@ -51,6 +54,7 @@ public class RunCanvas : Singleton<RunCanvas>
 
     private void OpenCharacterPanel() => OpenPanel(CharacterPanel);
     private void OpenTechTreePanel() => OpenPanel(TechTreePanel);
+    private void OpenMapPanel() => OpenPanel(MapPanel);
     private void OpenBattlePanel() => OpenPanel(BattlePanel);
     private void OpenPanel(Panel panel)
     {

@@ -16,12 +16,12 @@ namespace CLLibrary
 
         public void Populate(IEnumerable<T> list)
         {
-            list.Do(t => _list.Add(t));
+            _list.AddRange(list);
         }
 
         public void Populate(IEnumerable<T> list, Predicate<T> pred)
         {
-            list.FilterObj(pred).Do(t => _list.Add(t));
+            _list.AddRange(list.FilterObj(pred));
         }
 
         public void Shuffle()
@@ -35,7 +35,22 @@ namespace CLLibrary
             }
         }
 
-        public bool TryPopFirst(Predicate<T> pred, out T item)
+        public bool TryPopItem(out T item)
+        {
+            if (_list.Count == 0)
+            {
+                item = default;
+                return false;
+            }
+            else
+            {
+                item = _list[0];
+                _list.RemoveAt(0);
+                return true;
+            }
+        }
+
+        public bool TryPopItem(Predicate<T> pred, out T item)
         {
             item = _list.FirstObj(pred);
             if (item == null) return false;

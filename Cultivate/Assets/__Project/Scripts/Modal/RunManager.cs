@@ -35,8 +35,9 @@ public class RunManager : Singleton<RunManager>
 
     private ChipPool _chipPool;
     public DanTian DanTian { get; private set; }
-    public TechInventory TechInventory { get; private set; }
     private ProductInventory _productInventory;
+    public TechInventory TechInventory { get; private set; }
+    public Map Map { get; private set; }
     public ChipInventory ChipInventory { get; private set; }
     public AcquiredWaiGongInventory AcquiredInventory { get; private set; }
     public RunHero Hero { get; private set; }
@@ -54,6 +55,7 @@ public class RunManager : Singleton<RunManager>
             Hero.SetJingJie(_jingJie);
             DanTian.SetJingJie(_jingJie);
             Enemy.SetJingJie(_jingJie);
+            Map.SetJingJie(_jingJie);
         }
     }
 
@@ -88,20 +90,22 @@ public class RunManager : Singleton<RunManager>
 
         _chipPool = new();
         DanTian = new();
-        TechInventory = new();
         _productInventory = new();
+        TechInventory = new();
+        Map = new();
         ChipInventory = new();
         AcquiredInventory = new();
 
         Hero = new();
         EnemyPool = new();
-        NextEnemyFromPool();
+        TryDrawEnemy();
 
         _accessors = new()
         {
             { "GetTileXY",             GetTileXY },
-            { "GetRunTech",            GetRunTech },
             // { "TryGetProduct",         TryGetProduct },
+            { "GetRunTech",            GetRunTech },
+            { "TryGetRunNode",         TryGetRunNode },
             { "TryGetRunChip",         TryGetRunChip },
             { "TryGetAcquired",        TryGetAcquired },
             { "GetHeroSlot",           GetHeroSlot },
@@ -121,8 +125,9 @@ public class RunManager : Singleton<RunManager>
 
     public static T Get<T>(IndexPath indexPath) => (T) Instance._accessors[indexPath._str](indexPath);
     private object GetTileXY(IndexPath indexPath) => DanTian.GetTileXY(indexPath._ints[0], indexPath._ints[1]);
-    private object GetRunTech(IndexPath indexPath) => TechInventory[indexPath._ints[0]];
     // private object TryGetProduct(IndexPath indexPath) => _productInventory[indexPath._ints[0]];
+    private object GetRunTech(IndexPath indexPath) => TechInventory[indexPath._ints[0]];
+    private object TryGetRunNode(IndexPath indexPath) => Map[indexPath._ints[0], indexPath._ints[1]];
     private object TryGetRunChip(IndexPath indexPath) => ChipInventory.TryGet(indexPath._ints[0]);
     private object TryGetAcquired(IndexPath indexPath) => AcquiredInventory.TryGet(indexPath._ints[0]);
     private object GetHeroSlot(IndexPath indexPath) => Hero.HeroSlotInventory[indexPath._ints[0]];
@@ -430,31 +435,15 @@ public class RunManager : Singleton<RunManager>
     public bool TryDrawWaiGong()
     {
         _chipPool.Shuffle();
-
-        bool success = _chipPool.TryPopFirst(c => c is WaiGongEntry && c.JingJie <= _jingJie, out ChipEntry chipEntry);
-        if (!success)
-        {
-            _chipPool.PopulateChips();
-            success = _chipPool.TryPopFirst(c => c is WaiGongEntry && c.JingJie <= _jingJie, out chipEntry);
-        }
-
-        ChipInventory.Add(new RunChip(chipEntry));
-        return success;
+        ChipInventory.Add(new RunChip(_chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJie <= _jingJie)));
+        return true;
     }
 
     public bool TryDrawStone()
     {
         _chipPool.Shuffle();
-
-        bool success = _chipPool.TryPopFirst(c => c is WuXingChipEntry, out ChipEntry chipEntry);
-        if (!success)
-        {
-            _chipPool.PopulateChips();
-            success = _chipPool.TryPopFirst(c => c is WuXingChipEntry, out chipEntry);
-        }
-
-        ChipInventory.Add(new RunChip(chipEntry));
-        return success;
+        ChipInventory.Add(new RunChip(_chipPool.ForcePopItem(c => c is WuXingChipEntry)));
+        return true;
     }
 
     public void DrawChip(Predicate<ChipEntry> pred, int count)
@@ -462,32 +451,16 @@ public class RunManager : Singleton<RunManager>
         _chipPool.Shuffle();
         for (int i = 0; i < count; i++)
         {
-            bool success = _chipPool.TryPopFirst(pred, out ChipEntry chipEntry);
-            if (!success)
-            {
-                _chipPool.PopulateChips();
-                _chipPool.Shuffle();
-                success = _chipPool.TryPopFirst(pred, out chipEntry);
-            }
-
-            ChipInventory.Add(new RunChip(chipEntry));
+            ChipInventory.Add(new RunChip(_chipPool.ForcePopItem(pred)));
         }
     }
 
-    public bool NextEnemyFromPool()
+    public bool TryDrawEnemy()
     {
-        if(EnemyPool.Count() == 0)
-            EnemyPool.Populate();
-
-        bool success = EnemyPool.TryPopFirst(out RunEnemy runEnemy);
-        if (success)
-        {
-            Enemy = runEnemy;
-        }
-        else
-        {
-            Enemy = new RunEnemy();
-        }
-        return success;
+        EnemyPool.Shuffle();
+        CreateEnemyDetails d = new CreateEnemyDetails();
+        EnemyEntry entry = EnemyPool.ForcePopItem(e => e.CanCreate(d));
+        Enemy = entry.Create(d);
+        return true;
     }
 }

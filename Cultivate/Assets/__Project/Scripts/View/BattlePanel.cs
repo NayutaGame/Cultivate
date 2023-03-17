@@ -36,7 +36,7 @@ public class BattlePanel : Panel
 
     private void NextEnemy()
     {
-        RunManager.Instance.NextEnemyFromPool();
+        RunManager.Instance.TryDrawEnemy();
         SkillEditor.EnemyHPInputField.text = RunManager.Instance.Enemy.Health.ToString();
         SkillEditor.Refresh();
     }
