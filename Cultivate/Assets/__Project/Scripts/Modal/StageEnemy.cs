@@ -17,6 +17,7 @@ public class StageEnemy : StageEntity
         _neiGongList = new StageNeiGong[4];
 
         _waiGongList = new StageWaiGong[_runEnemy.Limit];
+
         for (int i = 0; i < _waiGongList.Length; i++)
         {
             EnemyChipSlot slot = _runEnemy.GetSlot(i + _runEnemy.Start);
@@ -24,7 +25,7 @@ public class StageEnemy : StageEntity
             int[] powers = new int[WuXing.Length];
             WuXing.Traversal.Do(wuXing => powers[wuXing] = slot.GetPower(wuXing));
 
-            _waiGongList[i] = new StageWaiGong(this, _runEnemy.GetSlot(i).Chip, powers, i);
+            _waiGongList[i] = new StageWaiGong(this, _runEnemy.GetSlot(i + _runEnemy.Start).Chip, powers, i);
         }
 
         _p = 0;

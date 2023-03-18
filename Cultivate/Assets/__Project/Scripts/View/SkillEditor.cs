@@ -13,6 +13,9 @@ public class SkillEditor : MonoBehaviour
     public TMP_InputField HeroHPInputField;
     public TMP_InputField EnemyHPInputField;
 
+    public TMP_Text SimulatedPlayerHP;
+    public TMP_Text SimulatedEnemyHP;
+
     private RunChipView[] _heroNeiGongViews;
     private RunChipView[] _heroWaiGongViews;
     private RunChipView[] _enemyNeiGongViews;
@@ -33,6 +36,9 @@ public class SkillEditor : MonoBehaviour
     {
         foreach(var view in _heroWaiGongViews) view.Refresh();
         foreach(var view in _enemyWaiGongViews) view.Refresh();
+
+        SimulatedPlayerHP.text = $"玩家剩余生命: {RunManager.Instance.Brief.Item1}";
+        SimulatedEnemyHP.text = $"怪物剩余生命: {RunManager.Instance.Brief.Item2}";
     }
 
     private void ConfigureList(ref RunChipView[] views, int limit, Transform parentTransform, string indexPathString)

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class NodeView : ItemView
+public class NodeView : ItemView, IPointerClickHandler
 {
     private Image Image;
     public TMP_Text NameText;
@@ -26,5 +27,29 @@ public class NodeView : ItemView
             return;
 
         NameText.text = $"{runNode.GetName()}";
+        switch (runNode.State)
+        {
+            case RunNode.RunNodeState.Current:
+                Image.color = Color.cyan;
+                break;
+            case RunNode.RunNodeState.Locked:
+                Image.color = Color.gray;
+                break;
+            case RunNode.RunNodeState.Missed:
+                Image.color = Color.red;
+                break;
+            case RunNode.RunNodeState.Passed:
+                Image.color = Color.yellow;
+                break;
+            case RunNode.RunNodeState.ToChoose:
+                Image.color = Color.green;
+                break;
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        RunManager.Instance.TryClickNode(GetIndexPath());
+        RunCanvas.Instance.Refresh();
     }
 }

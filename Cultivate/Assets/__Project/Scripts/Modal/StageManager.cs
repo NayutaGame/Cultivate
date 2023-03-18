@@ -330,10 +330,27 @@ public class StageManager : Singleton<StageManager>
         // accelerating
         // skip animation
 
-        Debug.Log(seq.ToString());
+        string report = seq.ToString();
+        // Debug.Log(report);
+        RunCanvas.Instance.SimulatePanel.ReportText.text = report;
         // seq.Restart();
 
         AppManager.Pop();
+    }
+
+    public static (int, int) Simulate()
+    {
+        AppManager.Instance.StageManager.gameObject.SetActive(true);
+        AppManager.Instance.StageManager.gameObject.SetActive(false);
+
+        Instance._hero = new StageHero(RunManager.Instance.Hero);
+        Instance._enemy = new StageEnemy(RunManager.Instance.Enemy);
+
+        StringBuilder seq = new StringBuilder();
+
+        Instance.Simulate(seq);
+
+        return (Instance._hero.Hp, Instance._enemy.Hp);
     }
 
     private void Simulate(StringBuilder seq)
@@ -351,12 +368,23 @@ public class StageManager : Singleton<StageManager>
         {
             if (heroTurn)
             {
+                seq.Append($"--------第{i}回合, 玩家行动--------\n");
                 _hero.Execute(seq);
             }
             else
             {
+                seq.Append($"--------第{i}回合, 敌人行动--------\n");
                 _enemy.Execute(seq);
             }
+
+            seq.Append($"玩家 {_hero.Hp}[{_hero.Armor}] Buff:");
+            foreach (Buff b in _hero.Buffs)
+                seq.Append($"  {b.GetName()}*{b.Stack}");
+            seq.Append("\n");
+            seq.Append($"敌人 {_enemy.Hp}[{_enemy.Armor}] Buff:");
+            foreach (Buff b in _enemy.Buffs)
+                seq.Append($"  {b.GetName()}*{b.Stack}");
+            seq.Append("\n");
 
             if (TryCommit(seq, heroTurn))
                 return;

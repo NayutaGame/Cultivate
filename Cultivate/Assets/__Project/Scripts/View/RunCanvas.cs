@@ -17,13 +17,15 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public Button CharacterButton;
     public Button TechButton;
+    public Button SimulateButton;
     public Button MapButton;
-    public Button BattleButton;
+    public Button NodeButton;
 
     public CharacterPanel CharacterPanel;
     public TechTreePanel TechTreePanel;
+    public SimulatePanel SimulatePanel;
     public MapPanel MapPanel;
-    public BattlePanel BattlePanel;
+    public NodePanel NodePanel;
 
     private Panel _currentPanel;
 
@@ -42,8 +44,9 @@ public class RunCanvas : Singleton<RunCanvas>
 
         CharacterButton.onClick.AddListener(OpenCharacterPanel);
         TechButton.onClick.AddListener(OpenTechTreePanel);
+        SimulateButton.onClick.AddListener(OpenSimulatePanel);
         MapButton.onClick.AddListener(OpenMapPanel);
-        BattleButton.onClick.AddListener(OpenBattlePanel);
+        NodeButton.onClick.AddListener(OpenNodePanel);
 
         TurnButton.onClick.AddListener(AddTurn);
         XiuWeiButton.onClick.AddListener(AddXiuWei);
@@ -54,8 +57,9 @@ public class RunCanvas : Singleton<RunCanvas>
 
     private void OpenCharacterPanel() => OpenPanel(CharacterPanel);
     private void OpenTechTreePanel() => OpenPanel(TechTreePanel);
+    private void OpenSimulatePanel() => OpenPanel(SimulatePanel);
     private void OpenMapPanel() => OpenPanel(MapPanel);
-    private void OpenBattlePanel() => OpenPanel(BattlePanel);
+    private void OpenNodePanel() => OpenPanel(NodePanel);
     private void OpenPanel(Panel panel)
     {
         if(_currentPanel != null)

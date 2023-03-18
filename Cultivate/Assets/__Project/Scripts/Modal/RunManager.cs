@@ -133,6 +133,7 @@ public class RunManager : Singleton<RunManager>
     private object GetHeroSlot(IndexPath indexPath) => Hero.HeroSlotInventory[indexPath._ints[0]];
     private object GetEnemySlot(IndexPath indexPath) => Enemy.GetSlot(indexPath._ints[0]);
 
+    public RunNode TryGetCurrentNode() => Map.TryGetCurrentNode();
     public string GetStatusString() => $"命元：{_mingYuan}\n气血：{Hero.Health}\n初始灵力：{Hero.Mana}";
 
     // public bool TryDropProduct(IndexPath from, IndexPath to)
@@ -247,6 +248,8 @@ public class RunManager : Singleton<RunManager>
         else if (fromHero && toHero)
         {
             Hero.HeroSlotInventory.Swap(from._ints[0], to._ints[0]);
+            // extract waigong changed event
+            GenerateSimulation();
             return true;
         }
         else if (fromAcquired && toHero)
@@ -265,6 +268,7 @@ public class RunManager : Singleton<RunManager>
 
             slot.AcquiredRunChip = toEquip;
 
+            GenerateSimulation();
             return true;
         }
         else if (fromHero && toAcquired)
@@ -276,6 +280,7 @@ public class RunManager : Singleton<RunManager>
 
             slot.AcquiredRunChip = AcquiredInventory[to._ints[0]];
             AcquiredInventory[to._ints[0]] = toUnequip;
+            GenerateSimulation();
             return true;
         }
 
@@ -311,6 +316,7 @@ public class RunManager : Singleton<RunManager>
             Enemy.SetSlotContent(to._ints[0], null, powers);
         }
 
+        GenerateSimulation();
         return true;
     }
 
@@ -462,5 +468,30 @@ public class RunManager : Singleton<RunManager>
         EnemyEntry entry = EnemyPool.ForcePopItem(e => e.CanCreate(d));
         Enemy = entry.Create(d);
         return true;
+    }
+
+
+
+
+
+
+
+
+
+    public bool TryClickNode(IndexPath indexPath)
+    {
+        RunNode runNode = Get<RunNode>(indexPath);
+        if (runNode.State != RunNode.RunNodeState.ToChoose || !Map.Selecting)
+            return false;
+
+        Map.SelectedNode(runNode);
+        return true;
+    }
+
+    public (int, int) Brief;
+
+    private void GenerateSimulation()
+    {
+        Brief = StageManager.Simulate();
     }
 }
