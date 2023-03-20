@@ -19,6 +19,7 @@ public class AcquiredRunChip
     public int GetLevel() => Chip.Level;
     public int GetPower(WuXing wuXing) => Tile.Powers[wuXing];
 
+    // dirty variable
     public int GetManaCost()
     {
         if (Chip._entry is WaiGongEntry waigongEntry)

@@ -28,7 +28,7 @@ public class NodePanel : Panel
         base.Refresh();
 
         RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        PanelDescriptor d = runNode.CurrentPanel;
+        PanelDescriptor d = runNode?.CurrentPanel;
         if (d is BattlePanelDescriptor)
         {
             if (_currentPanel == BattlePanel)

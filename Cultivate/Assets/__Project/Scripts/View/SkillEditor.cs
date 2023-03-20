@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using CLLibrary;
 using TMPro;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public class SkillEditor : MonoBehaviour
     public TMP_Text SimulatedPlayerHP;
     public TMP_Text SimulatedEnemyHP;
 
+    public TMP_Dropdown EnemyPicker;
+
     private RunChipView[] _heroNeiGongViews;
     private RunChipView[] _heroWaiGongViews;
     private RunChipView[] _enemyNeiGongViews;
@@ -30,6 +33,12 @@ public class SkillEditor : MonoBehaviour
         EnemyHPInputField.text = RunManager.Instance.Enemy.Health.ToString();
         HeroHPInputField.onEndEdit.AddListener(SetHeroHP);
         EnemyHPInputField.onEndEdit.AddListener(SetEnemyHP);
+
+        var options = new List<TMP_Dropdown.OptionData>();
+        Encyclopedia.EnemyCategory.Traversal.Do(enemy => options.Add(new TMP_Dropdown.OptionData(enemy.Name)));
+        EnemyPicker.options = options;
+
+        EnemyPicker.onValueChanged.AddListener(SetEnemy);
     }
 
     public void Refresh()
@@ -64,5 +73,14 @@ public class SkillEditor : MonoBehaviour
         int hp = int.Parse(hpString);
         hp = Mathf.Clamp(hp, 1, 9999);
         RunManager.Instance.Enemy.Health = hp;
+    }
+
+    private void SetEnemy(int i)
+    {
+        CreateEnemyDetails d = new CreateEnemyDetails();
+        RunEnemy e = Encyclopedia.EnemyCategory[i].Create(d);
+        RunManager.Instance.SetEnemy(e);
+
+        RunCanvas.Instance.Refresh();
     }
 }

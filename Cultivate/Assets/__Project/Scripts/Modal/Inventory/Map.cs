@@ -62,8 +62,11 @@ public class Map : IInventory
         Selecting = false;
     }
 
-    public void FinishNode()
+    public void TryFinishNode()
     {
+        if (Selecting)
+            return;
+
         for (int y = 0; y < HEIGHT; y++)
         {
             RunNode runNode = this[_heroPosition.x + 1, y];
@@ -115,6 +118,7 @@ public class Map : IInventory
                     continue;
                 }
 
+                // canCreate
                 this[x, y] = new RunNode(new Vector2Int(x, y), pool.ForcePopItem());
 
                 if (x == 0)

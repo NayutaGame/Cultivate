@@ -11,15 +11,14 @@ public class RunEnemy
     public int Start;
     public int Limit;
 
-    public RunEnemy(int health = 40)
+    public RunEnemy(int health = 40, JingJie? jingJie = null)
     {
         Health = health;
         _slots = new EnemyChipSlot[RunManager.WaiGongLimit];
         for (int i = 0; i < _slots.Length; i++)
             _slots[i] = new EnemyChipSlot(i);
 
-        Start = 0;
-        Limit = RunManager.WaiGongLimit;
+        SetJingJie(jingJie ?? RunManager.Instance.JingJie);
     }
 
     public void SetJingJie(JingJie jingJie)

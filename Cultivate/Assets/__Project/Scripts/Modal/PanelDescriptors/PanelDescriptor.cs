@@ -5,5 +5,20 @@ using UnityEngine;
 
 public class PanelDescriptor
 {
-    public Action<Signal> ReceiveSignal;
+    public Action<Signal> _receiveSignal;
+
+    public virtual void ReceiveSignal(Signal signal)
+    {
+        _receiveSignal(signal);
+    }
+
+    public virtual void Enter()
+    {
+
+    }
+
+    public virtual void Exit()
+    {
+
+    }
 }

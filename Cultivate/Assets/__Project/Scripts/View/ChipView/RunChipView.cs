@@ -5,12 +5,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public abstract class RunChipView : ItemView, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
+public abstract class RunChipView : ItemView,
+    IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected Image _image;
 
     public TMP_Text LevelText;
+    public TMP_Text ManacostText;
     public TMP_Text NameText;
     public TMP_Text PowerText;
 

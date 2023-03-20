@@ -21,6 +21,7 @@ public class EnemyChipView : RunChipView
         if(slot.Chip == null)
         {
             LevelText.text = "";
+            ManacostText.text = "";
             NameText.text = "空";
             PowerText.text = $"{slot.GetPowerString()}";
             return;
@@ -28,6 +29,7 @@ public class EnemyChipView : RunChipView
         else
         {
             LevelText.text = $"{slot.Chip.Level}";
+            ManacostText.text = "";
             NameText.text = $"{slot.Chip.GetName()}";
             PowerText.text = $"{slot.GetPowerString()}";
         }

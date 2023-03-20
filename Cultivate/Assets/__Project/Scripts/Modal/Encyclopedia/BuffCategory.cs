@@ -15,7 +15,22 @@ public class BuffCategory : Category<BuffEntry>
             /*********************************************** 百花缭乱 **************************************************/
             /**********************************************************************************************************/
 
-            new ("灵气", "可以消耗灵气使用技能", BuffStackRule.Add, true, false),
+            new ("灵气", "可以消耗灵气使用技能", BuffStackRule.Add, true, false,
+                buffed: new Tuple<int, Func<Buff, BuffDetails, BuffDetails>>(0,
+                    (buff, d) =>
+                    {
+                        int limit = 3 + buff.Owner.GetStackOfBuff("灵气上限");
+                        if (buff.Stack > limit)
+                            buff.Stack = limit;
+                        return d;
+                    })),
+
+            new ("灵气上限", "", BuffStackRule.Add, true, false),
+
+
+
+
+
             new ("跳回合", "回合中无法行动", BuffStackRule.Add, false, false),
             new ("跳卡牌", "行动时跳过下账卡牌", BuffStackRule.Add, false, false),
             new ("双发", "下一张牌使用两次", BuffStackRule.Wasted, true, false),
@@ -272,12 +287,7 @@ public class BuffCategory : Category<BuffEntry>
                     buff.Stack -=1;
                 }
                 ),
-            new ("力量", "攻击时攻击提高", BuffStackRule.Add, true, false,
-                attack: (buff, d) =>
-                {
-                    d.Value+=buff.Stack;
-                }
-                ),
+
 
             new ("混乱", "攻击防御时数值随机减少", BuffStackRule.Add, false, false,
                 attack: (buff, d) =>
@@ -327,7 +337,8 @@ public class BuffCategory : Category<BuffEntry>
                                 xianh=xianji.Stack;
                             }
                         d.Tgt.Hp=xianh;
-                        d.Tgt.Buffs.RemoveAll(bf=>true);
+                        d.Tgt.RemoveAllBuffs();
+                        // d.Tgt.Buffs.RemoveAll(bf=>true);
                     }
 
                 }
@@ -361,6 +372,175 @@ public class BuffCategory : Category<BuffEntry>
                 {
                     StageManager.Instance.ArmorGainProcedure(new StringBuilder(), owner, owner,buff.Stack);
                 }),
+
+
+
+
+
+
+            new ("基础加灵力", "每回合获得1灵力", BuffStackRule.Add, true, false,
+
+                startTurn: (buff, owner) =>
+                {
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), owner, owner, "灵气",buff.Stack);
+                }),
+
+
+            new ("力量", "攻击时攻击提高", BuffStackRule.Add, true, false,
+                attack: (buff, d) =>
+                {
+                    d.Value+=buff.Stack;
+                }
+                ),
+            new ("敏捷", "防御时防御提高", BuffStackRule.Add, true, false,
+                armor: (buff, d) =>
+                {
+                    d.Value+=buff.Stack;
+                }
+                ),
+
+            new ("下回合加五防御", "下回合加五防御", BuffStackRule.Add, true, false,
+
+                startTurn: (buff, owner) =>
+                {
+                    if(buff.Stack==1)
+                    {
+                         StageManager.Instance.ArmorGainProcedure(new StringBuilder(), owner, owner,7);
+                    }
+                },
+                endTurn: (buff, owner) =>
+                {
+                    buff.Stack-=1;
+                }
+                ),
+
+            new ("下次被攻击减伤8", "下次被攻击减伤8", BuffStackRule.Add, true, false,
+                attacked: (buff, d) =>
+                {
+                    int dmg=d.Value>8?d.Value-8:0;
+                    d.Value=dmg;
+                }
+                ),
+
+            new ("下回合减一灵力", "下回合减一灵力", BuffStackRule.Add, true, false,
+
+                startTurn: (buff, owner) =>
+                {
+                    if(buff.Stack==1)
+                    {
+                        Buff mana=owner.FindBuff("灵气");
+                        mana.Stack-=1;
+                    }
+                },
+                endTurn: (buff, owner) =>
+                {
+                    buff.Stack-=1;
+                }
+                ),
+            new ("没受伤回一灵力", "如果本回合没受到伤害，那么回合结束后恢复1灵力", BuffStackRule.Add, true, false,
+                damaged: (buff, d) =>
+                {
+                        buff.Stack = 0;
+                },
+                endTurn: (buff, owner) =>
+                {
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), owner, owner, "灵气",1);
+                }
+                ),
+
+            new ("下回合获得十二防御", "下回合加十二防御", BuffStackRule.Add, true, false,
+
+                startTurn: (buff, owner) =>
+                {
+                    if(buff.Stack==1)
+                    {
+                         StageManager.Instance.ArmorGainProcedure(new StringBuilder(), owner, owner,15);
+                    }
+                },
+                endTurn: (buff, owner) =>
+                {
+                    buff.Stack-=1;
+                }
+                ),
+            new ("凌迟", "计算凌迟数", BuffStackRule.Add, true, false),
+            new ("虚弱", "攻击力减少1/4，Stack记录回合数", BuffStackRule.Add, true, false,
+                attack: (buff, d) =>
+                {
+                        d.Value=d.Value-d.Value/4;
+                },
+                endTurn: (buff, owner) =>
+                {
+                    buff.Stack-=1;
+                }
+                ),
+            new ("易伤", "受击时攻击提高1/3，Stack记录回合数", BuffStackRule.Add, true, false,
+                attacked: (buff, d) =>
+                {
+                        d.Value=d.Value+d.Value/3;
+                },
+                endTurn: (buff, owner) =>
+                {
+                    buff.Stack-=1;
+                }
+                ),
+            new ("吸血鬼", "获得吸血（恢复伤害一半的血量），但无法再获得护甲", BuffStackRule.Add, true, false,
+                armor: (buff, d) =>
+                {
+                    d.Value=0;
+                },
+                damage: (buff, d) =>
+                {
+                    StageManager.Instance.HealProcedure(new StringBuilder(), d.Src, d.Src, d.Value/2);
+                }
+                ),
+
+            new ("诅咒之刃", "回合开始对敌方造成3点伤害", BuffStackRule.Add, true, false,
+
+                startTurn: (buff, owner) =>
+                {
+
+                    StageManager.Instance.DamageProcedure(new StringBuilder(), owner, owner.Opponent(), 3, false);
+                }
+
+                ),
+            new ("诅咒之盾", "回合开始获得5护甲", BuffStackRule.Add, true, false,
+
+                startTurn: (buff, owner) =>
+                {
+
+                    StageManager.Instance.ArmorGainProcedure(new StringBuilder(), owner, owner,5);
+                }
+
+                ),
+            new ("卖个破绽", "受击后给对方施加2易伤", BuffStackRule.Add, true, false,
+                attacked: (buff, d) =>
+                {
+                        StageManager.Instance.BuffProcedure(new StringBuilder(), d.Tgt, d.Src, "易伤",2);
+                },
+                startTurn: (buff, owner) =>
+                {
+                    buff.Stack-=1;
+                }
+                ),
+            new ("免疫攻击", "受攻击时不受伤害", BuffStackRule.Add, true, false,
+                attacked: (buff, d) =>
+                {
+                        d.Value=0;
+                        buff.Stack-=1;
+                }
+                ),
+            new ("低于十五回满", "回合开始时若生命值低于15则恢复全部生命值", BuffStackRule.Add, true, false,
+
+                startTurn: (buff, owner) =>
+                {
+
+                    if(owner.Hp<15)
+                    {
+                        owner.Hp=owner.MaxHp;
+                    }
+                }
+
+                ),
             /**********************************************************************************************************/
             /*********************************************** End ******************************************************/
             /**********************************************************************************************************/

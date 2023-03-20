@@ -11,7 +11,13 @@ public class RunNode
     public RunNodeState State
     {
         get => _state;
-        set => _state = value;
+        set
+        {
+            _state = value;
+
+            if (_state == RunNodeState.Current)
+                _entry.Create(this);
+        }
     }
 
     public string GetName() => _entry.Name;
@@ -37,6 +43,8 @@ public class RunNode
 
     public void ChangePanel(PanelDescriptor panel)
     {
+        CurrentPanel?.Exit();
         CurrentPanel = panel;
+        CurrentPanel.Enter();
     }
 }

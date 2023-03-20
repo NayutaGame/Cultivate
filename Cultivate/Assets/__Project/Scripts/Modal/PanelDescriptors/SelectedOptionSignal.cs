@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class SelectedOptionSignal : Signal
 {
-    public int _selected;
+    public int Selected;
+
+    public SelectedOptionSignal(int selected)
+    {
+        Selected = selected;
+    }
 }

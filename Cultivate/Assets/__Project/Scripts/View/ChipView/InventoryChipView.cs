@@ -17,6 +17,7 @@ public class InventoryChipView : RunChipView
         if (chip == null) return;
 
         LevelText.text = $"{chip.Level}";
+        ManacostText.text = $"{chip.GetManaCost()}";
         NameText.text = $"{chip.GetName()}";
         PowerText.text = "";
     }

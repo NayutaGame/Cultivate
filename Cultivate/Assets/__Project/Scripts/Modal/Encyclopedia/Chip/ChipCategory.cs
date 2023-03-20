@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
+using System.Text;
 
 public class ChipCategory : Category<ChipEntry>
 {
@@ -187,16 +188,26 @@ public class ChipCategory : Category<ChipEntry>
             //     }),
             //
 
-            new WaiGongEntry("聚气术", JingJie.LianQi, "灵气+1",
+            /*new WaiGongEntry("聚气术", JingJie.LianQi, "灵气+1",
                 execute: (seq, caster, waiGong, recursive) =>
-                    StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气")),
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气")),*/
 
+            new WaiGongEntry("聚气术", JingJie.LianQi, "空过",
+            execute: (seq, caster, waiGong, recursive) =>
+                {
+                    // Buff mana=caster.FindBuff("灵气");
+                    // mana.Stack-=1;
+
+                    // 写成下面这样
+                    caster.TryConsumeMana();
+                }),
+            /*
             new WuXingChipEntry("金", "周围金+1", WuXing.Jin),
             new WuXingChipEntry("水", "周围水+1", WuXing.Shui),
             new WuXingChipEntry("木", "周围木+1", WuXing.Mu),
             new WuXingChipEntry("火", "周围火+1", WuXing.Huo),
             new WuXingChipEntry("土", "周围土+1", WuXing.Tu),
-
+            */
             /*new WaiGongEntry("火剑", JingJie.LianQi, "5, 有【火】时攻+4",
                 execute: (seq, caster, waiGong, recursive) =>
                 {
@@ -208,20 +219,19 @@ public class ChipCategory : Category<ChipEntry>
                 plug: (tile, runChip) => tile.AcquiredRunChip.Chip._entry.Unplug(tile.AcquiredRunChip),
                 canUnplug: acquiredRunChip => false,
                 unplug: acquiredRunChip => { }),
-
-            // new XueWeiEntry("穴位1", "穴位1", 0),
-            // new XueWeiEntry("穴位2", "穴位2", 1),
-            // new XueWeiEntry("穴位3", "穴位3", 2),
-            // new XueWeiEntry("穴位4", "穴位4", 3),
-            // new XueWeiEntry("穴位5", "穴位5", 4),
-            // new XueWeiEntry("穴位6", "穴位6", 5),
-            // new XueWeiEntry("穴位7", "穴位7", 6),
-            // new XueWeiEntry("穴位8", "穴位8", 7),
-            // new XueWeiEntry("穴位9", "穴位9", 8),
-            // new XueWeiEntry("穴位10", "穴位10", 9),
-            // new XueWeiEntry("穴位11", "穴位11", 10),
-            // new XueWeiEntry("穴位12", "穴位12", 11),
-
+/*
+             new XueWeiEntry("穴位1", "穴位1", 0),
+             new XueWeiEntry("穴位2", "穴位2", 1),
+            new XueWeiEntry("穴位3", "穴位3", 2),
+            new XueWeiEntry("穴位4", "穴位4", 3),
+            new XueWeiEntry("穴位5", "穴位5", 4),
+            new XueWeiEntry("穴位6", "穴位6", 5),
+            new XueWeiEntry("穴位7", "穴位7", 6),
+            new XueWeiEntry("穴位8", "穴位8", 7),
+            new XueWeiEntry("穴位9", "穴位9", 8),
+            new XueWeiEntry("穴位10", "穴位10", 9),
+            new XueWeiEntry("穴位11", "穴位11", 10),
+            new XueWeiEntry("穴位12", "穴位12", 11),*/
             /*
             new WaiGongEntry("自动使用", JingJie.LianQi, "自动消耗掉自己", 0,
                 startStage: (caster, waiGong) =>
@@ -313,7 +323,7 @@ public class ChipCategory : Category<ChipEntry>
             /*********************************************** Summer68 *************************************************/
             /**********************************************************************************************************/
 
-            //金
+           /* //金
             new WaiGongEntry("蓄力", JingJie.LianQi, "获得蓄力buff，下次攻击时攻击力乘二，受到伤害后移除。",
                 execute: (seq, caster, waiGong, recursive) =>
                 {
@@ -802,8 +812,613 @@ public class ChipCategory : Category<ChipEntry>
                 }),
 
             //怪物卡牌
+            */
 
 
+
+           new WaiGongEntry("放第一", JingJie.FanXu, "",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    if (waiGong.StageUsedTimes == 0)
+                    {
+                        StageWaiGong waiGongPos7 = StageManager.Instance._hero._waiGongList[6];
+                        waiGongPos7.Consumed = true;
+
+                        // 消耗性效果
+                    }
+                    else
+                    {
+                        StageWaiGong waiGongPos7 = StageManager.Instance._hero._waiGongList[6];
+                        waiGongPos7.Execute(seq, caster);
+                    }
+                }),
+
+           new WaiGongEntry("放第七", JingJie.FanXu, "",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    // "一般效果"
+                }),
+
+           new WaiGongEntry("访问其他卡", JingJie.FanXu, "",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    if (!recursive)
+                        return;
+
+                    // 当前卡的序号
+                    int currPos = waiGong.SlotIndex;
+
+                    // 访问第0张
+                    StageWaiGong waiGongPos0 = StageManager.Instance._hero._waiGongList[0];
+
+                    waiGong.Next().Execute(seq, caster, false);
+                }),
+
+           new WaiGongEntry("基础加灵力", JingJie.FanXu, "每回合开始获得1灵力",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        waiGong.Consumed = true;
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "基础加灵力",1);
+
+                }),
+
+            //基础攻击类
+            new WaiGongEntry("佯攻", JingJie.FanXu, "4攻",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 4);
+                }),
+
+            new WaiGongEntry("轻击", JingJie.FanXu, "7攻", 1 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 7);
+                }),
+
+            new WaiGongEntry("重击", JingJie.FanXu, "11攻", 2 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 11);
+                }),
+
+            new WaiGongEntry("超重击", JingJie.FanXu, "16攻", 3 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 16);
+                }),
+
+            //基础防御
+            new WaiGongEntry("单手防御", JingJie.FanXu, "5防御",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster,5);
+                }),
+
+            new WaiGongEntry("双手防御", JingJie.FanXu, "10防御",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster,10);
+                }),
+
+            new WaiGongEntry("全力防御", JingJie.FanXu, "15防御",2,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster,15);
+                }),
+
+
+            //基础强化类
+            new WaiGongEntry("聚气", JingJie.FanXu, "本回合额外获得1灵力",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",1);
+
+                }),
+
+
+
+
+            //游玩过程中可以获得的卡，相较于基础卡更强力
+            //攻击类
+            new WaiGongEntry("醉拳", JingJie.LianQi, "随机1~13攻，",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    int d=RandomManager.Range(1,13);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), d);
+                }),
+            new WaiGongEntry("手里剑", JingJie.LianQi, "3攻*3", 1 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 3);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 3);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 3);
+                }),
+
+            new WaiGongEntry("迅捷之刃", JingJie.LianQi, "9攻，携带此牌后你可以多带一张牌", 2 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 9);
+
+                }),
+
+            new WaiGongEntry("穷途末路攻", JingJie.LianQi, "如果你上回合用完了你的灵力，那么12攻",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    int d=caster.GetMana();
+                    Buff add=caster.FindBuff("基础加灵力");
+                    int d1=0;
+                    if(add!=null)
+                        d1=add.Stack;
+                    if(d==d1)
+                        StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 12);
+
+                }),
+
+            new WaiGongEntry("铁锤", JingJie.LianQi, "8攻，如果对手有护甲，追加6攻", 1 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                    int d=caster.Opponent().Armor;
+                    if(d>0)
+                    {
+                        StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 8);
+                        StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 6);
+                    }
+                    else
+                        StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 8);
+                }),
+
+            new WaiGongEntry("苦痛之刃", JingJie.LianQi, "23攻，自身失去3点生命值", 2 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.DamageProcedure(seq, caster, caster, 2, false);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 19);
+
+                }),
+
+            new WaiGongEntry("泰山压顶", JingJie.LianQi, "9攻，对手本回合无法攻击。", 3 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 21);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "疲劳",1);
+                }),
+            new WaiGongEntry("凌迟", JingJie.LianQi, "1攻，本轮战斗内每次打出使伤害翻倍",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "凌迟",1);
+                    Buff n=caster.FindBuff("凌迟");
+                    int d =1;
+                    for(int i=1;i<n.Stack;i++)
+                        d*=2;
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), d);
+
+                }),
+            new WaiGongEntry("灵气之剑", JingJie.LianQi, "造成你当前灵力值*6的伤害", 1 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    int d=caster.GetMana();
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), d*6);
+
+                }),
+
+
+            new WaiGongEntry("冲锋", JingJie.LianQi, "13攻，只能放在卡组第一张", 1 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 13);
+
+                }),
+
+            new WaiGongEntry("泰坦", JingJie.LianQi, "15攻，15防御", 3,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 15);
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster,15);
+
+                }),
+
+            new WaiGongEntry("诅咒之刃", JingJie.LianQi, "携带后,每回合开始自动对敌方造成4点伤害", 0,
+                startStage: (caster, waiGong) =>
+                {
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "诅咒之刃",1);
+                }
+                ),
+            new WaiGongEntry("虚弱之刃", JingJie.LianQi, "7攻，给对手2虚弱", 1 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "虚弱", 2);
+                }),
+
+            new WaiGongEntry("痛击", JingJie.LianQi, "5攻，给对手2易伤", 1 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "易伤", 2);
+                }),
+
+            new WaiGongEntry("通灵剑", JingJie.LianQi, "8攻，恢复1灵力，提升1灵力上限。", 1 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 9);
+                    //提升灵力上限
+                }),
+            new WaiGongEntry("终结", JingJie.LianQi, "5攻*6，只能放在最后一张", 3,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 5);
+                }),
+
+            new WaiGongEntry("灵力体系大招", JingJie.LianQi, "只能放在最后一张，会重复随机打出你的卡牌，且最小灵力花费为1，直到灵力不够为止。", 1 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    //待实现
+                }),
+            //防御类
+            new WaiGongEntry("预知危险", JingJie.JinDan, "下次被攻击时提供8点格挡",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "下次被攻击减伤8",1);
+
+                }),
+            new WaiGongEntry("持盾", JingJie.JinDan, "获得7防御，下回合再获得7防御",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster,7);
+                    Buff mana=caster.FindBuff("下回合获得五防御");
+                    if(mana!= null)
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "下回合获得五防御",1);
+                    else
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "下回合获得五防御",2);
+
+                }),
+
+            new WaiGongEntry("穷途末路守", JingJie.LianQi, "如果你上回合用完了你的灵力，那么14防御",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    int d=caster.GetMana();
+                    Buff add=caster.FindBuff("基础加灵力");
+                    int d1=0;
+                    if(add!=null)
+                        d1=add.Stack;
+                    if(d==d1)
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster, 14);
+
+                }),
+            new WaiGongEntry("迅捷之盾", JingJie.LianQi, "13防，携带此牌后你可以多带一张牌", 2 ,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster, 13);
+
+                }),
+
+            new WaiGongEntry("应急装置", JingJie.LianQi, "15防御，下回合减少1灵力",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster.Opponent(), 15);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "下回合减一灵力",2);
+
+                }),
+
+            new WaiGongEntry("通灵盾", JingJie.LianQi, "13防御，获得1点灵力上限",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster.Opponent(), 13);
+                    //获得1灵力上限
+
+                }),
+
+            new WaiGongEntry("后撤步", JingJie.LianQi, "11防御，如果本回合没受到伤害，那么回合结束后恢复1灵力",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster.Opponent(), 11);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "没受伤回一灵力",2);
+
+                }),
+            new WaiGongEntry("加强版持盾", JingJie.JinDan, "获得15防御，下回合再获得15防御",2,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster,15);
+                    Buff mana=caster.FindBuff("下回合获得十二防御");
+                    if(mana!= null)
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "下回合获得十二防御",1);
+                    else
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "下回合获得十二防御",2);
+                }),
+
+            new WaiGongEntry("武装力量", JingJie.LianQi, "9防御，获得2力量",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster, 9);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "力量",2);
+                    //获得1灵力上限
+
+                }),
+            new WaiGongEntry("武装敏捷", JingJie.LianQi, "9防御，获得2敏捷",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster, 9);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "敏捷",2);
+                    //获得1灵力上限
+
+                }),
+            new WaiGongEntry("诅咒之盾", JingJie.LianQi, "携带后,每回合开始自动获得5护甲", 0,
+                startStage: (caster, waiGong) =>
+                {
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "诅咒之盾",5);
+                }
+                ),
+
+            new WaiGongEntry("卖个破绽", JingJie.LianQi, "6防御，本回合受到攻击后给对方施加2易伤",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster.Opponent(), 6);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "卖个破绽",1);
+                    //获得1灵力上限
+
+                }),
+            //强化投资类
+            new WaiGongEntry("灵气收集器", JingJie.JinDan, "携带后每回合开始额外获得1灵力，但在开局时获得2回合虚弱,2回合易伤",0,
+                startStage: (caster, waiGong) =>
+                {
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "基础加灵力",1);
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "虚弱",3);
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "易伤",3);
+                }),
+
+            new WaiGongEntry("增强力量核心", JingJie.JinDan, "额外获得3力量增强",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "力量",3);
+
+                }),
+
+            new WaiGongEntry("增强防御核心", JingJie.JinDan, "额外获得3防御增强",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "敏捷",3);
+
+                }),
+
+
+            new WaiGongEntry("穷途末路加灵气", JingJie.JinDan, "如果你上回合用完了你的灵力，那么加2灵力",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    int d=caster.GetMana();
+                    Buff add=caster.FindBuff("基础加灵力");
+                    int d1=0;
+                    if(add!=null)
+                        d1=add.Stack;
+                    if(d==d1)
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "灵气",2);
+
+                }),
+
+            new WaiGongEntry("蓄力", JingJie.JinDan, "下次攻击造成2倍伤害，受到伤害后移除",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.BuffProcedure(seq, caster, caster, "蓄力",1);
+
+                }),
+
+            new WaiGongEntry("我已成神", JingJie.JinDan, "携带后在回合开始时不再能获得灵力，获得3灵力，获得5力量，5敏捷",0,
+                startStage: (caster, waiGong) =>
+                {
+
+                    Buff Smana=caster.FindBuff("基础加灵力");
+                    Smana.Stack=0;
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "敏捷",5);
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "力量",5);
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "灵气",3);
+                }),
+
+            new WaiGongEntry("收刀", JingJie.LianQi, "携带后你开局额外获得2灵力，2力量，只能放在最后一张", 0 ,
+                startStage: (caster, waiGong) =>
+                {
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "灵气",2);
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "力量",2);
+                }
+                ),
+            new WaiGongEntry("吸血鬼", JingJie.LianQi, "携带此卡开局获得吸血（恢复伤害一半的血量），但无法再获得护甲", 0 ,
+                startStage: (caster, waiGong) =>
+                {
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "吸血鬼",1);
+                }
+                ),
+
+            new WaiGongEntry("任务：过量伤害", JingJie.JinDan, "携带后把怪物的血量打到低于-18即可移除此卡并获得任务奖励，抽三卡",0),
+
+            new WaiGongEntry("任务：完美格挡", JingJie.JinDan, "携带后在一轮内受到5次以上攻击且不受到伤害，则移除此卡并获得武装力量和武装敏捷",0),
+
+
+            //怪物专用卡牌
+
+
+            new WaiGongEntry("怪兽一介绍", JingJie.FanXu, "你好我是你的新手教官，请你把基础加灵力放在第一格，把我的血量设置为16。每人三张卡",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "基础加灵力",1);
+                }),
+
+            new WaiGongEntry("怪兽一攻击", JingJie.FanXu, "我会对你造成6攻击，请注意防御",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 6);
+                }),
+
+            new WaiGongEntry("怪兽一防御", JingJie.FanXu, "5防御，我会给自己加上5点防御，在下回合你攻击我的时候减少我受到的伤害，到我的下个回合开始防御会消失",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster,5);
+                }),
+
+            new WaiGongEntry("怪兽一休息", JingJie.FanXu, "有点累了，你快点把我打死吧",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster,5);
+                }),
+
+            new WaiGongEntry("怪兽二奖励", JingJie.FanXu, "在化神期抽3张卡，并选一张加入到你的卡组中。",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                }),
+            new WaiGongEntry("怪兽二介绍", JingJie.FanXu, "你每个回合都会获得1灵力，灵力花费更高的卡往往也会更强力。这次你可以用所有的基础卡和我战斗，希望你能承受住我的重♂击.血量26",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "基础加灵力",1);
+                }),
+
+            new WaiGongEntry("怪兽二防御", JingJie.FanXu, "5防御",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                        StageManager.Instance.ArmorGainProcedure(seq, caster, caster,5);
+                }),
+
+            new WaiGongEntry("怪兽二重击", JingJie.FanXu, "13攻击!!!，尝尝我的厉♂害！！",3,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 13);
+                }),
+
+            new WaiGongEntry("怪兽二奖励", JingJie.FanXu, "在化神期抽3张卡，并选一张加入到你的卡组中。",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                }),
+
+            new WaiGongEntry("怪兽三介绍", JingJie.FanXu, "难缠的对手，每一轮他都会变得更强，请注意速战速决,血量为35",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "基础加灵力",1);
+                }),
+            new WaiGongEntry("怪兽三攻击强化", JingJie.FanXu, "3攻击",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 3);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "力量",1);
+                }),
+            new WaiGongEntry("怪兽三强化", JingJie.FanXu, "加2力量",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "力量",2);
+                }),
+            new WaiGongEntry("怪兽三奖励", JingJie.FanXu, "在化神期抽3张卡，并选一张加入到你的卡组中。并且你升级了！！！之后你可以每轮打4张牌",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                }),
+
+            new WaiGongEntry("怪兽四介绍", JingJie.FanXu, "会给你施加攻击力减半的debuff。血量33",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "基础加灵力",1);
+                }),
+            new WaiGongEntry("怪兽四攻击", JingJie.FanXu, "8攻击",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 8);
+                }),
+            new WaiGongEntry("怪兽四重击", JingJie.FanXu, "14攻击",2,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 14);
+                }),
+            new WaiGongEntry("虚弱", JingJie.FanXu, "施加虚弱二回合，攻击力减半",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "虚弱", 2);
+                }),
+
+             new WaiGongEntry("怪兽四奖励", JingJie.FanXu, "在化神期抽3张卡，并选一张加入到你的卡组中。",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                }),
+
+            new WaiGongEntry("怪兽五（精英）", JingJie.FanXu, "开局会免疫前三次攻击，血量55。战胜后抽一卡，升级。",0,
+                startStage: (caster, waiGong) =>
+                {
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "免疫攻击",3);
+                },
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "基础加灵力",1);
+                }),
+
+            new WaiGongEntry("怪兽五防御强化", JingJie.FanXu, "防御9，获得2力量",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.ArmorGainProcedure(seq, caster, caster.Opponent(), 9);
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "力量",2);
+                }),
+
+            new WaiGongEntry("易伤", JingJie.FanXu, "给玩家施加2易伤",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+
+                    StageManager.Instance.BuffProcedure(seq, caster, caster.Opponent(), "易伤",2);
+                }),
+            new WaiGongEntry("怪兽五多段攻击", JingJie.FanXu, "4攻击*3",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 4);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 4);
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 4);
+                }),
+            new WaiGongEntry("怪兽五攻击", JingJie.FanXu, "12攻击",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 12);
+                }),
+
+            new WaiGongEntry("怪兽六介绍", JingJie.FanXu, "在血量低于15点以下时会恢复所有生命值，48生命值",0,
+                startStage: (caster, waiGong) =>
+                {
+                    StageManager.Instance.BuffProcedure(new StringBuilder(), caster, caster, "低于十五回满",1);
+                },
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "基础加灵力",1);
+                }),
+
+            new WaiGongEntry("怪兽六攻击", JingJie.FanXu, "11攻击",1,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 11);
+                }),
+
+            new WaiGongEntry("怪兽七介绍", JingJie.FanXu, "皮糙肉厚的石巨人，血量120！！！力大无穷！！！",0,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    StageManager.Instance.BuffProcedure(seq, caster, caster, "基础加灵力",1);
+                }),
+
+            new WaiGongEntry("怪兽七攻击", JingJie.FanXu, "35攻击",3,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.AttackProcedure(seq, caster, caster.Opponent(), 35);
+                }),
+
+            new WaiGongEntry("自我再生", JingJie.FanXu, "20治疗",3,
+                execute: (seq, caster, waiGong, recursive) =>
+                {
+                    StageManager.Instance.HealProcedure(seq, caster, caster, 20);
+                }),
             /**********************************************************************************************************/
             /*********************************************** End ******************************************************/
             /**********************************************************************************************************/

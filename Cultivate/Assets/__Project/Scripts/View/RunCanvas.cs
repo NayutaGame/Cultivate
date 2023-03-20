@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
@@ -101,6 +102,11 @@ public class RunCanvas : Singleton<RunCanvas>
     public void AddChanNeng()
     {
         RunManager.Instance.AddChanNeng();
+        Refresh();
+    }
+
+    private void OnEnable()
+    {
         Refresh();
     }
 }

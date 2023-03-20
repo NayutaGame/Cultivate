@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using DG.Tweening;
 using UnityEngine;
@@ -32,6 +33,9 @@ public abstract class StageEntity
 
     public event Action<EndStepDetails> EndStepEvent;
     public void EndStep(EndStepDetails d) => EndStepEvent?.Invoke(d);
+
+    public event Action<int> ManaShortageEvent;
+    public void ManaShortage(int p) => ManaShortageEvent?.Invoke(p);
 
     public event Action<AttackDetails> AttackEvent;
     public void Attack(AttackDetails d) => AttackEvent?.Invoke(d);
@@ -162,23 +166,16 @@ public abstract class StageEntity
         StartStep();
         if (!_manaShortage)
             MoveP();
-        StageWaiGong waiGong = _waiGongList[_p];
-        Buff mana = FindBuff("灵气");
-        int manaCount = mana?.Stack ?? 0;
-        int manaCost = waiGong.GetManaCost();
 
-        if (manaCost - manaCount > 0)
+        StageWaiGong waiGong = _waiGongList[_p];
+
+        _manaShortage = !TryConsumeMana(waiGong.GetManaCost());
+        if(_manaShortage)
         {
-            _manaShortage = true;
+            ManaShortage(_p);
             (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute(seq, this, null, true);
             EndStep(new EndStepDetails(seq, this, null));
             return;
-        }
-
-        _manaShortage = false;
-        if (mana != null)
-        {
-            mana.Stack -= manaCost;
         }
 
         if (TryConsumeBuff("双发"))
@@ -197,7 +194,13 @@ public abstract class StageEntity
     {
         for (int i = 0; i < _waiGongList.Length; i++)
         {
-            _p = (_p + 1) % _waiGongList.Length;
+            _p++;
+            if (_p >= _waiGongList.Length)
+            {
+                _p %= _waiGongList.Length;
+                EndRound();
+                StartRound();
+            }
 
             if(_waiGongList[_p].Consumed)
                 continue;
@@ -285,11 +288,7 @@ public abstract class StageEntity
         LoseHpEvent -= DefaultLoseHp;
     }
 
-    protected virtual void DefaultStartTurn()
-    {
-        StageManager.Instance.ArmorLoseProcedure(new StringBuilder(), this, Armor);
-    }
-
+    protected virtual void DefaultStartTurn() => DesignerEnvironment.DefaultStartTurn(this);
     protected virtual void DefaultEndTurn() { }
     protected virtual void DefaultDamage(DamageDetails damageDetails) { }
     protected virtual void DefaultDamaged(DamageDetails damageDetails) { }
@@ -298,13 +297,22 @@ public abstract class StageEntity
     #region Buff
 
     private List<Buff> _buffs;
-    public List<Buff> Buffs => _buffs;
+    public IEnumerable<Buff> Buffs
+    {
+        get
+        {
+            foreach (Buff buff in _buffs)
+            {
+                yield return buff;
+            }
+        }
+    }
 
     public void AddBuff(Buff buff)
     {
         buff.Gain(buff.Stack);
         buff.Register();
-        Buffs.Add(buff);
+        _buffs.Add(buff);
         // OnBuffChangedEvent?.Invoke();
     }
 
@@ -318,21 +326,24 @@ public abstract class StageEntity
     public void RemoveBuff(Buff buff)
     {
         buff.Unregister();
-        Buffs.Remove(buff);
+        _buffs.Remove(buff);
         buff.Lose();
         // OnBuffChangedEvent?.Invoke();
     }
 
-    public void RemoveAllBuffs()
+    public void RemoveAllBuffs() => RemoveBuffs(b => true);
+    public void RemoveBuffs(Predicate<Buff> pred)
     {
         _buffs.Do(b =>
         {
             b.Unregister();
             b.Lose();
         });
-        Buffs.RemoveAll(b => true);
+        _buffs.RemoveAll(pred);
         // OnBuffChangedEvent?.Invoke();
     }
+    public void RemoveBuffs(params string[] names)
+        => _buffs.FilterObj(b => names.Contains(b.GetName())).Do(RemoveBuff);
 
     public Buff FindBuff(string name) => Buffs.FirstObj(b => b.BuffEntry.Name == name);
     public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.BuffEntry == buffEntry);
@@ -341,10 +352,16 @@ public abstract class StageEntity
     public int GetStackOfBuff(string name) => FindBuff(name)?.Stack ?? 0;
     public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
 
+    public int GetSumOfStackOfBuffs(params string[] names)
+        => names.Map(GetStackOfBuff).Aggregate((a, b) => a + b);
+
     public bool TryConsumeBuff(string buffName, int stack = 1)
     {
+        if (stack == 0)
+            return true;
+
         Buff b = FindBuff(buffName);
-        if (b is { Stack: > 0 })
+        if (b != null && b.Stack >= stack)
         {
             b.Stack -= stack;
             return true;
@@ -355,8 +372,11 @@ public abstract class StageEntity
 
     public bool TryConsumeBuff(BuffEntry buffEntry, int stack = 1)
     {
+        if (stack == 0)
+            return true;
+
         Buff b = FindBuff(buffEntry);
-        if (b is { Stack: > 0 })
+        if (b != null && b.Stack >= stack)
         {
             b.Stack -= stack;
             return true;
@@ -368,11 +388,11 @@ public abstract class StageEntity
     public int GetMana() => GetStackOfBuff("灵气");
     public bool TryConsumeMana(int stack = 1) => TryConsumeBuff("灵气", stack);
 
-    public int GetBuffCount() => Buffs.Count;
+    public int GetBuffCount() => _buffs.Count;
     public Buff TryGetBuff(int i)
     {
-        if (i < Buffs.Count)
-            return Buffs[i];
+        if (i < _buffs.Count)
+            return _buffs[i];
         return null;
     }
 

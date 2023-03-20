@@ -33,6 +33,9 @@ public class RunManager : Singleton<RunManager>
     public event Action<StatusChangedDetails> StatusChangedEvent;
     public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
 
+    public event Action EquippedChangedEvent;
+    public void EquippedChanged() => EquippedChangedEvent?.Invoke();
+
     private ChipPool _chipPool;
     public DanTian DanTian { get; private set; }
     private ProductInventory _productInventory;
@@ -84,6 +87,8 @@ public class RunManager : Singleton<RunManager>
 
     private Dictionary<string, Func<IndexPath, object>> _accessors;
 
+    public string Report;
+
     public override void DidAwake()
     {
         base.DidAwake();
@@ -98,7 +103,9 @@ public class RunManager : Singleton<RunManager>
 
         Hero = new();
         EnemyPool = new();
-        TryDrawEnemy();
+
+        CreateEnemyDetails d = new CreateEnemyDetails();
+        Enemy = DrawEnemy(d).Create(d);
 
         _accessors = new()
         {
@@ -120,7 +127,10 @@ public class RunManager : Singleton<RunManager>
         Modifier = Modifier.Default;
         Modifier.AddChild(DanTian.Modifier);
 
-        JingJie = JingJie.LianQi;
+        EquippedChangedEvent += CalcBrief;
+        EquippedChangedEvent += CalcManaShortageBrief;
+
+        DesignerEnvironment.EnterRun();
     }
 
     public static T Get<T>(IndexPath indexPath) => (T) Instance._accessors[indexPath._str](indexPath);
@@ -207,11 +217,8 @@ public class RunManager : Singleton<RunManager>
     //     return _danTian.TryToggleWorkerLock(tile);
     // }
 
-    public bool TryPlug(IndexPath from, IndexPath to)
+    public bool TryPlug(RunChip runChip, Tile tile)
     {
-        RunChip runChip = Get<RunChip>(from);
-        Tile tile = Get<Tile>(to);
-
         if (!runChip.CanPlug(tile)) return false;
         runChip.Plug(tile);
 
@@ -219,6 +226,14 @@ public class RunManager : Singleton<RunManager>
             Acquire(new AcquireDetails(runChip));
 
         return true;
+    }
+
+    public bool TryPlug(IndexPath from, IndexPath to)
+    {
+        RunChip runChip = Get<RunChip>(from);
+        Tile tile = Get<Tile>(to);
+
+        return TryPlug(runChip, tile);
     }
 
     public bool InventorySwap(IndexPath from, IndexPath to)
@@ -248,8 +263,7 @@ public class RunManager : Singleton<RunManager>
         else if (fromHero && toHero)
         {
             Hero.HeroSlotInventory.Swap(from._ints[0], to._ints[0]);
-            // extract waigong changed event
-            GenerateSimulation();
+            EquippedChanged();
             return true;
         }
         else if (fromAcquired && toHero)
@@ -268,7 +282,7 @@ public class RunManager : Singleton<RunManager>
 
             slot.AcquiredRunChip = toEquip;
 
-            GenerateSimulation();
+            EquippedChanged();
             return true;
         }
         else if (fromHero && toAcquired)
@@ -280,7 +294,7 @@ public class RunManager : Singleton<RunManager>
 
             slot.AcquiredRunChip = AcquiredInventory[to._ints[0]];
             AcquiredInventory[to._ints[0]] = toUnequip;
-            GenerateSimulation();
+            EquippedChanged();
             return true;
         }
 
@@ -316,7 +330,7 @@ public class RunManager : Singleton<RunManager>
             Enemy.SetSlotContent(to._ints[0], null, powers);
         }
 
-        GenerateSimulation();
+        EquippedChanged();
         return true;
     }
 
@@ -329,6 +343,7 @@ public class RunManager : Singleton<RunManager>
 
         slot.AcquiredRunChip = null;
         AcquiredInventory.Add(toUnequip);
+        EquippedChanged();
         return true;
     }
 
@@ -386,27 +401,6 @@ public class RunManager : Singleton<RunManager>
         return true;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public bool TryUpgradeDanTian(IndexPath from, IndexPath to)
     {
         RunChip runChip = Get<RunChip>(from);
@@ -452,6 +446,13 @@ public class RunManager : Singleton<RunManager>
         return true;
     }
 
+    public RunChip DrawChip(string chipName)
+    {
+        RunChip picked = new RunChip(Encyclopedia.ChipCategory[chipName]);
+        ChipInventory.Add(picked);
+        return picked;
+    }
+
     public void DrawChip(Predicate<ChipEntry> pred, int count)
     {
         _chipPool.Shuffle();
@@ -461,22 +462,17 @@ public class RunManager : Singleton<RunManager>
         }
     }
 
-    public bool TryDrawEnemy()
+    public void SetEnemy(RunEnemy runEnemy)
     {
-        EnemyPool.Shuffle();
-        CreateEnemyDetails d = new CreateEnemyDetails();
-        EnemyEntry entry = EnemyPool.ForcePopItem(e => e.CanCreate(d));
-        Enemy = entry.Create(d);
-        return true;
+        Enemy = runEnemy;
     }
 
-
-
-
-
-
-
-
+    public EnemyEntry DrawEnemy(CreateEnemyDetails d)
+    {
+        EnemyPool.Shuffle();
+        EnemyEntry entry = EnemyPool.ForcePopItem(e => e.CanCreate(d));
+        return entry;
+    }
 
     public bool TryClickNode(IndexPath indexPath)
     {
@@ -488,10 +484,8 @@ public class RunManager : Singleton<RunManager>
         return true;
     }
 
-    public (int, int) Brief;
-
-    private void GenerateSimulation()
-    {
-        Brief = StageManager.Simulate();
-    }
+    [NonSerialized] public (int, int) Brief;
+    private void CalcBrief() => Brief = StageManager.Simulate();
+    [NonSerialized] public bool[] ManaShortageBrief;
+    private void CalcManaShortageBrief() => ManaShortageBrief = StageManager.ManaSimulate();
 }

@@ -15,6 +15,7 @@ public class AcquiredWaiGongView : RunChipView
         if (acquiredRunChip == null) return;
 
         LevelText.text = $"{acquiredRunChip.GetLevel()}";
+        ManacostText.text = $"{acquiredRunChip.GetManaCost()}";
         NameText.text = $"{acquiredRunChip.GetName()}";
         PowerText.text = $"{acquiredRunChip.GetPowerString()}";
     }

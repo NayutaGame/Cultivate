@@ -8,12 +8,10 @@ using UnityEngine.UI;
 
 public class SimulatePanel : Panel
 {
-    // status
     public AcquiredWaiGongInventoryView AcquiredWaiGongInventoryView;
     public SkillEditor SkillEditor;
 
     public Button ReportButton;
-    public Button EscapeButton;
     public Button NextEnemyButton;
 
     public TMP_Text ReportText;
@@ -30,6 +28,8 @@ public class SimulatePanel : Panel
     {
         AcquiredWaiGongInventoryView.Refresh();
         SkillEditor.Refresh();
+
+        ReportText.text = RunManager.Instance.Report;
     }
 
     private void Report()
@@ -39,7 +39,10 @@ public class SimulatePanel : Panel
 
     private void NextEnemy()
     {
-        RunManager.Instance.TryDrawEnemy();
+        CreateEnemyDetails d = new CreateEnemyDetails();
+        RunEnemy e = RunManager.Instance.DrawEnemy(d).Create(d);
+        RunManager.Instance.SetEnemy(e);
+
         SkillEditor.EnemyHPInputField.text = RunManager.Instance.Enemy.Health.ToString();
         SkillEditor.Refresh();
     }

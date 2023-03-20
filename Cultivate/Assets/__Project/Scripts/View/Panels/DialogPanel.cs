@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using CLLibrary;
 using TMPro;
 using UnityEngine;
@@ -32,7 +33,7 @@ public class DialogPanel : Panel
 
         for (int i = 0; i < Buttons.Length; i++)
         {
-            bool active = i < d.GetOptionsCount();
+            bool active = i < d.GetOptionsCount() && !RunManager.Instance.Map.Selecting;
             Buttons[i].gameObject.SetActive(active);
             if(!active)
                 continue;
@@ -46,7 +47,8 @@ public class DialogPanel : Panel
         RunNode runNode = RunManager.Instance.TryGetCurrentNode();
         DialogPanelDescriptor d = runNode.CurrentPanel as DialogPanelDescriptor;
 
-        // d.SelectOption(i);
+        d.ReceiveSignal(new SelectedOptionSignal(i));
+        RunCanvas.Instance.NodePanel.Refresh();
     }
 
     private void SelectOption0() => SelectedOption(0);

@@ -22,6 +22,7 @@ public class HeroChipView : RunChipView
         if(slot.AcquiredRunChip == null)
         {
             LevelText.text = "";
+            ManacostText.text = "";
             NameText.text = "空";
             PowerText.text = $"{slot.GetPowerString()}";
             return;
@@ -29,6 +30,11 @@ public class HeroChipView : RunChipView
         else
         {
             LevelText.text = $"{slot.GetLevel()}";
+            ManacostText.text = $"{slot.GetManaCost()}";
+
+            bool manaShortage = RunManager.Instance.ManaShortageBrief[GetIndexPath()._ints[0]];
+            ManacostText.color = manaShortage ? Color.red : Color.black;
+
             NameText.text = $"{slot.GetName()}";
             PowerText.text = $"{slot.GetPowerString()}";
         }

@@ -301,13 +301,7 @@ public class StageManager : Singleton<StageManager>
 
         CanvasManager.Instance.StageCanvas.Refresh();
 
-        // Sequence seq = DOTween.Sequence()
-        //     .SetAutoKill()
-        //     .OnComplete(() =>
-        //     {
-        //         Debug.Log("Animation is finished");
-        //         // after animation is finished, exit
-        //     });
+        // StageReport report = new();
 
         StringBuilder seq = new StringBuilder();
 
@@ -319,21 +313,9 @@ public class StageManager : Singleton<StageManager>
         StageCanvas.Instance.SetEnemyHealth(_enemy.Hp);
         StageCanvas.Instance.SetEnemyArmor(0);
 
-        // animation
-        // opening
-        // show card
-        // act
-        // card back
-        // end
-
-        // bullet time at killing moment
-        // accelerating
-        // skip animation
-
         string report = seq.ToString();
-        // Debug.Log(report);
-        RunCanvas.Instance.SimulatePanel.ReportText.text = report;
-        // seq.Restart();
+        Debug.Log(report);
+        RunManager.Instance.Report = report;
 
         AppManager.Pop();
     }
@@ -351,6 +333,56 @@ public class StageManager : Singleton<StageManager>
         Instance.Simulate(seq);
 
         return (Instance._hero.Hp, Instance._enemy.Hp);
+    }
+
+    public static bool[] ManaSimulate()
+    {
+        AppManager.Instance.StageManager.gameObject.SetActive(true);
+        AppManager.Instance.StageManager.gameObject.SetActive(false);
+
+        Instance._hero = new StageHero(RunManager.Instance.Hero);
+        Instance._enemy = new StageEnemy(new RunEnemy(1000000)); // 工具人
+
+        StringBuilder seq = new StringBuilder();
+
+        return Instance.ManaSimulate(seq);
+    }
+
+    private bool[] ManaSimulate(StringBuilder seq)
+    {
+        bool[] manaShortageBrief = new bool[RunManager.WaiGongLimit];
+        bool stopWriting = false;
+
+        void WriteManaShortage(int p)
+        {
+            if (stopWriting)
+                return;
+            manaShortageBrief[p + RunManager.WaiGongStartFromJingJie[RunManager.Instance.JingJie]] = true;
+        }
+
+        void StopWriting()
+        {
+            stopWriting = true;
+        }
+
+        _hero._p = -1;
+
+        _hero.StartStage();
+
+        _hero.ManaShortageEvent += WriteManaShortage;
+        _hero.EndRoundEvent += StopWriting;
+
+        for (int i = 0; i < MAX_ACTION_COUNT; i++)
+        {
+            _hero.Execute(seq);
+            if (stopWriting)
+                break;
+        }
+
+        _hero.ManaShortageEvent -= WriteManaShortage;
+        _hero.EndRoundEvent -= StopWriting;
+
+        return manaShortageBrief;
     }
 
     private void Simulate(StringBuilder seq)
@@ -401,12 +433,14 @@ public class StageManager : Singleton<StageManager>
         {
             if (_hero.Hp <= 0)
             {
+                _commitWin = false;
                 seq.Append($"玩家失败\n");
                 return true;
             }
 
             if (_enemy.Hp <= 0)
             {
+                _commitWin = true;
                 seq.Append($"玩家胜利\n");
                 return true;
             }
@@ -415,11 +449,13 @@ public class StageManager : Singleton<StageManager>
         {
             if (_enemy.Hp <= 0)
             {
+                _commitWin = true;
                 seq.Append($"玩家胜利\n");
                 return true;
             }
             if (_hero.Hp <= 0)
             {
+                _commitWin = false;
                 seq.Append($"玩家失败\n");
                 return true;
             }
@@ -432,14 +468,22 @@ public class StageManager : Singleton<StageManager>
     {
         if (_hero.Hp >= _enemy.Hp)
         {
+            _commitWin = true;
             seq.Append($"玩家胜利\n");
             return;
         }
+        _commitWin = false;
         seq.Append($"玩家失败\n");
     }
 
+    private bool _commitWin;
+
     public void Exit()
     {
-        // apply outcome to run manager
+        BattlePanelDescriptor battlePanelDescriptor = RunManager.Instance.TryGetCurrentNode()?.CurrentPanel as BattlePanelDescriptor;
+        if (battlePanelDescriptor == null)
+            return;
+
+        battlePanelDescriptor.ReceiveSignal(new BattleResultSignal(_commitWin ? BattleResultSignal.BattleResultState.Win : BattleResultSignal.BattleResultState.Lose));
     }
 }
