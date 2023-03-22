@@ -17,7 +17,7 @@ public class NodeCategory : Category<NodeEntry>
                 create: runNode =>
                 {
                     DialogPanelDescriptor A = new DialogPanelDescriptor("来到一处神殿", "我必凯旋", "我已膨胀");
-                    BattlePanelDescriptor B = new BattlePanelDescriptor("敌人模板", new CreateEnemyDetails());
+                    BattlePanelDescriptor B = new BattlePanelDescriptor("鶸", new CreateEnemyDetails());
                     DialogPanelDescriptor C = new DialogPanelDescriptor("你无法再获得命元，所有牌获得二动");
                     DialogPanelDescriptor D = new DialogPanelDescriptor("胜利");
                     DialogPanelDescriptor E = new DialogPanelDescriptor("逃跑成功");

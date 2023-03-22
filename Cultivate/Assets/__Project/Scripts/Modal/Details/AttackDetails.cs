@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class AttackDetails
 {
-    public StringBuilder Seq;
     public StageEntity Src;
     public StageEntity Tgt;
     public int Value;
@@ -19,11 +18,10 @@ public class AttackDetails
 
     public bool Cancel;
 
-    public AttackDetails(StringBuilder seq, StageEntity src, StageEntity tgt, int value, int times, bool recursive = true,
+    public AttackDetails(StageEntity src, StageEntity tgt, int value, int times, bool recursive = true,
         Action<DamageDetails> damaged = null,
         Action<DamageDetails> undamaged = null)
     {
-        Seq = seq;
         Src = src;
         Tgt = tgt;
         Value = value;

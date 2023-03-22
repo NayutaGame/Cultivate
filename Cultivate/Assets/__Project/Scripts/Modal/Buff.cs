@@ -2,6 +2,9 @@
 using System;
 using CLLibrary;
 
+/// <summary>
+/// Buff
+/// </summary>
 public class Buff
 {
     private StageEntity _owner;
@@ -21,7 +24,8 @@ public class Buff
             _stack = value;
             // _owner.OnBuffChanged();
             StackChangedEvent?.Invoke();
-            if(_stack <= 0) _owner.RemoveBuff(this);
+            if(_stack <= 0)
+                _owner.RemoveBuff(this);
         }
     }
 
@@ -30,7 +34,15 @@ public class Buff
 
     public event Action StackChangedEvent;
 
+
+    /// <summary>
+    /// 是否有益
+    /// </summary>
     public bool Friendly => _buffEntry.Friendly;
+
+    /// <summary>
+    /// 是否可驱散
+    /// </summary>
     public bool Dispellable => _buffEntry.Dispellable;
 
     public Buff(StageEntity owner, string name, int stack = 1)
@@ -127,7 +139,7 @@ public class Buff
     //     _modifierLeaf = null;
     // }
 
-    public void Gain(int stack) => _buffEntry._gain?.Invoke(this, _owner, stack);
+    public void Gain(int gain) => _buffEntry._gain?.Invoke(this, _owner, gain);
     public void Lose() => _buffEntry._lose?.Invoke(this, _owner);
     private void StackChanged() => _buffEntry._stackChanged(this, _owner);
 
@@ -154,8 +166,8 @@ public class Buff
     // private void Evade(AttackDetails d) => _buffEntry._evade(this, d);
     // private void Clean(int stack) => _buffEntry._clean(this, stack);
 
-    public BuffDetails _Buff(BuffDetails d) => _buffEntry._buff.Item2(this, d);
-    public BuffDetails AnyBuff(BuffDetails d) => _buffEntry._anyBuff.Item2(this, d);
-    public BuffDetails Buffed(BuffDetails d) => _buffEntry._buffed.Item2(this, d);
-    public BuffDetails AnyBuffed(BuffDetails d) => _buffEntry._anyBuffed.Item2(this, d);
+    private BuffDetails _Buff(BuffDetails d) => _buffEntry._buff.Item2(this, d);
+    private BuffDetails AnyBuff(BuffDetails d) => _buffEntry._anyBuff.Item2(this, d);
+    private BuffDetails Buffed(BuffDetails d) => _buffEntry._buffed.Item2(this, d);
+    private BuffDetails AnyBuffed(BuffDetails d) => _buffEntry._anyBuffed.Item2(this, d);
 }

@@ -7,7 +7,26 @@ using UnityEngine;
 public class StageReport
 {
     private Sequence _seq;
+    public Sequence Seq => _seq;
     private StringBuilder _sb;
+
+    public void Append(string s)
+        => _sb?.Append(s);
+
+    public StageReport(Sequence seq = null, StringBuilder sb = null)
+    {
+        _seq = seq;
+        _sb = sb;
+    }
+
+    public override string ToString()
+    {
+        return _sb?.ToString();
+    }
+
+    public void Play()
+    {
+    }
 
     // Sequence seq = DOTween.Sequence()
     //     .SetAutoKill()

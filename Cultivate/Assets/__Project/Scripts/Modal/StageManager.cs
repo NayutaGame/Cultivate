@@ -12,25 +12,19 @@ public class StageManager : Singleton<StageManager>
 {
     private readonly int MAX_ACTION_COUNT = 128;
 
-    // public static event Action HeroStartTurnEvent;
-    // public static void HeroStartTurn() => HeroStartTurnEvent?.Invoke();
-    //
-    // public static event Action HeroEndTurnEvent;
-    // public static void HeroEndTurn() => HeroEndTurnEvent?.Invoke();
-    //
-    // public static event Action MonsterStartTurnEvent;
-    // public static void MonsterStartTurn() => MonsterStartTurnEvent?.Invoke();
-    //
-    // public static event Action MonsterEndTurnEvent;
-    // public static void MonsterEndTurn() => MonsterEndTurnEvent?.Invoke();
-    //
-    // public static FuncQueue<BuffDetails> AnyBuff = new();
-    //
-    // public static FuncQueue<BuffDetails> AnyBuffed = new();
-
-    public void AttackProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value, int times = 1, bool recursive = true,
+    /// <summary>
+    /// 发起一次攻击行为，会结算目标的护甲
+    /// </summary>
+    /// <param name="src">攻击者</param>
+    /// <param name="tgt">受攻击者</param>
+    /// <param name="value">攻击数值</param>
+    /// <param name="times">攻击次数</param>
+    /// <param name="recursive">是否会递归</param>
+    /// <param name="damaged">如果造成伤害时候的额外行为</param>
+    /// <param name="undamaged">如果未造成伤害的额外行为</param>
+    public void AttackProcedure(StageEntity src, StageEntity tgt, int value, int times = 1, bool recursive = true,
         Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-        => AttackProcedure(new AttackDetails(seq, src, tgt, value, times, recursive, damaged, undamaged));
+        => AttackProcedure(new AttackDetails(src, tgt, value, times, recursive, damaged, undamaged));
     public void AttackProcedure(AttackDetails d)
     {
         for (int i = 0; i < d.Times; i++)
@@ -48,7 +42,7 @@ public class StageManager : Singleton<StageManager>
             tgt.Attacked(d);
             if (d.Cancel)
             {
-                d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+                Report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
                 continue;
             }
 
@@ -71,17 +65,17 @@ public class StageManager : Singleton<StageManager>
             // 结算护甲
             int negate = Mathf.Min(d.Value, tgt.Armor);
             d.Value -= negate;
-            ArmorLoseProcedure(d.Seq, d.Tgt, negate);
+            ArmorLoseProcedure(d.Tgt, negate);
 
             if (d.Value == 0)
             {
                 // undamage?.Invoke();
-                d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+                Report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
                 continue;
             }
 
             // 伤害Procedure
-            DamageProcedure(d.Seq, d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
+            DamageProcedure(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
 
 
             // if (target.IsDead())
@@ -97,13 +91,22 @@ public class StageManager : Singleton<StageManager>
             // d.Seq.Append(src.Slot().GetAttackTween())
             //     .Join(tgt.Slot().GetAttackedTween())
             //     .AppendInterval(0.5f);
-            d.Seq.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+            Report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
         }
     }
 
-    public void DamageProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value, bool recursive = true,
+    /// <summary>
+    /// 发起一次直接伤害行为，不会结算目标的护甲
+    /// </summary>
+    /// <param name="src">伤害者</param>
+    /// <param name="tgt">受伤害者</param>
+    /// <param name="value">伤害数值</param>
+    /// <param name="recursive">是否会递归</param>
+    /// <param name="damaged">如果造成伤害时候的额外行为</param>
+    /// <param name="undamaged">如果未造成伤害的额外行为</param>
+    public void DamageProcedure(StageEntity src, StageEntity tgt, int value, bool recursive = true,
         Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-        => DamageProcedure(new DamageDetails(seq, src, tgt, value, recursive, damaged, undamaged));
+        => DamageProcedure(new DamageDetails(src, tgt, value, recursive, damaged, undamaged));
     public void DamageProcedure(DamageDetails d)
     {
         StageEntity src = d.Src;
@@ -157,8 +160,8 @@ public class StageManager : Singleton<StageManager>
         }
     }
 
-    public void HealProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
-        => HealProcedure(new HealDetails(seq, src, tgt, value));
+    public void HealProcedure(StageEntity src, StageEntity tgt, int value)
+        => HealProcedure(new HealDetails(src, tgt, value));
     public void HealProcedure(HealDetails d)
     {
         StageEntity src = d.Src;
@@ -173,13 +176,13 @@ public class StageManager : Singleton<StageManager>
         int actualHealed = Mathf.Min(space, d.Value);
         tgt.HealedRecord += actualHealed;
 
-        d.Seq.Append($"    生命变成了${tgt.Hp}");
+        Report.Append($"    生命变成了${tgt.Hp}");
     }
 
-    public void BuffProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, string buffName, int stack = 1, bool recursive = true)
-        => BuffProcedure(seq, src, tgt, Encyclopedia.BuffCategory[buffName], stack, recursive);
-    public void BuffProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => BuffProcedure(new BuffDetails(seq, src, tgt, buffEntry, stack, recursive));
+    public void BuffProcedure(StageEntity src, StageEntity tgt, string buffName, int stack = 1, bool recursive = true)
+        => BuffProcedure(src, tgt, Encyclopedia.BuffCategory[buffName], stack, recursive);
+    public void BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
     public void BuffProcedure(BuffDetails buffDetails)
     {
         // buffDetails = CleanProcedure(buffDetails);
@@ -194,8 +197,8 @@ public class StageManager : Singleton<StageManager>
         buffDetails = buffDetails.Tgt.Buffed.Evaluate(buffDetails);
     }
 
-    public void ArmorGainProcedure(StringBuilder seq, StageEntity src, StageEntity tgt, int value)
-        => ArmorGainProcedure(new ArmorDetails(seq, src, tgt, value));
+    public void ArmorGainProcedure(StageEntity src, StageEntity tgt, int value)
+        => ArmorGainProcedure(new ArmorDetails(src, tgt, value));
     public void ArmorGainProcedure(ArmorDetails d)
     {
         d.Src._Armor(d);
@@ -204,10 +207,10 @@ public class StageManager : Singleton<StageManager>
             return;
 
         d.Tgt.Armor += d.Value;
-        d.Seq.Append($"    护甲变成了[{d.Src.Armor}]");
+        Report.Append($"    护甲变成了[{d.Src.Armor}]");
     }
 
-    public void ArmorLoseProcedure(StringBuilder seq, StageEntity tgt, int value)
+    public void ArmorLoseProcedure(StageEntity tgt, int value)
     {
         tgt.Armor -= value;
         tgt.LostArmorRecord += value;
@@ -294,18 +297,19 @@ public class StageManager : Singleton<StageManager>
     public int GetHeroBuffCount() => _hero.GetBuffCount();
     public int GetEnemyBuffCount() => _enemy.GetBuffCount();
 
+    public StageReport Report;
+
     public void Enter()
     {
+        // 文字战报，录像战报
         _hero = new StageHero(RunManager.Instance.Hero);
         _enemy = new StageEnemy(RunManager.Instance.Enemy);
 
         CanvasManager.Instance.StageCanvas.Refresh();
 
-        // StageReport report = new();
+        Report = new(sb: new StringBuilder());
 
-        StringBuilder seq = new StringBuilder();
-
-        Simulate(seq);
+        Simulate();
 
         // config the scene
         StageCanvas.Instance.SetHeroHealth(_hero.Hp);
@@ -313,14 +317,18 @@ public class StageManager : Singleton<StageManager>
         StageCanvas.Instance.SetEnemyHealth(_enemy.Hp);
         StageCanvas.Instance.SetEnemyArmor(0);
 
-        string report = seq.ToString();
-        Debug.Log(report);
-        RunManager.Instance.Report = report;
+        RunManager.Instance.Report = Report;
 
-        AppManager.Pop();
+        if (!RunManager.Instance.IsStream)
+        {
+            AppManager.Pop();
+            return;
+        }
+
+        Report.Play();
     }
 
-    public static (int, int) Simulate()
+    public static (int, int) SimulateBrief()
     {
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         AppManager.Instance.StageManager.gameObject.SetActive(false);
@@ -328,11 +336,53 @@ public class StageManager : Singleton<StageManager>
         Instance._hero = new StageHero(RunManager.Instance.Hero);
         Instance._enemy = new StageEnemy(RunManager.Instance.Enemy);
 
-        StringBuilder seq = new StringBuilder();
+        Instance.Report = new(sb: new StringBuilder());
 
-        Instance.Simulate(seq);
+        Instance.Simulate();
 
         return (Instance._hero.Hp, Instance._enemy.Hp);
+    }
+
+    private void Simulate()
+    {
+        bool heroTurn = true;
+        _hero._p = -1;
+        _enemy._p = -1;
+
+        // register
+
+        _hero.StartStage();
+        _enemy.StartStage();
+
+        for (int i = 0; i < MAX_ACTION_COUNT; i++)
+        {
+            if (heroTurn)
+            {
+                Report.Append($"--------第{i}回合, 玩家行动--------\n");
+                _hero.Turn();
+            }
+            else
+            {
+                Report.Append($"--------第{i}回合, 敌人行动--------\n");
+                _enemy.Turn();
+            }
+
+            Report.Append($"玩家 {_hero.Hp}[{_hero.Armor}] Buff:");
+            foreach (Buff b in _hero.Buffs)
+                Report.Append($"  {b.GetName()}*{b.Stack}");
+            Report.Append("\n");
+            Report.Append($"敌人 {_enemy.Hp}[{_enemy.Armor}] Buff:");
+            foreach (Buff b in _enemy.Buffs)
+                Report.Append($"  {b.GetName()}*{b.Stack}");
+            Report.Append("\n");
+
+            if (TryCommit(heroTurn))
+                return;
+
+            heroTurn = !heroTurn;
+        }
+
+        ForceCommit();
     }
 
     public static bool[] ManaSimulate()
@@ -343,12 +393,12 @@ public class StageManager : Singleton<StageManager>
         Instance._hero = new StageHero(RunManager.Instance.Hero);
         Instance._enemy = new StageEnemy(new RunEnemy(1000000)); // 工具人
 
-        StringBuilder seq = new StringBuilder();
+        Instance.Report = new();
 
-        return Instance.ManaSimulate(seq);
+        return Instance.InnerManaSimulate();
     }
 
-    private bool[] ManaSimulate(StringBuilder seq)
+    private bool[] InnerManaSimulate()
     {
         bool[] manaShortageBrief = new bool[RunManager.WaiGongLimit];
         bool stopWriting = false;
@@ -374,7 +424,7 @@ public class StageManager : Singleton<StageManager>
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
-            _hero.Execute(seq);
+            _hero.Turn();
             if (stopWriting)
                 break;
         }
@@ -385,63 +435,21 @@ public class StageManager : Singleton<StageManager>
         return manaShortageBrief;
     }
 
-    private void Simulate(StringBuilder seq)
-    {
-        bool heroTurn = true;
-        _hero._p = -1;
-        _enemy._p = -1;
-
-        // register
-
-        _hero.StartStage();
-        _enemy.StartStage();
-
-        for (int i = 0; i < MAX_ACTION_COUNT; i++)
-        {
-            if (heroTurn)
-            {
-                seq.Append($"--------第{i}回合, 玩家行动--------\n");
-                _hero.Execute(seq);
-            }
-            else
-            {
-                seq.Append($"--------第{i}回合, 敌人行动--------\n");
-                _enemy.Execute(seq);
-            }
-
-            seq.Append($"玩家 {_hero.Hp}[{_hero.Armor}] Buff:");
-            foreach (Buff b in _hero.Buffs)
-                seq.Append($"  {b.GetName()}*{b.Stack}");
-            seq.Append("\n");
-            seq.Append($"敌人 {_enemy.Hp}[{_enemy.Armor}] Buff:");
-            foreach (Buff b in _enemy.Buffs)
-                seq.Append($"  {b.GetName()}*{b.Stack}");
-            seq.Append("\n");
-
-            if (TryCommit(seq, heroTurn))
-                return;
-
-            heroTurn = !heroTurn;
-        }
-
-        ForceCommit(seq);
-    }
-
-    public bool TryCommit(StringBuilder seq, bool heroTurn)
+    public bool TryCommit(bool heroTurn)
     {
         if (heroTurn)
         {
             if (_hero.Hp <= 0)
             {
                 _commitWin = false;
-                seq.Append($"玩家失败\n");
+                Report.Append($"玩家失败\n");
                 return true;
             }
 
             if (_enemy.Hp <= 0)
             {
                 _commitWin = true;
-                seq.Append($"玩家胜利\n");
+                Report.Append($"玩家胜利\n");
                 return true;
             }
         }
@@ -450,13 +458,13 @@ public class StageManager : Singleton<StageManager>
             if (_enemy.Hp <= 0)
             {
                 _commitWin = true;
-                seq.Append($"玩家胜利\n");
+                Report.Append($"玩家胜利\n");
                 return true;
             }
             if (_hero.Hp <= 0)
             {
                 _commitWin = false;
-                seq.Append($"玩家失败\n");
+                Report.Append($"玩家失败\n");
                 return true;
             }
         }
@@ -464,16 +472,16 @@ public class StageManager : Singleton<StageManager>
         return false;
     }
 
-    public void ForceCommit(StringBuilder seq)
+    public void ForceCommit()
     {
         if (_hero.Hp >= _enemy.Hp)
         {
             _commitWin = true;
-            seq.Append($"玩家胜利\n");
+            Report.Append($"玩家胜利\n");
             return;
         }
         _commitWin = false;
-        seq.Append($"玩家失败\n");
+        Report.Append($"玩家失败\n");
     }
 
     private bool _commitWin;

@@ -11,7 +11,7 @@ public class StageWaiGong
 {
     private StageEntity _owner;
     private RunChip _runChip;
-    private Action<StringBuilder, StageEntity, StageWaiGong, bool> _execute;
+    private Action<StageEntity, StageWaiGong, bool> _execute;
 
     private int _slotIndex;
     public int SlotIndex => _slotIndex;
@@ -79,9 +79,9 @@ public class StageWaiGong
         return _runChip.GetName();
     }
 
-    public void Execute(StringBuilder seq, StageEntity caster, bool recursive = true)
+    public void Execute(StageEntity caster, bool recursive = true)
     {
-        _execute(seq, caster, this, recursive);
+        _execute(caster, this, recursive);
         RunUsedTimes += 1;
         StageUsedTimes += 1;
     }

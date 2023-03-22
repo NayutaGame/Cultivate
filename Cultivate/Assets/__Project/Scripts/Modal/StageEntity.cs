@@ -134,7 +134,7 @@ public abstract class StageEntity
 
     public int _p;
 
-    public void Execute(StringBuilder seq)
+    public void Turn()
     {
         UltraSwift = false;
         Swift = false;
@@ -146,48 +146,52 @@ public abstract class StageEntity
         }
         else
         {
-            Step(seq);
+            Step();
             if (UltraSwift)
             {
-                Step(seq);
-                Step(seq);
+                Step();
+                Step();
             }
             else if (Swift)
             {
-                Step(seq);
+                Step();
             }
         }
 
         EndTurn();
     }
 
-    private void Step(StringBuilder seq)
+    private void Step()
     {
         StartStep();
         if (!_manaShortage)
             MoveP();
 
         StageWaiGong waiGong = _waiGongList[_p];
+        // StageManager.Instance.Report.Seq?.
+        // show waigong
 
         _manaShortage = !TryConsumeMana(waiGong.GetManaCost());
         if(_manaShortage)
         {
             ManaShortage(_p);
-            (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute(seq, this, null, true);
-            EndStep(new EndStepDetails(seq, this, null));
+            (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute(this, null, true);
+            EndStep(new EndStepDetails(this, null));
             return;
         }
 
         if (TryConsumeBuff("双发"))
         {
-            waiGong.Execute(seq, this);
-            waiGong.Execute(seq, this);
+            waiGong.Execute(this);
+            waiGong.Execute(this);
         }
         else
         {
-            waiGong.Execute(seq, this);
+            waiGong.Execute(this);
         }
-        EndStep(new EndStepDetails(seq, this, waiGong));
+
+        // hide waigong
+        EndStep(new EndStepDetails(this, waiGong));
     }
 
     private void MoveP()
@@ -297,16 +301,7 @@ public abstract class StageEntity
     #region Buff
 
     private List<Buff> _buffs;
-    public IEnumerable<Buff> Buffs
-    {
-        get
-        {
-            foreach (Buff buff in _buffs)
-            {
-                yield return buff;
-            }
-        }
-    }
+    public IEnumerable<Buff> Buffs => _buffs.Traversal();
 
     public void AddBuff(Buff buff)
     {

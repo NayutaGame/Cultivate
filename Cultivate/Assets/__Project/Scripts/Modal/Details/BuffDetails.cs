@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BuffDetails
 {
-    public StringBuilder Seq;
     public StageEntity Src;
     public StageEntity Tgt;
     public BuffEntry _buffEntry;
@@ -13,11 +12,10 @@ public class BuffDetails
     public bool _recursive;
     public bool Cancel;
 
-    public Action<int> Clean;
+    // public Action<int> Clean;
 
-    public BuffDetails(StringBuilder seq, StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true, bool cancel = false)
+    public BuffDetails(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true, bool cancel = false)
     {
-        Seq = seq;
         Src = src;
         Tgt = tgt;
         _buffEntry = buffEntry;
@@ -43,14 +41,14 @@ public class BuffDetails
                     break;
             }
 
-            Seq.Append($"    {_buffEntry.Name}: {oldStack} -> {same.Stack}");
+            StageManager.Instance.Report.Append($"    {_buffEntry.Name}: {oldStack} -> {same.Stack}");
         }
         else
         {
             Buff buff = new Buff(Tgt, _buffEntry, _stack);
             Tgt.AddBuff(buff);
 
-            Seq.Append($"    {_buffEntry.Name}: 0 -> {buff.Stack}");
+            StageManager.Instance.Report.Append($"    {_buffEntry.Name}: 0 -> {buff.Stack}");
         }
     }
 }

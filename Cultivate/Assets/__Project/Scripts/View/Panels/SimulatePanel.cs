@@ -11,8 +11,9 @@ public class SimulatePanel : Panel
     public AcquiredWaiGongInventoryView AcquiredWaiGongInventoryView;
     public SkillEditor SkillEditor;
 
-    public Button ReportButton;
     public Button NextEnemyButton;
+    public Button ReportButton;
+    public Button StreamButton;
 
     public TMP_Text ReportText;
 
@@ -20,8 +21,9 @@ public class SimulatePanel : Panel
     {
         AcquiredWaiGongInventoryView.Configure(RunManager.Instance.AcquiredInventory);
         SkillEditor.Configure();
-        ReportButton.onClick.AddListener(Report);
         NextEnemyButton.onClick.AddListener(NextEnemy);
+        ReportButton.onClick.AddListener(Report);
+        StreamButton.onClick.AddListener(Stream);
     }
 
     public override void Refresh()
@@ -29,12 +31,7 @@ public class SimulatePanel : Panel
         AcquiredWaiGongInventoryView.Refresh();
         SkillEditor.Refresh();
 
-        ReportText.text = RunManager.Instance.Report;
-    }
-
-    private void Report()
-    {
-        AppManager.Push(new AppStageS());
+        ReportText.text = RunManager.Instance.Report?.ToString();
     }
 
     private void NextEnemy()
@@ -45,5 +42,15 @@ public class SimulatePanel : Panel
 
         SkillEditor.EnemyHPInputField.text = RunManager.Instance.Enemy.Health.ToString();
         SkillEditor.Refresh();
+    }
+
+    private void Report()
+    {
+        RunManager.Instance.GenerateReport();
+    }
+
+    private void Stream()
+    {
+        RunManager.Instance.Stream();
     }
 }

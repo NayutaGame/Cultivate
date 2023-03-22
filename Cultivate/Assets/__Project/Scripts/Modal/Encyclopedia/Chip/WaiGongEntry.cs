@@ -11,7 +11,7 @@ public class WaiGongEntry : ChipEntry
     public int GetManaCost(int level) => GetManaCost(level, new int[] { 0, 0, 0, 0, 0 });
     public int GetManaCost(int level, int[] powers) => _manaCost(level, powers);
 
-    private Action<StringBuilder, StageEntity, StageWaiGong, bool> _execute;
+    private Action<StageEntity, StageWaiGong, bool> _execute;
     public Action<StageEntity, StageWaiGong> _startStage;
 
     public WaiGongEntry(
@@ -19,7 +19,7 @@ public class WaiGongEntry : ChipEntry
         JingJie jingJie,
         string description,
         int manaCost = 0,
-        Action<StringBuilder, StageEntity, StageWaiGong, bool> execute = null,
+        Action<StageEntity, StageWaiGong, bool> execute = null,
         Action<StageEntity, StageWaiGong> startStage = null
         ) : this(name, jingJie, description, (level, powers) => manaCost, execute, startStage)
     {}
@@ -29,7 +29,7 @@ public class WaiGongEntry : ChipEntry
         JingJie jingJie,
         string description,
         Func<int, int[], int> manaCost,
-        Action<StringBuilder, StageEntity, StageWaiGong, bool> execute = null,
+        Action<StageEntity, StageWaiGong, bool> execute = null,
         Action<StageEntity, StageWaiGong> startStage = null
     ) : base(name, jingJie, description,
         canPlug: (tile, runChip) => tile.AcquiredRunChip == null,
@@ -62,12 +62,12 @@ public class WaiGongEntry : ChipEntry
         _startStage = startStage;
     }
 
-    public void Execute(StringBuilder seq, StageEntity caster, StageWaiGong waiGong, bool recursive)
+    public void Execute(StageEntity caster, StageWaiGong waiGong, bool recursive)
     {
-        seq.Append($"{caster.GetName()}使用了{Name}");
-        _execute(seq, caster, waiGong, recursive);
-        seq.Append($"\n");
+        StageManager.Instance.Report.Append($"{caster.GetName()}使用了{Name}");
+        _execute(caster, waiGong, recursive);
+        StageManager.Instance.Report.Append($"\n");
     }
 
-    private void DefaultExecute(StringBuilder seq, StageEntity caster, StageWaiGong waiGong, bool recursive) { }
+    private void DefaultExecute(StageEntity caster, StageWaiGong waiGong, bool recursive) { }
 }

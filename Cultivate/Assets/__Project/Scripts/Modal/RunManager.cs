@@ -87,7 +87,8 @@ public class RunManager : Singleton<RunManager>
 
     private Dictionary<string, Func<IndexPath, object>> _accessors;
 
-    public string Report;
+    public bool IsStream { get; private set; }
+    public StageReport Report;
 
     public override void DidAwake()
     {
@@ -248,6 +249,26 @@ public class RunManager : Singleton<RunManager>
         return true;
     }
 
+    public bool TryEquip(int from, int to)
+    {
+        AcquiredRunChip toEquip = AcquiredInventory[from];
+        HeroChipSlot slot = Hero.HeroSlotInventory[to];
+
+        if (slot.AcquiredRunChip != null)
+        {
+            AcquiredInventory[from] = slot.AcquiredRunChip;
+        }
+        else
+        {
+            AcquiredInventory.RemoveAt(from);
+        }
+
+        slot.AcquiredRunChip = toEquip;
+
+        EquippedChanged();
+        return true;
+    }
+
     public bool TryDrag(IndexPath from, IndexPath to)
     {
         bool fromAcquired = from._str == "TryGetAcquired";
@@ -268,22 +289,7 @@ public class RunManager : Singleton<RunManager>
         }
         else if (fromAcquired && toHero)
         {
-            AcquiredRunChip toEquip = AcquiredInventory[from._ints[0]];
-            HeroChipSlot slot = Hero.HeroSlotInventory[to._ints[0]];
-
-            if (slot.AcquiredRunChip != null)
-            {
-                AcquiredInventory[from._ints[0]] = slot.AcquiredRunChip;
-            }
-            else
-            {
-                AcquiredInventory.RemoveAt(from._ints[0]);
-            }
-
-            slot.AcquiredRunChip = toEquip;
-
-            EquippedChanged();
-            return true;
+            return TryEquip(from._ints[0], to._ints[0]);
         }
         else if (fromHero && toAcquired)
         {
@@ -485,7 +491,19 @@ public class RunManager : Singleton<RunManager>
     }
 
     [NonSerialized] public (int, int) Brief;
-    private void CalcBrief() => Brief = StageManager.Simulate();
+    private void CalcBrief() => Brief = StageManager.SimulateBrief();
     [NonSerialized] public bool[] ManaShortageBrief;
     private void CalcManaShortageBrief() => ManaShortageBrief = StageManager.ManaSimulate();
+
+    public void GenerateReport()
+    {
+        IsStream = false;
+        AppManager.Push(new AppStageS());
+    }
+
+    public void Stream()
+    {
+        IsStream = true;
+        AppManager.Push(new AppStageS());
+    }
 }

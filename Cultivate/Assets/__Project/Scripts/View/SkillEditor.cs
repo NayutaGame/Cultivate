@@ -34,11 +34,14 @@ public class SkillEditor : MonoBehaviour
         HeroHPInputField.onEndEdit.AddListener(SetHeroHP);
         EnemyHPInputField.onEndEdit.AddListener(SetEnemyHP);
 
-        var options = new List<TMP_Dropdown.OptionData>();
-        Encyclopedia.EnemyCategory.Traversal.Do(enemy => options.Add(new TMP_Dropdown.OptionData(enemy.Name)));
-        EnemyPicker.options = options;
+        if (EnemyPicker != null)
+        {
+            List<TMP_Dropdown.OptionData> options = new();
+            Encyclopedia.EnemyCategory.Traversal.Do(enemy => options.Add(new TMP_Dropdown.OptionData(enemy.Name)));
+            EnemyPicker.options = options;
 
-        EnemyPicker.onValueChanged.AddListener(SetEnemy);
+            EnemyPicker.onValueChanged.AddListener(SetEnemy);
+        }
     }
 
     public void Refresh()

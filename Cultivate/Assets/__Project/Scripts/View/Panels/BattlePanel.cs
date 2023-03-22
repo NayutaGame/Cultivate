@@ -29,7 +29,7 @@ public class BattlePanel : Panel
         AcquiredWaiGongInventoryView.Refresh();
         SkillEditor.Refresh();
 
-        ReportText.text = RunManager.Instance.Report;
+        ReportText.text = RunManager.Instance.Report?.ToString();
     }
 
     private void Report()

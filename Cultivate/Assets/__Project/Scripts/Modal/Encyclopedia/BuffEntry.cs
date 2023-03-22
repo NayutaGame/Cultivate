@@ -46,12 +46,42 @@ public class BuffEntry : Entry
     public Action<Buff, ArmorDetails> _armored;
     // public Action<Buff, DamageDetails> _laststand;
     // public Action<Buff, AttackDetails> _evade;
-    // public Action<Buff, int> _clean;
+    // public Action<StageReport, Buff, int> _clean;
     public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _buff;
     public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _anyBuff;
     public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _buffed;
     public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _anyBuffed;
 
+    /// <summary>
+    /// 定义一个Buff
+    /// </summary>
+    /// <param name="name">名称</param>
+    /// <param name="description">描述</param>
+    /// <param name="buffStackRule">堆叠规则</param>
+    /// <param name="friendly">是否有益</param>
+    /// <param name="dispellable">是否可驱散</param>
+    /// <param name="gain">获得时的额外行为</param>
+    /// <param name="stackChanged">层数改变时的额外行为</param>
+    /// <param name="startStage">Stage开始时的额外行为</param>
+    /// <param name="endStage">Stage结束时的额外行为</param>
+    /// <param name="startTurn">Turn开始时的额外行为</param>
+    /// <param name="endTurn">Turn结束时的额外行为</param>
+    /// <param name="startRound">Round开始时的额外行为</param>
+    /// <param name="endRound">Round结束时的额外行为</param>
+    /// <param name="startStep">Step开始是的额外行为</param>
+    /// <param name="endStep">Step结束时的额外行为</param>
+    /// <param name="attack">攻击时的额外行为</param>
+    /// <param name="attacked">受攻击时的额外行为</param>
+    /// <param name="damage">伤害时的额外行为</param>
+    /// <param name="damaged">受伤害时的额外行为</param>
+    /// <param name="killed">被击杀时的额外行为</param>
+    /// <param name="kill">击杀时的额外行为</param>
+    /// <param name="heal">治疗时的额外行为</param>
+    /// <param name="healed">被治疗时的额外行为</param>
+    /// <param name="armor">给予护甲时的额外行为</param>
+    /// <param name="armored">接受护甲时的额外行为</param>
+    /// <param name="buff">受到Buff时的额外行为，结算之前</param>
+    /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
         // ModifierLeaf modifierLeaf = null,
         Action<Buff, StageEntity, int> gain = null,
@@ -77,7 +107,7 @@ public class BuffEntry : Entry
         Action<Buff, ArmorDetails> armored = null,
         // Action<Buff, DamageDetails> laststand = null,
         // Action<Buff, AttackDetails> evade = null,
-        // Action<Buff, int> clean = null,
+        // Action<StageReport, Buff, int> clean = null,
         Tuple<int, Func<Buff, BuffDetails, BuffDetails>> buff = null,
         Tuple<int, Func<Buff, BuffDetails, BuffDetails>> anyBuff = null,
         Tuple<int, Func<Buff, BuffDetails, BuffDetails>> buffed = null,
