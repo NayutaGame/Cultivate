@@ -46,12 +46,23 @@ public class EnemyChipView : RunChipView
     public override void OnDrop(PointerEventData eventData)
     {
         IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
-        if (drop == null)
-            return;
+        if (drop == null) return;
+        if (GetIndexPath().Equals(drop.GetIndexPath())) return;
 
-        if (GetIndexPath().Equals(drop.GetIndexPath()))
-            return;
+        EnemyChipSlot to = RunManager.Get<EnemyChipSlot>(GetIndexPath());
 
-        if (RunManager.Instance.TryWrite(drop.GetIndexPath(), GetIndexPath())) return;
+        AcquiredRunChip fromAcquired = RunManager.Get<AcquiredRunChip>(drop.GetIndexPath());
+        if (fromAcquired != null)
+        {
+            if (to.TryWrite(fromAcquired)) return;
+            return;
+        }
+
+        HeroChipSlot fromHeroChipSlot = RunManager.Get<HeroChipSlot>(drop.GetIndexPath());
+        if (fromHeroChipSlot != null)
+        {
+            if (to.TryWrite(fromHeroChipSlot)) return;
+            return;
+        }
     }
 }

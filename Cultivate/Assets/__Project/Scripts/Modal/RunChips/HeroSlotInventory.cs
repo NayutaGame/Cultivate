@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class HeroSlotInventory
+public class HeroSlotInventory : GDictionary
 {
     private HeroChipSlot[] _slots;
     public int Start;
@@ -26,8 +27,16 @@ public class HeroSlotInventory
         Limit = RunManager.WaiGongLimitFromJingJie[jingJie];
     }
 
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+
     public HeroSlotInventory()
     {
+        _accessors = new()
+        {
+            { "Slots", () => _slots },
+        };
+
         _slots = new HeroChipSlot[RunManager.WaiGongLimit];
         for (int i = 0; i < _slots.Length; i++)
             _slots[i] = new HeroChipSlot(i);
@@ -36,8 +45,17 @@ public class HeroSlotInventory
         Limit = RunManager.WaiGongLimit;
     }
 
-    public void Swap(int from, int to)
+    public bool Swap(int from, int to)
     {
-        (_slots[@from].AcquiredRunChip, _slots[to].AcquiredRunChip) = (_slots[to].AcquiredRunChip, _slots[@from].AcquiredRunChip);
+        (_slots[from].AcquiredRunChip, _slots[to].AcquiredRunChip) = (_slots[to].AcquiredRunChip, _slots[from].AcquiredRunChip);
+        RunManager.Instance.EquippedChanged();
+        return true;
+    }
+
+    public bool Swap(HeroChipSlot from, HeroChipSlot to) => Swap(IndexOf(from), IndexOf(to));
+
+    public int IndexOf(HeroChipSlot heroChipSlot)
+    {
+        return _slots.FirstIdx(slot => slot == heroChipSlot).Value;
     }
 }

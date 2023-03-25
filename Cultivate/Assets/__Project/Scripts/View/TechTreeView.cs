@@ -1,22 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class TechTreeView : MonoBehaviour
+public class TechTreeView : MonoBehaviour, IIndexPath
 {
     private static readonly int HEIGHT = 8;
 
     public Transform Container;
     public GameObject Prefab;
 
-    private IInventory _inventory;
     private List<Transform> _holders;
     private List<TechView> _views;
 
-    public virtual void Configure(IInventory inventory)
+    private IndexPath _indexPath;
+    public IndexPath GetIndexPath() => _indexPath;
+
+    public virtual void Configure(IndexPath indexPath)
     {
-        _inventory = inventory;
+        _indexPath = indexPath;
         InitHolders();
         _views = new ();
         PopulateList();
@@ -46,9 +49,10 @@ public class TechTreeView : MonoBehaviour
 
     private void PopulateList()
     {
-        for (int i = 0; i < _inventory.GetCount(); i++)
+        ChipInventory inventory = RunManager.Get<ChipInventory>(_indexPath);
+        for (int i = 0; i < inventory.GetCount(); i++)
         {
-            IndexPath indexPath = new IndexPath(_inventory.GetIndexPathString(), i);
+            IndexPath indexPath = new IndexPath($"{_indexPath}#{i}");
             RunTech tech = RunManager.Get<RunTech>(indexPath);
             Vector2Int position = tech.GetPosition();
             int index = position.x * HEIGHT + position.y;

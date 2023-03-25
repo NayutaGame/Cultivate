@@ -25,13 +25,17 @@ public class InventoryChipView : RunChipView
 
     public override void OnDrop(PointerEventData eventData)
     {
+        // if (eventData.pointerDrag == null) return;
         IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
-        if (drop == null)
-            return;
+        if (drop == null) return;
+        if (GetIndexPath().Equals(drop.GetIndexPath())) return;
 
-        if (GetIndexPath().Equals(drop.GetIndexPath()))
-            return;
+        RunChip to = RunManager.Get<RunChip>(GetIndexPath());
 
-        if (RunManager.Instance.InventorySwap(drop.GetIndexPath(), GetIndexPath())) return;
+        RunChip from = RunManager.Get<RunChip>(drop.GetIndexPath());
+        if (from != null)
+        {
+            if (RunManager.Instance.ChipInventory.Swap(from, to)) return;
+        }
     }
 }

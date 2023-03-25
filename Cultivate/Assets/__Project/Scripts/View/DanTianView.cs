@@ -19,8 +19,9 @@ public class DanTianView : MonoBehaviour
 
                 if(!DanTian.IsInsideXY(x, y)) continue;
 
-                _tileViews[DanTian.DIAMETER * y + x] = tileView;
-                tileView.Configure(new IndexPath("GetTileXY", x, y));
+                int i = DanTian.DIAMETER * y + x;
+                _tileViews[i] = tileView;
+                tileView.Configure(new IndexPath($"DanTian.Tiles#{i}"));
             }
         }
     }

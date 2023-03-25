@@ -103,8 +103,15 @@ public class TileView : MonoBehaviour, IIndexPath, IDropHandler
         IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
         if (drop == null) return;
 
-        if (RunManager.Instance.TryUpgradeDanTian(drop.GetIndexPath(), _indexPath)) return;
-        if (RunManager.Instance.TryPlug(drop.GetIndexPath(), _indexPath)) return;
+        Tile to = RunManager.Get<Tile>(_indexPath);
+
+        RunChip from = RunManager.Get<RunChip>(drop.GetIndexPath());
+        if (from != null)
+        {
+            // if (from.TryUpgradeDanTian(to)) return;
+            if (from.TryPlug(to)) return;
+        }
+
         // if (RunManager.Instance.TryDropProduct(drop.GetIndexPath(), _indexPath)) return;
     }
 

@@ -1,12 +1,13 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using TMPro;
 using UnityEngine;
 
-public class DanTian
+public class DanTian : GDictionary
 {
     public static readonly int RADIUS = 4;
     public static readonly int DIAMETER = 2 * RADIUS + 1;
@@ -79,8 +80,16 @@ public class DanTian
         return (Mathf.Abs(q) + Mathf.Abs(q + r) + Mathf.Abs(r)) / 2;
     }
 
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+
     public DanTian()
     {
+        _accessors = new()
+        {
+            { "Tiles",                  () => _tiles },
+        };
+
         InitTiles();
         // _workers = new();
         // _workerLocks = new();

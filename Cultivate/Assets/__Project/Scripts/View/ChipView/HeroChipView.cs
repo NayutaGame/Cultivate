@@ -33,7 +33,7 @@ public class HeroChipView : RunChipView
             LevelText.text = $"{slot.GetLevel()}";
             ManacostText.text = $"{slot.GetManaCost()}";
 
-            bool manaShortage = RunManager.Instance.ManaShortageBrief[GetIndexPath()._ints[0]];
+            bool manaShortage = slot.IsManaShortage();
             ManacostText.color = manaShortage ? Color.red : Color.black;
 
             NameText.text = $"{slot.GetName()}";
@@ -46,12 +46,23 @@ public class HeroChipView : RunChipView
     public override void OnDrop(PointerEventData eventData)
     {
         IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
-        if (drop == null)
-            return;
+        if (drop == null) return;
+        if (GetIndexPath().Equals(drop.GetIndexPath())) return;
 
-        if (GetIndexPath().Equals(drop.GetIndexPath()))
-            return;
+        HeroChipSlot to = RunManager.Get<HeroChipSlot>(GetIndexPath());
 
-        if (RunManager.Instance.TryDrag(drop.GetIndexPath(), GetIndexPath())) return;
+        AcquiredRunChip fromAcquired = RunManager.Get<AcquiredRunChip>(drop.GetIndexPath());
+        if (fromAcquired != null)
+        {
+            if (to.TryEquip(fromAcquired)) return;
+            return;
+        }
+
+        HeroChipSlot fromHeroChipSlot = RunManager.Get<HeroChipSlot>(drop.GetIndexPath());
+        if (fromHeroChipSlot != null)
+        {
+            if (RunManager.Instance.Hero.HeroSlotInventory.Swap(fromHeroChipSlot, to)) return;
+            return;
+        }
     }
 }

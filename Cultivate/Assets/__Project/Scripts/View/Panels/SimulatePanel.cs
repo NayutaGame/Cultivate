@@ -21,7 +21,7 @@ public class SimulatePanel : Panel
 
     public override void Configure()
     {
-        AcquiredWaiGongInventoryView.Configure(RunManager.Instance.AcquiredInventory);
+        AcquiredWaiGongInventoryView.Configure(new IndexPath("AcquiredInventory"));
         SkillEditor.Configure();
         NextEnemyButton.onClick.AddListener(NextEnemy);
         ReportButton.onClick.AddListener(Report);

@@ -25,12 +25,23 @@ public class AcquiredWaiGongView : RunChipView
     public override void OnDrop(PointerEventData eventData)
     {
         IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
-        if (drop == null)
-            return;
+        if (drop == null) return;
+        if (GetIndexPath().Equals(drop.GetIndexPath())) return;
 
-        if (GetIndexPath().Equals(drop.GetIndexPath()))
-            return;
+        AcquiredRunChip to = RunManager.Get<AcquiredRunChip>(GetIndexPath());
 
-        if (RunManager.Instance.TryDrag(drop.GetIndexPath(), GetIndexPath())) return;
+        AcquiredRunChip fromAcquired = RunManager.Get<AcquiredRunChip>(drop.GetIndexPath());
+        if (fromAcquired != null)
+        {
+            if (RunManager.Instance.AcquiredInventory.Swap(fromAcquired, to)) return;
+            return;
+        }
+
+        HeroChipSlot fromHeroChipSlot = RunManager.Get<HeroChipSlot>(drop.GetIndexPath());
+        if (fromHeroChipSlot != null)
+        {
+            if (fromHeroChipSlot.TryUnequip(to)) return;
+            return;
+        }
     }
 }

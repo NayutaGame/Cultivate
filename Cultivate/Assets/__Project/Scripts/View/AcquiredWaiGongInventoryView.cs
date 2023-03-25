@@ -9,20 +9,24 @@ public class AcquiredWaiGongInventoryView : InventoryView<AcquiredWaiGongView>, 
 {
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null)
-            return;
-
+        if (eventData.pointerDrag == null) return;
         RunChipView drop = eventData.pointerDrag.GetComponent<RunChipView>();
-        if (drop == null)
-            return;
+        if (drop == null) return;
 
-        if (drop.GetIndexPath()._str == "TryGetAcquired")
+        AcquiredWaiGongInventory to = RunManager.Get<AcquiredWaiGongInventory>(GetIndexPath());
+
+        AcquiredRunChip fromAcquired = RunManager.Get<AcquiredRunChip>(drop.GetIndexPath());
+        if (fromAcquired != null)
         {
-            if (RunManager.Instance.AcquiredWaiGongMoveToEnd(drop.GetIndexPath())) return;
+            if (to.MoveToEnd(fromAcquired)) return;
+            return;
         }
-        else if (drop.GetIndexPath()._str == "GetHeroSlot")
+
+        HeroChipSlot fromHeroChipSlot = RunManager.Get<HeroChipSlot>(drop.GetIndexPath());
+        if (fromHeroChipSlot != null)
         {
-            if (RunManager.Instance.Unequip(drop.GetIndexPath())) return;
+            if (fromHeroChipSlot.TryUnequip()) return;
+            return;
         }
     }
 

@@ -8,7 +8,7 @@ using UnityEngine;
 using CLLibrary;
 using Unity.VisualScripting;
 
-public abstract class StageEntity
+public abstract class StageEntity : GDictionary
 {
     public event Action StartStageEvent;
     public void StartStage() => StartStageEvent?.Invoke();
@@ -270,8 +270,18 @@ public abstract class StageEntity
     public int SelfDamageRecord;
     public int HealedRecord;
 
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+
     public StageEntity()
     {
+        _accessors = new()
+        {
+            { "WaiGongs", () => _waiGongList },
+            { "NeiGongs", () => _neiGongList },
+            { "Buffs", () => _buffs },
+        };
+
         _buffs = new List<Buff>();
         _manaShortage = false;
 

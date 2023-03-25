@@ -45,15 +45,19 @@ public class ArenaEnemyView : ItemView
         // ArenaEnemyEquippedInventoryView.Refresh();
     }
 
-    public void EnemyEntryChanged(int index)
+    public void EnemyEntryChanged(int enemyEntryIndex)
     {
-        RunManager.Instance.SetArenaEnemy(GetIndexPath(), index);
+        RunEnemy enemy = RunManager.Get<RunEnemy>(GetIndexPath());
+        int index = RunManager.Instance.Arena.IndexOf(enemy);
+        RunManager.Instance.Arena.SetEnemy(index, enemyEntryIndex);
         RunCanvas.Instance.Refresh();
     }
 
     public void RandomEnemy()
     {
-        RunManager.Instance.SetArenaEnemyRandom(GetIndexPath());
+        RunEnemy enemy = RunManager.Get<RunEnemy>(GetIndexPath());
+        int index = RunManager.Instance.Arena.IndexOf(enemy);
+        RunManager.Instance.Arena.SetRandom(index);
         RunCanvas.Instance.Refresh();
     }
 
@@ -61,7 +65,10 @@ public class ArenaEnemyView : ItemView
     {
         int.TryParse(value, out int hp);
         hp = Mathf.Clamp(hp, 1, 9999);
-        RunManager.Instance.SetArenaEnemyHealth(GetIndexPath(), hp);
+
+        RunEnemy enemy = RunManager.Get<RunEnemy>(GetIndexPath());
+        enemy.Health = hp;
+
         RunCanvas.Instance.Refresh();
     }
 

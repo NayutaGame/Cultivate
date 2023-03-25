@@ -26,8 +26,8 @@ public class SkillEditor : MonoBehaviour
 
     public void Configure()
     {
-        ConfigureList(ref _heroWaiGongViews, RunManager.WaiGongLimit, HeroWaiGongTransform, "GetHeroSlot");
-        ConfigureList(ref _enemyWaiGongViews, RunManager.WaiGongLimit, EnemyWaiGongTransform, "GetEnemySlot");
+        ConfigureList(ref _heroWaiGongViews, RunManager.WaiGongLimit, HeroWaiGongTransform, "Hero.HeroSlotInventory.Slots");
+        ConfigureList(ref _enemyWaiGongViews, RunManager.WaiGongLimit, EnemyWaiGongTransform, "Enemy.Slots");
 
         HeroHPInputField.text = RunManager.Instance.Hero.Health.ToString();
         EnemyHPInputField.text = RunManager.Instance.Enemy.Health.ToString();
@@ -63,7 +63,7 @@ public class SkillEditor : MonoBehaviour
         {
             RunChipView view = parentTransform.GetChild(i).GetComponent<RunChipView>();
             views[i] = view;
-            view.Configure(new IndexPath(indexPathString, i));
+            view.Configure(new IndexPath($"{indexPathString}#{i}"));
         }
     }
 

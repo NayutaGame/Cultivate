@@ -43,28 +43,28 @@ public class StageCanvas : Singleton<StageCanvas>
         for (int i = 0; i < HeroNeiGongContainerTransform.childCount; i++)
         {
             _heroNeiGongViews[i] = HeroNeiGongContainerTransform.GetChild(i).GetComponent<StageNeiGongView>();
-            _heroNeiGongViews[i].Configure(new IndexPath("TryGetHeroStageNeiGong", i));
+            _heroNeiGongViews[i].Configure(new IndexPath($"Hero.NeiGongs#{i}"));
         }
 
         _heroWaiGongViews = new StageWaiGongView[RunManager.WaiGongLimit];
         for (int i = 0; i < HeroWaiGongContainerTransform.childCount; i++)
         {
             _heroWaiGongViews[i] = HeroWaiGongContainerTransform.GetChild(i).GetComponent<StageWaiGongView>();
-            _heroWaiGongViews[i].Configure(new IndexPath("TryGetHeroStageWaiGong", i));
+            _heroWaiGongViews[i].Configure(new IndexPath($"Hero.WaiGongs#{i}"));
         }
 
         _enemyNeiGongViews = new StageNeiGongView[RunManager.NeiGongLimit];
         for (int i = 0; i < EnemyNeiGongContainerTransform.childCount; i++)
         {
             _enemyNeiGongViews[i] = EnemyNeiGongContainerTransform.GetChild(i).GetComponent<StageNeiGongView>();
-            _enemyNeiGongViews[i].Configure(new IndexPath("TryGetEnemyStageNeiGong", i));
+            _enemyNeiGongViews[i].Configure(new IndexPath($"Enemy.NeiGongs#{i}"));
         }
 
         _enemyWaiGongViews = new StageWaiGongView[RunManager.WaiGongLimit];
         for (int i = 0; i < EnemyWaiGongContainerTransform.childCount; i++)
         {
             _enemyWaiGongViews[i] = EnemyWaiGongContainerTransform.GetChild(i).GetComponent<StageWaiGongView>();
-            _enemyWaiGongViews[i].Configure(new IndexPath("TryGetEnemyStageWaiGong", i));
+            _enemyWaiGongViews[i].Configure(new IndexPath($"Enemy.WaiGongs#{i}"));
         }
 
         _heroBuffViews = new List<BuffView>();
@@ -100,7 +100,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, HeroBuffContainerTransform).GetComponent<BuffView>();
             _heroBuffViews.Add(v);
-            v.Configure(new IndexPath("TryGetHeroBuff", i));
+            v.Configure(new IndexPath($"Hero.Buffs#{i}"));
         }
     }
 
@@ -119,7 +119,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, EnemyBuffContainerTransform).GetComponent<BuffView>();
             _heroBuffViews.Add(v);
-            v.Configure(new IndexPath("TryGetEnemyBuff", i));
+            v.Configure(new IndexPath($"Enemy.Buffs#{i}"));
         }
     }
 

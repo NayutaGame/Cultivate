@@ -11,17 +11,28 @@ public abstract class Inventory<T> : List<T>, IInventory
         return this[i];
     }
 
-    public void MoveToEnd(int i)
+    public bool MoveToEnd(int i)
     {
         T item = this[i];
         RemoveAt(i);
         Add(item);
+        return true;
     }
 
-    public void Swap(int from, int to)
+    public bool MoveToEnd(T item)
+    {
+        Remove(item);
+        Add(item);
+        return true;
+    }
+
+    public bool Swap(int from, int to)
     {
         (this[from], this[to]) = (this[to], this[from]);
+        return true;
     }
+
+    public bool Swap(T from, T to) => Swap(IndexOf(from), IndexOf(to));
 
     public int GetCount() => Count;
     public abstract string GetIndexPathString();

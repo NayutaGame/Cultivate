@@ -5,7 +5,7 @@ using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class RunEnemy
+public class RunEnemy : GDictionary
 {
     private EnemyEntry _entry;
     public EnemyEntry Entry => _entry;
@@ -19,9 +19,17 @@ public class RunEnemy
     public int Start;
     public int Limit;
 
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+
     public RunEnemy(string name, CreateEnemyDetails d) : this(Encyclopedia.EnemyCategory[name], d) { }
     public RunEnemy(EnemyEntry entry, CreateEnemyDetails d) : this()
     {
+        _accessors = new()
+        {
+            { "Slots", () => _slots },
+        };
+
         _entry = entry;
         _createEnemyDetails = d;
 

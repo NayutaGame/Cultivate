@@ -9,7 +9,7 @@ public class MapPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        MapView.Configure(RunManager.Instance.Map);
+        MapView.Configure(new IndexPath("Map"));
     }
 
     public override void Refresh()

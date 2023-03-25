@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class InventoryView<T> : MonoBehaviour where T : ItemView
+public abstract class InventoryView<T> : MonoBehaviour, IIndexPath where T : ItemView
 {
     public Transform Container;
     public GameObject Prefab;
@@ -13,14 +13,15 @@ public abstract class InventoryView<T> : MonoBehaviour where T : ItemView
     private IInventory _inventory;
     private List<T> _views;
 
-    private IndexPath _parentIndexPath;
+    private IndexPath _indexPath;
+    public IndexPath GetIndexPath() => _indexPath;
 
-    public virtual void Configure(IInventory inventory, IndexPath parentIndexPath = null)
+    public virtual void Configure(IndexPath indexPath)
     {
-        _inventory = inventory;
-        _views = new List<T>();
+        _indexPath = indexPath;
 
-        _parentIndexPath = parentIndexPath;
+        _inventory = RunManager.Get<IInventory>(_indexPath);
+        _views = new List<T>();
     }
 
     public virtual void Refresh()
@@ -42,13 +43,7 @@ public abstract class InventoryView<T> : MonoBehaviour where T : ItemView
         {
             T v = Instantiate(Prefab, Container).GetComponent<T>();
             _views.Add(v);
-
-            IndexPath indexPath;
-            if (_parentIndexPath == null)
-                indexPath = new IndexPath(_inventory.GetIndexPathString(), i);
-            else
-                indexPath = new IndexPath(_inventory.GetIndexPathString(), _parentIndexPath._ints, i);
-            v.Configure(indexPath);
+            v.Configure(new IndexPath($"{_indexPath}#{i}"));
         }
     }
 }

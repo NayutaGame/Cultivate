@@ -13,9 +13,10 @@ public class ChipInventoryView : InventoryView<InventoryChipView>, IDropHandler
     public Button DrawWaiGongButton;
     public Button DrawStoneButton;
 
-    public override void Configure(IInventory inventory, IndexPath parentIndexPath = null)
+    public override void Configure(IndexPath indexPath)
     {
-        base.Configure(inventory, parentIndexPath);
+        base.Configure(indexPath);
+
         RefreshChipButton.onClick.AddListener(RefreshChip);
         ClearChipButton.onClick.AddListener(ClearChip);
         UpgradeFirstButton.onClick.AddListener(UpgradeFirst);
@@ -25,16 +26,16 @@ public class ChipInventoryView : InventoryView<InventoryChipView>, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null)
-            return;
-
+        if (eventData.pointerDrag == null) return;
         RunChipView drop = eventData.pointerDrag.GetComponent<RunChipView>();
-        if (drop == null)
-            return;
+        if (drop == null) return;
 
-        if (drop.GetIndexPath()._str == "TryGetRunChip")
+        ChipInventory to = RunManager.Get<ChipInventory>(GetIndexPath());
+
+        RunChip from = RunManager.Get<RunChip>(drop.GetIndexPath());
+        if (from != null)
         {
-            if (RunManager.Instance.InventoryMoveToEnd(drop.GetIndexPath())) return;
+            if (to.MoveToEnd(from)) return;
         }
     }
 

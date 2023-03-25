@@ -6,15 +6,12 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class Map : IInventory
+public class Map
 {
     private static readonly int HEIGHT = 3;
     private static readonly int WIDTH = 10;
 
     private RunNode[] _list;
-    public int GetCount() => _list.Length;
-
-    public string GetIndexPathString() => "TryGetRunNode";
 
     public RunNode this[int x, int y]
     {
@@ -78,6 +75,9 @@ public class Map : IInventory
         Selecting = true;
     }
 
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+
     public Map()
     {
         _list = new RunNode[HEIGHT * WIDTH];
@@ -86,6 +86,12 @@ public class Map : IInventory
         _a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is AdventureNodeEntry).ToList());
         _boss = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is BossNodeEntry).ToList());
         _m = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is MarketNodeEntry).ToList());
+
+        _accessors = new()
+        {
+            { "Nodes", () => _list },
+        };
+
         _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
         {
             { JingJie.LianQi   , new[] { _b, _a, _b, _a, _boss, _m } },

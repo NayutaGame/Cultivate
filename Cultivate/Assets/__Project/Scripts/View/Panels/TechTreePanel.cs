@@ -10,7 +10,7 @@ public class TechTreePanel : Panel
     public override void Configure()
     {
         base.Configure();
-        TechTreeView.Configure(RunManager.Instance.TechInventory);
+        TechTreeView.Configure(new IndexPath("TechInventory"));
     }
 
     public override void Refresh()

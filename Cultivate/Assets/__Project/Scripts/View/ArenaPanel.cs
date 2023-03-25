@@ -10,8 +10,9 @@ public class ArenaPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        ArenaWaiGongInventoryView.Configure(RunManager.Instance.ArenaWaiGongInventory);
-        ArenaEditorView.Configure(RunManager.Instance.ArenaEditor);
+
+        ArenaWaiGongInventoryView.Configure(new IndexPath("ArenaWaiGongInventory"));
+        ArenaEditorView.Configure(new IndexPath("Arena"));
     }
 
     public override void Refresh()

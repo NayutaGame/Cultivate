@@ -15,7 +15,7 @@ public class CharacterPanel : Panel
     {
         StatusView.Configure();
         DanTianView.Configure();
-        ChipInventoryView.Configure(RunManager.Instance.ChipInventory);
+        ChipInventoryView.Configure(new IndexPath("ChipInventory"));
         // InspectorView.Configure();
 
         _state = new CharacterPanelStateNormal();

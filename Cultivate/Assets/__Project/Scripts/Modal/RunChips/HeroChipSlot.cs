@@ -58,4 +58,54 @@ public class HeroChipSlot
         int end = RunManager.Instance.Hero.HeroSlotInventory.Start + RunManager.Instance.Hero.HeroSlotInventory.Limit;
         return start <= SlotIndex && SlotIndex < end;
     }
+
+    public bool TryUnequip()
+    {
+        AcquiredRunChip toUnequip = AcquiredRunChip;
+        if (toUnequip == null)
+            return false;
+
+        AcquiredRunChip = null;
+        RunManager.Instance.AcquiredInventory.Add(toUnequip);
+        RunManager.Instance.EquippedChanged();
+        return true;
+    }
+
+    public bool TryUnequip(AcquiredRunChip acquired)
+    {
+        AcquiredRunChip toUnequip = AcquiredRunChip;
+        if (toUnequip == null)
+            return false;
+
+        AcquiredRunChip = acquired;
+        int i = RunManager.Instance.AcquiredInventory.IndexOf(acquired);
+        RunManager.Instance.AcquiredInventory.RemoveAt(i);
+        RunManager.Instance.AcquiredInventory.Insert(i, toUnequip);
+        RunManager.Instance.EquippedChanged();
+        return true;
+    }
+
+    public bool TryEquip(AcquiredRunChip toEquip)
+    {
+        int index = RunManager.Instance.AcquiredInventory.IndexOf(toEquip);
+
+        if (AcquiredRunChip != null)
+        {
+            RunManager.Instance.AcquiredInventory[index] = AcquiredRunChip;
+        }
+        else
+        {
+            RunManager.Instance.AcquiredInventory.RemoveAt(index);
+        }
+
+        AcquiredRunChip = toEquip;
+
+        RunManager.Instance.EquippedChanged();
+        return true;
+    }
+
+    public bool IsManaShortage()
+    {
+        return RunManager.Instance.ManaShortageBrief[SlotIndex];
+    }
 }

@@ -1,46 +1,29 @@
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using System.Text.RegularExpressions;
 
 public class IndexPath : IEquatable<IndexPath>
 {
+    private static Regex Pattern = new Regex(@"\w+");
 
+    private string _rawString;
+    private readonly List<string> _values;
+    public List<string> Values => _values;
 
-    // private static Regex Pattern = new Regex(@"\w+");
-    //
-    // private string _rawString;
-    // private List<string> _values;
-    //
-    // public NewIndexPath(string rawString)
-    // {
-    //     _rawString = rawString;
-    //     _values = Pattern.Matches(_rawString).Map(m => m.Value).ToList();
-    // }
-
-
-    public readonly string _str;
-    public readonly int[] _ints;
-
-    public IndexPath(string str, int[] parentInts, params int[] ints)
+    public IndexPath(string rawString)
     {
-        _str = str;
-        _ints = new int[parentInts.Length + ints.Length];
-        parentInts.Length.Do(i => _ints[i] = parentInts[i]);
-        ints.Length.Do(i => _ints[i + parentInts.Length] = ints[i]);
-    }
-
-    public IndexPath(string str, params int[] ints)
-    {
-        _str = str;
-        _ints = ints;
+        _rawString = rawString;
+        _values = Pattern.Matches(_rawString).Map(m => m.Value).ToList();
     }
 
     public bool Equals(IndexPath other)
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return _str == other._str && Equals(_ints, other._ints);
+        return Equals(_values, other._values);
     }
 
     public override bool Equals(object obj)
@@ -51,8 +34,7 @@ public class IndexPath : IEquatable<IndexPath>
         return Equals((IndexPath)obj);
     }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_str, _ints);
-    }
+    public override int GetHashCode() => _values.GetHashCode();
+
+    public override string ToString() => _rawString;
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Sequence = DG.Tweening.Sequence;
 
-public class StageManager : Singleton<StageManager>
+public class StageManager : Singleton<StageManager>, GDictionary
 {
     private readonly int MAX_ACTION_COUNT = 128;
 
@@ -273,7 +274,31 @@ public class StageManager : Singleton<StageManager>
     public HeroSlot _heroSlot;
     public EnemySlot _enemySlot;
 
-    private Dictionary<string, Func<IndexPath, object>> _accessors;
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public static T Get<T>(IndexPath indexPath)
+    {
+        object curr = Instance;
+        foreach (string key in indexPath.Values)
+        {
+            if (int.TryParse(key, out int i))
+            {
+                IList l = curr as IList;
+                if (l.Count <= i)
+                    return default;
+                curr = l[i];
+            }
+            else
+            {
+                curr = (curr as GDictionary).GetAccessors()[key]();
+            }
+        }
+
+        if (curr is T ret)
+            return ret;
+        else
+            return default;
+    }
 
     public override void DidAwake()
     {
@@ -281,28 +306,15 @@ public class StageManager : Singleton<StageManager>
 
         _accessors = new()
         {
-            { "TryGetHeroStageNeiGong",    TryGetHeroStageNeiGong },
-            { "TryGetHeroStageWaiGong",    TryGetHeroStageWaiGong },
-            { "TryGetEnemyStageNeiGong",   TryGetEnemyStageNeiGong },
-            { "TryGetEnemyStageWaiGong",   TryGetEnemyStageWaiGong },
-            { "TryGetHeroBuff",            TryGetHeroBuff },
-            { "TryGetEnemyBuff",           TryGetEnemyBuff },
+            { "Hero",                  () => _hero },
+            { "Enemy",                 () => _enemy },
         };
     }
 
-    public static T Get<T>(IndexPath indexPath) => (T) Instance._accessors[indexPath._str](indexPath);
-    public static T Get<T>(string funcName) => Get<T>(new IndexPath(funcName));
-    private object TryGetHeroStageNeiGong(IndexPath indexPath) => _hero.TryGetNeiGong(indexPath._ints[0]);
-    private object TryGetHeroStageWaiGong(IndexPath indexPath) => _hero.TryGetWaiGong(indexPath._ints[0]);
-    private object TryGetEnemyStageNeiGong(IndexPath indexPath) => _enemy.TryGetNeiGong(indexPath._ints[0]);
-    private object TryGetEnemyStageWaiGong(IndexPath indexPath) => _enemy.TryGetWaiGong(indexPath._ints[0]);
-    private object TryGetHeroBuff(IndexPath indexPath) => _hero.TryGetBuff(indexPath._ints[0]);
-    private object TryGetEnemyBuff(IndexPath indexPath) => _enemy.TryGetBuff(indexPath._ints[0]);
-
-    public int GetHeroNeiGongCount() => _hero._neiGongList.Length;
-    public int GetHeroWaiGongCount() => _hero._waiGongList.Length;
-    public int GetEnemyNeiGongCount() => _enemy._neiGongList.Length;
-    public int GetEnemyWaiGongCount() => _enemy._waiGongList.Length;
+    // public int GetHeroNeiGongCount() => _hero._neiGongList.Length;
+    // public int GetHeroWaiGongCount() => _hero._waiGongList.Length;
+    // public int GetEnemyNeiGongCount() => _enemy._neiGongList.Length;
+    // public int GetEnemyWaiGongCount() => _enemy._waiGongList.Length;
 
     public int GetHeroBuffCount() => _hero.GetBuffCount();
     public int GetEnemyBuffCount() => _enemy.GetBuffCount();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using CLLibrary;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyChipSlot
@@ -50,5 +51,21 @@ public class EnemyChipSlot
         int start = RunManager.Instance.Enemy.Start;
         int end = RunManager.Instance.Enemy.Start + RunManager.Instance.Enemy.Limit;
         return start <= SlotIndex && SlotIndex < end;
+    }
+
+    public bool TryWrite(AcquiredRunChip acquired)
+    {
+        Chip = acquired.Chip.Clone();
+        WuXing.Traversal.Do(wuXing => SetPower(wuXing, acquired.GetPower(wuXing)));
+        RunManager.Instance.EquippedChanged();
+        return true;
+    }
+
+    public bool TryWrite(HeroChipSlot heroChipSlot)
+    {
+        Chip = heroChipSlot.RunChip?.Clone();
+        WuXing.Traversal.Do(wuXing => SetPower(wuXing, heroChipSlot.GetPower(wuXing)));
+        RunManager.Instance.EquippedChanged();
+        return true;
     }
 }

@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class MapView : MonoBehaviour
+public class MapView : MonoBehaviour, IIndexPath
 {
     private static readonly int HEIGHT = 3;
     private static readonly int WIDTH = 10;
 
     public Transform Container;
 
-    private IInventory _inventory;
     private NodeView[] _views;
+    private IndexPath _indexPath;
+    public IndexPath GetIndexPath() => _indexPath;
 
-    public virtual void Configure(IInventory inventory)
+    public virtual void Configure(IndexPath indexPath)
     {
-        _inventory = inventory;
+        _indexPath = indexPath;
         _views = new NodeView[HEIGHT * WIDTH];
         PopulateList();
     }
@@ -33,8 +34,9 @@ public class MapView : MonoBehaviour
 
             for (int y = 0; y < levelTransform.childCount; y++)
             {
-                _views[x * HEIGHT + y] = levelTransform.GetChild(y).GetComponent<NodeView>();
-                _views[x * HEIGHT + y].Configure(new IndexPath(_inventory.GetIndexPathString(), x, y));
+                int i = x * HEIGHT + y;
+                _views[i] = levelTransform.GetChild(y).GetComponent<NodeView>();
+                _views[i].Configure(new IndexPath($"{_indexPath}.Nodes#{i}"));
             }
         }
     }

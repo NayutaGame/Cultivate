@@ -57,4 +57,15 @@ public class RunChip
 
     public bool CanPlug(Tile tile) => _entry.CanPlug(tile, this);
     public void Plug(Tile tile) => _entry.Plug(tile, this);
+
+    public bool TryPlug(Tile tile)
+    {
+        if (!CanPlug(tile)) return false;
+        Plug(tile);
+
+        if (_entry is WaiGongEntry)
+            RunManager.Instance.Acquire(new AcquireDetails(this));
+
+        return true;
+    }
 }
