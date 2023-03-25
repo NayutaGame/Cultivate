@@ -6,17 +6,15 @@ using UnityEngine.EventSystems;
 
 public class EnemyChipView : RunChipView
 {
-    private bool _reveal;
-
     public override void Refresh()
     {
         base.Refresh();
 
         EnemyChipSlot slot = RunManager.Get<EnemyChipSlot>(GetIndexPath());
-        _reveal = slot.IsReveal();
+        bool reveal = slot.IsReveal();
 
-        gameObject.SetActive(_reveal);
-        if (!_reveal) return;
+        gameObject.SetActive(reveal);
+        if (!reveal) return;
 
         if(slot.Chip == null)
         {
@@ -24,6 +22,7 @@ public class EnemyChipView : RunChipView
             ManacostText.text = "";
             NameText.text = "空";
             PowerText.text = $"{slot.GetPowerString()}";
+            SetColorFromJingJie(JingJie.LianQi);
             return;
         }
         else
@@ -32,6 +31,7 @@ public class EnemyChipView : RunChipView
             ManacostText.text = "";
             NameText.text = $"{slot.Chip.GetName()}";
             PowerText.text = $"{slot.GetPowerString()}";
+            SetColorFromJingJie(slot.Chip.GetJingJie());
         }
     }
 

@@ -16,7 +16,7 @@ public class EnemyChipSlot
         _powers = new int[WuXing.Length];
     }
 
-    public string GetName() => Chip.GetName();
+    public string GetName() => Chip?.GetName();
     public int GetLevel() => Chip.Level;
     public int GetPower(WuXing wuXing) => _powers[wuXing];
     public void SetPower(WuXing wuXing, int value) => _powers[wuXing] = value;

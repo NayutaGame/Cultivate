@@ -28,11 +28,11 @@ public abstract class StageEntity
     public event Action EndRoundEvent;
     public void EndRound() => EndRoundEvent?.Invoke();
 
-    public event Action StartStepEvent;
-    public void StartStep() => StartStepEvent?.Invoke();
+    public event Action<StepDetails> StartStepEvent;
+    public void StartStep(StepDetails d) => StartStepEvent?.Invoke(d);
 
-    public event Action<EndStepDetails> EndStepEvent;
-    public void EndStep(EndStepDetails d) => EndStepEvent?.Invoke(d);
+    public event Action<StepDetails> EndStepEvent;
+    public void EndStep(StepDetails d) => EndStepEvent?.Invoke(d);
 
     public event Action<int> ManaShortageEvent;
     public void ManaShortage(int p) => ManaShortageEvent?.Invoke(p);
@@ -102,7 +102,11 @@ public abstract class StageEntity
     public int MaxHp
     {
         get => _maxHp;
-        set => _maxHp = Mathf.Max(value, 0);
+        set
+        {
+            _maxHp = Mathf.Max(value, 0);
+            Hp = Hp;
+        }
         // OnStatsChanged()
     }
 
@@ -138,6 +142,8 @@ public abstract class StageEntity
     {
         UltraSwift = false;
         Swift = false;
+        TryConsumeBuff("激活的不屈");
+
         StartTurn();
 
         if (TryConsumeBuff("跳回合"))
@@ -147,14 +153,18 @@ public abstract class StageEntity
         else
         {
             Step();
-            if (UltraSwift)
+
+            if (GetSumOfStackOfBuffs("不屈", "激活的不屈") == 0)
             {
-                Step();
-                Step();
-            }
-            else if (Swift)
-            {
-                Step();
+                if (UltraSwift)
+                {
+                    Step();
+                    Step();
+                }
+                else if (Swift)
+                {
+                    Step();
+                }
             }
         }
 
@@ -163,11 +173,12 @@ public abstract class StageEntity
 
     private void Step()
     {
-        StartStep();
         if (!_manaShortage)
             MoveP();
 
         StageWaiGong waiGong = _waiGongList[_p];
+
+        StartStep(new StepDetails(this, waiGong));
         // StageManager.Instance.Report.Seq?.
         // show waigong
 
@@ -176,7 +187,7 @@ public abstract class StageEntity
         {
             ManaShortage(_p);
             (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute(this, null, true);
-            EndStep(new EndStepDetails(this, null));
+            EndStep(new StepDetails(this, null));
             return;
         }
 
@@ -191,7 +202,7 @@ public abstract class StageEntity
         }
 
         // hide waigong
-        EndStep(new EndStepDetails(this, waiGong));
+        EndStep(new StepDetails(this, waiGong));
     }
 
     private void MoveP()
@@ -337,8 +348,12 @@ public abstract class StageEntity
         _buffs.RemoveAll(pred);
         // OnBuffChangedEvent?.Invoke();
     }
+
     public void RemoveBuffs(params string[] names)
-        => _buffs.FilterObj(b => names.Contains(b.GetName())).Do(RemoveBuff);
+    {
+        List<Buff> toRemove = _buffs.FilterObj(b => names.Contains(b.GetName())).ToList();
+        toRemove.Do(RemoveBuff);
+    }
 
     public Buff FindBuff(string name) => Buffs.FirstObj(b => b.BuffEntry.Name == name);
     public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.BuffEntry == buffEntry);

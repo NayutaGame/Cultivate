@@ -11,6 +11,7 @@ public class WaiGongEntry : ChipEntry
     public int GetManaCost(int level) => GetManaCost(level, new int[] { 0, 0, 0, 0, 0 });
     public int GetManaCost(int level, int[] powers) => _manaCost(level, powers);
 
+    public WaiGongType Type { get; private set; }
     private Action<StageEntity, StageWaiGong, bool> _execute;
     public Action<StageEntity, StageWaiGong> _startStage;
 
@@ -19,9 +20,10 @@ public class WaiGongEntry : ChipEntry
         JingJie jingJie,
         string description,
         int manaCost = 0,
+        WaiGongType type = WaiGongType.NONATTACK,
         Action<StageEntity, StageWaiGong, bool> execute = null,
         Action<StageEntity, StageWaiGong> startStage = null
-        ) : this(name, jingJie, description, (level, powers) => manaCost, execute, startStage)
+        ) : this(name, jingJie, description, (level, powers) => manaCost, type, execute, startStage)
     {}
 
     public WaiGongEntry(
@@ -29,6 +31,7 @@ public class WaiGongEntry : ChipEntry
         JingJie jingJie,
         string description,
         Func<int, int[], int> manaCost,
+        WaiGongType type = WaiGongType.NONATTACK,
         Action<StageEntity, StageWaiGong, bool> execute = null,
         Action<StageEntity, StageWaiGong> startStage = null
     ) : base(name, jingJie, description,
@@ -58,6 +61,7 @@ public class WaiGongEntry : ChipEntry
         })
     {
         _manaCost = manaCost;
+        Type = type;
         _execute = execute ?? DefaultExecute;
         _startStage = startStage;
     }
@@ -70,4 +74,10 @@ public class WaiGongEntry : ChipEntry
     }
 
     private void DefaultExecute(StageEntity caster, StageWaiGong waiGong, bool recursive) { }
+
+    public enum WaiGongType
+    {
+        ATTACK,
+        NONATTACK,
+    }
 }

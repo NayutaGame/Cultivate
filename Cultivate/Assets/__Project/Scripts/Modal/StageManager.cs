@@ -19,64 +19,72 @@ public class StageManager : Singleton<StageManager>
     /// <param name="tgt">受攻击者</param>
     /// <param name="value">攻击数值</param>
     /// <param name="times">攻击次数</param>
+    /// <param name="lifeSteal">是否吸血</param>
+    /// <param name="pierce">是否穿透</param>
     /// <param name="recursive">是否会递归</param>
     /// <param name="damaged">如果造成伤害时候的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
-    public void AttackProcedure(StageEntity src, StageEntity tgt, int value, int times = 1, bool recursive = true,
+    public void AttackProcedure(StageEntity src, StageEntity tgt, int value, int times = 1, bool lifeSteal = false, bool pierce = false, bool recursive = true,
         Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-        => AttackProcedure(new AttackDetails(src, tgt, value, times, recursive, damaged, undamaged));
-    public void AttackProcedure(AttackDetails d)
+        => AttackProcedure(new AttackDetails(src, tgt, value, lifeSteal, pierce, false, recursive, damaged, undamaged), times);
+    public void AttackProcedure(AttackDetails attackDetails, int times)
     {
-        for (int i = 0; i < d.Times; i++)
+        // 结算连击
+
+        for (int i = 0; i < times; i++)
         {
+            AttackDetails d = attackDetails.Clone();
+
             StageEntity src = d.Src;
             StageEntity tgt = d.Tgt;
-
-            // if (source == null || source.IsDead() || target == null || target.IsDead())
-            // {
-            //     sequence.AppendInterval(0.5f);
-            //     return;
-            // }
 
             src.Attack(d);
             tgt.Attacked(d);
             if (d.Cancel)
             {
-                Report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+                Report.Append($"    攻击被取消");
                 continue;
             }
 
-            // if (source.IsDead() || target.IsDead())
-            // {
-            //     sequence.AppendInterval(0.5f);
-            //     return;
-            // }
-
-            // 加攻 和 格挡
-            // int power = (int)Mathf.Max(0, source.GetFinalPower() * (1 + magnification) - target.GetBlock());
-
-            // 闪避
-            // if (target.CanEvade)
-            // {
-            //     target.Evade(attackDetails);
-            //     return;
-            // }
-
-            // 结算护甲
-            int negate = Mathf.Min(d.Value, tgt.Armor);
-            d.Value -= negate;
-            ArmorLoseProcedure(d.Tgt, negate);
+            if (!d.Pierce && d.Evade) // 提取事件 target.Evade(attackDetails);
+            {
+                Report.Append($"    攻击被闪避");
+                continue;
+            }
 
             if (d.Value == 0)
             {
-                // undamage?.Invoke();
-                Report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+                Report.Append($"    攻击为0");
                 continue;
             }
 
-            // 伤害Procedure
-            DamageProcedure(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
+            if (!d.Pierce && tgt.Armor >= 0) // 结算护甲
+            {
+                int negate = Mathf.Min(d.Value, tgt.Armor);
+                d.Value -= negate;
+                ArmorLoseProcedure(d.Tgt, negate);
 
+                if (d.Value == 0) // undamage?.Invoke();
+                {
+                    Report.Append($"    攻击被格挡");
+                    continue;
+                }
+            }
+            else if (tgt.Armor < 0) // 结算破甲
+            {
+                d.Value += -tgt.Armor;
+                tgt.Armor = 0;
+            }
+
+            // 伤害Procedure
+            DamageDetails damageDetails = DamageProcedure(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
+
+            // 结算吸血
+            if (!damageDetails.Cancel)
+            {
+                if (d.LifeSteal)
+                    HealProcedure(src, src, damageDetails.Value);
+            }
 
             // if (target.IsDead())
             // {
@@ -104,40 +112,16 @@ public class StageManager : Singleton<StageManager>
     /// <param name="recursive">是否会递归</param>
     /// <param name="damaged">如果造成伤害时候的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
-    public void DamageProcedure(StageEntity src, StageEntity tgt, int value, bool recursive = true,
+    public DamageDetails DamageProcedure(StageEntity src, StageEntity tgt, int value, bool recursive = true,
         Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
         => DamageProcedure(new DamageDetails(src, tgt, value, recursive, damaged, undamaged));
-    public void DamageProcedure(DamageDetails d)
+    public DamageDetails DamageProcedure(DamageDetails d)
     {
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
 
-        // 结算伤害免疫
-        // int hpLose = (int)(1 - target.GetFinalDamageImmune());
-        // if (hpLose == 0)
-        // {
-        //     undamage?.Invoke();
-        //     return;
-        // }
-
-        // 结算不屈
-        // bool canLaststand = target.CanLaststand;
-        // if (target.GetCurrHP() > hpLose || !canLaststand)
-        // {
-        //     target.SetCurrHP(target.GetCurrHP() - hpLose);
-        //     damageDetails = new DamageDetails(source, target, hpLose);
-        // }
-        // else
-        // {
-        //     target.SetCurrHP(1);
-        //     damageDetails = new DamageDetails(source, target, target.GetCurrHP() - 1);
-        //     target.Laststand(damageDetails);
-        // }
-
         // 如果击伤
         // damaged?.Invoke(damageDetails);
-
-        // 结算吸血
 
         src.Damage(d);
         tgt.Damaged(d);
@@ -145,18 +129,38 @@ public class StageManager : Singleton<StageManager>
         if (d.Cancel)
         {
             d.Undamaged?.Invoke(d);
-            return;
+            return d;
         }
 
         tgt.Hp -= d.Value;
 
+        if (tgt.Hp <= 0)
+        {
+            bool activeLastStand = tgt.GetStackOfBuff("激活的不屈") > 0;
+            if (activeLastStand)
+            {
+                tgt.Hp = 1;
+            }
+            else
+            {
+                bool lastStand = tgt.TryConsumeBuff("不屈");
+                if (lastStand)
+                {
+                    BuffProcedure(tgt, tgt, "激活的不屈");
+                    tgt.Hp = 1;
+                }
+            }
+        }
+
         if (d.Value == 0)
         {
             d.Undamaged?.Invoke(d);
+            return d;
         }
         else
         {
             d.Damaged?.Invoke(d);
+            return d;
         }
     }
 
@@ -212,8 +216,14 @@ public class StageManager : Singleton<StageManager>
 
     public void ArmorLoseProcedure(StageEntity tgt, int value)
     {
+        if (tgt.Armor < 0)
+        {
+            tgt.Armor -= value;
+            return;
+        }
+
+        tgt.LostArmorRecord += Mathf.Min(tgt.Armor, value);
         tgt.Armor -= value;
-        tgt.LostArmorRecord += value;
     }
 
     // private static BuffDetails CleanProcedure(BuffDetails d)
@@ -240,13 +250,13 @@ public class StageManager : Singleton<StageManager>
     // }
     //
 
-    public void DispelProcedure(StringBuilder seq, StageEntity entity, int stack, bool targetingFriendly)
+    public void DispelProcedure(StageEntity entity, int stack, bool targetingFriendly)
     {
         List<Buff> buffs = entity.Buffs.FilterObj(b => b.Friendly == targetingFriendly && b.Dispellable).ToList();
         buffs.Do(b =>
         {
             b.Stack -= stack;
-            seq.Append($"{b.GetName()}.Stack 驱散后变成 {b.Stack}");
+            Report.Append($"{b.GetName()}.Stack 驱散后变成 {b.Stack}");
         });
     }
 

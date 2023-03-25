@@ -571,6 +571,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunCanvas: {fileID: 6570500142930501897}
   StageCanvas: {fileID: 1688634940}
+  JingJieColors:
+  - {r: 0.948, g: 0.948, b: 0.948, a: 1}
+  - {r: 0.5955856, g: 0.7924528, b: 0.6414199, a: 1}
+  - {r: 0.42745098, g: 0.654902, b: 0.77254903, a: 1}
+  - {r: 0.5708644, g: 0.5031446, b: 0.754717, a: 1}
+  - {r: 0.7927295, g: 0.8018868, b: 0.45894146, a: 1}
+  - {r: 0.864, g: 0.48470402, b: 0.48470402, a: 1}
 --- !u!1 &882905661
 GameObject:
   m_ObjectHideFlags: 0

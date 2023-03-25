@@ -25,6 +25,7 @@ public class HeroChipView : RunChipView
             ManacostText.text = "";
             NameText.text = "空";
             PowerText.text = $"{slot.GetPowerString()}";
+            SetColorFromJingJie(JingJie.LianQi);
             return;
         }
         else
@@ -37,6 +38,8 @@ public class HeroChipView : RunChipView
 
             NameText.text = $"{slot.GetName()}";
             PowerText.text = $"{slot.GetPowerString()}";
+
+            SetColorFromJingJie(slot.RunChip.GetJingJie());
         }
     }
 

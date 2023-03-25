@@ -41,11 +41,13 @@ public class TileView : MonoBehaviour, IIndexPath, IDropHandler
         {
             PrimaryText.text = "";
             LevelText.text = "";
+            SetColorFromJingJie(JingJie.LianQi);
         }
         else
         {
             PrimaryText.text = tile.AcquiredRunChip.GetName();
             LevelText.text = tile.AcquiredRunChip.Chip.Level.ToString();
+            SetColorFromJingJie(tile.AcquiredRunChip.GetJingJie());
         }
 
         if (tile.AcquiredRunChip == null || !(tile.AcquiredRunChip.Chip._entry is WuXingChipEntry))
@@ -104,6 +106,11 @@ public class TileView : MonoBehaviour, IIndexPath, IDropHandler
         if (RunManager.Instance.TryUpgradeDanTian(drop.GetIndexPath(), _indexPath)) return;
         if (RunManager.Instance.TryPlug(drop.GetIndexPath(), _indexPath)) return;
         // if (RunManager.Instance.TryDropProduct(drop.GetIndexPath(), _indexPath)) return;
+    }
+
+    protected void SetColorFromJingJie(JingJie jingJie)
+    {
+        _image.color = CanvasManager.Instance.JingJieColors[jingJie];
     }
 
     // public void OnPointerClick(PointerEventData eventData)

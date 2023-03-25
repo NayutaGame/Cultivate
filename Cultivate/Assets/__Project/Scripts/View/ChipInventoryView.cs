@@ -13,9 +13,9 @@ public class ChipInventoryView : InventoryView<InventoryChipView>, IDropHandler
     public Button DrawWaiGongButton;
     public Button DrawStoneButton;
 
-    public override void Configure(IInventory inventory)
+    public override void Configure(IInventory inventory, IndexPath parentIndexPath = null)
     {
-        base.Configure(inventory);
+        base.Configure(inventory, parentIndexPath);
         RefreshChipButton.onClick.AddListener(RefreshChip);
         ClearChipButton.onClick.AddListener(ClearChip);
         UpgradeFirstButton.onClick.AddListener(UpgradeFirst);

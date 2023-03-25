@@ -46,6 +46,8 @@ public class RunManager : Singleton<RunManager>
     public RunHero Hero { get; private set; }
     public EnemyPool EnemyPool { get; private set; }
     public RunEnemy Enemy { get; private set; }
+    public ArenaWaiGongInventory ArenaWaiGongInventory;
+    public ArenaEditor ArenaEditor;
 
     private JingJie _jingJie;
 
@@ -106,7 +108,10 @@ public class RunManager : Singleton<RunManager>
         EnemyPool = new();
 
         CreateEnemyDetails d = new CreateEnemyDetails();
-        Enemy = DrawEnemy(d).Create(d);
+        Enemy = new RunEnemy(DrawEnemy(d), d);
+
+        ArenaWaiGongInventory = new();
+        ArenaEditor = new();
 
         _accessors = new()
         {
@@ -118,6 +123,8 @@ public class RunManager : Singleton<RunManager>
             { "TryGetAcquired",        TryGetAcquired },
             { "GetHeroSlot",           GetHeroSlot },
             { "GetEnemySlot",          GetEnemySlot },
+            { "TryGetArenaChip",       TryGetArenaChip },
+            { "TryGetArenaEnemy",      TryGetArenaEnemy },
         };
 
         _mingYuan = 100;
@@ -143,6 +150,8 @@ public class RunManager : Singleton<RunManager>
     private object TryGetAcquired(IndexPath indexPath) => AcquiredInventory.TryGet(indexPath._ints[0]);
     private object GetHeroSlot(IndexPath indexPath) => Hero.HeroSlotInventory[indexPath._ints[0]];
     private object GetEnemySlot(IndexPath indexPath) => Enemy.GetSlot(indexPath._ints[0]);
+    private object TryGetArenaChip(IndexPath indexPath) => ArenaWaiGongInventory[indexPath._ints[0]];
+    private object TryGetArenaEnemy(IndexPath indexPath) => ArenaEditor[indexPath._ints[0]];
 
     public RunNode TryGetCurrentNode() => Map.TryGetCurrentNode();
     public string GetStatusString() => $"命元：{_mingYuan}\n气血：{Hero.Health}\n初始灵力：{Hero.Mana}";
@@ -333,7 +342,7 @@ public class RunManager : Singleton<RunManager>
         else
         {
             int[] powers = new int[WuXing.Length];
-            Enemy.SetSlotContent(to._ints[0], null, powers);
+            Enemy.SetSlotContent(to._ints[0], "", powers);
         }
 
         EquippedChanged();
@@ -505,5 +514,20 @@ public class RunManager : Singleton<RunManager>
     {
         IsStream = true;
         AppManager.Push(new AppStageS());
+    }
+
+    public void SetArenaEnemy(IndexPath indexPath, int index)
+    {
+        ArenaEditor.SetArenaEnemy(indexPath._ints[0], index);
+    }
+
+    public void SetArenaEnemyRandom(IndexPath indexPath)
+    {
+        ArenaEditor.SetArenaEnemyRandom(indexPath._ints[0]);
+    }
+
+    public void SetArenaEnemyHealth(IndexPath indexPath, int health)
+    {
+        ArenaEditor.SetArenaEnemyHealth(indexPath._ints[0], health);
     }
 }

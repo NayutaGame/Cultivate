@@ -18,6 +18,8 @@ public class AcquiredWaiGongView : RunChipView
         ManacostText.text = $"{acquiredRunChip.GetManaCost()}";
         NameText.text = $"{acquiredRunChip.GetName()}";
         PowerText.text = $"{acquiredRunChip.GetPowerString()}";
+
+        SetColorFromJingJie(acquiredRunChip.GetJingJie());
     }
 
     public override void OnDrop(PointerEventData eventData)

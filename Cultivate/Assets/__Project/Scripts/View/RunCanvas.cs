@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using CLLibrary;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RunCanvas : Singleton<RunCanvas>
 {
-    public Color GreenColor;
-    public Color YellowColor;
-    public Color RedColor;
+    public Color TechColorGreen;
+    public Color TechColorYellow;
+    public Color TechColorRed;
 
     public ChipPreview ChipPreview;
     public GhostProduct GhostProduct;
@@ -19,12 +20,14 @@ public class RunCanvas : Singleton<RunCanvas>
     public Button CharacterButton;
     public Button TechButton;
     public Button SimulateButton;
+    public Button ArenaButton;
     public Button MapButton;
     public Button NodeButton;
 
     public CharacterPanel CharacterPanel;
     public TechTreePanel TechTreePanel;
     public SimulatePanel SimulatePanel;
+    public ArenaPanel ArenaPanel;
     public MapPanel MapPanel;
     public NodePanel NodePanel;
 
@@ -46,6 +49,7 @@ public class RunCanvas : Singleton<RunCanvas>
         CharacterButton.onClick.AddListener(OpenCharacterPanel);
         TechButton.onClick.AddListener(OpenTechTreePanel);
         SimulateButton.onClick.AddListener(OpenSimulatePanel);
+        ArenaButton.onClick.AddListener(OpenArenaPanel);
         MapButton.onClick.AddListener(OpenMapPanel);
         NodeButton.onClick.AddListener(OpenNodePanel);
 
@@ -59,6 +63,7 @@ public class RunCanvas : Singleton<RunCanvas>
     private void OpenCharacterPanel() => OpenPanel(CharacterPanel);
     private void OpenTechTreePanel() => OpenPanel(TechTreePanel);
     private void OpenSimulatePanel() => OpenPanel(SimulatePanel);
+    private void OpenArenaPanel() => OpenPanel(ArenaPanel);
     private void OpenMapPanel() => OpenPanel(MapPanel);
     private void OpenNodePanel() => OpenPanel(NodePanel);
     private void OpenPanel(Panel panel)

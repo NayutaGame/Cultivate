@@ -20,6 +20,6 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         base.Enter();
 
-        RunManager.Instance.SetEnemy(_enemyEntry.Create(_createEnemyDetails));
+        RunManager.Instance.SetEnemy(new RunEnemy(_enemyEntry, _createEnemyDetails));
     }
 }

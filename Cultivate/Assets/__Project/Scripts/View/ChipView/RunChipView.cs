@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -19,6 +20,11 @@ public abstract class RunChipView : ItemView,
     private void Awake()
     {
         _image = GetComponent<Image>();
+    }
+
+    protected void SetColorFromJingJie(JingJie jingJie)
+    {
+        _image.color = CanvasManager.Instance.JingJieColors[jingJie];
     }
 
     public void OnPointerDown(PointerEventData eventData) { }

@@ -42,15 +42,15 @@ public class TechView : ItemView
         switch (runTech.State)
         {
             case RunTech.RunTechState.Done:
-                _image.color = RunCanvas.Instance.GreenColor;
+                _image.color = RunCanvas.Instance.TechColorGreen;
                 RewardText.text = "";
                 break;
             case RunTech.RunTechState.Current:
-                _image.color = RunCanvas.Instance.YellowColor;
+                _image.color = RunCanvas.Instance.TechColorYellow;
                 RewardText.text = runTech.GetRewardsString();
                 break;
             case RunTech.RunTechState.Locked:
-                _image.color = RunCanvas.Instance.RedColor;
+                _image.color = RunCanvas.Instance.TechColorRed;
                 RewardText.text = runTech.GetRewardsString();
                 break;
         }

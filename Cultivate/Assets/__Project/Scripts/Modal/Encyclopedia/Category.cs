@@ -40,4 +40,6 @@ public class Category<T> where T : Entry
     public T this[int i] => _list[i];
     public T this[string key] => _dict[key];
 
+    public int IndexOf(T item)
+        => _list.IndexOf(item);
 }

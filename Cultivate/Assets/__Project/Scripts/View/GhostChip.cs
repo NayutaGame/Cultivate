@@ -3,15 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GhostChip : MonoBehaviour
 {
+    protected Image _image;
+
     public TMP_Text InfoText;
 
     private IndexPath _indexPath;
     public IndexPath IndexPath => _indexPath;
 
     private RectTransform _rectTransform;
+
+    private void Awake()
+    {
+        _image = GetComponent<Image>();
+    }
 
     public void Configure(IndexPath indexPath)
     {
@@ -54,10 +62,17 @@ public class GhostChip : MonoBehaviour
         if (c == null)
         {
             InfoText.text = "空";
+            SetColorFromJingJie(JingJie.LianQi);
             return;
         }
 
         InfoText.text = $"{c.GetName()}";
+        SetColorFromJingJie(c.GetJingJie());
+    }
+
+    protected void SetColorFromJingJie(JingJie jingJie)
+    {
+        _image.color = CanvasManager.Instance.JingJieColors[jingJie];
     }
 
     public void UpdateMousePos(Vector2 pos)

@@ -39,6 +39,11 @@ public class BuffDetails
                 case BuffStackRule.Add:
                     Tgt.StackBuff(same, _stack);
                     break;
+                case BuffStackRule.Max:
+                    int gain = _stack - oldStack;
+                    if(gain > 0)
+                        Tgt.StackBuff(same, gain);
+                    break;
             }
 
             StageManager.Instance.Report.Append($"    {_buffEntry.Name}: {oldStack} -> {same.Stack}");

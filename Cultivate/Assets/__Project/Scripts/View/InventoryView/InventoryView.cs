@@ -13,10 +13,14 @@ public abstract class InventoryView<T> : MonoBehaviour where T : ItemView
     private IInventory _inventory;
     private List<T> _views;
 
-    public virtual void Configure(IInventory inventory)
+    private IndexPath _parentIndexPath;
+
+    public virtual void Configure(IInventory inventory, IndexPath parentIndexPath = null)
     {
         _inventory = inventory;
         _views = new List<T>();
+
+        _parentIndexPath = parentIndexPath;
     }
 
     public virtual void Refresh()
@@ -38,7 +42,13 @@ public abstract class InventoryView<T> : MonoBehaviour where T : ItemView
         {
             T v = Instantiate(Prefab, Container).GetComponent<T>();
             _views.Add(v);
-            v.Configure(new IndexPath(_inventory.GetIndexPathString(), i));
+
+            IndexPath indexPath;
+            if (_parentIndexPath == null)
+                indexPath = new IndexPath(_inventory.GetIndexPathString(), i);
+            else
+                indexPath = new IndexPath(_inventory.GetIndexPathString(), _parentIndexPath._ints, i);
+            v.Configure(indexPath);
         }
     }
 }

@@ -79,6 +79,8 @@ public class StageWaiGong
         return _runChip.GetName();
     }
 
+    public WaiGongEntry.WaiGongType GetWaiGongType() => (_runChip._entry as WaiGongEntry).Type;
+
     public void Execute(StageEntity caster, bool recursive = true)
     {
         _execute(caster, this, recursive);

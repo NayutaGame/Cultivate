@@ -9,4 +9,6 @@ public class CanvasManager : Singleton<CanvasManager>
     public StageCanvas StageCanvas;
 
     // public RectTransform GhostHolder;
+
+    public Color[] JingJieColors;
 }

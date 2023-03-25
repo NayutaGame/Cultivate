@@ -14,8 +14,6 @@ public class DesignerEnvironment
 
     public static void DefaultStartTurn(StageEntity entity)
     {
-        Buff b = entity.FindBuff("固化");
-        if (b == null)
-            StageManager.Instance.ArmorLoseProcedure(entity, entity.Armor);
+        // StageManager.Instance.ArmorLoseProcedure(entity, entity.Armor);
     }
 }

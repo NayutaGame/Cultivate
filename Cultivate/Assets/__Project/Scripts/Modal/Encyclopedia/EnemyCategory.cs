@@ -8,361 +8,127 @@ public class EnemyCategory : Category<EnemyEntry>
     {
         List = new()
         {
-            new("鶸", "除了聚气什么都不会的废物",
-                canCreate: d =>
+            new("鶸", "除了聚气什么都不会的废物", canCreate: d => true,
+                create: (enemy, d) => { }),
+
+            // new("敌人模板", "",
+            //     canCreate: d =>
+            //     {
+            //         return true;
+            //     },
+            //     create: (enemy, d) =>
+            //     {
+            //         enemy.SetSlotContent(0, "蓄力", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(1, "挥砍", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(2, "藤甲", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(3, "蓄力", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(4, "挥砍", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(5, "藤甲", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(6, "蓄力", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(7, "挥砍", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(8, "藤甲", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(9, "火00", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(10, "挥砍", new int[] { 0, 0, 0, 0, 0 });
+            //         enemy.SetSlotContent(11, "金00", new int[] { 0, 0, 0, 0, 0 });
+            //     }),
+
+            new("敌人00", "", canCreate: d => true,
+                create: (enemy, d) =>
                 {
-                    return true;
-                },
-                create: d =>
-                {
-                    return new RunEnemy();
+                    enemy.QuickSetSlotContent("火00", "", "金00");
                 }),
 
-            /*
-            new("炼气1", "蓄力流，弱点很多，正常人都能打过，玩家元素0",
-                canCreate: d =>
+            new("敌人01", "", canCreate: d => true,
+                create: (enemy, d) =>
                 {
-                    return true;
-                },
-                create: d =>
-                {
-                    RunEnemy e = new RunEnemy();
-                    e.SetSlotContent(0, new RunChip("蓄力"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(1, new RunChip("挥砍"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(2, new RunChip("藤甲"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(3, new RunChip("蓄力"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(4, new RunChip("挥砍"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(5, new RunChip("藤甲"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(6, new RunChip("蓄力"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(7, new RunChip("挥砍"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(8, new RunChip("藤甲"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(9, new RunChip("蓄力"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(10, new RunChip("挥砍"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(11, new RunChip("藤甲"), new int[] { 0, 0, 0, 0, 0 });
-                    return e;
-                }),
-            new("炼气2", "有点强度，需要防御对手攻击和抓住机会，玩家元素1",
-                canCreate: d =>
-                {
-                    return true;
-                },
-                create: d =>
-                {
-                    RunEnemy e = new RunEnemy();
-                    e.SetSlotContent(0, new RunChip("水盾"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(1, new RunChip("叶刃"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(2, new RunChip("藤甲"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(3, new RunChip("水盾"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(4, new RunChip("叶刃"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(5, new RunChip("藤甲"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(6, new RunChip("水盾"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(7, new RunChip("叶刃"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(8, new RunChip("藤甲"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(9, new RunChip("水盾"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(10, new RunChip("叶刃"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(11, new RunChip("藤甲"), new int[] { 0, 0, 0, 0, 0 });
-                    return e;
+                    enemy.QuickSetSlotContent("火00", "木00", "火01");
                 }),
 
-            new("炼气3", "快速卡组轮转，有点强,玩家元素2",
-                canCreate: d =>
+            new("敌人02", "", canCreate: d => true,
+                create: (enemy, d) =>
                 {
-                    return true;
-                },
-                create: d =>
-                {
-                    RunEnemy e = new RunEnemy();
-                    e.SetSlotContent(0, new RunChip("水刃"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(1, new RunChip("地动术"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(2, new RunChip("大地灵气"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(3, new RunChip("水盾"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(4, new RunChip("地动术"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(5, new RunChip("大地灵气"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(6, new RunChip("水盾"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(7, new RunChip("地动术"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(8, new RunChip("大地灵气"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(9, new RunChip("水盾"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(10, new RunChip("地动术"), new int[] { 0, 0, 0, 0, 0 });
-                    e.SetSlotContent(11, new RunChip("大地灵气"), new int[] { 0, 0, 0, 0, 0 });
-                    return e;
-                }),
-            new("炼气boss", "一根手指可以把玩家打的爆浆,玩家元素3",
-                canCreate: d =>
-                {
-                    return true;
-                },
-                create: d =>
-                {
-                    RunEnemy e = new RunEnemy();
-                    e.SetSlotContent(0, new RunChip("水刃"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(1, new RunChip("叶刃"), new int[] { 0, 0, 1, 0, 0 });
-                    e.SetSlotContent(2, new RunChip("藤甲"), new int[] { 0, 0, 1, 0, 0 });
-                    e.SetSlotContent(3, new RunChip("水刃"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(4, new RunChip("叶刃"), new int[] { 0, 0, 1, 0, 0 });
-                    e.SetSlotContent(5, new RunChip("藤甲"), new int[] { 0, 0, 1, 0, 0 });
-                    e.SetSlotContent(6, new RunChip("水刃"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(7, new RunChip("叶刃"), new int[] { 0, 0, 1, 0, 0 });
-                    e.SetSlotContent(8, new RunChip("藤甲"), new int[] { 0, 0, 1, 0, 0 });
-                    e.SetSlotContent(9, new RunChip("水刃"), new int[] { 0, 1, 0, 0, 0 });
-                    e.SetSlotContent(10, new RunChip("叶刃"), new int[] { 0, 0, 1, 0, 0 });
-                    e.SetSlotContent(11, new RunChip("藤甲"), new int[] { 0, 0, 1, 0, 0 });
-                    return e;
+                    enemy.QuickSetSlotContent("水00", "火00", "金00");
                 }),
 
-            new("筑基金", "会施放控制，需要玩家合理应对",
-                canCreate: d =>
+            new("敌人03", "", canCreate: d => true,
+                create: (enemy, d) =>
                 {
-                    return true;
-                },
-                create: d =>
-                {
-                    RunEnemy e = new RunEnemy();
-                    e.SetSlotContent(0, new RunChip("硬直"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(1, new RunChip("蓄力"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(2, new RunChip("强袭"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(3, new RunChip("蓄力"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(4, new RunChip("挥斧"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(5, new RunChip("挥斧"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(6, new RunChip("硬直"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(7, new RunChip("蓄力"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(8, new RunChip("强袭"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(9, new RunChip("蓄力"), new int[] { 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(10, new RunChip("挥斧"), new int[]{ 2, 0, 0, 0, 0 });
-                    e.SetSlotContent(11, new RunChip("挥斧"), new int[]{ 2, 0, 0, 0, 0 });
-                    return e;
+                    enemy.QuickSetSlotContent("土00", "金00", "金01");
                 }),
 
-            new("筑基木", "中毒防御流",
-                canCreate: d =>
+            new("敌人04", "", canCreate: d => true,
+                create: (enemy, d) =>
                 {
-                    return true;
-                },
-                create: d =>
-                {
-                    RunEnemy e = new RunEnemy();
-                    e.SetSlotContent(0, new RunChip("万物有灵"), new int[] { 0, 0, 3, 0, 0 });
-                    e.SetSlotContent(1, new RunChip("见血封喉"), new int[] { 0, 0, 2, 0, 0 });
-                    e.SetSlotContent(2, new RunChip("生生不息"), new int[] { 0, 0, 2, 0, 0 });
-                    e.SetSlotContent(3, new RunChip("万物有灵"), new int[] { 0, 0, 2, 0, 0 });
-                    e.SetSlotContent(4, new RunChip("蜜糖砒霜"), new int[] { 0, 0, 2, 0, 0 });
-                    e.SetSlotContent(5, new RunChip("藤甲"), new int[] { 0, 0, 2, 0, 0 });
-                    e.SetSlotContent(6, new RunChip("万物有灵"), new int[] { 0, 0, 3, 0, 0 });
-                    e.SetSlotContent(7, new RunChip("见血封喉"), new int[] { 0, 0, 2, 0, 0 });
-                    e.SetSlotContent(8, new RunChip("生生不息"), new int[] { 0, 0, 2, 0, 0 });
-                    e.SetSlotContent(9, new RunChip("万物有灵"), new int[] { 0, 0, 2, 0, 0 });
-                    e.SetSlotContent(10, new RunChip("蜜糖砒霜"), new int[]{ 0, 0, 2, 0, 0 });
-                    e.SetSlotContent(11, new RunChip("藤甲"), new int[]{ 0, 0, 2, 0, 0 });
-                    return e;
+                    enemy.QuickSetSlotContent("火01", "土00", "金00");
                 }),
 
-            new("筑基水", "会施放控制，需要玩家合理应对",
-                canCreate: d =>
+            new("敌人05", "", canCreate: d => true,
+                create: (enemy, d) =>
                 {
-                    return true;
-                },
-                create: d =>
-                {
-                    RunEnemy e = new RunEnemy();
-                    e.SetSlotContent(0, new RunChip("水之抉择"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(1, new RunChip("水刃"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(2, new RunChip("水盾"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(3, new RunChip("灵气暴涨"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(4, new RunChip("水之守护"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(5, new RunChip("水之抉择"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(6, new RunChip("水之抉择"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(7, new RunChip("水刃"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(8, new RunChip("水盾"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(9, new RunChip("灵气暴涨"), new int[] { 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(10, new RunChip("水之守护"), new int[]{ 0, 2, 0, 0, 0 });
-                    e.SetSlotContent(11, new RunChip("水之抉择"), new int[]{ 0, 2, 0, 0, 0 });
-                    return e;
+                    enemy.QuickSetSlotContent("木01", "木01", "木01");
                 }),
-                */
 
+            new("敌人06", "", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.QuickSetSlotContent("金01", "土01", "土01");
+                }),
 
-            //     new("敌人模板", "",
-            //     canCreate: d =>
-            //     {
-            //         return true;
-            //     },
-            //     create: d =>
-            //     {
-            //         RunEnemy e = new RunEnemy();
-            //         e.SetSlotContent(0, new RunChip("基础加灵力"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(1, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(2, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(3, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(4, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(5, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(6, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(7, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(8, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(9, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(10, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(11, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         return e;
-            //     }),
-            //
-            //
-            // new("怪兽一", "",
-            //     canCreate: d =>
-            //     {
-            //         return true;
-            //     },
-            //     create: d =>
-            //     {
-            //         RunEnemy e = new RunEnemy();
-            //         e.SetSlotContent(0, new RunChip("怪兽一介绍"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(1, new RunChip("怪兽一攻击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(2, new RunChip("怪兽一防御"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(3, new RunChip("怪兽一休息"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(4, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(5, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(6, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(7, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(8, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(9, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(10, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(11, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         return e;
-            //     }),
-            //
-            // new("怪兽二", "",
-            //     canCreate: d =>
-            //     {
-            //         return true;
-            //     },
-            //     create: d =>
-            //     {
-            //         RunEnemy e = new RunEnemy();
-            //         e.SetSlotContent(0, new RunChip("怪兽二介绍"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(1, new RunChip("怪兽二防御"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(2, new RunChip("怪兽二防御"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(3, new RunChip("怪兽二重击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(4, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(5, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(6, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(7, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(8, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(9, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(10, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(11, new RunChip("怪兽二奖励"), new int[]{ 0, 0, 0, 0, 0 });
-            //         return e;
-            //     }),
-            // new("怪兽三", "",
-            //     canCreate: d =>
-            //     {
-            //         return true;
-            //     },
-            //     create: d =>
-            //     {
-            //         RunEnemy e = new RunEnemy();
-            //         e.SetSlotContent(0, new RunChip("怪兽三介绍"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(1, new RunChip("怪兽三攻击强化"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(2, new RunChip("怪兽三攻击强化"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(3, new RunChip("怪兽三攻击强化"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(4, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(5, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(6, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(7, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(8, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(9, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(10, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(11, new RunChip("怪兽三奖励"), new int[]{ 0, 0, 0, 0, 0 });
-            //         return e;
-            //     }),
-            //
-            // new("怪兽四", "",
-            //     canCreate: d =>
-            //     {
-            //         return true;
-            //     },
-            //     create: d =>
-            //     {
-            //         RunEnemy e = new RunEnemy();
-            //         e.SetSlotContent(0, new RunChip("怪兽四介绍"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(1, new RunChip("虚弱"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(2, new RunChip("怪兽四攻击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(3, new RunChip("怪兽四重击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(4, new RunChip("怪兽四攻击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(5, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(6, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(7, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(8, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(9, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(10, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(11, new RunChip("怪兽四奖励"), new int[]{ 0, 0, 0, 0, 0 });
-            //         return e;
-            //     }),
-            //
-            // new("怪兽五", "",
-            //     canCreate: d =>
-            //     {
-            //         return true;
-            //     },
-            //     create: d =>
-            //     {
-            //         RunEnemy e = new RunEnemy();
-            //         e.SetSlotContent(0, new RunChip("怪兽五（精英）"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(1, new RunChip("怪兽五防御强化"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(2, new RunChip("易伤"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(3, new RunChip("怪兽五多段攻击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(4, new RunChip("怪兽五攻击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(5, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(6, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(7, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(8, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(9, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(10, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(11, new RunChip("怪兽四奖励"), new int[]{ 0, 0, 0, 0, 0 });
-            //         return e;
-            //     }),
-            //
-            // new("怪兽六", "",
-            //     canCreate: d =>
-            //     {
-            //         return true;
-            //     },
-            //     create: d =>
-            //     {
-            //         RunEnemy e = new RunEnemy();
-            //         e.SetSlotContent(0, new RunChip("怪兽六介绍"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(1, new RunChip("虚弱"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(2, new RunChip("怪兽六攻击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(3, new RunChip("怪兽六攻击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(4, new RunChip("怪兽六攻击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(5, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(6, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(7, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(8, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(9, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(10, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(11, new RunChip("怪兽四奖励"), new int[]{ 0, 0, 0, 0, 0 });
-            //         return e;
-            //     }),
-            //
-            // new("怪兽七", "",
-            //     canCreate: d =>
-            //     {
-            //         return true;
-            //     },
-            //     create: d =>
-            //     {
-            //         RunEnemy e = new RunEnemy();
-            //         e.SetSlotContent(0, new RunChip("怪兽七介绍"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(1, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(2, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(3, new RunChip("怪兽七攻击"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(4, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(5, new RunChip("自我再生"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(6, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(7, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(8, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(9, new RunChip("聚气术"), new int[] { 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(10, new RunChip("聚气术"), new int[]{ 0, 0, 0, 0, 0 });
-            //         e.SetSlotContent(11, new RunChip("怪兽四奖励"), new int[]{ 0, 0, 0, 0, 0 });
-            //         return e;
-            //     }),
+            new("敌人10", "", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 80;
+                    enemy.QuickSetSlotContent("金10", "金01", "水00", "木11", "火01", "土11");
+                }),
+
+            new("敌人11", "", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 80;
+                    enemy.QuickSetSlotContent("金11", "水11", "木00", "", "", "");
+                }),
+
+            new("敌人12", "", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 80;
+                    enemy.QuickSetSlotContent("火11", "", "土10", "", "", "");
+                }),
+
+            new("敌人13", "", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 80;
+                    enemy.QuickSetSlotContent("金11", "水11", "木00", "火11", "", "土10");
+                }),
+
+            new("敌人14", "", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 80;
+                    enemy.QuickSetSlotContent("水10", "木11", "火11", "", "土10", "");
+                }),
+
+            new("敌人15", "描述", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 80;
+                    enemy.QuickSetSlotContent("", "", "", "", "", "", "金10", "金01", "水00", "木11", "火01", "土11");
+                }),
+
+            new("敌人16", "描述", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 80;
+                    enemy.QuickSetSlotContent("", "", "", "", "", "", "金11", "火01", "火11", "金10", "水00", "木11");
+                }),
+
+            new("敌人20", "描述", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 80;
+                    enemy.QuickSetSlotContent("", "", "", "", "水20", "金21", "金20", "金22", "水10", "金10", "土10", "土21");
+                }),
         };
     }
 }

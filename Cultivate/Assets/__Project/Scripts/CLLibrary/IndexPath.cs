@@ -1,10 +1,34 @@
 
 using System;
+using CLLibrary;
+using System.Text.RegularExpressions;
 
 public class IndexPath : IEquatable<IndexPath>
 {
+
+
+    // private static Regex Pattern = new Regex(@"\w+");
+    //
+    // private string _rawString;
+    // private List<string> _values;
+    //
+    // public NewIndexPath(string rawString)
+    // {
+    //     _rawString = rawString;
+    //     _values = Pattern.Matches(_rawString).Map(m => m.Value).ToList();
+    // }
+
+
     public readonly string _str;
     public readonly int[] _ints;
+
+    public IndexPath(string str, int[] parentInts, params int[] ints)
+    {
+        _str = str;
+        _ints = new int[parentInts.Length + ints.Length];
+        parentInts.Length.Do(i => _ints[i] = parentInts[i]);
+        ints.Length.Do(i => _ints[i + parentInts.Length] = ints[i]);
+    }
 
     public IndexPath(string str, params int[] ints)
     {

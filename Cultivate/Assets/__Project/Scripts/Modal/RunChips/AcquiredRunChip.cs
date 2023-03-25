@@ -18,6 +18,7 @@ public class AcquiredRunChip
     public string GetName() => Chip.GetName();
     public int GetLevel() => Chip.Level;
     public int GetPower(WuXing wuXing) => Tile.Powers[wuXing];
+    public JingJie GetJingJie() => Chip.GetJingJie();
 
     // dirty variable
     public int GetManaCost()

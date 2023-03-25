@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
@@ -14,6 +15,7 @@ public class SimulatePanel : Panel
     public Button NextEnemyButton;
     public Button ReportButton;
     public Button StreamButton;
+    public Button CopyEnemyButton;
 
     public TMP_Text ReportText;
 
@@ -24,6 +26,7 @@ public class SimulatePanel : Panel
         NextEnemyButton.onClick.AddListener(NextEnemy);
         ReportButton.onClick.AddListener(Report);
         StreamButton.onClick.AddListener(Stream);
+        CopyEnemyButton.onClick.AddListener(CopyEnemy);
     }
 
     public override void Refresh()
@@ -37,8 +40,8 @@ public class SimulatePanel : Panel
     private void NextEnemy()
     {
         CreateEnemyDetails d = new CreateEnemyDetails();
-        RunEnemy e = RunManager.Instance.DrawEnemy(d).Create(d);
-        RunManager.Instance.SetEnemy(e);
+        EnemyEntry enemyEntry = RunManager.Instance.DrawEnemy(d);
+        RunManager.Instance.SetEnemy(new RunEnemy(enemyEntry, d));
 
         SkillEditor.EnemyHPInputField.text = RunManager.Instance.Enemy.Health.ToString();
         SkillEditor.Refresh();
@@ -52,5 +55,10 @@ public class SimulatePanel : Panel
     private void Stream()
     {
         RunManager.Instance.Stream();
+    }
+
+    private void CopyEnemy()
+    {
+        GUIUtility.systemCopyBuffer = RunManager.Instance.Enemy.GetEntryDescriptor();
     }
 }

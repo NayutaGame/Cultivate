@@ -49,6 +49,9 @@ public class SkillEditor : MonoBehaviour
         foreach(var view in _heroWaiGongViews) view.Refresh();
         foreach(var view in _enemyWaiGongViews) view.Refresh();
 
+        HeroHPInputField.text = RunManager.Instance.Hero.Health.ToString();
+        EnemyHPInputField.text = RunManager.Instance.Enemy.Health.ToString();
+
         SimulatedPlayerHP.text = $"玩家剩余生命: {RunManager.Instance.Brief.Item1}";
         SimulatedEnemyHP.text = $"怪物剩余生命: {RunManager.Instance.Brief.Item2}";
     }
@@ -81,8 +84,7 @@ public class SkillEditor : MonoBehaviour
     private void SetEnemy(int i)
     {
         CreateEnemyDetails d = new CreateEnemyDetails();
-        RunEnemy e = Encyclopedia.EnemyCategory[i].Create(d);
-        RunManager.Instance.SetEnemy(e);
+        RunManager.Instance.SetEnemy(new RunEnemy(Encyclopedia.EnemyCategory[i], d));
 
         RunCanvas.Instance.Refresh();
     }

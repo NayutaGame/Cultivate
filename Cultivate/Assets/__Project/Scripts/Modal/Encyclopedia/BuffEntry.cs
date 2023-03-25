@@ -32,8 +32,8 @@ public class BuffEntry : Entry
     public Action<Buff, StageEntity> _endTurn;
     public Action<Buff, StageEntity> _startRound;
     public Action<Buff, StageEntity> _endRound;
-    public Action<Buff, StageEntity> _startStep;
-    public Action<Buff, EndStepDetails> _endStep;
+    public Action<Buff, StepDetails> _startStep;
+    public Action<Buff, StepDetails> _endStep;
     public Action<Buff, AttackDetails> _attack;
     public Action<Buff, AttackDetails> _attacked;
     public Action<Buff, DamageDetails> _damage;
@@ -93,8 +93,8 @@ public class BuffEntry : Entry
         Action<Buff, StageEntity> endTurn = null,
         Action<Buff, StageEntity> startRound = null,
         Action<Buff, StageEntity> endRound = null,
-        Action<Buff, StageEntity> startStep = null,
-        Action<Buff, EndStepDetails> endStep = null,
+        Action<Buff, StepDetails> startStep = null,
+        Action<Buff, StepDetails> endStep = null,
         Action<Buff, AttackDetails> attack = null,
         Action<Buff, AttackDetails> attacked = null,
         Action<Buff, DamageDetails> damage = null,
