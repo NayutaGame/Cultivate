@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class ChipInventory : Inventory<RunChip>
 {
-    public override string GetIndexPathString() => "TryGetRunChip";
-
     public bool CanUpgradeInventory(int from, int to)
     {
         return RunChip.CanUpgrade(this[from], this[to]);

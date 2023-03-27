@@ -10,8 +10,8 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath where T : Ite
     public Transform Container;
     public GameObject Prefab;
 
-    private IInventory _inventory;
     private List<T> _views;
+    public List<T> Views => _views;
 
     private IndexPath _indexPath;
     public IndexPath GetIndexPath() => _indexPath;
@@ -20,8 +20,19 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath where T : Ite
     {
         _indexPath = indexPath;
 
-        _inventory = RunManager.Get<IInventory>(_indexPath);
         _views = new List<T>();
+
+        RegisterExists();
+    }
+
+    private void RegisterExists()
+    {
+        for (int i = 0; i < Container.childCount; i++)
+        {
+            T v = Container.GetChild(i).GetComponent<T>();
+            _views.Add(v);
+            v.Configure(new IndexPath($"{_indexPath}#{i}"));
+        }
     }
 
     public virtual void Refresh()
@@ -33,7 +44,8 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath where T : Ite
     private void PopulateList()
     {
         int current = Container.childCount;
-        int need = _inventory.GetCount();
+        IList inventory = RunManager.Get<IList>(_indexPath);
+        int need = inventory.Count;
 
         (need, _) = Numeric.Negate(need, current);
         if (need <= 0) return;

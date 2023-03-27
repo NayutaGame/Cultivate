@@ -227,30 +227,6 @@ public class StageManager : Singleton<StageManager>, GDictionary
         tgt.Armor -= value;
     }
 
-    // private static BuffDetails CleanProcedure(BuffDetails d)
-    // {
-    //     if (d._canceled) return d;
-    //     if (d._buffEntry.Friendly) return d;
-    //
-    //     bool shouldCancel = d.Tgt.CleanStack >= d._stack;
-    //     int toClean = Mathf.Min(d._stack, d.Tgt.CleanStack);
-    //
-    //     if (shouldCancel)
-    //     {
-    //         d._stack = 0;
-    //         d.Tgt.Clean(toClean);
-    //         d._canceled = true;
-    //         return d;
-    //     }
-    //     else
-    //     {
-    //         d._stack -= toClean;
-    //         d.Tgt.Clean(toClean);
-    //         return d;
-    //     }
-    // }
-    //
-
     public void DispelProcedure(StageEntity entity, int stack, bool targetingFriendly)
     {
         List<Buff> buffs = entity.Buffs.FilterObj(b => b.Friendly == targetingFriendly && b.Dispellable).ToList();
@@ -261,18 +237,8 @@ public class StageManager : Singleton<StageManager>, GDictionary
         });
     }
 
-    //
-    // public static void LoseHpProcedure(StageEntity entity, int amount)
-    // {
-    //     entity.SetCurrHP(entity.GetCurrHP() - amount);
-    //     entity.LoseHp();
-    // }
-
-    public StageHero _hero;
-    public StageEnemy _enemy;
-
-    public HeroSlot _heroSlot;
-    public EnemySlot _enemySlot;
+    public StageEntity[] _entities;
+    public EntitySlot[] _slots;
 
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
@@ -306,8 +272,8 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
         _accessors = new()
         {
-            { "Hero",                  () => _hero },
-            { "Enemy",                 () => _enemy },
+            { "Home",                  () => _entities[0] },
+            { "Away",                  () => _entities[1] },
         };
     }
 
@@ -316,16 +282,19 @@ public class StageManager : Singleton<StageManager>, GDictionary
     // public int GetEnemyNeiGongCount() => _enemy._neiGongList.Length;
     // public int GetEnemyWaiGongCount() => _enemy._waiGongList.Length;
 
-    public int GetHeroBuffCount() => _hero.GetBuffCount();
-    public int GetEnemyBuffCount() => _enemy.GetBuffCount();
+    public int GetHeroBuffCount() => _entities[0].GetBuffCount();
+    public int GetEnemyBuffCount() => _entities[1].GetBuffCount();
 
     public StageReport Report;
 
     public void Enter()
     {
         // 文字战报，录像战报
-        _hero = new StageHero(RunManager.Instance.Hero);
-        _enemy = new StageEnemy(RunManager.Instance.Enemy);
+        _entities = new StageEntity[]
+        {
+            new StageHero(RunManager.Instance.Hero, 0),
+            new StageEnemy(RunManager.Instance.Enemy, 1),
+        };
 
         CanvasManager.Instance.StageCanvas.Refresh();
 
@@ -334,11 +303,14 @@ public class StageManager : Singleton<StageManager>, GDictionary
         Simulate();
 
         // config the scene
-        StageCanvas.Instance.SetHeroHealth(_hero.Hp);
+        StageCanvas.Instance.SetHeroHealth(_entities[0].Hp);
         StageCanvas.Instance.SetHeroArmor(0);
-        StageCanvas.Instance.SetEnemyHealth(_enemy.Hp);
+        StageCanvas.Instance.SetEnemyHealth(_entities[1].Hp);
         StageCanvas.Instance.SetEnemyArmor(0);
 
+
+        Report.HomeLeftHp = _entities[0].Hp;
+        Report.AwayLeftHp = _entities[1].Hp;
         RunManager.Instance.Report = Report;
 
         if (!RunManager.Instance.IsStream)
@@ -350,58 +322,52 @@ public class StageManager : Singleton<StageManager>, GDictionary
         Report.Play();
     }
 
-    public static (int, int) SimulateBrief()
+    public static StageReport SimulateBrief(StageEntity[] entities)
     {
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         AppManager.Instance.StageManager.gameObject.SetActive(false);
 
-        Instance._hero = new StageHero(RunManager.Instance.Hero);
-        Instance._enemy = new StageEnemy(RunManager.Instance.Enemy);
+        Instance._entities = entities;
 
         Instance.Report = new(sb: new StringBuilder());
 
         Instance.Simulate();
 
-        return (Instance._hero.Hp, Instance._enemy.Hp);
+        Instance.Report.HomeLeftHp = Instance._entities[0].Hp;
+        Instance.Report.AwayLeftHp = Instance._entities[1].Hp;
+
+        return Instance.Report;
     }
 
     private void Simulate()
     {
-        bool heroTurn = true;
-        _hero._p = -1;
-        _enemy._p = -1;
+        int whosTurn = 0;
 
-        // register
-
-        _hero.StartStage();
-        _enemy.StartStage();
+        _entities.Do(e =>
+        {
+            e._p = -1;
+            e.StartStage();
+        });
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
-            if (heroTurn)
-            {
-                Report.Append($"--------第{i}回合, 玩家行动--------\n");
-                _hero.Turn();
-            }
-            else
-            {
-                Report.Append($"--------第{i}回合, 敌人行动--------\n");
-                _enemy.Turn();
-            }
+            StageEntity actor = _entities[whosTurn];
 
-            Report.Append($"玩家 {_hero.Hp}[{_hero.Armor}] Buff:");
-            foreach (Buff b in _hero.Buffs)
-                Report.Append($"  {b.GetName()}*{b.Stack}");
-            Report.Append("\n");
-            Report.Append($"敌人 {_enemy.Hp}[{_enemy.Armor}] Buff:");
-            foreach (Buff b in _enemy.Buffs)
-                Report.Append($"  {b.GetName()}*{b.Stack}");
-            Report.Append("\n");
+            Report.Append($"--------第{i}回合, {actor.GetName()}行动--------\n");
+            actor.Turn();
 
-            if (TryCommit(heroTurn))
+            _entities.Do(e =>
+            {
+                Report.Append($"{e.GetName()} {e.Hp}[{e.Armor}] Buff:");
+                foreach (Buff b in e.Buffs)
+                    Report.Append($"  {b.GetName()}*{b.Stack}");
+                Report.Append("\n");
+            });
+
+            if (TryCommit(whosTurn))
                 return;
 
-            heroTurn = !heroTurn;
+            whosTurn = 1 - whosTurn;
         }
 
         ForceCommit();
@@ -412,8 +378,11 @@ public class StageManager : Singleton<StageManager>, GDictionary
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         AppManager.Instance.StageManager.gameObject.SetActive(false);
 
-        Instance._hero = new StageHero(RunManager.Instance.Hero);
-        Instance._enemy = new StageEnemy(new RunEnemy(1000000)); // 工具人
+        Instance._entities = new StageEntity[]
+        {
+            new StageHero(RunManager.Instance.Hero, 0),
+            new StageEnemy(new RunEnemy(1000000), 1), // 工具人
+        };
 
         Instance.Report = new();
 
@@ -437,38 +406,40 @@ public class StageManager : Singleton<StageManager>, GDictionary
             stopWriting = true;
         }
 
-        _hero._p = -1;
+        StageEntity hero = _entities[0];
 
-        _hero.StartStage();
+        hero._p = -1;
 
-        _hero.ManaShortageEvent += WriteManaShortage;
-        _hero.EndRoundEvent += StopWriting;
+        hero.StartStage();
+
+        hero.ManaShortageEvent += WriteManaShortage;
+        hero.EndRoundEvent += StopWriting;
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
-            _hero.Turn();
+            hero.Turn();
             if (stopWriting)
                 break;
         }
 
-        _hero.ManaShortageEvent -= WriteManaShortage;
-        _hero.EndRoundEvent -= StopWriting;
+        hero.ManaShortageEvent -= WriteManaShortage;
+        hero.EndRoundEvent -= StopWriting;
 
         return manaShortageBrief;
     }
 
-    public bool TryCommit(bool heroTurn)
+    public bool TryCommit(int whosTurn)
     {
-        if (heroTurn)
+        if (whosTurn == 0)
         {
-            if (_hero.Hp <= 0)
+            if (_entities[whosTurn].Hp <= 0)
             {
                 _commitWin = false;
                 Report.Append($"玩家失败\n");
                 return true;
             }
 
-            if (_enemy.Hp <= 0)
+            if (_entities[1 - whosTurn].Hp <= 0)
             {
                 _commitWin = true;
                 Report.Append($"玩家胜利\n");
@@ -477,13 +448,13 @@ public class StageManager : Singleton<StageManager>, GDictionary
         }
         else
         {
-            if (_enemy.Hp <= 0)
+            if (_entities[1 - whosTurn].Hp <= 0)
             {
                 _commitWin = true;
                 Report.Append($"玩家胜利\n");
                 return true;
             }
-            if (_hero.Hp <= 0)
+            if (_entities[whosTurn].Hp <= 0)
             {
                 _commitWin = false;
                 Report.Append($"玩家失败\n");
@@ -496,7 +467,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
     public void ForceCommit()
     {
-        if (_hero.Hp >= _enemy.Hp)
+        if (_entities[0].Hp >= _entities[1].Hp)
         {
             _commitWin = true;
             Report.Append($"玩家胜利\n");

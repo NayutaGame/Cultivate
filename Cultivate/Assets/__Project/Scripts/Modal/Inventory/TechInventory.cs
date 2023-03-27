@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class TechInventory : IInventory
+public class TechInventory : GDictionary
 {
     private List<RunTech> _list;
 
@@ -12,13 +13,18 @@ public class TechInventory : IInventory
     private List<RunTech> _currentList;
     private List<RunTech> _lockedList;
 
-    public int GetCount() => _doneList.Count + _currentList.Count + _lockedList.Count;
-    public string GetIndexPathString() => "GetRunTech";
-
     public RunTech this[int i] => _list[i];
+
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
 
     public TechInventory()
     {
+        _accessors = new()
+        {
+            { "List", () => _list },
+        };
+
         _list = new();
         _doneList = new();
         _currentList = new();

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Inventory<T> : List<T>, IInventory
+public abstract class Inventory<T> : List<T>
 {
     public T TryGet(int i)
     {
@@ -33,7 +33,4 @@ public abstract class Inventory<T> : List<T>, IInventory
     }
 
     public bool Swap(T from, T to) => Swap(IndexOf(from), IndexOf(to));
-
-    public int GetCount() => Count;
-    public abstract string GetIndexPathString();
 }

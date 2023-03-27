@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class ArenaWaiGongInventory: Inventory<RunChip>
 {
-    public override string GetIndexPathString() => "TryGetArenaChip";
-
     public ArenaWaiGongInventory()
     {
         Clear();

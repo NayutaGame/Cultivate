@@ -168,10 +168,9 @@ public class ChipCategory : Category<ChipEntry>
                     StageManager.Instance.BuffProcedure(caster, caster, "格挡", consumed);
                 }),
 
-            new WaiGongEntry("木11", JingJie.ZhuJi, "8攻 吸血", 2, type: WaiGongEntry.WaiGongType.ATTACK,
+            new WaiGongEntry("木11", JingJie.ZhuJi, "8攻 击伤：格挡+2", 2, type: WaiGongEntry.WaiGongType.ATTACK,
                 execute: (caster, waiGong, recursive) =>
                 {
-                    StageManager.Instance.DamageProcedure(caster, caster, 8);
                     StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 8,
                         damaged: d => StageManager.Instance.BuffProcedure(caster, caster, "格挡", 2));
                 }),

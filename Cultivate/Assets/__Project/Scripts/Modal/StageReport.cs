@@ -10,6 +10,9 @@ public class StageReport
     public Sequence Seq => _seq;
     private StringBuilder _sb;
 
+    public int HomeLeftHp;
+    public int AwayLeftHp;
+
     public void Append(string s)
         => _sb?.Append(s);
 

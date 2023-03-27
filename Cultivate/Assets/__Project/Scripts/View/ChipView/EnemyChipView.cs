@@ -11,7 +11,7 @@ public class EnemyChipView : RunChipView
         base.Refresh();
 
         EnemyChipSlot slot = RunManager.Get<EnemyChipSlot>(GetIndexPath());
-        bool reveal = slot.IsReveal();
+        bool reveal = slot.IsReveal;
 
         gameObject.SetActive(reveal);
         if (!reveal) return;
@@ -50,6 +50,13 @@ public class EnemyChipView : RunChipView
         if (GetIndexPath().Equals(drop.GetIndexPath())) return;
 
         EnemyChipSlot to = RunManager.Get<EnemyChipSlot>(GetIndexPath());
+
+        RunChip fromArenaChip = RunManager.Get<RunChip>(drop.GetIndexPath());
+        if (fromArenaChip != null)
+        {
+            if (to.TryWrite(fromArenaChip)) return;
+            return;
+        }
 
         AcquiredRunChip fromAcquired = RunManager.Get<AcquiredRunChip>(drop.GetIndexPath());
         if (fromAcquired != null)

@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ArenaPanel : Panel
 {
     public ArenaWaiGongInventoryView ArenaWaiGongInventoryView;
     public ArenaEditorView ArenaEditorView;
+    public ArenaScoreboardView ArenaScoreboardView;
+    public TMP_Text ReportView;
 
     public override void Configure()
     {
@@ -13,6 +16,7 @@ public class ArenaPanel : Panel
 
         ArenaWaiGongInventoryView.Configure(new IndexPath("ArenaWaiGongInventory"));
         ArenaEditorView.Configure(new IndexPath("Arena"));
+        ArenaScoreboardView.Configure();
     }
 
     public override void Refresh()
@@ -20,5 +24,8 @@ public class ArenaPanel : Panel
         base.Refresh();
         ArenaWaiGongInventoryView.Refresh();
         ArenaEditorView.Refresh();
+        ArenaScoreboardView.Refresh();
+
+        ReportView.text = RunManager.Instance.Arena.Report?.ToString();
     }
 }

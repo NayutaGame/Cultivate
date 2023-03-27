@@ -49,8 +49,8 @@ public class TechTreeView : MonoBehaviour, IIndexPath
 
     private void PopulateList()
     {
-        ChipInventory inventory = RunManager.Get<ChipInventory>(_indexPath);
-        for (int i = 0; i < inventory.GetCount(); i++)
+        IList inventory = RunManager.Get<IList>(_indexPath);
+        for (int i = 0; i < inventory.Count; i++)
         {
             IndexPath indexPath = new IndexPath($"{_indexPath}#{i}");
             RunTech tech = RunManager.Get<RunTech>(indexPath);

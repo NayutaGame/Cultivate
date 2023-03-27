@@ -60,7 +60,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
             _jingJie = value;
             Hero.SetJingJie(_jingJie);
             DanTian.SetJingJie(_jingJie);
-            Enemy.SetJingJie(_jingJie);
             Map.SetJingJie(_jingJie);
         }
     }
@@ -161,7 +160,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
         Modifier = Modifier.Default;
         Modifier.AddChild(DanTian.Modifier);
 
-        EquippedChangedEvent += CalcBrief;
+        EquippedChangedEvent += CalcReport;
         EquippedChangedEvent += CalcManaShortageBrief;
 
         DesignerEnvironment.EnterRun();
@@ -307,8 +306,17 @@ public class RunManager : Singleton<RunManager>, GDictionary
         return true;
     }
 
-    [NonSerialized] public (int, int) Brief;
-    private void CalcBrief() => Brief = StageManager.SimulateBrief();
+    private void CalcReport()
+    {
+        StageEntity[] entities = new StageEntity[]
+        {
+            new StageHero(Hero, 0),
+            new StageEnemy(Enemy, 1),
+        };
+
+        Report = StageManager.SimulateBrief(entities);
+    }
+
     [NonSerialized] public bool[] ManaShortageBrief;
     private void CalcManaShortageBrief() => ManaShortageBrief = StageManager.ManaSimulate();
 

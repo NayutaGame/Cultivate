@@ -11,10 +11,13 @@ public class EnemyChipSlot
     private int[] _powers;
     public RunChip Chip;
 
+    public bool IsReveal;
+
     public EnemyChipSlot(int slotIndex)
     {
         SlotIndex = slotIndex;
         _powers = new int[WuXing.Length];
+        IsReveal = true;
     }
 
     public string GetName() => Chip?.GetName();
@@ -46,11 +49,11 @@ public class EnemyChipSlot
         return sb.ToString();
     }
 
-    public bool IsReveal()
+    public bool TryWrite(RunChip chip)
     {
-        int start = RunManager.Instance.Enemy.Start;
-        int end = RunManager.Instance.Enemy.Start + RunManager.Instance.Enemy.Limit;
-        return start <= SlotIndex && SlotIndex < end;
+        Chip = chip.Clone();
+        // RunManager.Instance.EquippedChanged();
+        return true;
     }
 
     public bool TryWrite(AcquiredRunChip acquired)

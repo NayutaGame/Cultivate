@@ -7,7 +7,7 @@ public class StageHero : StageEntity
 {
     public RunHero _runHero;
 
-    public StageHero(RunHero runHero)
+    public StageHero(RunHero runHero, int index) : base(index)
     {
         _runHero = runHero;
         MaxHp = _runHero.Health;
@@ -36,8 +36,4 @@ public class StageHero : StageEntity
     {
         _waiGongList.Do(waiGong => waiGong.Unregister());
     }
-
-    public override string GetName() => "玩家";
-    public override EntitySlot Slot() => StageManager.Instance._heroSlot;
-    public override StageEntity Opponent() => StageManager.Instance._enemy;
 }

@@ -228,9 +228,9 @@ public abstract class StageEntity : GDictionary
     }
 
     // public abstract GameObject GetPrefab();
-    public abstract string GetName();
-    public abstract EntitySlot Slot();
-    public abstract StageEntity Opponent();
+    public string GetName() => _index == 0 ? "主场" : "客场";
+    public EntitySlot Slot() => StageManager.Instance._slots[_index];
+    public StageEntity Opponent() => StageManager.Instance._entities[1 - _index];
 
     // private bool _canLaststand;
     // public bool CanLaststand { get => _canLaststand; set => _canLaststand = value; }
@@ -273,7 +273,9 @@ public abstract class StageEntity : GDictionary
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
 
-    public StageEntity()
+    private int _index;
+
+    public StageEntity(int index)
     {
         _accessors = new()
         {
@@ -281,6 +283,8 @@ public abstract class StageEntity : GDictionary
             { "NeiGongs", () => _neiGongList },
             { "Buffs", () => _buffs },
         };
+
+        _index = index;
 
         _buffs = new List<Buff>();
         _manaShortage = false;

@@ -14,8 +14,27 @@ public class RunEnemy : GDictionary
     public CreateEnemyDetails CreateEnemyDetails => _createEnemyDetails;
 
     public int Health;
-
     private EnemyChipSlot[] _slots;
+
+    private JingJie _jingJie;
+    public JingJie JingJie
+    {
+        get => _jingJie;
+        set
+        {
+            _jingJie = value;
+
+            Start = RunManager.WaiGongStartFromJingJie[_jingJie];
+            Limit = RunManager.WaiGongLimitFromJingJie[_jingJie];
+
+            int end = Start + Limit;
+            _slots.Length.Do(i =>
+            {
+                _slots[i].IsReveal = Start <= i && i < end;
+            });
+        }
+    }
+
     public int Start;
     public int Limit;
 
@@ -43,7 +62,7 @@ public class RunEnemy : GDictionary
         for (int i = 0; i < _slots.Length; i++)
             _slots[i] = new EnemyChipSlot(i);
 
-        SetJingJie(jingJie ?? RunManager.Instance.JingJie);
+        JingJie = jingJie ?? RunManager.Instance.JingJie;
     }
 
     public void QuickSetSlotContent(params string[] waiGongNames)
@@ -54,12 +73,6 @@ public class RunEnemy : GDictionary
             if(waiGongNames[i] != null && waiGongNames[i] != "")
                 SetSlotContent(diff + i, new RunChip(waiGongNames[i]));
         }
-    }
-
-    public void SetJingJie(JingJie jingJie)
-    {
-        Start = RunManager.WaiGongStartFromJingJie[jingJie];
-        Limit = RunManager.WaiGongLimitFromJingJie[jingJie];
     }
 
     public EnemyChipSlot GetSlot(int i) => _slots[i];
@@ -81,10 +94,11 @@ public class RunEnemy : GDictionary
             create: (enemy, d) =>
             {{
                 enemy.Health = {1};
-                enemy.QuickSetSlotContent(""{2}"", ""{3}"", ""{4}"", ""{5}"", ""{6}"", ""{7}"", ""{8}"", ""{9}"", ""{10}"", ""{11}"", ""{12}"", ""{13}"");
+                enemy.JingJie = {2};
+                enemy.QuickSetSlotContent(""{3}"", ""{4}"", ""{5}"", ""{6}"", ""{7}"", ""{8}"", ""{9}"", ""{10}"", ""{11}"", ""{12}"", ""{13}"", ""{14}"");
             }}),";
 
-        return string.Format(enemyDescriptor, dateTime, Health,
+        return string.Format(enemyDescriptor, dateTime, Health, _jingJie._index,
             GetSlot(0).GetName() ?? "",
             GetSlot(1).GetName() ?? "",
             GetSlot(2).GetName() ?? "",
