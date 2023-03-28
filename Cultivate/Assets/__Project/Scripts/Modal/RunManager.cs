@@ -268,6 +268,17 @@ public class RunManager : Singleton<RunManager>, GDictionary
         return true;
     }
 
+    public bool TryDrawAcquired(JingJie jingJie)
+    {
+        _chipPool.Shuffle();
+        RunChip draw = new RunChip(_chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJie == jingJie));
+        Tile emptyTile = DanTian.FirstEmptyTile();
+        if (emptyTile == null)
+            return false;
+
+        return draw.TryPlug(emptyTile);
+    }
+
     public RunChip DrawChip(string chipName)
     {
         RunChip picked = new RunChip(Encyclopedia.ChipCategory[chipName]);

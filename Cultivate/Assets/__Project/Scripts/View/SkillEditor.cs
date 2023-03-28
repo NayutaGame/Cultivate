@@ -35,8 +35,11 @@ public class SkillEditor : MonoBehaviour
 
         HeroHPInputField.text = RunManager.Instance.Hero.Health.ToString();
 
-        SimulatedPlayerHP.text = $"玩家剩余生命: {RunManager.Instance.Report.HomeLeftHp}";
-        SimulatedEnemyHP.text = $"怪物剩余生命: {RunManager.Instance.Report.AwayLeftHp}";
+        if (RunManager.Instance.Report != null)
+        {
+            SimulatedPlayerHP.text = $"玩家剩余生命: {RunManager.Instance.Report.HomeLeftHp}";
+            SimulatedEnemyHP.text = $"怪物剩余生命: {RunManager.Instance.Report.AwayLeftHp}";
+        }
     }
 
     private void ConfigureList(ref RunChipView[] views, int limit, Transform parentTransform, string indexPathString)

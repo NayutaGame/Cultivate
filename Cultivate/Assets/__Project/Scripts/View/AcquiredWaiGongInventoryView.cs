@@ -7,6 +7,19 @@ using UnityEngine.UI;
 
 public class AcquiredWaiGongInventoryView : InventoryView<AcquiredWaiGongView>, IDropHandler
 {
+    public Button[] DrawButtons;
+
+    public override void Configure(IndexPath indexPath)
+    {
+        base.Configure(indexPath);
+
+        DrawButtons.Length.Do(i =>
+        {
+            JingJie jingJie = i;
+            DrawButtons[i].onClick.AddListener(() => DrawJingJie(jingJie));
+        });
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null) return;
@@ -28,6 +41,12 @@ public class AcquiredWaiGongInventoryView : InventoryView<AcquiredWaiGongView>, 
             if (fromHeroChipSlot.TryUnequip()) return;
             return;
         }
+    }
+
+    private void DrawJingJie(JingJie jingJie)
+    {
+        RunManager.Instance.TryDrawAcquired(jingJie);
+        RunCanvas.Instance.Refresh();
     }
 
     // private void RefreshChip()

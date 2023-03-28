@@ -15,6 +15,7 @@ public class ArenaScoreboardView : MonoBehaviour
 
     public Transform GridLayoutContainer;
     private TMP_Text[] GridLayoutTexts;
+    private Image[] GridLayoutImages;
 
     public void Configure()
     {
@@ -27,10 +28,12 @@ public class ArenaScoreboardView : MonoBehaviour
             HLayoutTexts[i] = HLayoutContainer.GetChild(i).GetComponent<TMP_Text>();
 
         GridLayoutTexts = new TMP_Text[GridLayoutContainer.childCount];
+        GridLayoutImages = new Image[GridLayoutContainer.childCount];
         for (int i = 0; i < GridLayoutContainer.childCount; i++)
         {
             Transform child = GridLayoutContainer.GetChild(i);
             GridLayoutTexts[i] = child.GetComponentInChildren<TMP_Text>();
+            GridLayoutImages[i] = child.GetComponentInChildren<Image>();
             int index = i;
             child.GetComponentInChildren<Button>().onClick.AddListener(() => ShowReport(index));
         }
@@ -48,8 +51,11 @@ public class ArenaScoreboardView : MonoBehaviour
         for (int i = 0; i < GridLayoutTexts.Length; i++)
         {
             StageReport report = arena.Reports[i];
-            if(report != null)
+            if (report != null)
+            {
+                GridLayoutImages[i].color = report.HomeVictory ? Color.green : Color.red;
                 GridLayoutTexts[i].text = $"{report.HomeLeftHp} : {report.AwayLeftHp}";
+            }
         }
     }
 

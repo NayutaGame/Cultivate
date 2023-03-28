@@ -305,4 +305,7 @@ public class DanTian : GDictionary
     //         AddWorker(t);
     //     }
     // }
+
+    public Tile FirstEmptyTile()
+        => _tiles.FirstObj(t => t is { Revealed: true, AcquiredRunChip: null });
 }

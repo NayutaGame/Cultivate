@@ -12,6 +12,7 @@ public class StageReport
 
     public int HomeLeftHp;
     public int AwayLeftHp;
+    public bool HomeVictory;
 
     public void Append(string s)
         => _sb?.Append(s);

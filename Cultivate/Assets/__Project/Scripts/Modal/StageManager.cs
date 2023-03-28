@@ -238,7 +238,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
     }
 
     public StageEntity[] _entities;
-    public EntitySlot[] _slots;
+    [NonSerialized] public EntitySlot[] _slots;
 
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
@@ -311,6 +311,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
         Report.HomeLeftHp = _entities[0].Hp;
         Report.AwayLeftHp = _entities[1].Hp;
+        Report.HomeVictory = _commitWin;
         RunManager.Instance.Report = Report;
 
         if (!RunManager.Instance.IsStream)
@@ -335,6 +336,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
         Instance.Report.HomeLeftHp = Instance._entities[0].Hp;
         Instance.Report.AwayLeftHp = Instance._entities[1].Hp;
+        Instance.Report.HomeVictory = Instance._commitWin;
 
         return Instance.Report;
     }
@@ -448,13 +450,13 @@ public class StageManager : Singleton<StageManager>, GDictionary
         }
         else
         {
-            if (_entities[1 - whosTurn].Hp <= 0)
+            if (_entities[whosTurn].Hp <= 0)
             {
                 _commitWin = true;
                 Report.Append($"玩家胜利\n");
                 return true;
             }
-            if (_entities[whosTurn].Hp <= 0)
+            if (_entities[1 - whosTurn].Hp <= 0)
             {
                 _commitWin = false;
                 Report.Append($"玩家失败\n");

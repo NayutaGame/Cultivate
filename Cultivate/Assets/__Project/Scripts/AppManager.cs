@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
@@ -15,6 +16,14 @@ public class AppManager : Singleton<AppManager>
         base.DidAwake();
         _sm = new AppSM();
         _sm.Push(new AppRunS());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     public static void Push(AppS state)

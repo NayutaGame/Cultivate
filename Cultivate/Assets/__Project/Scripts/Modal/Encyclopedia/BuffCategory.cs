@@ -97,8 +97,8 @@ public class BuffCategory : Category<BuffEntry>
                     if (d.Value >= 10)
                         StageManager.Instance.BuffProcedure(buff.Owner, buff.Owner, "力量");
                 }),
-            new ("土20", "本场战斗中，Step开始：【Stack】攻", BuffStackRule.Wasted, true, false,
-                startStep: (buff, d) => StageManager.Instance.AttackProcedure(d.Caster, d.Caster.Opponent(), 8)),
+            new ("土20", "本场战斗中，Step开始：3攻", BuffStackRule.Wasted, true, false,
+                startStep: (buff, d) => StageManager.Instance.AttackProcedure(d.Caster, d.Caster.Opponent(), 3)),
 
             /**********************************************************************************************************/
             /*********************************************** 大剑哥 ****************************************************/

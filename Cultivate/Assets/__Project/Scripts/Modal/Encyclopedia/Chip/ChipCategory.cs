@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
@@ -143,7 +144,7 @@ public class ChipCategory : Category<ChipEntry>
                         damaged: d => StageManager.Instance.ArmorGainProcedure(caster, caster, 6));
                 }),
 
-            new TargetSelfBuffWaiGongEntry("金11", JingJie.ZhuJi, "消耗，自动护甲+2", 0, WaiGongEntry.WaiGongType.NONATTACK, "自动护甲", 2),
+            new TargetSelfBuffWaiGongEntry("金11", JingJie.ZhuJi, "消耗，自动护甲+1", 0, WaiGongEntry.WaiGongType.NONATTACK, "自动护甲", 1),
 
             new WaiGongEntry("水10", JingJie.ZhuJi, "护甲+5，施加5减甲",
                 execute: (caster, waiGong, recursive) =>
@@ -160,19 +161,19 @@ public class ChipCategory : Category<ChipEntry>
                     StageManager.Instance.HealProcedure(caster, caster, caster.GetStackOfBuff("再生"));
                 }),
 
-            new WaiGongEntry("木10", JingJie.ZhuJi, "每有3点再生消耗1点，格挡+【被消耗层数】", 1,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int consumed = caster.GetStackOfBuff("再生") / 3;
-                    caster.TryConsumeBuff("再生", consumed);
-                    StageManager.Instance.BuffProcedure(caster, caster, "格挡", consumed);
-                }),
+            // new WaiGongEntry("木10", JingJie.ZhuJi, "每有3点再生消耗1点，格挡+【被消耗层数】", 1,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         int consumed = caster.GetStackOfBuff("再生") / 3;
+            //         caster.TryConsumeBuff("再生", consumed);
+            //         StageManager.Instance.BuffProcedure(caster, caster, "格挡", consumed);
+            //     }),
 
-            new WaiGongEntry("木11", JingJie.ZhuJi, "8攻 击伤：格挡+2", 2, type: WaiGongEntry.WaiGongType.ATTACK,
+            new WaiGongEntry("木11", JingJie.ZhuJi, "8攻 击伤：格挡+1", 2, type: WaiGongEntry.WaiGongType.ATTACK,
                 execute: (caster, waiGong, recursive) =>
                 {
                     StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 8,
-                        damaged: d => StageManager.Instance.BuffProcedure(caster, caster, "格挡", 2));
+                        damaged: d => StageManager.Instance.BuffProcedure(caster, caster, "格挡"));
                 }),
 
             new WaiGongEntry("火10", JingJie.ZhuJi, "闪避+1，满血：闪避+1",
@@ -183,11 +184,11 @@ public class ChipCategory : Category<ChipEntry>
                         StageManager.Instance.BuffProcedure(caster, caster, "闪避");
                 }),
 
-            new WaiGongEntry("火11", JingJie.ZhuJi, "力量+1，6攻", type: WaiGongEntry.WaiGongType.ATTACK,
+            new WaiGongEntry("火11", JingJie.ZhuJi, "消耗6生命，力量+1", type: WaiGongEntry.WaiGongType.ATTACK,
                 execute: (caster, waiGong, recursive) =>
                 {
+                    StageManager.Instance.DamageProcedure(caster, caster, 4);
                     StageManager.Instance.BuffProcedure(caster, caster, "力量");
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 6);
                 }),
 
             new WaiGongEntry("火12", JingJie.ZhuJi, "灵气+2，净化2",
@@ -197,10 +198,10 @@ public class ChipCategory : Category<ChipEntry>
                     StageManager.Instance.DispelProcedure(caster, 2, false);
                 }),
 
-            new WaiGongEntry("土10", JingJie.ZhuJi, "3攻x4", 1, type: WaiGongEntry.WaiGongType.ATTACK,
+            new WaiGongEntry("土10", JingJie.ZhuJi, "2攻x3", 2, type: WaiGongEntry.WaiGongType.ATTACK,
                 execute: (caster, waiGong, recursive) =>
                 {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 3, 4);
+                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 2, 3);
                 }),
 
             new WaiGongEntry("土11", JingJie.ZhuJi, "2攻x2，不屈+1", type: WaiGongEntry.WaiGongType.ATTACK,
@@ -288,9 +289,14 @@ public class ChipCategory : Category<ChipEntry>
                     StageManager.Instance.BuffProcedure(caster, caster, "穿透");
                 }),
 
-            new TargetSelfBuffWaiGongEntry("火22", JingJie.JinDan, "消耗，本场战斗中，每次受到不少于10点伤害的时候，力量+1", 0, WaiGongEntry.WaiGongType.NONATTACK, "火22"),
+            new WaiGongEntry("火22", JingJie.JinDan, "消耗，本场战斗中，每次受到不少于10点伤害的时候，力量+1", 0, WaiGongEntry.WaiGongType.NONATTACK,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    StageManager.Instance.BuffProcedure(caster, caster, "火22");
+                }),
 
-            new WaiGongEntry("土20", JingJie.JinDan, "消耗，如果卡牌中没有攻击牌，本场战斗中，Step开始：8攻",
+            new WaiGongEntry("土20", JingJie.JinDan, "消耗，如果卡牌中没有攻击牌，本场战斗中，Step开始：3攻",
                 execute: (caster, waiGong, recursive) =>
                 {
                     waiGong.Consumed = true;
