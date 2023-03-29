@@ -32,6 +32,14 @@ public class StageWaiGong
     public int RunEquippedTimes { get; private set; }
     public int StageUsedTimes { get; private set; }
 
+    public JingJie GetJingJie()
+    {
+        if(_runChip == null)
+            return JingJie.LianQi;
+
+        return _runChip.JingJie;
+    }
+
     // run powers
 
     private static readonly string[] PowerBuffNames = new string[] { "临金", "临水", "临木", "临火", "临土" };

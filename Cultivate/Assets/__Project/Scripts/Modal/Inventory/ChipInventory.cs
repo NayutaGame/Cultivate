@@ -21,7 +21,7 @@ public class ChipInventory : Inventory<RunChip>
         Clear();
         foreach (var chip in Encyclopedia.ChipCategory.Traversal)
         {
-            Add(new RunChip(chip));
+            Add(new RunChip(chip, chip.JingJieRange.Start));
         }
     }
 

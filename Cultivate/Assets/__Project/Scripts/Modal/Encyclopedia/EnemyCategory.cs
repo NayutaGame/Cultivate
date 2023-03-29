@@ -200,7 +200,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "水21", "金11", "木01", "火01", "火11", "金10", "水00", "木11");
                 }),
 
-            new("敌人23", "描述", canCreate: d => true,
+            new("敌人24", "描述", canCreate: d => true,
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;

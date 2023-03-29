@@ -43,23 +43,28 @@ public class ChipPreview : MonoBehaviour
         if (o is RunChip runChip)
         {
             c = runChip;
+            DescriptionText.text = runChip.GetDescription();
+            PowerText.text = "";
             manaCost = c.GetManaCost();
         }
         else if (o is AcquiredRunChip acquiredRunChip)
         {
             c = acquiredRunChip.Chip;
+            DescriptionText.text = acquiredRunChip.GetDescription();
             PowerText.text = acquiredRunChip.GetPowerString();
             manaCost = acquiredRunChip.GetManaCost();
         }
         else if (o is HeroChipSlot heroChipSlot)
         {
             c = heroChipSlot.RunChip;
+            DescriptionText.text = heroChipSlot.GetDescription();
             PowerText.text = heroChipSlot.GetPowerString();
             manaCost = heroChipSlot.GetManaCost();
         }
         else if (o is EnemyChipSlot enemyChipSlot)
         {
             c = enemyChipSlot.Chip;
+            DescriptionText.text = enemyChipSlot.GetDescription();
             PowerText.text = enemyChipSlot.GetPowerString();
             manaCost = enemyChipSlot.GetManaCost();
         }
@@ -77,9 +82,8 @@ public class ChipPreview : MonoBehaviour
         gameObject.SetActive(true);
 
         NameText.text = c.GetName();
-        DescriptionText.text = c.GetDescription();
         ManaCostText.text = manaCost == 0 ? "" : manaCost.ToString();
-        JingJieText.text = c.GetJingJie().ToString();
+        JingJieText.text = c.JingJie.ToString();
     }
 
     public void UpdateMousePos(Vector2 pos)

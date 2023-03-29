@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public abstract class RunChipView : ItemView,
+public class RunChipView : ItemView,
     IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
@@ -15,6 +15,7 @@ public abstract class RunChipView : ItemView,
     public TMP_Text LevelText;
     public TMP_Text ManacostText;
     public TMP_Text NameText;
+    public TMP_Text DescriptionText;
     public TMP_Text PowerText;
 
     private void Awake()
@@ -27,10 +28,100 @@ public abstract class RunChipView : ItemView,
         _image.color = CanvasManager.Instance.JingJieColors[jingJie];
     }
 
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        if (RunManager.Get<AcquiredRunChip>(GetIndexPath()) is { } acquiredRunChip)
+        {
+            gameObject.SetActive(true);
+
+            LevelText.text = acquiredRunChip.GetLevel().ToString();
+            ManacostText.text = acquiredRunChip.GetManaCost().ToString();
+            NameText.text = acquiredRunChip.GetName();
+            DescriptionText.text = acquiredRunChip.GetDescription();
+            PowerText.text = acquiredRunChip.GetPowerString();
+
+            SetColorFromJingJie(acquiredRunChip.GetJingJie());
+        }
+        else if (RunManager.Get<HeroChipSlot>(GetIndexPath()) is { } heroChipSlot)
+        {
+            bool reveal = heroChipSlot.IsReveal();
+
+            gameObject.SetActive(reveal);
+            if (!reveal) return;
+
+            if(heroChipSlot.AcquiredRunChip == null)
+            {
+                LevelText.text = "";
+                ManacostText.text = "";
+                NameText.text = "空";
+                DescriptionText.text = "";
+                PowerText.text = $"{heroChipSlot.GetPowerString()}";
+                SetColorFromJingJie(JingJie.LianQi);
+                return;
+            }
+            else
+            {
+                LevelText.text = $"{heroChipSlot.GetLevel()}";
+                ManacostText.text = $"{heroChipSlot.GetManaCost()}";
+
+                bool manaShortage = heroChipSlot.IsManaShortage();
+                ManacostText.color = manaShortage ? Color.red : Color.black;
+
+                NameText.text = $"{heroChipSlot.GetName()}";
+                DescriptionText.text = heroChipSlot.GetDescription();
+                PowerText.text = $"{heroChipSlot.GetPowerString()}";
+
+                SetColorFromJingJie(heroChipSlot.RunChip.JingJie);
+            }
+        }
+        else if(RunManager.Get<EnemyChipSlot>(GetIndexPath()) is { } enemyChipSlot)
+        {
+            bool reveal = enemyChipSlot.IsReveal;
+
+            gameObject.SetActive(reveal);
+            if (!reveal) return;
+
+            if(enemyChipSlot.Chip == null)
+            {
+                LevelText.text = "";
+                ManacostText.text = "";
+                NameText.text = "空";
+                DescriptionText.text = "";
+                PowerText.text = $"{enemyChipSlot.GetPowerString()}";
+                SetColorFromJingJie(JingJie.LianQi);
+                return;
+            }
+            else
+            {
+                LevelText.text = $"{enemyChipSlot.Chip.Level}";
+                ManacostText.text = "";
+                NameText.text = $"{enemyChipSlot.Chip.GetName()}";
+                DescriptionText.text = $"{enemyChipSlot.GetDescription()}";
+                PowerText.text = $"{enemyChipSlot.GetPowerString()}";
+                SetColorFromJingJie(enemyChipSlot.Chip.JingJie);
+            }
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
     public void OnPointerDown(PointerEventData eventData) { }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
+        if (RunManager.Get<EnemyChipSlot>(GetIndexPath()) is { } enemyChipSlot)
+        {
+            eventData.pointerDrag = null;
+
+            RunCanvas.Instance.ChipPreview.Configure(null);
+            RunCanvas.Instance.ChipPreview.Refresh();
+            return;
+        }
+
         RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
         RunCanvas.Instance.GhostChip.Configure(GetIndexPath());
@@ -61,7 +152,68 @@ public abstract class RunChipView : ItemView,
         RunCanvas.Instance.GhostChip.UpdateMousePos(eventData.position);
     }
 
-    public abstract void OnDrop(PointerEventData eventData);
+    public virtual void OnDrop(PointerEventData eventData)
+    {
+        IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
+        if (drop == null) return;
+        if (GetIndexPath().Equals(drop.GetIndexPath())) return;
+
+        if (RunManager.Get<AcquiredRunChip>(GetIndexPath()) is { } acquiredRunChip)
+        {
+            AcquiredRunChip fromAcquired = RunManager.Get<AcquiredRunChip>(drop.GetIndexPath());
+            if (fromAcquired != null)
+            {
+                if (RunManager.Instance.AcquiredInventory.Swap(fromAcquired, acquiredRunChip)) return;
+                return;
+            }
+
+            HeroChipSlot fromHeroChipSlot = RunManager.Get<HeroChipSlot>(drop.GetIndexPath());
+            if (fromHeroChipSlot != null)
+            {
+                if (fromHeroChipSlot.TryUnequip(acquiredRunChip)) return;
+                return;
+            }
+        }
+        else if (RunManager.Get<HeroChipSlot>(GetIndexPath()) is { } heroChipSlot)
+        {
+            AcquiredRunChip fromAcquired = RunManager.Get<AcquiredRunChip>(drop.GetIndexPath());
+            if (fromAcquired != null)
+            {
+                if (heroChipSlot.TryEquip(fromAcquired)) return;
+                return;
+            }
+
+            HeroChipSlot fromHeroChipSlot = RunManager.Get<HeroChipSlot>(drop.GetIndexPath());
+            if (fromHeroChipSlot != null)
+            {
+                if (RunManager.Instance.Hero.HeroSlotInventory.Swap(fromHeroChipSlot, heroChipSlot)) return;
+                return;
+            }
+        }
+        else if (RunManager.Get<EnemyChipSlot>(GetIndexPath()) is { } enemyChipSlot)
+        {
+            RunChip fromArenaChip = RunManager.Get<RunChip>(drop.GetIndexPath());
+            if (fromArenaChip != null)
+            {
+                if (enemyChipSlot.TryWrite(fromArenaChip)) return;
+                return;
+            }
+
+            AcquiredRunChip fromAcquired = RunManager.Get<AcquiredRunChip>(drop.GetIndexPath());
+            if (fromAcquired != null)
+            {
+                if (enemyChipSlot.TryWrite(fromAcquired)) return;
+                return;
+            }
+
+            HeroChipSlot fromHeroChipSlot = RunManager.Get<HeroChipSlot>(drop.GetIndexPath());
+            if (fromHeroChipSlot != null)
+            {
+                if (enemyChipSlot.TryWrite(fromHeroChipSlot)) return;
+                return;
+            }
+        }
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {

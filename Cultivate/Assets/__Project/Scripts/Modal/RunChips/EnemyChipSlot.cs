@@ -21,9 +21,25 @@ public class EnemyChipSlot
     }
 
     public string GetName() => Chip?.GetName();
+
+    public string GetDescription()
+    {
+        if (Chip == null)
+            return null;
+
+        int[] powers = new int[5];
+        WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
+        return Chip._entry.Description.Eval(GetLevel(), GetJingJie().Value, powers);
+    }
     public int GetLevel() => Chip.Level;
     public int GetPower(WuXing wuXing) => _powers[wuXing];
     public void SetPower(WuXing wuXing, int value) => _powers[wuXing] = value;
+    public JingJie? GetJingJie()
+    {
+        if (Chip == null)
+            return null;
+        return Chip.JingJie;
+    }
 
     public int GetManaCost()
     {

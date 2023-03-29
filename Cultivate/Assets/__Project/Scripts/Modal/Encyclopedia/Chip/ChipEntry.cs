@@ -1,29 +1,32 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
 public class ChipEntry : Entry
 {
-    private JingJie _jingJie;
-    public JingJie JingJie => _jingJie;
+    private CLLibrary.Range _jingJieRange;
+    public CLLibrary.Range JingJieRange => _jingJieRange;
 
-    private string _description;
-    public string Description => _description;
+    private ChipDescription _description;
+    public ChipDescription Description => _description;
 
     private Func<Tile, RunChip, bool> _canPlug;
     private Action<Tile, RunChip> _plug;
     private Func<AcquiredRunChip, bool> _canUnplug;
     private Action<AcquiredRunChip> _unplug;
 
-    public ChipEntry(string name, JingJie jingJie, string description,
+    public ChipEntry(string name,
+        CLLibrary.Range jingJieRange,
+        string description,
         Func<Tile, RunChip, bool> canPlug,
         Action<Tile, RunChip> plug,
         Func<AcquiredRunChip, bool> canUnplug,
         Action<AcquiredRunChip> unplug
-    ) : base(name)
+        ) : base(name)
     {
-        _jingJie = jingJie;
+        _jingJieRange = jingJieRange;
         _description = description;
         _canPlug = canPlug;
         _plug = plug;
@@ -35,4 +38,6 @@ public class ChipEntry : Entry
     public void Plug(Tile tile, RunChip runChip) => _plug(tile, runChip);
     public bool CanUnplug(AcquiredRunChip acquiredRunChip) => _canUnplug(acquiredRunChip);
     public void Unplug(AcquiredRunChip acquiredRunChip) => _unplug(acquiredRunChip);
+
+    public static implicit operator ChipEntry(string name) => Encyclopedia.ChipCategory[name];
 }

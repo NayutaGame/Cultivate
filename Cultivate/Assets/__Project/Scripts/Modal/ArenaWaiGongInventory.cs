@@ -8,6 +8,6 @@ public class ArenaWaiGongInventory: Inventory<RunChip>
     public ArenaWaiGongInventory()
     {
         Clear();
-        Encyclopedia.ChipCategory.Traversal.FilterObj(chip => chip is WaiGongEntry).Map(chip => new RunChip(chip)).Do(Add);
+        Encyclopedia.ChipCategory.Traversal.FilterObj(chip => chip is WaiGongEntry).Map(chip => new RunChip(chip, chip.JingJieRange.Start)).Do(Add);
     }
 }

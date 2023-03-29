@@ -7,7 +7,7 @@ public class RunChip
     public ChipEntry _entry;
 
     public string GetName() => _entry.Name;
-    public string GetDescription() => _entry.Description;
+    public string GetDescription() => _entry.Description.Eval(Level, _jingJie, new int[] { 0, 0, 0, 0, 0 });
 
     public int GetManaCost()
     {
@@ -17,16 +17,17 @@ public class RunChip
         return 0;
     }
 
-    public JingJie GetJingJie() => _entry.JingJie;
+    private JingJie _jingJie;
+    public JingJie JingJie => _jingJie;
 
     public int Level { get; private set; }
     public int RunUsedTimes { get; protected set; }
     public int RunEquippedTimes { get; protected set; }
 
-    public RunChip(string entryName, int level = 0) : this(Encyclopedia.ChipCategory[entryName], level) { }
-    public RunChip(ChipEntry entry, int level = 0)
+    public RunChip(ChipEntry entry, JingJie jingJie, int level = 0)
     {
         _entry = entry;
+        _jingJie = jingJie;
         Level = level;
     }
 

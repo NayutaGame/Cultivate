@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CLLibrary
 {
-    public class Numeric : MonoBehaviour
+    public static class Numeric
     {
         public static (int, int) Negate(int i0, int i1)
         {

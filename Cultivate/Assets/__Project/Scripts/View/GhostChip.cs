@@ -67,7 +67,7 @@ public class GhostChip : MonoBehaviour
         }
 
         InfoText.text = $"{c.GetName()}";
-        SetColorFromJingJie(c.GetJingJie());
+        SetColorFromJingJie(c.JingJie);
     }
 
     protected void SetColorFromJingJie(JingJie jingJie)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ public abstract class EnemyView : ItemView
     public Button RandomEnemyButton;
     public TMP_InputField HealthInputField;
     public Button CopyButton;
-    public ArenaEnemyEquippedInventoryView ArenaEnemyEquippedInventoryView;
+    public InventoryView<RunChipView> EquippedInventoryView;
 
     public override void Configure(IndexPath indexPath)
     {
@@ -33,7 +34,7 @@ public abstract class EnemyView : ItemView
 
         CopyButton.onClick.AddListener(Copy);
 
-        ArenaEnemyEquippedInventoryView.Configure(new IndexPath($"{GetIndexPath()}.Slots"));
+        EquippedInventoryView.Configure(new IndexPath($"{GetIndexPath()}.Slots"));
     }
 
     public override void Refresh()
@@ -48,7 +49,7 @@ public abstract class EnemyView : ItemView
         EnemyEntryDropdown.value = Encyclopedia.EnemyCategory.IndexOf(runEnemy.Entry);
         JingJieDropdown.value = runEnemy.JingJie;
         HealthInputField.text = runEnemy.Health.ToString();
-        ArenaEnemyEquippedInventoryView.Refresh();
+        EquippedInventoryView.Refresh();
     }
 
     protected abstract void EnemyEntryChanged(int enemyEntryIndex);

@@ -1174,7 +1174,6 @@ GameObject:
   - component: {fileID: 8740805536434874612}
   - component: {fileID: 7786482133983257770}
   - component: {fileID: 1766966082248338918}
-  - component: {fileID: 3109903593445286700}
   m_Layer: 5
   m_Name: SkillEditor
   m_TagString: Untagged
@@ -1251,27 +1250,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3109903593445286700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647325942457273432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c563ab908163f604ca77a3952cb91a1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HeroNeiGongTransform: {fileID: 5297245075059729552}
-  HeroWaiGongTransform: {fileID: 8964881968659738950}
-  EnemyNeiGongTransform: {fileID: 3937559175162809998}
-  EnemyWaiGongTransform: {fileID: 4536232459985838530}
-  HeroHPInputField: {fileID: 1311773319390888231}
-  EnemyHPInputField: {fileID: 462040930963766673}
-  SimulatedPlayerHP: {fileID: 3065228925652042291}
-  SimulatedEnemyHP: {fileID: 2123058744039934187}
-  EnemyPicker: {fileID: 0}
 --- !u!1 &1724480696289457859
 GameObject:
   m_ObjectHideFlags: 0
@@ -4160,7 +4138,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AcquiredWaiGongInventoryView: {fileID: 1821961813825759920}
-  SkillEditor: {fileID: 3109903593445286700}
   ReportButton: {fileID: 8744419825586979524}
   EscapeButton: {fileID: 2987272695762367920}
   ReportText: {fileID: 7746512750540083118}
@@ -4796,6 +4773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Container: {fileID: 9208596043702880780}
   Prefab: {fileID: 4730905039607144230, guid: 7809716d8a8541040b85ad008a9c0166, type: 3}
+  DrawButtons: []
 --- !u!1001 &353041270417515696
 PrefabInstance:
   m_ObjectHideFlags: 0

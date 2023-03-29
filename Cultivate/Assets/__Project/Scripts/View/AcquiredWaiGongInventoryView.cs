@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AcquiredWaiGongInventoryView : InventoryView<AcquiredWaiGongView>, IDropHandler
+public class AcquiredWaiGongInventoryView : InventoryView<RunChipView>, IDropHandler
 {
     public Button[] DrawButtons;
 

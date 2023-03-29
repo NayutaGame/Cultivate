@@ -257,21 +257,24 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public bool TryDrawWaiGong()
     {
         _chipPool.Shuffle();
-        ChipInventory.Add(new RunChip(_chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJie <= _jingJie)));
+        ChipEntry chip = _chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJieRange.Contains(_jingJie));
+        ChipInventory.Add(new RunChip(chip, chip.JingJieRange.Start));
         return true;
     }
 
     public bool TryDrawStone()
     {
         _chipPool.Shuffle();
-        ChipInventory.Add(new RunChip(_chipPool.ForcePopItem(c => c is WuXingChipEntry)));
+        ChipEntry chip = _chipPool.ForcePopItem(c => c is WuXingChipEntry);
+        ChipInventory.Add(new RunChip(chip, chip.JingJieRange.Start));
         return true;
     }
 
     public bool TryDrawAcquired(JingJie jingJie)
     {
         _chipPool.Shuffle();
-        RunChip draw = new RunChip(_chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJie == jingJie));
+        ChipEntry chip = _chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJieRange.Contains(_jingJie));
+        RunChip draw = new RunChip(chip, jingJie);
         Tile emptyTile = DanTian.FirstEmptyTile();
         if (emptyTile == null)
             return false;
@@ -281,7 +284,8 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     public RunChip DrawChip(string chipName)
     {
-        RunChip picked = new RunChip(Encyclopedia.ChipCategory[chipName]);
+        ChipEntry chip = chipName;
+        RunChip picked = new RunChip(chip, chip.JingJieRange.Start);
         ChipInventory.Add(picked);
         return picked;
     }
@@ -291,7 +295,8 @@ public class RunManager : Singleton<RunManager>, GDictionary
         _chipPool.Shuffle();
         for (int i = 0; i < count; i++)
         {
-            ChipInventory.Add(new RunChip(_chipPool.ForcePopItem(pred)));
+            ChipEntry chip = _chipPool.ForcePopItem(pred);
+            ChipInventory.Add(new RunChip(chip, chip.JingJieRange.Start));
         }
     }
 

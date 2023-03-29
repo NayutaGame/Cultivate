@@ -20,7 +20,7 @@ public class InventoryChipView : RunChipView
         ManacostText.text = $"{chip.GetManaCost()}";
         NameText.text = $"{chip.GetName()}";
         PowerText.text = "";
-        SetColorFromJingJie(chip.GetJingJie());
+        SetColorFromJingJie(chip.JingJie);
     }
 
     public override void OnDrop(PointerEventData eventData)

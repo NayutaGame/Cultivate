@@ -54,8 +54,9 @@ public struct JingJie : IEquatable<JingJie>
     public override bool Equals(object obj) => obj is JingJie other && Equals(other);
     public override int GetHashCode() => _index;
 
-    public static implicit operator int(JingJie wuXing) => wuXing._index;
+    public static implicit operator int(JingJie jingJie) => jingJie._index;
     public static implicit operator JingJie(int index) => _list[index];
+    public static implicit operator CLLibrary.Range(JingJie jingJie) => new(jingJie._index);
 
     public override string ToString() => _name;
 }

@@ -7,9 +7,9 @@ using UnityEngine;
 
 public class WaiGongEntry : ChipEntry
 {
-    private Func<int, int[], int> _manaCost;
-    public int GetManaCost(int level) => GetManaCost(level, new int[] { 0, 0, 0, 0, 0 });
-    public int GetManaCost(int level, int[] powers) => _manaCost(level, powers);
+    private ManaCost _manaCost;
+    public int GetManaCost(int level) => _manaCost.Eval(level);
+    public int GetManaCost(int level, int[] powers) => _manaCost.Eval(level, powers);
 
     public WaiGongType Type { get; private set; }
     private Action<StageEntity, StageWaiGong, bool> _execute;
@@ -17,24 +17,13 @@ public class WaiGongEntry : ChipEntry
 
     public WaiGongEntry(
         string name,
-        JingJie jingJie,
+        CLLibrary.Range jingJieRange,
         string description,
-        int manaCost = 0,
+        ManaCost manaCost = null,
         WaiGongType type = WaiGongType.NONATTACK,
         Action<StageEntity, StageWaiGong, bool> execute = null,
         Action<StageEntity, StageWaiGong> startStage = null
-        ) : this(name, jingJie, description, (level, powers) => manaCost, type, execute, startStage)
-    {}
-
-    public WaiGongEntry(
-        string name,
-        JingJie jingJie,
-        string description,
-        Func<int, int[], int> manaCost,
-        WaiGongType type = WaiGongType.NONATTACK,
-        Action<StageEntity, StageWaiGong, bool> execute = null,
-        Action<StageEntity, StageWaiGong> startStage = null
-    ) : base(name, jingJie, description,
+        ) : base(name, jingJieRange, description,
         canPlug: (tile, runChip) => tile.AcquiredRunChip == null,
         plug: (tile, runChip) =>
         {
@@ -60,7 +49,7 @@ public class WaiGongEntry : ChipEntry
             RunManager.Instance.ChipInventory.Add(acquiredRunChip.Chip);
         })
     {
-        _manaCost = manaCost;
+        _manaCost = manaCost ?? 0;
         Type = type;
         _execute = execute ?? DefaultExecute;
         _startStage = startStage;

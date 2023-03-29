@@ -602,8 +602,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6628ecec2a9fd624ea0990eb32dde672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heroSlot: {fileID: 127727448}
-  _enemySlot: {fileID: 1421936687}
 --- !u!4 &882905663
 Transform:
   m_ObjectHideFlags: 0
@@ -3214,7 +3212,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -40
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7873205929534839188, guid: ab8702c878a227e4a97130deb79a0772, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ab8702c878a227e4a97130deb79a0772, type: 3}
 --- !u!1 &2016568532
 GameObject:

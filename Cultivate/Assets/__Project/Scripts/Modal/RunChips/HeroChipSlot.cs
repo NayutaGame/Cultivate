@@ -17,7 +17,24 @@ public class HeroChipSlot
 
     public RunChip RunChip => AcquiredRunChip?.Chip;
     public string GetName() => AcquiredRunChip.GetName();
+    public string GetDescription()
+    {
+        if (AcquiredRunChip == null)
+            return null;
+
+        int[] powers = new int[5];
+        WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
+        return AcquiredRunChip.Chip._entry.Description.Eval(GetLevel(), GetJingJie().Value, powers);
+    }
+
     public int GetLevel() => AcquiredRunChip.GetLevel();
+
+    public JingJie? GetJingJie()
+    {
+        if (AcquiredRunChip == null)
+            return null;
+        return AcquiredRunChip.GetJingJie();
+    }
     public int GetPower(WuXing wuXing)
     {
         int power = 0;

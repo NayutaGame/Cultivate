@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class BattlePanel : Panel
 {
     public AcquiredWaiGongInventoryView AcquiredWaiGongInventoryView;
-    public SkillEditor SkillEditor;
+    // public SkillEditor SkillEditor;
 
     public Button ReportButton;
     public Button EscapeButton;
@@ -17,7 +17,7 @@ public class BattlePanel : Panel
     public override void Configure()
     {
         AcquiredWaiGongInventoryView.Configure(new IndexPath("AcquiredInventory"));
-        SkillEditor.Configure();
+        // SkillEditor.Configure();
         ReportButton.onClick.AddListener(Report);
         EscapeButton.onClick.AddListener(Escape);
     }
@@ -27,7 +27,7 @@ public class BattlePanel : Panel
         base.Refresh();
 
         AcquiredWaiGongInventoryView.Refresh();
-        SkillEditor.Refresh();
+        // SkillEditor.Refresh();
 
         ReportText.text = RunManager.Instance.Report?.ToString();
     }

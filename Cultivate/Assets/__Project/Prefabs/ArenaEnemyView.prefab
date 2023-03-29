@@ -469,7 +469,6 @@ GameObject:
   - component: {fileID: 1034870889667672422}
   - component: {fileID: 7027770605360222183}
   - component: {fileID: 8158033816462839215}
-  - component: {fileID: 3141863284169722043}
   m_Layer: 0
   m_Name: ArenaEnemyEquippedInventoryView
   m_TagString: Untagged
@@ -573,20 +572,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3141863284169722043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1034870889667672440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcd87036c8b50644ea98ec27ff148e82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Container: {fileID: 1034870889667672423}
-  Prefab: {fileID: 0}
 --- !u!1 &1079105701493811340
 GameObject:
   m_ObjectHideFlags: 0
@@ -3226,7 +3211,6 @@ MonoBehaviour:
   RandomEnemyButton: {fileID: 671868785090152974}
   HealthInputField: {fileID: 7784654355227722631}
   CopyButton: {fileID: 8090759316246746368}
-  ArenaEnemyEquippedInventoryView: {fileID: 3141863284169722043}
 --- !u!1 &7608016415086252841
 GameObject:
   m_ObjectHideFlags: 0

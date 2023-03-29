@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -70,15 +71,22 @@ public class RunEnemy : GDictionary
         int diff = _slots.Length - waiGongNames.Length;
         for (int i = waiGongNames.Length - 1; i >= 0; i--)
         {
-            if(waiGongNames[i] != null && waiGongNames[i] != "")
-                SetSlotContent(diff + i, new RunChip(waiGongNames[i]));
+            if (waiGongNames[i] != null && waiGongNames[i] != "")
+            {
+                ChipEntry chip = waiGongNames[i];
+                SetSlotContent(diff + i, new RunChip(chip, chip.JingJieRange.Start));
+            }
         }
     }
 
     public EnemyChipSlot GetSlot(int i) => _slots[i];
 
     public void SetSlotContent(int i, string waiGongName, int[] powers = null)
-        => SetSlotContent(i, new RunChip(waiGongName), powers);
+    {
+        ChipEntry chip = waiGongName;
+        SetSlotContent(i, new RunChip(chip, chip.JingJieRange.Start), powers);
+    }
+
     public void SetSlotContent(int i, RunChip waiGong, int[] powers = null)
     {
         _slots[i].Chip = waiGong;
