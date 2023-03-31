@@ -22,7 +22,6 @@ public class RunNode
 
     public string GetName() => _entry.Name;
 
-    public RunNode(Vector2Int position, string entryName) : this(position, Encyclopedia.NodeCategory[entryName]) { }
     public RunNode(Vector2Int position, NodeEntry entry)
     {
         Position = position;

@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyEntry : Entry
 {
     private string _description;
-    public string Description;
+    public string Description => _description;
 
     private Func<CreateEnemyDetails, bool> _canCreate;
     private Action<RunEnemy, CreateEnemyDetails> _create;
@@ -21,4 +21,6 @@ public class EnemyEntry : Entry
 
     public bool CanCreate(CreateEnemyDetails d) => _canCreate(d);
     public void Create(RunEnemy enemy, CreateEnemyDetails d) => _create(enemy, d);
+
+    public static implicit operator EnemyEntry(string name) => Encyclopedia.EnemyCategory[name];
 }

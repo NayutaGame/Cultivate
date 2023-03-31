@@ -9,7 +9,6 @@ public class BattlePanelDescriptor : PanelDescriptor
 
     private CreateEnemyDetails _createEnemyDetails;
 
-    public BattlePanelDescriptor(string enemyName, CreateEnemyDetails createEnemyDetails) : this(Encyclopedia.EnemyCategory[enemyName], createEnemyDetails) { }
     public BattlePanelDescriptor(EnemyEntry enemyEntry, CreateEnemyDetails createEnemyDetails)
     {
         _enemyEntry = enemyEntry;

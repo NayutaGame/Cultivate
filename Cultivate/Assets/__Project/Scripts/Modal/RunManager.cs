@@ -270,10 +270,22 @@ public class RunManager : Singleton<RunManager>, GDictionary
         return true;
     }
 
+    public bool TryDrawAcquired(Predicate<ChipEntry> pred, JingJie jingJie)
+    {
+        _chipPool.Shuffle();
+        ChipEntry chip = _chipPool.ForcePopItem(pred);
+        RunChip draw = new RunChip(chip, jingJie);
+        Tile emptyTile = DanTian.FirstEmptyTile();
+        if (emptyTile == null)
+            return false;
+
+        return draw.TryPlug(emptyTile);
+    }
+
     public bool TryDrawAcquired(JingJie jingJie)
     {
         _chipPool.Shuffle();
-        ChipEntry chip = _chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJieRange.Contains(_jingJie));
+        ChipEntry chip = _chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJieRange.Contains(jingJie));
         RunChip draw = new RunChip(chip, jingJie);
         Tile emptyTile = DanTian.FirstEmptyTile();
         if (emptyTile == null)

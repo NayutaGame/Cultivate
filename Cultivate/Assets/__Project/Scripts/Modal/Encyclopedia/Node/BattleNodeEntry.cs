@@ -12,21 +12,20 @@ public class BattleNodeEntry : NodeEntry
             EnemyEntry enemyEntry = RunManager.Instance.DrawEnemy(d);
             BattlePanelDescriptor A = new BattlePanelDescriptor(enemyEntry, d);
             DialogPanelDescriptor B = new DialogPanelDescriptor("胜利");
-            DialogPanelDescriptor C = new DialogPanelDescriptor("逃跑成功");
+            DialogPanelDescriptor C = new DialogPanelDescriptor("你没能击败对手，虽然损失了一些命元，但还是获得了奖励");
 
             A._receiveSignal = (signal) =>
             {
-                BattleResultSignal battleResultSignal = signal as BattleResultSignal;
-                if (battleResultSignal == null)
-                    return;
-
-                if (battleResultSignal.State == BattleResultSignal.BattleResultState.Win)
+                if (signal is BattleResultSignal battleResultSignal)
                 {
-                    runNode.ChangePanel(B);
-                }
-                else if (battleResultSignal.State == BattleResultSignal.BattleResultState.Escape)
-                {
-                    runNode.ChangePanel(C);
+                    if (battleResultSignal.State == BattleResultSignal.BattleResultState.Win)
+                    {
+                        runNode.ChangePanel(B);
+                    }
+                    else if (battleResultSignal.State == BattleResultSignal.BattleResultState.Lose)
+                    {
+                        runNode.ChangePanel(C);
+                    }
                 }
             };
 

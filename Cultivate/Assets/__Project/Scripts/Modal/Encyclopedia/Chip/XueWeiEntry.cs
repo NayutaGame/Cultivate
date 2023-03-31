@@ -8,7 +8,7 @@ public class XueWeiEntry : ChipEntry
     public XueWeiEntry(
         string name,
         string description,
-        int slotIndex) : base(name, JingJie.LianQi, description,
+        int slotIndex) : base(name, JingJie.LianQi, description, null,
         canPlug: (tile, runChip) => tile.AcquiredRunChip == null,
         plug: (tile, runChip) =>
         {

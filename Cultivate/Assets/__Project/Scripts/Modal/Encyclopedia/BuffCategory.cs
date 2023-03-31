@@ -80,8 +80,10 @@ public class BuffCategory : Category<BuffEntry>
             new ("激活的不屈", "直到下个自己回合开始前，生命值最少为1", BuffStackRule.Wasted, true, false),
 
             new ("铃鹿御前", "造成伤害：施加【造成伤害，最多Stack】减甲", BuffStackRule.Add, true, false,
-                damaged: (buff, d) =>
+                damage: (buff, d) =>
                 {
+                    if (buff.Owner == d.Tgt)
+                        return;
                     StageManager.Instance.ArmorLoseProcedure(d.Tgt, Mathf.Min(d.Value, buff.Stack));
                 }),
             new ("木21", "攻击一直具有吸血，直到使用一张非攻击牌", BuffStackRule.Wasted, true, false,
@@ -97,8 +99,11 @@ public class BuffCategory : Category<BuffEntry>
                     if (d.Value >= 10)
                         StageManager.Instance.BuffProcedure(buff.Owner, buff.Owner, "力量");
                 }),
-            new ("土20", "本场战斗中，Step开始：3攻", BuffStackRule.Wasted, true, false,
-                startStep: (buff, d) => StageManager.Instance.AttackProcedure(d.Caster, d.Caster.Opponent(), 3)),
+            new ("天衣无缝", "本场战斗中，Step开始：【stack】攻", BuffStackRule.Max, true, false,
+                startStep: (buff, d) => StageManager.Instance.AttackProcedure(d.Caster, d.Caster.Opponent(), buff.Stack)),
+
+            new ("通透世界", "本场战斗中，自己的所有攻击具有穿透", BuffStackRule.Wasted, true, false,
+                attack: (buff, d) => d.Pierce = true),
 
             /**********************************************************************************************************/
             /*********************************************** 大剑哥 ****************************************************/

@@ -7,18 +7,17 @@ public class RunChip
     public ChipEntry _entry;
 
     public string GetName() => _entry.Name;
-    public string GetDescription() => _entry.Description.Eval(Level, _jingJie, new int[] { 0, 0, 0, 0, 0 });
+    public string GetDescription() => _entry.Description.Eval(Level, JingJie, new int[] { 0, 0, 0, 0, 0 });
 
     public int GetManaCost()
     {
         if (_entry is WaiGongEntry waigongEntry)
-            return waigongEntry.GetManaCost(Level);
+            return waigongEntry.GetManaCost(Level, JingJie);
 
         return 0;
     }
 
-    private JingJie _jingJie;
-    public JingJie JingJie => _jingJie;
+    public JingJie JingJie;
 
     public int Level { get; private set; }
     public int RunUsedTimes { get; protected set; }
@@ -27,7 +26,7 @@ public class RunChip
     public RunChip(ChipEntry entry, JingJie jingJie, int level = 0)
     {
         _entry = entry;
-        _jingJie = jingJie;
+        JingJie = jingJie;
         Level = level;
     }
 

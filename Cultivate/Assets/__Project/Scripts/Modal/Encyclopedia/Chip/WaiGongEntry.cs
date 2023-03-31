@@ -8,8 +8,8 @@ using UnityEngine;
 public class WaiGongEntry : ChipEntry
 {
     private ManaCost _manaCost;
-    public int GetManaCost(int level) => _manaCost.Eval(level);
-    public int GetManaCost(int level, int[] powers) => _manaCost.Eval(level, powers);
+    public int GetManaCost(int level, JingJie jingJie) => _manaCost.Eval(level, jingJie);
+    public int GetManaCost(int level, JingJie jingJie, int[] powers) => _manaCost.Eval(level, jingJie, powers);
 
     public WaiGongType Type { get; private set; }
     private Action<StageEntity, StageWaiGong, bool> _execute;
@@ -18,12 +18,13 @@ public class WaiGongEntry : ChipEntry
     public WaiGongEntry(
         string name,
         CLLibrary.Range jingJieRange,
-        string description,
+        ChipDescription description,
+        WuXing? wuXing = null,
         ManaCost manaCost = null,
         WaiGongType type = WaiGongType.NONATTACK,
         Action<StageEntity, StageWaiGong, bool> execute = null,
         Action<StageEntity, StageWaiGong> startStage = null
-        ) : base(name, jingJieRange, description,
+        ) : base(name, jingJieRange, description, wuXing,
         canPlug: (tile, runChip) => tile.AcquiredRunChip == null,
         plug: (tile, runChip) =>
         {

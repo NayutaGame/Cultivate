@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HeroSlotInventory : GDictionary
@@ -14,6 +15,15 @@ public class HeroSlotInventory : GDictionary
     {
         get => _slots[i];
         set => _slots[i] = value;
+    }
+
+    public IEnumerable<HeroChipSlot> Traversal
+    {
+        get
+        {
+            foreach (var item in _slots)
+                yield return item;
+        }
     }
 
     public AcquiredRunChip GetAcquired(int i) => _slots[i].AcquiredRunChip;

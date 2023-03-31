@@ -31,10 +31,10 @@ public struct WuXing : IEquatable<WuXing>
     public static int Length => _list.Length;
 
     public static WuXing Jin => _list[0];
-    public static WuXing Shui  => _list[1];
-    public static WuXing Mu  => _list[2];
+    public static WuXing Shui => _list[1];
+    public static WuXing Mu => _list[2];
     public static WuXing Huo => _list[3];
-    public static WuXing Tu  => _list[4];
+    public static WuXing Tu => _list[4];
 
     public WuXing Shift(int i)
     {
@@ -64,4 +64,21 @@ public struct WuXing : IEquatable<WuXing>
     public static implicit operator WuXing(int index) => _list[index];
 
     public override string ToString() => _name;
+
+    public static bool SameWuXing(WuXing? i0, WuXing? i1)
+        => i0 != null && i1 != null && i0 == i1;
+
+    public static bool XiangSheng(WuXing? i0, WuXing? i1)
+        => i0 != null && i1 != null && (i0.Value.Next == i1 || i0.Value.Prev == i1);
+
+    public static WuXing? XiangShengNext(WuXing? i0, WuXing? i1)
+    {
+        if (i0 == null || i1 == null)
+            return null;
+        if (i0.Value.Next == i1)
+            return i1.Value.Next;
+        if (i1.Value.Next == i0)
+            return i0.Value.Next;
+        return null;
+    }
 }

@@ -53,7 +53,7 @@ public class EnemyCategory : Category<EnemyEntry>
                 {
                     enemy.Health = 40;
                     enemy.JingJie = JingJie.LianQi;
-                    enemy.QuickSetSlotContent("土00", "金00", "金01");
+                    enemy.QuickSetSlotContent("火01", "土00", "金00");
                 }),
 
             new("敌人03", "", canCreate: d => true,
@@ -61,7 +61,7 @@ public class EnemyCategory : Category<EnemyEntry>
                 {
                     enemy.Health = 40;
                     enemy.JingJie = JingJie.LianQi;
-                    enemy.QuickSetSlotContent("火01", "土00", "金00");
+                    enemy.QuickSetSlotContent("木01", "木01", "木01");
                 }),
 
             new("敌人04", "", canCreate: d => true,
@@ -69,18 +69,10 @@ public class EnemyCategory : Category<EnemyEntry>
                 {
                     enemy.Health = 40;
                     enemy.JingJie = JingJie.LianQi;
-                    enemy.QuickSetSlotContent("木01", "木01", "木01");
+                    enemy.QuickSetSlotContent("金01", "土01", "");
                 }),
 
             new("敌人05", "", canCreate: d => true,
-                create: (enemy, d) =>
-                {
-                    enemy.Health = 40;
-                    enemy.JingJie = JingJie.LianQi;
-                    enemy.QuickSetSlotContent("金01", "土01", "土01");
-                }),
-
-            new("敌人06", "", canCreate: d => true,
                 create: (enemy, d) =>
                 {
                     enemy.Health = 40;
@@ -172,8 +164,8 @@ public class EnemyCategory : Category<EnemyEntry>
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;
-                    enemy.JingJie = JingJie.JinDan;
-                    enemy.QuickSetSlotContent("", "", "", "", "水20", "金21", "金20", "金22", "水10", "金10", "土10", "土21");
+                    enemy.JingJie = 2;
+                    enemy.QuickSetSlotContent("", "", "", "", "火10", "金21", "水11", "", "土10", "木11", "水10", "木20");
                 }),
 
             new("敌人21", "描述", canCreate: d => true,
@@ -181,7 +173,7 @@ public class EnemyCategory : Category<EnemyEntry>
                 {
                     enemy.Health = 140;
                     enemy.JingJie = 2;
-                    enemy.QuickSetSlotContent("", "", "", "", "火10", "金21", "水11", "聚气术", "土10", "木11", "水10", "木20");
+                    enemy.QuickSetSlotContent("", "", "", "", "木21", "火00", "火00", "土01", "金10", "金10", "木01", "木01");
                 }),
 
             new("敌人22", "描述", canCreate: d => true,
@@ -189,7 +181,7 @@ public class EnemyCategory : Category<EnemyEntry>
                 {
                     enemy.Health = 140;
                     enemy.JingJie = 2;
-                    enemy.QuickSetSlotContent("", "", "", "", "木21", "火00", "火00", "土01", "金10", "金10", "木01", "木01");
+                    enemy.QuickSetSlotContent("", "", "", "", "水21", "金11", "木01", "火01", "火11", "金10", "水00", "木11");
                 }),
 
             new("敌人23", "描述", canCreate: d => true,
@@ -197,7 +189,7 @@ public class EnemyCategory : Category<EnemyEntry>
                 {
                     enemy.Health = 140;
                     enemy.JingJie = 2;
-                    enemy.QuickSetSlotContent("", "", "", "", "水21", "金11", "木01", "火01", "火11", "金10", "水00", "木11");
+                    enemy.QuickSetSlotContent("", "", "", "", "火10", "金21", "水11", "木11", "水10", "火01", "", "金20");
                 }),
 
             new("敌人24", "描述", canCreate: d => true,
@@ -205,32 +197,32 @@ public class EnemyCategory : Category<EnemyEntry>
                 {
                     enemy.Health = 140;
                     enemy.JingJie = 2;
-                    enemy.QuickSetSlotContent("", "", "", "", "火10", "金21", "水11", "木11", "水10", "火01", "", "金20");
+                    enemy.QuickSetSlotContent("", "", "", "", "火22", "火11", "土10", "土00", "木11", "", "木22", "土21");
                 }),
-
-            // new("敌人24", "描述", canCreate: d => true,
-            //     create: (enemy, d) =>
-            //     {
-            //         enemy.Health = 140;
-            //         enemy.JingJie = 2;
-            //         enemy.QuickSetSlotContent("", "", "", "", "土20", "水10", "水11", "木10", "火10", "火12", "聚气术", "聚气术");
-            //     }),
 
             new("敌人25", "描述", canCreate: d => true,
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;
                     enemy.JingJie = 2;
-                    enemy.QuickSetSlotContent("", "", "", "", "火22", "火11", "土10", "土00", "木11", "", "木22", "土21");
+                    enemy.QuickSetSlotContent("", "", "", "", "土20", "水10", "", "", "火10", "", "", "");
                 }),
 
             new("敌人26", "描述", canCreate: d => true,
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;
-                    enemy.JingJie = 2;
-                    enemy.QuickSetSlotContent("", "", "", "", "土20", "水10", "", "", "火10", "", "聚气术", "聚气术");
+                    enemy.JingJie = JingJie.JinDan;
+                    enemy.QuickSetSlotContent("", "", "", "", "水20", "金21", "金20", "金22", "水10", "金10", "土10", "土21");
                 }),
+
+            // new("敌人27", "描述", canCreate: d => true,
+            //     create: (enemy, d) =>
+            //     {
+            //         enemy.Health = 140;
+            //         enemy.JingJie = 2;
+            //         enemy.QuickSetSlotContent("", "", "", "", "土20", "水10", "水11", "木10", "火10", "火12", "聚气术", "聚气术");
+            //     }),
         };
     }
 }

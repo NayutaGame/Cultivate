@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Text;
 using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -81,44 +82,52 @@ public class RunEnemy : GDictionary
 
     public EnemyChipSlot GetSlot(int i) => _slots[i];
 
-    public void SetSlotContent(int i, string waiGongName, int[] powers = null)
+    public void SetSlotContent(int i, string waiGongName, int l = 0, JingJie? j = null, int[] p = null)
     {
+        if (string.IsNullOrEmpty(waiGongName))
+            return;
+
         ChipEntry chip = waiGongName;
-        SetSlotContent(i, new RunChip(chip, chip.JingJieRange.Start), powers);
+        JingJie jingJie = j ?? chip.JingJieRange.Start;
+        SetSlotContent(i, new RunChip(chip, jingJie, l), l, j, p);
     }
 
-    public void SetSlotContent(int i, RunChip waiGong, int[] powers = null)
+    public void SetSlotContent(int i, RunChip waiGong, int l = 0, JingJie? j = null, int[] p = null)
     {
         _slots[i].Chip = waiGong;
-        if(powers != null)
-            WuXing.Traversal.Do(wuXing => _slots[i].SetPower(wuXing, powers[wuXing]));
+        if(p != null)
+            WuXing.Traversal.Do(wuXing => _slots[i].SetPower(wuXing, p[wuXing]));
     }
 
     public string GetEntryDescriptor()
     {
         string dateTime = DateTime.Now.ToString();
-        string enemyDescriptor = @"
-        new(""敌人{0}"", ""描述"", canCreate: d => true,
+
+        StringBuilder sb = new StringBuilder();
+        sb.Append(@$"
+        new(""敌人{dateTime}"", ""描述"", canCreate: d => true,
             create: (enemy, d) =>
             {{
-                enemy.Health = {1};
-                enemy.JingJie = {2};
-                enemy.QuickSetSlotContent(""{3}"", ""{4}"", ""{5}"", ""{6}"", ""{7}"", ""{8}"", ""{9}"", ""{10}"", ""{11}"", ""{12}"", ""{13}"", ""{14}"");
-            }}),";
+                enemy.Health = {Health};
+                enemy.JingJie = {_jingJie._index};
+");
 
-        return string.Format(enemyDescriptor, dateTime, Health, _jingJie._index,
-            GetSlot(0).GetName() ?? "",
-            GetSlot(1).GetName() ?? "",
-            GetSlot(2).GetName() ?? "",
-            GetSlot(3).GetName() ?? "",
-            GetSlot(4).GetName() ?? "",
-            GetSlot(5).GetName() ?? "",
-            GetSlot(6).GetName() ?? "",
-            GetSlot(7).GetName() ?? "",
-            GetSlot(8).GetName() ?? "",
-            GetSlot(9).GetName() ?? "",
-            GetSlot(10).GetName() ?? "",
-            GetSlot(11).GetName() ?? ""
-        );
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            EnemyChipSlot s = GetSlot(i);
+            string name = s.GetName();
+            int level = s.Chip?.Level ?? 0;
+            string jingJie = s.GetJingJie()?._index.ToString() ?? "null";
+            int jin = s.GetPower(WuXing.Jin);
+            int shui = s.GetPower(WuXing.Shui);
+            int mu = s.GetPower(WuXing.Mu);
+            int huo = s.GetPower(WuXing.Huo);
+            int tu = s.GetPower(WuXing.Tu);
+            sb.Append($"enemy.SetSlotContent({i}, \"{name}\", {level}, {jingJie}, new int[]{{{jin}, {shui}, {mu}, {huo}, {tu}}});\n");
+        }
+
+        sb.Append(@$"}}),");
+
+        return sb.ToString();
     }
 }

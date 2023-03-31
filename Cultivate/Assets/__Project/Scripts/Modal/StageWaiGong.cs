@@ -23,7 +23,7 @@ public class StageWaiGong
             return 0;
 
         var entry = _runChip._entry as WaiGongEntry;
-        return entry.GetManaCost(Level, _powers);
+        return entry.GetManaCost(Level, GetJingJie(), _powers);
     }
 
     // public int RunLevel { get; private set; }

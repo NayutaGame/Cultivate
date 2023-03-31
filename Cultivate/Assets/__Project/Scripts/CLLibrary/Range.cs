@@ -19,5 +19,7 @@ namespace CLLibrary
 
         public bool Contains(int value)
             => Start <= value && value < End;
+
+        public static implicit operator Range(int i) => new(i);
     }
 }

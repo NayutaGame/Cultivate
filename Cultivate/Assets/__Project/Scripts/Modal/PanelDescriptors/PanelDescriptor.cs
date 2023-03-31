@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PanelDescriptor
+public abstract class PanelDescriptor
 {
     public Action<Signal> _receiveSignal;
 

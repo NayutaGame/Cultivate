@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class AcquiredWaiGongInventoryView : InventoryView<RunChipView>, IDropHandler
 {
     public Button[] DrawButtons;
+    public Button SortButton;
 
     public override void Configure(IndexPath indexPath)
     {
@@ -18,6 +19,7 @@ public class AcquiredWaiGongInventoryView : InventoryView<RunChipView>, IDropHan
             JingJie jingJie = i;
             DrawButtons[i].onClick.AddListener(() => DrawJingJie(jingJie));
         });
+        SortButton.onClick.AddListener(Sort);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -46,6 +48,28 @@ public class AcquiredWaiGongInventoryView : InventoryView<RunChipView>, IDropHan
     private void DrawJingJie(JingJie jingJie)
     {
         RunManager.Instance.TryDrawAcquired(jingJie);
+        RunCanvas.Instance.Refresh();
+    }
+
+    private void Sort()
+    {
+        RunManager.Instance.AcquiredInventory.Sort((lhs, rhs) =>
+        {
+            int lJingJie = lhs.Chip.JingJie;
+            int rJingJie = rhs.Chip.JingJie;
+            if (lJingJie != rJingJie)
+                return rJingJie - lJingJie;
+
+            int lWuXing = lhs.Chip._entry.WuXing ?? -1;
+            int rWuXing = rhs.Chip._entry.WuXing ?? -1;
+            if (lWuXing != rWuXing)
+                return lWuXing - rWuXing;
+
+            int lIndex = Encyclopedia.ChipCategory.IndexOf(lhs.Chip._entry);
+            int rIndex = Encyclopedia.ChipCategory.IndexOf(rhs.Chip._entry);
+            // if (lIndex != rIndex)
+            return lIndex - rIndex;
+        });
         RunCanvas.Instance.Refresh();
     }
 

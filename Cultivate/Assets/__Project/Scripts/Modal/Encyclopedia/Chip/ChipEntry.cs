@@ -12,6 +12,9 @@ public class ChipEntry : Entry
     private ChipDescription _description;
     public ChipDescription Description => _description;
 
+    private WuXing? _wuXing;
+    public WuXing? WuXing => _wuXing;
+
     private Func<Tile, RunChip, bool> _canPlug;
     private Action<Tile, RunChip> _plug;
     private Func<AcquiredRunChip, bool> _canUnplug;
@@ -19,7 +22,8 @@ public class ChipEntry : Entry
 
     public ChipEntry(string name,
         CLLibrary.Range jingJieRange,
-        string description,
+        ChipDescription description,
+        WuXing? wuXing,
         Func<Tile, RunChip, bool> canPlug,
         Action<Tile, RunChip> plug,
         Func<AcquiredRunChip, bool> canUnplug,
@@ -28,6 +32,7 @@ public class ChipEntry : Entry
     {
         _jingJieRange = jingJieRange;
         _description = description;
+        _wuXing = wuXing;
         _canPlug = canPlug;
         _plug = plug;
         _canUnplug = canUnplug;

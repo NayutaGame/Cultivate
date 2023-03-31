@@ -34,7 +34,7 @@ public class AcquiredRunChip
         {
             int[] powers = new int[5];
             WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
-            return waigongEntry.GetManaCost(GetLevel(), powers);
+            return waigongEntry.GetManaCost(GetLevel(), GetJingJie(), powers);
         }
 
         return 0;

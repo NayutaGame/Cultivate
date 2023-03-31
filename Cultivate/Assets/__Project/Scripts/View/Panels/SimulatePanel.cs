@@ -17,12 +17,6 @@ public class SimulatePanel : Panel
     public RunChipInventoryView HeroEquippedInventoryView;
     public AcquiredWaiGongInventoryView AcquiredWaiGongInventoryView;
 
-
-
-
-
-
-
     public Button ReportButton;
     public Button StreamButton;
 
@@ -36,10 +30,6 @@ public class SimulatePanel : Panel
         EnemyView.Configure(new IndexPath("Enemy"));
         HeroEquippedInventoryView.Configure(new IndexPath("Hero.HeroSlotInventory.Slots"));
         AcquiredWaiGongInventoryView.Configure(new IndexPath("AcquiredInventory"));
-
-
-
-
 
         ReportButton.onClick.AddListener(Report);
         StreamButton.onClick.AddListener(Stream);
@@ -58,11 +48,6 @@ public class SimulatePanel : Panel
         EnemyView.Refresh();
         HeroEquippedInventoryView.Refresh();
         AcquiredWaiGongInventoryView.Refresh();
-
-
-
-
-
 
         ReportText.text = RunManager.Instance.Report?.ToString();
     }

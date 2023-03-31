@@ -47,7 +47,7 @@ public class EnemyChipSlot
         {
             int[] powers = new int[5];
             WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
-            return waigongEntry.GetManaCost(GetLevel(), powers);
+            return waigongEntry.GetManaCost(GetLevel(), GetJingJie().Value, powers);
         }
 
         return 0;
@@ -84,6 +84,20 @@ public class EnemyChipSlot
     {
         Chip = heroChipSlot.RunChip?.Clone();
         WuXing.Traversal.Do(wuXing => SetPower(wuXing, heroChipSlot.GetPower(wuXing)));
+        RunManager.Instance.EquippedChanged();
+        return true;
+    }
+
+    public bool TryIncreseJingJie()
+    {
+        if (Chip == null)
+            return false;
+
+        JingJie curr = Chip.JingJie;
+        JingJie next = curr + 1;
+        if (!Chip._entry.JingJieRange.Contains(next))
+            next = Chip._entry.JingJieRange.Start;
+        Chip.JingJie = next;
         RunManager.Instance.EquippedChanged();
         return true;
     }

@@ -51,7 +51,7 @@ public class HeroChipSlot
         {
             int[] powers = new int[5];
             WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
-            return waigongEntry.GetManaCost(GetLevel(), powers);
+            return waigongEntry.GetManaCost(GetLevel(), GetJingJie().Value, powers);
         }
 
         return 0;

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class WuXingChipEntry : ChipEntry
 {
-    public WuXingChipEntry(string name, string description, WuXing wuXing) : base(name, JingJie.LianQi, description,
+    public WuXingChipEntry(string name, string description, WuXing wuXing) : base(name, JingJie.LianQi, description, wuXing,
         canPlug: (tile, runChip) => tile.AcquiredRunChip == null,
         plug: (tile, runChip) =>
         {
