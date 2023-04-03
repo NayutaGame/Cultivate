@@ -288,7 +288,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public bool TryDrawAcquired(Predicate<ChipEntry> pred, JingJie jingJie)
     {
         _chipPool.Shuffle();
-        ChipEntry chip = _chipPool.ForcePopItem(pred);
+        ChipEntry chip = _chipPool.ForcePopItem(c => pred(c) && c is WaiGongEntry && c.JingJieRange.Contains(jingJie));
         RunChip draw = new RunChip(chip, jingJie);
         Tile emptyTile = DanTian.FirstEmptyTile();
         if (emptyTile == null)
