@@ -7,9 +7,21 @@ public abstract class PanelDescriptor
 {
     public Action<Signal> _receiveSignal;
 
-    public virtual void ReceiveSignal(Signal signal)
+    public void ReceiveSignal(Signal signal)
     {
-        _receiveSignal(signal);
+        if (_receiveSignal != null)
+        {
+            _receiveSignal(signal);
+        }
+        else
+        {
+            DefaultReceiveSignal(signal);
+        }
+    }
+
+    protected virtual void DefaultReceiveSignal(Signal signal)
+    {
+
     }
 
     public virtual void Enter()

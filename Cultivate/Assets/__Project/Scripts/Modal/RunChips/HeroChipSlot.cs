@@ -84,7 +84,7 @@ public class HeroChipSlot
 
         AcquiredRunChip = null;
         RunManager.Instance.AcquiredInventory.Add(toUnequip);
-        RunManager.Instance.EquippedChanged();
+        RunManager.Instance.StageEnvironmentChanged();
         return true;
     }
 
@@ -98,7 +98,7 @@ public class HeroChipSlot
         int i = RunManager.Instance.AcquiredInventory.IndexOf(acquired);
         RunManager.Instance.AcquiredInventory.RemoveAt(i);
         RunManager.Instance.AcquiredInventory.Insert(i, toUnequip);
-        RunManager.Instance.EquippedChanged();
+        RunManager.Instance.StageEnvironmentChanged();
         return true;
     }
 
@@ -117,7 +117,7 @@ public class HeroChipSlot
 
         AcquiredRunChip = toEquip;
 
-        RunManager.Instance.EquippedChanged();
+        RunManager.Instance.StageEnvironmentChanged();
         return true;
     }
 

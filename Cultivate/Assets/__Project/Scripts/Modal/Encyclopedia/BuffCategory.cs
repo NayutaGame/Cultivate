@@ -69,7 +69,8 @@ public class BuffCategory : Category<BuffEntry>
                     d.Pierce = true;
                     buff.Stack -= 1;
                 }),
-            new ("自动护甲", "回合开始:护甲+【stack】", BuffStackRule.Add, true, true),
+            new ("自动护甲", "回合开始:护甲+【stack】", BuffStackRule.Add, true, true,
+                startTurn: (buff, owner) => StageManager.Instance.ArmorGainProcedure(owner, owner, buff.Stack)),
             new ("力量", "攻击时:数值+【stack】", BuffStackRule.Add, true, true,
                 attack: (buff, d) =>
                 {

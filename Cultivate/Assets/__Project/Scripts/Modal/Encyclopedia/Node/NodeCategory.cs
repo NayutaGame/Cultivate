@@ -9,10 +9,9 @@ public class NodeCategory : Category<NodeEntry>
     {
         List = new()
         {
-            new BossNodeEntry("Boss", "Boss", null),
             new MarketNodeEntry("Market", "Market", null),
 
-            new BattleNodeEntry("敌人", "敌人", new CreateEnemyDetails()),
+            new BattleNodeEntry("敌人", "敌人"),
 
             new AdventureNodeEntry("神殿事件", "",
                 create: runNode =>

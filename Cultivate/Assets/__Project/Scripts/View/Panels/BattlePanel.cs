@@ -11,14 +11,14 @@ public class BattlePanel : Panel
 {
     public TMP_Text HeroJingJieText;
     public TMP_Text HeroHPText;
-    public TMP_Text SimulatedPlayerHP;
-    public TMP_Text SimulatedEnemyHP;
+    public TMP_Text SimulatedHP;
 
     public BattleEnemyView BattleEnemyView;
     public RunChipInventoryView HeroEquippedInventoryView;
     public AcquiredWaiGongInventoryView AcquiredWaiGongInventoryView;
 
     public Button CommitButton;
+    public TMP_Text CommitText;
     public TMP_Text ReportText;
 
     public override void Configure()
@@ -37,9 +37,25 @@ public class BattlePanel : Panel
 
         if (RunManager.Instance.Report is { } report)
         {
-            SimulatedPlayerHP.text = $"玩家剩余生命: {report.HomeLeftHp}";
-            SimulatedEnemyHP.text = $"怪物剩余生命: {report.AwayLeftHp}";
+            SimulatedHP.text = $"玩家 {report.HomeLeftHp} : {report.AwayLeftHp} 敌人";
             ReportText.text = report.ToString();
+            if (report.HomeVictory)
+            {
+                CommitText.color = Color.green;
+                CommitText.text = $"提交胜利";
+            }
+            else
+            {
+                CommitText.color = Color.gray;
+                CommitText.text = $"提交逃跑\n命元: {RunManager.Instance.MingYuan}->{RunManager.Instance.MingYuan - report.MingYuanPenalty}";
+            }
+        }
+        else
+        {
+            SimulatedHP.text = "";
+            ReportText.text = "";
+            CommitText.color = Color.black;
+            CommitText.text = "刷新";
         }
 
         BattleEnemyView.Refresh();

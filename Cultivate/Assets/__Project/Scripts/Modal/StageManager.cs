@@ -308,10 +308,10 @@ public class StageManager : Singleton<StageManager>, GDictionary
         StageCanvas.Instance.SetEnemyHealth(_entities[1].Hp);
         StageCanvas.Instance.SetEnemyArmor(0);
 
-
         Report.HomeLeftHp = _entities[0].Hp;
         Report.AwayLeftHp = _entities[1].Hp;
         Report.HomeVictory = _commitWin;
+        Report.MingYuanPenalty = _commitWin ? 0 : 1;
         RunManager.Instance.Report = Report;
 
         if (!RunManager.Instance.IsStream)
@@ -337,6 +337,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
         Instance.Report.HomeLeftHp = Instance._entities[0].Hp;
         Instance.Report.AwayLeftHp = Instance._entities[1].Hp;
         Instance.Report.HomeVictory = Instance._commitWin;
+        Instance.Report.MingYuanPenalty = Instance._commitWin ? 0 : 1;
 
         return Instance.Report;
     }

@@ -76,7 +76,7 @@ public class EnemyChipSlot
     {
         Chip = acquired.Chip.Clone();
         WuXing.Traversal.Do(wuXing => SetPower(wuXing, acquired.GetPower(wuXing)));
-        RunManager.Instance.EquippedChanged();
+        RunManager.Instance.StageEnvironmentChanged();
         return true;
     }
 
@@ -84,7 +84,7 @@ public class EnemyChipSlot
     {
         Chip = heroChipSlot.RunChip?.Clone();
         WuXing.Traversal.Do(wuXing => SetPower(wuXing, heroChipSlot.GetPower(wuXing)));
-        RunManager.Instance.EquippedChanged();
+        RunManager.Instance.StageEnvironmentChanged();
         return true;
     }
 
@@ -98,7 +98,7 @@ public class EnemyChipSlot
         if (!Chip._entry.JingJieRange.Contains(next))
             next = Chip._entry.JingJieRange.Start;
         Chip.JingJie = next;
-        RunManager.Instance.EquippedChanged();
+        RunManager.Instance.StageEnvironmentChanged();
         return true;
     }
 }

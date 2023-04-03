@@ -49,7 +49,7 @@ public class TechEntry : Entry
 
     public void Claim()
     {
-        _rewards.Do(techEntry => techEntry.Claim());
+        _rewards.Do(reward => reward.Claim());
     }
 
     public string GetEurekaString()

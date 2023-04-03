@@ -21,6 +21,7 @@ public class RunCanvas : Singleton<RunCanvas>
     public Button TechButton;
     public Button SimulateButton;
     public Button ArenaButton;
+    public Button LibraryButton;
     public Button MapButton;
     public Button NodeButton;
 
@@ -28,6 +29,7 @@ public class RunCanvas : Singleton<RunCanvas>
     public TechTreePanel TechTreePanel;
     public SimulatePanel SimulatePanel;
     public ArenaPanel ArenaPanel;
+    public LibraryPanel LibraryPanel;
     public MapPanel MapPanel;
     public NodePanel NodePanel;
 
@@ -50,6 +52,7 @@ public class RunCanvas : Singleton<RunCanvas>
         TechButton.onClick.AddListener(OpenTechTreePanel);
         SimulateButton.onClick.AddListener(OpenSimulatePanel);
         ArenaButton.onClick.AddListener(OpenArenaPanel);
+        LibraryButton.onClick.AddListener(OpenLibraryPanel);
         MapButton.onClick.AddListener(OpenMapPanel);
         NodeButton.onClick.AddListener(OpenNodePanel);
 
@@ -60,12 +63,13 @@ public class RunCanvas : Singleton<RunCanvas>
         Refresh();
     }
 
-    private void OpenCharacterPanel() => OpenPanel(CharacterPanel);
-    private void OpenTechTreePanel() => OpenPanel(TechTreePanel);
-    private void OpenSimulatePanel() => OpenPanel(SimulatePanel);
-    private void OpenArenaPanel() => OpenPanel(ArenaPanel);
-    private void OpenMapPanel() => OpenPanel(MapPanel);
-    private void OpenNodePanel() => OpenPanel(NodePanel);
+    public void OpenCharacterPanel() => OpenPanel(CharacterPanel);
+    public void OpenTechTreePanel() => OpenPanel(TechTreePanel);
+    public void OpenSimulatePanel() => OpenPanel(SimulatePanel);
+    public void OpenArenaPanel() => OpenPanel(ArenaPanel);
+    public void OpenLibraryPanel() => OpenPanel(LibraryPanel);
+    public void OpenMapPanel() => OpenPanel(MapPanel);
+    public void OpenNodePanel() => OpenPanel(NodePanel);
     private void OpenPanel(Panel panel)
     {
         if(_currentPanel != null)

@@ -19,6 +19,7 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         base.Enter();
 
-        RunManager.Instance.SetEnemy(new RunEnemy(_enemyEntry, _createEnemyDetails));
+        // 是否可以由BattleRunNode维护Enemy
+        RunManager.Instance.Enemy = new RunEnemy(_enemyEntry, _createEnemyDetails);
     }
 }

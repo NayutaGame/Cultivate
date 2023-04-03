@@ -34,8 +34,8 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public event Action<StatusChangedDetails> StatusChangedEvent;
     public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
 
-    public event Action EquippedChangedEvent;
-    public void EquippedChanged() => EquippedChangedEvent?.Invoke();
+    public event Action StageEnvironmentChangedEvent;
+    public void StageEnvironmentChanged() => StageEnvironmentChangedEvent?.Invoke();
 
     private ChipPool _chipPool;
     public DanTian DanTian { get; private set; }
@@ -46,7 +46,18 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public AcquiredWaiGongInventory AcquiredInventory { get; private set; }
     public RunHero Hero { get; private set; }
     public EnemyPool EnemyPool { get; private set; }
-    public RunEnemy Enemy { get; private set; }
+
+    private RunEnemy _enemy;
+    public RunEnemy Enemy
+    {
+        get => _enemy;
+        set
+        {
+            _enemy = value;
+            StageEnvironmentChanged();
+        }
+    }
+
     public ArenaWaiGongInventory ArenaWaiGongInventory;
     public Arena Arena;
 
@@ -65,7 +76,11 @@ public class RunManager : Singleton<RunManager>, GDictionary
     }
 
     private int _mingYuan;
-    public int MingYuan => _mingYuan;
+    public int MingYuan
+    {
+        get => _mingYuan;
+        set => _mingYuan = value;
+    }
 
     // 灵根
     // 神识
@@ -160,8 +175,8 @@ public class RunManager : Singleton<RunManager>, GDictionary
         Modifier = Modifier.Default;
         Modifier.AddChild(DanTian.Modifier);
 
-        EquippedChangedEvent += CalcReport;
-        EquippedChangedEvent += CalcManaShortageBrief;
+        StageEnvironmentChangedEvent += CalcReport;
+        StageEnvironmentChangedEvent += CalcManaShortageBrief;
 
         DesignerEnvironment.EnterRun();
     }
@@ -310,11 +325,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
             ChipEntry chip = _chipPool.ForcePopItem(pred);
             ChipInventory.Add(new RunChip(chip, chip.JingJieRange.Start));
         }
-    }
-
-    public void SetEnemy(RunEnemy runEnemy)
-    {
-        Enemy = runEnemy;
     }
 
     public EnemyEntry DrawEnemy(CreateEnemyDetails d)

@@ -26,7 +26,7 @@ public class NodeView : ItemView, IPointerClickHandler
         if (runNode == null)
             return;
 
-        NameText.text = $"{runNode.GetName()}";
+        NameText.text = $"{runNode.GetTitle()}";
         switch (runNode.State)
         {
             case RunNode.RunNodeState.Current:

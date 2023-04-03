@@ -569,10 +569,16 @@ MonoBehaviour:
   JingJieColors:
   - {r: 0.948, g: 0.948, b: 0.948, a: 1}
   - {r: 0.5955856, g: 0.7924528, b: 0.6414199, a: 1}
-  - {r: 0.42745098, g: 0.654902, b: 0.77254903, a: 1}
+  - {r: 0.48819602, g: 0.67206544, b: 0.764, a: 1}
   - {r: 0.5708644, g: 0.5031446, b: 0.754717, a: 1}
-  - {r: 0.7927295, g: 0.8018868, b: 0.45894146, a: 1}
+  - {r: 0.8753333, g: 0.884, b: 0.50699997, a: 1}
   - {r: 0.864, g: 0.48470402, b: 0.48470402, a: 1}
+  CardFaces:
+  - {fileID: 21300000, guid: a4d008a208ad7f64aad93cb0eded6dbc, type: 3}
+  - {fileID: 21300000, guid: d5ceb22dfdcdc694983ddb40b520c9dd, type: 3}
+  - {fileID: 21300000, guid: 83c15c7f4ccf2c14d8a45c562e1d3b3d, type: 3}
+  - {fileID: 21300000, guid: e17dc680ad1929949a9b2c86a331d8fa, type: 3}
+  - {fileID: 21300000, guid: 515b4a8a7ebc9cf4ba66049dc0fe1da7, type: 3}
 --- !u!1 &882905661
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,19 @@ public class ChipEntry : Entry
     private WuXing? _wuXing;
     public WuXing? WuXing => _wuXing;
 
+    private Sprite _cardFace;
+    public Sprite CardFace
+    {
+        get
+        {
+            if (_cardFace != null)
+                return _cardFace;
+
+            _cardFace = _wuXing.HasValue ? CanvasManager.Instance.CardFaces[_wuXing.Value] : null;
+            return _cardFace;
+        }
+    }
+
     private Func<Tile, RunChip, bool> _canPlug;
     private Action<Tile, RunChip> _plug;
     private Func<AcquiredRunChip, bool> _canUnplug;

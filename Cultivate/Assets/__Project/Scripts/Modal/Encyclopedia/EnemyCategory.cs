@@ -32,7 +32,7 @@ public class EnemyCategory : Category<EnemyEntry>
             //         enemy.SetSlotContent(11, "金00", new int[] { 0, 0, 0, 0, 0 });
             //     }),
 
-            new("敌人00", "", canCreate: d => true,
+            new("敌人00", "", canCreate: d => d.JingJieRange.Contains(JingJie.LianQi) && !d.AllowBoss,
                 create: (enemy, d) =>
                 {
                     enemy.Health = 40;
@@ -40,7 +40,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("火00", "", "金00");
                 }),
 
-            new("敌人01", "", canCreate: d => true,
+            new("敌人01", "", canCreate: d => d.JingJieRange.Contains(JingJie.LianQi) && !d.AllowBoss,
                 create: (enemy, d) =>
                 {
                     enemy.Health = 40;
@@ -48,7 +48,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("火00", "木00", "火01");
                 }),
 
-            new("敌人02", "", canCreate: d => true,
+            new("敌人02", "", canCreate: d => d.JingJieRange.Contains(JingJie.LianQi) && !d.AllowBoss,
                 create: (enemy, d) =>
                 {
                     enemy.Health = 40;
@@ -56,15 +56,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("火01", "土00", "金00");
                 }),
 
-            new("敌人03", "", canCreate: d => true,
-                create: (enemy, d) =>
-                {
-                    enemy.Health = 40;
-                    enemy.JingJie = JingJie.LianQi;
-                    enemy.QuickSetSlotContent("木01", "木01", "木01");
-                }),
-
-            new("敌人04", "", canCreate: d => true,
+            new("敌人03", "", canCreate: d => d.JingJieRange.Contains(JingJie.LianQi) && !d.AllowBoss,
                 create: (enemy, d) =>
                 {
                     enemy.Health = 40;
@@ -72,7 +64,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("金01", "土01", "");
                 }),
 
-            new("敌人05", "", canCreate: d => true,
+            new("敌人04", "", canCreate: d => d.JingJieRange.Contains(JingJie.LianQi) && !d.AllowBoss,
                 create: (enemy, d) =>
                 {
                     enemy.Health = 40;
@@ -80,7 +72,15 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("水00", "火00", "金00");
                 }),
 
-            new("敌人10", "", canCreate: d => true,
+            new("练气Boss", "", canCreate: d => d.JingJieRange.Contains(JingJie.LianQi) && d.AllowBoss,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 40;
+                    enemy.JingJie = JingJie.LianQi;
+                    enemy.QuickSetSlotContent("木01", "木01", "木01");
+                }),
+
+            new("敌人10", "", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -88,7 +88,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("金10", "金01", "水00", "木11", "火01", "土11");
                 }),
 
-            new("敌人11", "", canCreate: d => true,
+            new("敌人11", "", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -96,7 +96,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("金11", "水11", "木00", "", "", "");
                 }),
 
-            new("敌人12", "", canCreate: d => true,
+            new("敌人12", "", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -104,7 +104,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("火11", "", "土10", "", "", "");
                 }),
 
-            new("敌人13", "", canCreate: d => true,
+            new("敌人13", "", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -112,7 +112,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("金11", "水11", "木00", "火11", "", "土10");
                 }),
 
-            new("敌人14", "", canCreate: d => true,
+            new("敌人14", "", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -120,7 +120,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("水10", "木11", "火11", "", "土10", "");
                 }),
 
-            new("敌人15", "描述", canCreate: d => true,
+            new("敌人15", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -128,7 +128,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "", "", "水11", "金00", "水00", "火00", "木01", "");
                 }),
 
-            new("敌人16", "描述", canCreate: d => true,
+            new("敌人16", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -136,7 +136,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "", "", "金10", "金01", "水00", "木11", "火01", "土11");
                 }),
 
-            new("敌人17", "描述", canCreate: d => true,
+            new("敌人17", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -144,7 +144,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "", "", "金11", "火01", "火11", "金10", "水00", "木11");
                 }),
 
-            new("敌人18", "描述", canCreate: d => true,
+            new("敌人18", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -152,7 +152,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "", "", "火10", "火00", "", "木11", "", "水10");
                 }),
 
-            new("敌人19", "描述", canCreate: d => true,
+            new("敌人19", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.ZhuJi),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 80;
@@ -160,7 +160,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "", "", "", "火00", "水10", "水00", "木01", "金00");
                 }),
 
-            new("敌人20", "描述", canCreate: d => true,
+            new("敌人20", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.JinDan),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;
@@ -168,7 +168,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "火10", "金21", "水11", "", "土10", "木11", "水10", "木20");
                 }),
 
-            new("敌人21", "描述", canCreate: d => true,
+            new("敌人21", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.JinDan),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;
@@ -176,7 +176,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "木21", "火00", "火00", "土01", "金10", "金10", "木01", "木01");
                 }),
 
-            new("敌人22", "描述", canCreate: d => true,
+            new("敌人22", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.JinDan),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;
@@ -184,7 +184,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "水21", "金11", "木01", "火01", "火11", "金10", "水00", "木11");
                 }),
 
-            new("敌人23", "描述", canCreate: d => true,
+            new("敌人23", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.JinDan),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;
@@ -192,7 +192,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "火10", "金21", "水11", "木11", "水10", "火01", "", "金20");
                 }),
 
-            new("敌人24", "描述", canCreate: d => true,
+            new("敌人24", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.JinDan),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;
@@ -200,7 +200,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "火22", "火11", "土10", "土00", "木11", "", "木22", "土21");
                 }),
 
-            new("敌人25", "描述", canCreate: d => true,
+            new("敌人25", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.JinDan),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;
@@ -208,7 +208,7 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "土20", "水10", "", "", "火10", "", "", "");
                 }),
 
-            new("敌人26", "描述", canCreate: d => true,
+            new("敌人26", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.JinDan),
                 create: (enemy, d) =>
                 {
                     enemy.Health = 140;

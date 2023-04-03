@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RunNode
 {
-    private NodeEntry _entry;
+    protected NodeEntry _entry;
     public Vector2Int Position { get; private set; }
 
     private RunNodeState _state;
@@ -20,7 +20,7 @@ public class RunNode
         }
     }
 
-    public string GetName() => _entry.Name;
+    public virtual string GetTitle() => _entry.Name;
 
     public RunNode(Vector2Int position, NodeEntry entry)
     {

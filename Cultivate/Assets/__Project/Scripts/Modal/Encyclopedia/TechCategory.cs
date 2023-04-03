@@ -20,7 +20,7 @@ public class TechCategory : Category<TechEntry>
                 rewards: new RewardDescriptor[] {
                     new ResourceRewardDescriptor(10),
                     new StatusRewardDescriptor(10),
-                    new DrawChipRewardDescriptor("一个外功", e => e is WaiGongEntry),
+                    new DrawChipRewardDescriptor("一个练气外功", e => e is WaiGongEntry, JingJie.LianQi),
                 }),
             new ("四象", "", new(1, 5), 10, new string[]{"八卦"}),
             new ("两仪", "", new(2, 5), 10, new string[]{"四象"}),

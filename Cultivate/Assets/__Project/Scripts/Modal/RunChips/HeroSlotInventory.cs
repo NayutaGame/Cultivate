@@ -58,7 +58,7 @@ public class HeroSlotInventory : GDictionary
     public bool Swap(int from, int to)
     {
         (_slots[from].AcquiredRunChip, _slots[to].AcquiredRunChip) = (_slots[to].AcquiredRunChip, _slots[from].AcquiredRunChip);
-        RunManager.Instance.EquippedChanged();
+        RunManager.Instance.StageEnvironmentChanged();
         return true;
     }
 
