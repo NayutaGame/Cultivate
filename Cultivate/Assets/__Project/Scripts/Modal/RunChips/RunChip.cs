@@ -34,6 +34,7 @@ public class RunChip
     {
         _entry = prototype._entry;
         Level = prototype.Level;
+        JingJie = prototype.JingJie;
         RunUsedTimes = prototype.RunUsedTimes;
         RunEquippedTimes = prototype.RunEquippedTimes;
     }

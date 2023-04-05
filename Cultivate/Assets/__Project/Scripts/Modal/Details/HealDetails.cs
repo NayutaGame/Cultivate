@@ -10,10 +10,14 @@ public class HealDetails
     public StageEntity Tgt;
     public int Value;
 
+    public bool Cancel;
+
     public HealDetails(StageEntity src, StageEntity tgt, int value)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
+
+        Cancel = false;
     }
 }

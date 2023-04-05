@@ -19,6 +19,7 @@ public class AttackDetails
 
     public bool LifeSteal;
     public bool Pierce;
+    public bool Crit;
     public bool Evade;
 
     public bool Recursive;
@@ -30,6 +31,7 @@ public class AttackDetails
     public AttackDetails(StageEntity src, StageEntity tgt, int value,
         bool lifeSteal,
         bool pierce,
+        bool crit,
         bool evade,
         bool recursive = true,
         Action<DamageDetails> damaged = null,
@@ -40,6 +42,7 @@ public class AttackDetails
         Value = value;
         LifeSteal = lifeSteal;
         Pierce = pierce;
+        Crit = crit;
         Evade = evade;
         Recursive = recursive;
         Damaged = damaged;
@@ -48,5 +51,5 @@ public class AttackDetails
         Cancel = false;
     }
 
-    public AttackDetails Clone() => new AttackDetails(Src, Tgt, _value, LifeSteal, Pierce, Evade, Recursive, Damaged, Undamaged);
+    public AttackDetails Clone() => new AttackDetails(Src, Tgt, _value, LifeSteal, Pierce, Crit, Evade, Recursive, Damaged, Undamaged);
 }

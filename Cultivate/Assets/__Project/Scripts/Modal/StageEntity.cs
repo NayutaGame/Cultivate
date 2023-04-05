@@ -142,6 +142,10 @@ public abstract class StageEntity : GDictionary
     {
         UltraSwift = false;
         Swift = false;
+
+        if (GetStackOfBuff("激活的不屈") > 0 && GetStackOfBuff("强化不屈") > 0)
+            StageManager.Instance.BuffProcedure(this, Opponent(), "跳回合");
+
         TryConsumeBuff("激活的不屈");
 
         StartTurn();
@@ -336,10 +340,10 @@ public abstract class StageEntity : GDictionary
         // OnBuffChangedEvent?.Invoke();
     }
 
-    public void StackBuff(Buff buff, int stack)
+    public void BuffGainStack(Buff buff, int gain)
     {
-        buff.Gain(stack);
-        buff.Stack += stack;
+        buff.Gain(gain);
+        buff.Stack += gain;
         // OnBuffChangedEvent?.Invoke();
     }
 
@@ -349,6 +353,11 @@ public abstract class StageEntity : GDictionary
         _buffs.Remove(buff);
         buff.Lose();
         // OnBuffChangedEvent?.Invoke();
+    }
+
+    public void RemoveBuff(string buffName)
+    {
+        RemoveBuff(FindBuff(buffName));
     }
 
     public void RemoveAllBuffs() => RemoveBuffs(b => true);

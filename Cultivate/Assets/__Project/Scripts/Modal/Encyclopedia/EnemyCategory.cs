@@ -8,8 +8,178 @@ public class EnemyCategory : Category<EnemyEntry>
     {
         List = new()
         {
-            new("鶸", "除了聚气什么都不会的废物", canCreate: d => true,
+            new("鶸", "除了聚气什么都不会的废物", canCreate: d => false,
                 create: (enemy, d) => { }),
+
+            new("护甲流", "描述", canCreate: d => true,
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 340;
+                    enemy.JingJie = 4;
+                    enemy.SetSlotContent(0, "金11", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(1, "金11", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(2, "金21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(3, "金21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(4, "金21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(5, "金21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(6, "金40", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(7, "金32", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(8, "金22", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(9, "金22", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(10, "金31", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(11, "金31", 0, 3, new int[]{0, 0, 0, 0, 0});
+                }),
+
+            new("暴击流", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 340;
+                    enemy.JingJie = 4;
+                    enemy.SetSlotContent(0, "金21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(1, "金21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(2, "金22", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(3, "金22", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(4, "金20", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(5, "金20", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(6, "金20", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(7, "金20", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(8, "金30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(9, "金30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(10, "金30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(11, "金30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                }),
+            new("减甲流", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 340;
+                    enemy.JingJie = 4;
+                    enemy.SetSlotContent(0, "水20", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(1, "水21", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(2, "水10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(3, "水10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(4, "水30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(5, "水10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(6, "水30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(7, "水10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(8, "水30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(9, "水40", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(10, "水30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(11, "水41", 0, 4, new int[]{0, 0, 0, 0, 0});
+                }),
+
+            new("吸血流", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 340;
+                    enemy.JingJie = 4;
+                    enemy.SetSlotContent(0, "木42", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(1, "木21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(2, "木01", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(3, "木22", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(4, "木40", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(5, "木01", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(6, "木22", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(7, "木40", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(8, "木01", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(9, "木22", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(10, "木40", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(11, "木01", 0, 3, new int[]{0, 0, 0, 0, 0});
+                }),
+
+            new("格挡流", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 340;
+                    enemy.JingJie = 4;
+                    enemy.SetSlotContent(0, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(1, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(2, "木30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(3, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(4, "木00", 0, 0, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(5, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(6, "木00", 0, 0, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(7, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(8, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(9, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(10, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(11, "木31", 0, 3, new int[]{0, 0, 0, 0, 0});
+                }),
+
+            new("力量流", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 340;
+                    enemy.JingJie = 4;
+                    enemy.SetSlotContent(0, "火20", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(1, "火22", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(2, "火11", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(3, "火11", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(4, "火21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(5, "火30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(6, "火40", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(7, "火21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(8, "火30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(9, "火21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(10, "火30", 0, 3, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(11, "火40", 0, 4, new int[]{0, 0, 0, 0, 0});
+                }),
+
+            new("闪避流", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 340;
+                    enemy.JingJie = 4;
+                    enemy.SetSlotContent(0, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(1, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(2, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(3, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(4, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(5, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(6, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(7, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(8, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(9, "火10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(10, "火41", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(11, "火32", 0, 3, new int[]{0, 0, 0, 0, 0});
+                }),
+
+            new("不屈流", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 340;
+                    enemy.JingJie = 4;
+                    enemy.SetSlotContent(0, "土11", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(1, "土21", 0, 2, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(2, "土42", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(3, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(4, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(5, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(6, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(7, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(8, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(9, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(10, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(11, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                }),
+
+            new("高段流", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) =>
+                {
+                    enemy.Health = 340;
+                    enemy.JingJie = 4;
+                    enemy.SetSlotContent(0, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(1, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(2, "土10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(3, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(4, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(5, "土10", 0, 1, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(6, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(7, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(8, "天女散花", 0, 4, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(9, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(10, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                    enemy.SetSlotContent(11, "", 0, null, new int[]{0, 0, 0, 0, 0});
+                }),
 
             // new("敌人模板", "",
             //     canCreate: d =>
@@ -205,7 +375,7 @@ public class EnemyCategory : Category<EnemyEntry>
                 {
                     enemy.Health = 140;
                     enemy.JingJie = 2;
-                    enemy.QuickSetSlotContent("", "", "", "", "土20", "水10", "", "", "火10", "", "", "");
+                    enemy.QuickSetSlotContent("", "", "", "", "天衣无缝", "水10", "", "", "火10", "", "", "");
                 }),
 
             new("敌人26", "描述", canCreate: d => d.JingJieRange.Contains(JingJie.JinDan),
@@ -216,13 +386,46 @@ public class EnemyCategory : Category<EnemyEntry>
                     enemy.QuickSetSlotContent("", "", "", "", "水20", "金21", "金20", "金22", "水10", "金10", "土10", "土21");
                 }),
 
-            // new("敌人27", "描述", canCreate: d => true,
-            //     create: (enemy, d) =>
-            //     {
-            //         enemy.Health = 140;
-            //         enemy.JingJie = 2;
-            //         enemy.QuickSetSlotContent("", "", "", "", "土20", "水10", "水11", "木10", "火10", "火12", "聚气术", "聚气术");
-            //     }),
+            new("元婴工具人0", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("元婴工具人1", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("元婴工具人2", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("元婴工具人3", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("元婴工具人4", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("元婴工具人5", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("元婴工具人6", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("元婴工具人7", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("元婴工具人8", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("元婴工具人9", "", canCreate: d => d.JingJieRange.Contains(JingJie.YuanYing),
+                create: (enemy, d) => { }),
+            new("化神工具人0", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
+            new("化神工具人1", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
+            new("化神工具人2", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
+            new("化神工具人3", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
+            new("化神工具人4", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
+            new("化神工具人5", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
+            new("化神工具人6", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
+            new("化神工具人7", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
+            new("化神工具人8", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
+            new("化神工具人9", "", canCreate: d => d.JingJieRange.Contains(JingJie.HuaShen),
+                create: (enemy, d) => { }),
         };
     }
 }

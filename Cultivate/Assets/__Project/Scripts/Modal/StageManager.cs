@@ -25,12 +25,13 @@ public class StageManager : Singleton<StageManager>, GDictionary
     /// <param name="recursive">是否会递归</param>
     /// <param name="damaged">如果造成伤害时候的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
-    public void AttackProcedure(StageEntity src, StageEntity tgt, int value, int times = 1, bool lifeSteal = false, bool pierce = false, bool recursive = true,
+    public void AttackProcedure(StageEntity src, StageEntity tgt, int value, int times = 1, bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
         Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-        => AttackProcedure(new AttackDetails(src, tgt, value, lifeSteal, pierce, false, recursive, damaged, undamaged), times);
+        => AttackProcedure(new AttackDetails(src, tgt, value, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
     public void AttackProcedure(AttackDetails attackDetails, int times)
     {
-        // 结算连击
+        if (attackDetails.Src.TryConsumeBuff("追击")) // 结算连击/追击
+            times += 1;
 
         for (int i = 0; i < times; i++)
         {
@@ -76,6 +77,10 @@ public class StageManager : Singleton<StageManager>, GDictionary
                 d.Value += -tgt.Armor;
                 tgt.Armor = 0;
             }
+
+            // 结算暴击
+            if (d.Crit)
+                d.Value *= 2;
 
             // 伤害Procedure
             DamageDetails damageDetails = DamageProcedure(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
@@ -175,10 +180,12 @@ public class StageManager : Singleton<StageManager>, GDictionary
         src.Heal(d);
         tgt.Healed(d);
 
-        int space = tgt.MaxHp - tgt.Hp;
-        tgt.Hp += d.Value;
+        if (d.Cancel)
+            return;
 
-        int actualHealed = Mathf.Min(space, d.Value);
+        int actualHealed = Mathf.Min(tgt.MaxHp - tgt.Hp, d.Value);
+
+        tgt.Hp += actualHealed;
         tgt.HealedRecord += actualHealed;
 
         Report.Append($"    生命变成了${tgt.Hp}");

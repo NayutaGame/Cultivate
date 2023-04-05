@@ -211,7 +211,8 @@ public class RunChipView : ItemView,
             HeroChipSlot fromHeroChipSlot = RunManager.Get<HeroChipSlot>(drop.GetIndexPath());
             if (fromHeroChipSlot != null)
             {
-                if (fromHeroChipSlot.TryUnequip(acquiredRunChip)) return;
+                // if (fromHeroChipSlot.TryUnequip(acquiredRunChip)) return;
+                if (fromHeroChipSlot.TryUnequip()) return;
                 return;
             }
         }

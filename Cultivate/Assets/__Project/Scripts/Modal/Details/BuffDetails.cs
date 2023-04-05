@@ -37,12 +37,12 @@ public class BuffDetails
                 case BuffStackRule.Wasted:
                     break;
                 case BuffStackRule.Add:
-                    Tgt.StackBuff(same, _stack);
+                    Tgt.BuffGainStack(same, _stack);
                     break;
                 case BuffStackRule.Max:
                     int gain = _stack - oldStack;
                     if(gain > 0)
-                        Tgt.StackBuff(same, gain);
+                        Tgt.BuffGainStack(same, gain);
                     break;
             }
 

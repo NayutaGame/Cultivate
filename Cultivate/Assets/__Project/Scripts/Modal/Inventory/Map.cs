@@ -113,10 +113,10 @@ public class Map : GDictionary
 
         _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
         {
-            { JingJie.LianQi   , new[] { _b, _a, _b, _a, _b } },
-            { JingJie.ZhuJi    , new[] { _b, _b, _a, _b, _a, _b } },
-            { JingJie.JinDan   , new[] { _b, _b, _a, _b, _b, _a, _b } },
-            { JingJie.YuanYing , new[] { _b, _b, _a, _b, _b, _a, _b, _b } },
+            { JingJie.LianQi   , new[] { _a, _a, _a, _a, _a, _a, _b, _b, _b } },
+            { JingJie.ZhuJi    , new[] { _b, _b, _a, _b, _b, _a, _b, _b, _b } },
+            { JingJie.JinDan   , new[] { _b, _b, _a, _b, _b, _a, _b, _b, _b } },
+            { JingJie.YuanYing , new[] { _b, _b, _a, _b, _b, _a, _b, _b, _b } },
             { JingJie.HuaShen  , new[] { _b, _b, _a, _b, _b, _a, _b, _b, _b } },
             { JingJie.FanXu    , new[] { _b, _b, _a, _b, _b, _a, _b, _b, _b } },
         };

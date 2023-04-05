@@ -14,6 +14,9 @@ public class AppManager : Singleton<AppManager>
     public override void DidAwake()
     {
         base.DidAwake();
+
+        Application.targetFrameRate = 120;
+
         _sm = new AppSM();
         _sm.Push(new AppRunS());
     }

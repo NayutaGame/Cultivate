@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class RunHero : GDictionary
 {
+    public static readonly int[] BaseHP = new int[] { 40, 80, 140, 220, 340, 340 };
+
     public int Health;
     public int Mana { get; private set; }
 
@@ -15,6 +17,7 @@ public class RunHero : GDictionary
 
     public void SetJingJie(JingJie jingJie)
     {
+        Health = BaseHP[jingJie];
         HeroSlotInventory.SetJingJie(jingJie);
     }
 
