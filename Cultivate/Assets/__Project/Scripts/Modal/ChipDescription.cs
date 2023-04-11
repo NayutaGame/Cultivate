@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class ChipDescription
 {
-    public Func<int, JingJie, int[], string> _func;
+    public Func<int, JingJie, int, int[], string> _func;
 
-    public ChipDescription(Func<int, JingJie, int[], string> func)
+    public ChipDescription(Func<int, JingJie, int, int[], string> func)
     {
         _func = func;
     }
 
-    public string Eval(int level, JingJie jingJie, int[] powers)
-        => _func(level, jingJie, powers);
+    public string Eval(int level, JingJie jingJie, int dJingJie, int[] powers)
+        => _func(level, jingJie, dJingJie, powers);
 
-    public static implicit operator ChipDescription(string s) => new((level, jingJie, powers) => s);
+    public static implicit operator ChipDescription(string s) => new((level, jingJie, dJingJie, powers) => s);
 }

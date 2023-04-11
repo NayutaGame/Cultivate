@@ -191,8 +191,6 @@ public class StageManager : Singleton<StageManager>, GDictionary
         Report.Append($"    生命变成了${tgt.Hp}");
     }
 
-    public void BuffProcedure(StageEntity src, StageEntity tgt, string buffName, int stack = 1, bool recursive = true)
-        => BuffProcedure(src, tgt, Encyclopedia.BuffCategory[buffName], stack, recursive);
     public void BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
         => BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
     public void BuffProcedure(BuffDetails buffDetails)

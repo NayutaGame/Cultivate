@@ -135,7 +135,10 @@ public class RunManager : Singleton<RunManager>, GDictionary
     {
         base.DidAwake();
 
-        _chipPool = new();
+        List<ChipEntry> l = new List<ChipEntry>();
+        4.Do(i => l.AddRange(Encyclopedia.ChipCategory.Traversal.FilterObj(entry => entry.Name != "聚气术")));
+        _chipPool = new(l);
+
         DanTian = new();
         _productInventory = new();
         TechInventory = new();

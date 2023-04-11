@@ -64,6 +64,141 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
+            new AdventureNodeEntry("土匪事件", "",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new DialogPanelDescriptor("你经过一处村庄，村口的石碑上刻着“问剑村”，村子里的村民各个面色凝重，这时一位老者向你走来，他告诉你：村庄饱受土匪强盗侵扰。你决定：", "迅速离去", "拔刀相助");
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("自从筑基成功，你就正式踏上修仙的道路，凡尘的准则与琐事都与你无关。");
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("修仙者走的就是一条逆天而行的路，常年累月的修行换来的力量就是为了能够以自己的意志行走于大地之上。“老伯你放心，今日，我定给‘问剑村’一个安宁。”说罢，你一个飞身往土匪的藏身处遁去。");
+                    BattlePanelDescriptor D = new BattlePanelDescriptor("鶸", new CreateEnemyDetails());//先用了你声明过得关键字
+                    BattlePanelDescriptor E = new BattlePanelDescriptor("鶸", new CreateEnemyDetails());
+                    DialogPanelDescriptor F = new DialogPanelDescriptor("你带着土匪老大的头颅返回了问剑村，村长奖励了你一些XXX");
+                    DialogPanelDescriptor G = new DialogPanelDescriptor("你没能击败对手，损失了一些命元");
+                    DialogPanelDescriptor H = new DialogPanelDescriptor("土匪老大落败后提出：他在问剑村找到一本功法秘籍。他用秘籍作为交换希望你能放他一命。你决定：","同意","直接杀死土匪老大");
+                    DialogPanelDescriptor I = new DialogPanelDescriptor("土匪老大带你来到洞窟深处，打开某个暗门后，你看见一个石台上放着一本秘籍，趁你被秘籍吸引了注意，他掏出一个护符握在手中，护符化作一道金光划过天际，你回头一看，土匪老大逃走了。你决定：","遵从交易，放过他","追杀土匪老大");
+                    DialogPanelDescriptor J = new DialogPanelDescriptor("你没有管逃跑的土匪老大，继续在藏宝处寻找，在又找到一些宝藏后，你离开洞窟，继续赶路去了。");
+                    DialogPanelDescriptor K = new DialogPanelDescriptor("你成功追上了土匪老大，砍下了他的头颅，由于追的太投入，你找不到返回藏宝处的路，只能提着土匪老大的头返回了问剑村，村长奖励了你一些XXX");
+                    DialogPanelDescriptor L = new DialogPanelDescriptor("你拼命追赶可还是被土匪老大逃掉了,由于追的太投入，你找不到返回藏宝处的路，只能拿着秘籍离开。");
+                    DialogPanelDescriptor M = new DialogPanelDescriptor("杀死土匪老大后，你砍下了他的头颅，你决定：", "尝试在洞窟中寻找秘籍", "带着头颅返回问剑村");
+                    DialogPanelDescriptor N = new DialogPanelDescriptor("你在洞窟深处发现一道暗门，打开暗门后你发现了一本功法秘籍还有一些其他的宝藏。收集完宝藏后，你带着土匪老大的头颅返回了问剑村，村长奖励了你一些XXX");
+                    DialogPanelDescriptor O = new DialogPanelDescriptor("你在洞窟中四处寻找，可是一无所获，还触发了一些陷阱，损失了一些命元，所幸没有大碍。你带着土匪老大的头颅返回了问剑村，村长奖励了你一些XXX");
+
+
+
+                    A._receiveSignal = (signal) =>
+                    {
+                        SelectedOptionSignal selectedOptionSignal = signal as SelectedOptionSignal;
+                        if (selectedOptionSignal == null)
+                            return;
+
+                        runNode.ChangePanel(selectedOptionSignal.Selected == 0 ? B : C);
+                    };
+
+                    B._receiveSignal = (signal) =>
+                    {
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    C._receiveSignal = (signal) =>
+                    {
+                       runNode.ChangePanel(D);
+                    };
+
+                    D._receiveSignal = (signal) =>
+                    {
+                        if (signal is BattleResultSignal battleResultSignal)
+                        {
+                            if (battleResultSignal.State == BattleResultSignal.BattleResultState.Win)
+                            {
+                                runNode.ChangePanel(E);
+                            }
+                            else if (battleResultSignal.State == BattleResultSignal.BattleResultState.Lose)
+                            {
+                                runNode.ChangePanel(G);
+                            }
+                        }
+                    };
+
+                    E._receiveSignal = (signal) =>
+                    {
+                        if (signal is BattleResultSignal battleResultSignal)
+                        {
+                            if (battleResultSignal.State == BattleResultSignal.BattleResultState.Win)
+                            {
+                                runNode.ChangePanel(H);
+                            }
+                            else if (battleResultSignal.State == BattleResultSignal.BattleResultState.Lose)
+                            {
+                                runNode.ChangePanel(G);
+                            }
+                        }
+                    };
+
+                    F._receiveSignal = (signal) =>
+                    {
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    G._receiveSignal = (signal) =>
+                    {
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    H._receiveSignal = (signal) =>
+                    {
+                        SelectedOptionSignal selectedOptionSignal = signal as SelectedOptionSignal;
+                        if (selectedOptionSignal == null)
+                            return;
+
+                        runNode.ChangePanel(selectedOptionSignal.Selected == 0 ? I : M);
+                    };
+
+                    I._receiveSignal = (signal) =>
+                    {
+                        SelectedOptionSignal selectedOptionSignal = signal as SelectedOptionSignal;
+                        if (selectedOptionSignal == null)
+                            return;
+
+                        runNode.ChangePanel(selectedOptionSignal.Selected == 0 ? J : K/*or L need judge*/);
+                    };
+
+                    J._receiveSignal = (signal) =>
+                    {
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    K._receiveSignal = (signal) =>
+                    {
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    L._receiveSignal = (signal) =>
+                    {
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    M._receiveSignal = (signal) =>
+                    {
+                        SelectedOptionSignal selectedOptionSignal = signal as SelectedOptionSignal;
+                        if (selectedOptionSignal == null)
+                            return;
+
+                        runNode.ChangePanel(selectedOptionSignal.Selected == 0 ? N/*or O need judge*/ : F);
+                    };
+
+                    N._receiveSignal = (signal) =>
+                    {
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    O._receiveSignal = (signal) =>
+                    {
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    runNode.ChangePanel(A);
+                }),
+
             // new AdventureNodeEntry("狂吾师叔事件", "",
             //     create: runNode =>
             //     {

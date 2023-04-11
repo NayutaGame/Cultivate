@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class StepDetails
 {
-    public StageEntity Caster;
+    public StageEntity Owner;
     public StageWaiGong WaiGong;
 
-    public StepDetails(StageEntity caster, StageWaiGong waiGong)
+    public StepDetails(StageEntity owner, StageWaiGong waiGong)
     {
-        Caster = caster;
+        Owner = owner;
         WaiGong = waiGong;
     }
 }

@@ -8,8 +8,8 @@ using UnityEngine;
 public class WaiGongEntry : ChipEntry
 {
     private ManaCost _manaCost;
-    public int GetManaCost(int level, JingJie jingJie) => _manaCost.Eval(level, jingJie);
-    public int GetManaCost(int level, JingJie jingJie, int[] powers) => _manaCost.Eval(level, jingJie, powers);
+    public int GetManaCost(int level, JingJie jingJie, int dJingJie) => _manaCost.Eval(level, jingJie, dJingJie);
+    public int GetManaCost(int level, JingJie jingJie, int dJingJie, int[] powers) => _manaCost.Eval(level, jingJie, dJingJie, powers);
 
     public WaiGongType Type { get; private set; }
     private Action<StageEntity, StageWaiGong, bool> _execute;
@@ -21,7 +21,7 @@ public class WaiGongEntry : ChipEntry
         ChipDescription description,
         WuXing? wuXing = null,
         ManaCost manaCost = null,
-        WaiGongType type = WaiGongType.NONATTACK,
+        WaiGongType type = null,
         Action<StageEntity, StageWaiGong, bool> execute = null,
         Action<StageEntity, StageWaiGong> startStage = null
         ) : base(name, jingJieRange, description, wuXing,
@@ -51,7 +51,7 @@ public class WaiGongEntry : ChipEntry
         })
     {
         _manaCost = manaCost ?? 0;
-        Type = type;
+        Type = type ?? 0x00000000;
         _execute = execute ?? DefaultExecute;
         _startStage = startStage;
     }
@@ -64,10 +64,4 @@ public class WaiGongEntry : ChipEntry
     }
 
     private void DefaultExecute(StageEntity caster, StageWaiGong waiGong, bool recursive) { }
-
-    public enum WaiGongType
-    {
-        ATTACK,
-        NONATTACK,
-    }
 }

@@ -81,6 +81,19 @@ namespace CLLibrary
             return outObj;
         }
 
+        public static IEnumerable<T> FirstN<T>(this IEnumerable<T> enumerable, int n)
+        {
+            int i = 0;
+            foreach (T obj in enumerable)
+            {
+                if (i >= n)
+                    yield break;
+
+                i++;
+                yield return obj;
+            }
+        }
+
         public static IEnumerable<int> FilterIdx<T>(this IEnumerable<T> enumerable, Predicate<T> pred)
         {
             int i = 0;

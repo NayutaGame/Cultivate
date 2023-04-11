@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class ChipPool : AutoPool<ChipEntry>
 {
-    public ChipPool() : base(Encyclopedia.ChipCategory.Traversal.FilterObj(entry => entry.Name != "聚气术").ToList())
+    public ChipPool(List<ChipEntry> toPopulate) : base(toPopulate)
     {
     }
 }

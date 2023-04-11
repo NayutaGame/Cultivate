@@ -11,20 +11,16 @@ public class StageWaiGong
 {
     private StageEntity _owner;
     private RunChip _runChip;
-    private Action<StageEntity, StageWaiGong, bool> _execute;
+    private WaiGongEntry _entry;
+    public WaiGongEntry Entry => _entry;
 
     private int _slotIndex;
     public int SlotIndex => _slotIndex;
 
     public bool Consumed;
-    public int GetManaCost()
-    {
-        if (_runChip == null) // 聚气术
-            return 0;
 
-        var entry = _runChip._entry as WaiGongEntry;
-        return entry.GetManaCost(Level, GetJingJie(), _powers);
-    }
+    public int GetManaCost()
+        => _entry.GetManaCost(Level, GetJingJie(), Dj, _powers);
 
     // public int RunLevel { get; private set; }
     public int Level { get; private set; }
@@ -39,6 +35,11 @@ public class StageWaiGong
 
         return _runChip.JingJie;
     }
+
+    public int Dj => GetJingJie() - _entry.JingJieRange.Start;
+    public bool JiaShi => Next(true).Entry.Name == "收刀" || Prev(true).Entry.Name == "拔刀" || _owner.GetStackOfBuff("天人合一") > 0;
+    public bool IsFirstTime => StageUsedTimes == 0;
+    public bool IsOdd => SlotIndex % 2 == 0;
 
     // run powers
 
@@ -55,7 +56,7 @@ public class StageWaiGong
 
         if (_runChip != null)
         {
-            _execute = (_runChip._entry as WaiGongEntry).Execute;
+            _entry = _runChip._entry as WaiGongEntry;
             Consumed = false;
             // RunLevel = _runChip.Level;
             Level = _runChip.Level;
@@ -68,7 +69,7 @@ public class StageWaiGong
         }
         else
         {
-            _execute = (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute;
+            _entry = Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry;
             Consumed = false;
             // RunLevel = 0;
             Level = 0;
@@ -82,29 +83,67 @@ public class StageWaiGong
     }
 
     public string GetName()
-    {
-        if (_runChip == null) return "聚气术";
-        return _runChip.GetName();
-    }
+        => _entry.Name;
 
-    public WaiGongEntry.WaiGongType GetWaiGongType()
-    {
-        if (_runChip == null) return WaiGongEntry.WaiGongType.NONATTACK;
-        return (_runChip._entry as WaiGongEntry).Type;
-    }
+    public WaiGongType GetWaiGongType()
+        => _entry.Type;
 
     public void Execute(StageEntity caster, bool recursive = true)
     {
-        _execute(caster, this, recursive);
+        _entry.Execute(caster, this, recursive);
         RunUsedTimes += 1;
         StageUsedTimes += 1;
     }
 
-    public StageWaiGong Next()
-        => _owner._waiGongList[(_slotIndex + 1) % _owner._waiGongList.Length];
+    public IEnumerable<StageWaiGong> Nexts(bool loop = false)
+    {
+        StageWaiGong curr = this;
+        for (int i = 0; i < _owner._waiGongList.Length - 1; i++)
+        {
+            curr = curr.Next(loop);
+            if (curr == null)
+                yield break;
 
-    public StageWaiGong Prev()
-        => _owner._waiGongList[(_slotIndex + _owner._waiGongList.Length - 1) % _owner._waiGongList.Length];
+            yield return curr;
+        }
+    }
+
+    public IEnumerable<StageWaiGong> Prevs(bool loop = false)
+    {
+        StageWaiGong curr = this;
+        for (int i = 0; i < _owner._waiGongList.Length - 1; i++)
+        {
+            curr = curr.Prev(loop);
+            if (curr == null)
+                yield break;
+
+            yield return curr;
+        }
+    }
+
+    public StageWaiGong Next(bool loop)
+    {
+        int index = _slotIndex + 1;
+        if (loop)
+            index %= _owner._waiGongList.Length;
+
+        if (index >= _owner._waiGongList.Length)
+            return null;
+
+        return _owner._waiGongList[index];
+    }
+
+    public StageWaiGong Prev(bool loop)
+    {
+        int index = _slotIndex - 1;
+        if (loop)
+            index = (index + _owner._waiGongList.Length) % _owner._waiGongList.Length;
+
+        if (index < 0)
+            return null;
+
+        return _owner._waiGongList[index];
+    }
 
     public void Register()
     {

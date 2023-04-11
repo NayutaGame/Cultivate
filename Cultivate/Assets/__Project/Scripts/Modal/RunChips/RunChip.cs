@@ -7,12 +7,12 @@ public class RunChip
     public ChipEntry _entry;
 
     public string GetName() => _entry.Name;
-    public string GetDescription() => _entry.Description.Eval(Level, JingJie, new int[] { 0, 0, 0, 0, 0 });
+    public string GetDescription() => _entry.Description.Eval(Level, JingJie, JingJie - _entry.JingJieRange.Start, new int[] { 0, 0, 0, 0, 0 });
 
     public int GetManaCost()
     {
         if (_entry is WaiGongEntry waigongEntry)
-            return waigongEntry.GetManaCost(Level, JingJie);
+            return waigongEntry.GetManaCost(Level, JingJie, JingJie - _entry.JingJieRange.Start);
 
         return 0;
     }

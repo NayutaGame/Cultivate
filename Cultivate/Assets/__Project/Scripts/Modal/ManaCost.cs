@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class ManaCost
 {
-    private Func<int, JingJie, int[], int> _func;
+    private Func<int, JingJie, int, int[], int> _func;
 
-    public ManaCost(Func<int, JingJie, int[], int> func)
+    public ManaCost(Func<int, JingJie, int, int[], int> func)
     {
         _func = func;
     }
 
-    public int Eval(int level, JingJie jingJie)
-        => _func(level, jingJie, new int[] { 0, 0, 0, 0, 0 });
-    public int Eval(int level, JingJie jingJie, int[] powers)
-        => _func(level, jingJie, powers);
+    public int Eval(int level, JingJie jingJie, int dJingJie)
+        => _func(level, jingJie, dJingJie, new int[] { 0, 0, 0, 0, 0 });
+    public int Eval(int level, JingJie jingJie, int dJingJie, int[] powers)
+        => _func(level, jingJie, dJingJie, powers);
 
-    public static implicit operator ManaCost(int value) => new((level, jingJie, powers) => value);
+    public static implicit operator ManaCost(int value) => new((level, jingJie, dJingJie, powers) => value);
 }

@@ -28,8 +28,8 @@ public class BuffEntry : Entry
     public Action<Buff, StageEntity> _stackChanged;
     public Action<Buff, StageEntity> _startStage;
     public Action<Buff, StageEntity> _endStage;
-    public Action<Buff, StageEntity> _startTurn;
-    public Action<Buff, StageEntity> _endTurn;
+    public Action<Buff, TurnDetails> _startTurn;
+    public Action<Buff, TurnDetails> _endTurn;
     public Action<Buff, StageEntity> _startRound;
     public Action<Buff, StageEntity> _endRound;
     public Action<Buff, StepDetails> _startStep;
@@ -89,8 +89,8 @@ public class BuffEntry : Entry
         Action<Buff, StageEntity> stackChanged = null,
         Action<Buff, StageEntity> startStage = null,
         Action<Buff, StageEntity> endStage = null,
-        Action<Buff, StageEntity> startTurn = null,
-        Action<Buff, StageEntity> endTurn = null,
+        Action<Buff, TurnDetails> startTurn = null,
+        Action<Buff, TurnDetails> endTurn = null,
         Action<Buff, StageEntity> startRound = null,
         Action<Buff, StageEntity> endRound = null,
         Action<Buff, StepDetails> startStep = null,
@@ -161,4 +161,6 @@ public class BuffEntry : Entry
     //     sb.Append($"<style=\"NoteSeparator\">__________</style>\n");
     //     sb.Append($"<style=\"NoteDescription\">{Description}</style>");
     // }
+
+    public static implicit operator BuffEntry(string name) => Encyclopedia.BuffCategory[name];
 }

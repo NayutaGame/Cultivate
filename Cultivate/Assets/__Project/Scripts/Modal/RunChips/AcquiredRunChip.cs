@@ -20,7 +20,7 @@ public class AcquiredRunChip
     {
         int[] powers = new int[5];
         WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
-        return Chip._entry.Description.Eval(GetLevel(), GetJingJie(), powers);
+        return Chip._entry.Description.Eval(GetLevel(), GetJingJie(), GetJingJie() - Chip._entry.JingJieRange.Start, powers);
     }
 
     public int GetLevel() => Chip.Level;
@@ -34,7 +34,7 @@ public class AcquiredRunChip
         {
             int[] powers = new int[5];
             WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
-            return waigongEntry.GetManaCost(GetLevel(), GetJingJie(), powers);
+            return waigongEntry.GetManaCost(GetLevel(), GetJingJie(), GetJingJie() - Chip._entry.JingJieRange.Start, powers);
         }
 
         return 0;

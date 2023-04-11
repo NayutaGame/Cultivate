@@ -145,8 +145,8 @@ public class Buff
 
     private void StartStage() => _buffEntry._startStage(this, _owner);
     private void EndStage() => _buffEntry._endStage(this, _owner);
-    private void StartTurn() => _buffEntry._startTurn(this, _owner);
-    private void EndTurn() => _buffEntry._endTurn(this, _owner);
+    private void StartTurn(TurnDetails d) => _buffEntry._startTurn(this, d);
+    private void EndTurn(TurnDetails d) => _buffEntry._endTurn(this, d);
     private void StartRound() => _buffEntry._startRound(this, _owner);
     private void EndRound() => _buffEntry._endRound(this, _owner);
     private void StartStep(StepDetails d) => _buffEntry._startStep(this, d);

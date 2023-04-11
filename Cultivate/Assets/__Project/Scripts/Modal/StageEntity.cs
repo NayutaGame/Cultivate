@@ -16,11 +16,11 @@ public abstract class StageEntity : GDictionary
     public event Action EndStageEvent;
     public void EndStage() => EndStageEvent?.Invoke();
 
-    public event Action StartTurnEvent;
-    public void StartTurn() => StartTurnEvent?.Invoke();
+    public event Action<TurnDetails> StartTurnEvent;
+    public void StartTurn(TurnDetails d) => StartTurnEvent?.Invoke(d);
 
-    public event Action EndTurnEvent;
-    public void EndTurn() => EndTurnEvent?.Invoke();
+    public event Action<TurnDetails> EndTurnEvent;
+    public void EndTurn(TurnDetails d) => EndTurnEvent?.Invoke(d);
 
     public event Action StartRoundEvent;
     public void StartRound() => StartRoundEvent?.Invoke();
@@ -148,17 +148,14 @@ public abstract class StageEntity : GDictionary
 
         TryConsumeBuff("激活的不屈");
 
-        StartTurn();
+        StartTurn(new TurnDetails(this, _p));
 
-        if (TryConsumeBuff("跳回合"))
-        {
-
-        }
-        else
+        bool skipTurn = TryConsumeBuff("跳回合");
+        if (!skipTurn)
         {
             Step();
 
-            if (GetSumOfStackOfBuffs("不屈", "激活的不屈") == 0)
+            if (GetSumOfStackOfBuffs("不屈", "激活的不屈", "缠绕") == 0)
             {
                 if (UltraSwift)
                 {
@@ -172,7 +169,7 @@ public abstract class StageEntity : GDictionary
             }
         }
 
-        EndTurn();
+        EndTurn(new TurnDetails(this, _p));
     }
 
     private void Step()
@@ -186,7 +183,8 @@ public abstract class StageEntity : GDictionary
         // StageManager.Instance.Report.Seq?.
         // show waigong
 
-        _manaShortage = !TryConsumeMana(waiGong.GetManaCost());
+        bool manaSufficient = waiGong.GetManaCost() == 0 || TryConsumeBuff("免费") || TryConsumeMana(waiGong.GetManaCost());
+        _manaShortage = !manaSufficient;
         if(_manaShortage)
         {
             ManaShortage(_p);
@@ -236,41 +234,15 @@ public abstract class StageEntity : GDictionary
     public EntitySlot Slot() => StageManager.Instance._slots[_index];
     public StageEntity Opponent() => StageManager.Instance._entities[1 - _index];
 
-    // private bool _canLaststand;
-    // public bool CanLaststand { get => _canLaststand; set => _canLaststand = value; }
-    //
-    // private bool _canEvade;
-    // public bool CanEvade { get => _canEvade; set => _canEvade = value; }
-    //
-    // public int CleanStack;
-
-    // private bool CanCost(BuffEntry buffEntry, int stack = 1)
-    // {
-    //     Buff same = FindBuff(buffEntry);
-    //     return same != null && same.Stack >= stack;
-    // }
-    //
-    // private void Cost(BuffEntry buffEntry, int stack = 1)
-    // {
-    //     Buff same = FindBuff(buffEntry);
-    //     same.Stack -= stack;
-    // }
-    //
-    // public bool TryCost(string buffName, int stack = 1) => TryCost(Encyclopedia.BuffCategory.Find(buffName), stack);
-    //
-    // public bool TryCost(BuffEntry buffEntry, int stack = 1)
-    // {
-    //     if (!CanCost(buffEntry, stack)) return false;
-    //     Cost(buffEntry, stack);
-    //     return true;
-    // }
-
     public bool UltraSwift;
     public bool Swift;
     private bool _manaShortage;
 
+    public bool IsFullHp => Hp == MaxHp;
+
     public int LostArmorRecord;
     public int GeneratedManaRecord;
+    public int HighestManaRecord;
     public int SelfDamageRecord;
     public int HealedRecord;
 
@@ -295,6 +267,7 @@ public abstract class StageEntity : GDictionary
 
         LostArmorRecord = 0;
         GeneratedManaRecord = 0;
+        HighestManaRecord = 0;
         SelfDamageRecord = 0;
         HealedRecord = 0;
 
@@ -321,8 +294,8 @@ public abstract class StageEntity : GDictionary
         LoseHpEvent -= DefaultLoseHp;
     }
 
-    protected virtual void DefaultStartTurn() => DesignerEnvironment.DefaultStartTurn(this);
-    protected virtual void DefaultEndTurn() { }
+    protected virtual void DefaultStartTurn(TurnDetails d) => DesignerEnvironment.DefaultStartTurn(this);
+    protected virtual void DefaultEndTurn(TurnDetails d) { }
     protected virtual void DefaultDamage(DamageDetails damageDetails) { }
     protected virtual void DefaultDamaged(DamageDetails damageDetails) { }
     protected virtual void DefaultLoseHp() { }
@@ -355,12 +328,13 @@ public abstract class StageEntity : GDictionary
         // OnBuffChangedEvent?.Invoke();
     }
 
-    public void RemoveBuff(string buffName)
+    public void TryRemoveBuff(string buffName)
     {
-        RemoveBuff(FindBuff(buffName));
+        Buff b = FindBuff(buffName);
+        if (b != null)
+            RemoveBuff(b);
     }
 
-    public void RemoveAllBuffs() => RemoveBuffs(b => true);
     public void RemoveBuffs(Predicate<Buff> pred)
     {
         _buffs.Do(b =>
@@ -378,30 +352,14 @@ public abstract class StageEntity : GDictionary
         toRemove.Do(RemoveBuff);
     }
 
-    public Buff FindBuff(string name) => Buffs.FirstObj(b => b.BuffEntry.Name == name);
-    public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.BuffEntry == buffEntry);
-    public Buff FindBuff(Predicate<Buff> pred) => Buffs.FirstObj(pred);
+    public void RemoveAllBuffs() => RemoveBuffs(b => true);
 
-    public int GetStackOfBuff(string name) => FindBuff(name)?.Stack ?? 0;
+    public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.BuffEntry == buffEntry);
+
     public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
 
     public int GetSumOfStackOfBuffs(params string[] names)
-        => names.Map(GetStackOfBuff).Aggregate((a, b) => a + b);
-
-    public bool TryConsumeBuff(string buffName, int stack = 1)
-    {
-        if (stack == 0)
-            return true;
-
-        Buff b = FindBuff(buffName);
-        if (b != null && b.Stack >= stack)
-        {
-            b.Stack -= stack;
-            return true;
-        }
-
-        return false;
-    }
+        => names.Map(name => GetStackOfBuff(name)).Aggregate((a, b) => a + b);
 
     public bool TryConsumeBuff(BuffEntry buffEntry, int stack = 1)
     {
@@ -430,6 +388,15 @@ public abstract class StageEntity : GDictionary
     }
 
     #endregion
+
+    // public void Attack(int value, int times = 1, bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true, Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
+    //     => StageManager.Instance.AttackProcedure(this, Opponent(), value, times, lifeSteal, pierce, crit, recursive, damaged, undamaged);
+    //
+    // public void ReceiveBuff(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+    //     => StageManager.Instance.BuffProcedure(this, this, buffEntry, stack, recursive);
+    //
+    // public void GiveBuff(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+    //     => StageManager.Instance.BuffProcedure(this, Opponent(), buffEntry, stack, recursive);
 
     // #region Modifier
     //
