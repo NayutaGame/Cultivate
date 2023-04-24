@@ -42,8 +42,10 @@ public class BuffEntry : Entry
     public Action<Buff, AttackDetails> _kill;
     public Action<Buff, HealDetails> _heal;
     public Action<Buff, HealDetails> _healed;
-    public Action<Buff, ArmorDetails> _armor;
-    public Action<Buff, ArmorDetails> _armored;
+    public Action<Buff, ArmorGainDetails> _armorGain;
+    public Action<Buff, ArmorGainDetails> _armorGained;
+    public Action<Buff, ArmorLoseDetails> _armorLose;
+    public Action<Buff, ArmorLoseDetails> _armorLost;
     // public Action<Buff, DamageDetails> _laststand;
     // public Action<Buff, AttackDetails> _evade;
     // public Action<StageReport, Buff, int> _clean;
@@ -78,8 +80,10 @@ public class BuffEntry : Entry
     /// <param name="kill">击杀时的额外行为</param>
     /// <param name="heal">治疗时的额外行为</param>
     /// <param name="healed">被治疗时的额外行为</param>
-    /// <param name="armor">给予护甲时的额外行为</param>
-    /// <param name="armored">接受护甲时的额外行为</param>
+    /// <param name="armorGain">给予护甲时的额外行为</param>
+    /// <param name="armorGained">接受护甲时的额外行为</param>
+    /// <param name="armorLose">使失去护甲时的额外行为</param>
+    /// <param name="armorLost">失去护甲时的额外行为</param>
     /// <param name="buff">受到Buff时的额外行为，结算之前</param>
     /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
@@ -103,8 +107,10 @@ public class BuffEntry : Entry
         Action<Buff, AttackDetails> kill = null,
         Action<Buff, HealDetails> heal = null,
         Action<Buff, HealDetails> healed = null,
-        Action<Buff, ArmorDetails> armor = null,
-        Action<Buff, ArmorDetails> armored = null,
+        Action<Buff, ArmorGainDetails> armorGain = null,
+        Action<Buff, ArmorGainDetails> armorGained = null,
+        Action<Buff, ArmorLoseDetails> armorLose = null,
+        Action<Buff, ArmorLoseDetails> armorLost = null,
         // Action<Buff, DamageDetails> laststand = null,
         // Action<Buff, AttackDetails> evade = null,
         // Action<StageReport, Buff, int> clean = null,
@@ -143,8 +149,10 @@ public class BuffEntry : Entry
         _kill = kill;
         _heal = heal;
         _healed = healed;
-        _armor = armor;
-        _armored = armored;
+        _armorGain = armorGain;
+        _armorGained = armorGained;
+        _armorLose = armorLose;
+        _armorLost = armorLost;
         // _laststand = laststand;
         // _evade = evade;
         // _clean = clean;

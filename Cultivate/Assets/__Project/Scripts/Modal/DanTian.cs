@@ -12,7 +12,7 @@ public class DanTian : GDictionary
     public static readonly int RADIUS = 4;
     public static readonly int DIAMETER = 2 * RADIUS + 1;
 
-    public static readonly int[] REVEAL_RADIUS = new[] { 2, 2, 3, 3, 4, 4 };
+    public static readonly int[] REVEAL_RADIUS = new[] { 4, 4, 4, 4, 4, 4 };
     public static readonly int[] WORKER_COUNT = new[] { 3, 6, 8, 10, 12, 12 };
 
     private Tile[] _tiles;

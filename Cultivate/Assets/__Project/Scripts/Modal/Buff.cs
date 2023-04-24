@@ -74,8 +74,8 @@ public class Buff
         if (_buffEntry._kill != null) _owner.KillEvent += Kill;
         if (_buffEntry._heal != null) _owner.HealEvent += Heal;
         if (_buffEntry._healed != null) _owner.HealedEvent += Healed;
-        if (_buffEntry._armor != null) _owner.ArmorEvent += _Armor;
-        if (_buffEntry._armored != null) _owner.ArmoredEvent += Armored;
+        if (_buffEntry._armorGain != null) _owner.ArmorGainEvent += ArmorGain;
+        if (_buffEntry._armorGained != null) _owner.ArmorGainedEvent += ArmorGained;
         // if (_buffEntry._laststand != null) _owner.LaststandEvent += Laststand;
         // if (_buffEntry._evade != null) _owner.EvadeEvent += Evade;
         // if (_buffEntry._clean != null) _owner.CleanEvent += Clean;
@@ -106,8 +106,8 @@ public class Buff
         if (_buffEntry._kill != null) _owner.KillEvent -= Kill;
         if (_buffEntry._heal != null) _owner.HealEvent -= Heal;
         if (_buffEntry._healed != null) _owner.HealedEvent -= Healed;
-        if (_buffEntry._armor != null) _owner.ArmorEvent -= _Armor;
-        if (_buffEntry._armored != null) _owner.ArmoredEvent -= Armored;
+        if (_buffEntry._armorGain != null) _owner.ArmorGainEvent -= ArmorGain;
+        if (_buffEntry._armorGained != null) _owner.ArmorGainedEvent -= ArmorGained;
 
         // if (_buffEntry._laststand != null) _owner.LaststandEvent -= Laststand;
         // if (_buffEntry._evade != null) _owner.EvadeEvent -= Evade;
@@ -160,8 +160,10 @@ public class Buff
     private void Kill(AttackDetails d) => _buffEntry._kill(this, d);
     private void Heal(HealDetails d) => _buffEntry._heal(this, d);
     private void Healed(HealDetails d) => _buffEntry._healed(this, d);
-    private void _Armor(ArmorDetails d) => _buffEntry._armor(this, d);
-    private void Armored(ArmorDetails d) => _buffEntry._armored(this, d);
+    private void ArmorGain(ArmorGainDetails d) => _buffEntry._armorGain(this, d);
+    private void ArmorGained(ArmorGainDetails d) => _buffEntry._armorGained(this, d);
+    private void ArmorLose(ArmorLoseDetails d) => _buffEntry._armorLose(this, d);
+    private void ArmorLost(ArmorLoseDetails d) => _buffEntry._armorLost(this, d);
     // private void Laststand(DamageDetails d) => _buffEntry._laststand(this, d);
     // private void Evade(AttackDetails d) => _buffEntry._evade(this, d);
     // private void Clean(int stack) => _buffEntry._clean(this, stack);

@@ -149,7 +149,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
         Hero = new();
         EnemyPool = new();
 
-        CreateEnemyDetails d = new CreateEnemyDetails();
+        CreateEnemyDetails d = new CreateEnemyDetails(JingJie);
         Enemy = new RunEnemy(DrawEnemy(d), d);
 
         ArenaWaiGongInventory = new();
@@ -182,6 +182,15 @@ public class RunManager : Singleton<RunManager>, GDictionary
         StageEnvironmentChangedEvent += CalcManaShortageBrief;
 
         DesignerEnvironment.EnterRun();
+    }
+
+    public void CExit()
+    {
+        // remove run consumed cards
+        Hero.HeroSlotInventory.Traversal.Do(slot =>
+        {
+            slot.TryConsume();
+        });
     }
 
     public RunNode TryGetCurrentNode() => Map.TryGetCurrentNode();
@@ -361,13 +370,13 @@ public class RunManager : Singleton<RunManager>, GDictionary
     [NonSerialized] public bool[] ManaShortageBrief;
     private void CalcManaShortageBrief() => ManaShortageBrief = StageManager.ManaSimulate();
 
-    public void GenerateReport()
+    public void RealCombat()
     {
         IsStream = false;
         AppManager.Push(new AppStageS());
     }
 
-    public void Stream()
+    public void RealCombatWithAnimation()
     {
         IsStream = true;
         AppManager.Push(new AppStageS());

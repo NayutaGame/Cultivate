@@ -32,6 +32,17 @@ public class StageHero : StageEntity
         _waiGongList.Do(waiGong => waiGong.Register());
     }
 
+    public override void WriteEffect()
+    {
+        base.WriteEffect();
+
+        for (int i = 0; i < _waiGongList.Length; i++)
+        {
+            HeroChipSlot slot = _runHero.HeroSlotInventory[i + _runHero.HeroSlotInventory.Start];
+            slot.RunConsumed = _waiGongList[i].RunConsumed;
+        }
+    }
+
     ~StageHero()
     {
         _waiGongList.Do(waiGong => waiGong.Unregister());

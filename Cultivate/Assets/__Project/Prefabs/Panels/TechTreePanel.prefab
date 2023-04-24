@@ -1657,9 +1657,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6d36c7893659e4780c7e97aa6202e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GreenColor: {r: 0.62352943, g: 0.8196079, b: 0.6392157, a: 1}
-  YellowColor: {r: 0.7725491, g: 0.7843138, b: 0.5647059, a: 1}
-  RedColor: {r: 0.91372555, g: 0.6745098, b: 0.6745098, a: 1}
   Container: {fileID: 4758449760444135545}
   Prefab: {fileID: 6020024773167110056, guid: c7bb48bc4d5d5b848ac5d6a37d123d06, type: 3}
 --- !u!1 &4056517525582970121
@@ -4228,7 +4225,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 0
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 60
   m_Viewport: {fileID: 6676795678040578135}
   m_HorizontalScrollbar: {fileID: 4510474183874435891}
   m_VerticalScrollbar: {fileID: 6745372962656350782}

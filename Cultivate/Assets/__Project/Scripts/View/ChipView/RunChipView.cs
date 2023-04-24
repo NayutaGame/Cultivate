@@ -17,6 +17,7 @@ public class RunChipView : ItemView,
     public TMP_Text NameText;
     public TMP_Text DescriptionText;
     public TMP_Text PowerText;
+    public TMP_Text SkillTypeText;
 
     private void Awake()
     {
@@ -43,6 +44,7 @@ public class RunChipView : ItemView,
             NameText.text = acquiredRunChip.GetName();
             SetDescriptionText(acquiredRunChip.GetDescription());
             PowerText.text = acquiredRunChip.GetPowerString();
+            SetSkillTypeText((acquiredRunChip.Chip._entry as WaiGongEntry).Type);
 
             SetColorFromJingJie(acquiredRunChip.GetJingJie());
 
@@ -64,6 +66,7 @@ public class RunChipView : ItemView,
                 PowerText.text = heroChipSlot.GetPowerString();
                 SetColorFromJingJie(JingJie.LianQi);
                 _image.sprite = null;
+                SetSkillTypeText(null);
                 return;
             }
             else
@@ -79,6 +82,7 @@ public class RunChipView : ItemView,
                 NameText.text = heroChipSlot.GetName();
                 SetDescriptionText(heroChipSlot.GetDescription());
                 PowerText.text = heroChipSlot.GetPowerString();
+                SetSkillTypeText((heroChipSlot.RunChip._entry as WaiGongEntry).Type);
 
                 SetColorFromJingJie(heroChipSlot.RunChip.JingJie);
                 _image.sprite = heroChipSlot.RunChip._entry.CardFace;
@@ -100,6 +104,7 @@ public class RunChipView : ItemView,
                 PowerText.text = enemyChipSlot.GetPowerString();
                 SetColorFromJingJie(JingJie.LianQi);
                 _image.sprite = null;
+                SetSkillTypeText(null);
                 return;
             }
             else
@@ -111,6 +116,7 @@ public class RunChipView : ItemView,
                 NameText.text = enemyChipSlot.Chip.GetName();
                 SetDescriptionText(enemyChipSlot.GetDescription());
                 PowerText.text = enemyChipSlot.GetPowerString();
+                SetSkillTypeText((enemyChipSlot.Chip._entry as WaiGongEntry).Type);
                 SetColorFromJingJie(enemyChipSlot.Chip.JingJie);
                 _image.sprite = enemyChipSlot.Chip._entry.CardFace;
             }
@@ -126,6 +132,7 @@ public class RunChipView : ItemView,
             NameText.text = runChip.GetName();
             SetDescriptionText(runChip.GetDescription());
             PowerText.text = "";
+            SetSkillTypeText((runChip._entry as WaiGongEntry).Type);
             SetColorFromJingJie(runChip.JingJie);
             _image.sprite = runChip._entry.CardFace;
         }
@@ -139,6 +146,14 @@ public class RunChipView : ItemView,
     {
         if (DescriptionText != null)
             DescriptionText.text = s;
+    }
+
+    protected void SetSkillTypeText(WaiGongType type)
+    {
+        if (SkillTypeText == null)
+            return;
+
+        SkillTypeText.text = type?.ToString();
     }
 
     public void OnPointerDown(PointerEventData eventData)

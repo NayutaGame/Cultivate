@@ -52,13 +52,7 @@ public class ChipCategory : Category<ChipEntry>
 
             new WaiGongEntry("聚气术", JingJie.LianQi, "灵气+1",
                 execute: (caster, waiGong, recursive) =>
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气")),
-
-            // new WuXingChipEntry("金", "周围金+1", WuXing.Jin),
-            // new WuXingChipEntry("水", "周围水+1", WuXing.Shui),
-            // new WuXingChipEntry("木", "周围木+1", WuXing.Mu),
-            // new WuXingChipEntry("火", "周围火+1", WuXing.Huo),
-            // new WuXingChipEntry("土", "周围土+1", WuXing.Tu),
+                    caster.BuffSelfProcedure("灵气")),
 
             new ChipEntry("拆除", JingJie.LianQi, "拆除", null,
                 canPlug: (tile, runChip) => tile.AcquiredRunChip != null && tile.AcquiredRunChip.Chip._entry.CanUnplug(tile.AcquiredRunChip),
@@ -66,590 +60,780 @@ public class ChipCategory : Category<ChipEntry>
                 canUnplug: acquiredRunChip => false,
                 unplug: acquiredRunChip => { }),
 
-            // new XueWeiEntry("穴位1", "穴位1", 0),
-            // new XueWeiEntry("穴位2", "穴位2", 1),
-            // new XueWeiEntry("穴位3", "穴位3", 2),
-            // new XueWeiEntry("穴位4", "穴位4", 3),
-            // new XueWeiEntry("穴位5", "穴位5", 4),
-            // new XueWeiEntry("穴位6", "穴位6", 5),
-            // new XueWeiEntry("穴位7", "穴位7", 6),
-            // new XueWeiEntry("穴位8", "穴位8", 7),
-            // new XueWeiEntry("穴位9", "穴位9", 8),
-            // new XueWeiEntry("穴位10", "穴位10", 9),
-            // new XueWeiEntry("穴位11", "穴位11", 10),
-            // new XueWeiEntry("穴位12", "穴位12", 11),
 
-            new WaiGongEntry("金00", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{12 + 6 * dj}攻"), WuXing.Jin, new ManaCost((l, j, dj, p) => 2 + dj), WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 12 + 6 * waiGong.Dj);
-                }),
 
-            new WaiGongEntry("金01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"护甲+{6 + 2 * dj}"), WuXing.Jin,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.ArmorGainProcedure(caster, caster, 6 + 2 * waiGong.Dj);
-                }),
 
-            new WaiGongEntry("金02", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{3 + dj}攻\n自己或对方有护甲：多{6 + 2 * dj}攻"), WuXing.Jin,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    bool anyHasArmor = caster.Armor > 0 || caster.Opponent().Armor > 0;
-                    int value = 3 + waiGong.Dj + (anyHasArmor ? (6 + 2 * waiGong.Dj) : 0);
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), value);
-                }),
 
-            // new WaiGongEntry("金02", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"灵气+{1 + dj}\n护甲+{3 + dj}"), WuXing.Jin,
+
+
+
+
+
+
+
+            // new WaiGongEntry("木30", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗10生命\n{18 + 4 * dj}攻\n每1闪避，多{4 + 2 * dj}攻"), WuXing.Mu, type: WaiGongType.Attack,
             //     execute: (caster, waiGong, recursive) =>
             //     {
-            //         StageManager.Instance.ArmorGainProcedure(caster, caster, 6 + 2 * waiGong.Dj);
+            //         int value = (4 + 2 * waiGong.Dj) * caster.GetStackOfBuff("闪避");
+            //         caster.AttackProcedure(18 + 4 * waiGong.Dj + value);
             //     }),
-
-            new WaiGongEntry("水00", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"灵气+{1 + dj}\n施加{3 + dj}减甲"), WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 1 + waiGong.Dj);
-                    StageManager.Instance.ArmorLoseProcedure(caster.Opponent(), 3 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("水01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"灵气+{2 + dj}"), WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 2 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("木00", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"格挡+{1 + dj}"), WuXing.Mu, new ManaCost((l, j, dj, p) => 1 + dj),
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "格挡", 1 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("木01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{4 + 2 * dj}攻 吸血"), WuXing.Mu, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 4 + 2 * waiGong.Dj, lifeSteal: true);
-                }),
-
-            new WaiGongEntry("火00", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"灵气+{1 + dj}\n{3 + dj}攻"), WuXing.Huo, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 1 + waiGong.Dj);
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 3 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("火02", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"消耗{5 + 5 * dj}生命\n力量+{1 + dj}"), WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.DamageProcedure(caster, caster, 5 + 5 * waiGong.Dj);
-                    StageManager.Instance.BuffProcedure(caster, caster, "力量", 1 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("火01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{6 + 2 * dj}攻 穿透"), WuXing.Huo, manaCost: new ManaCost((l, j, dj, p) => 2),
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 6 + 2 * waiGong.Dj, pierce: true);
-                }),
-
-            new WaiGongEntry("土00", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"3攻x{2 + dj}"), WuXing.Tu,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 3, 2 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("土01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{3 + dj}攻\n护甲+{3 + dj}"), WuXing.Tu, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 3 + waiGong.Dj);
-                    StageManager.Instance.ArmorGainProcedure(caster, caster, 3 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("金10", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{8 + 2 * dj}攻\n击伤：护甲+{8 + 2 * dj}"), WuXing.Jin, 1, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int value = 8 + 2 * waiGong.Dj;
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), value,
-                        damaged: d => StageManager.Instance.ArmorGainProcedure(caster, caster, value));
-                }),
-
-            new WaiGongEntry("金11", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"消耗\n自动护甲+{1 + dj}"), WuXing.Jin,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "自动护甲", 1 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("起", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"水势+{2 + dj}\n初次：翻倍"), WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int d = waiGong.IsFirstTime ? 2 : 1;
-                    StageManager.Instance.BuffProcedure(caster, caster, "水势", (2 + waiGong.Dj) * d);
-                }),
-
-            new WaiGongEntry("水10", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"护甲+{5 + dj}\n施加{5 + dj}减甲"), WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.ArmorGainProcedure(caster, caster, 5 + waiGong.Dj);
-                    StageManager.Instance.ArmorLoseProcedure(caster.Opponent(), 5 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("水11", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"奇偶：施加{10 + 2 * dj}减甲/护甲+{10 + 2 * dj}\n消耗1水势：翻倍"), WuXing.Shui, manaCost: 1,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int d = caster.TryConsumeBuff("水势") ? 2 : 1;
-                    int value = (10 + 2 * waiGong.Dj) * d;
-                    if (waiGong.IsOdd)
-                    {
-                        StageManager.Instance.ArmorLoseProcedure(caster.Opponent(), value);
-                    }
-                    else
-                    {
-                        StageManager.Instance.ArmorGainProcedure(caster, caster, value);
-                    }
-                }),
-
-            // new WaiGongEntry("竹剑", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{5 + 2 * dj}攻x2"), WuXing.Shui, manaCost: 1, type: WaiGongType.Attack,
+            //
+            // new WaiGongEntry("木31", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"每{4 - dj}格挡，消耗1点，闪避+1"), WuXing.Mu,
             //     execute: (caster, waiGong, recursive) =>
             //     {
-            //         StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 5 + 2 * waiGong.Dj, 2);
+            //         int value = caster.GetStackOfBuff("格挡") / (4 - waiGong.Dj);
+            //         caster.TryConsumeBuff("格挡", value);
+            //         caster.BuffSelfProcedure("闪避", value);
             //     }),
-
-            new WaiGongEntry("吐纳", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"灵气+{2 + dj}\n生命上限+{6 + 3 * dj}"), WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 2 + waiGong.Dj);
-                    caster.MaxHp += 6 + 3 * waiGong.Dj;
-                }),
-
-            new WaiGongEntry("潜龙在渊", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{8 + 2 * (j - 1)}攻 击伤：+{1 + (j - 1)}格挡"), WuXing.Mu, manaCost: 2, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 8 + 2 * (waiGong.GetJingJie() - 1),
-                        damaged: d => StageManager.Instance.BuffProcedure(caster, caster, "格挡", 1 + (waiGong.GetJingJie() - 1)));
-                }),
-
-            new WaiGongEntry("木10", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"消耗{5 + 5 * dj}生命上限\n灵气+{3 + 2 * dj}"), WuXing.Mu,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.DamageProcedure(caster, caster, 5 + 5 * waiGong.Dj);
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 3 + 2 * waiGong.Dj);
-                }),
-
-            new WaiGongEntry("火10", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"消耗{8 + 8 * dj}生命\n闪避+{1 + dj}\n初次：闪避+1"), WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.DamageProcedure(caster, caster, 8 + 8 * waiGong.Dj);
-                    int firstTime = waiGong.IsFirstTime ? 1 : 0;
-                    StageManager.Instance.BuffProcedure(caster, caster, "闪避", 1 + waiGong.Dj + firstTime);
-                }),
-
-            new WaiGongEntry("火12", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"力量+1\n{3 + 3 * dj}攻\n消耗1格挡：翻倍"), WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int d = caster.TryConsumeBuff("格挡") ? 2 : 1;
-                    StageManager.Instance.BuffProcedure(caster, caster, "力量", d);
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), (3 + 3 * waiGong.Dj) * d);
-                }),
-
-            new WaiGongEntry("土10", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"4攻x{3 + dj}"), WuXing.Tu, 1, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 4, 3 + waiGong.Dj);
-                }),
-
-            // new WaiGongEntry("土11", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{1 + j}攻x2\n不屈+{(int)j}"), WuXing.Tu, type: WaiGongType.Attack,
-            //     execute: (caster, waiGong, recursive) =>
-            //     {
-            //         StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 1 + waiGong.GetJingJie(), 2);
-            //         StageManager.Instance.BuffProcedure(caster, caster, "不屈", waiGong.GetJingJie());
-            //     }),
-
-            new WaiGongEntry("金20", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{10 + 4 * dj}攻\n每1不屈，多{4 + dj}攻"), WuXing.Jin, 1, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(),
-                        10 + 4 * waiGong.Dj + (4 + waiGong.Dj) * caster.GetSumOfStackOfBuffs("不屈", "激活的不屈"));
-                }),
-
-            new WaiGongEntry("金21", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"灵气+{3 + (j - 2)}\n每1灵气，护甲+1"), WuXing.Jin, 0,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 3 + (waiGong.GetJingJie() - 2));
-                    StageManager.Instance.ArmorGainProcedure(caster, caster, caster.GetMana());
-                }),
-
-            new WaiGongEntry("高速剑阵", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"灵气+4\n消耗{10 - 5 * (j - 2)}护甲：二动"), WuXing.Jin, 0, type: WaiGongType.JianZhen,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 4);
-                    int value = 10 - 5 * (waiGong.GetJingJie() - 2);
-                    if (caster.Armor >= value)
-                    {
-                        StageManager.Instance.ArmorLoseProcedure(caster, value);
-                        caster.Swift = true;
-                    }
-                }),
-
-            new WaiGongEntry("磐石剑阵", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"护甲+{20 + 6 * (j - 2)}\n遭受1跳回合\n架势：无需跳回合"), WuXing.Jin, 0, type: WaiGongType.JianZhen,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.ArmorGainProcedure(caster, caster, 20 + 6 * (waiGong.GetJingJie() - 2));
-                    if (!waiGong.JiaShi)
-                        StageManager.Instance.BuffProcedure(caster, caster, "跳回合");
-                }),
-
-           new WaiGongEntry("利剑", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{10 + 2 * (j - 2)}攻\n击伤：对方减少{1 + (j - 2)}灵气"), WuXing.Jin, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 10 + 2 * (waiGong.GetJingJie() - 2),
-                        damaged: d => d.Tgt.TryConsumeMana(1 + (waiGong.GetJingJie() - 2)));
-                }),
-
-           new WaiGongEntry("少阳", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗\n自己获得护甲时，额外获得{3 + 2 * (j - 2)}护甲"), WuXing.Jin,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "少阳");
-                }),
-
-           new WaiGongEntry("拔刀", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"下张牌激活架势\n下回合护甲+{10 + 4 * dj}"), WuXing.Jin,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "延迟护甲", 10 + 4 * waiGong.Dj);
-                }),
-
-            new WaiGongEntry("水20", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗\n灵气+{3 * j}"), WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 3 * waiGong.GetJingJie());
-                }),
-
-            new WaiGongEntry("水21", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗\n本场战斗中，造成伤害：施加{3 + dj}减甲，不高于伤害值"), WuXing.Shui, 4,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "铃鹿御前", 3 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("自动灵气", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗\n每回合灵气+{1 + (j - 2) / 2}"), WuXing.Shui, 0,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "自动灵气", 1 + (waiGong.GetJingJie() - 2) / 2);
-                }),
-
-            new WaiGongEntry("承", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"灵气+{3 + dj}\n每2灵气，水势+1"), WuXing.Shui, 0,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 3 + waiGong.Dj);
-                    int value = caster.GetStackOfBuff("灵气") / 2;
-                    StageManager.Instance.BuffProcedure(caster, caster, "水势", value);
-                }),
-
-            new WaiGongEntry("木20", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{12 + 2 * dj}攻\n消耗1格挡：吸血"), WuXing.Mu, 1, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 12 + 2 * waiGong.Dj,
-                        lifeSteal: caster.TryConsumeBuff("格挡"));
-                }),
-
-            new WaiGongEntry("木21", new CLLibrary.Range(2, 5), "消耗\n永久吸血，直到使用非攻击牌", WuXing.Mu, manaCost: new ManaCost((l, j, dj, p) => 3 - dj),
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "永久吸血");
-                }),
-
-            new WaiGongEntry("木22", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{3 * j}攻\n二动\n初次：遭受1跳卡牌"), WuXing.Mu, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 3 * waiGong.GetJingJie());
-                    caster.Swift = true;
-                    if (waiGong.IsFirstTime)
-                        StageManager.Instance.BuffProcedure(caster, caster, "跳卡牌");
-                }),
-
-            new WaiGongEntry("木23", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"每{6 - dj}水势，消耗1点，格挡+1"), WuXing.Mu, 1,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int value = caster.GetStackOfBuff("水势") / (6 - waiGong.Dj);
-                    caster.TryConsumeBuff("水势", value);
-                    StageManager.Instance.BuffProcedure(caster, caster, "格挡", value);
-                }),
-
-            new WaiGongEntry("见龙在田", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{12 + 3 * dj}攻\n每1水势，多1攻"), WuXing.Mu, 1, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 12 + 3 * waiGong.Dj + caster.GetStackOfBuff("水势"));
-                }),
-
-            new WaiGongEntry("木24", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"灵气+{2 + dj}\n满血：翻倍"), WuXing.Mu,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int d = caster.IsFullHp ? 2 : 1;
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", (2 + waiGong.Dj) * d);
-                }),
-
-            new WaiGongEntry("火20", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"灵气+2\n每有{6 - dj}点格挡，力量+1"), WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", 2);
-                    int value = caster.GetStackOfBuff("格挡") / (6 - waiGong.Dj);
-                    StageManager.Instance.BuffProcedure(caster, caster, "力量", value);
-                }),
-
-            new WaiGongEntry("火22", new CLLibrary.Range(2, 5), "消耗\n本场战斗中，每次受到不少于10点伤害的时候，力量+1", WuXing.Huo, manaCost: new ManaCost((l, j, dj, p) => 3 - dj),
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "火22");
-                }),
-
-            new WaiGongEntry("朝孔雀", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"力量+1\n{8 + 2 * (j - 2)}攻\n消耗1格挡：翻倍"), WuXing.Huo, manaCost: 1, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int d = caster.TryConsumeBuff("格挡") ? 2 : 1;
-                    StageManager.Instance.BuffProcedure(caster, caster, "力量", d);
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), d * (8 + 2 * (waiGong.GetJingJie() - 2)));
-                }),
-
-            new WaiGongEntry("昼虎", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{15 + 3 * (j - 2)}攻 穿透"), WuXing.Huo, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 15 + 3 * (waiGong.GetJingJie() - 2), pierce: true);
-                }),
-
-            new WaiGongEntry("势如火", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"下{1 + (j - 2)}次攻击具有穿透"), WuXing.Huo, manaCost: 1,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "穿透", 1 + (waiGong.GetJingJie() - 2));
-                }),
-
-            new WaiGongEntry("天衣无缝", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗\n若无攻击牌，每回合：{8 + 2 * (j - 2)}攻"), WuXing.Tu,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    bool noAttack = caster._waiGongList.FirstObj(wg => wg.GetWaiGongType().Contains(WaiGongType.Attack)) == null;
-                    if (noAttack)
-                        StageManager.Instance.BuffProcedure(caster, caster, "天衣无缝", 8 + 2 * (waiGong.GetJingJie() - 2));
-                }),
-
-            // new WaiGongEntry("土21", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗\n生命上限变为一半\n不屈+{3 + (j + 1) / 2}"), WuXing.Tu,
+            //
+            // new WaiGongEntry("雷鸣", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗\n二动\n力量+{1 + dj}\n{3 + dj}攻"), WuXing.Mu, type: WaiGongType.Attack,
             //     execute: (caster, waiGong, recursive) =>
             //     {
             //         waiGong.Consumed = true;
-            //         caster.MaxHp /= 2;
-            //         StageManager.Instance.BuffProcedure(caster, caster, "不屈", 3 + (waiGong.GetJingJie() + 1) / 2);
+            //         caster.Swift = true;
+            //         caster.BuffSelfProcedure("力量", 1 + waiGong.Dj);
+            //         caster.AttackProcedure(3 + waiGong.Dj);
             //     }),
             //
-            // new WaiGongEntry("土22", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{30 + 10 * j}攻\n遭受2跳回合"), WuXing.Tu, 2, type: WaiGongType.Attack,
+            // new WaiGongEntry("金22", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{8 + 2 * dj}攻\n相邻牌都非攻击：翻倍\n充沛：翻倍"), WuXing.Jin, manaCost: 2, type: WaiGongType.Attack,
             //     execute: (caster, waiGong, recursive) =>
             //     {
-            //         StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 30 + 10 * waiGong.GetJingJie());
-            //         StageManager.Instance.BuffProcedure(caster, caster, "跳回合", 2);
+            //         int d = waiGong.NoAttackAdjacents ? 2 : 1;
+            //         d *= caster.TryConsumeMana(2) ? 2 : 1;
+            //         caster.AttackProcedure((8 + 3 * waiGong.Dj) * d);
             //     }),
             //
-            // new WaiGongEntry("贪狼", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"5攻x{3 + dj}\n不屈+2"), WuXing.Tu, 2, type: WaiGongType.Attack,
+            // new WaiGongEntry("水23", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"每{6 - dj}锋锐，消耗1点，格挡+1"), WuXing.Shui, 1,
             //     execute: (caster, waiGong, recursive) =>
             //     {
-            //         StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 5, 3 + waiGong.Dj);
-            //         StageManager.Instance.BuffProcedure(caster, caster, "不屈", 2);
-            //     }),
-
-            new WaiGongEntry("木剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{16 + 4 * dj}攻\n架势：暴击"), WuXing.Jin, 0, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 16 + 4 * waiGong.Dj, crit: waiGong.JiaShi);
-                }),
-
-            new WaiGongEntry("金31", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"1攻 每失去过{8 - j}点护甲，多1攻"), WuXing.Jin, 0, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 1 + (8 - caster.LostArmorRecord / waiGong.GetJingJie()), crit: true);
-                }),
-
-            new WaiGongEntry("金32", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"护甲翻倍"), WuXing.Jin, new ManaCost((l, j, dj, p) => 12 - 2 * j),
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.ArmorGainProcedure(caster, caster, caster.Armor);
-                }),
-
-            new WaiGongEntry("软剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{4 + (j - 3) * 4}攻\n击伤：二动"), WuXing.Jin, 1, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 4 + (waiGong.GetJingJie() - 3) * 4,
-                        damaged: d => caster.Swift = true);
-                }),
-
-            new WaiGongEntry("重剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{22 + 8 * dj}攻\n击伤：护甲+击伤值\n遭受2跳回合\n架势：无需跳回合"), WuXing.Jin, 2, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 22 + 8 * waiGong.Dj,
-                        damaged: d => StageManager.Instance.ArmorGainProcedure(caster, caster, d.Value));
-                    if (!waiGong.JiaShi)
-                        StageManager.Instance.BuffProcedure(caster, caster, "跳回合", 2);
-                }),
-
-            new WaiGongEntry("金刚剑阵", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"1攻 每有一点护甲多1攻"), WuXing.Jin, new ManaCost((l, j, dj, p) => 3 - 2 * (j - 3)), type: WaiGongType.Attack | WaiGongType.JianZhen,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 1 + Mathf.Max(0, caster.Armor));
-                }),
-
-            new WaiGongEntry("菊剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"敌方减甲不少于5：二动\n{4 + 4 * dj}攻"), WuXing.Shui, 0, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    if (caster.Opponent().Armor <= -5)
-                        caster.Swift = true;
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), -2 + 4 * waiGong.GetJingJie());
-                }),
-
-            new WaiGongEntry("兰剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"施加{4 + 4 * (j - 3)}减甲\n二动"), WuXing.Shui, 0,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.ArmorLoseProcedure(caster.Opponent(), 4 + 4 * (waiGong.GetJingJie() - 3));
-                    caster.Swift = true;
-                }),
-
-            new WaiGongEntry("水31", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗一半护甲，施加等量破甲"), WuXing.Shui, new ManaCost((l, j, dj, p) => 6 - j),
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int value = caster.Armor / 2;
-                    StageManager.Instance.ArmorLoseProcedure(caster, value);
-                    StageManager.Instance.ArmorLoseProcedure(caster.Opponent(), value);
-                }),
-
-            new WaiGongEntry("隐如云", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"下{1 + dj}次造成伤害转减甲"), WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "隐如云", 1 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("转", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"奇偶：每1水势，施加1减甲/生命及上限+1"), WuXing.Shui, new ManaCost((l, j, dj, p) => 4 - 2 * dj),
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int value = caster.GetStackOfBuff("水势");
-                    if (waiGong.IsOdd)
-                    {
-                        StageManager.Instance.ArmorLoseProcedure(caster.Opponent(), value);
-                    }
-                    else
-                    {
-                        caster.MaxHp += value;
-                        StageManager.Instance.HealProcedure(caster, caster, value);
-                    }
-                }),
-
-            new WaiGongEntry("气吞山河", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"将灵气补至本局最大值+{1 + dj}"), WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int space = caster.HighestManaRecord - caster.GetMana() + 1 + waiGong.Dj;
-                    StageManager.Instance.BuffProcedure(caster, caster, "灵气", space);
-                }),
-
-            new WaiGongEntry("木30", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{10 + (j - 3) * 4}攻\n每造成3点伤害，格挡+1"), WuXing.Mu, 4, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 10 + (waiGong.GetJingJie() - 3) * 4,
-                        damaged: d => StageManager.Instance.BuffProcedure(caster, caster, "格挡", d.Value / 3));
-                }),
-
-            new WaiGongEntry("木31", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗\n自动格挡+{(int)j}"), WuXing.Mu, 4,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "自动格挡", waiGong.GetJingJie());
-                }),
-
-            new WaiGongEntry("飞龙在天", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{18 + 3 * dj}攻\n击伤：施加{2 + dj}缠绕"), WuXing.Mu, 4, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 18 + 3 * waiGong.Dj,
-                        damaged: d => StageManager.Instance.BuffProcedure(caster, caster.Opponent(), "缠绕", 2 + waiGong.Dj));
-                }),
-
-            new WaiGongEntry("徐如林", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"下{1 + (j - 3)}次耗灵气免费"), WuXing.Mu,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "免费");
-                }),
-
-            new WaiGongEntry("火30", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗10生命\n{18 + 4 * dj}攻\n每1闪避，多{2 + dj}攻"), WuXing.Huo, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int value = (2 + waiGong.Dj) * caster.GetStackOfBuff("闪避");
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 18 + 4 * waiGong.Dj + value);
-                }),
-
-            new WaiGongEntry("火31", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"每{4 - dj}格挡，消耗1点，闪避+1"), WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int value = caster.GetStackOfBuff("格挡") / (4 - waiGong.Dj);
-                    caster.TryConsumeBuff("格挡", value);
-                    StageManager.Instance.BuffProcedure(caster, caster, "闪避", value);
-                }),
-
-            new WaiGongEntry("火32", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗\n每轮：闪避补至{3 + dj}"), WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "自动闪避", 3 + waiGong.Dj);
-                }),
-
-            new WaiGongEntry("夕象", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗{20 - 10 * dj}生命\n三动"), WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.DamageProcedure(caster, caster, 20 - 10 * waiGong.Dj);
-                    caster.UltraSwift = true;
-                }),
-
-            new WaiGongEntry("文曲", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"下{1 + dj}次攻击时，次数+1"), WuXing.Tu,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "连击", 1 + waiGong.Dj);
-                }),
-
-            // new WaiGongEntry("廉贞", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"对敌方造成伤害时，至少为{4 + 3 * dj}"), WuXing.Tu,
-            //     execute: (caster, waiGong, recursive) =>
-            //     {
-            //         throw new NotImplementedException();
+            //         int value = caster.GetStackOfBuff("锋锐") / (6 - waiGong.Dj);
+            //         caster.TryConsumeBuff("锋锐", value);
+            //         caster.BuffSelfProcedure("格挡", value);
             //     }),
             //
-            // new WaiGongEntry("土31", new CLLibrary.Range(3, 5), new ChipDescription((l, j,, dj p) => $"消耗所有生命转护甲"), WuXing.Tu, new ManaCost((l, j,, dj p) => 4 - 2 * (j - 3)),
+            // new WaiGongEntry("木20", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"灵气+2\n每有{6 - dj}点格挡，力量+1"), WuXing.Mu, type: WaiGongType.LingQi,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         caster.BuffSelfProcedure("灵气", 2);
+            //         int value = caster.GetStackOfBuff("格挡") / (6 - waiGong.Dj);
+            //         caster.BuffSelfProcedure("力量", value);
+            //     }),
+            //
+            // new WaiGongEntry("火31", new CLLibrary.Range(3, 5), new ChipDescription((l, j,, dj p) => $"消耗所有生命转护甲"), WuXing.Huo, new ManaCost((l, j,, dj p) => 4 - 2 * (j - 3)),
             //     execute: (caster, waiGong, recursive) =>
             //     {
             //         int value = caster.Hp;
             //         StageManager.Instance.AttackProcedure(caster, caster, value);
-            //         StageManager.Instance.ArmorGainProcedure(caster, caster, value);
+            //         caster.ArmorGainSelfProcedure(value);
             //     }),
             //
-            // new WaiGongEntry("稳如山", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"下{1 + (j - 3)}张牌后驱散"), WuXing.Tu,
+            // new WaiGongEntry("金31", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗一半护甲，施加等量减甲"), WuXing.Jin, new ManaCost((l, j, dj, p) => 6 - j),
             //     execute: (caster, waiGong, recursive) =>
             //     {
-            //         throw new NotImplementedException();
+            //         int value = caster.Armor / 2;
+            //         caster.ArmorLoseSelfProcedure(value);
+            //         caster.ArmorLoseOppoProcedure(value);
+            //     }),
+            //
+            // new WaiGongEntry("水24", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"灵气+{2 + dj}\n满血：翻倍"), WuXing.Shui, type: WaiGongType.LingQi,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         int d = caster.IsFullHp ? 2 : 1;
+            //         caster.BuffSelfProcedure("灵气", (2 + waiGong.Dj) * d);
+            //     }),
+            //
+            // new WaiGongEntry("熟能生巧", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"使用消耗不少于2的牌，下一次攻击带有吸血"), WuXing.Mu, manaCost: 2, type: WaiGongType.Attack,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //     }),
+            //
+            // new WaiGongEntry("夜幕", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"本轮格挡+{3 + dj}"), WuXing.Mu, manaCost: 1,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         caster.BuffSelfProcedure("轮格挡", 3);
+            //     }),
+            //
+            // new WaiGongEntry("朝孔雀", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"力量+1\n{3 + 3 * dj}攻\n消耗1格挡：翻倍"), WuXing.Mu, manaCost: 1, type: WaiGongType.Attack,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         int d = caster.TryConsumeBuff("格挡") ? 2 : 1;
+            //         caster.BuffSelfProcedure("力量", d);
+            //         caster.AttackProcedure((3 + 3 * waiGong.Dj) * d);
+            //     }),
+            //
+            // new WaiGongEntry("贪狼", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"5攻x{3 + dj}\n不屈+2"), WuXing.Huo, 2, type: WaiGongType.Attack,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         caster.AttackProcedure(5, 3 + waiGong.Dj);
+            //         caster.BuffSelfProcedure("不屈", 2);
+            //     }),
+            //
+            // new WaiGongEntry("飞龙在天", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{18 + 3 * dj}攻\n击伤：施加{2 + dj}缠绕"), WuXing.Shui, 4, type: WaiGongType.Attack,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         caster.AttackProcedure(18 + 3 * waiGong.Dj,
+            //             damaged: d => caster.BuffOppoProcedure("缠绕", 2 + waiGong.Dj));
+            //     }),
+            //
+            // new WaiGongEntry("廉贞", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"对敌方造成伤害时，至少为{4 + 3 * dj}"), WuXing.Huo,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //     }),
+            //
+            // new WaiGongEntry("腐朽", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{(dj >= 1 ? "二动\n" : "")}敌方减甲大于生命：斩杀"), WuXing.Jin,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         if (waiGong.Dj >= 1)
+            //             caster.Swift = true;
+            //
+            //         if (-caster.Opponent().Armor >= caster.Opponent().Hp)
+            //             caster.Opponent().Hp = 0;
+            //     }),
+            //
+            // new WaiGongEntry("水41", new CLLibrary.Range(4, 5), "消耗\n本场战斗中，治疗被代替，每有10点，格挡+1\n格挡效果翻倍", WuXing.Shui,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         waiGong.Consumed = true;
+            //         caster.BuffSelfProcedure("强化格挡");
+            //     }),
+            //
+            // new WaiGongEntry("水42", new CLLibrary.Range(4, 5), "消耗\n本场战斗中，被治疗时，如果实际治疗>=20，二动", WuXing.Shui,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         waiGong.Consumed = true;
+            //         caster.BuffSelfProcedure("治疗转二动");
+            //     }),
+            //
+            // new WaiGongEntry("土41", new CLLibrary.Range(4, 5), "消耗\n累计获得200护甲：永久暴击", WuXing.Tu,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //     }),
+            //
+            // new WaiGongEntry("土42", new CLLibrary.Range(4, 5), new ChipDescription((l, j, dj, p) => $"持续4次，护甲减少时，加回来"), WuXing.Tu,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
             //     }),
 
-            new WaiGongEntry("金40", new CLLibrary.Range(4, 5), "消耗\n护甲+50", WuXing.Jin,
+            new WaiGongEntry("金00", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{3 + dj}攻\n施加{3 + dj}减甲"), WuXing.Jin, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(3 + waiGong.Dj);
+                    caster.ArmorLoseOppoProcedure(3 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("金01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{5 + dj}攻\n敌方有减甲：多{3 + dj}攻"), WuXing.Jin, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int add = caster.Opponent().Armor >= 0 ? (3 + waiGong.Dj) : 0;
+                    caster.AttackProcedure(5 + waiGong.Dj + add);
+                }),
+
+            new WaiGongEntry("水00", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"灵气+{2 + dj}"), WuXing.Shui, type: WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("灵气", 2 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("水01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{4 + 2 * dj}攻 吸血"), WuXing.Shui, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(4 + 2 * waiGong.Dj, lifeSteal: true);
+                }),
+
+            new WaiGongEntry("木01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{6 + 2 * dj}攻 穿透"), WuXing.Mu, manaCost: 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(6 + 2 * waiGong.Dj, pierce: true);
+                }),
+
+            new WaiGongEntry("木02", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"灵气+{1 + dj}\n生命+{3 + 2 * dj}"), WuXing.Mu, type: WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("灵气", 1 + waiGong.Dj);
+                    caster.HealProcedure(3 + 2 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("火00", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"消耗{2 + dj}生命\n{8 + 3 * dj}攻"), WuXing.Huo, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.DamageSelfProcedure(2 + waiGong.Dj);
+                    caster.AttackProcedure(8 + 3 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("火01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{3 + 2 * dj}攻\n灵气+{1 + dj}"), WuXing.Huo, type: WaiGongType.LingQi | WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(3 + 2 * waiGong.Dj);
+                    caster.BuffSelfProcedure("灵气", 1 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("土00", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"{12 + 4 * dj}攻"), WuXing.Tu, new ManaCost((l, j, dj, p) => 2 + dj), WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(12 + 4 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("土01", new CLLibrary.Range(0, 5), new ChipDescription((l, j, dj, p) => $"灵气+{1 + dj}\n护甲+{3 + 2 * dj}"), WuXing.Tu, type: WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("灵气", 1 + waiGong.Dj);
+                    caster.ArmorGainSelfProcedure(3 + 2 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("刺穴", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"消耗\n灵气+{6 + 2 * dj}"), WuXing.Jin, type: WaiGongType.LingQi,
                 execute: (caster, waiGong, recursive) =>
                 {
                     waiGong.Consumed = true;
-                    StageManager.Instance.ArmorGainProcedure(caster, caster, 50);
+                    caster.BuffSelfProcedure("灵气", 6 + 2 * waiGong.Dj);
                 }),
 
-            new WaiGongEntry("金41", new CLLibrary.Range(4, 5), "消耗\n累计获得200护甲：永久暴击", WuXing.Jin,
+            new WaiGongEntry("起", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{4 + 2 * dj}攻\n锋锐+{2 + dj}\n初次：翻倍"), WuXing.Jin, type: WaiGongType.Attack,
                 execute: (caster, waiGong, recursive) =>
                 {
-                    throw new NotImplementedException();
-                    // waiGong.Consumed = true;
-                    // StageManager.Instance.BuffProcedure(caster, caster, "待激活的永久暴击");
+                    int mul = waiGong.IsFirstTime ? 2 : 1;
+                    caster.AttackProcedure((4 + 2 * waiGong.Dj) * mul);
+                    caster.BuffSelfProcedure("锋锐", (2 + waiGong.Dj) * mul);
                 }),
 
-            new WaiGongEntry("收刀", new CLLibrary.Range(4, 5), "二动\n上张牌激活架势", WuXing.Jin,
+            new WaiGongEntry("金10", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"护甲+{4 + 2 * dj}\n施加{4 + 2 * dj}减甲"), WuXing.Jin,
                 execute: (caster, waiGong, recursive) =>
                 {
+                    caster.ArmorGainSelfProcedure(4 + 2 * waiGong.Dj);
+                    caster.ArmorLoseOppoProcedure(4 + 2 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("竹剑", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{6 + 2 * dj}攻\n敌方有减甲：多1次"), WuXing.Jin, manaCost: 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int times = caster.Opponent().Armor < 0 ? 2 : 1;
+                    caster.AttackProcedure(6 + 2 * waiGong.Dj, times);
+                }),
+
+            new WaiGongEntry("吐纳", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"灵气+{3 + dj}\n生命上限+{8 + 4 * dj}"), WuXing.Shui, type: WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("灵气", 3 + waiGong.Dj);
+                    caster.MaxHp += 8 + 4 * waiGong.Dj;
+                }),
+
+            new WaiGongEntry("水10", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{10 + 2 * dj}攻\n击伤：格挡+1"), WuXing.Shui, manaCost: 2, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(10 + 2 * waiGong.Dj,
+                        damaged: d => caster.BuffSelfProcedure("格挡"));
+                }),
+
+            new WaiGongEntry("水11", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{10 + 2 * dj}攻\n终结：吸血"), WuXing.Shui, manaCost: 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(10 + 2 * waiGong.Dj, lifeSteal: waiGong.IsEnd);
+                }),
+
+            new WaiGongEntry("勤能补拙", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"护甲+{10 + 4 * dj}\n初次：遭受1跳回合"), WuXing.Shui,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.ArmorGainSelfProcedure(10 + 4 * waiGong.Dj);
+                    if(waiGong.IsFirstTime)
+                        caster.BuffSelfProcedure("跳回合");
+                }),
+
+            new WaiGongEntry("身骑白马", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"第{3 + dj}+次使用：{(6 + 2 * dj) * (6 + 2 * dj)}攻 穿透"), WuXing.Mu, manaCost: 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    if (waiGong.StageUsedTimes < 2 + waiGong.Dj)
+                        return;
+                    caster.AttackProcedure((6 + 2 * waiGong.Dj) * (6 + 2 * waiGong.Dj));
+                }),
+
+            new WaiGongEntry("回马枪", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"下次受攻击时：{12 + 4 * dj}攻"), WuXing.Mu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("回马枪", 12 + 4 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("早春", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"力量+1\n{6 + dj}攻\n初次：翻倍"), WuXing.Mu, manaCost: 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int mul = waiGong.IsFirstTime ? 2 : 1;
+                    caster.BuffSelfProcedure("力量", mul);
+                    caster.AttackProcedure((6 + waiGong.Dj) * mul);
+                }),
+
+            new WaiGongEntry("潜龙在渊", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"生命+{10 + 4 * dj}\n初次：闪避+1"), WuXing.Mu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.HealProcedure(10 + 4 * waiGong.Dj);
+                    if (waiGong.IsFirstTime)
+                        caster.BuffSelfProcedure("闪避");
+                }),
+
+            new WaiGongEntry("一切皆苦", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"消耗\n唯一灵气牌：每回合灵气+1"), WuXing.Huo, new ManaCost((l, j, dj, p) => 3 - dj), type: WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    if (waiGong.NoOtherLingQi)
+                        caster.BuffSelfProcedure("自动灵气");
+                }),
+
+            new WaiGongEntry("火10", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"2攻x{3 + dj}"), WuXing.Huo, 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(2, 3 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("火11", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"消耗\n灼烧+{2 + dj}"), WuXing.Huo, manaCost: 1,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("灼烧", 2 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("常夏", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{4 + dj}攻\n每相邻1张火，多{4 + dj}攻"), WuXing.Huo, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int mul = 1;
+                    mul += waiGong.Prev(true).Entry.WuXing == WuXing.Huo ? 1 : 0;
+                    mul += waiGong.Next(true).Entry.WuXing == WuXing.Huo ? 1 : 0;
+                    caster.AttackProcedure((4 + waiGong.Dj) * mul);
+                }),
+
+            new WaiGongEntry("土11", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"消耗\n自动护甲+{1 + dj}"), WuXing.Tu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("自动护甲", 1 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("巩固", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"灵气+{2 + dj}\n每1灵气，护甲+1"), WuXing.Tu, type: WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("灵气", 2 + waiGong.Dj);
+                    caster.ArmorGainSelfProcedure(caster.GetMana());
+                }),
+
+            new WaiGongEntry("土10", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{7 + 2 * dj}攻\n击伤：护甲+{7 + 2 * dj}"), WuXing.Tu, 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int value = 7 + 2 * waiGong.Dj;
+                    caster.AttackProcedure(value,
+                        damaged: d => caster.ArmorGainSelfProcedure(value));
+                }),
+
+            new WaiGongEntry("利剑", new CLLibrary.Range(1, 5), new ChipDescription((l, j, dj, p) => $"{10 + 2 * dj}攻\n击伤：对方减少1灵气"), WuXing.Tu, manaCost: 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(10 + 2 * waiGong.Dj,
+                        damaged: d => d.Tgt.TryConsumeMana());
+                }),
+
+            new WaiGongEntry("无常已至", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗\n本场战斗中，造成伤害：施加{5 + 2 * dj}减甲，不高于伤害值"), WuXing.Jin, 4,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("无常已至", 5 + 2 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("金20", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"奇偶：施加{12 + 2 * dj}减甲/护甲+{12 + 2 * dj}\n消耗1锋锐：多{8 + 2 * dj}"), WuXing.Jin, manaCost: 1,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int add = caster.TryConsumeBuff("锋锐") ? (8 + 2 * waiGong.Dj) : 0;
+                    int value = 12 + 2 * waiGong.Dj + add;
+                    if (waiGong.IsOdd)
+                        caster.ArmorLoseOppoProcedure(value);
+                    if (waiGong.IsEven)
+                        caster.ArmorGainSelfProcedure(value);
+                }),
+
+            new WaiGongEntry("承", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"锋锐+{2 + dj}\n10攻 每1锋锐，多1攻"), WuXing.Jin, manaCost: 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("锋锐", 2 + waiGong.Dj);
+                    caster.AttackProcedure(10 + caster.GetStackOfBuff("锋锐"));
+                }),
+
+            new WaiGongEntry("菊剑", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{4 + 4 * dj}攻\n敌方有减甲：二动"), WuXing.Jin, 0, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.Swift |= caster.Opponent().Armor < 0;
+                    caster.AttackProcedure(4 + 4 * waiGong.Dj);
+                    caster.Swift |= caster.Opponent().Armor < 0;
+                }),
+
+            new WaiGongEntry("永久吸血", new CLLibrary.Range(2, 5), "消耗\n永久吸血，直到使用非攻击牌", WuXing.Shui, manaCost: new ManaCost((l, j, dj, p) => 3 - dj),
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("永久吸血");
+                }),
+
+            new WaiGongEntry("气吞山河", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"将灵气补至本局最大值+{1 + dj}"), WuXing.Shui, type: WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int space = caster.HighestManaRecord - caster.GetMana() + 1 + waiGong.Dj;
+                    caster.BuffSelfProcedure("灵气", space);
+                }),
+
+            new WaiGongEntry("水22", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{3 * j}攻\n二动\n初次：遭受1跳卡牌"), WuXing.Shui, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(3 * waiGong.GetJingJie());
+                    caster.Swift = true;
+                    if (waiGong.IsFirstTime)
+                        caster.BuffSelfProcedure("跳卡牌");
+                }),
+
+            new WaiGongEntry("水25", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{12 + 2 * dj}攻\n消耗1锋锐：吸血\n充沛：翻倍"), WuXing.Shui, manaCost: 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int d = caster.TryConsumeMana() ? 2 : 1;
+                    caster.AttackProcedure((12 + 2 * waiGong.Dj) * d, lifeSteal: caster.TryConsumeBuff("锋锐"));
+                }),
+
+            new WaiGongEntry("凝神", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"护甲+{5 + 5 * dj}\n下{1 + dj}次受到治疗：护甲+治疗量"), WuXing.Shui, manaCost: 2,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.ArmorGainSelfProcedure(5 + 5 * waiGong.Dj);
+                    caster.BuffSelfProcedure("凝神", 1 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("盛开", new CLLibrary.Range(2, 5), "消耗\n本场战斗中，受到治疗：力量+1", WuXing.Mu, manaCost: new ManaCost((l, j, dj, p) => 3 - dj),
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("盛开");
+                }),
+
+            new WaiGongEntry("一虚一实", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"8攻\n受到{3 + dj}倍力量影响\n未造成伤害：治疗等量数值"), WuXing.Mu, manaCost: 2, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int add = caster.GetStackOfBuff("力量") * (2 + waiGong.Dj);
+                    int value = 8 + add;
+                    caster.AttackProcedure(value, undamaged:
+                        d => caster.HealProcedure(value));
+                }),
+
+            new WaiGongEntry("见龙在田", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"闪避+{2 + dj}"), WuXing.Mu, manaCost: new ManaCost((l, j, dj, p) =>  3 + dj),
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("闪避", 2 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("天衣无缝", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗\n若无攻击牌，每回合：{6 + 2 * dj}攻"), WuXing.Huo,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    if (waiGong.NoOtherAttack)
+                        caster.BuffSelfProcedure("天衣无缝", 6 + 2 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("化劲", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"消耗5生命\n灼烧+{2 + dj}\n消耗1力量：翻倍"), WuXing.Huo,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.DamageSelfProcedure(5);
+                    int d = caster.TryConsumeBuff("力量") ? 2 : 1;
+                    caster.BuffSelfProcedure("灼烧", (2 + waiGong.Dj) * d);
+                }),
+
+            // new WaiGongEntry("土20", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{10 + 4 * dj}攻\n每1灼烧，多{2 + dj}攻"), WuXing.Tu, 1, type: WaiGongType.Attack,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         caster.AttackProcedure(10 + 4 * waiGong.Dj + (2 + waiGong.Dj) * caster.GetStackOfBuff("灼烧"));
+            //     }),
+
+            new WaiGongEntry("收刀", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"下回合护甲+{8 + 4 * dj}\n上张牌激活架势"), WuXing.Tu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("延迟护甲", 8 + 4 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("一力降十会", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"6攻\n唯一攻击牌：{6 + dj}倍"), WuXing.Tu, manaCost: 3, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int d = waiGong.NoOtherAttack ? (6 + waiGong.Dj) : 1;
+                    caster.AttackProcedure(6 * d);
+                }),
+
+            new WaiGongEntry("高速剑阵", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"灵气+4\n架势：二动"), WuXing.Tu, 0, type: WaiGongType.JianZhen | WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("灵气", 4);
+                    caster.Swift |= waiGong.JiaShi;
+                }),
+
+            new WaiGongEntry("磐石剑阵", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"护甲+{20 + 6 * dj}\n遭受1跳回合\n架势：无需跳回合"), WuXing.Tu, 0, type: WaiGongType.JianZhen,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.ArmorGainSelfProcedure(20 + 6 * waiGong.Dj);
+                    if (!waiGong.JiaShi)
+                        caster.BuffSelfProcedure("跳回合");
+                }),
+
+           new WaiGongEntry("兰剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"施加{4 + 4 * dj}减甲\n二动"), WuXing.Jin, 0,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.ArmorLoseOppoProcedure(4 + 4 * waiGong.Dj);
                     caster.Swift = true;
                 }),
 
-            new WaiGongEntry("无极剑阵", new CLLibrary.Range(4 , 5), "消耗\n使用之前3张剑阵牌", WuXing.Jin, 6, WaiGongType.JianZhen,
+            new WaiGongEntry("敛息", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"下{1 + dj}次造成伤害转减甲"), WuXing.Jin,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("敛息", 1 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("转", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗\n消耗所有护甲，每消耗{4 - dj}点，锋锐+1"), WuXing.Jin, type: WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    int value = caster.Armor / (4 - waiGong.Dj);
+                    caster.ArmorLoseSelfProcedure(caster.Armor);
+                    caster.BuffSelfProcedure("锋锐", value);
+                }),
+
+            new WaiGongEntry("金30", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"奇偶：\n消耗 施加{10 + 10 * dj}减甲\n二动 施加{5 + 5 * dj}减甲"), WuXing.Jin,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    if (waiGong.IsOdd)
+                    {
+                        waiGong.Consumed = true;
+                        caster.ArmorLoseOppoProcedure(10 + 10 * waiGong.Dj);
+                    }
+                    if (waiGong.IsEven)
+                    {
+                        caster.Swift = true;
+                        caster.ArmorLoseOppoProcedure(5 + 5 * waiGong.Dj);
+                    }
+                }),
+
+            new WaiGongEntry("水30", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{16 + 8 * dj}攻\n每造成{8 - dj}点伤害，格挡+1"), WuXing.Shui, 4, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(16 + 8 * waiGong.Dj,
+                        damaged: d => caster.BuffSelfProcedure("格挡", d.Value / (8 - waiGong.Dj)));
+                }),
+
+            new WaiGongEntry("奔腾", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"二动\n充沛：三动"), WuXing.Shui, manaCost: 1,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.Swift = true;
+                    if (caster.TryConsumeMana())
+                        caster.UltraSwift = true;
+                }),
+
+            new WaiGongEntry("心斋", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"灵气+2\n下{1 + dj}次耗灵气免费"), WuXing.Mu, type: WaiGongType.LingQi,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("灵气", 2);
+                    caster.BuffSelfProcedure("免费", 1 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("双发", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"下{1 + dj}张牌使用两次"), WuXing.Mu, manaCost: 1,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("双发", 1 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("千年笋", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{15 + 3 * dj}攻\n消耗1格挡：穿透"), WuXing.Mu, manaCost: 1, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(15 + 5 * waiGong.Dj,
+                        pierce: caster.TryConsumeBuff("格挡"));
+                }),
+
+            new WaiGongEntry("飞龙在天", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗\n每轮：闪避补至{1 + dj}"), WuXing.Mu, manaCost: 2,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("自动闪避", 1 + waiGong.Dj);
+                }),
+
+            new WaiGongEntry("燃灯留烬", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"护甲+{6 + 2 * dj}\n每1被消耗卡：多{6 + 2 * dj}"), WuXing.Huo, manaCost: 1,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.ArmorGainSelfProcedure((caster.ConsumedCount + 1) * (6 + 2 * waiGong.Dj));
+                }),
+
+            new WaiGongEntry("抱元守一", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"每回合：消耗{3 + 3 * dj}生命，护甲+{3 + 3 * dj}"), WuXing.Huo,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("抱元守一", 3 + 3 * waiGong.Dj);
+                }),
+
+            // new WaiGongEntry("木剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{16 + 4 * dj}攻\n架势：暴击"), WuXing.Tu, 0, type: WaiGongType.Attack,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         caster.AttackProcedure(16 + 4 * waiGong.Dj, crit: waiGong.JiaShi);
+            //     }),
+            //
+            // new WaiGongEntry("土31", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"1攻 每失去过{8 - j}点护甲，多1攻"), WuXing.Tu, 0, type: WaiGongType.Attack,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         caster.AttackProcedure(1 + (8 - caster.LostArmorRecord / waiGong.GetJingJie()), crit: true);
+            //     }),
+            //
+            // new WaiGongEntry("土32", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"护甲翻倍"), WuXing.Tu, new ManaCost((l, j, dj, p) => 12 - 2 * j),
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         caster.ArmorGainSelfProcedure(caster.Armor);
+            //     }),
+            //
+            // new WaiGongEntry("软剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{4 + dj * 4}攻\n击伤：二动"), WuXing.Tu, 1, type: WaiGongType.Attack,
+            //     execute: (caster, waiGong, recursive) =>
+            //     {
+            //         caster.AttackProcedure(4 + 4 * waiGong.Dj,
+            //             damaged: d => caster.Swift = true);
+            //     }),
+
+            new WaiGongEntry("少阳", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗\n获得护甲：额外+{3 + 2 * dj}"), WuXing.Tu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("少阳", 3 + 2 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("金刚剑阵", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"1攻 每有一点护甲多1攻"), WuXing.Tu, new ManaCost((l, j, dj, p) => 3 - 2 * dj), type: WaiGongType.Attack | WaiGongType.JianZhen,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(1 + Mathf.Max(0, caster.Armor));
+                }),
+
+            new WaiGongEntry("重剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{22 + 8 * dj}攻\n击伤：护甲+击伤值\n遭受2跳回合\n架势：无需跳回合"), WuXing.Tu, 2, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(22 + 8 * waiGong.Dj,
+                        damaged: d => caster.ArmorGainSelfProcedure(d.Value));
+                    if (!waiGong.JiaShi)
+                        caster.BuffSelfProcedure("跳回合", 2);
+                }),
+
+            new WaiGongEntry("拔刀", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{10 + 5 * dj}攻\n下张牌激活架势"), WuXing.Tu, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(10 + 5 * waiGong.Dj);
+                }),
+
+            new WaiGongEntry("森罗万象", new CLLibrary.Range(4, 5), new ChipDescription((l, j, dj, p) => $"消耗\n本场战斗中：奇偶同时激活两个效果"), WuXing.Jin,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("森罗万象");
+                }),
+
+            new WaiGongEntry("梅剑", new CLLibrary.Range(4, 5), "5攻x2\n敌方有减甲：暴击", WuXing.Jin, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(5, crit: caster.Opponent().Armor < 0);
+                    caster.AttackProcedure(5, crit: caster.Opponent().Armor < 0);
+                }),
+
+            new WaiGongEntry("少阴", new CLLibrary.Range(4, 5), "消耗\n施加减甲：额外+3\n消耗少阳：额外层数", WuXing.Jin,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    int value = caster.GetStackOfBuff("少阳") + 3;
+                    caster.TryRemoveBuff("少阳");
+                    caster.BuffSelfProcedure("少阴", value);
+                }),
+
+            new WaiGongEntry("合", new CLLibrary.Range(4, 5), new ChipDescription((l, j, dj, p) => $"奇偶：每1锋锐，施加1减甲/护甲+1"), WuXing.Jin, 6,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    int value = caster.GetStackOfBuff("锋锐");
+                    if (waiGong.IsOdd)
+                        caster.ArmorLoseOppoProcedure(value);
+                    if (waiGong.IsEven)
+                        caster.ArmorGainSelfProcedure(value);
+                }),
+
+            new WaiGongEntry("玄武吐息法", new CLLibrary.Range(4, 5), "消耗\n本局游戏中：治疗可以穿上限", WuXing.Shui, manaCost: 2,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("玄武吐息法");
+                }),
+
+            new WaiGongEntry("吞天", new CLLibrary.Range(4, 5), "消耗\n10攻 暴击 吸血", WuXing.Shui, manaCost: 2, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.AttackProcedure(10, crit: true, lifeSteal: true);
+                }),
+
+            new WaiGongEntry("观棋烂柯", new CLLibrary.Range(4, 5), "施加1跳回合", WuXing.Shui, manaCost: 1,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffOppoProcedure("跳回合");
+                }),
+
+            new WaiGongEntry("通透世界", new CLLibrary.Range(4, 5), "消耗\n本场战斗中：攻击具有穿透", WuXing.Mu, manaCost: 1,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("通透世界");
+                }),
+
+            new WaiGongEntry("回响", new CLLibrary.Range(4, 5), "使用第一张牌", WuXing.Mu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    if (!recursive)
+                        return;
+                    caster._waiGongList[0].Execute(caster, false);
+                }),
+
+            new WaiGongEntry("鹤回翔", new CLLibrary.Range(4, 5), "消耗\n反转出牌顺序", WuXing.Mu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    if (caster.Forward)
+                        caster.BuffSelfProcedure("鹤回翔");
+                    else
+                        caster.TryRemoveBuff("鹤回翔");
+                }),
+
+            new WaiGongEntry("亢龙有悔", new CLLibrary.Range(4, 5), "10攻x3 穿透\n闪避+3\n每使用一次效果减弱", WuXing.Mu, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    if (waiGong.RunUsedTimes >= 3)
+                        return;
+
+                    caster.AttackProcedure(10, 3 - waiGong.RunUsedTimes, pierce: true);
+                    caster.BuffSelfProcedure("闪避", 3 - waiGong.RunUsedTimes);
+                }),
+
+            new WaiGongEntry("净天地", new CLLibrary.Range(4, 5), "下1张非攻击卡不消耗灵气，使用之后消耗", WuXing.Huo,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("净天地");
+                }),
+
+            new WaiGongEntry("天女散花", new CLLibrary.Range(4, 5), "1攻 本局对战中，每获得过1闪避，多攻击1次", WuXing.Huo, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.AttackProcedure(1, caster.GainedEvadeRecord + 1);
+                }),
+
+            new WaiGongEntry("凤凰涅槃", new CLLibrary.Range(4, 5), "消耗\n累计获得20灼烧激活\n每轮：生命回满", WuXing.Huo,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.BuffSelfProcedure("待激活的凤凰涅槃");
+                }),
+
+            new WaiGongEntry("土40", new CLLibrary.Range(4, 5), "消耗\n护甲+50", WuXing.Tu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                    caster.ArmorGainSelfProcedure(50);
+                }),
+
+            new WaiGongEntry("天人合一", new CLLibrary.Range(4, 5), "消耗\n激活所有架势", WuXing.Tu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                }),
+
+            new WaiGongEntry("无极剑阵", new CLLibrary.Range(4 , 5), "消耗\n使用之前3张剑阵牌", WuXing.Tu, 6, WaiGongType.JianZhen,
                 execute: (caster, waiGong, recursive) =>
                 {
                     if (recursive == false)
@@ -663,185 +847,58 @@ public class ChipCategory : Category<ChipEntry>
                         .Do(wg => wg.Execute(caster, false));
                 }),
 
-            // new WaiGongEntry("金42", new CLLibrary.Range(4, 5), new ChipDescription((l, j, dj, p) => $"持续4次，护甲减少时，加回来"), WuXing.Jin, 0, type: WaiGongEntry.WaiGongType.NONATTACK,
-            //     execute: (caster, waiGong, recursive) =>
-            //     {
-            //     }),
-
-            new WaiGongEntry("梅剑", new CLLibrary.Range(4, 5), "5攻*2\n敌方有减甲：暴击", WuXing.Shui, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 5, crit: caster.Opponent().Armor < 0);
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 5, crit: caster.Opponent().Armor < 0);
-                }),
-
-            new WaiGongEntry("水42", new CLLibrary.Range(4, 5), "消耗\n施加2跳回合", WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster.Opponent(), "跳回合", 2);
-                }),
-
-            new WaiGongEntry("少阴", new CLLibrary.Range(4, 5), "消耗\n敌方获得减甲时，+3\n消耗少阳：额外层数", WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    int value = caster.GetStackOfBuff("少阳") + 3;
-                    caster.TryRemoveBuff("少阳");
-                    StageManager.Instance.BuffProcedure(caster, caster, "少阴", value);
-                }),
-
-            new WaiGongEntry("玄武吐息法", new CLLibrary.Range(4, 5), "消耗\n水势不少于30激活\n本局游戏中：治疗可以穿上限，无法二动", WuXing.Shui,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    throw new NotImplementedException();
-                    // waiGong.Consumed = true;
-                    // StageManager.Instance.BuffProcedure(caster, caster, "玄武吐息法");
-                }),
-
-            new WaiGongEntry("合", new CLLibrary.Range(4, 5), new ChipDescription((l, j, dj, p) => $"消耗所有水势\n奇偶：每消耗1，给与3减甲/生命及上限+3"), WuXing.Shui, 6,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int value = caster.GetStackOfBuff("水势") * 3;
-                    caster.TryRemoveBuff("水势");
-                    if (waiGong.IsOdd)
-                    {
-                        StageManager.Instance.AttackProcedure(caster, caster.Opponent(), value);
-                    }
-                    else
-                    {
-                        caster.MaxHp += value;
-                        StageManager.Instance.HealProcedure(caster, caster, value);
-                    }
-                }),
-
-            new WaiGongEntry("亢龙有悔", new CLLibrary.Range(4, 5), "消耗24生命上限\n24攻 吸血", WuXing.Mu, 1, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    caster.MaxHp -= 24;
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 24, lifeSteal: true);
-                }),
-
-            new WaiGongEntry("木41", new CLLibrary.Range(4, 5), "消耗\n本场战斗中，治疗被代替，每有10点，格挡+1\n格挡效果翻倍", WuXing.Mu,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "强化格挡");
-                }),
-
-            new WaiGongEntry("木42", new CLLibrary.Range(4, 5), "消耗\n本场战斗中，被治疗时，如果实际治疗>=20，二动", WuXing.Mu,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "治疗转二动");
-                }),
-
-            new WaiGongEntry("火40", new CLLibrary.Range(4, 5), "10攻*3 穿透", WuXing.Huo, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 10, 3, pierce: true);
-                }),
-
-            new WaiGongEntry("涅槃", new CLLibrary.Range(4, 5), "消耗\n累计获得20闪避激活\n每轮：生命回满", WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "待激活的涅槃");
-                }),
-
-            new WaiGongEntry("夜凯", new CLLibrary.Range(4, 5), "每回合：消耗10生命，力量+1", WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "夜凯");
-                }),
-
-            new WaiGongEntry("惊如雷", new CLLibrary.Range(4, 5), "下一张牌使用两次", WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "双发");
-                }),
-
-            new WaiGongEntry("天女散花", new CLLibrary.Range(4, 5), "1攻 消耗所有闪避，每消耗1点，多攻击1次", WuXing.Tu, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    int value = caster.GetStackOfBuff("闪避");
-                    caster.TryConsumeBuff("闪避", value);
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 1, value);
-                }),
-
-            // new WaiGongEntry("强化不屈", new CLLibrary.Range(4, 5), "消耗\n累计12不屈激活\n对手回合中，自己不屈激活时，施加1跳回合", WuXing.Tu,
-            //     execute: (caster, waiGong, recursive) =>
-            //     {
-            //         throw new NotImplementedException();
-            //         // if (!caster.TryConsumeBuff("不屈", 8))
-            //         //     return;
-            //         // waiGong.Consumed = true;
-            //         // StageManager.Instance.BuffProcedure(caster, caster, "强化不屈");
-            //     }),
-
-            new WaiGongEntry("破军", new CLLibrary.Range(4, 5), "5攻x5", WuXing.Tu, 3,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.AttackProcedure(caster, caster.Opponent(), 5, 5);
-                }),
-
-            new WaiGongEntry("庚金：万千辉", 5, "无效化敌人下一次攻击，并且反击", WuXing.Jin, type: WaiGongType.Attack,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    StageManager.Instance.BuffProcedure(caster, caster, "看破");
-                }),
-
-            new WaiGongEntry("天人合一", 5, "消耗\n激活所有架势", WuXing.Jin,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    throw new NotImplementedException();
-                }),
-
             // 莲花
-            new WaiGongEntry("凶水：三步", 5, "10攻 击伤：对方剩余生命每有2点，施加1减甲", WuXing.Shui, type: WaiGongType.Attack,
+            new WaiGongEntry("凶水：三步", 5, "10攻 击伤：对方剩余生命每有2点，施加1减甲", WuXing.Jin, type: WaiGongType.Attack,
                 execute: (caster, waiGong, recursive) =>
                 {
-                    StageManager.Instance.AttackProcedure(caster, caster, 10,
+                    caster.AttackProcedure(10,
                         damaged: d =>
                         {
                             int value = d.Tgt.Hp / 2;
-                            StageManager.Instance.ArmorLoseProcedure(d.Tgt, value);
+                            d.Src.ArmorLoseOppoProcedure(value);
                         });
                 }),
 
-            new WaiGongEntry("缠枝：周天结", 5, "消耗6格挡\n消耗\n本场战斗中，灵气消耗后加回", WuXing.Mu,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    // waiGong.Consumed = true;
-                    // StageManager.Instance.BuffProcedure(caster, caster, "通透世界");
-                }),
-
-            new WaiGongEntry("烬焰：须菩提", 5, "下一张牌使用之后消耗，第六次使用时消耗", WuXing.Huo,
-                execute: (caster, waiGong, recursive) =>
-                {
-                    // waiGong.Consumed = true;
-                    // StageManager.Instance.BuffProcedure(caster, caster, "通透世界");
-                }),
-
-            new WaiGongEntry("轰炎：焚天", 5, "消耗，本场战斗中，自己的所有攻击具有穿透", WuXing.Huo,
+            new WaiGongEntry("缠枝：周天结", 5, "消耗6格挡\n消耗\n本场战斗中，灵气消耗后加回", WuXing.Shui, type: WaiGongType.LingQi,
                 execute: (caster, waiGong, recursive) =>
                 {
                     waiGong.Consumed = true;
-                    StageManager.Instance.BuffProcedure(caster, caster, "通透世界");
                 }),
 
-            new WaiGongEntry("狂火：钟声", 5, "消耗，永久三动，三回合后死亡", WuXing.Huo,
+            new WaiGongEntry("烬焰：须菩提", 5, "下一张牌使用之后消耗，第六次使用时消耗", WuXing.Mu,
                 execute: (caster, waiGong, recursive) =>
                 {
+                    waiGong.Consumed = true;
                 }),
 
-            new WaiGongEntry("霸王鼎：离别", 5, "消耗，永久不屈（待实现）", WuXing.Tu,
+            new WaiGongEntry("轰炎：焚天", 5, "消耗，本场战斗中，自己的所有攻击具有穿透", WuXing.Mu,
                 execute: (caster, waiGong, recursive) =>
                 {
-                    // waiGong.Consumed = true;
-                    // StageManager.Instance.BuffProcedure(caster, caster, "通透世界");
+                    waiGong.Consumed = true;
+                }),
+
+            new WaiGongEntry("狂火：钟声", 5, "消耗，永久三动，三回合后死亡", WuXing.Mu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                }),
+
+            new WaiGongEntry("霸王鼎：离别", 5, "消耗，永久不屈", WuXing.Huo,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
+                }),
+
+            new WaiGongEntry("庚金：万千辉", 5, "无效化敌人下一次攻击，并且反击", WuXing.Tu, type: WaiGongType.Attack,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    caster.BuffSelfProcedure("看破");
+                }),
+
+            new WaiGongEntry("返虚土", 5, "消耗", WuXing.Tu,
+                execute: (caster, waiGong, recursive) =>
+                {
+                    waiGong.Consumed = true;
                 }),
         };
     }

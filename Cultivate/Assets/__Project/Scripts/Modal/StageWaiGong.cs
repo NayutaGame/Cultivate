@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CLLibrary;
 using DG.Tweening;
@@ -18,6 +19,7 @@ public class StageWaiGong
     public int SlotIndex => _slotIndex;
 
     public bool Consumed;
+    public bool RunConsumed;
 
     public int GetManaCost()
         => _entry.GetManaCost(Level, GetJingJie(), Dj, _powers);
@@ -36,10 +38,24 @@ public class StageWaiGong
         return _runChip.JingJie;
     }
 
-    public int Dj => GetJingJie() - _entry.JingJieRange.Start;
-    public bool JiaShi => Next(true).Entry.Name == "收刀" || Prev(true).Entry.Name == "拔刀" || _owner.GetStackOfBuff("天人合一") > 0;
-    public bool IsFirstTime => StageUsedTimes == 0;
-    public bool IsOdd => SlotIndex % 2 == 0;
+    public int Dj
+        => GetJingJie() - _entry.JingJieRange.Start;
+    public bool JiaShi
+        => Next(true).Entry.Name == "收刀" || Prev(true).Entry.Name == "拔刀" || _owner.GetStackOfBuff("天人合一") > 0;
+    public bool IsFirstTime
+        => StageUsedTimes == 0;
+    public bool IsOdd
+        => SlotIndex % 2 == 0 || _owner.GetStackOfBuff("森罗万象") > 0;
+    public bool IsEven
+        => SlotIndex % 2 == 1 || _owner.GetStackOfBuff("森罗万象") > 0;
+    public bool IsEnd
+        => SlotIndex == _owner._waiGongList.Length - 1;
+    public bool NoOtherAttack
+        => _owner._waiGongList.All(wg => wg == this || !wg.GetWaiGongType().Contains(WaiGongType.Attack));
+    public bool NoOtherLingQi
+        => _owner._waiGongList.All(wg => wg == this || !wg.GetWaiGongType().Contains(WaiGongType.LingQi));
+    public bool NoAttackAdjacents
+        => !Prev(false).GetWaiGongType().Contains(WaiGongType.Attack) && !Next(false).GetWaiGongType().Contains(WaiGongType.Attack);
 
     // run powers
 
@@ -58,6 +74,7 @@ public class StageWaiGong
         {
             _entry = _runChip._entry as WaiGongEntry;
             Consumed = false;
+            RunConsumed = false;
             // RunLevel = _runChip.Level;
             Level = _runChip.Level;
             RunUsedTimes = _runChip.RunUsedTimes;
@@ -71,6 +88,7 @@ public class StageWaiGong
         {
             _entry = Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry;
             Consumed = false;
+            RunConsumed = false;
             // RunLevel = 0;
             Level = 0;
             RunUsedTimes = 0;

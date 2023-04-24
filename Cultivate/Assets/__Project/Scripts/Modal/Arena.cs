@@ -30,7 +30,7 @@ public class Arena : Inventory<RunEnemy>, GDictionary
 
     public void SetEnemy(int index, int enemyEntryIndex)
     {
-        this[index] = new RunEnemy(Encyclopedia.EnemyCategory[enemyEntryIndex], new CreateEnemyDetails());
+        this[index] = new RunEnemy(Encyclopedia.EnemyCategory[enemyEntryIndex], new CreateEnemyDetails(RunManager.Instance.JingJie));
     }
 
     public void SetRandom(int index)

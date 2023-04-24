@@ -10,6 +10,19 @@ public class HeroChipSlot
     public Tile XueWei;
     public AcquiredRunChip AcquiredRunChip;
 
+    public bool RunConsumed;
+
+    public bool TryConsume()
+    {
+        if (!RunConsumed)
+            return false;
+
+        AcquiredRunChip toConsume = AcquiredRunChip;
+        TryUnequip();
+        toConsume.Unplug();
+        return true;
+    }
+
     public HeroChipSlot(int slotIndex)
     {
         SlotIndex = slotIndex;

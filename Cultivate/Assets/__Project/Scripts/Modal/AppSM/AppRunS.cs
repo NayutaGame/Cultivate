@@ -26,5 +26,6 @@ public class AppRunS : AppS
     {
         base.CExit();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
+        RunManager.Instance.CExit();
     }
 }

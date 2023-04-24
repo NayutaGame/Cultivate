@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using CLLibrary;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Sequence = DG.Tweening.Sequence;
 
-public class StageManager : Singleton<StageManager>, GDictionary
+public class StageManager : CLLibrary.Singleton<StageManager>, GDictionary
 {
     private readonly int MAX_ACTION_COUNT = 128;
 
@@ -64,7 +65,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
             {
                 int negate = Mathf.Min(d.Value, tgt.Armor);
                 d.Value -= negate;
-                ArmorLoseProcedure(d.Tgt, negate);
+                ArmorLoseProcedure(d.Src, d.Tgt, negate);
 
                 if (d.Value == 0) // undamage?.Invoke();
                 {
@@ -140,24 +141,6 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
         tgt.Hp -= d.Value;
 
-        if (tgt.Hp <= 0)
-        {
-            bool activeLastStand = tgt.GetStackOfBuff("激活的不屈") > 0;
-            if (activeLastStand)
-            {
-                tgt.Hp = 1;
-            }
-            else
-            {
-                bool lastStand = tgt.TryConsumeBuff("不屈");
-                if (lastStand)
-                {
-                    BuffProcedure(tgt, tgt, "激活的不屈");
-                    tgt.Hp = 1;
-                }
-            }
-        }
-
         if (d.Value == 0)
         {
             d.Undamaged?.Invoke(d);
@@ -183,7 +166,16 @@ public class StageManager : Singleton<StageManager>, GDictionary
         if (d.Cancel)
             return;
 
-        int actualHealed = Mathf.Min(tgt.MaxHp - tgt.Hp, d.Value);
+        int actualHealed;
+        if (d.Penetrate)
+        {
+            tgt.MaxHp = Mathf.Max(tgt.MaxHp, tgt.Hp + d.Value);
+            actualHealed = d.Value;
+        }
+        else
+        {
+            actualHealed = Mathf.Min(tgt.MaxHp - tgt.Hp, d.Value);
+        }
 
         tgt.Hp += actualHealed;
         tgt.HealedRecord += actualHealed;
@@ -208,39 +200,43 @@ public class StageManager : Singleton<StageManager>, GDictionary
     }
 
     public void ArmorGainProcedure(StageEntity src, StageEntity tgt, int value)
-        => ArmorGainProcedure(new ArmorDetails(src, tgt, value));
-    public void ArmorGainProcedure(ArmorDetails d)
+        => ArmorGainProcedure(new ArmorGainDetails(src, tgt, value));
+    public void ArmorGainProcedure(ArmorGainDetails d)
     {
-        d.Src._Armor(d);
-        d.Tgt.Armored(d);
+        d.Src.ArmorGain(d);
+        d.Tgt.ArmorGained(d);
         if (d.Cancel)
             return;
 
         d.Tgt.Armor += d.Value;
-        Report.Append($"    护甲变成了[{d.Src.Armor}]");
+        Report.Append($"    护甲变成了[{d.Tgt.Armor}]");
     }
 
-    public void ArmorLoseProcedure(StageEntity tgt, int value)
+    public void ArmorLoseProcedure(StageEntity src, StageEntity tgt, int value)
+        => ArmorLoseProcedure(new ArmorLoseDetails(src, tgt, value));
+    public void ArmorLoseProcedure(ArmorLoseDetails d)
     {
-        if (tgt.Armor < 0)
-        {
-            tgt.Armor -= value;
+        d.Src.ArmorLose(d);
+        d.Tgt.ArmorLost(d);
+        if (d.Cancel)
             return;
-        }
 
-        tgt.LostArmorRecord += Mathf.Min(tgt.Armor, value);
-        tgt.Armor -= value;
+        if (d.Tgt.Armor >= 0)
+            d.Tgt.LostArmorRecord += Mathf.Min(d.Tgt.Armor, d.Value);
+
+        d.Tgt.Armor -= d.Value;
+        Report.Append($"    护甲变成了[{d.Tgt.Armor}]");
     }
 
-    public void DispelProcedure(StageEntity entity, int stack, bool targetingFriendly)
-    {
-        List<Buff> buffs = entity.Buffs.FilterObj(b => b.Friendly == targetingFriendly && b.Dispellable).ToList();
-        buffs.Do(b =>
-        {
-            b.Stack -= stack;
-            Report.Append($"{b.GetName()}.Stack 驱散后变成 {b.Stack}");
-        });
-    }
+    // public void DispelProcedure(StageEntity entity, int stack, bool targetingFriendly)
+    // {
+    //     List<Buff> buffs = entity.Buffs.FilterObj(b => b.Friendly == targetingFriendly && b.Dispellable).ToList();
+    //     buffs.Do(b =>
+    //     {
+    //         b.Stack -= stack;
+    //         Report.Append($"{b.GetName()}.Stack 驱散后变成 {b.Stack}");
+    //     });
+    // }
 
     public StageEntity[] _entities;
     [NonSerialized] public EntitySlot[] _slots;
@@ -282,11 +278,6 @@ public class StageManager : Singleton<StageManager>, GDictionary
         };
     }
 
-    // public int GetHeroNeiGongCount() => _hero._neiGongList.Length;
-    // public int GetHeroWaiGongCount() => _hero._waiGongList.Length;
-    // public int GetEnemyNeiGongCount() => _enemy._neiGongList.Length;
-    // public int GetEnemyWaiGongCount() => _enemy._waiGongList.Length;
-
     public int GetHeroBuffCount() => _entities[0].GetBuffCount();
     public int GetEnemyBuffCount() => _entities[1].GetBuffCount();
 
@@ -318,6 +309,8 @@ public class StageManager : Singleton<StageManager>, GDictionary
         Report.HomeVictory = _commitWin;
         Report.MingYuanPenalty = _commitWin ? 0 : 1;
         RunManager.Instance.Report = Report;
+
+        _entities[0].WriteEffect();
 
         if (!RunManager.Instance.IsStream)
         {
@@ -378,6 +371,8 @@ public class StageManager : Singleton<StageManager>, GDictionary
             whosTurn = 1 - whosTurn;
         }
 
+        _entities[1].EndStage();
+        _entities[0].EndStage();
         ForceCommit();
     }
 

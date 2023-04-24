@@ -7,6 +7,7 @@ public class ArenaWaiGongInventoryView : InventoryView<RunChipView>
 {
     public Button IndexOrderButton;
     public Button WuXingOrderButton;
+    public Button TypeOrderButton;
 
     public override void Configure(IndexPath indexPath)
     {
@@ -14,6 +15,7 @@ public class ArenaWaiGongInventoryView : InventoryView<RunChipView>
 
         IndexOrderButton.onClick.AddListener(SortIndexOrder);
         WuXingOrderButton.onClick.AddListener(SortWuXingOrder);
+        TypeOrderButton.onClick.AddListener(SortTypeOrder);
     }
 
     private void SortIndexOrder()
@@ -21,16 +23,6 @@ public class ArenaWaiGongInventoryView : InventoryView<RunChipView>
         ArenaWaiGongInventory inventory = RunManager.Get<ArenaWaiGongInventory>(GetIndexPath());
         inventory.Sort((lhs, rhs) =>
         {
-            // int lJingJie = lhs.JingJie;
-            // int rJingJie = rhs.JingJie;
-            // if (lJingJie != rJingJie)
-            //     return rJingJie - lJingJie;
-            //
-            // int lWuXing = lhs._entry.WuXing ?? -1;
-            // int rWuXing = rhs._entry.WuXing ?? -1;
-            // if (lWuXing != rWuXing)
-            //     return lWuXing - rWuXing;
-
             int lIndex = Encyclopedia.ChipCategory.IndexOf(lhs._entry);
             int rIndex = Encyclopedia.ChipCategory.IndexOf(rhs._entry);
             return lIndex - rIndex;
@@ -43,11 +35,6 @@ public class ArenaWaiGongInventoryView : InventoryView<RunChipView>
         ArenaWaiGongInventory inventory = RunManager.Get<ArenaWaiGongInventory>(GetIndexPath());
         inventory.Sort((lhs, rhs) =>
         {
-            // int lJingJie = lhs.JingJie;
-            // int rJingJie = rhs.JingJie;
-            // if (lJingJie != rJingJie)
-            //     return rJingJie - lJingJie;
-
             int lWuXing = lhs._entry.WuXing.HasValue ? lhs._entry.WuXing.Value : -1;
             int rWuXing = rhs._entry.WuXing.HasValue ? rhs._entry.WuXing.Value : -1;
             if (lWuXing != rWuXing)
@@ -59,4 +46,23 @@ public class ArenaWaiGongInventoryView : InventoryView<RunChipView>
         });
         RunCanvas.Instance.Refresh();
     }
+
+    private void SortTypeOrder()
+    {
+        ArenaWaiGongInventory inventory = RunManager.Get<ArenaWaiGongInventory>(GetIndexPath());
+        inventory.Sort((lhs, rhs) =>
+        {
+            int lType = (lhs._entry as WaiGongEntry).Type.Value;
+            int rType = (rhs._entry as WaiGongEntry).Type.Value;
+            if (lType != rType)
+                return lType - rType;
+
+            int lIndex = Encyclopedia.ChipCategory.IndexOf(lhs._entry);
+            int rIndex = Encyclopedia.ChipCategory.IndexOf(rhs._entry);
+            return lIndex - rIndex;
+        });
+        RunCanvas.Instance.Refresh();
+    }
+
+
 }

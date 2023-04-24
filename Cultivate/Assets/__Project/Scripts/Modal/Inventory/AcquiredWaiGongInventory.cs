@@ -18,14 +18,15 @@ public class AcquiredWaiGongInventory: Inventory<AcquiredRunChip>
         if (jingJie == JingJie.FanXu) {
             upgrade = false;
         } else if (jingJie == JingJie.HuaShen) {
-            upgrade = RandomManager.value < 0.05;
+            // upgrade = RandomManager.value < 0.05;
+            upgrade = false;
         } else {
             upgrade = true;
         }
 
         JingJie newJingJie = jingJie + (upgrade ? 1 : 0);
 
-        if (lhs.Chip._entry == rhs.Chip._entry && upgrade)
+        if (lhs.Chip._entry == rhs.Chip._entry && upgrade && lhs.Chip._entry.JingJieRange.Contains(lhs.Chip.JingJie + 1))
         {
             lhs.Chip.JingJie = newJingJie;
             rhs.Unplug();

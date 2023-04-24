@@ -13,7 +13,7 @@ public class BattleNodeEntry : NodeEntry
 
             // 根据CreateEnemyDetail生成，比如打筑基敌人应该抽两张卡
             // Boss战斗奖励应该更丰富
-            battleRunNode.AddReward(new DrawChipRewardDescriptor("一个练气外功", e => e is WaiGongEntry, JingJie.LianQi, RunManager.Instance.JingJie + 1));
+            DesignerEnvironment.AddRewardForBattleRunNode(battleRunNode);
 
             BattlePanelDescriptor A = new BattlePanelDescriptor(battleRunNode._enemyEntry, battleRunNode.CreateEnemyDetails);
             DialogPanelDescriptor B = new DialogPanelDescriptor($"胜利\n\n得到{battleRunNode.GetRewardsString()}");

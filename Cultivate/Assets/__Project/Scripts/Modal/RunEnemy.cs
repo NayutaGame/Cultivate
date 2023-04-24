@@ -116,6 +116,8 @@ public class RunEnemy : GDictionary
         {
             EnemyChipSlot s = GetSlot(i);
             string name = s.GetName();
+            if(string.IsNullOrEmpty(name))
+                continue;
             int level = s.Chip?.Level ?? 0;
             string jingJie = s.GetJingJie()?._index.ToString() ?? "null";
             int jin = s.GetPower(WuXing.Jin);

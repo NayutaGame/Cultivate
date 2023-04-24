@@ -61,13 +61,18 @@ public abstract class StageEntity : GDictionary
     public event Action<HealDetails> HealedEvent;
     public void Healed(HealDetails d) => HealedEvent?.Invoke(d);
 
-    public event Action<ArmorDetails> ArmorEvent;
-    public void _Armor(ArmorDetails d) => ArmorEvent?.Invoke(d);
+    public event Action<ArmorGainDetails> ArmorGainEvent;
+    public void ArmorGain(ArmorGainDetails d) => ArmorGainEvent?.Invoke(d);
 
-    public event Action<ArmorDetails> ArmoredEvent;
-    public void Armored(ArmorDetails d) => ArmoredEvent?.Invoke(d);
+    public event Action<ArmorGainDetails> ArmorGainedEvent;
+    public void ArmorGained(ArmorGainDetails d) => ArmorGainedEvent?.Invoke(d);
 
-    //
+    public event Action<ArmorLoseDetails> ArmorLoseEvent;
+    public void ArmorLose(ArmorLoseDetails d) => ArmorLoseEvent?.Invoke(d);
+
+    public event Action<ArmorLoseDetails> ArmorLostEvent;
+    public void ArmorLost(ArmorLoseDetails d) => ArmorLostEvent?.Invoke(d);
+
     // public event Action<DamageDetails> LaststandEvent;
     // public void Laststand(DamageDetails d) => LaststandEvent?.Invoke(d);
     //
@@ -143,11 +148,6 @@ public abstract class StageEntity : GDictionary
         UltraSwift = false;
         Swift = false;
 
-        if (GetStackOfBuff("激活的不屈") > 0 && GetStackOfBuff("强化不屈") > 0)
-            StageManager.Instance.BuffProcedure(this, Opponent(), "跳回合");
-
-        TryConsumeBuff("激活的不屈");
-
         StartTurn(new TurnDetails(this, _p));
 
         bool skipTurn = TryConsumeBuff("跳回合");
@@ -155,18 +155,18 @@ public abstract class StageEntity : GDictionary
         {
             Step();
 
-            if (GetSumOfStackOfBuffs("不屈", "激活的不屈", "缠绕") == 0)
+            // if (GetStackOfBuff("缠绕") == 0)
+            // {
+            if (UltraSwift)
             {
-                if (UltraSwift)
-                {
-                    Step();
-                    Step();
-                }
-                else if (Swift)
-                {
-                    Step();
-                }
+                Step();
+                Step();
             }
+            else if (Swift)
+            {
+                Step();
+            }
+            // }
         }
 
         EndTurn(new TurnDetails(this, _p));
@@ -209,12 +209,15 @@ public abstract class StageEntity : GDictionary
 
     private void MoveP()
     {
+        int dir = Forward ? 1 : -1;
         for (int i = 0; i < _waiGongList.Length; i++)
         {
-            _p++;
-            if (_p >= _waiGongList.Length)
+            _p += dir;
+
+            bool within = 0 <= _p && _p < _waiGongList.Length;
+            if (!within)
             {
-                _p %= _waiGongList.Length;
+                _p = (_p + _waiGongList.Length) % _waiGongList.Length;
                 EndRound();
                 StartRound();
             }
@@ -238,13 +241,22 @@ public abstract class StageEntity : GDictionary
     public bool Swift;
     private bool _manaShortage;
 
-    public bool IsFullHp => Hp == MaxHp;
+    public bool IsFullHp
+        => Hp == MaxHp;
+    public bool Forward
+        => GetStackOfBuff("鹤回翔") == 0;
+    public bool IsDead()
+        => _hp <= 0;
+    public int ConsumedCount
+        => _waiGongList.Count(waiGong => waiGong.Consumed);
 
     public int LostArmorRecord;
     public int GeneratedManaRecord;
     public int HighestManaRecord;
     public int SelfDamageRecord;
     public int HealedRecord;
+    public int GainedEvadeRecord;
+    public int GainedBurningRecord;
 
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
@@ -271,6 +283,10 @@ public abstract class StageEntity : GDictionary
         SelfDamageRecord = 0;
         HealedRecord = 0;
 
+        Buffed.Add(0, HighestManaRecorder);
+        Buffed.Add(0, GainedEvadeRecorder);
+        Buffed.Add(0, GainedBurningRecorder);
+
         // _modifier = Modifier.Default;
         // _notes = new List<INote>();
 
@@ -281,7 +297,34 @@ public abstract class StageEntity : GDictionary
         LoseHpEvent += DefaultLoseHp;
     }
 
-    public bool IsDead() => _hp <= 0;
+    public BuffDetails HighestManaRecorder(BuffDetails d)
+    {
+        if (d._buffEntry.Name != "灵气")
+            return d;
+
+        HighestManaRecord = Mathf.Max(HighestManaRecord, GetStackOfBuff("灵气"));
+        return d;
+    }
+
+    public BuffDetails GainedEvadeRecorder(BuffDetails d)
+    {
+        if (d._buffEntry.Name != "闪避")
+            return d;
+
+        GainedEvadeRecord += d._stack;
+        return d;
+    }
+
+    public BuffDetails GainedBurningRecorder(BuffDetails d)
+    {
+        if (d._buffEntry.Name != "灼热")
+            return d;
+
+        GainedBurningRecord += d._stack;
+        return d;
+    }
+
+    public virtual void WriteEffect() { }
 
     ~StageEntity()
     {
@@ -389,40 +432,6 @@ public abstract class StageEntity : GDictionary
 
     #endregion
 
-    // public void Attack(int value, int times = 1, bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true, Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-    //     => StageManager.Instance.AttackProcedure(this, Opponent(), value, times, lifeSteal, pierce, crit, recursive, damaged, undamaged);
-    //
-    // public void ReceiveBuff(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-    //     => StageManager.Instance.BuffProcedure(this, this, buffEntry, stack, recursive);
-    //
-    // public void GiveBuff(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-    //     => StageManager.Instance.BuffProcedure(this, Opponent(), buffEntry, stack, recursive);
-
-    // #region Modifier
-    //
-    // private Modifier _modifier;
-    // public Modifier Modifier => _modifier;
-    //
-    // public int GetFinalPower() =>
-    //     (int)Mathf.Max(0, ((
-    //                            GetCurrPower()
-    //                            + GetModifierProperty(Constants.PowerAdd)
-    //                            + GetModifierProperty(Constants.LostHP2Power) * (GetMaxHP() - GetCurrHP())
-    //                        )
-    //                        * (1 + GetModifierProperty(Constants.PowerMul))
-    //                        ));
-    //
-    // public float GetModifierProperty(string key) => Modifier.Value.ContainsKey(key) ? Modifier.Value[key] : 0;
-    //
-    // public float GetFinalLifesteal() => GetModifierProperty(Constants.Lifesteal);
-    // public float GetFinalDamageImmune() => GetModifierProperty(Constants.DamageImmune);
-    // public float GetFinalBlademail() => GetModifierProperty(Constants.Blademail);
-    // public float GetFinalArmorKeep() => GetModifierProperty(Constants.ArmorKeep);
-    // public float GetFinalExtraGather() => GetModifierProperty(Constants.ExtraGather);
-    // public float GetBlock() => GetModifierProperty(Constants.Block);
-    //
-    // #endregion
-
     // private List<INote> _notes;
     //
     // public void ConfigureNote(StringBuilder sb)
@@ -445,4 +454,41 @@ public abstract class StageEntity : GDictionary
     // {
     //     notes.Clear();
     // }
+
+    #region Procedure
+
+    public void AttackProcedure(int value, int times = 1, bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
+        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
+        => StageManager.Instance.AttackProcedure(new AttackDetails(this, Opponent(), value, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
+
+    public void DamageSelfProcedure(int value, bool recursive = true,
+        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
+        => StageManager.Instance.DamageProcedure(new DamageDetails(this, this, value, recursive, damaged, undamaged));
+
+    public void DamageOppoProcedure(int value, bool recursive = true,
+        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
+        => StageManager.Instance.DamageProcedure(new DamageDetails(this, Opponent(), value, recursive, damaged, undamaged));
+
+    public void HealProcedure(int value)
+        => StageManager.Instance.HealProcedure(new HealDetails(this, this, value));
+
+    public void BuffSelfProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => StageManager.Instance.BuffProcedure(new BuffDetails(this, this, buffEntry, stack, recursive));
+
+    public void BuffOppoProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => StageManager.Instance.BuffProcedure(new BuffDetails(this, Opponent(), buffEntry, stack, recursive));
+
+    public void ArmorGainSelfProcedure(int value)
+        => StageManager.Instance.ArmorGainProcedure(new ArmorGainDetails(this, this, value));
+
+    public void ArmorGainOppoProcedure(int value)
+        => StageManager.Instance.ArmorGainProcedure(new ArmorGainDetails(this, Opponent(), value));
+
+    public void ArmorLoseSelfProcedure(int value)
+        => StageManager.Instance.ArmorLoseProcedure(new ArmorLoseDetails(this, this, value));
+
+    public void ArmorLoseOppoProcedure(int value)
+        => StageManager.Instance.ArmorLoseProcedure(new ArmorLoseDetails(this, Opponent(), value));
+
+    #endregion
 }

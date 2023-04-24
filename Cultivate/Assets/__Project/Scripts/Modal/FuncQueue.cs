@@ -10,7 +10,8 @@ public class FuncQueue<T0>
         _list = new List<Tuple<int, Func<T0, T0>>>();
     }
 
-    public void Add(int priority, Func<T0, T0> func) => Add(new Tuple<int, Func<T0, T0>>(priority, func));
+    public void Add(int priority, Func<T0, T0> func)
+        => Add(new Tuple<int, Func<T0, T0>>(priority, func));
     public void Add(Tuple<int, Func<T0, T0>> item)
     {
         for (int i = 0; i < _list.Count; i++)

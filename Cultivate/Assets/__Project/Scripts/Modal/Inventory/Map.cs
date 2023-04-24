@@ -113,12 +113,12 @@ public class Map : GDictionary
 
         _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
         {
-            { JingJie.LianQi   , new[] { _b, _b, _b, _b, _b, _b, _b, _b, _b } },
-            { JingJie.ZhuJi    , new[] { _b, _b, _b, _b, _b, _b, _b, _b, _b } },
-            { JingJie.JinDan   , new[] { _b, _b, _b, _b, _b, _b, _b, _b, _b } },
-            { JingJie.YuanYing , new[] { _b, _b, _b, _b, _b, _b, _b, _b, _b } },
-            { JingJie.HuaShen  , new[] { _b, _b, _b, _b, _b, _b, _b, _b, _b } },
-            { JingJie.FanXu    , new[] { _b, _b, _b, _b, _b, _b, _b, _b, _b } },
+            { JingJie.LianQi   , new[] { _b, _b, _b } },
+            { JingJie.ZhuJi    , new[] { _b, _b, _b } },
+            { JingJie.JinDan   , new[] { _b, _b, _b } },
+            { JingJie.YuanYing , new[] { _b, _b, _b } },
+            { JingJie.HuaShen  , new[] { _b, _b, _b } },
+            { JingJie.FanXu    , new[] { _b, _b, _b } },
         };
     }
 
@@ -126,8 +126,7 @@ public class Map : GDictionary
     {
         AutoPool<NodeEntry>[] pools = _poolConfiguration[jingJie];
 
-        bool isLastBattle = true;
-        for (int x = WIDTH - 1; x >= 0; x--)
+        for (int x = 0; x < WIDTH; x++)
         {
             AutoPool<NodeEntry> pool = x < pools.Length ? pools[x] : null;
             for (int y = 0; y < HEIGHT; y++)
@@ -144,18 +143,18 @@ public class Map : GDictionary
                     continue;
                 }
 
+                if (pool == _b && y != 0)
+                {
+                    this[x, y] = null;
+                    continue;
+                }
+
                 // canCreate
                 NodeEntry nodeEntry = pool.ForcePopItem();
                 if (nodeEntry is BattleNodeEntry battleNodeEntry)
                 {
-                    CreateEnemyDetails d = new CreateEnemyDetails(jingJie) { AllowNormal = !isLastBattle, AllowElite = !isLastBattle, AllowBoss = isLastBattle};
+                    CreateEnemyDetails d = new CreateEnemyDetails(jingJie, x);
                     this[x, y] = new BattleRunNode(new Vector2Int(x, y), battleNodeEntry, d);
-
-                    if (isLastBattle)
-                    {
-                        isLastBattle = false;
-                        break;
-                    }
                 }
                 else
                 {
