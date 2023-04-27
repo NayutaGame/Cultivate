@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using DG.Tweening;
+using UnityEditor.Experimental;
 using UnityEngine;
 
 public class WaiGongEntry : ChipEntry
@@ -58,9 +59,17 @@ public class WaiGongEntry : ChipEntry
 
     public void Execute(StageEntity caster, StageWaiGong waiGong, bool recursive)
     {
-        StageManager.Instance.Report.Append($"{caster.GetName()}使用了{Name}");
+        StageReport r = caster.Env.Report;
+        if (r.UseTween)
+        {
+            // await StageManager.Instance.AsyncWaitForCompletion();
+            r.ResetTween();
+            // shift tween
+        }
+        r.Append($"{caster.GetName()}使用了{Name}");
+        r.AppendNote(caster.Index, waiGong);
         _execute(caster, waiGong, recursive);
-        StageManager.Instance.Report.Append($"\n");
+        r.Append($"\n");
     }
 
     private void DefaultExecute(StageEntity caster, StageWaiGong waiGong, bool recursive) { }

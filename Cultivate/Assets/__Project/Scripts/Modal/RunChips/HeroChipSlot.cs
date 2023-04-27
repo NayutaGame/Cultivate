@@ -70,6 +70,12 @@ public class HeroChipSlot
         return 0;
     }
 
+    public string GetManaCostString()
+    {
+        int manaCost = GetManaCost();
+        return manaCost == 0 ? "" : manaCost.ToString();
+    }
+
     public string GetPowerString()
     {
         StringBuilder sb = new();

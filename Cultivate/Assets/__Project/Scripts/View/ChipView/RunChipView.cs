@@ -24,23 +24,17 @@ public class RunChipView : ItemView,
         _image = GetComponent<Image>();
     }
 
-    protected void SetColorFromJingJie(JingJie jingJie)
-    {
-        _image.color = CanvasManager.Instance.JingJieColors[jingJie];
-    }
-
     public override void Refresh()
     {
         base.Refresh();
+
+        LevelText.text = "";
 
         if (RunManager.Get<AcquiredRunChip>(GetIndexPath()) is { } acquiredRunChip)
         {
             gameObject.SetActive(true);
 
-            // LevelText.text = acquiredRunChip.GetLevel().ToString();
-            LevelText.text = "";
-            int manaCost = acquiredRunChip.GetManaCost();
-            ManacostText.text = manaCost == 0 ? "" : manaCost.ToString();
+            ManacostText.text = acquiredRunChip.GetManaCostString();
             NameText.text = acquiredRunChip.GetName();
             SetDescriptionText(acquiredRunChip.GetDescription());
             PowerText.text = acquiredRunChip.GetPowerString();
@@ -59,7 +53,6 @@ public class RunChipView : ItemView,
 
             if(heroChipSlot.AcquiredRunChip == null)
             {
-                LevelText.text = "";
                 ManacostText.text = "";
                 NameText.text = "空";
                 SetDescriptionText("");
@@ -71,11 +64,7 @@ public class RunChipView : ItemView,
             }
             else
             {
-                // LevelText.text = heroChipSlot.GetLevel().ToString();
-                LevelText.text = "";
-
-                int manaCost = heroChipSlot.GetManaCost();
-                ManacostText.text = manaCost == 0 ? "" : manaCost.ToString();
+                ManacostText.text = heroChipSlot.GetManaCostString();
                 bool manaShortage = heroChipSlot.IsManaShortage();
                 ManacostText.color = manaShortage ? Color.red : Color.black;
 
@@ -97,7 +86,6 @@ public class RunChipView : ItemView,
 
             if(enemyChipSlot.Chip == null)
             {
-                LevelText.text = "";
                 ManacostText.text = "";
                 NameText.text = "空";
                 SetDescriptionText("");
@@ -109,10 +97,7 @@ public class RunChipView : ItemView,
             }
             else
             {
-                // LevelText.text = enemyChipSlot.Chip.Level.ToString();
-                LevelText.text = "";
-                int manaCost = enemyChipSlot.GetManaCost();
-                ManacostText.text = manaCost == 0 ? "" : manaCost.ToString();
+                ManacostText.text = enemyChipSlot.GetManaCostString();
                 NameText.text = enemyChipSlot.Chip.GetName();
                 SetDescriptionText(enemyChipSlot.GetDescription());
                 PowerText.text = enemyChipSlot.GetPowerString();
@@ -125,10 +110,7 @@ public class RunChipView : ItemView,
         {
             gameObject.SetActive(true);
 
-            // LevelText.text = chip.Level.ToString();
-            LevelText.text = "";
-            int manaCost = runChip.GetManaCost();
-            ManacostText.text = manaCost == 0 ? "" : manaCost.ToString();
+            ManacostText.text = runChip.GetManaCostString();
             NameText.text = runChip.GetName();
             SetDescriptionText(runChip.GetDescription());
             PowerText.text = "";
@@ -154,6 +136,11 @@ public class RunChipView : ItemView,
             return;
 
         SkillTypeText.text = type?.ToString();
+    }
+
+    protected void SetColorFromJingJie(JingJie jingJie)
+    {
+        _image.color = CanvasManager.Instance.JingJieColors[jingJie];
     }
 
     public void OnPointerDown(PointerEventData eventData)

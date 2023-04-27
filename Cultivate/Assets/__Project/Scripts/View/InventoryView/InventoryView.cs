@@ -19,9 +19,7 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath where T : Ite
     public virtual void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
-
         _views = new List<T>();
-
         RegisterExists();
     }
 
