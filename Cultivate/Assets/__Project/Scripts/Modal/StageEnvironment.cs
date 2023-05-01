@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 using DG.Tweening;
@@ -22,11 +23,11 @@ public class StageEnvironment : GDictionary
     /// <param name="recursive">是否会递归</param>
     /// <param name="damaged">如果造成伤害时候的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
-    public void AttackProcedure(StageEntity src, StageEntity tgt, int value, int times = 1,
+    public async Task AttackProcedure(StageEntity src, StageEntity tgt, int value, int times = 1,
         bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
-        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-        => AttackProcedure(new AttackDetails(src, tgt, value, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
-    public void AttackProcedure(AttackDetails attackDetails, int times)
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
+        => await AttackProcedure(new AttackDetails(src, tgt, value, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
+    public async Task AttackProcedure(AttackDetails attackDetails, int times)
     {
         if (attackDetails.Src.TryConsumeBuff("追击")) // 结算连击/追击
             times += 1;
@@ -38,8 +39,8 @@ public class StageEnvironment : GDictionary
             StageEntity src = d.Src;
             StageEntity tgt = d.Tgt;
 
-            src.Attack(d);
-            tgt.Attacked(d);
+            await src.Attack(d);
+            await tgt.Attacked(d);
             if (d.Cancel)
             {
                 _report.Append($"    攻击被取消");
@@ -62,7 +63,7 @@ public class StageEnvironment : GDictionary
             {
                 int negate = Mathf.Min(d.Value, tgt.Armor);
                 d.Value -= negate;
-                ArmorLoseProcedure(d.Src, d.Tgt, negate);
+                await ArmorLoseProcedure(d.Src, d.Tgt, negate);
 
                 if (d.Value == 0) // undamage?.Invoke();
                 {
@@ -81,13 +82,13 @@ public class StageEnvironment : GDictionary
                 d.Value *= 2;
 
             // 伤害Procedure
-            DamageDetails damageDetails = DamageProcedure(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
+            DamageDetails damageDetails = await DamageProcedure(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
 
             // 结算吸血
             if (!damageDetails.Cancel)
             {
                 if (d.LifeSteal)
-                    HealProcedure(src, src, damageDetails.Value);
+                    await HealProcedure(src, src, damageDetails.Value);
             }
 
             // if (target.IsDead())
@@ -102,11 +103,7 @@ public class StageEnvironment : GDictionary
 
             if (_report.UseTween)
             {
-                Sequence attackTween = DOTween.Sequence()
-                    .Append(src.Slot().GetAttackTween())
-                    .Join(tgt.Slot().GetAttackedTween())
-                    .AppendInterval(0.5f);
-                _report.AppendTween(attackTween);
+                await _report.PlayTween(new AttackTweenDescriptor(d));
             }
             _report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
         }
@@ -121,16 +118,16 @@ public class StageEnvironment : GDictionary
     /// <param name="recursive">是否会递归</param>
     /// <param name="damaged">如果造成伤害时候的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
-    public DamageDetails DamageProcedure(StageEntity src, StageEntity tgt, int value, bool recursive = true,
-        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-        => DamageProcedure(new DamageDetails(src, tgt, value, recursive, damaged, undamaged));
-    public DamageDetails DamageProcedure(DamageDetails d)
+    public async Task<DamageDetails> DamageProcedure(StageEntity src, StageEntity tgt, int value, bool recursive = true,
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
+        => await DamageProcedure(new DamageDetails(src, tgt, value, recursive, damaged, undamaged));
+    public async Task<DamageDetails> DamageProcedure(DamageDetails d)
     {
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
 
-        src.Damage(d);
-        tgt.Damaged(d);
+        await src.Damage(d);
+        await tgt.Damaged(d);
 
         if (d.Cancel)
         {
@@ -152,15 +149,15 @@ public class StageEnvironment : GDictionary
         }
     }
 
-    public void HealProcedure(StageEntity src, StageEntity tgt, int value)
-        => HealProcedure(new HealDetails(src, tgt, value));
-    public void HealProcedure(HealDetails d)
+    public async Task HealProcedure(StageEntity src, StageEntity tgt, int value)
+        => await HealProcedure(new HealDetails(src, tgt, value));
+    public async Task HealProcedure(HealDetails d)
     {
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
 
-        src.Heal(d);
-        tgt.Healed(d);
+        await src.Heal(d);
+        await tgt.Healed(d);
 
         if (d.Cancel)
             return;
@@ -182,11 +179,11 @@ public class StageEnvironment : GDictionary
         _report.Append($"    生命变成了${tgt.Hp}");
     }
 
-    public void BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
-    public void BuffProcedure(BuffDetails d)
+    public async Task BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
+    public async Task BuffProcedure(BuffDetails d)
     {
-        d = d.Src.Buff.Evaluate(d);
+        d = await d.Src.Buff.Evaluate(d);
         if (d.Cancel) return;
 
         Buff same = d.Tgt.FindBuff(d._buffEntry);
@@ -209,6 +206,10 @@ public class StageEnvironment : GDictionary
                     break;
             }
 
+            if (_report.UseTween)
+            {
+                await _report.PlayTween(new VfxTweenDescriptor(d.Src.Slot(), $"{d._buffEntry.Name} +{d._stack}"));
+            }
             _report.Append($"    {d._buffEntry.Name}: {oldStack} -> {same.Stack}");
         }
         else
@@ -216,16 +217,20 @@ public class StageEnvironment : GDictionary
             Buff buff = new Buff(d.Tgt, d._buffEntry, d._stack);
             d.Tgt.AddBuff(buff);
 
+            if (_report.UseTween)
+            {
+                await _report.PlayTween(new VfxTweenDescriptor(d.Src.Slot(), $"{d._buffEntry.Name} +{d._stack}"));
+            }
             _report.Append($"    {d._buffEntry.Name}: 0 -> {buff.Stack}");
         }
 
         if (d.Cancel) return;
-        d = d.Tgt.Buffed.Evaluate(d);
+        d = await d.Tgt.Buffed.Evaluate(d);
     }
 
-    public void ArmorGainProcedure(StageEntity src, StageEntity tgt, int value)
-        => ArmorGainProcedure(new ArmorGainDetails(src, tgt, value));
-    public void ArmorGainProcedure(ArmorGainDetails d)
+    public async Task ArmorGainProcedure(StageEntity src, StageEntity tgt, int value)
+        => await ArmorGainProcedure(new ArmorGainDetails(src, tgt, value));
+    public async Task ArmorGainProcedure(ArmorGainDetails d)
     {
         d.Src.ArmorGain(d);
         d.Tgt.ArmorGained(d);
@@ -236,9 +241,9 @@ public class StageEnvironment : GDictionary
         _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
     }
 
-    public void ArmorLoseProcedure(StageEntity src, StageEntity tgt, int value)
-        => ArmorLoseProcedure(new ArmorLoseDetails(src, tgt, value));
-    public void ArmorLoseProcedure(ArmorLoseDetails d)
+    public async Task ArmorLoseProcedure(StageEntity src, StageEntity tgt, int value)
+        => await ArmorLoseProcedure(new ArmorLoseDetails(src, tgt, value));
+    public async Task ArmorLoseProcedure(ArmorLoseDetails d)
     {
         d.Src.ArmorLose(d);
         d.Tgt.ArmorLost(d);
@@ -309,22 +314,22 @@ public class StageEnvironment : GDictionary
         _entities[0].WriteEffect();
     }
 
-    public void Simulate()
+    public async Task Simulate()
     {
         int whosTurn = 0;
 
-        _entities.Do(e =>
+        foreach (var e in _entities)
         {
             e._p = -1;
-            e.StartStage();
-        });
+            await e.StartStage();
+        }
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
             StageEntity actor = _entities[whosTurn];
 
             _report.Append($"--------第{i}回合, {actor.GetName()}行动--------\n");
-            actor.Turn();
+            await actor.Turn();
 
             _entities.Do(e =>
             {
@@ -340,24 +345,24 @@ public class StageEnvironment : GDictionary
             whosTurn = 1 - whosTurn;
         }
 
-        _entities[1].EndStage();
-        _entities[0].EndStage();
+        await _entities[1].EndStage();
+        await _entities[0].EndStage();
         ForceCommit();
     }
 
-    public bool[] InnerManaSimulate()
+    public async Task<bool[]> InnerManaSimulate()
     {
         bool[] manaShortageBrief = new bool[RunManager.WaiGongLimit];
         bool stopWriting = false;
 
-        void WriteManaShortage(int p)
+        async Task WriteManaShortage(int p)
         {
             if (stopWriting)
                 return;
             manaShortageBrief[p + RunManager.WaiGongStartFromJingJie[RunManager.Instance.JingJie]] = true;
         }
 
-        void StopWriting()
+        async Task StopWriting()
         {
             stopWriting = true;
         }
@@ -366,14 +371,14 @@ public class StageEnvironment : GDictionary
 
         hero._p = -1;
 
-        hero.StartStage();
+        await hero.StartStage();
 
         hero.ManaShortageEvent += WriteManaShortage;
         hero.EndRoundEvent += StopWriting;
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
-            hero.Turn();
+            await hero.Turn();
             if (stopWriting)
                 break;
         }

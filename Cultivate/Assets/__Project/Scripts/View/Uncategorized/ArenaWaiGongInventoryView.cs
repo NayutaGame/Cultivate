@@ -52,8 +52,8 @@ public class ArenaWaiGongInventoryView : InventoryView<RunChipView>
         ArenaWaiGongInventory inventory = RunManager.Get<ArenaWaiGongInventory>(GetIndexPath());
         inventory.Sort((lhs, rhs) =>
         {
-            int lType = (lhs._entry as WaiGongEntry).Type.Value;
-            int rType = (rhs._entry as WaiGongEntry).Type.Value;
+            int lType = (lhs._entry as WaiGongEntry).SkillTypeCollection.Value;
+            int rType = (rhs._entry as WaiGongEntry).SkillTypeCollection.Value;
             if (lType != rType)
                 return lType - rType;
 

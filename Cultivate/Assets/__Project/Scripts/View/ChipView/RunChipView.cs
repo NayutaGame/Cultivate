@@ -38,7 +38,7 @@ public class RunChipView : ItemView,
             NameText.text = acquiredRunChip.GetName();
             SetDescriptionText(acquiredRunChip.GetDescription());
             PowerText.text = acquiredRunChip.GetPowerString();
-            SetSkillTypeText((acquiredRunChip.Chip._entry as WaiGongEntry).Type);
+            SetSkillTypeText((acquiredRunChip.Chip._entry as WaiGongEntry).SkillTypeCollection);
 
             SetColorFromJingJie(acquiredRunChip.GetJingJie());
 
@@ -71,7 +71,7 @@ public class RunChipView : ItemView,
                 NameText.text = heroChipSlot.GetName();
                 SetDescriptionText(heroChipSlot.GetDescription());
                 PowerText.text = heroChipSlot.GetPowerString();
-                SetSkillTypeText((heroChipSlot.RunChip._entry as WaiGongEntry).Type);
+                SetSkillTypeText((heroChipSlot.RunChip._entry as WaiGongEntry).SkillTypeCollection);
 
                 SetColorFromJingJie(heroChipSlot.RunChip.JingJie);
                 _image.sprite = heroChipSlot.RunChip._entry.CardFace;
@@ -101,7 +101,7 @@ public class RunChipView : ItemView,
                 NameText.text = enemyChipSlot.Chip.GetName();
                 SetDescriptionText(enemyChipSlot.GetDescription());
                 PowerText.text = enemyChipSlot.GetPowerString();
-                SetSkillTypeText((enemyChipSlot.Chip._entry as WaiGongEntry).Type);
+                SetSkillTypeText((enemyChipSlot.Chip._entry as WaiGongEntry).SkillTypeCollection);
                 SetColorFromJingJie(enemyChipSlot.Chip.JingJie);
                 _image.sprite = enemyChipSlot.Chip._entry.CardFace;
             }
@@ -114,7 +114,7 @@ public class RunChipView : ItemView,
             NameText.text = runChip.GetName();
             SetDescriptionText(runChip.GetDescription());
             PowerText.text = "";
-            SetSkillTypeText((runChip._entry as WaiGongEntry).Type);
+            SetSkillTypeText((runChip._entry as WaiGongEntry).SkillTypeCollection);
             SetColorFromJingJie(runChip.JingJie);
             _image.sprite = runChip._entry.CardFace;
         }
@@ -130,12 +130,12 @@ public class RunChipView : ItemView,
             DescriptionText.text = s;
     }
 
-    protected void SetSkillTypeText(WaiGongType type)
+    protected void SetSkillTypeText(SkillTypeCollection skillTypeCollection)
     {
         if (SkillTypeText == null)
             return;
 
-        SkillTypeText.text = type?.ToString();
+        SkillTypeText.text = skillTypeCollection?.ToString();
     }
 
     protected void SetColorFromJingJie(JingJie jingJie)

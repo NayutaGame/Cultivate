@@ -114,8 +114,8 @@ public class RunCanvas : Singleton<RunCanvas>
         Refresh();
     }
 
-    private void OnEnable()
-    {
-        Refresh();
-    }
+    // private void OnEnable()
+    // {
+    //     Refresh();
+    // }
 }

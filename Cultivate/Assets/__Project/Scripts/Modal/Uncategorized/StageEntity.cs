@@ -3,85 +3,143 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
 public abstract class StageEntity : GDictionary
 {
-    public event Action StartStageEvent;
-    public void StartStage() => StartStageEvent?.Invoke();
+    public event Func<Task> StartStageEvent;
+    public async Task StartStage()
+    {
+        if (StartStageEvent != null) await StartStageEvent();
+    }
 
-    public event Action EndStageEvent;
-    public void EndStage() => EndStageEvent?.Invoke();
+    public event Func<Task> EndStageEvent;
+    public async Task EndStage()
+    {
+        if (EndStageEvent != null) await EndStageEvent();
+    }
 
-    public event Action<TurnDetails> StartTurnEvent;
-    public void StartTurn(TurnDetails d) => StartTurnEvent?.Invoke(d);
+    public event Func<TurnDetails, Task> StartTurnEvent;
+    public async Task StartTurn(TurnDetails d)
+    {
+        if (StartTurnEvent != null) await StartTurnEvent(d);
+    }
 
-    public event Action<TurnDetails> EndTurnEvent;
-    public void EndTurn(TurnDetails d) => EndTurnEvent?.Invoke(d);
+    public event Func<TurnDetails, Task> EndTurnEvent;
+    public async Task EndTurn(TurnDetails d)
+    {
+        if (EndTurnEvent != null) await EndTurnEvent(d);
+    }
 
-    public event Action StartRoundEvent;
-    public void StartRound() => StartRoundEvent?.Invoke();
+    public event Func<Task> StartRoundEvent;
+    public async Task StartRound()
+    {
+        if (StartRoundEvent != null) await StartRoundEvent();
+    }
 
-    public event Action EndRoundEvent;
-    public void EndRound() => EndRoundEvent?.Invoke();
+    public event Func<Task> EndRoundEvent;
+    public async Task EndRound()
+    {
+        if (EndRoundEvent != null) await EndRoundEvent();
+    }
 
-    public event Action<StepDetails> StartStepEvent;
-    public void StartStep(StepDetails d) => StartStepEvent?.Invoke(d);
+    public event Func<StepDetails, Task> StartStepEvent;
+    public async Task StartStep(StepDetails d)
+    {
+        if (StartStepEvent != null) await StartStepEvent(d);
+    }
 
-    public event Action<StepDetails> EndStepEvent;
-    public void EndStep(StepDetails d) => EndStepEvent?.Invoke(d);
+    public event Func<StepDetails, Task> EndStepEvent;
+    public async Task EndStep(StepDetails d)
+    {
+        if (EndStepEvent != null) await EndStepEvent(d);
+    }
 
-    public event Action<int> ManaShortageEvent;
-    public void ManaShortage(int p) => ManaShortageEvent?.Invoke(p);
+    public event Func<int, Task> ManaShortageEvent;
+    public async Task ManaShortage(int p)
+    {
+        if (ManaShortageEvent != null) await ManaShortageEvent(p);
+    }
 
-    public event Action<AttackDetails> AttackEvent;
-    public void Attack(AttackDetails d) => AttackEvent?.Invoke(d);
+    public event Func<AttackDetails, Task> AttackEvent;
+    public async Task Attack(AttackDetails d)
+    {
+        if (AttackEvent != null) await AttackEvent(d);
+    }
 
-    public event Action<AttackDetails> AttackedEvent;
-    public void Attacked(AttackDetails d) => AttackedEvent?.Invoke(d);
+    public event Func<AttackDetails, Task> AttackedEvent;
+    public async Task Attacked(AttackDetails d)
+    {
+        if (AttackedEvent != null) await AttackedEvent(d);
+    }
 
-    public event Action<DamageDetails> DamageEvent;
-    public void Damage(DamageDetails d) => DamageEvent?.Invoke(d);
+    public event Func<DamageDetails, Task> DamageEvent;
+    public async Task Damage(DamageDetails d)
+    {
+        if (DamageEvent != null) await DamageEvent(d);
+    }
 
-    public event Action<DamageDetails> DamagedEvent;
-    public void Damaged(DamageDetails d) => DamagedEvent?.Invoke(d);
+    public event Func<DamageDetails, Task> DamagedEvent;
+    public async Task Damaged(DamageDetails d)
+    {
+        if (DamagedEvent != null) await DamagedEvent(d);
+    }
 
-    public event Action<AttackDetails> KilledEvent;
-    public void Killed(AttackDetails d) => KilledEvent?.Invoke(d);
+    public event Func<Task> KillEvent;
+    public async Task Kill()
+    {
+        if (KillEvent != null) await KillEvent();
+    }
 
-    public event Action<AttackDetails> KillEvent;
-    public void Kill(AttackDetails d) => KillEvent?.Invoke(d);
+    public event Func<Task> KilledEvent;
+    public async Task Killed()
+    {
+        if (KilledEvent != null) await KilledEvent();
+    }
 
-    public event Action<HealDetails> HealEvent;
-    public void Heal(HealDetails d) => HealEvent?.Invoke(d);
+    public event Func<HealDetails, Task> HealEvent;
+    public async Task Heal(HealDetails d)
+    {
+        if (HealEvent != null) await HealEvent(d);
+    }
 
-    public event Action<HealDetails> HealedEvent;
-    public void Healed(HealDetails d) => HealedEvent?.Invoke(d);
+    public event Func<HealDetails, Task> HealedEvent;
+    public async Task Healed(HealDetails d)
+    {
+        if (HealedEvent != null) await HealedEvent(d);
+    }
 
-    public event Action<ArmorGainDetails> ArmorGainEvent;
-    public void ArmorGain(ArmorGainDetails d) => ArmorGainEvent?.Invoke(d);
+    public event Func<ArmorGainDetails, Task> ArmorGainEvent;
+    public async Task ArmorGain(ArmorGainDetails d)
+    {
+        if (ArmorGainEvent != null) await ArmorGainEvent(d);
+    }
 
-    public event Action<ArmorGainDetails> ArmorGainedEvent;
-    public void ArmorGained(ArmorGainDetails d) => ArmorGainedEvent?.Invoke(d);
+    public event Func<ArmorGainDetails, Task> ArmorGainedEvent;
+    public async Task ArmorGained(ArmorGainDetails d)
+    {
+        if (ArmorGainedEvent != null) await ArmorGainedEvent(d);
+    }
 
-    public event Action<ArmorLoseDetails> ArmorLoseEvent;
-    public void ArmorLose(ArmorLoseDetails d) => ArmorLoseEvent?.Invoke(d);
+    public event Func<ArmorLoseDetails, Task> ArmorLoseEvent;
+    public async Task ArmorLose(ArmorLoseDetails d)
+    {
+        if (ArmorLoseEvent != null) await ArmorLoseEvent(d);
+    }
 
-    public event Action<ArmorLoseDetails> ArmorLostEvent;
-    public void ArmorLost(ArmorLoseDetails d) => ArmorLostEvent?.Invoke(d);
+    public event Func<ArmorLoseDetails, Task> ArmorLostEvent;
+    public async Task ArmorLost(ArmorLoseDetails d)
+    {
+        if (ArmorLostEvent != null) await ArmorLostEvent(d);
+    }
 
-    // public event Action<DamageDetails> LaststandEvent;
-    // public void Laststand(DamageDetails d) => LaststandEvent?.Invoke(d);
-    //
-    // public event Action<AttackDetails> EvadeEvent;
-    // public void Evade(AttackDetails d) => EvadeEvent?.Invoke(d);
-    //
-    // public event Action<int> CleanEvent;
-    // public void Clean(int stack) => CleanEvent?.Invoke(stack);
-
-    public event Action LoseHpEvent;
-    public void LoseHp() => LoseHpEvent?.Invoke();
+    public event Func<Task> LoseHpEvent;
+    public async Task LoseHp()
+    {
+        if (LoseHpEvent != null) await LoseHpEvent();
+    }
 
     public FuncQueue<BuffDetails> Buff = new();
 
@@ -141,43 +199,43 @@ public abstract class StageEntity : GDictionary
 
     public int _p;
 
-    public void Turn()
+    public async Task Turn()
     {
         UltraSwift = false;
         Swift = false;
 
-        StartTurn(new TurnDetails(this, _p));
+        await StartTurn(new TurnDetails(this, _p));
 
         bool skipTurn = TryConsumeBuff("跳回合");
         if (!skipTurn)
         {
-            Step();
+            await Step();
 
             // if (GetStackOfBuff("缠绕") == 0)
             // {
             if (UltraSwift)
             {
-                Step();
-                Step();
+                await Step();
+                await Step();
             }
             else if (Swift)
             {
-                Step();
+                await Step();
             }
             // }
         }
 
-        EndTurn(new TurnDetails(this, _p));
+        await EndTurn(new TurnDetails(this, _p));
     }
 
-    private void Step()
+    private async Task Step()
     {
         if (!_manaShortage)
-            MoveP();
+            await MoveP();
 
         StageWaiGong waiGong = _waiGongList[_p];
 
-        StartStep(new StepDetails(this, waiGong));
+        await StartStep(new StepDetails(this, waiGong));
         // _env.Report.Seq?.
         // show waigong
 
@@ -185,27 +243,27 @@ public abstract class StageEntity : GDictionary
         _manaShortage = !manaSufficient;
         if(_manaShortage)
         {
-            ManaShortage(_p);
-            (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute(this, null, true);
-            EndStep(new StepDetails(this, null));
+            await ManaShortage(_p);
+            await (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute(this, null, true);
+            await EndStep(new StepDetails(this, null));
             return;
         }
 
         if (TryConsumeBuff("双发"))
         {
-            waiGong.Execute(this);
-            waiGong.Execute(this);
+            await waiGong.Execute(this);
+            await waiGong.Execute(this);
         }
         else
         {
-            waiGong.Execute(this);
+            await waiGong.Execute(this);
         }
 
         // hide waigong
-        EndStep(new StepDetails(this, waiGong));
+        await EndStep(new StepDetails(this, waiGong));
     }
 
-    private void MoveP()
+    private async Task MoveP()
     {
         int dir = Forward ? 1 : -1;
         for (int i = 0; i < _waiGongList.Length; i++)
@@ -216,8 +274,8 @@ public abstract class StageEntity : GDictionary
             if (!within)
             {
                 _p = (_p + _waiGongList.Length) % _waiGongList.Length;
-                EndRound();
-                StartRound();
+                await EndRound();
+                await StartRound();
             }
 
             if(_waiGongList[_p].Consumed)
@@ -290,9 +348,6 @@ public abstract class StageEntity : GDictionary
         Buffed.Add(0, GainedEvadeRecorder);
         Buffed.Add(0, GainedBurningRecorder);
 
-        // _modifier = Modifier.Default;
-        // _notes = new List<INote>();
-
         StartTurnEvent += DefaultStartTurn;
         EndTurnEvent += DefaultEndTurn;
         DamageEvent += DefaultDamage;
@@ -300,7 +355,7 @@ public abstract class StageEntity : GDictionary
         LoseHpEvent += DefaultLoseHp;
     }
 
-    public BuffDetails HighestManaRecorder(BuffDetails d)
+    public async Task<BuffDetails> HighestManaRecorder(BuffDetails d)
     {
         if (d._buffEntry.Name != "灵气")
             return d;
@@ -309,7 +364,7 @@ public abstract class StageEntity : GDictionary
         return d;
     }
 
-    public BuffDetails GainedEvadeRecorder(BuffDetails d)
+    public async Task<BuffDetails> GainedEvadeRecorder(BuffDetails d)
     {
         if (d._buffEntry.Name != "闪避")
             return d;
@@ -318,7 +373,7 @@ public abstract class StageEntity : GDictionary
         return d;
     }
 
-    public BuffDetails GainedBurningRecorder(BuffDetails d)
+    public async Task<BuffDetails> GainedBurningRecorder(BuffDetails d)
     {
         if (d._buffEntry.Name != "灼热")
             return d;
@@ -333,6 +388,10 @@ public abstract class StageEntity : GDictionary
     {
         RemoveAllBuffs();
 
+        Buffed.Remove(HighestManaRecorder);
+        Buffed.Remove(GainedEvadeRecorder);
+        Buffed.Remove(GainedBurningRecorder);
+
         StartTurnEvent -= DefaultStartTurn;
         EndTurnEvent -= DefaultEndTurn;
         DamageEvent -= DefaultDamage;
@@ -340,11 +399,11 @@ public abstract class StageEntity : GDictionary
         LoseHpEvent -= DefaultLoseHp;
     }
 
-    protected virtual void DefaultStartTurn(TurnDetails d) => DesignerEnvironment.DefaultStartTurn(this);
-    protected virtual void DefaultEndTurn(TurnDetails d) { }
-    protected virtual void DefaultDamage(DamageDetails damageDetails) { }
-    protected virtual void DefaultDamaged(DamageDetails damageDetails) { }
-    protected virtual void DefaultLoseHp() { }
+    protected async Task DefaultStartTurn(TurnDetails d) => await DesignerEnvironment.DefaultStartTurn(this);
+    protected async Task DefaultEndTurn(TurnDetails d) { }
+    protected async Task DefaultDamage(DamageDetails damageDetails) { }
+    protected async Task DefaultDamaged(DamageDetails damageDetails) { }
+    protected async Task DefaultLoseHp() { }
 
     #region Buff
 
@@ -460,38 +519,38 @@ public abstract class StageEntity : GDictionary
 
     #region Procedure
 
-    public void AttackProcedure(int value, int times = 1, bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
-        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-        => _env.AttackProcedure(new AttackDetails(this, Opponent(), value, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
+    public async Task AttackProcedure(int value, int times = 1, bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
+        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
 
-    public void DamageSelfProcedure(int value, bool recursive = true,
-        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-        => _env.DamageProcedure(new DamageDetails(this, this, value, recursive, damaged, undamaged));
+    public async Task DamageSelfProcedure(int value, bool recursive = true,
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
+        => await _env.DamageProcedure(new DamageDetails(this, this, value, recursive, damaged, undamaged));
 
-    public void DamageOppoProcedure(int value, bool recursive = true,
-        Action<DamageDetails> damaged = null, Action<DamageDetails> undamaged = null)
-        => _env.DamageProcedure(new DamageDetails(this, Opponent(), value, recursive, damaged, undamaged));
+    public async Task DamageOppoProcedure(int value, bool recursive = true,
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
+        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, recursive, damaged, undamaged));
 
-    public void HealProcedure(int value)
-        => _env.HealProcedure(new HealDetails(this, this, value));
+    public async Task HealProcedure(int value)
+        => await _env.HealProcedure(new HealDetails(this, this, value));
 
-    public void BuffSelfProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => _env.BuffProcedure(new BuffDetails(this, this, buffEntry, stack, recursive));
+    public async Task BuffSelfProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await _env.BuffProcedure(new BuffDetails(this, this, buffEntry, stack, recursive));
 
-    public void BuffOppoProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => _env.BuffProcedure(new BuffDetails(this, Opponent(), buffEntry, stack, recursive));
+    public async Task BuffOppoProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await _env.BuffProcedure(new BuffDetails(this, Opponent(), buffEntry, stack, recursive));
 
-    public void ArmorGainSelfProcedure(int value)
-        => _env.ArmorGainProcedure(new ArmorGainDetails(this, this, value));
+    public async Task ArmorGainSelfProcedure(int value)
+        => await _env.ArmorGainProcedure(new ArmorGainDetails(this, this, value));
 
-    public void ArmorGainOppoProcedure(int value)
-        => _env.ArmorGainProcedure(new ArmorGainDetails(this, Opponent(), value));
+    public async Task ArmorGainOppoProcedure(int value)
+        => await _env.ArmorGainProcedure(new ArmorGainDetails(this, Opponent(), value));
 
-    public void ArmorLoseSelfProcedure(int value)
-        => _env.ArmorLoseProcedure(new ArmorLoseDetails(this, this, value));
+    public async Task ArmorLoseSelfProcedure(int value)
+        => await _env.ArmorLoseProcedure(new ArmorLoseDetails(this, this, value));
 
-    public void ArmorLoseOppoProcedure(int value)
-        => _env.ArmorLoseProcedure(new ArmorLoseDetails(this, Opponent(), value));
+    public async Task ArmorLoseOppoProcedure(int value)
+        => await _env.ArmorLoseProcedure(new ArmorLoseDetails(this, Opponent(), value));
 
     #endregion
 }

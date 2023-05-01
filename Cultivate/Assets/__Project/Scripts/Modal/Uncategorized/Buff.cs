@@ -1,5 +1,6 @@
 
 using System;
+using System.Threading.Tasks;
 using CLLibrary;
 
 /// <summary>
@@ -29,9 +30,6 @@ public class Buff
         }
     }
 
-    // private ModifierLeaf _modifierLeaf;
-    // public ModifierLeaf ModifierLeaf => _modifierLeaf;
-
     public event Action StackChangedEvent;
 
 
@@ -56,7 +54,6 @@ public class Buff
 
     public void Register()
     {
-        // if (_buffEntry.ModifierLeaf != null) CreateModifierLeaf(_buffEntry.ModifierLeaf);
         if (_buffEntry._stackChanged != null) StackChangedEvent += StackChanged;
         if (_buffEntry._startStage != null) _owner.StartStageEvent += StartStage;
         if (_buffEntry._endStage != null) _owner.EndStageEvent += EndStage;
@@ -70,16 +67,12 @@ public class Buff
         if (_buffEntry._attacked != null) _owner.AttackedEvent += Attacked;
         if (_buffEntry._damage != null) _owner.DamageEvent += Damage;
         if (_buffEntry._damaged != null) _owner.DamagedEvent += Damaged;
-        if (_buffEntry._killed != null) _owner.KilledEvent += Killed;
-        if (_buffEntry._kill != null) _owner.KillEvent += Kill;
         if (_buffEntry._heal != null) _owner.HealEvent += Heal;
         if (_buffEntry._healed != null) _owner.HealedEvent += Healed;
         if (_buffEntry._armorGain != null) _owner.ArmorGainEvent += ArmorGain;
         if (_buffEntry._armorGained != null) _owner.ArmorGainedEvent += ArmorGained;
-        // if (_buffEntry._laststand != null) _owner.LaststandEvent += Laststand;
-        // if (_buffEntry._evade != null) _owner.EvadeEvent += Evade;
-        // if (_buffEntry._clean != null) _owner.CleanEvent += Clean;
-
+        if (_buffEntry._armorLose != null) _owner.ArmorLoseEvent += ArmorLose;
+        if (_buffEntry._armorLost != null) _owner.ArmorLostEvent += ArmorLost;
         if (_buffEntry._buff      != null) _owner.Buff.Add            (_buffEntry._buff.Item1,      _Buff);
         if (_buffEntry._buffed    != null) _owner.Buffed.Add          (_buffEntry._buffed.Item1,    Buffed);
 
@@ -88,7 +81,6 @@ public class Buff
 
     public void Unregister()
     {
-        // if (_modifierLeaf != null) DestroyModifierLeaf();
         if (_buffEntry._stackChanged != null) StackChangedEvent -= StackChanged;
         if (_buffEntry._startStage != null) _owner.StartStageEvent -= StartStage;
         if (_buffEntry._endStage != null) _owner.EndStageEvent -= EndStage;
@@ -108,68 +100,36 @@ public class Buff
         if (_buffEntry._healed != null) _owner.HealedEvent -= Healed;
         if (_buffEntry._armorGain != null) _owner.ArmorGainEvent -= ArmorGain;
         if (_buffEntry._armorGained != null) _owner.ArmorGainedEvent -= ArmorGained;
-
-        // if (_buffEntry._laststand != null) _owner.LaststandEvent -= Laststand;
-        // if (_buffEntry._evade != null) _owner.EvadeEvent -= Evade;
-        // if (_buffEntry._clean != null) _owner.CleanEvent -= Clean;
-
+        if (_buffEntry._armorLose != null) _owner.ArmorLoseEvent -= ArmorLose;
+        if (_buffEntry._armorLost != null) _owner.ArmorLostEvent -= ArmorLost;
         if (_buffEntry._buff      != null) _owner.Buff.Remove            (_Buff);
         if (_buffEntry._buffed    != null) _owner.Buffed.Remove          (Buffed);
     }
-
-    // public void ForceSetModifierLeaf(string key, float value)
-    // {
-    //     if (ModifierLeaf == null) CreateModifierLeaf(new ModifierLeaf());
-    //     ModifierLeaf.ForceSet(key, value);
-    // }
-    //
-    // public void CreateModifierLeaf(ModifierLeaf modifierLeaf)
-    // {
-    //     _modifierLeaf = modifierLeaf.Clone();
-    //     _modifierLeaf.Changed += _owner.Modifier.SetDirty;
-    //     _modifierLeaf.Changed += _owner.OnStatsChanged;
-    //     _owner.Modifier.AddLeaf(_modifierLeaf);
-    // }
-    //
-    // public void DestroyModifierLeaf()
-    // {
-    //     _owner.Modifier.RemoveLeaf(_modifierLeaf);
-    //     _modifierLeaf.Changed -= _owner.Modifier.SetDirty;
-    //     _modifierLeaf.Changed -= _owner.OnStatsChanged;
-    //     _modifierLeaf = null;
-    // }
 
     public void Gain(int gain) => _buffEntry._gain?.Invoke(this, _owner, gain);
     public void Lose() => _buffEntry._lose?.Invoke(this, _owner);
     private void StackChanged() => _buffEntry._stackChanged(this, _owner);
 
-    private void StartStage() => _buffEntry._startStage(this, _owner);
-    private void EndStage() => _buffEntry._endStage(this, _owner);
-    private void StartTurn(TurnDetails d) => _buffEntry._startTurn(this, d);
-    private void EndTurn(TurnDetails d) => _buffEntry._endTurn(this, d);
-    private void StartRound() => _buffEntry._startRound(this, _owner);
-    private void EndRound() => _buffEntry._endRound(this, _owner);
-    private void StartStep(StepDetails d) => _buffEntry._startStep(this, d);
-    private void EndStep(StepDetails d) => _buffEntry._endStep(this, d);
-
-    private void Attack(AttackDetails d) => _buffEntry._attack(this, d);
-    private void Attacked(AttackDetails d) => _buffEntry._attacked(this, d);
-    private void Damage(DamageDetails d) => _buffEntry._damage(this, d);
-    private void Damaged(DamageDetails d) => _buffEntry._damaged(this, d);
-    private void Killed(AttackDetails d) => _buffEntry._killed(this, d);
-    private void Kill(AttackDetails d) => _buffEntry._kill(this, d);
-    private void Heal(HealDetails d) => _buffEntry._heal(this, d);
-    private void Healed(HealDetails d) => _buffEntry._healed(this, d);
-    private void ArmorGain(ArmorGainDetails d) => _buffEntry._armorGain(this, d);
-    private void ArmorGained(ArmorGainDetails d) => _buffEntry._armorGained(this, d);
-    private void ArmorLose(ArmorLoseDetails d) => _buffEntry._armorLose(this, d);
-    private void ArmorLost(ArmorLoseDetails d) => _buffEntry._armorLost(this, d);
-    // private void Laststand(DamageDetails d) => _buffEntry._laststand(this, d);
-    // private void Evade(AttackDetails d) => _buffEntry._evade(this, d);
-    // private void Clean(int stack) => _buffEntry._clean(this, stack);
-
-    private BuffDetails _Buff(BuffDetails d) => _buffEntry._buff.Item2(this, d);
-    private BuffDetails AnyBuff(BuffDetails d) => _buffEntry._anyBuff.Item2(this, d);
-    private BuffDetails Buffed(BuffDetails d) => _buffEntry._buffed.Item2(this, d);
-    private BuffDetails AnyBuffed(BuffDetails d) => _buffEntry._anyBuffed.Item2(this, d);
+    private async Task StartStage          () =>                   await _buffEntry._startStage   (this, _owner);
+    private async Task EndStage            () =>                   await _buffEntry._endStage     (this, _owner);
+    private async Task StartTurn           (TurnDetails d) =>      await _buffEntry._startTurn    (this, d);
+    private async Task EndTurn             (TurnDetails d) =>      await _buffEntry._endTurn      (this, d);
+    private async Task StartRound          () =>                   await _buffEntry._startRound   (this, _owner);
+    private async Task EndRound            () =>                   await _buffEntry._endRound     (this, _owner);
+    private async Task StartStep           (StepDetails d) =>      await _buffEntry._startStep    (this, d);
+    private async Task EndStep             (StepDetails d) =>      await _buffEntry._endStep      (this, d);
+    private async Task Attack              (AttackDetails d) =>    await _buffEntry._attack       (this, d);
+    private async Task Attacked            (AttackDetails d) =>    await _buffEntry._attacked     (this, d);
+    private async Task Damage              (DamageDetails d) =>    await _buffEntry._damage       (this, d);
+    private async Task Damaged             (DamageDetails d) =>    await _buffEntry._damaged      (this, d);
+    private async Task Killed              () =>                   await _buffEntry._killed       (this);
+    private async Task Kill                () =>                   await _buffEntry._kill         (this);
+    private async Task Heal                (HealDetails d) =>      await _buffEntry._heal         (this, d);
+    private async Task Healed              (HealDetails d) =>      await _buffEntry._healed       (this, d);
+    private async Task ArmorGain           (ArmorGainDetails d) => await _buffEntry._armorGain    (this, d);
+    private async Task ArmorGained         (ArmorGainDetails d) => await _buffEntry._armorGained  (this, d);
+    private async Task ArmorLose           (ArmorLoseDetails d) => await _buffEntry._armorLose    (this, d);
+    private async Task ArmorLost           (ArmorLoseDetails d) => await _buffEntry._armorLost    (this, d);
+    private async Task<BuffDetails> _Buff  (BuffDetails d) =>      await _buffEntry._buff.Item2   (this, d);
+    private async Task<BuffDetails> Buffed (BuffDetails d) =>      await _buffEntry._buffed.Item2 (this, d);
 }

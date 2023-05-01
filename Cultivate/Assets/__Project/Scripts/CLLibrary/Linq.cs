@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CLLibrary
 {
@@ -123,6 +124,11 @@ namespace CLLibrary
         public static void Do<T>(this IEnumerable<T> enumerable, Action<T> func)
         {
             foreach (T e in enumerable) func(e);
+        }
+
+        public static async Task Do<T>(this IEnumerable<T> enumerable, Func<T, Task> func)
+        {
+            foreach (T e in enumerable) await func(e);
         }
 
         public static void Do(this int times, Action<int> func)

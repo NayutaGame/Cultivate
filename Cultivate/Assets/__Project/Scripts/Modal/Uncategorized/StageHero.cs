@@ -28,8 +28,6 @@ public class StageHero : StageEntity
         }
 
         _p = 0;
-
-        _waiGongList.Do(waiGong => waiGong.Register());
     }
 
     public override void WriteEffect()
@@ -41,10 +39,5 @@ public class StageHero : StageEntity
             HeroChipSlot slot = _runHero.HeroSlotInventory[i + _runHero.HeroSlotInventory.Start];
             slot.RunConsumed = _waiGongList[i].RunConsumed;
         }
-    }
-
-    ~StageHero()
-    {
-        _waiGongList.Do(waiGong => waiGong.Unregister());
     }
 }

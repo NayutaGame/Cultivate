@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CLLibrary;
 using DG.Tweening;
@@ -10,46 +12,53 @@ using UnityEngine.UI;
 
 public class TimelineView : MonoBehaviour
 {
+    public int IndexOfCurr;
     public RectTransform[] AwaySlots;
     public RectTransform[] HomeSlots;
 
-    private static readonly int CurrSlot = 3;
+    [NonSerialized] public int TotalCount;
+    [NonSerialized] public int FutureCount;
+    [NonSerialized] public int PastCount;
 
     public RectTransform NoteContainer;
     public GameObject NotePrefab;
 
-    private List<NoteView> _views;
-    public List<NoteView> Views => _views;
+    private List<NoteCardView> _views;
+    public List<NoteCardView> Views => _views;
 
     private int _time;
 
-    public void Configure()
+    private void OnEnable()
     {
-        _views = new List<NoteView>();
+        StageManager.Instance.Anim.TimelineView = this;
     }
 
-    public async Task Play()
+    private void OnDisable()
     {
-        InitialSetup();
+        if (StageManager.Instance != null)
+            StageManager.Instance.Anim.TimelineView = null;
+    }
 
-        // opening animation
-        for (int i = 0; i < 20; i++)
-        {
-            await ShiftAnimation();
-            await NoteAnimation();
-        }
+    public void Configure()
+    {
+        _views = new List<NoteCardView>();
+
+        TotalCount = HomeSlots.Length;
+        FutureCount = HomeSlots.Length - (IndexOfCurr + 1);
+        PastCount = IndexOfCurr;
     }
 
     public void InitialSetup()
     {
         _time = -1;
-        List<StageNote> batch = StageManager.Instance.EndEnv.Report.Timeline.GetNotes(0, 8);
+        List<StageNote> batch = StageManager.Instance.EndEnv.Report.Timeline.GetNotes(0, FutureCount);
 
         for (int i = 0; i < batch.Count; i++)
         {
             StageNote note = batch[i];
-            RectTransform slot = note.IsHome ? HomeSlots[i + 4] : AwaySlots[i + 4];
-            NoteView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<NoteView>();
+            RectTransform slot = (note.IsHome ? HomeSlots : AwaySlots)[IndexOfCurr + 1 + i];
+            NoteCardView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<NoteCardView>();
+            v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
             v.Configure(new IndexPath($"EndEnv.Report.Timeline.Notes#{note.TemporalIndex}"));
         }
@@ -64,35 +73,32 @@ public class TimelineView : MonoBehaviour
 
         for (int i = 0; i < _views.Count; i++)
         {
-            NoteView v = _views[i];
+            NoteCardView v = _views[i];
             StageNote note = StageManager.Get<StageNote>(v.GetIndexPath());
-            int spatialIndex = note.TemporalIndex - nextTime;
+            int spatialIndex = note.TemporalIndex - nextTime + 1 + IndexOfCurr;
 
-            if (spatialIndex == -4) // destruction
+            if (spatialIndex == 0)
             {
-                NoteView toDestroy = _views[i];
+                NoteCardView toDestroy = _views[i];
                 _views.RemoveAt(i);
                 Destroy(toDestroy.gameObject);
                 i--;
                 continue;
             }
 
-            RectTransform nextSlot = note.IsHome ? HomeSlots[spatialIndex + 3] : AwaySlots[spatialIndex + 3];
+            int nextIndex = spatialIndex - 1;
+            RectTransform nextSlot = (note.IsHome ? HomeSlots : AwaySlots)[nextIndex];
             Vector3 nextPos = nextSlot.position;
 
-            if (spatialIndex == -1) // shrink
+            seq.Join(_views[i].transform.DOMove(nextPos, 0.6f).SetEase(Ease.InOutQuad));
+
+            if (spatialIndex == IndexOfCurr)
             {
-                seq.Join(_views[i].transform.DOMove(nextPos, 0.6f).SetEase(Ease.InOutQuad));
-                seq.Join(_views[i].Shrink());
+                seq.Join(_views[i].GetShrinkTween());
             }
-            else if (spatialIndex == 0) // expand
+            else if (spatialIndex == IndexOfCurr + 1)
             {
-                seq.Join(_views[i].transform.DOMove(nextPos, 0.6f).SetEase(Ease.InOutQuad));
-                seq.Join(_views[i].Expand());
-            }
-            else // shift
-            {
-                seq.Join(_views[i].transform.DOMove(nextPos, 0.6f).SetEase(Ease.InOutQuad));
+                seq.Join(_views[i].GetExpandTween());
             }
         }
 
@@ -107,22 +113,15 @@ public class TimelineView : MonoBehaviour
         await seq.AsyncWaitForCompletion();
     }
 
-    public async Task NoteAnimation()
-    {
-        await StageManager.Instance.PlayTween();
-
-        // bullet time at killing moment
-        // gradually accelerating
-        // pause, speed control and skip
-        // camera shake when large attacks
-    }
-
     private void TryCreate()
     {
-        StageNote toCreate = StageManager.Instance.EndEnv.Report.Timeline.GetNote(_time + 8);
+        StageNote toCreate = StageManager.Instance.EndEnv.Report.Timeline.GetNote(_time + FutureCount);
+        if (toCreate == null)
+            return;
 
         RectTransform slot = toCreate.IsHome ? HomeSlots[^1] : AwaySlots[^1];
-        NoteView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<NoteView>();
+        NoteCardView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<NoteCardView>();
+        v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
         v.Configure(new IndexPath($"EndEnv.Report.Timeline.Notes#{toCreate.TemporalIndex}"));
     }

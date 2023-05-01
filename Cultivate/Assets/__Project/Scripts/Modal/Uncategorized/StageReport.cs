@@ -67,25 +67,18 @@ public class StageReport : GDictionary
     public void AppendNote(int entityIndex, StageWaiGong waiGong)
         => _timeline?.AppendNote(entityIndex, waiGong);
 
-    public void ResetTween()
+    public async Task PlayTween(TweenDescriptor descriptor)
     {
         if (!_useTween)
             return;
-        StageManager.Instance.ResetTween();
+        await StageManager.Instance.Anim.PlayTween(descriptor);
     }
 
-    public void AppendTween(Tween tween)
+    public async Task PlayTween(Tween tween)
     {
         if (!_useTween)
             return;
-        StageManager.Instance.AppendTween(tween);
-    }
-
-    public async Task PlayTween()
-    {
-        if (!_useTween)
-            return;
-        await StageManager.Instance.PlayTween();
+        await StageManager.Instance.Anim.PlayTween(tween);
     }
 
     public override string ToString()

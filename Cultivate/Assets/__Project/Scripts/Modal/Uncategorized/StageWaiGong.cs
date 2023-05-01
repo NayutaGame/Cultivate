@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
@@ -24,8 +25,8 @@ public class StageWaiGong
     public string GetDescription()
         => _entry.Description.Eval(Level, GetJingJie(), GetJingJie() - _entry.JingJieRange.Start, new int[] { 0, 0, 0, 0, 0 });
 
-    public string GetSkillTypeString()
-        => _entry.Type?.ToString();
+    public SkillTypeCollection GetSkillTypeCollection()
+        => _entry.SkillTypeCollection;
 
     public int GetManaCost()
         => _entry.GetManaCost(Level, GetJingJie(), Dj, _powers);
@@ -63,11 +64,11 @@ public class StageWaiGong
     public bool IsEnd
         => SlotIndex == _owner._waiGongList.Length - 1;
     public bool NoOtherAttack
-        => _owner._waiGongList.All(wg => wg == this || !wg.GetWaiGongType().Contains(WaiGongType.Attack));
+        => _owner._waiGongList.All(wg => wg == this || !wg.GetWaiGongType().Contains(SkillTypeCollection.Attack));
     public bool NoOtherLingQi
-        => _owner._waiGongList.All(wg => wg == this || !wg.GetWaiGongType().Contains(WaiGongType.LingQi));
+        => _owner._waiGongList.All(wg => wg == this || !wg.GetWaiGongType().Contains(SkillTypeCollection.LingQi));
     public bool NoAttackAdjacents
-        => !Prev(false).GetWaiGongType().Contains(WaiGongType.Attack) && !Next(false).GetWaiGongType().Contains(WaiGongType.Attack);
+        => !Prev(false).GetWaiGongType().Contains(SkillTypeCollection.Attack) && !Next(false).GetWaiGongType().Contains(SkillTypeCollection.Attack);
 
     // run powers
 
@@ -115,12 +116,12 @@ public class StageWaiGong
     public string GetName()
         => _entry.Name;
 
-    public WaiGongType GetWaiGongType()
-        => _entry.Type;
+    public SkillTypeCollection GetWaiGongType()
+        => _entry.SkillTypeCollection;
 
-    public void Execute(StageEntity caster, bool recursive = true)
+    public async Task Execute(StageEntity caster, bool recursive = true)
     {
-        _entry.Execute(caster, this, recursive);
+        await _entry.Execute(caster, this, recursive);
         RunUsedTimes += 1;
         StageUsedTimes += 1;
     }
@@ -173,29 +174,5 @@ public class StageWaiGong
             return null;
 
         return _owner._waiGongList[index];
-    }
-
-    public void Register()
-    {
-        WaiGongEntry entry = _runChip?._entry as WaiGongEntry;
-        if (entry == null) return;
-
-        if (entry._startStage != null) _owner.StartStageEvent += StartStage;
-    }
-
-    public void Unregister()
-    {
-        WaiGongEntry entry = _runChip?._entry as WaiGongEntry;
-        if (entry == null) return;
-
-        if (entry._startStage != null) _owner.StartStageEvent -= StartStage;
-    }
-
-    private void StartStage()
-    {
-        WaiGongEntry entry = _runChip?._entry as WaiGongEntry;
-        if (entry == null) return;
-
-        entry._startStage(_owner, this);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -23,8 +24,8 @@ public class AttackDetails
     public bool Evade;
 
     public bool Recursive;
-    public Action<DamageDetails> Damaged;
-    public Action<DamageDetails> Undamaged;
+    public Func<DamageDetails, Task> Damaged;
+    public Func<DamageDetails, Task> Undamaged;
 
     public bool Cancel;
 
@@ -34,8 +35,8 @@ public class AttackDetails
         bool crit,
         bool evade,
         bool recursive = true,
-        Action<DamageDetails> damaged = null,
-        Action<DamageDetails> undamaged = null)
+        Func<DamageDetails, Task> damaged = null,
+        Func<DamageDetails, Task> undamaged = null)
     {
         Src = src;
         Tgt = tgt;

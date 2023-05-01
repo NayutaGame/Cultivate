@@ -35,20 +35,28 @@ public class StageCanvas : Singleton<StageCanvas>
         _enemyBuffViews = new List<BuffView>();
     }
 
-    public void Play()
+    public void InitialSetup()
     {
-        TimelineView.Play();
+        TimelineView.InitialSetup();
+    }
 
-        // StageCanvas.Instance.SetHeroHealth(_entities[0].Hp);
-        // StageCanvas.Instance.SetHeroArmor(0);
-        // StageCanvas.Instance.SetEnemyHealth(_entities[1].Hp);
-        // StageCanvas.Instance.SetEnemyArmor(0);
+    public void Refresh()
+    {
+        StageEntity home = StageManager.Instance.CurrEnv.Entities[0];
 
-        // PopulateHeroBuffViews();
-        // PopulateEnemyBuffViews();
-        //
-        // foreach(var view in _heroBuffViews) view.Refresh();
-        // foreach(var view in _enemyBuffViews) view.Refresh();
+        SetHeroHealth(home.Hp);
+        SetHeroArmor(home.Armor);
+
+        StageEntity away = StageManager.Instance.CurrEnv.Entities[1];
+
+        SetEnemyHealth(away.Hp);
+        SetEnemyArmor(away.Armor);
+
+        PopulateHeroBuffViews();
+        PopulateEnemyBuffViews();
+
+        foreach(var view in _heroBuffViews) view.Refresh();
+        foreach(var view in _enemyBuffViews) view.Refresh();
     }
 
     private void PopulateHeroBuffViews()
@@ -66,7 +74,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, HeroBuffContainerTransform).GetComponent<BuffView>();
             _heroBuffViews.Add(v);
-            v.Configure(new IndexPath($"Home.Buffs#{i}"));
+            v.Configure(new IndexPath($"CurrEnv.Home.Buffs#{i}"));
         }
     }
 
@@ -85,7 +93,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, EnemyBuffContainerTransform).GetComponent<BuffView>();
             _enemyBuffViews.Add(v);
-            v.Configure(new IndexPath($"Away.Buffs#{i}"));
+            v.Configure(new IndexPath($"CurrEnv.Away.Buffs#{i}"));
         }
     }
 

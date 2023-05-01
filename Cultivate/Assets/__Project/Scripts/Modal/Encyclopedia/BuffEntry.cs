@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class BuffEntry : Entry
@@ -20,39 +21,33 @@ public class BuffEntry : Entry
     private bool _dispellable;
     public bool Dispellable => _dispellable;
 
-    // private ModifierLeaf _modifierLeaf;
-    // public ModifierLeaf ModifierLeaf => _modifierLeaf;
-
-    public Action<Buff, StageEntity, int> _gain;
-    public Action<Buff, StageEntity> _lose;
-    public Action<Buff, StageEntity> _stackChanged;
-    public Action<Buff, StageEntity> _startStage;
-    public Action<Buff, StageEntity> _endStage;
-    public Action<Buff, TurnDetails> _startTurn;
-    public Action<Buff, TurnDetails> _endTurn;
-    public Action<Buff, StageEntity> _startRound;
-    public Action<Buff, StageEntity> _endRound;
-    public Action<Buff, StepDetails> _startStep;
-    public Action<Buff, StepDetails> _endStep;
-    public Action<Buff, AttackDetails> _attack;
-    public Action<Buff, AttackDetails> _attacked;
-    public Action<Buff, DamageDetails> _damage;
-    public Action<Buff, DamageDetails> _damaged;
-    public Action<Buff, AttackDetails> _killed;
-    public Action<Buff, AttackDetails> _kill;
-    public Action<Buff, HealDetails> _heal;
-    public Action<Buff, HealDetails> _healed;
-    public Action<Buff, ArmorGainDetails> _armorGain;
-    public Action<Buff, ArmorGainDetails> _armorGained;
-    public Action<Buff, ArmorLoseDetails> _armorLose;
-    public Action<Buff, ArmorLoseDetails> _armorLost;
-    // public Action<Buff, DamageDetails> _laststand;
-    // public Action<Buff, AttackDetails> _evade;
-    // public Action<StageReport, Buff, int> _clean;
-    public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _buff;
-    public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _anyBuff;
-    public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _buffed;
-    public Tuple<int, Func<Buff, BuffDetails, BuffDetails>> _anyBuffed;
+    public Func<Buff, StageEntity, int, Task> _gain;
+    public Func<Buff, StageEntity, Task> _lose;
+    public Func<Buff, StageEntity, Task> _stackChanged;
+    public Func<Buff, StageEntity, Task> _startStage;
+    public Func<Buff, StageEntity, Task> _endStage;
+    public Func<Buff, TurnDetails, Task> _startTurn;
+    public Func<Buff, TurnDetails, Task> _endTurn;
+    public Func<Buff, StageEntity, Task> _startRound;
+    public Func<Buff, StageEntity, Task> _endRound;
+    public Func<Buff, StepDetails, Task> _startStep;
+    public Func<Buff, StepDetails, Task> _endStep;
+    public Func<Buff, AttackDetails, Task> _attack;
+    public Func<Buff, AttackDetails, Task> _attacked;
+    public Func<Buff, DamageDetails, Task> _damage;
+    public Func<Buff, DamageDetails, Task> _damaged;
+    public Func<Buff, Task> _killed;
+    public Func<Buff, Task> _kill;
+    public Func<Buff, HealDetails, Task> _heal;
+    public Func<Buff, HealDetails, Task> _healed;
+    public Func<Buff, ArmorGainDetails, Task> _armorGain;
+    public Func<Buff, ArmorGainDetails, Task> _armorGained;
+    public Func<Buff, ArmorLoseDetails, Task> _armorLose;
+    public Func<Buff, ArmorLoseDetails, Task> _armorLost;
+    public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buff;
+    public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuff;
+    public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buffed;
+    public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuffed;
 
     /// <summary>
     /// 定义一个Buff
@@ -87,37 +82,33 @@ public class BuffEntry : Entry
     /// <param name="buff">受到Buff时的额外行为，结算之前</param>
     /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
-        // ModifierLeaf modifierLeaf = null,
-        Action<Buff, StageEntity, int> gain = null,
-        Action<Buff, StageEntity> lose = null,
-        Action<Buff, StageEntity> stackChanged = null,
-        Action<Buff, StageEntity> startStage = null,
-        Action<Buff, StageEntity> endStage = null,
-        Action<Buff, TurnDetails> startTurn = null,
-        Action<Buff, TurnDetails> endTurn = null,
-        Action<Buff, StageEntity> startRound = null,
-        Action<Buff, StageEntity> endRound = null,
-        Action<Buff, StepDetails> startStep = null,
-        Action<Buff, StepDetails> endStep = null,
-        Action<Buff, AttackDetails> attack = null,
-        Action<Buff, AttackDetails> attacked = null,
-        Action<Buff, DamageDetails> damage = null,
-        Action<Buff, DamageDetails> damaged = null,
-        Action<Buff, AttackDetails> killed = null,
-        Action<Buff, AttackDetails> kill = null,
-        Action<Buff, HealDetails> heal = null,
-        Action<Buff, HealDetails> healed = null,
-        Action<Buff, ArmorGainDetails> armorGain = null,
-        Action<Buff, ArmorGainDetails> armorGained = null,
-        Action<Buff, ArmorLoseDetails> armorLose = null,
-        Action<Buff, ArmorLoseDetails> armorLost = null,
-        // Action<Buff, DamageDetails> laststand = null,
-        // Action<Buff, AttackDetails> evade = null,
-        // Action<StageReport, Buff, int> clean = null,
-        Tuple<int, Func<Buff, BuffDetails, BuffDetails>> buff = null,
-        Tuple<int, Func<Buff, BuffDetails, BuffDetails>> anyBuff = null,
-        Tuple<int, Func<Buff, BuffDetails, BuffDetails>> buffed = null,
-        Tuple<int, Func<Buff, BuffDetails, BuffDetails>> anyBuffed = null
+        Func<Buff, StageEntity, int, Task> gain = null,
+        Func<Buff, StageEntity, Task> lose = null,
+        Func<Buff, StageEntity, Task> stackChanged = null,
+        Func<Buff, StageEntity, Task> startStage = null,
+        Func<Buff, StageEntity, Task> endStage = null,
+        Func<Buff, TurnDetails, Task> startTurn = null,
+        Func<Buff, TurnDetails, Task> endTurn = null,
+        Func<Buff, StageEntity, Task> startRound = null,
+        Func<Buff, StageEntity, Task> endRound = null,
+        Func<Buff, StepDetails, Task> startStep = null,
+        Func<Buff, StepDetails, Task> endStep = null,
+        Func<Buff, AttackDetails, Task> attack = null,
+        Func<Buff, AttackDetails, Task> attacked = null,
+        Func<Buff, DamageDetails, Task> damage = null,
+        Func<Buff, DamageDetails, Task> damaged = null,
+        Func<Buff, Task> killed = null,
+        Func<Buff, Task> kill = null,
+        Func<Buff, HealDetails, Task> heal = null,
+        Func<Buff, HealDetails, Task> healed = null,
+        Func<Buff, ArmorGainDetails, Task> armorGain = null,
+        Func<Buff, ArmorGainDetails, Task> armorGained = null,
+        Func<Buff, ArmorLoseDetails, Task> armorLose = null,
+        Func<Buff, ArmorLoseDetails, Task> armorLost = null,
+        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buff = null,
+        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuff = null,
+        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buffed = null,
+        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuffed = null
     ) : base(name)
     {
         _description = description;
@@ -125,8 +116,6 @@ public class BuffEntry : Entry
         _buffStackRule = buffStackRule;
         _friendly = friendly;
         _dispellable = dispellable;
-
-        // _modifierLeaf = modifierLeaf;
 
         _gain = gain;
         _lose = lose;
@@ -153,9 +142,6 @@ public class BuffEntry : Entry
         _armorGained = armorGained;
         _armorLose = armorLose;
         _armorLost = armorLost;
-        // _laststand = laststand;
-        // _evade = evade;
-        // _clean = clean;
 
         _buff = buff;
         _anyBuff = anyBuff;

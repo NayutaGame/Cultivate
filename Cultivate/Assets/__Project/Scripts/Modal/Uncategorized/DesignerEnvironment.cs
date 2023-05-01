@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ public class DesignerEnvironment
         battleRunNode.AddReward(new DrawChipRewardDescriptor("一些练气外功", e => e is WaiGongEntry, j, DrawCountPerJingJie[j]));
     }
 
-    public static void DefaultStartTurn(StageEntity entity)
+    public static async Task DefaultStartTurn(StageEntity entity)
     {
         // StageManager.Instance.ArmorLoseProcedure(entity, entity.Armor);
     }

@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public class FuncQueue<T0>
+public class FuncQueue<T>
 {
-    private List<Tuple<int, Func<T0, T0>>> _list;
+    private List<Tuple<int, Func<T, Task<T>>>> _list;
 
     public FuncQueue()
     {
-        _list = new List<Tuple<int, Func<T0, T0>>>();
+        _list = new List<Tuple<int, Func<T, Task<T>>>>();
     }
 
-    public void Add(int priority, Func<T0, T0> func)
-        => Add(new Tuple<int, Func<T0, T0>>(priority, func));
-    public void Add(Tuple<int, Func<T0, T0>> item)
+    public void Add(int priority, Func<T, Task<T>> func)
+        => Add(new Tuple<int, Func<T, Task<T>>>(priority, func));
+    public void Add(Tuple<int, Func<T, Task<T>>> item)
     {
         for (int i = 0; i < _list.Count; i++)
         {
@@ -26,15 +27,15 @@ public class FuncQueue<T0>
         _list.Add(item);
     }
 
-    public void Remove(Tuple<int, Func<T0, T0>> t) => Remove(t.Item2);
-    public void Remove(Func<T0, T0> func)
+    public void Remove(Tuple<int, Func<T, Task<T>>> t) => Remove(t.Item2);
+    public void Remove(Func<T, Task<T>> func)
     {
         _list.RemoveAll(t => t.Item2 == func);
     }
 
-    public T0 Evaluate(T0 val)
+    public async Task<T> Evaluate(T val)
     {
-        foreach (var t in _list) val = t.Item2(val);
+        foreach (var t in _list) val = await t.Item2(val);
 
         return val;
     }
