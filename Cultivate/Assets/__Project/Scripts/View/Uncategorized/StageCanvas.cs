@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class StageCanvas : Singleton<StageCanvas>
 {
+    [SerializeField] private CardPreview Preview;
+
     public TMP_Text _heroHealthText;
     public TMP_Text _heroArmorText;
     public TMP_Text _enemyHealthText;
@@ -115,5 +117,17 @@ public class StageCanvas : Singleton<StageCanvas>
     public void SetEnemyArmor(int value)
     {
         _enemyArmorText.text = $"护甲：{value}";
+    }
+
+    public void SetIndexPathForPreview(IndexPath indexPath)
+    {
+        Preview.Configure(indexPath);
+        Preview.Refresh();
+    }
+
+    public void UpdateMousePosForPreview(Vector2 pos)
+    {
+        Preview.UpdateMousePos(pos);
+        Preview.Refresh();
     }
 }

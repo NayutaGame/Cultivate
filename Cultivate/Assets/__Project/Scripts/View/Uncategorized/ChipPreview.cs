@@ -17,6 +17,10 @@ public class ChipPreview : MonoBehaviour
 
     private RectTransform _rectTransform;
 
+    private void Awake()
+    {
+    }
+
     public void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;

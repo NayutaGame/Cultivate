@@ -8,12 +8,17 @@ public class StageAnimationDelegate : AnimationDelegate
 {
     public TimelineView TimelineView;
 
+    private Tween _tween;
+
     public async Task PlayTween(TweenDescriptor descriptor)
     {
         if (descriptor is ShiftTweenDescriptor shift)
         {
             if (TimelineView != null)
-                await TimelineView.ShiftAnimation();
+            {
+                Tween shiftTween = TimelineView.ShiftAnimation();
+                await PlayTween(shiftTween);
+            }
         }
         else if (descriptor is VfxTweenDescriptor vfx)
         {
@@ -45,7 +50,18 @@ public class StageAnimationDelegate : AnimationDelegate
 
     public async Task PlayTween(Tween tween)
     {
-        tween.SetAutoKill().Restart();
-        await tween.AsyncWaitForCompletion();
+        _tween = tween;
+        _tween.SetAutoKill().Restart();
+        await _tween.AsyncWaitForCompletion();
+    }
+
+    public void PauseTween()
+    {
+        _tween.Pause();
+    }
+
+    public void ResumeTween()
+    {
+        _tween.Play();
     }
 }

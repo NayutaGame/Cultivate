@@ -159,8 +159,7 @@ public class RunChipView : ItemView,
         {
             eventData.pointerDrag = null;
 
-            RunCanvas.Instance.ChipPreview.Configure(null);
-            RunCanvas.Instance.ChipPreview.Refresh();
+            RunCanvas.Instance.SetIndexPathForPreview(null);
             return;
         }
 
@@ -172,8 +171,7 @@ public class RunChipView : ItemView,
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
 
-        RunCanvas.Instance.ChipPreview.Configure(null);
-        RunCanvas.Instance.ChipPreview.Refresh();
+        RunCanvas.Instance.SetIndexPathForPreview(null);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -262,20 +260,18 @@ public class RunChipView : ItemView,
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.ChipPreview.Configure(GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForPreview(GetIndexPath());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.ChipPreview.Configure(null);
-        RunCanvas.Instance.ChipPreview.Refresh();
+        RunCanvas.Instance.SetIndexPathForPreview(null);
     }
 
     public void OnPointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.ChipPreview.UpdateMousePos(eventData.position);
-        RunCanvas.Instance.ChipPreview.Refresh();
+        RunCanvas.Instance.UpdateMousePosForPreview(eventData.position);
     }
 }

@@ -37,6 +37,9 @@ public class StageWaiGong
         return manaCost == 0 ? "" : manaCost.ToString();
     }
 
+    public string GetAnnotationString()
+        => "AnnotationString";
+
     // public int RunLevel { get; private set; }
     public int Level { get; private set; }
     public int RunUsedTimes { get; private set; }

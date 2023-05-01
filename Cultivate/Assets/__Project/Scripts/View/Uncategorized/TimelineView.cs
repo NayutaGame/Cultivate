@@ -64,9 +64,9 @@ public class TimelineView : MonoBehaviour
         }
     }
 
-    public async Task ShiftAnimation()
+    public Tween ShiftAnimation()
     {
-        Sequence seq = DOTween.Sequence().SetAutoKill();
+        Sequence seq = DOTween.Sequence();
 
         int currTime = _time;
         int nextTime = _time + 1;
@@ -108,9 +108,7 @@ public class TimelineView : MonoBehaviour
 
         _time += 1;
 
-        seq.Restart();
-
-        await seq.AsyncWaitForCompletion();
+        return seq;
     }
 
     private void TryCreate()

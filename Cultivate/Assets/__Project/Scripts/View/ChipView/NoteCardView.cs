@@ -6,8 +6,10 @@ using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class NoteCardView : ItemView
+public class NoteCardView : ItemView,
+    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     private RectTransform _rectTransform;
 
@@ -26,6 +28,16 @@ public class NoteCardView : ItemView
     public override void Configure(IndexPath indexPath)
     {
         base.Configure(indexPath);
+
+        Refresh();
+    }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        if (GetIndexPath() == null)
+            return;
 
         StageNote note = StageManager.Get<StageNote>(GetIndexPath());
 
@@ -76,5 +88,25 @@ public class NoteCardView : ItemView
         Sequence seq = DOTween.Sequence();
         seq.Join(_rectTransform.DOScale(0.5f, 0.6f).SetEase(Ease.InOutQuad));
         return seq;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        StageCanvas.Instance.SetIndexPathForPreview(GetIndexPath());
+        StageManager.Instance.Pause();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        StageCanvas.Instance.SetIndexPathForPreview(null);
+        StageManager.Instance.Resume();
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        StageCanvas.Instance.UpdateMousePosForPreview(eventData.position);
     }
 }

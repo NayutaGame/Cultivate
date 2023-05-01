@@ -13,7 +13,7 @@ public class RunCanvas : Singleton<RunCanvas>
     public Color TechColorYellow;
     public Color TechColorRed;
 
-    public ChipPreview ChipPreview;
+    [SerializeField] private ChipPreview ChipPreview;
     public GhostProduct GhostProduct;
     public GhostChip GhostChip;
 
@@ -118,4 +118,16 @@ public class RunCanvas : Singleton<RunCanvas>
     // {
     //     Refresh();
     // }
+
+    public void SetIndexPathForPreview(IndexPath indexPath)
+    {
+        ChipPreview.Configure(indexPath);
+        ChipPreview.Refresh();
+    }
+
+    public void UpdateMousePosForPreview(Vector2 pos)
+    {
+        ChipPreview.UpdateMousePos(pos);
+        ChipPreview.Refresh();
+    }
 }

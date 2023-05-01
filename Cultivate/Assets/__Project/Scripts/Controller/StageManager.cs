@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
@@ -58,6 +59,8 @@ public class StageManager : Singleton<StageManager>, GDictionary
         Anim = new();
     }
 
+    private Task _task;
+
     public async Task Enter()
     {
         EndEnv = new StageEnvironment(useTimeline: true, useSb: true);
@@ -74,7 +77,8 @@ public class StageManager : Singleton<StageManager>, GDictionary
         }
 
         CanvasManager.Instance.StageCanvas.InitialSetup();
-        await CurrEnv.Simulate();
+        _task = CurrEnv.Simulate();
+        await _task;
     }
 
     public static StageReport SimulateBrief(RunHero home, RunEnemy away)
@@ -115,5 +119,15 @@ public class StageManager : Singleton<StageManager>, GDictionary
             return;
 
         battlePanelDescriptor.ReceiveSignal(new BattleResultSignal(EndEnv.Report.HomeVictory ? BattleResultSignal.BattleResultState.Win : BattleResultSignal.BattleResultState.Lose));
+    }
+
+    public void Pause()
+    {
+        Anim.PauseTween();
+    }
+
+    public void Resume()
+    {
+        Anim.ResumeTween();
     }
 }
