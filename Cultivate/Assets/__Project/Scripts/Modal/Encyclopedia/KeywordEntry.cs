@@ -43,7 +43,7 @@ public class KeywordEntry : Entry, IAnnotation
     {
         string toRet = evaluated ?? _description;
         foreach (var annotation in _annotations)
-            toRet = toRet.Replace(annotation.GetName(), $"<style=\"H2\">{annotation.GetName()}</style>");
+            toRet = toRet.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
 
         return toRet;
     }

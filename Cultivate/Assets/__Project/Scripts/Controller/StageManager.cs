@@ -79,6 +79,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
         CanvasManager.Instance.StageCanvas.InitialSetup();
         _task = CurrEnv.Simulate();
         await _task;
+        AppManager.Pop();
     }
 
     public static StageReport SimulateBrief(RunHero home, RunEnemy away)
@@ -129,5 +130,15 @@ public class StageManager : Singleton<StageManager>, GDictionary
     public void Resume()
     {
         Anim.ResumeTween();
+    }
+
+    public void SetSpeed(float speed)
+    {
+        Anim.SetSpeed(speed);
+    }
+
+    public void Skip()
+    {
+        Anim.Skip();
     }
 }

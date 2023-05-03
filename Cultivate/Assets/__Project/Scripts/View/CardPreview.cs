@@ -6,7 +6,7 @@ using UnityEngine;
 public class CardPreview : ItemView
 {
     public NoteCardView CardView;
-    public TMP_Text PreviewDescriptionText;
+    public TMP_Text AnnotationText;
 
     private RectTransform _rectTransform;
 
@@ -31,15 +31,16 @@ public class CardPreview : ItemView
         if (isNull)
             return;
 
+        // ICardPreview
         StageNote note = StageManager.Get<StageNote>(GetIndexPath());
         StageWaiGong waiGong = note.WaiGong;
         if (waiGong == null)
         {
-            PreviewDescriptionText.text = null;
+            AnnotationText.text = null;
         }
         else
         {
-            PreviewDescriptionText.text = waiGong.GetAnnotationString();
+            AnnotationText.text = waiGong.GetAnnotationString();
         }
     }
 

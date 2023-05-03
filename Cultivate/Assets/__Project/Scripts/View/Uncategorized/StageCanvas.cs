@@ -3,11 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
 using TMPro;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageCanvas : Singleton<StageCanvas>
 {
     [SerializeField] private CardPreview Preview;
+
+    public TMP_Text SpeedText;
+    public Slider SpeedSlider;
+    public Button SkipButton;
 
     public TMP_Text _heroHealthText;
     public TMP_Text _heroArmorText;
@@ -26,6 +32,7 @@ public class StageCanvas : Singleton<StageCanvas>
     public override void DidAwake()
     {
         base.DidAwake();
+
         Configure();
     }
 
@@ -35,11 +42,39 @@ public class StageCanvas : Singleton<StageCanvas>
 
         _heroBuffViews = new List<BuffView>();
         _enemyBuffViews = new List<BuffView>();
+
+        SpeedSlider.onValueChanged.AddListener(SpeedChanged);
+        SkipButton.onClick.AddListener(Skip);
+    }
+
+    private void SpeedChanged(float value)
+    {
+        int intValue = Mathf.RoundToInt(value);
+        float speed;
+        if (intValue == -1)
+        {
+            speed = 0.5f;
+            SpeedText.text = "0.5倍速";
+        }
+        else
+        {
+            speed = Mathf.Pow(2, intValue);
+            SpeedText.text = $"{Mathf.RoundToInt(speed)}倍速";
+        }
+
+        StageManager.Instance.SetSpeed(speed);
+    }
+
+    private void Skip()
+    {
+        StageManager.Instance.Skip();
     }
 
     public void InitialSetup()
     {
         TimelineView.InitialSetup();
+
+        SpeedSlider.value = 0;
     }
 
     public void Refresh()

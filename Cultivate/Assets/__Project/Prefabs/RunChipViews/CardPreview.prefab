@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 2840162751242043952}
   - component: {fileID: 250219417020278456}
   m_Layer: 0
-  m_Name: PreviewDescriptionText
+  m_Name: AnnotationText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u5947\u5076\n\u5F53\u672C\u5361\u6240\u5728\u5361\u69FD\u4F4D\u7F6E\u4E3A\u5947\u6570\u65F6\u89E6\u53D1\u201C/\u201D\u524D\u6548\u679C\uFF0C\u5076\u6570\u65F6\u89E6\u53D1\u201C/\u201D\u540E\u6548\u679C\u3002\n\u950B\u9510\n\u6BCF\u4E2A\u51FA\u724C\u56DE\u5408\u6839\u636E\u51FA\u724C\u5947\u5076\u4F4D\u7F6E\u4EA7\u751F\u6548\u679C\uFF0C\u5947\u5076\uFF1A\u5BF9\u654C\u4EBA\u9020\u6210\u950B\u9510\u5C42\u6570\u70B9\u4F24\u5BB3/\u83B7\u5F97\u950B\u9510\u5C42\u6570\u70B9\u62A4\u7532"
+  m_text: "<style=\"Highlight\">\u5947\u5076</style>\n\u5F53\u672C\u5361\u6240\u5728\u5361\u69FD\u4F4D\u7F6E\u4E3A\u5947\u6570\u65F6\u89E6\u53D1\u201C/\u201D\u524D\u6548\u679C\uFF0C\u5076\u6570\u65F6\u89E6\u53D1\u201C/\u201D\u540E\u6548\u679C\u3002\n<style=\"Highlight\">\u950B\u9510</style>\n\u6BCF\u4E2A\u51FA\u724C\u56DE\u5408\u6839\u636E\u51FA\u724C\u5947\u5076\u4F4D\u7F6E\u4EA7\u751F\u6548\u679C\uFF0C\u5947\u5076\uFF1A\u5BF9\u654C\u4EBA\u9020\u6210\u950B\u9510\u5C42\u6570\u70B9\u4F24\u5BB3/\u83B7\u5F97\u950B\u9510\u5C42\u6570\u70B9\u62A4\u7532"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 244ffa2646a30fc42bd782a209ca2764, type: 2}
   m_sharedMaterial: {fileID: -3280477472025022827, guid: 244ffa2646a30fc42bd782a209ca2764, type: 2}
@@ -342,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardView: {fileID: 3081661369392923386}
-  PreviewDescriptionText: {fileID: 250219417020278456}
+  AnnotationText: {fileID: 250219417020278456}
 --- !u!1 &8512262248008265388
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,7 +46,7 @@ public class StageWaiGong
         StringBuilder sb = new();
         foreach (IAnnotation annotation in _entry.GetAnnotations())
         {
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}");
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}\n");
         }
 
         return sb.ToString();

@@ -10,6 +10,13 @@ public class StageAnimationDelegate : AnimationDelegate
 
     private Tween _tween;
 
+    private float _speed;
+
+    public StageAnimationDelegate()
+    {
+        _speed = 1;
+    }
+
     public async Task PlayTween(TweenDescriptor descriptor)
     {
         if (descriptor is ShiftTweenDescriptor shift)
@@ -51,6 +58,7 @@ public class StageAnimationDelegate : AnimationDelegate
     public async Task PlayTween(Tween tween)
     {
         _tween = tween;
+        _tween.timeScale = _speed;
         _tween.SetAutoKill().Restart();
         await _tween.AsyncWaitForCompletion();
     }
@@ -63,5 +71,17 @@ public class StageAnimationDelegate : AnimationDelegate
     public void ResumeTween()
     {
         _tween.Play();
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _speed = speed;
+        _tween.timeScale = _speed;
+    }
+
+    public void Skip()
+    {
+        // _tween.Complete();
+        // Anim.Skip();
     }
 }
