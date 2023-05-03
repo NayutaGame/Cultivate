@@ -37,7 +37,7 @@ public class HeroChipSlot
 
         int[] powers = new int[5];
         WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
-        return AcquiredRunChip.Chip._entry.Description.Eval(GetLevel(), GetJingJie().Value, GetJingJie().Value - AcquiredRunChip.Chip._entry.JingJieRange.Start, powers);
+        return AcquiredRunChip.Chip._entry.Evaluate(GetJingJie().Value, GetJingJie().Value - AcquiredRunChip.Chip._entry.JingJieRange.Start);
     }
 
     public int GetLevel() => AcquiredRunChip.GetLevel();

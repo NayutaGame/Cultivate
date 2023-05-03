@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -71,7 +72,7 @@ public class BuffCategory : Category<BuffEntry>
                     buff.Stack -= 1;
                 }),
 
-            new ("吸血", "下一次攻击具有吸血", BuffStackRule.Add, true, true,
+            new ("吸血", "下一次攻击造成伤害时，回复生命", BuffStackRule.Add, true, true,
                 attack: async (buff, d) =>
                 {
                     d.LifeSteal = true;
@@ -101,7 +102,7 @@ public class BuffCategory : Category<BuffEntry>
                 {
                     d.Penetrate = true;
                 }),
-            new ("格挡", "受到攻击：攻击力-1", BuffStackRule.Add, true, true,
+            new ("格挡", "受到攻击：攻击力-[层数]", BuffStackRule.Add, true, true,
                 attacked: async (buff, d) =>
                 {
                     if (d.Pierce)
@@ -109,7 +110,7 @@ public class BuffCategory : Category<BuffEntry>
 
                     d.Value -= buff.Stack;
                 }),
-            new ("自动格挡", "每回合：格挡+[层数]", BuffStackRule.Add, true, true,
+            new ("自动格挡", "每轮：格挡+[层数]", BuffStackRule.Add, true, true,
                 startRound: async (buff, owner) => await owner.BuffSelfProcedure("格挡", buff.Stack)),
             // new ("强化格挡", "本场战斗中，无法治疗，每次治疗时，每有10点，格挡+1\n每1格挡可以抵挡2攻", BuffStackRule.Wasted, true, false,
             //     healed: (buff, d) =>
@@ -122,7 +123,7 @@ public class BuffCategory : Category<BuffEntry>
             // new ("缠绕", "无法二动\n每回合：层数-1", BuffStackRule.Add, false, true,
             //     endTurn: (buff, d) => buff.Stack -= 1),
 
-            new ("闪避", "下一次受攻击时具有闪避", BuffStackRule.Add, true, true,
+            new ("闪避", "受到攻击时，减少1层，忽略此次攻击", BuffStackRule.Add, true, true,
                 attacked: async (buff, d) =>
                 {
                     d.Evade = true;
@@ -130,7 +131,7 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             new ("自动闪避", "每轮：闪避补至[层数]", BuffStackRule.Add, true, true,
                 startRound: async (buff, owner) => await buff.Owner.BuffSelfProcedure("闪避", buff.Stack - owner.GetStackOfBuff("闪避"))),
-            new ("穿透", "下一次攻击时具有穿透", BuffStackRule.Add, true, true,
+            new ("穿透", "下一次攻击时，忽略对方护甲/闪避/格挡", BuffStackRule.Add, true, true,
                 attack: async (buff, d) =>
                 {
                     d.Pierce = true;
@@ -231,5 +232,10 @@ public class BuffCategory : Category<BuffEntry>
                     d.Cancel = true;
                 }),
         };
+    }
+
+    public void Init()
+    {
+        List.Do(entry => entry.Generate());
     }
 }

@@ -43,6 +43,20 @@ public class NoteCardView : ItemView,
 
         StageWaiGong waiGong = note.WaiGong;
 
+        if (waiGong == null)
+        {
+            ManaCostText.text = "";
+            ManaCostView.SetActive(false);
+            WaiGongEntry juQiShu = Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry;
+            NameText.text = juQiShu.Name;
+            DescriptionText.text = juQiShu.Evaluate(0, 0);
+            foreach(var v in TypeViews)
+            {
+                v.SetActive(false);
+            }
+            return;
+        }
+
         int manaCost = waiGong.GetManaCost();
         if (manaCost == 0)
         {
@@ -64,7 +78,7 @@ public class NoteCardView : ItemView,
         for (int i = 0; i < skillTypes.Count; i++)
         {
             TypeViews[i].SetActive(true);
-            TypeTexts[i].text = skillTypes.ToString();
+            TypeTexts[i].text = skillTypes[i].ToString();
         }
 
         for (int i = skillTypes.Count; i < TypeViews.Length; i++)

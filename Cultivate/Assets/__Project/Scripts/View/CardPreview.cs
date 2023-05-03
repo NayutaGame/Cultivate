@@ -33,7 +33,14 @@ public class CardPreview : ItemView
 
         StageNote note = StageManager.Get<StageNote>(GetIndexPath());
         StageWaiGong waiGong = note.WaiGong;
-        PreviewDescriptionText.text = waiGong.GetAnnotationString();
+        if (waiGong == null)
+        {
+            PreviewDescriptionText.text = null;
+        }
+        else
+        {
+            PreviewDescriptionText.text = waiGong.GetAnnotationString();
+        }
     }
 
     public void UpdateMousePos(Vector2 pos)

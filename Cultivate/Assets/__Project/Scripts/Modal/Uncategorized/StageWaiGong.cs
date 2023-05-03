@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CLLibrary;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,7 +24,10 @@ public class StageWaiGong
     public bool RunConsumed;
 
     public string GetDescription()
-        => _entry.Description.Eval(Level, GetJingJie(), GetJingJie() - _entry.JingJieRange.Start, new int[] { 0, 0, 0, 0, 0 });
+    {
+        string evalutated = _entry.Evaluate(GetJingJie(), GetJingJie() - _entry.JingJieRange.Start);
+        return _entry.GetAnnotatedDescription(evalutated);
+    }
 
     public SkillTypeCollection GetSkillTypeCollection()
         => _entry.SkillTypeCollection;
@@ -38,7 +42,15 @@ public class StageWaiGong
     }
 
     public string GetAnnotationString()
-        => "AnnotationString";
+    {
+        StringBuilder sb = new();
+        foreach (IAnnotation annotation in _entry.GetAnnotations())
+        {
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}");
+        }
+
+        return sb.ToString();
+    }
 
     // public int RunLevel { get; private set; }
     public int Level { get; private set; }

@@ -1,16 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class ChipEntry : Entry
+public class ChipEntry : Entry, IAnnotation
 {
     private CLLibrary.Range _jingJieRange;
     public CLLibrary.Range JingJieRange => _jingJieRange;
 
     private ChipDescription _description;
-    public ChipDescription Description => _description;
+
+    private IAnnotation[] _annotations;
+    public IAnnotation[] GetAnnotations() => _annotations;
 
     private WuXing? _wuXing;
     public WuXing? WuXing => _wuXing;
@@ -58,4 +61,39 @@ public class ChipEntry : Entry
     public void Unplug(AcquiredRunChip acquiredRunChip) => _unplug(acquiredRunChip);
 
     public static implicit operator ChipEntry(string name) => Encyclopedia.ChipCategory[name];
+
+    public string Evaluate(int j, int dj) => _description.Eval(0, j, dj, null);
+
+    public string GetName()
+        => Name;
+
+    public void Generate()
+    {
+        string evaluated = Evaluate(0, 0);
+
+        List<IAnnotation> annotations = new();
+
+        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
+        {
+            if (evaluated.Contains(buffEntry.Name))
+                annotations.Add(buffEntry);
+        }
+
+        foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
+        {
+            if (evaluated.Contains(keywordEntry.Name))
+                annotations.Add(keywordEntry);
+        }
+
+        _annotations = annotations.ToArray();
+    }
+
+    public string GetAnnotatedDescription(string evaluated = null)
+    {
+        string toRet = evaluated ?? Evaluate(0, 0);
+        foreach (var annotation in _annotations)
+            toRet = toRet.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
+
+        return toRet;
+    }
 }

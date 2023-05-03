@@ -29,7 +29,7 @@ public class EnemyChipSlot
 
         int[] powers = new int[5];
         WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
-        return Chip._entry.Description.Eval(GetLevel(), GetJingJie().Value, GetJingJie().Value - Chip._entry.JingJieRange.Start, powers);
+        return Chip._entry.Evaluate(GetJingJie().Value, GetJingJie().Value - Chip._entry.JingJieRange.Start);
     }
     public int GetLevel() => Chip.Level;
     public int GetPower(WuXing wuXing) => _powers[wuXing];

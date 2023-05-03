@@ -903,4 +903,9 @@ public class ChipCategory : Category<ChipEntry>
                 }),
         };
     }
+
+    public void Init()
+    {
+        List.Do(entry => entry.Generate());
+    }
 }

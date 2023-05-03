@@ -44,7 +44,7 @@ public class StageAnimationDelegate : AnimationDelegate
 
         // bullet time at killing moment
         // gradually accelerating
-        // pause, speed control and skip
+        // speed control and skip
         // camera shake when large attacks
     }
 

@@ -30,5 +30,9 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
         NodeCategory = new();
 
         TechCategory.Init();
+
+        KeywordCategory.Init();
+        BuffCategory.Init();
+        ChipCategory.Init();
     }
 }
