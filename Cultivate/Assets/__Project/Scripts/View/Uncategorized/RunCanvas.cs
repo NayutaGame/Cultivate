@@ -13,7 +13,7 @@ public class RunCanvas : Singleton<RunCanvas>
     public Color TechColorYellow;
     public Color TechColorRed;
 
-    [SerializeField] private CardPreview CardPreview;
+    [SerializeField] private RunCardPreview RunCardPreview;
     public GhostProduct GhostProduct;
     public GhostChip GhostChip;
 
@@ -121,13 +121,13 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public void SetIndexPathForPreview(IndexPath indexPath)
     {
-        CardPreview.Configure(indexPath);
-        CardPreview.Refresh();
+        RunCardPreview.Configure(indexPath);
+        RunCardPreview.Refresh();
     }
 
     public void UpdateMousePosForPreview(Vector2 pos)
     {
-        CardPreview.UpdateMousePos(pos);
-        CardPreview.Refresh();
+        RunCardPreview.UpdateMousePos(pos);
+        RunCardPreview.Refresh();
     }
 }

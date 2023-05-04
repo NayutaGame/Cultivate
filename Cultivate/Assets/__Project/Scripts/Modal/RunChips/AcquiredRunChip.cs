@@ -4,7 +4,7 @@ using System.Text;
 using CLLibrary;
 using UnityEngine;
 
-public class AcquiredRunChip
+public class AcquiredRunChip : ICardModel
 {
     public Tile Tile;
     public RunChip Chip;
@@ -15,7 +15,21 @@ public class AcquiredRunChip
         Chip = runChip;
     }
 
-    public string GetName() => Chip.GetName();
+    public string GetName()
+        => Chip.GetName();
+
+    public string GetAnnotatedDescription(string evaluated = null)
+        => Chip.GetAnnotatedDescription(evaluated ?? GetDescription());
+
+    public SkillTypeCollection GetSkillTypeCollection()
+        => (Chip._entry as WaiGongEntry).SkillTypeCollection;
+
+    public Color GetColor()
+        => CanvasManager.Instance.JingJieColors[GetJingJie()];
+
+    public Sprite GetCardFace()
+        => Chip._entry.CardFace;
+
     public string GetDescription()
     {
         int[] powers = new int[5];
@@ -26,6 +40,9 @@ public class AcquiredRunChip
     public int GetLevel() => Chip.Level;
     public int GetPower(WuXing wuXing) => Tile.Powers[wuXing];
     public JingJie GetJingJie() => Chip.JingJie;
+
+    public bool GetReveal()
+        => true;
 
     // dirty variable
     public int GetManaCost()
@@ -39,6 +56,18 @@ public class AcquiredRunChip
 
         return 0;
     }
+
+    public string GetAnnotationText()
+    {
+        StringBuilder sb = new();
+        foreach (IAnnotation annotation in Chip._entry.GetAnnotations())
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}\n");
+
+        return sb.ToString();
+    }
+
+    public Color GetManaCostColor()
+        => Color.black;
 
     public string GetManaCostString()
     {

@@ -15,7 +15,7 @@ public class BuffCategory : Category<BuffEntry>
         {
             new ("灵气", "可以消耗灵气使用技能", BuffStackRule.Add, true, false),
             new ("跳回合", "跳过回合", BuffStackRule.Add, false, false),
-            new ("跳卡牌", "行动时跳过下账卡牌", BuffStackRule.Add, false, false),
+            new ("跳卡牌", "行动时跳过下张卡牌", BuffStackRule.Add, false, false),
             new ("双发", "下一张牌使用两次", BuffStackRule.Wasted, true, false),
             new ("二动", "下一张牌二动", BuffStackRule.Add, true, false,
                 startTurn: async (buff, d) =>

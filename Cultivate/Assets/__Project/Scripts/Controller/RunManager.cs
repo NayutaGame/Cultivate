@@ -149,9 +149,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
         Hero = new();
         EnemyPool = new();
 
-        CreateEnemyDetails d = new CreateEnemyDetails(JingJie);
-        Enemy = new RunEnemy(DrawEnemy(d), d);
-
         ArenaWaiGongInventory = new();
         Arena = new();
 
@@ -182,6 +179,12 @@ public class RunManager : Singleton<RunManager>, GDictionary
         StageEnvironmentChangedEvent += CalcManaShortageBrief;
 
         DesignerEnvironment.EnterRun();
+    }
+
+    public void Enter()
+    {
+        CreateEnemyDetails d = new CreateEnemyDetails(JingJie);
+        Enemy = new RunEnemy(DrawEnemy(d), d);
     }
 
     public void CExit()

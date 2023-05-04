@@ -46,7 +46,7 @@ public class RunChipView : ItemView,
         }
         else if (RunManager.Get<HeroChipSlot>(GetIndexPath()) is { } heroChipSlot)
         {
-            bool reveal = heroChipSlot.IsReveal();
+            bool reveal = heroChipSlot.GetReveal();
 
             gameObject.SetActive(reveal);
             if (!reveal) return;

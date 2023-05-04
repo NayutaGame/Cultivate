@@ -4,7 +4,7 @@ using System.Text;
 using CLLibrary;
 using UnityEngine;
 
-public class HeroChipSlot
+public class HeroChipSlot : ICardModel
 {
     public int SlotIndex;
     public Tile XueWei;
@@ -29,7 +29,24 @@ public class HeroChipSlot
     }
 
     public RunChip RunChip => AcquiredRunChip?.Chip;
-    public string GetName() => AcquiredRunChip.GetName();
+
+    public Color GetManaCostColor()
+        => IsManaShortage() ? Color.red : Color.black;
+
+    public string GetName() => AcquiredRunChip?.GetName() ?? "空";
+
+    public string GetAnnotatedDescription(string evaluated = null)
+        => AcquiredRunChip?.GetAnnotatedDescription(evaluated ?? GetDescription()) ?? "";
+
+    public SkillTypeCollection GetSkillTypeCollection()
+        => (AcquiredRunChip?.Chip._entry as WaiGongEntry)?.SkillTypeCollection ?? SkillTypeCollection.None;
+
+    public Color GetColor()
+        => AcquiredRunChip?.Chip.GetColor() ?? CanvasManager.Instance.JingJieColors[JingJie.LianQi];
+
+    public Sprite GetCardFace()
+        => AcquiredRunChip?.Chip.GetCardFace();
+
     public string GetDescription()
     {
         if (AcquiredRunChip == null)
@@ -38,6 +55,18 @@ public class HeroChipSlot
         int[] powers = new int[5];
         WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
         return AcquiredRunChip.Chip._entry.Evaluate(GetJingJie().Value, GetJingJie().Value - AcquiredRunChip.Chip._entry.JingJieRange.Start);
+    }
+
+    public string GetAnnotationText()
+    {
+        if (AcquiredRunChip == null)
+            return null;
+
+        StringBuilder sb = new();
+        foreach (IAnnotation annotation in AcquiredRunChip.Chip._entry.GetAnnotations())
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}\n");
+
+        return sb.ToString();
     }
 
     public int GetLevel() => AcquiredRunChip.GetLevel();
@@ -88,7 +117,7 @@ public class HeroChipSlot
         return sb.ToString();
     }
 
-    public bool IsReveal()
+    public bool GetReveal()
     {
         int start = RunManager.Instance.Hero.HeroSlotInventory.Start;
         int end = RunManager.Instance.Hero.HeroSlotInventory.Start + RunManager.Instance.Hero.HeroSlotInventory.Limit;

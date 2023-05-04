@@ -5,13 +5,16 @@ using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyChipSlot
+public class EnemyChipSlot : ICardModel
 {
     public int SlotIndex;
     private int[] _powers;
     public RunChip Chip;
 
     public bool IsReveal;
+
+    public bool GetReveal()
+        => IsReveal;
 
     public EnemyChipSlot(int slotIndex)
     {
@@ -20,7 +23,41 @@ public class EnemyChipSlot
         IsReveal = true;
     }
 
-    public string GetName() => Chip?.GetName();
+    public int GetManaCost()
+    {
+        if (Chip?._entry is WaiGongEntry waigongEntry)
+        {
+            int[] powers = new int[5];
+            WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
+            return waigongEntry.GetManaCost(GetLevel(), GetJingJie(), GetJingJie() - Chip._entry.JingJieRange.Start, powers);
+        }
+
+        return 0;
+    }
+
+    public Color GetManaCostColor()
+        => Color.black;
+
+    public string GetManaCostString()
+    {
+        int manaCost = GetManaCost();
+        return manaCost == 0 ? "" : manaCost.ToString();
+    }
+
+    public string GetName()
+        => Chip?.GetName() ?? "空";
+
+    public string GetAnnotatedDescription(string evaluated = null)
+        => Chip?.GetAnnotatedDescription(evaluated ?? GetDescription()) ?? "";
+
+    public SkillTypeCollection GetSkillTypeCollection()
+        => (Chip?._entry as WaiGongEntry)?.SkillTypeCollection ?? SkillTypeCollection.None;
+
+    public Color GetColor()
+        => Chip?.GetColor() ?? CanvasManager.Instance.JingJieColors[JingJie.LianQi];
+
+    public Sprite GetCardFace()
+        => Chip?._entry.CardFace;
 
     public string GetDescription()
     {
@@ -29,35 +66,29 @@ public class EnemyChipSlot
 
         int[] powers = new int[5];
         WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
-        return Chip._entry.Evaluate(GetJingJie().Value, GetJingJie().Value - Chip._entry.JingJieRange.Start);
+        return Chip._entry.Evaluate(GetJingJie(), GetJingJie() - Chip._entry.JingJieRange.Start);
     }
-    public int GetLevel() => Chip.Level;
-    public int GetPower(WuXing wuXing) => _powers[wuXing];
-    public void SetPower(WuXing wuXing, int value) => _powers[wuXing] = value;
-    public JingJie? GetJingJie()
+
+    public string GetAnnotationText()
     {
         if (Chip == null)
             return null;
-        return Chip.JingJie;
+
+        StringBuilder sb = new();
+        foreach (IAnnotation annotation in Chip._entry.GetAnnotations())
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}\n");
+
+        return sb.ToString();
     }
 
-    public int GetManaCost()
-    {
-        if (Chip?._entry is WaiGongEntry waigongEntry)
-        {
-            int[] powers = new int[5];
-            WuXing.Traversal.Do(wuXing => powers[wuXing] = GetPower(wuXing));
-            return waigongEntry.GetManaCost(GetLevel(), GetJingJie().Value, GetJingJie().Value - Chip._entry.JingJieRange.Start, powers);
-        }
+    public int GetLevel() => Chip.Level;
+    public int GetPower(WuXing wuXing) => _powers[wuXing];
+    public void SetPower(WuXing wuXing, int value) => _powers[wuXing] = value;
+    public JingJie GetJingJie()
+        => Chip.JingJie;
 
-        return 0;
-    }
-
-    public string GetManaCostString()
-    {
-        int manaCost = GetManaCost();
-        return manaCost == 0 ? "" : manaCost.ToString();
-    }
+    public string GetJingJieString()
+        => Chip?.GetJingJie()._index.ToString() ?? "null";
 
     public string GetPowerString()
     {

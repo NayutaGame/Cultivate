@@ -119,7 +119,7 @@ public class RunEnemy : GDictionary
             if(string.IsNullOrEmpty(name))
                 continue;
             int level = s.Chip?.Level ?? 0;
-            string jingJie = s.GetJingJie()?._index.ToString() ?? "null";
+            string jingJie = s.GetJingJieString();
             int jin = s.GetPower(WuXing.Jin);
             int shui = s.GetPower(WuXing.Shui);
             int mu = s.GetPower(WuXing.Mu);

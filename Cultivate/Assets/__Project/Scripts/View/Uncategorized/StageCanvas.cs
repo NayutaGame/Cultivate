@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class StageCanvas : Singleton<StageCanvas>
 {
-    [SerializeField] private CardPreview Preview;
+    [SerializeField] private StageCardPreview Preview;
 
     public TMP_Text SpeedText;
     public Slider SpeedSlider;

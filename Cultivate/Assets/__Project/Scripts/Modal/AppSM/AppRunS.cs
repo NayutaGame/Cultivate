@@ -8,6 +8,7 @@ public class AppRunS : AppS
     {
         base.Enter();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
+        RunManager.Instance.Enter();
     }
 
     public override void Exit()
