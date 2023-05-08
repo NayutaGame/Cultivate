@@ -5,21 +5,22 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class NodeView : ItemView, IPointerClickHandler
+public class NodeView : MonoBehaviour, IIndexPath, IPointerClickHandler
 {
+    private IndexPath _indexPath;
+    public IndexPath GetIndexPath() => _indexPath;
+
     private Image Image;
     public TMP_Text NameText;
 
-    public override void Configure(IndexPath indexPath)
+    public virtual void Configure(IndexPath indexPath)
     {
-        base.Configure(indexPath);
+        _indexPath = indexPath;
         Image = GetComponent<Image>();
     }
 
-    public override void Refresh()
+    public virtual void Refresh()
     {
-        base.Refresh();
-
         RunNode runNode = RunManager.Get<RunNode>(GetIndexPath());
 
         gameObject.SetActive(runNode != null);

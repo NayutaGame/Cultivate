@@ -6,20 +6,21 @@ using UnityEngine;
 
 public class BattleRunNode : RunNode
 {
-    public CreateEnemyDetails CreateEnemyDetails;
+    public CreateEntityDetails CreateEntityDetails;
     private List<RewardDescriptor> _rewards;
-    public EnemyEntry _enemyEntry;
+    public EntityEntry EntityEntry;
 
-    public BattleRunNode(Vector2Int position, BattleNodeEntry entry, CreateEnemyDetails createEnemyDetails) : base(position, entry)
+    public BattleRunNode(Vector2Int position, BattleNodeEntry entry, CreateEntityDetails createEntityDetails) : base(position, entry)
     {
-        CreateEnemyDetails = createEnemyDetails;
+        CreateEntityDetails = createEntityDetails;
         _rewards = new();
-        _enemyEntry = RunManager.Instance.DrawEnemy(CreateEnemyDetails);
+        RunManager.Instance.EntityPool.TryDrawEntityEntry(out EntityEntry entityEntry, CreateEntityDetails);
+        EntityEntry = entityEntry;
     }
 
     public override string GetTitle()
     {
-        return _enemyEntry.Name;
+        return EntityEntry.Name;
     }
 
     public void AddReward(RewardDescriptor rewardDescriptor)

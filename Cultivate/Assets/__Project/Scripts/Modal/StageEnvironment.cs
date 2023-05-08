@@ -232,8 +232,8 @@ public class StageEnvironment : GDictionary
         => await ArmorGainProcedure(new ArmorGainDetails(src, tgt, value));
     public async Task ArmorGainProcedure(ArmorGainDetails d)
     {
-        d.Src.ArmorGain(d);
-        d.Tgt.ArmorGained(d);
+        await d.Src.ArmorGain(d);
+        await d.Tgt.ArmorGained(d);
         if (d.Cancel)
             return;
 
@@ -245,8 +245,8 @@ public class StageEnvironment : GDictionary
         => await ArmorLoseProcedure(new ArmorLoseDetails(src, tgt, value));
     public async Task ArmorLoseProcedure(ArmorLoseDetails d)
     {
-        d.Src.ArmorLose(d);
-        d.Tgt.ArmorLost(d);
+        await d.Src.ArmorLose(d);
+        await d.Tgt.ArmorLost(d);
         if (d.Cancel)
             return;
 
@@ -265,7 +265,7 @@ public class StageEnvironment : GDictionary
     private StageReport _report;
     public StageReport Report => _report;
 
-    public StageEnvironment(RunHero home = null, RunEnemy away = null, bool useTween = false, bool useTimeline = false, bool useSb = false)
+    public StageEnvironment(RunEntity home, RunEntity away, bool useTween = false, bool useTimeline = false, bool useSb = false)
     {
         _accessors = new()
         {
@@ -276,25 +276,8 @@ public class StageEnvironment : GDictionary
 
         _entities = new StageEntity[]
         {
-            new StageHero(this, home ?? RunManager.Instance.Hero, 0),
-            new StageEnemy(this, away ?? RunManager.Instance.Enemy, 1),
-        };
-        _report = new(useTween, useTimeline, useSb);
-    }
-
-    public StageEnvironment(RunEnemy home, RunEnemy away, bool useTween = false, bool useTimeline = false, bool useSb = false)
-    {
-        _accessors = new()
-        {
-            { "Home",                  () => _entities[0] },
-            { "Away",                  () => _entities[1] },
-            { "Report",                () => _report },
-        };
-
-        _entities = new StageEntity[]
-        {
-            new StageEnemy(this, home, 0),
-            new StageEnemy(this, away, 1),
+            new(this, home, 0),
+            new(this, away, 1),
         };
         _report = new(useTween, useTimeline, useSb);
     }
@@ -359,7 +342,7 @@ public class StageEnvironment : GDictionary
         {
             if (stopWriting)
                 return;
-            manaShortageBrief[p + RunManager.WaiGongStartFromJingJie[RunManager.Instance.JingJie]] = true;
+            manaShortageBrief[p + RunManager.WaiGongStartFromJingJie[_entities[0].RunEntity.GetJingJie()]] = true;
         }
 
         async Task StopWriting()

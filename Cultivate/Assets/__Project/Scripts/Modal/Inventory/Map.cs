@@ -80,14 +80,26 @@ public class Map : GDictionary
         Selecting = true;
 
         if (isEnd)
-            RunManager.Instance.JingJie += 1;
+            JingJie += 1;
 
         RunCanvas.Instance.OpenMapPanel();
     }
 
+
+    private JingJie _jingJie;
+
+    public JingJie JingJie
+    {
+        get => _jingJie;
+        set
+        {
+            _jingJie = value;
+            RefreshPools();
+        }
+    }
+
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
-
     public Map()
     {
         _list = new RunNode[HEIGHT * WIDTH];
@@ -122,9 +134,9 @@ public class Map : GDictionary
         };
     }
 
-    public void SetJingJie(JingJie jingJie)
+    private void RefreshPools()
     {
-        AutoPool<NodeEntry>[] pools = _poolConfiguration[jingJie];
+        AutoPool<NodeEntry>[] pools = _poolConfiguration[_jingJie];
 
         for (int x = 0; x < WIDTH; x++)
         {
@@ -153,7 +165,7 @@ public class Map : GDictionary
                 NodeEntry nodeEntry = pool.ForcePopItem();
                 if (nodeEntry is BattleNodeEntry battleNodeEntry)
                 {
-                    CreateEnemyDetails d = new CreateEnemyDetails(jingJie, x);
+                    CreateEntityDetails d = new CreateEntityDetails(_jingJie, x);
                     this[x, y] = new BattleRunNode(new Vector2Int(x, y), battleNodeEntry, d);
                 }
                 else

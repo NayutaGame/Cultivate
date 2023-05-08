@@ -23,8 +23,8 @@ public class ArenaWaiGongInventoryView : InventoryView<RunChipView>
         ArenaWaiGongInventory inventory = RunManager.Get<ArenaWaiGongInventory>(GetIndexPath());
         inventory.Sort((lhs, rhs) =>
         {
-            int lIndex = Encyclopedia.ChipCategory.IndexOf(lhs._entry);
-            int rIndex = Encyclopedia.ChipCategory.IndexOf(rhs._entry);
+            int lIndex = Encyclopedia.SkillCategory.IndexOf(lhs._entry);
+            int rIndex = Encyclopedia.SkillCategory.IndexOf(rhs._entry);
             return lIndex - rIndex;
         });
         RunCanvas.Instance.Refresh();
@@ -40,8 +40,8 @@ public class ArenaWaiGongInventoryView : InventoryView<RunChipView>
             if (lWuXing != rWuXing)
                 return lWuXing - rWuXing;
 
-            int lIndex = Encyclopedia.ChipCategory.IndexOf(lhs._entry);
-            int rIndex = Encyclopedia.ChipCategory.IndexOf(rhs._entry);
+            int lIndex = Encyclopedia.SkillCategory.IndexOf(lhs._entry);
+            int rIndex = Encyclopedia.SkillCategory.IndexOf(rhs._entry);
             return lIndex - rIndex;
         });
         RunCanvas.Instance.Refresh();
@@ -52,13 +52,13 @@ public class ArenaWaiGongInventoryView : InventoryView<RunChipView>
         ArenaWaiGongInventory inventory = RunManager.Get<ArenaWaiGongInventory>(GetIndexPath());
         inventory.Sort((lhs, rhs) =>
         {
-            int lType = (lhs._entry as WaiGongEntry).SkillTypeCollection.Value;
-            int rType = (rhs._entry as WaiGongEntry).SkillTypeCollection.Value;
+            int lType = lhs.GetSkillTypeCollection().Value;
+            int rType = rhs.GetSkillTypeCollection().Value;
             if (lType != rType)
                 return lType - rType;
 
-            int lIndex = Encyclopedia.ChipCategory.IndexOf(lhs._entry);
-            int rIndex = Encyclopedia.ChipCategory.IndexOf(rhs._entry);
+            int lIndex = Encyclopedia.SkillCategory.IndexOf(lhs._entry);
+            int rIndex = Encyclopedia.SkillCategory.IndexOf(rhs._entry);
             return lIndex - rIndex;
         });
         RunCanvas.Instance.Refresh();

@@ -15,7 +15,7 @@ public class BattleNodeEntry : NodeEntry
             // Boss战斗奖励应该更丰富
             DesignerEnvironment.AddRewardForBattleRunNode(battleRunNode);
 
-            BattlePanelDescriptor A = new BattlePanelDescriptor(battleRunNode._enemyEntry, battleRunNode.CreateEnemyDetails);
+            BattlePanelDescriptor A = new BattlePanelDescriptor(battleRunNode.EntityEntry, battleRunNode.CreateEntityDetails);
             DialogPanelDescriptor B = new DialogPanelDescriptor($"胜利\n\n得到{battleRunNode.GetRewardsString()}");
             DialogPanelDescriptor C = new DialogPanelDescriptor($"你没能击败对手，虽然损失了一些命元，但还是获得了奖励\n\n得到{battleRunNode.GetRewardsString()}");
 

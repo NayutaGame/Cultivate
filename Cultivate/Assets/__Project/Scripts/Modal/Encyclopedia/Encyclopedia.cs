@@ -7,11 +7,8 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
 {
     public static KeywordCategory KeywordCategory;
     public static BuffCategory BuffCategory;
-    public static ChipCategory ChipCategory;
-    public static TileResourceCategory TileResourceCategory;
-    public static TerrainCategory TerrainCategory;
-    public static ProductCategory ProductCategory;
-    public static EnemyCategory EnemyCategory;
+    public static SkillCategory SkillCategory;
+    public static EntityCategory EntityCategory;
     public static TechCategory TechCategory;
     public static NodeCategory NodeCategory;
 
@@ -21,11 +18,8 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
 
         KeywordCategory = new();
         BuffCategory = new();
-        ChipCategory = new();
-        TileResourceCategory = new();
-        TerrainCategory = new();
-        ProductCategory = new();
-        EnemyCategory = new();
+        SkillCategory = new();
+        EntityCategory = new();
         TechCategory = new();
         NodeCategory = new();
 
@@ -33,6 +27,6 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
 
         KeywordCategory.Init();
         BuffCategory.Init();
-        ChipCategory.Init();
+        SkillCategory.Init();
     }
 }

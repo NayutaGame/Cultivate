@@ -63,8 +63,8 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
     public async Task Enter()
     {
-        EndEnv = new StageEnvironment(useTimeline: true, useSb: true);
-        CurrEnv = new StageEnvironment(useTween: true);
+        EndEnv = new StageEnvironment(RunManager.Instance.Battle.Hero, RunManager.Instance.Battle.Enemy, useTimeline: true, useSb: true);
+        CurrEnv = new StageEnvironment(RunManager.Instance.Battle.Hero, RunManager.Instance.Battle.Enemy, useTween: true);
         EndEnv.Simulate().GetAwaiter().GetResult();
         EndEnv.WriteResult();
         RunManager.Instance.Report = EndEnv.Report;
@@ -82,7 +82,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
         AppManager.Pop();
     }
 
-    public static StageReport SimulateBrief(RunHero home, RunEnemy away)
+    public static StageReport SimulateBrief(RunEntity home, RunEntity away)
     {
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         AppManager.Instance.StageManager.gameObject.SetActive(false);
@@ -93,23 +93,12 @@ public class StageManager : Singleton<StageManager>, GDictionary
         return Instance.EndEnv.Report;
     }
 
-    public static StageReport SimulateBrief(RunEnemy home, RunEnemy away)
+    public static bool[] ManaSimulate(RunEntity home, RunEntity away)
     {
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         AppManager.Instance.StageManager.gameObject.SetActive(false);
 
-        Instance.EndEnv = new StageEnvironment(home, away, useSb: true);
-        Instance.EndEnv.Simulate().GetAwaiter().GetResult();
-        Instance.EndEnv.WriteResult();
-        return Instance.EndEnv.Report;
-    }
-
-    public static bool[] ManaSimulate()
-    {
-        AppManager.Instance.StageManager.gameObject.SetActive(true);
-        AppManager.Instance.StageManager.gameObject.SetActive(false);
-
-        Instance.EndEnv = new StageEnvironment();
+        Instance.EndEnv = new StageEnvironment(home, away);
         return Instance.EndEnv.InnerManaSimulate().GetAwaiter().GetResult();
     }
 

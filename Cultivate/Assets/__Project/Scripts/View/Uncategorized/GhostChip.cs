@@ -41,33 +41,33 @@ public class GhostChip : MonoBehaviour
             return;
         }
 
-        RunChip c;
-        if (o is RunChip runChip)
-        {
-            c = runChip;
-        }
-        else if (o is AcquiredRunChip acquiredRunChip)
-        {
-            c = acquiredRunChip.Chip;
-        }
-        else if (o is HeroChipSlot heroRunChip)
-        {
-            c = heroRunChip.RunChip;
-        }
-        else
-        {
-            throw new Exception($"undefined, o.type = {o.GetType()}");
-        }
-
-        if (c == null)
-        {
-            InfoText.text = "空";
-            SetColorFromJingJie(JingJie.LianQi);
-            return;
-        }
-
-        InfoText.text = $"{c.GetName()}";
-        SetColorFromJingJie(c.JingJie);
+        RunSkill c;
+        // if (o is RunSkill runChip)
+        // {
+        //     c = runChip;
+        // }
+        // else if (o is AcquiredRunChip acquiredRunChip)
+        // {
+        //     c = acquiredRunChip.Skill;
+        // }
+        // else if (o is HeroChipSlot heroRunChip)
+        // {
+        //     c = heroRunChip.RunSkill;
+        // }
+        // else
+        // {
+        //     throw new Exception($"undefined, o.type = {o.GetType()}");
+        // }
+        //
+        // if (c == null)
+        // {
+        //     InfoText.text = "空";
+        //     SetColorFromJingJie(JingJie.LianQi);
+        //     return;
+        // }
+        //
+        // InfoText.text = $"{c.GetName()}";
+        // SetColorFromJingJie(c.JingJie);
     }
 
     protected void SetColorFromJingJie(JingJie jingJie)

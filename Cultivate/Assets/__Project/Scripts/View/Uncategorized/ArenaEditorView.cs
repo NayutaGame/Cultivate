@@ -4,7 +4,7 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ArenaEditorView : InventoryView<ArenaEnemyView>
+public class ArenaEditorView : InventoryView<ArenaEntityView>
 {
     public Button RandomButton;
     public Button CompeteButton;
@@ -19,7 +19,7 @@ public class ArenaEditorView : InventoryView<ArenaEnemyView>
 
     private void Random()
     {
-        Views.Do(v => v.RandomEnemyButton.onClick.Invoke());
+        Views.Do(v => v.RandomButton.onClick.Invoke());
         // multiple refreshes
     }
 

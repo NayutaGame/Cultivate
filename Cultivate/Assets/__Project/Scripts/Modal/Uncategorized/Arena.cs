@@ -5,7 +5,7 @@ using System.Drawing;
 using CLLibrary;
 using UnityEngine;
 
-public class Arena : Inventory<RunEnemy>, GDictionary
+public class Arena : Inventory<RunEntity>, GDictionary
 {
     private static readonly int ArenaSize = 6;
 
@@ -17,26 +17,25 @@ public class Arena : Inventory<RunEnemy>, GDictionary
 
     public StageReport Report;
 
+    public ArenaWaiGongInventory ArenaWaiGongInventory;
+
     public Arena()
     {
         _accessors = new()
         {
             { "Briefs", () => _reports },
+            { "ArenaWaiGongInventory", () => ArenaWaiGongInventory },
         };
 
-        ArenaSize.Do(item => Add(new RunEnemy()));
+        ArenaSize.Do(item => Add(new RunEntity()));
         _reports = new StageReport[ArenaSize * ArenaSize];
+        ArenaWaiGongInventory = new();
     }
 
-    public void SetEnemy(int index, int enemyEntryIndex)
+    // Entity 的 SetEntry 的具体实现
+    public void SetEnemy(int index, EntityEntry entityEntry, CreateEntityDetails d)
     {
-        this[index] = new RunEnemy(Encyclopedia.EnemyCategory[enemyEntryIndex], new CreateEnemyDetails(RunManager.Instance.JingJie));
-    }
-
-    public void SetRandom(int index)
-    {
-        int r = RandomManager.Range(0, Encyclopedia.EnemyCategory.GetCount());
-        SetEnemy(index, r);
+        this[index] = new RunEntity(entityEntry, d);
     }
 
     public void Compete()

@@ -64,8 +64,8 @@ public class StageReport : GDictionary
     public void Append(string s)
         => _sb?.Append(s);
 
-    public void AppendNote(int entityIndex, StageWaiGong waiGong)
-        => _timeline?.AppendNote(entityIndex, waiGong);
+    public void AppendNote(int entityIndex, StageSkill skill)
+        => _timeline?.AppendNote(entityIndex, skill);
 
     public async Task PlayTween(TweenDescriptor descriptor)
     {

@@ -15,7 +15,7 @@ public class BattlePanel : Panel
 
     public BattleEnemyView BattleEnemyView;
     public RunChipInventoryView HeroEquippedInventoryView;
-    public AcquiredWaiGongInventoryView AcquiredWaiGongInventoryView;
+    public SkillInventoryView SkillInventoryView;
 
     public Button CommitButton;
     public TMP_Text CommitText;
@@ -25,15 +25,15 @@ public class BattlePanel : Panel
     {
         BattleEnemyView.Configure(new IndexPath("Enemy"));
         HeroEquippedInventoryView.Configure(new IndexPath("Hero.HeroSlotInventory.Slots"));
-        AcquiredWaiGongInventoryView.Configure(new IndexPath("AcquiredInventory"));
+        SkillInventoryView.Configure(new IndexPath("AcquiredInventory"));
         CommitButton.onClick.AddListener(Commit);
     }
 
     public override void Refresh()
     {
         base.Refresh();
-        HeroJingJieText.text = RunManager.Instance.JingJie.ToString();
-        HeroHPText.text = RunManager.Instance.Hero.Health.ToString();
+        HeroJingJieText.text = RunManager.Instance.Battle.Hero.GetJingJie().ToString();
+        HeroHPText.text = RunManager.Instance.Battle.Hero.GetHealth().ToString();
 
         if (RunManager.Instance.Report is { } report)
         {
@@ -60,7 +60,7 @@ public class BattlePanel : Panel
 
         BattleEnemyView.Refresh();
         HeroEquippedInventoryView.Refresh();
-        AcquiredWaiGongInventoryView.Refresh();
+        SkillInventoryView.Refresh();
     }
 
     private void Commit()

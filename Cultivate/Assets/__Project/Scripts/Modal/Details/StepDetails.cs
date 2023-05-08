@@ -6,11 +6,11 @@ using UnityEngine;
 public class StepDetails
 {
     public StageEntity Owner;
-    public StageWaiGong WaiGong;
+    public StageSkill Skill;
 
-    public StepDetails(StageEntity owner, StageWaiGong waiGong)
+    public StepDetails(StageEntity owner, StageSkill skill)
     {
         Owner = owner;
-        WaiGong = waiGong;
+        Skill = skill;
     }
 }

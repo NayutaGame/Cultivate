@@ -1,17 +1,17 @@
 
 using UnityEngine;
 
-public class StageNote : ICardModel
+public class StageNote : ISkillModel
 {
     public int EntityIndex;
     public int TemporalIndex;
-    public StageWaiGong WaiGong;
+    public StageSkill Skill;
 
-    public StageNote(int entityIndex, int temporalIndex, StageWaiGong waiGong)
+    public StageNote(int entityIndex, int temporalIndex, StageSkill skill)
     {
         EntityIndex = entityIndex;
         TemporalIndex = temporalIndex;
-        WaiGong = waiGong;
+        Skill = skill;
     }
 
     public bool IsHome
@@ -21,27 +21,27 @@ public class StageNote : ICardModel
         => true;
 
     public int GetManaCost()
-        => WaiGong?.GetManaCost() ?? 0;
+        => Skill?.GetManaCost() ?? 0;
 
     public Color GetManaCostColor()
         => Color.white;
 
     public string GetName()
-        => WaiGong?.GetName() ?? (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Name;
+        => Skill?.GetName() ?? Encyclopedia.SkillCategory["聚气术"].Name;
 
     public string GetAnnotatedDescription(string evaluated = null)
-        => WaiGong?.GetAnnotatedDescription() ?? (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Evaluate(0, 0);
+        => Skill?.GetAnnotatedDescription() ?? Encyclopedia.SkillCategory["聚气术"].Evaluate(0, 0);
 
     public SkillTypeCollection GetSkillTypeCollection()
-        => WaiGong?.GetSkillTypeCollection() ?? SkillTypeCollection.None;
+        => Skill?.GetSkillTypeCollection() ?? SkillTypeCollection.None;
 
     public Color GetColor()
         // => WaiGong?.GetColor() ?? CanvasManager.Instance.JingJieColors[JingJie.LianQi];
-        => CanvasManager.Instance.JingJieColors[WaiGong?.GetJingJie() ?? JingJie.LianQi];
+        => CanvasManager.Instance.JingJieColors[Skill?.GetJingJie() ?? JingJie.LianQi];
 
     public Sprite GetCardFace()
-        => WaiGong?.Entry.CardFace;
+        => Skill?.Entry.CardFace;
 
     public string GetAnnotationText()
-        => WaiGong?.GetAnnotationText();
+        => Skill?.GetAnnotationText();
 }

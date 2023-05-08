@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
-public abstract class StageEntity : GDictionary
+public class StageEntity : GDictionary
 {
     public event Func<Task> StartStageEvent;
     public async Task StartStage()
@@ -189,8 +189,8 @@ public abstract class StageEntity : GDictionary
         return null;
     }
 
-    public StageWaiGong[] _waiGongList;
-    public StageWaiGong TryGetWaiGong(int i)
+    public StageSkill[] _waiGongList;
+    public StageSkill TryGetWaiGong(int i)
     {
         if (i < _waiGongList.Length)
             return _waiGongList[i];
@@ -233,34 +233,34 @@ public abstract class StageEntity : GDictionary
         if (!_manaShortage)
             await MoveP();
 
-        StageWaiGong waiGong = _waiGongList[_p];
+        StageSkill skill = _waiGongList[_p];
 
-        await StartStep(new StepDetails(this, waiGong));
+        await StartStep(new StepDetails(this, skill));
         // _env.Report.Seq?.
         // show waigong
 
-        bool manaSufficient = waiGong.GetManaCost() == 0 || TryConsumeBuff("免费") || TryConsumeMana(waiGong.GetManaCost());
+        bool manaSufficient = skill.GetManaCost() == 0 || TryConsumeBuff("免费") || TryConsumeMana(skill.GetManaCost());
         _manaShortage = !manaSufficient;
         if(_manaShortage)
         {
             await ManaShortage(_p);
-            await (Encyclopedia.ChipCategory["聚气术"] as WaiGongEntry).Execute(this, null, true);
+            await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
             await EndStep(new StepDetails(this, null));
             return;
         }
 
         if (TryConsumeBuff("双发"))
         {
-            await waiGong.Execute(this);
-            await waiGong.Execute(this);
+            await skill.Execute(this);
+            await skill.Execute(this);
         }
         else
         {
-            await waiGong.Execute(this);
+            await skill.Execute(this);
         }
 
         // hide waigong
-        await EndStep(new StepDetails(this, waiGong));
+        await EndStep(new StepDetails(this, skill));
     }
 
     private async Task MoveP()
@@ -320,10 +320,13 @@ public abstract class StageEntity : GDictionary
     private int _index;
     public int Index => _index;
 
+    private RunEntity _runEntity;
+    public RunEntity RunEntity => _runEntity;
+
     private StageEnvironment _env;
     public StageEnvironment Env => _env;
 
-    public StageEntity(StageEnvironment env, int index)
+    public StageEntity(StageEnvironment env, RunEntity runEntity, int index)
     {
         _accessors = new()
         {
@@ -333,6 +336,7 @@ public abstract class StageEntity : GDictionary
         };
 
         _env = env;
+        _runEntity = runEntity;
         _index = index;
 
         _buffs = new List<Buff>();
@@ -353,6 +357,30 @@ public abstract class StageEntity : GDictionary
         DamageEvent += DefaultDamage;
         DamagedEvent += DefaultDamaged;
         LoseHpEvent += DefaultLoseHp;
+
+        MaxHp = _runEntity.GetHealth();
+        Hp = _runEntity.GetHealth();
+        Armor = 0;
+
+        _neiGongList = new StageNeiGong[4];
+
+        _waiGongList = new StageSkill[_runEntity.Limit];
+        for (int i = 0; i < _waiGongList.Length; i++)
+        {
+            SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
+            _waiGongList[i] = new StageSkill(this, slot.Skill, i);
+        }
+
+        _p = 0;
+    }
+
+    public void WriteEffect()
+    {
+        for (int i = 0; i < _waiGongList.Length; i++)
+        {
+            SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
+            slot.RunConsumed = _waiGongList[i].RunConsumed;
+        }
     }
 
     public async Task<BuffDetails> HighestManaRecorder(BuffDetails d)
@@ -381,8 +409,6 @@ public abstract class StageEntity : GDictionary
         GainedBurningRecord += d._stack;
         return d;
     }
-
-    public virtual void WriteEffect() { }
 
     ~StageEntity()
     {

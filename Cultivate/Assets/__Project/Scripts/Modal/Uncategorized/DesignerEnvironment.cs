@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -13,15 +14,19 @@ public class DesignerEnvironment
     {
         RunManager rm = RunManager.Instance;
 
-        rm.JingJie = JingJie.JinDan;
+        rm.Map.JingJie = JingJie.JinDan;
 
-        16.Do(i => rm.TryDrawAcquired(JingJie.JinDan));
+        bool flag = rm.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: JingJie.JinDan, count: 16);
+        if (!flag)
+            throw new Exception();
+
+        rm.Battle.SkillInventory.AddRange(skills);
     }
 
     public static void AddRewardForBattleRunNode(BattleRunNode battleRunNode)
     {
-        JingJie j = RunManager.Instance.JingJie;
-        battleRunNode.AddReward(new DrawChipRewardDescriptor("一些练气外功", e => e is WaiGongEntry, j, DrawCountPerJingJie[j]));
+        JingJie j = RunManager.Instance.Map.JingJie;
+        battleRunNode.AddReward(new DrawSkillRewardDescriptor("一些外功", jingJie: j, count: DrawCountPerJingJie[j]));
     }
 
     public static async Task DefaultStartTurn(StageEntity entity)

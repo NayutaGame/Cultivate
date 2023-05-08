@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class StatusView : MonoBehaviour
 {
-    public TMP_Text StatusText;
     public TMP_Dropdown JingJieDropdown;
 
     public void Configure()
@@ -18,12 +17,11 @@ public class StatusView : MonoBehaviour
 
     public void Refresh()
     {
-        StatusText.text = RunManager.Instance.GetStatusString();
     }
 
     public void JingJieChanged(int index)
     {
-        RunManager.Instance.JingJie = index;
+        RunManager.Instance.Map.JingJie = index;
         RunCanvas.Instance.Refresh();
     }
 }

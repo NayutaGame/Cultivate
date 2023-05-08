@@ -17,7 +17,7 @@ public class NodeCategory : Category<NodeEntry>
                 create: runNode =>
                 {
                     DialogPanelDescriptor A = new DialogPanelDescriptor("来到一处神殿", "我必凯旋", "我已膨胀");
-                    BattlePanelDescriptor B = new BattlePanelDescriptor("鶸", new CreateEnemyDetails(RunManager.Instance.JingJie));
+                    BattlePanelDescriptor B = new BattlePanelDescriptor("鶸", new CreateEntityDetails(RunManager.Instance.Map.JingJie));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("你无法再获得命元，所有牌获得二动");
                     DialogPanelDescriptor D = new DialogPanelDescriptor("胜利");
                     DialogPanelDescriptor E = new DialogPanelDescriptor("你没能击败对手，虽然损失了一些命元，但还是获得了奖励");
@@ -70,8 +70,8 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor A = new DialogPanelDescriptor("你经过一处村庄，村口的石碑上刻着“问剑村”，村子里的村民各个面色凝重，这时一位老者向你走来，他告诉你：村庄饱受土匪强盗侵扰。你决定：", "迅速离去", "拔刀相助");
                     DialogPanelDescriptor B = new DialogPanelDescriptor("自从筑基成功，你就正式踏上修仙的道路，凡尘的准则与琐事都与你无关。");
                     DialogPanelDescriptor C = new DialogPanelDescriptor("修仙者走的就是一条逆天而行的路，常年累月的修行换来的力量就是为了能够以自己的意志行走于大地之上。“老伯你放心，今日，我定给‘问剑村’一个安宁。”说罢，你一个飞身往土匪的藏身处遁去。");
-                    BattlePanelDescriptor D = new BattlePanelDescriptor("鶸", new CreateEnemyDetails(RunManager.Instance.JingJie));//先用了你声明过得关键字
-                    BattlePanelDescriptor E = new BattlePanelDescriptor("鶸", new CreateEnemyDetails(RunManager.Instance.JingJie));
+                    BattlePanelDescriptor D = new BattlePanelDescriptor("鶸", new CreateEntityDetails(RunManager.Instance.Map.JingJie));//先用了你声明过得关键字
+                    BattlePanelDescriptor E = new BattlePanelDescriptor("鶸", new CreateEntityDetails(RunManager.Instance.Map.JingJie));
                     DialogPanelDescriptor F = new DialogPanelDescriptor("你带着土匪老大的头颅返回了问剑村，村长奖励了你一些XXX");
                     DialogPanelDescriptor G = new DialogPanelDescriptor("你没能击败对手，损失了一些命元");
                     DialogPanelDescriptor H = new DialogPanelDescriptor("土匪老大落败后提出：他在问剑村找到一本功法秘籍。他用秘籍作为交换希望你能放他一命。你决定：","同意","直接杀死土匪老大");

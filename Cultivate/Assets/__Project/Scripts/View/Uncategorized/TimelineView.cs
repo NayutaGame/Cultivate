@@ -23,8 +23,8 @@ public class TimelineView : MonoBehaviour
     public RectTransform NoteContainer;
     public GameObject NotePrefab;
 
-    private List<StageCardView> _views;
-    public List<StageCardView> Views => _views;
+    private List<StageSkillView> _views;
+    public List<StageSkillView> Views => _views;
 
     private int _time;
 
@@ -41,7 +41,7 @@ public class TimelineView : MonoBehaviour
 
     public void Configure()
     {
-        _views = new List<StageCardView>();
+        _views = new List<StageSkillView>();
 
         TotalCount = HomeSlots.Length;
         FutureCount = HomeSlots.Length - (IndexOfCurr + 1);
@@ -57,7 +57,7 @@ public class TimelineView : MonoBehaviour
         {
             StageNote note = batch[i];
             RectTransform slot = (note.IsHome ? HomeSlots : AwaySlots)[IndexOfCurr + 1 + i];
-            StageCardView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageCardView>();
+            StageSkillView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillView>();
             v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
             v.Configure(new IndexPath($"EndEnv.Report.Timeline.Notes#{note.TemporalIndex}"));
@@ -74,13 +74,13 @@ public class TimelineView : MonoBehaviour
 
         for (int i = 0; i < _views.Count; i++)
         {
-            StageCardView v = _views[i];
+            StageSkillView v = _views[i];
             StageNote note = StageManager.Get<StageNote>(v.GetIndexPath());
             int spatialIndex = note.TemporalIndex - nextTime + 1 + IndexOfCurr;
 
             if (spatialIndex == 0)
             {
-                StageCardView toDestroy = _views[i];
+                StageSkillView toDestroy = _views[i];
                 _views.RemoveAt(i);
                 Destroy(toDestroy.gameObject);
                 i--;
@@ -119,7 +119,7 @@ public class TimelineView : MonoBehaviour
             return;
 
         RectTransform slot = toCreate.IsHome ? HomeSlots[^1] : AwaySlots[^1];
-        StageCardView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageCardView>();
+        StageSkillView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillView>();
         v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
         v.Configure(new IndexPath($"EndEnv.Report.Timeline.Notes#{toCreate.TemporalIndex}"));

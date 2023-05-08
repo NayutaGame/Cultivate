@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class BattlePanelDescriptor : PanelDescriptor
 {
-    private EnemyEntry _enemyEntry;
-    public EnemyEntry EnemyEntry => _enemyEntry;
+    private EntityEntry _entityEntry;
+    public EntityEntry EntityEntry => _entityEntry;
 
-    private CreateEnemyDetails _createEnemyDetails;
+    private CreateEntityDetails _createEntityDetails;
 
-    public BattlePanelDescriptor(EnemyEntry enemyEntry, CreateEnemyDetails createEnemyDetails)
+    public BattlePanelDescriptor(EntityEntry entityEntry, CreateEntityDetails createEntityDetails)
     {
-        _enemyEntry = enemyEntry;
-        _createEnemyDetails = createEnemyDetails;
+        _entityEntry = entityEntry;
+        _createEntityDetails = createEntityDetails;
     }
 
     public override void Enter()
     {
         base.Enter();
-
-        // 是否可以由BattleRunNode维护Enemy
-        RunManager.Instance.Enemy = new RunEnemy(_enemyEntry, _createEnemyDetails);
+        RunManager.Instance.Battle.Enemy = new RunEntity(_entityEntry, _createEntityDetails);
     }
 }

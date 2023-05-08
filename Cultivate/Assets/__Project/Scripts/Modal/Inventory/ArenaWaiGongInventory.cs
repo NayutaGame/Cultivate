@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class ArenaWaiGongInventory: Inventory<RunChip>
+public class ArenaWaiGongInventory: Inventory<RunSkill>
 {
     public ArenaWaiGongInventory()
     {
         Clear();
-        Encyclopedia.ChipCategory.Traversal.FilterObj(chip => chip is WaiGongEntry).Map(chip => new RunChip(chip, chip.JingJieRange.Start)).Do(Add);
+        Encyclopedia.SkillCategory.Traversal.Map(chip => new RunSkill(chip, chip.JingJieRange.Start)).Do(Add);
     }
 }

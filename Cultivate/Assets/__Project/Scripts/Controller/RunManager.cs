@@ -22,58 +22,21 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public event Action<StageCommitDetails> StageCommitEvent;
     public void StageCommit(StageCommitDetails d) => StageCommitEvent?.Invoke(d);
 
-    public event Action<AcquireDetails> AcquireEvent;
-    public void Acquire(AcquireDetails d) => AcquireEvent?.Invoke(d);
-
-    public event Action<BuildDetails> BuildEvent;
-    public void Build(BuildDetails d) => BuildEvent?.Invoke(d);
-
-    public event Action<PowerChangedDetails> PowerChangedEvent;
-    public void PowerChanged(PowerChangedDetails d) => PowerChangedEvent?.Invoke(d);
+    public event Action<GainSkillDetails> GainSkillEvent;
+    public void Acquire(GainSkillDetails d) => GainSkillEvent?.Invoke(d);
 
     public event Action<StatusChangedDetails> StatusChangedEvent;
     public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
 
-    public event Action StageEnvironmentChangedEvent;
-    public void StageEnvironmentChanged() => StageEnvironmentChangedEvent?.Invoke();
+    public SkillPool SkillPool { get; private set; }
+    public EntityPool EntityPool { get; private set; }
 
-    private ChipPool _chipPool;
-    public DanTian DanTian { get; private set; }
-    private ProductInventory _productInventory;
     public TechInventory TechInventory { get; private set; }
     public Map Map { get; private set; }
-    public ChipInventory ChipInventory { get; private set; }
-    public AcquiredWaiGongInventory AcquiredInventory { get; private set; }
-    public RunHero Hero { get; private set; }
-    public EnemyPool EnemyPool { get; private set; }
 
-    private RunEnemy _enemy;
-    public RunEnemy Enemy
-    {
-        get => _enemy;
-        set
-        {
-            _enemy = value;
-            StageEnvironmentChanged();
-        }
-    }
-
-    public ArenaWaiGongInventory ArenaWaiGongInventory;
+    public BattleRunEnvironment Battle { get; private set; }
+    public SimulateRunEnvironment Simulate { get; private set; }
     public Arena Arena;
-
-    private JingJie _jingJie;
-
-    public JingJie JingJie
-    {
-        get => _jingJie;
-        set
-        {
-            _jingJie = value;
-            Hero.SetJingJie(_jingJie);
-            DanTian.SetJingJie(_jingJie);
-            Map.SetJingJie(_jingJie);
-        }
-    }
 
     private int _mingYuan;
     public int MingYuan
@@ -135,36 +98,22 @@ public class RunManager : Singleton<RunManager>, GDictionary
     {
         base.DidAwake();
 
-        List<ChipEntry> l = new List<ChipEntry>();
-        4.Do(i => l.AddRange(Encyclopedia.ChipCategory.Traversal.FilterObj(entry => entry.Name != "聚气术")));
-        _chipPool = new(l);
+        SkillPool = new();
+        EntityPool = new();
 
-        DanTian = new();
-        _productInventory = new();
         TechInventory = new();
         Map = new();
-        ChipInventory = new();
-        AcquiredInventory = new();
-
-        Hero = new();
-        EnemyPool = new();
-
-        ArenaWaiGongInventory = new();
+        Battle = new();
+        Simulate = new();
         Arena = new();
 
         _accessors = new()
         {
-            { "DanTian",               () => DanTian },
             { "TechInventory",         () => TechInventory },
             { "Map",                   () => Map },
-            { "ChipInventory",         () => ChipInventory },
-            { "AcquiredInventory",     () => AcquiredInventory },
-            { "Hero",                  () => Hero },
-            { "Enemy",                 () => Enemy },
-            { "ArenaWaiGongInventory", () => ArenaWaiGongInventory },
+            { "Battle",                () => Battle },
+            { "Simulate",              () => Simulate },
             { "Arena",                 () => Arena },
-            // { "TryGetProduct",         TryGetProduct },
-            // private object TryGetProduct(IndexPath indexPath) => _productInventory[indexPath._ints[0]];
         };
 
         _mingYuan = 100;
@@ -173,31 +122,22 @@ public class RunManager : Singleton<RunManager>, GDictionary
         _chanNeng = 0;
 
         Modifier = Modifier.Default;
-        Modifier.AddChild(DanTian.Modifier);
-
-        StageEnvironmentChangedEvent += CalcReport;
-        StageEnvironmentChangedEvent += CalcManaShortageBrief;
 
         DesignerEnvironment.EnterRun();
     }
 
     public void Enter()
     {
-        CreateEnemyDetails d = new CreateEnemyDetails(JingJie);
-        Enemy = new RunEnemy(DrawEnemy(d), d);
+        Simulate.Enter();
+        Battle.Enter();
     }
 
     public void CExit()
     {
-        // remove run consumed cards
-        Hero.HeroSlotInventory.Traversal.Do(slot =>
-        {
-            slot.TryConsume();
-        });
+        Battle.Hero.TryConsume();
     }
 
     public RunNode TryGetCurrentNode() => Map.TryGetCurrentNode();
-    public string GetStatusString() => $"命元：{_mingYuan}\n气血：{Hero.Health}\n初始灵力：{Hero.Mana}";
 
     public void AddTurn()
     {
@@ -221,20 +161,15 @@ public class RunManager : Singleton<RunManager>, GDictionary
         _mingYuan += mingYuan;
     }
 
-    public void RefreshChip()
-    {
-        ChipInventory.RefreshChip();
-    }
-
-    public void UpgradeFirstChip()
-    {
-        ChipInventory.UpgradeFirstChip();
-    }
-
-    public void ClearChip()
-    {
-        ChipInventory.Clear();
-    }
+    // public void RefreshChip()
+    // {
+    //     SkillInventory.RefreshChip();
+    // }
+    //
+    // public void ClearChip()
+    // {
+    //     SkillInventory.Clear();
+    // }
 
     public bool CanAffordTech(IndexPath indexPath)
     {
@@ -253,102 +188,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
         return true;
     }
 
-    public bool TryUpgradeDanTian(IndexPath from, IndexPath to)
-    {
-        RunChip runChip = Get<RunChip>(from);
-        Tile tile = Get<Tile>(to);
-
-        if (!CanUpgradeDanTian(runChip, tile)) return false;
-        UpgradeDanTian(runChip, tile);
-        return true;
-    }
-
-    public bool CanUpgradeDanTian(RunChip runChip, Tile tile)
-    {
-        return RunChip.CanUpgrade(runChip, tile.AcquiredRunChip?.Chip);
-    }
-
-    public void UpgradeDanTian(RunChip runChip, Tile tile)
-    {
-        tile.AcquiredRunChip.Upgrade();
-        ChipInventory.Remove(runChip);
-    }
-
-    // public bool TryUpgradeInventory(IndexPath from, IndexPath to)
-    // {
-    //     int fromIndex = from._ints[0];
-    //     int toIndex = to._ints[0];
-    //
-    //     if (!Instance._chipInventory.CanUpgradeInventory(fromIndex, toIndex)) return false;
-    //     Instance._chipInventory.UpgradeInventory(fromIndex, toIndex);
-    //     return true;
-    // }
-
-    public bool TryDrawWaiGong()
-    {
-        _chipPool.Shuffle();
-        ChipEntry chip = _chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJieRange.Contains(_jingJie));
-        ChipInventory.Add(new RunChip(chip, chip.JingJieRange.Start));
-        return true;
-    }
-
-    public bool TryDrawStone()
-    {
-        _chipPool.Shuffle();
-        ChipEntry chip = _chipPool.ForcePopItem(c => c is WuXingChipEntry);
-        ChipInventory.Add(new RunChip(chip, chip.JingJieRange.Start));
-        return true;
-    }
-
-    public bool TryDrawAcquired(Predicate<ChipEntry> pred, JingJie jingJie)
-    {
-        _chipPool.Shuffle();
-        ChipEntry chip = _chipPool.ForcePopItem(c => pred(c) && c is WaiGongEntry && c.JingJieRange.Contains(jingJie));
-        RunChip draw = new RunChip(chip, jingJie);
-        Tile emptyTile = DanTian.FirstEmptyTile();
-        if (emptyTile == null)
-            return false;
-
-        return draw.TryPlug(emptyTile);
-    }
-
-    public bool TryDrawAcquired(JingJie jingJie)
-    {
-        _chipPool.Shuffle();
-        ChipEntry chip = _chipPool.ForcePopItem(c => c is WaiGongEntry && c.JingJieRange.Contains(jingJie));
-        RunChip draw = new RunChip(chip, jingJie);
-        Tile emptyTile = DanTian.FirstEmptyTile();
-        if (emptyTile == null)
-            return false;
-
-        return draw.TryPlug(emptyTile);
-    }
-
-    public RunChip DrawChip(string chipName)
-    {
-        ChipEntry chip = chipName;
-        RunChip picked = new RunChip(chip, chip.JingJieRange.Start);
-        ChipInventory.Add(picked);
-        return picked;
-    }
-
-    public void DrawChip(Predicate<ChipEntry> pred, int count)
-    {
-        _chipPool.Shuffle();
-        for (int i = 0; i < count; i++)
-        {
-            ChipEntry chip = _chipPool.ForcePopItem(pred);
-            ChipInventory.Add(new RunChip(chip, chip.JingJieRange.Start));
-        }
-    }
-
-    public EnemyEntry DrawEnemy(CreateEnemyDetails d)
-    {
-        EnemyPool.Shuffle();
-        EnemyEntry entry = EnemyPool.ForcePopItem(e => e.CanCreate(d));
-        return entry;
-    }
-
     public bool TryClickNode(IndexPath indexPath)
     {
         RunNode runNode = Get<RunNode>(indexPath);
@@ -358,15 +197,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
         Map.SelectedNode(runNode);
         return true;
     }
-
-    private void CalcReport()
-    {
-        Report = StageManager.SimulateBrief(Hero, Enemy);
-    }
-
-    [NonSerialized] public bool[] ManaShortageBrief;
-    private void CalcManaShortageBrief()
-        => ManaShortageBrief = StageManager.ManaSimulate();
 
     public void RealCombat()
     {
@@ -379,75 +209,4 @@ public class RunManager : Singleton<RunManager>, GDictionary
         IsStream = true;
         AppManager.Push(new AppStageS());
     }
-
-    // public bool TryDropProduct(IndexPath from, IndexPath to)
-    // {
-    //     if (!CanDropProduct(from, to))
-    //         return false;
-    //     DropProduct(from, to);
-    //     return true;
-    // }
-    //
-    // public bool CanDropProduct(IndexPath from, IndexPath to)
-    // {
-    //     Product product = Get<Product>(from);
-    //     Tile tile = Get<Tile>(to);
-    //     if (product == null || tile == null) return false;
-    //
-    //     return _productInventory.CanDrop(product, tile);
-    // }
-    //
-    // public void DropProduct(IndexPath from, IndexPath to)
-    // {
-    //     Product product = Get<Product>(from);
-    //     Tile tile = Get<Tile>(to);
-    //
-    //     _chanNeng -= product.GetCost();
-    //     _productInventory.Drop(product, tile);
-    //     // _danTian.AutoAssignWorkers();
-    // }
-    //
-    // public bool TryClickProduct(IndexPath clicked)
-    // {
-    //     if (!CanClickProduct(clicked))
-    //         return false;
-    //     ClickProduct(clicked);
-    //     return true;
-    // }
-    //
-    // public bool CanClickProduct(IndexPath clicked)
-    // {
-    //     Product product = Get<Product>(clicked);
-    //     if (product == null) return false;
-    //
-    //     return _productInventory.CanClick(product);
-    // }
-    //
-    // public void ClickProduct(IndexPath clicked)
-    // {
-    //     Product product = Get<Product>(clicked);
-    //
-    //     _chanNeng -= product.GetCost();
-    //     _productInventory.Click(product);
-    //     // _danTian.AutoAssignWorkers();
-    // }
-    //
-    // public bool CanAfford(Product product)
-    // {
-    //     if (product.GetCost() > ChanNeng) return false;
-    //
-    //     if (product.IsDrag())
-    //         return null != _danTian.Revealed().FirstObj(product.CanDrop);
-    //
-    //     if (product.IsClick())
-    //         return product.CanClick();
-    //
-    //     return false;
-    // }
-    //
-    // public bool TryToggleWorkerLock(IndexPath pos)
-    // {
-    //     Tile tile = Get<Tile>(pos);
-    //     return _danTian.TryToggleWorkerLock(tile);
-    // }
 }

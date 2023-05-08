@@ -88,7 +88,7 @@ public class BuffCategory : Category<BuffEntry>
                 attack: async (buff, d) => d.LifeSteal = true,
                 startStep: async (buff, d) =>
                 {
-                    if (!d.WaiGong.GetWaiGongType().Contains(SkillTypeCollection.Attack))
+                    if (!d.Skill.GetWaiGongType().Contains(SkillTypeCollection.Attack))
                         buff.Stack -= 1;
                 }),
             // new ("治疗转二动", "本场战斗中，被治疗时，如果实际治疗>=20，二动", BuffStackRule.Wasted, true, false,
@@ -158,9 +158,9 @@ public class BuffCategory : Category<BuffEntry>
             new ("净天地", "使用非攻击卡不消耗灵气，使用之后消耗", BuffStackRule.Add, true, false,
                 startStep: async (buff, d) =>
                 {
-                    if (d.WaiGong.GetWaiGongType().Contains(SkillTypeCollection.Attack))
+                    if (d.Skill.GetWaiGongType().Contains(SkillTypeCollection.Attack))
                         return;
-                    d.WaiGong.Consumed = true;
+                    d.Skill.Consumed = true;
                     bool noBuff = buff.Owner.GetStackOfBuff("免费") == 0;
                     if(noBuff)
                         await buff.Owner.BuffSelfProcedure("免费");

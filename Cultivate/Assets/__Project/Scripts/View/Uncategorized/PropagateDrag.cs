@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PropagateDrag : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IIndexPath
+public class PropagateDrag : MonoBehaviour, IIndexPath, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public IndexPath _indexPath;
     public Action<PointerEventData> _onPointerDown;
@@ -13,6 +13,12 @@ public class PropagateDrag : MonoBehaviour, IPointerDownHandler, IBeginDragHandl
     public Action<PointerEventData> _onDrag;
 
     public IndexPath GetIndexPath() => _indexPath;
+    public void Configure(IndexPath indexPath)
+    {
+        _indexPath = indexPath;
+    }
+
+    public void Refresh() { }
 
     public void OnPointerDown(PointerEventData eventData)
     {

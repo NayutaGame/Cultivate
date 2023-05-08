@@ -33,4 +33,9 @@ public abstract class Inventory<T> : List<T>
     }
 
     public bool Swap(T from, T to) => Swap(IndexOf(from), IndexOf(to));
+
+    public void Replace(T from, T to)
+    {
+        this[IndexOf(from)] = to;
+    }
 }

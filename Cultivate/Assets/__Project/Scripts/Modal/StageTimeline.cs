@@ -49,9 +49,9 @@ public class StageTimeline : GDictionary
         return null;
     }
 
-    public void AppendNote(int entityIndex, StageWaiGong waiGong)
+    public void AppendNote(int entityIndex, StageSkill skill)
     {
         int count = _notes.Count;
-        _notes.Add(new StageNote(entityIndex, count, waiGong));
+        _notes.Add(new StageNote(entityIndex, count, skill));
     }
 }

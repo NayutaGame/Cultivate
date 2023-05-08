@@ -4,9 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TechView : ItemView
+public class TechView : MonoBehaviour, IIndexPath
 {
     private Image _image;
+
+    private IndexPath _indexPath;
+    public IndexPath GetIndexPath() => _indexPath;
 
     public TMP_Text NameText;
     public TMP_Text RewardText;
@@ -15,17 +18,15 @@ public class TechView : ItemView
     public TMP_Text CostText;
     public TMP_Text DiscountText;
 
-    public override void Configure(IndexPath indexPath)
+    public virtual void Configure(IndexPath indexPath)
     {
-        base.Configure(indexPath);
+        _indexPath = indexPath;
         _image = GetComponent<Image>();
         SetDoneButton.onClick.AddListener(TrySetDone);
     }
 
-    public override void Refresh()
+    public virtual void Refresh()
     {
-        base.Refresh();
-
         RunTech runTech = RunManager.Get<RunTech>(GetIndexPath());
 
         NameText.text = runTech.GetName();

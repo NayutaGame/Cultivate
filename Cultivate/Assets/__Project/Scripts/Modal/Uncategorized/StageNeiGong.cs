@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class StageNeiGong
 {
-    private RunChip _runChip;
+    private RunSkill _runSkill;
 
-    public StageNeiGong(RunChip runChip)
+    public StageNeiGong(RunSkill runSkill)
     {
-        _runChip = runChip;
+        _runSkill = runSkill;
 
-        if (_runChip != null)
+        if (_runSkill != null)
         {
             // register
         }
@@ -18,16 +18,7 @@ public class StageNeiGong
 
     public string GetName()
     {
-        if (_runChip == null) return "空";
-        return _runChip.GetName();
-    }
-
-    public int Level
-    {
-        get
-        {
-            if (_runChip == null) return 0;
-            return _runChip.Level;
-        }
+        if (_runSkill == null) return "空";
+        return _runSkill.GetName();
     }
 }

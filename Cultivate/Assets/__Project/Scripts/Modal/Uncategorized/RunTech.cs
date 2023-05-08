@@ -81,27 +81,9 @@ public class RunTech
         Unregister();
     }
 
-    public void Acquire(AcquireDetails d)
+    public void GainSkill(GainSkillDetails d)
     {
-        AcquireEventDescriptor eureka = _entry.Eureka as AcquireEventDescriptor;
-        if (!eureka._cond(d, this)) return;
-
-        _hasEureka = true;
-        Unregister();
-    }
-
-    public void Build(BuildDetails d)
-    {
-        BuildEventDescriptor eureka = _entry.Eureka as BuildEventDescriptor;
-        if (!eureka._cond(d, this)) return;
-
-        _hasEureka = true;
-        Unregister();
-    }
-
-    public void PowerChanged(PowerChangedDetails d)
-    {
-        PowerChangedEventDescriptor eureka = _entry.Eureka as PowerChangedEventDescriptor;
+        GainSkillEventDescriptor eureka = _entry.Eureka as GainSkillEventDescriptor;
         if (!eureka._cond(d, this)) return;
 
         _hasEureka = true;

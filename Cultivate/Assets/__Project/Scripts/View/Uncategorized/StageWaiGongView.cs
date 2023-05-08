@@ -17,8 +17,8 @@ public class StageWaiGongView : MonoBehaviour
 
     public void Refresh()
     {
-        StageWaiGong chip = StageManager.Get<StageWaiGong>(IndexPath);
+        StageSkill chip = StageManager.Get<StageSkill>(IndexPath);
 
-        InfoText.text = chip == null ? "" : $"{chip.GetName()}[{chip.Level}]";
+        // InfoText.text = chip == null ? "" : $"{chip.GetName()}[{chip.Level}]";
     }
 }
