@@ -135,6 +135,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public void CExit()
     {
         Battle.Hero.TryConsume();
+        RunCanvas.Instance.Refresh();
     }
 
     public RunNode TryGetCurrentNode() => Map.TryGetCurrentNode();
@@ -200,7 +201,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     public void Combat(bool useAnim, RunEnvironment environment)
     {
-        CombatDetails = new CombatDetails(useAnim, environment.Hero, environment.Enemy);
+        CombatDetails = new CombatDetails(useAnim, environment is BattleRunEnvironment, environment.Hero, environment.Enemy);
         AppManager.Push(new AppStageS());
     }
 }

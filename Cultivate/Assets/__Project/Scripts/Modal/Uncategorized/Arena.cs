@@ -11,13 +11,14 @@ public class Arena : Inventory<RunEntity>, GDictionary
     private StageReport[] _reports;
     public StageReport[] Reports => _reports;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
-
     public StageReport Report;
 
     public SkillInventory SkillInventory;
 
+    protected DragDropDelegate _dragDropDelegate;
+
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
     public Arena()
     {
         _accessors = new()
@@ -26,16 +27,51 @@ public class Arena : Inventory<RunEntity>, GDictionary
             { "SkillInventory", () => SkillInventory },
         };
 
-        ArenaSize.Do(item => Add(new RunEntity()));
-        _reports = new StageReport[ArenaSize * ArenaSize];
+        _dragDropDelegate = new(2, new Func<IDragDrop, IDragDrop, bool>[]
+            {
+                /*               RunSkill,   SkillSlot */
+                /* RunSkill   */ null,       TryWrite,
+                /* SkillSlot  */ null,       TryWrite,
+            },
+            item =>
+            {
+                if (item is RunSkill)
+                    return 0;
+                if (item is SkillSlot)
+                    return 1;
+
+                return null;
+            });
+
         SkillInventory = new();
-        Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.Add(e));
+        SkillInventory.SetDragDropDelegate(_dragDropDelegate);
+        Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));
+
+        ArenaSize.Do(item =>
+        {
+            RunEntity e = new RunEntity();
+            e.SetDragDropDelegate(_dragDropDelegate);
+            Add(e);
+        });
+
+        _reports = new StageReport[ArenaSize * ArenaSize];
     }
 
-    // Entity 的 SetEntry 的具体实现
-    public void SetEnemy(int index, EntityEntry entityEntry, CreateEntityDetails d)
+    private bool TryWrite(IDragDrop from, IDragDrop to)
     {
-        this[index] = new RunEntity(entityEntry, d);
+        RunSkill skill = null;
+        if (from is RunSkill fromSkill)
+        {
+            skill = fromSkill;
+        }
+        else if (from is SkillSlot skillSlot)
+        {
+            skill = skillSlot.Skill;
+        }
+
+        SkillSlot toSlot = to as SkillSlot;
+        toSlot.Skill = skill;
+        return true;
     }
 
     public void Compete()

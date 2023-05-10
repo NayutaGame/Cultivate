@@ -2453,7 +2453,7 @@ GameObject:
   - component: {fileID: 5896712554100659081}
   - component: {fileID: -711014571449497360}
   m_Layer: 5
-  m_Name: SimulateEntityView
+  m_Name: MutableEntityView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

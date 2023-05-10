@@ -190,7 +190,10 @@ public class RunEnvironment : GDictionary
         Report = StageManager.SimulateBrief(Hero, Enemy);
     }
 
-    [NonSerialized] public bool[] ManaShortageBrief;
     private void CalcManaShortageBrief()
-        => ManaShortageBrief = StageManager.ManaSimulate(Hero, Enemy);
+    {
+        bool[] manaShortageBrief = StageManager.ManaSimulate(Hero, Enemy);
+        for (int i = 0; i < manaShortageBrief.Length; i++)
+            Hero.GetSlot(i).IsManaShortage = manaShortageBrief[i];
+    }
 }

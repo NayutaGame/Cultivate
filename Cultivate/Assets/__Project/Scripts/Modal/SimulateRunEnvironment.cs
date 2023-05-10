@@ -31,7 +31,7 @@ public class SimulateRunEnvironment : RunEnvironment
                         return 3;
                 }
 
-                throw new Exception();
+                return null;
             });
     }
 }

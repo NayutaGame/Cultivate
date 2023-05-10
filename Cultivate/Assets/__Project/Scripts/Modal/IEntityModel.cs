@@ -4,7 +4,6 @@ using UnityEngine;
 
 public interface IEntityModel
 {
-    // bool CanModify();
     EntityEntry GetEntry();
     void SetEntry(EntityEntry entry);
     JingJie GetJingJie();

@@ -5,16 +5,14 @@ using UnityEngine.UI;
 
 public class SimulatePanel : Panel
 {
-    public EntityView EnemyView;
-    public EntityView HeroView;
+    public MutableEntityView EnemyView;
+    public MutableEntityView HeroView;
+    public SkillInventoryView SkillInventoryView;
 
     public TMP_Text SimulatedHP;
     public Image Light;
     public Button ReportButton;
     public Button StreamButton;
-
-    public SkillInventoryView SkillInventoryView;
-
     public TMP_Text ReportText;
 
     public override void Configure()

@@ -1,71 +1,60 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using CLLibrary;
-using UnityEngine.Serialization;
 
 public class BattlePanel : Panel
 {
-    public TMP_Text HeroJingJieText;
-    public TMP_Text HeroHPText;
-    public TMP_Text SimulatedHP;
-
-    public BattleEnemyView BattleEnemyView;
-    public RunChipInventoryView HeroEquippedInventoryView;
+    public EntityView EnemyView;
+    public EntityView HeroView;
     public SkillInventoryView SkillInventoryView;
 
-    public Button CommitButton;
-    public TMP_Text CommitText;
+    public TMP_Text SimulatedHP;
+    public Image Light;
+    public Button ReportButton;
+    public Button StreamButton;
     public TMP_Text ReportText;
 
     public override void Configure()
     {
-        BattleEnemyView.Configure(new IndexPath("Enemy"));
-        HeroEquippedInventoryView.Configure(new IndexPath("Hero.HeroSlotInventory.Slots"));
-        SkillInventoryView.Configure(new IndexPath("AcquiredInventory"));
-        CommitButton.onClick.AddListener(Commit);
+        base.Configure();
+        HeroView.Configure(new IndexPath("Battle.Hero"));
+        EnemyView.Configure(new IndexPath("Battle.Enemy"));
+        SkillInventoryView.Configure(new IndexPath("Battle.SkillInventory"));
+
+        ReportButton.onClick.AddListener(Report);
+        StreamButton.onClick.AddListener(Stream);
     }
 
     public override void Refresh()
     {
-        base.Refresh();
-        HeroJingJieText.text = RunManager.Instance.Battle.Hero.GetJingJie().ToString();
-        HeroHPText.text = RunManager.Instance.Battle.Hero.GetHealth().ToString();
+        HeroView.Refresh();
+        EnemyView.Refresh();
+        SkillInventoryView.Refresh();
 
-        if (RunManager.Instance.Report is { } report)
+        if (RunManager.Instance.Battle.Report is { } report)
         {
-            SimulatedHP.text = $"玩家 {report.HomeLeftHp} : {report.AwayLeftHp} 敌人";
+            SimulatedHP.text = $"玩家 : 怪物\n{report.HomeLeftHp} : {report.AwayLeftHp}";
+            Light.color = report.HomeVictory ? Color.green : Color.red;
             ReportText.text = report.ToString();
-            if (report.HomeVictory)
-            {
-                CommitText.color = Color.green;
-                CommitText.text = $"提交胜利";
-            }
-            else
-            {
-                CommitText.color = Color.gray;
-                CommitText.text = $"提交逃跑\n命元: {RunManager.Instance.MingYuan}->{RunManager.Instance.MingYuan - report.MingYuanPenalty}";
-            }
         }
         else
         {
-            SimulatedHP.text = "";
+            SimulatedHP.text = $"玩家 : 怪物\n无结果";
+            Light.color = Color.gray;
             ReportText.text = "";
-            CommitText.color = Color.black;
-            CommitText.text = "刷新";
         }
-
-        BattleEnemyView.Refresh();
-        HeroEquippedInventoryView.Refresh();
-        SkillInventoryView.Refresh();
     }
 
-    private void Commit()
+    private void Report()
     {
-        // RunManager.Instance.Combat();
+        RunManager.Instance.Combat(false, RunManager.Instance.Battle);
+        RunCanvas.Instance.Refresh();
+    }
+
+    private void Stream()
+    {
+        RunManager.Instance.Combat(true, RunManager.Instance.Battle);
         RunCanvas.Instance.Refresh();
     }
 }

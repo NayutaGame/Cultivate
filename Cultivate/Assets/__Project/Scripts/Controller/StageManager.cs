@@ -110,6 +110,10 @@ public class StageManager : Singleton<StageManager>, GDictionary
         if (battlePanelDescriptor == null)
             return;
 
+        CombatDetails d = RunManager.Instance.CombatDetails;
+        if (!d.FireSignal)
+            return;
+
         battlePanelDescriptor.ReceiveSignal(new BattleResultSignal(EndEnv.Report.HomeVictory ? BattleResultSignal.BattleResultState.Win : BattleResultSignal.BattleResultState.Lose));
     }
 

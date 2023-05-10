@@ -4,7 +4,7 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ArenaEditorView : InventoryView<EntityView>
+public class ArenaEditorView : InventoryView<MutableEntityView>
 {
     public Button RandomButton;
     public Button CompeteButton;

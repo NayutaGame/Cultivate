@@ -33,7 +33,7 @@ public class BattleRunEnvironment : RunEnvironment
                         return 3;
                 }
 
-                throw new Exception();
+                return null;
             });
     }
 }
