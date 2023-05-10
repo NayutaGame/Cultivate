@@ -63,14 +63,16 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
     public async Task Enter()
     {
-        EndEnv = new StageEnvironment(RunManager.Instance.Battle.Hero, RunManager.Instance.Battle.Enemy, useTimeline: true, useSb: true);
-        CurrEnv = new StageEnvironment(RunManager.Instance.Battle.Hero, RunManager.Instance.Battle.Enemy, useTween: true);
+        CombatDetails d = RunManager.Instance.CombatDetails;
+
+        EndEnv = new StageEnvironment(d.Home, d.Away, useTimeline: true, useSb: true);
+        CurrEnv = new StageEnvironment(d.Home, d.Away, useTween: true);
         EndEnv.Simulate().GetAwaiter().GetResult();
         EndEnv.WriteResult();
         RunManager.Instance.Report = EndEnv.Report;
         EndEnv.WriteEffect();
 
-        if (!RunManager.Instance.IsStream)
+        if (!d.UseAnim)
         {
             AppManager.Pop();
             return;

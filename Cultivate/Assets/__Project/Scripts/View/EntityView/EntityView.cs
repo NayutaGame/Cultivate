@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class EntityView : MonoBehaviour, IIndexPath
+public class EntityView : MonoBehaviour, IIndexPath
 {
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
@@ -43,17 +43,17 @@ public abstract class EntityView : MonoBehaviour, IIndexPath
 
     private void SetEntry(EntityEntry entry)
     {
-        EntityDropdown.value = entry == null ? 0 : Encyclopedia.EntityCategory.IndexOf(entry);
+        EntityDropdown.SetValueWithoutNotify(entry == null ? 0 : Encyclopedia.EntityCategory.IndexOf(entry));
     }
 
     private void SetJingJie(JingJie jingJie)
     {
-        JingJieDropdown.value = jingJie;
+        JingJieDropdown.SetValueWithoutNotify(jingJie);
     }
 
     private void SetHealth(int health)
     {
-        HealthInputField.text = health.ToString();
+        HealthInputField.SetTextWithoutNotify(health.ToString());
     }
 
     #endregion
@@ -112,5 +112,6 @@ public abstract class EntityView : MonoBehaviour, IIndexPath
     {
         IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
         entity.FromJson(GUIUtility.systemCopyBuffer);
+        RunCanvas.Instance.Refresh();
     }
 }

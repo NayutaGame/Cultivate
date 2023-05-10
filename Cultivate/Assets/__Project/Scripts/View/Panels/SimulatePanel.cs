@@ -49,13 +49,13 @@ public class SimulatePanel : Panel
 
     private void Report()
     {
-        RunManager.Instance.RealCombat();
+        RunManager.Instance.Combat(false, RunManager.Instance.Simulate);
         RunCanvas.Instance.Refresh();
     }
 
     private void Stream()
     {
-        RunManager.Instance.RealCombatWithAnimation();
+        RunManager.Instance.Combat(true, RunManager.Instance.Simulate);
         RunCanvas.Instance.Refresh();
     }
 }

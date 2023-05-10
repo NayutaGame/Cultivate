@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillInventoryView : InventoryView<RunChipView>, IDropHandler
+public class SkillInventoryView : InventoryView<AbstractSkillView>, IDropHandler
 {
     public Button[] DrawButtons;
-    public Button SortButton;
+    public Button[] SortButtons;
 
     public override void Configure(IndexPath indexPath)
     {
@@ -19,81 +19,43 @@ public class SkillInventoryView : InventoryView<RunChipView>, IDropHandler
             JingJie jingJie = i;
             DrawButtons[i].onClick.AddListener(() => DrawJingJie(jingJie));
         });
-        SortButton.onClick.AddListener(Sort);
+
+        SortButtons.Length.Do(i =>
+        {
+            int comparisonId = i;
+            SortButtons[i].onClick.AddListener(() => SortByComparisonId(comparisonId));
+        });
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null) return;
-        RunChipView drop = eventData.pointerDrag.GetComponent<RunChipView>();
+        IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
         if (drop == null) return;
+        if (GetIndexPath().Equals(drop.GetIndexPath())) return;
 
-        // AcquiredWaiGongInventory to = RunManager.Get<AcquiredWaiGongInventory>(GetIndexPath());
-        //
-        // AcquiredRunChip fromAcquired = RunManager.Get<AcquiredRunChip>(drop.GetIndexPath());
-        // if (fromAcquired != null)
-        // {
-        //     if (to.MoveToEnd(fromAcquired)) return;
-        //     return;
-        // }
-        //
-        // HeroChipSlot fromHeroChipSlot = RunManager.Get<HeroChipSlot>(drop.GetIndexPath());
-        // if (fromHeroChipSlot != null)
-        // {
-        //     if (fromHeroChipSlot.TryUnequip()) return;
-        //     return;
-        // }
+        IDragDrop from = RunManager.Get<IDragDrop>(drop.GetIndexPath());
+        IDragDrop to = RunManager.Get<IDragDrop>(GetIndexPath());
+
+        from.GetDragDropDelegate().DragDrop(from, to);
     }
 
     private void DrawJingJie(JingJie jingJie)
     {
-        // RunManager.Instance.TryDrawAcquired(jingJie);
-        // RunCanvas.Instance.Refresh();
+        SkillInventory inventory = RunManager.Get<SkillInventory>(GetIndexPath());
+        inventory.TryDrawSkill(out _, jingJie: jingJie);
+        RunCanvas.Instance.Refresh();
     }
 
-    private void Sort()
+    private void SortByComparisonId(int i)
     {
-        // RunManager.Instance.AcquiredInventory.Sort((lhs, rhs) =>
-        // {
-        //     int lJingJie = lhs.Skill.JingJie;
-        //     int rJingJie = rhs.Skill.JingJie;
-        //     if (lJingJie != rJingJie)
-        //         return rJingJie - lJingJie;
-        //
-        //     int lWuXing = lhs.Skill._entry.WuXing ?? -1;
-        //     int rWuXing = rhs.Skill._entry.WuXing ?? -1;
-        //     if (lWuXing != rWuXing)
-        //         return lWuXing - rWuXing;
-        //
-        //     int lIndex = Encyclopedia.SkillCategory.IndexOf(lhs.Skill._entry);
-        //     int rIndex = Encyclopedia.SkillCategory.IndexOf(rhs.Skill._entry);
-        //     // if (lIndex != rIndex)
-        //     return lIndex - rIndex;
-        // });
-        // RunCanvas.Instance.Refresh();
+        SkillInventory inventory = RunManager.Get<SkillInventory>(GetIndexPath());
+        inventory.SortByComparisonId(i);
+        RunCanvas.Instance.Refresh();
     }
 
-    // private void RefreshChip()
-    // {
-    //     RunManager.Instance.RefreshChip();
-    //     Refresh();
-    // }
-    //
     // private void ClearChip()
     // {
     //     RunManager.Instance.ClearChip();
-    //     Refresh();
-    // }
-    //
-    // private void DrawChip()
-    // {
-    //     RunManager.Instance.DrawChip();
-    //     Refresh();
-    // }
-    //
-    // private void UpgradeFirst()
-    // {
-    //     RunManager.Instance.UpgradeFirstChip();
     //     Refresh();
     // }
 }

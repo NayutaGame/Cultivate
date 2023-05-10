@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 
+[Serializable]
 public class SkillEntry : Entry, IAnnotation
 {
     public string GetName()

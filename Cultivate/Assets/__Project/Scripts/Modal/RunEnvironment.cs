@@ -29,7 +29,7 @@ public class RunEnvironment : GDictionary
         }
     }
 
-    private DragDropDelegate _dragDropDelegate;
+    protected DragDropDelegate _dragDropDelegate;
 
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
@@ -42,40 +42,20 @@ public class RunEnvironment : GDictionary
             { "Enemy",                 () => Enemy },
         };
 
-        _dragDropDelegate = new(4, new Func<IDragDrop, IDragDrop, bool>[]
-            {
-                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
-                /* RunSkill         */ TryMerge,   null,           TryEquip,        null,
-                /* SkillInventory   */ null,       null,           null,            null,
-                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         null,
-                /* SkillSlot(Enemy) */ null,       null,           null,            null,
-            },
-            item =>
-            {
-                if (item is RunSkill)
-                    return 0;
-                if (item is SkillInventory)
-                    return 1;
-                if (item is SkillSlot skillSlot)
-                {
-                    if (skillSlot.Owner == Hero)
-                        return 2;
-                    if (skillSlot.Owner == Enemy)
-                        return 3;
-                }
-
-                throw new Exception();
-            });
+        InitDragDropDelegate();
 
         SkillInventory = new();
         SkillInventory.SetDragDropDelegate(_dragDropDelegate);
 
         Hero = new();
         Hero.SetDragDropDelegate(_dragDropDelegate);
+        Hero.EnvironmentChangedEvent += EnvironmentChanged;
 
         EnvironmentChangedEvent += CalcReport;
         EnvironmentChangedEvent += CalcManaShortageBrief;
     }
+
+    public virtual void InitDragDropDelegate() { }
 
     public void Enter()
     {
@@ -84,7 +64,7 @@ public class RunEnvironment : GDictionary
         Enemy = new RunEntity(entry, d);
     }
 
-    private bool TryMerge(IDragDrop from, IDragDrop to)
+    protected bool TryMerge(IDragDrop from, IDragDrop to)
     {
         RunSkill lhs = from as RunSkill;
         RunSkill rhs = to as RunSkill;
@@ -93,8 +73,8 @@ public class RunEnvironment : GDictionary
             return false;
 
         JingJie jingJie = lhs.GetJingJie();
-        WuXing? lWuXing = lhs._entry.WuXing;
-        WuXing? rWuXing = rhs._entry.WuXing;
+        WuXing? lWuXing = lhs.Entry.WuXing;
+        WuXing? rWuXing = rhs.Entry.WuXing;
 
         bool upgrade;
 
@@ -109,10 +89,10 @@ public class RunEnvironment : GDictionary
 
         JingJie newJingJie = jingJie + (upgrade ? 1 : 0);
 
-        if (lhs._entry == rhs._entry && upgrade && lhs._entry.JingJieRange.Contains(lhs.JingJie + 1))
+        if (lhs.Entry == rhs.Entry && upgrade && lhs.Entry.JingJieRange.Contains(lhs.JingJie + 1))
         {
             rhs.JingJie = newJingJie;
-            SkillInventory.Remove(lhs);
+            SkillInventory.RemoveSkill(lhs);
             return true;
         }
         else if (!lWuXing.HasValue || !rWuXing.HasValue)
@@ -125,7 +105,7 @@ public class RunEnvironment : GDictionary
 
         if (WuXing.SameWuXing(lWuXing, rWuXing))
         {
-            pred = s => s != lhs._entry && s != rhs._entry;
+            pred = s => s != lhs.Entry && s != rhs.Entry;
             wuXing = lWuXing;
         }
         else if (WuXing.XiangSheng(lWuXing, rWuXing))
@@ -141,12 +121,12 @@ public class RunEnvironment : GDictionary
         if (!success)
             return false;
 
-        SkillInventory.Replace(rhs, newSkill);
-        SkillInventory.Remove(lhs);
+        SkillInventory.ReplaceSkill(rhs, newSkill);
+        SkillInventory.RemoveSkill(lhs);
         return true;
     }
 
-    private bool TryEquip(IDragDrop from, IDragDrop to)
+    protected bool TryEquip(IDragDrop from, IDragDrop to)
     {
         RunSkill toEquip = from as RunSkill;
         SkillSlot slot = to as SkillSlot;
@@ -154,16 +134,16 @@ public class RunEnvironment : GDictionary
         RunSkill toUnequip = slot.Skill;
 
         if (toUnequip != null)
-            SkillInventory.Replace(toEquip, toUnequip);
+            SkillInventory.ReplaceSkill(toEquip, toUnequip);
         else
-            SkillInventory.Remove(toEquip);
+            SkillInventory.RemoveSkill(toEquip);
 
         slot.Skill = toEquip;
         EnvironmentChanged();
         return true;
     }
 
-    public bool TryUnequip(IDragDrop from, IDragDrop to)
+    protected bool TryUnequip(IDragDrop from, IDragDrop to)
     {
         SkillSlot slot = from as SkillSlot;
         RunSkill toUnequip = slot.Skill;
@@ -171,12 +151,12 @@ public class RunEnvironment : GDictionary
             return false;
 
         slot.Skill = null;
-        SkillInventory.Add(toUnequip);
+        SkillInventory.AddSkill(toUnequip);
         EnvironmentChanged();
         return true;
     }
 
-    public bool TrySwap(IDragDrop from, IDragDrop to)
+    protected bool TrySwap(IDragDrop from, IDragDrop to)
     {
         SkillSlot fromSlot = from as SkillSlot;
         SkillSlot toSlot = to as SkillSlot;
@@ -184,6 +164,23 @@ public class RunEnvironment : GDictionary
         RunSkill temp = fromSlot.Skill;
         fromSlot.Skill = toSlot.Skill;
         toSlot.Skill = temp;
+        return true;
+    }
+
+    protected bool TryWrite(IDragDrop from, IDragDrop to)
+    {
+        RunSkill skill = null;
+        if (from is RunSkill fromSkill)
+        {
+            skill = fromSkill;
+        }
+        else if (from is SkillSlot skillSlot)
+        {
+            skill = skillSlot.Skill;
+        }
+
+        SkillSlot toSlot = to as SkillSlot;
+        toSlot.Skill = skill;
         return true;
     }
 

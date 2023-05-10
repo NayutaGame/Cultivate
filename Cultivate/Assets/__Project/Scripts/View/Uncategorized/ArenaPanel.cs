@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ArenaPanel : Panel
 {
-    public ArenaWaiGongInventoryView ArenaWaiGongInventoryView;
+    public SkillInventoryView SkillInventoryView;
     public ArenaEditorView ArenaEditorView;
     public ArenaScoreboardView ArenaScoreboardView;
     public TMP_Text ReportView;
@@ -14,7 +14,7 @@ public class ArenaPanel : Panel
     {
         base.Configure();
 
-        ArenaWaiGongInventoryView.Configure(new IndexPath("ArenaWaiGongInventory"));
+        SkillInventoryView.Configure(new IndexPath("Arena.SkillInventory"));
         ArenaEditorView.Configure(new IndexPath("Arena"));
         ArenaScoreboardView.Configure();
     }
@@ -22,7 +22,7 @@ public class ArenaPanel : Panel
     public override void Refresh()
     {
         base.Refresh();
-        ArenaWaiGongInventoryView.Refresh();
+        SkillInventoryView.Refresh();
         ArenaEditorView.Refresh();
         ArenaScoreboardView.Refresh();
 

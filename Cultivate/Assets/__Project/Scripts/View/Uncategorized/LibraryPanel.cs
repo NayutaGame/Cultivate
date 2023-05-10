@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class LibraryPanel : Panel
 {
-    public ArenaWaiGongInventoryView ArenaWaiGongInventoryView;
+    public SkillInventoryView SkillInventoryView;
 
     public override void Configure()
     {
         base.Configure();
-        ArenaWaiGongInventoryView.Configure(new IndexPath("ArenaWaiGongInventory"));
+        SkillInventoryView.Configure(new IndexPath("Arena.SkillInventory"));
     }
 
     public override void Refresh()
     {
         base.Refresh();
-        ArenaWaiGongInventoryView.Refresh();
+        SkillInventoryView.Refresh();
     }
 }

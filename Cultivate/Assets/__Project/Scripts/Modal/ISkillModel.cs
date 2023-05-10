@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface ISkillModel
 {
+    bool ShowPreview();
     bool GetReveal();
     int GetManaCost();
     Color GetManaCostColor();

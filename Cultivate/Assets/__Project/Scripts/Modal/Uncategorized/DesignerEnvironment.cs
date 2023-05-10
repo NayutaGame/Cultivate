@@ -14,13 +14,14 @@ public class DesignerEnvironment
     {
         RunManager rm = RunManager.Instance;
 
-        rm.Map.JingJie = JingJie.JinDan;
+        rm.Map.JingJie = JingJie.LianQi;
 
-        bool flag = rm.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: JingJie.JinDan, count: 16);
+        bool flag = rm.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: JingJie.LianQi, count: 5);
         if (!flag)
             throw new Exception();
 
-        rm.Battle.SkillInventory.AddRange(skills);
+        rm.Simulate.SkillInventory.AddSkills(skills);
+        rm.Battle.SkillInventory.AddSkills(skills);
     }
 
     public static void AddRewardForBattleRunNode(BattleRunNode battleRunNode)

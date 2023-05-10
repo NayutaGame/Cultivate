@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98b5d68c4403da547aea2cc9b3f7504c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ManaCostView: {fileID: 0}
+  ManaCostView: {fileID: 8761564396075560131}
   ManaCostText: {fileID: 6578427324654956750}
   NameText: {fileID: 328300260318751242}
   DescriptionText: {fileID: 7741453642062331819}

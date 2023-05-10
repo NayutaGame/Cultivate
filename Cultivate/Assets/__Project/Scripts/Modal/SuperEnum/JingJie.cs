@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[Serializable]
 public struct JingJie : IEquatable<JingJie>
 {
     private static JingJie[] _list;
 
-    public readonly int _index;
-    public readonly string _name;
+    [SerializeField] private int _index;
+    public int Index => _index;
+    [SerializeField] public string _name;
+    public string Name => _name;
 
     private JingJie(int index, string name)
     {

@@ -19,6 +19,11 @@ public class RunSkillPreview : AbstractSkillView
 
     public override void Refresh()
     {
+        if (GetIndexPath() == null || !GetSkillModel().ShowPreview())
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         base.Refresh();
         SkillView.Refresh();
     }

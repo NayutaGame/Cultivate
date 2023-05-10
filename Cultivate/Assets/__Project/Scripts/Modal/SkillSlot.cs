@@ -5,15 +5,17 @@ using System.Text;
 using CLLibrary;
 using UnityEngine;
 
+[Serializable]
 public class SkillSlot : ISkillModel, IDragDrop
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
-    public RunEntity Owner { get; private set; }
-    private int SlotIndex;
+    [SerializeReference] private RunEntity _owner;
+    public RunEntity Owner => _owner;
+    [SerializeField] private int _index;
 
-    private RunSkill _skill;
+    [SerializeReference] private RunSkill _skill;
     public RunSkill Skill
     {
         get => _skill;
@@ -24,16 +26,19 @@ public class SkillSlot : ISkillModel, IDragDrop
         }
     }
 
+    public bool ShowPreview()
+        => _skill != null;
+
     private bool IsReveal;
     public bool GetReveal()
         => IsReveal;
     public void SetReveal(bool isReveal)
         => IsReveal = isReveal;
 
-    public SkillSlot(RunEntity owner, int slotIndex)
+    public SkillSlot(RunEntity owner, int index)
     {
-        Owner = owner;
-        SlotIndex = slotIndex;
+        _owner = owner;
+        _index = index;
         IsReveal = true;
     }
 
@@ -62,7 +67,7 @@ public class SkillSlot : ISkillModel, IDragDrop
         => _skill?.GetColor() ?? CanvasManager.Instance.JingJieColors[JingJie.LianQi];
 
     public Sprite GetCardFace()
-        => _skill?._entry.CardFace;
+        => _skill?.Entry.CardFace;
 
     public string GetDescription()
         => _skill?.GetDescription();
@@ -71,7 +76,7 @@ public class SkillSlot : ISkillModel, IDragDrop
         => _skill?.GetAnnotationText();
 
     public string GetJingJieString()
-        => _skill?.GetJingJie()._index.ToString() ?? "null";
+        => _skill?.GetJingJie().Index.ToString() ?? "null";
 
     public bool TryIncreaseJingJie()
     {
@@ -80,14 +85,14 @@ public class SkillSlot : ISkillModel, IDragDrop
 
         JingJie curr = _skill.JingJie;
         JingJie next = curr + 1;
-        if (!_skill._entry.JingJieRange.Contains(next))
-            next = _skill._entry.JingJieRange.Start;
+        if (!_skill.Entry.JingJieRange.Contains(next))
+            next = _skill.Entry.JingJieRange.Start;
         _skill.JingJie = next;
         EnvironmentChanged();
         return true;
     }
 
-    public bool RunConsumed;
+    [NonSerialized] public bool RunConsumed;
 
     public bool TryConsume()
     {
@@ -98,7 +103,7 @@ public class SkillSlot : ISkillModel, IDragDrop
         return true;
     }
 
-    public bool IsManaShortage;
+    [NonSerialized] public bool IsManaShortage;
 
     #region IDragDrop
 

@@ -8,6 +8,7 @@ using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[Serializable]
 public class RunEntity : GDictionary, IEntityModel
 {
     public event Action EnvironmentChangedEvent;
@@ -15,20 +16,21 @@ public class RunEntity : GDictionary, IEntityModel
 
     public static readonly int[] BaseHP = new int[] { 40, 80, 140, 220, 340, 340 };
 
-    private int _health;
+    [SerializeField] private int _health;
     public int GetHealth() => _health;
     public void SetHealth(int health) => _health = health;
 
-    private JingJie _jingJie;
+    [SerializeField] private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
     public void SetJingJie(JingJie jingJie)
     {
         _jingJie = jingJie;
         UpdateReveal();
+        EnvironmentChanged();
     }
 
-    public int Start;
-    public int Limit;
+    [NonSerialized] public int Start;
+    [NonSerialized] public int Limit;
     private void UpdateReveal()
     {
         Start = RunManager.WaiGongStartFromJingJie[_jingJie];
@@ -41,7 +43,7 @@ public class RunEntity : GDictionary, IEntityModel
         });
     }
 
-    private SkillSlot[] _slots;
+    [SerializeReference] private SkillSlot[] _slots;
     public SkillSlot GetSlot(int i)
         => _slots[i];
 
@@ -50,8 +52,8 @@ public class RunEntity : GDictionary, IEntityModel
         => _entry;
     public void SetEntry(EntityEntry entry)
     {
-        RunEntity entity = new RunEntity(entry, new CreateEntityDetails(GetJingJie()));
-        FromEntity(entity);
+        _entry = entry;
+        FromEntity(new RunEntity(_entry, new CreateEntityDetails(GetJingJie())));
     }
 
     private CreateEntityDetails _createEntityDetails;
@@ -118,41 +120,12 @@ public class RunEntity : GDictionary, IEntityModel
 
     public void FromJson(string json)
     {
-        RunEntity entity = JsonUtility.FromJson<RunEntity>(json);
-        FromEntity(entity);
+        FromEntity(JsonUtility.FromJson<RunEntity>(json.Replace('\'', '\"')));
     }
 
     public string ToJson()
     {
-        return JsonUtility.ToJson(this);
-    }
-
-    public string GetEntryDescriptor()
-    {
-        string dateTime = DateTime.Now.ToString();
-
-        StringBuilder sb = new StringBuilder();
-        sb.Append(@$"
-        new(""敌人{dateTime}"", ""描述"", canCreate: d => true,
-            create: (enemy, d) =>
-            {{
-                enemy.Health = {_health};
-                enemy.JingJie = {_jingJie._index};
-");
-
-        for (int i = 0; i < _slots.Length; i++)
-        {
-            SkillSlot s = _slots[i];
-            string name = s.GetName();
-            if(string.IsNullOrEmpty(name))
-                continue;
-            string jingJie = s.GetJingJieString();
-            sb.Append($"enemy.SetSlotContent({i}, \"{name}\", {jingJie});\n");
-        }
-
-        sb.Append(@$"}}),");
-
-        return sb.ToString();
+        return JsonUtility.ToJson(this).Replace('\"', '\'');
     }
 
     public void TryConsume()

@@ -85,7 +85,7 @@ public class StageSkill
         _runSkill = runSkill;
         _slotIndex = slotIndex;
 
-        _entry = _runSkill?._entry ?? Encyclopedia.SkillCategory["聚气术"];
+        _entry = _runSkill?.Entry ?? Encyclopedia.SkillCategory["聚气术"];
 
         Consumed = false;
         RunConsumed = false;

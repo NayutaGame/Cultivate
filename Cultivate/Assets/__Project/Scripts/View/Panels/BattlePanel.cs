@@ -65,7 +65,7 @@ public class BattlePanel : Panel
 
     private void Commit()
     {
-        RunManager.Instance.RealCombat();
+        // RunManager.Instance.Combat();
         RunCanvas.Instance.Refresh();
     }
 }

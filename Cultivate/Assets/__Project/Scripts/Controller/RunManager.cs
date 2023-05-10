@@ -65,7 +65,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     public float TurnChanNeng => Modifier.Value.ForceGet("turnChanNengAdd") * (1 + Modifier.Value.ForceGet("turnChanNengMul"));
 
-    public bool IsStream { get; private set; }
+    public CombatDetails CombatDetails;
     public StageReport Report;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -198,15 +198,9 @@ public class RunManager : Singleton<RunManager>, GDictionary
         return true;
     }
 
-    public void RealCombat()
+    public void Combat(bool useAnim, RunEnvironment environment)
     {
-        IsStream = false;
-        AppManager.Push(new AppStageS());
-    }
-
-    public void RealCombatWithAnimation()
-    {
-        IsStream = true;
+        CombatDetails = new CombatDetails(useAnim, environment.Hero, environment.Enemy);
         AppManager.Push(new AppStageS());
     }
 }

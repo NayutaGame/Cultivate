@@ -14,7 +14,7 @@ public class RunCanvas : Singleton<RunCanvas>
     public Color TechColorRed;
 
     [SerializeField] private RunSkillPreview RunSkillPreview;
-    public GhostChip GhostChip;
+    public SkillGhost SkillGhost;
 
     public Button CharacterButton;
     public Button TechButton;

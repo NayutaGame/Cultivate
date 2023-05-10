@@ -11,12 +11,7 @@ public class DragDropDelegate
     private Func<IDragDrop, int> _getID;
 
     public Func<IDragDrop, IDragDrop, bool> this[int from, int to]
-    {
-        get
-        {
-            return _dragDropTable[to * _distinctItems + from];
-        }
-    }
+        => _dragDropTable[to + from * _distinctItems];
 
     public Func<IDragDrop, IDragDrop, bool> this[IDragDrop from, IDragDrop to]
     {
@@ -54,6 +49,6 @@ public class DragDropDelegate
 
     public bool DragDrop(IDragDrop from, IDragDrop to)
     {
-        return this[from, to](from, to);
+        return this[from, to]?.Invoke(from, to) ?? false;
     }
 }

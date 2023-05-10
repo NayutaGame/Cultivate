@@ -14,101 +14,113 @@ public class EntityCategory : Category<EntityEntry>
             new("金丹水吸血", "永久吸血", canCreate: d => (d.Step == 0 || d.Step == 1) && d.JingJie == JingJie.JinDan,
                 create: (entity, d) =>
                 {
-                    entity.SetHealth(RunEntity.BaseHP[d.JingJie]);
-                    entity.SetJingJie(d.JingJie);
-                    switch (d.JingJie)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            entity.SetSlotContent(4, "气吞山河", 2);
-                            entity.SetSlotContent(5, "吐纳", 2);
-                            entity.SetSlotContent(6, "水22", 2);
-                            entity.SetSlotContent(7, "永久吸血", 2);
-                            entity.SetSlotContent(8, "水25", 2);
-                            entity.SetSlotContent(9, "水25", 2);
-                            entity.SetSlotContent(10, "水25", 2);
-                            entity.SetSlotContent(11, "水25", 2);
-                            break;
-                        case 3:
-                            break;
-                        case 4:
-                        case 5:
-                        default:
-                            break;
-                    }
+                    string json = @"
+{'_health':140,'_jingJie':{'_index':2,'_name':'金丹'},'_slots':[{'rid':1000},{'rid':1001},{'rid':1002},{'rid':1003},{'rid':1004},{'rid':1005},{'rid':1006},{'rid':1007},{'rid':1008},{'rid':1009},{'rid':1010},{'rid':1011}],'references':{'version':2,'RefIds':[{'rid':-2,'type':{'class':'','ns':'','asm':''},'data':{}},{'rid':1000,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':0,'_skill':{'rid':-2}}},{'rid':1001,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':1,'_skill':{'rid':-2}}},{'rid':1002,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':2,'_skill':{'rid':-2}}},{'rid':1003,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':3,'_skill':{'rid':-2}}},{'rid':1004,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':4,'_skill':{'rid':1013}}},{'rid':1005,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':5,'_skill':{'rid':1014}}},{'rid':1006,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':6,'_skill':{'rid':1015}}},{'rid':1007,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':7,'_skill':{'rid':1016}}},{'rid':1008,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':8,'_skill':{'rid':1017}}},{'rid':1009,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':9,'_skill':{'rid':1018}}},{'rid':1010,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':10,'_skill':{'rid':1019}}},{'rid':1011,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':11,'_skill':{'rid':1020}}},{'rid':1012,'type':{'class':'RunEntity','ns':'','asm':'Assembly-CSharp'},'data':{'_health':140,'_jingJie':{'_index':2,'_name':'金丹'},'_slots':[{'rid':1000},{'rid':1001},{'rid':1002},{'rid':1003},{'rid':1004},{'rid':1005},{'rid':1006},{'rid':1007},{'rid':1008},{'rid':1009},{'rid':1010},{'rid':1011}]}},{'rid':1013,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'气吞山河'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1014,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'吐纳'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1015,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'水22'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1016,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'永久吸血'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1017,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'水25'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1018,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'水25'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1019,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'水25'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1020,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'水25'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}}]}}
+";
+                    entity.FromJson(json);
+                    // entity.SetHealth(RunEntity.BaseHP[JingJie.JinDan]);
+                    // entity.SetJingJie(JingJie.JinDan);
+                    // switch (JingJie.JinDan)
+                    // {
+                    //     case 0:
+                    //         break;
+                    //     case 1:
+                    //         break;
+                    //     case 2:
+                    //         entity.SetSlotContent(4, "气吞山河", 2);
+                    //         entity.SetSlotContent(5, "吐纳", 2);
+                    //         entity.SetSlotContent(6, "水22", 2);
+                    //         entity.SetSlotContent(7, "永久吸血", 2);
+                    //         entity.SetSlotContent(8, "水25", 2);
+                    //         entity.SetSlotContent(9, "水25", 2);
+                    //         entity.SetSlotContent(10, "水25", 2);
+                    //         entity.SetSlotContent(11, "水25", 2);
+                    //         break;
+                    //     case 3:
+                    //         break;
+                    //     case 4:
+                    //     case 5:
+                    //     default:
+                    //         break;
+                    // }
                 }),
 
             new("金丹水格挡", "减甲刷格挡", canCreate: d => d.Step == 2 && d.JingJie == JingJie.JinDan,
                 create: (entity, d) =>
                 {
-                    entity.SetHealth(RunEntity.BaseHP[d.JingJie]);
-                    entity.SetJingJie(d.JingJie);
-                    switch (d.JingJie)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            entity.SetSlotContent(4, "刺穴", 2);
-                            entity.SetSlotContent(5, "起", 2);
-                            entity.SetSlotContent(6, "金20", 2);
-                            entity.SetSlotContent(7, "水30", 3);
-                            entity.SetSlotContent(8, "水25", 2);
-                            entity.SetSlotContent(9, "气吞山河", 2);
-                            entity.SetSlotContent(10, "身骑白马", 1);
-                            entity.SetSlotContent(11, "水30", 3);
-                            break;
-                        case 3:
-                            break;
-                        case 4:
-                        case 5:
-                        default:
-                            break;
-                    }
+                    string json = @"
+{'_health':140,'_jingJie':{'_index':2,'_name':'金丹'},'_slots':[{'rid':1000},{'rid':1001},{'rid':1002},{'rid':1003},{'rid':1004},{'rid':1005},{'rid':1006},{'rid':1007},{'rid':1008},{'rid':1009},{'rid':1010},{'rid':1011}],'references':{'version':2,'RefIds':[{'rid':-2,'type':{'class':'','ns':'','asm':''},'data':{}},{'rid':1000,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':0,'_skill':{'rid':-2}}},{'rid':1001,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':1,'_skill':{'rid':-2}}},{'rid':1002,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':2,'_skill':{'rid':-2}}},{'rid':1003,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':3,'_skill':{'rid':-2}}},{'rid':1004,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':4,'_skill':{'rid':1013}}},{'rid':1005,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':5,'_skill':{'rid':1014}}},{'rid':1006,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':6,'_skill':{'rid':1015}}},{'rid':1007,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':7,'_skill':{'rid':1016}}},{'rid':1008,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':8,'_skill':{'rid':1017}}},{'rid':1009,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':9,'_skill':{'rid':1018}}},{'rid':1010,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':10,'_skill':{'rid':1019}}},{'rid':1011,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':11,'_skill':{'rid':1020}}},{'rid':1012,'type':{'class':'RunEntity','ns':'','asm':'Assembly-CSharp'},'data':{'_health':140,'_jingJie':{'_index':2,'_name':'金丹'},'_slots':[{'rid':1000},{'rid':1001},{'rid':1002},{'rid':1003},{'rid':1004},{'rid':1005},{'rid':1006},{'rid':1007},{'rid':1008},{'rid':1009},{'rid':1010},{'rid':1011}]}},{'rid':1013,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'刺穴'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1014,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'起'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1015,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'金20'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1016,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'水30'},'_jingJie':{'_index':3,'_name':'元婴'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1017,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'水25'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1018,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'气吞山河'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1019,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'身骑白马'},'_jingJie':{'_index':1,'_name':'筑基'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1020,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'水30'},'_jingJie':{'_index':3,'_name':'元婴'},'_runUsedTimes':0,'_runEquippedTimes':0}}]}}
+";
+                    entity.FromJson(json);
+                    // entity.SetHealth(RunEntity.BaseHP[JingJie.JinDan]);
+                    // entity.SetJingJie(JingJie.JinDan);
+                    // switch (JingJie.JinDan)
+                    // {
+                    //     case 0:
+                    //         break;
+                    //     case 1:
+                    //         break;
+                    //     case 2:
+                    //         entity.SetSlotContent(4, "刺穴", 2);
+                    //         entity.SetSlotContent(5, "起", 2);
+                    //         entity.SetSlotContent(6, "金20", 2);
+                    //         entity.SetSlotContent(7, "水30", 3);
+                    //         entity.SetSlotContent(8, "水25", 2);
+                    //         entity.SetSlotContent(9, "气吞山河", 2);
+                    //         entity.SetSlotContent(10, "身骑白马", 1);
+                    //         entity.SetSlotContent(11, "水30", 3);
+                    //         break;
+                    //     case 3:
+                    //         break;
+                    //     case 4:
+                    //     case 5:
+                    //     default:
+                    //         break;
+                    // }
                 }),
 
             new("元婴土重剑", "重剑架势", canCreate: d => d.Step == 0 && d.JingJie == JingJie.YuanYing,
                 create: (entity, d) =>
                 {
-                    entity.SetHealth(RunEntity.BaseHP[d.JingJie]);
-                    entity.SetJingJie(d.JingJie);
-                    switch (d.JingJie)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            entity.SetSlotContent(2, "磐石剑阵", 2);
-                            entity.SetSlotContent(3, "收刀", 2);
-                            entity.SetSlotContent(4, "高速剑阵", 2);
-                            entity.SetSlotContent(5, "收刀", 2);
-                            entity.SetSlotContent(6, "磐石剑阵", 2);
-                            entity.SetSlotContent(7, "收刀", 2);
-                            entity.SetSlotContent(8, "拔刀", 3);
-                            entity.SetSlotContent(9, "金刚剑阵", 3);
-                            entity.SetSlotContent(10, "拔刀", 3);
-                            entity.SetSlotContent(11, "磐石剑阵", 2);
-                            break;
-                        case 4:
-                        case 5:
-                        default:
-                            break;
-                    }
+                    string json = @"
+{'_health':220,'_jingJie':{'_index':3,'_name':'元婴'},'_slots':[{'rid':1000},{'rid':1001},{'rid':1002},{'rid':1003},{'rid':1004},{'rid':1005},{'rid':1006},{'rid':1007},{'rid':1008},{'rid':1009},{'rid':1010},{'rid':1011}],'references':{'version':2,'RefIds':[{'rid':-2,'type':{'class':'','ns':'','asm':''},'data':{}},{'rid':1000,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':0,'_skill':{'rid':-2}}},{'rid':1001,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':1,'_skill':{'rid':-2}}},{'rid':1002,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':2,'_skill':{'rid':1013}}},{'rid':1003,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':3,'_skill':{'rid':1014}}},{'rid':1004,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':4,'_skill':{'rid':1015}}},{'rid':1005,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':5,'_skill':{'rid':1016}}},{'rid':1006,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':6,'_skill':{'rid':1017}}},{'rid':1007,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':7,'_skill':{'rid':1018}}},{'rid':1008,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':8,'_skill':{'rid':1019}}},{'rid':1009,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':9,'_skill':{'rid':1020}}},{'rid':1010,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':10,'_skill':{'rid':1021}}},{'rid':1011,'type':{'class':'SkillSlot','ns':'','asm':'Assembly-CSharp'},'data':{'_owner':{'rid':1012},'_index':11,'_skill':{'rid':1022}}},{'rid':1012,'type':{'class':'RunEntity','ns':'','asm':'Assembly-CSharp'},'data':{'_health':220,'_jingJie':{'_index':3,'_name':'元婴'},'_slots':[{'rid':1000},{'rid':1001},{'rid':1002},{'rid':1003},{'rid':1004},{'rid':1005},{'rid':1006},{'rid':1007},{'rid':1008},{'rid':1009},{'rid':1010},{'rid':1011}]}},{'rid':1013,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'磐石剑阵'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1014,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'收刀'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1015,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'高速剑阵'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1016,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'收刀'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1017,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'磐石剑阵'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1018,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'收刀'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1019,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'拔刀'},'_jingJie':{'_index':3,'_name':'元婴'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1020,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'金刚剑阵'},'_jingJie':{'_index':3,'_name':'元婴'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1021,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'拔刀'},'_jingJie':{'_index':3,'_name':'元婴'},'_runUsedTimes':0,'_runEquippedTimes':0}},{'rid':1022,'type':{'class':'RunSkill','ns':'','asm':'Assembly-CSharp'},'data':{'_entry':{'_name':'磐石剑阵'},'_jingJie':{'_index':2,'_name':'金丹'},'_runUsedTimes':0,'_runEquippedTimes':0}}]}}
+";
+                    entity.FromJson(json);
+                    // entity.SetHealth(RunEntity.BaseHP[JingJie.YuanYing]);
+                    // entity.SetJingJie(JingJie.YuanYing);
+                    // switch (JingJie.YuanYing)
+                    // {
+                    //     case 0:
+                    //         break;
+                    //     case 1:
+                    //         break;
+                    //     case 2:
+                    //         break;
+                    //     case 3:
+                    //         entity.SetSlotContent(2, "磐石剑阵", 2);
+                    //         entity.SetSlotContent(3, "收刀", 2);
+                    //         entity.SetSlotContent(4, "高速剑阵", 2);
+                    //         entity.SetSlotContent(5, "收刀", 2);
+                    //         entity.SetSlotContent(6, "磐石剑阵", 2);
+                    //         entity.SetSlotContent(7, "收刀", 2);
+                    //         entity.SetSlotContent(8, "拔刀", 3);
+                    //         entity.SetSlotContent(9, "金刚剑阵", 3);
+                    //         entity.SetSlotContent(10, "拔刀", 3);
+                    //         entity.SetSlotContent(11, "磐石剑阵", 2);
+                    //         break;
+                    //     case 4:
+                    //     case 5:
+                    //     default:
+                    //         break;
+                    // }
                 }),
 
             new("元婴金减甲", "无常已至", canCreate: d => d.Step == 1 && d.JingJie == JingJie.YuanYing,
                 create: (entity, d) =>
                 {
-                    entity.SetHealth(RunEntity.BaseHP[d.JingJie]);
-                    entity.SetJingJie(d.JingJie);
-                    switch (d.JingJie)
+                    entity.SetHealth(RunEntity.BaseHP[JingJie.YuanYing]);
+                    entity.SetJingJie(JingJie.YuanYing);
+                    switch (JingJie.YuanYing)
                     {
                         case 0:
                             break;
@@ -138,9 +150,9 @@ public class EntityCategory : Category<EntityEntry>
             new("元婴木力量", "天女散花", canCreate: d => d.Step == 2 && d.JingJie == JingJie.YuanYing,
                 create: (entity, d) =>
                 {
-                    entity.SetHealth(RunEntity.BaseHP[d.JingJie]);
-                    entity.SetJingJie(d.JingJie);
-                    switch (d.JingJie)
+                    entity.SetHealth(RunEntity.BaseHP[JingJie.YuanYing]);
+                    entity.SetJingJie(JingJie.YuanYing);
+                    switch (JingJie.YuanYing)
                     {
                         case 0:
                             break;
@@ -170,9 +182,9 @@ public class EntityCategory : Category<EntityEntry>
             new("化神金锋锐", "甲转锋锐", canCreate: d => d.Step == 0 && d.JingJie == JingJie.HuaShen,
                 create: (entity, d) =>
                 {
-                    entity.SetHealth(RunEntity.BaseHP[d.JingJie]);
-                    entity.SetJingJie(d.JingJie);
-                    switch (d.JingJie)
+                    entity.SetHealth(RunEntity.BaseHP[JingJie.HuaShen]);
+                    entity.SetJingJie(JingJie.HuaShen);
+                    switch (JingJie.HuaShen)
                     {
                         case 0:
                             break;
@@ -204,9 +216,9 @@ public class EntityCategory : Category<EntityEntry>
             new("化神木白马", "身骑白马", canCreate: d => d.Step == 1 && d.JingJie == JingJie.HuaShen,
                 create: (entity, d) =>
                 {
-                    entity.SetHealth(RunEntity.BaseHP[d.JingJie]);
-                    entity.SetJingJie(d.JingJie);
-                    switch (d.JingJie)
+                    entity.SetHealth(RunEntity.BaseHP[JingJie.HuaShen]);
+                    entity.SetJingJie(JingJie.HuaShen);
+                    switch (JingJie.HuaShen)
                     {
                         case 0:
                             break;
@@ -232,9 +244,9 @@ public class EntityCategory : Category<EntityEntry>
             new("化神火涅槃", "涅槃", canCreate: d => d.Step == 2 && d.JingJie == JingJie.HuaShen,
                 create: (entity, d) =>
                 {
-                    entity.SetHealth(RunEntity.BaseHP[d.JingJie]);
-                    entity.SetJingJie(d.JingJie);
-                    switch (d.JingJie)
+                    entity.SetHealth(RunEntity.BaseHP[JingJie.HuaShen]);
+                    entity.SetJingJie(JingJie.HuaShen);
+                    switch (JingJie.HuaShen)
                     {
                         case 0:
                             break;

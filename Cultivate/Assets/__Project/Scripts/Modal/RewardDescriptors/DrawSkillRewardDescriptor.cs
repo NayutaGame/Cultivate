@@ -26,7 +26,7 @@ public class DrawSkillRewardDescriptor : RewardDescriptor
         bool success = RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, _pred, _wuXing, _jingJie, _count);
         if (!success)
             throw new Exception();
-        RunManager.Instance.Battle.SkillInventory.AddRange(skills);
+        RunManager.Instance.Battle.SkillInventory.AddSkills(skills);
     }
 
     public override string GetDescription() => _description;

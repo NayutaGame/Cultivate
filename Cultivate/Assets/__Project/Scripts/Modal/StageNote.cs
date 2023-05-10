@@ -17,6 +17,9 @@ public class StageNote : ISkillModel
     public bool IsHome
         => EntityIndex == 0;
 
+    public bool ShowPreview()
+        => true;
+
     public bool GetReveal()
         => true;
 

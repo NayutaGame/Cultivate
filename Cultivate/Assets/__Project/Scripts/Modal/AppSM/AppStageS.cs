@@ -9,7 +9,7 @@ public class AppStageS : AppS
         base.Enter();
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(true);
-        StageManager.Instance.Enter().RunSynchronously();
+        StageManager.Instance.Enter();
     }
 
     public override void Exit()

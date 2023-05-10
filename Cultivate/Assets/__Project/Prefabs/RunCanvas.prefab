@@ -3723,7 +3723,7 @@ MonoBehaviour:
   TechColorYellow: {r: 0.77254903, g: 0.78431374, b: 0.5647059, a: 1}
   TechColorRed: {r: 0.9137255, g: 0.6745098, b: 0.6745098, a: 1}
   RunSkillPreview: {fileID: 427471729097561689}
-  GhostChip: {fileID: 9222973916022311103}
+  SkillGhost: {fileID: 9222973916022311103}
   CharacterButton: {fileID: 6570500142787482385}
   TechButton: {fileID: 6570500142729028997}
   SimulateButton: {fileID: 4474482839460401464}
@@ -11292,7 +11292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1887680324972115699, guid: 67692ae2f4622594faedc5fdeb66f7f7, type: 3}
       propertyPath: m_Name
-      value: GhostChip
+      value: SkillGhost
       objectReference: {fileID: 0}
     - target: {fileID: 1887680324972115699, guid: 67692ae2f4622594faedc5fdeb66f7f7, type: 3}
       propertyPath: m_IsActive

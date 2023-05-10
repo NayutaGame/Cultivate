@@ -26,12 +26,6 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
     [SerializeField] private TMP_Text[] TypeTexts;
     [SerializeField] private TMP_Text AnnotationText;
 
-    private void Awake()
-    {
-        _rectTransform = GetComponent<RectTransform>();
-        _image = GetComponent<Image>();
-    }
-
     #region Accessors
 
     public abstract ISkillModel GetSkillModel();
@@ -116,6 +110,8 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
     public virtual void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
+        _rectTransform = GetComponent<RectTransform>();
+        _image = GetComponent<Image>();
     }
 
     public virtual void Refresh()
@@ -127,12 +123,13 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
         }
 
         ISkillModel skill = GetSkillModel();
-        if (skill == null)
+        if (skill == null || !skill.GetReveal())
+        {
+            gameObject.SetActive(false);
             return;
+        }
 
-        gameObject.SetActive(skill.GetReveal());
-        if (!skill.GetReveal())
-            return;
+        gameObject.SetActive(true);
 
         SetManaCost(skill.GetManaCost());
         SetManaCostColor(skill.GetManaCostColor());
@@ -146,12 +143,12 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (RunManager.Get<SkillSlot>(GetIndexPath()) is { } enemyChipSlot)
-        {
-            enemyChipSlot.TryIncreaseJingJie();
-            RunCanvas.Instance.Refresh();
-            return;
-        }
+        // if (RunManager.Get<SkillSlot>(GetIndexPath()) is { } enemyChipSlot)
+        // {
+        //     enemyChipSlot.TryIncreaseJingJie();
+        //     RunCanvas.Instance.Refresh();
+        //     return;
+        // }
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
@@ -165,8 +162,8 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        RunCanvas.Instance.GhostChip.Configure(GetIndexPath());
-        RunCanvas.Instance.GhostChip.Refresh();
+        RunCanvas.Instance.SkillGhost.Configure(GetIndexPath());
+        RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
@@ -178,8 +175,8 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
     {
         RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
 
-        RunCanvas.Instance.GhostChip.Configure(null);
-        RunCanvas.Instance.GhostChip.Refresh();
+        RunCanvas.Instance.SkillGhost.Configure(null);
+        RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
@@ -189,7 +186,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
 
     public virtual void OnDrag(PointerEventData eventData)
     {
-        RunCanvas.Instance.GhostChip.UpdateMousePos(eventData.position);
+        RunCanvas.Instance.SkillGhost.UpdateMousePos(eventData.position);
     }
 
     public virtual void OnDrop(PointerEventData eventData)
@@ -198,7 +195,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
         if (drop == null) return;
         if (GetIndexPath().Equals(drop.GetIndexPath())) return;
 
-        IDragDrop from = RunManager.Get<IDragDrop>(GetIndexPath());
+        IDragDrop from = RunManager.Get<IDragDrop>(drop.GetIndexPath());
         IDragDrop to = RunManager.Get<IDragDrop>(GetIndexPath());
 
         from.GetDragDropDelegate().DragDrop(from, to);

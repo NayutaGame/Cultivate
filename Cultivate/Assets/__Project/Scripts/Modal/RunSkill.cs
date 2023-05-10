@@ -1,27 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class RunSkill : ISkillModel, IDragDrop
+[Serializable]
+public class RunSkill : ISkillModel, IDragDrop, ISerializationCallbackReceiver
 {
-    public SkillEntry _entry;
-    public JingJie JingJie;
-    public int RunUsedTimes { get; protected set; }
-    public int RunEquippedTimes { get; protected set; }
+    [SerializeField] private SkillEntry _entry;
+    public SkillEntry Entry => _entry;
+    [SerializeField] private JingJie _jingJie;
+    public JingJie JingJie
+    {
+        get => _jingJie;
+        set => _jingJie = value;
+    }
+    [SerializeField] protected int _runUsedTimes;
+    public int RunUsedTimes => _runUsedTimes;
+    [SerializeField] protected int _runEquippedTimes;
+    public int RunEquippedTimes => _runEquippedTimes;
 
     public RunSkill(SkillEntry entry, JingJie jingJie)
     {
         _entry = entry;
-        JingJie = jingJie;
+        _jingJie = jingJie;
     }
 
     private RunSkill(RunSkill prototype)
     {
         _entry = prototype._entry;
-        JingJie = prototype.JingJie;
-        RunUsedTimes = prototype.RunUsedTimes;
-        RunEquippedTimes = prototype.RunEquippedTimes;
+        _jingJie = prototype._jingJie;
+        _runUsedTimes = prototype._runUsedTimes;
+        _runEquippedTimes = prototype._runEquippedTimes;
     }
 
     public string GetName()
@@ -44,6 +54,9 @@ public class RunSkill : ISkillModel, IDragDrop
 
     public string GetDescription()
         => _entry.Evaluate(JingJie, JingJie - _entry.JingJieRange.Start);
+
+    public bool ShowPreview()
+        => true;
 
     public bool GetReveal()
         => true;
@@ -83,4 +96,11 @@ public class RunSkill : ISkillModel, IDragDrop
         => _dragDropDelegate = dragDropDelegate;
 
     #endregion
+
+    public void OnBeforeSerialize() { }
+
+    public void OnAfterDeserialize()
+    {
+        _entry = string.IsNullOrEmpty(_entry.Name) ? null : Encyclopedia.SkillCategory[_entry.Name];
+    }
 }

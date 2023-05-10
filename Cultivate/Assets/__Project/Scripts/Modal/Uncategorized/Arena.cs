@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using CLLibrary;
 using UnityEngine;
 
@@ -17,19 +16,20 @@ public class Arena : Inventory<RunEntity>, GDictionary
 
     public StageReport Report;
 
-    public ArenaWaiGongInventory ArenaWaiGongInventory;
+    public SkillInventory SkillInventory;
 
     public Arena()
     {
         _accessors = new()
         {
             { "Briefs", () => _reports },
-            { "ArenaWaiGongInventory", () => ArenaWaiGongInventory },
+            { "SkillInventory", () => SkillInventory },
         };
 
         ArenaSize.Do(item => Add(new RunEntity()));
         _reports = new StageReport[ArenaSize * ArenaSize];
-        ArenaWaiGongInventory = new();
+        SkillInventory = new();
+        Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.Add(e));
     }
 
     // Entity 的 SetEntry 的具体实现
