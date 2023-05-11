@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 [Serializable]
-public class RunSkill : ISkillModel, IDragDrop, ISerializationCallbackReceiver
+public class RunSkill : ISkillModel, IInteractable, ISerializationCallbackReceiver
 {
     [SerializeField] private SkillEntry _entry;
     public SkillEntry Entry => _entry;
@@ -85,15 +85,15 @@ public class RunSkill : ISkillModel, IDragDrop, ISerializationCallbackReceiver
     public RunSkill Clone()
         => new(this);
 
-    #region IDragDrop
+    #region Interact
 
-    private DragDropDelegate _dragDropDelegate;
+    private InteractDelegate _interactDelegate;
 
-    public DragDropDelegate GetDragDropDelegate()
-        => _dragDropDelegate;
+    public InteractDelegate GetInteractDelegate()
+        => _interactDelegate;
 
-    public void SetDragDropDelegate(DragDropDelegate dragDropDelegate)
-        => _dragDropDelegate = dragDropDelegate;
+    public void SetInteractDelegate(InteractDelegate interactDelegate)
+        => _interactDelegate = interactDelegate;
 
     #endregion
 
@@ -102,5 +102,15 @@ public class RunSkill : ISkillModel, IDragDrop, ISerializationCallbackReceiver
     public void OnAfterDeserialize()
     {
         _entry = string.IsNullOrEmpty(_entry.Name) ? null : Encyclopedia.SkillCategory[_entry.Name];
+    }
+
+    public bool TryIncreaseJingJie()
+    {
+        JingJie curr = JingJie;
+        JingJie next = curr + 1;
+        if (!Entry.JingJieRange.Contains(next))
+            next = Entry.JingJieRange.Start;
+        JingJie = next;
+        return true;
     }
 }

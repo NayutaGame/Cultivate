@@ -85,9 +85,9 @@ public class RunEntity : GDictionary, IEntityModel
             _entry.Create(this, _createEntityDetails);
     }
 
-    public void SetDragDropDelegate(DragDropDelegate dragDropDelegate)
+    public void SetDragDropDelegate(InteractDelegate interactDelegate)
     {
-        _slots.Do(slot => slot.SetDragDropDelegate(dragDropDelegate));
+        _slots.Do(slot => slot.SetInteractDelegate(interactDelegate));
     }
 
     public void SetSlotContent(int i, string waiGongName, JingJie? j = null)

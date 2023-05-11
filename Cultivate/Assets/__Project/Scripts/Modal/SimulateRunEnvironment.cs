@@ -9,14 +9,7 @@ public class SimulateRunEnvironment : RunEnvironment
     {
         base.InitDragDropDelegate();
 
-        _dragDropDelegate = new(4, new Func<IDragDrop, IDragDrop, bool>[]
-            {
-                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
-                /* RunSkill         */ TryMerge,   null,           TryEquip,        TryWrite,
-                /* SkillInventory   */ null,       null,           null,            null,
-                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryWrite,
-                /* SkillSlot(Enemy) */ null,       null,           null,            null,
-            },
+        _interactDelegate = new(4,
             item =>
             {
                 if (item is RunSkill)
@@ -32,6 +25,21 @@ public class SimulateRunEnvironment : RunEnvironment
                 }
 
                 return null;
+            },
+            new Func<IInteractable, IInteractable, bool>[]
+            {
+                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
+                /* RunSkill         */ TryMerge,   null,           TryEquip,        TryWrite,
+                /* SkillInventory   */ null,       null,           null,            null,
+                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryWrite,
+                /* SkillSlot(Enemy) */ null,       null,           null,            null,
+            },
+            new Func<IInteractable, bool>[]
+            {
+                /* RunSkill         */ TryIncreaseJingJie,
+                /* SkillInventory   */ null,
+                /* SkillSlot(Hero)  */ TryIncreaseJingJie,
+                /* SkillSlot(Enemy) */ TryIncreaseJingJie,
             });
     }
 }

@@ -33,10 +33,10 @@ public class SkillInventoryView : InventoryView<AbstractSkillView>, IDropHandler
         if (drop == null) return;
         if (GetIndexPath().Equals(drop.GetIndexPath())) return;
 
-        IDragDrop from = RunManager.Get<IDragDrop>(drop.GetIndexPath());
-        IDragDrop to = RunManager.Get<IDragDrop>(GetIndexPath());
+        IInteractable from = RunManager.Get<IInteractable>(drop.GetIndexPath());
+        IInteractable to = RunManager.Get<IInteractable>(GetIndexPath());
 
-        from.GetDragDropDelegate().DragDrop(from, to);
+        from.GetInteractDelegate().DragDrop(from, to);
     }
 
     private void DrawJingJie(JingJie jingJie)

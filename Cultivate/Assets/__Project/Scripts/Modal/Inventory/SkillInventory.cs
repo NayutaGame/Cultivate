@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SkillInventory : Inventory<RunSkill>, IDragDrop
+public class SkillInventory : Inventory<RunSkill>, IInteractable
 {
     public void AddSkill(RunSkill skill)
     {
         RunSkill clone = skill.Clone();
-        clone.SetDragDropDelegate(GetDragDropDelegate());
+        clone.SetInteractDelegate(GetInteractDelegate());
         Add(clone);
     }
 
@@ -22,14 +22,14 @@ public class SkillInventory : Inventory<RunSkill>, IDragDrop
 
     public void RemoveSkill(RunSkill skill)
     {
-        skill.SetDragDropDelegate(null);
+        skill.SetInteractDelegate(null);
         Remove(skill);
     }
 
     public void ReplaceSkill(RunSkill from, RunSkill to)
     {
-        from.SetDragDropDelegate(null);
-        to.SetDragDropDelegate(GetDragDropDelegate());
+        from.SetInteractDelegate(null);
+        to.SetInteractDelegate(GetInteractDelegate());
         Replace(from, to);
     }
 
@@ -114,15 +114,15 @@ public class SkillInventory : Inventory<RunSkill>, IDragDrop
         Sort(Comparisons[i]);
     }
 
-    #region IDragDrop
+    #region Interact
 
-    private DragDropDelegate _dragDropDelegate;
+    private InteractDelegate _interactDelegate;
 
-    public DragDropDelegate GetDragDropDelegate()
-        => _dragDropDelegate;
+    public InteractDelegate GetInteractDelegate()
+        => _interactDelegate;
 
-    public void SetDragDropDelegate(DragDropDelegate dragDropDelegate)
-        => _dragDropDelegate = dragDropDelegate;
+    public void SetInteractDelegate(InteractDelegate interactDelegate)
+        => _interactDelegate = interactDelegate;
 
     #endregion
 }

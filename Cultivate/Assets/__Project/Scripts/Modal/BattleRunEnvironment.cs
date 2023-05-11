@@ -11,14 +11,7 @@ public class BattleRunEnvironment : RunEnvironment
     {
         base.InitDragDropDelegate();
 
-        _dragDropDelegate = new(4, new Func<IDragDrop, IDragDrop, bool>[]
-            {
-                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
-                /* RunSkill         */ TryMerge,   null,           TryEquip,        null,
-                /* SkillInventory   */ null,       null,           null,            null,
-                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         null,
-                /* SkillSlot(Enemy) */ null,       null,           null,            null,
-            },
+        _interactDelegate = new(4,
             item =>
             {
                 if (item is RunSkill)
@@ -34,6 +27,21 @@ public class BattleRunEnvironment : RunEnvironment
                 }
 
                 return null;
+            },
+            new Func<IInteractable, IInteractable, bool>[]
+            {
+                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
+                /* RunSkill         */ TryMerge,   null,           TryEquip,        null,
+                /* SkillInventory   */ null,       null,           null,            null,
+                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         null,
+                /* SkillSlot(Enemy) */ null,       null,           null,            null,
+            },
+            new Func<IInteractable, bool>[]
+            {
+                /* RunSkill         */ null,
+                /* SkillInventory   */ null,
+                /* SkillSlot(Hero)  */ null,
+                /* SkillSlot(Enemy) */ null,
             });
     }
 }

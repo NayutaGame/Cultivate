@@ -90,7 +90,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2108923873393925487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98b5d68c4403da547aea2cc9b3f7504c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e14588677774954fa706910f4830509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ManaCostView: {fileID: 8761564396075560131}

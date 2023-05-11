@@ -15,7 +15,7 @@ public class Arena : Inventory<RunEntity>, GDictionary
 
     public SkillInventory SkillInventory;
 
-    protected DragDropDelegate _dragDropDelegate;
+    protected InteractDelegate _interactDelegate;
 
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
@@ -27,37 +27,42 @@ public class Arena : Inventory<RunEntity>, GDictionary
             { "SkillInventory", () => SkillInventory },
         };
 
-        _dragDropDelegate = new(2, new Func<IDragDrop, IDragDrop, bool>[]
-            {
-                /*               RunSkill,   SkillSlot */
-                /* RunSkill   */ null,       TryWrite,
-                /* SkillSlot  */ null,       TryWrite,
-            },
+        _interactDelegate = new(2,
             item =>
             {
                 if (item is RunSkill)
                     return 0;
                 if (item is SkillSlot)
                     return 1;
-
                 return null;
+            },
+            new Func<IInteractable, IInteractable, bool>[]
+            {
+                /*               RunSkill,   SkillSlot */
+                /* RunSkill   */ null,       TryWrite,
+                /* SkillSlot  */ null,       TryWrite,
+            },
+            new Func<IInteractable, bool>[]
+            {
+                /* RunSkill   */ null,
+                /* SkillSlot  */ TryIncreaseJingJie,
             });
 
         SkillInventory = new();
-        SkillInventory.SetDragDropDelegate(_dragDropDelegate);
+        SkillInventory.SetInteractDelegate(_interactDelegate);
         Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));
 
         ArenaSize.Do(item =>
         {
             RunEntity e = new RunEntity();
-            e.SetDragDropDelegate(_dragDropDelegate);
+            e.SetDragDropDelegate(_interactDelegate);
             Add(e);
         });
 
         _reports = new StageReport[ArenaSize * ArenaSize];
     }
 
-    private bool TryWrite(IDragDrop from, IDragDrop to)
+    private bool TryWrite(IInteractable from, IInteractable to)
     {
         RunSkill skill = null;
         if (from is RunSkill fromSkill)
@@ -72,6 +77,14 @@ public class Arena : Inventory<RunEntity>, GDictionary
         SkillSlot toSlot = to as SkillSlot;
         toSlot.Skill = skill;
         return true;
+    }
+
+    private bool TryIncreaseJingJie(IInteractable item)
+    {
+        if (item is SkillSlot skillSlot)
+            return skillSlot.TryIncreaseJingJie();
+
+        return false;
     }
 
     public void Compete()

@@ -50,6 +50,8 @@ public class TimelineView : MonoBehaviour
 
     public void InitialSetup()
     {
+        ClearViews();
+
         _time = -1;
         List<StageNote> batch = StageManager.Instance.EndEnv.Report.Timeline.GetNotes(0, FutureCount);
 
@@ -63,6 +65,13 @@ public class TimelineView : MonoBehaviour
             v.Configure(new IndexPath($"EndEnv.Report.Timeline.Notes#{note.TemporalIndex}"));
             v.Refresh();
         }
+    }
+
+    private void ClearViews()
+    {
+        foreach (var v in _views)
+            Destroy(v.gameObject);
+        _views.Clear();
     }
 
     public Tween ShiftAnimation()

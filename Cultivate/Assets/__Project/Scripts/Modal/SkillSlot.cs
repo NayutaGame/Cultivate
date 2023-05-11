@@ -6,7 +6,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class SkillSlot : ISkillModel, IDragDrop
+public class SkillSlot : ISkillModel, IInteractable
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
@@ -83,11 +83,10 @@ public class SkillSlot : ISkillModel, IDragDrop
         if (_skill == null)
             return false;
 
-        JingJie curr = _skill.JingJie;
-        JingJie next = curr + 1;
-        if (!_skill.Entry.JingJieRange.Contains(next))
-            next = _skill.Entry.JingJieRange.Start;
-        _skill.JingJie = next;
+        bool success = _skill.TryIncreaseJingJie();
+        if (!success)
+            return false;
+
         EnvironmentChanged();
         return true;
     }
@@ -105,15 +104,15 @@ public class SkillSlot : ISkillModel, IDragDrop
 
     [NonSerialized] public bool IsManaShortage;
 
-    #region IDragDrop
+    #region Interact
 
-    private DragDropDelegate _dragDropDelegate;
+    private InteractDelegate _interactDelegate;
 
-    public DragDropDelegate GetDragDropDelegate()
-        => _dragDropDelegate;
+    public InteractDelegate GetInteractDelegate()
+        => _interactDelegate;
 
-    public void SetDragDropDelegate(DragDropDelegate dragDropDelegate)
-        => _dragDropDelegate = dragDropDelegate;
+    public void SetInteractDelegate(InteractDelegate interactDelegate)
+        => _interactDelegate = interactDelegate;
 
     #endregion
 }
