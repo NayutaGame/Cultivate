@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class SimulateRunEnvironment : RunEnvironment
 {
-    public override void InitDragDropDelegate()
+    public override void InitInteractDelegate()
     {
-        base.InitDragDropDelegate();
+        base.InitInteractDelegate();
 
         _interactDelegate = new(4,
-            item =>
+            getID: item =>
             {
                 if (item is RunSkill)
                     return 0;
@@ -26,7 +26,7 @@ public class SimulateRunEnvironment : RunEnvironment
 
                 return null;
             },
-            new Func<IInteractable, IInteractable, bool>[]
+            dragDropTable: new Func<IInteractable, IInteractable, bool>[]
             {
                 /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
                 /* RunSkill         */ TryMerge,   null,           TryEquip,        TryWrite,
@@ -34,7 +34,7 @@ public class SimulateRunEnvironment : RunEnvironment
                 /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryWrite,
                 /* SkillSlot(Enemy) */ null,       null,           null,            null,
             },
-            new Func<IInteractable, bool>[]
+            rMouseTable: new Func<IInteractable, bool>[]
             {
                 /* RunSkill         */ TryIncreaseJingJie,
                 /* SkillInventory   */ null,

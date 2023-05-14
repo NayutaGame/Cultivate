@@ -102,10 +102,10 @@ public class RunManager : Singleton<RunManager>, GDictionary
         EntityPool = new();
 
         TechInventory = new();
-        Map = new();
         Battle = new();
         Simulate = new();
         Arena = new();
+        Map = new();
 
         _accessors = new()
         {
@@ -114,6 +114,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
             { "Battle",                () => Battle },
             { "Simulate",              () => Simulate },
             { "Arena",                 () => Arena },
+            { "CurrentNode",           TryGetCurrentNode },
         };
 
         _mingYuan = 100;

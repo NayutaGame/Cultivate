@@ -143,13 +143,20 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right &&
-            RunManager.Get<IInteractable>(GetIndexPath()) is { } item)
+        IInteractable item = RunManager.Get<IInteractable>(GetIndexPath());
+        if (item == null)
+            return;
+
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            item.GetInteractDelegate().LMouse(item);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
         {
             item.GetInteractDelegate().RMouse(item);
-            RunCanvas.Instance.Refresh();
-            return;
         }
+
+        RunCanvas.Instance.Refresh();
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)

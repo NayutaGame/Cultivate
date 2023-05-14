@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunNode
+public class RunNode : GDictionary
 {
     protected NodeEntry _entry;
     public Vector2Int Position { get; private set; }
@@ -22,8 +23,15 @@ public class RunNode
 
     public virtual string GetTitle() => _entry.Name;
 
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
     public RunNode(Vector2Int position, NodeEntry entry)
     {
+        _accessors = new()
+        {
+            { "CurrentPanel",          () => CurrentPanel },
+        };
+
         Position = position;
         _entry = entry;
         _state = RunNodeState.Locked;

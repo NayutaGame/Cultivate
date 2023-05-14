@@ -24,7 +24,7 @@ public class CreateEntityDetails
 
         Step = step;
         AllowNormal = step == 0;
-        AllowElite = step == 1;
-        AllowBoss = step == 2;
+        AllowElite = step == 3;
+        AllowBoss = step == 6;
     }
 }

@@ -14,7 +14,7 @@ public class BattleRunNode : RunNode
     {
         CreateEntityDetails = createEntityDetails;
         _rewards = new();
-        RunManager.Instance.EntityPool.TryDrawEntityEntry(out EntityEntry entityEntry, CreateEntityDetails);
+        RunManager.Instance.EntityPool.ForceDrawEntityEntry(out EntityEntry entityEntry, CreateEntityDetails);
         EntityEntry = entityEntry;
     }
 

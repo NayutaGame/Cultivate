@@ -4,16 +4,18 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class EntityPool : AutoPool<EntityEntry>
+public class EntityPool : Pool<EntityEntry>
 {
-    public EntityPool() : base(Encyclopedia.EntityCategory.Traversal.ToList())
+    public EntityPool()
     {
+        Populate(Encyclopedia.EntityCategory.Traversal.FilterObj(entityEntry => entityEntry != Encyclopedia.EntityCategory[0]).ToList());
     }
 
-    public bool TryDrawEntityEntry(out EntityEntry entityEntry, CreateEntityDetails d)
+    public bool ForceDrawEntityEntry(out EntityEntry entityEntry, CreateEntityDetails d)
     {
         Shuffle();
-        entityEntry = ForcePopItem(e => e.CanCreate(d));
+        TryPopItem(out EntityEntry item, e => e.CanCreate(d));
+        entityEntry = item ?? Encyclopedia.EntityCategory[0];
         return true;
     }
 }

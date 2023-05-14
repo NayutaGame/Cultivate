@@ -42,7 +42,7 @@ public class RunEnvironment : GDictionary
             { "Enemy",                 () => Enemy },
         };
 
-        InitDragDropDelegate();
+        InitInteractDelegate();
 
         SkillInventory = new();
         SkillInventory.SetInteractDelegate(_interactDelegate);
@@ -55,12 +55,12 @@ public class RunEnvironment : GDictionary
         EnvironmentChangedEvent += CalcManaShortageBrief;
     }
 
-    public virtual void InitDragDropDelegate() { }
+    public virtual void InitInteractDelegate() { }
 
     public void Enter()
     {
         CreateEntityDetails d = new CreateEntityDetails(RunManager.Instance.Map.JingJie);
-        RunManager.Instance.EntityPool.TryDrawEntityEntry(out EntityEntry entry, d);
+        RunManager.Instance.EntityPool.ForceDrawEntityEntry(out EntityEntry entry, d);
         Enemy = new RunEntity(entry, d);
     }
 

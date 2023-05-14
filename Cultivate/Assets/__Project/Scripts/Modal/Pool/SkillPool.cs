@@ -9,14 +9,14 @@ public class SkillPool : Pool<SkillEntry>
 {
     public SkillPool()
     {
-        4.Do(i => Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.Name != "聚气术")));
+        4.Do(i => Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e != Encyclopedia.SkillCategory[0])));
     }
 
     public bool TryDrawSkill(out RunSkill skill, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
     {
         Shuffle();
 
-        TryPopItem(s =>
+        TryPopItem(out SkillEntry item, s =>
         {
             if (pred != null && !pred(s))
                 return false;
@@ -28,27 +28,24 @@ public class SkillPool : Pool<SkillEntry>
                 return false;
 
             return true;
-        }, out SkillEntry item);
+        });
 
-        if (item == null)
-        {
-            skill = null;
-            return false;
-        }
-
+        item ??= Encyclopedia.SkillCategory[0];
         JingJie itemJingJie = jingJie ?? item.JingJieRange.Start;
         skill = new RunSkill(item, itemJingJie);
         return true;
     }
 
-    public bool TryDrawSkills(out List<RunSkill> skills, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null, int count = 1)
+    public bool TryDrawSkills(out List<RunSkill> skills, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null, int count = 1, bool distinct = true)
     {
         Shuffle();
 
         skills = new List<RunSkill>();
+        List<SkillEntry> skillEntries = new List<SkillEntry>();
+
         for (int i = 0; i < count; i++)
         {
-            TryPopItem(s =>
+            TryPopItem(out SkillEntry item, s =>
             {
                 if (pred != null && !pred(s))
                     return false;
@@ -59,11 +56,14 @@ public class SkillPool : Pool<SkillEntry>
                 if (jingJie != null && !s.JingJieRange.Contains(jingJie.Value))
                     return false;
 
-                return true;
-            }, out SkillEntry item);
+                if (distinct && skillEntries.Contains(s))
+                    return false;
 
-            if (item == null)
-                return false;
+                return true;
+            });
+
+            item ??= Encyclopedia.SkillCategory[0];
+            skillEntries.Add(item);
 
             JingJie itemJingJie = jingJie ?? item.JingJieRange.Start;
             skills.Add(new RunSkill(item, itemJingJie));

@@ -7,13 +7,11 @@ using UnityEngine;
 public class InteractDelegate
 {
     private int _distinctItems;
-    private Func<IInteractable, IInteractable, bool>[] _dragDropTable;
-    private Func<IInteractable, bool>[] _rMouseTable;
     private Func<IInteractable, int?> _getID;
 
+    private Func<IInteractable, IInteractable, bool>[] _dragDropTable;
     private Func<IInteractable, IInteractable, bool> GetDragDrop(int from, int to)
-        => _dragDropTable[to + from * _distinctItems];
-
+        => _dragDropTable?[to + from * _distinctItems];
     private Func<IInteractable, IInteractable, bool> GetDragDrop(IInteractable from, IInteractable to)
     {
         if (from.GetInteractDelegate() != to.GetInteractDelegate())
@@ -26,29 +24,6 @@ public class InteractDelegate
 
         return GetDragDrop(fromId.Value, toId.Value);
     }
-
-    private Func<IInteractable, bool> GetRMouse(int item)
-        => _rMouseTable[item];
-
-    private Func<IInteractable, bool> GetRMouse(IInteractable item)
-    {
-        int? itemId = _getID(item);
-        if (!itemId.HasValue)
-            return null;
-
-        return GetRMouse(itemId.Value);
-    }
-
-    public InteractDelegate(int distinctItems, Func<IInteractable, int?> getID,
-        Func<IInteractable, IInteractable, bool>[] dragDropTable,
-        Func<IInteractable, bool>[] rMouseTable)
-    {
-        _distinctItems = distinctItems;
-        _getID = getID;
-        _dragDropTable = dragDropTable;
-        _rMouseTable = rMouseTable;
-    }
-
     public bool CanDrag(IInteractable item)
     {
         int? itemId = _getID(item);
@@ -64,10 +39,46 @@ public class InteractDelegate
 
         return false;
     }
-
     public bool DragDrop(IInteractable from, IInteractable to)
         => GetDragDrop(from, to)?.Invoke(from, to) ?? false;
 
+    private Func<IInteractable, bool>[] _rMouseTable;
+    private Func<IInteractable, bool> GetRMouse(int item)
+        => _rMouseTable?[item];
+    private Func<IInteractable, bool> GetRMouse(IInteractable item)
+    {
+        int? itemId = _getID(item);
+        if (!itemId.HasValue)
+            return null;
+
+        return GetRMouse(itemId.Value);
+    }
     public bool RMouse(IInteractable item)
         => GetRMouse(item)?.Invoke(item) ?? false;
+
+    private Func<IInteractable, bool>[] _lMouseTable;
+    private Func<IInteractable, bool> GetLMouse(int item)
+        => _lMouseTable?[item];
+    private Func<IInteractable, bool> GetLMouse(IInteractable item)
+    {
+        int? itemId = _getID(item);
+        if (!itemId.HasValue)
+            return null;
+
+        return GetLMouse(itemId.Value);
+    }
+    public bool LMouse(IInteractable item)
+        => GetLMouse(item)?.Invoke(item) ?? false;
+
+    public InteractDelegate(int distinctItems, Func<IInteractable, int?> getID,
+        Func<IInteractable, IInteractable, bool>[] dragDropTable = null,
+        Func<IInteractable, bool>[] lMouseTable = null,
+        Func<IInteractable, bool>[] rMouseTable = null)
+    {
+        _distinctItems = distinctItems;
+        _getID = getID;
+        _dragDropTable = dragDropTable;
+        _lMouseTable = lMouseTable;
+        _rMouseTable = rMouseTable;
+    }
 }

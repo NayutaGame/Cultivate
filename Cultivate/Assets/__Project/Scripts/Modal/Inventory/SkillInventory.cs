@@ -74,7 +74,7 @@ public class SkillInventory : Inventory<RunSkill>, IInteractable
     {
         int jingJieResult = JingJieComparison(lhs, rhs);
         if (jingJieResult != 0)
-            return jingJieResult;
+            return -jingJieResult;
 
         int wuXingResult = WuXingComparison(lhs, rhs);
         if (wuXingResult != 0)

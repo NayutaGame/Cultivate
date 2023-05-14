@@ -87,13 +87,18 @@ public class Map : GDictionary
 
 
     private JingJie _jingJie;
-
     public JingJie JingJie
     {
         get => _jingJie;
         set
         {
             _jingJie = value;
+            if (AppManager.Instance != null)
+                if (AppManager.Instance.StageManager != null)
+                {
+                    RunManager.Instance.Battle.Hero.SetHealth(RunEntity.BaseHP[_jingJie]);
+                    RunManager.Instance.Battle.Hero.SetJingJie(_jingJie);
+                }
             RefreshPools();
         }
     }
@@ -125,12 +130,12 @@ public class Map : GDictionary
 
         _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
         {
-            { JingJie.LianQi   , new[] { _b, _b, _b } },
-            { JingJie.ZhuJi    , new[] { _b, _b, _b } },
-            { JingJie.JinDan   , new[] { _b, _b, _b } },
-            { JingJie.YuanYing , new[] { _b, _b, _b } },
-            { JingJie.HuaShen  , new[] { _b, _b, _b } },
-            { JingJie.FanXu    , new[] { _b, _b, _b } },
+            { JingJie.LianQi   , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
+            { JingJie.ZhuJi    , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
+            { JingJie.JinDan   , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
+            { JingJie.YuanYing , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
+            { JingJie.HuaShen  , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
+            { JingJie.FanXu    , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
         };
     }
 

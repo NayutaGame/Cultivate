@@ -50,7 +50,7 @@ namespace CLLibrary
             }
         }
 
-        public bool TryPopItem(Predicate<T> pred, out T item)
+        public bool TryPopItem(out T item, Predicate<T> pred)
         {
             item = _list.FirstObj(pred);
             if (item == null) return false;

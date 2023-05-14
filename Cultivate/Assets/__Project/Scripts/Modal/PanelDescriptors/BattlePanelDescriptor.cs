@@ -15,9 +15,8 @@ public class BattlePanelDescriptor : PanelDescriptor
         _createEntityDetails = createEntityDetails;
     }
 
-    public override void Enter()
+    public override void DefaultEnter()
     {
-        base.Enter();
         RunManager.Instance.Battle.Enemy = new RunEntity(_entityEntry, _createEntityDetails);
     }
 }

@@ -28,11 +28,11 @@ namespace CLLibrary
 
         public T ForcePopItem(Predicate<T> pred)
         {
-            if (!TryPopItem(pred, out T item))
+            if (!TryPopItem(out T item, pred))
             {
                 Populate(_toPopulate);
                 Shuffle();
-                TryPopItem(pred, out item);
+                TryPopItem(out item, pred);
             }
 
             return item;

@@ -62,14 +62,14 @@ public class RunCanvas : Singleton<RunCanvas>
         Refresh();
     }
 
-    public void OpenCharacterPanel() => OpenPanel(CharacterPanel);
-    public void OpenTechTreePanel() => OpenPanel(TechTreePanel);
-    public void OpenSimulatePanel() => OpenPanel(SimulatePanel);
-    public void OpenArenaPanel() => OpenPanel(ArenaPanel);
-    public void OpenLibraryPanel() => OpenPanel(LibraryPanel);
-    public void OpenMapPanel() => OpenPanel(MapPanel);
-    public void OpenNodePanel() => OpenPanel(NodePanel);
-    private void OpenPanel(Panel panel)
+    public void OpenCharacterPanel() => ChangePanel(CharacterPanel);
+    public void OpenTechTreePanel() => ChangePanel(TechTreePanel);
+    public void OpenSimulatePanel() => ChangePanel(SimulatePanel);
+    public void OpenArenaPanel() => ChangePanel(ArenaPanel);
+    public void OpenLibraryPanel() => ChangePanel(LibraryPanel);
+    public void OpenMapPanel() => ChangePanel(MapPanel);
+    public void OpenNodePanel() => ChangePanel(NodePanel);
+    private void ChangePanel(Panel panel)
     {
         if(_currentPanel != null)
             _currentPanel.gameObject.SetActive(false);

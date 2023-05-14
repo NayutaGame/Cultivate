@@ -28,7 +28,7 @@ public class Arena : Inventory<RunEntity>, GDictionary
         };
 
         _interactDelegate = new(2,
-            item =>
+            getID: item =>
             {
                 if (item is RunSkill)
                     return 0;
@@ -36,13 +36,13 @@ public class Arena : Inventory<RunEntity>, GDictionary
                     return 1;
                 return null;
             },
-            new Func<IInteractable, IInteractable, bool>[]
+            dragDropTable: new Func<IInteractable, IInteractable, bool>[]
             {
                 /*               RunSkill,   SkillSlot */
                 /* RunSkill   */ null,       TryWrite,
                 /* SkillSlot  */ null,       TryWrite,
             },
-            new Func<IInteractable, bool>[]
+            rMouseTable: new Func<IInteractable, bool>[]
             {
                 /* RunSkill   */ null,
                 /* SkillSlot  */ TryIncreaseJingJie,
