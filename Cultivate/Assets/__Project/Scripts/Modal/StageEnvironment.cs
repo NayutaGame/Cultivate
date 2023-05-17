@@ -23,10 +23,10 @@ public class StageEnvironment : GDictionary
     /// <param name="recursive">是否会递归</param>
     /// <param name="damaged">如果造成伤害时候的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
-    public async Task AttackProcedure(StageEntity src, StageEntity tgt, int value, int times = 1,
+    public async Task AttackProcedure(StageEntity src, StageEntity tgt, int value, WuXing? wuXing = null, int times = 1,
         bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
         Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
-        => await AttackProcedure(new AttackDetails(src, tgt, value, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
+        => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
     public async Task AttackProcedure(AttackDetails attackDetails, int times)
     {
         if (attackDetails.Src.TryConsumeBuff("追击")) // 结算连击/追击

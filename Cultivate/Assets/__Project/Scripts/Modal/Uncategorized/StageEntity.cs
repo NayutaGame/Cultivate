@@ -545,9 +545,9 @@ public class StageEntity : GDictionary
 
     #region Procedure
 
-    public async Task AttackProcedure(int value, int times = 1, bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
+    public async Task AttackProcedure(int value, WuXing? wuXing = null, int times = 1, bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
         Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
-        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
+        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
 
     public async Task DamageSelfProcedure(int value, bool recursive = true,
         Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)

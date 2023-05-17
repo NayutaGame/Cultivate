@@ -12,6 +12,8 @@ public class StageManager : Singleton<StageManager>, GDictionary
 {
     public Transform VFXPool;
     public GameObject FlowTextVFXPrefab;
+    public GameObject[] PiercingVFXFromWuXing;
+    public GameObject[] HitVFXFromWuXing;
 
     public EntitySlot[] _slots;
 
@@ -106,6 +108,8 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
     public void Exit()
     {
+        DisableVFX();
+
         BattlePanelDescriptor battlePanelDescriptor = RunManager.Instance.TryGetCurrentNode()?.CurrentPanel as BattlePanelDescriptor;
         if (battlePanelDescriptor == null)
             return;
@@ -135,5 +139,13 @@ public class StageManager : Singleton<StageManager>, GDictionary
     public void Skip()
     {
         Anim.Skip();
+    }
+
+    public void DisableVFX()
+    {
+        for (int i = 0; i < VFXPool.childCount; i++)
+        {
+            VFXPool.GetChild(i).gameObject.SetActive(false);
+        }
     }
 }

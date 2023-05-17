@@ -200,7 +200,7 @@ public class SkillCategory : Category<SkillEntry>
             new("金00", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"{3 + dj}攻\n施加{3 + dj}减甲"), WuXing.Jin, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(3 + waiGong.Dj);
+                    await caster.AttackProcedure(3 + waiGong.Dj, wuXing: waiGong.Entry.WuXing);
                     await caster.ArmorLoseOppoProcedure(3 + waiGong.Dj);
                 }),
 
@@ -208,7 +208,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, waiGong, recursive) =>
                 {
                     int add = caster.Opponent().Armor >= 0 ? (3 + waiGong.Dj) : 0;
-                    await caster.AttackProcedure(5 + waiGong.Dj + add);
+                    await caster.AttackProcedure(5 + waiGong.Dj + add, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("水00", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"灵气+{2 + dj}"), WuXing.Shui, skillTypeCollection: SkillTypeCollection.LingQi,
@@ -220,13 +220,13 @@ public class SkillCategory : Category<SkillEntry>
             new("水01", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"{4 + 2 * dj}攻 吸血"), WuXing.Shui, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(4 + 2 * waiGong.Dj, lifeSteal: true);
+                    await caster.AttackProcedure(4 + 2 * waiGong.Dj, lifeSteal: true, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("木01", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"{6 + 2 * dj}攻 穿透"), WuXing.Mu, manaCost: 1, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(6 + 2 * waiGong.Dj, pierce: true);
+                    await caster.AttackProcedure(6 + 2 * waiGong.Dj, pierce: true, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("木02", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"灵气+{1 + dj}\n生命+{3 + 2 * dj}"), WuXing.Mu, skillTypeCollection: SkillTypeCollection.LingQi,
@@ -240,20 +240,20 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, waiGong, recursive) =>
                 {
                     await caster.DamageSelfProcedure(2 + waiGong.Dj);
-                    await caster.AttackProcedure(8 + 3 * waiGong.Dj);
+                    await caster.AttackProcedure(8 + 3 * waiGong.Dj, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("火01", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"{3 + 2 * dj}攻\n灵气+{1 + dj}"), WuXing.Huo, skillTypeCollection: SkillTypeCollection.LingQi | SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(3 + 2 * waiGong.Dj);
+                    await caster.AttackProcedure(3 + 2 * waiGong.Dj, wuXing: waiGong.Entry.WuXing);
                     await caster.BuffSelfProcedure("灵气", 1 + waiGong.Dj);
                 }),
 
             new("土00", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"{12 + 4 * dj}攻"), WuXing.Tu, new ManaCost((j, dj) => 2 + dj), SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(12 + 4 * waiGong.Dj);
+                    await caster.AttackProcedure(12 + 4 * waiGong.Dj, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("土01", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"灵气+{1 + dj}\n护甲+{3 + 2 * dj}"), WuXing.Tu, skillTypeCollection: SkillTypeCollection.LingQi,
@@ -274,7 +274,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, waiGong, recursive) =>
                 {
                     int mul = waiGong.IsFirstTime ? 2 : 1;
-                    await caster.AttackProcedure((4 + 2 * waiGong.Dj) * mul);
+                    await caster.AttackProcedure((4 + 2 * waiGong.Dj) * mul, wuXing: waiGong.Entry.WuXing);
                     await caster.BuffSelfProcedure("锋锐", (2 + waiGong.Dj) * mul);
                 }),
 
@@ -289,7 +289,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, waiGong, recursive) =>
                 {
                     int times = caster.Opponent().Armor < 0 ? 2 : 1;
-                    await caster.AttackProcedure(6 + 2 * waiGong.Dj, times);
+                    await caster.AttackProcedure(6 + 2 * waiGong.Dj, times: times, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("吐纳", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"灵气+{3 + dj}\n生命上限+{8 + 4 * dj}"), WuXing.Shui, skillTypeCollection: SkillTypeCollection.LingQi,
@@ -303,14 +303,14 @@ public class SkillCategory : Category<SkillEntry>
             new("水10", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"{10 + 2 * dj}攻\n击伤：格挡+1"), WuXing.Shui, manaCost: 2, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(10 + 2 * waiGong.Dj,
+                    await caster.AttackProcedure(10 + 2 * waiGong.Dj, wuXing: waiGong.Entry.WuXing,
                         damaged: d => caster.BuffSelfProcedure("格挡"));
                 }),
 
             new("水11", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"{10 + 2 * dj}攻\n终结：吸血"), WuXing.Shui, manaCost: 1, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(10 + 2 * waiGong.Dj, lifeSteal: waiGong.IsEnd);
+                    await caster.AttackProcedure(10 + 2 * waiGong.Dj, lifeSteal: waiGong.IsEnd, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("勤能补拙", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"护甲+{10 + 4 * dj}\n初次：遭受1跳回合"), WuXing.Shui,
@@ -326,7 +326,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     if (waiGong.StageUsedTimes < 2 + waiGong.Dj)
                         return;
-                    await caster.AttackProcedure((6 + 2 * waiGong.Dj) * (6 + 2 * waiGong.Dj));
+                    await caster.AttackProcedure((6 + 2 * waiGong.Dj) * (6 + 2 * waiGong.Dj), pierce: true, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("回马枪", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"下次受攻击时：{12 + 4 * dj}攻"), WuXing.Mu,
@@ -340,7 +340,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     int mul = waiGong.IsFirstTime ? 2 : 1;
                     await caster.BuffSelfProcedure("力量", mul);
-                    await caster.AttackProcedure((6 + waiGong.Dj) * mul);
+                    await caster.AttackProcedure((6 + waiGong.Dj) * mul, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("潜龙在渊", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"生命+{10 + 4 * dj}\n初次：闪避+1"), WuXing.Mu,
@@ -362,7 +362,7 @@ public class SkillCategory : Category<SkillEntry>
             new("火10", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"2攻x{3 + dj}"), WuXing.Huo, 1, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(2, 3 + waiGong.Dj);
+                    await caster.AttackProcedure(2, times: 3 + waiGong.Dj, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("火11", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"消耗\n灼烧+{2 + dj}"), WuXing.Huo, manaCost: 1,
@@ -378,7 +378,7 @@ public class SkillCategory : Category<SkillEntry>
                     int mul = 1;
                     mul += waiGong.Prev(true).Entry.WuXing == WuXing.Huo ? 1 : 0;
                     mul += waiGong.Next(true).Entry.WuXing == WuXing.Huo ? 1 : 0;
-                    await caster.AttackProcedure((4 + waiGong.Dj) * mul);
+                    await caster.AttackProcedure((4 + waiGong.Dj) * mul, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("土11", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"消耗\n自动护甲+{1 + dj}"), WuXing.Tu,
@@ -399,14 +399,14 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, waiGong, recursive) =>
                 {
                     int value = 7 + 2 * waiGong.Dj;
-                    await caster.AttackProcedure(value,
+                    await caster.AttackProcedure(value, wuXing: waiGong.Entry.WuXing,
                         damaged: d => caster.ArmorGainSelfProcedure(value));
                 }),
 
             new("利剑", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"{10 + 2 * dj}攻\n击伤：对方减少1灵气"), WuXing.Tu, manaCost: 1, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(10 + 2 * waiGong.Dj,
+                    await caster.AttackProcedure(10 + 2 * waiGong.Dj, wuXing: waiGong.Entry.WuXing,
                         damaged: async d => d.Tgt.TryConsumeMana());
                 }),
 
@@ -432,14 +432,14 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, waiGong, recursive) =>
                 {
                     await caster.BuffSelfProcedure("锋锐", 2 + waiGong.Dj);
-                    await caster.AttackProcedure(10 + caster.GetStackOfBuff("锋锐"));
+                    await caster.AttackProcedure(10 + caster.GetStackOfBuff("锋锐"), wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("菊剑", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"{4 + 4 * dj}攻\n敌方有减甲：二动"), WuXing.Jin, 0, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
                     caster.Swift |= caster.Opponent().Armor < 0;
-                    await caster.AttackProcedure(4 + 4 * waiGong.Dj);
+                    await caster.AttackProcedure(4 + 4 * waiGong.Dj, wuXing: waiGong.Entry.WuXing);
                     caster.Swift |= caster.Opponent().Armor < 0;
                 }),
 
@@ -460,7 +460,7 @@ public class SkillCategory : Category<SkillEntry>
             new("水22", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"{3 * j}攻\n二动\n初次：遭受1跳卡牌"), WuXing.Shui, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(3 * waiGong.GetJingJie());
+                    await caster.AttackProcedure(3 * waiGong.GetJingJie(), wuXing: waiGong.Entry.WuXing);
                     caster.Swift = true;
                     if (waiGong.IsFirstTime)
                         await caster.BuffSelfProcedure("跳卡牌");
@@ -470,7 +470,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, waiGong, recursive) =>
                 {
                     int d = caster.TryConsumeMana() ? 2 : 1;
-                    await caster.AttackProcedure((12 + 2 * waiGong.Dj) * d, lifeSteal: caster.TryConsumeBuff("锋锐"));
+                    await caster.AttackProcedure((12 + 2 * waiGong.Dj) * d, lifeSteal: caster.TryConsumeBuff("锋锐"), wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("凝神", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"护甲+{5 + 5 * dj}\n下{1 + dj}次受到治疗：护甲+治疗量"), WuXing.Shui, manaCost: 2,
@@ -492,8 +492,8 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     int add = caster.GetStackOfBuff("力量") * (2 + waiGong.Dj);
                     int value = 8 + add;
-                    await caster.AttackProcedure(value, undamaged:
-                        d => caster.HealProcedure(value));
+                    await caster.AttackProcedure(value, wuXing: waiGong.Entry.WuXing,
+                        undamaged: d => caster.HealProcedure(value));
                 }),
 
             new("见龙在田", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"闪避+{2 + dj}"), WuXing.Mu, manaCost: new ManaCost((j, dj) =>  3 + dj),
@@ -521,7 +521,7 @@ public class SkillCategory : Category<SkillEntry>
             // new("土20", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{10 + 4 * dj}攻\n每1灼烧，多{2 + dj}攻"), WuXing.Tu, 1, type: WaiGongType.Attack,
             //     execute: (caster, waiGong, recursive) =>
             //     {
-            //         caster.AttackProcedure(10 + 4 * waiGong.Dj + (2 + waiGong.Dj) * caster.GetStackOfBuff("灼烧"));
+            //         caster.AttackProcedure(10 + 4 * waiGong.Dj + (2 + waiGong.Dj) * caster.GetStackOfBuff("灼烧"), wuXing: waiGong.Entry.WuXing);
             //     }),
 
             new("收刀", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"下回合护甲+{8 + 4 * dj}\n上张牌激活架势"), WuXing.Tu,
@@ -534,7 +534,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, waiGong, recursive) =>
                 {
                     int d = waiGong.NoOtherAttack ? (6 + waiGong.Dj) : 1;
-                    await caster.AttackProcedure(6 * d);
+                    await caster.AttackProcedure(6 * d, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("高速剑阵", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"灵气+4\n架势：二动"), WuXing.Tu, 0, skillTypeCollection: SkillTypeCollection.JianZhen | SkillTypeCollection.LingQi,
@@ -592,7 +592,7 @@ public class SkillCategory : Category<SkillEntry>
             new("水30", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"{16 + 8 * dj}攻\n每造成{8 - dj}点伤害，格挡+1"), WuXing.Shui, 4, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(16 + 8 * waiGong.Dj,
+                    await caster.AttackProcedure(16 + 8 * waiGong.Dj, wuXing: waiGong.Entry.WuXing,
                         damaged: d => caster.BuffSelfProcedure("格挡", d.Value / (8 - waiGong.Dj)));
                 }),
 
@@ -620,7 +620,7 @@ public class SkillCategory : Category<SkillEntry>
             new("千年笋", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"{15 + 3 * dj}攻\n消耗1格挡：穿透"), WuXing.Mu, manaCost: 1, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(15 + 5 * waiGong.Dj,
+                    await caster.AttackProcedure(15 + 5 * waiGong.Dj, wuXing: waiGong.Entry.WuXing,
                         pierce: caster.TryConsumeBuff("格挡"));
                 }),
 
@@ -647,13 +647,13 @@ public class SkillCategory : Category<SkillEntry>
             // new("木剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{16 + 4 * dj}攻\n架势：暴击"), WuXing.Tu, 0, type: WaiGongType.Attack,
             //     execute: (caster, waiGong, recursive) =>
             //     {
-            //         caster.AttackProcedure(16 + 4 * waiGong.Dj, crit: waiGong.JiaShi);
+            //         caster.AttackProcedure(16 + 4 * waiGong.Dj, crit: waiGong.JiaShi, wuXing: waiGong.Entry.WuXing);
             //     }),
             //
             // new("土31", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"1攻 每失去过{8 - j}点护甲，多1攻"), WuXing.Tu, 0, type: WaiGongType.Attack,
             //     execute: (caster, waiGong, recursive) =>
             //     {
-            //         caster.AttackProcedure(1 + (8 - caster.LostArmorRecord / waiGong.GetJingJie()), crit: true);
+            //         caster.AttackProcedure(1 + (8 - caster.LostArmorRecord / waiGong.GetJingJie()), crit: true, wuXing: waiGong.Entry.WuXing);
             //     }),
             //
             // new("土32", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"护甲翻倍"), WuXing.Tu, new ManaCost((j, dj) => 12 - 2 * j),
@@ -665,7 +665,7 @@ public class SkillCategory : Category<SkillEntry>
             // new("软剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{4 + dj * 4}攻\n击伤：二动"), WuXing.Tu, 1, type: WaiGongType.Attack,
             //     execute: (caster, waiGong, recursive) =>
             //     {
-            //         caster.AttackProcedure(4 + 4 * waiGong.Dj,
+            //         caster.AttackProcedure(4 + 4 * waiGong.Dj, wuXing: waiGong.Entry.WuXing,
             //             damaged: d => caster.Swift = true);
             //     }),
 
@@ -679,13 +679,13 @@ public class SkillCategory : Category<SkillEntry>
             new("金刚剑阵", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"1攻 每有一点护甲多1攻"), WuXing.Tu, new ManaCost((j, dj) => 3 - 2 * dj), skillTypeCollection: SkillTypeCollection.Attack | SkillTypeCollection.JianZhen,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(1 + Mathf.Max(0, caster.Armor));
+                    await caster.AttackProcedure(1 + Mathf.Max(0, caster.Armor), wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("重剑", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"{22 + 8 * dj}攻\n击伤：护甲+击伤值\n遭受2跳回合\n架势：无需跳回合"), WuXing.Tu, 2, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(22 + 8 * waiGong.Dj,
+                    await caster.AttackProcedure(22 + 8 * waiGong.Dj, wuXing: waiGong.Entry.WuXing,
                         damaged: d => caster.ArmorGainSelfProcedure(d.Value));
                     if (!waiGong.JiaShi)
                         await caster.BuffSelfProcedure("跳回合", 2);
@@ -694,7 +694,7 @@ public class SkillCategory : Category<SkillEntry>
             new("拔刀", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"{10 + 5 * dj}攻\n下张牌激活架势"), WuXing.Tu, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(10 + 5 * waiGong.Dj);
+                    await caster.AttackProcedure(10 + 5 * waiGong.Dj, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("森罗万象", new CLLibrary.Range(4, 5), new SkillDescription((j, dj) => $"消耗\n本场战斗中：奇偶同时激活两个效果"), WuXing.Jin,
@@ -707,8 +707,8 @@ public class SkillCategory : Category<SkillEntry>
             new("梅剑", new CLLibrary.Range(4, 5), "5攻x2\n敌方有减甲：暴击", WuXing.Jin, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(5, crit: caster.Opponent().Armor < 0);
-                    await caster.AttackProcedure(5, crit: caster.Opponent().Armor < 0);
+                    await caster.AttackProcedure(5, crit: caster.Opponent().Armor < 0, wuXing: waiGong.Entry.WuXing);
+                    await caster.AttackProcedure(5, crit: caster.Opponent().Armor < 0, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("少阴", new CLLibrary.Range(4, 5), "消耗\n施加减甲：额外+3\n消耗少阳：额外层数", WuXing.Jin,
@@ -741,7 +741,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, waiGong, recursive) =>
                 {
                     waiGong.Consumed = true;
-                    await caster.AttackProcedure(10, crit: true, lifeSteal: true);
+                    await caster.AttackProcedure(10, crit: true, lifeSteal: true, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("观棋烂柯", new CLLibrary.Range(4, 5), "施加1跳回合", WuXing.Shui, manaCost: 1,
@@ -780,7 +780,7 @@ public class SkillCategory : Category<SkillEntry>
                     if (waiGong.RunUsedTimes >= 3)
                         return;
 
-                    await caster.AttackProcedure(10, 3 - waiGong.RunUsedTimes, pierce: true);
+                    await caster.AttackProcedure(10, times: 3 - waiGong.RunUsedTimes, pierce: true, wuXing: waiGong.Entry.WuXing);
                     await caster.BuffSelfProcedure("闪避", 3 - waiGong.RunUsedTimes);
                 }),
 
@@ -794,7 +794,7 @@ public class SkillCategory : Category<SkillEntry>
             new("天女散花", new CLLibrary.Range(4, 5), "1攻 本局对战中，每获得过1闪避，多攻击1次", WuXing.Huo, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(1, caster.GainedEvadeRecord + 1);
+                    await caster.AttackProcedure(1, times: caster.GainedEvadeRecord + 1, wuXing: waiGong.Entry.WuXing);
                 }),
 
             new("凤凰涅槃", new CLLibrary.Range(4, 5), "消耗\n累计获得20灼烧激活\n每轮：生命回满", WuXing.Huo,
@@ -835,7 +835,7 @@ public class SkillCategory : Category<SkillEntry>
             new("凶水：三步", 5, "10攻 击伤：对方剩余生命每有2点，施加1减甲", WuXing.Jin, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    await caster.AttackProcedure(10,
+                    await caster.AttackProcedure(10, wuXing: waiGong.Entry.WuXing,
                         damaged: async d =>
                         {
                             int value = d.Tgt.Hp / 2;

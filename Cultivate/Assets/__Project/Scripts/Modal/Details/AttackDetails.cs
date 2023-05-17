@@ -10,13 +10,14 @@ public class AttackDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
-
     private int _value;
     public int Value
     {
         get => _value;
         set => _value = Mathf.Max(0, value);
     }
+
+    public WuXing? WuXing;
 
     public bool LifeSteal;
     public bool Pierce;
@@ -30,10 +31,11 @@ public class AttackDetails
     public bool Cancel;
 
     public AttackDetails(StageEntity src, StageEntity tgt, int value,
-        bool lifeSteal,
-        bool pierce,
-        bool crit,
-        bool evade,
+        WuXing? wuxing,
+        bool lifeSteal = false,
+        bool pierce = false,
+        bool crit = false,
+        bool evade = false,
         bool recursive = true,
         Func<DamageDetails, Task> damaged = null,
         Func<DamageDetails, Task> undamaged = null)
@@ -41,6 +43,7 @@ public class AttackDetails
         Src = src;
         Tgt = tgt;
         Value = value;
+        WuXing = wuxing;
         LifeSteal = lifeSteal;
         Pierce = pierce;
         Crit = crit;
@@ -52,5 +55,5 @@ public class AttackDetails
         Cancel = false;
     }
 
-    public AttackDetails Clone() => new AttackDetails(Src, Tgt, _value, LifeSteal, Pierce, Crit, Evade, Recursive, Damaged, Undamaged);
+    public AttackDetails Clone() => new(Src, Tgt, _value, WuXing, LifeSteal, Pierce, Crit, Evade, Recursive, Damaged, Undamaged);
 }

@@ -29,18 +29,17 @@ public class StageAnimationDelegate : AnimationDelegate
         }
         else if (descriptor is VfxTweenDescriptor vfx)
         {
-            GameObject vfxGameObject = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, vfx.Slot.transform.position,
-                Quaternion.identity, StageManager.Instance.VFXPool);
-            vfxGameObject.GetComponent<FlowTextVFX>().Text.text = vfx.Text;
-            Sequence vfxTween = DOTween.Sequence().AppendInterval(0.5f);
-            await PlayTween(vfxTween);
+            SpawnFlowText(vfx);
+
+            Sequence waitTween = DOTween.Sequence().AppendInterval(0.5f);
+            await PlayTween(waitTween);
         }
         else if (descriptor is AttackTweenDescriptor attack)
         {
             AttackDetails d = attack.AttackDetails;
             Sequence attackTween = DOTween.Sequence()
-                .Append(d.Src.Slot().GetAttackTween())
-                .Join(d.Tgt.Slot().GetAttackedTween())
+                .Append(GetAttackTween(d))
+                .Join(GetAttackedTween(d))
                 .AppendInterval(0.5f);
             await PlayTween(attackTween);
         }
@@ -83,5 +82,62 @@ public class StageAnimationDelegate : AnimationDelegate
     {
         // _tween.Complete();
         // Anim.Skip();
+    }
+
+    private float IntensityFromValue(int value)
+    {
+        return Mathf.InverseLerp(0, 100, value);
+    }
+
+    private Tween GetAttackTween(AttackDetails d)
+    {
+        Transform slotTransform = d.Src.Slot().transform;
+        Transform entityTransform = d.Src.Slot().EntityTransform;
+        int orient = -(d.Src.Index * 2 - 1);
+
+        return DOTween.Sequence().SetAutoKill()
+            .Append(DOTween.Sequence()
+                .AppendInterval(0.1f)
+                .AppendCallback(() => SpawnPiercingVFX(d)))
+            .Join(entityTransform.DOMove(slotTransform.position + Vector3.right * orient, 0.2f).SetEase(Ease.InBack))
+            .AppendCallback(StageCanvas.Instance.Refresh)
+            .Append(entityTransform.DOMove(slotTransform.position, 0.3f).SetEase(Ease.OutQuad));
+    }
+
+    private Tween GetAttackedTween(AttackDetails d)
+    {
+        Transform entityTransform = d.Tgt.Slot().EntityTransform;
+        int orient = -(d.Src.Index * 2 - 1);
+
+        return DOTween.Sequence().SetDelay(0.2f).SetAutoKill()
+            .AppendCallback(() => SpawnHitVFX(d))
+            .Append(entityTransform.DOShakeRotation(0.6f, 10 * orient * Vector3.back, 10, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.InQuad));
+    }
+
+    private void SpawnFlowText(VfxTweenDescriptor vfx)
+    {
+        GameObject flowTextGameObject = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, vfx.Slot.transform.position,
+            Quaternion.identity, StageManager.Instance.VFXPool);
+        flowTextGameObject.GetComponent<FlowTextVFX>().Text.text = vfx.Text;
+    }
+
+    private void SpawnPiercingVFX(AttackDetails d)
+    {
+        int orient = -(d.Src.Index * 2 - 1);
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.PiercingVFXFromWuXing[d.WuXing ?? WuXing.Jin], d.Src.Slot().transform.position + 2 * orient * Vector3.right,
+            Quaternion.Euler(0, d.Src.Index * 180, 0), StageManager.Instance.VFXPool);
+        VFX vfx = gao.GetComponent<VFX>();
+        vfx.SetIntensity(IntensityFromValue(d.Value));
+        vfx.Play();
+    }
+
+    private void SpawnHitVFX(AttackDetails d)
+    {
+        int orient = -(d.Src.Index * 2 - 1);
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.HitVFXFromWuXing[d.WuXing ?? WuXing.Jin], d.Tgt.Slot().transform.position + -0.5f * orient * Vector3.right,
+            Quaternion.identity, StageManager.Instance.VFXPool);
+        VFX vfx = gao.GetComponent<VFX>();
+        vfx.SetIntensity(IntensityFromValue(d.Value));
+        vfx.Play();
     }
 }

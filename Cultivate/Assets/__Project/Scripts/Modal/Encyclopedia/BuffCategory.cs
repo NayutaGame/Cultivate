@@ -52,7 +52,7 @@ public class BuffCategory : Category<BuffEntry>
                 {
                     bool both = buff.Owner.GetStackOfBuff("森罗万象") > 0;
                     if (d.SlotIndex % 2 == 0 || both)
-                        await buff.Owner.AttackProcedure(buff.Stack);
+                        await buff.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Jin);
                     if (d.SlotIndex % 2 == 1 || both)
                         await buff.Owner.ArmorGainSelfProcedure(buff.Stack);
                 },
@@ -148,12 +148,12 @@ public class BuffCategory : Category<BuffEntry>
                     if (!d.Recursive)
                         return;
 
-                    await buff.Owner.AttackProcedure(buff.Stack, recursive: false);
+                    await buff.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Mu, recursive: false);
                     buff.Owner.RemoveBuff(buff);
                 }),
 
             new ("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,
-                startTurn: async (buff, d) => await d.Owner.AttackProcedure(buff.Stack)),
+                startTurn: async (buff, d) => await d.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Huo)),
             new ("追击", "持续[层数]次，下次攻击时，次数+1", BuffStackRule.Add, true, true),
             new ("净天地", "使用非攻击卡不消耗灵气，使用之后消耗", BuffStackRule.Add, true, false,
                 startStep: async (buff, d) =>
@@ -228,7 +228,7 @@ public class BuffCategory : Category<BuffEntry>
                     if (!d.Recursive || d.Src == buff.Owner)
                         return;
 
-                    await buff.Owner.AttackProcedure(d.Value, 1, d.LifeSteal, d.Pierce, d.Crit, false, d.Damaged);
+                    await buff.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Pierce, d.Crit, false, d.Damaged);
                     d.Cancel = true;
                 }),
         };
