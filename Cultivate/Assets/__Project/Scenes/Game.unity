@@ -808,17 +808,17 @@ MonoBehaviour:
   VFXPool: {fileID: 1602027813}
   FlowTextVFXPrefab: {fileID: 7866473307321664959, guid: 58c3f5dc9fe79084fa90a4d7954a53f5, type: 3}
   PiercingVFXFromWuXing:
-  - {fileID: 7643533338891860691, guid: d141decd91a58304caaf74b5aa78a176, type: 3}
-  - {fileID: 1495219333915761031, guid: d06e0ce9bcfc5364a971a1297dca0a04, type: 3}
-  - {fileID: 6584312661937688420, guid: de87e82b09c51c0439b9fb83a428b35c, type: 3}
-  - {fileID: 219907389202149757, guid: f0bc8f3bace2e0445ab85406661fc1d7, type: 3}
-  - {fileID: 2706901117734426872, guid: ff004ff1057207b45a83a98359dbcb79, type: 3}
+  - {fileID: 8367835152781022940, guid: d141decd91a58304caaf74b5aa78a176, type: 3}
+  - {fileID: 4617423118041907090, guid: d06e0ce9bcfc5364a971a1297dca0a04, type: 3}
+  - {fileID: 500041351919360500, guid: de87e82b09c51c0439b9fb83a428b35c, type: 3}
+  - {fileID: 4522381585165356457, guid: f0bc8f3bace2e0445ab85406661fc1d7, type: 3}
+  - {fileID: 6793721860130305078, guid: ff004ff1057207b45a83a98359dbcb79, type: 3}
   HitVFXFromWuXing:
-  - {fileID: 6003983207546953199, guid: fb12aaab7134acf4abc719a25fb97fb8, type: 3}
-  - {fileID: 465101247430911692, guid: 310498b78ae0f4d40a19426595ee8d53, type: 3}
-  - {fileID: 1323195144767341398, guid: 55ffaba082bcc0b459cc44addd595f7a, type: 3}
-  - {fileID: 3293656504304605648, guid: 3d5471b892d9b0e42bcf68e4ece9527e, type: 3}
-  - {fileID: 8447203773025457173, guid: 563a87fdfd4650943b445a7ddad49d86, type: 3}
+  - {fileID: 3582158355154858211, guid: fb12aaab7134acf4abc719a25fb97fb8, type: 3}
+  - {fileID: 7481477878131641738, guid: 310498b78ae0f4d40a19426595ee8d53, type: 3}
+  - {fileID: 521368000594935582, guid: 55ffaba082bcc0b459cc44addd595f7a, type: 3}
+  - {fileID: 9005026191812248120, guid: 3d5471b892d9b0e42bcf68e4ece9527e, type: 3}
+  - {fileID: 7112929426395492996, guid: 563a87fdfd4650943b445a7ddad49d86, type: 3}
   _slots:
   - {fileID: 127727448}
   - {fileID: 1421936689}

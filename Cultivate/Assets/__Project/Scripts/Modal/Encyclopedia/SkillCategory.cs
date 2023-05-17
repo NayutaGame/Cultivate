@@ -207,7 +207,7 @@ public class SkillCategory : Category<SkillEntry>
             new("金01", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"{5 + dj}攻\n敌方有减甲：多{3 + dj}攻"), WuXing.Jin, skillTypeCollection: SkillTypeCollection.Attack,
                 execute: async (caster, waiGong, recursive) =>
                 {
-                    int add = caster.Opponent().Armor >= 0 ? (3 + waiGong.Dj) : 0;
+                    int add = caster.Opponent().Armor < 0 ? (3 + waiGong.Dj) : 0;
                     await caster.AttackProcedure(5 + waiGong.Dj + add, wuXing: waiGong.Entry.WuXing);
                 }),
 
