@@ -120,7 +120,15 @@ public class RunEntity : GDictionary, IEntityModel
 
     public void FromJson(string json)
     {
-        FromEntity(JsonUtility.FromJson<RunEntity>(json.Replace('\'', '\"')));
+        try
+        {
+            FromEntity(JsonUtility.FromJson<RunEntity>(json.Replace('\'', '\"')));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public string ToJson()

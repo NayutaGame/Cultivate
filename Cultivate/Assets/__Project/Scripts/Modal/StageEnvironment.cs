@@ -176,6 +176,10 @@ public class StageEnvironment : GDictionary
         tgt.Hp += actualHealed;
         tgt.HealedRecord += actualHealed;
 
+        if (_report.UseTween)
+        {
+            await _report.PlayTween(new HealTweenDescriptor(d));
+        }
         _report.Append($"    生命变成了${tgt.Hp}");
     }
 
@@ -208,7 +212,8 @@ public class StageEnvironment : GDictionary
 
             if (_report.UseTween)
             {
-                await _report.PlayTween(new VfxTweenDescriptor(d.Src.Slot(), $"{d._buffEntry.Name} +{d._stack}"));
+                await _report.PlayTween(new BuffTweenDescriptor(d));
+                await _report.PlayTween(new VfxTweenDescriptor(d.Tgt.Slot(), $"{d._buffEntry.Name} +{d._stack}"));
             }
             _report.Append($"    {d._buffEntry.Name}: {oldStack} -> {same.Stack}");
         }
@@ -219,7 +224,8 @@ public class StageEnvironment : GDictionary
 
             if (_report.UseTween)
             {
-                await _report.PlayTween(new VfxTweenDescriptor(d.Src.Slot(), $"{d._buffEntry.Name} +{d._stack}"));
+                await _report.PlayTween(new BuffTweenDescriptor(d));
+                await _report.PlayTween(new VfxTweenDescriptor(d.Tgt.Slot(), $"{d._buffEntry.Name} +{d._stack}"));
             }
             _report.Append($"    {d._buffEntry.Name}: 0 -> {buff.Stack}");
         }

@@ -14,6 +14,9 @@ public class StageManager : Singleton<StageManager>, GDictionary
     public GameObject FlowTextVFXPrefab;
     public GameObject[] PiercingVFXFromWuXing;
     public GameObject[] HitVFXFromWuXing;
+    public GameObject BuffVFXPrefab;
+    public GameObject DebuffVFXPrefab;
+    public GameObject HealVFXPrefab;
 
     public EntitySlot[] _slots;
 

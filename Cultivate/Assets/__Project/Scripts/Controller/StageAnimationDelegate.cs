@@ -43,6 +43,22 @@ public class StageAnimationDelegate : AnimationDelegate
                 .AppendInterval(0.5f);
             await PlayTween(attackTween);
         }
+        else if (descriptor is HealTweenDescriptor heal)
+        {
+            HealDetails d = heal.HealDetails;
+            Sequence healTween = DOTween.Sequence()
+                .Append(GetHealedTween(d))
+                .AppendInterval(0.5f);
+            await PlayTween(healTween);
+        }
+        else if (descriptor is BuffTweenDescriptor buff)
+        {
+            BuffDetails d = buff.BuffDetails;
+            Sequence buffTween = DOTween.Sequence()
+                .Append(GetBuffedTween(d))
+                .AppendInterval(0.5f);
+            await PlayTween(buffTween);
+        }
 
         StageCanvas.Instance.Refresh();
 
@@ -114,6 +130,18 @@ public class StageAnimationDelegate : AnimationDelegate
             .Append(entityTransform.DOShakeRotation(0.6f, 10 * orient * Vector3.back, 10, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.InQuad));
     }
 
+    private Tween GetHealedTween(HealDetails d)
+    {
+        return DOTween.Sequence().SetAutoKill()
+            .AppendCallback(() => SpawnHealVFX(d));
+    }
+
+    private Tween GetBuffedTween(BuffDetails d)
+    {
+        return DOTween.Sequence().SetAutoKill()
+            .AppendCallback(() => SpawnBuffVFX(d));
+    }
+
     private void SpawnFlowText(VfxTweenDescriptor vfx)
     {
         GameObject flowTextGameObject = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, vfx.Slot.transform.position,
@@ -138,6 +166,26 @@ public class StageAnimationDelegate : AnimationDelegate
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.SetIntensity(IntensityFromValue(d.Value));
+        vfx.Play();
+    }
+
+    private void SpawnHealVFX(HealDetails d)
+    {
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.HealVFXPrefab, d.Tgt.Slot().transform.position,
+            Quaternion.identity, StageManager.Instance.VFXPool);
+        VFX vfx = gao.GetComponent<VFX>();
+        vfx.SetIntensity(IntensityFromValue(d.Value));
+        vfx.Play();
+    }
+
+    private void SpawnBuffVFX(BuffDetails d)
+    {
+        GameObject prefab = d._buffEntry.Friendly
+            ? StageManager.Instance.BuffVFXPrefab
+            : StageManager.Instance.DebuffVFXPrefab;
+        GameObject gao = GameObject.Instantiate(prefab, d.Tgt.Slot().transform.position,
+            Quaternion.identity, StageManager.Instance.VFXPool);
+        VFX vfx = gao.GetComponent<VFX>();
         vfx.Play();
     }
 }
