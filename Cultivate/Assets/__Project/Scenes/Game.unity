@@ -804,6 +804,13 @@ MonoBehaviour:
   - {r: 0.5708644, g: 0.5031446, b: 0.754717, a: 1}
   - {r: 0.8753333, g: 0.884, b: 0.50699997, a: 1}
   - {r: 0.864, g: 0.48470402, b: 0.48470402, a: 1}
+  JingJieSprites:
+  - {fileID: -8002059469597653019, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
+  - {fileID: 2343180519818504324, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
+  - {fileID: 8717211752615702092, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
+  - {fileID: 6993151123101782196, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
+  - {fileID: 2013189819111367260, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
+  - {fileID: 8498834934565666074, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
   CardFaces:
   - {fileID: 21300000, guid: a4d008a208ad7f64aad93cb0eded6dbc, type: 3}
   - {fileID: 21300000, guid: d5ceb22dfdcdc694983ddb40b520c9dd, type: 3}

@@ -52,6 +52,9 @@ public class RunSkill : ISkillModel, IInteractable, ISerializationCallbackReceiv
     public Sprite GetCardFace()
         => _entry.CardFace;
 
+    public Sprite GetJingJieSprite()
+        => CanvasManager.Instance.JingJieSprites[GetJingJie()];
+
     public string GetDescription()
         => _entry.Evaluate(JingJie, JingJie - _entry.JingJieRange.Start);
 

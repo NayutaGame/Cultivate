@@ -13,5 +13,6 @@ public interface ISkillModel
     SkillTypeCollection GetSkillTypeCollection();
     Color GetColor();
     Sprite GetCardFace();
+    Sprite GetJingJieSprite();
     string GetAnnotationText();
 }

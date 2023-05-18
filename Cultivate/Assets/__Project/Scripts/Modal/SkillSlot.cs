@@ -69,6 +69,9 @@ public class SkillSlot : ISkillModel, IInteractable
     public Sprite GetCardFace()
         => _skill?.Entry.CardFace;
 
+    public Sprite GetJingJieSprite()
+        => CanvasManager.Instance.JingJieSprites[_skill?.GetJingJie() ?? JingJie.LianQi];
+
     public string GetDescription()
         => _skill?.GetDescription();
 

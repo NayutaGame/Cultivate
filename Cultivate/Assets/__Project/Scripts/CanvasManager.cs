@@ -11,6 +11,7 @@ public class CanvasManager : Singleton<CanvasManager>
     // public RectTransform GhostHolder;
 
     public Color[] JingJieColors;
+    public Sprite[] JingJieSprites;
 
     public Sprite[] CardFaces;
 }

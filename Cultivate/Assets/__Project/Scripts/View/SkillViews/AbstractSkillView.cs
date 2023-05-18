@@ -24,6 +24,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private GameObject[] TypeViews;
     [SerializeField] private TMP_Text[] TypeTexts;
+    [SerializeField] private Image JingJieImage;
     [SerializeField] private TMP_Text AnnotationText;
 
     #region Accessors
@@ -97,6 +98,12 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
         // _image.sprite = cardFace;
     }
 
+    public virtual void SetJingJieSprite(Sprite jingJieSprite)
+    {
+        if (JingJieImage != null)
+            JingJieImage.sprite = jingJieSprite;
+    }
+
     public virtual void SetAnnotationText(string annotationText)
     {
         if (AnnotationText == null)
@@ -139,6 +146,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
         SetAnnotationText(skill.GetAnnotationText());
         SetColor(skill.GetColor());
         SetCardFace(skill.GetCardFace());
+        SetJingJieSprite(skill.GetJingJieSprite());
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)

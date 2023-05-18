@@ -45,6 +45,9 @@ public class StageNote : ISkillModel
     public Sprite GetCardFace()
         => Skill?.Entry.CardFace;
 
+    public Sprite GetJingJieSprite()
+        => CanvasManager.Instance.JingJieSprites[Skill?.GetJingJie() ?? JingJie.LianQi];
+
     public string GetAnnotationText()
         => Skill?.GetAnnotationText();
 }
