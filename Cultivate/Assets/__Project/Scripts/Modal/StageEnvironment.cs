@@ -84,6 +84,12 @@ public class StageEnvironment : GDictionary
             // 伤害Procedure
             DamageDetails damageDetails = await DamageProcedure(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
 
+            if (_report.UseTween)
+            {
+                await _report.PlayTween(new AttackTweenDescriptor(d));
+            }
+            _report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+
             // 结算吸血
             if (!damageDetails.Cancel)
             {
@@ -100,12 +106,6 @@ public class StageEnvironment : GDictionary
             //     source.Kill(attackDetails);
             //     AnyKill(attackDetails);
             // }
-
-            if (_report.UseTween)
-            {
-                await _report.PlayTween(new AttackTweenDescriptor(d));
-            }
-            _report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
         }
     }
 
@@ -213,7 +213,6 @@ public class StageEnvironment : GDictionary
             if (_report.UseTween)
             {
                 await _report.PlayTween(new BuffTweenDescriptor(d));
-                await _report.PlayTween(new VfxTweenDescriptor(d.Tgt.Slot(), $"{d._buffEntry.Name} +{d._stack}"));
             }
             _report.Append($"    {d._buffEntry.Name}: {oldStack} -> {same.Stack}");
         }
@@ -225,7 +224,6 @@ public class StageEnvironment : GDictionary
             if (_report.UseTween)
             {
                 await _report.PlayTween(new BuffTweenDescriptor(d));
-                await _report.PlayTween(new VfxTweenDescriptor(d.Tgt.Slot(), $"{d._buffEntry.Name} +{d._stack}"));
             }
             _report.Append($"    {d._buffEntry.Name}: 0 -> {buff.Stack}");
         }

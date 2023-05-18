@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class StageAnimationDelegate : AnimationDelegate
@@ -27,13 +28,6 @@ public class StageAnimationDelegate : AnimationDelegate
                 await PlayTween(shiftTween);
             }
         }
-        else if (descriptor is VfxTweenDescriptor vfx)
-        {
-            SpawnFlowText(vfx);
-
-            Sequence waitTween = DOTween.Sequence().AppendInterval(0.5f);
-            await PlayTween(waitTween);
-        }
         else if (descriptor is AttackTweenDescriptor attack)
         {
             AttackDetails d = attack.AttackDetails;
@@ -56,6 +50,7 @@ public class StageAnimationDelegate : AnimationDelegate
             BuffDetails d = buff.BuffDetails;
             Sequence buffTween = DOTween.Sequence()
                 .Append(GetBuffedTween(d))
+                .AppendCallback(() => SpawnBuffedText(d))
                 .AppendInterval(0.5f);
             await PlayTween(buffTween);
         }
@@ -127,6 +122,7 @@ public class StageAnimationDelegate : AnimationDelegate
 
         return DOTween.Sequence().SetDelay(0.2f).SetAutoKill()
             .AppendCallback(() => SpawnHitVFX(d))
+            .AppendCallback(() => SpawnAttackedText(d))
             .Append(entityTransform.DOShakeRotation(0.6f, 10 * orient * Vector3.back, 10, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.InQuad));
     }
 
@@ -142,11 +138,26 @@ public class StageAnimationDelegate : AnimationDelegate
             .AppendCallback(() => SpawnBuffVFX(d));
     }
 
-    private void SpawnFlowText(VfxTweenDescriptor vfx)
+    private void SpawnBuffedText(BuffDetails d)
     {
-        GameObject flowTextGameObject = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, vfx.Slot.transform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, d.Tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
-        flowTextGameObject.GetComponent<FlowTextVFX>().Text.text = vfx.Text;
+        gao.GetComponent<FlowTextVFX>().Text.text = $"{d._buffEntry.Name} +{d._stack}";
+    }
+
+    private void SpawnAttackedText(AttackDetails d)
+    {
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, d.Tgt.Slot().transform.position,
+            Quaternion.identity, StageManager.Instance.VFXPool);
+
+        TMP_Text text = gao.GetComponent<FlowTextVFX>().Text;
+        text.text = $"{d.Value}";
+        text.color = Color.red;
+        gao.transform.localScale = Vector3.zero;
+        DOTween.Sequence()
+            .Append(gao.transform.DOScale(3, 0.3f).SetEase(Ease.OutCubic))
+            .Append(gao.transform.DOScale(1, 0.7f).SetEase(Ease.InCubic))
+            .SetAutoKill().Restart();
     }
 
     private void SpawnPiercingVFX(AttackDetails d)
