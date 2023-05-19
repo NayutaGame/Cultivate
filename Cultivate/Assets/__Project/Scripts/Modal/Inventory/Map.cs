@@ -96,7 +96,7 @@ public class Map : GDictionary
             if (AppManager.Instance != null)
                 if (AppManager.Instance.StageManager != null)
                 {
-                    RunManager.Instance.Battle.Hero.SetHealth(RunEntity.BaseHP[_jingJie]);
+                    RunManager.Instance.Battle.Hero.SetBaseHealth(RunEntity.BaseHP[_jingJie]);
                     RunManager.Instance.Battle.Hero.SetJingJie(_jingJie);
                 }
             RefreshPools();

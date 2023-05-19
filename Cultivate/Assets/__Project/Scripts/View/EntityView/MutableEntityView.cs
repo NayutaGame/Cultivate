@@ -66,7 +66,7 @@ public class MutableEntityView : MonoBehaviour, IIndexPath
 
         SetEntry(entity.GetEntry());
         SetJingJie(entity.GetJingJie());
-        SetHealth(entity.GetHealth());
+        SetHealth(entity.GetBaseHealth());
         EquippedInventoryView.Refresh();
     }
 
@@ -98,7 +98,7 @@ public class MutableEntityView : MonoBehaviour, IIndexPath
         health = Mathf.Clamp(health, 1, 9999);
 
         IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
-        entity.SetHealth(health);
+        entity.SetBaseHealth(health);
         RunCanvas.Instance.Refresh();
     }
 

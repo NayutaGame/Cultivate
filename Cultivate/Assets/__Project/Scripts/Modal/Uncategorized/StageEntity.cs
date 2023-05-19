@@ -358,8 +358,8 @@ public class StageEntity : GDictionary
         DamagedEvent += DefaultDamaged;
         LoseHpEvent += DefaultLoseHp;
 
-        MaxHp = _runEntity.GetHealth();
-        Hp = _runEntity.GetHealth();
+        MaxHp = _runEntity.GetFinalHealth();
+        Hp = _runEntity.GetFinalHealth();
         Armor = 0;
 
         _neiGongList = new StageNeiGong[4];

@@ -7,17 +7,23 @@ public class ResourceRewardDescriptor : RewardDescriptor
 {
     public int _xiuWei;
     public int _chanNeng;
+    public int _mingYuan;
+    public int _health;
 
-    public ResourceRewardDescriptor(int xiuWei = 0, int chanNeng = 0)
+    public ResourceRewardDescriptor(int xiuWei = 0, int chanNeng = 0, int mingYuan = 0, int health = 0)
     {
         _xiuWei = xiuWei;
         _chanNeng = chanNeng;
+        _mingYuan = mingYuan;
+        _health = health;
     }
 
     public override void Claim()
     {
         RunManager.Instance.AddXiuWei(_xiuWei);
         RunManager.Instance.AddChanNeng(_chanNeng);
+        RunManager.Instance.AddMingYuan(_mingYuan);
+        RunManager.Instance.AddHealth(_health);
     }
 
     public override string GetDescription()
@@ -31,6 +37,16 @@ public class ResourceRewardDescriptor : RewardDescriptor
         if (_chanNeng != 0)
         {
             sb.Append($"{_chanNeng}产能");
+        }
+
+        if (_mingYuan != 0)
+        {
+            sb.Append($"{_mingYuan}命元");
+        }
+
+        if (_health != 0)
+        {
+            sb.Append($"{_health}生命上限");
         }
 
         return sb.ToString();

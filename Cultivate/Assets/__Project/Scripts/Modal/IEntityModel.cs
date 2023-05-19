@@ -8,8 +8,9 @@ public interface IEntityModel
     void SetEntry(EntityEntry entry);
     JingJie GetJingJie();
     void SetJingJie(JingJie jingJie);
-    int GetHealth();
-    void SetHealth(int health);
+    int GetBaseHealth();
+    void SetBaseHealth(int health);
+    int GetFinalHealth();
     string ToJson();
     void FromJson(string json);
 }

@@ -34,7 +34,7 @@ public class EntityView : MonoBehaviour, IIndexPath
 
         NameText.text = entity.GetEntry()?.Name ?? "未命名";
         JingJieText.text = entity.GetJingJie().ToString();
-        HPText.text = entity.GetHealth().ToString();
+        HPText.text = entity.GetFinalHealth().ToString();
         DescriptionText.text = entity.GetEntry()?.Description ?? "这家伙很懒，什么都没有写";
         EquippedInventoryView.Refresh();
     }

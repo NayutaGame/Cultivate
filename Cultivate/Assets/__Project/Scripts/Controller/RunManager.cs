@@ -38,33 +38,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public SimulateRunEnvironment Simulate { get; private set; }
     public Arena Arena;
 
-    private int _mingYuan;
-    public int MingYuan
-    {
-        get => _mingYuan;
-        set => _mingYuan = value;
-    }
-
-    // 灵根
-    // 神识
-    // 遁速
-    // 心境
-
-    public Modifier Modifier;
-
-    private int _turn;
-    public int Turn => _turn;
-
-    private float _xiuWei;
-    public float XiuWei => _xiuWei;
-
-    private float _chanNeng;
-    public float ChanNeng => _chanNeng;
-
-    public float TurnXiuWei => Modifier.Value.ForceGet("turnXiuWeiAdd") * (1 + Modifier.Value.ForceGet("turnXiuWeiMul"));
-
-    public float TurnChanNeng => Modifier.Value.ForceGet("turnChanNengAdd") * (1 + Modifier.Value.ForceGet("turnChanNengMul"));
-
     public CombatDetails CombatDetails;
     public StageReport Report;
 
@@ -141,6 +114,30 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     public RunNode TryGetCurrentNode() => Map.TryGetCurrentNode();
 
+    #region Resource
+
+    public Modifier Modifier;
+
+    private int _mingYuan;
+    public int MingYuan
+    {
+        get => _mingYuan;
+        set => _mingYuan = value;
+    }
+
+    private int _turn;
+    public int Turn => _turn;
+
+    private float _xiuWei;
+    public float XiuWei => _xiuWei;
+
+    private float _chanNeng;
+    public float ChanNeng => _chanNeng;
+
+    public float TurnXiuWei => Modifier.Value.ForceGet("turnXiuWeiAdd") * (1 + Modifier.Value.ForceGet("turnXiuWeiMul"));
+
+    public float TurnChanNeng => Modifier.Value.ForceGet("turnChanNengAdd") * (1 + Modifier.Value.ForceGet("turnChanNengMul"));
+
     public void AddTurn()
     {
         _turn += 1;
@@ -162,6 +159,13 @@ public class RunManager : Singleton<RunManager>, GDictionary
     {
         _mingYuan += mingYuan;
     }
+
+    public void AddHealth(int health)
+    {
+        Battle.Hero.SetDHealth(Battle.Hero.GetDHealth() + health);
+    }
+
+    #endregion
 
     // public void RefreshChip()
     // {

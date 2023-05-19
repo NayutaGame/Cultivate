@@ -18,8 +18,6 @@ public class TechCategory : Category<TechEntry>
             new("土", "土科技", Vector2Int.one * 4, 10),
             new ("八卦", "", new(0, 5), 10,
                 rewards: new RewardDescriptor[] {
-                    new ResourceRewardDescriptor(10),
-                    new StatusRewardDescriptor(10),
                     new DrawSkillRewardDescriptor("一个练气外功", jingJie: JingJie.LianQi),
                 }),
             new ("四象", "", new(1, 5), 10, new string[]{"八卦"}),

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using CLLibrary;
@@ -17,8 +18,14 @@ public class RunEntity : GDictionary, IEntityModel
     public static readonly int[] BaseHP = new int[] { 40, 80, 140, 220, 340, 340 };
 
     [SerializeField] private int _health;
-    public int GetHealth() => _health;
-    public void SetHealth(int health) => _health = health;
+    public int GetBaseHealth() => _health;
+    public void SetBaseHealth(int health) => _health = health;
+
+    [OptionalField(VersionAdded = 2)] private int _dHealth;
+    public int GetDHealth() => _dHealth;
+    public void SetDHealth(int dHealth) => _dHealth = dHealth;
+
+    public int GetFinalHealth() => _health + _dHealth;
 
     [SerializeField] private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
@@ -79,7 +86,7 @@ public class RunEntity : GDictionary, IEntityModel
         }
 
         SetJingJie(JingJie.LianQi);
-        SetHealth(BaseHP[JingJie.LianQi]);
+        SetBaseHealth(BaseHP[JingJie.LianQi]);
 
         if (_entry != null && _createEntityDetails != null)
             _entry.Create(this, _createEntityDetails);
@@ -144,7 +151,7 @@ public class RunEntity : GDictionary, IEntityModel
     private void FromEntity(RunEntity entity)
     {
         SetJingJie(entity.GetJingJie());
-        SetHealth(entity.GetHealth());
+        SetBaseHealth(entity.GetBaseHealth());
         for (int i = 0; i < _slots.Length; i++)
             _slots[i].Skill = entity._slots[i].Skill;
     }
