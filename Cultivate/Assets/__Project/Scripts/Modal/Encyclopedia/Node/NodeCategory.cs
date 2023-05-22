@@ -17,14 +17,103 @@ public class NodeCategory : Category<NodeEntry>
                 create: runNode =>
                 {
                     DiscoverSkillPanelDescriptor A = new();
+                    runNode.ChangePanel(A);
+                }),
 
-                    A._receiveSignal = signal =>
-                    {
-                        A.DefaultReceiveSignal(signal);
-                        RunManager.Instance.Map.TryFinishNode();
-                    };
+            new AdventureNodeEntry("温泉", "温泉",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("遇到温泉", "泡", "下潜", "离开");
+                    DialogPanelDescriptor B = new("命元 + 2");
+                    B._reward = new ResourceRewardDescriptor(mingYuan: 2);
+                    DiscoverSkillPanelDescriptor C = new("随机水属当前境界卡牌1张", wuXing: WuXing.Shui);
+                    DiscoverSkillPanelDescriptor D = new("随机火属当前境界卡牌1张", wuXing: WuXing.Huo);
+
+                    A[0]._select = option => runNode.ChangePanel(B);
+                    A[1]._select = option => runNode.ChangePanel(C);
+                    A[2]._select = option => runNode.ChangePanel(D);
 
                     runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("集市地摊", "集市地摊",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("在集市地摊上感应到模糊的灵气",
+                        new DialogOption("5金币买下", new CostDetails(xiuWei: 5)),
+                        new DialogOption("60金币整摊包了", new CostDetails(xiuWei: 60)),
+                        "在此摆摊赚钱");
+                    DialogPanelDescriptor B1 = new("判定失败");
+                    DialogPanelDescriptor B2 = new("判定成功");
+                    DiscoverSkillPanelDescriptor C = new("随机获得下品法宝", pred: s => s.SkillTypeCollection.Contains(SkillType.LingQi));
+                    DialogPanelDescriptor D = new("获得35金币");
+                    D._reward = new ResourceRewardDescriptor(xiuWei: 35);
+
+                    A[0]._select = option => runNode.ChangePanel(RandomManager.value < 0.5f ? B1 : B2);
+                    A[1]._select = option => runNode.ChangePanel(C);
+                    A[2]._select = option => runNode.ChangePanel(D);
+
+                    B2[0]._select = option => runNode.ChangePanel(C);
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("镇上饭馆", "镇上饭馆",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A1 = new("你路过镇上，前往饭馆打工挣钱，遇到后厨不同师傅之间闹矛盾",
+                        "专心打工赚钱",
+                        "帮烧火师傅说话",
+                        "帮砍柴师傅说话",
+                        "下页");
+                    DialogPanelDescriptor A2 = new ("你路过镇上，前往饭馆打工挣钱，遇到后厨不同师傅之间闹矛盾",
+                        "上页",
+                        "帮挑水师傅说话",
+                        "帮扫地师傅说话",
+                        "帮切菜师傅说话");
+
+                    DialogPanelDescriptor jinBi = new("获得50金币");
+                    jinBi._reward = new ResourceRewardDescriptor(xiuWei: 50);
+
+                    DiscoverSkillPanelDescriptor jin = new("获得金属卡牌1张", wuXing: WuXing.Jin);
+                    DiscoverSkillPanelDescriptor shui = new("获得水属卡牌1张", wuXing: WuXing.Shui);
+                    DiscoverSkillPanelDescriptor mu = new("获得木属卡牌1张", wuXing: WuXing.Mu);
+                    DiscoverSkillPanelDescriptor huo = new("获得火属卡牌1张", wuXing: WuXing.Huo);
+                    DiscoverSkillPanelDescriptor tu = new("获得土属卡牌1张", wuXing: WuXing.Tu);
+
+                    A1[0]._select = option => runNode.ChangePanel(jinBi);
+                    A1[1]._select = option => runNode.ChangePanel(huo);
+                    A1[2]._select = option => runNode.ChangePanel(mu);
+                    A1[3]._select = option => runNode.ChangePanel(A2);
+                    A2[0]._select = option => runNode.ChangePanel(A1);
+                    A2[1]._select = option => runNode.ChangePanel(shui);
+                    A2[2]._select = option => runNode.ChangePanel(tu);
+                    A2[3]._select = option => runNode.ChangePanel(jin);
+
+                    runNode.ChangePanel(A1);
+                }),
+
+            new AdventureNodeEntry("夜中山间泉", "夜中山间泉",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("夜晚你在山上准备灌些泉水，水流在夜间乌黑发亮，捧起发现这水本身就呈黑色，恍惚间有奇怪的声音响起，一颗黑皮球从上流滚落下来",
+                        "捡起黑皮球",
+                        "品尝一下黑色泉水",
+                        "赶快逃离这个鬼地方");
+
+                    DialogPanelDescriptor A0 = new("你捡起黑皮球，表面柔软，摸起来像一颗快烂了的水蜜桃，你切开它，红色的汁液流了一地，里面露出了一枚淡黄色的果子",
+                        "用它修炼",
+                        "吸收其中灵气");
+
+                    DialogPanelDescriptor A00 = new("选择一张卡牌境界提升");
+
+                    DialogPanelDescriptor A01 = new("命元 + 2");
+
+                    DialogPanelDescriptor A1 = new("你的身体理解了黑水的本质，获得水属性金丹期卡牌1张");
+
+                    DialogPanelDescriptor A2 = new ("你从梦中醒来，手里握着一个道具");
+
+                    runNode.ChangePanel(A1);
                 }),
 
             // new AdventureNodeEntry("狂吾师叔事件", "",

@@ -38,7 +38,8 @@ public class DialogPanel : Panel
             if(!active)
                 continue;
 
-            Texts[i].text = d.GetOption(i);
+            Buttons[i].interactable = d.GetOption(i).CanSelect();
+            Texts[i].text = d.GetOption(i).Text;
         }
     }
 

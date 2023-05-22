@@ -13,7 +13,11 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     public int GetSkillCount() => _skills.Count;
     public RunSkill GetSkill(int i) => _skills[i];
 
-    public DiscoverSkillPanelDescriptor(string detailedText = null)
+    private Predicate<SkillEntry> _pred;
+    private WuXing? _wuXing;
+    private JingJie? _jingJie;
+
+    public DiscoverSkillPanelDescriptor(string detailedText = null, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
     {
         _accessors = new()
         {
@@ -29,6 +33,10 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         );
 
         _detailedText = detailedText ?? "请选择一张卡作为奖励";
+
+        _pred = pred;
+        _wuXing = wuXing;
+        _jingJie = jingJie ?? RunManager.Instance.Map.JingJie;
     }
 
     private bool TrySelectOption(IInteractable item)
@@ -43,7 +51,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     public override void DefaultEnter()
     {
         base.DefaultEnter();
-        RunManager.Instance.SkillPool.TryDrawSkills(out _skills, jingJie: RunManager.Instance.Map.JingJie, count: 3);
+        RunManager.Instance.SkillPool.TryDrawSkills(out _skills, pred: _pred, wuXing: _wuXing, jingJie: _jingJie , count: 3);
         _skills.Do(s => s.SetInteractDelegate(GetInteractDelegate()));
     }
 
@@ -54,6 +62,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         {
             _skills.Do(s => s.SetInteractDelegate(null));
             RunManager.Instance.Battle.SkillInventory.AddSkill(_skills[selectedOptionSignal.Selected]);
+            RunManager.Instance.Map.TryFinishNode();
         }
     }
 

@@ -150,6 +150,11 @@ public class RunManager : Singleton<RunManager>, GDictionary
         _xiuWei += xiuWei;
     }
 
+    public void RemoveXiuWei(int value)
+    {
+        _xiuWei -= value;
+    }
+
     public void AddChanNeng(int chanNeng = 10)
     {
         _chanNeng += chanNeng;
