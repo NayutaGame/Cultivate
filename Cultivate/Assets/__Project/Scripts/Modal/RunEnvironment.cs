@@ -93,6 +93,7 @@ public class RunEnvironment : GDictionary
         {
             rhs.JingJie = newJingJie;
             SkillInventory.RemoveSkill(lhs);
+            EnvironmentChanged();
             return true;
         }
         else if (!lWuXing.HasValue || !rWuXing.HasValue)
@@ -123,6 +124,7 @@ public class RunEnvironment : GDictionary
 
         SkillInventory.ReplaceSkill(rhs, newSkill);
         SkillInventory.RemoveSkill(lhs);
+        EnvironmentChanged();
         return true;
     }
 
@@ -194,6 +196,7 @@ public class RunEnvironment : GDictionary
         {
             return skillSlot.TryIncreaseJingJie();
         }
+        EnvironmentChanged();
         return false;
     }
 

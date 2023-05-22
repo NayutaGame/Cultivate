@@ -18,8 +18,8 @@ public class BattlePanel : Panel
     public override void Configure()
     {
         base.Configure();
-        HeroView.Configure(new IndexPath("Battle.Hero"));
         EnemyView.Configure(new IndexPath("Battle.Enemy"));
+        HeroView.Configure(new IndexPath("Battle.Hero"));
         SkillInventoryView.Configure(new IndexPath("Battle.SkillInventory"));
 
         ReportButton.onClick.AddListener(Report);
@@ -28,8 +28,8 @@ public class BattlePanel : Panel
 
     public override void Refresh()
     {
-        HeroView.Refresh();
         EnemyView.Refresh();
+        HeroView.Refresh();
         SkillInventoryView.Refresh();
 
         if (RunManager.Instance.Battle.Report is { } report)
