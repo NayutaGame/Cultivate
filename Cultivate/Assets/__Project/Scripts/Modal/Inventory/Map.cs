@@ -19,6 +19,12 @@ public class Map : GDictionary
         private set => _list[x * HEIGHT + y] = value;
     }
 
+    public bool InRange(int x, int y)
+    {
+        int i = x * HEIGHT + y;
+        return 0 <= i && i < _list.Length;
+    }
+
     public RunNode this[Vector2Int pos]
     {
         get => this[pos.x, pos.y];
@@ -26,8 +32,8 @@ public class Map : GDictionary
     }
 
     private AutoPool<NodeEntry> _b;
+    private AutoPool<NodeEntry> _r;
     private AutoPool<NodeEntry> _a;
-    private AutoPool<NodeEntry> _m;
     private Dictionary<JingJie, AutoPool<NodeEntry>[]> _poolConfiguration;
 
     public bool Selecting { get; private set; }
@@ -70,6 +76,8 @@ public class Map : GDictionary
         bool isEnd = true;
         for (int y = 0; y < HEIGHT; y++)
         {
+            if (!InRange(_heroPosition.x + 1, y))
+                break;
             RunNode runNode = this[_heroPosition.x + 1, y];
             if (runNode == null)
                 continue;
@@ -110,32 +118,22 @@ public class Map : GDictionary
         _list = new RunNode[HEIGHT * WIDTH];
 
         _b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is BattleNodeEntry).ToList());
+        _r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is RewardNodeEntry).ToList());
         _a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is AdventureNodeEntry).ToList());
-        _m = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is MarketNodeEntry).ToList());
 
         _accessors = new()
         {
             { "Nodes", () => _list },
         };
 
-        // _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
-        // {
-        //     { JingJie.LianQi   , new[] { _b, _a, _b, _a, _b, _m } },
-        //     { JingJie.ZhuJi    , new[] { _b, _b, _a, _b, _a, _b, _m } },
-        //     { JingJie.JinDan   , new[] { _b, _b, _a, _b, _b, _a, _b, _m } },
-        //     { JingJie.YuanYing , new[] { _b, _b, _a, _b, _b, _a, _b, _b, _m } },
-        //     { JingJie.HuaShen  , new[] { _b, _b, _a, _b, _b, _a, _b, _b, _m, _b } },
-        //     { JingJie.FanXu    , new[] { _b, _b, _a, _b, _b, _a, _b, _b, _m, _b } },
-        // };
-
         _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
         {
-            { JingJie.LianQi   , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
-            { JingJie.ZhuJi    , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
-            { JingJie.JinDan   , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
-            { JingJie.YuanYing , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
-            { JingJie.HuaShen  , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
-            { JingJie.FanXu    , new[] { _b, _a, _a, _b, _a, _a, _b, _a, _a } },
+            { JingJie.LianQi   , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
+            { JingJie.ZhuJi    , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
+            { JingJie.JinDan   , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
+            { JingJie.YuanYing , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
+            { JingJie.HuaShen  , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _r, _b } },
+            { JingJie.FanXu    , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _r, _b } },
         };
     }
 
@@ -154,13 +152,7 @@ public class Map : GDictionary
                     continue;
                 }
 
-                if (pool == _m && y != 0)
-                {
-                    this[x, y] = null;
-                    continue;
-                }
-
-                if (pool == _b && y != 0)
+                if (pool != _r && y != 0)
                 {
                     this[x, y] = null;
                     continue;
@@ -170,7 +162,7 @@ public class Map : GDictionary
                 NodeEntry nodeEntry = pool.ForcePopItem();
                 if (nodeEntry is BattleNodeEntry battleNodeEntry)
                 {
-                    CreateEntityDetails d = new CreateEntityDetails(_jingJie, x);
+                    CreateEntityDetails d = new CreateEntityDetails(_jingJie, x <= 2, 4 <= x && x <= 6, x == 8);
                     this[x, y] = new BattleRunNode(new Vector2Int(x, y), battleNodeEntry, d);
                 }
                 else

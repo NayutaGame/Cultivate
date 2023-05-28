@@ -9,14 +9,64 @@ public class NodeCategory : Category<NodeEntry>
     {
         List = new()
         {
-            new MarketNodeEntry("Market", "Market", null),
-
             new BattleNodeEntry("敌人", "敌人"),
 
-            new AdventureNodeEntry("发现模板测试", "发现模板测试",
+            new RewardNodeEntry("发现一张金属性的卡", "发现一张金属性的卡",
                 create: runNode =>
                 {
-                    DiscoverSkillPanelDescriptor A = new();
+                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Jin);
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("发现一张水属性的卡", "发现一张水属性的卡",
+                create: runNode =>
+                {
+                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Shui);
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("发现一张木属性的卡", "发现一张木属性的卡",
+                create: runNode =>
+                {
+                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Mu);
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("发现一张火属性的卡", "发现一张火属性的卡",
+                create: runNode =>
+                {
+                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Huo);
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("发现一张土属性的卡", "发现一张土属性的卡",
+                create: runNode =>
+                {
+                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Tu);
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("回复命元", "回复命元",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("回复了2点命元");
+                    A._reward = new ResourceRewardDescriptor(mingYuan: 2);
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("加生命上限", "加生命上限",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("加10点生命上限");
+                    A._reward = new ResourceRewardDescriptor(health: 10);
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("获得修为", "获得修为",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("获得了20修为");
+                    A._reward = new ResourceRewardDescriptor(xiuWei: 20);
                     runNode.ChangePanel(A);
                 }),
 
@@ -102,18 +152,152 @@ public class NodeCategory : Category<NodeEntry>
                         "赶快逃离这个鬼地方");
 
                     DialogPanelDescriptor A0 = new("你捡起黑皮球，表面柔软，摸起来像一颗快烂了的水蜜桃，你切开它，红色的汁液流了一地，里面露出了一枚淡黄色的果子",
-                        "用它修炼",
+                        "用它修炼（未实现）",
                         "吸收其中灵气");
 
-                    DialogPanelDescriptor A00 = new("选择一张卡牌境界提升");
+                    DialogPanelDescriptor A00 = new("选择一张卡牌境界提升（未实现）");
 
                     DialogPanelDescriptor A01 = new("命元 + 2");
+                    A01._reward = new ResourceRewardDescriptor(mingYuan: 2);
 
-                    DialogPanelDescriptor A1 = new("你的身体理解了黑水的本质，获得水属性金丹期卡牌1张");
+                    DiscoverSkillPanelDescriptor A1 = new("你的身体理解了黑水的本质，获得水属性金丹期卡牌1张", wuXing: WuXing.Shui, jingJie: JingJie.JinDan);
 
-                    DialogPanelDescriptor A2 = new ("你从梦中醒来，手里握着一个道具");
+                    DiscoverSkillPanelDescriptor A2 = new ("你从梦中醒来，手里握着一个木属性道具", wuXing: WuXing.Mu);
 
-                    runNode.ChangePanel(A1);
+
+                    A[0]._select = option => runNode.ChangePanel(A0);
+                    A[1]._select = option => runNode.ChangePanel(A1);
+                    A[2]._select = option => runNode.ChangePanel(A2);
+
+                    A0[0]._select = option => runNode.ChangePanel(A00);
+                    A0[1]._select = option => runNode.ChangePanel(A01);
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("灵山", "灵山",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("你在一座灵山上勘探时，寻获了一处宝物，其一旁写着“孕育愿望之壶”",
+                        "你对着“孕育愿望之壶”许愿改变你的命运",
+                        "总之先拿走（未实现）");
+
+                    DialogPanelDescriptor A0 = new("一时间白天黑夜，星河流转，你的卡牌发生了改变，“五行相生”");
+                    DialogPanelDescriptor A1 = new("获得下品法宝“孕育愿望之壶”（未实现）");
+
+                    A[0]._select = option => runNode.ChangePanel(A0);
+                    A[1]._select = option => runNode.ChangePanel(A1);
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("龙脉", "龙脉",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("你寻得一处龙脉所在灵气聚集之地",
+                        "潜心闭关修炼（未实现）",
+                        "温养体内命元");
+
+                    DialogPanelDescriptor A0 = new("提升自己一张卡牌的境界（未实现）");
+                    DialogPanelDescriptor A1 = new("命元 + 3");
+                    A1._reward = new ResourceRewardDescriptor(mingYuan: 3);
+
+                    A[0]._select = option => runNode.ChangePanel(A0);
+                    A[1]._select = option => runNode.ChangePanel(A1);
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("幽亭", "幽亭",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("你的面前是一滩清池，池水中立着一尊幽亭，墨绿色的亭柱顶着猩红色的宝顶。",
+                        "饮一口池水（未实现）",
+                        "在池边停下修炼",
+                        "跃入亭子一探究竟");
+
+                    DialogPanelDescriptor A0 = new("池水清冽，你沿路奔波的劳累一扫而光。获得卡牌“精力充沛”（未实现）");
+                    DiscoverSkillPanelDescriptor A1 = new("你不禁暗想，这块宝地许是某位修士前辈开辟的宝地，不妨在这修炼一段时间，肯定大有裨益。（获得水属性卡牌1张）", wuXing: WuXing.Shui);
+                    DialogPanelDescriptor A20 = new("你纵身一跃，但池水仿佛有着一股引力，将你拉入水中，而这水下竟望不到底，入目皆是幽黑，你用尽全力向水面挣扎，终于在意识模糊前探出水面。而亭子也同引力一并消失了。");
+                    DiscoverSkillPanelDescriptor A21 = new("你纵身一跃，一个跟斗，稳稳落入亭中，亭子正中的石桌上，有一本秘籍。", wuXing: WuXing.Huo);
+
+                    A[0]._select = option => runNode.ChangePanel(A0);
+                    A[1]._select = option => runNode.ChangePanel(A1);
+                    A[2]._select = option => runNode.ChangePanel(RandomManager.value < 0.5 ? A20 : A21);
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("问剑村", "问剑村",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("你来到了“问剑村”，最近村中时常发生强盗事件，村民苦不堪言。",
+                        "我必拔刀相助（未实现）",
+                        "离开村庄");
+
+                    DiscoverSkillPanelDescriptor A0 = new("（先直接获得奖励，在敌人设计完成后再更新）");
+                    DialogPanelDescriptor A1 = new("世事无常，对于此你已无悲喜（生命上限+10）");
+                    A1._reward = new ResourceRewardDescriptor(health: 10);
+
+                    A[0]._select = option => runNode.ChangePanel(A0);
+                    A[1]._select = option => runNode.ChangePanel(A1);
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("夜间洞穴", "夜间洞穴",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("你在夜间行路，却听到一些似有似无的嘈杂声响，循声来到一处洞穴前，其中传来了打斗和欢呼声",
+                        "步入洞中（未实现）",
+                        "噢，我架子上烤着鸡呢，我得回去看火");
+
+                    DiscoverSkillPanelDescriptor A0 = new("洞内是一处地下擂台，你的到来引起了庄家的注意，不一会儿，几名大汉前来邀请你参与擂台。（未实现）");
+                    DialogPanelDescriptor A1 = new("离开此处，做了一个吃烤鸡的美梦。（生命上限+10）");
+                    A1._reward = new ResourceRewardDescriptor(health: 10);
+
+                    A[0]._select = option => runNode.ChangePanel(A0);
+                    A[1]._select = option => runNode.ChangePanel(A1);
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("元神不稳", "元神不稳",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("你正在修炼，突然感到元神不稳，你会怎么做？",
+                        "继续冥想调整元神",
+                        new DialogOption("停下来仔细观察元神", new CostDetails(xiuWei: 10)));
+
+                    DialogPanelDescriptor A0 = new("你成功稳定了元神，修为提升了10。");
+                    A0._reward = new ResourceRewardDescriptor(xiuWei: 10);
+
+                    DiscoverSkillPanelDescriptor A1 = new("你因为没有及时处理，元神出现了一些微小的损伤，修为下降，但你的仔细观察倒也有些许感悟。");
+
+                    A[0]._select = option => runNode.ChangePanel(A0);
+                    A[1]._select = option => runNode.ChangePanel(A1);
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("禁忌秘籍", "禁忌秘籍",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("你意外得到了一本失传已久的修炼秘籍，但是此书似乎有禁忌，你会怎么做？",
+                        "毫不犹豫地开始修炼（未实现）",
+                        "先研究禁忌再说",
+                        "将书藏起来，不再碰它。");
+
+                    DialogPanelDescriptor A0 = new("你开始了修炼，秘籍带给你惊人的修为提升，但是在修炼尾声书中蹦出一只怪物，打伤了你，并接着朝你袭来。（未实现）");
+                    DialogPanelDescriptor A1s = new("你研究了禁忌并发现其中隐含的危险，解除禁忌后，你顺利的完成了修炼。（未实现）");
+                    DialogPanelDescriptor A1f = new("你不小心触发了禁忌。书中蹦出一只怪物，还好你早有防备，避开了怪物的攻击，你看到书损毁了，同时怪物向你袭来。");
+                    DialogPanelDescriptor A2 = new("你将秘籍藏在了一个安全的地方，虽然错过了修炼的机会，但是避免了潜在的风险。");
+
+                    A[0]._select = option => runNode.ChangePanel(A0);
+                    A[1]._select = option => runNode.ChangePanel(RandomManager.value < 0.5f ? A1s : A1f);
+                    A[2]._select = option => runNode.ChangePanel(A2);
+
+                    runNode.ChangePanel(A);
                 }),
 
             // new AdventureNodeEntry("狂吾师叔事件", "",

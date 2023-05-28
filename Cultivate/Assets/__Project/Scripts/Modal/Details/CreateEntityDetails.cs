@@ -8,23 +8,12 @@ public class CreateEntityDetails
     public bool AllowNormal;
     public bool AllowElite;
     public bool AllowBoss;
-    public int Step;
 
-    public CreateEntityDetails(JingJie jingJie, int step = -1)
+    public CreateEntityDetails(JingJie jingJie, bool allowNormal = false, bool allowElite = false, bool allowBoss = false)
     {
         JingJie = jingJie;
-
-        if (step == -1)
-        {
-            AllowNormal = true;
-            AllowElite = true;
-            AllowBoss = true;
-            return;
-        }
-
-        Step = step;
-        AllowNormal = step == 0;
-        AllowElite = step == 3;
-        AllowBoss = step == 6;
+        AllowNormal = allowNormal;
+        AllowElite = allowElite;
+        AllowBoss = allowBoss;
     }
 }

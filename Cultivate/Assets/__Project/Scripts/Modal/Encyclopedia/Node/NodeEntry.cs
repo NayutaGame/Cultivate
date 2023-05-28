@@ -20,4 +20,9 @@ public abstract class NodeEntry : Entry
     public void Create(RunNode runNode) => _create(runNode);
 
     public static implicit operator NodeEntry(string name) => Encyclopedia.NodeCategory[name];
+
+    public virtual string GetTitle()
+    {
+        return Name;
+    }
 }
