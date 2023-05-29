@@ -19,17 +19,13 @@ public class RunEnvironment : GDictionary
         {
             if (_enemy != null)
             {
-                _enemy.SetDragDropDelegate(null);
                 _enemy.EnvironmentChangedEvent -= EnvironmentChanged;
             }
             _enemy = value;
-            _enemy.SetDragDropDelegate(_interactDelegate);
             _enemy.EnvironmentChangedEvent += EnvironmentChanged;
             EnvironmentChanged();
         }
     }
-
-    protected InteractDelegate _interactDelegate;
 
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
@@ -42,20 +38,14 @@ public class RunEnvironment : GDictionary
             { "Enemy",                 () => Enemy },
         };
 
-        InitInteractDelegate();
-
         SkillInventory = new();
-        SkillInventory.SetInteractDelegate(_interactDelegate);
 
         Hero = new();
-        Hero.SetDragDropDelegate(_interactDelegate);
         Hero.EnvironmentChangedEvent += EnvironmentChanged;
 
         EnvironmentChangedEvent += CalcReport;
         EnvironmentChangedEvent += CalcManaShortageBrief;
     }
-
-    public virtual void InitInteractDelegate() { }
 
     public void Enter()
     {
@@ -64,11 +54,8 @@ public class RunEnvironment : GDictionary
         Enemy = new RunEntity(entry, d);
     }
 
-    protected bool TryMerge(IInteractable from, IInteractable to)
+    public bool TryMerge(RunSkill lhs, RunSkill rhs)
     {
-        RunSkill lhs = from as RunSkill;
-        RunSkill rhs = to as RunSkill;
-
         if (lhs.GetJingJie() != rhs.GetJingJie())
             return false;
 
@@ -128,11 +115,8 @@ public class RunEnvironment : GDictionary
         return true;
     }
 
-    protected bool TryEquip(IInteractable from, IInteractable to)
+    public bool TryEquip(RunSkill toEquip, SkillSlot slot)
     {
-        RunSkill toEquip = from as RunSkill;
-        SkillSlot slot = to as SkillSlot;
-
         RunSkill toUnequip = slot.Skill;
 
         if (toUnequip != null)
@@ -145,9 +129,8 @@ public class RunEnvironment : GDictionary
         return true;
     }
 
-    protected bool TryUnequip(IInteractable from, IInteractable to)
+    public bool TryUnequip(SkillSlot slot, object _)
     {
-        SkillSlot slot = from as SkillSlot;
         RunSkill toUnequip = slot.Skill;
         if (toUnequip == null)
             return false;
@@ -158,44 +141,40 @@ public class RunEnvironment : GDictionary
         return true;
     }
 
-    protected bool TrySwap(IInteractable from, IInteractable to)
+    public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
     {
-        SkillSlot fromSlot = from as SkillSlot;
-        SkillSlot toSlot = to as SkillSlot;
-
         RunSkill temp = fromSlot.Skill;
         fromSlot.Skill = toSlot.Skill;
         toSlot.Skill = temp;
         return true;
     }
 
-    protected bool TryWrite(IInteractable from, IInteractable to)
+    public bool TryWrite(RunSkill fromSkill, SkillSlot toSlot)
     {
-        RunSkill skill = null;
-        if (from is RunSkill fromSkill)
-        {
-            skill = fromSkill;
-        }
-        else if (from is SkillSlot skillSlot)
-        {
-            skill = skillSlot.Skill;
-        }
-
-        SkillSlot toSlot = to as SkillSlot;
-        toSlot.Skill = skill;
+        toSlot.Skill = fromSkill;
         return true;
     }
 
-    protected bool TryIncreaseJingJie(IInteractable item)
+    public bool TryWrite(SkillSlot fromSlot, SkillSlot toSlot)
     {
-        if (item is RunSkill fromSkill)
-        {
-            return fromSkill.TryIncreaseJingJie();
-        }
-        else if (item is SkillSlot skillSlot)
-        {
-            return skillSlot.TryIncreaseJingJie();
-        }
+        toSlot.Skill = fromSlot.Skill;
+        return true;
+    }
+
+    public bool TryIncreaseJingJie(RunSkill skill)
+    {
+        bool success = skill.TryIncreaseJingJie();
+        if (!success)
+            return false;
+        EnvironmentChanged();
+        return false;
+    }
+
+    public bool TryIncreaseJingJie(SkillSlot slot)
+    {
+        bool success = slot.TryIncreaseJingJie();
+        if (!success)
+            return false;
         EnvironmentChanged();
         return false;
     }

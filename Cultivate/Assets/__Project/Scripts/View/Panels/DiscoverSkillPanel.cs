@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using CLLibrary;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +9,27 @@ public class DiscoverSkillPanel : Panel
 {
     public TMP_Text DetailedText;
     public RunSkillView[] SkillViews;
+
+    private InteractDelegate InteractDelegate;
+
+    public override void Configure()
+    {
+        base.Configure();
+
+        ConfigureInteractDelegate();
+        SkillViews.Do(v => v.SetDelegate(InteractDelegate));
+    }
+
+    private void ConfigureInteractDelegate()
+    {
+        InteractDelegate = new InteractDelegate(1,
+            getId: item => 0,
+            lMouseTable: new Func<IInteractable, bool>[]
+            {
+                TrySelectOption,
+            }
+        );
+    }
 
     public override void Refresh()
     {
@@ -28,5 +51,20 @@ public class DiscoverSkillPanel : Panel
             SkillViews[i].Configure(new IndexPath($"CurrentNode.CurrentPanel.Skills#{i}"));
             SkillViews[i].Refresh();
         }
+    }
+
+    public bool TrySelectOption(IInteractable view)
+    {
+        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
+        DiscoverSkillPanelDescriptor d = runNode.CurrentPanel as DiscoverSkillPanelDescriptor;
+
+        RunSkill skill = RunManager.Get<RunSkill>(view.GetIndexPath());
+        bool success = d.TrySelectOption(skill);
+        if (!success)
+            return false;
+
+        // RunCanvas.Instance.NodePanel.Refresh();
+        RunCanvas.Instance.SetIndexPathForPreview(null);
+        return true;
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    InteractDelegate GetInteractDelegate();
-    void SetInteractDelegate(InteractDelegate interactDelegate);
+    InteractDelegate GetDelegate();
+    void SetDelegate(InteractDelegate interactDelegate);
+
+    IndexPath GetIndexPath();
 }

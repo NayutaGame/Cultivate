@@ -6,7 +6,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class SkillSlot : ISkillModel, IInteractable
+public class SkillSlot : ISkillModel
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
@@ -106,16 +106,4 @@ public class SkillSlot : ISkillModel, IInteractable
     }
 
     [NonSerialized] public bool IsManaShortage;
-
-    #region Interact
-
-    private InteractDelegate _interactDelegate;
-
-    public InteractDelegate GetInteractDelegate()
-        => _interactDelegate;
-
-    public void SetInteractDelegate(InteractDelegate interactDelegate)
-        => _interactDelegate = interactDelegate;
-
-    #endregion
 }

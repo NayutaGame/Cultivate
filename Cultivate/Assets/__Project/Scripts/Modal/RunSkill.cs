@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 [Serializable]
-public class RunSkill : ISkillModel, IInteractable, ISerializationCallbackReceiver
+public class RunSkill : ISkillModel, ISerializationCallbackReceiver
 {
     [SerializeField] private SkillEntry _entry;
     public SkillEntry Entry => _entry;
@@ -87,18 +87,6 @@ public class RunSkill : ISkillModel, IInteractable, ISerializationCallbackReceiv
 
     public RunSkill Clone()
         => new(this);
-
-    #region Interact
-
-    private InteractDelegate _interactDelegate;
-
-    public InteractDelegate GetInteractDelegate()
-        => _interactDelegate;
-
-    public void SetInteractDelegate(InteractDelegate interactDelegate)
-        => _interactDelegate = interactDelegate;
-
-    #endregion
 
     public void OnBeforeSerialize() { }
 

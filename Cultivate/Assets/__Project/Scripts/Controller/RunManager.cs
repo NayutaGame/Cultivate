@@ -34,8 +34,8 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public TechInventory TechInventory { get; private set; }
     public Map Map { get; private set; }
 
-    public BattleRunEnvironment Battle { get; private set; }
-    public SimulateRunEnvironment Simulate { get; private set; }
+    public RunEnvironment Battle { get; private set; }
+    public RunEnvironment Simulate { get; private set; }
     public Arena Arena;
 
     public CombatDetails CombatDetails;
@@ -211,7 +211,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     public void Combat(bool useAnim, RunEnvironment environment)
     {
-        CombatDetails = new CombatDetails(useAnim, environment is BattleRunEnvironment, environment.Hero, environment.Enemy);
+        CombatDetails = new CombatDetails(useAnim, environment == Battle, environment.Hero, environment.Enemy);
         AppManager.Push(new AppStageS());
     }
 }

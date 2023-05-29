@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MutableEntityView : MonoBehaviour, IIndexPath
+public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
 {
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
@@ -18,6 +18,19 @@ public class MutableEntityView : MonoBehaviour, IIndexPath
     private IndexPath _indexPath;
     public IndexPath GetIndexPath()
         => _indexPath;
+
+    #region Interact
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate()
+        => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate)
+    {
+        InteractDelegate = interactDelegate;
+        EquippedInventoryView.SetDelegate(InteractDelegate);
+    }
+
+    #endregion
 
     public void Configure(IndexPath indexPath)
     {

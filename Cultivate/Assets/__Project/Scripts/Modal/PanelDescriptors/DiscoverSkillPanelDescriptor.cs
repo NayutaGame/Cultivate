@@ -24,14 +24,6 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
             { "Skills",                () => _skills },
         };
 
-        _interactDelegate = new InteractDelegate(1,
-            getID: item => 0,
-            lMouseTable: new Func<IInteractable, bool>[]
-            {
-                TrySelectOption,
-            }
-        );
-
         _detailedText = detailedText ?? "请选择一张卡作为奖励";
 
         _pred = pred;
@@ -39,12 +31,9 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         _jingJie = jingJie ?? RunManager.Instance.Map.JingJie;
     }
 
-    private bool TrySelectOption(IInteractable item)
+    public bool TrySelectOption(RunSkill skill)
     {
-        int i = _skills.IndexOf(item as RunSkill);
-        ReceiveSignal(new SelectedOptionSignal(i));
-        // RunCanvas.Instance.NodePanel.Refresh();
-        RunCanvas.Instance.SetIndexPathForPreview(null);
+        ReceiveSignal(new SelectedOptionSignal(_skills.IndexOf(skill)));
         return true;
     }
 
@@ -52,7 +41,6 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     {
         base.DefaultEnter();
         RunManager.Instance.SkillPool.TryDrawSkills(out _skills, pred: _pred, wuXing: _wuXing, jingJie: _jingJie , count: 3);
-        _skills.Do(s => s.SetInteractDelegate(GetInteractDelegate()));
     }
 
     public override void DefaultReceiveSignal(Signal signal)
@@ -60,21 +48,8 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         base.DefaultReceiveSignal(signal);
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
-            _skills.Do(s => s.SetInteractDelegate(null));
             RunManager.Instance.Battle.SkillInventory.AddSkill(_skills[selectedOptionSignal.Selected]);
             RunManager.Instance.Map.TryFinishNode();
         }
     }
-
-    #region Interact
-
-    private InteractDelegate _interactDelegate;
-
-    public InteractDelegate GetInteractDelegate()
-        => _interactDelegate;
-
-    public void SetInteractDelegate(InteractDelegate interactDelegate)
-        => _interactDelegate = interactDelegate;
-
-    #endregion
 }

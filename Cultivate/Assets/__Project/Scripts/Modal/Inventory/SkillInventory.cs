@@ -5,12 +5,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SkillInventory : Inventory<RunSkill>, IInteractable
+public class SkillInventory : Inventory<RunSkill>
 {
     public void AddSkill(RunSkill skill)
     {
         RunSkill clone = skill.Clone();
-        clone.SetInteractDelegate(GetInteractDelegate());
         Add(clone);
     }
 
@@ -22,14 +21,11 @@ public class SkillInventory : Inventory<RunSkill>, IInteractable
 
     public void RemoveSkill(RunSkill skill)
     {
-        skill.SetInteractDelegate(null);
         Remove(skill);
     }
 
     public void ReplaceSkill(RunSkill from, RunSkill to)
     {
-        from.SetInteractDelegate(null);
-        to.SetInteractDelegate(GetInteractDelegate());
         Replace(from, to);
     }
 
@@ -113,16 +109,4 @@ public class SkillInventory : Inventory<RunSkill>, IInteractable
     {
         Sort(Comparisons[i]);
     }
-
-    #region Interact
-
-    private InteractDelegate _interactDelegate;
-
-    public InteractDelegate GetInteractDelegate()
-        => _interactDelegate;
-
-    public void SetInteractDelegate(InteractDelegate interactDelegate)
-        => _interactDelegate = interactDelegate;
-
-    #endregion
 }

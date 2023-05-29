@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
+public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractable,
     IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
@@ -17,6 +18,12 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
 
     private IndexPath _indexPath;
     public IndexPath GetIndexPath() => _indexPath;
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate()
+        => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate)
+        => InteractDelegate = interactDelegate;
 
     [SerializeField] private GameObject ManaCostView;
     [SerializeField] private TMP_Text ManaCostText;
@@ -151,17 +158,21 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        IInteractable item = RunManager.Get<IInteractable>(GetIndexPath());
+        IInteractable item = GetComponent<IInteractable>();
         if (item == null)
+            return;
+
+        InteractDelegate interactDelegate = item.GetDelegate();
+        if (interactDelegate == null)
             return;
 
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            item.GetInteractDelegate().LMouse(item);
+            interactDelegate.LMouse(item);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            item.GetInteractDelegate().RMouse(item);
+            interactDelegate.RMouse(item);
         }
 
         RunCanvas.Instance.Refresh();
@@ -169,7 +180,8 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        if (RunManager.Get<IInteractable>(GetIndexPath()) is { } from && !from.GetInteractDelegate().CanDrag(from))
+        IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
+        if(drag == null || drag.GetDelegate() == null || !drag.GetDelegate().CanDrag(drag))
         {
             eventData.pointerDrag = null;
             RunCanvas.Instance.SetIndexPathForPreview(null);
@@ -207,14 +219,15 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath,
 
     public virtual void OnDrop(PointerEventData eventData)
     {
-        IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
-        if (drop == null) return;
-        if (GetIndexPath().Equals(drop.GetIndexPath())) return;
+        IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
+        if (drag == null)
+            return;
 
-        IInteractable from = RunManager.Get<IInteractable>(drop.GetIndexPath());
-        IInteractable to = RunManager.Get<IInteractable>(GetIndexPath());
+        IInteractable drop = GetComponent<IInteractable>();
+        if (drag == drop)
+            return;
 
-        from.GetInteractDelegate().DragDrop(from, to);
+        drag.GetDelegate()?.DragDrop(drag, drop);
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)

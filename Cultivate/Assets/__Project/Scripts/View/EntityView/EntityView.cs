@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntityView : MonoBehaviour, IIndexPath
+public class EntityView : MonoBehaviour, IIndexPath, IInteractable
 {
     public TMP_Text NameText;
     public TMP_Text JingJieText;
@@ -13,6 +13,19 @@ public class EntityView : MonoBehaviour, IIndexPath
     public TMP_Text DescriptionText;
     public Button CopyButton;
     public InventoryView<AbstractSkillView> EquippedInventoryView;
+
+    #region Interact
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate()
+        => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate)
+    {
+        InteractDelegate = interactDelegate;
+        EquippedInventoryView.SetDelegate(InteractDelegate);
+    }
+
+    #endregion
 
     private IndexPath _indexPath;
     public IndexPath GetIndexPath()

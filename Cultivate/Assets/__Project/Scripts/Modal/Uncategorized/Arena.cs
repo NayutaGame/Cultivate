@@ -15,8 +15,6 @@ public class Arena : Inventory<RunEntity>, GDictionary
 
     public SkillInventory SkillInventory;
 
-    protected InteractDelegate _interactDelegate;
-
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
     public Arena()
@@ -27,65 +25,31 @@ public class Arena : Inventory<RunEntity>, GDictionary
             { "SkillInventory", () => SkillInventory },
         };
 
-        _interactDelegate = new(2,
-            getID: item =>
-            {
-                if (item is RunSkill)
-                    return 0;
-                if (item is SkillSlot)
-                    return 1;
-                return null;
-            },
-            dragDropTable: new Func<IInteractable, IInteractable, bool>[]
-            {
-                /*               RunSkill,   SkillSlot */
-                /* RunSkill   */ null,       TryWrite,
-                /* SkillSlot  */ null,       TryWrite,
-            },
-            rMouseTable: new Func<IInteractable, bool>[]
-            {
-                /* RunSkill   */ null,
-                /* SkillSlot  */ TryIncreaseJingJie,
-            });
-
         SkillInventory = new();
-        SkillInventory.SetInteractDelegate(_interactDelegate);
         Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));
 
         ArenaSize.Do(item =>
         {
-            RunEntity e = new RunEntity();
-            e.SetDragDropDelegate(_interactDelegate);
-            Add(e);
+            Add(new RunEntity());
         });
 
         _reports = new StageReport[ArenaSize * ArenaSize];
     }
 
-    private bool TryWrite(IInteractable from, IInteractable to)
+    public bool TryWrite(RunSkill fromSkill, SkillSlot toSlot)
     {
-        RunSkill skill = null;
-        if (from is RunSkill fromSkill)
-        {
-            skill = fromSkill;
-        }
-        else if (from is SkillSlot skillSlot)
-        {
-            skill = skillSlot.Skill;
-        }
-
-        SkillSlot toSlot = to as SkillSlot;
-        toSlot.Skill = skill;
+        toSlot.Skill = fromSkill;
         return true;
     }
 
-    private bool TryIncreaseJingJie(IInteractable item)
+    public bool TryWrite(SkillSlot fromSlot, SkillSlot toSlot)
     {
-        if (item is SkillSlot skillSlot)
-            return skillSlot.TryIncreaseJingJie();
-
-        return false;
+        toSlot.Skill = fromSlot.Skill;
+        return true;
     }
+
+    public bool TryIncreaseJingJie(SkillSlot slot)
+        => slot.TryIncreaseJingJie();
 
     public void Compete()
     {

@@ -29,14 +29,15 @@ public class SkillInventoryView : InventoryView<AbstractSkillView>, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        IIndexPath drop = eventData.pointerDrag.GetComponent<IIndexPath>();
-        if (drop == null) return;
-        if (GetIndexPath().Equals(drop.GetIndexPath())) return;
+        IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
+        if (drag == null)
+            return;
 
-        IInteractable from = RunManager.Get<IInteractable>(drop.GetIndexPath());
-        IInteractable to = RunManager.Get<IInteractable>(GetIndexPath());
+        IInteractable drop = GetComponent<IInteractable>();
+        if (drag == drop)
+            return;
 
-        from.GetInteractDelegate().DragDrop(from, to);
+        drag.GetDelegate()?.DragDrop(drag, drop);
     }
 
     private void DrawJingJie(JingJie jingJie)
