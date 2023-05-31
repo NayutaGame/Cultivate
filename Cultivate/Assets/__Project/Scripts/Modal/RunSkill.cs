@@ -95,13 +95,17 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
         _entry = string.IsNullOrEmpty(_entry.Name) ? null : Encyclopedia.SkillCategory[_entry.Name];
     }
 
-    public bool TryIncreaseJingJie()
+    public bool TryIncreaseJingJie(bool loop = true)
     {
-        JingJie curr = JingJie;
-        JingJie next = curr + 1;
-        if (!Entry.JingJieRange.Contains(next))
-            next = Entry.JingJieRange.Start;
-        JingJie = next;
+        if (Entry.JingJieRange.Contains(JingJie + 1))
+        {
+            JingJie += 1;
+        }
+        else if (loop)
+        {
+            JingJie = Entry.JingJieRange.Start;
+        }
+
         return true;
     }
 }

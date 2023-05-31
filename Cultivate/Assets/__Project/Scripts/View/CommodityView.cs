@@ -1,0 +1,47 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class CommodityView : MonoBehaviour, IIndexPath
+{
+    private IndexPath _indexPath;
+    public IndexPath GetIndexPath() => _indexPath;
+
+    public RunSkillView SkillView;
+    public TMP_Text PriceText;
+    public Button BuyButton;
+
+    public event Action<Commodity> BuyEvent;
+
+    public void Configure(IndexPath indexPath)
+    {
+        _indexPath = indexPath;
+        SkillView.Configure(new IndexPath($"{_indexPath}.Skill"));
+
+        BuyButton.onClick.AddListener(Buy);
+    }
+
+    public void Refresh()
+    {
+        Commodity commodity = RunManager.Get<Commodity>(_indexPath);
+        if (commodity == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        SkillView.Refresh();
+        PriceText.text = commodity.FinalPrice.ToString();
+        BuyButton.interactable = commodity.Affordable();
+    }
+
+    private void Buy()
+    {
+        Commodity commodity = RunManager.Get<Commodity>(_indexPath);
+        BuyEvent?.Invoke(commodity);
+        RunCanvas.Instance.Refresh();
+    }
+}

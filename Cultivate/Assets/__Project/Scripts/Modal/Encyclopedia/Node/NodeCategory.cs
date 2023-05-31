@@ -11,62 +11,86 @@ public class NodeCategory : Category<NodeEntry>
         {
             new BattleNodeEntry("敌人", "敌人"),
 
-            new RewardNodeEntry("发现一张金属性的卡", "发现一张金属性的卡",
-                create: runNode =>
-                {
-                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Jin);
-                    runNode.ChangePanel(A);
-                }),
+            // new RewardNodeEntry("选择一种五行，获得一张随机牌", "选择一种五行，获得一张随机牌",
+            //     create: runNode =>
+            //     {
+            //         Pool<WuXing> pool = new Pool<WuXing>();
+            //         pool.Populate(WuXing.Traversal);
+            //         pool.Shuffle();
+            //
+            //         WuXing[] options = new WuXing[3];
+            //         for (int i = 0; i < options.Length; i++)
+            //         {
+            //             pool.TryPopItem(out options[i]);
+            //         }
+            //
+            //         DialogPanelDescriptor A = new("选择一种五行，获得一张随机牌",
+            //             options[0]._name,
+            //             options[1]._name,
+            //             options[2]._name);
+            //
+            //         A._receiveSignal = signal =>
+            //         {
+            //             if (signal is SelectedOptionSignal selectedOptionSignal)
+            //             {
+            //                 int index = selectedOptionSignal.Selected;
+            //                 new DrawSkillRewardDescriptor("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Map.JingJie).Claim();
+            //             }
+            //             RunManager.Instance.Map.TryFinishNode();
+            //         };
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
 
-            new RewardNodeEntry("发现一张水属性的卡", "发现一张水属性的卡",
+            // new RewardNodeEntry("回复命元", "回复命元",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("回复了2点命元");
+            //         A._reward = new ResourceRewardDescriptor(mingYuan: 2);
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new RewardNodeEntry("获得修为", "获得修为",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("获得了20修为");
+            //         A._reward = new ResourceRewardDescriptor(xiuWei: 20);
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new RewardNodeEntry("请选择想要升级的牌", "请选择想要升级的牌",
+            //     create: runNode =>
+            //     {
+            //         CardPickerPanelDescriptor A = new("请选择想要升级的牌", new Range(0, 6),
+            //             action: iRunSkillList =>
+            //             {
+            //                 foreach (var iRunSkill in iRunSkillList)
+            //                 {
+            //                     if (iRunSkill is RunSkill skill)
+            //                     {
+            //                         skill.TryIncreaseJingJie();
+            //                     }
+            //                     else if (iRunSkill is SkillSlot slot)
+            //                     {
+            //                         slot.TryIncreaseJingJie();
+            //                     }
+            //                 }
+            //             });
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new RewardNodeEntry("加生命上限", "加生命上限",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("加10点生命上限");
+            //         A._reward = new ResourceRewardDescriptor(health: 10);
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            new RewardNodeEntry("商店", "商店",
                 create: runNode =>
                 {
-                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Shui);
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("发现一张木属性的卡", "发现一张木属性的卡",
-                create: runNode =>
-                {
-                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Mu);
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("发现一张火属性的卡", "发现一张火属性的卡",
-                create: runNode =>
-                {
-                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Huo);
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("发现一张土属性的卡", "发现一张土属性的卡",
-                create: runNode =>
-                {
-                    DiscoverSkillPanelDescriptor A = new(wuXing: WuXing.Tu);
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("回复命元", "回复命元",
-                create: runNode =>
-                {
-                    DialogPanelDescriptor A = new("回复了2点命元");
-                    A._reward = new ResourceRewardDescriptor(mingYuan: 2);
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("加生命上限", "加生命上限",
-                create: runNode =>
-                {
-                    DialogPanelDescriptor A = new("加10点生命上限");
-                    A._reward = new ResourceRewardDescriptor(health: 10);
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("获得修为", "获得修为",
-                create: runNode =>
-                {
-                    DialogPanelDescriptor A = new("获得了20修为");
-                    A._reward = new ResourceRewardDescriptor(xiuWei: 20);
+                    ShopPanelDescriptor A = new();
                     runNode.ChangePanel(A);
                 }),
 

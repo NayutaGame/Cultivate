@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,12 @@ public class NodePanel : Panel
     public BattlePanel BattlePanel;
     public DialogPanel DialogPanel;
     public DiscoverSkillPanel DiscoverSkillPanel;
+    public CardPickerPanel CardPickerPanel;
+    public ShopPanel ShopPanel;
 
     private Panel _currentPanel;
+
+    private Dictionary<Type, Panel> _panelDict;
 
     private void ChangePanel(Panel panel)
     {
@@ -28,6 +33,15 @@ public class NodePanel : Panel
     public override void Configure()
     {
         base.Configure();
+
+        _panelDict = new()
+        {
+            { typeof(BattlePanelDescriptor), BattlePanel },
+            { typeof(DialogPanelDescriptor), DialogPanel },
+            { typeof(DiscoverSkillPanelDescriptor), DiscoverSkillPanel },
+            { typeof(CardPickerPanelDescriptor), CardPickerPanel },
+            { typeof(ShopPanelDescriptor), ShopPanel },
+        };
     }
 
     public override void Refresh()
@@ -36,17 +50,7 @@ public class NodePanel : Panel
 
         RunNode runNode = RunManager.Instance.TryGetCurrentNode();
         PanelDescriptor d = runNode?.CurrentPanel;
-        if (d is BattlePanelDescriptor)
-        {
-            ChangePanel(BattlePanel);
-        }
-        else if (d is DialogPanelDescriptor)
-        {
-            ChangePanel(DialogPanel);
-        }
-        else if (d is DiscoverSkillPanelDescriptor)
-        {
-            ChangePanel(DiscoverSkillPanel);
-        }
+
+        ChangePanel(_panelDict[d.GetType()]);
     }
 }

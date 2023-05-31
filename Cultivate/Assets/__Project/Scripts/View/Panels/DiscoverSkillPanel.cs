@@ -23,7 +23,7 @@ public class DiscoverSkillPanel : Panel
     private void ConfigureInteractDelegate()
     {
         InteractDelegate = new InteractDelegate(1,
-            getId: item => 0,
+            getId: view => 0,
             lMouseTable: new Func<IInteractable, bool>[]
             {
                 TrySelectOption,
@@ -38,8 +38,7 @@ public class DiscoverSkillPanel : Panel
         RunNode runNode = RunManager.Instance.TryGetCurrentNode();
         DiscoverSkillPanelDescriptor d = runNode.CurrentPanel as DiscoverSkillPanelDescriptor;
 
-        if (d.GetDetailedText() != null)
-            DetailedText.text = d.GetDetailedText();
+        DetailedText.text = d.GetDetailedText();
 
         for (int i = 0; i < SkillViews.Length; i++)
         {

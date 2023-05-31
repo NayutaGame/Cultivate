@@ -4,6 +4,7 @@ using System.Linq;
 using CLLibrary;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -33,6 +34,10 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
     [SerializeField] private TMP_Text[] TypeTexts;
     [SerializeField] private Image JingJieImage;
     [SerializeField] private TMP_Text AnnotationText;
+
+    private bool _selected;
+    public virtual bool IsSelected() => _selected;
+    public virtual void SetSelected(bool selected) => _selected = selected;
 
     #region Accessors
 
