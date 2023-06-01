@@ -11,6 +11,7 @@ public class NodePanel : Panel
     public CardPickerPanel CardPickerPanel;
     public ShopPanel ShopPanel;
     public BarterPanel BarterPanel;
+    public ArbitraryCardPickerPanel ArbitraryCardPickerPanel;
 
     private Panel _currentPanel;
 
@@ -43,6 +44,7 @@ public class NodePanel : Panel
             { typeof(CardPickerPanelDescriptor), CardPickerPanel },
             { typeof(ShopPanelDescriptor), ShopPanel },
             { typeof(BarterPanelDescriptor), BarterPanel },
+            { typeof(ArbitraryCardPickerPanelDescriptor), ArbitraryCardPickerPanel },
         };
     }
 

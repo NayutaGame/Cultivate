@@ -21,7 +21,7 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         _commodities = new CommodityInventory();
 
-        bool success = RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 6);
+        bool success = RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 6, consume: false);
         if (success)
         {
             foreach (RunSkill skill in skills)
@@ -29,13 +29,6 @@ public class ShopPanelDescriptor : PanelDescriptor
                 _commodities.Add(new Commodity(skill, 20));
             }
         }
-    }
-
-    public override void DefaultExit()
-    {
-        base.DefaultExit();
-
-        RunManager.Instance.SkillPool.Populate(_commodities.Map(c => c.Skill.Entry));
     }
 
     public bool Buy(Commodity commodity)

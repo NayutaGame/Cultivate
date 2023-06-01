@@ -35,6 +35,7 @@ RectTransform:
   - {fileID: 5784528013882468868}
   - {fileID: 4965186292529638372}
   - {fileID: 7271460479810976288}
+  - {fileID: 5716902121362975130}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -61,6 +62,7 @@ MonoBehaviour:
   CardPickerPanel: {fileID: 6710302361150833614}
   ShopPanel: {fileID: 6057257631870743942}
   BarterPanel: {fileID: 5053846760348347269}
+  ArbitraryCardPickerPanel: {fileID: 4102062247294616366}
 --- !u!1001 &972854544169097595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1193,6 +1195,127 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1f8fe5db160f348822dbebdf34ef22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &6197519546213935998
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7934240958159680453}
+    m_Modifications:
+    - target: {fileID: 59190587108173445, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -540
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6572312528975603442, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_Name
+      value: ArbitraryCardPickerPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6572312528975603442, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+--- !u!114 &4102062247294616366 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7993731903739291728, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+  m_PrefabInstance: {fileID: 6197519546213935998}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86d2cc338b2c4e84e9b49146c8440a4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &5716902121362975130 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1825232190025974500, guid: 14d9a7aa1e4cf5a4a95ec107de8b1bea, type: 3}
+  m_PrefabInstance: {fileID: 6197519546213935998}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7988207025148534538
 PrefabInstance:
   m_ObjectHideFlags: 0

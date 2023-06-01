@@ -48,11 +48,6 @@ public class BarterPanelDescriptor : PanelDescriptor
         {
             _inventory.Add(new BarterItem(playerSkills[i], skills[i]));
         }
-    }
-
-    public override void DefaultExit()
-    {
-        base.DefaultExit();
 
         RunManager.Instance.SkillPool.Populate(_inventory.Map(b => b.Skill.Entry));
     }

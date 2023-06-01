@@ -36,7 +36,8 @@ public class SkillPool : Pool<SkillEntry>
         return true;
     }
 
-    public bool TryDrawSkills(out List<RunSkill> skills, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null, int count = 1, bool distinct = true)
+    public bool TryDrawSkills(out List<RunSkill> skills, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null,
+        int count = 1, bool distinct = true, bool consume = true)
     {
         Shuffle();
 
@@ -68,6 +69,9 @@ public class SkillPool : Pool<SkillEntry>
             JingJie itemJingJie = jingJie ?? item.JingJieRange.Start;
             skills.Add(new RunSkill(item, itemJingJie));
         }
+
+        if (!consume)
+            Populate(skills.Map(s => s.Entry));
 
         return true;
     }
