@@ -35,24 +35,18 @@ namespace CLLibrary
             }
         }
 
-        public bool TryPopItem(out T item)
+        public bool TryPeekItem(out T item, Predicate<T> pred = null)
         {
-            if (_list.Count == 0)
-            {
-                item = default;
+            item = _list.FirstObj(pred ?? (t => true));
+            if (item == null)
                 return false;
-            }
-            else
-            {
-                item = _list[0];
-                _list.RemoveAt(0);
-                return true;
-            }
+
+            return true;
         }
 
-        public bool TryPopItem(out T item, Predicate<T> pred)
+        public bool TryPopItem(out T item, Predicate<T> pred = null)
         {
-            item = _list.FirstObj(pred);
+            item = _list.FirstObj(pred ?? (t => true));
             if (item == null) return false;
             _list.Remove(item);
             return true;

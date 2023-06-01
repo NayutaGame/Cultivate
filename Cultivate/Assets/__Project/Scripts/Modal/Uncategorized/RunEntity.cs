@@ -54,6 +54,12 @@ public class RunEntity : GDictionary, IEntityModel
     public SkillSlot GetSlot(int i)
         => _slots[i];
 
+    public IEnumerable<SkillSlot> TraversalCurrentSlots()
+    {
+        for (int i = Start; i < Start + Limit; i++)
+            yield return _slots[i];
+    }
+
     private EntityEntry _entry;
     public EntityEntry GetEntry()
         => _entry;

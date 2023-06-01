@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AdventureNodeEntry : NodeEntry
 {
-    public AdventureNodeEntry(string name, string description, Action<RunNode> create) : base(name, description, create)
+    public AdventureNodeEntry(string name, string description, Action<RunNode> create, Predicate<int> canCreate = null) : base(name, description, create, canCreate)
     {
     }
 

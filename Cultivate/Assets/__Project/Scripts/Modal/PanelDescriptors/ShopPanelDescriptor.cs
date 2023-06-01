@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
 public class ShopPanelDescriptor : PanelDescriptor
@@ -20,7 +21,6 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         _commodities = new CommodityInventory();
 
-        // 随机6张卡，当前境界，应该不消耗池子，目前是消耗池子的
         bool success = RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 6);
         if (success)
         {
@@ -29,6 +29,13 @@ public class ShopPanelDescriptor : PanelDescriptor
                 _commodities.Add(new Commodity(skill, 20));
             }
         }
+    }
+
+    public override void DefaultExit()
+    {
+        base.DefaultExit();
+
+        RunManager.Instance.SkillPool.Populate(_commodities.Map(c => c.Skill.Entry));
     }
 
     public bool Buy(Commodity commodity)

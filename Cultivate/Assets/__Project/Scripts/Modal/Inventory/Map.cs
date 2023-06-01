@@ -158,8 +158,8 @@ public class Map : GDictionary
                     continue;
                 }
 
-                // canCreate
-                NodeEntry nodeEntry = pool.ForcePopItem();
+                int currX = x;
+                NodeEntry nodeEntry = pool.ForcePopItem(pred: e => e.CanCreate(currX));
                 if (nodeEntry is BattleNodeEntry battleNodeEntry)
                 {
                     CreateEntityDetails d = new CreateEntityDetails(_jingJie, x <= 2, 4 <= x && x <= 6, x == 8);
@@ -177,5 +177,46 @@ public class Map : GDictionary
 
         Selecting = true;
         _heroPosition = new Vector2Int(-1, 0);
+    }
+
+    public AdventureNodeEntry NextAdventure()
+    {
+        int currX = _heroPosition.x;
+        for (int x = currX + 1; x < _poolConfiguration[_jingJie].Length; x++)
+        for (int y = 0; y < 3; y++)
+        {
+            RunNode node = this[x, y];
+            if (node is { Entry: AdventureNodeEntry adventureNodeEntry })
+                return adventureNodeEntry;
+        }
+        return null;
+    }
+
+    public bool HasAdventrueAfterwards(int currX)
+    {
+        for (int x = currX + 1; x < _poolConfiguration[_jingJie].Length; x++)
+        {
+            if (_poolConfiguration[_jingJie][x] == _a)
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool RerollNextAdventure()
+    {
+        int currX = _heroPosition.x;
+        for (int x = currX + 1; x < _poolConfiguration[_jingJie].Length; x++)
+        for (int y = 0; y < 3; y++)
+        {
+            RunNode node = this[x, y];
+            if (node is { Entry: AdventureNodeEntry adventureNodeEntry })
+            {
+                NodeEntry newNodeEntry = _a.ForcePopItem(pred: n => n != adventureNodeEntry);
+                this[x, y] = new RunNode(new Vector2Int(x, y), newNodeEntry);
+                return true;
+            }
+        }
+        return false;
     }
 }

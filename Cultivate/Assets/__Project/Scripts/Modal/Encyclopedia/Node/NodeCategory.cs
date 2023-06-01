@@ -87,10 +87,34 @@ public class NodeCategory : Category<NodeEntry>
             //         runNode.ChangePanel(A);
             //     }),
             //
-            new RewardNodeEntry("商店", "商店",
+            // new RewardNodeEntry("商店", "商店",
+            //     create: runNode =>
+            //     {
+            //         ShopPanelDescriptor A = new();
+            //         runNode.ChangePanel(A);
+            //     }),
+
+            new RewardNodeEntry("以物易物", "以物易物",
                 create: runNode =>
                 {
-                    ShopPanelDescriptor A = new();
+                    BarterPanelDescriptor A = new();
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("算卦", "算卦",
+                canCreate: x => RunManager.Instance.Map.HasAdventrueAfterwards(x),
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Map.NextAdventure().Name}",
+                        "换一个",
+                        "保持现状");
+
+                    A[0]._select = option =>
+                    {
+                        RunManager.Instance.Map.RerollNextAdventure();
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
                     runNode.ChangePanel(A);
                 }),
 

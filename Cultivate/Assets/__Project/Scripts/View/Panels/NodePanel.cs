@@ -10,6 +10,7 @@ public class NodePanel : Panel
     public DiscoverSkillPanel DiscoverSkillPanel;
     public CardPickerPanel CardPickerPanel;
     public ShopPanel ShopPanel;
+    public BarterPanel BarterPanel;
 
     private Panel _currentPanel;
 
@@ -41,6 +42,7 @@ public class NodePanel : Panel
             { typeof(DiscoverSkillPanelDescriptor), DiscoverSkillPanel },
             { typeof(CardPickerPanelDescriptor), CardPickerPanel },
             { typeof(ShopPanelDescriptor), ShopPanel },
+            { typeof(BarterPanelDescriptor), BarterPanel },
         };
     }
 

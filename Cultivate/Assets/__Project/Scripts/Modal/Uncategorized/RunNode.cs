@@ -6,6 +6,7 @@ using UnityEngine;
 public class RunNode : GDictionary
 {
     protected NodeEntry _entry;
+    public NodeEntry Entry => _entry;
     public Vector2Int Position { get; private set; }
 
     private RunNodeState _state;
