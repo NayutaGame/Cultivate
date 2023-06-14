@@ -103,6 +103,7 @@ MonoBehaviour:
   JingJieImage: {fileID: 0}
   AnnotationText: {fileID: 0}
   SelectionImage: {fileID: 1151671682800697409}
+  TypeText: {fileID: 1594225631139461168}
 --- !u!1 &3563156297843413073
 GameObject:
   m_ObjectHideFlags: 0

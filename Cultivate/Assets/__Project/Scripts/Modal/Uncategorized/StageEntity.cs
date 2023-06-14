@@ -135,10 +135,22 @@ public class StageEntity : GDictionary
         if (ArmorLostEvent != null) await ArmorLostEvent(d);
     }
 
+    public event Func<EvadeDetails, Task> EvadedEvent;
+    public async Task Evaded(EvadeDetails d)
+    {
+        if (EvadedEvent != null) await EvadedEvent(d);
+    }
+
     public event Func<Task> LoseHpEvent;
     public async Task LoseHp()
     {
         if (LoseHpEvent != null) await LoseHpEvent();
+    }
+
+    public event Func<ConsumeDetails, Task> ConsumedEvent;
+    public async Task Consumed(ConsumeDetails d)
+    {
+        if (ConsumedEvent != null) await ConsumedEvent(d);
     }
 
     public FuncQueue<BuffDetails> Buff = new();
@@ -211,9 +223,11 @@ public class StageEntity : GDictionary
         {
             await Step();
 
-            // if (GetStackOfBuff("缠绕") == 0)
-            // {
-            if (UltraSwift)
+            if (GetSumOfStackOfBuffs("不动明王咒", "缠绕") > 0)
+            {
+
+            }
+            else if (UltraSwift)
             {
                 await Step();
                 await Step();
@@ -222,7 +236,6 @@ public class StageEntity : GDictionary
             {
                 await Step();
             }
-            // }
         }
 
         await EndTurn(new TurnDetails(this, _p));
@@ -239,7 +252,8 @@ public class StageEntity : GDictionary
         // _env.Report.Seq?.
         // show waigong
 
-        bool manaSufficient = skill.GetManaCost() == 0 || TryConsumeBuff("免费") || TryConsumeMana(skill.GetManaCost());
+        int manaCost = skill.GetManaCost() - GetStackOfBuff("心斋");
+        bool manaSufficient = skill.GetManaCost() == 0 || TryConsumeBuff("免费") || TryConsumeMana(manaCost);
         _manaShortage = !manaSufficient;
         if(_manaShortage)
         {

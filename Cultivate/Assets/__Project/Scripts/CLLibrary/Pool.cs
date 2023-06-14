@@ -8,6 +8,7 @@ namespace CLLibrary
     public class Pool<T>
     {
         private List<T> _list;
+        public List<T> List => _list;
 
         public Pool()
         {

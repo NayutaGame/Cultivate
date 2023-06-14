@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CLLibrary;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class BuffEntry : Entry, IAnnotation
 {
@@ -47,10 +49,12 @@ public class BuffEntry : Entry, IAnnotation
     public Func<Buff, ArmorGainDetails, Task> _armorGained;
     public Func<Buff, ArmorLoseDetails, Task> _armorLose;
     public Func<Buff, ArmorLoseDetails, Task> _armorLost;
+    public Func<Buff, EvadeDetails, Task> _evaded;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buffed;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuffed;
+    public Func<Buff, ConsumeDetails, Task> _consumed;
 
     /// <summary>
     /// 定义一个Buff
@@ -108,10 +112,12 @@ public class BuffEntry : Entry, IAnnotation
         Func<Buff, ArmorGainDetails, Task> armorGained = null,
         Func<Buff, ArmorLoseDetails, Task> armorLose = null,
         Func<Buff, ArmorLoseDetails, Task> armorLost = null,
+        Func<Buff, EvadeDetails, Task> evaded = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buffed = null,
-        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuffed = null
+        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuffed = null,
+        Func<Buff, ConsumeDetails, Task> consumed = null
     ) : base(name)
     {
         _description = description;
@@ -145,11 +151,14 @@ public class BuffEntry : Entry, IAnnotation
         _armorGained = armorGained;
         _armorLose = armorLose;
         _armorLost = armorLost;
+        _evaded = evaded;
 
         _buff = buff;
         _anyBuff = anyBuff;
         _buffed = buffed;
         _anyBuffed = anyBuffed;
+
+        _consumed = consumed;
     }
 
     // public void ConfigureNote(StringBuilder sb)
@@ -170,16 +179,24 @@ public class BuffEntry : Entry, IAnnotation
 
         List<IAnnotation> annotations = new();
 
-        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
-        {
-            if (description.Contains(buffEntry.Name))
-                annotations.Add(buffEntry);
-        }
-
         foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
         {
-            if (description.Contains(keywordEntry.Name))
-                annotations.Add(keywordEntry);
+            if (!description.Contains(keywordEntry.Name))
+                continue;
+
+            annotations.Add(keywordEntry);
+        }
+
+        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
+        {
+            if (!description.Contains(buffEntry.Name))
+                continue;
+
+            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.Name);
+            if (duplicate != null)
+                continue;
+
+            annotations.Add(buffEntry);
         }
 
         _annotations = annotations.ToArray();

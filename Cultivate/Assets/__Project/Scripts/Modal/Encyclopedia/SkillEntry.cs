@@ -69,16 +69,24 @@ public class SkillEntry : Entry, IAnnotation
 
         List<IAnnotation> annotations = new();
 
-        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
-        {
-            if (evaluated.Contains(buffEntry.Name))
-                annotations.Add(buffEntry);
-        }
-
         foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
         {
-            if (evaluated.Contains(keywordEntry.Name))
-                annotations.Add(keywordEntry);
+            if (!evaluated.Contains(keywordEntry.Name))
+                continue;
+
+            annotations.Add(keywordEntry);
+        }
+
+        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
+        {
+            if (!evaluated.Contains(buffEntry.Name))
+                continue;
+
+            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.Name);
+            if (duplicate != null)
+                continue;
+
+            annotations.Add(buffEntry);
         }
 
         _annotations = annotations.ToArray();

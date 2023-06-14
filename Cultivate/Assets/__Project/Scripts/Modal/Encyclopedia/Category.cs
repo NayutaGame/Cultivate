@@ -38,7 +38,19 @@ public class Category<T> where T : Entry
     public int GetCount() => _list.Count;
 
     public T this[int i] => _list[i];
-    public T this[string key] => _dict[key];
+    public T this[string key]
+    {
+        get
+        {
+            bool success = _dict.TryGetValue(key, out T value);
+            if (success)
+                return value;
+            else
+                return Default();
+        }
+    }
+
+    public virtual T Default() => null;
 
     public int IndexOf(T item)
         => _list.IndexOf(item);

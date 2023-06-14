@@ -10,7 +10,7 @@ public class BattleRunNode : RunNode
     private List<RewardDescriptor> _rewards;
     public EntityEntry EntityEntry;
 
-    public BattleRunNode(Vector2Int position, BattleNodeEntry entry, CreateEntityDetails createEntityDetails) : base(position, entry)
+    public BattleRunNode(Vector2Int position, JingJie jingJie, BattleNodeEntry entry, CreateEntityDetails createEntityDetails) : base(position, jingJie, entry)
     {
         CreateEntityDetails = createEntityDetails;
         _rewards = new();
@@ -43,5 +43,21 @@ public class BattleRunNode : RunNode
     public void ClaimRewards()
     {
         _rewards.Do(reward => reward.Claim());
+    }
+
+    public int Ladder()
+    {
+        int x = Position.x;
+        return JingJie * 3 + (4 <= x && x <= 6 ? 1 : 0) + (x >= 8 ? 2 : 0);
+    }
+
+    private int[] XiuWeiRewardTable = new int[]
+    {
+        5, 11, 31, 11, 21, 61, 15, 31, 91, 21, 41, 121, 25, 51, 151,
+    };
+
+    public int BaseXiuWeiReward()
+    {
+        return XiuWeiRewardTable[Ladder()];
     }
 }

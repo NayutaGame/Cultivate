@@ -74,6 +74,7 @@ public class StageCanvas : Singleton<StageCanvas>
         TimelineView.InitialSetup();
 
         SpeedSlider.value = 0;
+        Refresh();
     }
 
     public void Refresh()

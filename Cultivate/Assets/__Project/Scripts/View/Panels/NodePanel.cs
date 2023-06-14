@@ -54,7 +54,7 @@ public class NodePanel : Panel
 
         RunNode runNode = RunManager.Instance.TryGetCurrentNode();
         PanelDescriptor d = runNode?.CurrentPanel;
-
-        ChangePanel(_panelDict[d.GetType()]);
+        if (d != null)
+            ChangePanel(_panelDict[d.GetType()]);
     }
 }

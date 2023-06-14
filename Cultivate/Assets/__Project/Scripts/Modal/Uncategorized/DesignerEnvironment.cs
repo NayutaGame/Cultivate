@@ -15,6 +15,7 @@ public class DesignerEnvironment
         RunManager rm = RunManager.Instance;
 
         rm.Map.JingJie = JingJie.LianQi;
+        rm.AddXiuWei(50);
 
         bool flag = rm.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: JingJie.LianQi, count: 5);
         if (!flag)

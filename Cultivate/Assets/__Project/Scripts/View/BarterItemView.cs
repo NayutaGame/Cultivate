@@ -27,11 +27,11 @@ public class BarterItemView : MonoBehaviour, IIndexPath
     public void Refresh()
     {
         BarterItem barterItem = RunManager.Get<BarterItem>(_indexPath);
-        if (barterItem == null)
-        {
-            gameObject.SetActive(false);
+
+        bool isReveal = barterItem != null;
+        gameObject.SetActive(isReveal);
+        if (!isReveal)
             return;
-        }
 
         PlayerSkillView.Refresh();
         SkillView.Refresh();

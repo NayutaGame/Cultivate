@@ -49,6 +49,7 @@ public class StageEnvironment : GDictionary
 
             if (!d.Pierce && d.Evade) // 提取事件 target.Evade(attackDetails);
             {
+                await tgt.Evaded(new EvadeDetails(src, tgt, d.Value));
                 _report.Append($"    攻击被闪避");
                 continue;
             }
@@ -259,6 +260,20 @@ public class StageEnvironment : GDictionary
 
         d.Tgt.Armor -= d.Value;
         _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
+    }
+
+    public async Task ConsumeProcedure(StageEntity owner, StageSkill skill, bool forRun)
+        => await ConsumeProcedure(new ConsumeDetails(owner, skill, forRun));
+    public async Task ConsumeProcedure(ConsumeDetails d)
+    {
+        if (d.ForRun)
+            d.Skill.RunConsumed = true;
+
+        if (d.Skill.Consumed)
+            return;
+
+        d.Skill.Consumed = true;
+        await d.Owner.Consumed(d);
     }
 
     private Dictionary<string, Func<object>> _accessors;

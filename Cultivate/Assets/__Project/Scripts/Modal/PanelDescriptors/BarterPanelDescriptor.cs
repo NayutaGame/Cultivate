@@ -27,6 +27,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         pool.Populate(RunManager.Instance.Battle.Hero.TraversalCurrentSlots()
             .FilterObj(s => s.Skill != null).Map(s => s.Skill));
         pool.Populate(RunManager.Instance.Battle.SkillInventory);
+        pool.Shuffle();
 
         int count = Mathf.Min(pool.Count(), 6);
 

@@ -56,6 +56,9 @@ public class RunEnvironment : GDictionary
 
     public bool TryMerge(RunSkill lhs, RunSkill rhs)
     {
+        if (lhs.GetJingJie() >= Hero.GetJingJie())
+            return false;
+
         if (lhs.GetJingJie() != rhs.GetJingJie())
             return false;
 

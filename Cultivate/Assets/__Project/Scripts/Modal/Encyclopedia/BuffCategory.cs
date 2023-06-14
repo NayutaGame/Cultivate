@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class BuffCategory : Category<BuffEntry>
 {
@@ -13,6 +14,7 @@ public class BuffCategory : Category<BuffEntry>
     {
         List = new()
         {
+            new ("不存在的Buff", "不存在的Buff", BuffStackRule.Add, true, false),
             new ("灵气", "可以消耗灵气使用技能", BuffStackRule.Add, true, false),
             new ("跳回合", "跳过回合", BuffStackRule.Add, false, false),
             new ("跳卡牌", "行动时跳过下张卡牌", BuffStackRule.Add, false, false),
@@ -23,7 +25,7 @@ public class BuffCategory : Category<BuffEntry>
                     d.Owner.Swift = true;
                     buff.Stack -= 1;
                 }),
-            new ("免费", "下一次无需灵气", BuffStackRule.Add, true, false),
+            new ("免费", "下一次耗蓝时无需灵气", BuffStackRule.Add, true, false),
 
             new ("延迟护甲", "下回合护甲+[层数]", BuffStackRule.Add, true, false,
                 startTurn: async (buff, entity) =>
@@ -31,12 +33,6 @@ public class BuffCategory : Category<BuffEntry>
                     await buff.Owner.ArmorGainSelfProcedure(buff.Stack);
                     buff.Owner.RemoveBuff(buff);
                 }),
-
-            new ("临金", "临金", BuffStackRule.Add, true, false),
-            new ("临水", "临水", BuffStackRule.Add, true, false),
-            new ("临木", "临木", BuffStackRule.Add, true, false),
-            new ("临火", "临火", BuffStackRule.Add, true, false),
-            new ("临土", "临土", BuffStackRule.Add, true, false),
 
             new ("无常已至", "造成伤害：施加[伤害值，最多Stack]减甲", BuffStackRule.Add, true, false,
                 damage: async (buff, d) =>
@@ -47,15 +43,8 @@ public class BuffCategory : Category<BuffEntry>
                     await buff.Owner.ArmorLoseOppoProcedure(Mathf.Min(d.Value, buff.Stack));
                 }),
 
-            new ("锋锐", "每回合，奇偶：[层数]攻/护甲+[层数]\n受到伤害后层数-1", BuffStackRule.Add, true, true,
-                startTurn: async (buff, d) =>
-                {
-                    bool both = buff.Owner.GetStackOfBuff("森罗万象") > 0;
-                    if (d.SlotIndex % 2 == 0 || both)
-                        await buff.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Jin);
-                    if (d.SlotIndex % 2 == 1 || both)
-                        await buff.Owner.ArmorGainSelfProcedure(buff.Stack);
-                },
+            new ("锋锐", "每回合：[层数]攻\n受到伤害后层数-1", BuffStackRule.Add, true, true,
+                endTurn: async (buff, d) => await buff.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Jin),
                 damaged: async (buff, d) => buff.Stack -= 1),
             new ("森罗万象", "奇偶同时激活两个效果", BuffStackRule.Wasted, true, false),
 
@@ -91,17 +80,18 @@ public class BuffCategory : Category<BuffEntry>
                     if (!d.Skill.GetWaiGongType().Contains(SkillTypeCollection.Attack))
                         buff.Stack -= 1;
                 }),
-            // new ("治疗转二动", "本场战斗中，被治疗时，如果实际治疗>=20，二动", BuffStackRule.Wasted, true, false,
+
+            // new ("治疗转灵气", "受到治疗时：灵气+[Stack]", BuffStackRule.Add, true, false,
+            //     healed: async (buff, d) => await d.Tgt.BuffSelfProcedure("灵气", buff.Stack)),
+            // new ("治疗转二动", "被治疗时，如果实际治疗>=20，二动", BuffStackRule.Wasted, true, false,
             //     healed: (buff, d) =>
             //     {
             //         int actualHealed = Mathf.Min(d.Tgt.MaxHp - d.Tgt.Hp, d.Value);
             //         d.Tgt.Swift |= actualHealed >= 20;
             //     }),
+            new ("不动明王咒", "无法二动/三动", BuffStackRule.Wasted, false, false),
             new ("玄武吐息法", "治疗可以穿上限", BuffStackRule.Add, true, true,
-                healed: async (buff, d) =>
-                {
-                    d.Penetrate = true;
-                }),
+                healed: async (buff, d) => d.Penetrate = true),
             new ("格挡", "受到攻击：攻击力-[层数]", BuffStackRule.Add, true, true,
                 attacked: async (buff, d) =>
                 {
@@ -112,16 +102,8 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             new ("自动格挡", "每轮：格挡+[层数]", BuffStackRule.Add, true, true,
                 startRound: async (buff, owner) => await owner.BuffSelfProcedure("格挡", buff.Stack)),
-            // new ("强化格挡", "本场战斗中，无法治疗，每次治疗时，每有10点，格挡+1\n每1格挡可以抵挡2攻", BuffStackRule.Wasted, true, false,
-            //     healed: (buff, d) =>
-            //     {
-            //         int actualHealed = Mathf.Min(d.Tgt.MaxHp - d.Tgt.Hp, d.Value);
-            //         int value = actualHealed / 10;
-            //         d.Tgt.BuffSelfProcedure("格挡", value);
-            //         d.Cancel = true;
-            //     }),
-            // new ("缠绕", "无法二动\n每回合：层数-1", BuffStackRule.Add, false, true,
-            //     endTurn: (buff, d) => buff.Stack -= 1),
+            new ("缠绕", "无法二动/三动\n每回合：层数-1", BuffStackRule.Add, false, true,
+                endTurn: async (buff, d) => buff.Stack -= 1),
 
             new ("闪避", "受到攻击时，减少1层，忽略此次攻击", BuffStackRule.Add, true, true,
                 attacked: async (buff, d) =>
@@ -154,25 +136,35 @@ public class BuffCategory : Category<BuffEntry>
 
             new ("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,
                 startTurn: async (buff, d) => await d.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Huo)),
+            new ("业火", "消耗牌时：使用2次", BuffStackRule.Wasted, true, false,
+                consumed: async (buff, d) => await d.Skill.Execute(d.Owner)),
+            new ("淬体", "消耗生命时：灼烧+[层数]", BuffStackRule.Add, true, false,
+                damaged: async (buff, d) =>
+                {
+                    if (d.Src != d.Tgt || buff.Owner != d.Src)
+                        return;
+
+                    await buff.Owner.BuffSelfProcedure("灼烧", buff.Stack);
+                }),
             new ("追击", "持续[层数]次，下次攻击时，次数+1", BuffStackRule.Add, true, true),
             new ("净天地", "使用非攻击卡不消耗灵气，使用之后消耗", BuffStackRule.Add, true, false,
                 startStep: async (buff, d) =>
                 {
                     if (d.Skill.GetWaiGongType().Contains(SkillTypeCollection.Attack))
                         return;
-                    d.Skill.Consumed = true;
+
+                    await d.Skill.ConsumeProcedure();
                     bool noBuff = buff.Owner.GetStackOfBuff("免费") == 0;
                     if(noBuff)
                         await buff.Owner.BuffSelfProcedure("免费");
                 }),
 
-            new ("盛开", "受到治疗：力量+[层数]", BuffStackRule.Max, true, false,
-                healed: async (buff, d) =>
-                {
-                    await buff.Owner.BuffSelfProcedure("力量");
-                }),
+            new ("心斋", "所有耗蓝-[层数]", BuffStackRule.Add, true, false),
 
-            new ("通透世界", "本场战斗中：攻击具有穿透", BuffStackRule.Wasted, true, false,
+            new ("胧", "收到治疗时：力量+[层数]", BuffStackRule.Add, true, false,
+                evaded: async (buff, d) => await buff.Owner.BuffSelfProcedure("力量", buff.Stack)),
+
+            new ("通透世界", "攻击具有穿透", BuffStackRule.Wasted, true, false,
                 attack: async (buff, d) => d.Pierce = true),
             new ("鹤回翔", "反转出牌顺序", BuffStackRule.Wasted, true, false),
 
@@ -219,7 +211,7 @@ public class BuffCategory : Category<BuffEntry>
                         return;
                     d.Value += buff.Stack;
                 }),
-            new ("永久暴击", "本场战斗中，攻击附带暴击", BuffStackRule.Wasted, true, false),
+            new ("永久暴击", "攻击附带暴击", BuffStackRule.Wasted, true, false),
             new ("天人合一", "激活所有架势", BuffStackRule.Wasted, true, false),
 
             new ("看破", "无效化敌人下一次攻击，并且反击", BuffStackRule.Add, true, false,
@@ -238,4 +230,6 @@ public class BuffCategory : Category<BuffEntry>
     {
         List.Do(entry => entry.Generate());
     }
+
+    public override BuffEntry Default() => this["不存在的Buff"];
 }

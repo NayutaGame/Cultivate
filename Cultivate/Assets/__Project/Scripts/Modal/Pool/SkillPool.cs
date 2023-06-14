@@ -9,7 +9,7 @@ public class SkillPool : Pool<SkillEntry>
 {
     public SkillPool()
     {
-        4.Do(i => Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e != Encyclopedia.SkillCategory[0])));
+        4.Do(i => Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e != Encyclopedia.SkillCategory.Default() && e != Encyclopedia.SkillCategory[1])));
     }
 
     public bool TryDrawSkill(out RunSkill skill, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
@@ -71,7 +71,7 @@ public class SkillPool : Pool<SkillEntry>
         }
 
         if (!consume)
-            Populate(skills.Map(s => s.Entry));
+            Populate(skills.FilterObj(s => s.Entry != Encyclopedia.SkillCategory[0]).Map(s => s.Entry));
 
         return true;
     }

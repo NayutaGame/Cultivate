@@ -27,11 +27,11 @@ public class CommodityView : MonoBehaviour, IIndexPath
     public void Refresh()
     {
         Commodity commodity = RunManager.Get<Commodity>(_indexPath);
-        if (commodity == null)
-        {
-            gameObject.SetActive(false);
+
+        bool isReveal = commodity != null;
+        gameObject.SetActive(isReveal);
+        if (!isReveal)
             return;
-        }
 
         SkillView.Refresh();
         PriceText.text = commodity.FinalPrice.ToString();

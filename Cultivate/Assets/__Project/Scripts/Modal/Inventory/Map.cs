@@ -162,12 +162,12 @@ public class Map : GDictionary
                 NodeEntry nodeEntry = pool.ForcePopItem(pred: e => e.CanCreate(currX));
                 if (nodeEntry is BattleNodeEntry battleNodeEntry)
                 {
-                    CreateEntityDetails d = new CreateEntityDetails(_jingJie, x <= 2, 4 <= x && x <= 6, x == 8);
-                    this[x, y] = new BattleRunNode(new Vector2Int(x, y), battleNodeEntry, d);
+                    CreateEntityDetails d = new CreateEntityDetails(_jingJie, x <= 2, 4 <= x && x <= 6, x >= 8);
+                    this[x, y] = new BattleRunNode(new Vector2Int(x, y), _jingJie, battleNodeEntry, d);
                 }
                 else
                 {
-                    this[x, y] = new RunNode(new Vector2Int(x, y), nodeEntry);
+                    this[x, y] = new RunNode(new Vector2Int(x, y), _jingJie, nodeEntry);
                 }
 
                 if (x == 0)
@@ -213,7 +213,7 @@ public class Map : GDictionary
             if (node is { Entry: AdventureNodeEntry adventureNodeEntry })
             {
                 NodeEntry newNodeEntry = _a.ForcePopItem(pred: n => n != adventureNodeEntry);
-                this[x, y] = new RunNode(new Vector2Int(x, y), newNodeEntry);
+                this[x, y] = new RunNode(new Vector2Int(x, y), _jingJie, newNodeEntry);
                 return true;
             }
         }

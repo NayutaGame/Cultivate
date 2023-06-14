@@ -952,7 +952,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u9020\u621022\u70B9\u4F24\u5BB3\n<style=\"Highlight\">\u51FB\u4F24</style> 
     \u83B7\u5F97\u9020\u6210\u51FB\u4F24\u70B9\u6570\u7684\u62A4\u7532\uFF0C\u83B7\u5F972\u5C42\u8DF3\u56DE\u5408\n<style=\"Highlight\">\u67B6\u52BF</style> 
-    \u53D6\u6D88\u83B7\u5F97\u8DF3\u56DE\u5408"
+    \u53D6\u6D88\u83B7\u5F97\u8DF3\u56DE\u5408\n\u6FC0\u6D3B\u6240\u6709\u67B6\u52BF"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cedc498801f2c57498af03af488a905b, type: 2}
   m_sharedMaterial: {fileID: -6074226411166007710, guid: cedc498801f2c57498af03af488a905b, type: 2}
@@ -979,12 +979,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14.55
+  m_fontSize: 11.65
   m_fontSizeBase: 16.44
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 10
-  m_fontSizeMax: 30
+  m_fontSizeMax: 18
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512

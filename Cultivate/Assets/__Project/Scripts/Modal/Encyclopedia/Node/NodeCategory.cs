@@ -53,26 +53,29 @@ public class NodeCategory : Category<NodeEntry>
             new RewardNodeEntry("获得修为", "获得修为",
                 create: runNode =>
                 {
-                    DialogPanelDescriptor A = new("获得了20修为");
-                    A._reward = new ResourceRewardDescriptor(xiuWei: 20);
+                    int xiuWeiValue = Mathf.RoundToInt((runNode.JingJie + 1) * 21 * RandomManager.Range(0.8f, 1.2f));
+                    DialogPanelDescriptor A = new($"获得了{xiuWeiValue}修为");
+                    A._reward = new ResourceRewardDescriptor(xiuWei: xiuWeiValue);
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("请选择想要升级的牌", "请选择想要升级的牌",
+            new RewardNodeEntry("提升境界", "提升境界",
                 create: runNode =>
                 {
-                    CardPickerPanelDescriptor A = new("请选择想要升级的牌", new Range(0, 6),
+                    CardPickerPanelDescriptor A = new("可以将一张低于化神境界的牌提升到主角的下一境界，请选择想要提升的牌", new Range(0, 2),
                         action: iRunSkillList =>
                         {
                             foreach (var iRunSkill in iRunSkillList)
                             {
                                 if (iRunSkill is RunSkill skill)
                                 {
-                                    skill.TryIncreaseJingJie();
+                                    if (skill.JingJie <= runNode.JingJie && skill.JingJie != JingJie.HuaShen)
+                                        skill.JingJie = runNode.JingJie + 1;
                                 }
                                 else if (iRunSkill is SkillSlot slot)
                                 {
-                                    slot.TryIncreaseJingJie();
+                                    if (slot.Skill.JingJie <= runNode.JingJie && slot.Skill.JingJie != JingJie.HuaShen)
+                                        slot.Skill.JingJie = runNode.JingJie + 1;
                                 }
                             }
                         });
@@ -82,15 +85,16 @@ public class NodeCategory : Category<NodeEntry>
             new RewardNodeEntry("加生命上限", "加生命上限",
                 create: runNode =>
                 {
-                    DialogPanelDescriptor A = new("加10点生命上限");
-                    A._reward = new ResourceRewardDescriptor(health: 10);
+                    int healthValue = (runNode.JingJie + 1) * 3;
+                    DialogPanelDescriptor A = new($"找到了一个人参果，吃了之后获得了{healthValue}点生命上限");
+                    A._reward = new ResourceRewardDescriptor(health: healthValue);
                     runNode.ChangePanel(A);
                 }),
 
             new RewardNodeEntry("商店", "商店",
                 create: runNode =>
                 {
-                    ShopPanelDescriptor A = new();
+                    ShopPanelDescriptor A = new(runNode.JingJie);
                     runNode.ChangePanel(A);
                 }),
 
@@ -118,18 +122,127 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
+            new AdventureNodeEntry("镜花水月", "镜花水月",
+                create: runNode =>
+                {
+                    CardPickerPanelDescriptor A = new("请选择至多4张牌移除，将会从中选择一张，每移除一张牌，返还一份", range: new Range(0, 5),
+                        action: iSkills =>
+                        {
+                            int count = iSkills.Count;
+                            if (count == 0)
+                                return;
 
+                            RunSkill copyingSkill = null;
+                            object copying = iSkills[RandomManager.Range(0, count)];
+                            if (copying is RunSkill runSkill)
+                            {
+                                copyingSkill = runSkill;
+                            }
+                            else if (copying is SkillSlot slot)
+                            {
+                                copyingSkill = slot.Skill;
+                            }
 
+                            foreach (object iSkill in iSkills)
+                            {
+                                if (iSkill is RunSkill skill)
+                                {
+                                    RunManager.Instance.Battle.SkillInventory.RemoveSkill(skill);
+                                }
+                                else if (iSkill is SkillSlot slot)
+                                {
+                                    slot.Skill = null;
+                                }
+                            }
 
+                            count.Do(i => RunManager.Instance.Battle.SkillInventory.AddSkill(copyingSkill));
+                        });
 
+                    runNode.ChangePanel(A);
+                }),
 
-            new AdventureNodeEntry("图书馆", "图书馆",
+            new AdventureNodeEntry("感悟五行相生", "感悟五行相生",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("是否尝试感悟五行相生的规律",
+                        "尝试感受（将会将你的所有牌替换成相生五行的牌）",
+                        "离开");
+
+                    A[0]._select = option =>
+                    {
+                        foreach (var slot in RunManager.Instance.Battle.Hero.TraversalCurrentSlots())
+                        {
+                            if (slot.Skill == null)
+                                continue;
+                            WuXing? oldWuXing = slot.Skill.Entry.WuXing;
+                            JingJie oldJingJie = slot.Skill.JingJie;
+
+                            if (!oldWuXing.HasValue)
+                                continue;
+
+                            JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
+
+                            RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
+                            slot.Skill = newSkill;
+                        }
+
+                        for(int i = 0; i < RunManager.Instance.Battle.SkillInventory.Count; i++)
+                        {
+                            RunSkill oldSkill = RunManager.Instance.Battle.SkillInventory[i];
+                            WuXing? oldWuXing = oldSkill.Entry.WuXing;
+                            JingJie oldJingJie = oldSkill.JingJie;
+
+                            if (!oldWuXing.HasValue)
+                                continue;
+
+                            JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
+
+                            RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
+                            RunManager.Instance.Battle.SkillInventory.ReplaceSkill(oldSkill, newSkill);
+                        }
+
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("连抽五张", "连抽五张",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("连抽五张事件",
+                        "连抽五张，需要消耗一半生命上限",
+                        "只抽一张，无需消耗生命上限");
+
+                    A[0]._select = option =>
+                    {
+                        RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 5);
+                        RunManager.Instance.Battle.SkillInventory.AddSkills(skills);
+
+                        int dHealth = RunManager.Instance.Battle.Hero.GetFinalHealth() / 2;
+                        RunManager.Instance.Battle.Hero.SetDHealth(-dHealth);
+
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    A[1]._select = option =>
+                    {
+                        RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill skill, jingJie: RunManager.Instance.Map.JingJie);
+                        RunManager.Instance.Battle.SkillInventory.AddSkill(skill);
+
+                        RunManager.Instance.Map.TryFinishNode();
+                    };
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new AdventureNodeEntry("天机阁", "天机阁",
                 create: runNode =>
                 {
                     SkillInventory inventory = new();
-                    RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, count: 20, consume: false);
+                    RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 10, consume: false);
                     inventory.AddSkills(skills);
-                    ArbitraryCardPickerPanelDescriptor A = new("请从20张牌中选1张获取", inventory: inventory,
+                    ArbitraryCardPickerPanelDescriptor A = new("请从10张牌中选1张获取", inventory: inventory,
                         action: toAdd => RunManager.Instance.Battle.SkillInventory.AddSkills(toAdd));
                     runNode.ChangePanel(A);
                 }),

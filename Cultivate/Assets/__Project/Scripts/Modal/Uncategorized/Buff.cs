@@ -73,8 +73,10 @@ public class Buff
         if (_buffEntry._armorGained != null) _owner.ArmorGainedEvent += ArmorGained;
         if (_buffEntry._armorLose != null) _owner.ArmorLoseEvent += ArmorLose;
         if (_buffEntry._armorLost != null) _owner.ArmorLostEvent += ArmorLost;
+        if (_buffEntry._evaded != null) _owner.EvadedEvent += Evaded;
         if (_buffEntry._buff      != null) _owner.Buff.Add            (_buffEntry._buff.Item1,      _Buff);
         if (_buffEntry._buffed    != null) _owner.Buffed.Add          (_buffEntry._buffed.Item1,    Buffed);
+        if (_buffEntry._consumed != null) _owner.ConsumedEvent += Consumed;
 
         StackChangedEvent?.Invoke();
     }
@@ -102,8 +104,10 @@ public class Buff
         if (_buffEntry._armorGained != null) _owner.ArmorGainedEvent -= ArmorGained;
         if (_buffEntry._armorLose != null) _owner.ArmorLoseEvent -= ArmorLose;
         if (_buffEntry._armorLost != null) _owner.ArmorLostEvent -= ArmorLost;
+        if (_buffEntry._evaded != null) _owner.EvadedEvent -= Evaded;
         if (_buffEntry._buff      != null) _owner.Buff.Remove            (_Buff);
         if (_buffEntry._buffed    != null) _owner.Buffed.Remove          (Buffed);
+        if (_buffEntry._consumed != null) _owner.ConsumedEvent -= Consumed;
     }
 
     public void Gain(int gain) => _buffEntry._gain?.Invoke(this, _owner, gain);
@@ -130,6 +134,8 @@ public class Buff
     private async Task ArmorGained         (ArmorGainDetails d) => await _buffEntry._armorGained  (this, d);
     private async Task ArmorLose           (ArmorLoseDetails d) => await _buffEntry._armorLose    (this, d);
     private async Task ArmorLost           (ArmorLoseDetails d) => await _buffEntry._armorLost    (this, d);
+    private async Task Evaded              (EvadeDetails d) =>     await _buffEntry._evaded       (this, d);
     private async Task<BuffDetails> _Buff  (BuffDetails d) =>      await _buffEntry._buff.Item2   (this, d);
     private async Task<BuffDetails> Buffed (BuffDetails d) =>      await _buffEntry._buffed.Item2 (this, d);
+    private async Task Consumed            (ConsumeDetails d) =>   await _buffEntry._consumed     (this, d);
 }

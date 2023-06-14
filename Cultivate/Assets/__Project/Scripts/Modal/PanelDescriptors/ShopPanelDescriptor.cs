@@ -5,14 +5,17 @@ using UnityEngine;
 
 public class ShopPanelDescriptor : PanelDescriptor
 {
+    private static readonly int[] PriceTable = new int[] { 39, 59, 99, 149, 249 };
+    private JingJie _jingJie;
     private CommodityInventory _commodities;
 
-    public ShopPanelDescriptor()
+    public ShopPanelDescriptor(JingJie jingJie)
     {
         _accessors = new()
         {
             { "Commodities",                () => _commodities },
         };
+        _jingJie = jingJie;
     }
 
     public override void DefaultEnter()
@@ -21,12 +24,14 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         _commodities = new CommodityInventory();
 
-        bool success = RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 6, consume: false);
+        bool success = RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: _jingJie, count: 6, consume: false);
         if (success)
         {
             foreach (RunSkill skill in skills)
             {
-                _commodities.Add(new Commodity(skill, 20));
+                int price = Mathf.RoundToInt(PriceTable[_jingJie] * RandomManager.Range(0.8f, 1.2f));
+                float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
+                _commodities.Add(new Commodity(skill, price, discount));
             }
         }
     }

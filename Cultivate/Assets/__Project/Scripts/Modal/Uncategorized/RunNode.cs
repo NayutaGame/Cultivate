@@ -7,7 +7,9 @@ public class RunNode : GDictionary
 {
     protected NodeEntry _entry;
     public NodeEntry Entry => _entry;
+
     public Vector2Int Position { get; private set; }
+    public JingJie JingJie { get; private set; }
 
     private RunNodeState _state;
     public RunNodeState State
@@ -26,7 +28,7 @@ public class RunNode : GDictionary
 
     private Dictionary<string, Func<object>> _accessors;
     public Dictionary<string, Func<object>> GetAccessors() => _accessors;
-    public RunNode(Vector2Int position, NodeEntry entry)
+    public RunNode(Vector2Int position, JingJie jingJie, NodeEntry entry)
     {
         _accessors = new()
         {
@@ -34,6 +36,7 @@ public class RunNode : GDictionary
         };
 
         Position = position;
+        JingJie = jingJie;
         _entry = entry;
         _state = RunNodeState.Locked;
     }
