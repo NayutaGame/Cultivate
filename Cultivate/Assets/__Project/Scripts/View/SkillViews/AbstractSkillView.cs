@@ -197,7 +197,8 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
-        _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
+        if (_image != null)
+            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
 
         RunCanvas.Instance.SetIndexPathForPreview(null);
     }
@@ -210,7 +211,8 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
-        _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
+        if (_image != null)
+            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
 
         RunCanvas.Instance.Refresh();
     }

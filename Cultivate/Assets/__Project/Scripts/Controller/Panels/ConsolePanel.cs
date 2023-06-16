@@ -1,0 +1,103 @@
+using System.Collections;
+using System.Collections.Generic;
+using CLLibrary;
+using DG.Tweening;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ConsolePanel : Panel
+{
+    public TMP_Text MingYuanText;
+    public Button MingYuanButton;
+    public TMP_Text GoldText;
+    public Button GoldButton;
+    public TMP_InputField HealthInputField;
+    public TMP_Dropdown JingJieDropdown;
+
+    public override void Configure()
+    {
+        base.Configure();
+
+        MingYuanButton.onClick.AddListener(AddMingYuan);
+        GoldButton.onClick.AddListener(AddXiuWei);
+
+        HealthInputField.onValueChanged.AddListener(HealthChanged);
+
+        JingJieDropdown.options = new();
+        JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.ToString())));
+        JingJieDropdown.onValueChanged.AddListener(JingJieChanged);
+    }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        MingYuanText.text = RunManager.Instance.MingYuan.ToString();
+        GoldText.text = RunManager.Instance.XiuWei.ToString();
+
+        IEntityModel entity = RunManager.Instance.Battle.Hero;
+        HealthInputField.SetTextWithoutNotify(entity.GetBaseHealth().ToString());
+        JingJieDropdown.SetValueWithoutNotify(entity.GetJingJie());
+    }
+
+    public void AddMingYuan()
+    {
+        RunManager.Instance.AddMingYuan();
+        Refresh();
+    }
+
+    private void AddXiuWei()
+    {
+        RunManager.Instance.AddXiuWei();
+        Refresh();
+    }
+
+    private void HealthChanged(string value)
+    {
+        int.TryParse(value, out int health);
+        health = Mathf.Clamp(health, 1, 9999);
+
+        IEntityModel entity = RunManager.Instance.Battle.Hero;
+        entity.SetBaseHealth(health);
+        RunCanvas.Instance.Refresh();
+    }
+
+    private void JingJieChanged(int jingJie)
+    {
+        IEntityModel entity = RunManager.Instance.Battle.Hero;
+        entity.SetJingJie(jingJie);
+        RunCanvas.Instance.Refresh();
+    }
+
+    private bool _showing;
+
+    public bool Showing
+    {
+        get => _showing;
+        set
+        {
+            _showing = value;
+            DOTween.Kill(this);
+            if (_showing)
+                ShowTween();
+            else
+                HideTween();
+        }
+    }
+
+    public void ToggleShowing()
+    {
+        Showing = !Showing;
+    }
+
+    private void ShowTween()
+    {
+        _rectTransform.DOAnchorPosY(243f, 0.3f).SetEase(Ease.OutQuad).Restart();
+    }
+
+    private void HideTween()
+    {
+        _rectTransform.DOAnchorPosY(771f, 0.3f).SetEase(Ease.InQuad).Restart();
+    }
+}

@@ -138,13 +138,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     public float TurnChanNeng => Modifier.Value.ForceGet("turnChanNengAdd") * (1 + Modifier.Value.ForceGet("turnChanNengMul"));
 
-    public void AddTurn()
-    {
-        _turn += 1;
-        _xiuWei += TurnXiuWei;
-        _chanNeng += TurnChanNeng;
-    }
-
     public void AddXiuWei(int xiuWei = 10)
     {
         _xiuWei += xiuWei;
@@ -155,12 +148,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
         _xiuWei -= value;
     }
 
-    public void AddChanNeng(int chanNeng = 10)
-    {
-        _chanNeng += chanNeng;
-    }
-
-    public void AddMingYuan(int mingYuan = 10)
+    public void AddMingYuan(int mingYuan = 1)
     {
         _mingYuan += mingYuan;
     }
@@ -171,16 +159,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
     }
 
     #endregion
-
-    // public void RefreshChip()
-    // {
-    //     SkillInventory.RefreshChip();
-    // }
-    //
-    // public void ClearChip()
-    // {
-    //     SkillInventory.Clear();
-    // }
 
     public bool CanAffordTech(IndexPath indexPath)
     {

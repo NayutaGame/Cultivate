@@ -16,6 +16,10 @@ public class RunCanvas : Singleton<RunCanvas>
     [SerializeField] private RunSkillPreview RunSkillPreview;
     public SkillGhost SkillGhost;
 
+    public TopBar TopBar;
+    public Button ConsoleToggle;
+    public DeckView DeckView;
+
     public Button CharacterButton;
     public Button TechButton;
     public Button SimulateButton;
@@ -23,6 +27,8 @@ public class RunCanvas : Singleton<RunCanvas>
     public Button LibraryButton;
     public Button MapButton;
     public Button NodeButton;
+
+    public ConsolePanel ConsolePanel;
 
     public CharacterPanel CharacterPanel;
     public TechTreePanel TechTreePanel;
@@ -34,18 +40,13 @@ public class RunCanvas : Singleton<RunCanvas>
 
     private Panel _currentPanel;
 
-    public TMP_Text TurnText;
-    public Button TurnButton;
-    public TMP_Text XiuWeiText;
-    public TMP_Text TurnXiuWeiText;
-    public Button XiuWeiButton;
-    public TMP_Text ChanNengText;
-    public TMP_Text TurnChanNengText;
-    public Button ChanNengButton;
-
     public override void DidAwake()
     {
         base.DidAwake();
+
+        TopBar.Configure();
+        ConsoleToggle.onClick.AddListener(ConsolePanel.ToggleShowing);
+        DeckView.Configure();
 
         CharacterButton.onClick.AddListener(OpenCharacterPanel);
         TechButton.onClick.AddListener(OpenTechTreePanel);
@@ -54,10 +55,6 @@ public class RunCanvas : Singleton<RunCanvas>
         LibraryButton.onClick.AddListener(OpenLibraryPanel);
         MapButton.onClick.AddListener(OpenMapPanel);
         NodeButton.onClick.AddListener(OpenNodePanel);
-
-        TurnButton.onClick.AddListener(AddTurn);
-        XiuWeiButton.onClick.AddListener(AddXiuWei);
-        ChanNengButton.onClick.AddListener(AddChanNeng);
 
         Refresh();
     }
@@ -87,36 +84,10 @@ public class RunCanvas : Singleton<RunCanvas>
     {
         if(_currentPanel != null)
             _currentPanel.Refresh();
-
-        TurnText.text = RunManager.Instance.Turn.ToString();
-        XiuWeiText.text = RunManager.Instance.XiuWei.ToString();
-        TurnXiuWeiText.text = $"+{RunManager.Instance.TurnXiuWei}";
-        ChanNengText.text = RunManager.Instance.ChanNeng.ToString();
-        TurnChanNengText.text = $"+{RunManager.Instance.TurnChanNeng}";
+        TopBar.Refresh();
+        ConsolePanel.Refresh();
+        DeckView.Refresh();
     }
-
-    public void AddTurn()
-    {
-        RunManager.Instance.AddTurn();
-        Refresh();
-    }
-
-    public void AddXiuWei()
-    {
-        RunManager.Instance.AddXiuWei();
-        Refresh();
-    }
-
-    public void AddChanNeng()
-    {
-        RunManager.Instance.AddChanNeng();
-        Refresh();
-    }
-
-    // private void OnEnable()
-    // {
-    //     Refresh();
-    // }
 
     public void SetIndexPathForPreview(IndexPath indexPath)
     {
