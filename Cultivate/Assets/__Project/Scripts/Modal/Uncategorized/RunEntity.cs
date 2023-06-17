@@ -46,7 +46,7 @@ public class RunEntity : GDictionary, IEntityModel
 
         _slots.Length.Do(i =>
         {
-            _slots[i].SetReveal(Start <= i && i < end);
+            _slots[i].SetLocked(!(Start <= i && i < end));
         });
     }
 

@@ -8,9 +8,7 @@ public class InteractDelegate
 {
     private int _distinctItems;
 
-
     private Func<IInteractable, int?> _getId;
-
 
     private Func<IInteractable, IInteractable, bool>[] _dragDropTable;
     private Func<IInteractable, IInteractable, bool> GetDragDrop(int fromId, int toId)

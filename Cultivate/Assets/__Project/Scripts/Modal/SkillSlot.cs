@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using CLLibrary;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
-public class SkillSlot : ISkillModel
+public class SkillSlot : GDictionary
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
@@ -15,6 +16,33 @@ public class SkillSlot : ISkillModel
     public RunEntity Owner => _owner;
     [SerializeField] private int _index;
 
+    public enum SkillSlotState
+    {
+        Locked,
+        Empty,
+        Occupied,
+    }
+
+    private SkillSlotState _state;
+    public SkillSlotState State => _state;
+    public void SetLocked(bool locked)
+    {
+        if (_state == SkillSlotState.Locked)
+        {
+            if (locked)
+                return;
+
+            _state = SkillSlotState.Empty;
+            return;
+        }
+
+        if (!locked)
+            return;
+
+        Skill = null;
+        _state = SkillSlotState.Locked;
+    }
+
     [SerializeReference] private RunSkill _skill;
     public RunSkill Skill
     {
@@ -22,64 +50,24 @@ public class SkillSlot : ISkillModel
         set
         {
             _skill = value?.Clone();
+            _state = _skill == null ? SkillSlotState.Empty : SkillSlotState.Occupied;
             EnvironmentChanged();
         }
     }
 
-    public bool ShowPreview()
-        => _skill != null;
-
-    private bool IsReveal;
-    public bool GetReveal()
-        => IsReveal;
-    public void SetReveal(bool isReveal)
-        => IsReveal = isReveal;
-
+    private Dictionary<string, Func<object>> _accessors;
+    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
     public SkillSlot(RunEntity owner, int index)
     {
+        _accessors = new()
+        {
+            { "Skill",         () => _skill },
+        };
+
         _owner = owner;
         _index = index;
-        IsReveal = true;
+        _state = SkillSlotState.Locked;
     }
-
-    public int GetManaCost()
-        => _skill?.GetManaCost() ?? 0;
-
-    public Color GetManaCostColor()
-        => IsManaShortage ? Color.red : Color.black;
-
-    public string GetManaCostString()
-    {
-        int manaCost = GetManaCost();
-        return manaCost == 0 ? "" : manaCost.ToString();
-    }
-
-    public string GetName()
-        => _skill?.GetName() ?? "空";
-
-    public string GetAnnotatedDescription(string evaluated = null)
-        => _skill?.GetAnnotatedDescription(evaluated);
-
-    public SkillTypeCollection GetSkillTypeCollection()
-        => _skill?.GetSkillTypeCollection() ?? SkillTypeCollection.None;
-
-    public Color GetColor()
-        => _skill?.GetColor() ?? CanvasManager.Instance.JingJieColors[JingJie.LianQi];
-
-    public Sprite GetCardFace()
-        => _skill?.Entry.CardFace;
-
-    public Sprite GetJingJieSprite()
-        => CanvasManager.Instance.JingJieSprites[_skill?.GetJingJie() ?? JingJie.LianQi];
-
-    public string GetDescription()
-        => _skill?.GetDescription();
-
-    public string GetAnnotationText()
-        => _skill?.GetAnnotationText();
-
-    public string GetJingJieString()
-        => _skill?.GetJingJie().Index.ToString() ?? "null";
 
     public bool TryIncreaseJingJie()
     {

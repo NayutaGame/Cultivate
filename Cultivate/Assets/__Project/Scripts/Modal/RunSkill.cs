@@ -58,12 +58,6 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
     public string GetDescription()
         => _entry.Evaluate(JingJie, JingJie - _entry.JingJieRange.Start);
 
-    public bool ShowPreview()
-        => true;
-
-    public bool GetReveal()
-        => true;
-
     public int GetManaCost()
         => _entry.GetManaCost(JingJie, JingJie - _entry.JingJieRange.Start);
 

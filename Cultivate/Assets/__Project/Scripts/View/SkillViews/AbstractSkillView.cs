@@ -140,7 +140,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
         }
 
         ISkillModel skill = GetSkillModel();
-        if (skill == null || !skill.GetReveal())
+        if (skill == null)
         {
             gameObject.SetActive(false);
             return;

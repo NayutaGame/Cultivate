@@ -14,6 +14,7 @@ public class ConsolePanel : Panel
     public Button GoldButton;
     public TMP_InputField HealthInputField;
     public TMP_Dropdown JingJieDropdown;
+    public Button DrawSkillButton;
 
     public override void Configure()
     {
@@ -27,6 +28,8 @@ public class ConsolePanel : Panel
         JingJieDropdown.options = new();
         JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.ToString())));
         JingJieDropdown.onValueChanged.AddListener(JingJieChanged);
+
+        DrawSkillButton.onClick.AddListener(DrawSkill);
     }
 
     public override void Refresh()
@@ -67,6 +70,12 @@ public class ConsolePanel : Panel
     {
         IEntityModel entity = RunManager.Instance.Battle.Hero;
         entity.SetJingJie(jingJie);
+        RunCanvas.Instance.Refresh();
+    }
+
+    private void DrawSkill()
+    {
+        RunManager.Instance.Battle.SkillInventory.TryDrawSkill(out RunSkill skill, jingJie: RunManager.Instance.Map.JingJie);
         RunCanvas.Instance.Refresh();
     }
 

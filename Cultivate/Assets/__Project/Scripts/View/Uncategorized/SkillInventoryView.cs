@@ -7,8 +7,13 @@ using UnityEngine.UI;
 
 public class SkillInventoryView : InventoryView<AbstractSkillView>, IDropHandler
 {
+    public ScrollRect ScrollRect;
+
     public Button[] DrawButtons;
     public Button[] SortButtons;
+
+    public HoldButton LeftButton;
+    public HoldButton RightButton;
 
     public override void Configure(IndexPath indexPath)
     {
@@ -25,6 +30,12 @@ public class SkillInventoryView : InventoryView<AbstractSkillView>, IDropHandler
             int comparisonId = i;
             SortButtons[i].onClick.AddListener(() => SortByComparisonId(comparisonId));
         });
+
+        LeftButton.HoldAction = () =>
+            ScrollRect.horizontalNormalizedPosition -= 2000f / ScrollRect.content.rect.width * Time.deltaTime;
+
+        RightButton.HoldAction = () =>
+            ScrollRect.horizontalNormalizedPosition += 2000f / ScrollRect.content.rect.width * Time.deltaTime;
     }
 
     public void OnDrop(PointerEventData eventData)

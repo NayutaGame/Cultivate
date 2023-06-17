@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 
 public class DeckView : MonoBehaviour
@@ -9,21 +12,31 @@ public class DeckView : MonoBehaviour
     public Image PlayerSprite;
     public Button ToggleButton;
     public Button SortButton;
-    public RunChipInventoryView PlayerHand;
+    public SlotInventoryView PlayerHand;
     public SkillInventoryView PlayerInventory;
-    public Button LeftButton;
-    public Button RightButton;
+
+    public RectTransform _backgroundTransform;
+    public RectTransform _spriteTransform;
+    public RectTransform _handTransform;
 
     private InteractDelegate InteractDelegate;
 
     public void Configure()
     {
+        _showTween = GetShowTween();
+        _hideTween = GetHideTween();
+
+        _showing = true;
+
         ConfigureInteractDelegate();
 
         PlayerHand.Configure(new IndexPath("Battle.Hero.Slots"));
         PlayerHand.SetDelegate(InteractDelegate);
         PlayerInventory.Configure(new IndexPath("Battle.SkillInventory"));
         PlayerInventory.SetDelegate(InteractDelegate);
+
+        ToggleButton.onClick.AddListener(Toggle);
+        SortButton.onClick.AddListener(Sort);
     }
 
     public void Refresh()
@@ -34,7 +47,7 @@ public class DeckView : MonoBehaviour
 
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new(4,
+        InteractDelegate = new(3,
             getId: view =>
             {
                 object item = RunManager.Get<object>(view.GetIndexPath());
@@ -84,5 +97,45 @@ public class DeckView : MonoBehaviour
         SkillSlot fromSlot = RunManager.Get<SkillSlot>(from.GetIndexPath());
         SkillSlot toSlot = RunManager.Get<SkillSlot>(to.GetIndexPath());
         return runEnvironment.TrySwap(fromSlot, toSlot);
+    }
+
+    private bool _showing;
+
+    public bool Showing
+    {
+        get => _showing;
+        set
+        {
+            _showing = value;
+            if (_showing)
+                _showTween.Restart();
+            else
+                _hideTween.Restart();
+        }
+    }
+
+    public void Toggle()
+    {
+        Showing = !Showing;
+    }
+
+    private Tween _showTween;
+    private Tween _hideTween;
+
+    private Tween GetShowTween() => DOTween.Sequence().SetAutoKill(false)
+            .Append(_backgroundTransform.DOAnchorPosY(-56.5f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.1f))
+            .Join(_spriteTransform.DOAnchorPosY(0f, 0.3f).SetEase(Ease.OutQuad))
+            .Join(_handTransform.DOAnchorPosY(107f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.05f));
+
+    private Tween GetHideTween() => DOTween.Sequence().SetAutoKill(false)
+            .Append(_backgroundTransform.DOAnchorPosY(-434f, 0.3f).SetEase(Ease.InQuad))
+            .Join(_spriteTransform.DOAnchorPosY(-600f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.1f))
+            .Join(_handTransform.DOAnchorPosY(-392f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.05f));
+
+    private void Sort()
+    {
+        SkillInventory inventory = RunManager.Get<SkillInventory>(new IndexPath("Battle.SkillInventory"));
+        inventory.SortByComparisonId(0);
+        RunCanvas.Instance.Refresh();
     }
 }

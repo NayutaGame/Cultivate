@@ -27,7 +27,9 @@ public class NodeView : MonoBehaviour, IIndexPath, IPointerClickHandler
         if (runNode == null)
             return;
 
-        NameText.text = runNode.GetTitle();
+        if (NameText != null)
+            NameText.text = runNode.GetTitle();
+
         switch (runNode.State)
         {
             case RunNode.RunNodeState.Current:
