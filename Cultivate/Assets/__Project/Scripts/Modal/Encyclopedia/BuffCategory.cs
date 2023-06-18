@@ -161,7 +161,7 @@ public class BuffCategory : Category<BuffEntry>
 
             new ("心斋", "所有耗蓝-[层数]", BuffStackRule.Add, true, false),
 
-            new ("胧", "收到治疗时：力量+[层数]", BuffStackRule.Add, true, false,
+            new ("盛开", "收到治疗时：力量+[层数]", BuffStackRule.Add, true, false,
                 evaded: async (buff, d) => await buff.Owner.BuffSelfProcedure("力量", buff.Stack)),
 
             new ("通透世界", "攻击具有穿透", BuffStackRule.Wasted, true, false,

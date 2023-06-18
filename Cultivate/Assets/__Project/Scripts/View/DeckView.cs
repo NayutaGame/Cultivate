@@ -26,7 +26,7 @@ public class DeckView : MonoBehaviour
         _showTween = GetShowTween();
         _hideTween = GetHideTween();
 
-        _showing = true;
+        _showing = false;
 
         ConfigureInteractDelegate();
 
@@ -123,14 +123,18 @@ public class DeckView : MonoBehaviour
     private Tween _hideTween;
 
     private Tween GetShowTween() => DOTween.Sequence().SetAutoKill(false)
-            .Append(_backgroundTransform.DOAnchorPosY(-56.5f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.1f))
-            .Join(_spriteTransform.DOAnchorPosY(0f, 0.3f).SetEase(Ease.OutQuad))
-            .Join(_handTransform.DOAnchorPosY(107f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.05f));
+        // .AppendCallback(() => Mask.gameObject.SetActive(true))
+        // .Append(Mask.DOFade(0.8f, 0.4f).SetEase(Ease.OutQuad))
+        .Append(_spriteTransform.DOAnchorPosY(0f, 0.3f).SetEase(Ease.OutQuad))
+        .Join(_handTransform.DOAnchorPosY(107f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.05f))
+        .Join(_backgroundTransform.DOAnchorPosY(-56.5f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.1f));
 
     private Tween GetHideTween() => DOTween.Sequence().SetAutoKill(false)
-            .Append(_backgroundTransform.DOAnchorPosY(-434f, 0.3f).SetEase(Ease.InQuad))
-            .Join(_spriteTransform.DOAnchorPosY(-600f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.1f))
-            .Join(_handTransform.DOAnchorPosY(-392f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.05f));
+        .Append(_backgroundTransform.DOAnchorPosY(-434f, 0.3f).SetEase(Ease.InQuad))
+        .Join(_handTransform.DOAnchorPosY(-392f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.05f))
+        .Join(_spriteTransform.DOAnchorPosY(-600f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.1f));
+        // .Join(Mask.DOFade(0f, 0.4f).SetEase(Ease.InQuad))
+        // .AppendCallback(() => Mask.gameObject.SetActive(false));
 
     private void Sort()
     {

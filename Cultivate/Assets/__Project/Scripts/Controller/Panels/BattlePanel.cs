@@ -7,15 +7,18 @@ using Object = UnityEngine.Object;
 
 public class BattlePanel : Panel
 {
-    public EntityView EnemyView;
-    public EntityView HeroView;
-    public SkillInventoryView SkillInventoryView;
+    public SlotInventoryView EnemyHand;
+    public Image EnemySprite;
 
-    public TMP_Text SimulatedHP;
-    public Image Light;
-    public Button ReportButton;
-    public Button StreamButton;
-    public TMP_Text ReportText;
+    // public EntityView EnemyView;
+    // public EntityView HeroView;
+    // public SkillInventoryView SkillInventoryView;
+
+    public TMP_Text HomeHP;
+    public TMP_Text AwayHP;
+
+    public Button ActButton;
+    // public TMP_Text ReportText;
 
     private InteractDelegate InteractDelegate;
 
@@ -27,68 +30,38 @@ public class BattlePanel : Panel
 
         _indexPath = new IndexPath("Battle");
 
-        ConfigureInteractDelegate();
+        EnemyHand.Configure(new IndexPath($"{_indexPath}.Enemy.Slots"));
 
-        EnemyView.Configure(new IndexPath($"{_indexPath}.Enemy"));
-        EnemyView.SetDelegate(InteractDelegate);
-
-        HeroView.Configure(new IndexPath($"{_indexPath}.Hero"));
-        HeroView.SetDelegate(InteractDelegate);
-
-        SkillInventoryView.Configure(new IndexPath($"{_indexPath}.SkillInventory"));
-        SkillInventoryView.SetDelegate(InteractDelegate);
-
-        ReportButton.onClick.AddListener(Report);
-        StreamButton.onClick.AddListener(Stream);
-    }
-
-    private void ConfigureInteractDelegate()
-    {
-        InteractDelegate = new(4,
-            getId: view =>
-            {
-                object item = RunManager.Get<object>(view.GetIndexPath());
-                if (item is RunSkill)
-                    return 0;
-                if (item is SkillInventory)
-                    return 1;
-                if (item is SkillSlot slot)
-                {
-                    RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
-                    if (runEnvironment.Hero == slot.Owner)
-                        return 2;
-                    if (runEnvironment.Enemy == slot.Owner)
-                        return 3;
-                }
-                return null;
-            },
-            dragDropTable: new Func<IInteractable, IInteractable, bool>[]
-            {
-                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
-                /* RunSkill         */ TryMerge,   null,           TryEquip,        null,
-                /* SkillInventory   */ null,       null,           null,            null,
-                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         null,
-                /* SkillSlot(Enemy) */ null,       null,           null,            null,
-            });
+        ActButton.onClick.AddListener(Act);
     }
 
     public override void Refresh()
     {
-        EnemyView.Refresh();
-        HeroView.Refresh();
-        SkillInventoryView.Refresh();
+        EnemyHand.Refresh();
 
         if (RunManager.Instance.Battle.Report is { } report)
         {
-            SimulatedHP.text = $"玩家 : 怪物\n{report.HomeLeftHp} : {report.AwayLeftHp}";
-            Light.color = report.HomeVictory ? Color.green : Color.red;
-            ReportText.text = report.ToString();
+            HomeHP.text = report.HomeLeftHp.ToString();
+            AwayHP.text = report.AwayLeftHp.ToString();
+            if (report.HomeVictory)
+            {
+                HomeHP.color = Color.white;
+                AwayHP.color = Color.gray;
+            }
+            else
+            {
+                HomeHP.color = Color.gray;
+                AwayHP.color = Color.white;
+            }
+            // ReportText.text = report.ToString();
         }
         else
         {
-            SimulatedHP.text = $"玩家 : 怪物\n无结果";
-            Light.color = Color.gray;
-            ReportText.text = "";
+            HomeHP.text = "玩家";
+            AwayHP.text = "怪物";
+            HomeHP.color = Color.white;
+            AwayHP.color = Color.white;
+            // ReportText.text = "";
         }
     }
 
@@ -98,7 +71,7 @@ public class BattlePanel : Panel
         RunCanvas.Instance.Refresh();
     }
 
-    private void Stream()
+    private void Act()
     {
         RunManager.Instance.Combat(true, RunManager.Instance.Battle);
         RunCanvas.Instance.Refresh();

@@ -98,7 +98,7 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
+        // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
 
         RunCanvas.Instance.SkillGhost.Configure(null);
         RunCanvas.Instance.SkillGhost.Refresh();

@@ -31,11 +31,13 @@ public class SkillInventoryView : InventoryView<AbstractSkillView>, IDropHandler
             SortButtons[i].onClick.AddListener(() => SortByComparisonId(comparisonId));
         });
 
-        LeftButton.HoldAction = () =>
-            ScrollRect.horizontalNormalizedPosition -= 2000f / ScrollRect.content.rect.width * Time.deltaTime;
+        if (LeftButton != null)
+            LeftButton.HoldAction = () =>
+                ScrollRect.horizontalNormalizedPosition -= 2000f / ScrollRect.content.rect.width * Time.deltaTime;
 
-        RightButton.HoldAction = () =>
-            ScrollRect.horizontalNormalizedPosition += 2000f / ScrollRect.content.rect.width * Time.deltaTime;
+        if (RightButton != null)
+            RightButton.HoldAction = () =>
+                ScrollRect.horizontalNormalizedPosition += 2000f / ScrollRect.content.rect.width * Time.deltaTime;
     }
 
     public void OnDrop(PointerEventData eventData)

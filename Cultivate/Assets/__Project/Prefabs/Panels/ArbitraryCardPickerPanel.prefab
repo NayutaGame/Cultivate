@@ -1197,7 +1197,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -238.80325, y: -7.090912}
+  m_AnchoredPosition: {x: -238.80325, y: -7.0909424}
   m_SizeDelta: {x: 1349.96, y: 910.1774}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9006344273836300509
@@ -1214,8 +1214,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Container: {fileID: 59190587108173445}
   Prefab: {fileID: 8085986264311966347, guid: a7b602e43063ef049a52c87044816720, type: 3}
+  ScrollRect: {fileID: 0}
   DrawButtons: []
   SortButtons: []
+  LeftButton: {fileID: 0}
+  RightButton: {fileID: 0}
 --- !u!1 &5852064241505332180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1331,9 +1334,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -540}
-  m_SizeDelta: {x: 1920, y: 1000}
-  m_Pivot: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7993731903739291728
 MonoBehaviour:
   m_ObjectHideFlags: 0

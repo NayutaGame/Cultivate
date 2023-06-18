@@ -205,7 +205,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
+        // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
 
         RunCanvas.Instance.SkillGhost.Configure(null);
         RunCanvas.Instance.SkillGhost.Refresh();

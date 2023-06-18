@@ -20,7 +20,6 @@ public class RunCanvas : Singleton<RunCanvas>
     public Button ConsoleToggle;
     public DeckView DeckView;
 
-    public Button CharacterButton;
     public Button TechButton;
     public Button SimulateButton;
     public Button ArenaButton;
@@ -30,7 +29,6 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public ConsolePanel ConsolePanel;
 
-    public CharacterPanel CharacterPanel;
     public TechTreePanel TechTreePanel;
     public SimulatePanel SimulatePanel;
     public ArenaPanel ArenaPanel;
@@ -48,7 +46,6 @@ public class RunCanvas : Singleton<RunCanvas>
         ConsoleToggle.onClick.AddListener(ConsolePanel.ToggleShowing);
         DeckView.Configure();
 
-        CharacterButton.onClick.AddListener(OpenCharacterPanel);
         TechButton.onClick.AddListener(OpenTechTreePanel);
         SimulateButton.onClick.AddListener(OpenSimulatePanel);
         ArenaButton.onClick.AddListener(OpenArenaPanel);
@@ -59,7 +56,6 @@ public class RunCanvas : Singleton<RunCanvas>
         Refresh();
     }
 
-    public void OpenCharacterPanel() => ChangePanel(CharacterPanel);
     public void OpenTechTreePanel() => ChangePanel(TechTreePanel);
     public void OpenSimulatePanel() => ChangePanel(SimulatePanel);
     public void OpenArenaPanel() => ChangePanel(ArenaPanel);

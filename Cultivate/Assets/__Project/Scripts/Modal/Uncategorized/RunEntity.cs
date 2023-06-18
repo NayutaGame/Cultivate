@@ -111,7 +111,10 @@ public class RunEntity : GDictionary, IEntityModel
         SetBaseHealth(BaseHP[JingJie.LianQi]);
 
         if (_entry != null && _createEntityDetails != null)
+        {
             _entry.Create(this, _createEntityDetails);
+            UpdateReveal();
+        }
     }
 
     public void SetSlotContent(int i, string waiGongName, JingJie? j = null)
