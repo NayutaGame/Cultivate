@@ -12,12 +12,10 @@ public class TopBar : MonoBehaviour
     public TMP_Text HealthText;
     public TMP_Text JingJieText;
 
-    public Button MapButton;
     public Button SystemButton;
 
     public void Configure()
     {
-        // MapButton.onClick.AddListener(MapButton);
     }
 
     public void Refresh()

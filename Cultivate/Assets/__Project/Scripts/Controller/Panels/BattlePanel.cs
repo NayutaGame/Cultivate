@@ -1,24 +1,24 @@
 
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 public class BattlePanel : Panel
 {
+    public RectTransform _enemySpriteTransform;
+    public RectTransform _enemyHandTransform;
+    public RectTransform _operationViewTransform;
+    public CanvasGroup _operationViewCanvasGroup;
+
     public SlotInventoryView EnemyHand;
     public Image EnemySprite;
-
-    // public EntityView EnemyView;
-    // public EntityView HeroView;
-    // public SkillInventoryView SkillInventoryView;
 
     public TMP_Text HomeHP;
     public TMP_Text AwayHP;
 
     public Button ActButton;
-    // public TMP_Text ReportText;
 
     private InteractDelegate InteractDelegate;
 

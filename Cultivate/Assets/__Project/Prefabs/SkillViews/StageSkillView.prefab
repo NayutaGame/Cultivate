@@ -1848,6 +1848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d2af8476e12024c8ac31ec2fb4339a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 8152188524626589071}
   ManaCostView: {fileID: 5835859924913019223}
   ManaCostText: {fileID: 65764244767693451}
   NameText: {fileID: 2404343937271336379}

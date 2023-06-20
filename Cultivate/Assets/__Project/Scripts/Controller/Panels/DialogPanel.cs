@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using CLLibrary;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,7 +50,7 @@ public class DialogPanel : Panel
         DialogPanelDescriptor d = runNode.CurrentPanel as DialogPanelDescriptor;
 
         d.ReceiveSignal(new SelectedOptionSignal(i));
-        RunCanvas.Instance.NodePanel.Refresh();
+        RunCanvas.Instance.Refresh();
     }
 
     private void SelectOption0() => SelectedOption(0);

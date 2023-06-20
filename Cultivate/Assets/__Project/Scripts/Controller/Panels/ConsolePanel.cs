@@ -16,6 +16,14 @@ public class ConsolePanel : Panel
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
 
+    public override Tween GetShowTween()
+        => DOTween.Sequence().SetAutoKill()
+            .Append(_rectTransform.DOAnchorPosY(243f, 0.3f).SetEase(Ease.OutQuad));
+
+    public override Tween GetHideTween()
+        => DOTween.Sequence().SetAutoKill()
+            .Append(_rectTransform.DOAnchorPosY(771f, 0.3f).SetEase(Ease.InQuad));
+
     public override void Configure()
     {
         base.Configure();
@@ -77,36 +85,5 @@ public class ConsolePanel : Panel
     {
         RunManager.Instance.Battle.SkillInventory.TryDrawSkill(out RunSkill skill, jingJie: RunManager.Instance.Map.JingJie);
         RunCanvas.Instance.Refresh();
-    }
-
-    private bool _showing;
-
-    public bool Showing
-    {
-        get => _showing;
-        set
-        {
-            _showing = value;
-            DOTween.Kill(this);
-            if (_showing)
-                ShowTween();
-            else
-                HideTween();
-        }
-    }
-
-    public void ToggleShowing()
-    {
-        Showing = !Showing;
-    }
-
-    private void ShowTween()
-    {
-        _rectTransform.DOAnchorPosY(243f, 0.3f).SetEase(Ease.OutQuad).Restart();
-    }
-
-    private void HideTween()
-    {
-        _rectTransform.DOAnchorPosY(771f, 0.3f).SetEase(Ease.InQuad).Restart();
     }
 }
