@@ -12,6 +12,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     private List<RunSkill> _skills;
     public int GetSkillCount() => _skills.Count;
     public RunSkill GetSkill(int i) => _skills[i];
+    public int GetIndexOfSkill(RunSkill skill) => _skills.IndexOf(skill);
 
     private Predicate<SkillEntry> _pred;
     private WuXing? _wuXing;
@@ -29,13 +30,6 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         _pred = pred;
         _wuXing = wuXing;
         _jingJie = jingJie ?? RunManager.Instance.Map.JingJie;
-    }
-
-    public bool TrySelectOption(RunSkill skill)
-    {
-        RunManager.Instance.Map.ReceiveSignal(new SelectedOptionSignal(_skills.IndexOf(skill)));
-        // ReceiveSignal(new SelectedOptionSignal(_skills.IndexOf(skill)));
-        return true;
     }
 
     public override void DefaultEnter()

@@ -5,7 +5,11 @@ using UnityEngine;
 
 public class RewardNodeEntry : NodeEntry
 {
-    public RewardNodeEntry(string name, string description, Action<RunNode> create, Predicate<int> canCreate = null) : base(name, description, create, canCreate)
+    private SpriteEntry _spriteEntry;
+    public SpriteEntry SpriteEntry => _spriteEntry;
+
+    public RewardNodeEntry(string name, string description, SpriteEntry spriteEntry, Action<RunNode> create, Predicate<int> canCreate = null) : base(name, description, create, canCreate)
     {
+        _spriteEntry = spriteEntry;
     }
 }

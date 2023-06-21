@@ -30,6 +30,9 @@ public class NodeView : MonoBehaviour, IIndexPath, IPointerClickHandler
         if (NameText != null)
             NameText.text = runNode.GetTitle();
 
+        if (Image != null)
+            Image.sprite = runNode.Sprite;
+
         switch (runNode.State)
         {
             case RunNode.RunNodeState.Current:

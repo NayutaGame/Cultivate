@@ -8,6 +8,9 @@ public class RunNode : GDictionary
     protected NodeEntry _entry;
     public NodeEntry Entry => _entry;
 
+    protected SpriteEntry _spriteEntry;
+    public Sprite Sprite => _spriteEntry.Sprite;
+
     public Vector2Int Position { get; private set; }
     public JingJie JingJie { get; private set; }
 
@@ -34,6 +37,15 @@ public class RunNode : GDictionary
         {
             { "CurrentPanel",          () => CurrentPanel },
         };
+
+        if (entry is RewardNodeEntry r)
+        {
+            _spriteEntry = r.SpriteEntry;
+        }
+        else if (entry is AdventureNodeEntry)
+        {
+            _spriteEntry = "奇遇";
+        }
 
         Position = position;
         JingJie = jingJie;

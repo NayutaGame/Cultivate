@@ -31,7 +31,6 @@ public class StageCanvas : Singleton<StageCanvas>
     public override void DidAwake()
     {
         base.DidAwake();
-
         Configure();
     }
 
@@ -42,7 +41,10 @@ public class StageCanvas : Singleton<StageCanvas>
         _heroBuffViews = new List<BuffView>();
         _enemyBuffViews = new List<BuffView>();
 
+        SpeedSlider.onValueChanged.RemoveAllListeners();
         SpeedSlider.onValueChanged.AddListener(SpeedChanged);
+
+        SkipButton.onClick.RemoveAllListeners();
         SkipButton.onClick.AddListener(Skip);
     }
 
@@ -77,6 +79,7 @@ public class StageCanvas : Singleton<StageCanvas>
         Refresh();
     }
 
+    // TODO: Buff的改变全部都用Set, 不要用Refresh，因为Refresh没有办法描述状态的改变
     public void Refresh()
     {
         StageEntity home = StageManager.Instance.CurrEnv.Entities[0];

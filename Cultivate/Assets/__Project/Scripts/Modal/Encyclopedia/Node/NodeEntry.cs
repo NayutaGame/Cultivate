@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class NodeEntry : Entry
 {
     private string _description;
-    public string Description;
+    public string Description => _description;
 
     private Predicate<int> _canCreate;
     private Action<RunNode> _create;

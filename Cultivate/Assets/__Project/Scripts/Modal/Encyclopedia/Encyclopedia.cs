@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
 {
+    public static SpriteCategory SpriteCategory;
+
     public static KeywordCategory KeywordCategory;
     public static BuffCategory BuffCategory;
     public static SkillCategory SkillCategory;
@@ -15,6 +17,8 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
     public override void DidAwake()
     {
         base.DidAwake();
+
+        SpriteCategory = new();
 
         KeywordCategory = new();
         BuffCategory = new();

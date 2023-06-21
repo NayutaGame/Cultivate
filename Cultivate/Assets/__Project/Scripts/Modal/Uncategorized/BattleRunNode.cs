@@ -16,6 +16,8 @@ public class BattleRunNode : RunNode
         _rewards = new();
         RunManager.Instance.EntityPool.ForceDrawEntityEntry(out EntityEntry entityEntry, CreateEntityDetails);
         EntityEntry = entityEntry;
+
+        _spriteEntry = CreateEntityDetails.AllowBoss ? "Boss" : "战斗";
     }
 
     public override string GetTitle()
