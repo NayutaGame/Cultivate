@@ -27,6 +27,7 @@ public class ArbitraryCardPickerPanel : Panel
         base.Configure();
         _indexPath = new IndexPath("CurrentNode.CurrentPanel");
 
+        ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
         ConfigureInteractDelegate();

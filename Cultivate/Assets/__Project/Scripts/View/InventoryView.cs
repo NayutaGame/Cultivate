@@ -54,7 +54,9 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath, IInteractabl
 
     private void RegisterNew(T view, int i)
     {
-        _views.Add(view);
+        if (!_views.Contains(view))
+            _views.Add(view);
+
         view.Configure(new IndexPath($"{_indexPath}#{i}"));
 
         if (view is IInteractable interactable)

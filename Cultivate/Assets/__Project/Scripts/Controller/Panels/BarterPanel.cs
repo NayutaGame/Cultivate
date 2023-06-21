@@ -21,9 +21,11 @@ public class BarterPanel : Panel
 
         foreach (BarterItemView barterItemView in BarterInventoryView.Views)
         {
+            barterItemView.ClearExchangeEvent();
             barterItemView.ExchangeEvent += ExchangeEvent;
         }
 
+        ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
     }
 

@@ -15,12 +15,14 @@ public class CommodityView : MonoBehaviour, IIndexPath
     public Button BuyButton;
 
     public event Action<Commodity> BuyEvent;
+    public void ClearBuyEvent() => BuyEvent = null;
 
     public void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
         SkillView.Configure(new IndexPath($"{_indexPath}.Skill"));
 
+        BuyButton.onClick.RemoveAllListeners();
         BuyButton.onClick.AddListener(Buy);
     }
 

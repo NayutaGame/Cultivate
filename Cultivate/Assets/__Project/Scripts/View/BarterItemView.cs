@@ -14,6 +14,7 @@ public class BarterItemView : MonoBehaviour, IIndexPath
     public RunSkillView SkillView;
 
     public event Action<BarterItem> ExchangeEvent;
+    public void ClearExchangeEvent() => ExchangeEvent = null;
 
     public void Configure(IndexPath indexPath)
     {
@@ -21,6 +22,7 @@ public class BarterItemView : MonoBehaviour, IIndexPath
         PlayerSkillView.Configure(new IndexPath($"{_indexPath}.PlayerSkill"));
         SkillView.Configure(new IndexPath($"{_indexPath}.Skill"));
 
+        ExchangeButton.onClick.RemoveAllListeners();
         ExchangeButton.onClick.AddListener(Exchange);
     }
 

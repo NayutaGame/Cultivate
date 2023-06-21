@@ -22,6 +22,7 @@ public class ShopPanel : Panel
 
         foreach (CommodityView commodityView in CommodityInventoryView.Views)
         {
+            commodityView.ClearBuyEvent();
             commodityView.BuyEvent += BuyEvent;
         }
 

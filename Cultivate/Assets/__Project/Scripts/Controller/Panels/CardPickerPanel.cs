@@ -25,6 +25,7 @@ public class CardPickerPanel : Panel
     {
         base.Configure();
 
+        ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
         ConfigureInteractDelegate();

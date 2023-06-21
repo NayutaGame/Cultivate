@@ -32,6 +32,7 @@ public class BattlePanel : Panel
 
         EnemyHand.Configure(new IndexPath($"{_indexPath}.Enemy.Slots"));
 
+        ActButton.onClick.RemoveAllListeners();
         ActButton.onClick.AddListener(Act);
     }
 

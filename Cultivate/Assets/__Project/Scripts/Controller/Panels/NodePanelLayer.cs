@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 
@@ -57,13 +58,7 @@ public class NodePanelLayer : MonoBehaviour
             { typeof(ArbitraryCardPickerPanelDescriptor), ArbitraryCardPickerPanel },
         };
 
-        BattlePanel.Configure();
-        DialogPanel.Configure();
-        DiscoverSkillPanel.Configure();
-        CardPickerPanel.Configure();
-        ShopPanel.Configure();
-        BarterPanel.Configure();
-        ArbitraryCardPickerPanel.Configure();
+        _panelDict.Do(kvp => kvp.Value.Configure());
     }
 
     public void Refresh()
