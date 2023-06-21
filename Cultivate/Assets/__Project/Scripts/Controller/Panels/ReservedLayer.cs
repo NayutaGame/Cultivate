@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ThirdPanelLayer : MonoBehaviour
+public class ReservedLayer : MonoBehaviour
 {
     public Button TechButton;
     public Button SimulateButton;

@@ -62,8 +62,13 @@ public class Map : GDictionary
         }
 
         Selecting = false;
+        RunCanvas.Instance.Refresh();
+    }
 
-        RunCanvas.Instance.SetSecondLayerToShow();
+    public void ReceiveSignal(Signal signal)
+    {
+        TryGetCurrentNode().CurrentPanel.ReceiveSignal(signal);
+        RunCanvas.Instance.Refresh();
     }
 
     public void TryFinishNode()
@@ -90,7 +95,7 @@ public class Map : GDictionary
         if (isEnd)
             JingJie += 1;
 
-        RunCanvas.Instance.SetSecondLayerToHide();
+        RunCanvas.Instance.Refresh();
     }
 
 

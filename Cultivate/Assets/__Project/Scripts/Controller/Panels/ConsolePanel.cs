@@ -28,15 +28,22 @@ public class ConsolePanel : Panel
     {
         base.Configure();
 
+        MingYuanButton.onClick.RemoveAllListeners();
         MingYuanButton.onClick.AddListener(AddMingYuan);
+
+        GoldButton.onClick.RemoveAllListeners();
         GoldButton.onClick.AddListener(AddXiuWei);
 
+        HealthInputField.onValueChanged.RemoveAllListeners();
         HealthInputField.onValueChanged.AddListener(HealthChanged);
 
         JingJieDropdown.options = new();
         JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.ToString())));
+
+        JingJieDropdown.onValueChanged.RemoveAllListeners();
         JingJieDropdown.onValueChanged.AddListener(JingJieChanged);
 
+        DrawSkillButton.onClick.RemoveAllListeners();
         DrawSkillButton.onClick.AddListener(DrawSkill);
     }
 

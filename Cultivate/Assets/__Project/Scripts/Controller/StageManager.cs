@@ -113,15 +113,24 @@ public class StageManager : Singleton<StageManager>, GDictionary
     {
         DisableVFX();
 
-        BattlePanelDescriptor battlePanelDescriptor = RunManager.Instance.TryGetCurrentNode()?.CurrentPanel as BattlePanelDescriptor;
-        if (battlePanelDescriptor == null)
-            return;
+        // BattlePanelDescriptor battlePanelDescriptor = RunManager.Instance.TryGetCurrentNode()?.CurrentPanel as BattlePanelDescriptor;
+        // if (battlePanelDescriptor == null)
+        //     return;
+        //
+        // CombatDetails d = RunManager.Instance.CombatDetails;
+        // if (!d.FireSignal)
+        //     return;
+        //
+        // battlePanelDescriptor.ReceiveSignal(new BattleResultSignal(EndEnv.Report.HomeVictory ? BattleResultSignal.BattleResultState.Win : BattleResultSignal.BattleResultState.Lose));
 
         CombatDetails d = RunManager.Instance.CombatDetails;
         if (!d.FireSignal)
             return;
 
-        battlePanelDescriptor.ReceiveSignal(new BattleResultSignal(EndEnv.Report.HomeVictory ? BattleResultSignal.BattleResultState.Win : BattleResultSignal.BattleResultState.Lose));
+        Signal signal = new BattleResultSignal(EndEnv.Report.HomeVictory
+            ? BattleResultSignal.BattleResultState.Win
+            : BattleResultSignal.BattleResultState.Lose);
+        RunManager.Instance.Map.ReceiveSignal(signal);
     }
 
     public void Pause()

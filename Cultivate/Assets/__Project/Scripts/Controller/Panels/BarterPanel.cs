@@ -43,7 +43,9 @@ public class BarterPanel : Panel
 
     private void Exit()
     {
-        BarterPanelDescriptor d = RunManager.Get<BarterPanelDescriptor>(_indexPath);
-        d.ReceiveSignal(new Signal());
+        // BarterPanelDescriptor d = RunManager.Get<BarterPanelDescriptor>(_indexPath);
+        // d.ReceiveSignal(new Signal());
+
+        RunManager.Instance.Map.ReceiveSignal(new Signal());
     }
 }

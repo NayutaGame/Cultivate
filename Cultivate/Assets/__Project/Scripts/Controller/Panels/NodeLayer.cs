@@ -6,7 +6,7 @@ using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 
-public class NodePanelLayer : MonoBehaviour
+public class NodeLayer : MonoBehaviour
 {
     public BattlePanel BattlePanel;
     public DialogPanel DialogPanel;
@@ -27,7 +27,7 @@ public class NodePanelLayer : MonoBehaviour
     {
         Sequence seq = DOTween.Sequence().SetAutoKill();
 
-        if (_currentPanel == panel)
+        if (_currentPanel == panel && panel != null)
         {
             panel.Refresh();
             return seq;

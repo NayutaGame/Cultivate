@@ -26,6 +26,7 @@ public class ShopPanel : Panel
             commodityView.BuyEvent += BuyEvent;
         }
 
+        ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
     }
 
@@ -43,7 +44,9 @@ public class ShopPanel : Panel
 
     private void Exit()
     {
-        ShopPanelDescriptor d = RunManager.Get<ShopPanelDescriptor>(_indexPath);
-        d.ReceiveSignal(new Signal());
+        // ShopPanelDescriptor d = RunManager.Get<ShopPanelDescriptor>(_indexPath);
+        // d.ReceiveSignal(new Signal());
+
+        RunManager.Instance.Map.ReceiveSignal(new Signal());
     }
 }

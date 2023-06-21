@@ -36,7 +36,8 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
     public void ConfirmSelections(List<RunSkill> skills)
     {
         _action?.Invoke(skills);
-        ReceiveSignal(new Signal());
+        RunManager.Instance.Map.ReceiveSignal(new Signal());
+        // ReceiveSignal(new Signal());
     }
 
     public override void DefaultReceiveSignal(Signal signal)

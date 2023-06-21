@@ -33,7 +33,8 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public bool TrySelectOption(RunSkill skill)
     {
-        ReceiveSignal(new SelectedOptionSignal(_skills.IndexOf(skill)));
+        RunManager.Instance.Map.ReceiveSignal(new SelectedOptionSignal(_skills.IndexOf(skill)));
+        // ReceiveSignal(new SelectedOptionSignal(_skills.IndexOf(skill)));
         return true;
     }
 

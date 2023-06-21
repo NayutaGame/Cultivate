@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 5716525121622533319}
   - component: {fileID: 3833359034282269437}
   m_Layer: 5
-  m_Name: NodePanelLayer
+  m_Name: NodeLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -394,8 +394,8 @@ MonoBehaviour:
   TechColorYellow: {r: 0.77254903, g: 0.78431374, b: 0.5647059, a: 1}
   TechColorRed: {r: 0.9137255, g: 0.6745098, b: 0.6745098, a: 1}
   BackgroundButton: {fileID: 5279879593259150254}
-  ThirdPanelLayer: {fileID: 716594900314097153}
-  NodePanelLayer: {fileID: 3833359034282269437}
+  ReservedLayer: {fileID: 716594900314097153}
+  NodeLayer: {fileID: 3833359034282269437}
   MMDMLayer: {fileID: 478036715613714824}
   TopBar: {fileID: 5967210524579795741}
   ToggleShowingConsolePanelButton: {fileID: 4212255494254727701}
@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 6570500143329246658}
   - component: {fileID: 716594900314097153}
   m_Layer: 5
-  m_Name: ThirdPanelLayer
+  m_Name: ReservedLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

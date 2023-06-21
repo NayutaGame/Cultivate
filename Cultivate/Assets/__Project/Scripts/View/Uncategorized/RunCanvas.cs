@@ -12,8 +12,8 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public Button BackgroundButton;
 
-    public ThirdPanelLayer ThirdPanelLayer;
-    public NodePanelLayer NodePanelLayer;
+    public ReservedLayer ReservedLayer;
+    public NodeLayer NodeLayer;
     public MMDMLayer MMDMLayer;
 
     public TopBar TopBar;
@@ -28,44 +28,24 @@ public class RunCanvas : Singleton<RunCanvas>
     {
         base.DidAwake();
         Configure();
-
         Refresh();
     }
 
     private void ToggleConsolePanel() => ConsolePanel.Toggle();
 
-    public void SetSecondLayerToShow()
-    {
-        Sequence seq = DOTween.Sequence().SetAutoKill();
-
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        PanelDescriptor d = runNode?.CurrentPanel;
-
-        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor)
-            seq.Append(MMDMLayer.SetState(MMDMLayer.MMDMState.D));
-        else
-            seq.Append(MMDMLayer.SetState(MMDMLayer.MMDMState.N));
-
-        seq.AppendInterval(0.4f)
-            .Join(NodePanelLayer.SetPanel(d));
-
-        seq.Restart();
-    }
-
-    public void SetSecondLayerToHide()
-    {
-
-    }
-
     public void Configure()
     {
+        BackgroundButton.onClick.RemoveAllListeners();
         BackgroundButton.onClick.AddListener(MMDMLayer.ToggleMap);
 
         TopBar.Configure();
+        ConsolePanel.Configure();
+
+        ToggleShowingConsolePanelButton.onClick.RemoveAllListeners();
         ToggleShowingConsolePanelButton.onClick.AddListener(ToggleConsolePanel);
 
         MMDMLayer.Configure();
-        NodePanelLayer.Configure();
+        NodeLayer.Configure();
     }
 
     public void Refresh()
@@ -73,7 +53,9 @@ public class RunCanvas : Singleton<RunCanvas>
         TopBar.Refresh();
         ConsolePanel.Refresh();
 
-        NodePanelLayer.Refresh();
+        RefreshNodeState();
+
+        NodeLayer.Refresh();
         MMDMLayer.Refresh();
     }
 
@@ -89,8 +71,31 @@ public class RunCanvas : Singleton<RunCanvas>
         RunSkillPreview.Refresh();
     }
 
-    public void SetState(MMDMLayer.MMDMState mmdmState, Panel panel)
+    public void RefreshNodeState()
     {
+        Sequence seq = DOTween.Sequence().SetAutoKill();
 
+        PanelDescriptor d = RunManager.Instance.TryGetCurrentNode()?.CurrentPanel;
+        bool selecting = RunManager.Instance.Map.Selecting;
+
+        if (selecting)
+        {
+            seq.Join(NodeLayer.SetPanel(panel: null));
+
+            seq.AppendInterval(0.4f)
+                .Append(MMDMLayer.SetState(MMDMLayer.MMDMState.MM));
+        }
+        else
+        {
+            if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor)
+                seq.Append(MMDMLayer.SetState(MMDMLayer.MMDMState.D));
+            else
+                seq.Append(MMDMLayer.SetState(MMDMLayer.MMDMState.N));
+
+            seq.AppendInterval(0.4f)
+                .Join(NodeLayer.SetPanel(d));
+        }
+
+        seq.Restart();
     }
 }

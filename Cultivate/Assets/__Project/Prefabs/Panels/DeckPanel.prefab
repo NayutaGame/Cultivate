@@ -1225,7 +1225,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1811,8 +1811,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 819e6a992f91ef54bb476a0a793e8dfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OriginalImage: {fileID: 1270306370137069379}
+  DeckToggle: {fileID: 625309393015893193}
   PlayerSprite: {fileID: 2663220694779781524}
-  ToggleButton: {fileID: 625309393015893193}
   SortButton: {fileID: 8282294560355882562}
   PlayerHand: {fileID: 7615237041514077938}
   PlayerInventory: {fileID: 5944783886558934303}

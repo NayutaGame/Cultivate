@@ -32,7 +32,8 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     public void ConfirmSelections(List<object> iRunSkillList)
     {
         _action?.Invoke(iRunSkillList);
-        ReceiveSignal(new Signal());
+        RunManager.Instance.Map.ReceiveSignal(new Signal());
+        // ReceiveSignal(new Signal());
     }
 
     public override void DefaultReceiveSignal(Signal signal)

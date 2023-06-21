@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
@@ -9,6 +10,13 @@ using UnityEngine.UI;
 
 public class DeckPanel : Panel
 {
+    public Image OriginalImage;
+    public Button DeckToggle;
+
+    public void ClearToggleDeckEvent() => ToggleDeckEvent = null;
+    public event Action ToggleDeckEvent;
+    private void ToggleDeck() => ToggleDeckEvent?.Invoke();
+
     public Image PlayerSprite;
     public Button SortButton;
     public SlotInventoryView PlayerHand;
@@ -41,6 +49,10 @@ public class DeckPanel : Panel
         PlayerInventory.Configure(new IndexPath("Battle.SkillInventory"));
         PlayerInventory.SetDelegate(InteractDelegate);
 
+        DeckToggle.onClick.RemoveAllListeners();
+        DeckToggle.onClick.AddListener(ToggleDeck);
+
+        SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
     }
 
@@ -109,5 +121,19 @@ public class DeckPanel : Panel
         SkillInventory inventory = RunManager.Get<SkillInventory>(new IndexPath("Battle.SkillInventory"));
         inventory.SortByComparisonId(0);
         RunCanvas.Instance.Refresh();
+    }
+
+    public void SetLocked(bool locked)
+    {
+        if (locked)
+        {
+            DeckToggle.interactable = false;
+            OriginalImage.color = new Color(0.6f, 0.6f, 0.6f, 0.43f);
+        }
+        else
+        {
+            DeckToggle.interactable = true;
+            OriginalImage.color = Color.white;
+        }
     }
 }

@@ -13,9 +13,7 @@ public class MMDMLayer : MonoBehaviour
     public DeckPanel DeckPanel;
     public MaskView MaskUnderDeck;
 
-    public Button MaskButton;
     public Button MapToggle;
-    public Button DeckToggle;
 
     private Panel _currentPanel;
 
@@ -41,8 +39,9 @@ public class MMDMLayer : MonoBehaviour
     {
         int index = 5 * (int)_state + (int)state;
         _state = state;
+        DeckPanel.SetLocked(_state == MMDMState.D || _state == MMDMState.MMD);
         Refresh();
-        return TransitionTable[index]();
+        return TransitionTable[index]?.Invoke() ?? DOTween.Sequence().SetAutoKill();
     }
 
     public void Configure()
@@ -61,9 +60,17 @@ public class MMDMLayer : MonoBehaviour
         MapPanel.Configure(new IndexPath("Map"));
         DeckPanel.Configure();
 
-        MaskButton.onClick.AddListener(Close);
+        DeckPanel.ClearToggleDeckEvent();
+        DeckPanel.ToggleDeckEvent += ToggleDeck;
+
+        MaskAboveDeck.GetComponent<Button>().onClick.RemoveAllListeners();
+        MaskAboveDeck.GetComponent<Button>().onClick.AddListener(Close);
+
+        MaskUnderDeck.GetComponent<Button>().onClick.RemoveAllListeners();
+        MaskUnderDeck.GetComponent<Button>().onClick.AddListener(Close);
+
+        MapToggle.onClick.RemoveAllListeners();
         MapToggle.onClick.AddListener(ToggleMap);
-        DeckToggle.onClick.AddListener(ToggleDeck);
     }
 
     public void Close()
