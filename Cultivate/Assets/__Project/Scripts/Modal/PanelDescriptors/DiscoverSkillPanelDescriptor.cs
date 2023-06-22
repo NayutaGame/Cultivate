@@ -38,13 +38,15 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         RunManager.Instance.SkillPool.TryDrawSkills(out _skills, pred: _pred, wuXing: _wuXing, jingJie: _jingJie , count: 3);
     }
 
-    public override void DefaultReceiveSignal(Signal signal)
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {
-        base.DefaultReceiveSignal(signal);
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
             RunManager.Instance.Battle.SkillInventory.AddSkill(_skills[selectedOptionSignal.Selected]);
             RunManager.Instance.Map.TryFinishNode();
+            return null;
         }
+
+        return this;
     }
 }

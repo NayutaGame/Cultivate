@@ -38,9 +38,9 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
         _action?.Invoke(skills);
     }
 
-    public override void DefaultReceiveSignal(Signal signal)
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {
-        base.DefaultReceiveSignal(signal);
         RunManager.Instance.Map.TryFinishNode();
+        return null;
     }
 }

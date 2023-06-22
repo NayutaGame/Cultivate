@@ -59,9 +59,8 @@ public class DiscoverSkillPanel : Panel
         DiscoverSkillPanelDescriptor d = runNode.CurrentPanel as DiscoverSkillPanelDescriptor;
 
         RunSkill skill = RunManager.Get<RunSkill>(view.GetIndexPath());
-        RunManager.Instance.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
-
-        // RunCanvas.Instance.NodePanel.Refresh();
+        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
+        RunCanvas.Instance.SetNodeState(panelDescriptor);
         RunCanvas.Instance.SetIndexPathForPreview(null);
         return true;
     }

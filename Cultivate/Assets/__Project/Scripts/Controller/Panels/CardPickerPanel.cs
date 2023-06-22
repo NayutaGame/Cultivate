@@ -120,6 +120,7 @@ public class CardPickerPanel : Panel
         CardPickerPanelDescriptor d = runNode.CurrentPanel as CardPickerPanelDescriptor;
         List<object> mapped = _selections.Map(v => RunManager.Get<object>(v.GetIndexPath())).ToList();
         d.ConfirmSelections(mapped);
-        RunManager.Instance.Map.ReceiveSignal(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new Signal());
+        RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

@@ -44,9 +44,7 @@ public class ShopPanel : Panel
 
     private void Exit()
     {
-        // ShopPanelDescriptor d = RunManager.Get<ShopPanelDescriptor>(_indexPath);
-        // d.ReceiveSignal(new Signal());
-
-        RunManager.Instance.Map.ReceiveSignal(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new Signal());
+        RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

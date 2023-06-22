@@ -51,12 +51,8 @@ public class DialogPanel : Panel
 
     private void SelectedOption(int i)
     {
-        RunManager.Instance.Map.ReceiveSignal(new SelectedOptionSignal(i));
-        // RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        // DialogPanelDescriptor d = runNode.CurrentPanel as DialogPanelDescriptor;
-        //
-        // d.ReceiveSignal(new SelectedOptionSignal(i));
-        // RunCanvas.Instance.Refresh();
+        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new SelectedOptionSignal(i));
+        RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 
     private void SelectOption0() => SelectedOption(0);

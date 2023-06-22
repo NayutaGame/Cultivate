@@ -55,7 +55,18 @@ public class NodeView : MonoBehaviour, IIndexPath, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        RunManager.Instance.TryClickNode(GetIndexPath());
+        TryClickNode(GetIndexPath());
         RunCanvas.Instance.Refresh();
+    }
+
+    public bool TryClickNode(IndexPath indexPath)
+    {
+        RunNode runNode = RunManager.Get<RunNode>(indexPath);
+        if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Map.Selecting)
+            return false;
+
+        PanelDescriptor panelDescriptor = RunManager.Instance.Map.SelectedNode(runNode);
+        RunCanvas.Instance.SetNodeState(panelDescriptor);
+        return true;
     }
 }

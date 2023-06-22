@@ -1,6 +1,7 @@
 
 using CLLibrary;
 using DG.Tweening;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,8 +54,6 @@ public class RunCanvas : Singleton<RunCanvas>
         TopBar.Refresh();
         ConsolePanel.Refresh();
 
-        RefreshNodeState();
-
         NodeLayer.Refresh();
         MMDMLayer.Refresh();
     }
@@ -71,14 +70,16 @@ public class RunCanvas : Singleton<RunCanvas>
         RunSkillPreview.Refresh();
     }
 
-    public void RefreshNodeState()
+    public void SetNodeState(PanelDescriptor panelDescriptor)
     {
+        if (NodeLayer.CurrentIsDescriptor(panelDescriptor))
+            return;
+
         Sequence seq = DOTween.Sequence().SetAutoKill();
 
         PanelDescriptor d = RunManager.Instance.TryGetCurrentNode()?.CurrentPanel;
-        bool selecting = RunManager.Instance.Map.Selecting;
 
-        if (selecting)
+        if (panelDescriptor == null)
         {
             seq.Join(NodeLayer.SetPanel(panel: null));
 

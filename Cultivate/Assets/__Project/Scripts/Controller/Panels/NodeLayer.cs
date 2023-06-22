@@ -20,6 +20,17 @@ public class NodeLayer : MonoBehaviour
 
     private Dictionary<Type, Panel> _panelDict;
 
+    public bool CurrentIsDescriptor(PanelDescriptor d)
+    {
+        if (d == null && _currentPanel == null)
+            return true;
+
+        if (d != null && _panelDict[d.GetType()] == _currentPanel)
+            return true;
+
+        return false;
+    }
+
     public Tween SetPanel(PanelDescriptor panelDescriptor)
         => SetPanel(_panelDict[panelDescriptor.GetType()]);
 

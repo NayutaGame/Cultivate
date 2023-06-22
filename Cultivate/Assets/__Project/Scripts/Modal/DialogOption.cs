@@ -8,9 +8,9 @@ public class DialogOption
 
     public CostDetails Cost;
 
-    public Action<DialogOption> _select;
+    public Func<DialogOption, PanelDescriptor> _select;
 
-    public DialogOption(string text, CostDetails cost = null, Action<DialogOption> select = null)
+    public DialogOption(string text, CostDetails cost = null, Func<DialogOption, PanelDescriptor> select = null)
     {
         Text = text;
         Cost = cost;
@@ -22,16 +22,17 @@ public class DialogOption
         return Cost?.CanCost() ?? true;
     }
 
-    public void Select()
+    public PanelDescriptor Select()
     {
         Cost?.Cost();
-        _select(this);
+        return _select(this);
     }
 
-    private void DefaultSelect(DialogOption dialogOption)
+    private PanelDescriptor DefaultSelect(DialogOption dialogOption)
     {
         Cost?.Cost();
         RunManager.Instance.Map.TryFinishNode();
+        return null;
     }
 
     public static implicit operator DialogOption(string text) => new(text);

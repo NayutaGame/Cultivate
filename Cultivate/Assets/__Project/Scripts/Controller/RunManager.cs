@@ -177,16 +177,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
         return true;
     }
 
-    public bool TryClickNode(IndexPath indexPath)
-    {
-        RunNode runNode = Get<RunNode>(indexPath);
-        if (runNode.State != RunNode.RunNodeState.ToChoose || !Map.Selecting)
-            return false;
-
-        Map.SelectedNode(runNode);
-        return true;
-    }
-
     public void Combat(bool useAnim, RunEnvironment environment)
     {
         CombatDetails = new CombatDetails(useAnim, environment == Battle, environment.Hero, environment.Enemy);

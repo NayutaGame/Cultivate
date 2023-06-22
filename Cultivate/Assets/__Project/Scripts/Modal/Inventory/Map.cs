@@ -46,7 +46,7 @@ public class Map : GDictionary
         return this[_heroPosition];
     }
 
-    public void SelectedNode(RunNode selected)
+    public PanelDescriptor SelectedNode(RunNode selected)
     {
         if (_heroPosition.x >= 0)
             this[_heroPosition].State = RunNode.RunNodeState.Passed;
@@ -62,13 +62,12 @@ public class Map : GDictionary
         }
 
         Selecting = false;
-        RunCanvas.Instance.Refresh();
+        return TryGetCurrentNode().CurrentPanel;
     }
 
-    public void ReceiveSignal(Signal signal)
+    public PanelDescriptor ReceiveSignal(Signal signal)
     {
-        TryGetCurrentNode().CurrentPanel.ReceiveSignal(signal);
-        RunCanvas.Instance.Refresh();
+        return TryGetCurrentNode().CurrentPanel.ReceiveSignal(signal);
     }
 
     public void TryFinishNode()
@@ -95,7 +94,7 @@ public class Map : GDictionary
         if (isEnd)
             JingJie += 1;
 
-        RunCanvas.Instance.Refresh();
+        // RunCanvas.Instance.SetNodeState(null);
     }
 
 

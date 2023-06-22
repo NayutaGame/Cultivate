@@ -28,13 +28,14 @@ public class DialogPanelDescriptor : PanelDescriptor
             _reward.Claim();
     }
 
-    public override void DefaultReceiveSignal(Signal signal)
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {
-        base.DefaultReceiveSignal(signal);
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
             int i = selectedOptionSignal.Selected;
-            _options[i].Select();
+            return _options[i].Select();
         }
+
+        return this;
     }
 }

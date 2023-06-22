@@ -28,12 +28,16 @@ public class BattleNodeEntry : NodeEntry
                     if (battleResultSignal.State == BattleResultSignal.BattleResultState.Win)
                     {
                         runNode.ChangePanel(B);
+                        return B;
                     }
                     else if (battleResultSignal.State == BattleResultSignal.BattleResultState.Lose)
                     {
                         runNode.ChangePanel(C);
+                        return C;
                     }
                 }
+
+                return A;
             };
 
             B._receiveSignal = signal =>
@@ -41,6 +45,7 @@ public class BattleNodeEntry : NodeEntry
                 battleRunNode.ClaimRewards();
                 B.DefaultReceiveSignal(signal);
                 RunManager.Instance.Map.TryFinishNode();
+                return null;
             };
 
             C._receiveSignal = signal =>
@@ -49,6 +54,7 @@ public class BattleNodeEntry : NodeEntry
                 RunManager.Instance.MingYuan -= 1;
                 C.DefaultReceiveSignal(signal);
                 RunManager.Instance.Map.TryFinishNode();
+                return null;
             };
 
             runNode.ChangePanel(A);

@@ -37,6 +37,7 @@ public class NodeCategory : Category<NodeEntry>
                             new DrawSkillRewardDescriptor("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Map.JingJie).Claim();
                         }
                         RunManager.Instance.Map.TryFinishNode();
+                        return null;
                     };
 
                     runNode.ChangePanel(A);
@@ -117,6 +118,7 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         RunManager.Instance.Map.RerollNextAdventure();
                         RunManager.Instance.Map.TryFinishNode();
+                        return null;
                     };
 
                     runNode.ChangePanel(A);
@@ -202,6 +204,7 @@ public class NodeCategory : Category<NodeEntry>
                         }
 
                         RunManager.Instance.Map.TryFinishNode();
+                        return null;
                     };
 
                     runNode.ChangePanel(A);
@@ -223,6 +226,7 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.Battle.Hero.SetDHealth(-dHealth);
 
                         RunManager.Instance.Map.TryFinishNode();
+                        return null;
                     };
 
                     A[1]._select = option =>
@@ -231,6 +235,7 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.Battle.SkillInventory.AddSkill(skill);
 
                         RunManager.Instance.Map.TryFinishNode();
+                        return null;
                     };
 
                     runNode.ChangePanel(A);

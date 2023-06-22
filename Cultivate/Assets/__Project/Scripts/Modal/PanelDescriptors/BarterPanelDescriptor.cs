@@ -78,9 +78,9 @@ public class BarterPanelDescriptor : PanelDescriptor
         return true;
     }
 
-    public override void DefaultReceiveSignal(Signal signal)
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {
-        base.DefaultReceiveSignal(signal);
         RunManager.Instance.Map.TryFinishNode();
+        return null;
     }
 }
