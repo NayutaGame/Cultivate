@@ -36,7 +36,7 @@ public class RunSkillPreview : AbstractSkillView
     }
 
 
-    public override void OnPointerDown(PointerEventData eventData) { }
+    public override void OnPointerClick(PointerEventData eventData) { }
     public override void OnBeginDrag(PointerEventData eventData) { }
     public override void OnEndDrag(PointerEventData eventData) { }
     public override void OnDrag(PointerEventData eventData) { }

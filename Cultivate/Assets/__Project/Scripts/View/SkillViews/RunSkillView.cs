@@ -1,5 +1,6 @@
 
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 
 public class RunSkillView : AbstractSkillView
@@ -7,7 +8,7 @@ public class RunSkillView : AbstractSkillView
     public override ISkillModel GetSkillModel()
         => RunManager.Get<ISkillModel>(GetIndexPath());
 
-    // public override void OnPointerDown(PointerEventData eventData) { }
+    // public override void OnPointerClick(PointerEventData eventData) { }
     // public override void OnBeginDrag(PointerEventData eventData) { }
     // public override void OnEndDrag(PointerEventData eventData) { }
     // public override void OnDrag(PointerEventData eventData) { }

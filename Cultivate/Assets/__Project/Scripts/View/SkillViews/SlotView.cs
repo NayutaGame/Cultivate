@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
-    IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
+    IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     private IndexPath _indexPath;
@@ -66,7 +66,7 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
             SkillView.Refresh();
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         IInteractable item = GetComponent<IInteractable>();
         if (item == null)

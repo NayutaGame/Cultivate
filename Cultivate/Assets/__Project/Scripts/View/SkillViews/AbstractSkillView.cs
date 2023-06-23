@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 [SelectionBase]
 public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractable,
-    IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
+    IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected RectTransform _rectTransform;
@@ -174,12 +174,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
     public void ClearIsManaShortage() => IsManaShortageDelegate = null;
     public event Func<bool> IsManaShortageDelegate;
 
-    // public virtual void OnPointerClick(PointerEventData eventData)
-    // {
-    //
-    // }
-
-    public virtual void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerClick(PointerEventData eventData)
     {
         IInteractable item = GetComponent<IInteractable>();
         if (item == null)

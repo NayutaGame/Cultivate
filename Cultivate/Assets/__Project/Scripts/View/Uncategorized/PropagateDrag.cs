@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PropagateDrag : MonoBehaviour, IIndexPath, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class PropagateDrag : MonoBehaviour, IIndexPath, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public IndexPath _indexPath;
-    public Action<PointerEventData> _onPointerDown;
+    public Action<PointerEventData> _onPointerClick;
     public Action<PointerEventData> _onBeginDrag;
     public Action<PointerEventData> _onEndDrag;
     public Action<PointerEventData> _onDrag;
@@ -20,9 +20,9 @@ public class PropagateDrag : MonoBehaviour, IIndexPath, IPointerDownHandler, IBe
 
     public void Refresh() { }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        _onPointerDown?.Invoke(eventData);
+        _onPointerClick?.Invoke(eventData);
     }
 
     public void OnBeginDrag(PointerEventData eventData)

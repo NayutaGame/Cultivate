@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 [SelectionBase]
 public class RunChipView : MonoBehaviour, IIndexPath,
-    IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
+    IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected Image _image;
@@ -29,7 +29,7 @@ public class RunChipView : MonoBehaviour, IIndexPath,
     {
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (RunManager.Get<SkillSlot>(GetIndexPath()) is { } enemyChipSlot)
         {
