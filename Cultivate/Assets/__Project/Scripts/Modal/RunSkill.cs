@@ -61,9 +61,6 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
     public int GetManaCost()
         => _entry.GetManaCost(JingJie, JingJie - _entry.JingJieRange.Start);
 
-    public Color GetManaCostColor()
-        => Color.black;
-
     public string GetManaCostString()
     {
         int manaCost = GetManaCost();

@@ -75,6 +75,8 @@ public class BarterPanelDescriptor : PanelDescriptor
         }
 
         RunManager.Instance.Battle.SkillInventory.AddSkill(barterItem.Skill);
+
+        _inventory.Remove(barterItem);
         return true;
     }
 

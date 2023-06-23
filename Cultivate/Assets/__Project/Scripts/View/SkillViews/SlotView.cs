@@ -20,6 +20,25 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
     public AbstractSkillView SkillView;
     private Image _image;
 
+    private bool IsManaShortage()
+    {
+        SkillSlot slot = RunManager.Get<SkillSlot>(GetIndexPath());
+        return slot.IsManaShortage;
+    }
+
+    public virtual bool IsSelected()
+    {
+        if (SkillView == null)
+            return false;
+        return SkillView.IsSelected();
+    }
+
+    public virtual void SetSelected(bool selected)
+    {
+        if (SkillView != null)
+            SkillView.SetSelected(selected);
+    }
+
     public void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
@@ -27,6 +46,9 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
 
         SkillView.Configure(new IndexPath($"{GetIndexPath()}.Skill"));
         SkillView.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+        SkillView.ClearIsManaShortage();
+        SkillView.IsManaShortageDelegate += IsManaShortage;
     }
 
     public void Refresh()

@@ -68,6 +68,6 @@ public class RunNode : GDictionary
     {
         CurrentPanel?.Exit();
         CurrentPanel = panel;
-        CurrentPanel.Enter();
+        CurrentPanel?.Enter();
     }
 }

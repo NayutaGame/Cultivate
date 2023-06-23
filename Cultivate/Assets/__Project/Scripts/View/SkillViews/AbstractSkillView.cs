@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
@@ -32,10 +33,16 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
     [SerializeField] private TMP_Text[] TypeTexts;
     [SerializeField] private Image JingJieImage;
     [SerializeField] private TMP_Text AnnotationText;
+    [SerializeField] private Image SelectionImage;
 
     private bool _selected;
     public virtual bool IsSelected() => _selected;
-    public virtual void SetSelected(bool selected) => _selected = selected;
+    public virtual void SetSelected(bool selected)
+    {
+        _selected = selected;
+        if (SelectionImage != null)
+            SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
+    }
 
     #region Accessors
 
@@ -58,10 +65,15 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
         }
     }
 
-    public virtual void SetManaCostColor(Color color)
+    public virtual void SetManaCostColor()
     {
         if (ManaCostText == null)
             return;
+
+        Color color = Color.white;
+
+        if (IsManaShortageDelegate != null && IsManaShortageDelegate())
+            color = Color.red;
 
         ManaCostText.color = color;
     }
@@ -149,7 +161,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
         gameObject.SetActive(true);
 
         SetManaCost(skill.GetManaCost());
-        SetManaCostColor(skill.GetManaCostColor());
+        SetManaCostColor();
         SetName(skill.GetName());
         SetDescription(skill.GetAnnotatedDescription());
         SetSkillTypeCollection(skill.GetSkillTypeCollection());
@@ -158,6 +170,14 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
         SetCardFace(skill.GetCardFace());
         SetJingJieSprite(skill.GetJingJieSprite());
     }
+
+    public void ClearIsManaShortage() => IsManaShortageDelegate = null;
+    public event Func<bool> IsManaShortageDelegate;
+
+    // public virtual void OnPointerClick(PointerEventData eventData)
+    // {
+    //
+    // }
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {

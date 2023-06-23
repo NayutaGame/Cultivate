@@ -20,9 +20,6 @@ public class StageNote : ISkillModel
     public int GetManaCost()
         => Skill?.GetManaCost() ?? 0;
 
-    public Color GetManaCostColor()
-        => Color.white;
-
     public string GetName()
         => Skill?.GetName() ?? Encyclopedia.SkillCategory["聚气术"].Name;
 

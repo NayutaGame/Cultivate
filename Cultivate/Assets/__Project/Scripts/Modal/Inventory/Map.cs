@@ -91,10 +91,10 @@ public class Map : GDictionary
 
         Selecting = true;
 
+        TryGetCurrentNode().ChangePanel(null);
+
         if (isEnd)
             JingJie += 1;
-
-        // RunCanvas.Instance.SetNodeState(null);
     }
 
 

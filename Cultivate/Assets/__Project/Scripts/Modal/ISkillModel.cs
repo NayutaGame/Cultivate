@@ -5,7 +5,6 @@ using UnityEngine;
 public interface ISkillModel
 {
     int GetManaCost();
-    Color GetManaCostColor();
     string GetName();
     string GetAnnotatedDescription(string evaluated = null);
     SkillTypeCollection GetSkillTypeCollection();
