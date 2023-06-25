@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface ISkillModel
 {
+    Sprite GetSprite();
     int GetManaCost();
     string GetName();
     string GetAnnotatedDescription(string evaluated = null);

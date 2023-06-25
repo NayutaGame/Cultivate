@@ -13,26 +13,31 @@ public class AudioManager : Singleton<AudioManager>
         base.DidAwake();
     }
 
-    public void Play(SoundEntry soundEntry)
+    public void Play(AudioEntry audioEntry)
     {
-        if (soundEntry._audioType == SoundEntry.AudioType.Music)
+        if (audioEntry._audioType == AudioEntry.AudioType.Music)
         {
-            PlayMusic(soundEntry);
+            PlayMusic(audioEntry);
         }
-        else if (soundEntry._audioType == SoundEntry.AudioType.SFX)
+        else if (audioEntry._audioType == AudioEntry.AudioType.SFX)
         {
-            PlaySFX(soundEntry);
+            PlaySFX(audioEntry);
         }
     }
 
-    private void PlaySFX(SoundEntry soundEntry)
+    public void Stop()
     {
-        _audioSource.PlayOneShot(soundEntry.AudioClip);
+        _audioSource.Stop();
     }
 
-    private void PlayMusic(SoundEntry soundEntry)
+    private void PlaySFX(AudioEntry audioEntry)
     {
-        _audioSource.clip = soundEntry.AudioClip;
+        _audioSource.PlayOneShot(audioEntry.AudioClip);
+    }
+
+    private void PlayMusic(AudioEntry audioEntry)
+    {
+        _audioSource.clip = audioEntry.AudioClip;
         _audioSource.Play();
     }
 }

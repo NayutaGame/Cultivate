@@ -96,8 +96,6 @@ public class CardPickerPanel : Panel
             if (space <= 0)
                 return false;
 
-
-
             SkillSlot slot = RunManager.Get<SkillSlot>(slotView.GetIndexPath());
             if (!d.CanSelect(slot))
                 return false;

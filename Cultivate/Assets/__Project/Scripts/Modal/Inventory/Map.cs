@@ -97,6 +97,14 @@ public class Map : GDictionary
             JingJie += 1;
     }
 
+    private readonly Dictionary<JingJie, AudioEntry> JingJieToAudio = new()
+    {
+        { JingJie.LianQi, "练气BGM" },
+        { JingJie.ZhuJi, "筑基BGM" },
+        { JingJie.JinDan, "金丹BGM" },
+        { JingJie.YuanYing, "元婴BGM" },
+        { JingJie.HuaShen, "化神BGM" },
+    };
 
     private JingJie _jingJie;
     public JingJie JingJie
@@ -112,6 +120,7 @@ public class Map : GDictionary
                     RunManager.Instance.Battle.Hero.SetJingJie(_jingJie);
                 }
             RefreshPools();
+            AudioManager.Instance.Play(JingJieToAudio[_jingJie]);
         }
     }
 

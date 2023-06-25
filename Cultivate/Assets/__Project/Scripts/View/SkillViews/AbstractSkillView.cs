@@ -25,6 +25,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
     public void SetDelegate(InteractDelegate interactDelegate)
         => InteractDelegate = interactDelegate;
 
+    [SerializeField] private Image CardImage;
     [SerializeField] private GameObject ManaCostView;
     [SerializeField] private TMP_Text ManaCostText;
     [SerializeField] protected TMP_Text NameText;
@@ -47,6 +48,14 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
     #region Accessors
 
     public abstract ISkillModel GetSkillModel();
+
+    public virtual void SetCardImage(Sprite sprite)
+    {
+        if (CardImage == null)
+            return;
+
+        CardImage.sprite = sprite;
+    }
 
     public virtual void SetManaCost(int manaCost)
     {
@@ -160,6 +169,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
 
         gameObject.SetActive(true);
 
+        SetCardImage(skill.GetSprite());
         SetManaCost(skill.GetManaCost());
         SetManaCostColor();
         SetName(skill.GetName());

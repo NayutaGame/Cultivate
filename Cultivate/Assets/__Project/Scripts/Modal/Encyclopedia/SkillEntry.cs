@@ -42,6 +42,9 @@ public class SkillEntry : Entry, IAnnotation
     public SkillTypeCollection SkillTypeCollection { get; private set; }
     private Func<StageEntity, StageSkill, bool, Task> _execute;
 
+    private SpriteEntry _spriteEntry;
+    public Sprite Sprite => _spriteEntry?.Sprite;
+
     public SkillEntry(string name,
         CLLibrary.Range jingJieRange,
         SkillDescription description,
@@ -57,6 +60,8 @@ public class SkillEntry : Entry, IAnnotation
         _manaCost = manaCost ?? 0;
         SkillTypeCollection = skillTypeCollection ?? SkillTypeCollection.None;
         _execute = execute ?? DefaultExecute;
+
+        _spriteEntry = name;
     }
 
     public static implicit operator SkillEntry(string name) => Encyclopedia.SkillCategory[name];

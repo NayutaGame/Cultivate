@@ -34,6 +34,9 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
         _runEquippedTimes = prototype._runEquippedTimes;
     }
 
+    public Sprite GetSprite()
+        => _entry.Sprite;
+
     public string GetName()
         => _entry.Name;
 

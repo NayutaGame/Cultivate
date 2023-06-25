@@ -6,7 +6,7 @@ using UnityEngine;
 public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
 {
     public static SpriteCategory SpriteCategory;
-    public static SoundCategory SoundCategory;
+    public static AudioCategory AudioCategory;
 
     public static KeywordCategory KeywordCategory;
     public static BuffCategory BuffCategory;
@@ -20,7 +20,7 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
         base.DidAwake();
 
         SpriteCategory = new();
-        SoundCategory = new();
+        AudioCategory = new();
 
         KeywordCategory = new();
         BuffCategory = new();

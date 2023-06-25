@@ -17,6 +17,9 @@ public class StageNote : ISkillModel
     public bool IsHome
         => EntityIndex == 0;
 
+    public Sprite GetSprite()
+        => Skill?.Entry.Sprite;
+
     public int GetManaCost()
         => Skill?.GetManaCost() ?? 0;
 

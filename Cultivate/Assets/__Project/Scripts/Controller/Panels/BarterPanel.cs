@@ -39,6 +39,7 @@ public class BarterPanel : Panel
     {
         BarterPanelDescriptor d = RunManager.Get<BarterPanelDescriptor>(_indexPath);
         d.Exchange(barterItem);
+        AudioManager.Instance.Play("钱币");
     }
 
     private void Exit()
