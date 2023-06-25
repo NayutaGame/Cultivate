@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundCategory : MonoBehaviour
+public class SoundCategory : Category<SoundEntry>
 {
-    // Start is called before the first frame update
-    void Start()
+    public SoundCategory()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        List = new()
+        {
+            new("奇遇", "Images/NodeIcons/Adventure", SoundEntry.AudioType.Music),
+        };
     }
 }
