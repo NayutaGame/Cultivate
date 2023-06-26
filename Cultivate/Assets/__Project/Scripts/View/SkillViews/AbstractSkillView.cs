@@ -33,6 +33,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
     [SerializeField] private GameObject[] TypeViews;
     [SerializeField] private TMP_Text[] TypeTexts;
     [SerializeField] private Image JingJieImage;
+    [SerializeField] private Image WuXingImage;
     [SerializeField] private TMP_Text AnnotationText;
     [SerializeField] private Image SelectionImage;
 
@@ -135,6 +136,12 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
             JingJieImage.sprite = jingJieSprite;
     }
 
+    public virtual void SetWuXingSprite(Sprite wuXingSprite)
+    {
+        if (WuXingImage != null)
+            WuXingImage.sprite = wuXingSprite;
+    }
+
     public virtual void SetAnnotationText(string annotationText)
     {
         if (AnnotationText == null)
@@ -179,6 +186,7 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
         SetColor(skill.GetColor());
         SetCardFace(skill.GetCardFace());
         SetJingJieSprite(skill.GetJingJieSprite());
+        SetWuXingSprite(skill.GetWuXingSprite());
     }
 
     public void ClearIsManaShortage() => IsManaShortageDelegate = null;

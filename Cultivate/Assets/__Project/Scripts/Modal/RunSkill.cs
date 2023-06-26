@@ -58,6 +58,9 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
     public Sprite GetJingJieSprite()
         => CanvasManager.Instance.JingJieSprites[GetJingJie()];
 
+    public Sprite GetWuXingSprite()
+        => CanvasManager.Instance.GetWuXingSprite(_entry.WuXing);
+
     public string GetDescription()
         => _entry.Evaluate(JingJie, JingJie - _entry.JingJieRange.Start);
 

@@ -42,6 +42,9 @@ public class StageNote : ISkillModel
     public Sprite GetJingJieSprite()
         => CanvasManager.Instance.JingJieSprites[Skill?.GetJingJie() ?? JingJie.LianQi];
 
+    public Sprite GetWuXingSprite()
+        => CanvasManager.Instance.GetWuXingSprite(Skill?.Entry.WuXing);
+
     public string GetAnnotationText()
         => Skill?.GetAnnotationText();
 }

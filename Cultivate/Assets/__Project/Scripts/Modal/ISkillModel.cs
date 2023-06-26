@@ -12,5 +12,6 @@ public interface ISkillModel
     Color GetColor();
     Sprite GetCardFace();
     Sprite GetJingJieSprite();
+    Sprite GetWuXingSprite();
     string GetAnnotationText();
 }
