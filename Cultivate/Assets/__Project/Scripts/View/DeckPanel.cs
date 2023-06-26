@@ -18,21 +18,21 @@ public class DeckPanel : Panel
     public SlotInventoryView PlayerHand;
     public SkillInventoryView PlayerInventory;
 
-    public RectTransform _backgroundTransform;
+    public RectTransform _deckTransform;
     public RectTransform _spriteTransform;
     public RectTransform _handTransform;
 
     public override Tween GetShowTween()
         => DOTween.Sequence()
             .Join(_spriteTransform.DOAnchorPosY(0f, 0.3f).SetEase(Ease.OutQuad))
-            .Join(_handTransform.DOAnchorPosY(107f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.05f))
-            .Join(_backgroundTransform.DOAnchorPosY(-56.5f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.1f));
+            .Join(_handTransform.DOAnchorPosY(94f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.05f))
+            .Join(_deckTransform.DOAnchorPosY(-69.5f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.1f));
 
     public override Tween GetHideTween()
         => DOTween.Sequence()
-            .Join(_backgroundTransform.DOAnchorPosY(-434f, 0.3f).SetEase(Ease.InQuad))
-            .Join(_handTransform.DOAnchorPosY(-392f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.05f))
-            .Join(_spriteTransform.DOAnchorPosY(-600f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.1f));
+            .Join(_deckTransform.DOAnchorPosY(-445f, 0.3f).SetEase(Ease.InQuad))
+            .Join(_handTransform.DOAnchorPosY(-403f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.05f))
+            .Join(_spriteTransform.DOAnchorPosY(-626f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.1f));
 
     public override void Configure()
     {
