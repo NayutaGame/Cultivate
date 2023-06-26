@@ -1,4 +1,4 @@
 
-public class RunChipInventoryView : InventoryView<AbstractSkillView>
+public class RunChipInventoryView : InventoryView<SlotView>
 {
 }

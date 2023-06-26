@@ -415,6 +415,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6452065672785603730}
   - component: {fileID: 6361871301536584980}
+  - component: {fileID: 1784323114420190295}
   - component: {fileID: 3022393418496761076}
   - component: {fileID: 4038979552059505080}
   m_Layer: 5
@@ -455,6 +456,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4730905039607144230}
   m_CullTransparentMesh: 1
+--- !u!225 &1784323114420190295
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4730905039607144230}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &3022393418496761076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,6 +510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e14588677774954fa706910f4830509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardImage: {fileID: 0}
   ManaCostView: {fileID: 556437860677060265}
   ManaCostText: {fileID: 2694504842172242596}
   NameText: {fileID: 8836575341314080864}
@@ -504,6 +518,7 @@ MonoBehaviour:
   TypeViews: []
   TypeTexts: []
   JingJieImage: {fileID: 0}
+  WuXingImage: {fileID: 0}
   AnnotationText: {fileID: 0}
   SelectionImage: {fileID: 0}
   TypeText: {fileID: 2184432948138666190}

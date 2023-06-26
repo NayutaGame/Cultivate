@@ -94,6 +94,7 @@ public class RunCanvas : Singleton<RunCanvas>
         ToggleShowingConsolePanelButton.onClick.RemoveAllListeners();
         ToggleShowingConsolePanelButton.onClick.AddListener(ToggleConsolePanel);
 
+        ReservedLayer.Configure();
         MMDMLayer.Configure();
         NodeLayer.Configure();
 
@@ -108,6 +109,7 @@ public class RunCanvas : Singleton<RunCanvas>
         TopBar.Refresh();
         ConsolePanel.Refresh();
 
+        ReservedLayer.Refresh();
         NodeLayer.Refresh();
         MMDMLayer.Refresh();
     }

@@ -417,7 +417,7 @@ public class StageEntity : GDictionary
 
     public async Task<BuffDetails> GainedBurningRecorder(BuffDetails d)
     {
-        if (d._buffEntry.Name != "灼热")
+        if (d._buffEntry.Name != "灼烧")
             return d;
 
         GainedBurningRecord += d._stack;

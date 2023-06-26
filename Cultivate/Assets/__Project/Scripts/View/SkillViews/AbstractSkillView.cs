@@ -133,13 +133,25 @@ public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractab
     public virtual void SetJingJieSprite(Sprite jingJieSprite)
     {
         if (JingJieImage != null)
+        {
             JingJieImage.sprite = jingJieSprite;
+        }
     }
 
     public virtual void SetWuXingSprite(Sprite wuXingSprite)
     {
         if (WuXingImage != null)
-            WuXingImage.sprite = wuXingSprite;
+        {
+            if (wuXingSprite != null)
+            {
+                WuXingImage.sprite = wuXingSprite;
+                WuXingImage.enabled = true;
+            }
+            else
+            {
+                WuXingImage.enabled = false;
+            }
+        }
     }
 
     public virtual void SetAnnotationText(string annotationText)

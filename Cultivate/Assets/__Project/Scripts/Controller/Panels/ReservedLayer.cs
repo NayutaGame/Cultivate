@@ -9,6 +9,7 @@ public class ReservedLayer : MonoBehaviour
     public Button SimulateButton;
     public Button ArenaButton;
     public Button LibraryButton;
+    public Button CloseButton;
 
     public TechTreePanel TechTreePanel;
     public SimulatePanel SimulatePanel;
@@ -19,10 +20,20 @@ public class ReservedLayer : MonoBehaviour
 
     public void Configure()
     {
+        TechButton.onClick.RemoveAllListeners();
         TechButton.onClick.AddListener(OpenTechTreePanel);
+
+        SimulateButton.onClick.RemoveAllListeners();
         SimulateButton.onClick.AddListener(OpenSimulatePanel);
+
+        ArenaButton.onClick.RemoveAllListeners();
         ArenaButton.onClick.AddListener(OpenArenaPanel);
+
+        LibraryButton.onClick.RemoveAllListeners();
         LibraryButton.onClick.AddListener(OpenLibraryPanel);
+
+        CloseButton.onClick.RemoveAllListeners();
+        CloseButton.onClick.AddListener(ClosePanel);
     }
 
     public void Refresh()
@@ -35,13 +46,17 @@ public class ReservedLayer : MonoBehaviour
     public void OpenSimulatePanel() => ChangePanel(SimulatePanel);
     public void OpenArenaPanel() => ChangePanel(ArenaPanel);
     public void OpenLibraryPanel() => ChangePanel(LibraryPanel);
+    public void ClosePanel() => ChangePanel(null);
 
     private void ChangePanel(Panel next)
     {
         if (_currentPanel != null)
             _currentPanel.gameObject.SetActive(false);
         _currentPanel = next;
-        _currentPanel.gameObject.SetActive(true);
-        _currentPanel.Refresh();
+        if (_currentPanel != null)
+        {
+            _currentPanel.gameObject.SetActive(true);
+            _currentPanel.Refresh();
+        }
     }
 }

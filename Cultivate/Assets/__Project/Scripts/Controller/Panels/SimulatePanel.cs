@@ -39,7 +39,10 @@ public class SimulatePanel : Panel
         SkillInventoryView.Configure(new IndexPath($"{_indexPath}.SkillInventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
 
+        ReportButton.onClick.RemoveAllListeners();
         ReportButton.onClick.AddListener(Report);
+
+        StreamButton.onClick.RemoveAllListeners();
         StreamButton.onClick.AddListener(Stream);
     }
 
