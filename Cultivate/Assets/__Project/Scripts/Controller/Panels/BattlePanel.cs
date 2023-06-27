@@ -16,7 +16,9 @@ public class BattlePanel : Panel
     public Image EnemySprite;
 
     public TMP_Text HomeHP;
+    public GameObject HomeHPSlash;
     public TMP_Text AwayHP;
+    public GameObject AwayHPSlash;
 
     public Button ActButton;
 
@@ -47,12 +49,16 @@ public class BattlePanel : Panel
             if (report.HomeVictory)
             {
                 HomeHP.color = Color.white;
-                AwayHP.color = Color.gray;
+                HomeHPSlash.SetActive(false);
+                AwayHP.color = Color.black;
+                AwayHPSlash.SetActive(true);
             }
             else
             {
-                HomeHP.color = Color.gray;
+                HomeHP.color = Color.black;
+                HomeHPSlash.SetActive(true);
                 AwayHP.color = Color.white;
+                AwayHPSlash.SetActive(false);
             }
             // ReportText.text = report.ToString();
         }
@@ -61,7 +67,9 @@ public class BattlePanel : Panel
             HomeHP.text = "玩家";
             AwayHP.text = "怪物";
             HomeHP.color = Color.white;
+            HomeHPSlash.SetActive(false);
             AwayHP.color = Color.white;
+            AwayHPSlash.SetActive(false);
             // ReportText.text = "";
         }
     }
