@@ -50,16 +50,16 @@ public class RunNode : GDictionary
         Position = position;
         JingJie = jingJie;
         _entry = entry;
-        _state = RunNodeState.Locked;
+        _state = RunNodeState.Future;
     }
 
     public enum RunNodeState
     {
-        Passed,
         Missed,
+        Passed,
         Current,
         ToChoose,
-        Locked,
+        Future,
     }
 
     public PanelDescriptor CurrentPanel { get; private set; }

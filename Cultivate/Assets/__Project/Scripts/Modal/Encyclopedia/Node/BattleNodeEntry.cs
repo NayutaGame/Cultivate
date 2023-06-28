@@ -21,10 +21,18 @@ public class BattleNodeEntry : NodeEntry
             DiscoverSkillPanelDescriptor B = new($"胜利！获得了{xiuWeiValue}的修为\n请选择一张卡作为奖励");
             DiscoverSkillPanelDescriptor C = new($"你没能击败对手\n虽然损失了一些命元，但还是获得了{xiuWeiValue}修为，以及可以选择一张卡作为奖励");
 
+            DialogPanelDescriptor D = new($"游戏胜利！按Esc退出游戏。");
+
             A._receiveSignal = (signal) =>
             {
                 if (signal is BattleResultSignal battleResultSignal)
                 {
+                    if (runNode.JingJie == JingJie.HuaShen && battleRunNode.CreateEntityDetails.AllowBoss == true)
+                    {
+                        runNode.ChangePanel(D);
+                        return D;
+                    }
+
                     if (battleResultSignal.State == BattleResultSignal.BattleResultState.Win)
                     {
                         runNode.ChangePanel(B);
@@ -56,6 +64,8 @@ public class BattleNodeEntry : NodeEntry
                 RunManager.Instance.Map.TryFinishNode();
                 return null;
             };
+
+            D._receiveSignal = signal => D;
 
             runNode.ChangePanel(A);
         }

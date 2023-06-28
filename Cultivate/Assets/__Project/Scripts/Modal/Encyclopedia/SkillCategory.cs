@@ -721,6 +721,7 @@ public class SkillCategory : Category<SkillEntry>
             new("鹤回翔", new CLLibrary.Range(4, 5), "消耗\n反转出牌顺序", WuXing.Mu,
                 execute: async (caster, waiGong, recursive) =>
                 {
+                    await waiGong.ConsumeProcedure();
                     if (caster.Forward)
                         await caster.BuffSelfProcedure("鹤回翔");
                     else

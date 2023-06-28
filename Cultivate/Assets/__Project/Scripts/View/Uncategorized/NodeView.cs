@@ -1,22 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class NodeView : MonoBehaviour, IIndexPath, IPointerClickHandler
+public class NodeView : MonoBehaviour, IIndexPath
 {
     private IndexPath _indexPath;
     public IndexPath GetIndexPath() => _indexPath;
 
-    private Image Image;
+    public JumpingButton _jumpingButton;
     public TMP_Text NameText;
 
     public virtual void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
-        Image = GetComponent<Image>();
+
+        _jumpingButton.RemoveAllListeners();
+        _jumpingButton.AddListener(OnPointerClick);
     }
 
     public virtual void Refresh()
@@ -28,38 +28,33 @@ public class NodeView : MonoBehaviour, IIndexPath, IPointerClickHandler
             return;
 
         if (NameText != null)
-            NameText.text = runNode.GetTitle();
+            NameText.text = runNode.GetTitle() + runNode.State.ToString();
 
-        if (Image != null)
-            Image.sprite = runNode.Sprite;
+        _jumpingButton.SetSprite(runNode.Sprite);
 
         switch (runNode.State)
         {
-            case RunNode.RunNodeState.Current:
-                Image.color = Color.cyan;
-                break;
-            case RunNode.RunNodeState.Locked:
-                Image.color = Color.gray;
-                break;
             case RunNode.RunNodeState.Missed:
-                Image.color = Color.red;
-                break;
             case RunNode.RunNodeState.Passed:
-                Image.color = Color.yellow;
+            case RunNode.RunNodeState.Current:
+                _jumpingButton.SetColor(Color.black);
                 break;
             case RunNode.RunNodeState.ToChoose:
-                Image.color = Color.green;
+            case RunNode.RunNodeState.Future:
+                _jumpingButton.SetColor(Color.white);
                 break;
         }
+
+        _jumpingButton.SetJumping(runNode.State == RunNode.RunNodeState.ToChoose);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    private void OnPointerClick(PointerEventData eventData)
     {
         TryClickNode(GetIndexPath());
         RunCanvas.Instance.Refresh();
     }
 
-    public bool TryClickNode(IndexPath indexPath)
+    private bool TryClickNode(IndexPath indexPath)
     {
         RunNode runNode = RunManager.Get<RunNode>(indexPath);
         if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Map.Selecting)
