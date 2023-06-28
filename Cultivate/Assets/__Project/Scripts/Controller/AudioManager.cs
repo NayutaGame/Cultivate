@@ -11,6 +11,8 @@ public class AudioManager : Singleton<AudioManager>
     public override void DidAwake()
     {
         base.DidAwake();
+
+        SetAudible(true);
     }
 
     public void Play(AudioEntry audioEntry)
@@ -39,5 +41,18 @@ public class AudioManager : Singleton<AudioManager>
     {
         _audioSource.clip = audioEntry.AudioClip;
         _audioSource.Play();
+    }
+
+    private bool _audible;
+    public bool IsAudible => _audible;
+    public void SetAudible(bool audible)
+    {
+        _audible = audible;
+        _audioSource.volume = _audible ? 1 : 0;
+    }
+
+    public void ToggleAudible()
+    {
+        SetAudible(!IsAudible);
     }
 }
