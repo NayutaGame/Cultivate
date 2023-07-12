@@ -13,7 +13,11 @@ using UnityEngine;
 public class RunEntity : GDictionary, IEntityModel
 {
     public event Action EnvironmentChangedEvent;
-    public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
+    public void EnvironmentChanged()
+    {
+        RefreshFormations();
+        EnvironmentChangedEvent?.Invoke();
+    }
 
     public static readonly int[] BaseHP = new int[] { 40, 80, 140, 220, 340, 340 };
 
@@ -76,6 +80,21 @@ public class RunEntity : GDictionary, IEntityModel
         return true;
     }
 
+    #region Formation
+
+    private List<SubFormationEntry> _activatedFormations;
+
+    private void RefreshFormations()
+    {
+        _activatedFormations.Clear();
+        FormationArguments args = new FormationArguments(this);
+        _activatedFormations.AddRange(Encyclopedia.FormationCategory.Traversal
+            .Map(f => f.FirstActivatedFormation(this, args))
+            .FilterObj(f => f != null));
+    }
+
+    #endregion
+
     private EntityEntry _entry;
     public EntityEntry GetEntry()
         => _entry;
@@ -99,6 +118,8 @@ public class RunEntity : GDictionary, IEntityModel
 
         _entry = entry;
         _createEntityDetails = d;
+
+        _activatedFormations = new List<SubFormationEntry>();
 
         _slots = new SkillSlot[RunManager.WaiGongLimit];
         for (int i = 0; i < _slots.Length; i++)

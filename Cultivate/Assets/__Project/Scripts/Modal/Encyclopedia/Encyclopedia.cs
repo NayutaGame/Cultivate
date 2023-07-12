@@ -14,6 +14,7 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
     public static EntityCategory EntityCategory;
     public static TechCategory TechCategory;
     public static NodeCategory NodeCategory;
+    public static FormationCategory FormationCategory;
 
     public override void DidAwake()
     {
@@ -28,6 +29,7 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
         EntityCategory = new();
         TechCategory = new();
         NodeCategory = new();
+        FormationCategory = new();
 
         TechCategory.Init();
 
