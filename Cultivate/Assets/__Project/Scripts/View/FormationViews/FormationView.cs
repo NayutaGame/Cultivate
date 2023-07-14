@@ -2,21 +2,166 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class FormationView : MonoBehaviour, IIndexPath
+[SelectionBase]
+public class FormationView : MonoBehaviour, IIndexPath, IInteractable,
+    IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
+    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     private IndexPath _indexPath;
     public IndexPath GetIndexPath() => _indexPath;
 
-    [SerializeField] private TMP_Text NameText;
-    [SerializeField] private SubFormationView SubFormationViews;
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate()
+        => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate)
+        => InteractDelegate = interactDelegate;
 
-    public void Configure(IndexPath indexPath)
+    [SerializeField] private TMP_Text NameText;
+    [SerializeField] private SubFormationInventoryView SubFormationInventoryView;
+    [SerializeField] private Image SelectionImage;
+
+    private bool _selected;
+    public virtual bool IsSelected() => _selected;
+    public virtual void SetSelected(bool selected)
+    {
+        _selected = selected;
+        if (SelectionImage != null)
+            SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
+    }
+
+    public virtual void Configure(IndexPath indexPath)
     {
         _indexPath = indexPath;
     }
 
-    public void Refresh()
+    public virtual void Refresh()
     {
+        if (GetIndexPath() == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        FormationEntry formation = DataManager.Get<FormationEntry>(GetIndexPath());
+        if (formation == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        gameObject.SetActive(true);
+
+        SetName(formation.Name);
+        SetSubFormations();
+    }
+
+    public virtual void SetName(string s)
+    {
+        NameText.text = s;
+    }
+
+    public virtual void SetSubFormations()
+    {
+        if (SubFormationInventoryView == null)
+            return;
+        SubFormationInventoryView.Configure(new IndexPath($"{GetIndexPath()}.SubFormations"));
+        SubFormationInventoryView.Refresh();
+    }
+
+    public virtual void OnPointerClick(PointerEventData eventData)
+    {
+        IInteractable item = GetComponent<IInteractable>();
+        if (item == null)
+            return;
+
+        InteractDelegate interactDelegate = item.GetDelegate();
+        if (interactDelegate == null)
+            return;
+
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            interactDelegate.LMouse(item);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            interactDelegate.RMouse(item);
+        }
+
+        RunCanvas.Instance.Refresh();
+    }
+
+    public virtual void OnBeginDrag(PointerEventData eventData)
+    {
+        // IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
+        // if(drag == null || drag.GetDelegate() == null || !drag.GetDelegate().CanDrag(drag))
+        // {
+        //     eventData.pointerDrag = null;
+        //     RunCanvas.Instance.SetIndexPathForPreview(null);
+        //     return;
+        // }
+        //
+        // // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
+        //
+        // RunCanvas.Instance.SkillGhost.Configure(GetIndexPath());
+        // RunCanvas.Instance.SkillGhost.Refresh();
+        // RunCanvas.Instance.Refresh();
+        //
+        // if (_image != null)
+        //     _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
+        //
+        // RunCanvas.Instance.SetIndexPathForPreview(null);
+    }
+
+    public virtual void OnEndDrag(PointerEventData eventData)
+    {
+        // // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
+        //
+        // RunCanvas.Instance.SkillGhost.Configure(null);
+        // RunCanvas.Instance.SkillGhost.Refresh();
+        // RunCanvas.Instance.Refresh();
+        //
+        // if (_image != null)
+        //     _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
+        //
+        // RunCanvas.Instance.Refresh();
+    }
+
+    public virtual void OnDrag(PointerEventData eventData)
+    {
+        // RunCanvas.Instance.SkillGhost.UpdateMousePos(eventData.position);
+    }
+
+    public virtual void OnDrop(PointerEventData eventData)
+    {
+        // IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
+        // if (drag == null)
+        //     return;
+        //
+        // IInteractable drop = GetComponent<IInteractable>();
+        // if (drag == drop)
+        //     return;
+        //
+        // drag.GetDelegate()?.DragDrop(drag, drop);
+    }
+
+    public virtual void OnPointerEnter(PointerEventData eventData)
+    {
+        // if (eventData.dragging) return;
+        // RunCanvas.Instance.SetIndexPathForPreview(GetIndexPath());
+    }
+
+    public virtual void OnPointerExit(PointerEventData eventData)
+    {
+        // if (eventData.dragging) return;
+        // RunCanvas.Instance.SetIndexPathForPreview(null);
+    }
+
+    public virtual void OnPointerMove(PointerEventData eventData)
+    {
+        // if (eventData.dragging) return;
+        // RunCanvas.Instance.UpdateMousePosForPreview(eventData.position);
     }
 }

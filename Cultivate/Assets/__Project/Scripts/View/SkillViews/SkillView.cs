@@ -46,9 +46,10 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
             SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
     }
 
-    #region Accessors
+    public void ClearIsManaShortage() => IsManaShortageDelegate = null;
+    public event Func<bool> IsManaShortageDelegate;
 
-    public abstract ISkillModel GetSkillModel();
+    #region Accessors
 
     public virtual void SetCardImage(Sprite sprite)
     {
@@ -179,7 +180,7 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
             return;
         }
 
-        ISkillModel skill = GetSkillModel();
+        ISkillModel skill = DataManager.Get<ISkillModel>(GetIndexPath());
         if (skill == null)
         {
             gameObject.SetActive(false);
@@ -200,9 +201,6 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
         SetJingJieSprite(skill.GetJingJieSprite());
         SetWuXingSprite(skill.GetWuXingSprite());
     }
-
-    public void ClearIsManaShortage() => IsManaShortageDelegate = null;
-    public event Func<bool> IsManaShortageDelegate;
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {

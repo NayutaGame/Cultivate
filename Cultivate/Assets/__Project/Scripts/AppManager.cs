@@ -11,6 +11,7 @@ public class AppManager : Singleton<AppManager>, GDictionary
     public RunManager RunManager;
     public StageManager StageManager;
 
+    public FormationInventory FormationInventory;
     public SkillInventory SkillInventory;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -23,10 +24,14 @@ public class AppManager : Singleton<AppManager>, GDictionary
 
         _accessors = new Dictionary<string, Func<object>>()
         {
+            { "FormationInventory", () => FormationInventory },
             { "SkillInventory", () => SkillInventory },
         };
 
         Application.targetFrameRate = 120;
+
+        FormationInventory = new();
+        Encyclopedia.FormationCategory.Traversal.Do(e => FormationInventory.Add(e));
 
         SkillInventory = new();
         Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));

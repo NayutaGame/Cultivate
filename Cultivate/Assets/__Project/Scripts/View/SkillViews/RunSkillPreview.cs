@@ -8,9 +8,6 @@ public class RunSkillPreview : SkillView
 {
     public RunSkillView SkillView;
 
-    public override ISkillModel GetSkillModel()
-        => DataManager.Get<ISkillModel>(GetIndexPath());
-
     public override void Configure(IndexPath indexPath)
     {
         base.Configure(indexPath);

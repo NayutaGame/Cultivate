@@ -19,7 +19,7 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath, IInteractabl
     public InteractDelegate GetDelegate()
         => InteractDelegate;
 
-    public void SetDelegate(InteractDelegate interactDelegate)
+    public virtual void SetDelegate(InteractDelegate interactDelegate)
     {
         InteractDelegate = interactDelegate;
 

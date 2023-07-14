@@ -5,9 +5,6 @@ using UnityEngine.EventSystems;
 
 public class StageSkillView : SkillView
 {
-    public override ISkillModel GetSkillModel()
-        => DataManager.Get<ISkillModel>(GetIndexPath());
-
     public Tween GetExpandTween()
     {
         Sequence seq = DOTween.Sequence();

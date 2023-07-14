@@ -8,13 +8,15 @@ public class ReservedLayer : MonoBehaviour
     public Button TechButton;
     public Button SimulateButton;
     public Button ArenaButton;
-    public Button LibraryButton;
+    public Button SkillBrowserButton;
+    public Button FormationBrowserButton;
     public Button CloseButton;
 
     public TechTreePanel TechTreePanel;
     public SimulatePanel SimulatePanel;
     public ArenaPanel ArenaPanel;
-    public LibraryPanel LibraryPanel;
+    public SkillBrowserPanel SkillBrowserPanel;
+    public FormationBrowserPanel FormationBrowserPanel;
 
     private Panel _currentPanel;
 
@@ -29,8 +31,11 @@ public class ReservedLayer : MonoBehaviour
         ArenaButton.onClick.RemoveAllListeners();
         ArenaButton.onClick.AddListener(OpenArenaPanel);
 
-        LibraryButton.onClick.RemoveAllListeners();
-        LibraryButton.onClick.AddListener(OpenLibraryPanel);
+        SkillBrowserButton.onClick.RemoveAllListeners();
+        SkillBrowserButton.onClick.AddListener(OpenSkillBrowserPanel);
+
+        FormationBrowserButton.onClick.RemoveAllListeners();
+        FormationBrowserButton.onClick.AddListener(OpenFormationBrowserPanel);
 
         CloseButton.onClick.RemoveAllListeners();
         CloseButton.onClick.AddListener(ClosePanel);
@@ -45,7 +50,8 @@ public class ReservedLayer : MonoBehaviour
     public void OpenTechTreePanel() => ChangePanel(TechTreePanel);
     public void OpenSimulatePanel() => ChangePanel(SimulatePanel);
     public void OpenArenaPanel() => ChangePanel(ArenaPanel);
-    public void OpenLibraryPanel() => ChangePanel(LibraryPanel);
+    public void OpenSkillBrowserPanel() => ChangePanel(SkillBrowserPanel);
+    public void OpenFormationBrowserPanel() => ChangePanel(FormationBrowserPanel);
     public void ClosePanel() => ChangePanel(null);
 
     private void ChangePanel(Panel next)

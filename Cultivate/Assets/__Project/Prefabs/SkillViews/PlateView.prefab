@@ -94,6 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e14588677774954fa706910f4830509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardImage: {fileID: 0}
   ManaCostView: {fileID: 8761564396075560131}
   ManaCostText: {fileID: 6578427324654956750}
   NameText: {fileID: 328300260318751242}
@@ -101,6 +102,7 @@ MonoBehaviour:
   TypeViews: []
   TypeTexts: []
   JingJieImage: {fileID: 0}
+  WuXingImage: {fileID: 0}
   AnnotationText: {fileID: 0}
   SelectionImage: {fileID: 1151671682800697409}
   TypeText: {fileID: 1594225631139461168}
@@ -305,8 +307,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f79b2e46f59d6fe48ac24619bb0b0f1d, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 3092a6f51bb8b32498fd141a272966ed, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

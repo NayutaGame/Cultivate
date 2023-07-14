@@ -19,5 +19,16 @@ public class SubFormationView : MonoBehaviour, IIndexPath
 
     public void Refresh()
     {
+        SubFormationEntry e = DataManager.Get<SubFormationEntry>(GetIndexPath());
+        if (e == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        gameObject.SetActive(true);
+        JingJieText.text = e.GetJingJie().ToString();
+        ConditionText.text = e.GetConditionDescription();
+        RewardText.text = e.GetRewardDescription();
     }
 }

@@ -8,9 +8,6 @@ public class StageSkillPreview : SkillView
 {
     public StageSkillView SkillView;
 
-    public override ISkillModel GetSkillModel()
-        => DataManager.Get<ISkillModel>(GetIndexPath());
-
     public override void Configure(IndexPath indexPath)
     {
         base.Configure(indexPath);
