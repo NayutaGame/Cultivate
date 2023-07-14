@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillInventoryView : InventoryView<AbstractSkillView>, IDropHandler
+public class SkillInventoryView : InventoryView<SkillView>, IDropHandler
 {
     public ScrollRect ScrollRect;
 
@@ -55,14 +55,14 @@ public class SkillInventoryView : InventoryView<AbstractSkillView>, IDropHandler
 
     private void DrawJingJie(JingJie jingJie)
     {
-        SkillInventory inventory = RunManager.Get<SkillInventory>(GetIndexPath());
+        SkillInventory inventory = DataManager.Get<SkillInventory>(GetIndexPath());
         inventory.TryDrawSkill(out _, jingJie: jingJie);
         RunCanvas.Instance.Refresh();
     }
 
     private void SortByComparisonId(int i)
     {
-        SkillInventory inventory = RunManager.Get<SkillInventory>(GetIndexPath());
+        SkillInventory inventory = DataManager.Get<SkillInventory>(GetIndexPath());
         inventory.SortByComparisonId(i);
         RunCanvas.Instance.Refresh();
     }

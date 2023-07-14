@@ -11,7 +11,8 @@ public class Commodity : GDictionary
     public int FinalPrice;
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
 
     public Commodity(RunSkill skill, int price, float discount = 1f)
     {

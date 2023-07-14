@@ -13,20 +13,16 @@ public class Arena : Inventory<RunEntity>, GDictionary
 
     public StageReport Report;
 
-    public SkillInventory SkillInventory;
-
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public Arena()
     {
         _accessors = new()
         {
             { "Briefs", () => _reports },
-            { "SkillInventory", () => SkillInventory },
         };
-
-        SkillInventory = new();
-        Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));
 
         ArenaSize.Do(item =>
         {

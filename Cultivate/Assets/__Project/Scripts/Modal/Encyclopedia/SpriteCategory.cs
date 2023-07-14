@@ -6,7 +6,7 @@ public class SpriteCategory : Category<SpriteEntry>
 {
     public SpriteCategory()
     {
-        List = new()
+        AddRange(new List<SpriteEntry>()
         {
             new("奇遇", "Images/NodeIcons/Adventure"),
             new("战斗", "Images/NodeIcons/Battle"),
@@ -115,6 +115,6 @@ public class SpriteCategory : Category<SpriteEntry>
             new("铁骨", "Images/Cards/铁骨"),
             new("飞龙在天", "Images/Cards/飞龙在天"),
             new("鹤回翔", "Images/Cards/鹤回翔"),
-        };
+        });
     }
 }

@@ -21,7 +21,7 @@ public class NodeView : MonoBehaviour, IIndexPath
 
     public virtual void Refresh()
     {
-        RunNode runNode = RunManager.Get<RunNode>(GetIndexPath());
+        RunNode runNode = DataManager.Get<RunNode>(GetIndexPath());
 
         gameObject.SetActive(runNode != null);
         if (runNode == null)
@@ -56,7 +56,7 @@ public class NodeView : MonoBehaviour, IIndexPath
 
     private bool TryClickNode(IndexPath indexPath)
     {
-        RunNode runNode = RunManager.Get<RunNode>(indexPath);
+        RunNode runNode = DataManager.Get<RunNode>(indexPath);
         if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Map.Selecting)
             return false;
 

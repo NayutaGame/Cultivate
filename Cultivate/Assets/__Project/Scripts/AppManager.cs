@@ -5,17 +5,31 @@ using CLLibrary;
 using TMPro;
 using UnityEngine;
 
-public class AppManager : Singleton<AppManager>
+public class AppManager : Singleton<AppManager>, GDictionary
 {
     private AppSM _sm;
     public RunManager RunManager;
     public StageManager StageManager;
 
+    public SkillInventory SkillInventory;
+
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public override void DidAwake()
     {
         base.DidAwake();
 
+        _accessors = new Dictionary<string, Func<object>>()
+        {
+            { "SkillInventory", () => SkillInventory },
+        };
+
         Application.targetFrameRate = 120;
+
+        SkillInventory = new();
+        Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));
 
         _sm = new AppSM();
         _sm.Push(new AppRunS());

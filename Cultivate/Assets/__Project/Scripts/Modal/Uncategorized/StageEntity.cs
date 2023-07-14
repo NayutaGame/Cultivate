@@ -329,7 +329,8 @@ public class StageEntity : GDictionary
     public int GainedBurningRecord;
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
 
     private int _index;
     public int Index => _index;

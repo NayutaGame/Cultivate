@@ -30,7 +30,7 @@ public class BattlePanel : Panel
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Battle");
+        _indexPath = new IndexPath("Run.Battle");
 
         EnemyHand.Configure(new IndexPath($"{_indexPath}.Enemy.Slots"));
 
@@ -88,32 +88,32 @@ public class BattlePanel : Panel
 
     private bool TryMerge(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
-        RunSkill lhs = RunManager.Get<RunSkill>(from.GetIndexPath());
-        RunSkill rhs = RunManager.Get<RunSkill>(to.GetIndexPath());
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        RunSkill lhs = DataManager.Get<RunSkill>(from.GetIndexPath());
+        RunSkill rhs = DataManager.Get<RunSkill>(to.GetIndexPath());
         return runEnvironment.TryMerge(lhs, rhs);
     }
 
     private bool TryEquip(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
-        RunSkill toEquip = RunManager.Get<RunSkill>(from.GetIndexPath());
-        SkillSlot slot = RunManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        RunSkill toEquip = DataManager.Get<RunSkill>(from.GetIndexPath());
+        SkillSlot slot = DataManager.Get<SkillSlot>(to.GetIndexPath());
         return runEnvironment.TryEquip(toEquip, slot);
     }
 
     private bool TryUnequip(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
-        SkillSlot slot = RunManager.Get<SkillSlot>(from.GetIndexPath());
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        SkillSlot slot = DataManager.Get<SkillSlot>(from.GetIndexPath());
         return runEnvironment.TryUnequip(slot, null);
     }
 
     private bool TrySwap(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
-        SkillSlot fromSlot = RunManager.Get<SkillSlot>(from.GetIndexPath());
-        SkillSlot toSlot = RunManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        SkillSlot fromSlot = DataManager.Get<SkillSlot>(from.GetIndexPath());
+        SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
         return runEnvironment.TrySwap(fromSlot, toSlot);
     }
 }

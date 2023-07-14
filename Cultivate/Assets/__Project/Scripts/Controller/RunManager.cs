@@ -42,30 +42,8 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public StageReport Report;
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
-    public static T Get<T>(IndexPath indexPath)
-    {
-        object curr = Instance;
-        foreach (string key in indexPath.Values)
-        {
-            if (int.TryParse(key, out int i))
-            {
-                IList l = curr as IList;
-                if (l.Count <= i)
-                    return default;
-                curr = l[i];
-            }
-            else
-            {
-                curr = (curr as GDictionary).GetAccessors()[key]();
-            }
-        }
-
-        if (curr is T ret)
-            return ret;
-        else
-            return default;
-    }
+    public object Get(string s)
+        => _accessors[s]();
 
     public override void DidAwake()
     {
@@ -162,7 +140,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     public bool CanAffordTech(IndexPath indexPath)
     {
-        RunTech runTech = Get<RunTech>(indexPath);
+        RunTech runTech = DataManager.Get<RunTech>(indexPath);
         return runTech.GetCost() <= _xiuWei;
     }
 
@@ -171,7 +149,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
         if (!CanAffordTech(indexPath))
             return false;
 
-        RunTech runTech = Get<RunTech>(indexPath);
+        RunTech runTech = DataManager.Get<RunTech>(indexPath);
         _xiuWei -= runTech.GetCost();
         TechInventory.SetDone(runTech);
         return true;

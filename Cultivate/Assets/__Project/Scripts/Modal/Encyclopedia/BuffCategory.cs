@@ -12,7 +12,7 @@ public class BuffCategory : Category<BuffEntry>
 {
     public BuffCategory()
     {
-        List = new()
+        AddRange(new List<BuffEntry>()
         {
             new ("不存在的Buff", "不存在的Buff", BuffStackRule.Add, true, false),
             new ("灵气", "可以消耗灵气使用技能", BuffStackRule.Add, true, false),
@@ -223,7 +223,7 @@ public class BuffCategory : Category<BuffEntry>
                     await buff.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Pierce, d.Crit, false, d.Damaged);
                     d.Cancel = true;
                 }),
-        };
+        });
     }
 
     public void Init()

@@ -933,7 +933,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6504039293807863442}
-  - component: {fileID: 3948016155349997490}
+  - component: {fileID: 7390306182346954505}
   m_Layer: 5
   m_Name: LibraryPanel
   m_TagString: Untagged
@@ -962,7 +962,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3948016155349997490
+--- !u!114 &7390306182346954505
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

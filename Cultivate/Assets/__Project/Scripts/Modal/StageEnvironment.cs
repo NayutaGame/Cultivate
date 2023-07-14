@@ -277,7 +277,8 @@ public class StageEnvironment : GDictionary
     }
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
 
     private StageEntity[] _entities;
     public StageEntity[] Entities => _entities;

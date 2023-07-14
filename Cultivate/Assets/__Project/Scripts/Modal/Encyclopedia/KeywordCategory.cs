@@ -7,7 +7,7 @@ public class KeywordCategory : Category<KeywordEntry>
 {
     public KeywordCategory()
     {
-        List = new()
+        AddRange(new List<KeywordEntry>()
         {
             new("奇偶", "此牌位置是奇数时触发前一个效果，是偶数时触发后一个效果"),
             new("架势", "需要激活架势的牌以触发特殊效果"),
@@ -22,7 +22,7 @@ public class KeywordCategory : Category<KeywordEntry>
             new("一次性", "本局对战后，将此卡移出玩家手牌"),
             new("每轮", "每轮触发一次效果"),
             new("每回合", "每回合触发一次效果"),
-        };
+        });
     }
 
     public void Init()

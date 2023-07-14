@@ -9,7 +9,7 @@ public class TechCategory : Category<TechEntry>
     public TechCategory()
     {
         // for positions, x in (0 ~ 9), y in (0 ~ 7)
-        List = new()
+        AddRange(new List<TechEntry>()
         {
             new("金", "金科技", Vector2Int.zero, 10),
             new("水", "水科技", Vector2Int.one, 10),
@@ -28,7 +28,7 @@ public class TechCategory : Category<TechEntry>
                 {
                     return true;
                 })),
-        };
+        });
     }
 
     public void Init()

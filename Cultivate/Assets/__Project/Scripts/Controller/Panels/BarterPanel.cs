@@ -16,7 +16,7 @@ public class BarterPanel : Panel
     {
         base.Configure();
 
-        _indexPath = new IndexPath("CurrentNode.CurrentPanel");
+        _indexPath = new IndexPath("Run.CurrentNode.CurrentPanel");
         BarterInventoryView.Configure(new IndexPath($"{_indexPath}.Inventory"));
 
         foreach (BarterItemView barterItemView in BarterInventoryView.Views)
@@ -37,7 +37,7 @@ public class BarterPanel : Panel
 
     private void ExchangeEvent(BarterItem barterItem)
     {
-        BarterPanelDescriptor d = RunManager.Get<BarterPanelDescriptor>(_indexPath);
+        BarterPanelDescriptor d = DataManager.Get<BarterPanelDescriptor>(_indexPath);
         d.Exchange(barterItem);
         AudioManager.Instance.Play("钱币");
     }

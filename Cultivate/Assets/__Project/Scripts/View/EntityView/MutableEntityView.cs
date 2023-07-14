@@ -73,7 +73,7 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
 
     public void Refresh()
     {
-        IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
         if (entity == null)
             return;
 
@@ -85,21 +85,21 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
 
     private void EntryChanged(int entityEntryIndex)
     {
-        IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
         entity.SetEntry(Encyclopedia.EntityCategory[entityEntryIndex]);
         RunCanvas.Instance.Refresh();
     }
 
     private void JingJieChanged(int jingJie)
     {
-        IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
         entity.SetJingJie(jingJie);
         RunCanvas.Instance.Refresh();
     }
 
     private void RandomEntity()
     {
-        IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
         int r = RandomManager.Range(0, Encyclopedia.EntityCategory.GetCount());
         entity.SetEntry(Encyclopedia.EntityCategory[r]);
         RunCanvas.Instance.Refresh();
@@ -110,20 +110,20 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
         int.TryParse(value, out int health);
         health = Mathf.Clamp(health, 1, 9999);
 
-        IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
         entity.SetBaseHealth(health);
         RunCanvas.Instance.Refresh();
     }
 
     private void Copy()
     {
-        IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
         GUIUtility.systemCopyBuffer = entity.ToJson();
     }
 
     private void Paste()
     {
-        IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
         entity.FromJson(GUIUtility.systemCopyBuffer);
         RunCanvas.Instance.Refresh();
     }

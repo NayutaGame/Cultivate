@@ -16,7 +16,7 @@ public class ArbitraryCardPickerPanel : Panel
 
     public SkillInventoryView SkillInventoryView;
 
-    private List<AbstractSkillView> _selections;
+    private List<SkillView> _selections;
 
     private InteractDelegate InteractDelegate;
 
@@ -25,13 +25,13 @@ public class ArbitraryCardPickerPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        _indexPath = new IndexPath("CurrentNode.CurrentPanel");
+        _indexPath = new IndexPath("Run.CurrentNode.CurrentPanel");
 
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
         ConfigureInteractDelegate();
-        _selections = new List<AbstractSkillView>();
+        _selections = new List<SkillView>();
 
         SkillInventoryView.Configure(new IndexPath($"{_indexPath}.Inventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
@@ -72,7 +72,7 @@ public class ArbitraryCardPickerPanel : Panel
         RunNode runNode = RunManager.Instance.TryGetCurrentNode();
         ArbitraryCardPickerPanelDescriptor d = runNode.CurrentPanel as ArbitraryCardPickerPanelDescriptor;
 
-        AbstractSkillView skillView = view as AbstractSkillView;
+        SkillView skillView = view as SkillView;
         bool isSelected = _selections.Contains(skillView);
 
         if (isSelected)
@@ -86,7 +86,7 @@ public class ArbitraryCardPickerPanel : Panel
             if (space <= 0)
                 return false;
 
-            RunSkill skill = RunManager.Get<RunSkill>(skillView.GetIndexPath());
+            RunSkill skill = DataManager.Get<RunSkill>(skillView.GetIndexPath());
             if (!d.CanSelect(skill))
                 return false;
 
@@ -104,7 +104,7 @@ public class ArbitraryCardPickerPanel : Panel
     {
         RunNode runNode = RunManager.Instance.TryGetCurrentNode();
         ArbitraryCardPickerPanelDescriptor d = runNode.CurrentPanel as ArbitraryCardPickerPanelDescriptor;
-        List<RunSkill> mapped = _selections.Map(v => RunManager.Get<RunSkill>(v.GetIndexPath())).ToList();
+        List<RunSkill> mapped = _selections.Map(v => DataManager.Get<RunSkill>(v.GetIndexPath())).ToList();
         d.ConfirmSelections(mapped);
         PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new Signal());
         RunCanvas.Instance.SetNodeState(panelDescriptor);

@@ -31,7 +31,7 @@ public class RunChipView : MonoBehaviour, IIndexPath,
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (RunManager.Get<SkillSlot>(GetIndexPath()) is { } enemyChipSlot)
+        if (DataManager.Get<SkillSlot>(GetIndexPath()) is { } enemyChipSlot)
         {
             enemyChipSlot.TryIncreaseJingJie();
             RunCanvas.Instance.Refresh();
@@ -41,7 +41,7 @@ public class RunChipView : MonoBehaviour, IIndexPath,
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        if (RunManager.Get<SkillSlot>(GetIndexPath()) is { } enemyChipSlot)
+        if (DataManager.Get<SkillSlot>(GetIndexPath()) is { } enemyChipSlot)
         {
             eventData.pointerDrag = null;
 

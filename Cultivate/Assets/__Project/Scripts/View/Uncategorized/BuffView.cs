@@ -19,7 +19,7 @@ public class BuffView : MonoBehaviour
     public virtual void Refresh()
     {
         // TryGetHeroBuff
-        Buff b = StageManager.Get<Buff>(IndexPath);
+        Buff b = DataManager.Get<Buff>(IndexPath);
 
         gameObject.SetActive(b != null);
         if (b == null) return;

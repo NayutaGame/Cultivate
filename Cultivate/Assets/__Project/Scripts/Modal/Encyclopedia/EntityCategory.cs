@@ -6,7 +6,7 @@ public class EntityCategory : Category<EntityEntry>
 {
     public EntityCategory()
     {
-        List = new()
+        AddRange(new List<EntityEntry>()
         {
             new("鶸", "除了聚气什么都不会的废物", canCreate: d => false,
                 create: (entity, d) => { }),
@@ -685,6 +685,6 @@ public class EntityCategory : Category<EntityEntry>
 ";
                     entity.FromJson(json);
                 }),
-        };
+        });
     }
 }

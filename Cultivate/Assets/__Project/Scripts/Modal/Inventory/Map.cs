@@ -125,7 +125,9 @@ public class Map : GDictionary
     }
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public Map()
     {
         _list = new RunNode[HEIGHT * WIDTH];

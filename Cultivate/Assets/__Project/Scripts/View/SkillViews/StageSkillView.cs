@@ -3,10 +3,10 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class StageSkillView : AbstractSkillView
+public class StageSkillView : SkillView
 {
     public override ISkillModel GetSkillModel()
-        => StageManager.Get<ISkillModel>(GetIndexPath());
+        => DataManager.Get<ISkillModel>(GetIndexPath());
 
     public Tween GetExpandTween()
     {

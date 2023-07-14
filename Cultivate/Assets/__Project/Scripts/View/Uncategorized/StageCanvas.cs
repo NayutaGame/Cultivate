@@ -114,7 +114,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, HeroBuffContainerTransform).GetComponent<BuffView>();
             _heroBuffViews.Add(v);
-            v.Configure(new IndexPath($"CurrEnv.Home.Buffs#{i}"));
+            v.Configure(new IndexPath($"Stage.CurrEnv.Home.Buffs#{i}"));
         }
     }
 
@@ -133,7 +133,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, EnemyBuffContainerTransform).GetComponent<BuffView>();
             _enemyBuffViews.Add(v);
-            v.Configure(new IndexPath($"CurrEnv.Away.Buffs#{i}"));
+            v.Configure(new IndexPath($"Stage.CurrEnv.Away.Buffs#{i}"));
         }
     }
 

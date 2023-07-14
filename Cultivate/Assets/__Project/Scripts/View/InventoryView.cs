@@ -66,7 +66,7 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath, IInteractabl
     private void PopulateList()
     {
         int current = Container.childCount;
-        IList inventory = RunManager.Get<IList>(_indexPath);
+        IList inventory = DataManager.Get<IList>(_indexPath);
         int need = inventory.Count;
 
         (need, _) = Numeric.Negate(need, current);

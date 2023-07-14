@@ -26,7 +26,7 @@ public class SimulatePanel : Panel
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Simulate");
+        _indexPath = new IndexPath("Run.Simulate");
 
         ConfigureInteractDelegate();
 
@@ -51,14 +51,14 @@ public class SimulatePanel : Panel
         InteractDelegate = new(4,
             getId: view =>
             {
-                object item = RunManager.Get<object>(view.GetIndexPath());
+                object item = DataManager.Get<object>(view.GetIndexPath());
                 if (item is RunSkill)
                     return 0;
                 if (item is SkillInventory)
                     return 1;
                 if (item is SkillSlot slot)
                 {
-                    RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
+                    RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
                     if (runEnvironment.Hero == slot.Owner)
                         return 2;
                     if (runEnvironment.Enemy == slot.Owner)
@@ -117,41 +117,41 @@ public class SimulatePanel : Panel
 
     private bool TryMerge(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
-        RunSkill lhs = RunManager.Get<RunSkill>(from.GetIndexPath());
-        RunSkill rhs = RunManager.Get<RunSkill>(to.GetIndexPath());
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        RunSkill lhs = DataManager.Get<RunSkill>(from.GetIndexPath());
+        RunSkill rhs = DataManager.Get<RunSkill>(to.GetIndexPath());
         return runEnvironment.TryMerge(lhs, rhs);
     }
 
     private bool TryEquip(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
-        RunSkill toEquip = RunManager.Get<RunSkill>(from.GetIndexPath());
-        SkillSlot slot = RunManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        RunSkill toEquip = DataManager.Get<RunSkill>(from.GetIndexPath());
+        SkillSlot slot = DataManager.Get<SkillSlot>(to.GetIndexPath());
         return runEnvironment.TryEquip(toEquip, slot);
     }
 
     private bool TryUnequip(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
-        SkillSlot slot = RunManager.Get<SkillSlot>(from.GetIndexPath());
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        SkillSlot slot = DataManager.Get<SkillSlot>(from.GetIndexPath());
         return runEnvironment.TryUnequip(slot, null);
     }
 
     private bool TrySwap(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
-        SkillSlot fromSlot = RunManager.Get<SkillSlot>(from.GetIndexPath());
-        SkillSlot toSlot = RunManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        SkillSlot fromSlot = DataManager.Get<SkillSlot>(from.GetIndexPath());
+        SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
         return runEnvironment.TrySwap(fromSlot, toSlot);
     }
 
     private bool TryWrite(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
 
-        object fromItem = RunManager.Get<object>(from.GetIndexPath());
-        SkillSlot toSlot = RunManager.Get<SkillSlot>(to.GetIndexPath());
+        object fromItem = DataManager.Get<object>(from.GetIndexPath());
+        SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
 
         if (fromItem is RunSkill fromSkill)
         {
@@ -167,9 +167,9 @@ public class SimulatePanel : Panel
 
     private bool TryIncreaseJingJie(IInteractable view)
     {
-        RunEnvironment runEnvironment = RunManager.Get<RunEnvironment>(_indexPath);
+        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
 
-        object item = RunManager.Get<object>(view.GetIndexPath());
+        object item = DataManager.Get<object>(view.GetIndexPath());
 
         if (item is RunSkill skill)
         {

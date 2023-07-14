@@ -49,11 +49,11 @@ public class TechTreeView : MonoBehaviour, IIndexPath
 
     private void PopulateList()
     {
-        IList inventory = RunManager.Get<IList>(_indexPath);
+        IList inventory = DataManager.Get<IList>(_indexPath);
         for (int i = 0; i < inventory.Count; i++)
         {
             IndexPath indexPath = new IndexPath($"{_indexPath}#{i}");
-            RunTech tech = RunManager.Get<RunTech>(indexPath);
+            RunTech tech = DataManager.Get<RunTech>(indexPath);
             Vector2Int position = tech.GetPosition();
             int index = position.x * HEIGHT + position.y;
             Transform parent = _holders[index];

@@ -1,31 +1,33 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using Unity.VisualScripting;
-using UnityEngine;
 
 public class Category<T> where T : Entry
 {
     private List<T> _list;
+    protected List<T> List => _list;
 
-    protected List<T> List
+    public void AddRange(IEnumerable<T> collection)
     {
-        get => _list;
-        set
-        {
-            _list = value;
-            RefreshDict();
-        }
+        List.AddRange(collection);
+        RefreshDict();
     }
 
     private Dictionary<string, T> _dict;
+
+    public Category()
+    {
+        _list = new();
+        _dict = new();
+    }
+
     private void RefreshDict()
     {
-        _dict = new Dictionary<string, T>();
+        _dict.Clear();
 
         foreach (T item in _list)
             _dict[item.Name] = item;
     }
+
     public IEnumerable<T> Traversal
     {
         get

@@ -4,6 +4,17 @@ using UnityEngine;
 
 public abstract class Inventory<T> : List<T>
 {
+    public object Get(CLKey key)
+    {
+        IntKey intKey = key as IntKey;
+        int i = intKey.Key;
+        if (Count <= i)
+            return default;
+        return this[i];
+    }
+
+    public int GetCount() => Count;
+
     public T TryGet(int i)
     {
         if (i >= Count)

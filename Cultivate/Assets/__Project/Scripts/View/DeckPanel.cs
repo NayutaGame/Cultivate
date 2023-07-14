@@ -36,8 +36,8 @@ public class DeckPanel : Panel
 
     public override void Configure()
     {
-        PlayerHand.Configure(new IndexPath("Battle.Hero.Slots"));
-        PlayerInventory.Configure(new IndexPath("Battle.SkillInventory"));
+        PlayerHand.Configure(new IndexPath("Run.Battle.Hero.Slots"));
+        PlayerInventory.Configure(new IndexPath("Run.Battle.SkillInventory"));
 
         DeckToggle.onClick.RemoveAllListeners();
         DeckToggle.onClick.AddListener(ToggleDeck);
@@ -60,7 +60,7 @@ public class DeckPanel : Panel
 
     private void Sort()
     {
-        SkillInventory inventory = RunManager.Get<SkillInventory>(new IndexPath("Battle.SkillInventory"));
+        SkillInventory inventory = DataManager.Get<SkillInventory>(new IndexPath("Run.Battle.SkillInventory"));
         inventory.SortByComparisonId(0);
         RunCanvas.Instance.Refresh();
     }

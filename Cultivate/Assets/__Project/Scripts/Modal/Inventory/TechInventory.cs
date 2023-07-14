@@ -13,18 +13,16 @@ public class TechInventory : GDictionary
     private List<RunTech> _currentList;
     private List<RunTech> _lockedList;
 
-    public RunTech this[int i] => _list[i];
-
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
 
     public TechInventory()
     {
         _accessors = new()
         {
-            { "List", () => _list },
+            { "List",              () => _list },
         };
-
         _list = new();
         _doneList = new();
         _currentList = new();

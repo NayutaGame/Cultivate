@@ -40,7 +40,9 @@ public class StageReport : GDictionary
     public bool UseTween => _useTween;
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public StageReport(bool useTween = false, bool useTimeline = false, bool useSb = false)
     {
         _accessors = new()

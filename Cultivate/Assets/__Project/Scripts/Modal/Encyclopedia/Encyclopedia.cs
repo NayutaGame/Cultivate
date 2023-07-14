@@ -1,9 +1,10 @@
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
+public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, GDictionary
 {
     public static SpriteCategory SpriteCategory;
     public static AudioCategory AudioCategory;
@@ -16,9 +17,19 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>
     public static NodeCategory NodeCategory;
     public static FormationCategory FormationCategory;
 
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public override void DidAwake()
     {
         base.DidAwake();
+
+        _accessors = new()
+        {
+            { "FormationCategory", () => FormationCategory },
+            { "SkillCategory", () => SkillCategory },
+        };
 
         SpriteCategory = new();
         AudioCategory = new();

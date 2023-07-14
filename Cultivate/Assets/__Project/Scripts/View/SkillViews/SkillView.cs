@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public abstract class AbstractSkillView : MonoBehaviour, IIndexPath, IInteractable,
+public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
     IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {

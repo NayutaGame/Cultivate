@@ -10,13 +10,20 @@ public class IndexPath : IEquatable<IndexPath>
     private static Regex Pattern = new Regex(@"\w+");
 
     private string _rawString;
-    private readonly List<string> _values;
-    public List<string> Values => _values;
+    private readonly List<CLKey> _values;
+    public List<CLKey> Values => _values;
 
     public IndexPath(string rawString)
     {
         _rawString = rawString;
-        _values = Pattern.Matches(_rawString).Map(m => m.Value).ToList();
+        List<string> rawValues = Pattern.Matches(_rawString).Map(m => m.Value).ToList();
+        _values = rawValues.Map<string, CLKey>(s =>
+        {
+            if (int.TryParse(s, out int i))
+                return new IntKey(i);
+
+            return new StringKey(s);
+        }).ToList();
     }
 
     public bool Equals(IndexPath other)

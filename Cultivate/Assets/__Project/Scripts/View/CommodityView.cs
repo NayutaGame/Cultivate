@@ -28,7 +28,7 @@ public class CommodityView : MonoBehaviour, IIndexPath
 
     public void Refresh()
     {
-        Commodity commodity = RunManager.Get<Commodity>(_indexPath);
+        Commodity commodity = DataManager.Get<Commodity>(_indexPath);
 
         bool isReveal = commodity != null;
         gameObject.SetActive(isReveal);
@@ -42,7 +42,7 @@ public class CommodityView : MonoBehaviour, IIndexPath
 
     private void Buy()
     {
-        Commodity commodity = RunManager.Get<Commodity>(_indexPath);
+        Commodity commodity = DataManager.Get<Commodity>(_indexPath);
         BuyEvent?.Invoke(commodity);
         RunCanvas.Instance.Refresh();
     }

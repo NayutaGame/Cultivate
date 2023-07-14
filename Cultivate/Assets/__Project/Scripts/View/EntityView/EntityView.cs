@@ -12,7 +12,7 @@ public class EntityView : MonoBehaviour, IIndexPath, IInteractable
     public TMP_Text HPText;
     public TMP_Text DescriptionText;
     public Button CopyButton;
-    public InventoryView<AbstractSkillView> EquippedInventoryView;
+    public InventoryView<SkillView> EquippedInventoryView;
 
     #region Interact
 
@@ -40,7 +40,7 @@ public class EntityView : MonoBehaviour, IIndexPath, IInteractable
 
     public void Refresh()
     {
-        IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
 
         if (entity == null)
             return;
@@ -54,7 +54,7 @@ public class EntityView : MonoBehaviour, IIndexPath, IInteractable
 
     private void Copy()
     {
-        IEntityModel entity = RunManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
         GUIUtility.systemCopyBuffer = entity.ToJson();
     }
 }

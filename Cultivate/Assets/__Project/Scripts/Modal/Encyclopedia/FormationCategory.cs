@@ -8,7 +8,7 @@ public class FormationCategory : Category<FormationEntry>
 {
     public FormationCategory()
     {
-        List = new()
+        AddRange(new List<FormationEntry>()
         {
             new FormationEntry("一业常置阵", new[]
             {
@@ -167,6 +167,6 @@ public class FormationCategory : Category<FormationEntry>
                     return args.ConsecutiveAttackCount >= 5;
                 }),
             }),
-        };
+        });
     }
 }

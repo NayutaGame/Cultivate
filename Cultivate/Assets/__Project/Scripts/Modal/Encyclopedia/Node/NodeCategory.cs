@@ -7,7 +7,7 @@ public class NodeCategory : Category<NodeEntry>
 {
     public NodeCategory()
     {
-        List = new()
+        AddRange(new List<NodeEntry>()
         {
             new BattleNodeEntry("敌人", "敌人"),
 
@@ -839,6 +839,6 @@ public class NodeCategory : Category<NodeEntry>
             //
             //         runNode.ChangePanel(A);
             //     }),
-        };
+        });
     }
 }

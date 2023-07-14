@@ -20,7 +20,7 @@ public class ArenaPanel : Panel
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Arena");
+        _indexPath = new IndexPath("Run.Arena");
 
         ConfigureInteractDelegate();
 
@@ -38,7 +38,7 @@ public class ArenaPanel : Panel
         InteractDelegate = new(2,
             getId: view =>
             {
-                object item = RunManager.Get<object>(view.GetIndexPath());
+                object item = DataManager.Get<object>(view.GetIndexPath());
                 if (item is RunSkill)
                     return 0;
                 if (item is SkillSlot)
@@ -70,10 +70,10 @@ public class ArenaPanel : Panel
 
     private bool TryWrite(IInteractable from, IInteractable to)
     {
-        Arena arena = RunManager.Get<Arena>(_indexPath);
+        Arena arena = DataManager.Get<Arena>(_indexPath);
 
-        object fromItem = RunManager.Get<object>(from.GetIndexPath());
-        SkillSlot toSlot = RunManager.Get<SkillSlot>(to.GetIndexPath());
+        object fromItem = DataManager.Get<object>(from.GetIndexPath());
+        SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
 
         if (fromItem is RunSkill fromSkill)
         {
@@ -89,8 +89,8 @@ public class ArenaPanel : Panel
 
     private bool TryIncreaseJingJie(IInteractable view)
     {
-        Arena arena = RunManager.Get<Arena>(_indexPath);
-        SkillSlot slot = RunManager.Get<SkillSlot>(view.GetIndexPath());
+        Arena arena = DataManager.Get<Arena>(_indexPath);
+        SkillSlot slot = DataManager.Get<SkillSlot>(view.GetIndexPath());
         return arena.TryIncreaseJingJie(slot);
     }
 }

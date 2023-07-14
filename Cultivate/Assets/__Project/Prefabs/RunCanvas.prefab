@@ -463,7 +463,7 @@ MonoBehaviour:
   TechTreePanel: {fileID: 8907128354098584190}
   SimulatePanel: {fileID: 831102025440101746}
   ArenaPanel: {fileID: 31234559057949996}
-  LibraryPanel: {fileID: 1497854167346856643}
+  LibraryPanel: {fileID: 4939602142660280952}
 --- !u!1 &6906138843770888021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1830,9 +1830,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62c2232e22a1beb4680656a7e06b862b, type: 3}
---- !u!114 &1497854167346856643 stripped
+--- !u!114 &4939602142660280952 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3948016155349997490, guid: 62c2232e22a1beb4680656a7e06b862b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7390306182346954505, guid: 62c2232e22a1beb4680656a7e06b862b, type: 3}
   m_PrefabInstance: {fileID: 2450901215227123057}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -1853,6 +1853,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6570500142996436562}
     m_Modifications:
+    - target: {fileID: 599517345557962226, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_Name
+      value: Library
+      objectReference: {fileID: 0}
     - target: {fileID: 1491361715007600477, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

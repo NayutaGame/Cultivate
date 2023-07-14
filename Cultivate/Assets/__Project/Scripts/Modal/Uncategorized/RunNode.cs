@@ -30,7 +30,9 @@ public class RunNode : GDictionary
     public virtual string GetTitle() => _entry.GetTitle();
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public RunNode(Vector2Int position, JingJie jingJie, NodeEntry entry)
     {
         _accessors = new()

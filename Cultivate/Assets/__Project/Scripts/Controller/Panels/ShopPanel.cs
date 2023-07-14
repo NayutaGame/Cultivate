@@ -17,7 +17,7 @@ public class ShopPanel : Panel
     {
         base.Configure();
 
-        _indexPath = new IndexPath("CurrentNode.CurrentPanel");
+        _indexPath = new IndexPath("Run.CurrentNode.CurrentPanel");
         CommodityInventoryView.Configure(new IndexPath($"{_indexPath}.Commodities"));
 
         foreach (CommodityView commodityView in CommodityInventoryView.Views)
@@ -38,7 +38,7 @@ public class ShopPanel : Panel
 
     private void BuyEvent(Commodity commodity)
     {
-        ShopPanelDescriptor d = RunManager.Get<ShopPanelDescriptor>(_indexPath);
+        ShopPanelDescriptor d = DataManager.Get<ShopPanelDescriptor>(_indexPath);
         d.Buy(commodity);
         AudioManager.Instance.Play("钱币");
     }

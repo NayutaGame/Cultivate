@@ -28,7 +28,9 @@ public class RunEnvironment : GDictionary
     }
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public RunEnvironment()
     {
         _accessors = new()

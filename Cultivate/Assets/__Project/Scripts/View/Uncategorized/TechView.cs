@@ -27,7 +27,7 @@ public class TechView : MonoBehaviour, IIndexPath
 
     public virtual void Refresh()
     {
-        RunTech runTech = RunManager.Get<RunTech>(GetIndexPath());
+        RunTech runTech = DataManager.Get<RunTech>(GetIndexPath());
 
         NameText.text = runTech.GetName();
 

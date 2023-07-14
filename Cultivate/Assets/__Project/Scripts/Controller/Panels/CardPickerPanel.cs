@@ -11,7 +11,7 @@ public class CardPickerPanel : Panel
     public TMP_Text StatusText;
     public Button ConfirmButton;
 
-    private List<AbstractSkillView> _skillSelections;
+    private List<SkillView> _skillSelections;
     private List<SlotView> _slotSelections;
 
     public override void Configure()
@@ -21,7 +21,7 @@ public class CardPickerPanel : Panel
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
-        _skillSelections = new List<AbstractSkillView>();
+        _skillSelections = new List<SkillView>();
         _slotSelections = new List<SlotView>();
     }
 
@@ -51,7 +51,7 @@ public class CardPickerPanel : Panel
         RunNode runNode = RunManager.Instance.TryGetCurrentNode();
         CardPickerPanelDescriptor d = runNode.CurrentPanel as CardPickerPanelDescriptor;
 
-        AbstractSkillView skillView = view as AbstractSkillView;
+        SkillView skillView = view as SkillView;
         bool isSelected = _skillSelections.Contains(skillView);
 
         if (isSelected)
@@ -65,7 +65,7 @@ public class CardPickerPanel : Panel
             if (space <= 0)
                 return false;
 
-            RunSkill runSkill = RunManager.Get<RunSkill>(skillView.GetIndexPath());
+            RunSkill runSkill = DataManager.Get<RunSkill>(skillView.GetIndexPath());
             if (!d.CanSelect(runSkill))
                 return false;
 
@@ -96,7 +96,7 @@ public class CardPickerPanel : Panel
             if (space <= 0)
                 return false;
 
-            SkillSlot slot = RunManager.Get<SkillSlot>(slotView.GetIndexPath());
+            SkillSlot slot = DataManager.Get<SkillSlot>(slotView.GetIndexPath());
             if (!d.CanSelect(slot))
                 return false;
 
@@ -113,8 +113,8 @@ public class CardPickerPanel : Panel
         RunNode runNode = RunManager.Instance.TryGetCurrentNode();
         CardPickerPanelDescriptor d = runNode.CurrentPanel as CardPickerPanelDescriptor;
         List<object> iRunSkillList = new List<object>();
-        iRunSkillList.AddRange(_skillSelections.Map(v => RunManager.Get<object>(v.GetIndexPath())));
-        iRunSkillList.AddRange(_slotSelections.Map(v => RunManager.Get<object>(v.GetIndexPath())));
+        iRunSkillList.AddRange(_skillSelections.Map(v => DataManager.Get<object>(v.GetIndexPath())));
+        iRunSkillList.AddRange(_slotSelections.Map(v => DataManager.Get<object>(v.GetIndexPath())));
         d.ConfirmSelections(iRunSkillList);
         PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new Signal());
         RunCanvas.Instance.SetNodeState(panelDescriptor);

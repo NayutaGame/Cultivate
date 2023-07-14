@@ -4,12 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RunSkillPreview : AbstractSkillView
+public class RunSkillPreview : SkillView
 {
     public RunSkillView SkillView;
 
     public override ISkillModel GetSkillModel()
-        => RunManager.Get<ISkillModel>(GetIndexPath());
+        => DataManager.Get<ISkillModel>(GetIndexPath());
 
     public override void Configure(IndexPath indexPath)
     {

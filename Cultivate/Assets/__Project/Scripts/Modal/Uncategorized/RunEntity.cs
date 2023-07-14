@@ -108,7 +108,9 @@ public class RunEntity : GDictionary, IEntityModel
     public CreateEntityDetails CreateEntityDetails => _createEntityDetails;
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public RunEntity(EntityEntry entry = null, CreateEntityDetails d = null)
     {
         _accessors = new()

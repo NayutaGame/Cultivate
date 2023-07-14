@@ -4,12 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class StageSkillPreview : AbstractSkillView
+public class StageSkillPreview : SkillView
 {
     public StageSkillView SkillView;
 
     public override ISkillModel GetSkillModel()
-        => StageManager.Get<ISkillModel>(GetIndexPath());
+        => DataManager.Get<ISkillModel>(GetIndexPath());
 
     public override void Configure(IndexPath indexPath)
     {

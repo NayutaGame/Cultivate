@@ -25,7 +25,7 @@ public class ArenaEditorView : InventoryView<MutableEntityView>
 
     private void Compete()
     {
-        Arena arena = RunManager.Get<Arena>(GetIndexPath());
+        Arena arena = DataManager.Get<Arena>(GetIndexPath());
         arena.Compete();
         RunCanvas.Instance.Refresh();
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 
@@ -10,7 +11,8 @@ public class BarterItem : GDictionary
     public RunSkill Skill;
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
 
     public BarterItem(RunSkill playerSkill, RunSkill skill)
     {

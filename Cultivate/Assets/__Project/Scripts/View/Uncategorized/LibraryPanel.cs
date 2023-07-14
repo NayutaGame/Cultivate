@@ -11,7 +11,7 @@ public class LibraryPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        SkillInventoryView.Configure(new IndexPath("Arena.SkillInventory"));
+        SkillInventoryView.Configure(new IndexPath("App.SkillInventory"));
     }
 
     public override void Refresh()

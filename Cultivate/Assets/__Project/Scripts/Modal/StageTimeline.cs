@@ -11,7 +11,9 @@ public class StageTimeline : GDictionary
     private int _pointer;
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public StageTimeline()
     {
         _accessors = new()

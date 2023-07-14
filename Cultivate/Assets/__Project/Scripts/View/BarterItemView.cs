@@ -28,7 +28,7 @@ public class BarterItemView : MonoBehaviour, IIndexPath
 
     public void Refresh()
     {
-        BarterItem barterItem = RunManager.Get<BarterItem>(_indexPath);
+        BarterItem barterItem = DataManager.Get<BarterItem>(_indexPath);
 
         bool isReveal = barterItem != null;
         gameObject.SetActive(isReveal);
@@ -42,7 +42,7 @@ public class BarterItemView : MonoBehaviour, IIndexPath
 
     private void Exchange()
     {
-        BarterItem barterItem = RunManager.Get<BarterItem>(_indexPath);
+        BarterItem barterItem = DataManager.Get<BarterItem>(_indexPath);
         ExchangeEvent?.Invoke(barterItem);
         RunCanvas.Instance.Refresh();
     }

@@ -56,7 +56,9 @@ public class SkillSlot : GDictionary
     }
 
     private Dictionary<string, Func<object>> _accessors;
-    public Dictionary<string, Func<object>> GetAccessors() => _accessors;
+    public object Get(string s)
+        => _accessors[s]();
+
     public SkillSlot(RunEntity owner, int index)
     {
         _accessors = new()

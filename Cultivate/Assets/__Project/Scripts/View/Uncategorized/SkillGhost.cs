@@ -5,10 +5,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillGhost : AbstractSkillView
+public class SkillGhost : SkillView
 {
     public override ISkillModel GetSkillModel()
-        => RunManager.Get<ISkillModel>(GetIndexPath());
+        => DataManager.Get<ISkillModel>(GetIndexPath());
 
     // protected void SetColorFromJingJie(JingJie jingJie)
     // {

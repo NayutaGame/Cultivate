@@ -57,7 +57,7 @@ public class MMDMLayer : MonoBehaviour
 
         _state = MMDMState.N;
 
-        MapPanel.Configure(new IndexPath("Map"));
+        MapPanel.Configure(new IndexPath("Run.Map"));
         DeckPanel.Configure();
 
         DeckPanel.ClearToggleDeckEvent();
