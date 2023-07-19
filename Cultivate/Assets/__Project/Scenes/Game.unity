@@ -723,6 +723,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 746431136}
     m_Modifications:
+    - target: {fileID: 418032892176744178, guid: ab8702c878a227e4a97130deb79a0772, type: 3}
+      propertyPath: m_Name
+      value: FormationInventoryView
+      objectReference: {fileID: 0}
     - target: {fileID: 657934883940328749, guid: ab8702c878a227e4a97130deb79a0772, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

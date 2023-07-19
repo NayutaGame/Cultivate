@@ -14,18 +14,18 @@ public class RunSkillView : SkillView
     public override void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForPreview(GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForSkillPreview(GetIndexPath());
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForPreview(null);
+        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
     }
 
     public override void OnPointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.UpdateMousePosForPreview(eventData.position);
+        RunCanvas.Instance.UpdateMousePosForSkillPreview(eventData.position);
     }
 }

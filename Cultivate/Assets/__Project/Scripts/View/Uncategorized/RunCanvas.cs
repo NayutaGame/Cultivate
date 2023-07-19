@@ -24,6 +24,7 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public SkillGhost SkillGhost;
     [SerializeField] private RunSkillPreview RunSkillPreview;
+    [SerializeField] private SubFormationPreview SubFormationPreview;
 
     private InteractDelegate DeckInteractDelegate;
     private InteractDelegate CardPickerInteractDelegate;
@@ -114,16 +115,28 @@ public class RunCanvas : Singleton<RunCanvas>
         MMDMLayer.Refresh();
     }
 
-    public void SetIndexPathForPreview(IndexPath indexPath)
+    public void SetIndexPathForSkillPreview(IndexPath indexPath)
     {
         RunSkillPreview.Configure(indexPath);
         RunSkillPreview.Refresh();
     }
 
-    public void UpdateMousePosForPreview(Vector2 pos)
+    public void UpdateMousePosForSkillPreview(Vector2 pos)
     {
         RunSkillPreview.UpdateMousePos(pos);
         RunSkillPreview.Refresh();
+    }
+
+    public void SetIndexPathForSubFormationPreview(IndexPath indexPath)
+    {
+        SubFormationPreview.Configure(indexPath);
+        SubFormationPreview.Refresh();
+    }
+
+    public void UpdateMousePosForSubFormationPreview(Vector2 pos)
+    {
+        SubFormationPreview.UpdateMousePos(pos);
+        SubFormationPreview.Refresh();
     }
 
     public void SetNodeState(PanelDescriptor panelDescriptor)

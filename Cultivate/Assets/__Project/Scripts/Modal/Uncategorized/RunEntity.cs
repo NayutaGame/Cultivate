@@ -82,13 +82,13 @@ public class RunEntity : GDictionary, IEntityModel
 
     #region Formation
 
-    private List<SubFormationEntry> _activatedFormations;
+    private List<SubFormationEntry> _activatedSubFormations;
 
     private void RefreshFormations()
     {
-        _activatedFormations.Clear();
+        _activatedSubFormations.Clear();
         FormationArguments args = new FormationArguments(this);
-        _activatedFormations.AddRange(Encyclopedia.FormationCategory.Traversal
+        _activatedSubFormations.AddRange(Encyclopedia.FormationCategory.Traversal
             .Map(f => f.FirstActivatedFormation(this, args))
             .FilterObj(f => f != null));
     }
@@ -116,12 +116,13 @@ public class RunEntity : GDictionary, IEntityModel
         _accessors = new()
         {
             { "Slots", () => _slots },
+            { "ActivatedSubFormations", () => _activatedSubFormations },
         };
 
         _entry = entry;
         _createEntityDetails = d;
 
-        _activatedFormations = new List<SubFormationEntry>();
+        _activatedSubFormations = new List<SubFormationEntry>();
 
         _slots = new SkillSlot[RunManager.WaiGongLimit];
         for (int i = 0; i < _slots.Length; i++)

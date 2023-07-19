@@ -94,7 +94,7 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
         if(drag == null || drag.GetDelegate() == null || !drag.GetDelegate().CanDrag(drag))
         {
             eventData.pointerDrag = null;
-            RunCanvas.Instance.SetIndexPathForPreview(null);
+            RunCanvas.Instance.SetIndexPathForSkillPreview(null);
             return;
         }
 
@@ -102,7 +102,7 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
         if (slot.State != SkillSlot.SkillSlotState.Occupied)
         {
             eventData.pointerDrag = null;
-            RunCanvas.Instance.SetIndexPathForPreview(null);
+            RunCanvas.Instance.SetIndexPathForSkillPreview(null);
             return;
         }
 
@@ -115,7 +115,7 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
         if (_image != null)
             _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
 
-        RunCanvas.Instance.SetIndexPathForPreview(null);
+        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -157,22 +157,22 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
         SkillSlot slot = DataManager.Get<SkillSlot>(GetIndexPath());
         if (slot.State != SkillSlot.SkillSlotState.Occupied)
         {
-            RunCanvas.Instance.SetIndexPathForPreview(null);
+            RunCanvas.Instance.SetIndexPathForSkillPreview(null);
             return;
         }
 
-        RunCanvas.Instance.SetIndexPathForPreview(SkillView.GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForSkillPreview(SkillView.GetIndexPath());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForPreview(null);
+        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
     }
 
     public void OnPointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.UpdateMousePosForPreview(eventData.position);
+        RunCanvas.Instance.UpdateMousePosForSkillPreview(eventData.position);
     }
 }

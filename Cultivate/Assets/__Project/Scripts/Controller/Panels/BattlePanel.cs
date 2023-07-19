@@ -9,11 +9,14 @@ public class BattlePanel : Panel
 {
     public RectTransform _enemySpriteTransform;
     public RectTransform _enemyHandTransform;
+    public RectTransform _enemySubFormationInventoryTransform;
+
     public RectTransform _operationViewTransform;
     public CanvasGroup _operationViewCanvasGroup;
 
     public SlotInventoryView EnemyHand;
     public Image EnemySprite;
+    public SubFormationInventoryView EnemySubFormationInventory;
 
     public TMP_Text HomeHP;
     public GameObject HomeHPSlash;
@@ -33,6 +36,7 @@ public class BattlePanel : Panel
         _indexPath = new IndexPath("Run.Battle");
 
         EnemyHand.Configure(new IndexPath($"{_indexPath}.Enemy.Slots"));
+        EnemySubFormationInventory.Configure(new IndexPath($"{_indexPath}.Enemy.ActivatedSubFormations"));
 
         ActButton.onClick.RemoveAllListeners();
         ActButton.onClick.AddListener(Act);
@@ -41,6 +45,7 @@ public class BattlePanel : Panel
     public override void Refresh()
     {
         EnemyHand.Refresh();
+        EnemySubFormationInventory.Refresh();
 
         if (RunManager.Instance.Battle.Report is { } report)
         {

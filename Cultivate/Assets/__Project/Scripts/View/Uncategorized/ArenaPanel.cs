@@ -24,7 +24,7 @@ public class ArenaPanel : Panel
 
         ConfigureInteractDelegate();
 
-        SkillInventoryView.Configure(new IndexPath($"{_indexPath}.SkillInventory"));
+        SkillInventoryView.Configure(new IndexPath("App.SkillInventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
 
         ArenaEditorView.Configure(_indexPath);

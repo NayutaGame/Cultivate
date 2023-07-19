@@ -230,7 +230,7 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
         if(drag == null || drag.GetDelegate() == null || !drag.GetDelegate().CanDrag(drag))
         {
             eventData.pointerDrag = null;
-            RunCanvas.Instance.SetIndexPathForPreview(null);
+            RunCanvas.Instance.SetIndexPathForSkillPreview(null);
             return;
         }
 
@@ -243,7 +243,7 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
         if (_image != null)
             _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
 
-        RunCanvas.Instance.SetIndexPathForPreview(null);
+        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -281,18 +281,18 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForPreview(GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForSkillPreview(GetIndexPath());
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForPreview(null);
+        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
     }
 
     public virtual void OnPointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.UpdateMousePosForPreview(eventData.position);
+        RunCanvas.Instance.UpdateMousePosForSkillPreview(eventData.position);
     }
 }

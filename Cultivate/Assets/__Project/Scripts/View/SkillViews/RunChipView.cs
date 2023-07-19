@@ -45,7 +45,7 @@ public class RunChipView : MonoBehaviour, IIndexPath,
         {
             eventData.pointerDrag = null;
 
-            RunCanvas.Instance.SetIndexPathForPreview(null);
+            RunCanvas.Instance.SetIndexPathForSkillPreview(null);
             return;
         }
 
@@ -57,7 +57,7 @@ public class RunChipView : MonoBehaviour, IIndexPath,
 
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
 
-        RunCanvas.Instance.SetIndexPathForPreview(null);
+        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -85,18 +85,18 @@ public class RunChipView : MonoBehaviour, IIndexPath,
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForPreview(GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForSkillPreview(GetIndexPath());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForPreview(null);
+        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
     }
 
     public void OnPointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.UpdateMousePosForPreview(eventData.position);
+        RunCanvas.Instance.UpdateMousePosForSkillPreview(eventData.position);
     }
 }
