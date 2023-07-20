@@ -121,6 +121,13 @@ public class StageSkill
         StageUsedTimes += 1;
     }
 
+    public async Task ExecuteWithoutTween(StageEntity caster, bool recursive = true)
+    {
+        await _entry.ExecuteWithoutTween(caster, this, recursive);
+        RunUsedTimes += 1;
+        StageUsedTimes += 1;
+    }
+
     public IEnumerable<StageSkill> Nexts(bool loop = false)
     {
         StageSkill curr = this;

@@ -78,8 +78,17 @@ public class Formation
         if (_entry._consumed != null) _owner.ConsumedEvent -= Consumed;
     }
 
-    public void Gain() => _entry._gain?.Invoke(this, _owner);
-    public void Lose() => _entry._lose?.Invoke(this, _owner);
+    public async Task Gain()
+    {
+        if (_entry._gain != null)
+            await _entry._gain.Invoke(this, _owner);
+    }
+
+    public async Task Lose()
+    {
+        if (_entry._lose != null)
+            await _entry._lose.Invoke(this, _owner);
+    }
 
     private async Task<FormationDetails> AnyFormationAdd   (FormationDetails d) => await _entry._anyFormationAdd   (this, _owner, d);
     private async Task<FormationDetails> AnyFormationAdded (FormationDetails d) => await _entry._anyFormationAdded (this, _owner, d);

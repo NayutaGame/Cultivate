@@ -457,25 +457,25 @@ public class StageEntity : GDictionary
     private List<Formation> _formations;
     public IEnumerable<Formation> Formations => _formations.Traversal();
 
-    public void AddFormation(Formation formation)
+    public async Task AddFormation(Formation formation)
     {
-        formation.Gain();
+        await formation.Gain();
         formation.Register();
         _formations.Add(formation);
     }
 
-    public void RemoveFormation(Formation formation)
+    public async Task RemoveFormation(Formation formation)
     {
-        formation.Lose();
+        await formation.Lose();
         formation.Unregister();
         _formations.Remove(formation);
     }
 
-    public void RemoveAllFormations()
+    public async Task RemoveAllFormations()
     {
-        _formations.Do(f =>
+        await _formations.Do(async f =>
         {
-            f.Lose();
+            await f.Lose();
             f.Unregister();
         });
         _formations.RemoveAll(f => true);
@@ -488,51 +488,51 @@ public class StageEntity : GDictionary
     private List<Buff> _buffs;
     public IEnumerable<Buff> Buffs => _buffs.Traversal();
 
-    public void AddBuff(Buff buff)
+    public async Task AddBuff(Buff buff)
     {
-        buff.Gain(buff.Stack);
+        await buff.Gain(buff.Stack);
         buff.Register();
         _buffs.Add(buff);
         // OnBuffChangedEvent?.Invoke();
     }
 
-    public void BuffGainStack(Buff buff, int gain)
+    public async Task BuffGainStack(Buff buff, int gain)
     {
-        buff.Gain(gain);
+        await buff.Gain(gain);
         buff.Stack += gain;
         // OnBuffChangedEvent?.Invoke();
     }
 
-    public void RemoveBuff(Buff buff)
+    public async Task RemoveBuff(Buff buff)
     {
-        buff.Lose();
+        await buff.Lose();
         buff.Unregister();
         _buffs.Remove(buff);
         // OnBuffChangedEvent?.Invoke();
     }
 
-    public void TryRemoveBuff(string buffName)
+    public async Task TryRemoveBuff(string buffName)
     {
         Buff b = FindBuff(buffName);
         if (b != null)
-            RemoveBuff(b);
+            await RemoveBuff(b);
     }
 
-    public void RemoveBuffs(Predicate<Buff> pred)
+    public async Task RemoveBuffs(Predicate<Buff> pred)
     {
-        _buffs.Do(b =>
+        await _buffs.Do(async b =>
         {
-            b.Lose();
+            await b.Lose();
             b.Unregister();
         });
         _buffs.RemoveAll(pred);
         // OnBuffChangedEvent?.Invoke();
     }
 
-    public void RemoveBuffs(params string[] names)
+    public async Task RemoveBuffs(params string[] names)
     {
         List<Buff> toRemove = _buffs.FilterObj(b => names.Contains(b.GetName())).ToList();
-        toRemove.Do(RemoveBuff);
+        await toRemove.Do(RemoveBuff);
     }
 
     public void RemoveAllBuffs() => RemoveBuffs(b => true);

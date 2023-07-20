@@ -108,9 +108,20 @@ public class Buff
         if (_entry._consumed != null) _owner.ConsumedEvent -= Consumed;
     }
 
-    public void Gain(int gain) => _entry._gain?.Invoke(this, _owner, gain);
-    public void Lose() => _entry._lose?.Invoke(this, _owner);
-    private void StackChanged() => _entry._stackChanged(this, _owner);
+    public async Task Gain(int gain)
+    {
+        if (_entry._gain != null) await _entry._gain.Invoke(this, _owner, gain);
+    }
+
+    public async Task Lose()
+    {
+        if (_entry._lose != null) await _entry._lose.Invoke(this, _owner);
+    }
+
+    private void StackChanged()
+    {
+        if (_entry._stackChanged != null) _entry._stackChanged(this, _owner);
+    }
 
     private async Task StartStage          () =>                   await _entry._startStage   (this, _owner);
     private async Task EndStage            () =>                   await _entry._endStage     (this, _owner);

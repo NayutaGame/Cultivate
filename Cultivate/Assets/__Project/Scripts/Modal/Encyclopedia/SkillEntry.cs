@@ -117,5 +117,14 @@ public class SkillEntry : Entry, IAnnotation
         r.Append($"\n");
     }
 
+    public async Task ExecuteWithoutTween(StageEntity caster, StageSkill skill, bool recursive)
+    {
+        StageReport r = caster.Env.Report;
+
+        r.Append($"{caster.GetName()}使用了{Name}");
+        await _execute(caster, skill, recursive);
+        r.Append($"\n");
+    }
+
     private async Task DefaultExecute(StageEntity caster, StageSkill skill, bool recursive) { }
 }

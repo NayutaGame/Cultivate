@@ -34,7 +34,7 @@ public class StageEnvironment : GDictionary
         if (d.Cancel) return;
 
         Formation formation = new Formation(d.Owner, d._formation);
-        d.Owner.AddFormation(formation);
+        await d.Owner.AddFormation(formation);
 
         // if (_report.UseTween)
         //     await _report.PlayTween(new BuffTweenDescriptor(d));
@@ -236,12 +236,12 @@ public class StageEnvironment : GDictionary
                 case BuffStackRule.Wasted:
                     break;
                 case BuffStackRule.Add:
-                    d.Tgt.BuffGainStack(same, d._stack);
+                    await d.Tgt.BuffGainStack(same, d._stack);
                     break;
                 case BuffStackRule.Max:
                     int gain = d._stack - oldStack;
                     if(gain > 0)
-                        d.Tgt.BuffGainStack(same, gain);
+                        await d.Tgt.BuffGainStack(same, gain);
                     break;
             }
 
@@ -254,7 +254,7 @@ public class StageEnvironment : GDictionary
         else
         {
             Buff buff = new Buff(d.Tgt, d._buffEntry, d._stack);
-            d.Tgt.AddBuff(buff);
+            await d.Tgt.AddBuff(buff);
 
             if (_report.UseTween)
             {
@@ -426,6 +426,7 @@ public class StageEnvironment : GDictionary
 
         hero._p = -1;
 
+        await StartFormation();
         await hero.StartStage();
 
         hero.ManaShortageEvent += WriteManaShortage;

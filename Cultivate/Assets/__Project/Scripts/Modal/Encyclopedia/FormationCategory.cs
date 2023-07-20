@@ -23,8 +23,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     gain: async (formation, owner) =>
                     {
-                        await owner._waiGongList[0].Execute(owner);
-                        await owner._waiGongList[1].Execute(owner);
+                        await owner._waiGongList[0].ExecuteWithoutTween(owner);
+                        await owner._waiGongList[1].ExecuteWithoutTween(owner);
                     }),
                 new FormationEntry(JingJie.YuanYing, "有且只有1种五行，不少于7张", "战斗开始时，使用第一位的卡",
                     canActivate: (entity, args) =>
@@ -37,7 +37,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     gain: async (formation, owner) =>
                     {
-                        await owner._waiGongList[0].Execute(owner);
+                        await owner._waiGongList[0].ExecuteWithoutTween(owner);
                     }),
             }),
 
