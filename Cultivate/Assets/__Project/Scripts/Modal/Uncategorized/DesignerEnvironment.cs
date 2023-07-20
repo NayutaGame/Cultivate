@@ -12,13 +12,31 @@ public class DesignerEnvironment
 
     public static void EnterRun()
     {
-        RunManager rm = RunManager.Instance;
+        // Standard();
+        Custom();
+    }
 
-        // rm.Map.JingJie = JingJie.LianQi;
-        rm.Map.JingJie = JingJie.HuaShen;
+    public static void Standard()
+    {
+        RunManager rm = RunManager.Instance;
+        rm.Map.JingJie = JingJie.LianQi;
         rm.AddXiuWei(50);
 
         bool flag = rm.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: JingJie.LianQi, count: 5);
+        if (!flag)
+            throw new Exception();
+
+        rm.Simulate.SkillInventory.AddSkills(skills);
+        rm.Battle.SkillInventory.AddSkills(skills);
+    }
+
+    public static void Custom()
+    {
+        RunManager rm = RunManager.Instance;
+        rm.Map.JingJie = JingJie.HuaShen;
+        rm.Battle.Hero.SetJingJie(JingJie.HuaShen);
+
+        bool flag = rm.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: JingJie.HuaShen, wuXing: WuXing.Shui, count: 12);
         if (!flag)
             throw new Exception();
 

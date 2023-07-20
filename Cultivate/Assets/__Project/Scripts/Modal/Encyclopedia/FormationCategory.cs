@@ -23,6 +23,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     gain: async (formation, owner) =>
                     {
+                        await owner._waiGongList[0].Execute(owner);
+                        await owner._waiGongList[1].Execute(owner);
                     }),
                 new FormationEntry(JingJie.YuanYing, "有且只有1种五行，不少于7张", "战斗开始时，使用第一位的卡",
                     canActivate: (entity, args) =>
@@ -32,6 +34,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         int countEQ0 = WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] == 0);
                         return countGErequirement == 1 && countEQ0 == 4;
+                    },
+                    gain: async (formation, owner) =>
+                    {
+                        await owner._waiGongList[0].Execute(owner);
                     }),
             }),
 

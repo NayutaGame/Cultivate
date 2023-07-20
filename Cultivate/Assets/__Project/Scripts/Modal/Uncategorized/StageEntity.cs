@@ -432,6 +432,7 @@ public class StageEntity : GDictionary
 
     ~StageEntity()
     {
+        RemoveAllFormations();
         RemoveAllBuffs();
 
         Buffed.Remove(HighestManaRecorder);

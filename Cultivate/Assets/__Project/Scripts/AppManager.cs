@@ -36,6 +36,9 @@ public class AppManager : Singleton<AppManager>, GDictionary
         SkillInventory = new();
         Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));
 
+        StageManager.gameObject.SetActive(true);
+        StageManager.gameObject.SetActive(false);
+
         _sm = new AppSM();
         _sm.Push(new AppRunS());
     }

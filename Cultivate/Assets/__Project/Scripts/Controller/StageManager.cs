@@ -65,9 +65,6 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
     public static StageReport SimulateBrief(RunEntity home, RunEntity away)
     {
-        AppManager.Instance.StageManager.gameObject.SetActive(true);
-        AppManager.Instance.StageManager.gameObject.SetActive(false);
-
         Instance.EndEnv = new StageEnvironment(home, away, useSb: true);
         Instance.EndEnv.Simulate().GetAwaiter().GetResult();
         Instance.EndEnv.WriteResult();
@@ -76,9 +73,6 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
     public static bool[] ManaSimulate(RunEntity home, RunEntity away)
     {
-        AppManager.Instance.StageManager.gameObject.SetActive(true);
-        AppManager.Instance.StageManager.gameObject.SetActive(false);
-
         Instance.EndEnv = new StageEnvironment(home, away);
         return Instance.EndEnv.InnerManaSimulate().GetAwaiter().GetResult();
     }

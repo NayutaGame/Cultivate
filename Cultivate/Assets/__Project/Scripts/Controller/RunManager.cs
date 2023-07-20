@@ -74,14 +74,14 @@ public class RunManager : Singleton<RunManager>, GDictionary
         _chanNeng = 0;
 
         Modifier = Modifier.Default;
-
-        DesignerEnvironment.EnterRun();
     }
 
     public void Enter()
     {
         Simulate.Enter();
         Battle.Enter();
+
+        DesignerEnvironment.EnterRun();
     }
 
     public void CExit()

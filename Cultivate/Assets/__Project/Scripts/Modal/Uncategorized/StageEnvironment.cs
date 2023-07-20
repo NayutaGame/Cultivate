@@ -395,7 +395,7 @@ public class StageEnvironment : GDictionary
 
         foreach (var e in _entities)
         foreach (var f in e.RunFormations())
-            details.Add(new FormationDetails(_entities[0], f));
+            details.Add(new FormationDetails(e, f));
 
         details.Sort((lhs, rhs) => lhs._formation.GetOrder() - rhs._formation.GetOrder());
 
