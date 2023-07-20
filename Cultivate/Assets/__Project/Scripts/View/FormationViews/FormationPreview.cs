@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SubFormationPreview : SubFormationView
+public class FormationPreview : FormationView
 {
-    public SubFormationView SubFormationView;
+    public FormationView FormationView;
 
     public override void Configure(IndexPath indexPath)
     {
         base.Configure(indexPath);
-        if (SubFormationView != null)
-            SubFormationView.Configure(indexPath);
+        if (FormationView != null)
+            FormationView.Configure(indexPath);
     }
 
     public override void Refresh()
@@ -20,8 +20,8 @@ public class SubFormationPreview : SubFormationView
             return;
         }
         base.Refresh();
-        if (SubFormationView != null)
-            SubFormationView.Refresh();
+        if (FormationView != null)
+            FormationView.Refresh();
     }
 
     public void UpdateMousePos(Vector2 pos)

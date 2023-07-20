@@ -65,6 +65,7 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="friendly">是否有益</param>
     /// <param name="dispellable">是否可驱散</param>
     /// <param name="gain">获得时的额外行为</param>
+    /// <param name="lose">失去时的额外行为</param>
     /// <param name="stackChanged">层数改变时的额外行为</param>
     /// <param name="startStage">Stage开始时的额外行为</param>
     /// <param name="endStage">Stage结束时的额外行为</param>
@@ -86,8 +87,12 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="armorGained">接受护甲时的额外行为</param>
     /// <param name="armorLose">使失去护甲时的额外行为</param>
     /// <param name="armorLost">失去护甲时的额外行为</param>
+    /// <param name="evaded">闪避时的额外行为</param>
     /// <param name="buff">受到Buff时的额外行为，结算之前</param>
+    /// <param name="anyBuff">任何人受到Buff时的额外行为，结算之前</param>
     /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
+    /// <param name="anyBuffed">任何人受到Buff时的额外行为，结算之后</param>
+    /// <param name="consumed">被消耗时的额外行动</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
         Func<Buff, StageEntity, int, Task> gain = null,
         Func<Buff, StageEntity, Task> lose = null,

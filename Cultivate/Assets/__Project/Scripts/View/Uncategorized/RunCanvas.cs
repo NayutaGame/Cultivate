@@ -24,7 +24,7 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public SkillGhost SkillGhost;
     [SerializeField] private RunSkillPreview RunSkillPreview;
-    [SerializeField] private SubFormationPreview SubFormationPreview;
+    [SerializeField] private FormationPreview FormationPreview;
 
     private InteractDelegate DeckInteractDelegate;
     private InteractDelegate CardPickerInteractDelegate;
@@ -129,14 +129,14 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public void SetIndexPathForSubFormationPreview(IndexPath indexPath)
     {
-        SubFormationPreview.Configure(indexPath);
-        SubFormationPreview.Refresh();
+        FormationPreview.Configure(indexPath);
+        FormationPreview.Refresh();
     }
 
     public void UpdateMousePosForSubFormationPreview(Vector2 pos)
     {
-        SubFormationPreview.UpdateMousePos(pos);
-        SubFormationPreview.Refresh();
+        FormationPreview.UpdateMousePos(pos);
+        FormationPreview.Refresh();
     }
 
     public void SetNodeState(PanelDescriptor panelDescriptor)

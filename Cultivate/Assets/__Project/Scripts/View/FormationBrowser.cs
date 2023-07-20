@@ -3,11 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FormationBrowser : InventoryView<FormationView>
+public class FormationBrowser : InventoryView<FormationGroupView>
 {
-    public FormationView DetailedView;
-
-    private FormationView _selection;
+    [SerializeField] private FormationGroupView _detailedGroupView;
+    private FormationGroupView _selection;
 
     public override void Configure(IndexPath indexPath)
     {
@@ -31,11 +30,11 @@ public class FormationBrowser : InventoryView<FormationView>
     {
         if (_selection != null)
             _selection.SetSelected(false);
-        _selection = (FormationView)view;
+        _selection = (FormationGroupView)view;
         if (_selection != null)
         {
-            DetailedView.Configure(view.GetIndexPath());
-            DetailedView.Refresh();
+            _detailedGroupView.Configure(view.GetIndexPath());
+            _detailedGroupView.Refresh();
             _selection.SetSelected(true);
         }
         return true;

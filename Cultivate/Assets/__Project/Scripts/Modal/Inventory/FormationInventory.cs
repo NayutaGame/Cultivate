@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FormationInventory : Inventory<FormationEntry>
+public class FormationInventory : Inventory<FormationGroupEntry>
 {
 
 }

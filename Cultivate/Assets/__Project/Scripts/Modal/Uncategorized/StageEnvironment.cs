@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
@@ -9,7 +10,40 @@ using DG.Tweening;
 
 public class StageEnvironment : GDictionary
 {
-    private static readonly int MAX_ACTION_COUNT = 128;
+    public event Func<FormationDetails, Task<FormationDetails>> AnyFormationAddEvent;
+    public async Task<FormationDetails> AnyFormationAdd(FormationDetails d)
+    {
+        if (AnyFormationAddEvent != null) return await AnyFormationAddEvent(d);
+        return d;
+    }
+
+    public event Func<FormationDetails, Task<FormationDetails>> AnyFormationAddedEvent;
+    public async Task<FormationDetails> AnyFormationAdded(FormationDetails d)
+    {
+        if (AnyFormationAddedEvent != null) return await AnyFormationAddedEvent(d);
+        return d;
+    }
+
+    private static readonly int MAX_ACTION_COUNT = 120;
+
+    public async Task FormationProcedure(StageEntity owner, FormationEntry formation, bool recursive = true, bool cancel = false)
+        => await FormationProcedure(new FormationDetails(owner, formation, recursive, cancel));
+    public async Task FormationProcedure(FormationDetails d)
+    {
+        d = await AnyFormationAdd(d);
+        if (d.Cancel) return;
+
+        Formation formation = new Formation(d.Owner, d._formation);
+        d.Owner.AddFormation(formation);
+
+        // if (_report.UseTween)
+        //     await _report.PlayTween(new BuffTweenDescriptor(d));
+
+        _report.Append($"    {d._formation.GetName()} is set");
+
+        if (d.Cancel) return;
+        d = await AnyFormationAdded(d);
+    }
 
     /// <summary>
     /// 发起一次攻击行为，会结算目标的护甲
@@ -321,6 +355,8 @@ public class StageEnvironment : GDictionary
     {
         int whosTurn = 0;
 
+        await StartFormation();
+
         foreach (var e in _entities)
         {
             e._p = -1;
@@ -351,6 +387,22 @@ public class StageEnvironment : GDictionary
         await _entities[1].EndStage();
         await _entities[0].EndStage();
         ForceCommit();
+    }
+
+    private async Task StartFormation()
+    {
+        List<FormationDetails> details = new List<FormationDetails>();
+
+        foreach (var e in _entities)
+        foreach (var f in e.RunFormations())
+            details.Add(new FormationDetails(_entities[0], f));
+
+        details.Sort((lhs, rhs) => lhs._formation.GetOrder() - rhs._formation.GetOrder());
+
+        foreach (var d in details)
+        {
+            await FormationProcedure(d);
+        }
     }
 
     public async Task<bool[]> InnerManaSimulate()

@@ -1,12 +1,9 @@
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
-using DG.Tweening;
 
 public class StageManager : Singleton<StageManager>, GDictionary
 {
@@ -53,7 +50,6 @@ public class StageManager : Singleton<StageManager>, GDictionary
         EndEnv.Simulate().GetAwaiter().GetResult();
         EndEnv.WriteResult();
         RunManager.Instance.Report = EndEnv.Report;
-        EndEnv.WriteEffect();
 
         if (!d.UseAnim)
         {
@@ -100,6 +96,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
             : BattleResultSignal.BattleResultState.Lose);
         PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(signal);
         RunCanvas.Instance.SetNodeState(panelDescriptor);
+        EndEnv.WriteEffect();
     }
 
     public void Pause()

@@ -403,7 +403,7 @@ MonoBehaviour:
   ConsolePanel: {fileID: 955416620752398226}
   SkillGhost: {fileID: 9222973916022311103}
   RunSkillPreview: {fileID: 427471729097561689}
-  SubFormationPreview: {fileID: 4195929028488326489}
+  FormationPreview: {fileID: 4195929028488326489}
 --- !u!1 &6570500143329246657
 GameObject:
   m_ObjectHideFlags: 0
@@ -8700,7 +8700,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1921744115998550485, guid: 40b63534a0d640e43940cfd8a0287f75, type: 3}
       propertyPath: m_Name
-      value: SubFormationPreview
+      value: FormationPreview
       objectReference: {fileID: 0}
     - target: {fileID: 1921744115998550485, guid: 40b63534a0d640e43940cfd8a0287f75, type: 3}
       propertyPath: m_IsActive

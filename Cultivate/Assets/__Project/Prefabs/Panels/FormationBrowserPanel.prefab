@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 3536910654057943105}
   - component: {fileID: 3407030177936121561}
   m_Layer: 5
-  m_Name: FormationView
+  m_Name: FormationGroupView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -604,8 +604,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3491700176683634572}
   m_HandleRect: {fileID: 5397596976357488355}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.8724485
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1020,7 +1020,7 @@ GameObject:
   - component: {fileID: 1086402084154369952}
   - component: {fileID: 2805027683389663078}
   m_Layer: 5
-  m_Name: SubFormationInventoryView
+  m_Name: FormationInventoryView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1809,7 +1809,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Container: {fileID: 7404021261528822207}
   Prefab: {fileID: 2108923873393925487, guid: afce141183aaebd4e896e760d089f59d, type: 3}
-  DetailedView: {fileID: 3407030177936121561}
+  _detailedGroupView: {fileID: 3407030177936121561}
 --- !u!1 &6428075880954596432
 GameObject:
   m_ObjectHideFlags: 0

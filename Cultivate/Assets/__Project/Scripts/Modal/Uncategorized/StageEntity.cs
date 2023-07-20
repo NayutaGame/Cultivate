@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
+using Unity.VisualScripting;
 
 public class StageEntity : GDictionary
 {
@@ -338,6 +339,8 @@ public class StageEntity : GDictionary
     private RunEntity _runEntity;
     public RunEntity RunEntity => _runEntity;
 
+    public IEnumerable<FormationEntry> RunFormations() => _runEntity.TraversalActivatedFormations;
+
     private StageEnvironment _env;
     public StageEnvironment Env => _env;
 
@@ -354,7 +357,9 @@ public class StageEntity : GDictionary
         _runEntity = runEntity;
         _index = index;
 
+        _formations = new List<Formation>();
         _buffs = new List<Buff>();
+
         _manaShortage = false;
 
         LostArmorRecord = 0;
@@ -446,6 +451,37 @@ public class StageEntity : GDictionary
     protected async Task DefaultDamaged(DamageDetails damageDetails) { }
     protected async Task DefaultLoseHp() { }
 
+    #region Formation
+
+    private List<Formation> _formations;
+    public IEnumerable<Formation> Formations => _formations.Traversal();
+
+    public void AddFormation(Formation formation)
+    {
+        formation.Gain();
+        formation.Register();
+        _formations.Add(formation);
+    }
+
+    public void RemoveFormation(Formation formation)
+    {
+        formation.Lose();
+        formation.Unregister();
+        _formations.Remove(formation);
+    }
+
+    public void RemoveAllFormations()
+    {
+        _formations.Do(f =>
+        {
+            f.Lose();
+            f.Unregister();
+        });
+        _formations.RemoveAll(f => true);
+    }
+
+    #endregion
+
     #region Buff
 
     private List<Buff> _buffs;
@@ -468,9 +504,9 @@ public class StageEntity : GDictionary
 
     public void RemoveBuff(Buff buff)
     {
+        buff.Lose();
         buff.Unregister();
         _buffs.Remove(buff);
-        buff.Lose();
         // OnBuffChangedEvent?.Invoke();
     }
 
@@ -485,8 +521,8 @@ public class StageEntity : GDictionary
     {
         _buffs.Do(b =>
         {
-            b.Unregister();
             b.Lose();
+            b.Unregister();
         });
         _buffs.RemoveAll(pred);
         // OnBuffChangedEvent?.Invoke();
@@ -500,7 +536,7 @@ public class StageEntity : GDictionary
 
     public void RemoveAllBuffs() => RemoveBuffs(b => true);
 
-    public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.BuffEntry == buffEntry);
+    public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.Entry == buffEntry);
 
     public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
 
