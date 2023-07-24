@@ -137,7 +137,7 @@ public class BuffCategory : Category<BuffEntry>
             new ("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,
                 startTurn: async (buff, d) => await d.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Huo)),
             new ("业火", "消耗牌时：使用2次", BuffStackRule.Wasted, true, false,
-                consumed: async (buff, d) => await d.Skill.Execute(d.Owner)),
+                exhaust: async (buff, d) => await d.Skill.Execute(d.Owner)),
             new ("淬体", "消耗生命时：灼烧+[层数]", BuffStackRule.Add, true, false,
                 damaged: async (buff, d) =>
                 {
@@ -153,10 +153,12 @@ public class BuffCategory : Category<BuffEntry>
                     if (d.Skill.GetWaiGongType().Contains(SkillTypeCollection.Attack))
                         return;
 
-                    await d.Skill.ConsumeProcedure();
+                    await d.Skill.ExhaustProcedure();
                     bool noBuff = buff.Owner.GetStackOfBuff("免费") == 0;
                     if(noBuff)
                         await buff.Owner.BuffSelfProcedure("免费");
+
+                    buff.Stack -= 1;
                 }),
 
             new ("心斋", "所有耗蓝-[层数]", BuffStackRule.Add, true, false),

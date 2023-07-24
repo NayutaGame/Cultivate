@@ -148,10 +148,10 @@ public class StageEntity : GDictionary
         if (LoseHpEvent != null) await LoseHpEvent();
     }
 
-    public event Func<ConsumeDetails, Task> ConsumedEvent;
-    public async Task Consumed(ConsumeDetails d)
+    public event Func<ExhaustDetails, Task> ExhaustEvent;
+    public async Task Exhausted(ExhaustDetails d)
     {
-        if (ConsumedEvent != null) await ConsumedEvent(d);
+        if (ExhaustEvent != null) await ExhaustEvent(d);
     }
 
     public FuncQueue<BuffDetails> Buff = new();
@@ -293,7 +293,7 @@ public class StageEntity : GDictionary
                 await StartRound();
             }
 
-            if(_waiGongList[_p].Consumed)
+            if(_waiGongList[_p].Exhausted)
                 continue;
 
             if(TryConsumeBuff("跳卡牌"))
@@ -319,7 +319,7 @@ public class StageEntity : GDictionary
     public bool IsDead()
         => _hp <= 0;
     public int ConsumedCount
-        => _waiGongList.Count(waiGong => waiGong.Consumed);
+        => _waiGongList.Count(waiGong => waiGong.Exhausted);
 
     public int LostArmorRecord;
     public int GeneratedManaRecord;
@@ -399,7 +399,7 @@ public class StageEntity : GDictionary
         for (int i = 0; i < _waiGongList.Length; i++)
         {
             SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
-            slot.RunConsumed = _waiGongList[i].RunConsumed;
+            slot.RunConsumed = _waiGongList[i].RunExhausted;
         }
     }
 

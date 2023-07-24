@@ -64,7 +64,7 @@ public class FormationEntry
     public Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> _anyBuff;
     public Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> _buffed;
     public Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> _anyBuffed;
-    public Func<Formation, ConsumeDetails, Task> _consumed;
+    public Func<Formation, ExhaustDetails, Task> _consumed;
 
     /// <summary>
     /// 定义一个Formation
@@ -132,7 +132,7 @@ public class FormationEntry
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> anyBuff = null,
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> buffed = null,
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> anyBuffed = null,
-        Func<Formation, ConsumeDetails, Task> consumed = null
+        Func<Formation, ExhaustDetails, Task> consumed = null
     )
     {
         _jingJie = jingJie;

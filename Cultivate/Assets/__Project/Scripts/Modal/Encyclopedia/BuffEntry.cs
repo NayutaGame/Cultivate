@@ -54,7 +54,7 @@ public class BuffEntry : Entry, IAnnotation
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buffed;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuffed;
-    public Func<Buff, ConsumeDetails, Task> _consumed;
+    public Func<Buff, ExhaustDetails, Task> _exhaust;
 
     /// <summary>
     /// 定义一个Buff
@@ -92,7 +92,7 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="anyBuff">任何人受到Buff时的额外行为，结算之前</param>
     /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
     /// <param name="anyBuffed">任何人受到Buff时的额外行为，结算之后</param>
-    /// <param name="consumed">被消耗时的额外行动</param>
+    /// <param name="exhaust">被消耗时的额外行动</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
         Func<Buff, StageEntity, int, Task> gain = null,
         Func<Buff, StageEntity, Task> lose = null,
@@ -122,7 +122,7 @@ public class BuffEntry : Entry, IAnnotation
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buffed = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuffed = null,
-        Func<Buff, ConsumeDetails, Task> consumed = null
+        Func<Buff, ExhaustDetails, Task> exhaust = null
     ) : base(name)
     {
         _description = description;
@@ -163,7 +163,7 @@ public class BuffEntry : Entry, IAnnotation
         _buffed = buffed;
         _anyBuffed = anyBuffed;
 
-        _consumed = consumed;
+        _exhaust = exhaust;
     }
 
     // public void ConfigureNote(StringBuilder sb)

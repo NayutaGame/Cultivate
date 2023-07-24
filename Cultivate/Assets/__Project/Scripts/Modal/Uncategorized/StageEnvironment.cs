@@ -10,6 +10,8 @@ using DG.Tweening;
 
 public class StageEnvironment : GDictionary
 {
+    private static readonly int MAX_ACTION_COUNT = 120;
+
     public event Func<FormationDetails, Task<FormationDetails>> AnyFormationAddEvent;
     public async Task<FormationDetails> AnyFormationAdd(FormationDetails d)
     {
@@ -23,8 +25,6 @@ public class StageEnvironment : GDictionary
         if (AnyFormationAddedEvent != null) return await AnyFormationAddedEvent(d);
         return d;
     }
-
-    private static readonly int MAX_ACTION_COUNT = 120;
 
     public async Task FormationProcedure(StageEntity owner, FormationEntry formation, bool recursive = true, bool cancel = false)
         => await FormationProcedure(new FormationDetails(owner, formation, recursive, cancel));
@@ -44,6 +44,11 @@ public class StageEnvironment : GDictionary
         if (d.Cancel) return;
         d = await AnyFormationAdded(d);
     }
+
+    // public async Task BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
+    //     => await BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
+    //
+    // public async Task ConsumeBuffProcedure(StageEntity src, StageEntity tgt, )
 
     /// <summary>
     /// 发起一次攻击行为，会结算目标的护甲
@@ -296,18 +301,18 @@ public class StageEnvironment : GDictionary
         _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
     }
 
-    public async Task ConsumeProcedure(StageEntity owner, StageSkill skill, bool forRun)
-        => await ConsumeProcedure(new ConsumeDetails(owner, skill, forRun));
-    public async Task ConsumeProcedure(ConsumeDetails d)
+    public async Task ExhaustProcedure(StageEntity owner, StageSkill skill, bool forRun)
+        => await ExhaustProcedure(new ExhaustDetails(owner, skill, forRun));
+    public async Task ExhaustProcedure(ExhaustDetails d)
     {
         if (d.ForRun)
-            d.Skill.RunConsumed = true;
+            d.Skill.RunExhausted = true;
 
-        if (d.Skill.Consumed)
+        if (d.Skill.Exhausted)
             return;
 
-        d.Skill.Consumed = true;
-        await d.Owner.Consumed(d);
+        d.Skill.Exhausted = true;
+        await d.Owner.Exhausted(d);
     }
 
     private Dictionary<string, Func<object>> _accessors;

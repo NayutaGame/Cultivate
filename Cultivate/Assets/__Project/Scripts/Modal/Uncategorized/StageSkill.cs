@@ -18,22 +18,22 @@ public class StageSkill
     private int _slotIndex;
     public int SlotIndex => _slotIndex;
 
-    private bool _consumed;
-    public bool Consumed
+    private bool _exhausted;
+    public bool Exhausted
     {
-        get => _consumed;
-        set => _consumed = value;
+        get => _exhausted;
+        set => _exhausted = value;
     }
 
-    private bool _runConsumed;
-    public bool RunConsumed
+    private bool _runExhausted;
+    public bool RunExhausted
     {
-        get => _runConsumed;
-        set => _runConsumed = value;
+        get => _runExhausted;
+        set => _runExhausted = value;
     }
 
-    public async Task ConsumeProcedure(bool forRun = false)
-        => await _owner.Env.ConsumeProcedure(_owner, this, forRun);
+    public async Task ExhaustProcedure(bool forRun = false)
+        => await _owner.Env.ExhaustProcedure(_owner, this, forRun);
 
     public string GetAnnotatedDescription(string evalutated = null)
         => _entry.GetAnnotatedDescription(evalutated ?? GetDescription());
@@ -101,8 +101,8 @@ public class StageSkill
 
         _entry = _runSkill?.Entry ?? Encyclopedia.SkillCategory["聚气术"];
 
-        _consumed = false;
-        _runConsumed = false;
+        _exhausted = false;
+        _runExhausted = false;
         RunUsedTimes = _runSkill?.RunUsedTimes ?? 0;
         RunEquippedTimes = _runSkill?.RunEquippedTimes + 1 ?? 0;
         StageUsedTimes = 0;
