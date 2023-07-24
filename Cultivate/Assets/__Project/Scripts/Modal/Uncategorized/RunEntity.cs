@@ -188,9 +188,9 @@ public class RunEntity : GDictionary, IEntityModel
         return JsonUtility.ToJson(this).Replace('\"', '\'');
     }
 
-    public void TryConsume()
+    public void TryExhaust()
     {
-        _slots.Do(slot => slot.TryConsume());
+        _slots.Do(slot => slot.TryExhaust());
     }
 
     private void FromEntity(RunEntity entity)

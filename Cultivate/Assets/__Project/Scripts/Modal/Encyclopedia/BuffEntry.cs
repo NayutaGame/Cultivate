@@ -49,6 +49,8 @@ public class BuffEntry : Entry, IAnnotation
     public Func<Buff, ArmorGainDetails, Task> _armorGained;
     public Func<Buff, ArmorLoseDetails, Task> _armorLose;
     public Func<Buff, ArmorLoseDetails, Task> _armorLost;
+    public Func<Buff, ConsumeDetails, Task> _consume;
+    public Func<Buff, ConsumeDetails, Task> _consumed;
     public Func<Buff, EvadeDetails, Task> _evaded;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuff;
@@ -87,6 +89,8 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="armorGained">接受护甲时的额外行为</param>
     /// <param name="armorLose">使失去护甲时的额外行为</param>
     /// <param name="armorLost">失去护甲时的额外行为</param>
+    /// <param name="consume">失去Buff时的额外行为，结算之前</param>
+    /// <param name="consumed">失去Buff时的额外行为，结算之后</param>
     /// <param name="evaded">闪避时的额外行为</param>
     /// <param name="buff">受到Buff时的额外行为，结算之前</param>
     /// <param name="anyBuff">任何人受到Buff时的额外行为，结算之前</param>
@@ -117,6 +121,8 @@ public class BuffEntry : Entry, IAnnotation
         Func<Buff, ArmorGainDetails, Task> armorGained = null,
         Func<Buff, ArmorLoseDetails, Task> armorLose = null,
         Func<Buff, ArmorLoseDetails, Task> armorLost = null,
+        Func<Buff, ConsumeDetails, Task> consume = null,
+        Func<Buff, ConsumeDetails, Task> consumed = null,
         Func<Buff, EvadeDetails, Task> evaded = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuff = null,
@@ -156,6 +162,8 @@ public class BuffEntry : Entry, IAnnotation
         _armorGained = armorGained;
         _armorLose = armorLose;
         _armorLost = armorLost;
+        _consume = consume;
+        _consumed = consumed;
         _evaded = evaded;
 
         _buff = buff;

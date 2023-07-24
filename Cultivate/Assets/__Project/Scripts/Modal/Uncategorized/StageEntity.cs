@@ -148,6 +148,18 @@ public class StageEntity : GDictionary
         if (LoseHpEvent != null) await LoseHpEvent();
     }
 
+    public event Func<ConsumeDetails, Task> ConsumeEvent;
+    public async Task Consume(ConsumeDetails d)
+    {
+        if (ConsumeEvent != null) await ConsumeEvent(d);
+    }
+
+    public event Func<ConsumeDetails, Task> ConsumedEvent;
+    public async Task Consumed(ConsumeDetails d)
+    {
+        if (ConsumedEvent != null) await ConsumedEvent(d);
+    }
+
     public event Func<ExhaustDetails, Task> ExhaustEvent;
     public async Task Exhausted(ExhaustDetails d)
     {
@@ -219,7 +231,7 @@ public class StageEntity : GDictionary
 
         await StartTurn(new TurnDetails(this, _p));
 
-        bool skipTurn = TryConsumeBuff("跳回合");
+        bool skipTurn = await TryConsumeBuff("跳回合");
         if (!skipTurn)
         {
             await Step();
@@ -254,7 +266,7 @@ public class StageEntity : GDictionary
         // show waigong
 
         int manaCost = skill.GetManaCost() - GetStackOfBuff("心斋");
-        bool manaSufficient = skill.GetManaCost() == 0 || TryConsumeBuff("免费") || TryConsumeMana(manaCost);
+        bool manaSufficient = skill.GetManaCost() == 0 || await TryConsumeBuff("免费") || await TryConsumeMana(manaCost);
         _manaShortage = !manaSufficient;
         if(_manaShortage)
         {
@@ -264,7 +276,7 @@ public class StageEntity : GDictionary
             return;
         }
 
-        if (TryConsumeBuff("双发"))
+        if (await TryConsumeBuff("双发"))
         {
             await skill.Execute(this);
             await skill.Execute(this);
@@ -296,7 +308,7 @@ public class StageEntity : GDictionary
             if(_waiGongList[_p].Exhausted)
                 continue;
 
-            if(TryConsumeBuff("跳卡牌"))
+            if(await TryConsumeBuff("跳卡牌"))
                 continue;
 
             return;
@@ -318,7 +330,7 @@ public class StageEntity : GDictionary
         => GetStackOfBuff("鹤回翔") == 0;
     public bool IsDead()
         => _hp <= 0;
-    public int ConsumedCount
+    public int ExhaustedCount
         => _waiGongList.Count(waiGong => waiGong.Exhausted);
 
     public int LostArmorRecord;
@@ -399,7 +411,7 @@ public class StageEntity : GDictionary
         for (int i = 0; i < _waiGongList.Length; i++)
         {
             SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
-            slot.RunConsumed = _waiGongList[i].RunExhausted;
+            slot.RunExhausted = _waiGongList[i].RunExhausted;
         }
     }
 
@@ -544,7 +556,7 @@ public class StageEntity : GDictionary
     public int GetSumOfStackOfBuffs(params string[] names)
         => names.Map(name => GetStackOfBuff(name)).Aggregate((a, b) => a + b);
 
-    public bool TryConsumeBuff(BuffEntry buffEntry, int stack = 1)
+    public async Task<bool> TryConsumeBuff(BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
     {
         if (stack == 0)
             return true;
@@ -552,7 +564,7 @@ public class StageEntity : GDictionary
         Buff b = FindBuff(buffEntry);
         if (b != null && b.Stack >= stack)
         {
-            b.Stack -= stack;
+            await ConsumeProcedure(buffEntry, stack, friendly, recursive);
             return true;
         }
 
@@ -560,7 +572,7 @@ public class StageEntity : GDictionary
     }
 
     public int GetMana() => GetStackOfBuff("灵气");
-    public bool TryConsumeMana(int stack = 1) => TryConsumeBuff("灵气", stack);
+    public async Task<bool> TryConsumeMana(int stack = 1) => await TryConsumeBuff("灵气", stack);
 
     public int GetBuffCount() => _buffs.Count;
     public Buff TryGetBuff(int i)
@@ -629,6 +641,9 @@ public class StageEntity : GDictionary
 
     public async Task ArmorLoseOppoProcedure(int value)
         => await _env.ArmorLoseProcedure(new ArmorLoseDetails(this, Opponent(), value));
+
+    public async Task ConsumeProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive)
+        => await _env.ConsumeProcedure(new ConsumeDetails(this, this, buffEntry, stack, friendly, recursive));
 
     #endregion
 }

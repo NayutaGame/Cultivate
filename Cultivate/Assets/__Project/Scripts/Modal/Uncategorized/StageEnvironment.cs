@@ -45,11 +45,6 @@ public class StageEnvironment : GDictionary
         d = await AnyFormationAdded(d);
     }
 
-    // public async Task BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
-    //     => await BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
-    //
-    // public async Task ConsumeBuffProcedure(StageEntity src, StageEntity tgt, )
-
     /// <summary>
     /// 发起一次攻击行为，会结算目标的护甲
     /// </summary>
@@ -68,7 +63,7 @@ public class StageEnvironment : GDictionary
         => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
     public async Task AttackProcedure(AttackDetails attackDetails, int times)
     {
-        if (attackDetails.Src.TryConsumeBuff("追击")) // 结算连击/追击
+        if (await attackDetails.Src.TryConsumeBuff("追击")) // 结算连击/追击
             times += 1;
 
         for (int i = 0; i < times; i++)
@@ -299,6 +294,20 @@ public class StageEnvironment : GDictionary
 
         d.Tgt.Armor -= d.Value;
         _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
+    }
+    public async Task ConsumeProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
+        => await ConsumeProcedure(new ConsumeDetails(src, tgt, buffEntry, stack, friendly, recursive));
+
+    public async Task ConsumeProcedure(ConsumeDetails d)
+    {
+        await d.Tgt.Consume(d);
+        if (d.Cancel) return;
+
+        Buff b = d.Src.FindBuff(d._buffEntry);
+        b.Stack -= d._stack;
+
+        if (d.Cancel) return;
+        await d.Tgt.Consumed(d);
     }
 
     public async Task ExhaustProcedure(StageEntity owner, StageSkill skill, bool forRun)

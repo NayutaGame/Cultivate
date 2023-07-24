@@ -84,11 +84,11 @@ public class SkillSlot : GDictionary
         return true;
     }
 
-    [NonSerialized] public bool RunConsumed;
+    [NonSerialized] public bool RunExhausted;
 
-    public bool TryConsume()
+    public bool TryExhaust()
     {
-        if (!RunConsumed)
+        if (!RunExhausted)
             return false;
 
         Skill = null;
