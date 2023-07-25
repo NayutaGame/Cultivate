@@ -63,7 +63,7 @@ public class StageEnvironment : GDictionary
         => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
     public async Task AttackProcedure(AttackDetails attackDetails, int times)
     {
-        if (await attackDetails.Src.TryConsumeBuff("追击")) // 结算连击/追击
+        if (await attackDetails.Src.TryConsumeProcedure("追击")) // 结算连击/追击
             times += 1;
 
         for (int i = 0; i < times; i++)
@@ -75,6 +75,7 @@ public class StageEnvironment : GDictionary
 
             await src.Attack(d);
             await tgt.Attacked(d);
+
             if (d.Cancel)
             {
                 _report.Append($"    攻击被取消");
@@ -421,14 +422,14 @@ public class StageEnvironment : GDictionary
 
     public async Task<bool[]> InnerManaSimulate()
     {
-        bool[] manaShortageBrief = new bool[RunManager.WaiGongLimit];
+        bool[] manaShortageBrief = new bool[RunManager.SkillLimit];
         bool stopWriting = false;
 
         async Task WriteManaShortage(int p)
         {
             if (stopWriting)
                 return;
-            manaShortageBrief[p + RunManager.WaiGongStartFromJingJie[_entities[0].RunEntity.GetJingJie()]] = true;
+            manaShortageBrief[p + RunManager.SkillStartFromJingJie[_entities[0].RunEntity.GetJingJie()]] = true;
         }
 
         async Task StopWriting()

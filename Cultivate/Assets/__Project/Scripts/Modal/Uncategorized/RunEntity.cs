@@ -44,8 +44,8 @@ public class RunEntity : GDictionary, IEntityModel
     [NonSerialized] public int Limit;
     private void UpdateReveal()
     {
-        Start = RunManager.WaiGongStartFromJingJie[_jingJie];
-        Limit = RunManager.WaiGongLimitFromJingJie[_jingJie];
+        Start = RunManager.SkillStartFromJingJie[_jingJie];
+        Limit = RunManager.SkillLimitFromJingJie[_jingJie];
         int end = Start + Limit;
 
         _slots.Length.Do(i =>
@@ -125,7 +125,7 @@ public class RunEntity : GDictionary, IEntityModel
 
         _activatedFormations = new List<FormationEntry>();
 
-        _slots = new SkillSlot[RunManager.WaiGongLimit];
+        _slots = new SkillSlot[RunManager.SkillLimit];
         for (int i = 0; i < _slots.Length; i++)
         {
             _slots[i] = new SkillSlot(this, i);
@@ -142,12 +142,12 @@ public class RunEntity : GDictionary, IEntityModel
         }
     }
 
-    public void SetSlotContent(int i, string waiGongName, JingJie? j = null)
+    public void SetSlotContent(int i, string skillName, JingJie? j = null)
     {
-        if (string.IsNullOrEmpty(waiGongName))
+        if (string.IsNullOrEmpty(skillName))
             return;
 
-        SkillEntry skill = waiGongName;
+        SkillEntry skill = skillName;
         JingJie jingJie = j ?? skill.JingJieRange.Start;
         SetSlotContent(i, new RunSkill(skill, jingJie), j);
     }
@@ -157,14 +157,14 @@ public class RunEntity : GDictionary, IEntityModel
         _slots[i].Skill = skill;
     }
 
-    public void QuickSetSlotContent(params string[] waiGongNames)
+    public void QuickSetSlotContent(params string[] skillNames)
     {
-        int diff = _slots.Length - waiGongNames.Length;
-        for (int i = waiGongNames.Length - 1; i >= 0; i--)
+        int diff = _slots.Length - skillNames.Length;
+        for (int i = skillNames.Length - 1; i >= 0; i--)
         {
-            if (waiGongNames[i] != null && waiGongNames[i] != "")
+            if (skillNames[i] != null && skillNames[i] != "")
             {
-                SkillEntry skill = waiGongNames[i];
+                SkillEntry skill = skillNames[i];
                 SetSlotContent(diff + i, new RunSkill(skill, skill.JingJieRange.Start));
             }
         }

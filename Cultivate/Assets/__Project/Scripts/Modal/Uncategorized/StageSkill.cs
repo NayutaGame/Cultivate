@@ -66,13 +66,9 @@ public class StageSkill
     public int RunEquippedTimes { get; private set; }
     public int StageUsedTimes { get; private set; }
 
-    public JingJie GetJingJie()
-    {
-        if(_runSkill == null)
-            return JingJie.LianQi;
-
-        return _runSkill.JingJie;
-    }
+    private JingJie _jingJie;
+    public JingJie GetJingJie() => _jingJie;
+    public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
 
     public int Dj
         => GetJingJie() - _entry.JingJieRange.Start;
@@ -85,21 +81,31 @@ public class StageSkill
     public bool IsEven
         => SlotIndex % 2 == 1 || _owner.GetStackOfBuff("森罗万象") > 0;
     public bool IsEnd
-        => SlotIndex == _owner._waiGongList.Length - 1;
+        => SlotIndex == _owner._skills.Length - 1;
     public bool NoOtherAttack
-        => _owner._waiGongList.All(wg => wg == this || !wg.GetWaiGongType().Contains(SkillTypeCollection.Attack));
+        => _owner._skills.All(wg => wg == this || !wg.GetSkillType().Contains(SkillTypeCollection.Attack));
     public bool NoOtherLingQi
-        => _owner._waiGongList.All(wg => wg == this || !wg.GetWaiGongType().Contains(SkillTypeCollection.LingQi));
+        => _owner._skills.All(wg => wg == this || !wg.GetSkillType().Contains(SkillTypeCollection.LingQi));
     public bool NoAttackAdjacents
-        => !Prev(false).GetWaiGongType().Contains(SkillTypeCollection.Attack) && !Next(false).GetWaiGongType().Contains(SkillTypeCollection.Attack);
+        => !Prev(false).GetSkillType().Contains(SkillTypeCollection.Attack) && !Next(false).GetSkillType().Contains(SkillTypeCollection.Attack);
 
-    public StageSkill(StageEntity owner, RunSkill runSkill, int slotIndex)
+    public StageSkill(StageEntity owner, RunSkill runSkill, int slotIndex) : this(owner, runSkill, "聚气术", null, slotIndex) { }
+    public StageSkill(StageEntity owner, SkillEntry skillEntry, JingJie jingJie, int slotIndex) : this(owner, null, skillEntry, jingJie, slotIndex) { }
+    private StageSkill(StageEntity owner, RunSkill runSkill, SkillEntry skillEntry, JingJie? jingJie, int slotIndex)
     {
         _owner = owner;
         _runSkill = runSkill;
-        _slotIndex = slotIndex;
+        _entry = _runSkill?.Entry ?? skillEntry;
 
-        _entry = _runSkill?.Entry ?? Encyclopedia.SkillCategory["聚气术"];
+        if (jingJie.HasValue) {
+            _jingJie = jingJie.Value;
+        } else if(_runSkill != null) {
+            _jingJie = _runSkill.GetJingJie();
+        } else {
+            _jingJie = _entry.JingJieRange.Start;
+        }
+
+        _slotIndex = slotIndex;
 
         _exhausted = false;
         _runExhausted = false;
@@ -111,7 +117,7 @@ public class StageSkill
     public string GetName()
         => _entry.Name;
 
-    public SkillTypeCollection GetWaiGongType()
+    public SkillTypeCollection GetSkillType()
         => _entry.SkillTypeCollection;
 
     public async Task Execute(StageEntity caster, bool recursive = true)
@@ -131,7 +137,7 @@ public class StageSkill
     public IEnumerable<StageSkill> Nexts(bool loop = false)
     {
         StageSkill curr = this;
-        for (int i = 0; i < _owner._waiGongList.Length - 1; i++)
+        for (int i = 0; i < _owner._skills.Length - 1; i++)
         {
             curr = curr.Next(loop);
             if (curr == null)
@@ -144,7 +150,7 @@ public class StageSkill
     public IEnumerable<StageSkill> Prevs(bool loop = false)
     {
         StageSkill curr = this;
-        for (int i = 0; i < _owner._waiGongList.Length - 1; i++)
+        for (int i = 0; i < _owner._skills.Length - 1; i++)
         {
             curr = curr.Prev(loop);
             if (curr == null)
@@ -158,23 +164,23 @@ public class StageSkill
     {
         int index = _slotIndex + 1;
         if (loop)
-            index %= _owner._waiGongList.Length;
+            index %= _owner._skills.Length;
 
-        if (index >= _owner._waiGongList.Length)
+        if (index >= _owner._skills.Length)
             return null;
 
-        return _owner._waiGongList[index];
+        return _owner._skills[index];
     }
 
     public StageSkill Prev(bool loop)
     {
         int index = _slotIndex - 1;
         if (loop)
-            index = (index + _owner._waiGongList.Length) % _owner._waiGongList.Length;
+            index = (index + _owner._skills.Length) % _owner._skills.Length;
 
         if (index < 0)
             return null;
 
-        return _owner._waiGongList[index];
+        return _owner._skills[index];
     }
 }

@@ -33,7 +33,7 @@ public class StageNote : ISkillModel
         => Skill?.GetSkillTypeCollection() ?? SkillTypeCollection.None;
 
     public Color GetColor()
-        // => WaiGong?.GetColor() ?? CanvasManager.Instance.JingJieColors[JingJie.LianQi];
+        // => Skill?.GetColor() ?? CanvasManager.Instance.JingJieColors[JingJie.LianQi];
         => CanvasManager.Instance.JingJieColors[Skill?.GetJingJie() ?? JingJie.LianQi];
 
     public Sprite GetCardFace()

@@ -9,13 +9,10 @@ using UnityEngine;
 
 public class RunManager : Singleton<RunManager>, GDictionary
 {
-    public static readonly int NeiGongLimit = 4;
-    public static readonly int WaiGongLimit = 12;
+    public static readonly int SkillLimit = 12;
+    public static readonly int[] SkillLimitFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
 
-    public static readonly int[] NeiGongLimitFromJingJie = new[] { 0, 1, 2, 3, 4, 4 };
-    public static readonly int[] WaiGongLimitFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
-
-    public static readonly int[] WaiGongStartFromJingJie = new[] { 9, 6, 4, 2, 0, 0 };
+    public static readonly int[] SkillStartFromJingJie = new[] { 9, 6, 4, 2, 0, 0 };
 
     public static readonly float EUREKA_DISCOUNT_RATE = 0.5f;
 

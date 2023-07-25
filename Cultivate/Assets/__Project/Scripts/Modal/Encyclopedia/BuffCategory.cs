@@ -27,6 +27,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             new ("免费", "下一次耗蓝时无需灵气", BuffStackRule.Add, true, false),
 
+            new ("集中", "下一次使用牌时，条件算作激活", BuffStackRule.Add, true, false),
+            new ("永久集中", "使用牌时，条件算作激活", BuffStackRule.Add, true, false),
+
             new ("延迟护甲", "下回合护甲+[层数]", BuffStackRule.Add, true, false,
                 startTurn: async (buff, entity) =>
                 {
@@ -77,7 +80,7 @@ public class BuffCategory : Category<BuffEntry>
                 attack: async (buff, d) => d.LifeSteal = true,
                 startStep: async (buff, d) =>
                 {
-                    if (!d.Skill.GetWaiGongType().Contains(SkillTypeCollection.Attack))
+                    if (!d.Skill.GetSkillType().Contains(SkillTypeCollection.Attack))
                         buff.Stack -= 1;
                 }),
 
@@ -150,7 +153,7 @@ public class BuffCategory : Category<BuffEntry>
             new ("净天地", "使用非攻击卡不消耗灵气，使用之后消耗", BuffStackRule.Add, true, false,
                 startStep: async (buff, d) =>
                 {
-                    if (d.Skill.GetWaiGongType().Contains(SkillTypeCollection.Attack))
+                    if (d.Skill.GetSkillType().Contains(SkillTypeCollection.Attack))
                         return;
 
                     await d.Skill.ExhaustProcedure();

@@ -1,6 +1,9 @@
+using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 
@@ -23,8 +26,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     gain: async (formation, owner) =>
                     {
-                        await owner._waiGongList[0].ExecuteWithoutTween(owner);
-                        await owner._waiGongList[1].ExecuteWithoutTween(owner);
+                        await owner._skills[0].ExecuteWithoutTween(owner);
+                        await owner._skills[1].ExecuteWithoutTween(owner);
                     }),
                 new FormationEntry(JingJie.YuanYing, "有且只有1种五行，不少于7张", "战斗开始时，使用第一位的卡",
                     canActivate: (entity, args) =>
@@ -37,48 +40,90 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     gain: async (formation, owner) =>
                     {
-                        await owner._waiGongList[0].ExecuteWithoutTween(owner);
+                        await owner._skills[0].ExecuteWithoutTween(owner);
                     }),
             }),
 
             new("二律无相阵", formationEntries: new[]
             {
-                new FormationEntry(JingJie.HuaShen, "有两个五行，都不少于6张", "主动消耗非灵气Buff时，返还2点",
+                new FormationEntry(JingJie.HuaShen, "有两个五行，都不少于6张", "主动消耗锋锐\\格挡\\闪避\\力量\\灼烧时，返还2点",
                     canActivate: (entity, args) =>
                     {
                         int requirement = 6;
                         int countGErequirement =
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 2;
+                    },
+                    consumed: async (formation, d) =>
+                    {
+                        if (!d._friendly) return;
+                        if (d._stack <= 0) return;
+
+                        BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
+                        if (!buffs.Contains(d._buffEntry)) return;
+
+                        await d.Tgt.BuffSelfProcedure(d._buffEntry, 2, recursive: false);
                     }),
-                new FormationEntry(JingJie.YuanYing, "有两个五行，都不少于5张", "主动消耗非灵气Buff时，返还1点",
+                new FormationEntry(JingJie.YuanYing, "有两个五行，都不少于5张", "主动消耗锋锐\\格挡\\闪避\\力量\\灼烧时，返还1点",
                     canActivate: (entity, args) =>
                     {
                         int requirement = 5;
                         int countGErequirement =
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 2;
+                    },
+                    consumed: async (formation, d) =>
+                    {
+                        if (!d._friendly) return;
+                        if (d._stack <= 0) return;
+
+                        BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
+                        if (!buffs.Contains(d._buffEntry)) return;
+
+                        await d.Tgt.BuffSelfProcedure(d._buffEntry, recursive: false);
                     }),
             }),
 
             new("三才流转阵", formationEntries: new[]
             {
-                new FormationEntry(JingJie.HuaShen, "有三个五行，都不少于4张", "X计数+1",
+                new FormationEntry(JingJie.HuaShen, "有三个五行，都不少于4张", "获得锋锐\\格挡\\闪避\\力量\\灼烧时，额外2点",
                     canActivate: (entity, args) =>
                     {
                         int requirement = 4;
                         int countGErequirement =
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 3;
-                    }),
-                new FormationEntry(JingJie.YuanYing, "有三个五行，都不少于3张", "X计数+2",
+                    },
+                    buff: new Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>>(0, async (formation, d) =>
+                    {
+                        if (d._stack <= 0) return d;
+
+                        BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
+                        if (!buffs.Contains(d._buffEntry)) return d;
+
+                        d._stack += 2;
+
+                        return d;
+                    })),
+                new FormationEntry(JingJie.YuanYing, "有三个五行，都不少于3张", "获得锋锐\\格挡\\闪避\\力量\\灼烧时，额外1点",
                     canActivate: (entity, args) =>
                     {
                         int requirement = 3;
                         int countGErequirement =
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 3;
-                    }),
+                    },
+                    buff: new Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>>(0, async (formation, d) =>
+                    {
+                        if (d._stack <= 0) return d;
+
+                        BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
+                        if (!buffs.Contains(d._buffEntry)) return d;
+
+                        d._stack += 1;
+
+                        return d;
+                    })),
             }),
 
             new("四元禁法阵", -3, formationEntries: new[]
@@ -101,13 +146,38 @@ public class FormationCategory : Category<FormationGroupEntry>
 
             new("颠倒五行阵", -2, formationEntries: new[]
             {
-                new FormationEntry(JingJie.HuaShen, "有五种不同五行，都不少于2张", "拥有对方的所有阵法，战斗开始时，空置位将复制对方同位置的卡，所有条件算作已激活",
+                new FormationEntry(JingJie.HuaShen, "有五种不同五行，都不少于2张", "复制对方的所有阵法，战斗开始时，空置位将复制对方同位置的卡，所有条件算作已激活",
                     canActivate: (entity, args) =>
                     {
                         int requirement = 2;
                         int countGErequirement =
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 5;
+                    },
+                    gain: async (formation, owner) =>
+                    {
+                        for (int i = 0; i < owner._skills.Length; i++)
+                        {
+                            StageSkill skill = owner._skills[i];
+                            if (skill.Entry.GetName() != "聚气术") continue;
+
+                            if (!(i < owner.Opponent()._skills.Length)) continue;
+
+                            StageSkill opponentSkill = owner.Opponent()._skills[i];
+                            owner._skills[i] = new StageSkill(owner, opponentSkill.Entry, opponentSkill.GetJingJie(), i);
+                        }
+
+                        await owner.BuffSelfProcedure("永久集中");
+                    },
+                    anyFormationAdded: async (formation, owner, d) =>
+                    {
+                        if (!d._recursive) return d;
+                        if (d._formation.GetName() == "颠倒五行阵") return d;
+                        if (d.Owner == owner) return d;
+
+                        await owner.FormationProcedure(d._formation, false);
+
+                        return d;
                     }),
             }),
 

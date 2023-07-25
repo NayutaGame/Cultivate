@@ -44,10 +44,12 @@ public class Formation
         if (_entry._armorGained != null) _owner.ArmorGainedEvent += ArmorGained;
         if (_entry._armorLose != null) _owner.ArmorLoseEvent += ArmorLose;
         if (_entry._armorLost != null) _owner.ArmorLostEvent += ArmorLost;
+        if (_entry._consume != null) _owner.ConsumeEvent += Consume;
+        if (_entry._consumed != null) _owner.ConsumeEvent += Consumed;
         if (_entry._evaded != null) _owner.EvadedEvent += Evaded;
         if (_entry._buff      != null) _owner.Buff.Add            (_entry._buff.Item1,      _Buff);
         if (_entry._buffed    != null) _owner.Buffed.Add          (_entry._buffed.Item1,    Buffed);
-        if (_entry._consumed != null) _owner.ExhaustEvent += Exhaust;
+        if (_entry._exhaust != null) _owner.ExhaustEvent += Exhaust;
     }
 
     public void Unregister()
@@ -72,10 +74,12 @@ public class Formation
         if (_entry._armorGained != null) _owner.ArmorGainedEvent -= ArmorGained;
         if (_entry._armorLose != null) _owner.ArmorLoseEvent -= ArmorLose;
         if (_entry._armorLost != null) _owner.ArmorLostEvent -= ArmorLost;
+        if (_entry._consume != null) _owner.ConsumeEvent -= Consume;
+        if (_entry._consumed != null) _owner.ConsumeEvent -= Consumed;
         if (_entry._evaded != null) _owner.EvadedEvent -= Evaded;
         if (_entry._buff      != null) _owner.Buff.Remove            (_Buff);
         if (_entry._buffed    != null) _owner.Buffed.Remove          (Buffed);
-        if (_entry._consumed != null) _owner.ExhaustEvent -= Exhaust;
+        if (_entry._exhaust != null) _owner.ExhaustEvent -= Exhaust;
     }
 
     public async Task Gain()
@@ -112,8 +116,10 @@ public class Formation
     private async Task ArmorGained                         (ArmorGainDetails d) => await _entry._armorGained       (this, d);
     private async Task ArmorLose                           (ArmorLoseDetails d) => await _entry._armorLose         (this, d);
     private async Task ArmorLost                           (ArmorLoseDetails d) => await _entry._armorLost         (this, d);
+    private async Task Consume                             (ConsumeDetails d) =>   await _entry._consume           (this, d);
+    private async Task Consumed                            (ConsumeDetails d) =>   await _entry._consumed          (this, d);
     private async Task Evaded                              (EvadeDetails d) =>     await _entry._evaded            (this, d);
     private async Task<BuffDetails> _Buff                  (BuffDetails d) =>      await _entry._buff.Item2        (this, d);
     private async Task<BuffDetails> Buffed                 (BuffDetails d) =>      await _entry._buffed.Item2      (this, d);
-    private async Task Exhaust                            (ExhaustDetails d) =>   await _entry._consumed          (this, d);
+    private async Task Exhaust                             (ExhaustDetails d) =>   await _entry._exhaust           (this, d);
 }

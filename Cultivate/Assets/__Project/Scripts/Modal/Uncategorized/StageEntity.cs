@@ -206,19 +206,11 @@ public class StageEntity : GDictionary
         // OnStatsChanged()
     }
 
-    public StageNeiGong[] _neiGongList;
-    public StageNeiGong TryGetNeiGong(int i)
+    public StageSkill[] _skills;
+    public StageSkill TryGetSkill(int i)
     {
-        if (i < _neiGongList.Length)
-            return _neiGongList[i];
-        return null;
-    }
-
-    public StageSkill[] _waiGongList;
-    public StageSkill TryGetWaiGong(int i)
-    {
-        if (i < _waiGongList.Length)
-            return _waiGongList[i];
+        if (i < _skills.Length)
+            return _skills[i];
         return null;
     }
 
@@ -231,7 +223,7 @@ public class StageEntity : GDictionary
 
         await StartTurn(new TurnDetails(this, _p));
 
-        bool skipTurn = await TryConsumeBuff("跳回合");
+        bool skipTurn = await TryConsumeProcedure("跳回合");
         if (!skipTurn)
         {
             await Step();
@@ -259,14 +251,14 @@ public class StageEntity : GDictionary
         if (!_manaShortage)
             await MoveP();
 
-        StageSkill skill = _waiGongList[_p];
+        StageSkill skill = _skills[_p];
 
         await StartStep(new StepDetails(this, skill));
         // _env.Report.Seq?.
-        // show waigong
+        // show skill
 
         int manaCost = skill.GetManaCost() - GetStackOfBuff("心斋");
-        bool manaSufficient = skill.GetManaCost() == 0 || await TryConsumeBuff("免费") || await TryConsumeMana(manaCost);
+        bool manaSufficient = skill.GetManaCost() == 0 || await TryConsumeProcedure("免费") || await TryConsumeManaProcedure(manaCost);
         _manaShortage = !manaSufficient;
         if(_manaShortage)
         {
@@ -276,7 +268,7 @@ public class StageEntity : GDictionary
             return;
         }
 
-        if (await TryConsumeBuff("双发"))
+        if (await TryConsumeProcedure("双发"))
         {
             await skill.Execute(this);
             await skill.Execute(this);
@@ -286,29 +278,29 @@ public class StageEntity : GDictionary
             await skill.Execute(this);
         }
 
-        // hide waigong
+        // hide skill
         await EndStep(new StepDetails(this, skill));
     }
 
     private async Task MoveP()
     {
         int dir = Forward ? 1 : -1;
-        for (int i = 0; i < _waiGongList.Length; i++)
+        for (int i = 0; i < _skills.Length; i++)
         {
             _p += dir;
 
-            bool within = 0 <= _p && _p < _waiGongList.Length;
+            bool within = 0 <= _p && _p < _skills.Length;
             if (!within)
             {
-                _p = (_p + _waiGongList.Length) % _waiGongList.Length;
+                _p = (_p + _skills.Length) % _skills.Length;
                 await EndRound();
                 await StartRound();
             }
 
-            if(_waiGongList[_p].Exhausted)
+            if(_skills[_p].Exhausted)
                 continue;
 
-            if(await TryConsumeBuff("跳卡牌"))
+            if(await TryConsumeProcedure("跳卡牌"))
                 continue;
 
             return;
@@ -331,7 +323,7 @@ public class StageEntity : GDictionary
     public bool IsDead()
         => _hp <= 0;
     public int ExhaustedCount
-        => _waiGongList.Count(waiGong => waiGong.Exhausted);
+        => _skills.Count(skill => skill.Exhausted);
 
     public int LostArmorRecord;
     public int GeneratedManaRecord;
@@ -360,8 +352,7 @@ public class StageEntity : GDictionary
     {
         _accessors = new()
         {
-            { "WaiGongs", () => _waiGongList },
-            { "NeiGongs", () => _neiGongList },
+            { "Skills", () => _skills },
             { "Buffs", () => _buffs },
         };
 
@@ -394,13 +385,11 @@ public class StageEntity : GDictionary
         Hp = _runEntity.GetFinalHealth();
         Armor = 0;
 
-        _neiGongList = new StageNeiGong[4];
-
-        _waiGongList = new StageSkill[_runEntity.Limit];
-        for (int i = 0; i < _waiGongList.Length; i++)
+        _skills = new StageSkill[_runEntity.Limit];
+        for (int i = 0; i < _skills.Length; i++)
         {
             SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
-            _waiGongList[i] = new StageSkill(this, slot.Skill, i);
+            _skills[i] = new StageSkill(this, slot.Skill, i);
         }
 
         _p = 0;
@@ -408,10 +397,10 @@ public class StageEntity : GDictionary
 
     public void WriteEffect()
     {
-        for (int i = 0; i < _waiGongList.Length; i++)
+        for (int i = 0; i < _skills.Length; i++)
         {
             SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
-            slot.RunExhausted = _waiGongList[i].RunExhausted;
+            slot.RunExhausted = _skills[i].RunExhausted;
         }
     }
 
@@ -556,23 +545,7 @@ public class StageEntity : GDictionary
     public int GetSumOfStackOfBuffs(params string[] names)
         => names.Map(name => GetStackOfBuff(name)).Aggregate((a, b) => a + b);
 
-    public async Task<bool> TryConsumeBuff(BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
-    {
-        if (stack == 0)
-            return true;
-
-        Buff b = FindBuff(buffEntry);
-        if (b != null && b.Stack >= stack)
-        {
-            await ConsumeProcedure(buffEntry, stack, friendly, recursive);
-            return true;
-        }
-
-        return false;
-    }
-
     public int GetMana() => GetStackOfBuff("灵气");
-    public async Task<bool> TryConsumeMana(int stack = 1) => await TryConsumeBuff("灵气", stack);
 
     public int GetBuffCount() => _buffs.Count;
     public Buff TryGetBuff(int i)
@@ -580,6 +553,12 @@ public class StageEntity : GDictionary
         if (i < _buffs.Count)
             return _buffs[i];
         return null;
+    }
+
+    public async Task<bool> IsFocused()
+    {
+        if (GetStackOfBuff("永久集中") > 0) return true;
+        return await TryConsumeProcedure("集中");
     }
 
     #endregion
@@ -644,6 +623,26 @@ public class StageEntity : GDictionary
 
     public async Task ConsumeProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive)
         => await _env.ConsumeProcedure(new ConsumeDetails(this, this, buffEntry, stack, friendly, recursive));
+
+    public async Task<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
+    {
+        if (stack == 0)
+            return true;
+
+        Buff b = FindBuff(buffEntry);
+        if (b != null && b.Stack >= stack)
+        {
+            await ConsumeProcedure(buffEntry, stack, friendly, recursive);
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> TryConsumeManaProcedure(int stack = 1) => await TryConsumeProcedure("灵气", stack);
+
+    public async Task FormationProcedure(FormationEntry formationEntry, bool recursive = true)
+        => await _env.FormationProcedure(this, formationEntry, recursive);
 
     #endregion
 }

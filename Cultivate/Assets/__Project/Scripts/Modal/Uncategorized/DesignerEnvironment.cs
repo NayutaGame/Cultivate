@@ -36,12 +36,11 @@ public class DesignerEnvironment
         rm.Map.JingJie = JingJie.HuaShen;
         rm.Battle.Hero.SetJingJie(JingJie.HuaShen);
 
-        bool flag = rm.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: JingJie.HuaShen, wuXing: WuXing.Shui, count: 12);
-        if (!flag)
-            throw new Exception();
-
-        rm.Simulate.SkillInventory.AddSkills(skills);
-        rm.Battle.SkillInventory.AddSkills(skills);
+        foreach (var wuXing in WuXing.Traversal)
+        {
+            rm.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: JingJie.HuaShen, wuXing: wuXing, count: 3);
+            rm.Battle.SkillInventory.AddSkills(skills);
+        }
     }
 
     public static void AddRewardForBattleRunNode(BattleRunNode battleRunNode)
