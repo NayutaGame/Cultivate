@@ -26,6 +26,8 @@ public class Formation
     {
         if (_entry._anyFormationAdd != null) _owner.Env.AnyFormationAddEvent += AnyFormationAdd;
         if (_entry._anyFormationAdded != null) _owner.Env.AnyFormationAddedEvent += AnyFormationAdded;
+        if (_entry._anyExhaust != null) _owner.Env.AnyExhaustEvent += AnyExhaust;
+        if (_entry._anyExhausted != null) _owner.Env.AnyExhaustedEvent += AnyExhausted;
         if (_entry._startStage != null) _owner.StartStageEvent += StartStage;
         if (_entry._endStage != null) _owner.EndStageEvent += EndStage;
         if (_entry._startTurn != null) _owner.StartTurnEvent += StartTurn;
@@ -54,6 +56,10 @@ public class Formation
 
     public void Unregister()
     {
+        if (_entry._anyFormationAdd != null) _owner.Env.AnyFormationAddEvent -= AnyFormationAdd;
+        if (_entry._anyFormationAdded != null) _owner.Env.AnyFormationAddedEvent -= AnyFormationAdded;
+        if (_entry._anyExhaust != null) _owner.Env.AnyExhaustEvent -= AnyExhaust;
+        if (_entry._anyExhausted != null) _owner.Env.AnyExhaustedEvent -= AnyExhausted;
         if (_entry._startStage != null) _owner.StartStageEvent -= StartStage;
         if (_entry._endStage != null) _owner.EndStageEvent -= EndStage;
         if (_entry._startTurn != null) _owner.StartTurnEvent -= StartTurn;
@@ -96,6 +102,8 @@ public class Formation
 
     private async Task<FormationDetails> AnyFormationAdd   (FormationDetails d) => await _entry._anyFormationAdd   (this, _owner, d);
     private async Task<FormationDetails> AnyFormationAdded (FormationDetails d) => await _entry._anyFormationAdded (this, _owner, d);
+    private async Task AnyExhaust                          (ExhaustDetails d) =>   await _entry._anyExhaust        (this, _owner, d);
+    private async Task AnyExhausted                        (ExhaustDetails d) =>   await _entry._anyExhausted      (this, _owner, d);
     private async Task StartStage                          () =>                   await _entry._startStage        (this, _owner);
     private async Task EndStage                            () =>                   await _entry._endStage          (this, _owner);
     private async Task StartTurn                           (TurnDetails d) =>      await _entry._startTurn         (this, d);

@@ -29,12 +29,25 @@ public class BuffCategory : Category<BuffEntry>
 
             new ("集中", "下一次使用牌时，条件算作激活", BuffStackRule.Add, true, false),
             new ("永久集中", "使用牌时，条件算作激活", BuffStackRule.Add, true, false),
+            new ("六爻化劫", "第二轮开始时，双方重置生命上限，回[层数]%血", BuffStackRule.Max, true, false,
+                startRound: async (buff, owner) =>
+                {
+                    int selfMaxHp = Mathf.Max(owner.MaxHp, owner.RunEntity.GetFinalHealth());
+                    int oppoMaxHp = Mathf.Max(owner.Opponent().MaxHp, owner.Opponent().RunEntity.GetFinalHealth());
+                    owner.MaxHp = owner.RunEntity.GetFinalHealth();
+                    owner.Opponent().MaxHp = owner.Opponent().RunEntity.GetFinalHealth();
+
+                    await owner.HealProcedure((int)((float)selfMaxHp * buff.Stack / 100));
+                    await owner.Opponent().HealProcedure((int)((float)oppoMaxHp * buff.Stack / 100));
+
+                    await owner.RemoveBuff(buff);
+                }),
 
             new ("延迟护甲", "下回合护甲+[层数]", BuffStackRule.Add, true, false,
                 startTurn: async (buff, entity) =>
                 {
                     await buff.Owner.ArmorGainSelfProcedure(buff.Stack);
-                    buff.Owner.RemoveBuff(buff);
+                    await buff.Owner.RemoveBuff(buff);
                 }),
 
             new ("无常已至", "造成伤害：施加[伤害值，最多Stack]减甲", BuffStackRule.Add, true, false,
@@ -134,7 +147,7 @@ public class BuffCategory : Category<BuffEntry>
                         return;
 
                     await buff.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Mu, recursive: false);
-                    buff.Owner.RemoveBuff(buff);
+                    await buff.Owner.RemoveBuff(buff);
                 }),
 
             new ("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,

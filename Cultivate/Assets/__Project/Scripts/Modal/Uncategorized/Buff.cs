@@ -53,6 +53,8 @@ public class Buff
 
     public void Register()
     {
+        if (_entry._anyExhaust != null) _owner.Env.AnyExhaustEvent += AnyExhaust;
+        if (_entry._anyExhausted != null) _owner.Env.AnyExhaustedEvent += AnyExhausted;
         if (_entry._stackChanged != null) StackChangedEvent += StackChanged;
         if (_entry._startStage != null) _owner.StartStageEvent += StartStage;
         if (_entry._endStage != null) _owner.EndStageEvent += EndStage;
@@ -84,6 +86,8 @@ public class Buff
 
     public void Unregister()
     {
+        if (_entry._anyExhaust != null) _owner.Env.AnyExhaustEvent -= AnyExhaust;
+        if (_entry._anyExhausted != null) _owner.Env.AnyExhaustedEvent -= AnyExhausted;
         if (_entry._stackChanged != null) StackChangedEvent -= StackChanged;
         if (_entry._startStage != null) _owner.StartStageEvent -= StartStage;
         if (_entry._endStage != null) _owner.EndStageEvent -= EndStage;
@@ -128,6 +132,8 @@ public class Buff
         if (_entry._stackChanged != null) _entry._stackChanged(this, _owner);
     }
 
+    private async Task AnyExhaust          (ExhaustDetails d) =>   await _entry._anyExhaust   (this, _owner, d);
+    private async Task AnyExhausted        (ExhaustDetails d) =>   await _entry._anyExhausted (this, _owner, d);
     private async Task StartStage          () =>                   await _entry._startStage   (this, _owner);
     private async Task EndStage            () =>                   await _entry._endStage     (this, _owner);
     private async Task StartTurn           (TurnDetails d) =>      await _entry._startTurn    (this, d);

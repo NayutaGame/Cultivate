@@ -20,6 +20,7 @@ public class RunEntity : GDictionary, IEntityModel
     }
 
     public static readonly int[] BaseHP = new int[] { 40, 80, 140, 220, 340, 340 };
+    // public static readonly int[] BaseHP = new int[] { 40, 50, 70, 100, 140, 140 };
 
     [SerializeField] private int _health;
     public int GetBaseHealth() => _health;

@@ -26,6 +26,18 @@ public class StageEnvironment : GDictionary
         return d;
     }
 
+    public event Func<ExhaustDetails, Task> AnyExhaustEvent;
+    public async Task AnyExhaust(ExhaustDetails d)
+    {
+        if (AnyExhaustEvent != null) await AnyExhaustEvent(d);
+    }
+
+    public event Func<ExhaustDetails, Task> AnyExhaustedEvent;
+    public async Task AnyExhausted(ExhaustDetails d)
+    {
+        if (AnyExhaustedEvent != null) await AnyExhaustedEvent(d);
+    }
+
     public async Task FormationProcedure(StageEntity owner, FormationEntry formation, bool recursive = true, bool cancel = false)
         => await FormationProcedure(new FormationDetails(owner, formation, recursive, cancel));
     public async Task FormationProcedure(FormationDetails d)
@@ -321,8 +333,12 @@ public class StageEnvironment : GDictionary
         if (d.Skill.Exhausted)
             return;
 
+        await AnyExhaust(d);
+
         d.Skill.Exhausted = true;
         await d.Owner.Exhausted(d);
+
+        await AnyExhausted(d);
     }
 
     private Dictionary<string, Func<object>> _accessors;

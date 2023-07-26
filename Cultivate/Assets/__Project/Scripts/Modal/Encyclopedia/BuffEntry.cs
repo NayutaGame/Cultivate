@@ -29,6 +29,8 @@ public class BuffEntry : Entry, IAnnotation
     public Func<Buff, StageEntity, int, Task> _gain;
     public Func<Buff, StageEntity, Task> _lose;
     public Func<Buff, StageEntity, Task> _stackChanged;
+    public Func<Buff, StageEntity, ExhaustDetails, Task> _anyExhaust;
+    public Func<Buff, StageEntity, ExhaustDetails, Task> _anyExhausted;
     public Func<Buff, StageEntity, Task> _startStage;
     public Func<Buff, StageEntity, Task> _endStage;
     public Func<Buff, TurnDetails, Task> _startTurn;
@@ -69,6 +71,8 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="gain">获得时的额外行为</param>
     /// <param name="lose">失去时的额外行为</param>
     /// <param name="stackChanged">层数改变时的额外行为</param>
+    /// <param name="anyExhaust">任何卡牌消耗时的额外行为，结算之前</param>
+    /// <param name="anyExhausted">任何卡牌消耗时的额外行为，结算之后</param>
     /// <param name="startStage">Stage开始时的额外行为</param>
     /// <param name="endStage">Stage结束时的额外行为</param>
     /// <param name="startTurn">Turn开始时的额外行为</param>
@@ -101,6 +105,8 @@ public class BuffEntry : Entry, IAnnotation
         Func<Buff, StageEntity, int, Task> gain = null,
         Func<Buff, StageEntity, Task> lose = null,
         Func<Buff, StageEntity, Task> stackChanged = null,
+        Func<Buff, StageEntity, ExhaustDetails, Task> anyExhaust = null,
+        Func<Buff, StageEntity, ExhaustDetails, Task> anyExhausted = null,
         Func<Buff, StageEntity, Task> startStage = null,
         Func<Buff, StageEntity, Task> endStage = null,
         Func<Buff, TurnDetails, Task> startTurn = null,
@@ -141,6 +147,8 @@ public class BuffEntry : Entry, IAnnotation
         _lose = lose;
         _stackChanged = stackChanged;
 
+        _anyExhaust = anyExhaust;
+        _anyExhausted = anyExhausted;
         _startStage = startStage;
         _endStage = endStage;
         _startTurn = startTurn;

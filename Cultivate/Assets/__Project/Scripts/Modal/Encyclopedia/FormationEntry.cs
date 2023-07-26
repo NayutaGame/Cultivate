@@ -39,6 +39,8 @@ public class FormationEntry
     public Func<Formation, StageEntity, Task> _lose;
     public Func<Formation, StageEntity, FormationDetails, Task<FormationDetails>> _anyFormationAdd;
     public Func<Formation, StageEntity, FormationDetails, Task<FormationDetails>> _anyFormationAdded;
+    public Func<Formation, StageEntity, ExhaustDetails, Task> _anyExhaust;
+    public Func<Formation, StageEntity, ExhaustDetails, Task> _anyExhausted;
     public Func<Formation, StageEntity, Task> _startStage;
     public Func<Formation, StageEntity, Task> _endStage;
     public Func<Formation, TurnDetails, Task> _startTurn;
@@ -78,6 +80,8 @@ public class FormationEntry
     /// <param name="lose">失去时的额外行为</param>
     /// <param name="anyFormationAdd">任何Formation Add时的额外行为，结算之前</param>
     /// <param name="anyFormationAdded">任何Formation Add时的额外行为，结算之后</param>
+    /// <param name="anyExhaust">任何卡牌消耗时的额外行为，结算之前</param>
+    /// <param name="anyExhausted">任何卡牌消耗时的额外行为，结算之后</param>
     /// <param name="startStage">Stage开始时的额外行为</param>
     /// <param name="endStage">Stage结束时的额外行为</param>
     /// <param name="startTurn">Turn开始时的额外行为</param>
@@ -109,6 +113,8 @@ public class FormationEntry
         Func<Formation, StageEntity, Task> lose = null,
         Func<Formation, StageEntity, FormationDetails, Task<FormationDetails>> anyFormationAdd = null,
         Func<Formation, StageEntity, FormationDetails, Task<FormationDetails>> anyFormationAdded = null,
+        Func<Formation, StageEntity, ExhaustDetails, Task> anyExhaust = null,
+        Func<Formation, StageEntity, ExhaustDetails, Task> anyExhausted = null,
         Func<Formation, StageEntity, Task> startStage = null,
         Func<Formation, StageEntity, Task> endStage = null,
         Func<Formation, TurnDetails, Task> startTurn = null,
@@ -150,6 +156,8 @@ public class FormationEntry
 
         _anyFormationAdd = anyFormationAdd;
         _anyFormationAdded = anyFormationAdded;
+        _anyExhaust = anyExhaust;
+        _anyExhausted = anyExhausted;
         _startStage = startStage;
         _endStage = endStage;
         _startTurn = startTurn;

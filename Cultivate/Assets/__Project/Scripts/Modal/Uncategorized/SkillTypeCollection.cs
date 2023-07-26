@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class SkillTypeCollection
 {
-    public static readonly SkillTypeCollection None =     0x00000000;
-    public static readonly SkillTypeCollection Attack =   0x00000001;
-    public static readonly SkillTypeCollection JianZhen = 0x00000010;
-    public static readonly SkillTypeCollection LingQi =   0x00000100;
+    public static readonly SkillTypeCollection None =     0b00000000;
+    public static readonly SkillTypeCollection Attack =   0b00000001;
+    public static readonly SkillTypeCollection JianZhen = 0b00000010;
+    public static readonly SkillTypeCollection LingQi =   0b00000100;
+    public static readonly SkillTypeCollection ErDong =   0b00001000;
+    public static readonly SkillTypeCollection XiaoHao =  0b00010000;
 
     public IEnumerable<SkillType> ContainedTags
     {
@@ -52,6 +54,12 @@ public class SkillTypeCollection
 
         if (Contains(LingQi))
             sb.Append("灵气 ");
+
+        if (Contains(ErDong))
+            sb.Append("二动 ");
+
+        if (Contains(XiaoHao))
+            sb.Append("消耗 ");
 
         return sb.ToString();
     }

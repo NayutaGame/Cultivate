@@ -183,34 +183,58 @@ public class FormationCategory : Category<FormationGroupEntry>
 
             new("六爻化劫阵", formationEntries: new[]
             {
-                new FormationEntry(JingJie.HuaShen, "无二动牌，角色境界不低于化神", "第二回合开始时，双方重置生命上限，回100%血",
+                new FormationEntry(JingJie.HuaShen, "无二动牌，角色境界不低于化神", "第二轮开始时，双方重置生命上限，回100%血",
                     canActivate: (entity, args) =>
                     {
                         return args.SwiftCount == 0 && entity.GetJingJie() >= JingJie.HuaShen;
+                    },
+                    gain: async (formation, owner) =>
+                    {
+                        await owner.BuffSelfProcedure("六爻化劫", 100);
                     }),
-                new FormationEntry(JingJie.YuanYing, "无二动牌，角色境界不低于元婴", "第二回合开始时，双方重置生命上限，回30%血",
+                new FormationEntry(JingJie.YuanYing, "无二动牌，角色境界不低于元婴", "第二轮开始时，双方重置生命上限，回30%血",
                     canActivate: (entity, args) =>
                     {
                         return args.SwiftCount == 0 && entity.GetJingJie() >= JingJie.YuanYing;
+                    },
+                    gain: async (formation, owner) =>
+                    {
+                        await owner.BuffSelfProcedure("六爻化劫", 30);
                     }),
             }),
 
             new("七曜移星阵", formationEntries: new[]
             {
-                new FormationEntry(JingJie.HuaShen, "有至少8张带有二动的牌", "战斗开始时，对方遭受3跳回合",
-                    canActivate: (entity, args) =>
-                    {
-                        return args.SwiftCount >= 8;
-                    }),
-                new FormationEntry(JingJie.YuanYing, "有至少6张带有二动的牌", "战斗开始时，对方遭受2跳回合",
+                new FormationEntry(JingJie.HuaShen, "有至少6张带有二动的牌", "轮开始时，对方遭受1跳回合\n战斗开始时，对方遭受2跳回合",
                     canActivate: (entity, args) =>
                     {
                         return args.SwiftCount >= 6;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.BuffOppoProcedure("跳回合", 2);
+                    },
+                    startRound: async (formation, owner) =>
+                    {
+                        await owner.BuffOppoProcedure("跳回合");
+                    }),
+                new FormationEntry(JingJie.YuanYing, "有至少5张带有二动的牌", "战斗开始时，对方遭受2跳回合",
+                    canActivate: (entity, args) =>
+                    {
+                        return args.SwiftCount >= 5;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.BuffOppoProcedure("跳回合", 2);
                     }),
                 new FormationEntry(JingJie.JinDan, "有至少4张带有二动的牌", "战斗开始时，对方遭受1跳回合",
                     canActivate: (entity, args) =>
                     {
                         return args.SwiftCount >= 4;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.BuffOppoProcedure("跳回合");
                     }),
             }),
 
@@ -219,31 +243,64 @@ public class FormationCategory : Category<FormationGroupEntry>
                 new FormationEntry(JingJie.HuaShen, "无消耗牌，角色境界不低于化神", "对方使用消耗牌后，自己也使用2次",
                     canActivate: (entity, args) =>
                     {
-                        return args.ConsumeCount == 0 && entity.GetJingJie() >= JingJie.HuaShen;
+                        return args.ExhaustedCount == 0 && entity.GetJingJie() >= JingJie.HuaShen;
+                    },
+                    anyExhausted: async (formation, owner, d) =>
+                    {
+                        await d.Skill.Execute(owner, false);
+                        await d.Skill.Execute(owner, false);
                     }),
                 new FormationEntry(JingJie.YuanYing, "无消耗牌，角色境界不低于元婴", "对方使用消耗牌后，自己也使用1次",
                     canActivate: (entity, args) =>
                     {
-                        return args.ConsumeCount == 0 && entity.GetJingJie() >= JingJie.YuanYing;
+                        return args.ExhaustedCount == 0 && entity.GetJingJie() >= JingJie.YuanYing;
+                    },
+                    anyExhausted: async (formation, owner, d) =>
+                    {
+                        await d.Skill.Execute(owner, false);
                     }),
             }),
 
             new("九宫迷踪阵", formationEntries: new[]
             {
-                new FormationEntry(JingJie.HuaShen, "不少于9张非攻击牌", "护甲损耗变成0%，战斗开始护甲+30",
+                new FormationEntry(JingJie.HuaShen, "不少于9张非攻击牌", "战斗开始护甲+30，每回合护甲+3",
                     canActivate: (entity, args) =>
                     {
                         return args.NonAttackCount >= 9;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.ArmorGainSelfProcedure(30);
+                    },
+                    startTurn: async (formation, d) =>
+                    {
+                        await d.Owner.ArmorGainSelfProcedure(3);
                     }),
-                new FormationEntry(JingJie.YuanYing, "不少于7张非攻击牌", "护甲损耗变成0%",
+                new FormationEntry(JingJie.YuanYing, "不少于7张非攻击牌", "战斗开始护甲+20，每回合护甲+2",
                     canActivate: (entity, args) =>
                     {
                         return args.NonAttackCount >= 7;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.ArmorGainSelfProcedure(20);
+                    },
+                    startTurn: async (formation, d) =>
+                    {
+                        await d.Owner.ArmorGainSelfProcedure(2);
                     }),
-                new FormationEntry(JingJie.JinDan, "不少于5张非攻击牌", "护甲损耗变成25%",
+                new FormationEntry(JingJie.JinDan, "不少于5张非攻击牌", "战斗开始护甲+10，每回合护甲+1",
                     canActivate: (entity, args) =>
                     {
                         return args.NonAttackCount >= 5;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.ArmorGainSelfProcedure(10);
+                    },
+                    startTurn: async (formation, d) =>
+                    {
+                        await d.Owner.ArmorGainSelfProcedure(1);
                     }),
             }),
 
@@ -253,16 +310,28 @@ public class FormationCategory : Category<FormationGroupEntry>
                     canActivate: (entity, args) =>
                     {
                         return args.TotalCostCount >= 20;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.BuffSelfProcedure("灵气", 7);
                     }),
                 new FormationEntry(JingJie.YuanYing, "费用消耗超过16", "战斗开始时，灵气+5",
                     canActivate: (entity, args) =>
                     {
                         return args.TotalCostCount >= 16;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.BuffSelfProcedure("灵气", 5);
                     }),
                 new FormationEntry(JingJie.JinDan, "费用消耗超过12", "战斗开始时，灵气+3",
                     canActivate: (entity, args) =>
                     {
                         return args.TotalCostCount >= 12;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.BuffSelfProcedure("灵气", 3);
                     }),
             }),
 
@@ -271,17 +340,29 @@ public class FormationCategory : Category<FormationGroupEntry>
                 new FormationEntry(JingJie.HuaShen, "连续7张攻击牌", "战斗开始时，力量+5",
                     canActivate: (entity, args) =>
                     {
-                        return args.ConsecutiveAttackCount >= 7;
+                        return args.HighestConsecutiveAttackCount >= 7;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.BuffSelfProcedure("力量", 5);
                     }),
                 new FormationEntry(JingJie.YuanYing, "连续6张攻击牌", "战斗开始时，力量+4",
                     canActivate: (entity, args) =>
                     {
-                        return args.ConsecutiveAttackCount >= 6;
+                        return args.HighestConsecutiveAttackCount >= 6;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.BuffSelfProcedure("力量", 4);
                     }),
                 new FormationEntry(JingJie.JinDan, "连续5张攻击牌", "战斗开始时，力量+3",
                     canActivate: (entity, args) =>
                     {
-                        return args.ConsecutiveAttackCount >= 5;
+                        return args.HighestConsecutiveAttackCount >= 5;
+                    },
+                    startStage: async (formation, owner) =>
+                    {
+                        await owner.BuffSelfProcedure("力量", 3);
                     }),
             }),
         });
