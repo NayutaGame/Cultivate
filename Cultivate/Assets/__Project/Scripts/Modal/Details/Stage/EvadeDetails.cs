@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EvadeDetails
+public class EvadeDetails : StageEventDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

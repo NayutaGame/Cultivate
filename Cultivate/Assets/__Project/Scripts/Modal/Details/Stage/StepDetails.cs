@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
-public class ExhaustDetails
+public class StepDetails : StageEventDetails
 {
     public StageEntity Owner;
     public StageSkill Skill;
-    public bool ForRun;
 
-    public ExhaustDetails(StageEntity owner, StageSkill skill, bool forRun)
+    public StepDetails(StageEntity owner, StageSkill skill)
     {
         Owner = owner;
         Skill = skill;
-        ForRun = forRun;
     }
 }

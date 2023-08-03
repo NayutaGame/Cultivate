@@ -42,6 +42,9 @@ public class SkillEntry : Entry, IAnnotation
     public SkillTypeCollection SkillTypeCollection { get; private set; }
     private Func<StageEntity, StageSkill, bool, Task> _execute;
 
+    private bool _withinPool;
+    public bool WithinPool => _withinPool;
+
     private SpriteEntry _spriteEntry;
     public Sprite Sprite => _spriteEntry?.Sprite;
 
@@ -51,6 +54,7 @@ public class SkillEntry : Entry, IAnnotation
         WuXing? wuXing = null,
         ManaCost manaCost = null,
         SkillTypeCollection skillTypeCollection = null,
+        bool withinPool = true,
         Func<StageEntity, StageSkill, bool, Task> execute = null
         ) : base(name)
     {
@@ -59,6 +63,7 @@ public class SkillEntry : Entry, IAnnotation
         _wuXing = wuXing;
         _manaCost = manaCost ?? 0;
         SkillTypeCollection = skillTypeCollection ?? SkillTypeCollection.None;
+        _withinPool = withinPool;
         _execute = execute ?? DefaultExecute;
 
         _spriteEntry = name;

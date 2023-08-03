@@ -41,6 +41,9 @@ public class DesignerEnvironment
             rm.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: JingJie.HuaShen, wuXing: wuXing, count: 3);
             rm.Battle.SkillInventory.AddSkills(skills);
         }
+
+        rm.SkillPool.TryDrawSkill(out RunSkill skill, pred: e => e.Name == "少阴");
+        rm.Battle.SkillInventory.AddSkill(skill);
     }
 
     public static void AddRewardForBattleRunNode(BattleRunNode battleRunNode)

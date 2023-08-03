@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using CLLibrary;
@@ -33,7 +34,6 @@ public class Buff
 
     public event Action StackChangedEvent;
 
-
     /// <summary>
     /// 是否有益
     /// </summary>
@@ -49,6 +49,8 @@ public class Buff
         _owner = owner;
         _entry = entry;
         _stack = stack;
+
+        _eventPropagatorDict = new();
     }
 
     public void Register()
@@ -72,14 +74,25 @@ public class Buff
         if (_entry._healed != null) _owner.HealedEvent += Healed;
         if (_entry._armorGain != null) _owner.ArmorGainEvent += ArmorGain;
         if (_entry._armorGained != null) _owner.ArmorGainedEvent += ArmorGained;
-        if (_entry._armorLose != null) _owner.ArmorLoseEvent += ArmorLose;
-        if (_entry._armorLost != null) _owner.ArmorLostEvent += ArmorLost;
-        if (_entry._consume != null) _owner.ConsumeEvent += Consume;
-        if (_entry._consumed != null) _owner.ConsumedEvent += Consumed;
+        if (_entry._dispel != null) _owner.DispelEvent += Dispel;
+        if (_entry._dispelled != null) _owner.DispelledEvent += Dispelled;
         if (_entry._evaded != null) _owner.EvadedEvent += Evaded;
         if (_entry._buff      != null) _owner.Buff.Add            (_entry._buff.Item1,      _Buff);
         if (_entry._buffed    != null) _owner.Buffed.Add          (_entry._buffed.Item1,    Buffed);
         if (_entry._exhaust != null) _owner.ExhaustEvent += Exhaust;
+
+        foreach (string eventId in _entry._eventCaptureDict.Keys)
+        {
+            _eventPropagatorDict[eventId] = d => _entry._eventCaptureDict[eventId].Invoke(this, d);
+            if (_owner.Env._stageEventTriggerDict.ContainsKey(eventId))
+            {
+                _owner.Env._stageEventTriggerDict[eventId] += _eventPropagatorDict[eventId];
+            }
+            else
+            {
+                _owner.Env._stageEventTriggerDict[eventId] = _eventPropagatorDict[eventId];
+            }
+        }
 
         StackChangedEvent?.Invoke();
     }
@@ -107,14 +120,15 @@ public class Buff
         if (_entry._healed != null) _owner.HealedEvent -= Healed;
         if (_entry._armorGain != null) _owner.ArmorGainEvent -= ArmorGain;
         if (_entry._armorGained != null) _owner.ArmorGainedEvent -= ArmorGained;
-        if (_entry._armorLose != null) _owner.ArmorLoseEvent -= ArmorLose;
-        if (_entry._armorLost != null) _owner.ArmorLostEvent -= ArmorLost;
-        if (_entry._consume != null) _owner.ConsumeEvent -= Consume;
-        if (_entry._consumed != null) _owner.ConsumedEvent -= Consumed;
+        if (_entry._dispel != null) _owner.DispelEvent -= Dispel;
+        if (_entry._dispelled != null) _owner.DispelledEvent -= Dispelled;
         if (_entry._evaded != null) _owner.EvadedEvent -= Evaded;
         if (_entry._buff      != null) _owner.Buff.Remove            (_Buff);
         if (_entry._buffed    != null) _owner.Buffed.Remove          (Buffed);
         if (_entry._exhaust != null) _owner.ExhaustEvent -= Exhaust;
+
+        foreach (string eventId in _entry._eventCaptureDict.Keys)
+            _owner.Env._stageEventTriggerDict[eventId] -= _eventPropagatorDict[eventId];
     }
 
     public async Task Gain(int gain)
@@ -132,32 +146,32 @@ public class Buff
         if (_entry._stackChanged != null) _entry._stackChanged(this, _owner);
     }
 
-    private async Task AnyExhaust          (ExhaustDetails d) =>   await _entry._anyExhaust   (this, _owner, d);
-    private async Task AnyExhausted        (ExhaustDetails d) =>   await _entry._anyExhausted (this, _owner, d);
-    private async Task StartStage          () =>                   await _entry._startStage   (this, _owner);
-    private async Task EndStage            () =>                   await _entry._endStage     (this, _owner);
-    private async Task StartTurn           (TurnDetails d) =>      await _entry._startTurn    (this, d);
-    private async Task EndTurn             (TurnDetails d) =>      await _entry._endTurn      (this, d);
-    private async Task StartRound          () =>                   await _entry._startRound   (this, _owner);
-    private async Task EndRound            () =>                   await _entry._endRound     (this, _owner);
-    private async Task StartStep           (StepDetails d) =>      await _entry._startStep    (this, d);
-    private async Task EndStep             (StepDetails d) =>      await _entry._endStep      (this, d);
-    private async Task Attack              (AttackDetails d) =>    await _entry._attack       (this, d);
-    private async Task Attacked            (AttackDetails d) =>    await _entry._attacked     (this, d);
-    private async Task Damage              (DamageDetails d) =>    await _entry._damage       (this, d);
-    private async Task Damaged             (DamageDetails d) =>    await _entry._damaged      (this, d);
-    private async Task Killed              () =>                   await _entry._killed       (this);
-    private async Task Kill                () =>                   await _entry._kill         (this);
-    private async Task Heal                (HealDetails d) =>      await _entry._heal         (this, d);
-    private async Task Healed              (HealDetails d) =>      await _entry._healed       (this, d);
-    private async Task ArmorGain           (ArmorGainDetails d) => await _entry._armorGain    (this, d);
-    private async Task ArmorGained         (ArmorGainDetails d) => await _entry._armorGained  (this, d);
-    private async Task ArmorLose           (ArmorLoseDetails d) => await _entry._armorLose    (this, d);
-    private async Task ArmorLost           (ArmorLoseDetails d) => await _entry._armorLost    (this, d);
-    private async Task Consume             (ConsumeDetails d) =>   await _entry._consume      (this, d);
-    private async Task Consumed            (ConsumeDetails d) =>   await _entry._consumed     (this, d);
-    private async Task Evaded              (EvadeDetails d) =>     await _entry._evaded       (this, d);
-    private async Task<BuffDetails> _Buff  (BuffDetails d) =>      await _entry._buff.Item2   (this, d);
-    private async Task<BuffDetails> Buffed (BuffDetails d) =>      await _entry._buffed.Item2 (this, d);
-    private async Task Exhaust             (ExhaustDetails d) =>   await _entry._exhaust      (this, d);
+    private async Task AnyExhaust          (ExhaustDetails d) =>   await _entry._anyExhaust    (this, _owner, d);
+    private async Task AnyExhausted        (ExhaustDetails d) =>   await _entry._anyExhausted  (this, _owner, d);
+    private async Task StartStage          () =>                   await _entry._startStage    (this, _owner);
+    private async Task EndStage            () =>                   await _entry._endStage      (this, _owner);
+    private async Task StartTurn           (TurnDetails d) =>      await _entry._startTurn     (this, d);
+    private async Task EndTurn             (TurnDetails d) =>      await _entry._endTurn       (this, d);
+    private async Task StartRound          () =>                   await _entry._startRound    (this, _owner);
+    private async Task EndRound            () =>                   await _entry._endRound      (this, _owner);
+    private async Task StartStep           (StepDetails d) =>      await _entry._startStep     (this, d);
+    private async Task EndStep             (StepDetails d) =>      await _entry._endStep       (this, d);
+    private async Task Attack              (AttackDetails d) =>    await _entry._attack        (this, d);
+    private async Task Attacked            (AttackDetails d) =>    await _entry._attacked      (this, d);
+    private async Task Damage              (DamageDetails d) =>    await _entry._damage        (this, d);
+    private async Task Damaged             (DamageDetails d) =>    await _entry._damaged       (this, d);
+    private async Task Killed              () =>                   await _entry._killed        (this);
+    private async Task Kill                () =>                   await _entry._kill          (this);
+    private async Task Heal                (HealDetails d) =>      await _entry._heal          (this, d);
+    private async Task Healed              (HealDetails d) =>      await _entry._healed        (this, d);
+    private async Task ArmorGain           (ArmorGainDetails d) => await _entry._armorGain     (this, d);
+    private async Task ArmorGained         (ArmorGainDetails d) => await _entry._armorGained   (this, d);
+    private async Task Dispel              (DispelDetails d) =>    await _entry._dispel        (this, d);
+    private async Task Dispelled           (DispelDetails d) =>    await _entry._dispelled     (this, d);
+    private async Task Evaded              (EvadeDetails d) =>     await _entry._evaded        (this, d);
+    private async Task<BuffDetails> _Buff  (BuffDetails d) =>      await _entry._buff.Item2    (this, d);
+    private async Task<BuffDetails> Buffed (BuffDetails d) =>      await _entry._buffed.Item2  (this, d);
+    private async Task Exhaust             (ExhaustDetails d) =>   await _entry._exhaust       (this, d);
+
+    private Dictionary<string, Func<StageEventDetails, Task>> _eventPropagatorDict;
 }

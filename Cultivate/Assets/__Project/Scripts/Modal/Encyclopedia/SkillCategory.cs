@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using CLLibrary;
 
@@ -9,35 +10,286 @@ public class SkillCategory : Category<SkillEntry>
     {
         AddRange(new List<SkillEntry>()
         {
-            // new XinfaEntry("龙象吞海决", "水系心法"),
-            // new XinfaEntry("魔焰决", "火系心法"),
-            // new XinfaEntry("明王决", "金系心法"),
-            // new XinfaEntry("玄清天衍录", "通用心法"),
-            // new XinfaEntry("大帝轮华经", "通用心法"),
-            // new XinfaEntry("自在极意式", "通用心法"),
-            // new XinfaEntry("逍遥游", "通用心法"),
-            // new NeigongEntry("水雾决", "内功"),
-            // new NeigongEntry("冰心决", "内功"),
-            // new NeigongEntry("飞云劲", "内功"),
-            // new NeigongEntry("春草决", "内功"),
+            new("不存在的技能", JingJie.LianQi, "不存在的技能", withinPool: false),
 
-            // new("灵光印", "在本回合下一次受到伤害时，获得3点金系灵气"),
-            // new("灵体印", "获得【护罩】*6；本回合释放金系技能时，将额外消耗一点金系灵气，并获得【护罩】*1"),
-            // new("覆体印", "消散所有金系灵气，每消散一点获得【减伤】*1"),
-            // new("璇水印", "在本回合下一次受到技能伤害时，恢复3点生命值。"),
-            // new("罡水印", "下回合造成的水系技能伤害+2")
-            // new("春丝印", "下一次造成的木系技能伤害+5"),
-            // new("丹阳印", "获得【焰】*2"),
-            // new("炙火印", "在本回合下一次受到技能伤害时，使对手获得【灼烧】*2"),
-            // new("驱寒印", "本场战斗中每吸收一点灵气，移除自身1层【霜冻】。只能使用一次。"),
-            // new("回风印", "直到下回合开始前，每次受到伤害后获得【蓄力】*1"),
-            // new("神皇印", "若使用相同的灵气释放，则下回合开始时，自身【蓄势】层数翻倍。否则，本回合【护罩】抵挡的伤害等量转化为【蓄势】。"),
-
-            new("不存在的技能", JingJie.LianQi, "不存在的技能"),
-
-            new("聚气术", JingJie.LianQi, "灵气+1",
+            new("聚气术", JingJie.LianQi, "灵气+1", withinPool: false,
                 execute: (entity, skill, recursive) =>
                     entity.BuffSelfProcedure("灵气")),
+
+            // 机关牌
+
+            // 筑基
+            new("醒神香", JingJie.ZhuJi, "灵气+4", // 香
+                skillTypeCollection: SkillTypeCollection.LingQi, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("灵气", 4);
+                }),
+
+            new("飞镖", JingJie.ZhuJi, "12攻", // 刃
+                skillTypeCollection: SkillTypeCollection.Attack, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(12);
+                }),
+
+            new("铁匣", JingJie.ZhuJi, "护甲+12", // 匣
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("灵气", 4);
+                }),
+
+            new("滑索", JingJie.ZhuJi, "三动 消耗", // 轮
+                skillTypeCollection: SkillTypeCollection.ErDong | SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    caster.UltraSwift = true;
+                    await skill.ExhaustProcedure();
+                }),
+
+            // 元婴
+            new("还魂香", JingJie.YuanYing, "灵气+8", // 香香
+                skillTypeCollection: SkillTypeCollection.LingQi, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("灵气", 8);
+                }),
+
+            new("净魂刀", JingJie.YuanYing, "10攻 击伤：灵气+1，对手灵气-1", // 香刃
+                skillTypeCollection: SkillTypeCollection.Attack | SkillTypeCollection.LingQi, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(10,
+                        damaged: async d =>
+                        {
+                            await caster.BuffSelfProcedure("灵气");
+                            await caster.Opponent().TryConsumeProcedure("灵气", friendly: false);
+                        });
+                }),
+
+            new("防护罩", JingJie.YuanYing, "护甲+8\n每有1灵气，护甲+4", // 香匣
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    int add = caster.GetStackOfBuff("灵气");
+                    await caster.ArmorGainSelfProcedure(8 + add);
+                }),
+
+            new("能量饮料", JingJie.YuanYing, "下1次灵气减少时，加回", // 香轮
+                skillTypeCollection: SkillTypeCollection.LingQi, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("灵气回收");
+                }),
+
+            new("炎铳", JingJie.YuanYing, "25攻", // 刃刃
+                skillTypeCollection: SkillTypeCollection.Attack, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(25);
+                }),
+
+            new("机关人偶", JingJie.YuanYing, "10攻 护甲+12", // 刃匣
+                skillTypeCollection: SkillTypeCollection.Attack, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.ArmorGainSelfProcedure(12);
+                    await caster.AttackProcedure(10);
+                }),
+
+            new("铁陀螺", JingJie.YuanYing, "2攻x6", // 刃轮
+                skillTypeCollection: SkillTypeCollection.Attack, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(2, times: 6);
+                }),
+
+            new("防壁", JingJie.YuanYing, "护甲+20\n自动护甲+2", // 匣匣
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.ArmorGainSelfProcedure(20);
+                    await caster.BuffSelfProcedure("自动护甲", 2);
+                }),
+
+            new("不倒翁", JingJie.YuanYing, "下2次护甲减少时，加回", // 匣轮
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("护甲回收", 2);
+                }),
+
+            new("助推器", JingJie.YuanYing, "二动 双发", // 轮轮
+                skillTypeCollection: SkillTypeCollection.ErDong, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    caster.Swift = true;
+                    await caster.BuffSelfProcedure("双发");
+                }),
+
+            // 返虚
+            new("反应堆", JingJie.FanXu, "消耗\n生命上限设为1，无法收到治疗，永久双发+1", // 香香香
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    caster.MaxHp = 1;
+                    caster.Hp = 1;
+                    await caster.BuffSelfProcedure("禁止治疗");
+                    await caster.BuffSelfProcedure("永久双发");
+                }),
+
+            new("烟花", JingJie.FanXu, "消耗所有灵气，每1，力量+1", // 香香刃
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    int stack = caster.GetStackOfBuff("灵气");
+                    await caster.TryConsumeProcedure("灵气", stack);
+                    await caster.BuffSelfProcedure("力量", stack);
+                }),
+
+            new("长明灯", JingJie.FanXu, "消耗\n本场战斗中，获得灵气时：每1，生命+3", // 香香匣
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("长明灯", 3);
+                }),
+
+            new("大往生香", JingJie.FanXu, "消耗\n永久免费+1", // 香香轮
+                skillTypeCollection: SkillTypeCollection.XiaoHao | SkillTypeCollection.LingQi, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("永久免费");
+                }),
+
+            new("地府通讯器", JingJie.FanXu, "失去一半生命，每8，灵气+1", // 轮香刃
+                skillTypeCollection: SkillTypeCollection.LingQi, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    int gain = caster.Hp / 16;
+                    caster.Hp -= gain * 8;
+                    await caster.BuffSelfProcedure("灵气", gain);
+                }),
+
+            new("无人机阵列", JingJie.FanXu, "消耗\n永久穿透+1", // 刃刃刃
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("永久穿透");
+                }),
+
+            new("弩炮", JingJie.FanXu, "50攻 吸血", // 刃刃香
+                skillTypeCollection: SkillTypeCollection.Attack, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(50, lifeSteal: true);
+                }),
+
+            new("尖刺陷阱", JingJie.FanXu, "下次受到攻击时，对对方施加等量减甲", // 刃刃匣
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("尖刺陷阱");
+                }),
+
+            new("暴雨梨花针", JingJie.FanXu, "1攻x10", // 刃刃轮
+                skillTypeCollection: SkillTypeCollection.Attack, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(1, times: 10);
+                }),
+
+            new("炼丹炉", JingJie.FanXu, "消耗\n本场战斗中，每回合：力量+1", // 香刃匣
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("回合力量");
+                }),
+
+            new("浮空艇", JingJie.FanXu, "消耗\n本场战斗中，回合被跳过后，生命及上线无法下降\n遭受12跳回合", // 匣匣匣
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("浮空艇");
+                    await caster.BuffSelfProcedure("跳回合", 12);
+                }),
+
+            new("动量中和器", JingJie.FanXu, "格挡+10", // 匣匣香
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("格挡", 10);
+                }),
+
+            new("机关伞", JingJie.FanXu, "灼烧+8", // 匣匣刃
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("灼烧", 8);
+                }),
+
+            new("一轮马", JingJie.FanXu, "闪避+6", // 匣匣轮
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("闪避", 6);
+                }),
+
+            new("外骨骼", JingJie.FanXu, "消耗\n本场战斗中，每次攻击时，护甲+3", // 刃匣轮
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("外骨骼", 3);
+                }),
+
+            new("永动机", JingJie.FanXu, "消耗\n力量+8 灵气+8\n8回合后死亡", // 轮轮轮
+                skillTypeCollection: SkillTypeCollection.XiaoHao | SkillTypeCollection.LingQi, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("力量", 8);
+                    await caster.BuffSelfProcedure("灵气", 8);
+                    await caster.BuffSelfProcedure("永动机", 8);
+                }),
+
+            new("火箭靴", JingJie.FanXu, "消耗\n本场战斗中，使用灵气牌时，获得二动", // 轮轮香
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("火箭靴");
+                }),
+
+            new("定龙桩", JingJie.FanXu, "消耗\n本场战斗中，对方二动时，如果没有暴击，获得1", // 轮轮刃
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("定龙桩");
+                }),
+
+            new("飞行器", JingJie.FanXu, "消耗\n本场战斗中，成功闪避时，如果对方没有跳回合，施加1", // 轮轮匣
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("飞行器");
+                }),
+
+            new("时光机", JingJie.FanXu, "消耗\n本场战斗中，使用一张牌前，升级", // 匣轮香
+                skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("时光机");
+                }),
 
             // new("木30", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"消耗10生命\n{18 + 4 * dj}攻\n每1闪避，多{4 + 2 * dj}攻"), WuXing.Mu, type: skillType.Attack,
             //     execute: (caster, skill, recursive) =>
@@ -493,7 +745,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     bool useFocus = !(caster.GetMana() > 0 && caster.GetStackOfBuff("锋锐") > 0);
                     bool focus = useFocus && await caster.IsFocused();
-                    int d = focus || await caster.TryConsumeManaProcedure() ? 2 : 1;
+                    int d = focus || await caster.TryConsumeProcedure("灵气") ? 2 : 1;
                     await caster.AttackProcedure((12 + 2 * skill.Dj) * d, lifeSteal: focus || await caster.TryConsumeProcedure("锋锐"),
                         wuXing: skill.Entry.WuXing);
                 }),
@@ -533,7 +785,7 @@ public class SkillCategory : Category<SkillEntry>
 
                     if (value > 0)
                     {
-                        await caster.ConsumeProcedure("灵气", value * 3, true, true);
+                        await caster.DispelSelfProcedure("灵气", value * 3, true, true);
                         await caster.BuffSelfProcedure("格挡", value);
                     }
                 }),
@@ -598,7 +850,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, skill, recursive) =>
                 {
                     caster.Swift = true;
-                    if (await caster.TryConsumeManaProcedure() || await caster.IsFocused())
+                    if (await caster.TryConsumeProcedure("灵气") || await caster.IsFocused())
                         caster.UltraSwift = true;
                 }),
 
@@ -754,7 +1006,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure(10, times: 3, pierce: true, wuXing: skill.Entry.WuXing);
                     await caster.BuffSelfProcedure("闪避", 3);
                     await caster.BuffSelfProcedure("力量", 3);
-                    bool cond = await caster.TryConsumeManaProcedure(3) || await caster.IsFocused();
+                    bool cond = await caster.TryConsumeProcedure("灵气", 3) || await caster.IsFocused();
                     if (!cond)
                         await skill.ExhaustProcedure();
                 }),
@@ -970,7 +1222,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(6 + 4 * skill.Dj, wuXing: skill.Entry.WuXing,
-                        damaged: async d => await d.Tgt.TryConsumeManaProcedure());
+                        damaged: async d => await d.Tgt.TryConsumeProcedure("灵气"));
                 }),
 
             new("铁骨", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"消耗\n自动护甲+{1 + dj}"), WuXing.Tu,
@@ -1100,7 +1352,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, skill, recursive) =>
                 {
                     await skill.ExhaustProcedure();
-                    bool cond = await caster.TryConsumeManaProcedure() || await caster.IsFocused();
+                    bool cond = await caster.TryConsumeProcedure("灵气") || await caster.IsFocused();
                     int d = cond ? 2 : 1;
                     await caster.ArmorGainSelfProcedure(20 * d);
                 }),

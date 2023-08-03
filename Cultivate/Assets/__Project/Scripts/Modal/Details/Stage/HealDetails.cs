@@ -4,7 +4,7 @@ using System.Text;
 using DG.Tweening;
 using UnityEngine;
 
-public class HealDetails
+public class HealDetails : StageEventDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

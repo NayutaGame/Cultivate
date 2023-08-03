@@ -54,7 +54,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 2;
                     },
-                    consumed: async (formation, d) =>
+                    dispelled: async (formation, d) =>
                     {
                         if (!d._friendly) return;
                         if (d._stack <= 0) return;
@@ -72,7 +72,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 2;
                     },
-                    consumed: async (formation, d) =>
+                    dispelled: async (formation, d) =>
                     {
                         if (!d._friendly) return;
                         if (d._stack <= 0) return;

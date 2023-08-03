@@ -49,16 +49,16 @@ public class BuffEntry : Entry, IAnnotation
     public Func<Buff, HealDetails, Task> _healed;
     public Func<Buff, ArmorGainDetails, Task> _armorGain;
     public Func<Buff, ArmorGainDetails, Task> _armorGained;
-    public Func<Buff, ArmorLoseDetails, Task> _armorLose;
-    public Func<Buff, ArmorLoseDetails, Task> _armorLost;
-    public Func<Buff, ConsumeDetails, Task> _consume;
-    public Func<Buff, ConsumeDetails, Task> _consumed;
+    public Func<Buff, DispelDetails, Task> _dispel;
+    public Func<Buff, DispelDetails, Task> _dispelled;
     public Func<Buff, EvadeDetails, Task> _evaded;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buffed;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuffed;
     public Func<Buff, ExhaustDetails, Task> _exhaust;
+
+    public Dictionary<string, StageEventCapture> _eventCaptureDict;
 
     /// <summary>
     /// 定义一个Buff
@@ -91,10 +91,8 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="healed">被治疗时的额外行为</param>
     /// <param name="armorGain">给予护甲时的额外行为</param>
     /// <param name="armorGained">接受护甲时的额外行为</param>
-    /// <param name="armorLose">使失去护甲时的额外行为</param>
-    /// <param name="armorLost">失去护甲时的额外行为</param>
-    /// <param name="consume">失去Buff时的额外行为，结算之前</param>
-    /// <param name="consumed">失去Buff时的额外行为，结算之后</param>
+    /// <param name="dispel">失去Buff时的额外行为，结算之前</param>
+    /// <param name="dispelled">失去Buff时的额外行为，结算之后</param>
     /// <param name="evaded">闪避时的额外行为</param>
     /// <param name="buff">受到Buff时的额外行为，结算之前</param>
     /// <param name="anyBuff">任何人受到Buff时的额外行为，结算之前</param>
@@ -125,16 +123,15 @@ public class BuffEntry : Entry, IAnnotation
         Func<Buff, HealDetails, Task> healed = null,
         Func<Buff, ArmorGainDetails, Task> armorGain = null,
         Func<Buff, ArmorGainDetails, Task> armorGained = null,
-        Func<Buff, ArmorLoseDetails, Task> armorLose = null,
-        Func<Buff, ArmorLoseDetails, Task> armorLost = null,
-        Func<Buff, ConsumeDetails, Task> consume = null,
-        Func<Buff, ConsumeDetails, Task> consumed = null,
+        Func<Buff, DispelDetails, Task> dispel = null,
+        Func<Buff, DispelDetails, Task> dispelled = null,
         Func<Buff, EvadeDetails, Task> evaded = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buffed = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuffed = null,
-        Func<Buff, ExhaustDetails, Task> exhaust = null
+        Func<Buff, ExhaustDetails, Task> exhaust = null,
+        params StageEventCapture[] eventCaptures
     ) : base(name)
     {
         _description = description;
@@ -168,10 +165,8 @@ public class BuffEntry : Entry, IAnnotation
         _healed = healed;
         _armorGain = armorGain;
         _armorGained = armorGained;
-        _armorLose = armorLose;
-        _armorLost = armorLost;
-        _consume = consume;
-        _consumed = consumed;
+        _dispel = dispel;
+        _dispelled = dispelled;
         _evaded = evaded;
 
         _buff = buff;
@@ -180,6 +175,10 @@ public class BuffEntry : Entry, IAnnotation
         _anyBuffed = anyBuffed;
 
         _exhaust = exhaust;
+
+        _eventCaptureDict = new Dictionary<string, StageEventCapture>();
+        foreach (var stageEventCapture in eventCaptures)
+            _eventCaptureDict[stageEventCapture.EventId] = stageEventCapture;
     }
 
     // public void ConfigureNote(StringBuilder sb)

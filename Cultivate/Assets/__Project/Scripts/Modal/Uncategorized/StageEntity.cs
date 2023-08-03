@@ -124,17 +124,10 @@ public class StageEntity : GDictionary
         if (ArmorGainedEvent != null) await ArmorGainedEvent(d);
     }
 
-    public event Func<ArmorLoseDetails, Task> ArmorLoseEvent;
-    public async Task ArmorLose(ArmorLoseDetails d)
-    {
-        if (ArmorLoseEvent != null) await ArmorLoseEvent(d);
-    }
-
-    public event Func<ArmorLoseDetails, Task> ArmorLostEvent;
-    public async Task ArmorLost(ArmorLoseDetails d)
-    {
-        if (ArmorLostEvent != null) await ArmorLostEvent(d);
-    }
+    public event Func<ArmorLoseDetails, Task> ArmorWillLoseEvent; public async Task ArmorWillLose(ArmorLoseDetails d) { if (ArmorWillLoseEvent != null) await ArmorWillLoseEvent(d); }
+    public event Func<ArmorLoseDetails, Task> ArmorWillLostEvent; public async Task ArmorWillLost(ArmorLoseDetails d) { if (ArmorWillLostEvent != null) await ArmorWillLostEvent(d); }
+    public event Func<ArmorLoseDetails, Task> ArmorDidLoseEvent; public async Task ArmorDidLose(ArmorLoseDetails d) { if (ArmorDidLoseEvent != null) await ArmorDidLoseEvent(d); }
+    public event Func<ArmorLoseDetails, Task> ArmorDidLostEvent; public async Task ArmorDidLost(ArmorLoseDetails d) { if (ArmorDidLostEvent != null) await ArmorDidLostEvent(d); }
 
     public event Func<EvadeDetails, Task> EvadedEvent;
     public async Task Evaded(EvadeDetails d)
@@ -148,16 +141,16 @@ public class StageEntity : GDictionary
         if (LoseHpEvent != null) await LoseHpEvent();
     }
 
-    public event Func<ConsumeDetails, Task> ConsumeEvent;
-    public async Task Consume(ConsumeDetails d)
+    public event Func<DispelDetails, Task> DispelEvent;
+    public async Task Dispel(DispelDetails d)
     {
-        if (ConsumeEvent != null) await ConsumeEvent(d);
+        if (DispelEvent != null) await DispelEvent(d);
     }
 
-    public event Func<ConsumeDetails, Task> ConsumedEvent;
-    public async Task Consumed(ConsumeDetails d)
+    public event Func<DispelDetails, Task> DispelledEvent;
+    public async Task Dispelled(DispelDetails d)
     {
-        if (ConsumedEvent != null) await ConsumedEvent(d);
+        if (DispelledEvent != null) await DispelledEvent(d);
     }
 
     public event Func<ExhaustDetails, Task> ExhaustEvent;
@@ -258,7 +251,7 @@ public class StageEntity : GDictionary
         // show skill
 
         int manaCost = skill.GetManaCost() - GetStackOfBuff("心斋");
-        bool manaSufficient = skill.GetManaCost() == 0 || await TryConsumeProcedure("免费") || await TryConsumeManaProcedure(manaCost);
+        bool manaSufficient = skill.GetManaCost() == 0 || await TryConsumeProcedure("免费") || await TryConsumeProcedure("灵气", manaCost);
         _manaShortage = !manaSufficient;
         if(_manaShortage)
         {
@@ -603,12 +596,6 @@ public class StageEntity : GDictionary
     public async Task HealProcedure(int value)
         => await _env.HealProcedure(new HealDetails(this, this, value));
 
-    public async Task BuffSelfProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => await _env.BuffProcedure(new BuffDetails(this, this, buffEntry, stack, recursive));
-
-    public async Task BuffOppoProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => await _env.BuffProcedure(new BuffDetails(this, Opponent(), buffEntry, stack, recursive));
-
     public async Task ArmorGainSelfProcedure(int value)
         => await _env.ArmorGainProcedure(new ArmorGainDetails(this, this, value));
 
@@ -621,9 +608,6 @@ public class StageEntity : GDictionary
     public async Task ArmorLoseOppoProcedure(int value)
         => await _env.ArmorLoseProcedure(new ArmorLoseDetails(this, Opponent(), value));
 
-    public async Task ConsumeProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive)
-        => await _env.ConsumeProcedure(new ConsumeDetails(this, this, buffEntry, stack, friendly, recursive));
-
     public async Task<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
     {
         if (stack == 0)
@@ -632,14 +616,24 @@ public class StageEntity : GDictionary
         Buff b = FindBuff(buffEntry);
         if (b != null && b.Stack >= stack)
         {
-            await ConsumeProcedure(buffEntry, stack, friendly, recursive);
+            await DispelSelfProcedure(buffEntry, stack, friendly, recursive);
             return true;
         }
 
         return false;
     }
 
-    public async Task<bool> TryConsumeManaProcedure(int stack = 1) => await TryConsumeProcedure("灵气", stack);
+    public async Task BuffSelfProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await _env.BuffProcedure(new BuffDetails(this, this, buffEntry, stack, recursive));
+
+    public async Task BuffOppoProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await _env.BuffProcedure(new BuffDetails(this, Opponent(), buffEntry, stack, recursive));
+
+    public async Task DispelSelfProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive)
+        => await _env.DispelProcedure(new DispelDetails(this, this, buffEntry, stack, friendly, recursive));
+
+    public async Task DispelOppoProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive)
+        => await _env.DispelProcedure(new DispelDetails(this, Opponent(), buffEntry, stack, friendly, recursive));
 
     public async Task FormationProcedure(FormationEntry formationEntry, bool recursive = true)
         => await _env.FormationProcedure(this, formationEntry, recursive);

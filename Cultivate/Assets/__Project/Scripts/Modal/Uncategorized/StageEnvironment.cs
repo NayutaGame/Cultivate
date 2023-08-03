@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 using DG.Tweening;
+using UnityEngine.UIElements;
 
 public class StageEnvironment : GDictionary
 {
@@ -297,8 +298,8 @@ public class StageEnvironment : GDictionary
         => await ArmorLoseProcedure(new ArmorLoseDetails(src, tgt, value));
     public async Task ArmorLoseProcedure(ArmorLoseDetails d)
     {
-        await d.Src.ArmorLose(d);
-        await d.Tgt.ArmorLost(d);
+        await InvokeStageEvent("ArmorWillLose", d);
+
         if (d.Cancel)
             return;
 
@@ -307,20 +308,22 @@ public class StageEnvironment : GDictionary
 
         d.Tgt.Armor -= d.Value;
         _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
-    }
-    public async Task ConsumeProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
-        => await ConsumeProcedure(new ConsumeDetails(src, tgt, buffEntry, stack, friendly, recursive));
 
-    public async Task ConsumeProcedure(ConsumeDetails d)
+        await InvokeStageEvent("ArmorDidLose", d);
+    }
+
+    public async Task DispelProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
+        => await DispelProcedure(new DispelDetails(src, tgt, buffEntry, stack, friendly, recursive));
+    public async Task DispelProcedure(DispelDetails d)
     {
-        await d.Tgt.Consume(d);
+        await d.Tgt.Dispel(d);
         if (d.Cancel) return;
 
         Buff b = d.Src.FindBuff(d._buffEntry);
-        b.Stack -= d._stack;
+        b.Stack = Mathf.Max(0, b.Stack - d._stack);
 
         if (d.Cancel) return;
-        await d.Tgt.Consumed(d);
+        await d.Tgt.Dispelled(d);
     }
 
     public async Task ExhaustProcedure(StageEntity owner, StageSkill skill, bool forRun)
@@ -350,6 +353,16 @@ public class StageEnvironment : GDictionary
     private StageReport _report;
     public StageReport Report => _report;
 
+    public Dictionary<string, Func<StageEventDetails, Task>> _stageEventTriggerDict;
+    private async Task InvokeStageEvent(string eventId, StageEventDetails stageEventDetails)
+    {
+        if (!_stageEventTriggerDict.ContainsKey(eventId))
+            return;
+        Func<StageEventDetails, Task> trigger = _stageEventTriggerDict[eventId];
+        if (trigger != null)
+            await trigger(stageEventDetails);
+    }
+
     public StageEnvironment(RunEntity home, RunEntity away, bool useTween = false, bool useTimeline = false, bool useSb = false)
     {
         _accessors = new()
@@ -358,6 +371,8 @@ public class StageEnvironment : GDictionary
             { "Away",                  () => _entities[1] },
             { "Report",                () => _report },
         };
+
+        _stageEventTriggerDict = new();
 
         _entities = new StageEntity[]
         {

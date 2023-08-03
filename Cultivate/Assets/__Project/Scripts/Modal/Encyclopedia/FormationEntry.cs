@@ -59,10 +59,8 @@ public class FormationEntry
     public Func<Formation, HealDetails, Task> _healed;
     public Func<Formation, ArmorGainDetails, Task> _armorGain;
     public Func<Formation, ArmorGainDetails, Task> _armorGained;
-    public Func<Formation, ArmorLoseDetails, Task> _armorLose;
-    public Func<Formation, ArmorLoseDetails, Task> _armorLost;
-    public Func<Formation, ConsumeDetails, Task> _consume;
-    public Func<Formation, ConsumeDetails, Task> _consumed;
+    public Func<Formation, DispelDetails, Task> _dispel;
+    public Func<Formation, DispelDetails, Task> _dispelled;
     public Func<Formation, EvadeDetails, Task> _evaded;
     public Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> _buff;
     public Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> _anyBuff;
@@ -100,8 +98,8 @@ public class FormationEntry
     /// <param name="healed">被治疗时的额外行为</param>
     /// <param name="armorGain">给予护甲时的额外行为</param>
     /// <param name="armorGained">接受护甲时的额外行为</param>
-    /// <param name="armorLose">使失去护甲时的额外行为</param>
-    /// <param name="armorLost">失去护甲时的额外行为</param>
+    /// <param name="dispel">失去Buff时的额外行为，结算之前</param>
+    /// <param name="dispelled">失去Buff时的额外行为，结算之前</param>
     /// <param name="evaded">闪避时的额外行为</param>
     /// <param name="buff">受到Buff时的额外行为，结算之前</param>
     /// <param name="anyBuff">任何人受到Buff时的额外行为，结算之前</param>
@@ -133,10 +131,8 @@ public class FormationEntry
         Func<Formation, HealDetails, Task> healed = null,
         Func<Formation, ArmorGainDetails, Task> armorGain = null,
         Func<Formation, ArmorGainDetails, Task> armorGained = null,
-        Func<Formation, ArmorLoseDetails, Task> armorLose = null,
-        Func<Formation, ArmorLoseDetails, Task> armorLost = null,
-        Func<Formation, ConsumeDetails, Task> consume = null,
-        Func<Formation, ConsumeDetails, Task> consumed = null,
+        Func<Formation, DispelDetails, Task> dispel = null,
+        Func<Formation, DispelDetails, Task> dispelled = null,
         Func<Formation, EvadeDetails, Task> evaded = null,
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> buff = null,
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> anyBuff = null,
@@ -177,10 +173,8 @@ public class FormationEntry
         _healed = healed;
         _armorGain = armorGain;
         _armorGained = armorGained;
-        _armorLose = armorLose;
-        _armorLost = armorLost;
-        _consume = consume;
-        _consumed = consumed;
+        _dispel = dispel;
+        _dispelled = dispelled;
         _evaded = evaded;
 
         _buff = buff;
