@@ -34,129 +34,16 @@ public class StageEntity : GDictionary
         if (EndTurnEvent != null) await EndTurnEvent(d);
     }
 
-    public event Func<Task> StartRoundEvent;
-    public async Task StartRound()
-    {
-        if (StartRoundEvent != null) await StartRoundEvent();
-    }
-
-    public event Func<Task> EndRoundEvent;
-    public async Task EndRound()
-    {
-        if (EndRoundEvent != null) await EndRoundEvent();
-    }
-
-    public event Func<StepDetails, Task> StartStepEvent;
-    public async Task StartStep(StepDetails d)
-    {
-        if (StartStepEvent != null) await StartStepEvent(d);
-    }
-
-    public event Func<StepDetails, Task> EndStepEvent;
-    public async Task EndStep(StepDetails d)
-    {
-        if (EndStepEvent != null) await EndStepEvent(d);
-    }
-
     public event Func<int, Task> ManaShortageEvent;
     public async Task ManaShortage(int p)
     {
         if (ManaShortageEvent != null) await ManaShortageEvent(p);
     }
 
-    public event Func<AttackDetails, Task> AttackEvent;
-    public async Task Attack(AttackDetails d)
-    {
-        if (AttackEvent != null) await AttackEvent(d);
-    }
-
-    public event Func<AttackDetails, Task> AttackedEvent;
-    public async Task Attacked(AttackDetails d)
-    {
-        if (AttackedEvent != null) await AttackedEvent(d);
-    }
-
-    public event Func<DamageDetails, Task> DamageEvent;
-    public async Task Damage(DamageDetails d)
-    {
-        if (DamageEvent != null) await DamageEvent(d);
-    }
-
-    public event Func<DamageDetails, Task> DamagedEvent;
-    public async Task Damaged(DamageDetails d)
-    {
-        if (DamagedEvent != null) await DamagedEvent(d);
-    }
-
-    public event Func<Task> KillEvent;
-    public async Task Kill()
-    {
-        if (KillEvent != null) await KillEvent();
-    }
-
-    public event Func<Task> KilledEvent;
-    public async Task Killed()
-    {
-        if (KilledEvent != null) await KilledEvent();
-    }
-
-    public event Func<HealDetails, Task> HealEvent;
-    public async Task Heal(HealDetails d)
-    {
-        if (HealEvent != null) await HealEvent(d);
-    }
-
-    public event Func<HealDetails, Task> HealedEvent;
-    public async Task Healed(HealDetails d)
-    {
-        if (HealedEvent != null) await HealedEvent(d);
-    }
-
-    public event Func<ArmorGainDetails, Task> ArmorGainEvent;
-    public async Task ArmorGain(ArmorGainDetails d)
-    {
-        if (ArmorGainEvent != null) await ArmorGainEvent(d);
-    }
-
-    public event Func<ArmorGainDetails, Task> ArmorGainedEvent;
-    public async Task ArmorGained(ArmorGainDetails d)
-    {
-        if (ArmorGainedEvent != null) await ArmorGainedEvent(d);
-    }
-
-    public event Func<ArmorLoseDetails, Task> ArmorWillLoseEvent; public async Task ArmorWillLose(ArmorLoseDetails d) { if (ArmorWillLoseEvent != null) await ArmorWillLoseEvent(d); }
-    public event Func<ArmorLoseDetails, Task> ArmorWillLostEvent; public async Task ArmorWillLost(ArmorLoseDetails d) { if (ArmorWillLostEvent != null) await ArmorWillLostEvent(d); }
-    public event Func<ArmorLoseDetails, Task> ArmorDidLoseEvent; public async Task ArmorDidLose(ArmorLoseDetails d) { if (ArmorDidLoseEvent != null) await ArmorDidLoseEvent(d); }
-    public event Func<ArmorLoseDetails, Task> ArmorDidLostEvent; public async Task ArmorDidLost(ArmorLoseDetails d) { if (ArmorDidLostEvent != null) await ArmorDidLostEvent(d); }
-
-    public event Func<EvadeDetails, Task> EvadedEvent;
-    public async Task Evaded(EvadeDetails d)
-    {
-        if (EvadedEvent != null) await EvadedEvent(d);
-    }
-
     public event Func<Task> LoseHpEvent;
     public async Task LoseHp()
     {
         if (LoseHpEvent != null) await LoseHpEvent();
-    }
-
-    public event Func<DispelDetails, Task> DispelEvent;
-    public async Task Dispel(DispelDetails d)
-    {
-        if (DispelEvent != null) await DispelEvent(d);
-    }
-
-    public event Func<DispelDetails, Task> DispelledEvent;
-    public async Task Dispelled(DispelDetails d)
-    {
-        if (DispelledEvent != null) await DispelledEvent(d);
-    }
-
-    public event Func<ExhaustDetails, Task> ExhaustEvent;
-    public async Task Exhausted(ExhaustDetails d)
-    {
-        if (ExhaustEvent != null) await ExhaustEvent(d);
     }
 
     public FuncQueue<BuffDetails> Buff = new();
@@ -246,9 +133,8 @@ public class StageEntity : GDictionary
 
         StageSkill skill = _skills[_p];
 
-        await StartStep(new StepDetails(this, skill));
-        // _env.Report.Seq?.
-        // show skill
+
+        await _env.InvokeStageEvent("StartStep", new StepDetails(this, skill));
 
         int manaCost = skill.GetManaCost() - GetStackOfBuff("心斋");
         bool manaSufficient = skill.GetManaCost() == 0 || await TryConsumeProcedure("免费") || await TryConsumeProcedure("灵气", manaCost);
@@ -257,7 +143,7 @@ public class StageEntity : GDictionary
         {
             await ManaShortage(_p);
             await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
-            await EndStep(new StepDetails(this, null));
+            await _env.InvokeStageEvent("EndStep", new StepDetails(this, null));
             return;
         }
 
@@ -271,8 +157,7 @@ public class StageEntity : GDictionary
             await skill.Execute(this);
         }
 
-        // hide skill
-        await EndStep(new StepDetails(this, skill));
+        await _env.InvokeStageEvent("EndStep", new StepDetails(this, skill));
     }
 
     private async Task MoveP()
@@ -286,8 +171,8 @@ public class StageEntity : GDictionary
             if (!within)
             {
                 _p = (_p + _skills.Length) % _skills.Length;
-                await EndRound();
-                await StartRound();
+                await _env.InvokeStageEvent("EndRound", new RoundDetails(this));
+                await _env.InvokeStageEvent("StartRound", new RoundDetails(this));
             }
 
             if(_skills[_p].Exhausted)
@@ -370,8 +255,6 @@ public class StageEntity : GDictionary
 
         StartTurnEvent += DefaultStartTurn;
         EndTurnEvent += DefaultEndTurn;
-        DamageEvent += DefaultDamage;
-        DamagedEvent += DefaultDamaged;
         LoseHpEvent += DefaultLoseHp;
 
         MaxHp = _runEntity.GetFinalHealth();
@@ -386,6 +269,20 @@ public class StageEntity : GDictionary
         }
 
         _p = 0;
+    }
+
+    ~StageEntity()
+    {
+        RemoveAllFormations().GetAwaiter().GetResult();
+        RemoveAllBuffs();
+
+        Buffed.Remove(HighestManaRecorder);
+        Buffed.Remove(GainedEvadeRecorder);
+        Buffed.Remove(GainedBurningRecorder);
+
+        StartTurnEvent -= DefaultStartTurn;
+        EndTurnEvent -= DefaultEndTurn;
+        LoseHpEvent -= DefaultLoseHp;
     }
 
     public void WriteEffect()
@@ -424,26 +321,8 @@ public class StageEntity : GDictionary
         return d;
     }
 
-    ~StageEntity()
-    {
-        RemoveAllFormations();
-        RemoveAllBuffs();
-
-        Buffed.Remove(HighestManaRecorder);
-        Buffed.Remove(GainedEvadeRecorder);
-        Buffed.Remove(GainedBurningRecorder);
-
-        StartTurnEvent -= DefaultStartTurn;
-        EndTurnEvent -= DefaultEndTurn;
-        DamageEvent -= DefaultDamage;
-        DamagedEvent -= DefaultDamaged;
-        LoseHpEvent -= DefaultLoseHp;
-    }
-
     protected async Task DefaultStartTurn(TurnDetails d) => await DesignerEnvironment.DefaultStartTurn(this);
     protected async Task DefaultEndTurn(TurnDetails d) { }
-    protected async Task DefaultDamage(DamageDetails damageDetails) { }
-    protected async Task DefaultDamaged(DamageDetails damageDetails) { }
     protected async Task DefaultLoseHp() { }
 
     #region Formation

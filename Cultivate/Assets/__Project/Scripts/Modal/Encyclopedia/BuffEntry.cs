@@ -29,34 +29,14 @@ public class BuffEntry : Entry, IAnnotation
     public Func<Buff, StageEntity, int, Task> _gain;
     public Func<Buff, StageEntity, Task> _lose;
     public Func<Buff, StageEntity, Task> _stackChanged;
-    public Func<Buff, StageEntity, ExhaustDetails, Task> _anyExhaust;
-    public Func<Buff, StageEntity, ExhaustDetails, Task> _anyExhausted;
     public Func<Buff, StageEntity, Task> _startStage;
     public Func<Buff, StageEntity, Task> _endStage;
     public Func<Buff, TurnDetails, Task> _startTurn;
     public Func<Buff, TurnDetails, Task> _endTurn;
-    public Func<Buff, StageEntity, Task> _startRound;
-    public Func<Buff, StageEntity, Task> _endRound;
-    public Func<Buff, StepDetails, Task> _startStep;
-    public Func<Buff, StepDetails, Task> _endStep;
-    public Func<Buff, AttackDetails, Task> _attack;
-    public Func<Buff, AttackDetails, Task> _attacked;
-    public Func<Buff, DamageDetails, Task> _damage;
-    public Func<Buff, DamageDetails, Task> _damaged;
-    public Func<Buff, Task> _killed;
-    public Func<Buff, Task> _kill;
-    public Func<Buff, HealDetails, Task> _heal;
-    public Func<Buff, HealDetails, Task> _healed;
-    public Func<Buff, ArmorGainDetails, Task> _armorGain;
-    public Func<Buff, ArmorGainDetails, Task> _armorGained;
-    public Func<Buff, DispelDetails, Task> _dispel;
-    public Func<Buff, DispelDetails, Task> _dispelled;
-    public Func<Buff, EvadeDetails, Task> _evaded;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buffed;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuffed;
-    public Func<Buff, ExhaustDetails, Task> _exhaust;
 
     public Dictionary<string, StageEventCapture> _eventCaptureDict;
 
@@ -71,67 +51,27 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="gain">获得时的额外行为</param>
     /// <param name="lose">失去时的额外行为</param>
     /// <param name="stackChanged">层数改变时的额外行为</param>
-    /// <param name="anyExhaust">任何卡牌消耗时的额外行为，结算之前</param>
-    /// <param name="anyExhausted">任何卡牌消耗时的额外行为，结算之后</param>
     /// <param name="startStage">Stage开始时的额外行为</param>
     /// <param name="endStage">Stage结束时的额外行为</param>
     /// <param name="startTurn">Turn开始时的额外行为</param>
     /// <param name="endTurn">Turn结束时的额外行为</param>
-    /// <param name="startRound">Round开始时的额外行为</param>
-    /// <param name="endRound">Round结束时的额外行为</param>
-    /// <param name="startStep">Step开始是的额外行为</param>
-    /// <param name="endStep">Step结束时的额外行为</param>
-    /// <param name="attack">攻击时的额外行为</param>
-    /// <param name="attacked">受攻击时的额外行为</param>
-    /// <param name="damage">伤害时的额外行为</param>
-    /// <param name="damaged">受伤害时的额外行为</param>
-    /// <param name="killed">被击杀时的额外行为</param>
-    /// <param name="kill">击杀时的额外行为</param>
-    /// <param name="heal">治疗时的额外行为</param>
-    /// <param name="healed">被治疗时的额外行为</param>
-    /// <param name="armorGain">给予护甲时的额外行为</param>
-    /// <param name="armorGained">接受护甲时的额外行为</param>
-    /// <param name="dispel">失去Buff时的额外行为，结算之前</param>
-    /// <param name="dispelled">失去Buff时的额外行为，结算之后</param>
-    /// <param name="evaded">闪避时的额外行为</param>
     /// <param name="buff">受到Buff时的额外行为，结算之前</param>
     /// <param name="anyBuff">任何人受到Buff时的额外行为，结算之前</param>
     /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
     /// <param name="anyBuffed">任何人受到Buff时的额外行为，结算之后</param>
-    /// <param name="exhaust">被消耗时的额外行动</param>
     /// <param name="eventCaptures">事件捕获</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
         Func<Buff, StageEntity, int, Task> gain = null,
         Func<Buff, StageEntity, Task> lose = null,
         Func<Buff, StageEntity, Task> stackChanged = null,
-        Func<Buff, StageEntity, ExhaustDetails, Task> anyExhaust = null,
-        Func<Buff, StageEntity, ExhaustDetails, Task> anyExhausted = null,
         Func<Buff, StageEntity, Task> startStage = null,
         Func<Buff, StageEntity, Task> endStage = null,
         Func<Buff, TurnDetails, Task> startTurn = null,
         Func<Buff, TurnDetails, Task> endTurn = null,
-        Func<Buff, StageEntity, Task> startRound = null,
-        Func<Buff, StageEntity, Task> endRound = null,
-        Func<Buff, StepDetails, Task> startStep = null,
-        Func<Buff, StepDetails, Task> endStep = null,
-        Func<Buff, AttackDetails, Task> attack = null,
-        Func<Buff, AttackDetails, Task> attacked = null,
-        Func<Buff, DamageDetails, Task> damage = null,
-        Func<Buff, DamageDetails, Task> damaged = null,
-        Func<Buff, Task> killed = null,
-        Func<Buff, Task> kill = null,
-        Func<Buff, HealDetails, Task> heal = null,
-        Func<Buff, HealDetails, Task> healed = null,
-        Func<Buff, ArmorGainDetails, Task> armorGain = null,
-        Func<Buff, ArmorGainDetails, Task> armorGained = null,
-        Func<Buff, DispelDetails, Task> dispel = null,
-        Func<Buff, DispelDetails, Task> dispelled = null,
-        Func<Buff, EvadeDetails, Task> evaded = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buffed = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuffed = null,
-        Func<Buff, ExhaustDetails, Task> exhaust = null,
         params StageEventCapture[] eventCaptures
     ) : base(name)
     {
@@ -145,37 +85,15 @@ public class BuffEntry : Entry, IAnnotation
         _lose = lose;
         _stackChanged = stackChanged;
 
-        _anyExhaust = anyExhaust;
-        _anyExhausted = anyExhausted;
         _startStage = startStage;
         _endStage = endStage;
         _startTurn = startTurn;
         _endTurn = endTurn;
-        _startRound = startRound;
-        _endRound = endRound;
-        _startStep = startStep;
-        _endStep = endStep;
-
-        _attack = attack;
-        _attacked = attacked;
-        _damage = damage;
-        _damaged = damaged;
-        _killed = killed;
-        _kill = kill;
-        _heal = heal;
-        _healed = healed;
-        _armorGain = armorGain;
-        _armorGained = armorGained;
-        _dispel = dispel;
-        _dispelled = dispelled;
-        _evaded = evaded;
 
         _buff = buff;
         _anyBuff = anyBuff;
         _buffed = buffed;
         _anyBuffed = anyBuffed;
-
-        _exhaust = exhaust;
 
         _eventCaptureDict = new Dictionary<string, StageEventCapture>();
         foreach (var stageEventCapture in eventCaptures)

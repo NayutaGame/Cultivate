@@ -29,27 +29,46 @@ public class BuffCategory : Category<BuffEntry>
             new("集中", "下一次使用牌时，条件算作激活", BuffStackRule.Add, true, false),
             new("永久集中", "使用牌时，条件算作激活", BuffStackRule.Add, true, false),
             new("六爻化劫", "第二轮开始时，双方重置生命上限，回[层数]%血", BuffStackRule.Max, true, false,
-                startRound: async (buff, owner) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    int selfMaxHp = Mathf.Max(owner.MaxHp, owner.RunEntity.GetFinalHealth());
-                    int oppoMaxHp = Mathf.Max(owner.Opponent().MaxHp, owner.Opponent().RunEntity.GetFinalHealth());
-                    owner.MaxHp = owner.RunEntity.GetFinalHealth();
-                    owner.Opponent().MaxHp = owner.Opponent().RunEntity.GetFinalHealth();
+                    new("StartRound", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)stageEventDetails;
 
-                    await owner.HealProcedure((int)((float)selfMaxHp * buff.Stack / 100));
-                    await owner.Opponent().HealProcedure((int)((float)oppoMaxHp * buff.Stack / 100));
+                        if (b.Owner != d.Owner) return;
 
-                    await owner.RemoveBuff(buff);
+                        StageEntity self = b.Owner;
+                        StageEntity oppo = b.Owner.Opponent();
+
+                        int selfMaxHp = Mathf.Max(self.MaxHp, self.RunEntity.GetFinalHealth());
+                        int oppoMaxHp = Mathf.Max(oppo.MaxHp, oppo.RunEntity.GetFinalHealth());
+                        self.MaxHp = self.RunEntity.GetFinalHealth();
+                        oppo.MaxHp = oppo.RunEntity.GetFinalHealth();
+
+                        int selfHpGap = self.MaxHp - (int)((float)selfMaxHp * b.Stack / 100);
+                        int oppoHpGap = oppo.MaxHp - (int)((float)oppoMaxHp * b.Stack / 100);
+
+                        await self.HealProcedure(selfHpGap);
+                        await oppo.HealProcedure(oppoHpGap);
+
+                        await self.RemoveBuff(b);
+                    }),
                 }),
 
             new("灵气回收", "下一次灵气减少时，加回", BuffStackRule.Add, true, false,
-                dispelled: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    if (d._buffEntry.Name != "灵气")
-                        return;
+                    new("DidDispel", async (listener, eventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        DispelDetails d = (DispelDetails)eventDetails;
+                        if (b.Owner != d.Tgt) return;
+                        if (d._buffEntry.Name != "灵气") return;
 
-                    await d.Tgt.BuffSelfProcedure("灵气", d._stack);
-                    buff.Stack -= 1;
+                        await d.Tgt.BuffSelfProcedure("灵气", d._stack);
+                        b.Stack -= 1;
+                    }),
                 }),
 
             new("护甲回收", "下一次护甲减少时，加回", BuffStackRule.Add, true, false,
@@ -92,17 +111,30 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("无常已至", "造成伤害：施加[伤害值，最多Stack]减甲", BuffStackRule.Add, true, false,
-                damage: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    if (buff.Owner == d.Tgt)
-                        return;
-
-                    await buff.Owner.ArmorLoseOppoProcedure(Mathf.Min(d.Value, buff.Stack));
+                    new("DidDamage", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        DamageDetails d = (DamageDetails)stageEventDetails;
+                        if (!(b.Owner == d.Src && d.Src != d.Tgt))
+                            return;
+                        await b.Owner.ArmorLoseOppoProcedure(Mathf.Min(d.Value, b.Stack));
+                    }),
                 }),
 
             new("锋锐", "每回合：[层数]攻\n受到伤害后层数-1", BuffStackRule.Add, true, true,
                 endTurn: async (buff, d) => await buff.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Jin),
-                damaged: async (buff, d) => buff.Stack -= 1),
+                eventCaptures: new StageEventCapture[]
+                {
+                    new("DidDamage", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        DamageDetails d = (DamageDetails)stageEventDetails;
+                        if (b.Owner == d.Tgt)
+                            b.Stack -= 1;
+                    }),
+                }),
             new("森罗万象", "奇偶同时激活两个效果", BuffStackRule.Wasted, true, false),
 
             new("自动灵气", "每回合：灵气+[层数]", BuffStackRule.Add, true, true,
@@ -111,31 +143,72 @@ public class BuffCategory : Category<BuffEntry>
                     await buff.Owner.BuffSelfProcedure("灵气", buff.Stack);
                 }),
             new("敛息", "造成伤害时：取消伤害，施加减甲", BuffStackRule.Add, true, false,
-                damage: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    d.Cancel = true;
-                    await buff.Owner.ArmorLoseOppoProcedure(d.Value);
-                    buff.Stack -= 1;
+                    new("WillDamage", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        DamageDetails d = (DamageDetails)stageEventDetails;
+
+                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                        {
+                            d.Cancel = true;
+                            await b.Owner.ArmorLoseOppoProcedure(d.Value);
+                            b.Stack -= 1;
+                        }
+                    }),
                 }),
 
             new("吸血", "下一次攻击造成伤害时，回复生命", BuffStackRule.Add, true, true,
-                attack: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    d.LifeSteal = true;
-                    buff.Stack -= 1;
+                    new("WillAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner == d.Src)
+                        {
+                            d.LifeSteal = true;
+                            b.Stack -= 1;
+                        }
+                    }),
                 }),
             new("凝神", "下一次受到治疗：护甲+治疗量", BuffStackRule.Add, true, true,
-                healed: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    await buff.Owner.ArmorGainSelfProcedure(d.Value);
-                    buff.Stack -= 1;
+                    new("DidHeal", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        HealDetails d = (HealDetails)stageEventDetails;
+                        if (b.Owner == d.Tgt)
+                        {
+                            await b.Owner.ArmorGainSelfProcedure(d.Value);
+                            b.Stack -= 1;
+                        }
+                    }),
                 }),
             new("永久吸血", "攻击一直具有吸血，直到使用非攻击牌", BuffStackRule.Wasted, true, false,
-                attack: async (buff, d) => d.LifeSteal = true,
-                startStep: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    if (!d.Skill.GetSkillType().Contains(SkillTypeCollection.Attack))
-                        buff.Stack -= 1;
+                    new("StartStep", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        StepDetails d = (StepDetails)stageEventDetails;
+                        if (b.Owner == d.Owner)
+                        {
+                            if (!d.Skill.GetSkillType().Contains(SkillTypeCollection.Attack))
+                                b.Stack -= 1;
+                        }
+                    }),
+                    new("WillAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner == d.Src)
+                        {
+                            d.LifeSteal = true;
+                        }
+                    }),
                 }),
 
             // new("治疗转灵气", "受到治疗时：灵气+[Stack]", BuffStackRule.Add, true, false,
@@ -148,84 +221,184 @@ public class BuffCategory : Category<BuffEntry>
             //     }),
             new("不动明王咒", "无法二动/三动", BuffStackRule.Wasted, false, false),
             new("玄武吐息法", "治疗可以穿上限", BuffStackRule.Add, true, true,
-                healed: async (buff, d) => d.Penetrate = true),
-            new("格挡", "受到攻击：攻击力-[层数]", BuffStackRule.Add, true, true,
-                attacked: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    if (d.Pierce)
-                        return;
-
-                    d.Value -= buff.Stack;
+                    new("WillHeal", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        HealDetails d = (HealDetails)stageEventDetails;
+                        if (b.Owner == d.Tgt)
+                            d.Penetrate = true;
+                    }),
+                }),
+            new("格挡", "受到攻击：攻击力-[层数]", BuffStackRule.Add, true, true,
+                eventCaptures: new StageEventCapture[]
+                {
+                    new("WillAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (d.Pierce) return;
+                        if (b.Owner == d.Tgt && d.Src != d.Tgt)
+                        {
+                            d.Value -= b.Stack;
+                        }
+                    }),
                 }),
             new("自动格挡", "每轮：格挡+[层数]", BuffStackRule.Add, true, true,
-                startRound: async (buff, owner) => await owner.BuffSelfProcedure("格挡", buff.Stack)),
+                eventCaptures: new StageEventCapture[]
+                {
+                    new("StartRound", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)stageEventDetails;
+
+                        if (b.Owner == d.Owner)
+                            await b.Owner.BuffSelfProcedure("格挡", b.Stack);
+                    }),
+                }),
             new("缠绕", "无法二动/三动\n每回合：层数-1", BuffStackRule.Add, false, true,
                 endTurn: async (buff, d) => buff.Stack -= 1),
 
             new("闪避", "受到攻击时，减少1层，忽略此次攻击", BuffStackRule.Add, true, true,
-                attacked: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    d.Evade = true;
-                    buff.Stack -= 1;
+                    new("WillAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner == d.Tgt && d.Src != d.Tgt)
+                        {
+                            d.Evade = true;
+                            b.Stack -= 1;
+                        }
+                    }),
                 }),
             new("自动闪避", "每轮：闪避补至[层数]", BuffStackRule.Add, true, true,
-                startRound: async (buff, owner) =>
-                    await buff.Owner.BuffSelfProcedure("闪避", buff.Stack - owner.GetStackOfBuff("闪避"))),
-            new("穿透", "下一次攻击时，忽略对方护甲/闪避/格挡", BuffStackRule.Add, true, true,
-                attack: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    d.Pierce = true;
-                    buff.Stack -= 1;
+                    new("StartRound", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)stageEventDetails;
+
+                        if (b.Owner == d.Owner)
+                            await b.Owner.BuffSelfProcedure("闪避", b.Stack - b.Owner.GetStackOfBuff("闪避"));
+                    }),
+                }),
+            new("穿透", "下一次攻击时，忽略对方护甲/闪避/格挡", BuffStackRule.Add, true, true,
+                eventCaptures: new StageEventCapture[]
+                {
+                    new("WillAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                        {
+                            d.Pierce = true;
+                            b.Stack -= 1;
+                        }
+                    }),
                 }),
             new("力量", "攻击时，多[层数]攻", BuffStackRule.Add, true, true,
-                attack: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    d.Value += buff.Stack;
+                    new("WillAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                            d.Value += b.Stack;
+                    }),
                 }),
-            new("回马枪", "下次受攻击时：[层数]攻 穿透", BuffStackRule.Max, true, false,
-                attacked: async (buff, d) =>
+            new("回马枪", "下次受攻击后：[层数]攻 穿透", BuffStackRule.Max, true, false,
+                eventCaptures: new StageEventCapture[]
                 {
-                    if (!d.Recursive)
-                        return;
-
-                    await buff.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Mu, recursive: false);
-                    await buff.Owner.RemoveBuff(buff);
+                    new("DidAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (!d.Recursive) return;
+                        if (b.Owner == d.Tgt && d.Src != d.Tgt)
+                        {
+                            await b.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Mu, recursive: false);
+                            await b.Owner.RemoveBuff(b);
+                        }
+                    }),
                 }),
 
             new("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,
                 startTurn: async (buff, d) => await d.Owner.AttackProcedure(buff.Stack, wuXing: WuXing.Huo)),
             new("业火", "消耗牌时：使用2次", BuffStackRule.Wasted, true, false,
-                exhaust: async (buff, d) => await d.Skill.Execute(d.Owner)),
-            new("淬体", "消耗生命时：灼烧+[层数]", BuffStackRule.Add, true, false,
-                damaged: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    if (d.Src != d.Tgt || buff.Owner != d.Src)
-                        return;
-
-                    await buff.Owner.BuffSelfProcedure("灼烧", buff.Stack);
+                    new("DidExhaust", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        ExhaustDetails d = (ExhaustDetails)stageEventDetails;
+                        if (b.Owner == d.Owner)
+                            await d.Skill.Execute(d.Owner);
+                    }),
+                }),
+            new("淬体", "消耗生命时：灼烧+[层数]", BuffStackRule.Add, true, false,
+                eventCaptures: new StageEventCapture[]
+                {
+                    new("WillDamage", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        DamageDetails d = (DamageDetails)stageEventDetails;
+                        if (!(b.Owner == d.Src && b.Owner == d.Tgt))
+                            return;
+                        await b.Owner.BuffSelfProcedure("灼烧", b.Stack);
+                    }),
                 }),
             new("追击", "持续[层数]次，下次攻击时，次数+1", BuffStackRule.Add, true, true),
             new("净天地", "使用非攻击卡不消耗灵气，使用之后消耗", BuffStackRule.Add, true, false,
-                startStep: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    if (d.Skill.GetSkillType().Contains(SkillTypeCollection.Attack))
-                        return;
+                    new("StartStep", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        StepDetails d = (StepDetails)stageEventDetails;
 
-                    await d.Skill.ExhaustProcedure();
-                    bool noBuff = buff.Owner.GetStackOfBuff("免费") == 0;
-                    if (noBuff)
-                        await buff.Owner.BuffSelfProcedure("免费");
+                        if (b.Owner != d.Owner) return;
+                        if (d.Skill.GetSkillType().Contains(SkillTypeCollection.Attack))
+                            return;
 
-                    buff.Stack -= 1;
+                        await d.Skill.ExhaustProcedure();
+                        bool noBuff = b.Owner.GetStackOfBuff("免费") == 0;
+                        if (noBuff)
+                            await b.Owner.BuffSelfProcedure("免费");
+
+                        b.Stack -= 1;
+                    }),
                 }),
 
             new("心斋", "所有耗蓝-[层数]", BuffStackRule.Add, true, false),
 
             new("盛开", "收到治疗时：力量+[层数]", BuffStackRule.Add, true, false,
-                evaded: async (buff, d) => await buff.Owner.BuffSelfProcedure("力量", buff.Stack)),
+                eventCaptures: new StageEventCapture[]
+                {
+                    new("DidHeal", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        HealDetails d = (HealDetails)stageEventDetails;
+                        if (b.Owner == d.Tgt)
+                            await b.Owner.BuffSelfProcedure("力量", b.Stack);
+                    }),
+                }),
 
             new("通透世界", "攻击具有穿透", BuffStackRule.Wasted, true, false,
-                attack: async (buff, d) => d.Pierce = true),
+                eventCaptures: new StageEventCapture[]
+                {
+                    new("WillAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                            d.Pierce = true;
+                    }),
+                }),
             new("鹤回翔", "反转出牌顺序", BuffStackRule.Wasted, true, false),
 
             new("待激活的凤凰涅槃", "累计20灼烧后激活", BuffStackRule.Wasted, true, false,
@@ -236,13 +409,20 @@ public class BuffCategory : Category<BuffEntry>
                     return d;
                 })),
             new("涅槃", "每轮以及强制结算前：生命恢复至上限", BuffStackRule.Wasted, true, false,
-                startRound: async (buff, entity) =>
-                {
-                    await entity.HealProcedure(entity.MaxHp - entity.Hp);
-                },
                 endStage: async (buff, entity) =>
                 {
                     await entity.HealProcedure(entity.MaxHp - entity.Hp);
+                },
+                eventCaptures: new StageEventCapture[]
+                {
+                    new("StartRound", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)stageEventDetails;
+
+                        if (b.Owner == d.Owner)
+                            await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
+                    }),
                 }),
             new("抱元守一", "每回合：消耗[层数]生命，护甲+[层数]", BuffStackRule.Wasted, true, false,
                 startTurn: async (buff, d) =>
@@ -251,19 +431,34 @@ public class BuffCategory : Category<BuffEntry>
                     await buff.Owner.ArmorGainSelfProcedure(buff.Stack);
                 }),
 
-            new("灼烧", "受到敌方攻击时：造成[层数]伤害", BuffStackRule.Add, true, false,
-                attacked: async (buff, d) =>
+            new("灼烧", "受到敌方攻击后：造成[层数]伤害", BuffStackRule.Add, true, false,
+                eventCaptures: new StageEventCapture[]
                 {
-                    if (!d.Recursive || d.Src == buff.Owner)
-                        return;
-
-                    await buff.Owner.DamageOppoProcedure(buff.Stack, recursive: false);
+                    new("DidAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (!d.Recursive) return;
+                        if (d.Src != b.Owner && d.Tgt == b.Owner)
+                        {
+                            await b.Owner.DamageOppoProcedure(b.Stack, recursive: false);
+                        }
+                    }),
                 }),
 
             new("自动护甲", "每回合：护甲+[层数]", BuffStackRule.Add, true, false,
                 startTurn: async (buff, d) => await d.Owner.ArmorGainSelfProcedure(buff.Stack)),
             new("少阳", "获得护甲：额外+[层数]", BuffStackRule.Add, true, false,
-                armorGained: async (buff, d) => d.Value += buff.Stack),
+                eventCaptures: new StageEventCapture[]
+                {
+                    new("ArmorWillGain", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        ArmorGainDetails d = (ArmorGainDetails)stageEventDetails;
+                        if (b.Owner == d.Tgt)
+                            d.Value += b.Stack;
+                    }),
+                }),
             new("少阴", "施加减甲：额外+[层数]", BuffStackRule.Add, true, false,
                 eventCaptures: new StageEventCapture[]
                 {
@@ -279,14 +474,19 @@ public class BuffCategory : Category<BuffEntry>
             new("天人合一", "激活所有架势", BuffStackRule.Wasted, true, false),
 
             new("看破", "无效化敌人下一次攻击，并且反击", BuffStackRule.Add, true, false,
-                attacked: async (buff, d) =>
+                eventCaptures: new StageEventCapture[]
                 {
-                    if (!d.Recursive || d.Src == buff.Owner)
-                        return;
-
-                    await buff.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Pierce, d.Crit, false,
-                        d.Damaged);
-                    d.Cancel = true;
+                    new("WillAttack", async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (!d.Recursive) return;
+                        if (d.Src != b.Owner && d.Tgt == b.Owner)
+                        {
+                            await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Pierce, d.Crit, false, d.Damaged);
+                            d.Cancel = true;
+                        }
+                    }),
                 }),
         });
     }

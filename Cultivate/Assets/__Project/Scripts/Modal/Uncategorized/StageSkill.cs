@@ -123,15 +123,21 @@ public class StageSkill
     public async Task Execute(StageEntity caster, bool recursive = true)
     {
         await _entry.Execute(caster, this, recursive);
-        RunUsedTimes += 1;
-        StageUsedTimes += 1;
+        if (_owner == caster)
+        {
+            RunUsedTimes += 1;
+            StageUsedTimes += 1;
+        }
     }
 
     public async Task ExecuteWithoutTween(StageEntity caster, bool recursive = true)
     {
         await _entry.ExecuteWithoutTween(caster, this, recursive);
-        RunUsedTimes += 1;
-        StageUsedTimes += 1;
+        if (_owner == caster)
+        {
+            RunUsedTimes += 1;
+            StageUsedTimes += 1;
+        }
     }
 
     public IEnumerable<StageSkill> Nexts(bool loop = false)

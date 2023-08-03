@@ -1338,6 +1338,7 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, skill, recursive) =>
                 {
                     await skill.ExhaustProcedure();
+                    await caster.BuffSelfProcedure("天人合一");
                 }),
 
             new("木剑", new CLLibrary.Range(4, 5), new SkillDescription((j, dj) => $"18攻\n架势：暴击"), WuXing.Tu, 1,

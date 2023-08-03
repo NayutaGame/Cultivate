@@ -27,18 +27,6 @@ public class StageEnvironment : GDictionary
         return d;
     }
 
-    public event Func<ExhaustDetails, Task> AnyExhaustEvent;
-    public async Task AnyExhaust(ExhaustDetails d)
-    {
-        if (AnyExhaustEvent != null) await AnyExhaustEvent(d);
-    }
-
-    public event Func<ExhaustDetails, Task> AnyExhaustedEvent;
-    public async Task AnyExhausted(ExhaustDetails d)
-    {
-        if (AnyExhaustedEvent != null) await AnyExhaustedEvent(d);
-    }
-
     public async Task FormationProcedure(StageEntity owner, FormationEntry formation, bool recursive = true, bool cancel = false)
         => await FormationProcedure(new FormationDetails(owner, formation, recursive, cancel));
     public async Task FormationProcedure(FormationDetails d)
@@ -86,8 +74,7 @@ public class StageEnvironment : GDictionary
             StageEntity src = d.Src;
             StageEntity tgt = d.Tgt;
 
-            await src.Attack(d);
-            await tgt.Attacked(d);
+            await InvokeStageEvent("WillAttack", d);
 
             if (d.Cancel)
             {
@@ -95,9 +82,9 @@ public class StageEnvironment : GDictionary
                 continue;
             }
 
-            if (!d.Pierce && d.Evade) // 提取事件 target.Evade(attackDetails);
+            if (!d.Pierce && d.Evade)
             {
-                await tgt.Evaded(new EvadeDetails(src, tgt, d.Value));
+                await InvokeStageEvent("DidEvade", d);
                 _report.Append($"    攻击被闪避");
                 continue;
             }
@@ -105,6 +92,7 @@ public class StageEnvironment : GDictionary
             if (d.Value == 0)
             {
                 _report.Append($"    攻击为0");
+                await InvokeStageEvent("DidAttack", d);
                 continue;
             }
 
@@ -117,6 +105,7 @@ public class StageEnvironment : GDictionary
                 if (d.Value == 0) // undamage?.Invoke();
                 {
                     _report.Append($"    攻击被格挡");
+                    await InvokeStageEvent("DidAttack", d);
                     continue;
                 }
             }
@@ -146,15 +135,7 @@ public class StageEnvironment : GDictionary
                     await HealProcedure(src, src, damageDetails.Value);
             }
 
-            // if (target.IsDead())
-            // {
-            //     target.Killed(attackDetails);
-            //     AnyKilled(attackDetails);
-            //
-            //     kill?.Invoke();
-            //     source.Kill(attackDetails);
-            //     AnyKill(attackDetails);
-            // }
+            await InvokeStageEvent("DidAttack", d);
         }
     }
 
@@ -175,8 +156,7 @@ public class StageEnvironment : GDictionary
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
 
-        await src.Damage(d);
-        await tgt.Damaged(d);
+        await InvokeStageEvent("WillDamage", d);
 
         if (d.Cancel)
         {
@@ -191,11 +171,12 @@ public class StageEnvironment : GDictionary
             d.Undamaged?.Invoke(d);
             return d;
         }
-        else
-        {
-            d.Damaged?.Invoke(d);
-            return d;
-        }
+
+        d.Damaged?.Invoke(d);
+
+        await InvokeStageEvent("DidDamage", d);
+
+        return d;
     }
 
     public async Task HealProcedure(StageEntity src, StageEntity tgt, int value)
@@ -205,8 +186,7 @@ public class StageEnvironment : GDictionary
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
 
-        await src.Heal(d);
-        await tgt.Healed(d);
+        await InvokeStageEvent("WillHeal", d);
 
         if (d.Cancel)
             return;
@@ -230,6 +210,8 @@ public class StageEnvironment : GDictionary
             await _report.PlayTween(new HealTweenDescriptor(d));
         }
         _report.Append($"    生命变成了${tgt.Hp}");
+
+        await InvokeStageEvent("DidHeal", d);
     }
 
     public async Task BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
@@ -285,13 +267,15 @@ public class StageEnvironment : GDictionary
         => await ArmorGainProcedure(new ArmorGainDetails(src, tgt, value));
     public async Task ArmorGainProcedure(ArmorGainDetails d)
     {
-        await d.Src.ArmorGain(d);
-        await d.Tgt.ArmorGained(d);
+        await InvokeStageEvent("ArmorWillGain", d);
+
         if (d.Cancel)
             return;
 
         d.Tgt.Armor += d.Value;
         _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
+
+        await InvokeStageEvent("ArmorDidGain", d);
     }
 
     public async Task ArmorLoseProcedure(StageEntity src, StageEntity tgt, int value)
@@ -316,14 +300,15 @@ public class StageEnvironment : GDictionary
         => await DispelProcedure(new DispelDetails(src, tgt, buffEntry, stack, friendly, recursive));
     public async Task DispelProcedure(DispelDetails d)
     {
-        await d.Tgt.Dispel(d);
-        if (d.Cancel) return;
+        await InvokeStageEvent("WillDispel", d);
+
+        if (d.Cancel)
+            return;
 
         Buff b = d.Src.FindBuff(d._buffEntry);
         b.Stack = Mathf.Max(0, b.Stack - d._stack);
 
-        if (d.Cancel) return;
-        await d.Tgt.Dispelled(d);
+        await InvokeStageEvent("DidDispel", d);
     }
 
     public async Task ExhaustProcedure(StageEntity owner, StageSkill skill, bool forRun)
@@ -336,12 +321,11 @@ public class StageEnvironment : GDictionary
         if (d.Skill.Exhausted)
             return;
 
-        await AnyExhaust(d);
+        await InvokeStageEvent("WillExhaust", d);
 
         d.Skill.Exhausted = true;
-        await d.Owner.Exhausted(d);
 
-        await AnyExhausted(d);
+        await InvokeStageEvent("DidExhaust", d);
     }
 
     private Dictionary<string, Func<object>> _accessors;
@@ -354,7 +338,7 @@ public class StageEnvironment : GDictionary
     public StageReport Report => _report;
 
     public Dictionary<string, Func<StageEventDetails, Task>> _stageEventTriggerDict;
-    private async Task InvokeStageEvent(string eventId, StageEventDetails stageEventDetails)
+    public async Task InvokeStageEvent(string eventId, StageEventDetails stageEventDetails)
     {
         if (!_stageEventTriggerDict.ContainsKey(eventId))
             return;
@@ -463,7 +447,7 @@ public class StageEnvironment : GDictionary
             manaShortageBrief[p + RunManager.SkillStartFromJingJie[_entities[0].RunEntity.GetJingJie()]] = true;
         }
 
-        async Task StopWriting()
+        async Task StopWriting(StageEventDetails d)
         {
             stopWriting = true;
         }
@@ -476,7 +460,14 @@ public class StageEnvironment : GDictionary
         await hero.StartStage();
 
         hero.ManaShortageEvent += WriteManaShortage;
-        hero.EndRoundEvent += StopWriting;
+        if (_stageEventTriggerDict.ContainsKey("EndRound"))
+        {
+            _stageEventTriggerDict["EndRound"] += StopWriting;
+        }
+        else
+        {
+            _stageEventTriggerDict["EndRound"] = StopWriting;
+        }
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
@@ -486,7 +477,7 @@ public class StageEnvironment : GDictionary
         }
 
         hero.ManaShortageEvent -= WriteManaShortage;
-        hero.EndRoundEvent -= StopWriting;
+        _stageEventTriggerDict["EndRound"] -= StopWriting;
 
         return manaShortageBrief;
     }

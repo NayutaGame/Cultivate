@@ -42,7 +42,8 @@ public class DesignerEnvironment
             rm.Battle.SkillInventory.AddSkills(skills);
         }
 
-        rm.SkillPool.TryDrawSkill(out RunSkill skill, pred: e => e.Name == "少阴");
+        // rm.SkillPool.TryDrawSkill(out RunSkill skill, pred: e => e.Name == "少阴");
+        rm.SkillPool.TryDrawSkill(out RunSkill skill, pred: e => e.Name == "少阳");
         rm.Battle.SkillInventory.AddSkill(skill);
     }
 

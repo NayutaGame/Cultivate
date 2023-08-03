@@ -54,15 +54,21 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 2;
                     },
-                    dispelled: async (formation, d) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        if (!d._friendly) return;
-                        if (d._stack <= 0) return;
+                        new("DidDispel", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            DispelDetails d = (DispelDetails)stageEventDetails;
 
-                        BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
-                        if (!buffs.Contains(d._buffEntry)) return;
+                            if (!(f.Owner == d.Src && f.Owner == d.Tgt)) return;
+                            if (d._stack <= 0) return;
 
-                        await d.Tgt.BuffSelfProcedure(d._buffEntry, 2, recursive: false);
+                            BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
+                            if (!buffs.Contains(d._buffEntry)) return;
+
+                            await d.Tgt.BuffSelfProcedure(d._buffEntry, 2, recursive: false);
+                        }),
                     }),
                 new FormationEntry(JingJie.YuanYing, "有两个五行，都不少于5张", "主动消耗锋锐\\格挡\\闪避\\力量\\灼烧时，返还1点",
                     canActivate: (entity, args) =>
@@ -72,15 +78,21 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 2;
                     },
-                    dispelled: async (formation, d) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        if (!d._friendly) return;
-                        if (d._stack <= 0) return;
+                        new("DidDispel", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            DispelDetails d = (DispelDetails)stageEventDetails;
 
-                        BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
-                        if (!buffs.Contains(d._buffEntry)) return;
+                            if (!(f.Owner == d.Src && f.Owner == d.Tgt)) return;
+                            if (d._stack <= 0) return;
 
-                        await d.Tgt.BuffSelfProcedure(d._buffEntry, recursive: false);
+                            BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
+                            if (!buffs.Contains(d._buffEntry)) return;
+
+                            await d.Tgt.BuffSelfProcedure(d._buffEntry, recursive: false);
+                        }),
                     }),
             }),
 
@@ -214,9 +226,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         await owner.BuffOppoProcedure("跳回合", 2);
                     },
-                    startRound: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffOppoProcedure("跳回合");
+                        new("StartRound", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            RoundDetails d = (RoundDetails)stageEventDetails;
+
+                            if (f.Owner == d.Owner)
+                                await f.Owner.BuffOppoProcedure("跳回合");
+                        }),
                     }),
                 new FormationEntry(JingJie.YuanYing, "有至少5张带有二动的牌", "战斗开始时，对方遭受2跳回合",
                     canActivate: (entity, args) =>
@@ -245,19 +264,33 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.ExhaustedCount == 0 && entity.GetJingJie() >= JingJie.HuaShen;
                     },
-                    anyExhausted: async (formation, owner, d) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await d.Skill.Execute(owner, false);
-                        await d.Skill.Execute(owner, false);
+                        new("DidExhaust", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            ExhaustDetails d = (ExhaustDetails)stageEventDetails;
+                            if (f.Owner != d.Owner.Opponent())
+                                return;
+                            await d.Skill.Execute(f.Owner);
+                            await d.Skill.Execute(f.Owner);
+                        }),
                     }),
                 new FormationEntry(JingJie.YuanYing, "无消耗牌，角色境界不低于元婴", "对方使用消耗牌后，自己也使用1次",
                     canActivate: (entity, args) =>
                     {
                         return args.ExhaustedCount == 0 && entity.GetJingJie() >= JingJie.YuanYing;
                     },
-                    anyExhausted: async (formation, owner, d) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await d.Skill.Execute(owner, false);
+                        new("DidExhaust", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            ExhaustDetails d = (ExhaustDetails)stageEventDetails;
+                            if (f.Owner != d.Owner.Opponent())
+                                return;
+                            await d.Skill.Execute(f.Owner);
+                        }),
                     }),
             }),
 
