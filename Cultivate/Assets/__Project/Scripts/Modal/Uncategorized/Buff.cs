@@ -58,10 +58,6 @@ public class Buff : StageEventListener
     public void Register()
     {
         if (_entry._stackChanged != null) StackChangedEvent += StackChanged;
-        if (_entry._startStage != null) _owner.StartStageEvent += StartStage;
-        if (_entry._endStage != null) _owner.EndStageEvent += EndStage;
-        if (_entry._startTurn != null) _owner.StartTurnEvent += StartTurn;
-        if (_entry._endTurn != null) _owner.EndTurnEvent += EndTurn;
         if (_entry._buff      != null) _owner.Buff.Add            (_entry._buff.Item1,      _Buff);
         if (_entry._buffed    != null) _owner.Buffed.Add          (_entry._buffed.Item1,    Buffed);
 
@@ -84,10 +80,6 @@ public class Buff : StageEventListener
     public void Unregister()
     {
         if (_entry._stackChanged != null) StackChangedEvent -= StackChanged;
-        if (_entry._startStage != null) _owner.StartStageEvent -= StartStage;
-        if (_entry._endStage != null) _owner.EndStageEvent -= EndStage;
-        if (_entry._startTurn != null) _owner.StartTurnEvent -= StartTurn;
-        if (_entry._endTurn != null) _owner.EndTurnEvent -= EndTurn;
         if (_entry._buff      != null) _owner.Buff.Remove            (_Buff);
         if (_entry._buffed    != null) _owner.Buffed.Remove          (Buffed);
 
@@ -110,10 +102,6 @@ public class Buff : StageEventListener
         if (_entry._stackChanged != null) _entry._stackChanged(this, _owner);
     }
 
-    private async Task StartStage          () =>                   await _entry._startStage    (this, _owner);
-    private async Task EndStage            () =>                   await _entry._endStage      (this, _owner);
-    private async Task StartTurn           (TurnDetails d) =>      await _entry._startTurn     (this, d);
-    private async Task EndTurn             (TurnDetails d) =>      await _entry._endTurn       (this, d);
     private async Task<BuffDetails> _Buff  (BuffDetails d) =>      await _entry._buff.Item2    (this, d);
     private async Task<BuffDetails> Buffed (BuffDetails d) =>      await _entry._buffed.Item2  (this, d);
 }

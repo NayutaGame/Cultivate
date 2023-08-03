@@ -390,7 +390,7 @@ public class StageEnvironment : GDictionary
         foreach (var e in _entities)
         {
             e._p = -1;
-            await e.StartStage();
+            await InvokeStageEvent("StartStage", new StageDetails(e));
         }
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
@@ -414,8 +414,8 @@ public class StageEnvironment : GDictionary
             whosTurn = 1 - whosTurn;
         }
 
-        await _entities[1].EndStage();
-        await _entities[0].EndStage();
+        await InvokeStageEvent("EndStage", new StageDetails(_entities[1]));
+        await InvokeStageEvent("EndStage", new StageDetails(_entities[0]));
         ForceCommit();
     }
 
@@ -457,7 +457,7 @@ public class StageEnvironment : GDictionary
         hero._p = -1;
 
         await StartFormation();
-        await hero.StartStage();
+        await InvokeStageEvent("StartStage", new StageDetails(hero));
 
         hero.ManaShortageEvent += WriteManaShortage;
         if (_stageEventTriggerDict.ContainsKey("EndRound"))

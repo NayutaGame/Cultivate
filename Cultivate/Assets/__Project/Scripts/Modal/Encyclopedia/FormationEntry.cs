@@ -39,10 +39,6 @@ public class FormationEntry
     public Func<Formation, StageEntity, Task> _lose;
     public Func<Formation, StageEntity, FormationDetails, Task<FormationDetails>> _anyFormationAdd;
     public Func<Formation, StageEntity, FormationDetails, Task<FormationDetails>> _anyFormationAdded;
-    public Func<Formation, StageEntity, Task> _startStage;
-    public Func<Formation, StageEntity, Task> _endStage;
-    public Func<Formation, TurnDetails, Task> _startTurn;
-    public Func<Formation, TurnDetails, Task> _endTurn;
     public Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> _buff;
     public Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> _anyBuff;
     public Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> _buffed;
@@ -60,10 +56,6 @@ public class FormationEntry
     /// <param name="lose">失去时的额外行为</param>
     /// <param name="anyFormationAdd">任何Formation Add时的额外行为，结算之前</param>
     /// <param name="anyFormationAdded">任何Formation Add时的额外行为，结算之后</param>
-    /// <param name="startStage">Stage开始时的额外行为</param>
-    /// <param name="endStage">Stage结束时的额外行为</param>
-    /// <param name="startTurn">Turn开始时的额外行为</param>
-    /// <param name="endTurn">Turn结束时的额外行为</param>
     /// <param name="buff">受到Buff时的额外行为，结算之前</param>
     /// <param name="anyBuff">任何人受到Buff时的额外行为，结算之前</param>
     /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
@@ -74,10 +66,6 @@ public class FormationEntry
         Func<Formation, StageEntity, Task> lose = null,
         Func<Formation, StageEntity, FormationDetails, Task<FormationDetails>> anyFormationAdd = null,
         Func<Formation, StageEntity, FormationDetails, Task<FormationDetails>> anyFormationAdded = null,
-        Func<Formation, StageEntity, Task> startStage = null,
-        Func<Formation, StageEntity, Task> endStage = null,
-        Func<Formation, TurnDetails, Task> startTurn = null,
-        Func<Formation, TurnDetails, Task> endTurn = null,
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> buff = null,
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> anyBuff = null,
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> buffed = null,
@@ -96,10 +84,6 @@ public class FormationEntry
 
         _anyFormationAdd = anyFormationAdd;
         _anyFormationAdded = anyFormationAdded;
-        _startStage = startStage;
-        _endStage = endStage;
-        _startTurn = startTurn;
-        _endTurn = endTurn;
 
         _buff = buff;
         _anyBuff = anyBuff;

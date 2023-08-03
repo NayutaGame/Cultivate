@@ -222,12 +222,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.SwiftCount >= 6;
                     },
-                    startStage: async (formation, owner) =>
-                    {
-                        await owner.BuffOppoProcedure("跳回合", 2);
-                    },
                     eventCaptures: new StageEventCapture[]
                     {
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.BuffOppoProcedure("跳回合", 2);
+                        }),
                         new("StartRound", async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
@@ -242,18 +246,32 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.SwiftCount >= 5;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffOppoProcedure("跳回合", 2);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.BuffOppoProcedure("跳回合", 2);
+                        }),
                     }),
                 new FormationEntry(JingJie.JinDan, "有至少4张带有二动的牌", "战斗开始时，对方遭受1跳回合",
                     canActivate: (entity, args) =>
                     {
                         return args.SwiftCount >= 4;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffOppoProcedure("跳回合");
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.BuffOppoProcedure("跳回合");
+                        }),
                     }),
             }),
 
@@ -301,39 +319,72 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.NonAttackCount >= 9;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.ArmorGainSelfProcedure(30);
-                    },
-                    startTurn: async (formation, d) =>
-                    {
-                        await d.Owner.ArmorGainSelfProcedure(3);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.ArmorGainSelfProcedure(30);
+                        }),
+                        new("StartTurn", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            TurnDetails d = (TurnDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await d.Owner.ArmorGainSelfProcedure(3);
+                        }),
                     }),
                 new FormationEntry(JingJie.YuanYing, "不少于7张非攻击牌", "战斗开始护甲+20，每回合护甲+2",
                     canActivate: (entity, args) =>
                     {
                         return args.NonAttackCount >= 7;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.ArmorGainSelfProcedure(20);
-                    },
-                    startTurn: async (formation, d) =>
-                    {
-                        await d.Owner.ArmorGainSelfProcedure(2);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.ArmorGainSelfProcedure(20);
+                        }),
+                        new("StartTurn", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            TurnDetails d = (TurnDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await d.Owner.ArmorGainSelfProcedure(2);
+                        }),
                     }),
                 new FormationEntry(JingJie.JinDan, "不少于5张非攻击牌", "战斗开始护甲+10，每回合护甲+1",
                     canActivate: (entity, args) =>
                     {
                         return args.NonAttackCount >= 5;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.ArmorGainSelfProcedure(10);
-                    },
-                    startTurn: async (formation, d) =>
-                    {
-                        await d.Owner.ArmorGainSelfProcedure(1);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.ArmorGainSelfProcedure(10);
+                        }),
+                        new("StartTurn", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            TurnDetails d = (TurnDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await d.Owner.ArmorGainSelfProcedure(1);
+                        }),
                     }),
             }),
 
@@ -344,27 +395,48 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.TotalCostCount >= 20;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffSelfProcedure("灵气", 7);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.BuffSelfProcedure("灵气", 7);
+                        }),
                     }),
                 new FormationEntry(JingJie.YuanYing, "费用消耗超过16", "战斗开始时，灵气+5",
                     canActivate: (entity, args) =>
                     {
                         return args.TotalCostCount >= 16;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffSelfProcedure("灵气", 5);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.BuffSelfProcedure("灵气", 5);
+                        }),
                     }),
                 new FormationEntry(JingJie.JinDan, "费用消耗超过12", "战斗开始时，灵气+3",
                     canActivate: (entity, args) =>
                     {
                         return args.TotalCostCount >= 12;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffSelfProcedure("灵气", 3);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.BuffSelfProcedure("灵气", 3);
+                        }),
                     }),
             }),
 
@@ -375,27 +447,48 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.HighestConsecutiveAttackCount >= 7;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffSelfProcedure("力量", 5);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.BuffSelfProcedure("力量", 5);
+                        }),
                     }),
                 new FormationEntry(JingJie.YuanYing, "连续6张攻击牌", "战斗开始时，力量+4",
                     canActivate: (entity, args) =>
                     {
                         return args.HighestConsecutiveAttackCount >= 6;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffSelfProcedure("力量", 4);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.BuffSelfProcedure("力量", 4);
+                        }),
                     }),
                 new FormationEntry(JingJie.JinDan, "连续5张攻击牌", "战斗开始时，力量+3",
                     canActivate: (entity, args) =>
                     {
                         return args.HighestConsecutiveAttackCount >= 5;
                     },
-                    startStage: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffSelfProcedure("力量", 3);
+                        new("StartStage", async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            StageDetails d = (StageDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+
+                            await f.Owner.BuffSelfProcedure("力量", 3);
+                        }),
                     }),
             }),
         });

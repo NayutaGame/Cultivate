@@ -29,10 +29,6 @@ public class BuffEntry : Entry, IAnnotation
     public Func<Buff, StageEntity, int, Task> _gain;
     public Func<Buff, StageEntity, Task> _lose;
     public Func<Buff, StageEntity, Task> _stackChanged;
-    public Func<Buff, StageEntity, Task> _startStage;
-    public Func<Buff, StageEntity, Task> _endStage;
-    public Func<Buff, TurnDetails, Task> _startTurn;
-    public Func<Buff, TurnDetails, Task> _endTurn;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuff;
     public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buffed;
@@ -51,10 +47,6 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="gain">获得时的额外行为</param>
     /// <param name="lose">失去时的额外行为</param>
     /// <param name="stackChanged">层数改变时的额外行为</param>
-    /// <param name="startStage">Stage开始时的额外行为</param>
-    /// <param name="endStage">Stage结束时的额外行为</param>
-    /// <param name="startTurn">Turn开始时的额外行为</param>
-    /// <param name="endTurn">Turn结束时的额外行为</param>
     /// <param name="buff">受到Buff时的额外行为，结算之前</param>
     /// <param name="anyBuff">任何人受到Buff时的额外行为，结算之前</param>
     /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
@@ -64,10 +56,6 @@ public class BuffEntry : Entry, IAnnotation
         Func<Buff, StageEntity, int, Task> gain = null,
         Func<Buff, StageEntity, Task> lose = null,
         Func<Buff, StageEntity, Task> stackChanged = null,
-        Func<Buff, StageEntity, Task> startStage = null,
-        Func<Buff, StageEntity, Task> endStage = null,
-        Func<Buff, TurnDetails, Task> startTurn = null,
-        Func<Buff, TurnDetails, Task> endTurn = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuff = null,
         Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buffed = null,
@@ -84,11 +72,6 @@ public class BuffEntry : Entry, IAnnotation
         _gain = gain;
         _lose = lose;
         _stackChanged = stackChanged;
-
-        _startStage = startStage;
-        _endStage = endStage;
-        _startTurn = startTurn;
-        _endTurn = endTurn;
 
         _buff = buff;
         _anyBuff = anyBuff;

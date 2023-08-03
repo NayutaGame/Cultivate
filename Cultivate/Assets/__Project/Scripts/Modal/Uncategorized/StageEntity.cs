@@ -10,30 +10,6 @@ using Unity.VisualScripting;
 
 public class StageEntity : GDictionary
 {
-    public event Func<Task> StartStageEvent;
-    public async Task StartStage()
-    {
-        if (StartStageEvent != null) await StartStageEvent();
-    }
-
-    public event Func<Task> EndStageEvent;
-    public async Task EndStage()
-    {
-        if (EndStageEvent != null) await EndStageEvent();
-    }
-
-    public event Func<TurnDetails, Task> StartTurnEvent;
-    public async Task StartTurn(TurnDetails d)
-    {
-        if (StartTurnEvent != null) await StartTurnEvent(d);
-    }
-
-    public event Func<TurnDetails, Task> EndTurnEvent;
-    public async Task EndTurn(TurnDetails d)
-    {
-        if (EndTurnEvent != null) await EndTurnEvent(d);
-    }
-
     public event Func<int, Task> ManaShortageEvent;
     public async Task ManaShortage(int p)
     {
@@ -101,7 +77,7 @@ public class StageEntity : GDictionary
         UltraSwift = false;
         Swift = false;
 
-        await StartTurn(new TurnDetails(this, _p));
+        await _env.InvokeStageEvent("StartTurn", new TurnDetails(this, _p));
 
         bool skipTurn = await TryConsumeProcedure("跳回合");
         if (!skipTurn)
@@ -123,7 +99,7 @@ public class StageEntity : GDictionary
             }
         }
 
-        await EndTurn(new TurnDetails(this, _p));
+        await _env.InvokeStageEvent("EndTurn", new TurnDetails(this, _p));
     }
 
     private async Task Step()
@@ -253,8 +229,15 @@ public class StageEntity : GDictionary
         Buffed.Add(0, GainedEvadeRecorder);
         Buffed.Add(0, GainedBurningRecorder);
 
-        StartTurnEvent += DefaultStartTurn;
-        EndTurnEvent += DefaultEndTurn;
+        if (_env._stageEventTriggerDict.ContainsKey("StartTurn"))
+        {
+            _env._stageEventTriggerDict["StartTurn"] += DefaultStartTurn;
+        }
+        else
+        {
+            _env._stageEventTriggerDict["StartTurn"] = DefaultStartTurn;
+        }
+
         LoseHpEvent += DefaultLoseHp;
 
         MaxHp = _runEntity.GetFinalHealth();
@@ -280,8 +263,8 @@ public class StageEntity : GDictionary
         Buffed.Remove(GainedEvadeRecorder);
         Buffed.Remove(GainedBurningRecorder);
 
-        StartTurnEvent -= DefaultStartTurn;
-        EndTurnEvent -= DefaultEndTurn;
+        _env._stageEventTriggerDict["StartTurn"] -= DefaultStartTurn;
+
         LoseHpEvent -= DefaultLoseHp;
     }
 
@@ -321,8 +304,9 @@ public class StageEntity : GDictionary
         return d;
     }
 
-    protected async Task DefaultStartTurn(TurnDetails d) => await DesignerEnvironment.DefaultStartTurn(this);
-    protected async Task DefaultEndTurn(TurnDetails d) { }
+    protected async Task DefaultStartTurn(StageEventDetails d)
+        => await DesignerEnvironment.DefaultStartTurn(this, d);
+
     protected async Task DefaultLoseHp() { }
 
     #region Formation
