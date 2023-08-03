@@ -99,6 +99,7 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
     /// <param name="anyBuffed">任何人受到Buff时的额外行为，结算之后</param>
     /// <param name="exhaust">被消耗时的额外行动</param>
+    /// <param name="eventCaptures">事件捕获</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
         Func<Buff, StageEntity, int, Task> gain = null,
         Func<Buff, StageEntity, Task> lose = null,

@@ -68,6 +68,8 @@ public class FormationEntry
     public Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> _anyBuffed;
     public Func<Formation, ExhaustDetails, Task> _exhaust;
 
+    public Dictionary<string, StageEventCapture> _eventCaptureDict;
+
     /// <summary>
     /// 定义一个Formation
     /// </summary>
@@ -106,6 +108,7 @@ public class FormationEntry
     /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
     /// <param name="anyBuffed">任何人受到Buff时的额外行为，结算之后</param>
     /// <param name="exhaust">被消耗时的额外行动</param>
+    /// <param name="eventCaptures">事件捕获</param>
     public FormationEntry(JingJie jingJie, string conditionDescription, string rewardDescription, Func<RunEntity, FormationArguments, bool> canActivate,
         Func<Formation, StageEntity, Task> gain = null,
         Func<Formation, StageEntity, Task> lose = null,
@@ -138,7 +141,8 @@ public class FormationEntry
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> anyBuff = null,
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> buffed = null,
         Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>> anyBuffed = null,
-        Func<Formation, ExhaustDetails, Task> exhaust = null
+        Func<Formation, ExhaustDetails, Task> exhaust = null,
+        params StageEventCapture[] eventCaptures
     )
     {
         _jingJie = jingJie;
@@ -183,5 +187,9 @@ public class FormationEntry
         _anyBuffed = anyBuffed;
 
         _exhaust = exhaust;
+
+        _eventCaptureDict = new Dictionary<string, StageEventCapture>();
+        foreach (var stageEventCapture in eventCaptures)
+            _eventCaptureDict[stageEventCapture.EventId] = stageEventCapture;
     }
 }

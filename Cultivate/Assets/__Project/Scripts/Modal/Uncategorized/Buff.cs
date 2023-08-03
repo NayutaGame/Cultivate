@@ -8,7 +8,7 @@ using CLLibrary;
 /// <summary>
 /// Buff
 /// </summary>
-public class Buff
+public class Buff : StageEventListener
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -43,6 +43,8 @@ public class Buff
     /// 是否可驱散
     /// </summary>
     public bool Dispellable => _entry.Dispellable;
+
+    private Dictionary<string, Func<StageEventDetails, Task>> _eventPropagatorDict;
 
     public Buff(StageEntity owner, BuffEntry entry, int stack = 1)
     {
@@ -172,6 +174,4 @@ public class Buff
     private async Task<BuffDetails> _Buff  (BuffDetails d) =>      await _entry._buff.Item2    (this, d);
     private async Task<BuffDetails> Buffed (BuffDetails d) =>      await _entry._buffed.Item2  (this, d);
     private async Task Exhaust             (ExhaustDetails d) =>   await _entry._exhaust       (this, d);
-
-    private Dictionary<string, Func<StageEventDetails, Task>> _eventPropagatorDict;
 }

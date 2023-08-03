@@ -55,13 +55,14 @@ public class BuffCategory : Category<BuffEntry>
             new("护甲回收", "下一次护甲减少时，加回", BuffStackRule.Add, true, false,
                 eventCaptures: new StageEventCapture[]
                 {
-                    new("ArmorDidLose", async (buff, eventDetails) =>
+                    new("ArmorDidLose", async (listener, eventDetails) =>
                     {
+                        Buff b = (Buff)listener;
                         ArmorLoseDetails d = (ArmorLoseDetails)eventDetails;
-                        if (buff.Owner == d.Tgt)
+                        if (b.Owner == d.Tgt)
                         {
-                            await buff.Owner.ArmorGainSelfProcedure(d.Value);
-                            buff.Stack -= 1;
+                            await b.Owner.ArmorGainSelfProcedure(d.Value);
+                            b.Stack -= 1;
                         }
                     }),
                 }),
@@ -266,11 +267,12 @@ public class BuffCategory : Category<BuffEntry>
             new("少阴", "施加减甲：额外+[层数]", BuffStackRule.Add, true, false,
                 eventCaptures: new StageEventCapture[]
                 {
-                    new("ArmorWillLose", async (buff, stageEventDetails) =>
+                    new("ArmorWillLose", async (listener, stageEventDetails) =>
                     {
+                        Buff b = (Buff)listener;
                         ArmorLoseDetails d = (ArmorLoseDetails)stageEventDetails;
-                        if (buff.Owner == d.Src && buff.Owner != d.Tgt)
-                            d.Value += buff.Stack;
+                        if (b.Owner == d.Src && b.Owner != d.Tgt)
+                            d.Value += b.Stack;
                     }),
                 }),
             new("永久暴击", "攻击附带暴击", BuffStackRule.Wasted, true, false),

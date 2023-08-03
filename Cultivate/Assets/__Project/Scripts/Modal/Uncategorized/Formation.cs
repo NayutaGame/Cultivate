@@ -1,12 +1,13 @@
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CLLibrary;
 
 /// <summary>
 /// Formation
 /// </summary>
-public class Formation
+public class Formation : StageEventListener
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -16,10 +17,14 @@ public class Formation
 
     public string GetName() => _entry.GetName();
 
+    private Dictionary<string, Func<StageEventDetails, Task>> _eventPropagatorDict;
+
     public Formation(StageEntity owner, FormationEntry entry)
     {
         _owner = owner;
         _entry = entry;
+
+        _eventPropagatorDict = new();
     }
 
     public void Register()
@@ -50,6 +55,19 @@ public class Formation
         if (_entry._buff      != null) _owner.Buff.Add            (_entry._buff.Item1,      _Buff);
         if (_entry._buffed    != null) _owner.Buffed.Add          (_entry._buffed.Item1,    Buffed);
         if (_entry._exhaust != null) _owner.ExhaustEvent += Exhaust;
+
+        foreach (string eventId in _entry._eventCaptureDict.Keys)
+        {
+            _eventPropagatorDict[eventId] = d => _entry._eventCaptureDict[eventId].Invoke(this, d);
+            if (_owner.Env._stageEventTriggerDict.ContainsKey(eventId))
+            {
+                _owner.Env._stageEventTriggerDict[eventId] += _eventPropagatorDict[eventId];
+            }
+            else
+            {
+                _owner.Env._stageEventTriggerDict[eventId] = _eventPropagatorDict[eventId];
+            }
+        }
     }
 
     public void Unregister()
@@ -82,6 +100,9 @@ public class Formation
         if (_entry._buff      != null) _owner.Buff.Remove            (_Buff);
         if (_entry._buffed    != null) _owner.Buffed.Remove          (Buffed);
         if (_entry._exhaust != null) _owner.ExhaustEvent -= Exhaust;
+
+        foreach (string eventId in _entry._eventCaptureDict.Keys)
+            _owner.Env._stageEventTriggerDict[eventId] -= _eventPropagatorDict[eventId];
     }
 
     public async Task Gain()
