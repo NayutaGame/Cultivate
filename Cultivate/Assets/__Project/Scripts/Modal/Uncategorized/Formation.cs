@@ -29,50 +29,31 @@ public class Formation : StageEventListener
 
     public void Register()
     {
-        if (_entry._anyFormationAdd != null) _owner.Env.AnyFormationAddEvent += AnyFormationAdd;
-        if (_entry._anyFormationAdded != null) _owner.Env.AnyFormationAddedEvent += AnyFormationAdded;
-        if (_entry._buff      != null) _owner.Buff.Add            (_entry._buff.Item1,      _Buff);
-        if (_entry._buffed    != null) _owner.Buffed.Add          (_entry._buffed.Item1,    Buffed);
-
         foreach (string eventId in _entry._eventCaptureDict.Keys)
         {
-            _eventPropagatorDict[eventId] = d => _entry._eventCaptureDict[eventId].Invoke(this, d);
-            if (_owner.Env._stageEventTriggerDict.ContainsKey(eventId))
-            {
-                _owner.Env._stageEventTriggerDict[eventId] += _eventPropagatorDict[eventId];
-            }
-            else
-            {
-                _owner.Env._stageEventTriggerDict[eventId] = _eventPropagatorDict[eventId];
-            }
+            StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
+            _eventPropagatorDict[eventId] = d => eventCapture.Invoke(this, d);
+
+            if (!_owner.Env._stageEventFuncQueueDict.ContainsKey(eventId))
+                _owner.Env._stageEventFuncQueueDict[eventId] = new();
+
+            _owner.Env._stageEventFuncQueueDict[eventId].Add(eventCapture.Order, _eventPropagatorDict[eventId]);
         }
     }
 
     public void Unregister()
     {
-        if (_entry._anyFormationAdd != null) _owner.Env.AnyFormationAddEvent -= AnyFormationAdd;
-        if (_entry._anyFormationAdded != null) _owner.Env.AnyFormationAddedEvent -= AnyFormationAdded;
-        if (_entry._buff      != null) _owner.Buff.Remove            (_Buff);
-        if (_entry._buffed    != null) _owner.Buffed.Remove          (Buffed);
-
         foreach (string eventId in _entry._eventCaptureDict.Keys)
-            _owner.Env._stageEventTriggerDict[eventId] -= _eventPropagatorDict[eventId];
+            _owner.Env._stageEventFuncQueueDict[eventId].Remove(_eventPropagatorDict[eventId]);
     }
 
     public async Task Gain()
     {
-        if (_entry._gain != null)
-            await _entry._gain.Invoke(this, _owner);
+        if (_entry._gain != null) await _entry._gain.Invoke(this, _owner);
     }
 
     public async Task Lose()
     {
-        if (_entry._lose != null)
-            await _entry._lose.Invoke(this, _owner);
+        if (_entry._lose != null) await _entry._lose.Invoke(this, _owner);
     }
-
-    private async Task<FormationDetails> AnyFormationAdd   (FormationDetails d) => await _entry._anyFormationAdd   (this, _owner, d);
-    private async Task<FormationDetails> AnyFormationAdded (FormationDetails d) => await _entry._anyFormationAdded (this, _owner, d);
-    private async Task<BuffDetails> _Buff                  (BuffDetails d) =>      await _entry._buff.Item2        (this, d);
-    private async Task<BuffDetails> Buffed                 (BuffDetails d) =>      await _entry._buffed.Item2      (this, d);
 }

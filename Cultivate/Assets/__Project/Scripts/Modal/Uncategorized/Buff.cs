@@ -58,20 +58,16 @@ public class Buff : StageEventListener
     public void Register()
     {
         if (_entry._stackChanged != null) StackChangedEvent += StackChanged;
-        if (_entry._buff      != null) _owner.Buff.Add            (_entry._buff.Item1,      _Buff);
-        if (_entry._buffed    != null) _owner.Buffed.Add          (_entry._buffed.Item1,    Buffed);
 
         foreach (string eventId in _entry._eventCaptureDict.Keys)
         {
-            _eventPropagatorDict[eventId] = d => _entry._eventCaptureDict[eventId].Invoke(this, d);
-            if (_owner.Env._stageEventTriggerDict.ContainsKey(eventId))
-            {
-                _owner.Env._stageEventTriggerDict[eventId] += _eventPropagatorDict[eventId];
-            }
-            else
-            {
-                _owner.Env._stageEventTriggerDict[eventId] = _eventPropagatorDict[eventId];
-            }
+            StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
+            _eventPropagatorDict[eventId] = d => eventCapture.Invoke(this, d);
+
+            if (!_owner.Env._stageEventFuncQueueDict.ContainsKey(eventId))
+                _owner.Env._stageEventFuncQueueDict[eventId] = new();
+
+            _owner.Env._stageEventFuncQueueDict[eventId].Add(eventCapture.Order, _eventPropagatorDict[eventId]);
         }
 
         StackChangedEvent?.Invoke();
@@ -80,11 +76,9 @@ public class Buff : StageEventListener
     public void Unregister()
     {
         if (_entry._stackChanged != null) StackChangedEvent -= StackChanged;
-        if (_entry._buff      != null) _owner.Buff.Remove            (_Buff);
-        if (_entry._buffed    != null) _owner.Buffed.Remove          (Buffed);
 
         foreach (string eventId in _entry._eventCaptureDict.Keys)
-            _owner.Env._stageEventTriggerDict[eventId] -= _eventPropagatorDict[eventId];
+            _owner.Env._stageEventFuncQueueDict[eventId].Remove(_eventPropagatorDict[eventId]);
     }
 
     public async Task Gain(int gain)
@@ -101,7 +95,4 @@ public class Buff : StageEventListener
     {
         if (_entry._stackChanged != null) _entry._stackChanged(this, _owner);
     }
-
-    private async Task<BuffDetails> _Buff  (BuffDetails d) =>      await _entry._buff.Item2    (this, d);
-    private async Task<BuffDetails> Buffed (BuffDetails d) =>      await _entry._buffed.Item2  (this, d);
 }

@@ -22,10 +22,6 @@ public class StageEntity : GDictionary
         if (LoseHpEvent != null) await LoseHpEvent();
     }
 
-    public FuncQueue<BuffDetails> Buff = new();
-
-    public FuncQueue<BuffDetails> Buffed = new();
-    //
     // public event Action OnStatsChangedEvent;
     // public void OnStatsChanged() => OnStatsChangedEvent?.Invoke();
     //
@@ -225,18 +221,17 @@ public class StageEntity : GDictionary
         SelfDamageRecord = 0;
         HealedRecord = 0;
 
-        Buffed.Add(0, HighestManaRecorder);
-        Buffed.Add(0, GainedEvadeRecorder);
-        Buffed.Add(0, GainedBurningRecorder);
+        if (!_env._stageEventFuncQueueDict.ContainsKey("DidBuff"))
+            _env._stageEventFuncQueueDict["DidBuff"] = new();
 
-        if (_env._stageEventTriggerDict.ContainsKey("StartTurn"))
-        {
-            _env._stageEventTriggerDict["StartTurn"] += DefaultStartTurn;
-        }
-        else
-        {
-            _env._stageEventTriggerDict["StartTurn"] = DefaultStartTurn;
-        }
+        _env._stageEventFuncQueueDict["DidBuff"].Add(0, HighestManaRecorder);
+        _env._stageEventFuncQueueDict["DidBuff"].Add(0, GainedEvadeRecorder);
+        _env._stageEventFuncQueueDict["DidBuff"].Add(0, GainedBurningRecorder);
+
+        if (!_env._stageEventFuncQueueDict.ContainsKey("StartTurn"))
+            _env._stageEventFuncQueueDict["StartTurn"] = new();
+
+        _env._stageEventFuncQueueDict["StartTurn"].Add(0, DefaultStartTurn);
 
         LoseHpEvent += DefaultLoseHp;
 
@@ -259,11 +254,11 @@ public class StageEntity : GDictionary
         RemoveAllFormations().GetAwaiter().GetResult();
         RemoveAllBuffs();
 
-        Buffed.Remove(HighestManaRecorder);
-        Buffed.Remove(GainedEvadeRecorder);
-        Buffed.Remove(GainedBurningRecorder);
+        _env._stageEventFuncQueueDict["DidBuff"].Remove(HighestManaRecorder);
+        _env._stageEventFuncQueueDict["DidBuff"].Remove(GainedEvadeRecorder);
+        _env._stageEventFuncQueueDict["DidBuff"].Remove(GainedBurningRecorder);
 
-        _env._stageEventTriggerDict["StartTurn"] -= DefaultStartTurn;
+        _env._stageEventFuncQueueDict["StartTurn"].Remove(DefaultStartTurn);
 
         LoseHpEvent -= DefaultLoseHp;
     }
@@ -277,8 +272,9 @@ public class StageEntity : GDictionary
         }
     }
 
-    public async Task<BuffDetails> HighestManaRecorder(BuffDetails d)
+    public async Task<BuffDetails> HighestManaRecorder(StageEventDetails stageEventDetails)
     {
+        BuffDetails d = (BuffDetails)stageEventDetails;
         if (d._buffEntry.Name != "灵气")
             return d;
 
@@ -286,8 +282,9 @@ public class StageEntity : GDictionary
         return d;
     }
 
-    public async Task<BuffDetails> GainedEvadeRecorder(BuffDetails d)
+    public async Task<BuffDetails> GainedEvadeRecorder(StageEventDetails stageEventDetails)
     {
+        BuffDetails d = (BuffDetails)stageEventDetails;
         if (d._buffEntry.Name != "闪避")
             return d;
 
@@ -295,8 +292,9 @@ public class StageEntity : GDictionary
         return d;
     }
 
-    public async Task<BuffDetails> GainedBurningRecorder(BuffDetails d)
+    public async Task<BuffDetails> GainedBurningRecorder(StageEventDetails stageEventDetails)
     {
+        BuffDetails d = (BuffDetails)stageEventDetails;
         if (d._buffEntry.Name != "灼烧")
             return d;
 

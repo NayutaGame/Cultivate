@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class StageEventDetails
 {
+    public bool Cancel;
 
+    protected StageEventDetails()
+    {
+        Cancel = false;
+    }
 }

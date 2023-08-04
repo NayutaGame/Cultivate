@@ -13,25 +13,11 @@ public class StageEnvironment : GDictionary
 {
     private static readonly int MAX_ACTION_COUNT = 120;
 
-    public event Func<FormationDetails, Task<FormationDetails>> AnyFormationAddEvent;
-    public async Task<FormationDetails> AnyFormationAdd(FormationDetails d)
-    {
-        if (AnyFormationAddEvent != null) return await AnyFormationAddEvent(d);
-        return d;
-    }
-
-    public event Func<FormationDetails, Task<FormationDetails>> AnyFormationAddedEvent;
-    public async Task<FormationDetails> AnyFormationAdded(FormationDetails d)
-    {
-        if (AnyFormationAddedEvent != null) return await AnyFormationAddedEvent(d);
-        return d;
-    }
-
-    public async Task FormationProcedure(StageEntity owner, FormationEntry formation, bool recursive = true, bool cancel = false)
-        => await FormationProcedure(new FormationDetails(owner, formation, recursive, cancel));
+    public async Task FormationProcedure(StageEntity owner, FormationEntry formation, bool recursive = true)
+        => await FormationProcedure(new FormationDetails(owner, formation, recursive));
     public async Task FormationProcedure(FormationDetails d)
     {
-        d = await AnyFormationAdd(d);
+        await InvokeStageEvent("FormationWillAdd", d);
         if (d.Cancel) return;
 
         Formation formation = new Formation(d.Owner, d._formation);
@@ -43,7 +29,7 @@ public class StageEnvironment : GDictionary
         _report.Append($"    {d._formation.GetName()} is set");
 
         if (d.Cancel) return;
-        d = await AnyFormationAdded(d);
+        await InvokeStageEvent("FormationDidAdd", d);
     }
 
     /// <summary>
@@ -218,7 +204,7 @@ public class StageEnvironment : GDictionary
         => await BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
     public async Task BuffProcedure(BuffDetails d)
     {
-        d = await d.Src.Buff.Evaluate(d);
+        await InvokeStageEvent("WillBuff", d);
         if (d.Cancel) return;
 
         Buff same = d.Tgt.FindBuff(d._buffEntry);
@@ -259,8 +245,7 @@ public class StageEnvironment : GDictionary
             _report.Append($"    {d._buffEntry.Name}: 0 -> {buff.Stack}");
         }
 
-        if (d.Cancel) return;
-        d = await d.Tgt.Buffed.Evaluate(d);
+        await InvokeStageEvent("DidBuff", d);
     }
 
     public async Task ArmorGainProcedure(StageEntity src, StageEntity tgt, int value)
@@ -337,14 +322,17 @@ public class StageEnvironment : GDictionary
     private StageReport _report;
     public StageReport Report => _report;
 
-    public Dictionary<string, Func<StageEventDetails, Task>> _stageEventTriggerDict;
+    public Dictionary<string, FuncQueue<StageEventDetails>> _stageEventFuncQueueDict;
     public async Task InvokeStageEvent(string eventId, StageEventDetails stageEventDetails)
     {
-        if (!_stageEventTriggerDict.ContainsKey(eventId))
+        if (!_stageEventFuncQueueDict.ContainsKey(eventId))
             return;
-        Func<StageEventDetails, Task> trigger = _stageEventTriggerDict[eventId];
-        if (trigger != null)
-            await trigger(stageEventDetails);
+        FuncQueue<StageEventDetails> funcQueue = _stageEventFuncQueueDict[eventId];
+        foreach (Func<StageEventDetails, Task> func in funcQueue.Traversal())
+        {
+            if (stageEventDetails.Cancel) return;
+            await func(stageEventDetails);
+        }
     }
 
     public StageEnvironment(RunEntity home, RunEntity away, bool useTween = false, bool useTimeline = false, bool useSb = false)
@@ -356,7 +344,7 @@ public class StageEnvironment : GDictionary
             { "Report",                () => _report },
         };
 
-        _stageEventTriggerDict = new();
+        _stageEventFuncQueueDict = new();
 
         _entities = new StageEntity[]
         {
@@ -460,14 +448,11 @@ public class StageEnvironment : GDictionary
         await InvokeStageEvent("StartStage", new StageDetails(hero));
 
         hero.ManaShortageEvent += WriteManaShortage;
-        if (_stageEventTriggerDict.ContainsKey("EndRound"))
-        {
-            _stageEventTriggerDict["EndRound"] += StopWriting;
-        }
-        else
-        {
-            _stageEventTriggerDict["EndRound"] = StopWriting;
-        }
+
+        if (!_stageEventFuncQueueDict.ContainsKey("EndRound"))
+            _stageEventFuncQueueDict["EndRound"] = new();
+
+        _stageEventFuncQueueDict["EndRound"].Add(0, StopWriting);
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
@@ -477,7 +462,7 @@ public class StageEnvironment : GDictionary
         }
 
         hero.ManaShortageEvent -= WriteManaShortage;
-        _stageEventTriggerDict["EndRound"] -= StopWriting;
+        _stageEventFuncQueueDict["EndRound"].Remove(StopWriting);
 
         return manaShortageBrief;
     }

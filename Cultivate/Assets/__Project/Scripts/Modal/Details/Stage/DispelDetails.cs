@@ -10,9 +10,8 @@ public class DispelDetails : StageEventDetails
     public int _stack;
     public bool _friendly;
     public bool _recursive;
-    public bool Cancel;
 
-    public DispelDetails(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true, bool cancel = false)
+    public DispelDetails(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
     {
         Src = src;
         Tgt = tgt;
@@ -20,6 +19,5 @@ public class DispelDetails : StageEventDetails
         _stack = stack;
         _friendly = friendly;
         _recursive = recursive;
-        Cancel = cancel;
     }
 }

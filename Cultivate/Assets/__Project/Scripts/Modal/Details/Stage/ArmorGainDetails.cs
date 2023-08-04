@@ -8,13 +8,11 @@ public class ArmorGainDetails : StageEventDetails
     public StageEntity Src;
     public StageEntity Tgt;
     public int Value;
-    public bool Cancel;
 
     public ArmorGainDetails(StageEntity src, StageEntity tgt, int value)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
-        Cancel = false;
     }
 }

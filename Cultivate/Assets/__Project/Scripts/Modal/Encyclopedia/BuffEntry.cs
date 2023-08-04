@@ -29,10 +29,6 @@ public class BuffEntry : Entry, IAnnotation
     public Func<Buff, StageEntity, int, Task> _gain;
     public Func<Buff, StageEntity, Task> _lose;
     public Func<Buff, StageEntity, Task> _stackChanged;
-    public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buff;
-    public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuff;
-    public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _buffed;
-    public Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> _anyBuffed;
 
     public Dictionary<string, StageEventCapture> _eventCaptureDict;
 
@@ -47,19 +43,11 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="gain">获得时的额外行为</param>
     /// <param name="lose">失去时的额外行为</param>
     /// <param name="stackChanged">层数改变时的额外行为</param>
-    /// <param name="buff">受到Buff时的额外行为，结算之前</param>
-    /// <param name="anyBuff">任何人受到Buff时的额外行为，结算之前</param>
-    /// <param name="buffed">受到Buff时的额外行为，结算之后</param>
-    /// <param name="anyBuffed">任何人受到Buff时的额外行为，结算之后</param>
     /// <param name="eventCaptures">事件捕获</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
         Func<Buff, StageEntity, int, Task> gain = null,
         Func<Buff, StageEntity, Task> lose = null,
         Func<Buff, StageEntity, Task> stackChanged = null,
-        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buff = null,
-        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuff = null,
-        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> buffed = null,
-        Tuple<int, Func<Buff, BuffDetails, Task<BuffDetails>>> anyBuffed = null,
         params StageEventCapture[] eventCaptures
     ) : base(name)
     {
@@ -72,11 +60,6 @@ public class BuffEntry : Entry, IAnnotation
         _gain = gain;
         _lose = lose;
         _stackChanged = stackChanged;
-
-        _buff = buff;
-        _anyBuff = anyBuff;
-        _buffed = buffed;
-        _anyBuffed = anyBuffed;
 
         _eventCaptureDict = new Dictionary<string, StageEventCapture>();
         foreach (var stageEventCapture in eventCaptures)

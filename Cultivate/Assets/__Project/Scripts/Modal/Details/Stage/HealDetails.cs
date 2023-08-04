@@ -11,15 +11,11 @@ public class HealDetails : StageEventDetails
     public int Value;
     public bool Penetrate;
 
-    public bool Cancel;
-
     public HealDetails(StageEntity src, StageEntity tgt, int value, bool penetrate = false)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
         Penetrate = penetrate;
-
-        Cancel = false;
     }
 }

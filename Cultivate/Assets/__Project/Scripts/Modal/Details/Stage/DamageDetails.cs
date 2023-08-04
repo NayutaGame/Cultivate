@@ -16,8 +16,6 @@ public class DamageDetails : StageEventDetails
     public Func<DamageDetails, Task> Damaged;
     public Func<DamageDetails, Task> Undamaged;
 
-    public bool Cancel;
-
     public DamageDetails(StageEntity src, StageEntity tgt, int value, bool recursive = true,
         Func<DamageDetails, Task> damaged = null,
         Func<DamageDetails, Task> undamaged = null)
@@ -29,7 +27,5 @@ public class DamageDetails : StageEventDetails
 
         Damaged = damaged;
         Undamaged = undamaged;
-
-        Cancel = false;
     }
 }

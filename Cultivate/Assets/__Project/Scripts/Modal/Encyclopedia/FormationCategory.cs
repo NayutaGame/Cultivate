@@ -13,7 +13,7 @@ public class FormationCategory : Category<FormationGroupEntry>
     {
         AddRange(new List<FormationGroupEntry>()
         {
-            new("一业常置阵", 1, formationEntries: new[]
+            new("一业常置阵", order: 1, formationEntries: new[]
             {
                 new FormationEntry(JingJie.HuaShen, "有且只有1种五行，不少于9张", "战斗开始时，使用前两位的卡",
                     canActivate: (entity, args) =>
@@ -56,7 +56,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("DidDispel", async (listener, stageEventDetails) =>
+                        new("DidDispel", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             DispelDetails d = (DispelDetails)stageEventDetails;
@@ -80,7 +80,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("DidDispel", async (listener, stageEventDetails) =>
+                        new("DidDispel", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             DispelDetails d = (DispelDetails)stageEventDetails;
@@ -106,17 +106,22 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 3;
                     },
-                    buff: new Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>>(0, async (formation, d) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        if (d._stack <= 0) return d;
+                        new("WillBuff", 0, async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            BuffDetails d = (BuffDetails)stageEventDetails;
 
-                        BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
-                        if (!buffs.Contains(d._buffEntry)) return d;
+                            if (f.Owner != d.Tgt) return;
+                            if (d._stack <= 0) return;
 
-                        d._stack += 2;
+                            BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
+                            if (!buffs.Contains(d._buffEntry)) return;
 
-                        return d;
-                    })),
+                            d._stack += 2;
+                        }),
+                    }),
                 new FormationEntry(JingJie.YuanYing, "有三个五行，都不少于3张", "获得锋锐\\格挡\\闪避\\力量\\灼烧时，额外1点",
                     canActivate: (entity, args) =>
                     {
@@ -125,20 +130,25 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 3;
                     },
-                    buff: new Tuple<int, Func<Formation, BuffDetails, Task<BuffDetails>>>(0, async (formation, d) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        if (d._stack <= 0) return d;
+                        new("WillBuff", 0, async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            BuffDetails d = (BuffDetails)stageEventDetails;
 
-                        BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
-                        if (!buffs.Contains(d._buffEntry)) return d;
+                            if (f.Owner != d.Tgt) return;
+                            if (d._stack <= 0) return;
 
-                        d._stack += 1;
+                            BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "闪避", "力量", "灼烧" };
+                            if (!buffs.Contains(d._buffEntry)) return;
 
-                        return d;
-                    })),
+                            d._stack += 1;
+                        }),
+                    }),
             }),
 
-            new("四元禁法阵", -3, formationEntries: new[]
+            new("四元禁法阵", order: -3, formationEntries: new[]
             {
                 new FormationEntry(JingJie.HuaShen, "有四个五行，都不少于3张", "双方所有阵法失效",
                     canActivate: (entity, args) =>
@@ -148,15 +158,20 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 4;
                     },
-                    anyFormationAdd: async (formation, owner, d) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        if (d._formation.GetName() != "四元禁法阵")
-                            d.Cancel = true;
-                        return d;
+                        new("FormationWillAdd", -3, async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            FormationDetails d = (FormationDetails)stageEventDetails;
+                            if (f.Owner != d.Owner) return;
+                            if (d._formation.GetName() != "四元禁法阵")
+                                d.Cancel = true;
+                        }),
                     }),
             }),
 
-            new("颠倒五行阵", -2, formationEntries: new[]
+            new("颠倒五行阵", order: -2, formationEntries: new[]
             {
                 new FormationEntry(JingJie.HuaShen, "有五种不同五行，都不少于2张", "复制对方的所有阵法，战斗开始时，空置位将复制对方同位置的卡，所有条件算作已激活",
                     canActivate: (entity, args) =>
@@ -181,15 +196,18 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                         await owner.BuffSelfProcedure("永久集中");
                     },
-                    anyFormationAdded: async (formation, owner, d) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        if (!d._recursive) return d;
-                        if (d._formation.GetName() == "颠倒五行阵") return d;
-                        if (d.Owner == owner) return d;
+                        new("FormationWillAdd", -2, async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            FormationDetails d = (FormationDetails)stageEventDetails;
+                            if (f.Owner == d.Owner) return;
+                            if (!d._recursive) return;
+                            if (d._formation.GetName() == "颠倒五行阵") return;
 
-                        await owner.FormationProcedure(d._formation, false);
-
-                        return d;
+                            await f.Owner.FormationProcedure(d._formation, false);
+                        }),
                     }),
             }),
 
@@ -224,7 +242,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -232,7 +250,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.BuffOppoProcedure("跳回合", 2);
                         }),
-                        new("StartRound", async (listener, stageEventDetails) =>
+                        new("StartRound", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             RoundDetails d = (RoundDetails)stageEventDetails;
@@ -248,7 +266,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -264,7 +282,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -275,7 +293,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     }),
             }),
 
-            new("八卦奇门阵", -1, formationEntries: new[]
+            new("八卦奇门阵", order: -1, formationEntries: new[]
             {
                 new FormationEntry(JingJie.HuaShen, "无消耗牌，角色境界不低于化神", "对方使用消耗牌后，自己也使用2次",
                     canActivate: (entity, args) =>
@@ -284,7 +302,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("DidExhaust", async (listener, stageEventDetails) =>
+                        new("DidExhaust", -1, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             ExhaustDetails d = (ExhaustDetails)stageEventDetails;
@@ -301,7 +319,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("DidExhaust", async (listener, stageEventDetails) =>
+                        new("DidExhaust", -1, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             ExhaustDetails d = (ExhaustDetails)stageEventDetails;
@@ -321,7 +339,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -329,7 +347,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(30);
                         }),
-                        new("StartTurn", async (listener, stageEventDetails) =>
+                        new("StartTurn", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -345,7 +363,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -353,7 +371,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(20);
                         }),
-                        new("StartTurn", async (listener, stageEventDetails) =>
+                        new("StartTurn", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -369,7 +387,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -377,7 +395,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(10);
                         }),
-                        new("StartTurn", async (listener, stageEventDetails) =>
+                        new("StartTurn", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -397,7 +415,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -413,7 +431,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -429,7 +447,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -449,7 +467,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -465,7 +483,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -481,7 +499,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", async (listener, stageEventDetails) =>
+                        new("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;

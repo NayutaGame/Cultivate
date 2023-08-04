@@ -28,8 +28,6 @@ public class AttackDetails : StageEventDetails
     public Func<DamageDetails, Task> Damaged;
     public Func<DamageDetails, Task> Undamaged;
 
-    public bool Cancel;
-
     public AttackDetails(StageEntity src, StageEntity tgt, int value,
         WuXing? wuxing,
         bool lifeSteal = false,
@@ -51,8 +49,6 @@ public class AttackDetails : StageEventDetails
         Recursive = recursive;
         Damaged = damaged;
         Undamaged = undamaged;
-
-        Cancel = false;
     }
 
     public AttackDetails Clone() => new(Src, Tgt, _value, WuXing, LifeSteal, Pierce, Crit, Evade, Recursive, Damaged, Undamaged);
