@@ -614,7 +614,7 @@ public class SkillCategory : Category<SkillEntry>
                     {
                         Buff b = caster.Opponent().FindBuff("灵气");
                         if (b != null)
-                            b.Stack -= 2 + skill.Dj;
+                            await b.SetDStack(2 + skill.Dj);
                     }
 
                     if (skill.IsEven || await caster.IsFocused())

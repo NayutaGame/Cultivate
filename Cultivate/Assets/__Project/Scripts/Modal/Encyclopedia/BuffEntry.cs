@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using CLLibrary;
-using UnityEngine;
-using UnityEngine.Analytics;
 
 public class BuffEntry : Entry, IAnnotation
 {
@@ -26,10 +22,6 @@ public class BuffEntry : Entry, IAnnotation
     private bool _dispellable;
     public bool Dispellable => _dispellable;
 
-    public Func<Buff, StageEntity, int, Task> _gain;
-    public Func<Buff, StageEntity, Task> _lose;
-    public Func<Buff, StageEntity, Task> _stackChanged;
-
     public Dictionary<string, StageEventCapture> _eventCaptureDict;
 
     /// <summary>
@@ -40,14 +32,8 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="buffStackRule">堆叠规则</param>
     /// <param name="friendly">是否有益</param>
     /// <param name="dispellable">是否可驱散</param>
-    /// <param name="gain">获得时的额外行为</param>
-    /// <param name="lose">失去时的额外行为</param>
-    /// <param name="stackChanged">层数改变时的额外行为</param>
     /// <param name="eventCaptures">事件捕获</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
-        Func<Buff, StageEntity, int, Task> gain = null,
-        Func<Buff, StageEntity, Task> lose = null,
-        Func<Buff, StageEntity, Task> stackChanged = null,
         params StageEventCapture[] eventCaptures
     ) : base(name)
     {
@@ -56,10 +42,6 @@ public class BuffEntry : Entry, IAnnotation
         _buffStackRule = buffStackRule;
         _friendly = friendly;
         _dispellable = dispellable;
-
-        _gain = gain;
-        _lose = lose;
-        _stackChanged = stackChanged;
 
         _eventCaptureDict = new Dictionary<string, StageEventCapture>();
         foreach (var stageEventCapture in eventCaptures)

@@ -17,6 +17,7 @@ public class Formation : StageEventListener
 
     public string GetName() => _entry.GetName();
 
+    public CLEventDict _eventDict;
     private Dictionary<string, Func<StageEventDetails, Task>> _eventPropagatorDict;
 
     public Formation(StageEntity owner, FormationEntry entry)
@@ -24,6 +25,7 @@ public class Formation : StageEventListener
         _owner = owner;
         _entry = entry;
 
+        _eventDict = new();
         _eventPropagatorDict = new();
     }
 
@@ -34,26 +36,31 @@ public class Formation : StageEventListener
             StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
             _eventPropagatorDict[eventId] = d => eventCapture.Invoke(this, d);
 
-            if (!_owner.Env._stageEventFuncQueueDict.ContainsKey(eventId))
-                _owner.Env._stageEventFuncQueueDict[eventId] = new();
-
-            _owner.Env._stageEventFuncQueueDict[eventId].Add(eventCapture.Order, _eventPropagatorDict[eventId]);
+            if (eventCapture is StageEnvironmentEventCapture)
+            {
+                _owner.Env._eventDict.AddCallback(eventId, eventCapture.Order, _eventPropagatorDict[eventId]);
+            }
+            else if (eventCapture is StageListenerEventCapture)
+            {
+                _eventDict.AddCallback(eventId, eventCapture.Order, _eventPropagatorDict[eventId]);
+            }
         }
     }
 
     public void Unregister()
     {
         foreach (string eventId in _entry._eventCaptureDict.Keys)
-            _owner.Env._stageEventFuncQueueDict[eventId].Remove(_eventPropagatorDict[eventId]);
-    }
+        {
+            StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
 
-    public async Task Gain()
-    {
-        if (_entry._gain != null) await _entry._gain.Invoke(this, _owner);
-    }
-
-    public async Task Lose()
-    {
-        if (_entry._lose != null) await _entry._lose.Invoke(this, _owner);
+            if (eventCapture is StageEnvironmentEventCapture)
+            {
+                _owner.Env._eventDict.RemoveCallback(eventId, _eventPropagatorDict[eventId]);
+            }
+            else if (eventCapture is StageListenerEventCapture)
+            {
+                _eventDict.RemoveCallback(eventId, _eventPropagatorDict[eventId]);
+            }
+        }
     }
 }

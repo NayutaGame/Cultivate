@@ -1,12 +1,10 @@
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
-using Unity.VisualScripting;
 
 public class StageEntity : GDictionary
 {
@@ -73,7 +71,7 @@ public class StageEntity : GDictionary
         UltraSwift = false;
         Swift = false;
 
-        await _env.InvokeStageEvent("StartTurn", new TurnDetails(this, _p));
+        await _env._eventDict.FireEvent("StartTurn", new TurnDetails(this, _p));
 
         bool skipTurn = await TryConsumeProcedure("跳回合");
         if (!skipTurn)
@@ -95,7 +93,7 @@ public class StageEntity : GDictionary
             }
         }
 
-        await _env.InvokeStageEvent("EndTurn", new TurnDetails(this, _p));
+        await _env._eventDict.FireEvent("EndTurn", new TurnDetails(this, _p));
     }
 
     private async Task Step()
@@ -106,7 +104,7 @@ public class StageEntity : GDictionary
         StageSkill skill = _skills[_p];
 
 
-        await _env.InvokeStageEvent("StartStep", new StepDetails(this, skill));
+        await _env._eventDict.FireEvent("StartStep", new StepDetails(this, skill));
 
         int manaCost = skill.GetManaCost() - GetStackOfBuff("心斋");
         bool manaSufficient = skill.GetManaCost() == 0 || await TryConsumeProcedure("免费") || await TryConsumeProcedure("灵气", manaCost);
@@ -115,7 +113,7 @@ public class StageEntity : GDictionary
         {
             await ManaShortage(_p);
             await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
-            await _env.InvokeStageEvent("EndStep", new StepDetails(this, null));
+            await _env._eventDict.FireEvent("EndStep", new StepDetails(this, null));
             return;
         }
 
@@ -129,7 +127,7 @@ public class StageEntity : GDictionary
             await skill.Execute(this);
         }
 
-        await _env.InvokeStageEvent("EndStep", new StepDetails(this, skill));
+        await _env._eventDict.FireEvent("EndStep", new StepDetails(this, skill));
     }
 
     private async Task MoveP()
@@ -143,8 +141,8 @@ public class StageEntity : GDictionary
             if (!within)
             {
                 _p = (_p + _skills.Length) % _skills.Length;
-                await _env.InvokeStageEvent("EndRound", new RoundDetails(this));
-                await _env.InvokeStageEvent("StartRound", new RoundDetails(this));
+                await _env._eventDict.FireEvent("EndRound", new RoundDetails(this));
+                await _env._eventDict.FireEvent("StartRound", new RoundDetails(this));
             }
 
             if(_skills[_p].Exhausted)
@@ -221,17 +219,17 @@ public class StageEntity : GDictionary
         SelfDamageRecord = 0;
         HealedRecord = 0;
 
-        if (!_env._stageEventFuncQueueDict.ContainsKey("DidBuff"))
-            _env._stageEventFuncQueueDict["DidBuff"] = new();
+        if (!_env._eventDict.ContainsKey("DidBuff"))
+            _env._eventDict["DidBuff"] = new();
 
-        _env._stageEventFuncQueueDict["DidBuff"].Add(0, HighestManaRecorder);
-        _env._stageEventFuncQueueDict["DidBuff"].Add(0, GainedEvadeRecorder);
-        _env._stageEventFuncQueueDict["DidBuff"].Add(0, GainedBurningRecorder);
+        _env._eventDict["DidBuff"].Add(0, HighestManaRecorder);
+        _env._eventDict["DidBuff"].Add(0, GainedEvadeRecorder);
+        _env._eventDict["DidBuff"].Add(0, GainedBurningRecorder);
 
-        if (!_env._stageEventFuncQueueDict.ContainsKey("StartTurn"))
-            _env._stageEventFuncQueueDict["StartTurn"] = new();
+        if (!_env._eventDict.ContainsKey("StartTurn"))
+            _env._eventDict["StartTurn"] = new();
 
-        _env._stageEventFuncQueueDict["StartTurn"].Add(0, DefaultStartTurn);
+        _env._eventDict["StartTurn"].Add(0, DefaultStartTurn);
 
         LoseHpEvent += DefaultLoseHp;
 
@@ -252,13 +250,13 @@ public class StageEntity : GDictionary
     ~StageEntity()
     {
         RemoveAllFormations().GetAwaiter().GetResult();
-        RemoveAllBuffs();
+        RemoveAllBuffs().GetAwaiter().GetResult();
 
-        _env._stageEventFuncQueueDict["DidBuff"].Remove(HighestManaRecorder);
-        _env._stageEventFuncQueueDict["DidBuff"].Remove(GainedEvadeRecorder);
-        _env._stageEventFuncQueueDict["DidBuff"].Remove(GainedBurningRecorder);
+        _env._eventDict["DidBuff"].Remove(HighestManaRecorder);
+        _env._eventDict["DidBuff"].Remove(GainedEvadeRecorder);
+        _env._eventDict["DidBuff"].Remove(GainedBurningRecorder);
 
-        _env._stageEventFuncQueueDict["StartTurn"].Remove(DefaultStartTurn);
+        _env._eventDict["StartTurn"].Remove(DefaultStartTurn);
 
         LoseHpEvent -= DefaultLoseHp;
     }
@@ -312,25 +310,26 @@ public class StageEntity : GDictionary
     private List<Formation> _formations;
     public IEnumerable<Formation> Formations => _formations.Traversal();
 
-    public async Task AddFormation(Formation formation)
+    public async Task AddFormation(GainFormationDetails d)
     {
-        await formation.Gain();
+        Formation formation = new Formation(this, d._entry);
         formation.Register();
+        await formation._eventDict.FireEvent("GainFormation", d);
         _formations.Add(formation);
     }
 
-    public async Task RemoveFormation(Formation formation)
+    public async Task RemoveFormation(Formation f)
     {
-        await formation.Lose();
-        formation.Unregister();
-        _formations.Remove(formation);
+        await f._eventDict.FireEvent("LoseFormation", new LoseFormationDetails(f));
+        f.Unregister();
+        _formations.Remove(f);
     }
 
     public async Task RemoveAllFormations()
     {
         await _formations.Do(async f =>
         {
-            await f.Lose();
+            await f._eventDict.FireEvent("LoseFormation", new LoseFormationDetails(f));
             f.Unregister();
         });
         _formations.RemoveAll(f => true);
@@ -343,27 +342,20 @@ public class StageEntity : GDictionary
     private List<Buff> _buffs;
     public IEnumerable<Buff> Buffs => _buffs.Traversal();
 
-    public async Task AddBuff(Buff buff)
+    public async Task AddBuff(GainBuffDetails d)
     {
-        await buff.Gain(buff.Stack);
+        Buff buff = new Buff(this, d._entry);
         buff.Register();
+        await buff._eventDict.FireEvent("GainBuff", d);
+        await buff.SetStack(d._initialStack);
         _buffs.Add(buff);
-        // OnBuffChangedEvent?.Invoke();
     }
 
-    public async Task BuffGainStack(Buff buff, int gain)
+    public async Task RemoveBuff(Buff b)
     {
-        await buff.Gain(gain);
-        buff.Stack += gain;
-        // OnBuffChangedEvent?.Invoke();
-    }
-
-    public async Task RemoveBuff(Buff buff)
-    {
-        await buff.Lose();
-        buff.Unregister();
-        _buffs.Remove(buff);
-        // OnBuffChangedEvent?.Invoke();
+        await b._eventDict.FireEvent("LoseBuff", new LoseBuffDetails(b));
+        b.Unregister();
+        _buffs.Remove(b);
     }
 
     public async Task TryRemoveBuff(string buffName)
@@ -377,11 +369,10 @@ public class StageEntity : GDictionary
     {
         await _buffs.Do(async b =>
         {
-            await b.Lose();
+            await b._eventDict.FireEvent("LoseBuff", new LoseBuffDetails(b));
             b.Unregister();
         });
         _buffs.RemoveAll(pred);
-        // OnBuffChangedEvent?.Invoke();
     }
 
     public async Task RemoveBuffs(params string[] names)
@@ -390,7 +381,7 @@ public class StageEntity : GDictionary
         await toRemove.Do(RemoveBuff);
     }
 
-    public void RemoveAllBuffs() => RemoveBuffs(b => true);
+    public async Task RemoveAllBuffs() => await RemoveBuffs(b => true);
 
     public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.Entry == buffEntry);
 

@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using UnityEngine;
 
-public class StageEventCapture
+using System;
+using System.Threading.Tasks;
+
+public abstract class StageEventCapture
 {
     private string _eventId;
     public string EventId => _eventId;

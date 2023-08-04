@@ -1,11 +1,6 @@
-using System;
-using System.Buffers;
-using System.Collections;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using CLLibrary;
-using UnityEngine;
 
 public class FormationCategory : Category<FormationGroupEntry>
 {
@@ -24,10 +19,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                         int countEQ0 = WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] == 0);
                         return countGErequirement == 1 && countEQ0 == 4;
                     },
-                    gain: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner._skills[0].ExecuteWithoutTween(owner);
-                        await owner._skills[1].ExecuteWithoutTween(owner);
+                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            GainFormationDetails d = (GainFormationDetails)stageEventDetails;
+
+                            await f.Owner._skills[0].ExecuteWithoutTween(f.Owner);
+                            await f.Owner._skills[1].ExecuteWithoutTween(f.Owner);
+                        }),
                     }),
                 new FormationEntry(JingJie.YuanYing, "有且只有1种五行，不少于7张", "战斗开始时，使用第一位的卡",
                     canActivate: (entity, args) =>
@@ -38,9 +39,15 @@ public class FormationCategory : Category<FormationGroupEntry>
                         int countEQ0 = WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] == 0);
                         return countGErequirement == 1 && countEQ0 == 4;
                     },
-                    gain: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner._skills[0].ExecuteWithoutTween(owner);
+                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            GainFormationDetails d = (GainFormationDetails)stageEventDetails;
+
+                            await f.Owner._skills[0].ExecuteWithoutTween(f.Owner);
+                        }),
                     }),
             }),
 
@@ -56,7 +63,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("DidDispel", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("DidDispel", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             DispelDetails d = (DispelDetails)stageEventDetails;
@@ -80,7 +87,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("DidDispel", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("DidDispel", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             DispelDetails d = (DispelDetails)stageEventDetails;
@@ -108,7 +115,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("WillBuff", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("WillBuff", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             BuffDetails d = (BuffDetails)stageEventDetails;
@@ -132,7 +139,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("WillBuff", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("WillBuff", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             BuffDetails d = (BuffDetails)stageEventDetails;
@@ -160,7 +167,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("FormationWillAdd", -3, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("FormationWillAdd", -3, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             FormationDetails d = (FormationDetails)stageEventDetails;
@@ -181,24 +188,27 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 5;
                     },
-                    gain: async (formation, owner) =>
-                    {
-                        for (int i = 0; i < owner._skills.Length; i++)
-                        {
-                            StageSkill skill = owner._skills[i];
-                            if (skill.Entry.GetName() != "聚气术") continue;
-
-                            if (!(i < owner.Opponent()._skills.Length)) continue;
-
-                            StageSkill opponentSkill = owner.Opponent()._skills[i];
-                            owner._skills[i] = new StageSkill(owner, opponentSkill.Entry, opponentSkill.GetJingJie(), i);
-                        }
-
-                        await owner.BuffSelfProcedure("永久集中");
-                    },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("FormationWillAdd", -2, async (listener, stageEventDetails) =>
+                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            GainFormationDetails d = (GainFormationDetails)stageEventDetails;
+
+                            for (int i = 0; i < f.Owner._skills.Length; i++)
+                            {
+                                StageSkill skill = f.Owner._skills[i];
+                                if (skill.Entry.GetName() != "聚气术") continue;
+
+                                if (!(i < f.Owner.Opponent()._skills.Length)) continue;
+
+                                StageSkill opponentSkill = f.Owner.Opponent()._skills[i];
+                                f.Owner._skills[i] = new StageSkill(f.Owner, opponentSkill.Entry, opponentSkill.GetJingJie(), i);
+                            }
+
+                            await f.Owner.BuffSelfProcedure("永久集中");
+                        }),
+                        new StageEnvironmentEventCapture("FormationWillAdd", -2, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             FormationDetails d = (FormationDetails)stageEventDetails;
@@ -218,18 +228,30 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.SwiftCount == 0 && entity.GetJingJie() >= JingJie.HuaShen;
                     },
-                    gain: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffSelfProcedure("六爻化劫", 100);
+                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            GainFormationDetails d = (GainFormationDetails)stageEventDetails;
+
+                            await f.Owner.BuffSelfProcedure("六爻化劫", 100);
+                        }),
                     }),
                 new FormationEntry(JingJie.YuanYing, "无二动牌，角色境界不低于元婴", "第二轮开始时，双方重置生命上限，回30%血",
                     canActivate: (entity, args) =>
                     {
                         return args.SwiftCount == 0 && entity.GetJingJie() >= JingJie.YuanYing;
                     },
-                    gain: async (formation, owner) =>
+                    eventCaptures: new StageEventCapture[]
                     {
-                        await owner.BuffSelfProcedure("六爻化劫", 30);
+                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        {
+                            Formation f = (Formation)listener;
+                            GainFormationDetails d = (GainFormationDetails)stageEventDetails;
+
+                            await f.Owner.BuffSelfProcedure("六爻化劫", 30);
+                        }),
                     }),
             }),
 
@@ -242,7 +264,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -250,7 +272,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.BuffOppoProcedure("跳回合", 2);
                         }),
-                        new("StartRound", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartRound", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             RoundDetails d = (RoundDetails)stageEventDetails;
@@ -266,7 +288,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -282,7 +304,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -302,7 +324,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("DidExhaust", -1, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("DidExhaust", -1, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             ExhaustDetails d = (ExhaustDetails)stageEventDetails;
@@ -319,7 +341,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("DidExhaust", -1, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("DidExhaust", -1, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             ExhaustDetails d = (ExhaustDetails)stageEventDetails;
@@ -339,7 +361,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -347,7 +369,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(30);
                         }),
-                        new("StartTurn", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartTurn", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -363,7 +385,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -371,7 +393,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(20);
                         }),
-                        new("StartTurn", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartTurn", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -387,7 +409,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -395,7 +417,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(10);
                         }),
-                        new("StartTurn", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartTurn", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -415,7 +437,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -431,7 +453,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -447,7 +469,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -467,7 +489,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -483,7 +505,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -499,7 +521,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;

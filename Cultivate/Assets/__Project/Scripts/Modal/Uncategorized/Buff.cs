@@ -1,9 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using CLLibrary;
 
 /// <summary>
 /// Buff
@@ -19,20 +17,19 @@ public class Buff : StageEventListener
     public string GetName() => _entry.Name;
 
     private int _stack;
-    public int Stack
+    public int Stack => _stack;
+    public async Task SetStack(int stack)
     {
-        get => _stack;
-        set
-        {
-            _stack = value;
-            // _owner.OnBuffChanged();
-            StackChangedEvent?.Invoke();
-            if(_stack <= 0)
-                _owner.RemoveBuff(this);
-        }
+        await _eventDict.FireEvent("StackWillChange", new BuffStackChangeDetails(_stack, stack));
+        _stack = stack;
+        await _eventDict.FireEvent("StackDidChange", new BuffStackChangeDetails(_stack, stack));
+
+        if(_stack <= 0)
+            await _owner.RemoveBuff(this);
     }
 
-    public event Action StackChangedEvent;
+    public async Task SetDStack(int dStack)
+        => await SetStack(_stack + dStack);
 
     /// <summary>
     /// 是否有益
@@ -44,55 +41,51 @@ public class Buff : StageEventListener
     /// </summary>
     public bool Dispellable => _entry.Dispellable;
 
+    public CLEventDict _eventDict;
     private Dictionary<string, Func<StageEventDetails, Task>> _eventPropagatorDict;
 
-    public Buff(StageEntity owner, BuffEntry entry, int stack = 1)
+    public Buff(StageEntity owner, BuffEntry entry)
     {
         _owner = owner;
         _entry = entry;
-        _stack = stack;
+        _stack = 0;
 
+        _eventDict = new();
         _eventPropagatorDict = new();
     }
 
     public void Register()
     {
-        if (_entry._stackChanged != null) StackChangedEvent += StackChanged;
-
         foreach (string eventId in _entry._eventCaptureDict.Keys)
         {
             StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
             _eventPropagatorDict[eventId] = d => eventCapture.Invoke(this, d);
 
-            if (!_owner.Env._stageEventFuncQueueDict.ContainsKey(eventId))
-                _owner.Env._stageEventFuncQueueDict[eventId] = new();
-
-            _owner.Env._stageEventFuncQueueDict[eventId].Add(eventCapture.Order, _eventPropagatorDict[eventId]);
+            if (eventCapture is StageEnvironmentEventCapture)
+            {
+                _owner.Env._eventDict.AddCallback(eventId, eventCapture.Order, _eventPropagatorDict[eventId]);
+            }
+            else if (eventCapture is StageListenerEventCapture)
+            {
+                _eventDict.AddCallback(eventId, eventCapture.Order, _eventPropagatorDict[eventId]);
+            }
         }
-
-        StackChangedEvent?.Invoke();
     }
 
     public void Unregister()
     {
-        if (_entry._stackChanged != null) StackChangedEvent -= StackChanged;
-
         foreach (string eventId in _entry._eventCaptureDict.Keys)
-            _owner.Env._stageEventFuncQueueDict[eventId].Remove(_eventPropagatorDict[eventId]);
-    }
+        {
+            StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
 
-    public async Task Gain(int gain)
-    {
-        if (_entry._gain != null) await _entry._gain.Invoke(this, _owner, gain);
-    }
-
-    public async Task Lose()
-    {
-        if (_entry._lose != null) await _entry._lose.Invoke(this, _owner);
-    }
-
-    private void StackChanged()
-    {
-        if (_entry._stackChanged != null) _entry._stackChanged(this, _owner);
+            if (eventCapture is StageEnvironmentEventCapture)
+            {
+                _owner.Env._eventDict.RemoveCallback(eventId, _eventPropagatorDict[eventId]);
+            }
+            else if (eventCapture is StageListenerEventCapture)
+            {
+                _eventDict.RemoveCallback(eventId, _eventPropagatorDict[eventId]);
+            }
+        }
     }
 }
