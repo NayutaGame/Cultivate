@@ -20,9 +20,9 @@ public class Buff : StageEventListener
     public int Stack => _stack;
     public async Task SetStack(int stack)
     {
-        await _eventDict.FireEvent("StackWillChange", new BuffStackChangeDetails(_stack, stack));
+        await _eventDict.FireEvent(CLEventDict.STACK_WILL_CHANGE, new BuffStackChangeDetails(_stack, stack));
         _stack = stack;
-        await _eventDict.FireEvent("StackDidChange", new BuffStackChangeDetails(_stack, stack));
+        await _eventDict.FireEvent(CLEventDict.STACK_DID_CHANGE, new BuffStackChangeDetails(_stack, stack));
 
         if(_stack <= 0)
             await _owner.RemoveBuff(this);
@@ -42,7 +42,7 @@ public class Buff : StageEventListener
     public bool Dispellable => _entry.Dispellable;
 
     public CLEventDict _eventDict;
-    private Dictionary<string, Func<StageEventDetails, Task>> _eventPropagatorDict;
+    private Dictionary<int, Func<StageEventDetails, Task>> _eventPropagatorDict;
 
     public Buff(StageEntity owner, BuffEntry entry)
     {
@@ -56,7 +56,7 @@ public class Buff : StageEventListener
 
     public void Register()
     {
-        foreach (string eventId in _entry._eventCaptureDict.Keys)
+        foreach (int eventId in _entry._eventCaptureDict.Keys)
         {
             StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
             _eventPropagatorDict[eventId] = d => eventCapture.Invoke(this, d);
@@ -74,7 +74,7 @@ public class Buff : StageEventListener
 
     public void Unregister()
     {
-        foreach (string eventId in _entry._eventCaptureDict.Keys)
+        foreach (int eventId in _entry._eventCaptureDict.Keys)
         {
             StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
 

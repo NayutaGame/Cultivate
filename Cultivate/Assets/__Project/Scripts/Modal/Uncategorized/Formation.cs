@@ -18,7 +18,7 @@ public class Formation : StageEventListener
     public string GetName() => _entry.GetName();
 
     public CLEventDict _eventDict;
-    private Dictionary<string, Func<StageEventDetails, Task>> _eventPropagatorDict;
+    private Dictionary<int, Func<StageEventDetails, Task>> _eventPropagatorDict;
 
     public Formation(StageEntity owner, FormationEntry entry)
     {
@@ -31,7 +31,7 @@ public class Formation : StageEventListener
 
     public void Register()
     {
-        foreach (string eventId in _entry._eventCaptureDict.Keys)
+        foreach (int eventId in _entry._eventCaptureDict.Keys)
         {
             StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
             _eventPropagatorDict[eventId] = d => eventCapture.Invoke(this, d);
@@ -49,7 +49,7 @@ public class Formation : StageEventListener
 
     public void Unregister()
     {
-        foreach (string eventId in _entry._eventCaptureDict.Keys)
+        foreach (int eventId in _entry._eventCaptureDict.Keys)
         {
             StageEventCapture eventCapture = _entry._eventCaptureDict[eventId];
 

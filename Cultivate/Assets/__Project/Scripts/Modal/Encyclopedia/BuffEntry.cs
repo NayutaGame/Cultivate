@@ -22,7 +22,7 @@ public class BuffEntry : Entry, IAnnotation
     private bool _dispellable;
     public bool Dispellable => _dispellable;
 
-    public Dictionary<string, StageEventCapture> _eventCaptureDict;
+    public Dictionary<int, StageEventCapture> _eventCaptureDict;
 
     /// <summary>
     /// 定义一个Buff
@@ -43,7 +43,7 @@ public class BuffEntry : Entry, IAnnotation
         _friendly = friendly;
         _dispellable = dispellable;
 
-        _eventCaptureDict = new Dictionary<string, StageEventCapture>();
+        _eventCaptureDict = new Dictionary<int, StageEventCapture>();
         foreach (var stageEventCapture in eventCaptures)
             _eventCaptureDict[stageEventCapture.EventId] = stageEventCapture;
     }

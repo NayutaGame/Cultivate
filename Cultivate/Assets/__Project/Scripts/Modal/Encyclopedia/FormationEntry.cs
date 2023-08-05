@@ -33,7 +33,7 @@ public class FormationEntry
     public bool CanActivate(RunEntity entity, FormationArguments args)
         => _canActivate(entity, args);
 
-    public Dictionary<string, StageEventCapture> _eventCaptureDict;
+    public Dictionary<int, StageEventCapture> _eventCaptureDict;
 
     /// <summary>
     /// 定义一个Formation
@@ -52,7 +52,7 @@ public class FormationEntry
         _canActivate = canActivate;
         // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
 
-        _eventCaptureDict = new Dictionary<string, StageEventCapture>();
+        _eventCaptureDict = new Dictionary<int, StageEventCapture>();
         foreach (var stageEventCapture in eventCaptures)
             _eventCaptureDict[stageEventCapture.EventId] = stageEventCapture;
     }

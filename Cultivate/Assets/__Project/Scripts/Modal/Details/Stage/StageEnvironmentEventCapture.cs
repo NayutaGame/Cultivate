@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class StageEnvironmentEventCapture : StageEventCapture
 {
-    public StageEnvironmentEventCapture(string eventId, int order, Func<StageEventListener, StageEventDetails, Task> func) : base(eventId, order, func)
+    public StageEnvironmentEventCapture(int eventId, int order, Func<StageEventListener, StageEventDetails, Task> func) : base(eventId, order, func)
     {
     }
 }

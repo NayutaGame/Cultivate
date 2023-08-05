@@ -21,7 +21,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -41,7 +41,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -63,7 +63,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("DidDispel", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.DID_DISPEL, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             DispelDetails d = (DispelDetails)stageEventDetails;
@@ -87,7 +87,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("DidDispel", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.DID_DISPEL, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             DispelDetails d = (DispelDetails)stageEventDetails;
@@ -115,7 +115,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("WillBuff", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.WILL_BUFF, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             BuffDetails d = (BuffDetails)stageEventDetails;
@@ -139,7 +139,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("WillBuff", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.WILL_BUFF, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             BuffDetails d = (BuffDetails)stageEventDetails;
@@ -167,7 +167,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("FormationWillAdd", -3, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.FORMATION_WILL_ADD, -3, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             FormationDetails d = (FormationDetails)stageEventDetails;
@@ -190,7 +190,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -208,7 +208,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.BuffSelfProcedure("永久集中");
                         }),
-                        new StageEnvironmentEventCapture("FormationWillAdd", -2, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.FORMATION_WILL_ADD, -2, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             FormationDetails d = (FormationDetails)stageEventDetails;
@@ -230,7 +230,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -245,7 +245,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageListenerEventCapture("GainFormation", 0, async (listener, stageEventDetails) =>
+                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -264,7 +264,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -272,7 +272,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.BuffOppoProcedure("跳回合", 2);
                         }),
-                        new StageEnvironmentEventCapture("StartRound", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_ROUND, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             RoundDetails d = (RoundDetails)stageEventDetails;
@@ -288,7 +288,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -304,7 +304,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -324,7 +324,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("DidExhaust", -1, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.DID_EXHAUST, -1, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             ExhaustDetails d = (ExhaustDetails)stageEventDetails;
@@ -341,7 +341,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("DidExhaust", -1, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.DID_EXHAUST, -1, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             ExhaustDetails d = (ExhaustDetails)stageEventDetails;
@@ -361,7 +361,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -369,7 +369,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(30);
                         }),
-                        new StageEnvironmentEventCapture("StartTurn", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -385,7 +385,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -393,7 +393,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(20);
                         }),
-                        new StageEnvironmentEventCapture("StartTurn", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -409,7 +409,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -417,7 +417,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(10);
                         }),
-                        new StageEnvironmentEventCapture("StartTurn", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -437,7 +437,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -453,7 +453,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -469,7 +469,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -489,7 +489,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -505,7 +505,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -521,7 +521,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     },
                     eventCaptures: new StageEventCapture[]
                     {
-                        new StageEnvironmentEventCapture("StartStage", 0, async (listener, stageEventDetails) =>
+                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
