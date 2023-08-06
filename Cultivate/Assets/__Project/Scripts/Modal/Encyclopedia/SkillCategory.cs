@@ -211,7 +211,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("回合力量");
                 }),
 
-            new("浮空艇", JingJie.FanXu, "消耗\n本场战斗中，回合被跳过后，生命及上线无法下降\n遭受12跳回合", // 匣匣匣
+            new("浮空艇", JingJie.FanXu, "消耗\n本场战斗中，回合被跳过后，该回合无法受到伤害\n遭受12跳回合", // 匣匣匣
                 skillTypeCollection: SkillTypeCollection.XiaoHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -841,7 +841,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     await skill.ExhaustProcedure();
                     await caster.BuffSelfProcedure("格挡", caster.GetStackOfBuff("格挡"));
-                    await caster.BuffSelfProcedure("不动明王咒");
+                    await caster.BuffSelfProcedure("永久缠绕");
                 }),
 
             new("奔腾", new CLLibrary.Range(4, 5), new SkillDescription((j, dj) => $"二动\n充沛：三动"), WuXing.Shui,

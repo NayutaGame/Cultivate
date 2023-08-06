@@ -1,7 +1,7 @@
 
 public enum BuffStackRule
 {
-    Wasted,
+    One,
     Add,
     Min,
     Max,

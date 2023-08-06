@@ -210,7 +210,7 @@ public class StageEnvironment : GDictionary
         {
             switch (d._buffEntry.BuffStackRule)
             {
-                case BuffStackRule.Wasted:
+                case BuffStackRule.One:
                     break;
                 case BuffStackRule.Add:
                     await same.SetStack(same.Stack + d._stack);

@@ -11,6 +11,7 @@ using UnityEngine;
 public class StageSkill
 {
     private StageEntity _owner;
+    public StageEntity Owner => _owner;
     private RunSkill _runSkill;
     private SkillEntry _entry;
     public SkillEntry Entry => _entry;
@@ -70,6 +71,12 @@ public class StageSkill
     public JingJie GetJingJie() => _jingJie;
     public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
 
+    public async Task TryUpgradeJingJie()
+    {
+        if (_jingJie != _entry.JingJieRange.End - 1)
+            _jingJie += 1;
+    }
+
     public int Dj
         => GetJingJie() - _entry.JingJieRange.Start;
     public bool JiaShi
@@ -122,22 +129,26 @@ public class StageSkill
 
     public async Task Execute(StageEntity caster, bool recursive = true)
     {
+        await caster.Env._eventDict.FireEvent(CLEventDict.WILL_EXECUTE, new ExecuteDetails(caster, this));
         await _entry.Execute(caster, this, recursive);
         if (_owner == caster)
         {
             RunUsedTimes += 1;
             StageUsedTimes += 1;
         }
+        await caster.Env._eventDict.FireEvent(CLEventDict.DID_EXECUTE, new ExecuteDetails(caster, this));
     }
 
     public async Task ExecuteWithoutTween(StageEntity caster, bool recursive = true)
     {
+        await caster.Env._eventDict.FireEvent(CLEventDict.WILL_EXECUTE, new ExecuteDetails(caster, this));
         await _entry.ExecuteWithoutTween(caster, this, recursive);
         if (_owner == caster)
         {
             RunUsedTimes += 1;
             StageUsedTimes += 1;
         }
+        await caster.Env._eventDict.FireEvent(CLEventDict.DID_EXECUTE, new ExecuteDetails(caster, this));
     }
 
     public IEnumerable<StageSkill> Nexts(bool loop = false)

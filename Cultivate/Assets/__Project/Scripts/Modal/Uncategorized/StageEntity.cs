@@ -57,26 +57,35 @@ public class StageEntity : GDictionary
         await _env._eventDict.FireEvent(CLEventDict.START_TURN, new TurnDetails(this, _p));
 
         bool skipTurn = await TryConsumeProcedure("跳回合");
-        if (!skipTurn)
+        if (skipTurn)
+        {
+            if (GetStackOfBuff("浮空艇") > 0)
+                await BuffSelfProcedure("回合免疫");
+        }
+        else
         {
             await Step();
 
-            if (GetSumOfStackOfBuffs("不动明王咒", "缠绕") > 0)
-            {
-
-            }
-            else if (UltraSwift)
-            {
-                await Step();
-                await Step();
-            }
-            else if (Swift)
-            {
-                await Step();
-            }
+            if (Swift || UltraSwift)
+                await SwiftProcedure(new SwiftDetails(this, Swift, UltraSwift));
         }
 
         await _env._eventDict.FireEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+    }
+
+    private async Task SwiftProcedure(SwiftDetails d)
+    {
+        await _env._eventDict.FireEvent(CLEventDict.WILL_SWIFT, d);
+        if (d.Cancel)
+            return;
+
+        if (d.Swift || d.UltraSwift)
+            await Step();
+
+        if (d.UltraSwift)
+            await Step();
+
+        await _env._eventDict.FireEvent(CLEventDict.DID_SWIFT, d);
     }
 
     private async Task Step()
@@ -89,7 +98,7 @@ public class StageEntity : GDictionary
         await _env._eventDict.FireEvent(CLEventDict.START_STEP, new StepDetails(this, skill));
 
         int manaCost = skill.GetManaCost() - GetStackOfBuff("心斋");
-        bool manaSufficient = skill.GetManaCost() == 0 || await TryConsumeProcedure("免费") || await TryConsumeProcedure("灵气", manaCost);
+        bool manaSufficient = skill.GetManaCost() == 0 || GetStackOfBuff("永久免费") > 0 || await TryConsumeProcedure("免费") || await TryConsumeProcedure("灵气", manaCost);
         _manaShortage = !manaSufficient;
         if(_manaShortage)
         {
@@ -99,7 +108,8 @@ public class StageEntity : GDictionary
             return;
         }
 
-        if (await TryConsumeProcedure("双发"))
+        bool multicast = GetStackOfBuff("永久双发") > 0 || await TryConsumeProcedure("双发");
+        if (multicast)
         {
             await skill.Execute(this);
             await skill.Execute(this);
@@ -408,6 +418,9 @@ public class StageEntity : GDictionary
     public async Task DamageOppoProcedure(int value, bool recursive = true,
         Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
         => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, recursive, damaged, undamaged));
+
+    public async Task LoseHealthProcedure(int value)
+        => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value));
 
     public async Task HealProcedure(int value)
         => await _env.HealProcedure(new HealDetails(this, this, value));
