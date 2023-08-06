@@ -14,24 +14,11 @@ public class StageEntity : GDictionary
         if (ManaShortageEvent != null) await ManaShortageEvent(p);
     }
 
-    public event Func<Task> LoseHpEvent;
-    public async Task LoseHp()
-    {
-        if (LoseHpEvent != null) await LoseHpEvent();
-    }
-
-    // public event Action OnStatsChangedEvent;
-    // public void OnStatsChanged() => OnStatsChangedEvent?.Invoke();
-    //
-    // public event Action OnBuffChangedEvent;
-    // public void OnBuffChanged() => OnBuffChangedEvent?.Invoke();
-
     private int _hp;
     public int Hp
     {
         get => _hp;
         set => _hp = Mathf.Min(value, MaxHp);
-        // OnStatsChanged()
     }
 
     private int _maxHp;
@@ -43,17 +30,13 @@ public class StageEntity : GDictionary
             _maxHp = Mathf.Max(value, 0);
             Hp = Hp;
         }
-        // OnStatsChanged()
     }
-
-    public float HpPercent => (float)_hp / _maxHp;
 
     private int _armor;
     public int Armor
     {
         get => _armor;
         set => _armor = value;
-        // OnStatsChanged()
     }
 
     public StageSkill[] _skills;
@@ -163,12 +146,8 @@ public class StageEntity : GDictionary
     public bool Swift;
     private bool _manaShortage;
 
-    public bool IsFullHp
-        => Hp == MaxHp;
     public bool Forward
         => GetStackOfBuff("鹤回翔") == 0;
-    public bool IsDead()
-        => _hp <= 0;
     public int ExhaustedCount
         => _skills.Count(skill => skill.Exhausted);
 
@@ -223,8 +202,6 @@ public class StageEntity : GDictionary
         _env._eventDict.AddCallback(CLEventDict.DID_BUFF, 0, GainedBurningRecorder);
         _env._eventDict.AddCallback(CLEventDict.START_TURN, 0, DefaultStartTurn);
 
-        LoseHpEvent += DefaultLoseHp;
-
         MaxHp = _runEntity.GetFinalHealth();
         Hp = _runEntity.GetFinalHealth();
         Armor = 0;
@@ -248,8 +225,6 @@ public class StageEntity : GDictionary
         _env._eventDict.RemoveCallback(CLEventDict.DID_BUFF, GainedEvadeRecorder);
         _env._eventDict.RemoveCallback(CLEventDict.DID_BUFF, GainedBurningRecorder);
         _env._eventDict.RemoveCallback(CLEventDict.START_TURN, DefaultStartTurn);
-
-        LoseHpEvent -= DefaultLoseHp;
     }
 
     public void WriteEffect()
@@ -293,8 +268,6 @@ public class StageEntity : GDictionary
 
     protected async Task DefaultStartTurn(StageEventDetails d)
         => await DesignerEnvironment.DefaultStartTurn(this, d);
-
-    protected async Task DefaultLoseHp() { }
 
     #region Formation
 

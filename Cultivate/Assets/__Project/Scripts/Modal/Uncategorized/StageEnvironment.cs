@@ -67,49 +67,46 @@ public class StageEnvironment : GDictionary
             {
                 await _eventDict.FireEvent(CLEventDict.DID_EVADE, d);
                 _report.Append($"    攻击被闪避");
-                continue;
-            }
 
-            if (d.Value == 0)
-            {
-                _report.Append($"    攻击为0");
+                if (d.Undamaged != null)
+                    await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0));
                 await _eventDict.FireEvent(CLEventDict.DID_ATTACK, d);
                 continue;
             }
 
-            if (!d.Pierce && tgt.Armor >= 0) // 结算护甲
+            if (!d.Pierce && tgt.Armor >= 0)
             {
                 int negate = Mathf.Min(d.Value, tgt.Armor);
                 d.Value -= negate;
                 await ArmorLoseProcedure(d.Src, d.Tgt, negate);
-
-                if (d.Value == 0) // undamage?.Invoke();
-                {
-                    _report.Append($"    攻击被格挡");
-                    await _eventDict.FireEvent(CLEventDict.DID_ATTACK, d);
-                    continue;
-                }
             }
-            else if (tgt.Armor < 0) // 结算破甲
+
+            if (tgt.Armor < 0)
             {
                 d.Value += -tgt.Armor;
                 tgt.Armor = 0;
             }
 
-            // 结算暴击
+            if (d.Value == 0)
+            {
+                _report.Append($"    攻击为0");
+
+                if (d.Undamaged != null)
+                    await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0));
+                await _eventDict.FireEvent(CLEventDict.DID_ATTACK, d);
+                continue;
+            }
+
             if (d.Crit)
                 d.Value *= 2;
 
-            // 伤害Procedure
-            DamageDetails damageDetails = await DamageProcedure(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
+            DamageDetails damageDetails = new DamageDetails(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
+            await DamageProcedure(damageDetails);
 
             if (_report.UseTween)
-            {
                 await _report.PlayTween(new AttackTweenDescriptor(d));
-            }
             _report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
 
-            // 结算吸血
             if (!damageDetails.Cancel)
             {
                 if (d.LifeSteal)
@@ -129,35 +126,38 @@ public class StageEnvironment : GDictionary
     /// <param name="recursive">是否会递归</param>
     /// <param name="damaged">如果造成伤害时候的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
-    public async Task<DamageDetails> DamageProcedure(StageEntity src, StageEntity tgt, int value, bool recursive = true,
+    public async Task DamageProcedure(StageEntity src, StageEntity tgt, int value, bool recursive = true,
         Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
         => await DamageProcedure(new DamageDetails(src, tgt, value, recursive, damaged, undamaged));
-    public async Task<DamageDetails> DamageProcedure(DamageDetails d)
+    public async Task DamageProcedure(DamageDetails d)
     {
-        StageEntity src = d.Src;
-        StageEntity tgt = d.Tgt;
-
         await _eventDict.FireEvent(CLEventDict.WILL_DAMAGE, d);
 
-        if (d.Cancel)
+        if (d.Cancel || d.Value == 0)
         {
-            d.Undamaged?.Invoke(d);
-            return d;
+            if (d.Undamaged != null)
+                await d.Undamaged(d);
+            return;
         }
 
-        tgt.Hp -= d.Value;
-
-        if (d.Value == 0)
-        {
-            d.Undamaged?.Invoke(d);
-            return d;
-        }
-
-        d.Damaged?.Invoke(d);
+        await LoseHealthProcedure(d.Tgt, d.Value);
+        if (d.Damaged != null)
+            await d.Damaged(d);
 
         await _eventDict.FireEvent(CLEventDict.DID_DAMAGE, d);
+    }
 
-        return d;
+    public async Task LoseHealthProcedure(StageEntity owner, int value)
+        => await LoseHealthProcedure(new LoseHealthDetails(owner, value));
+    public async Task LoseHealthProcedure(LoseHealthDetails d)
+    {
+        await _eventDict.FireEvent(CLEventDict.WILL_LOSE_HEALTH, d);
+        if (d.Cancel)
+            return;
+
+        d.Owner.Hp -= d.Value;
+
+        await _eventDict.FireEvent(CLEventDict.DID_LOSE_HEALTH, d);
     }
 
     public async Task HealProcedure(StageEntity src, StageEntity tgt, int value)

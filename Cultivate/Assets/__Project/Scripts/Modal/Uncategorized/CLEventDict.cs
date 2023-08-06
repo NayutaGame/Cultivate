@@ -21,25 +21,27 @@ public class CLEventDict : Dictionary<int, CLEvent<StageEventDetails>>
     public static readonly int DID_EVADE          = 12;
     public static readonly int WILL_DAMAGE        = 13;
     public static readonly int DID_DAMAGE         = 14;
-    public static readonly int WILL_HEAL          = 15;
-    public static readonly int DID_HEAL           = 16;
-    public static readonly int WILL_BUFF          = 17;
-    public static readonly int DID_BUFF           = 18;
-    public static readonly int ARMOR_WILL_GAIN    = 19;
-    public static readonly int ARMOR_DID_GAIN     = 20;
-    public static readonly int ARMOR_WILL_LOSE    = 21;
-    public static readonly int ARMOR_DID_LOSE     = 22;
-    public static readonly int WILL_DISPEL        = 23;
-    public static readonly int DID_DISPEL         = 24;
-    public static readonly int WILL_EXHAUST       = 25;
-    public static readonly int DID_EXHAUST        = 26;
-    public static readonly int GAIN_BUFF          = 27;
-    public static readonly int LOSE_BUFF          = 28;
-    public static readonly int STACK_WILL_CHANGE  = 29;
-    public static readonly int STACK_DID_CHANGE   = 30;
-    public static readonly int GAIN_FORMATION     = 31;
-    public static readonly int LOSE_FORMATION     = 32;
-    public static readonly int COUNT              = 33;
+    public static readonly int WILL_LOSE_HEALTH   = 15;
+    public static readonly int DID_LOSE_HEALTH    = 16;
+    public static readonly int WILL_HEAL          = 17;
+    public static readonly int DID_HEAL           = 18;
+    public static readonly int WILL_BUFF          = 19;
+    public static readonly int DID_BUFF           = 20;
+    public static readonly int ARMOR_WILL_GAIN    = 21;
+    public static readonly int ARMOR_DID_GAIN     = 22;
+    public static readonly int ARMOR_WILL_LOSE    = 23;
+    public static readonly int ARMOR_DID_LOSE     = 24;
+    public static readonly int WILL_DISPEL        = 25;
+    public static readonly int DID_DISPEL         = 26;
+    public static readonly int WILL_EXHAUST       = 27;
+    public static readonly int DID_EXHAUST        = 28;
+    public static readonly int GAIN_BUFF          = 29;
+    public static readonly int LOSE_BUFF          = 30;
+    public static readonly int STACK_WILL_CHANGE  = 31;
+    public static readonly int STACK_DID_CHANGE   = 32;
+    public static readonly int GAIN_FORMATION     = 33;
+    public static readonly int LOSE_FORMATION     = 34;
+    public static readonly int COUNT              = 35;
 
     public void AddCallback(int eventId, int order, Func<StageEventDetails, Task> callback)
     {
