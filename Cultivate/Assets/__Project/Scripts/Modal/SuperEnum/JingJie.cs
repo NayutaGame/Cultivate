@@ -23,12 +23,12 @@ public struct JingJie : IEquatable<JingJie>
     {
         _list = new JingJie[]
         {
-            new JingJie(0, "练气"),
-            new JingJie(1, "筑基"),
-            new JingJie(2, "金丹"),
-            new JingJie(3, "元婴"),
-            new JingJie(4, "化神"),
-            new JingJie(5, "返虚"),
+            new(0, "练气"),
+            new(1, "筑基"),
+            new(2, "金丹"),
+            new(3, "元婴"),
+            new(4, "化神"),
+            new(5, "返虚"),
         };
     }
 

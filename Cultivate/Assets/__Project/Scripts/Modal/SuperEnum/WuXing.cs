@@ -20,11 +20,11 @@ public struct WuXing : IEquatable<WuXing>
     {
         _list = new WuXing[]
         {
-            new WuXing(0, "金"),
-            new WuXing(1, "水"),
-            new WuXing(2, "木"),
-            new WuXing(3, "火"),
-            new WuXing(4, "土"),
+            new(0, "金"),
+            new(1, "水"),
+            new(2, "木"),
+            new(3, "火"),
+            new(4, "土"),
         };
     }
 

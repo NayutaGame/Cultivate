@@ -8,6 +8,7 @@ public class RunEnvironment : GDictionary
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
+    public MechBag MechBag { get; private set; }
     public SkillInventory SkillInventory { get; private set; }
 
     public RunEntity Hero { get; private set; }
@@ -15,14 +16,11 @@ public class RunEnvironment : GDictionary
     public RunEntity Enemy
     {
         get => _enemy;
-        set // Entity 的 SetEntry 的具体实现
+        set
         {
-            if (_enemy != null)
-            {
-                _enemy.EnvironmentChangedEvent -= EnvironmentChanged;
-            }
+            if (_enemy != null) _enemy.EnvironmentChangedEvent -= EnvironmentChanged;
             _enemy = value;
-            _enemy.EnvironmentChangedEvent += EnvironmentChanged;
+            if (_enemy != null) _enemy.EnvironmentChangedEvent += EnvironmentChanged;
             EnvironmentChanged();
         }
     }
@@ -35,11 +33,13 @@ public class RunEnvironment : GDictionary
     {
         _accessors = new()
         {
+            { "MechBag",               () => MechBag },
             { "SkillInventory",        () => SkillInventory },
             { "Hero",                  () => Hero },
             { "Enemy",                 () => Enemy },
         };
 
+        MechBag = new();
         SkillInventory = new();
 
         Hero = new();
