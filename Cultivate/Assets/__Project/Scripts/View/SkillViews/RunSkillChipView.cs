@@ -8,12 +8,12 @@ public class RunSkillChipView : RunSkillView
 {
     [SerializeField] private TMP_Text TypeText;
 
-    public override void SetSkillTypeCollection(SkillTypeCollection skillTypeCollection)
+    public override void SetSkillTypeComposite(SkillTypeComposite skillTypeComposite)
     {
-        base.SetSkillTypeCollection(skillTypeCollection);
+        base.SetSkillTypeComposite(skillTypeComposite);
 
         if(TypeText != null)
-            TypeText.text = skillTypeCollection.ToString();
+            TypeText.text = skillTypeComposite.ToString();
     }
 
     public override void SetColor(Color color)

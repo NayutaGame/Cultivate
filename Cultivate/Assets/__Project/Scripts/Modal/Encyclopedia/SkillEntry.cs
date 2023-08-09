@@ -39,7 +39,7 @@ public class SkillEntry : Entry, IAnnotation
     private ManaCost _manaCost;
     public int GetManaCost(JingJie jingJie, int dJingJie) => _manaCost.Eval(jingJie, dJingJie);
 
-    public SkillTypeCollection SkillTypeCollection { get; private set; }
+    public SkillTypeComposite SkillTypeComposite { get; private set; }
     private Func<StageEntity, StageSkill, bool, Task> _execute;
 
     private bool _withinPool;
@@ -53,7 +53,7 @@ public class SkillEntry : Entry, IAnnotation
         SkillDescription description,
         WuXing? wuXing = null,
         ManaCost manaCost = null,
-        SkillTypeCollection skillTypeCollection = null,
+        SkillTypeComposite skillTypeComposite = null,
         bool withinPool = true,
         Func<StageEntity, StageSkill, bool, Task> execute = null
         ) : base(name)
@@ -62,7 +62,7 @@ public class SkillEntry : Entry, IAnnotation
         _description = description;
         _wuXing = wuXing;
         _manaCost = manaCost ?? 0;
-        SkillTypeCollection = skillTypeCollection ?? SkillTypeCollection.None;
+        SkillTypeComposite = skillTypeComposite ?? 0;
         _withinPool = withinPool;
         _execute = execute ?? DefaultExecute;
 

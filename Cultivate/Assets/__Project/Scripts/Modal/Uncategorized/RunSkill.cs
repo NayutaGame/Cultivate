@@ -43,8 +43,8 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
     public string GetAnnotatedDescription(string evaluated = null)
         => _entry.GetAnnotatedDescription(evaluated ?? GetDescription());
 
-    public SkillTypeCollection GetSkillTypeCollection()
-        => _entry.SkillTypeCollection;
+    public SkillTypeComposite GetSkillTypeComposite()
+        => _entry.SkillTypeComposite;
 
     public JingJie GetJingJie()
         => JingJie;

@@ -42,8 +42,8 @@ public class StageSkill
     public string GetDescription()
         => _entry.Evaluate(GetJingJie(), GetJingJie() - _entry.JingJieRange.Start);
 
-    public SkillTypeCollection GetSkillTypeCollection()
-        => _entry.SkillTypeCollection;
+    public SkillTypeComposite GetSkillTypeCollection()
+        => _entry.SkillTypeComposite;
 
     public int GetManaCost()
         => _entry.GetManaCost(GetJingJie(), Dj);
@@ -90,11 +90,11 @@ public class StageSkill
     public bool IsEnd
         => SlotIndex == _owner._skills.Length - 1;
     public bool NoOtherAttack
-        => _owner._skills.All(wg => wg == this || !wg.GetSkillType().Contains(SkillTypeCollection.Attack));
+        => _owner._skills.All(wg => wg == this || !wg.GetSkillType().Contains(SkillType.Attack));
     public bool NoOtherLingQi
-        => _owner._skills.All(wg => wg == this || !wg.GetSkillType().Contains(SkillTypeCollection.LingQi));
+        => _owner._skills.All(wg => wg == this || !wg.GetSkillType().Contains(SkillType.LingQi));
     public bool NoAttackAdjacents
-        => !Prev(false).GetSkillType().Contains(SkillTypeCollection.Attack) && !Next(false).GetSkillType().Contains(SkillTypeCollection.Attack);
+        => !Prev(false).GetSkillType().Contains(SkillType.Attack) && !Next(false).GetSkillType().Contains(SkillType.Attack);
 
     public StageSkill(StageEntity owner, RunSkill runSkill, int slotIndex) : this(owner, runSkill, "聚气术", null, slotIndex) { }
     public StageSkill(StageEntity owner, SkillEntry skillEntry, JingJie jingJie, int slotIndex) : this(owner, null, skillEntry, jingJie, slotIndex) { }
@@ -124,8 +124,8 @@ public class StageSkill
     public string GetName()
         => _entry.Name;
 
-    public SkillTypeCollection GetSkillType()
-        => _entry.SkillTypeCollection;
+    public SkillTypeComposite GetSkillType()
+        => _entry.SkillTypeComposite;
 
     public async Task Execute(StageEntity caster, bool recursive = true)
     {

@@ -27,17 +27,15 @@ public class SkillSlot : GDictionary
     public SkillSlotState State => _state;
     public void SetLocked(bool locked)
     {
-        if (_state == SkillSlotState.Locked)
-        {
-            if (locked)
-                return;
+        bool stateIsLocked = _state == SkillSlotState.Locked;
+        if (stateIsLocked == locked)
+            return;
 
+        if (!locked)
+        {
             _state = SkillSlotState.Empty;
             return;
         }
-
-        if (!locked)
-            return;
 
         Skill = null;
         _state = SkillSlotState.Locked;
@@ -54,6 +52,8 @@ public class SkillSlot : GDictionary
             EnvironmentChanged();
         }
     }
+
+    [SerializeReference] private MechComposite _mechComposite;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s)

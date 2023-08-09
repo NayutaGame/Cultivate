@@ -1,55 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class SkillType
+public class SkillType : SuperEnum<SkillType>
 {
-    public static readonly SkillType Attack =   0b00000001;
-    public static readonly SkillType JianZhen = 0b00000010;
-    public static readonly SkillType LingQi =   0b00000100;
-    public static readonly SkillType ErDong =   0b00001000;
-    public static readonly SkillType XiaoHao =  0b00010000;
+    private SkillType(int index, string name) : base(index, name) { }
 
-    private static readonly SkillType[] _list;
-    private static readonly Dictionary<SkillType, string> _nameDict;
-
-    static SkillType()
+    public static void Init()
     {
-        _list = new[]
+        _list = new SkillType[]
         {
-            Attack,
-            JianZhen,
-            LingQi,
-            ErDong,
-            XiaoHao,
-        };
-
-        _nameDict = new Dictionary<SkillType, string>()
-        {
-            { Attack, "攻击" },
-            { JianZhen, "剑阵" },
-            { LingQi, "灵气" },
-            { ErDong, "二动" },
-            { XiaoHao, "消耗" },
+            new(1 << 0, "攻击"),
+            new(1 << 1, "剑阵"),
+            new(1 << 2, "灵气"),
+            new(1 << 3, "二动"),
+            new(1 << 4, "消耗"),
         };
     }
 
-    public static IEnumerable<SkillType> Traversal
-    {
-        get
-        {
-            foreach (var tag in _list) yield return tag;
-        }
-    }
+    public static SkillType Attack   => _list[0];
+    public static SkillType JianZhen => _list[1];
+    public static SkillType LingQi   => _list[2];
+    public static SkillType ErDong   => _list[3];
+    public static SkillType XiaoHao  => _list[4];
 
-    private int _value;
-    public int Value => _value;
-
-    public static implicit operator int(SkillType skillType) => skillType._value;
-    public static implicit operator SkillType(int value) => new() { _value = value };
-
-    public override string ToString()
-    {
-        return _nameDict[this];
-    }
+    public static implicit operator int(SkillType skillType) => skillType._index;
+    // public static implicit operator SkillType(int index) => _list[index];
 }

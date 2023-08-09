@@ -38,13 +38,13 @@ public class FormationArguments
             if (slot.Skill.Entry.WuXing != null)
                 WuXingCounts[slot.Skill.Entry.WuXing.Value]++;
 
-            if (slot.Skill.GetSkillTypeCollection().Contains(SkillType.ErDong))
+            if (slot.Skill.GetSkillTypeComposite().Contains(SkillType.ErDong))
                 SwiftCount++;
 
-            if (slot.Skill.GetSkillTypeCollection().Contains(SkillType.XiaoHao))
+            if (slot.Skill.GetSkillTypeComposite().Contains(SkillType.XiaoHao))
                 ExhaustedCount++;
 
-            if (slot.Skill.GetSkillTypeCollection().Contains(SkillType.Attack))
+            if (slot.Skill.GetSkillTypeComposite().Contains(SkillType.Attack))
             {
                 consecutiveAttackCount++;
                 HighestConsecutiveAttackCount = Mathf.Max(HighestConsecutiveAttackCount, consecutiveAttackCount);

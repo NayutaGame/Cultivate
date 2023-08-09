@@ -1,7 +1,6 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class MechBag : GDictionary
 {
@@ -14,8 +13,13 @@ public class MechBag : GDictionary
     public MechBag()
     {
         _meches = new Mech[MechType.Length];
-        for (int i = 0; i < _meches.Length; i++)
-            _meches[i] = new(i);
+
+        int i = 0;
+        foreach (MechType t in MechType.Traversal)
+        {
+            _meches[i] = new(t);
+            i++;
+        }
 
         _accessors = new Dictionary<string, Func<object>>()
         {

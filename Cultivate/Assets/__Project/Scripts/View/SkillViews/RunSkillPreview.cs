@@ -14,11 +14,6 @@ public class RunSkillPreview : SkillView
 
     public override void Refresh()
     {
-        if (GetIndexPath() == null)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
         base.Refresh();
         SkillView.Refresh();
     }
@@ -29,7 +24,6 @@ public class RunSkillPreview : SkillView
         _rectTransform.pivot = pivot;
         _rectTransform.position = pos;
     }
-
 
     public override void OnPointerClick(PointerEventData eventData) { }
     public override void OnBeginDrag(PointerEventData eventData) { }

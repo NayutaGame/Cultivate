@@ -29,8 +29,8 @@ public class StageNote : ISkillModel
     public string GetAnnotatedDescription(string evaluated = null)
         => Skill?.GetAnnotatedDescription() ?? Encyclopedia.SkillCategory["聚气术"].Evaluate(0, 0);
 
-    public SkillTypeCollection GetSkillTypeCollection()
-        => Skill?.GetSkillTypeCollection() ?? SkillTypeCollection.None;
+    public SkillTypeComposite GetSkillTypeComposite()
+        => Skill?.GetSkillTypeCollection() ?? 0;
 
     public Color GetColor()
         // => Skill?.GetColor() ?? CanvasManager.Instance.JingJieColors[JingJie.LianQi];

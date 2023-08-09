@@ -10,7 +10,8 @@ using UnityEngine.UI;
 
 [SelectionBase]
 public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
-    IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
+    IPointerClickHandler,
+    IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected RectTransform _rectTransform;
@@ -105,9 +106,9 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
         DescriptionText.text = description;
     }
 
-    public virtual void SetSkillTypeCollection(SkillTypeCollection skillTypeCollection)
+    public virtual void SetSkillTypeComposite(SkillTypeComposite skillTypeComposite)
     {
-        List<SkillType> skillTypes = skillTypeCollection.ContainedTags.FirstN(TypeViews.Length).ToList();
+        List<SkillType> skillTypes = skillTypeComposite.ContainedSkillTypes.FirstN(TypeViews.Length).ToList();
 
         for (int i = 0; i < skillTypes.Count; i++)
         {
@@ -194,7 +195,7 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
         SetManaCostColor();
         SetName(skill.GetName());
         SetDescription(skill.GetAnnotatedDescription());
-        SetSkillTypeCollection(skill.GetSkillTypeCollection());
+        SetSkillTypeComposite(skill.GetSkillTypeComposite());
         SetAnnotationText(skill.GetAnnotationText());
         SetColor(skill.GetColor());
         SetCardFace(skill.GetCardFace());

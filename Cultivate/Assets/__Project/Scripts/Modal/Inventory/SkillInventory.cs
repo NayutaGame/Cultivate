@@ -61,7 +61,7 @@ public class SkillInventory : Inventory<RunSkill>
         (lhs, rhs) => Encyclopedia.SkillCategory.IndexOf(lhs.Entry) - Encyclopedia.SkillCategory.IndexOf(rhs.Entry);
 
     private static Comparison<RunSkill> TypeComparison =
-        (lhs, rhs) => lhs.GetSkillTypeCollection().Value - rhs.GetSkillTypeCollection().Value;
+        (lhs, rhs) => lhs.GetSkillTypeComposite().Value - rhs.GetSkillTypeComposite().Value;
 
     private static Comparison<RunSkill> InventoryComparison = (lhs, rhs) =>
     {

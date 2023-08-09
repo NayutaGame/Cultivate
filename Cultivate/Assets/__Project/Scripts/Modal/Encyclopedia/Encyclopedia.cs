@@ -31,6 +31,9 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, GDictionary
             { "SkillCategory", () => SkillCategory },
         };
 
+        SkillType.Init();
+        MechType.Init();
+
         SpriteCategory = new();
         AudioCategory = new();
 

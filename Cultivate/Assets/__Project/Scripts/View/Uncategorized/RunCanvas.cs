@@ -23,6 +23,7 @@ public class RunCanvas : Singleton<RunCanvas>
     public ConsolePanel ConsolePanel;
 
     public SkillGhost SkillGhost;
+    public MechGhost MechGhost;
     [SerializeField] private RunSkillPreview RunSkillPreview;
     [SerializeField] private FormationPreview FormationPreview;
 

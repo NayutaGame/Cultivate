@@ -360,7 +360,7 @@ public class BuffCategory : Category<BuffEntry>
                         StepDetails d = (StepDetails)stageEventDetails;
                         if (b.Owner == d.Owner)
                         {
-                            if (!d.Skill.GetSkillType().Contains(SkillTypeCollection.Attack))
+                            if (!d.Skill.GetSkillType().Contains(SkillType.Attack))
                                 await b.SetDStack(-1);
                         }
                     }),
@@ -564,7 +564,7 @@ public class BuffCategory : Category<BuffEntry>
                         StepDetails d = (StepDetails)stageEventDetails;
 
                         if (b.Owner != d.Owner) return;
-                        if (d.Skill.GetSkillType().Contains(SkillTypeCollection.Attack))
+                        if (d.Skill.GetSkillType().Contains(SkillType.Attack))
                             return;
 
                         await d.Skill.ExhaustProcedure();

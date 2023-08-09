@@ -1,6 +1,4 @@
 
-using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 
 public class RunSkillView : SkillView
