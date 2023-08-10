@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class NodeCategory : Category<NodeEntry>
 {
@@ -71,12 +72,12 @@ public class NodeCategory : Category<NodeEntry>
                                 if (iRunSkill is RunSkill skill)
                                 {
                                     if (skill.JingJie <= runNode.JingJie && skill.JingJie != JingJie.HuaShen)
-                                        skill.JingJie = runNode.JingJie + 1;
+                                        skill.TryIncreaseJingJie();
                                 }
                                 else if (iRunSkill is SkillSlot slot)
                                 {
-                                    if (slot.Skill.JingJie <= runNode.JingJie && slot.Skill.JingJie != JingJie.HuaShen)
-                                        slot.Skill.JingJie = runNode.JingJie + 1;
+                                    if (slot.Skill.GetJingJie() <= runNode.JingJie && slot.Skill.GetJingJie() != JingJie.HuaShen)
+                                        slot.TryIncreaseJingJie();
                                 }
                             }
                         });
@@ -142,7 +143,9 @@ public class NodeCategory : Category<NodeEntry>
                             }
                             else if (copying is SkillSlot slot)
                             {
-                                copyingSkill = slot.Skill;
+                                RunSkill rSkill = slot.Skill as RunSkill;
+                                Assert.IsTrue(rSkill != null);
+                                copyingSkill = rSkill;
                             }
 
                             foreach (object iSkill in iSkills)
@@ -176,8 +179,8 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (slot.Skill == null)
                                 continue;
-                            WuXing? oldWuXing = slot.Skill.Entry.WuXing;
-                            JingJie oldJingJie = slot.Skill.JingJie;
+                            WuXing? oldWuXing = slot.Skill.GetEntry().WuXing;
+                            JingJie oldJingJie = slot.Skill.GetJingJie();
 
                             if (!oldWuXing.HasValue)
                                 continue;
@@ -191,7 +194,7 @@ public class NodeCategory : Category<NodeEntry>
                         for(int i = 0; i < RunManager.Instance.Battle.SkillInventory.Count; i++)
                         {
                             RunSkill oldSkill = RunManager.Instance.Battle.SkillInventory[i];
-                            WuXing? oldWuXing = oldSkill.Entry.WuXing;
+                            WuXing? oldWuXing = oldSkill.GetEntry().WuXing;
                             JingJie oldJingJie = oldSkill.JingJie;
 
                             if (!oldWuXing.HasValue)

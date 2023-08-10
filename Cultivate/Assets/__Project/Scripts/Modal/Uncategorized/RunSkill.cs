@@ -5,10 +5,10 @@ using System.Text;
 using UnityEngine;
 
 [Serializable]
-public class RunSkill : ISkillModel, ISerializationCallbackReceiver
+public class RunSkill : ISkillModel, EmulatedSkill, ISerializationCallbackReceiver
 {
     [SerializeField] private SkillEntry _entry;
-    public SkillEntry Entry => _entry;
+    public SkillEntry GetEntry() => _entry;
     [SerializeField] private JingJie _jingJie;
     public JingJie JingJie
     {
@@ -16,9 +16,12 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
         set => _jingJie = value;
     }
     [SerializeField] protected int _runUsedTimes;
-    public int RunUsedTimes => _runUsedTimes;
+    public int GetRunUsedTimes() => _runUsedTimes;
+    public void SetRunUsedTimes(int value) => _runEquippedTimes = value;
+
     [SerializeField] protected int _runEquippedTimes;
-    public int RunEquippedTimes => _runEquippedTimes;
+    public int GetRunEquippedTimes() => _runEquippedTimes;
+    public void SetRunEquippedTimes(int value) => _runEquippedTimes = value;
 
     public RunSkill(SkillEntry entry, JingJie jingJie)
     {
@@ -94,13 +97,13 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
 
     public bool TryIncreaseJingJie(bool loop = true)
     {
-        if (Entry.JingJieRange.Contains(JingJie + 1))
+        if (GetEntry().JingJieRange.Contains(JingJie + 1))
         {
             JingJie += 1;
         }
         else if (loop)
         {
-            JingJie = Entry.JingJieRange.Start;
+            JingJie = GetEntry().JingJieRange.Start;
         }
 
         return true;

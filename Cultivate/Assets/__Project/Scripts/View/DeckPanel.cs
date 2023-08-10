@@ -68,6 +68,7 @@ public class DeckPanel : Panel
     {
         PlayerHand.SetDelegate(interactDelegate);
         PlayerInventory.SetDelegate(interactDelegate);
+        MechBagView.SetDelegate(interactDelegate);
     }
 
     private void Sort()

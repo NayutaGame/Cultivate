@@ -71,7 +71,7 @@ public class SkillPool : Pool<SkillEntry>
         }
 
         if (!consume)
-            Populate(skills.FilterObj(s => s.Entry != Encyclopedia.SkillCategory[0]).Map(s => s.Entry));
+            Populate(skills.FilterObj(s => s.GetEntry() != Encyclopedia.SkillCategory[0]).Map(s => s.GetEntry()));
 
         return true;
     }

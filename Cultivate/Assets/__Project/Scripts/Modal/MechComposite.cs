@@ -1,64 +1,120 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CLLibrary;
+using UnityEngine;
 
-public class MechComposite
+public class MechComposite : EmulatedSkill, ISkillModel
 {
-    private static readonly int MAX_CHAIN = 3;
-
-    private MechType[] _mechTypes;
-
-    public MechComposite()
-    {
-        _mechTypes = new MechType[MAX_CHAIN];
-    }
+    public static readonly int MAX_CHAIN = 3;
 
     private static Dictionary<int, SkillEntry> _composeDict = new()
     {
         { 0, null },
 
-        { MechType.Xiang, "醒神香" },
-        { MechType.Ren, "飞镖" },
-        { MechType.Xia, "铁匣" },
-        { MechType.Lun, "滑索" },
+        { MechType.Xiang._hash, "醒神香" },
+        { MechType.Ren._hash, "飞镖" },
+        { MechType.Xia._hash, "铁匣" },
+        { MechType.Lun._hash, "滑索" },
 
-        { MechType.Xiang + MechType.Xiang, "还魂香" },
-        { MechType.Xiang + MechType.Ren, "净魂刀" },
-        { MechType.Xiang + MechType.Xia, "防护罩" },
-        { MechType.Xiang + MechType.Lun, "能量饮料" },
-        { MechType.Ren + MechType.Ren, "炎铳" },
-        { MechType.Ren + MechType.Xia, "机关人偶" },
-        { MechType.Ren + MechType.Lun, "铁陀螺" },
-        { MechType.Xia + MechType.Xia, "防壁" },
-        { MechType.Xia + MechType.Lun, "不倒翁" },
-        { MechType.Lun + MechType.Lun, "助推器" },
+        { MechType.Xiang._hash + MechType.Xiang._hash, "还魂香" },
+        { MechType.Xiang._hash + MechType.Ren._hash, "净魂刀" },
+        { MechType.Xiang._hash + MechType.Xia._hash, "防护罩" },
+        { MechType.Xiang._hash + MechType.Lun._hash, "能量饮料" },
+        { MechType.Ren._hash + MechType.Ren._hash, "炎铳" },
+        { MechType.Ren._hash + MechType.Xia._hash, "机关人偶" },
+        { MechType.Ren._hash + MechType.Lun._hash, "铁陀螺" },
+        { MechType.Xia._hash + MechType.Xia._hash, "防壁" },
+        { MechType.Xia._hash + MechType.Lun._hash, "不倒翁" },
+        { MechType.Lun._hash + MechType.Lun._hash, "助推器" },
 
-        { MechType.Xiang + MechType.Xiang + MechType.Xiang, "反应堆" },
-        { MechType.Xiang + MechType.Xiang + MechType.Ren, "烟花" },
-        { MechType.Xiang + MechType.Xiang + MechType.Xia, "长明灯" },
-        { MechType.Xiang + MechType.Xiang + MechType.Lun, "大往生香" },
-        { MechType.Lun + MechType.Xiang + MechType.Ren, "地府通讯器" },
+        { MechType.Xiang._hash + MechType.Xiang._hash + MechType.Xiang._hash, "反应堆" },
+        { MechType.Xiang._hash + MechType.Xiang._hash + MechType.Ren._hash, "烟花" },
+        { MechType.Xiang._hash + MechType.Xiang._hash + MechType.Xia._hash, "长明灯" },
+        { MechType.Xiang._hash + MechType.Xiang._hash + MechType.Lun._hash, "大往生香" },
+        { MechType.Lun._hash + MechType.Xiang._hash + MechType.Ren._hash, "地府通讯器" },
 
-        { MechType.Ren + MechType.Ren + MechType.Ren, "无人机阵列" },
-        { MechType.Ren + MechType.Ren + MechType.Xiang, "弩炮" },
-        { MechType.Ren + MechType.Ren + MechType.Xia, "尖刺陷阱" },
-        { MechType.Ren + MechType.Ren + MechType.Lun, "暴雨梨花针" },
-        { MechType.Xiang + MechType.Ren + MechType.Xia, "炼丹炉" },
+        { MechType.Ren._hash + MechType.Ren._hash + MechType.Ren._hash, "无人机阵列" },
+        { MechType.Ren._hash + MechType.Ren._hash + MechType.Xiang._hash, "弩炮" },
+        { MechType.Ren._hash + MechType.Ren._hash + MechType.Xia._hash, "尖刺陷阱" },
+        { MechType.Ren._hash + MechType.Ren._hash + MechType.Lun._hash, "暴雨梨花针" },
+        { MechType.Xiang._hash + MechType.Ren._hash + MechType.Xia._hash, "炼丹炉" },
 
-        { MechType.Xia + MechType.Xia + MechType.Xia, "浮空艇" },
-        { MechType.Xia + MechType.Xia + MechType.Xiang, "动量中和器" },
-        { MechType.Xia + MechType.Xia + MechType.Ren, "机关伞" },
-        { MechType.Xia + MechType.Xia + MechType.Lun, "一轮马" },
-        { MechType.Ren + MechType.Xia + MechType.Lun, "外骨骼" },
+        { MechType.Xia._hash + MechType.Xia._hash + MechType.Xia._hash, "浮空艇" },
+        { MechType.Xia._hash + MechType.Xia._hash + MechType.Xiang._hash, "动量中和器" },
+        { MechType.Xia._hash + MechType.Xia._hash + MechType.Ren._hash, "机关伞" },
+        { MechType.Xia._hash + MechType.Xia._hash + MechType.Lun._hash, "一轮马" },
+        { MechType.Ren._hash + MechType.Xia._hash + MechType.Lun._hash, "外骨骼" },
 
-        { MechType.Lun + MechType.Lun + MechType.Lun, "永动机" },
-        { MechType.Lun + MechType.Lun + MechType.Xiang, "火箭靴" },
-        { MechType.Lun + MechType.Lun + MechType.Ren, "定龙桩" },
-        { MechType.Lun + MechType.Lun + MechType.Xia, "飞行器" },
-        { MechType.Xia + MechType.Lun + MechType.Xiang, "时光机" },
+        { MechType.Lun._hash + MechType.Lun._hash + MechType.Lun._hash, "永动机" },
+        { MechType.Lun._hash + MechType.Lun._hash + MechType.Xiang._hash, "火箭靴" },
+        { MechType.Lun._hash + MechType.Lun._hash + MechType.Ren._hash, "定龙桩" },
+        { MechType.Lun._hash + MechType.Lun._hash + MechType.Xia._hash, "飞行器" },
+        { MechType.Xia._hash + MechType.Lun._hash + MechType.Xiang._hash, "时光机" },
     };
 
-    private SkillEntry GetComposed()
-        => _composeDict[_mechTypes.Map(t => t ?? 0).Sum()];
+    private List<MechType> _mechTypes;
+    public List<MechType> MechTypes => _mechTypes;
+
+    public MechComposite()
+    {
+        _mechTypes = new();
+    }
+
+    public MechComposite(MechType mechType) : this()
+    {
+        _mechTypes.Add(mechType);
+    }
+
+    public SkillEntry GetEntry()
+        => _composeDict[_mechTypes.Map(t => t?._hash ?? 0).Sum()];
+
+    public JingJie GetJingJie()
+        => GetEntry().JingJieRange.Start;
+
+    public Sprite GetSprite()
+        => GetEntry().Sprite;
+
+    public int GetManaCost()
+        => GetEntry().GetManaCost(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start);
+
+    public string GetName()
+        => GetEntry().Name;
+
+    public string GetAnnotatedDescription(string evaluated = null)
+        => GetEntry().GetAnnotatedDescription(evaluated ?? GetDescription());
+
+    public SkillTypeComposite GetSkillTypeComposite()
+        => GetEntry().SkillTypeComposite;
+
+    public Color GetColor()
+        => CanvasManager.Instance.JingJieColors[GetJingJie()];
+
+    public Sprite GetCardFace()
+        => GetEntry().CardFace;
+
+    public Sprite GetJingJieSprite()
+        => CanvasManager.Instance.JingJieSprites[GetJingJie()];
+
+    public Sprite GetWuXingSprite()
+        => CanvasManager.Instance.GetWuXingSprite(GetEntry().WuXing);
+
+    public string GetDescription()
+        => GetEntry().Evaluate(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start);
+
+
+    public string GetAnnotationText()
+    {
+        StringBuilder sb = new();
+        foreach (IAnnotation annotation in GetEntry().GetAnnotations())
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}\n");
+
+        return sb.ToString();
+    }
+
+    public int GetRunUsedTimes() => 0;
+    public void SetRunUsedTimes(int value) { }
+    public int GetRunEquippedTimes() => 0;
+    public void SetRunEquippedTimes(int value) { }
 }

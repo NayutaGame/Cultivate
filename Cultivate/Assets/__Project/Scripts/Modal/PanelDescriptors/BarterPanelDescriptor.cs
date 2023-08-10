@@ -25,7 +25,7 @@ public class BarterPanelDescriptor : PanelDescriptor
 
         Pool<RunSkill> pool = new Pool<RunSkill>();
         pool.Populate(RunManager.Instance.Battle.Hero.TraversalCurrentSlots()
-            .FilterObj(s => s.Skill != null).Map(s => s.Skill));
+            .FilterObj(s => s.Skill != null && s.Skill is RunSkill).Map(s => s.Skill as RunSkill));
         pool.Populate(RunManager.Instance.Battle.SkillInventory);
         pool.Shuffle();
 
@@ -42,7 +42,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         {
             RunSkill thisSkill = playerSkills[i];
             RunManager.Instance.SkillPool.TryDrawSkill(out skills[i],
-                pred: skillEntry => !skills.FilterObj(s => s != null).Map(s => s.Entry).Contains(skillEntry) && skillEntry != thisSkill.Entry, jingJie: playerSkills[i].JingJie);
+                pred: skillEntry => !skills.FilterObj(s => s != null).Map(s => s.GetEntry()).Contains(skillEntry) && skillEntry != thisSkill.GetEntry(), jingJie: playerSkills[i].JingJie);
         }
 
         for (int i = 0; i < playerSkills.Length; i++)
@@ -50,7 +50,7 @@ public class BarterPanelDescriptor : PanelDescriptor
             _inventory.Add(new BarterItem(playerSkills[i], skills[i]));
         }
 
-        RunManager.Instance.SkillPool.Populate(_inventory.Map(b => b.Skill.Entry));
+        RunManager.Instance.SkillPool.Populate(_inventory.Map(b => b.Skill.GetEntry()));
     }
 
     public bool Exchange(BarterItem barterItem)

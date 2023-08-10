@@ -12,7 +12,7 @@ public class StageSkill
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
-    private RunSkill _runSkill;
+    private EmulatedSkill _runSkill;
     private SkillEntry _entry;
     public SkillEntry Entry => _entry;
 
@@ -96,13 +96,13 @@ public class StageSkill
     public bool NoAttackAdjacents
         => !Prev(false).GetSkillType().Contains(SkillType.Attack) && !Next(false).GetSkillType().Contains(SkillType.Attack);
 
-    public StageSkill(StageEntity owner, RunSkill runSkill, int slotIndex) : this(owner, runSkill, "聚气术", null, slotIndex) { }
+    public StageSkill(StageEntity owner, EmulatedSkill runSkill, int slotIndex) : this(owner, runSkill, "聚气术", null, slotIndex) { }
     public StageSkill(StageEntity owner, SkillEntry skillEntry, JingJie jingJie, int slotIndex) : this(owner, null, skillEntry, jingJie, slotIndex) { }
-    private StageSkill(StageEntity owner, RunSkill runSkill, SkillEntry skillEntry, JingJie? jingJie, int slotIndex)
+    private StageSkill(StageEntity owner, EmulatedSkill runSkill, SkillEntry skillEntry, JingJie? jingJie, int slotIndex)
     {
         _owner = owner;
         _runSkill = runSkill;
-        _entry = _runSkill?.Entry ?? skillEntry;
+        _entry = _runSkill?.GetEntry() ?? skillEntry;
 
         if (jingJie.HasValue) {
             _jingJie = jingJie.Value;
@@ -116,8 +116,8 @@ public class StageSkill
 
         _exhausted = false;
         _runExhausted = false;
-        RunUsedTimes = _runSkill?.RunUsedTimes ?? 0;
-        RunEquippedTimes = _runSkill?.RunEquippedTimes + 1 ?? 0;
+        RunUsedTimes = _runSkill?.GetRunEquippedTimes() ?? 0;
+        RunEquippedTimes = _runSkill?.GetRunEquippedTimes() + 1 ?? 0;
         StageUsedTimes = 0;
     }
 

@@ -65,8 +65,8 @@ public class RunEnvironment : GDictionary
             return false;
 
         JingJie jingJie = lhs.GetJingJie();
-        WuXing? lWuXing = lhs.Entry.WuXing;
-        WuXing? rWuXing = rhs.Entry.WuXing;
+        WuXing? lWuXing = lhs.GetEntry().WuXing;
+        WuXing? rWuXing = rhs.GetEntry().WuXing;
 
         bool upgrade;
 
@@ -81,7 +81,7 @@ public class RunEnvironment : GDictionary
 
         JingJie newJingJie = jingJie + (upgrade ? 1 : 0);
 
-        if (lhs.Entry == rhs.Entry && upgrade && lhs.Entry.JingJieRange.Contains(lhs.JingJie + 1))
+        if (lhs.GetEntry() == rhs.GetEntry() && upgrade && lhs.GetEntry().JingJieRange.Contains(lhs.JingJie + 1))
         {
             rhs.JingJie = newJingJie;
             SkillInventory.RemoveSkill(lhs);
@@ -98,7 +98,7 @@ public class RunEnvironment : GDictionary
 
         if (WuXing.SameWuXing(lWuXing, rWuXing))
         {
-            pred = s => s != lhs.Entry && s != rhs.Entry;
+            pred = s => s != lhs.GetEntry() && s != rhs.GetEntry();
             wuXing = lWuXing;
         }
         else if (WuXing.XiangSheng(lWuXing, rWuXing))
@@ -120,35 +120,91 @@ public class RunEnvironment : GDictionary
         return true;
     }
 
-    public bool TryEquip(RunSkill toEquip, SkillSlot slot)
+    public bool TryEquipSkill(RunSkill toEquip, SkillSlot slot)
     {
-        RunSkill toUnequip = slot.Skill;
+        EmulatedSkill toUnequip = slot.Skill;
 
-        if (toUnequip != null)
-            SkillInventory.ReplaceSkill(toEquip, toUnequip);
-        else
+        if (toUnequip == null)
             SkillInventory.RemoveSkill(toEquip);
+        else if (toUnequip is RunSkill runSkill)
+            SkillInventory.ReplaceSkill(toEquip, runSkill);
+        else if (toUnequip is MechComposite mechComposite)
+        {
+            SkillInventory.RemoveSkill(toEquip);
+            foreach(MechType m in mechComposite.MechTypes)
+                MechBag.AddMech(m);
+        };
 
         slot.Skill = toEquip;
         EnvironmentChanged();
         return true;
     }
 
-    public bool TryUnequip(SkillSlot slot, object _)
+    public bool TryEquipMech(Mech toEquip, SkillSlot slot)
     {
-        RunSkill toUnequip = slot.Skill;
-        if (toUnequip == null)
-            return false;
+        EmulatedSkill currentSkill = slot.Skill;
 
-        slot.Skill = null;
-        SkillInventory.AddSkill(toUnequip);
+        if (currentSkill == null)
+        {
+            bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
+            if (!success)
+                return false;
+            slot.Skill = new MechComposite(toEquip.GetMechType());
+        }
+        else if (currentSkill is RunSkill runSkill)
+        {
+            bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
+            if (!success)
+                return false;
+            SkillInventory.AddSkill(runSkill);
+            slot.Skill = new MechComposite(toEquip.GetMechType());
+        }
+        else if (currentSkill is MechComposite mechComposite)
+        {
+            bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
+            if (!success)
+                return false;
+
+            if (mechComposite.MechTypes.Count >= MechComposite.MAX_CHAIN)
+                return false;
+
+            mechComposite.MechTypes.Add(toEquip.GetMechType());
+        }
+
         EnvironmentChanged();
         return true;
     }
 
+    public bool TryUnequip(SkillSlot slot, object _)
+    {
+        EmulatedSkill toUnequip = slot.Skill;
+        if (toUnequip == null)
+            return false;
+
+        if (toUnequip is RunSkill runSkill)
+        {
+            SkillInventory.AddSkill(runSkill);
+
+            slot.Skill = null;
+            EnvironmentChanged();
+            return true;
+        }
+        else if (toUnequip is MechComposite mechComposite)
+        {
+            foreach (var m in mechComposite.MechTypes)
+                MechBag.AddMech(m);
+
+            slot.Skill = null;
+            EnvironmentChanged();
+            return true;
+        }
+
+        return false;
+    }
+
     public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
     {
-        RunSkill temp = fromSlot.Skill;
+        EmulatedSkill temp = fromSlot.Skill;
         fromSlot.Skill = toSlot.Skill;
         toSlot.Skill = temp;
         return true;

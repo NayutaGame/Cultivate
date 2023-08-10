@@ -104,7 +104,7 @@ public class BattlePanel : Panel
         RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
         RunSkill toEquip = DataManager.Get<RunSkill>(from.GetIndexPath());
         SkillSlot slot = DataManager.Get<SkillSlot>(to.GetIndexPath());
-        return runEnvironment.TryEquip(toEquip, slot);
+        return runEnvironment.TryEquipSkill(toEquip, slot);
     }
 
     private bool TryUnequip(IInteractable from, IInteractable to)

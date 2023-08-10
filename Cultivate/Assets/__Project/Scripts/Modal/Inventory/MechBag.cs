@@ -28,24 +28,24 @@ public class MechBag : GDictionary
     }
 
     public int GetCount(MechType mechType)
-        => _meches[mechType].Count;
+        => _meches[mechType._index].Count;
 
-    public void AddMech(MechType mechType, int count)
+    public void AddMech(MechType mechType, int count = 1)
     {
-        _meches[mechType].Count += count;
+        _meches[mechType._index].Count += count;
     }
 
-    public bool TryConsumeMech(MechType mechType, int count)
+    public bool TryConsumeMech(MechType mechType, int count = 1)
     {
         if (!CanConsumeMech(mechType, count))
             return false;
 
-        _meches[mechType].Count -= count;
+        _meches[mechType._index].Count -= count;
         return true;
     }
 
-    public bool CanConsumeMech(MechType mechType, int count)
+    public bool CanConsumeMech(MechType mechType, int count = 1)
     {
-        return _meches[mechType].Count >= count;
+        return _meches[mechType._index].Count >= count;
     }
 }

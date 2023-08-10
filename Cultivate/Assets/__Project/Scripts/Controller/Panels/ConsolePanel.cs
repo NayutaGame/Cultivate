@@ -15,6 +15,7 @@ public class ConsolePanel : Panel
     public TMP_InputField HealthInputField;
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
+    public Button AddMechButton;
 
     public override Tween GetShowTween()
         => DOTween.Sequence().SetAutoKill()
@@ -45,6 +46,9 @@ public class ConsolePanel : Panel
 
         DrawSkillButton.onClick.RemoveAllListeners();
         DrawSkillButton.onClick.AddListener(DrawSkill);
+
+        AddMechButton.onClick.RemoveAllListeners();
+        AddMechButton.onClick.AddListener(AddMech);
     }
 
     public override void Refresh()
@@ -91,6 +95,13 @@ public class ConsolePanel : Panel
     private void DrawSkill()
     {
         RunManager.Instance.Battle.SkillInventory.TryDrawSkill(out RunSkill skill, jingJie: RunManager.Instance.Map.JingJie);
+        RunCanvas.Instance.Refresh();
+    }
+
+    private void AddMech()
+    {
+        foreach(MechType m in MechType.Traversal)
+            RunManager.Instance.Battle.MechBag.AddMech(m);
         RunCanvas.Instance.Refresh();
     }
 }

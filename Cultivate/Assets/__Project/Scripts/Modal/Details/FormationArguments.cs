@@ -35,16 +35,19 @@ public class FormationArguments
                 continue;
             }
 
-            if (slot.Skill.Entry.WuXing != null)
-                WuXingCounts[slot.Skill.Entry.WuXing.Value]++;
+            WuXing? wuXing = slot.Skill.GetEntry().WuXing;
+            if (wuXing != null)
+                WuXingCounts[wuXing.Value]++;
 
-            if (slot.Skill.GetSkillTypeComposite().Contains(SkillType.ErDong))
+            SkillTypeComposite skillTypeComposite = slot.Skill.GetEntry().SkillTypeComposite;
+
+            if (skillTypeComposite.Contains(SkillType.ErDong))
                 SwiftCount++;
 
-            if (slot.Skill.GetSkillTypeComposite().Contains(SkillType.XiaoHao))
+            if (skillTypeComposite.Contains(SkillType.XiaoHao))
                 ExhaustedCount++;
 
-            if (slot.Skill.GetSkillTypeComposite().Contains(SkillType.Attack))
+            if (skillTypeComposite.Contains(SkillType.Attack))
             {
                 consecutiveAttackCount++;
                 HighestConsecutiveAttackCount = Mathf.Max(HighestConsecutiveAttackCount, consecutiveAttackCount);

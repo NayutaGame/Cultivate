@@ -54,11 +54,11 @@ public class SkillInventory : Inventory<RunSkill>
         (lhs, rhs) => lhs.JingJie - rhs.JingJie;
 
     private static Comparison<RunSkill> WuXingComparison =
-        (lhs, rhs) => (lhs.Entry.WuXing.HasValue ? lhs.Entry.WuXing.Value._index : -1) -
-                      (rhs.Entry.WuXing.HasValue ? rhs.Entry.WuXing.Value._index : -1);
+        (lhs, rhs) => (lhs.GetEntry().WuXing.HasValue ? lhs.GetEntry().WuXing.Value._index : -1) -
+                      (rhs.GetEntry().WuXing.HasValue ? rhs.GetEntry().WuXing.Value._index : -1);
 
     private static Comparison<RunSkill> IndexComparison =
-        (lhs, rhs) => Encyclopedia.SkillCategory.IndexOf(lhs.Entry) - Encyclopedia.SkillCategory.IndexOf(rhs.Entry);
+        (lhs, rhs) => Encyclopedia.SkillCategory.IndexOf(lhs.GetEntry()) - Encyclopedia.SkillCategory.IndexOf(rhs.GetEntry());
 
     private static Comparison<RunSkill> TypeComparison =
         (lhs, rhs) => lhs.GetSkillTypeComposite().Value - rhs.GetSkillTypeComposite().Value;

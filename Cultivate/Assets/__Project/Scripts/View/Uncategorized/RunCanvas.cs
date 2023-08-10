@@ -41,7 +41,7 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public void Configure()
     {
-        DeckInteractDelegate = new(3,
+        DeckInteractDelegate = new(4,
             getId: view =>
             {
                 object item = DataManager.Get<object>(view.GetIndexPath());
@@ -51,14 +51,17 @@ public class RunCanvas : Singleton<RunCanvas>
                     return 1;
                 if (item is SkillSlot)
                     return 2;
+                if (item is Mech)
+                    return 3;
                 return null;
             },
             dragDropTable: new Func<IInteractable, IInteractable, bool>[]
             {
-                /*                     RunSkill,   SkillInventory, SkillSlot(Hero) */
-                /* RunSkill         */ TryMerge,   null,           TryEquip,
-                /* SkillInventory   */ null,       null,           null,
-                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,
+                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), Mech */
+                /* RunSkill         */ TryMerge,   null,           TryEquipSkill,   null,
+                /* SkillInventory   */ null,       null,           null,            null,
+                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip,
+                /* Mech             */ null,       null,           TryEquipMech,    null,
             });
 
         CardPickerInteractDelegate = new(3,
@@ -71,20 +74,24 @@ public class RunCanvas : Singleton<RunCanvas>
                     return 1;
                 if (item is SkillSlot)
                     return 2;
+                if (item is Mech)
+                    return 3;
                 return null;
             },
             dragDropTable: new Func<IInteractable, IInteractable, bool>[]
             {
-                /*                     RunSkill,   SkillInventory, SkillSlot(Hero) */
-                /* RunSkill         */ TryMerge,   null,           TryEquip,
-                /* SkillInventory   */ null,       null,           null,
-                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,
+                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), Mech */
+                /* RunSkill         */ TryMerge,   null,           TryEquipSkill,   null,
+                /* SkillInventory   */ null,       null,           null,            null,
+                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip,
+                /* Mech             */ null,       null,           TryEquipMech,    null,
             },
             lMouseTable: new Func<IInteractable, bool>[]
             {
                 ToggleSkill,
                 null,
                 ToggleSkillSlot,
+                null,
             });
 
         BackgroundButton.onClick.RemoveAllListeners();
@@ -176,33 +183,41 @@ public class RunCanvas : Singleton<RunCanvas>
 
     private bool TryMerge(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
+        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
         RunSkill lhs = DataManager.Get<RunSkill>(from.GetIndexPath());
         RunSkill rhs = DataManager.Get<RunSkill>(to.GetIndexPath());
-        return runEnvironment.TryMerge(lhs, rhs);
+        return env.TryMerge(lhs, rhs);
     }
 
-    private bool TryEquip(IInteractable from, IInteractable to)
+    private bool TryEquipSkill(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
+        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
         RunSkill toEquip = DataManager.Get<RunSkill>(from.GetIndexPath());
         SkillSlot slot = DataManager.Get<SkillSlot>(to.GetIndexPath());
-        return runEnvironment.TryEquip(toEquip, slot);
+        return env.TryEquipSkill(toEquip, slot);
+    }
+
+    private bool TryEquipMech(IInteractable from, IInteractable to)
+    {
+        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
+        Mech toEquip = DataManager.Get<Mech>(from.GetIndexPath());
+        SkillSlot slot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        return env.TryEquipMech(toEquip, slot);
     }
 
     private bool TryUnequip(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
+        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
         SkillSlot slot = DataManager.Get<SkillSlot>(from.GetIndexPath());
-        return runEnvironment.TryUnequip(slot, null);
+        return env.TryUnequip(slot, null);
     }
 
     private bool TrySwap(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
+        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
         SkillSlot fromSlot = DataManager.Get<SkillSlot>(from.GetIndexPath());
         SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
-        return runEnvironment.TrySwap(fromSlot, toSlot);
+        return env.TrySwap(fromSlot, toSlot);
     }
 
     private bool ToggleSkill(IInteractable view)

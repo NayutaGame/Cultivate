@@ -21,9 +21,9 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         _action = action;
     }
 
-    public bool CanSelect(RunSkill skill)
+    public bool CanSelect(EmulatedSkill skill)
     {
-        return true;
+        return skill is RunSkill;
     }
 
     public bool CanSelect(SkillSlot slot)

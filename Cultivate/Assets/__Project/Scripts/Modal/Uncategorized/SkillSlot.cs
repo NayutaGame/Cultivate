@@ -1,9 +1,6 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using CLLibrary;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -41,19 +38,21 @@ public class SkillSlot : GDictionary
         _state = SkillSlotState.Locked;
     }
 
-    [SerializeReference] private RunSkill _skill;
-    public RunSkill Skill
+    [SerializeReference] private EmulatedSkill _skill;
+    public EmulatedSkill Skill
     {
         get => _skill;
         set
         {
-            _skill = value?.Clone();
+            if (value is RunSkill runSkill)
+                _skill = runSkill.Clone();
+            else
+                _skill = value;
+
             _state = _skill == null ? SkillSlotState.Empty : SkillSlotState.Occupied;
             EnvironmentChanged();
         }
     }
-
-    [SerializeReference] private MechComposite _mechComposite;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s)
@@ -76,7 +75,11 @@ public class SkillSlot : GDictionary
         if (_skill == null)
             return false;
 
-        bool success = _skill.TryIncreaseJingJie();
+        RunSkill runSkill = _skill as RunSkill;
+        if (runSkill == null)
+            return false;
+
+        bool success = runSkill.TryIncreaseJingJie();
         if (!success)
             return false;
 
