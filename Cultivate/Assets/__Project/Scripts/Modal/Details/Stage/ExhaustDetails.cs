@@ -6,12 +6,10 @@ public class ExhaustDetails : StageEventDetails
 {
     public StageEntity Owner;
     public StageSkill Skill;
-    public bool ForRun;
 
-    public ExhaustDetails(StageEntity owner, StageSkill skill, bool forRun)
+    public ExhaustDetails(StageEntity owner, StageSkill skill)
     {
         Owner = owner;
         Skill = skill;
-        ForRun = forRun;
     }
 }

@@ -91,11 +91,10 @@ public class SkillSlot : GDictionary
         return true;
     }
 
-    [NonSerialized] public bool RunExhausted;
-
     public bool TryExhaust()
     {
-        if (!RunExhausted)
+        bool sunHao = Skill.GetEntry().SkillTypeComposite.Contains(SkillType.SunHao);
+        if (!sunHao)
             return false;
 
         Skill = null;

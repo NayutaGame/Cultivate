@@ -20,20 +20,21 @@ public class SkillCategory : Category<SkillEntry>
 
             // 筑基
             new("醒神香", JingJie.ZhuJi, "灵气+4", // 香
-                skillTypeComposite: SkillType.LingQi, withinPool: false,
+                skillTypeComposite: SkillType.LingQi | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.BuffSelfProcedure("灵气", 4);
                 }),
 
             new("飞镖", JingJie.ZhuJi, "12攻", // 刃
-                skillTypeComposite: SkillType.Attack, withinPool: false,
+                skillTypeComposite: SkillType.Attack | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(12);
                 }),
 
             new("铁匣", JingJie.ZhuJi, "护甲+12", // 匣
+                skillTypeComposite: SkillType.SunHao,
                 withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -41,7 +42,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("滑索", JingJie.ZhuJi, "三动 消耗", // 轮
-                skillTypeComposite: SkillType.ErDong | SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.ErDong | SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     caster.UltraSwift = true;
@@ -50,14 +51,14 @@ public class SkillCategory : Category<SkillEntry>
 
             // 元婴
             new("还魂香", JingJie.YuanYing, "灵气+8", // 香香
-                skillTypeComposite: SkillType.LingQi, withinPool: false,
+                skillTypeComposite: SkillType.LingQi | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.BuffSelfProcedure("灵气", 8);
                 }),
 
             new("净魂刀", JingJie.YuanYing, "10攻 击伤：灵气+1，对手灵气-1", // 香刃
-                skillTypeComposite: SkillType.Attack | SkillType.LingQi, withinPool: false,
+                skillTypeComposite: SkillType.Attack | SkillType.LingQi | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(10,
@@ -69,6 +70,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("防护罩", JingJie.YuanYing, "护甲+8\n每有1灵气，护甲+4", // 香匣
+                skillTypeComposite: SkillType.SunHao,
                 withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -77,21 +79,21 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("能量饮料", JingJie.YuanYing, "下1次灵气减少时，加回", // 香轮
-                skillTypeComposite: SkillType.LingQi, withinPool: false,
+                skillTypeComposite: SkillType.LingQi | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.BuffSelfProcedure("灵气回收");
                 }),
 
             new("炎铳", JingJie.YuanYing, "25攻", // 刃刃
-                skillTypeComposite: SkillType.Attack, withinPool: false,
+                skillTypeComposite: SkillType.Attack | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(25);
                 }),
 
             new("机关人偶", JingJie.YuanYing, "10攻 护甲+12", // 刃匣
-                skillTypeComposite: SkillType.Attack, withinPool: false,
+                skillTypeComposite: SkillType.Attack | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.ArmorGainSelfProcedure(12);
@@ -99,13 +101,14 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("铁陀螺", JingJie.YuanYing, "2攻x6", // 刃轮
-                skillTypeComposite: SkillType.Attack, withinPool: false,
+                skillTypeComposite: SkillType.Attack | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(2, times: 6);
                 }),
 
             new("防壁", JingJie.YuanYing, "护甲+20\n自动护甲+2", // 匣匣
+                skillTypeComposite: SkillType.SunHao,
                 withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -114,6 +117,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("不倒翁", JingJie.YuanYing, "下2次护甲减少时，加回", // 匣轮
+                skillTypeComposite: SkillType.SunHao,
                 withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -121,7 +125,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("助推器", JingJie.YuanYing, "二动 双发", // 轮轮
-                skillTypeComposite: SkillType.ErDong, withinPool: false,
+                skillTypeComposite: SkillType.ErDong | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
                     caster.Swift = true;
@@ -130,7 +134,7 @@ public class SkillCategory : Category<SkillEntry>
 
             // 返虚
             new("反应堆", JingJie.FanXu, "消耗\n生命上限设为1，无法收到治疗，永久双发+1", // 香香香
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -142,6 +146,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("烟花", JingJie.FanXu, "消耗所有灵气，每1，力量+1", // 香香刃
+                skillTypeComposite: SkillType.SunHao,
                 withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -152,7 +157,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("长明灯", JingJie.FanXu, "消耗\n本场战斗中，获得灵气时：每1，生命+3", // 香香匣
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -161,7 +166,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("大往生香", JingJie.FanXu, "消耗\n永久免费+1", // 香香轮
-                skillTypeComposite: SkillType.XiaoHao | SkillType.LingQi, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.LingQi | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -170,7 +175,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("地府通讯器", JingJie.FanXu, "失去一半生命，每8，灵气+1", // 轮香刃
-                skillTypeComposite: SkillType.LingQi, withinPool: false,
+                skillTypeComposite: SkillType.LingQi | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -180,7 +185,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("无人机阵列", JingJie.FanXu, "消耗\n永久穿透+1", // 刃刃刃
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -189,7 +194,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("弩炮", JingJie.FanXu, "50攻 吸血", // 刃刃香
-                skillTypeComposite: SkillType.Attack, withinPool: false,
+                skillTypeComposite: SkillType.Attack | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -197,6 +202,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("尖刺陷阱", JingJie.FanXu, "下次受到攻击时，对对方施加等量减甲", // 刃刃匣
+                skillTypeComposite: SkillType.SunHao,
                 withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -205,7 +211,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("暴雨梨花针", JingJie.FanXu, "1攻x10", // 刃刃轮
-                skillTypeComposite: SkillType.Attack, withinPool: false,
+                skillTypeComposite: SkillType.Attack | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -213,7 +219,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("炼丹炉", JingJie.FanXu, "消耗\n本场战斗中，每回合：力量+1", // 香刃匣
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -222,7 +228,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("浮空艇", JingJie.FanXu, "消耗\n本场战斗中，回合被跳过后，该回合无法受到伤害\n遭受12跳回合", // 匣匣匣
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -232,6 +238,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("动量中和器", JingJie.FanXu, "格挡+10", // 匣匣香
+                skillTypeComposite: SkillType.SunHao,
                 withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -240,6 +247,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("机关伞", JingJie.FanXu, "灼烧+8", // 匣匣刃
+                skillTypeComposite: SkillType.SunHao,
                 withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -248,6 +256,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("一轮马", JingJie.FanXu, "闪避+6", // 匣匣轮
+                skillTypeComposite: SkillType.SunHao,
                 withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -256,7 +265,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("外骨骼", JingJie.FanXu, "消耗\n本场战斗中，每次攻击时，护甲+3", // 刃匣轮
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -265,7 +274,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("永动机", JingJie.FanXu, "消耗\n力量+8 灵气+8\n8回合后死亡", // 轮轮轮
-                skillTypeComposite: SkillType.XiaoHao | SkillType.LingQi, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.LingQi | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -276,7 +285,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("火箭靴", JingJie.FanXu, "消耗\n本场战斗中，使用灵气牌时，获得二动", // 轮轮香
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -285,7 +294,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("定龙桩", JingJie.FanXu, "消耗\n本场战斗中，对方二动时，如果没有暴击，获得1", // 轮轮刃
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -294,7 +303,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("飞行器", JingJie.FanXu, "消耗\n本场战斗中，成功闪避时，如果对方没有跳回合，施加1", // 轮轮匣
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -303,7 +312,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("时光机", JingJie.FanXu, "消耗\n本场战斗中，使用一张牌前，升级", // 匣轮香
-                skillTypeComposite: SkillType.XiaoHao, withinPool: false,
+                skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
                 {

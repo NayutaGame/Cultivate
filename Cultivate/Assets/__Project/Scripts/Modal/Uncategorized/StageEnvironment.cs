@@ -294,13 +294,10 @@ public class StageEnvironment : GDictionary
         await _eventDict.FireEvent(CLEventDict.DID_DISPEL, d);
     }
 
-    public async Task ExhaustProcedure(StageEntity owner, StageSkill skill, bool forRun)
-        => await ExhaustProcedure(new ExhaustDetails(owner, skill, forRun));
+    public async Task ExhaustProcedure(StageEntity owner, StageSkill skill)
+        => await ExhaustProcedure(new ExhaustDetails(owner, skill));
     public async Task ExhaustProcedure(ExhaustDetails d)
     {
-        if (d.ForRun)
-            d.Skill.RunExhausted = true;
-
         if (d.Skill.Exhausted)
             return;
 

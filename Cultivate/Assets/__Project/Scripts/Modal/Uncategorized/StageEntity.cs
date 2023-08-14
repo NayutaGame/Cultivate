@@ -273,11 +273,10 @@ public class StageEntity : GDictionary
 
     public void WriteEffect()
     {
-        for (int i = 0; i < _skills.Length; i++)
-        {
-            SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
-            slot.RunExhausted = _skills[i].RunExhausted;
-        }
+        // for (int i = 0; i < _skills.Length; i++)
+        // {
+        //     SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
+        // }
     }
 
     public async Task<BuffDetails> HighestManaRecorder(StageEventDetails stageEventDetails)

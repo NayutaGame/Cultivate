@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CLLibrary;
-using DG.Tweening;
-using UnityEngine;
 
 public class StageSkill
 {
@@ -26,15 +22,8 @@ public class StageSkill
         set => _exhausted = value;
     }
 
-    private bool _runExhausted;
-    public bool RunExhausted
-    {
-        get => _runExhausted;
-        set => _runExhausted = value;
-    }
-
-    public async Task ExhaustProcedure(bool forRun = false)
-        => await _owner.Env.ExhaustProcedure(_owner, this, forRun);
+    public async Task ExhaustProcedure()
+        => await _owner.Env.ExhaustProcedure(_owner, this);
 
     public string GetAnnotatedDescription(string evalutated = null)
         => _entry.GetAnnotatedDescription(evalutated ?? GetDescription());
@@ -118,7 +107,6 @@ public class StageSkill
         _slotIndex = slotIndex;
 
         _exhausted = false;
-        _runExhausted = false;
         RunUsedTimes = _runSkill?.GetRunEquippedTimes() ?? 0;
         RunEquippedTimes = _runSkill?.GetRunEquippedTimes() + 1 ?? 0;
         StageUsedTimes = 0;
