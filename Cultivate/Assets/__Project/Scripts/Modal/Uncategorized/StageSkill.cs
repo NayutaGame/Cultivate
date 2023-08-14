@@ -46,7 +46,10 @@ public class StageSkill
         => _entry.SkillTypeComposite;
 
     public int GetManaCost()
-        => _entry.GetManaCost(GetJingJie(), Dj);
+        => _entry.GetManaCost(GetJingJie(), Dj, JiaShi);
+
+    public int GetChannelTime()
+        => _entry.GetChannelTime(GetJingJie(), Dj, JiaShi);
 
     public string GetManaCostString()
     {
@@ -126,6 +129,20 @@ public class StageSkill
 
     public SkillTypeComposite GetSkillType()
         => _entry.SkillTypeComposite;
+
+    public async Task Channel(StageEntity caster, ChannelDetails d)
+    {
+        await caster.Env._eventDict.FireEvent(CLEventDict.WILL_CHANNEL, new ExecuteDetails(caster, this));
+        await _entry.Channel(caster, d);
+        await caster.Env._eventDict.FireEvent(CLEventDict.DID_CHANNEL, new ExecuteDetails(caster, this));
+    }
+
+    public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
+    {
+        await caster.Env._eventDict.FireEvent(CLEventDict.WILL_CHANNEL, new ExecuteDetails(caster, this));
+        await _entry.ChannelWithoutTween(caster, d);
+        await caster.Env._eventDict.FireEvent(CLEventDict.DID_CHANNEL, new ExecuteDetails(caster, this));
+    }
 
     public async Task Execute(StageEntity caster, bool recursive = true)
     {

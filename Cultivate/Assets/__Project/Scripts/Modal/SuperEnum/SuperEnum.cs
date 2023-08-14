@@ -1,13 +1,17 @@
 
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
+[Serializable]
 public class SuperEnum<T> : IEquatable<SuperEnum<T>>
     where T : SuperEnum<T>
 {
     protected static T[] _list;
 
+    [SerializeField]
     public readonly int _index;
+    [SerializeField]
     public readonly string _name;
 
     protected SuperEnum(int index, string name)

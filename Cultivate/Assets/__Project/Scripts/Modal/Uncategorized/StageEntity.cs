@@ -47,8 +47,6 @@ public class StageEntity : GDictionary
         return null;
     }
 
-    public int _p;
-
     public async Task Turn()
     {
         UltraSwift = false;
@@ -61,14 +59,21 @@ public class StageEntity : GDictionary
         {
             if (GetStackOfBuff("浮空艇") > 0)
                 await BuffSelfProcedure("回合免疫");
+            await _env._eventDict.FireEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+            return;
         }
-        else
-        {
-            await Step();
 
-            if (Swift || UltraSwift)
-                await SwiftProcedure(new SwiftDetails(this, Swift, UltraSwift));
+        if (_channelDetails != null)
+        {
+            await ChannelProcedure();
+            await _env._eventDict.FireEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+            return;
         }
+
+        await Step();
+
+        if (Swift || UltraSwift)
+            await SwiftProcedure(new SwiftDetails(this, Swift, UltraSwift));
 
         await _env._eventDict.FireEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
     }
@@ -108,6 +113,35 @@ public class StageEntity : GDictionary
             return;
         }
 
+        if (skill.GetChannelTime() > 0)
+        {
+            _channelDetails = new ChannelDetails(skill);
+            await skill.Channel(this, _channelDetails);
+            await _env._eventDict.FireEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
+            return;
+        }
+
+        await Cast(skill);
+        await _env._eventDict.FireEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
+    }
+
+    private async Task ChannelProcedure()
+    {
+        _channelDetails.IncrementProgress();
+        if (_channelDetails.FinishedChannelling())
+        {
+            await _channelDetails._skill.ChannelWithoutTween(this, _channelDetails);
+            await Cast(_channelDetails._skill);
+            _channelDetails = null;
+        }
+        else
+        {
+            await _channelDetails._skill.Channel(this, _channelDetails);
+        }
+    }
+
+    private async Task Cast(StageSkill skill)
+    {
         bool multicast = GetStackOfBuff("永久双发") > 0 || await TryConsumeProcedure("双发");
         if (multicast)
         {
@@ -118,8 +152,6 @@ public class StageEntity : GDictionary
         {
             await skill.Execute(this);
         }
-
-        await _env._eventDict.FireEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
     }
 
     private async Task MoveP()
@@ -152,6 +184,8 @@ public class StageEntity : GDictionary
     public EntitySlot Slot() => StageManager.Instance._slots[_index];
     public StageEntity Opponent() => _env.Entities[1 - _index];
 
+    public int _p;
+    private ChannelDetails _channelDetails;
     public bool UltraSwift;
     public bool Swift;
     private bool _manaShortage;
@@ -169,10 +203,6 @@ public class StageEntity : GDictionary
     public int GainedEvadeRecord;
     public int GainedBurningRecord;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
     private int _index;
     public int Index => _index;
 
@@ -183,6 +213,10 @@ public class StageEntity : GDictionary
 
     private StageEnvironment _env;
     public StageEnvironment Env => _env;
+
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s)
+        => _accessors[s]();
 
     public StageEntity(StageEnvironment env, RunEntity runEntity, int index)
     {

@@ -7,17 +7,29 @@ public class StageNote : ISkillModel
     public int TemporalIndex;
     public StageSkill Skill;
 
-    public StageNote(int entityIndex, int temporalIndex, StageSkill skill)
+    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, ChannelDetails d = null)
     {
         EntityIndex = entityIndex;
         TemporalIndex = temporalIndex;
         Skill = skill;
+
+        if (d != null)
+        {
+            _currCounter = d.GetCounter();
+            _maxCounter = d.GetChannelTime();
+        }
+        else
+        {
+            _currCounter = 0;
+            _maxCounter = 0;
+        }
     }
 
     public bool IsHome
         => EntityIndex == 0;
 
     public Sprite GetSprite()
+        // => Skill?.Entry.Sprite ?? Encyclopedia.SkillCategory["聚气术"].Sprite;
         => Skill?.Entry.Sprite;
 
     public int GetManaCost()
@@ -47,4 +59,10 @@ public class StageNote : ISkillModel
 
     public string GetAnnotationText()
         => Skill?.GetAnnotationText();
+
+    private int _currCounter;
+    public int GetCurrCounter() => _currCounter;
+
+    private int _maxCounter;
+    public int GetMaxCounter() => _maxCounter;
 }

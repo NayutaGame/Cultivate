@@ -1,7 +1,12 @@
 
+using System;
+using UnityEngine;
+
+[Serializable]
 public class MechType : SuperEnum<MechType>
 {
-    public int _hash { get; private set; }
+    [SerializeField]
+    public readonly int _hash;
 
     private MechType(int index, int hash, string name) : base(index, name)
     {

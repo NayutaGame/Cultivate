@@ -1,14 +1,15 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CLLibrary;
 using UnityEngine;
 
+[Serializable]
 public class MechComposite : EmulatedSkill, ISkillModel
 {
     public static readonly int MAX_CHAIN = 3;
-
     private static Dictionary<int, SkillEntry> _composeDict = new()
     {
         { 0, null },
@@ -54,6 +55,11 @@ public class MechComposite : EmulatedSkill, ISkillModel
         { MechType.Xia._hash + MechType.Lun._hash + MechType.Xiang._hash, "时光机" },
     };
 
+    [SerializeField] private SkillSlot _skillSlot;
+    public SkillSlot GetSkillSlot() => _skillSlot;
+    public void SetSkillSlot(SkillSlot value) => _skillSlot = value;
+
+    [SerializeField]
     private List<MechType> _mechTypes;
     public List<MechType> MechTypes => _mechTypes;
 
@@ -77,7 +83,10 @@ public class MechComposite : EmulatedSkill, ISkillModel
         => GetEntry().Sprite;
 
     public int GetManaCost()
-        => GetEntry().GetManaCost(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start);
+        => GetEntry().GetManaCost(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start, GetSkillSlot()?.IsJiaShi ?? false);
+
+    public int GetChannelTime()
+        => GetEntry().GetChannelTime(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start, GetSkillSlot()?.IsJiaShi ?? false);
 
     public string GetName()
         => GetEntry().Name;
@@ -103,7 +112,6 @@ public class MechComposite : EmulatedSkill, ISkillModel
     public string GetDescription()
         => GetEntry().Evaluate(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start);
 
-
     public string GetAnnotationText()
     {
         StringBuilder sb = new();
@@ -112,6 +120,9 @@ public class MechComposite : EmulatedSkill, ISkillModel
 
         return sb.ToString();
     }
+
+    public int GetCurrCounter() => 0;
+    public int GetMaxCounter() => 0;
 
     public int GetRunUsedTimes() => 0;
     public void SetRunUsedTimes(int value) { }

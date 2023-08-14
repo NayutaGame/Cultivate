@@ -36,8 +36,11 @@ public class SkillEntry : Entry, IAnnotation
         }
     }
 
-    private ManaCost _manaCost;
-    public int GetManaCost(JingJie jingJie, int dJingJie) => _manaCost.Eval(jingJie, dJingJie);
+    private ManaCostEvaluator _manaCostEvaluator;
+    public int GetManaCost(JingJie jingJie, int dJingJie, bool jiaShi) => _manaCostEvaluator.Eval(jingJie, dJingJie, jiaShi);
+
+    private ChannelTimeEvaluator _channelTimeEvaluator;
+    public int GetChannelTime(JingJie jingJie, int dJingJie, bool jiaShi) => _channelTimeEvaluator.Eval(jingJie, dJingJie, jiaShi);
 
     public SkillTypeComposite SkillTypeComposite { get; private set; }
     private Func<StageEntity, StageSkill, bool, Task> _execute;
@@ -52,7 +55,8 @@ public class SkillEntry : Entry, IAnnotation
         CLLibrary.Range jingJieRange,
         SkillDescription description,
         WuXing? wuXing = null,
-        ManaCost manaCost = null,
+        ManaCostEvaluator manaCostEvaluator = null,
+        ChannelTimeEvaluator channelTimeEvaluator = null,
         SkillTypeComposite skillTypeComposite = null,
         bool withinPool = true,
         Func<StageEntity, StageSkill, bool, Task> execute = null
@@ -61,7 +65,8 @@ public class SkillEntry : Entry, IAnnotation
         _jingJieRange = jingJieRange;
         _description = description;
         _wuXing = wuXing;
-        _manaCost = manaCost ?? 0;
+        _manaCostEvaluator = manaCostEvaluator ?? 0;
+        _channelTimeEvaluator = channelTimeEvaluator ?? 0;
         SkillTypeComposite = skillTypeComposite ?? 0;
         _withinPool = withinPool;
         _execute = execute ?? DefaultExecute;
@@ -109,6 +114,24 @@ public class SkillEntry : Entry, IAnnotation
             toRet = toRet.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
 
         return toRet;
+    }
+
+    public async Task Channel(StageEntity caster, ChannelDetails d)
+    {
+        StageReport r = caster.Env.Report;
+        if (r.UseTween)
+            await r.PlayTween(new ShiftTweenDescriptor());
+        r.Append($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
+        r.AppendChannelNote(caster.Index, d);
+        r.Append($"\n");
+    }
+
+    public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
+    {
+        StageReport r = caster.Env.Report;
+
+        r.Append($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
+        r.Append($"\n");
     }
 
     public async Task Execute(StageEntity caster, StageSkill skill, bool recursive)

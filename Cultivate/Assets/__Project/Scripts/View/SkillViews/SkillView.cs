@@ -36,6 +36,7 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
     [SerializeField] private Image JingJieImage;
     [SerializeField] private Image WuXingImage;
     [SerializeField] private TMP_Text AnnotationText;
+    [SerializeField] private Image CounterImage;
     [SerializeField] private Image SelectionImage;
 
     private bool _selected;
@@ -156,6 +157,14 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
         }
     }
 
+    public virtual void SetCounter(int currCounter, int maxCounter)
+    {
+        if (CounterImage == null)
+            return;
+
+        CounterImage.fillAmount = (float)currCounter / maxCounter;
+    }
+
     public virtual void SetAnnotationText(string annotationText)
     {
         if (AnnotationText == null)
@@ -201,6 +210,7 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
         SetCardFace(skill.GetCardFace());
         SetJingJieSprite(skill.GetJingJieSprite());
         SetWuXingSprite(skill.GetWuXingSprite());
+        SetCounter(skill.GetCurrCounter(), skill.GetMaxCounter());
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)

@@ -7,14 +7,20 @@ using UnityEngine;
 [Serializable]
 public class RunSkill : ISkillModel, EmulatedSkill, ISerializationCallbackReceiver
 {
+    [SerializeField] private SkillSlot _skillSlot;
+    public SkillSlot GetSkillSlot() => _skillSlot;
+    public void SetSkillSlot(SkillSlot value) => _skillSlot = value;
+
     [SerializeField] private SkillEntry _entry;
     public SkillEntry GetEntry() => _entry;
+
     [SerializeField] private JingJie _jingJie;
     public JingJie JingJie
     {
         get => _jingJie;
         set => _jingJie = value;
     }
+
     [SerializeField] protected int _runUsedTimes;
     public int GetRunUsedTimes() => _runUsedTimes;
     public void SetRunUsedTimes(int value) => _runEquippedTimes = value;
@@ -68,7 +74,10 @@ public class RunSkill : ISkillModel, EmulatedSkill, ISerializationCallbackReceiv
         => _entry.Evaluate(JingJie, JingJie - _entry.JingJieRange.Start);
 
     public int GetManaCost()
-        => _entry.GetManaCost(JingJie, JingJie - _entry.JingJieRange.Start);
+        => _entry.GetManaCost(JingJie, JingJie - _entry.JingJieRange.Start, GetSkillSlot()?.IsJiaShi ?? false);
+
+    public int GetChannelTime()
+        => _entry.GetChannelTime(JingJie, JingJie - _entry.JingJieRange.Start, GetSkillSlot()?.IsJiaShi ?? false);
 
     public string GetManaCostString()
     {
@@ -108,4 +117,7 @@ public class RunSkill : ISkillModel, EmulatedSkill, ISerializationCallbackReceiv
 
         return true;
     }
+
+    public int GetCurrCounter() => 0;
+    public int GetMaxCounter() => 0;
 }

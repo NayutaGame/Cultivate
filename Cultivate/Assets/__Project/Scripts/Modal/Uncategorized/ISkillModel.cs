@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface ISkillModel
 {
+    int GetCurrCounter();
+    int GetMaxCounter();
     Sprite GetSprite();
     int GetManaCost();
     string GetName();

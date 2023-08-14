@@ -44,10 +44,14 @@ public class SkillSlot : GDictionary
         get => _skill;
         set
         {
+            if (_skill != null) _skill.SetSkillSlot(null);
+
             if (value is RunSkill runSkill)
                 _skill = runSkill.Clone();
             else
                 _skill = value;
+
+            if (_skill != null) _skill.SetSkillSlot(this);
 
             _state = _skill == null ? SkillSlotState.Empty : SkillSlotState.Occupied;
             EnvironmentChanged();
@@ -99,4 +103,5 @@ public class SkillSlot : GDictionary
     }
 
     [NonSerialized] public bool IsManaShortage;
+    [NonSerialized] public bool IsJiaShi;
 }

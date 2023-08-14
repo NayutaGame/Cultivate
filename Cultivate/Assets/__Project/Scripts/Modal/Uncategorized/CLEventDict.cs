@@ -45,7 +45,9 @@ public class CLEventDict : Dictionary<int, CLEvent<StageEventDetails>>
     public static readonly int DID_SWIFT          = 36;
     public static readonly int WILL_EXECUTE       = 37;
     public static readonly int DID_EXECUTE        = 38;
-    public static readonly int COUNT              = 39;
+    public static readonly int WILL_CHANNEL       = 39;
+    public static readonly int DID_CHANNEL        = 40;
+    public static readonly int COUNT              = 41;
 
     public void AddCallback(int eventId, int order, Func<StageEventDetails, Task> callback)
     {
