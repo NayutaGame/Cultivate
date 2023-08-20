@@ -37,9 +37,7 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public StageReport Report;
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
+    public object Get(string s) => _accessors[s]();
     public override void DidAwake()
     {
         base.DidAwake();
@@ -63,7 +61,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
             { "CurrentNode",           TryGetCurrentNode },
         };
 
-        _mingYuan = 100;
         _turn = 1;
         _xiuWei = 0;
         _chanNeng = 0;
@@ -91,13 +88,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     public Modifier Modifier;
 
-    private int _mingYuan;
-    public int MingYuan
-    {
-        get => _mingYuan;
-        set => _mingYuan = value;
-    }
-
     private int _turn;
     public int Turn => _turn;
 
@@ -119,11 +109,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
     public void RemoveXiuWei(int value)
     {
         _xiuWei -= value;
-    }
-
-    public void AddMingYuan(int mingYuan = 1)
-    {
-        _mingYuan += mingYuan;
     }
 
     public void AddHealth(int health)

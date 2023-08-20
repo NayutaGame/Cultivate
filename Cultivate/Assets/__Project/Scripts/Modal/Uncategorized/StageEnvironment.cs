@@ -308,18 +308,19 @@ public class StageEnvironment : GDictionary
         await _eventDict.FireEvent(CLEventDict.DID_EXHAUST, d);
     }
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
     private StageEntity[] _entities;
     public StageEntity[] Entities => _entities;
+
+    public MingYuan HomeMingYuan;
+
     private StageReport _report;
     public StageReport Report => _report;
 
     public CLEventDict _eventDict;
 
-    public StageEnvironment(RunEntity home, RunEntity away, bool useTween = false, bool useTimeline = false, bool useSb = false)
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
+    public StageEnvironment(RunEntity home, RunEntity away, MingYuan homeMingYuan, bool useTween = false, bool useTimeline = false, bool useSb = false)
     {
         _accessors = new()
         {
@@ -335,6 +336,8 @@ public class StageEnvironment : GDictionary
             new(this, home, 0),
             new(this, away, 1),
         };
+
+        HomeMingYuan = homeMingYuan;
         _report = new(useTween, useTimeline, useSb);
     }
 
@@ -345,7 +348,7 @@ public class StageEnvironment : GDictionary
     {
         _report.HomeLeftHp = _entities[0].Hp;
         _report.AwayLeftHp = _entities[1].Hp;
-        _report.MingYuanPenalty = _report.HomeVictory ? 0 : 1;
+        _report.DMingYuan = _report.HomeVictory ? 0 : 1;
     }
 
     public void WriteEffect()
@@ -355,16 +358,46 @@ public class StageEnvironment : GDictionary
 
     public async Task Simulate()
     {
-        int whosTurn = 0;
+        await MingYuanPenaltyProcedure();
+        await FormationProcedure();
+        await StartStageProcedure();
+        await TurnProcedure();
+        await EndStageProcedure();
+    }
 
-        await StartFormation();
+    private async Task MingYuanPenaltyProcedure()
+    {
+        await HomeMingYuan.MingYuanPenaltyProcedure(_entities[0]);
+    }
 
+    private async Task FormationProcedure()
+    {
+        List<FormationDetails> details = new List<FormationDetails>();
+
+        foreach (var e in _entities)
+        foreach (var f in e.RunFormations())
+            details.Add(new FormationDetails(e, f));
+
+        details.Sort((lhs, rhs) => lhs._formation.GetOrder() - rhs._formation.GetOrder());
+
+        foreach (var d in details)
+        {
+            await FormationProcedure(d);
+        }
+    }
+
+    private async Task StartStageProcedure()
+    {
         foreach (var e in _entities)
         {
             e._p = -1;
             await _eventDict.FireEvent(CLEventDict.START_STAGE, new StageDetails(e));
         }
+    }
 
+    private async Task TurnProcedure()
+    {
+        int whosTurn = 0;
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
             StageEntity actor = _entities[whosTurn];
@@ -385,26 +418,18 @@ public class StageEnvironment : GDictionary
 
             whosTurn = 1 - whosTurn;
         }
+    }
 
+    private async Task EndStageProcedure()
+    {
         await _eventDict.FireEvent(CLEventDict.END_STAGE, new StageDetails(_entities[1]));
         await _eventDict.FireEvent(CLEventDict.END_STAGE, new StageDetails(_entities[0]));
         ForceCommit();
     }
 
-    private async Task StartFormation()
+    private void ForceCommit()
     {
-        List<FormationDetails> details = new List<FormationDetails>();
-
-        foreach (var e in _entities)
-        foreach (var f in e.RunFormations())
-            details.Add(new FormationDetails(e, f));
-
-        details.Sort((lhs, rhs) => lhs._formation.GetOrder() - rhs._formation.GetOrder());
-
-        foreach (var d in details)
-        {
-            await FormationProcedure(d);
-        }
+        _report.HomeVictory = _entities[0].Hp >= _entities[1].Hp;
     }
 
     public async Task<bool[]> InnerManaSimulate()
@@ -428,7 +453,8 @@ public class StageEnvironment : GDictionary
 
         hero._p = -1;
 
-        await StartFormation();
+        await FormationProcedure();
+        await MingYuanPenaltyProcedure();
         await _eventDict.FireEvent(CLEventDict.START_STAGE, new StageDetails(hero));
 
         hero.ManaShortageEvent += WriteManaShortage;
@@ -478,16 +504,5 @@ public class StageEnvironment : GDictionary
         }
 
         return false;
-    }
-
-    private void ForceCommit()
-    {
-        if (_entities[0].Hp >= _entities[1].Hp)
-        {
-            _report.HomeVictory = true;
-            return;
-        }
-
-        _report.HomeVictory = false;
     }
 }

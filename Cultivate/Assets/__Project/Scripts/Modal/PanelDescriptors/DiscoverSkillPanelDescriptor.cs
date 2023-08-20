@@ -8,6 +8,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 {
     private string _detailedText;
     public string GetDetailedText() => _detailedText;
+    public void SetDetailedText(string value) => _detailedText = value;
 
     private List<RunSkill> _skills;
     public int GetSkillCount() => _skills.Count;

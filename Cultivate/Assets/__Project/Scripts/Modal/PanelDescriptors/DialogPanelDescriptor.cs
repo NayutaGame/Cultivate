@@ -6,6 +6,7 @@ public class DialogPanelDescriptor : PanelDescriptor
 {
     private string _detailedText;
     public string GetDetailedText() => _detailedText;
+    public string SetDetailedText(string value) => _detailedText = value;
 
     private DialogOption[] _options;
     public int GetOptionsCount() => _options.Length;

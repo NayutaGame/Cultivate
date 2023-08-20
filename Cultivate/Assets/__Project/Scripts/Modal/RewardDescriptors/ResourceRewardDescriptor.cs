@@ -19,7 +19,7 @@ public class ResourceRewardDescriptor : RewardDescriptor
     public override void Claim()
     {
         RunManager.Instance.AddXiuWei(_xiuWei);
-        RunManager.Instance.AddMingYuan(_mingYuan);
+        RunManager.Instance.SetDMingYuan(_mingYuan);
         RunManager.Instance.AddHealth(_health);
     }
 

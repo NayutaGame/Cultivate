@@ -34,7 +34,7 @@ public class StageReport : GDictionary
         }
     }
 
-    public int MingYuanPenalty;
+    public int DMingYuan;
 
     private bool _useTween;
     public bool UseTween => _useTween;

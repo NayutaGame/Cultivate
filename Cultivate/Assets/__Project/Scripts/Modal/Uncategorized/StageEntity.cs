@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
+using Unity.Mathematics;
 
 public class StageEntity : GDictionary
 {
@@ -13,6 +15,8 @@ public class StageEntity : GDictionary
     {
         if (ManaShortageEvent != null) await ManaShortageEvent(p);
     }
+
+    public MingYuan MingYuan;
 
     private int _hp;
     public int Hp
@@ -215,9 +219,7 @@ public class StageEntity : GDictionary
     public StageEnvironment Env => _env;
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
+    public object Get(string s) => _accessors[s]();
     public StageEntity(StageEnvironment env, RunEntity runEntity, int index)
     {
         _accessors = new()
