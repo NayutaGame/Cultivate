@@ -19,10 +19,44 @@ public class BuffCategory : Category<BuffEntry>
             //     }),
 
             new("不存在的Buff", "不存在的Buff", BuffStackRule.Add, true, false),
-            new("灵气", "可以消耗灵气使用技能", BuffStackRule.Add, true, false),
+            new("灵气", "可以消耗灵气使用技能", BuffStackRule.Add, true, false,
+                eventCaptures: new StageEventCapture[]
+                {
+                    new StageEnvironmentEventCapture(CLEventDict.GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                            d.Value -= b.Stack;
+                    }),
+                }),
 
-            // new("灵气衰竭", "可以消耗灵气使用技能", BuffStackRule.Add, true, false),
-            // new("力量衰竭", "可以消耗灵气使用技能", BuffStackRule.Add, true, false),
+            new("脆弱", "受到攻击：攻击力+[层数]", BuffStackRule.Add, false, true,
+                eventCaptures: new StageEventCapture[]
+                {
+                    new StageEnvironmentEventCapture(CLEventDict.WILL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (d.Pierce) return;
+                        if (b.Owner == d.Tgt && d.Src != d.Tgt)
+                        {
+                            d.Value += b.Stack;
+                        }
+                    }),
+                }),
+
+            new("软弱", "攻击时，少[层数]攻", BuffStackRule.Add, false, true,
+                eventCaptures: new StageEventCapture[]
+                {
+                    new StageEnvironmentEventCapture(CLEventDict.WILL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                            d.Value -= b.Stack;
+                    }),
+                }),
 
             new("跳回合", "跳过回合", BuffStackRule.Add, false, false),
             new("跳卡牌", "行动时跳过下张卡牌", BuffStackRule.Add, false, false),

@@ -34,8 +34,8 @@ public class MingYuan : BoundedInt
         StringBuilder sb = new();
 
         if (penalty.Item1 != 0) sb.Append($"损失{penalty.Item1}%生命上限");
-        if (penalty.Item2 != 0) sb.Append($"遭受{penalty.Item2}灵气衰竭");
-        if (penalty.Item3 != 0) sb.Append($"遭受{penalty.Item3}力量衰竭");
+        if (penalty.Item2 != 0) sb.Append($"遭受{penalty.Item2}脆弱");
+        if (penalty.Item3 != 0) sb.Append($"遭受{penalty.Item3}软弱");
         if (penalty.Item4 != 0) sb.Append($"遭受{penalty.Item4}跳回合");
 
         return sb.ToString();
@@ -48,10 +48,14 @@ public class MingYuan : BoundedInt
 
         Tuple<int, int, int, int> penalty = MINGYUAN_PENALTY_TABLE[GetCurr()];
 
-        entity.MaxHp = (int)((float)entity.MaxHp * (100 - penalty.Item1) / 100);
-        await entity.BuffSelfProcedure("灵气衰竭", penalty.Item2);
-        await entity.BuffSelfProcedure("力量衰竭", penalty.Item3);
-        await entity.BuffSelfProcedure("跳回合", penalty.Item4);
+        if (penalty.Item1 != 0)
+            entity.MaxHp = (int)((float)entity.MaxHp * (100 - penalty.Item1) / 100);
+        if (penalty.Item2 != 0)
+            await entity.BuffSelfProcedure("脆弱", penalty.Item2);
+        if (penalty.Item3 != 0)
+            await entity.BuffSelfProcedure("软弱", penalty.Item3);
+        if (penalty.Item4 != 0)
+            await entity.BuffSelfProcedure("跳回合", penalty.Item4);
     }
 
     public MingYuan Clone()
