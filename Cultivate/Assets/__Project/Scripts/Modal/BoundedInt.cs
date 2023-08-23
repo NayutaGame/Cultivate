@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class BoundedInt
 {
     private int _curr;
@@ -9,7 +11,7 @@ public class BoundedInt
 
     public int GetCurr() => _curr;
     public void SetCurr(int value) => _curr = Mathf.Min(_max, value);
-    public void SetDCurr(int value = 1) => SetCurr(_curr + value);
+    public void SetDiff(int value = 1) => SetCurr(_curr + value);
 
     public int GetMax() => _max;
     public int SetMax(int value)

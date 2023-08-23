@@ -18,6 +18,9 @@ public class RunEntity : GDictionary, IEntityModel
     public static readonly int[] BaseHP = new int[] { 40, 80, 140, 220, 340, 340 };
     // public static readonly int[] BaseHP = new int[] { 40, 50, 70, 100, 140, 140 };
 
+    [SerializeField] private MingYuan _mingYuan;
+    public MingYuan MingYuan => _mingYuan;
+
     [SerializeField] private int _health;
     public int GetBaseHealth() => _health;
     public void SetBaseHealth(int health) => _health = health;
@@ -106,9 +109,7 @@ public class RunEntity : GDictionary, IEntityModel
     public CreateEntityDetails CreateEntityDetails => _createEntityDetails;
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
+    public object Get(string s) => _accessors[s]();
     public RunEntity(EntityEntry entry = null, CreateEntityDetails d = null)
     {
         _accessors = new()
@@ -119,6 +120,8 @@ public class RunEntity : GDictionary, IEntityModel
 
         _entry = entry;
         _createEntityDetails = d;
+
+        _mingYuan = MingYuan.Default;
 
         _activatedFormations = new List<FormationEntry>();
 

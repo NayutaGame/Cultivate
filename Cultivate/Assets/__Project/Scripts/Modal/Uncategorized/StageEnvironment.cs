@@ -311,8 +311,6 @@ public class StageEnvironment : GDictionary
     private StageEntity[] _entities;
     public StageEntity[] Entities => _entities;
 
-    public MingYuan HomeMingYuan;
-
     private StageReport _report;
     public StageReport Report => _report;
 
@@ -320,7 +318,7 @@ public class StageEnvironment : GDictionary
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public StageEnvironment(RunEntity home, RunEntity away, MingYuan homeMingYuan, bool useTween = false, bool useTimeline = false, bool useSb = false)
+    public StageEnvironment(RunEntity home, RunEntity away, bool useTween = false, bool useTimeline = false, bool useSb = false)
     {
         _accessors = new()
         {
@@ -337,7 +335,6 @@ public class StageEnvironment : GDictionary
             new(this, away, 1),
         };
 
-        HomeMingYuan = homeMingYuan;
         _report = new(useTween, useTimeline, useSb);
     }
 
@@ -367,7 +364,8 @@ public class StageEnvironment : GDictionary
 
     private async Task MingYuanPenaltyProcedure()
     {
-        await HomeMingYuan.MingYuanPenaltyProcedure(_entities[0]);
+        await _entities[0].MingYuan.MingYuanPenaltyProcedure(_entities[0]);
+        await _entities[1].MingYuan.MingYuanPenaltyProcedure(_entities[1]);
     }
 
     private async Task FormationProcedure()

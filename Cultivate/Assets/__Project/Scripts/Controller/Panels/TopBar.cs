@@ -34,7 +34,7 @@ public class TopBar : MonoBehaviour
     {
         IEntityModel entity = RunManager.Instance.Battle.Hero;
 
-        MingYuanText.text = RunManager.Instance.Battle.HeroMingYuan.ToString();
+        MingYuanText.text = RunManager.Instance.GetMingYuan().ToString();
         GoldText.text = RunManager.Instance.XiuWei.ToString();
         HealthText.text = entity.GetFinalHealth().ToString();
         JingJieText.text = $"{entity.GetJingJie().ToString()}期";

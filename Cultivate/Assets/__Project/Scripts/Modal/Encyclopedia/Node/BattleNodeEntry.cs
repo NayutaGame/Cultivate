@@ -37,7 +37,7 @@ public class BattleNodeEntry : NodeEntry
                     }
                     else
                     {
-                        RunManager.Instance.Battle.HeroMingYuan.SetDCurr(-2);
+                        RunManager.Instance.SetDMingYuan(-2);
                         C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{xiuWeiValue}修为\n请选择一张卡作为奖励");
                         runNode.ChangePanel(C);
                         return C;
@@ -47,7 +47,7 @@ public class BattleNodeEntry : NodeEntry
                 {
                     if (battleResultSignal.State == BattleResultSignal.BattleResultState.Win)
                     {
-                        RunManager.Instance.Battle.HeroMingYuan.SetDCurr(3);
+                        RunManager.Instance.SetDMingYuan(3);
                         B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{xiuWeiValue}的修为\n请选择一张卡作为奖励");
                         runNode.ChangePanel(B);
                         return B;

@@ -3,8 +3,11 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
+[Serializable]
 public class MingYuan : BoundedInt
 {
+    public static MingYuan Default => new(10, 10);
+
     public MingYuan(int curr, int max) : base(curr, max) { }
 
     private static Tuple<int, int, int, int>[] MINGYUAN_PENALTY_TABLE = new[]
@@ -50,6 +53,9 @@ public class MingYuan : BoundedInt
         await entity.BuffSelfProcedure("力量衰竭", penalty.Item3);
         await entity.BuffSelfProcedure("跳回合", penalty.Item4);
     }
+
+    public MingYuan Clone()
+        => new(GetCurr(), GetMax());
 
     /*
      * 	            胜利命元	        胜利文本	                    失败命元            	        失败文本

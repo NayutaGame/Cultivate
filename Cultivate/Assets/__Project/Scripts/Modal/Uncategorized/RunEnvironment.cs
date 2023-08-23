@@ -11,8 +11,6 @@ public class RunEnvironment : GDictionary
     public MechBag MechBag { get; private set; }
     public SkillInventory SkillInventory { get; private set; }
 
-    public MingYuan HeroMingYuan;
-
     public RunEntity Hero { get; private set; }
     private RunEntity _enemy;
     public RunEntity Enemy

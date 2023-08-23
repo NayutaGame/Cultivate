@@ -56,7 +56,7 @@ public class ConsolePanel : Panel
         base.Refresh();
 
         RunManager rm = RunManager.Instance;
-        MingYuanText.text = rm.Battle.HeroMingYuan.ToString();
+        MingYuanText.text = rm.GetMingYuan().ToString();
         GoldText.text = rm.XiuWei.ToString();
 
         IEntityModel entity = RunManager.Instance.Battle.Hero;
@@ -66,7 +66,7 @@ public class ConsolePanel : Panel
 
     public void AddMingYuan()
     {
-        RunManager.Instance.Battle.HeroMingYuan.SetDCurr();
+        RunManager.Instance.GetMingYuan().SetDiff();
         Refresh();
     }
 

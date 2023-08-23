@@ -248,6 +248,7 @@ public class StageEntity : GDictionary
         _env._eventDict.AddCallback(CLEventDict.DID_BUFF, 0, GainedBurningRecorder);
         _env._eventDict.AddCallback(CLEventDict.START_TURN, 0, DefaultStartTurn);
 
+        MingYuan = _runEntity.MingYuan.Clone();
         MaxHp = _runEntity.GetFinalHealth();
         Hp = _runEntity.GetFinalHealth();
         Armor = 0;

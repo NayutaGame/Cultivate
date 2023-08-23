@@ -116,6 +116,14 @@ public class RunManager : Singleton<RunManager>, GDictionary
         Battle.Hero.SetDHealth(Battle.Hero.GetDHealth() + health);
     }
 
+    public MingYuan GetMingYuan()
+        => Battle.Hero.MingYuan;
+
+    public void SetDMingYuan(int value)
+    {
+        Battle.Hero.MingYuan.SetDiff(value);
+    }
+
     #endregion
 
     public bool CanAffordTech(IndexPath indexPath)
