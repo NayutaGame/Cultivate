@@ -125,136 +125,387 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
-            new AdventureNodeEntry("镜花水月", "镜花水月",
+
+
+
+
+
+
+
+
+            // 复杂事件
+
+            // new AdventureNodeEntry("山木", "山木",
+            //     create: runNode =>
+            //     {
+            //         int trial = 0;
+            //         int rage = RandomManager.Range(0, 7);
+            //
+            //         DialogPanelDescriptor A = new("一位老者做在石头上向周围人传教，虚己以游世，其孰能害之。说的是，只要你不把别人当个人，别人就不会引起你生气。你突然想逗他一下。", "朝他作鬼脸", "戳他一下");
+            //
+            //         DialogPanelDescriptor B1 = new("他看起来有点生气了。", "朝他作鬼脸", "戳他一下");
+            //         DialogPanelDescriptor B2 = new("他看起来非常生气了。", "朝他作鬼脸", "戳他一下");
+            //
+            //         DialogPanelDescriptor D = new("你上去为自已的恶作剧道歉，他说还好，不会放在心上，这位学子应该学到了什么。\n获得50金");
+            //         DialogPanelDescriptor E = new("你上去为自已的恶作剧道歉，他喘了一口气，随即嘻笑开颜向大家解释道，这就是我刚才说的，不要随便生气。\n获得200金");
+            //         DialogPanelDescriptor F = new("你刚想上去为自己的恶作剧道歉。只见他不掩饰自己的怒火：“岂有此理啊，你有完没完啊！”你只能赶紧跑了。");
+            //
+            //         D._reward = new ResourceRewardDescriptor(xiuWei: 50);
+            //         E._reward = new ResourceRewardDescriptor(xiuWei: 200);
+            //
+            //         PanelDescriptor SelectA(DialogOption option)
+            //         {
+            //             trial += 1;
+            //             rage += RandomManager.Range(0, 4);
+            //
+            //             PanelDescriptor panelDescriptor;
+            //             if (trial < 2) {
+            //                 panelDescriptor = rage <= 5 ? B1 : B2;
+            //             } else if (rage <= 7) {
+            //                 panelDescriptor = D;
+            //             } else if (rage <= 10) {
+            //                 panelDescriptor = E;
+            //             } else {
+            //                 panelDescriptor = F;
+            //             }
+            //             runNode.ChangePanel(panelDescriptor);
+            //             return panelDescriptor;
+            //         }
+            //         PanelDescriptor SelectB(DialogOption option)
+            //         {
+            //             trial += 1;
+            //             rage += RandomManager.Range(4, 7);
+            //
+            //             PanelDescriptor panelDescriptor;
+            //             if (trial < 2) {
+            //                 panelDescriptor = rage <= 5 ? B1 : B2;
+            //             } else if (rage <= 7) {
+            //                 panelDescriptor = D;
+            //             } else if (rage <= 10) {
+            //                 panelDescriptor = E;
+            //             } else {
+            //                 panelDescriptor = F;
+            //             }
+            //             runNode.ChangePanel(panelDescriptor);
+            //             return panelDescriptor;
+            //         }
+            //
+            //         A[0]._select = SelectA;
+            //         A[1]._select = SelectB;
+            //         B1[0]._select = SelectA;
+            //         B1[1]._select = SelectB;
+            //         B2[0]._select = SelectA;
+            //         B2[1]._select = SelectB;
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+
+            // new AdventureNodeEntry("赤壁赋", "赤壁赋",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
+            //             "赞同月亮是变化的",
+            //             "赞同月亮是不变的",
+            //             "变得不是月亮，而是人");
+            //
+            //         DialogPanelDescriptor B = new("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n\n只见第一个人非常赞同你的观点，给了你一些东西。");
+            //         DialogPanelDescriptor C = new("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n\n只见第二个人非常赞同你的观点，给了你一些东西。");
+            //         DialogPanelDescriptor D = new("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n\n你发现他们还剩下了一些额外的东西。");
+            //
+            //         A[0]._select = option =>
+            //         {
+            //             runNode.ChangePanel(B);
+            //             return B;
+            //         };
+            //
+            //         A[1]._select = option =>
+            //         {
+            //             runNode.ChangePanel(C);
+            //             return C;
+            //         };
+            //
+            //         A[2]._select = option =>
+            //         {
+            //             runNode.ChangePanel(D);
+            //             return D;
+            //         };
+            //
+            //         B[0]._select = option =>
+            //         {
+            //             // 加一张牌
+            //             RunManager.Instance.Map.TryFinishNode();
+            //             return null;
+            //         };
+            //
+            //         C[0]._select = option =>
+            //         {
+            //             // 加一张牌
+            //             RunManager.Instance.Map.TryFinishNode();
+            //             return null;
+            //         };
+            //
+            //         D[0]._select = option =>
+            //         {
+            //             // 加一张随机零件
+            //             RunManager.Instance.Map.TryFinishNode();
+            //             return null;
+            //         };
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+
+            // new AdventureNodeEntry("天下", "天下",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？\n\n我跑步很快，如果有人跑步比我还快的话，只要他推着载我的车，我在车里跑，速度就比他还快，只要一直有人速度比我快，我的速度就是无穷的。\n\n我有一个木桩，我每天砍一半，过一万年也砍不完，这个叫做无穷。\n\n我养了一条蛇，他每天吃自己的尾巴，然后又能长出来新的蛇身，永远吃不完，这个叫做无穷。",
+            //             "用第一个想法",
+            //             "用第二个想法",
+            //             "用第三个想法");
+            //
+            //         DialogPanelDescriptor B = new("你痛快写了800字，时间没过5分钟，已经写完了。\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
+            //         DialogPanelDescriptor C = new("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。考试结束时，你已经把所有能写字的地方都写满了话。\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
+            //         DialogPanelDescriptor D = new("你写了一段话。又换了个角度将你的观点重述了一遍，又再换了个角度将你的观点重述了一遍。。。你的角度还没用完，考试已经结束了。\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
+            //
+            //         A[0]._select = option =>
+            //         {
+            //             runNode.ChangePanel(B);
+            //             return B;
+            //         };
+            //
+            //         A[1]._select = option =>
+            //         {
+            //             runNode.ChangePanel(C);
+            //             return C;
+            //         };
+            //
+            //         A[2]._select = option =>
+            //         {
+            //             runNode.ChangePanel(D);
+            //             return D;
+            //         };
+            //
+            //         B[0]._select = option =>
+            //         {
+            //             // 加一张牌
+            //             RunManager.Instance.Map.TryFinishNode();
+            //             return null;
+            //         };
+            //
+            //         C[0]._select = option =>
+            //         {
+            //             // 加一张牌
+            //             RunManager.Instance.Map.TryFinishNode();
+            //             return null;
+            //         };
+            //
+            //         D[0]._select = option =>
+            //         {
+            //             // 加一张牌
+            //             RunManager.Instance.Map.TryFinishNode();
+            //             return null;
+            //         };
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+
+            new AdventureNodeEntry("人间世", "人间世",
                 create: runNode =>
                 {
-                    CardPickerPanelDescriptor A = new("请选择至多4张牌移除，将会从中选择一张，每移除一张牌，返还一份", range: new Range(0, 5),
-                        action: iSkills =>
-                        {
-                            int count = iSkills.Count;
-                            if (count == 0)
-                                return;
+                    DialogPanelDescriptor A = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你追上了他，看出他事业心很重，于是对他说：\n\n成名要趁早，我看你将来肯定是做宰相的料。\n\n你看这些树，长了果子的树枝遭人摧残而早死，木质良好的被人砍去做成船了，就这棵无用的树才活得长久。即使如此，你还是要追求功名么？",
+                        "用第一个想法",
+                        "用第二个想法");
 
-                            RunSkill copyingSkill = null;
-                            object copying = iSkills[RandomManager.Range(0, count)];
-                            if (copying is RunSkill runSkill)
-                            {
-                                copyingSkill = runSkill;
-                            }
-                            else if (copying is SkillSlot slot)
-                            {
-                                RunSkill rSkill = slot.Skill as RunSkill;
-                                Assert.IsTrue(rSkill != null);
-                                copyingSkill = rSkill;
-                            }
+                    DialogPanelDescriptor B1 = new("感谢你这么夸我，但是现在我也没有钱给你。", "时间一下过了60年");
+                    DialogPanelDescriptor C1 = new("先生谬论不可再提，你看那胡人会因为我们不锻造兵器，充实军备而不来侵略我们么？", "时间一下过了60年");
 
-                            foreach (object iSkill in iSkills)
-                            {
-                                if (iSkill is RunSkill skill)
-                                {
-                                    RunManager.Instance.Battle.SkillInventory.RemoveSkill(skill);
-                                }
-                                else if (iSkill is SkillSlot slot)
-                                {
-                                    slot.Skill = null;
-                                }
-                            }
+                    DialogPanelDescriptor B2 = new("当年的少年已经成为了宰相。见到了你，发现你的容貌60年没有发生变化，察觉你是仙人，于是说道，感谢仙人提拔。给了你一大笔钱。");
+                    DialogPanelDescriptor C2 = new("当年的少年已经成为了宰相。见到了你，完全没有印象，只道是某个江湖中人来攀亲道故，于是叫下人给了你点盘缠打发了。");
 
-                            count.Do(i => RunManager.Instance.Battle.SkillInventory.AddSkill(copyingSkill));
-                        });
+                    DialogPanelDescriptor D = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你正向追上他说点什么，却被一颗小石子绊倒，起身已经不见那人踪影。于是道：“罢了罢了，缘分未到。”", "时间一下过了60年");
+                    DialogPanelDescriptor D2 = new("你又见到了当年的少年。现在他已经成为了宰相。你想着对他说些什么：\n\n成名要趁早，宰相一生过得荣华富贵。。。\n\n你看这些树，长了果子的树枝遭人摧残而早死，木质良好的被人砍去做成船了，就这棵无用的树才活得长久。哪怕功名已成恐怕也是路途险阻。",
+                        "用第一个想法",
+                        "用第二个想法");
 
-                    runNode.ChangePanel(A);
-                }),
-
-            new AdventureNodeEntry("感悟五行相生", "感悟五行相生",
-                create: runNode =>
-                {
-                    DialogPanelDescriptor A = new("是否尝试感悟五行相生的规律",
-                        "尝试感受（将会将你的所有牌替换成相生五行的牌）",
-                        "离开");
+                    DialogPanelDescriptor E = new("只见你话还没说完，宰相就摆手示意你离开。叫下人给了你点盘缠将你打发了。");
+                    DialogPanelDescriptor F = new("宰相回复到，先生说的属实，若是我早点知道了这些道理，也不至于一生过的如此跌宕起伏。叫人给了你一大笔钱。");
 
                     A[0]._select = option =>
                     {
-                        foreach (var slot in RunManager.Instance.Battle.Hero.TraversalCurrentSlots())
-                        {
-                            if (slot.Skill == null)
-                                continue;
-                            WuXing? oldWuXing = slot.Skill.GetEntry().WuXing;
-                            JingJie oldJingJie = slot.Skill.GetJingJie();
-
-                            if (!oldWuXing.HasValue)
-                                continue;
-
-                            JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
-
-                            RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
-                            slot.Skill = newSkill;
-                        }
-
-                        for(int i = 0; i < RunManager.Instance.Battle.SkillInventory.Count; i++)
-                        {
-                            RunSkill oldSkill = RunManager.Instance.Battle.SkillInventory[i];
-                            WuXing? oldWuXing = oldSkill.GetEntry().WuXing;
-                            JingJie oldJingJie = oldSkill.JingJie;
-
-                            if (!oldWuXing.HasValue)
-                                continue;
-
-                            JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
-
-                            RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
-                            RunManager.Instance.Battle.SkillInventory.ReplaceSkill(oldSkill, newSkill);
-                        }
-
-                        RunManager.Instance.Map.TryFinishNode();
-                        return null;
-                    };
-
-                    runNode.ChangePanel(A);
-                }),
-
-            new AdventureNodeEntry("连抽五张", "连抽五张",
-                create: runNode =>
-                {
-                    DialogPanelDescriptor A = new("连抽五张事件",
-                        "连抽五张，需要消耗一半生命上限",
-                        "只抽一张，无需消耗生命上限");
-
-                    A[0]._select = option =>
-                    {
-                        RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 5);
-                        RunManager.Instance.Battle.SkillInventory.AddSkills(skills);
-
-                        int dHealth = RunManager.Instance.Battle.Hero.GetFinalHealth() / 2;
-                        RunManager.Instance.Battle.Hero.SetDHealth(-dHealth);
-
-                        RunManager.Instance.Map.TryFinishNode();
-                        return null;
+                        runNode.ChangePanel(B1);
+                        return B1;
                     };
 
                     A[1]._select = option =>
                     {
-                        RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill skill, jingJie: RunManager.Instance.Map.JingJie);
-                        RunManager.Instance.Battle.SkillInventory.AddSkill(skill);
-
-                        RunManager.Instance.Map.TryFinishNode();
-                        return null;
+                        runNode.ChangePanel(C1);
+                        return C1;
                     };
 
-                    runNode.ChangePanel(A);
+                    B1[0]._select = option =>
+                    {
+                        runNode.ChangePanel(B2);
+                        return B2;
+                    };
+
+                    C1[0]._select = option =>
+                    {
+                        runNode.ChangePanel(C2);
+                        return C2;
+                    };
+
+                    D[0]._select = option =>
+                    {
+                        runNode.ChangePanel(D2);
+                        return D2;
+                    };
+
+                    D2[0]._select = option =>
+                    {
+                        runNode.ChangePanel(E);
+                        return E;
+                    };
+
+                    D2[1]._select = option =>
+                    {
+                        runNode.ChangePanel(F);
+                        return F;
+                    };
+
+                    bool isCatch = RandomManager.value < 0.5;
+                    runNode.ChangePanel(isCatch ? A : D);
                 }),
 
-            new AdventureNodeEntry("天机阁", "天机阁",
-                create: runNode =>
-                {
-                    SkillInventory inventory = new();
-                    RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 10, consume: false);
-                    inventory.AddSkills(skills);
-                    ArbitraryCardPickerPanelDescriptor A = new("请从10张牌中选1张获取", inventory: inventory,
-                        action: toAdd => RunManager.Instance.Battle.SkillInventory.AddSkills(toAdd));
-                    runNode.ChangePanel(A);
-                }),
-
+            //
+            // new AdventureNodeEntry("镜花水月", "镜花水月",
+            //     create: runNode =>
+            //     {
+            //         CardPickerPanelDescriptor A = new("请选择至多4张牌移除，将会从中选择一张，每移除一张牌，返还一份", range: new Range(0, 5),
+            //             action: iSkills =>
+            //             {
+            //                 int count = iSkills.Count;
+            //                 if (count == 0)
+            //                     return;
+            //
+            //                 RunSkill copyingSkill = null;
+            //                 object copying = iSkills[RandomManager.Range(0, count)];
+            //                 if (copying is RunSkill runSkill)
+            //                 {
+            //                     copyingSkill = runSkill;
+            //                 }
+            //                 else if (copying is SkillSlot slot)
+            //                 {
+            //                     RunSkill rSkill = slot.Skill as RunSkill;
+            //                     Assert.IsTrue(rSkill != null);
+            //                     copyingSkill = rSkill;
+            //                 }
+            //
+            //                 foreach (object iSkill in iSkills)
+            //                 {
+            //                     if (iSkill is RunSkill skill)
+            //                     {
+            //                         RunManager.Instance.Battle.SkillInventory.RemoveSkill(skill);
+            //                     }
+            //                     else if (iSkill is SkillSlot slot)
+            //                     {
+            //                         slot.Skill = null;
+            //                     }
+            //                 }
+            //
+            //                 count.Do(i => RunManager.Instance.Battle.SkillInventory.AddSkill(copyingSkill));
+            //             });
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("感悟五行相生", "感悟五行相生",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("是否尝试感悟五行相生的规律",
+            //             "尝试感受（将会将你的所有牌替换成相生五行的牌）",
+            //             "离开");
+            //
+            //         A[0]._select = option =>
+            //         {
+            //             foreach (var slot in RunManager.Instance.Battle.Hero.TraversalCurrentSlots())
+            //             {
+            //                 if (slot.Skill == null)
+            //                     continue;
+            //                 WuXing? oldWuXing = slot.Skill.GetEntry().WuXing;
+            //                 JingJie oldJingJie = slot.Skill.GetJingJie();
+            //
+            //                 if (!oldWuXing.HasValue)
+            //                     continue;
+            //
+            //                 JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
+            //
+            //                 RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
+            //                 slot.Skill = newSkill;
+            //             }
+            //
+            //             for(int i = 0; i < RunManager.Instance.Battle.SkillInventory.Count; i++)
+            //             {
+            //                 RunSkill oldSkill = RunManager.Instance.Battle.SkillInventory[i];
+            //                 WuXing? oldWuXing = oldSkill.GetEntry().WuXing;
+            //                 JingJie oldJingJie = oldSkill.JingJie;
+            //
+            //                 if (!oldWuXing.HasValue)
+            //                     continue;
+            //
+            //                 JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
+            //
+            //                 RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
+            //                 RunManager.Instance.Battle.SkillInventory.ReplaceSkill(oldSkill, newSkill);
+            //             }
+            //
+            //             RunManager.Instance.Map.TryFinishNode();
+            //             return null;
+            //         };
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("连抽五张", "连抽五张",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("连抽五张事件",
+            //             "连抽五张，需要消耗一半生命上限",
+            //             "只抽一张，无需消耗生命上限");
+            //
+            //         A[0]._select = option =>
+            //         {
+            //             RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 5);
+            //             RunManager.Instance.Battle.SkillInventory.AddSkills(skills);
+            //
+            //             int dHealth = RunManager.Instance.Battle.Hero.GetFinalHealth() / 2;
+            //             RunManager.Instance.Battle.Hero.SetDHealth(-dHealth);
+            //
+            //             RunManager.Instance.Map.TryFinishNode();
+            //             return null;
+            //         };
+            //
+            //         A[1]._select = option =>
+            //         {
+            //             RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill skill, jingJie: RunManager.Instance.Map.JingJie);
+            //             RunManager.Instance.Battle.SkillInventory.AddSkill(skill);
+            //
+            //             RunManager.Instance.Map.TryFinishNode();
+            //             return null;
+            //         };
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("天机阁", "天机阁",
+            //     create: runNode =>
+            //     {
+            //         SkillInventory inventory = new();
+            //         RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 10, consume: false);
+            //         inventory.AddSkills(skills);
+            //         ArbitraryCardPickerPanelDescriptor A = new("请从10张牌中选1张获取", inventory: inventory,
+            //             action: toAdd => RunManager.Instance.Battle.SkillInventory.AddSkills(toAdd));
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
             // new AdventureNodeEntry("温泉", "温泉",
             //     create: runNode =>
             //     {
@@ -264,9 +515,21 @@ public class NodeCategory : Category<NodeEntry>
             //         DiscoverSkillPanelDescriptor C = new("随机水属当前境界卡牌1张", wuXing: WuXing.Shui);
             //         DiscoverSkillPanelDescriptor D = new("随机火属当前境界卡牌1张", wuXing: WuXing.Huo);
             //
-            //         A[0]._select = option => runNode.ChangePanel(B);
-            //         A[1]._select = option => runNode.ChangePanel(C);
-            //         A[2]._select = option => runNode.ChangePanel(D);
+            //         A[0]._select = option =>
+            //         {
+            //             runNode.ChangePanel(B);
+            //             return B;
+            //         };
+            //         A[1]._select = option =>
+            //         {
+            //             runNode.ChangePanel(C);
+            //             return C;
+            //         };
+            //         A[2]._select = option =>
+            //         {
+            //             runNode.ChangePanel(D);
+            //             return D;
+            //         };
             //
             //         runNode.ChangePanel(A);
             //     }),
@@ -484,27 +747,27 @@ public class NodeCategory : Category<NodeEntry>
             //
             //         runNode.ChangePanel(A);
             //     }),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
             // new AdventureNodeEntry("狂吾师叔事件", "",
             //     create: runNode =>
             //     {
@@ -540,7 +803,7 @@ public class NodeCategory : Category<NodeEntry>
             //
             //         runNode.ChangePanel(A);
             //     }),
-
+            //
             // new AdventureNodeEntry("神殿事件", "",
             //     create: runNode =>
             //     {
@@ -726,7 +989,7 @@ public class NodeCategory : Category<NodeEntry>
             //
             //         runNode.ChangePanel(A);
             //     }),
-
+            //
             //
             // new AdventureNodeEntry("池塘", "",
             //     create: runNode =>

@@ -150,7 +150,10 @@ public class RunCanvas : Singleton<RunCanvas>
     public void SetNodeState(PanelDescriptor panelDescriptor)
     {
         if (NodeLayer.CurrentIsDescriptor(panelDescriptor))
+        {
+            NodeLayer.Refresh();
             return;
+        }
 
         Sequence seq = DOTween.Sequence().SetAutoKill();
 
