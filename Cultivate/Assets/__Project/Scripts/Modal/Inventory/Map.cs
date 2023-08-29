@@ -67,7 +67,16 @@ public class Map : GDictionary
 
     public PanelDescriptor ReceiveSignal(Signal signal)
     {
-        return TryGetCurrentNode().CurrentPanel.ReceiveSignal(signal);
+        PanelDescriptor panelDescriptor = TryGetCurrentNode().CurrentPanel.ReceiveSignal(signal);
+        if (panelDescriptor != null)
+        {
+            TryGetCurrentNode().ChangePanel(panelDescriptor);
+        }
+        else
+        {
+            TryFinishNode();
+        }
+        return panelDescriptor;
     }
 
     public void TryFinishNode()

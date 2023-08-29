@@ -37,7 +37,6 @@ public class NodeCategory : Category<NodeEntry>
                             int index = selectedOptionSignal.Selected;
                             new DrawSkillRewardDescriptor("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Map.JingJie).Claim();
                         }
-                        RunManager.Instance.Map.TryFinishNode();
                         return null;
                     };
 
@@ -118,88 +117,73 @@ public class NodeCategory : Category<NodeEntry>
                     A[0]._select = option =>
                     {
                         RunManager.Instance.Map.RerollNextAdventure();
-                        RunManager.Instance.Map.TryFinishNode();
                         return null;
                     };
 
                     runNode.ChangePanel(A);
                 }),
 
-
-
-
-
-
-
-
-
             // 复杂事件
 
-            // new AdventureNodeEntry("山木", "山木",
-            //     create: runNode =>
-            //     {
-            //         int trial = 0;
-            //         int rage = RandomManager.Range(0, 7);
-            //
-            //         DialogPanelDescriptor A = new("一位老者做在石头上向周围人传教，虚己以游世，其孰能害之。说的是，只要你不把别人当个人，别人就不会引起你生气。你突然想逗他一下。", "朝他作鬼脸", "戳他一下");
-            //
-            //         DialogPanelDescriptor B1 = new("他看起来有点生气了。", "朝他作鬼脸", "戳他一下");
-            //         DialogPanelDescriptor B2 = new("他看起来非常生气了。", "朝他作鬼脸", "戳他一下");
-            //
-            //         DialogPanelDescriptor D = new("你上去为自已的恶作剧道歉，他说还好，不会放在心上，这位学子应该学到了什么。\n获得50金");
-            //         DialogPanelDescriptor E = new("你上去为自已的恶作剧道歉，他喘了一口气，随即嘻笑开颜向大家解释道，这就是我刚才说的，不要随便生气。\n获得200金");
-            //         DialogPanelDescriptor F = new("你刚想上去为自己的恶作剧道歉。只见他不掩饰自己的怒火：“岂有此理啊，你有完没完啊！”你只能赶紧跑了。");
-            //
-            //         D._reward = new ResourceRewardDescriptor(xiuWei: 50);
-            //         E._reward = new ResourceRewardDescriptor(xiuWei: 200);
-            //
-            //         PanelDescriptor SelectA(DialogOption option)
-            //         {
-            //             trial += 1;
-            //             rage += RandomManager.Range(0, 4);
-            //
-            //             PanelDescriptor panelDescriptor;
-            //             if (trial < 2) {
-            //                 panelDescriptor = rage <= 5 ? B1 : B2;
-            //             } else if (rage <= 7) {
-            //                 panelDescriptor = D;
-            //             } else if (rage <= 10) {
-            //                 panelDescriptor = E;
-            //             } else {
-            //                 panelDescriptor = F;
-            //             }
-            //             runNode.ChangePanel(panelDescriptor);
-            //             return panelDescriptor;
-            //         }
-            //         PanelDescriptor SelectB(DialogOption option)
-            //         {
-            //             trial += 1;
-            //             rage += RandomManager.Range(4, 7);
-            //
-            //             PanelDescriptor panelDescriptor;
-            //             if (trial < 2) {
-            //                 panelDescriptor = rage <= 5 ? B1 : B2;
-            //             } else if (rage <= 7) {
-            //                 panelDescriptor = D;
-            //             } else if (rage <= 10) {
-            //                 panelDescriptor = E;
-            //             } else {
-            //                 panelDescriptor = F;
-            //             }
-            //             runNode.ChangePanel(panelDescriptor);
-            //             return panelDescriptor;
-            //         }
-            //
-            //         A[0]._select = SelectA;
-            //         A[1]._select = SelectB;
-            //         B1[0]._select = SelectA;
-            //         B1[1]._select = SelectB;
-            //         B2[0]._select = SelectA;
-            //         B2[1]._select = SelectB;
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
+            new AdventureNodeEntry("山木", "山木",
+                create: runNode =>
+                {
+                    int trial = 0;
+                    int rage = RandomManager.Range(0, 7);
 
+                    DialogPanelDescriptor A = new("一位老者做在石头上向周围人传教，虚己以游世，其孰能害之。说的是，只要你不把别人当个人，别人就不会引起你生气。你突然想逗他一下。", "朝他作鬼脸", "戳他一下");
+
+                    DialogPanelDescriptor B1 = new("他看起来有点生气了。", "朝他作鬼脸", "戳他一下");
+                    DialogPanelDescriptor B2 = new("他看起来非常生气了。", "朝他作鬼脸", "戳他一下");
+
+                    DialogPanelDescriptor D = new("你上去为自已的恶作剧道歉，他说还好，不会放在心上，这位学子应该学到了什么。\n\n获得50金");
+                    DialogPanelDescriptor E = new("你上去为自已的恶作剧道歉，他喘了一口气，随即嘻笑开颜向大家解释道，这就是我刚才说的，不要随便生气。\n\n获得200金");
+                    DialogPanelDescriptor F = new("你刚想上去为自己的恶作剧道歉。只见他不掩饰自己的怒火：“岂有此理啊，你有完没完啊！”你只能赶紧跑了。");
+
+                    D._reward = new ResourceRewardDescriptor(xiuWei: 50);
+                    E._reward = new ResourceRewardDescriptor(xiuWei: 200);
+
+                    PanelDescriptor SelectA(DialogOption option)
+                    {
+                        trial += 1;
+                        rage += RandomManager.Range(0, 4);
+
+                        if (trial < 2) {
+                            return rage <= 5 ? B1 : B2;
+                        } else if (rage <= 7) {
+                            return D;
+                        } else if (rage <= 10) {
+                            return E;
+                        } else {
+                            return F;
+                        }
+                    }
+                    PanelDescriptor SelectB(DialogOption option)
+                    {
+                        trial += 1;
+                        rage += RandomManager.Range(4, 7);
+
+                        if (trial < 2) {
+                            return rage <= 5 ? B1 : B2;
+                        } else if (rage <= 7) {
+                            return D;
+                        } else if (rage <= 10) {
+                            return E;
+                        } else {
+                            return F;
+                        }
+                    }
+
+                    A[0]._select = SelectA;
+                    A[1]._select = SelectB;
+                    B1[0]._select = SelectA;
+                    B1[1]._select = SelectB;
+                    B2[0]._select = SelectA;
+                    B2[1]._select = SelectB;
+
+                    runNode.ChangePanel(A);
+                }),
+            //
             // new AdventureNodeEntry("赤壁赋", "赤壁赋",
             //     create: runNode =>
             //     {
@@ -212,48 +196,16 @@ public class NodeCategory : Category<NodeEntry>
             //         DialogPanelDescriptor C = new("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n\n只见第二个人非常赞同你的观点，给了你一些东西。");
             //         DialogPanelDescriptor D = new("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n\n你发现他们还剩下了一些额外的东西。");
             //
-            //         A[0]._select = option =>
-            //         {
-            //             runNode.ChangePanel(B);
-            //             return B;
-            //         };
-            //
-            //         A[1]._select = option =>
-            //         {
-            //             runNode.ChangePanel(C);
-            //             return C;
-            //         };
-            //
-            //         A[2]._select = option =>
-            //         {
-            //             runNode.ChangePanel(D);
-            //             return D;
-            //         };
-            //
-            //         B[0]._select = option =>
-            //         {
-            //             // 加一张牌
-            //             RunManager.Instance.Map.TryFinishNode();
-            //             return null;
-            //         };
-            //
-            //         C[0]._select = option =>
-            //         {
-            //             // 加一张牌
-            //             RunManager.Instance.Map.TryFinishNode();
-            //             return null;
-            //         };
-            //
-            //         D[0]._select = option =>
-            //         {
-            //             // 加一张随机零件
-            //             RunManager.Instance.Map.TryFinishNode();
-            //             return null;
-            //         };
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //         A[2]._select = option => D;
+            //         B[0]._select = option => null; // 加一张牌
+            //         C[0]._select = option => null; // 加一张牌
+            //         D[0]._select = option => null; // 加一张随机零件
             //
             //         runNode.ChangePanel(A);
             //     }),
-
+            //
             // new AdventureNodeEntry("天下", "天下",
             //     create: runNode =>
             //     {
@@ -266,120 +218,76 @@ public class NodeCategory : Category<NodeEntry>
             //         DialogPanelDescriptor C = new("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。考试结束时，你已经把所有能写字的地方都写满了话。\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
             //         DialogPanelDescriptor D = new("你写了一段话。又换了个角度将你的观点重述了一遍，又再换了个角度将你的观点重述了一遍。。。你的角度还没用完，考试已经结束了。\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
             //
-            //         A[0]._select = option =>
-            //         {
-            //             runNode.ChangePanel(B);
-            //             return B;
-            //         };
-            //
-            //         A[1]._select = option =>
-            //         {
-            //             runNode.ChangePanel(C);
-            //             return C;
-            //         };
-            //
-            //         A[2]._select = option =>
-            //         {
-            //             runNode.ChangePanel(D);
-            //             return D;
-            //         };
-            //
-            //         B[0]._select = option =>
-            //         {
-            //             // 加一张牌
-            //             RunManager.Instance.Map.TryFinishNode();
-            //             return null;
-            //         };
-            //
-            //         C[0]._select = option =>
-            //         {
-            //             // 加一张牌
-            //             RunManager.Instance.Map.TryFinishNode();
-            //             return null;
-            //         };
-            //
-            //         D[0]._select = option =>
-            //         {
-            //             // 加一张牌
-            //             RunManager.Instance.Map.TryFinishNode();
-            //             return null;
-            //         };
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //         A[2]._select = option => D;
+            //         B[0]._select = option => null; // 加一张牌
+            //         C[0]._select = option => null; // 加一张牌
+            //         D[0]._select = option => null; // 加一张牌
             //
             //         runNode.ChangePanel(A);
             //     }),
-
-            new AdventureNodeEntry("人间世", "人间世",
-                create: runNode =>
-                {
-                    DialogPanelDescriptor A = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你追上了他，看出他事业心很重，于是对他说：\n\n成名要趁早，我看你将来肯定是做宰相的料。\n\n你看这些树，长了果子的树枝遭人摧残而早死，木质良好的被人砍去做成船了，就这棵无用的树才活得长久。即使如此，你还是要追求功名么？",
-                        "用第一个想法",
-                        "用第二个想法");
-
-                    DialogPanelDescriptor B1 = new("感谢你这么夸我，但是现在我也没有钱给你。", "时间一下过了60年");
-                    DialogPanelDescriptor C1 = new("先生谬论不可再提，你看那胡人会因为我们不锻造兵器，充实军备而不来侵略我们么？", "时间一下过了60年");
-
-                    DialogPanelDescriptor B2 = new("当年的少年已经成为了宰相。见到了你，发现你的容貌60年没有发生变化，察觉你是仙人，于是说道，感谢仙人提拔。给了你一大笔钱。");
-                    DialogPanelDescriptor C2 = new("当年的少年已经成为了宰相。见到了你，完全没有印象，只道是某个江湖中人来攀亲道故，于是叫下人给了你点盘缠打发了。");
-
-                    DialogPanelDescriptor D = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你正向追上他说点什么，却被一颗小石子绊倒，起身已经不见那人踪影。于是道：“罢了罢了，缘分未到。”", "时间一下过了60年");
-                    DialogPanelDescriptor D2 = new("你又见到了当年的少年。现在他已经成为了宰相。你想着对他说些什么：\n\n成名要趁早，宰相一生过得荣华富贵。。。\n\n你看这些树，长了果子的树枝遭人摧残而早死，木质良好的被人砍去做成船了，就这棵无用的树才活得长久。哪怕功名已成恐怕也是路途险阻。",
-                        "用第一个想法",
-                        "用第二个想法");
-
-                    DialogPanelDescriptor E = new("只见你话还没说完，宰相就摆手示意你离开。叫下人给了你点盘缠将你打发了。");
-                    DialogPanelDescriptor F = new("宰相回复到，先生说的属实，若是我早点知道了这些道理，也不至于一生过的如此跌宕起伏。叫人给了你一大笔钱。");
-
-                    A[0]._select = option =>
-                    {
-                        runNode.ChangePanel(B1);
-                        return B1;
-                    };
-
-                    A[1]._select = option =>
-                    {
-                        runNode.ChangePanel(C1);
-                        return C1;
-                    };
-
-                    B1[0]._select = option =>
-                    {
-                        runNode.ChangePanel(B2);
-                        return B2;
-                    };
-
-                    C1[0]._select = option =>
-                    {
-                        runNode.ChangePanel(C2);
-                        return C2;
-                    };
-
-                    D[0]._select = option =>
-                    {
-                        runNode.ChangePanel(D2);
-                        return D2;
-                    };
-
-                    D2[0]._select = option =>
-                    {
-                        runNode.ChangePanel(E);
-                        return E;
-                    };
-
-                    D2[1]._select = option =>
-                    {
-                        runNode.ChangePanel(F);
-                        return F;
-                    };
-
-                    bool isCatch = RandomManager.value < 0.5;
-                    runNode.ChangePanel(isCatch ? A : D);
-                }),
-
             //
-            // new AdventureNodeEntry("镜花水月", "镜花水月",
+            // new AdventureNodeEntry("人间世", "人间世",
             //     create: runNode =>
             //     {
-            //         CardPickerPanelDescriptor A = new("请选择至多4张牌移除，将会从中选择一张，每移除一张牌，返还一份", range: new Range(0, 5),
+            //         DialogPanelDescriptor A = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你追上了他，看出他事业心很重，于是对他说：\n\n成名要趁早，我看你将来肯定是做宰相的料。\n\n你看这些树，长了果子的树枝遭人摧残而早死，木质良好的被人砍去做成船了，就这棵无用的树才活得长久。即使如此，你还是要追求功名么？",
+            //             "用第一个想法",
+            //             "用第二个想法");
+            //
+            //         DialogPanelDescriptor B1 = new("感谢你这么夸我，但是现在我也没有钱给你。", "时间一下过了60年");
+            //         DialogPanelDescriptor C1 = new("先生谬论不可再提，你看那胡人会因为我们不锻造兵器，充实军备而不来侵略我们么？", "时间一下过了60年");
+            //
+            //         DialogPanelDescriptor B2 = new("当年的少年已经成为了宰相。见到了你，发现你的容貌60年没有发生变化，察觉你是仙人，于是说道，感谢仙人提拔。给了你一大笔钱。");
+            //         DialogPanelDescriptor C2 = new("当年的少年已经成为了宰相。见到了你，完全没有印象，只道是某个江湖中人来攀亲道故，于是叫下人给了你点盘缠打发了。");
+            //
+            //         DialogPanelDescriptor D = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你正向追上他说点什么，却被一颗小石子绊倒，起身已经不见那人踪影。于是道：“罢了罢了，缘分未到。”", "时间一下过了60年");
+            //         DialogPanelDescriptor D2 = new("你又见到了当年的少年。现在他已经成为了宰相。你想着对他说些什么：\n\n成名要趁早，宰相一生过得荣华富贵。。。\n\n你看这些树，长了果子的树枝遭人摧残而早死，木质良好的被人砍去做成船了，就这棵无用的树才活得长久。哪怕功名已成恐怕也是路途险阻。",
+            //             "用第一个想法",
+            //             "用第二个想法");
+            //
+            //         DialogPanelDescriptor E = new("只见你话还没说完，宰相就摆手示意你离开。叫下人给了你点盘缠将你打发了。");
+            //         DialogPanelDescriptor F = new("宰相回复到，先生说的属实，若是我早点知道了这些道理，也不至于一生过的如此跌宕起伏。叫人给了你一大笔钱。");
+            //
+            //         A[0]._select = option => B1;
+            //         A[1]._select = option => C1;
+            //         B1[0]._select = option => B2; // 缺少大奖励
+            //         C1[0]._select = option => C2; // 缺少小奖励
+            //         D[0]._select = option => D2;
+            //         D2[0]._select = option => E; // 缺少小奖励
+            //         D2[1]._select = option => F; // 缺少大奖励
+            //
+            //         bool isCatch = RandomManager.value < 0.5;
+            //         runNode.ChangePanel(isCatch ? A : D);
+            //     }),
+            //
+            // new AdventureNodeEntry("许愿", "许愿",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
+            //             "健康的体魄",
+            //             "钱币的富裕",
+            //             "这个愿望不被实现");
+            //
+            //         DialogPanelDescriptor B = new("实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮");
+            //         DialogPanelDescriptor C = new("实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币");
+            //         DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，要来干你了。");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //         A[2]._select = option => D;
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("分子打印机", "分子打印机",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你发现了一个机器，有两个插槽。中间写着一行说明，一边放原料，一边放卡牌。",
+            //             "试试这个机器可以做什么",
+            //             "来路不明的东西还是不要乱碰了");
+            //
+            //         CardPickerPanelDescriptor B = new("请选择2张牌", range: new Range(0, 3),
             //             action: iSkills =>
             //             {
             //                 int count = iSkills.Count;
@@ -414,17 +322,109 @@ public class NodeCategory : Category<NodeEntry>
             //                 count.Do(i => RunManager.Instance.Battle.SkillInventory.AddSkill(copyingSkill));
             //             });
             //
+            //         A[0]._select = option => B;
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("神农氏", "神农氏",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你看见一个人向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
+            //             "选择仙草",
+            //             "选择可疑的蘑菇");
+            //
+            //         DialogPanelDescriptor B = new("你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1");
+            //         DialogPanelDescriptor C = new("你吃了可疑的蘑菇，感觉头痛欲裂\n\n命元-1", "过了三十年");
+            //
+            //         DialogPanelDescriptor D = new("你又见到了那个少年，他又笑嘻嘻的向你走来，又是一手拿着一个福光满面的仙草，另一手拿着一个可疑的蘑菇，向你说道，这次你想吃哪个？",
+            //             "这次我就选择仙草吧",
+            //             "你个外行，学别人采什么药，离这个蘑菇远一点");
+            //
+            //         DialogPanelDescriptor E = new("你吃了仙草感觉治愈了你多年的旧伤，继续上路了。\n\n命元+2");
+            //         DialogPanelDescriptor F = new("你又一次吃下了可疑的蘑菇，感觉五脏俱焚\n\n命元-2", "又过了三十年");
+            //
+            //         DialogPanelDescriptor G = new("你又故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //         C[0]._select = option => D;
+            //         D[0]._select = option => E;
+            //         D[1]._select = option => F;
+            //         F[0]._select = option => G;
+            //
+            //         B._reward = new ResourceRewardDescriptor(mingYuan: 1);
+            //         C._reward = new ResourceRewardDescriptor(mingYuan: -1);
+            //         E._reward = new ResourceRewardDescriptor(mingYuan: 2);
+            //         F._reward = new ResourceRewardDescriptor(mingYuan: -2);
+            //         // G._reward = new ResourceRewardDescriptor(mingYuan: -2); // 百草集 卡片
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("天津四", "天津四",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你看见一个书生，悄悄看着一个织布的少女，应该是对她有意思。他看你道士打扮，于是问道：“先生可否帮我算一卦，算姻缘。”",
+            //             "祝福他的缘分",
+            //             "和他说不是每一段相思都能够有结果的");
+            //
+            //         DialogPanelDescriptor B = new("书生表情平静，实际上满心欢喜，说：“我去尝试追求她看看。”", "过了三十年");
+            //         DialogPanelDescriptor B1 = new("你又见到了当初的书生，他说没有在当年找到合适的姻缘。他给你留下了一些东西。",
+            //             "遗憾 --天津四");
+            //
+            //         DialogPanelDescriptor C = new("书生表情平静，实际上内心忧愁，然后默默离开了", "过了三十年");
+            //         DialogPanelDescriptor C1 = new("你又见到了当初的书生，他虽然当时放弃了，但是后来和其他人结成了姻缘。他给你留下了一些东西。",
+            //             "爱恋 --天津四");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //         B[0]._select = option => B1;
+            //         C[0]._select = option => C1;
+            //
+            //         // B1._reward = ; // 卡牌，对手流失3灵气
+            //         // C1._reward = ; // 卡牌，获得2集中
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("后羿", "后羿",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你看到了一个少年在幸苦的练习射箭，但是进度缓慢，你决定",
+            //             "我来教你一招",
+            //             "你应该换一身更好的装备",
+            //             "不打扰少年练习了");
+            //
+            //         DialogPanelDescriptor B = new("你比划了一个招式，对少年说，就这样练。少年谢过你了。", "过了三十年");
+            //         DialogPanelDescriptor B1 = new("少年感激你当初的指导，说：“现在感觉自己已经非常厉害了，哪怕是太阳也能射中”。于是把准备买装备的钱给你了。", "接过钱");
+            //
+            //         DialogPanelDescriptor C = new("你给了少年一些钱，对少年说，去置办一身新的行头对你更加有帮助。少年谢过你了", "过了三十年");
+            //         DialogPanelDescriptor C1 = new("少年感激你当初的指导，说：“现在感觉自己已经非常厉害了，哪怕是太阳也能射中”。于是把不需要的秘笈给你了。", "获得《射金乌》");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //         B[0]._select = option => B1;
+            //         C[0]._select = option => C1;
+            //
+            //         // B1._reward = ; // 卡牌，对手流失3灵气
+            //         // C1._reward = ; // 卡牌，获得2集中
+            //
             //         runNode.ChangePanel(A);
             //     }),
             //
             // new AdventureNodeEntry("感悟五行相生", "感悟五行相生",
             //     create: runNode =>
             //     {
-            //         DialogPanelDescriptor A = new("是否尝试感悟五行相生的规律",
-            //             "尝试感受（将会将你的所有牌替换成相生五行的牌）",
-            //             "离开");
+            //         DialogPanelDescriptor A = new("你知道自己在梦境里，千界树将你拉入了他的梦境，梦境中的东西都非常真实。",
+            //             "吃树上的果子",
+            //             "尝试感悟五行相生的规律");
             //
-            //         A[0]._select = option =>
+            //         DialogPanelDescriptor B = new("久闻千界树，3000年才能开花结果，醒来之后，身上所有伤都不见了。命元恢复至满");
+            //         DialogPanelDescriptor C = new("你看到了，冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，出现了火，最终归于尘土。感悟了五行相生，所有五行牌都被相生的元素替换了");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option =>
             //         {
             //             foreach (var slot in RunManager.Instance.Battle.Hero.TraversalCurrentSlots())
             //             {
@@ -457,9 +457,62 @@ public class NodeCategory : Category<NodeEntry>
             //                 RunManager.Instance.Battle.SkillInventory.ReplaceSkill(oldSkill, newSkill);
             //             }
             //
-            //             RunManager.Instance.Map.TryFinishNode();
-            //             return null;
+            //             return C;
             //         };
+            //
+            //         // B1._reward = ; // 命元回满
+            //         // C1._reward = ; // 卡牌，获得2集中
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("鬼兵", "鬼兵",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你看到鬼兵打算带走一个将死之人，但是那人请求鬼兵在给自己一点时间。鬼兵说那人的命元已尽，不该继续留在阳间",
+            //             "助他炼丹（需要一张牌）",
+            //             "给他传气（需要一命元）",
+            //             "帮他造业（需要100金）",
+            //             "装作看不见");
+            //
+            //         DialogPanelDescriptor B = new("你取出了一张卡牌作为原料，炼出了一枚丹药，给那人吃了。\n\n随后，那人打开了一个机关，一只乐曲从那机关中播出，然后说，这下就有仪式感了。然后心满意足的和鬼兵离开了");
+            //         DialogPanelDescriptor C = new("你使用了自已的命元，给他传了过去。\n\n随后，那人打开了一个机关，一只乐曲从那机关中播出，然后说，这下就有仪式感了。然后心满意足的和鬼兵离开了");
+            //         DialogPanelDescriptor D = new("你向鬼兵偷偷一笑，将一物塞到鬼兵怀中，鬼兵摸了一下，也向你一笑。\n\n随后，那人打开了一个机关，一只乐曲从那机关中播出，然后说，这下就有仪式感了。然后心满意足的和鬼兵离开了");
+            //
+            //         DialogPanelDescriptor E = new("那人已经离开。留下了这个机关在这里，你非常好奇，想必是哪位墨苑大家留下来的手笔。你可以原封不动带走，或者拆分出有用的零件然后带走",
+            //             "原封不动  得到《留声机》",
+            //             "拆成零件  得到三枚零件");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //         A[2]._select = option => D;
+            //
+            //         B[0]._select = option => E;
+            //         C[0]._select = option => E;
+            //         D[0]._select = option => E;
+            //
+            //         // B1._reward = ; // 卡牌，对手流失3灵气
+            //         // C1._reward = ; // 卡牌，获得2集中
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("琴仙", "琴仙",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你遇到了一个弹琴的人，他双目失明，衣衫褴褛，举手投足之间却让人感到大方得体，应该是一名隐士。正好前一首曲毕。向你的方向看了过来，好像知道你来了。",
+            //             "来一首欢快的曲子吧",
+            //             "来一首悲伤的曲子吧",
+            //             "赶路着急，没时间留下来听曲子了");
+            //
+            //         DialogPanelDescriptor B = new("那人哈哈大笑，然后弹了一首欢快的曲子。你回想起这一生，第一次这么有满足感，产生了一些思绪。回过神来，那人已经不见了。", "获得《春雨》");
+            //         DialogPanelDescriptor C = new("那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。", "获得《枯木》");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //
+            //         // B1._reward = ; // 卡牌，对手流失3灵气
+            //         // C1._reward = ; // 卡牌，获得2集中
             //
             //         runNode.ChangePanel(A);
             //     }),
@@ -467,29 +520,27 @@ public class NodeCategory : Category<NodeEntry>
             // new AdventureNodeEntry("连抽五张", "连抽五张",
             //     create: runNode =>
             //     {
-            //         DialogPanelDescriptor A = new("连抽五张事件",
-            //             "连抽五张，需要消耗一半生命上限",
-            //             "只抽一张，无需消耗生命上限");
+            //         DialogPanelDescriptor A = new("你近日练功，隐约感到一个瓶颈，心里略有不快。想着，如果全力一博，说不定就多一分机会窥见大道的真貌。",
+            //             "欲速则不达",
+            //             "大力出奇迹（需要30%生命上限）");
+            //
+            //         DialogPanelDescriptor B = new("哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获", "得到一张牌");
+            //         DialogPanelDescriptor C = new("随着喷出一大口鲜血，你回过神来，原来自己还活着，感谢大道没把自己留在那边。", "得到五张牌");
             //
             //         A[0]._select = option =>
             //         {
-            //             RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 5);
-            //             RunManager.Instance.Battle.SkillInventory.AddSkills(skills);
-            //
-            //             int dHealth = RunManager.Instance.Battle.Hero.GetFinalHealth() / 2;
-            //             RunManager.Instance.Battle.Hero.SetDHealth(-dHealth);
-            //
-            //             RunManager.Instance.Map.TryFinishNode();
-            //             return null;
+            //             RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill skill, jingJie: RunManager.Instance.Map.JingJie);
+            //             RunManager.Instance.Battle.SkillInventory.AddSkill(skill);
+            //             return B;
             //         };
             //
             //         A[1]._select = option =>
             //         {
-            //             RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill skill, jingJie: RunManager.Instance.Map.JingJie);
-            //             RunManager.Instance.Battle.SkillInventory.AddSkill(skill);
-            //
-            //             RunManager.Instance.Map.TryFinishNode();
-            //             return null;
+            //             RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 5);
+            //             RunManager.Instance.Battle.SkillInventory.AddSkills(skills);
+            //             int dHealth = (int)(RunManager.Instance.Battle.Hero.GetFinalHealth() * 0.3f);
+            //             RunManager.Instance.Battle.Hero.SetDHealth(-dHealth);
+            //             return C;
             //         };
             //
             //         runNode.ChangePanel(A);
@@ -501,305 +552,293 @@ public class NodeCategory : Category<NodeEntry>
             //         SkillInventory inventory = new();
             //         RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: RunManager.Instance.Map.JingJie, count: 10, consume: false);
             //         inventory.AddSkills(skills);
-            //         ArbitraryCardPickerPanelDescriptor A = new("请从10张牌中选1张获取", inventory: inventory,
+            //
+            //         DialogPanelDescriptor A = new("你在沙漠中行走，突然眼前出来了一栋华丽的建筑，上面写着天机阁", "进去看看");
+            //
+            //         ArbitraryCardPickerPanelDescriptor B = new("请从10张牌中选1张获取", inventory: inventory,
             //             action: toAdd => RunManager.Instance.Battle.SkillInventory.AddSkills(toAdd));
+            //
+            //         A[0]._select = option => B;
+            //
             //         runNode.ChangePanel(A);
             //     }),
             //
-            // new AdventureNodeEntry("温泉", "温泉",
+            // new AdventureNodeEntry("酿造仙岛玉液酒", "酿造仙岛玉液酒",
             //     create: runNode =>
             //     {
-            //         DialogPanelDescriptor A = new("遇到温泉", "泡", "下潜", "离开");
-            //         DialogPanelDescriptor B = new("命元 + 2");
-            //         B._reward = new ResourceRewardDescriptor(mingYuan: 2);
-            //         DiscoverSkillPanelDescriptor C = new("随机水属当前境界卡牌1张", wuXing: WuXing.Shui);
-            //         DiscoverSkillPanelDescriptor D = new("随机火属当前境界卡牌1张", wuXing: WuXing.Huo);
+            //         bool mixWater = false;
+            //         bool yellNoLie = false;
+            //         bool expert = RandomManager.value < 0.5f;
+            //
+            //         DialogPanelDescriptor A = new("你来到了一个市集，突发奇想想试试之前好不容易得到的酿酒秘方，说不定可以换些盘缠。到市集转了一圈，你发现需要的原材料价值不菲。" +
+            //                                       "\n这里人人都喜欢酒，其中有些人可以鉴赏出酒的品质也说不定。\n\n你决定：",
+            //             "购买足量的原材料",
+            //             "少买一些原材料，多加一些水");
+            //
+            //         DialogPanelDescriptor B = new("果然有一人对商品感到有兴趣。问你卖多少钱？",
+            //             "一百八一杯");
+            //
+            //         DialogPanelDescriptor BmixWater = new("果然有一人对商品感到有兴趣。问你卖多少钱？",
+            //             "一百八一杯",
+            //             "既然加了些水，卖的便宜一些也合适，就八十卖你吧");
+            //
+            //         DialogPanelDescriptor C = new("你敢不敢喊一声蓬莱人不骗蓬莱人",
+            //             "蓬莱人不骗蓬莱人",
+            //             "顾左右而言其他");
+            //
+            //         DialogPanelDescriptor D = new("那人将钱交予你，把酒拿走了。劳动真光荣。", "获得50金");
+            //
+            //         DialogPanelDescriptor[] EndingTable = new DialogPanelDescriptor[]
+            //         {
+            //             // mixWater, yellNoLie, expert
+            //             /* 0b000 */ new("算了，我还是不买了。\n\n眼看市集就快结束了，你只好平价将酒出手了。", "不赚不赔"),
+            //             /* 0b001 */ new("你今天不卖给我，我就不走了。那人出高价来买你的酒，你含泪把钱收下了。", "获得150金"),
+            //             /* ob010 */ new("那人将钱交予你，把酒拿走了。劳动真光荣。", "获得50金"),
+            //             /* ob011 */ new("那人将钱交予你，把酒拿走了。劳动真光荣。", "获得50金"),
+            //             /* 0b100 */ new("算了，我还是不买了。\n\n眼看市集就快结束了，你只好平价将酒出手了。", "不赚不赔"),
+            //             /* 0b101 */ new("哎，看你也不容易。那人虽然看出了你的酒兑了水，但还是有些良心，于是以正常价格买走了酒。", "获得50金"),
+            //             /* 0b110 */ new("那人将钱交予你，把酒拿走了。哇，小赚了一笔。", "获得150金。"),
+            //             /* 0b111 */ new("你个奸商。那人抓住你，说要去官府。你只好摊也不顾了，赶紧溜了。", "失去50金"),
+            //         };
             //
             //         A[0]._select = option =>
             //         {
-            //             runNode.ChangePanel(B);
+            //             mixWater = false;
             //             return B;
             //         };
+            //
             //         A[1]._select = option =>
             //         {
-            //             runNode.ChangePanel(C);
-            //             return C;
+            //             mixWater = true;
+            //             return BmixWater;
             //         };
-            //         A[2]._select = option =>
+            //
+            //         B[0]._select = option => C;
+            //         BmixWater[0]._select = option => C;
+            //         BmixWater[1]._select = option => D;
+            //
+            //         C[0]._select = option =>
             //         {
-            //             runNode.ChangePanel(D);
-            //             return D;
+            //             yellNoLie = true;
+            //             int key = ((mixWater ? 1 : 0) << 2) +
+            //                       ((yellNoLie ? 1 : 0) << 1) +
+            //                       ((expert ? 1 : 0) << 0);
+            //             return EndingTable[key];
             //         };
             //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("集市地摊", "集市地摊",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("在集市地摊上感应到模糊的灵气",
-            //             new DialogOption("5金币买下", new CostDetails(xiuWei: 5)),
-            //             new DialogOption("60金币整摊包了", new CostDetails(xiuWei: 60)),
-            //             "在此摆摊赚钱");
-            //         DialogPanelDescriptor B1 = new("判定失败");
-            //         DialogPanelDescriptor B2 = new("判定成功");
-            //         DiscoverSkillPanelDescriptor C = new("随机获得下品法宝", pred: s => s.SkillTypeCollection.Contains(SkillType.LingQi));
-            //         DialogPanelDescriptor D = new("获得35金币");
-            //         D._reward = new ResourceRewardDescriptor(xiuWei: 35);
-            //
-            //         A[0]._select = option => runNode.ChangePanel(RandomManager.value < 0.5f ? B1 : B2);
-            //         A[1]._select = option => runNode.ChangePanel(C);
-            //         A[2]._select = option => runNode.ChangePanel(D);
-            //
-            //         B2[0]._select = option => runNode.ChangePanel(C);
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("镇上饭馆", "镇上饭馆",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A1 = new("你路过镇上，前往饭馆打工挣钱，遇到后厨不同师傅之间闹矛盾",
-            //             "专心打工赚钱",
-            //             "帮烧火师傅说话",
-            //             "帮砍柴师傅说话",
-            //             "下页");
-            //         DialogPanelDescriptor A2 = new ("你路过镇上，前往饭馆打工挣钱，遇到后厨不同师傅之间闹矛盾",
-            //             "上页",
-            //             "帮挑水师傅说话",
-            //             "帮扫地师傅说话",
-            //             "帮切菜师傅说话");
-            //
-            //         DialogPanelDescriptor jinBi = new("获得50金币");
-            //         jinBi._reward = new ResourceRewardDescriptor(xiuWei: 50);
-            //
-            //         DiscoverSkillPanelDescriptor jin = new("获得金属卡牌1张", wuXing: WuXing.Jin);
-            //         DiscoverSkillPanelDescriptor shui = new("获得水属卡牌1张", wuXing: WuXing.Shui);
-            //         DiscoverSkillPanelDescriptor mu = new("获得木属卡牌1张", wuXing: WuXing.Mu);
-            //         DiscoverSkillPanelDescriptor huo = new("获得火属卡牌1张", wuXing: WuXing.Huo);
-            //         DiscoverSkillPanelDescriptor tu = new("获得土属卡牌1张", wuXing: WuXing.Tu);
-            //
-            //         A1[0]._select = option => runNode.ChangePanel(jinBi);
-            //         A1[1]._select = option => runNode.ChangePanel(huo);
-            //         A1[2]._select = option => runNode.ChangePanel(mu);
-            //         A1[3]._select = option => runNode.ChangePanel(A2);
-            //         A2[0]._select = option => runNode.ChangePanel(A1);
-            //         A2[1]._select = option => runNode.ChangePanel(shui);
-            //         A2[2]._select = option => runNode.ChangePanel(tu);
-            //         A2[3]._select = option => runNode.ChangePanel(jin);
-            //
-            //         runNode.ChangePanel(A1);
-            //     }),
-            //
-            // new AdventureNodeEntry("夜中山间泉", "夜中山间泉",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("夜晚你在山上准备灌些泉水，水流在夜间乌黑发亮，捧起发现这水本身就呈黑色，恍惚间有奇怪的声音响起，一颗黑皮球从上流滚落下来",
-            //             "捡起黑皮球",
-            //             "品尝一下黑色泉水",
-            //             "赶快逃离这个鬼地方");
-            //
-            //         DialogPanelDescriptor A0 = new("你捡起黑皮球，表面柔软，摸起来像一颗快烂了的水蜜桃，你切开它，红色的汁液流了一地，里面露出了一枚淡黄色的果子",
-            //             "用它修炼（未实现）",
-            //             "吸收其中灵气");
-            //
-            //         DialogPanelDescriptor A00 = new("选择一张卡牌境界提升（未实现）");
-            //
-            //         DialogPanelDescriptor A01 = new("命元 + 2");
-            //         A01._reward = new ResourceRewardDescriptor(mingYuan: 2);
-            //
-            //         DiscoverSkillPanelDescriptor A1 = new("你的身体理解了黑水的本质，获得水属性金丹期卡牌1张", wuXing: WuXing.Shui, jingJie: JingJie.JinDan);
-            //
-            //         DiscoverSkillPanelDescriptor A2 = new ("你从梦中醒来，手里握着一个木属性道具", wuXing: WuXing.Mu);
-            //
-            //
-            //         A[0]._select = option => runNode.ChangePanel(A0);
-            //         A[1]._select = option => runNode.ChangePanel(A1);
-            //         A[2]._select = option => runNode.ChangePanel(A2);
-            //
-            //         A0[0]._select = option => runNode.ChangePanel(A00);
-            //         A0[1]._select = option => runNode.ChangePanel(A01);
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("灵山", "灵山",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("你在一座灵山上勘探时，寻获了一处宝物，其一旁写着“孕育愿望之壶”",
-            //             "你对着“孕育愿望之壶”许愿改变你的命运",
-            //             "总之先拿走（未实现）");
-            //
-            //         DialogPanelDescriptor A0 = new("一时间白天黑夜，星河流转，你的卡牌发生了改变，“五行相生”");
-            //         DialogPanelDescriptor A1 = new("获得下品法宝“孕育愿望之壶”（未实现）");
-            //
-            //         A[0]._select = option => runNode.ChangePanel(A0);
-            //         A[1]._select = option => runNode.ChangePanel(A1);
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("龙脉", "龙脉",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("你寻得一处龙脉所在灵气聚集之地",
-            //             "潜心闭关修炼（未实现）",
-            //             "温养体内命元");
-            //
-            //         DialogPanelDescriptor A0 = new("提升自己一张卡牌的境界（未实现）");
-            //         DialogPanelDescriptor A1 = new("命元 + 3");
-            //         A1._reward = new ResourceRewardDescriptor(mingYuan: 3);
-            //
-            //         A[0]._select = option => runNode.ChangePanel(A0);
-            //         A[1]._select = option => runNode.ChangePanel(A1);
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("幽亭", "幽亭",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("你的面前是一滩清池，池水中立着一尊幽亭，墨绿色的亭柱顶着猩红色的宝顶。",
-            //             "饮一口池水（未实现）",
-            //             "在池边停下修炼",
-            //             "跃入亭子一探究竟");
-            //
-            //         DialogPanelDescriptor A0 = new("池水清冽，你沿路奔波的劳累一扫而光。获得卡牌“精力充沛”（未实现）");
-            //         DiscoverSkillPanelDescriptor A1 = new("你不禁暗想，这块宝地许是某位修士前辈开辟的宝地，不妨在这修炼一段时间，肯定大有裨益。（获得水属性卡牌1张）", wuXing: WuXing.Shui);
-            //         DialogPanelDescriptor A20 = new("你纵身一跃，但池水仿佛有着一股引力，将你拉入水中，而这水下竟望不到底，入目皆是幽黑，你用尽全力向水面挣扎，终于在意识模糊前探出水面。而亭子也同引力一并消失了。");
-            //         DiscoverSkillPanelDescriptor A21 = new("你纵身一跃，一个跟斗，稳稳落入亭中，亭子正中的石桌上，有一本秘籍。", wuXing: WuXing.Huo);
-            //
-            //         A[0]._select = option => runNode.ChangePanel(A0);
-            //         A[1]._select = option => runNode.ChangePanel(A1);
-            //         A[2]._select = option => runNode.ChangePanel(RandomManager.value < 0.5 ? A20 : A21);
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("问剑村", "问剑村",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("你来到了“问剑村”，最近村中时常发生强盗事件，村民苦不堪言。",
-            //             "我必拔刀相助（未实现）",
-            //             "离开村庄");
-            //
-            //         DiscoverSkillPanelDescriptor A0 = new("（先直接获得奖励，在敌人设计完成后再更新）");
-            //         DialogPanelDescriptor A1 = new("世事无常，对于此你已无悲喜（生命上限+10）");
-            //         A1._reward = new ResourceRewardDescriptor(health: 10);
-            //
-            //         A[0]._select = option => runNode.ChangePanel(A0);
-            //         A[1]._select = option => runNode.ChangePanel(A1);
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("夜间洞穴", "夜间洞穴",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("你在夜间行路，却听到一些似有似无的嘈杂声响，循声来到一处洞穴前，其中传来了打斗和欢呼声",
-            //             "步入洞中（未实现）",
-            //             "噢，我架子上烤着鸡呢，我得回去看火");
-            //
-            //         DiscoverSkillPanelDescriptor A0 = new("洞内是一处地下擂台，你的到来引起了庄家的注意，不一会儿，几名大汉前来邀请你参与擂台。（未实现）");
-            //         DialogPanelDescriptor A1 = new("离开此处，做了一个吃烤鸡的美梦。（生命上限+10）");
-            //         A1._reward = new ResourceRewardDescriptor(health: 10);
-            //
-            //         A[0]._select = option => runNode.ChangePanel(A0);
-            //         A[1]._select = option => runNode.ChangePanel(A1);
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("元神不稳", "元神不稳",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("你正在修炼，突然感到元神不稳，你会怎么做？",
-            //             "继续冥想调整元神",
-            //             new DialogOption("停下来仔细观察元神", new CostDetails(xiuWei: 10)));
-            //
-            //         DialogPanelDescriptor A0 = new("你成功稳定了元神，修为提升了10。");
-            //         A0._reward = new ResourceRewardDescriptor(xiuWei: 10);
-            //
-            //         DiscoverSkillPanelDescriptor A1 = new("你因为没有及时处理，元神出现了一些微小的损伤，修为下降，但你的仔细观察倒也有些许感悟。");
-            //
-            //         A[0]._select = option => runNode.ChangePanel(A0);
-            //         A[1]._select = option => runNode.ChangePanel(A1);
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("禁忌秘籍", "禁忌秘籍",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("你意外得到了一本失传已久的修炼秘籍，但是此书似乎有禁忌，你会怎么做？",
-            //             "毫不犹豫地开始修炼（未实现）",
-            //             "先研究禁忌再说",
-            //             "将书藏起来，不再碰它。");
-            //
-            //         DialogPanelDescriptor A0 = new("你开始了修炼，秘籍带给你惊人的修为提升，但是在修炼尾声书中蹦出一只怪物，打伤了你，并接着朝你袭来。（未实现）");
-            //         DialogPanelDescriptor A1s = new("你研究了禁忌并发现其中隐含的危险，解除禁忌后，你顺利的完成了修炼。（未实现）");
-            //         DialogPanelDescriptor A1f = new("你不小心触发了禁忌。书中蹦出一只怪物，还好你早有防备，避开了怪物的攻击，你看到书损毁了，同时怪物向你袭来。");
-            //         DialogPanelDescriptor A2 = new("你将秘籍藏在了一个安全的地方，虽然错过了修炼的机会，但是避免了潜在的风险。");
-            //
-            //         A[0]._select = option => runNode.ChangePanel(A0);
-            //         A[1]._select = option => runNode.ChangePanel(RandomManager.value < 0.5f ? A1s : A1f);
-            //         A[2]._select = option => runNode.ChangePanel(A2);
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            // new AdventureNodeEntry("狂吾师叔事件", "",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new DialogPanelDescriptor("你遇见了狂吾师叔，他问你狂剑的见解", "说出自己的见解(需要有狂剑牌)", "说自己不懂，请师叔赐教");
-            //         DialogPanelDescriptor B = new DialogPanelDescriptor("获得了一张练气牌");
-            //         DialogPanelDescriptor C = new DialogPanelDescriptor("获得了一张练气牌");
-            //
-            //         A._receiveSignal = (signal) =>
+            //         C[1]._select = option =>
             //         {
-            //             if (signal is SelectedOptionSignal selectedOptionSignal)
-            //             {
-            //                 runNode.ChangePanel(selectedOptionSignal.Selected == 0 ? B : C);
-            //             }
+            //             yellNoLie = false;
+            //             int key = ((mixWater ? 1 : 0) << 2) +
+            //                       ((yellNoLie ? 1 : 0) << 1) +
+            //                       ((expert ? 1 : 0) << 0);
+            //             return EndingTable[key];
             //         };
             //
-            //         B._receiveSignal = (signal) =>
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("解梦师", "解梦师",
+            //     create: runNode =>
+            //     {
+            //         WuXing? wuXing;
+            //         int manaCostLevel;
+            //
+            //         DialogPanelDescriptor A0 = new("你来到一个镇上，见到了当地有名的解梦师。你请他解梦，你梦中出现了",
+            //             "金",
+            //             "水",
+            //             "木",
+            //             "下一页");
+            //
+            //         DialogPanelDescriptor A1 = new("你来到一个镇上，见到了当地有名的解梦师。你请他解梦，你梦中出现了",
+            //             "火",
+            //             "土",
+            //             "上一页");
+            //
+            //         DialogPanelDescriptor B = new("解梦师又问你，在你梦中，你是谁？",
+            //             "没有灵气的贫民",
+            //             "一些灵气的贵族",
+            //             "拥有庞大灵气的方士");
+            //
+            //         ArbitraryCardPickerPanelDescriptor C = new("原来如此，你最近是否常常想着");
+            //
+            //         DialogPanelDescriptor D = new("这正是我现在需要的，先生真乃神医也。");
+            //
+            //         A0[3]._select = option => A1;
+            //         A1[2]._select = option => A0;
+            //
+            //         A0[0]._select = option =>
             //         {
-            //             bool success = RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill skill, jingJie: JingJie.LianQi);
-            //             if (success)
-            //                 RunManager.Instance.Battle.SkillInventory.AddSkill(skill);
-            //
-            //             RunManager.Instance.Map.TryFinishNode();
+            //             wuXing = WuXing.Jin;
+            //             return B;
             //         };
             //
-            //         C._receiveSignal = (signal) =>
+            //         A0[1]._select = option =>
             //         {
-            //             bool success = RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill skill, jingJie: JingJie.LianQi);
-            //             if (success)
-            //                 RunManager.Instance.Battle.SkillInventory.AddSkill(skill);
-            //
-            //             RunManager.Instance.Map.TryFinishNode();
+            //             wuXing = WuXing.Shui;
+            //             return B;
             //         };
+            //
+            //         A0[2]._select = option =>
+            //         {
+            //             wuXing = WuXing.Mu;
+            //             return B;
+            //         };
+            //
+            //         A1[0]._select = option =>
+            //         {
+            //             wuXing = WuXing.Huo;
+            //             return B;
+            //         };
+            //
+            //         A1[1]._select = option =>
+            //         {
+            //             wuXing = WuXing.Tu;
+            //             return B;
+            //         };
+            //
+            //         B[0]._select = option => C;
+            //         C._receiveSignal = signal => D;
+            //
+            //         runNode.ChangePanel(A0);
+            //     }),
+            //
+            // new AdventureNodeEntry("夏虫语冰", "夏虫语冰",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你在过一个桥，桥上站了一人，问你，什么时候河会变得可以行走。你说在冬季的时候。他说你是胡说八道：“一年只有三个季节，春夏秋，哪里来的冬季？”",
+            //             "赞同他，说一年只有三个季节",
+            //             "向他解释，说一年有四个季节");
+            //
+            //         DialogPanelDescriptor B = new("那人让你过去了，你感觉自己避免了一件麻烦事，心情大为畅快。生命上限+10");
+            //         DialogPanelDescriptor C = new("一个月过去了，想过桥的人看到你们俩堵在桥中间，劝也劝不动，都想其他法子过桥了。那人的面容有所变化，但是嘴还是硬的。" +
+            //                                       "\n两个月时间逐渐过去，周围的人已经不来这个桥了。那人竟然以肉眼可见的速度，每天变老，但是还是一口咬定冬季不存在。" +
+            //                                       "\n到了第三个月，你们旁边已经修好了一个新的桥，从新桥上过去的人都已异样的眼光看着你们。那人已经连站立都感到困难了。" +
+            //                                       "\n就快要到冬天了，到时候就能证明冬季了。你又一次像那人看去。那人已经老的站立都困难了。你终于发现那人是夏虫所化。一生始于春而终于秋。你刚想松口。那人先于你出口说，你赢了，你可以过桥了，然后坐在一颗树下，永远的合上了眼。" +
+            //                                       "\n你在此地过了三个月，虽然修为上没有太大的精进，但是休息了这么长时间，所有伤势都已消失不见。命元+10。");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("拍立得", "拍立得",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("到了桃花盛开的季节，你也来欣赏桃花。见到一名机关师，向人们介绍自己最近的新发明。按一下按钮，这个机关就可以将眼前美景永远记录下来。" +
+            //                                       "\n周围人看了那个机关，觉得画过于真实，害怕这个机关能够摄人心魄。都纷纷不敢上前。" +
+            //                                       "\n那人邀请你实验一下他的新发明。你站好之后，他叫你喊，一，二，三，茄子。然后启动了两次机关。果然出现了两张相片。一张优雅俊美，另一张略有瑕疵，可能是机关启动的时机并不完美。" +
+            //                                       "\n那人向你说道：“先生不如选一张，然后将另一张放在我这里，这样我们看见相片就能会想起，今时今日，曾一起赏桃花。”",
+            //             "拿走优雅俊美的那一张",
+            //             "拿走略有瑕疵的那一张",
+            //             "先生曾听过，人生苦短，及时行乐");
+            //
+            //         DialogPanelDescriptor B = new("你把这张相片放在了挂在了你的大堂里，寻求你帮助的人看到你俊美的相貌，愿意以更高价钱请你出力。金+200。");
+            //         DialogPanelDescriptor C = new("你把好的相片留给了机关师，这样他日后看到相片的时候，就会感到这段回忆多一分美好。这样想到，你的心情变好了。生命上限+20");
+            //         DialogPanelDescriptor D = new("你对那人说：”相必先生也知道，美好的时光总是短暂的。这个机关，可以将美好的时光记录下来，之后就可以看着照片反复回忆。" +
+            //                                       "但真的如此做的话，处于桃林中的我们也会因为知道相片可以反复回忆，反倒不去珍惜此时此刻的美景了。这难道不是本末倒置了么？“" +
+            //                                       "\n\n那人稍微惊讶于你的说法。然后感叹道：“先生教训的在理。不应以人生长而感到美好，也不应以短而感到苦恼。这个机关已经于我无用，这便赠与先生吧。”" +
+            //                                       "你收下了这个机关，但是并不会维护。与其看着它坏掉，不如将其中有用的零件取出。\n\n得到随机零件。");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //         A[2]._select = option => D;
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("可以把你的尺子丢了么", "可以把你的尺子丢了么",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("嘀嘀嘀。灵信响了，你看了一下。是之前委托你布阵的人发的消息。" +
+            //                                       "\n管家：大人，之前你帮我家设置的阵法，有一笔的长度不对。会不会引起问题？" +
+            //                                       "\n我：哪一笔，长度怎么不对了？" +
+            //                                       "\n管家：坎位其中一划，我拿尺子量了，和其他的差了一分",
+            //             "你多虑了，长度稍微差一点点没关系的。",
+            //             "可以把你的尺子丢了么？");
+            //
+            //         DialogPanelDescriptor B = new("嘀嘀嘀。灵信响了，又是两天前那个管家。" +
+            //                                       "\n管家：大人，我用尺子比了一下，有一笔稍微有些不直，会不会影响到阵法的效果？",
+            //             "你多虑了，笔划不需要完全直的。",
+            //             "可以把你的尺子丢了么？");
+            //
+            //         DialogPanelDescriptor C = new("嘀嘀嘀。灵信又响了。还是几天前那个管家。" +
+            //                                       "管家：大人，我又拿池子笔划了许久，发现这个阵法还是有些问题，能劳烦你来一趟么，越快越好。",
+            //             "没问题，我今天就赶过去。",
+            //             "可以把你的尺子丢了么？");
+            //
+            //         DialogPanelDescriptor D = new("你问了管家情况，发现都是些鸡毛蒜皮的小事。并不需要什么维护，就收了车马费。\n\n金+50。");
+            //
+            //         DialogPanelDescriptor E = new("这阵子，管家没有再来打扰你了，应该是去打扰别人了。心情变好了一点。\n\n生命上限+5");
+            //
+            //         A[0]._select = option => B;
+            //         B[0]._select = option => C;
+            //         C[0]._select = option => D;
+            //         A[1]._select = option => E;
+            //         B[1]._select = option => E;
+            //         C[1]._select = option => E;
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("曹操三笑", "曹操三笑",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("有人要去其他国家，听闻中间有一个险道，常常有山贼出没，托你保卫他的安全。一路上没有什么障碍，赶了几天的路之后，终于快要到目的地了。" +
+            //                                       "面前是一处山谷。这时候，他突然大笑起来：“哈哈哈哈哈哈哈哈。。。”",
+            //             "询问他何故突然大笑？",
+            //             "赶紧捂住他的嘴。");
+            //
+            //         DialogPanelDescriptor B = new("于是他解释道：”我看此等山贼都是少智无谋之辈，如果在此伏击我等，定然能让我们元气大伤。哈哈哈哈哈哈哈哈。。。“" +
+            //                                       "\n只见他正在笑着，然后一伙山贼就出现了。",
+            //             "和山贼战斗");
+            //
+            //         DialogPanelDescriptor C = new("他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n金+50");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new AdventureNodeEntry("仙人下棋", "仙人下棋",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你在竹林里迷路了，走了一阵遇到两个人在下棋，其中一个人发现了你，然后继续看棋盘去了。",
+            //             "尝试观看两人对弈",
+            //             "请教两人路怎么走");
+            //
+            //         DialogPanelDescriptor B = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
+            //         DialogPanelDescriptor B1 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
+            //
+            //         DialogPanelDescriptor C = new("虽然你沉下心来想要理解棋盘中发生了什么事，只见两人下棋越来越快，一息之间，那二人已下出千百步，你想说些什么，但是身体却来不及动。", "不知过了多久");
+            //         DialogPanelDescriptor C1 = new("你醒来时，那两人已经不在了。但是莫要紧，美美睡上一觉比什么都重要。命元+2。");
+            //
+            //         DialogPanelDescriptor D = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，你回想起了一段关于呼吸的功法，开始强迫自己吐纳，努力在这种环境下获取一些空气。", "不知过了多久");
+            //         DialogPanelDescriptor D1 = new("即使空气非常粘稠，你也可以呼吸自如。慢慢回到了正常的感觉，你悟出了一个关于吐纳的功法。");
+            //
+            //         DialogPanelDescriptor E = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，肺部在不断哀嚎。", "不知过了多久");
+            //         DialogPanelDescriptor E1 = new("空气中的粘稠感终于消失。你赶紧大口吸气呼气，第一次感到空气是这么美好。生命值上限+10。");
+            //
+            //         A[0]._select = option =>
+            //         {
+            //             // 需要玩家交出一张二动牌
+            //             bool hasSwift = false;
+            //             return hasSwift ? B : C;
+            //         };
+            //
+            //         A[1]._select = option =>
+            //         {
+            //             // 需要玩家交出一张治疗牌
+            //             bool hasHeal = false;
+            //             return hasHeal ? D : E;
+            //         };
+            //
+            //         B[0]._select = option => B1;
+            //         C[0]._select = option => C1;
+            //         D[0]._select = option => D1;
+            //         E[0]._select = option => E1;
             //
             //         runNode.ChangePanel(A);
             //     }),
@@ -849,257 +888,6 @@ public class NodeCategory : Category<NodeEntry>
             //
             //         E._receiveSignal = (signal) =>
             //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("土匪事件", "",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new DialogPanelDescriptor("你经过一处村庄，村口的石碑上刻着“问剑村”，村子里的村民各个面色凝重，这时一位老者向你走来，他告诉你：村庄饱受土匪强盗侵扰。你决定：", "迅速离去", "拔刀相助");
-            //         DialogPanelDescriptor B = new DialogPanelDescriptor("自从筑基成功，你就正式踏上修仙的道路，凡尘的准则与琐事都与你无关。");
-            //         DialogPanelDescriptor C = new DialogPanelDescriptor("修仙者走的就是一条逆天而行的路，常年累月的修行换来的力量就是为了能够以自己的意志行走于大地之上。“老伯你放心，今日，我定给‘问剑村’一个安宁。”说罢，你一个飞身往土匪的藏身处遁去。");
-            //         BattlePanelDescriptor D = new BattlePanelDescriptor("鶸", new CreateEntityDetails(RunManager.Instance.Map.JingJie));//先用了你声明过得关键字
-            //         BattlePanelDescriptor E = new BattlePanelDescriptor("鶸", new CreateEntityDetails(RunManager.Instance.Map.JingJie));
-            //         DialogPanelDescriptor F = new DialogPanelDescriptor("你带着土匪老大的头颅返回了问剑村，村长奖励了你一些XXX");
-            //         DialogPanelDescriptor G = new DialogPanelDescriptor("你没能击败对手，损失了一些命元");
-            //         DialogPanelDescriptor H = new DialogPanelDescriptor("土匪老大落败后提出：他在问剑村找到一本功法秘籍。他用秘籍作为交换希望你能放他一命。你决定：","同意","直接杀死土匪老大");
-            //         DialogPanelDescriptor I = new DialogPanelDescriptor("土匪老大带你来到洞窟深处，打开某个暗门后，你看见一个石台上放着一本秘籍，趁你被秘籍吸引了注意，他掏出一个护符握在手中，护符化作一道金光划过天际，你回头一看，土匪老大逃走了。你决定：","遵从交易，放过他","追杀土匪老大");
-            //         DialogPanelDescriptor J = new DialogPanelDescriptor("你没有管逃跑的土匪老大，继续在藏宝处寻找，在又找到一些宝藏后，你离开洞窟，继续赶路去了。");
-            //         DialogPanelDescriptor K = new DialogPanelDescriptor("你成功追上了土匪老大，砍下了他的头颅，由于追的太投入，你找不到返回藏宝处的路，只能提着土匪老大的头返回了问剑村，村长奖励了你一些XXX");
-            //         DialogPanelDescriptor L = new DialogPanelDescriptor("你拼命追赶可还是被土匪老大逃掉了,由于追的太投入，你找不到返回藏宝处的路，只能拿着秘籍离开。");
-            //         DialogPanelDescriptor M = new DialogPanelDescriptor("杀死土匪老大后，你砍下了他的头颅，你决定：", "尝试在洞窟中寻找秘籍", "带着头颅返回问剑村");
-            //         DialogPanelDescriptor N = new DialogPanelDescriptor("你在洞窟深处发现一道暗门，打开暗门后你发现了一本功法秘籍还有一些其他的宝藏。收集完宝藏后，你带着土匪老大的头颅返回了问剑村，村长奖励了你一些XXX");
-            //         DialogPanelDescriptor O = new DialogPanelDescriptor("你在洞窟中四处寻找，可是一无所获，还触发了一些陷阱，损失了一些命元，所幸没有大碍。你带着土匪老大的头颅返回了问剑村，村长奖励了你一些XXX");
-            //
-            //
-            //
-            //         A._receiveSignal = (signal) =>
-            //         {
-            //             SelectedOptionSignal selectedOptionSignal = signal as SelectedOptionSignal;
-            //             if (selectedOptionSignal == null)
-            //                 return;
-            //
-            //             runNode.ChangePanel(selectedOptionSignal.Selected == 0 ? B : C);
-            //         };
-            //
-            //         B._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         C._receiveSignal = (signal) =>
-            //         {
-            //            runNode.ChangePanel(D);
-            //         };
-            //
-            //         D._receiveSignal = (signal) =>
-            //         {
-            //             if (signal is BattleResultSignal battleResultSignal)
-            //             {
-            //                 if (battleResultSignal.State == BattleResultSignal.BattleResultState.Win)
-            //                 {
-            //                     runNode.ChangePanel(E);
-            //                 }
-            //                 else if (battleResultSignal.State == BattleResultSignal.BattleResultState.Lose)
-            //                 {
-            //                     runNode.ChangePanel(G);
-            //                 }
-            //             }
-            //         };
-            //
-            //         E._receiveSignal = (signal) =>
-            //         {
-            //             if (signal is BattleResultSignal battleResultSignal)
-            //             {
-            //                 if (battleResultSignal.State == BattleResultSignal.BattleResultState.Win)
-            //                 {
-            //                     runNode.ChangePanel(H);
-            //                 }
-            //                 else if (battleResultSignal.State == BattleResultSignal.BattleResultState.Lose)
-            //                 {
-            //                     runNode.ChangePanel(G);
-            //                 }
-            //             }
-            //         };
-            //
-            //         F._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         G._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         H._receiveSignal = (signal) =>
-            //         {
-            //             SelectedOptionSignal selectedOptionSignal = signal as SelectedOptionSignal;
-            //             if (selectedOptionSignal == null)
-            //                 return;
-            //
-            //             runNode.ChangePanel(selectedOptionSignal.Selected == 0 ? I : M);
-            //         };
-            //
-            //         I._receiveSignal = (signal) =>
-            //         {
-            //             SelectedOptionSignal selectedOptionSignal = signal as SelectedOptionSignal;
-            //             if (selectedOptionSignal == null)
-            //                 return;
-            //
-            //             runNode.ChangePanel(selectedOptionSignal.Selected == 0 ? J : K/*or L need judge*/);
-            //         };
-            //
-            //         J._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         K._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         L._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         M._receiveSignal = (signal) =>
-            //         {
-            //             SelectedOptionSignal selectedOptionSignal = signal as SelectedOptionSignal;
-            //             if (selectedOptionSignal == null)
-            //                 return;
-            //
-            //             runNode.ChangePanel(selectedOptionSignal.Selected == 0 ? N/*or O need judge*/ : F);
-            //         };
-            //
-            //         N._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         O._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            //
-            // new AdventureNodeEntry("池塘", "",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new DialogPanelDescriptor(
-            //             "你经过一滩清池，一座亭子立于池中，你不禁驻足。墨绿色的亭柱顶着朱红色的宝顶，绕池一周，你并未看到通向亭子的道路，你决定：",
-            //             "饮一口池水（回血）",
-            //             "在池边停下修炼（回血药）",
-            //             "尝试飞身跃入亭中（拥有一张筑基牌，则抽一张牌）。那亭子一看便不是凡物，里面说不好有一番机缘，你决定尝试飞身跃入亭中一探究竟。");
-            //         DialogPanelDescriptor B = new DialogPanelDescriptor("池水清冽，你沿路奔波的劳累一扫而光。");
-            //         DialogPanelDescriptor C = new DialogPanelDescriptor("你不禁暗想：这块宝地许是某位修士前辈开辟的宝地，不妨在这修炼一段时间，肯定大有裨益。");
-            //         DialogPanelDescriptor D = new DialogPanelDescriptor("你纵深一跃，在空中一个翻身，稳稳落入亭中，亭子正中的石桌上，有一本《XXX》。");
-            //         DialogPanelDescriptor E = new DialogPanelDescriptor("你纵身一跃，结果距离亭子仍有数尺，你落入水中，等你浮上水面时亭子已经消失了，你大感可惜，悻悻离去。");
-            //
-            //         A._receiveSignal = (signal) =>
-            //         {
-            //             if (signal is SelectedOptionSignal selectedOptionSignal)
-            //             {
-            //                 if (selectedOptionSignal.Selected == 0)
-            //                 {
-            //                     runNode.ChangePanel(B);
-            //                 }
-            //                 else if (selectedOptionSignal.Selected == 1)
-            //                 {
-            //                     runNode.ChangePanel(C);
-            //                 }
-            //                 else
-            //                 {
-            //                     bool flag = RunManager.Instance.AcquiredInventory.FirstObj(acquired =>
-            //                                     acquired.GetJingJie() >= JingJie.ZhuJi) != null ||
-            //                                 RunManager.Instance.Hero.HeroSlotInventory.Traversal.FirstObj(slot =>
-            //                                     slot.GetJingJie().HasValue && slot.GetJingJie() >= JingJie.ZhuJi) !=
-            //                                 null;
-            //                     if (flag)
-            //                     {
-            //                         runNode.ChangePanel(D);
-            //                     }
-            //                     else
-            //                     {
-            //                         runNode.ChangePanel(E);
-            //                     }
-            //                 }
-            //             }
-            //         };
-            //
-            //         B._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.TryDrawAcquired(JingJie.LianQi);
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         C._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.TryDrawAcquired(JingJie.LianQi);
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         D._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.TryDrawAcquired(JingJie.LianQi);
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         E._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
-            //
-            // new AdventureNodeEntry("路途劳累", "",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new DialogPanelDescriptor(
-            //             "旅行数日，即便你已踏上修炼之道，路途上的劳累也无法完全消除（【惩罚】生命值惩罚5），你前往一处聚落决定休息几日，凝练修为。路过坊市时，一位清新脱俗的姑娘映入你的眼帘，",
-            //             "不禁入神，驻足停留（【惩罚】【条件 驻足停留】 修为减少）",
-            //             "加快脚步前往客栈（【奖励】回复生命值10，修为增加）",
-            //             "前往坊市转转（跳转至商店界面）");
-            //         DialogPanelDescriptor B = new DialogPanelDescriptor("看到她，你想起了江南的雨，你楞在原地，看出了神，直到背后的人推了你一把，你才回过神来。你暗暗一惊：你的道心不稳。修仙长路漫漫，需要长年累月的苦修，男女之情是修仙路上的一大阻碍，跟何况对方还是一位没有踏上仙路的女子。你赶快加快脚步离开此地。");
-            //         DialogPanelDescriptor C = new DialogPanelDescriptor("你来到客栈后，就开始运转功法，一段时间后，旅途的劳累一扫而空，并巩固了修为。");
-            //         // DialogPanelDescriptor D = new MarketPanelDescriptor("你纵深一跃，在空中一个翻身，稳稳落入亭中，亭子正中的石桌上，有一本《XXX》。");
-            //
-            //         A._receiveSignal = (signal) =>
-            //         {
-            //             if (signal is SelectedOptionSignal selectedOptionSignal)
-            //             {
-            //                 if (selectedOptionSignal.Selected == 0)
-            //                 {
-            //                     runNode.ChangePanel(B);
-            //                 }
-            //                 else if (selectedOptionSignal.Selected == 1)
-            //                 {
-            //                     runNode.ChangePanel(C);
-            //                 }
-            //                 else
-            //                 {
-            //                 }
-            //             }
-            //         };
-            //
-            //         B._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.TryDrawAcquired(JingJie.LianQi);
-            //             RunManager.Instance.Map.TryFinishNode();
-            //         };
-            //
-            //         C._receiveSignal = (signal) =>
-            //         {
-            //             RunManager.Instance.TryDrawAcquired(JingJie.LianQi);
             //             RunManager.Instance.Map.TryFinishNode();
             //         };
             //
