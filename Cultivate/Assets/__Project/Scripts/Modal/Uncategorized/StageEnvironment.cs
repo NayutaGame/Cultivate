@@ -13,7 +13,7 @@ public class StageEnvironment : GDictionary, CLEventListener
         => await FormationProcedure(new FormationDetails(owner, formation, recursive));
     public async Task FormationProcedure(FormationDetails d)
     {
-        await _eventDict.FireEvent(CLEventDict.FORMATION_WILL_ADD, d);
+        await _eventDict.SendEvent(CLEventDict.FORMATION_WILL_ADD, d);
         if (d.Cancel) return;
 
         await d.Owner.AddFormation(new GainFormationDetails(d._formation));
@@ -24,7 +24,7 @@ public class StageEnvironment : GDictionary, CLEventListener
         _report.Append($"    {d._formation.GetName()} is set");
 
         if (d.Cancel) return;
-        await _eventDict.FireEvent(CLEventDict.FORMATION_DID_ADD, d);
+        await _eventDict.SendEvent(CLEventDict.FORMATION_DID_ADD, d);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class StageEnvironment : GDictionary, CLEventListener
             StageEntity src = d.Src;
             StageEntity tgt = d.Tgt;
 
-            await _eventDict.FireEvent(CLEventDict.WILL_ATTACK, d);
+            await _eventDict.SendEvent(CLEventDict.WILL_ATTACK, d);
 
             if (d.Cancel)
             {
@@ -65,12 +65,12 @@ public class StageEnvironment : GDictionary, CLEventListener
 
             if (!d.Pierce && d.Evade)
             {
-                await _eventDict.FireEvent(CLEventDict.DID_EVADE, d);
+                await _eventDict.SendEvent(CLEventDict.DID_EVADE, d);
                 _report.Append($"    攻击被闪避");
 
                 if (d.Undamaged != null)
                     await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0));
-                await _eventDict.FireEvent(CLEventDict.DID_ATTACK, d);
+                await _eventDict.SendEvent(CLEventDict.DID_ATTACK, d);
                 continue;
             }
 
@@ -93,7 +93,7 @@ public class StageEnvironment : GDictionary, CLEventListener
 
                 if (d.Undamaged != null)
                     await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0));
-                await _eventDict.FireEvent(CLEventDict.DID_ATTACK, d);
+                await _eventDict.SendEvent(CLEventDict.DID_ATTACK, d);
                 continue;
             }
 
@@ -113,7 +113,7 @@ public class StageEnvironment : GDictionary, CLEventListener
                     await HealProcedure(src, src, damageDetails.Value);
             }
 
-            await _eventDict.FireEvent(CLEventDict.DID_ATTACK, d);
+            await _eventDict.SendEvent(CLEventDict.DID_ATTACK, d);
         }
     }
 
@@ -131,7 +131,7 @@ public class StageEnvironment : GDictionary, CLEventListener
         => await DamageProcedure(new DamageDetails(src, tgt, value, recursive, damaged, undamaged));
     public async Task DamageProcedure(DamageDetails d)
     {
-        await _eventDict.FireEvent(CLEventDict.WILL_DAMAGE, d);
+        await _eventDict.SendEvent(CLEventDict.WILL_DAMAGE, d);
 
         if (d.Cancel || d.Value == 0)
         {
@@ -144,20 +144,20 @@ public class StageEnvironment : GDictionary, CLEventListener
         if (d.Damaged != null)
             await d.Damaged(d);
 
-        await _eventDict.FireEvent(CLEventDict.DID_DAMAGE, d);
+        await _eventDict.SendEvent(CLEventDict.DID_DAMAGE, d);
     }
 
     public async Task LoseHealthProcedure(StageEntity owner, int value)
         => await LoseHealthProcedure(new LoseHealthDetails(owner, value));
     public async Task LoseHealthProcedure(LoseHealthDetails d)
     {
-        await _eventDict.FireEvent(CLEventDict.WILL_LOSE_HEALTH, d);
+        await _eventDict.SendEvent(CLEventDict.WILL_LOSE_HEALTH, d);
         if (d.Cancel)
             return;
 
         d.Owner.Hp -= d.Value;
 
-        await _eventDict.FireEvent(CLEventDict.DID_LOSE_HEALTH, d);
+        await _eventDict.SendEvent(CLEventDict.DID_LOSE_HEALTH, d);
     }
 
     public async Task HealProcedure(StageEntity src, StageEntity tgt, int value)
@@ -167,7 +167,7 @@ public class StageEnvironment : GDictionary, CLEventListener
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
 
-        await _eventDict.FireEvent(CLEventDict.WILL_HEAL, d);
+        await _eventDict.SendEvent(CLEventDict.WILL_HEAL, d);
 
         if (d.Cancel)
             return;
@@ -192,14 +192,14 @@ public class StageEnvironment : GDictionary, CLEventListener
         }
         _report.Append($"    生命变成了${tgt.Hp}");
 
-        await _eventDict.FireEvent(CLEventDict.DID_HEAL, d);
+        await _eventDict.SendEvent(CLEventDict.DID_HEAL, d);
     }
 
     public async Task BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
         => await BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
     public async Task BuffProcedure(BuffDetails d)
     {
-        await _eventDict.FireEvent(CLEventDict.WILL_BUFF, d);
+        await _eventDict.SendEvent(CLEventDict.WILL_BUFF, d);
         if (d.Cancel) return;
 
         Buff same = d.Tgt.FindBuff(d._buffEntry);
@@ -243,14 +243,14 @@ public class StageEnvironment : GDictionary, CLEventListener
             _report.Append($"    {d._buffEntry.Name}: 0 -> {d._stack}");
         }
 
-        await _eventDict.FireEvent(CLEventDict.DID_BUFF, d);
+        await _eventDict.SendEvent(CLEventDict.DID_BUFF, d);
     }
 
     public async Task ArmorGainProcedure(StageEntity src, StageEntity tgt, int value)
         => await ArmorGainProcedure(new ArmorGainDetails(src, tgt, value));
     public async Task ArmorGainProcedure(ArmorGainDetails d)
     {
-        await _eventDict.FireEvent(CLEventDict.ARMOR_WILL_GAIN, d);
+        await _eventDict.SendEvent(CLEventDict.ARMOR_WILL_GAIN, d);
 
         if (d.Cancel)
             return;
@@ -258,14 +258,14 @@ public class StageEnvironment : GDictionary, CLEventListener
         d.Tgt.Armor += d.Value;
         _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
 
-        await _eventDict.FireEvent(CLEventDict.ARMOR_DID_GAIN, d);
+        await _eventDict.SendEvent(CLEventDict.ARMOR_DID_GAIN, d);
     }
 
     public async Task ArmorLoseProcedure(StageEntity src, StageEntity tgt, int value)
         => await ArmorLoseProcedure(new ArmorLoseDetails(src, tgt, value));
     public async Task ArmorLoseProcedure(ArmorLoseDetails d)
     {
-        await _eventDict.FireEvent(CLEventDict.ARMOR_WILL_LOSE, d);
+        await _eventDict.SendEvent(CLEventDict.ARMOR_WILL_LOSE, d);
 
         if (d.Cancel)
             return;
@@ -276,14 +276,14 @@ public class StageEnvironment : GDictionary, CLEventListener
         d.Tgt.Armor -= d.Value;
         _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
 
-        await _eventDict.FireEvent(CLEventDict.ARMOR_DID_LOSE, d);
+        await _eventDict.SendEvent(CLEventDict.ARMOR_DID_LOSE, d);
     }
 
     public async Task DispelProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
         => await DispelProcedure(new DispelDetails(src, tgt, buffEntry, stack, friendly, recursive));
     public async Task DispelProcedure(DispelDetails d)
     {
-        await _eventDict.FireEvent(CLEventDict.WILL_DISPEL, d);
+        await _eventDict.SendEvent(CLEventDict.WILL_DISPEL, d);
 
         if (d.Cancel)
             return;
@@ -291,7 +291,7 @@ public class StageEnvironment : GDictionary, CLEventListener
         Buff b = d.Src.FindBuff(d._buffEntry);
         await b.SetStack(Mathf.Max(0, b.Stack - d._stack));
 
-        await _eventDict.FireEvent(CLEventDict.DID_DISPEL, d);
+        await _eventDict.SendEvent(CLEventDict.DID_DISPEL, d);
     }
 
     public async Task ExhaustProcedure(StageEntity owner, StageSkill skill)
@@ -301,11 +301,11 @@ public class StageEnvironment : GDictionary, CLEventListener
         if (d.Skill.Exhausted)
             return;
 
-        await _eventDict.FireEvent(CLEventDict.WILL_EXHAUST, d);
+        await _eventDict.SendEvent(CLEventDict.WILL_EXHAUST, d);
 
         d.Skill.Exhausted = true;
 
-        await _eventDict.FireEvent(CLEventDict.DID_EXHAUST, d);
+        await _eventDict.SendEvent(CLEventDict.DID_EXHAUST, d);
     }
 
     private StageEntity[] _entities;
@@ -389,7 +389,7 @@ public class StageEnvironment : GDictionary, CLEventListener
         foreach (var e in _entities)
         {
             e._p = -1;
-            await _eventDict.FireEvent(CLEventDict.START_STAGE, new StageDetails(e));
+            await _eventDict.SendEvent(CLEventDict.START_STAGE, new StageDetails(e));
         }
     }
 
@@ -420,8 +420,8 @@ public class StageEnvironment : GDictionary, CLEventListener
 
     private async Task EndStageProcedure()
     {
-        await _eventDict.FireEvent(CLEventDict.END_STAGE, new StageDetails(_entities[1]));
-        await _eventDict.FireEvent(CLEventDict.END_STAGE, new StageDetails(_entities[0]));
+        await _eventDict.SendEvent(CLEventDict.END_STAGE, new StageDetails(_entities[1]));
+        await _eventDict.SendEvent(CLEventDict.END_STAGE, new StageDetails(_entities[0]));
         ForceCommit();
     }
 
@@ -451,7 +451,7 @@ public class StageEnvironment : GDictionary, CLEventListener
 
         await FormationProcedure();
         await MingYuanPenaltyProcedure();
-        await _eventDict.FireEvent(CLEventDict.START_STAGE, new StageDetails(hero));
+        await _eventDict.SendEvent(CLEventDict.START_STAGE, new StageDetails(hero));
 
         hero.ManaShortageEvent += WriteManaShortage;
         _eventDict.Register(this, stopWriteEventDescriptor);

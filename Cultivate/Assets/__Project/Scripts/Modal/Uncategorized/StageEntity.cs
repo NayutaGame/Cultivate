@@ -57,21 +57,21 @@ public class StageEntity : GDictionary, CLEventListener
         UltraSwift = false;
         Swift = false;
 
-        await _env._eventDict.FireEvent(CLEventDict.START_TURN, new TurnDetails(this, _p));
+        await _env._eventDict.SendEvent(CLEventDict.START_TURN, new TurnDetails(this, _p));
 
         bool skipTurn = await TryConsumeProcedure("跳回合");
         if (skipTurn)
         {
             if (GetStackOfBuff("浮空艇") > 0)
                 await BuffSelfProcedure("回合免疫");
-            await _env._eventDict.FireEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+            await _env._eventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
             return;
         }
 
         if (_channelDetails != null)
         {
             await ChannelProcedure();
-            await _env._eventDict.FireEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+            await _env._eventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
             return;
         }
 
@@ -80,12 +80,12 @@ public class StageEntity : GDictionary, CLEventListener
         if (Swift || UltraSwift)
             await SwiftProcedure(new SwiftDetails(this, Swift, UltraSwift));
 
-        await _env._eventDict.FireEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+        await _env._eventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
     }
 
     private async Task SwiftProcedure(SwiftDetails d)
     {
-        await _env._eventDict.FireEvent(CLEventDict.WILL_SWIFT, d);
+        await _env._eventDict.SendEvent(CLEventDict.WILL_SWIFT, d);
         if (d.Cancel)
             return;
 
@@ -95,7 +95,7 @@ public class StageEntity : GDictionary, CLEventListener
         if (d.UltraSwift)
             await Step();
 
-        await _env._eventDict.FireEvent(CLEventDict.DID_SWIFT, d);
+        await _env._eventDict.SendEvent(CLEventDict.DID_SWIFT, d);
     }
 
     private async Task Step()
@@ -105,7 +105,7 @@ public class StageEntity : GDictionary, CLEventListener
 
         StageSkill skill = _skills[_p];
 
-        await _env._eventDict.FireEvent(CLEventDict.START_STEP, new StepDetails(this, skill));
+        await _env._eventDict.SendEvent(CLEventDict.START_STEP, new StepDetails(this, skill));
 
         int manaCost = skill.GetManaCost() - GetStackOfBuff("心斋");
         bool manaSufficient = skill.GetManaCost() == 0 || GetStackOfBuff("永久免费") > 0 || await TryConsumeProcedure("免费") || await TryConsumeProcedure("灵气", manaCost);
@@ -114,7 +114,7 @@ public class StageEntity : GDictionary, CLEventListener
         {
             await ManaShortage(_p);
             await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
-            await _env._eventDict.FireEvent(CLEventDict.END_STEP, new StepDetails(this, null));
+            await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, null));
             return;
         }
 
@@ -122,12 +122,12 @@ public class StageEntity : GDictionary, CLEventListener
         {
             _channelDetails = new ChannelDetails(skill);
             await skill.Channel(this, _channelDetails);
-            await _env._eventDict.FireEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
+            await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
             return;
         }
 
         await Cast(skill);
-        await _env._eventDict.FireEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
+        await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
     }
 
     private async Task ChannelProcedure()
@@ -170,8 +170,8 @@ public class StageEntity : GDictionary, CLEventListener
             if (!within)
             {
                 _p = (_p + _skills.Length) % _skills.Length;
-                await _env._eventDict.FireEvent(CLEventDict.END_ROUND, new RoundDetails(this));
-                await _env._eventDict.FireEvent(CLEventDict.START_ROUND, new RoundDetails(this));
+                await _env._eventDict.SendEvent(CLEventDict.END_ROUND, new RoundDetails(this));
+                await _env._eventDict.SendEvent(CLEventDict.START_ROUND, new RoundDetails(this));
             }
 
             if(_skills[_p].Exhausted)
@@ -331,13 +331,13 @@ public class StageEntity : GDictionary, CLEventListener
     {
         Formation formation = new Formation(this, d._entry);
         formation.Register();
-        await formation._eventDict.FireEvent(CLEventDict.GAIN_FORMATION, d);
+        await formation._eventDict.SendEvent(CLEventDict.GAIN_FORMATION, d);
         _formations.Add(formation);
     }
 
     public async Task RemoveFormation(Formation f)
     {
-        await f._eventDict.FireEvent(CLEventDict.LOSE_FORMATION, new LoseFormationDetails(f));
+        await f._eventDict.SendEvent(CLEventDict.LOSE_FORMATION, new LoseFormationDetails(f));
         f.Unregister();
         _formations.Remove(f);
     }
@@ -346,7 +346,7 @@ public class StageEntity : GDictionary, CLEventListener
     {
         await _formations.Do(async f =>
         {
-            await f._eventDict.FireEvent(CLEventDict.LOSE_FORMATION, new LoseFormationDetails(f));
+            await f._eventDict.SendEvent(CLEventDict.LOSE_FORMATION, new LoseFormationDetails(f));
             f.Unregister();
         });
         _formations.RemoveAll(f => true);
@@ -363,14 +363,14 @@ public class StageEntity : GDictionary, CLEventListener
     {
         Buff buff = new Buff(this, d._entry);
         buff.Register();
-        await buff._eventDict.FireEvent(CLEventDict.GAIN_BUFF, d);
+        await buff._eventDict.SendEvent(CLEventDict.GAIN_BUFF, d);
         await buff.SetStack(d._initialStack);
         _buffs.Add(buff);
     }
 
     public async Task RemoveBuff(Buff b)
     {
-        await b._eventDict.FireEvent(CLEventDict.LOSE_BUFF, new LoseBuffDetails(b));
+        await b._eventDict.SendEvent(CLEventDict.LOSE_BUFF, new LoseBuffDetails(b));
         b.Unregister();
         _buffs.Remove(b);
     }
@@ -386,7 +386,7 @@ public class StageEntity : GDictionary, CLEventListener
     {
         await _buffs.Do(async b =>
         {
-            await b._eventDict.FireEvent(CLEventDict.LOSE_BUFF, new LoseBuffDetails(b));
+            await b._eventDict.SendEvent(CLEventDict.LOSE_BUFF, new LoseBuffDetails(b));
             b.Unregister();
         });
         _buffs.RemoveAll(pred);

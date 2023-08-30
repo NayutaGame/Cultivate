@@ -69,7 +69,7 @@ public class CLEventDict : Dictionary<int, CLEventElement>
         this[eventId].Remove(listener);
     }
 
-    public async Task FireEvent(int eventId, EventDetails eventDetails)
+    public async Task SendEvent(int eventId, EventDetails eventDetails)
     {
         if (!ContainsKey(eventId))
             return;

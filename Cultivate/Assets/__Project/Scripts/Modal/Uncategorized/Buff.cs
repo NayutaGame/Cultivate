@@ -20,9 +20,9 @@ public class Buff : CLEventListener
     public int Stack => _stack;
     public async Task SetStack(int stack)
     {
-        await _eventDict.FireEvent(CLEventDict.STACK_WILL_CHANGE, new BuffStackChangeDetails(_stack, stack));
+        await _eventDict.SendEvent(CLEventDict.STACK_WILL_CHANGE, new BuffStackChangeDetails(_stack, stack));
         _stack = stack;
-        await _eventDict.FireEvent(CLEventDict.STACK_DID_CHANGE, new BuffStackChangeDetails(_stack, stack));
+        await _eventDict.SendEvent(CLEventDict.STACK_DID_CHANGE, new BuffStackChangeDetails(_stack, stack));
 
         if(_stack <= 0)
             await _owner.RemoveBuff(this);
