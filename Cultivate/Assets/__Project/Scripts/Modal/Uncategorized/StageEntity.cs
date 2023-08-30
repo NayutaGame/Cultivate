@@ -243,10 +243,10 @@ public class StageEntity : GDictionary
         SelfDamageRecord = 0;
         HealedRecord = 0;
 
-        _env._eventDict.AddCallback(CLEventDict.DID_BUFF, 0, HighestManaRecorder);
-        _env._eventDict.AddCallback(CLEventDict.DID_BUFF, 0, GainedEvadeRecorder);
-        _env._eventDict.AddCallback(CLEventDict.DID_BUFF, 0, GainedBurningRecorder);
-        _env._eventDict.AddCallback(CLEventDict.START_TURN, 0, DefaultStartTurn);
+        _env._eventDict.Register(CLEventDict.DID_BUFF, 0, HighestManaRecorder);
+        _env._eventDict.Register(CLEventDict.DID_BUFF, 0, GainedEvadeRecorder);
+        _env._eventDict.Register(CLEventDict.DID_BUFF, 0, GainedBurningRecorder);
+        _env._eventDict.Register(CLEventDict.START_TURN, 0, DefaultStartTurn);
 
         MingYuan = _runEntity.MingYuan.Clone();
         MaxHp = _runEntity.GetFinalHealth();
@@ -268,10 +268,10 @@ public class StageEntity : GDictionary
         RemoveAllFormations().GetAwaiter().GetResult();
         RemoveAllBuffs().GetAwaiter().GetResult();
 
-        _env._eventDict.RemoveCallback(CLEventDict.DID_BUFF, HighestManaRecorder);
-        _env._eventDict.RemoveCallback(CLEventDict.DID_BUFF, GainedEvadeRecorder);
-        _env._eventDict.RemoveCallback(CLEventDict.DID_BUFF, GainedBurningRecorder);
-        _env._eventDict.RemoveCallback(CLEventDict.START_TURN, DefaultStartTurn);
+        _env._eventDict.Unregister(CLEventDict.DID_BUFF, HighestManaRecorder);
+        _env._eventDict.Unregister(CLEventDict.DID_BUFF, GainedEvadeRecorder);
+        _env._eventDict.Unregister(CLEventDict.DID_BUFF, GainedBurningRecorder);
+        _env._eventDict.Unregister(CLEventDict.START_TURN, DefaultStartTurn);
     }
 
     public void WriteEffect()

@@ -125,88 +125,89 @@ public class NodeCategory : Category<NodeEntry>
 
             // 复杂事件
 
-            new AdventureNodeEntry("山木", "山木",
-                create: runNode =>
-                {
-                    int trial = 0;
-                    int rage = RandomManager.Range(0, 7);
-
-                    DialogPanelDescriptor A = new("一位老者做在石头上向周围人传教，虚己以游世，其孰能害之。说的是，只要你不把别人当个人，别人就不会引起你生气。你突然想逗他一下。", "朝他作鬼脸", "戳他一下");
-
-                    DialogPanelDescriptor B1 = new("他看起来有点生气了。", "朝他作鬼脸", "戳他一下");
-                    DialogPanelDescriptor B2 = new("他看起来非常生气了。", "朝他作鬼脸", "戳他一下");
-
-                    DialogPanelDescriptor D = new("你上去为自已的恶作剧道歉，他说还好，不会放在心上，这位学子应该学到了什么。\n\n获得50金");
-                    DialogPanelDescriptor E = new("你上去为自已的恶作剧道歉，他喘了一口气，随即嘻笑开颜向大家解释道，这就是我刚才说的，不要随便生气。\n\n获得200金");
-                    DialogPanelDescriptor F = new("你刚想上去为自己的恶作剧道歉。只见他不掩饰自己的怒火：“岂有此理啊，你有完没完啊！”你只能赶紧跑了。");
-
-                    D._reward = new ResourceRewardDescriptor(xiuWei: 50);
-                    E._reward = new ResourceRewardDescriptor(xiuWei: 200);
-
-                    PanelDescriptor SelectA(DialogOption option)
-                    {
-                        trial += 1;
-                        rage += RandomManager.Range(0, 4);
-
-                        if (trial < 2) {
-                            return rage <= 5 ? B1 : B2;
-                        } else if (rage <= 7) {
-                            return D;
-                        } else if (rage <= 10) {
-                            return E;
-                        } else {
-                            return F;
-                        }
-                    }
-                    PanelDescriptor SelectB(DialogOption option)
-                    {
-                        trial += 1;
-                        rage += RandomManager.Range(4, 7);
-
-                        if (trial < 2) {
-                            return rage <= 5 ? B1 : B2;
-                        } else if (rage <= 7) {
-                            return D;
-                        } else if (rage <= 10) {
-                            return E;
-                        } else {
-                            return F;
-                        }
-                    }
-
-                    A[0]._select = SelectA;
-                    A[1]._select = SelectB;
-                    B1[0]._select = SelectA;
-                    B1[1]._select = SelectB;
-                    B2[0]._select = SelectA;
-                    B2[1]._select = SelectB;
-
-                    runNode.ChangePanel(A);
-                }),
-            //
-            // new AdventureNodeEntry("赤壁赋", "赤壁赋",
+            // new AdventureNodeEntry("山木", "山木",
             //     create: runNode =>
             //     {
-            //         DialogPanelDescriptor A = new("你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
-            //             "赞同月亮是变化的",
-            //             "赞同月亮是不变的",
-            //             "变得不是月亮，而是人");
+            //         int trial = 0;
+            //         int rage = RandomManager.Range(0, 7);
             //
-            //         DialogPanelDescriptor B = new("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n\n只见第一个人非常赞同你的观点，给了你一些东西。");
-            //         DialogPanelDescriptor C = new("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n\n只见第二个人非常赞同你的观点，给了你一些东西。");
-            //         DialogPanelDescriptor D = new("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n\n你发现他们还剩下了一些额外的东西。");
+            //         DialogPanelDescriptor A = new("一位老者做在石头上向周围人传教，虚己以游世，其孰能害之。说的是，只要你不把别人当个人，别人就不会引起你生气。你突然想逗他一下。", "朝他作鬼脸", "戳他一下");
             //
-            //         A[0]._select = option => B;
-            //         A[1]._select = option => C;
-            //         A[2]._select = option => D;
-            //         B[0]._select = option => null; // 加一张牌
-            //         C[0]._select = option => null; // 加一张牌
-            //         D[0]._select = option => null; // 加一张随机零件
+            //         DialogPanelDescriptor B1 = new("他看起来有点生气了。", "朝他作鬼脸", "戳他一下");
+            //         DialogPanelDescriptor B2 = new("他看起来非常生气了。", "朝他作鬼脸", "戳他一下");
+            //
+            //         DialogPanelDescriptor D = new("你上去为自已的恶作剧道歉，他说还好，不会放在心上，这位学子应该学到了什么。\n\n获得50金");
+            //         DialogPanelDescriptor E = new("你上去为自已的恶作剧道歉，他喘了一口气，随即嘻笑开颜向大家解释道，这就是我刚才说的，不要随便生气。\n\n获得200金");
+            //         DialogPanelDescriptor F = new("你刚想上去为自己的恶作剧道歉。只见他不掩饰自己的怒火：“岂有此理啊，你有完没完啊！”你只能赶紧跑了。");
+            //
+            //         D._reward = new ResourceRewardDescriptor(xiuWei: 50);
+            //         E._reward = new ResourceRewardDescriptor(xiuWei: 200);
+            //
+            //         PanelDescriptor SelectA(DialogOption option)
+            //         {
+            //             trial += 1;
+            //             rage += RandomManager.Range(0, 4);
+            //
+            //             if (trial < 2) {
+            //                 return rage <= 5 ? B1 : B2;
+            //             } else if (rage <= 7) {
+            //                 return D;
+            //             } else if (rage <= 10) {
+            //                 return E;
+            //             } else {
+            //                 return F;
+            //             }
+            //         }
+            //         PanelDescriptor SelectB(DialogOption option)
+            //         {
+            //             trial += 1;
+            //             rage += RandomManager.Range(4, 7);
+            //
+            //             if (trial < 2) {
+            //                 return rage <= 5 ? B1 : B2;
+            //             } else if (rage <= 7) {
+            //                 return D;
+            //             } else if (rage <= 10) {
+            //                 return E;
+            //             } else {
+            //                 return F;
+            //             }
+            //         }
+            //
+            //         A[0]._select = SelectA;
+            //         A[1]._select = SelectB;
+            //         B1[0]._select = SelectA;
+            //         B1[1]._select = SelectB;
+            //         B2[0]._select = SelectA;
+            //         B2[1]._select = SelectB;
             //
             //         runNode.ChangePanel(A);
             //     }),
             //
-            // new AdventureNodeEntry("天下", "天下",
+            new AdventureNodeEntry("赤壁赋", "赤壁赋",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
+                        "赞同月亮是变化的",
+                        "赞同月亮是不变的",
+                        "变得不是月亮，而是人");
+
+                    DialogPanelDescriptor B = new("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。\n\n得到《一念》");
+                    DialogPanelDescriptor C = new("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。\n\n得到《无量劫》");
+                    DialogPanelDescriptor D = new("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。\n\n得到");
+
+                    A[0]._select = option => B;
+                    A[1]._select = option => C;
+                    A[2]._select = option => D;
+
+                    // B._reward = new AddSkillRewardDescriptor("一念", jingJie : runNode.JingJie);
+                    //
+                    // A._reward = new DrawSkillRewardDescriptor()
+
+                    runNode.ChangePanel(A);
+                }),
+            //
+            // new AdventureNodeEntry("论无穷", "论无穷",
             //     create: runNode =>
             //     {
             //         DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？\n\n我跑步很快，如果有人跑步比我还快的话，只要他推着载我的车，我在车里跑，速度就比他还快，只要一直有人速度比我快，我的速度就是无穷的。\n\n我有一个木桩，我每天砍一半，过一万年也砍不完，这个叫做无穷。\n\n我养了一条蛇，他每天吃自己的尾巴，然后又能长出来新的蛇身，永远吃不完，这个叫做无穷。",
@@ -238,16 +239,16 @@ public class NodeCategory : Category<NodeEntry>
             //         DialogPanelDescriptor B1 = new("感谢你这么夸我，但是现在我也没有钱给你。", "时间一下过了60年");
             //         DialogPanelDescriptor C1 = new("先生谬论不可再提，你看那胡人会因为我们不锻造兵器，充实军备而不来侵略我们么？", "时间一下过了60年");
             //
-            //         DialogPanelDescriptor B2 = new("当年的少年已经成为了宰相。见到了你，发现你的容貌60年没有发生变化，察觉你是仙人，于是说道，感谢仙人提拔。给了你一大笔钱。");
-            //         DialogPanelDescriptor C2 = new("当年的少年已经成为了宰相。见到了你，完全没有印象，只道是某个江湖中人来攀亲道故，于是叫下人给了你点盘缠打发了。");
+            //         DialogPanelDescriptor B2 = new("当年的少年已经成为了宰相。见到了你，发现你的容貌60年没有发生变化，察觉你是仙人，于是说道，感谢仙人提拔。叫人给了你收藏的宝物。\n\n得到1机关牌");
+            //         DialogPanelDescriptor C2 = new("当年的少年已经成为了宰相。见到了你，完全没有印象，只道是某个江湖中人来攀亲道故，于是叫下人给了你点盘缠打发了。\n\n得到50金");
             //
             //         DialogPanelDescriptor D = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你正向追上他说点什么，却被一颗小石子绊倒，起身已经不见那人踪影。于是道：“罢了罢了，缘分未到。”", "时间一下过了60年");
             //         DialogPanelDescriptor D2 = new("你又见到了当年的少年。现在他已经成为了宰相。你想着对他说些什么：\n\n成名要趁早，宰相一生过得荣华富贵。。。\n\n你看这些树，长了果子的树枝遭人摧残而早死，木质良好的被人砍去做成船了，就这棵无用的树才活得长久。哪怕功名已成恐怕也是路途险阻。",
             //             "用第一个想法",
             //             "用第二个想法");
             //
-            //         DialogPanelDescriptor E = new("只见你话还没说完，宰相就摆手示意你离开。叫下人给了你点盘缠将你打发了。");
-            //         DialogPanelDescriptor F = new("宰相回复到，先生说的属实，若是我早点知道了这些道理，也不至于一生过的如此跌宕起伏。叫人给了你一大笔钱。");
+            //         DialogPanelDescriptor E = new("只见你话还没说完，宰相就摆手示意你离开。叫下人给了你点盘缠将你打发了。\n\n得到50金");
+            //         DialogPanelDescriptor F = new("宰相回复到，先生说的属实，若是我早点知道了这些道理，也不至于一生过的如此跌宕起伏。叫人给了你收藏的宝物。\n\n得到1机关牌");
             //
             //         A[0]._select = option => B1;
             //         A[1]._select = option => C1;
@@ -261,7 +262,7 @@ public class NodeCategory : Category<NodeEntry>
             //         runNode.ChangePanel(isCatch ? A : D);
             //     }),
             //
-            // new AdventureNodeEntry("许愿", "许愿",
+            // new AdventureNodeEntry("神灯精灵", "神灯精灵",
             //     create: runNode =>
             //     {
             //         DialogPanelDescriptor A = new("你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
@@ -407,20 +408,17 @@ public class NodeCategory : Category<NodeEntry>
             //         B[0]._select = option => B1;
             //         C[0]._select = option => C1;
             //
-            //         // B1._reward = ; // 卡牌，对手流失3灵气
-            //         // C1._reward = ; // 卡牌，获得2集中
-            //
             //         runNode.ChangePanel(A);
             //     }),
             //
-            // new AdventureNodeEntry("感悟五行相生", "感悟五行相生",
+            // new AdventureNodeEntry("天界树", "天界树",
             //     create: runNode =>
             //     {
-            //         DialogPanelDescriptor A = new("你知道自己在梦境里，千界树将你拉入了他的梦境，梦境中的东西都非常真实。",
+            //         DialogPanelDescriptor A = new("你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
             //             "吃树上的果子",
             //             "尝试感悟五行相生的规律");
             //
-            //         DialogPanelDescriptor B = new("久闻千界树，3000年才能开花结果，醒来之后，身上所有伤都不见了。命元恢复至满");
+            //         DialogPanelDescriptor B = new("久闻天界树，3000年才能开花结果，醒来之后，身上所有伤都不见了。命元恢复至满");
             //         DialogPanelDescriptor C = new("你看到了，冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，出现了火，最终归于尘土。感悟了五行相生，所有五行牌都被相生的元素替换了");
             //
             //         A[0]._select = option => B;
@@ -461,7 +459,6 @@ public class NodeCategory : Category<NodeEntry>
             //         };
             //
             //         // B1._reward = ; // 命元回满
-            //         // C1._reward = ; // 卡牌，获得2集中
             //
             //         runNode.ChangePanel(A);
             //     }),
@@ -491,9 +488,6 @@ public class NodeCategory : Category<NodeEntry>
             //         C[0]._select = option => E;
             //         D[0]._select = option => E;
             //
-            //         // B1._reward = ; // 卡牌，对手流失3灵气
-            //         // C1._reward = ; // 卡牌，获得2集中
-            //
             //         runNode.ChangePanel(A);
             //     }),
             //
@@ -511,9 +505,6 @@ public class NodeCategory : Category<NodeEntry>
             //         A[0]._select = option => B;
             //         A[1]._select = option => C;
             //
-            //         // B1._reward = ; // 卡牌，对手流失3灵气
-            //         // C1._reward = ; // 卡牌，获得2集中
-            //
             //         runNode.ChangePanel(A);
             //     }),
             //
@@ -522,7 +513,7 @@ public class NodeCategory : Category<NodeEntry>
             //     {
             //         DialogPanelDescriptor A = new("你近日练功，隐约感到一个瓶颈，心里略有不快。想着，如果全力一博，说不定就多一分机会窥见大道的真貌。",
             //             "欲速则不达",
-            //             "大力出奇迹（需要30%生命上限）");
+            //             "大力出奇迹（消耗30生命上限）");
             //
             //         DialogPanelDescriptor B = new("哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获", "得到一张牌");
             //         DialogPanelDescriptor C = new("随着喷出一大口鲜血，你回过神来，原来自己还活着，感谢大道没把自己留在那边。", "得到五张牌");
@@ -715,7 +706,7 @@ public class NodeCategory : Category<NodeEntry>
             //                                       "\n两个月时间逐渐过去，周围的人已经不来这个桥了。那人竟然以肉眼可见的速度，每天变老，但是还是一口咬定冬季不存在。" +
             //                                       "\n到了第三个月，你们旁边已经修好了一个新的桥，从新桥上过去的人都已异样的眼光看着你们。那人已经连站立都感到困难了。" +
             //                                       "\n就快要到冬天了，到时候就能证明冬季了。你又一次像那人看去。那人已经老的站立都困难了。你终于发现那人是夏虫所化。一生始于春而终于秋。你刚想松口。那人先于你出口说，你赢了，你可以过桥了，然后坐在一颗树下，永远的合上了眼。" +
-            //                                       "\n你在此地过了三个月，虽然修为上没有太大的精进，但是休息了这么长时间，所有伤势都已消失不见。命元+10。");
+            //                                       "\n你在此地过了三个月，虽然修为上没有太大的精进，但是休息了这么长时间，所有伤势都已消失不见。命元+1。");
             //
             //         A[0]._select = option => B;
             //         A[1]._select = option => C;
@@ -723,7 +714,7 @@ public class NodeCategory : Category<NodeEntry>
             //         runNode.ChangePanel(A);
             //     }),
             //
-            // new AdventureNodeEntry("拍立得", "拍立得",
+            // new AdventureNodeEntry("照相机", "照相机",
             //     create: runNode =>
             //     {
             //         DialogPanelDescriptor A = new("到了桃花盛开的季节，你也来欣赏桃花。见到一名机关师，向人们介绍自己最近的新发明。按一下按钮，这个机关就可以将眼前美景永远记录下来。" +
@@ -734,12 +725,12 @@ public class NodeCategory : Category<NodeEntry>
             //             "拿走略有瑕疵的那一张",
             //             "先生曾听过，人生苦短，及时行乐");
             //
-            //         DialogPanelDescriptor B = new("你把这张相片放在了挂在了你的大堂里，寻求你帮助的人看到你俊美的相貌，愿意以更高价钱请你出力。金+200。");
-            //         DialogPanelDescriptor C = new("你把好的相片留给了机关师，这样他日后看到相片的时候，就会感到这段回忆多一分美好。这样想到，你的心情变好了。生命上限+20");
+            //         DialogPanelDescriptor B = new("你把这张相片放在了挂在了你的大堂里，寻求你帮助的人看到你俊美的相貌，愿意以更高价钱请你出力。金+100。");
+            //         DialogPanelDescriptor C = new("你把好的相片留给了机关师，这样他日后看到相片的时候，就会感到这段回忆多一分美好。这样想到，你的心情变好了。生命上限+10");
             //         DialogPanelDescriptor D = new("你对那人说：”相必先生也知道，美好的时光总是短暂的。这个机关，可以将美好的时光记录下来，之后就可以看着照片反复回忆。" +
             //                                       "但真的如此做的话，处于桃林中的我们也会因为知道相片可以反复回忆，反倒不去珍惜此时此刻的美景了。这难道不是本末倒置了么？“" +
             //                                       "\n\n那人稍微惊讶于你的说法。然后感叹道：“先生教训的在理。不应以人生长而感到美好，也不应以短而感到苦恼。这个机关已经于我无用，这便赠与先生吧。”" +
-            //                                       "你收下了这个机关，但是并不会维护。与其看着它坏掉，不如将其中有用的零件取出。\n\n得到随机零件。");
+            //                                       "你收下了这个机关，但是并不会维护。与其看着它坏掉，不如将其中有用的零件取出。\n\n得到1机关");
             //
             //         A[0]._select = option => B;
             //         A[1]._select = option => C;
@@ -748,7 +739,7 @@ public class NodeCategory : Category<NodeEntry>
             //         runNode.ChangePanel(A);
             //     }),
             //
-            // new AdventureNodeEntry("可以把你的尺子丢了么", "可以把你的尺子丢了么",
+            // new AdventureNodeEntry("丢尺子", "丢尺子",
             //     create: runNode =>
             //     {
             //         DialogPanelDescriptor A = new("嘀嘀嘀。灵信响了，你看了一下。是之前委托你布阵的人发的消息。" +
@@ -758,7 +749,7 @@ public class NodeCategory : Category<NodeEntry>
             //             "你多虑了，长度稍微差一点点没关系的。",
             //             "可以把你的尺子丢了么？");
             //
-            //         DialogPanelDescriptor B = new("嘀嘀嘀。灵信响了，又是两天前那个管家。" +
+            //         DialogPanelDescriptor B = new("嘀嘀嘀。灵信响了，又是两天前那  个管家。" +
             //                                       "\n管家：大人，我用尺子比了一下，有一笔稍微有些不直，会不会影响到阵法的效果？",
             //             "你多虑了，笔划不需要完全直的。",
             //             "可以把你的尺子丢了么？");

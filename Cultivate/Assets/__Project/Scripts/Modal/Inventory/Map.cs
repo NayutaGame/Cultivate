@@ -162,12 +162,12 @@ public class Map : GDictionary
 
         _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
         {
-            { JingJie.LianQi   , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
-            { JingJie.ZhuJi    , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
-            { JingJie.JinDan   , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
-            { JingJie.YuanYing , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
-            { JingJie.HuaShen  , new[] { _a, _r, _b, _b, _b, _r, _b, _a, _r, _b } },
-            { JingJie.FanXu    , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _r, _b } },
+            { JingJie.LianQi   , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
+            { JingJie.ZhuJi    , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
+            { JingJie.JinDan   , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
+            { JingJie.YuanYing , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
+            { JingJie.HuaShen  , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
+            { JingJie.FanXu    , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
         };
     }
 

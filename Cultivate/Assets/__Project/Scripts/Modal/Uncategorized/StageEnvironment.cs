@@ -456,7 +456,7 @@ public class StageEnvironment : GDictionary
         await _eventDict.FireEvent(CLEventDict.START_STAGE, new StageDetails(hero));
 
         hero.ManaShortageEvent += WriteManaShortage;
-        _eventDict.AddCallback(CLEventDict.END_ROUND, 0, StopWriting);
+        _eventDict.Register(CLEventDict.END_ROUND, 0, StopWriting);
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
@@ -466,7 +466,7 @@ public class StageEnvironment : GDictionary
         }
 
         hero.ManaShortageEvent -= WriteManaShortage;
-        _eventDict.RemoveCallback(CLEventDict.END_ROUND, StopWriting);
+        _eventDict.Unregister(CLEventDict.END_ROUND, StopWriting);
 
         return manaShortageBrief;
     }

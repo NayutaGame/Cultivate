@@ -5,6 +5,5 @@ using UnityEngine;
 public abstract class RewardDescriptor
 {
     public abstract void Claim();
-
     public abstract string GetDescription();
 }

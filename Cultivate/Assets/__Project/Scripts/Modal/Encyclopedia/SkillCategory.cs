@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using CLLibrary;
+using UnityEditor;
 
 public class SkillCategory : Category<SkillEntry>
 {
@@ -15,6 +16,27 @@ public class SkillCategory : Category<SkillEntry>
             new("聚气术", JingJie.LianQi, "灵气+1", withinPool: false,
                 execute: (entity, skill, recursive) =>
                     entity.BuffSelfProcedure("灵气")),
+
+            // 事件牌
+
+            new("一念", JingJie.ZhuJi, new SkillDescription((j, dj) => ($"消耗{8 - dj}生命\n") + (j <= JingJie.ZhuJi ? "二动" : "三动")),
+                skillTypeComposite: SkillType.ErDong, withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.LoseHealthProcedure(8 - skill.Dj);
+                    if (skill.GetJingJie() <= JingJie.ZhuJi)
+                        caster.Swift = true;
+                    else
+                        caster.UltraSwift = true;
+                }),
+
+            new("无量劫", JingJie.ZhuJi, new SkillDescription((j, dj) => $"吟唱3\n治疗{18 + dj * 6}"),
+                skillTypeComposite: SkillType.LingQi | SkillType.SunHao, withinPool: false, channelTimeEvaluator: 3,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.HealProcedure(18 + skill.Dj * 6);
+                }),
+
 
             // 机关牌
 

@@ -49,7 +49,7 @@ public class CLEventDict : Dictionary<int, CLEvent<StageEventDetails>>
     public static readonly int DID_CHANNEL        = 40;
     public static readonly int COUNT              = 41;
 
-    public void AddCallback(int eventId, int order, Func<StageEventDetails, Task> callback)
+    public void Register(int eventId, int order, Func<StageEventDetails, Task> callback)
     {
         if (!ContainsKey(eventId))
             this[eventId] = new();
@@ -57,7 +57,7 @@ public class CLEventDict : Dictionary<int, CLEvent<StageEventDetails>>
         this[eventId].Add(order, callback);
     }
 
-    public void RemoveCallback(int eventId, Func<StageEventDetails, Task> callback)
+    public void Unregister(int eventId, Func<StageEventDetails, Task> callback)
     {
         this[eventId].Remove(callback);
     }

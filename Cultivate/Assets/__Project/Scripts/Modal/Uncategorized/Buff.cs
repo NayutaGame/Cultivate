@@ -63,11 +63,11 @@ public class Buff : StageEventListener
 
             if (eventCapture is StageEnvironmentEventCapture)
             {
-                _owner.Env._eventDict.AddCallback(eventId, eventCapture.Order, _eventPropagatorDict[eventId]);
+                _owner.Env._eventDict.Register(eventId, eventCapture.Order, _eventPropagatorDict[eventId]);
             }
             else if (eventCapture is StageListenerEventCapture)
             {
-                _eventDict.AddCallback(eventId, eventCapture.Order, _eventPropagatorDict[eventId]);
+                _eventDict.Register(eventId, eventCapture.Order, _eventPropagatorDict[eventId]);
             }
         }
     }
@@ -80,11 +80,11 @@ public class Buff : StageEventListener
 
             if (eventCapture is StageEnvironmentEventCapture)
             {
-                _owner.Env._eventDict.RemoveCallback(eventId, _eventPropagatorDict[eventId]);
+                _owner.Env._eventDict.Unregister(eventId, _eventPropagatorDict[eventId]);
             }
             else if (eventCapture is StageListenerEventCapture)
             {
-                _eventDict.RemoveCallback(eventId, _eventPropagatorDict[eventId]);
+                _eventDict.Unregister(eventId, _eventPropagatorDict[eventId]);
             }
         }
     }

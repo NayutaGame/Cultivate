@@ -126,6 +126,28 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     #endregion
 
+    #region SkillPool
+
+    // public bool TryDrawSkill(out RunSkill skill, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
+    //     => TryDrawSkill(out RunSkill skill, new DrawSkillDetails(pred, wuXing, jingJie));
+    //
+    // public bool TryDrawSkills(out List<RunSkill> skills, Predicate<SkillEntry> pred = null, WuXing? wuXing = null,
+    //     JingJie? jingJie = null, int count = 1, bool distinct = true, bool consume = true)
+    //     => TryDrawSkills(out List<RunSkill> skills, new DrawSkillsDetails(pred, wuXing, jingJie, count, distinct, consume));
+    //
+    // public bool TryDrawSkill()
+    // public bool TryDrawSkills(DrawSkillDescriptor d)
+    // {
+    //
+    // }
+    //
+    // public void AddSkill()
+    // {
+    //
+    // }
+
+    #endregion
+
     public bool CanAffordTech(IndexPath indexPath)
     {
         RunTech runTech = DataManager.Get<RunTech>(indexPath);
