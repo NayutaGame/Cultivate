@@ -11,12 +11,6 @@ using Unity.Mathematics;
 
 public class StageEntity : GDictionary, CLEventListener
 {
-    public event Func<int, Task> ManaShortageEvent;
-    public async Task ManaShortage(int p)
-    {
-        if (ManaShortageEvent != null) await ManaShortageEvent(p);
-    }
-
     public MingYuan MingYuan;
 
     private int _hp;
@@ -112,7 +106,7 @@ public class StageEntity : GDictionary, CLEventListener
         _manaShortage = !manaSufficient;
         if(_manaShortage)
         {
-            await ManaShortage(_p);
+            await ManaShortageProcedure(_p, skill);
             await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
             await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, null));
             return;
@@ -509,6 +503,9 @@ public class StageEntity : GDictionary, CLEventListener
 
     public async Task FormationProcedure(FormationEntry formationEntry, bool recursive = true)
         => await _env.FormationProcedure(this, formationEntry, recursive);
+
+    public async Task ManaShortageProcedure(int position, StageSkill skill)
+        => await _env.ManaShortageProcedure(this, position, skill);
 
     #endregion
 }

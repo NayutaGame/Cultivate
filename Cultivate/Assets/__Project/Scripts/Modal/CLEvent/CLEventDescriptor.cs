@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 public class CLEventDescriptor
 {
-    private int _senderId;
-    public int SenderId => _senderId;
+    private int _listenerId;
+    public int ListenerId => _listenerId;
 
     private int _eventId;
     public int EventId => _eventId;
@@ -16,9 +16,9 @@ public class CLEventDescriptor
     private Func<CLEventListener, EventDetails, Task> _func;
     public async Task Invoke(CLEventListener listener, EventDetails eventDetails) => await _func(listener, eventDetails);
 
-    public CLEventDescriptor(int senderId, int eventId, int order, Func<CLEventListener, EventDetails, Task> func)
+    public CLEventDescriptor(int listenerId, int eventId, int order, Func<CLEventListener, EventDetails, Task> func)
     {
-        _senderId = senderId;
+        _listenerId = listenerId;
         _eventId = eventId;
         _order = order;
         _func = func;

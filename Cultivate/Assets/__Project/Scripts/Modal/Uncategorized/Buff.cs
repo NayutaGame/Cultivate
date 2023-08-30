@@ -57,7 +57,7 @@ public class Buff : CLEventListener
         foreach (int eventId in _entry._eventDescriptorDict.Keys)
         {
             CLEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
-            int senderId = eventDescriptor.SenderId;
+            int senderId = eventDescriptor.ListenerId;
 
             if (senderId == CLEventDict.STAGE_ENVIRONMENT)
                 _owner.Env._eventDict.Register(this, eventDescriptor);
@@ -75,7 +75,7 @@ public class Buff : CLEventListener
         foreach (int eventId in _entry._eventDescriptorDict.Keys)
         {
             CLEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
-            int senderId = eventDescriptor.SenderId;
+            int senderId = eventDescriptor.ListenerId;
 
             if (senderId == CLEventDict.STAGE_ENVIRONMENT)
                 _owner.Env._eventDict.Unregister(this, eventDescriptor);

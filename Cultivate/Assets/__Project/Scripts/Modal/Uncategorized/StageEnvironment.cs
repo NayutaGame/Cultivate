@@ -294,6 +294,18 @@ public class StageEnvironment : GDictionary, CLEventListener
         await _eventDict.SendEvent(CLEventDict.DID_DISPEL, d);
     }
 
+    public async Task ManaShortageProcedure(StageEntity owner, int position, StageSkill skill)
+        => await ManaShortageProcedure(new ManaShortageDetails(owner, position, skill));
+    public async Task ManaShortageProcedure(ManaShortageDetails d)
+    {
+        await _eventDict.SendEvent(CLEventDict.WILL_MANA_SHORTAGE, d);
+
+        if (d.Cancel)
+            return;
+
+        await _eventDict.SendEvent(CLEventDict.DID_MANA_SHORTAGE, d);
+    }
+
     public async Task ExhaustProcedure(StageEntity owner, StageSkill skill)
         => await ExhaustProcedure(new ExhaustDetails(owner, skill));
     public async Task ExhaustProcedure(ExhaustDetails d)
@@ -435,12 +447,14 @@ public class StageEnvironment : GDictionary, CLEventListener
         bool[] manaShortageBrief = new bool[RunManager.SkillLimit];
         bool stopWriting = false;
 
-        async Task WriteManaShortage(int p)
-        {
-            if (stopWriting)
-                return;
-            manaShortageBrief[p + RunManager.SkillStartFromJingJie[_entities[0].RunEntity.GetJingJie()]] = true;
-        }
+        CLEventDescriptor writeManaShortageEventDescriptor = new CLEventDescriptor(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_MANA_SHORTAGE, 0,
+            async (listener, d) =>
+            {
+                if (stopWriting)
+                    return;
+                ManaShortageDetails manaShortageDetails = (ManaShortageDetails)d;
+                manaShortageBrief[manaShortageDetails.Position + RunManager.SkillStartFromJingJie[_entities[0].RunEntity.GetJingJie()]] = true;
+            });
 
         CLEventDescriptor stopWriteEventDescriptor = new CLEventDescriptor(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.END_ROUND, 0,
             async (listener, d) => stopWriting = true);
@@ -453,7 +467,7 @@ public class StageEnvironment : GDictionary, CLEventListener
         await MingYuanPenaltyProcedure();
         await _eventDict.SendEvent(CLEventDict.START_STAGE, new StageDetails(hero));
 
-        hero.ManaShortageEvent += WriteManaShortage;
+        _eventDict.Register(this, writeManaShortageEventDescriptor);
         _eventDict.Register(this, stopWriteEventDescriptor);
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
@@ -463,7 +477,7 @@ public class StageEnvironment : GDictionary, CLEventListener
                 break;
         }
 
-        hero.ManaShortageEvent -= WriteManaShortage;
+        _eventDict.Unregister(this, writeManaShortageEventDescriptor);
         _eventDict.Unregister(this, stopWriteEventDescriptor);
 
         return manaShortageBrief;
