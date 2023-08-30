@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class ArmorGainDetails : StageEventDetails
+public class ArmorGainDetails : EventDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

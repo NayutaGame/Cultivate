@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoseBuffDetails : StageEventDetails
+public class LoseBuffDetails : EventDetails
 {
     public Buff _buff;
 

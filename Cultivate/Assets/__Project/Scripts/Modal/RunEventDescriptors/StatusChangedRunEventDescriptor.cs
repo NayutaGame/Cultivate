@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatusChangedEventDescriptor : EventDescriptor
+public class StatusChangedRunEventDescriptor : RunEventDescriptor
 {
     public Func<StatusChangedDetails, RunTech, bool> _cond;
 
@@ -17,7 +17,7 @@ public class StatusChangedEventDescriptor : EventDescriptor
         RunManager.Instance.StatusChangedEvent -= runTech.StatusChanged;
     }
 
-    public StatusChangedEventDescriptor(string description, Func<StatusChangedDetails, RunTech, bool> cond) : base(description)
+    public StatusChangedRunEventDescriptor(string description, Func<StatusChangedDetails, RunTech, bool> cond) : base(description)
     {
         _cond = cond;
     }

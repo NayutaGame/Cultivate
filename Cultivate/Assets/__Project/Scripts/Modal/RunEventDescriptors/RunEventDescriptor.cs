@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EventDescriptor
+public abstract class RunEventDescriptor
 {
     private string _description;
     public string Description => _description;
 
-    protected EventDescriptor(string description)
+    protected RunEventDescriptor(string description)
     {
         _description = description;
     }

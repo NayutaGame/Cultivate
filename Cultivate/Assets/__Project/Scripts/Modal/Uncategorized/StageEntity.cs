@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using UnityEngine;
 using CLLibrary;
 using Unity.Mathematics;
 
-public class StageEntity : GDictionary
+public class StageEntity : GDictionary, CLEventListener
 {
     public event Func<int, Task> ManaShortageEvent;
     public async Task ManaShortage(int p)
@@ -218,6 +219,8 @@ public class StageEntity : GDictionary
     private StageEnvironment _env;
     public StageEnvironment Env => _env;
 
+    private CLEventDescriptor[] _eventDescriptors;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public StageEntity(StageEnvironment env, RunEntity runEntity, int index)
@@ -243,10 +246,16 @@ public class StageEntity : GDictionary
         SelfDamageRecord = 0;
         HealedRecord = 0;
 
-        _env._eventDict.Register(CLEventDict.DID_BUFF, 0, HighestManaRecorder);
-        _env._eventDict.Register(CLEventDict.DID_BUFF, 0, GainedEvadeRecorder);
-        _env._eventDict.Register(CLEventDict.DID_BUFF, 0, GainedBurningRecorder);
-        _env._eventDict.Register(CLEventDict.START_TURN, 0, DefaultStartTurn);
+        _eventDescriptors = new CLEventDescriptor[]
+        {
+            new(CLEventDict.STAGE_ENTITY, CLEventDict.DID_BUFF, 0, HighestManaRecorder),
+            new(CLEventDict.STAGE_ENTITY, CLEventDict.DID_BUFF, 0, GainedEvadeRecorder),
+            new(CLEventDict.STAGE_ENTITY, CLEventDict.DID_BUFF, 0, GainedBurningRecorder),
+            new(CLEventDict.STAGE_ENTITY, CLEventDict.START_TURN, 0, DefaultStartTurn),
+        };
+
+        foreach (var eventDescriptor in _eventDescriptors)
+            _env._eventDict.Register(this, eventDescriptor);
 
         MingYuan = _runEntity.MingYuan.Clone();
         MaxHp = _runEntity.GetFinalHealth();
@@ -268,10 +277,8 @@ public class StageEntity : GDictionary
         RemoveAllFormations().GetAwaiter().GetResult();
         RemoveAllBuffs().GetAwaiter().GetResult();
 
-        _env._eventDict.Unregister(CLEventDict.DID_BUFF, HighestManaRecorder);
-        _env._eventDict.Unregister(CLEventDict.DID_BUFF, GainedEvadeRecorder);
-        _env._eventDict.Unregister(CLEventDict.DID_BUFF, GainedBurningRecorder);
-        _env._eventDict.Unregister(CLEventDict.START_TURN, DefaultStartTurn);
+        foreach (var eventDescriptor in _eventDescriptors)
+            _env._eventDict.Unregister(this, eventDescriptor);
     }
 
     public void WriteEffect()
@@ -282,9 +289,9 @@ public class StageEntity : GDictionary
         // }
     }
 
-    public async Task<BuffDetails> HighestManaRecorder(StageEventDetails stageEventDetails)
+    public async Task<BuffDetails> HighestManaRecorder(CLEventListener listener, EventDetails eventDetails)
     {
-        BuffDetails d = (BuffDetails)stageEventDetails;
+        BuffDetails d = (BuffDetails)eventDetails;
         if (d._buffEntry.Name != "灵气")
             return d;
 
@@ -292,9 +299,9 @@ public class StageEntity : GDictionary
         return d;
     }
 
-    public async Task<BuffDetails> GainedEvadeRecorder(StageEventDetails stageEventDetails)
+    public async Task<BuffDetails> GainedEvadeRecorder(CLEventListener listener, EventDetails eventDetails)
     {
-        BuffDetails d = (BuffDetails)stageEventDetails;
+        BuffDetails d = (BuffDetails)eventDetails;
         if (d._buffEntry.Name != "闪避")
             return d;
 
@@ -302,9 +309,9 @@ public class StageEntity : GDictionary
         return d;
     }
 
-    public async Task<BuffDetails> GainedBurningRecorder(StageEventDetails stageEventDetails)
+    public async Task<BuffDetails> GainedBurningRecorder(CLEventListener listener, EventDetails eventDetails)
     {
-        BuffDetails d = (BuffDetails)stageEventDetails;
+        BuffDetails d = (BuffDetails)eventDetails;
         if (d._buffEntry.Name != "灼烧")
             return d;
 
@@ -312,7 +319,7 @@ public class StageEntity : GDictionary
         return d;
     }
 
-    protected async Task DefaultStartTurn(StageEventDetails d)
+    protected async Task DefaultStartTurn(CLEventListener listener, EventDetails d)
         => await DesignerEnvironment.DefaultStartTurn(this, d);
 
     #region Formation

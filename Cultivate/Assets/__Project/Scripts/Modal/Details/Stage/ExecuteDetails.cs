@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExecuteDetails : StageEventDetails
+public class ExecuteDetails : EventDetails
 {
     public StageEntity Caster;
     public StageSkill Skill;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChannelDetails : StageEventDetails
+public class ChannelDetails : EventDetails
 {
     public StageSkill _skill;
 

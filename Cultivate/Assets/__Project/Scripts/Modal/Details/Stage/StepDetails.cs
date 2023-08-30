@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class StepDetails : StageEventDetails
+public class StepDetails : EventDetails
 {
     public StageEntity Owner;
     public StageSkill Skill;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DispelDetails : StageEventDetails
+public class DispelDetails : EventDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

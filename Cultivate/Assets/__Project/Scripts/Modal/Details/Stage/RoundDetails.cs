@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoundDetails : StageEventDetails
+public class RoundDetails : EventDetails
 {
     public StageEntity Owner;
 

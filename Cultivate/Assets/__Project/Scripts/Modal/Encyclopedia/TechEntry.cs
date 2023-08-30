@@ -20,15 +20,15 @@ public class TechEntry : Entry
     private TechEntry[] _prerequisites;
     public TechEntry[] Prerequisites => _prerequisites;
 
-    private EventDescriptor _eureka;
-    public EventDescriptor Eureka => _eureka;
+    private RunEventDescriptor _eureka;
+    public RunEventDescriptor Eureka => _eureka;
 
     private RewardDescriptor[] _rewards;
     public RewardDescriptor[] Rewards => _rewards;
 
     public TechEntry(string name, string description, Vector2Int position, int cost,
         string[] prerequisiteNames = null,
-        EventDescriptor eureka = null,
+        RunEventDescriptor eureka = null,
         RewardDescriptor[] rewards = null) : base(name)
     {
         _description = description;

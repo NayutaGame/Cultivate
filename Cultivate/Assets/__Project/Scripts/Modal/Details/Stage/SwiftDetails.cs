@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwiftDetails : StageEventDetails
+public class SwiftDetails : EventDetails
 {
     public StageEntity Owner;
     public bool Swift;

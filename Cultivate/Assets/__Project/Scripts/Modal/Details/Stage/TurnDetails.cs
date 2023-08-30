@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnDetails : StageEventDetails
+public class TurnDetails : EventDetails
 {
     public StageEntity Owner;
     public int SlotIndex;

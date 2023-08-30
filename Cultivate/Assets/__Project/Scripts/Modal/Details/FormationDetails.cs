@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FormationDetails : StageEventDetails
+public class FormationDetails : EventDetails
 {
     public StageEntity Owner;
     public FormationEntry _formation;

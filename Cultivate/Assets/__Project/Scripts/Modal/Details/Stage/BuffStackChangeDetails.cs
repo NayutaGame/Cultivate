@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffStackChangeDetails : StageEventDetails
+public class BuffStackChangeDetails : EventDetails
 {
     public int _oldStack;
     public int _newStack;

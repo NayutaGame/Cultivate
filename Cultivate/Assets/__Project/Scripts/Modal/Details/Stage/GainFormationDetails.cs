@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GainFormationDetails : StageEventDetails
+public class GainFormationDetails : EventDetails
 {
     public FormationEntry _entry;
 

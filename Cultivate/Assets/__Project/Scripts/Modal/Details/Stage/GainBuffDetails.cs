@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GainBuffDetails : StageEventDetails
+public class GainBuffDetails : EventDetails
 {
     public BuffEntry _entry;
     public int _initialStack;

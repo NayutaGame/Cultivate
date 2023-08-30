@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExhaustDetails : StageEventDetails
+public class ExhaustDetails : EventDetails
 {
     public StageEntity Owner;
     public StageSkill Skill;

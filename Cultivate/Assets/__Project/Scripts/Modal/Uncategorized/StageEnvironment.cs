@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
-public class StageEnvironment : GDictionary
+public class StageEnvironment : GDictionary, CLEventListener
 {
     private static readonly int MAX_ACTION_COUNT = 120;
 
@@ -442,10 +442,8 @@ public class StageEnvironment : GDictionary
             manaShortageBrief[p + RunManager.SkillStartFromJingJie[_entities[0].RunEntity.GetJingJie()]] = true;
         }
 
-        async Task StopWriting(StageEventDetails d)
-        {
-            stopWriting = true;
-        }
+        CLEventDescriptor stopWriteEventDescriptor = new CLEventDescriptor(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.END_ROUND, 0,
+            async (listener, d) => stopWriting = true);
 
         StageEntity hero = _entities[0];
 
@@ -456,7 +454,7 @@ public class StageEnvironment : GDictionary
         await _eventDict.FireEvent(CLEventDict.START_STAGE, new StageDetails(hero));
 
         hero.ManaShortageEvent += WriteManaShortage;
-        _eventDict.Register(CLEventDict.END_ROUND, 0, StopWriting);
+        _eventDict.Register(this, stopWriteEventDescriptor);
 
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
         {
@@ -466,7 +464,7 @@ public class StageEnvironment : GDictionary
         }
 
         hero.ManaShortageEvent -= WriteManaShortage;
-        _eventDict.Unregister(CLEventDict.END_ROUND, StopWriting);
+        _eventDict.Unregister(this, stopWriteEventDescriptor);
 
         return manaShortageBrief;
     }

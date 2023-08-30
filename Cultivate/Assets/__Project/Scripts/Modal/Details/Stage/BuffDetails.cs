@@ -1,5 +1,5 @@
 
-public class BuffDetails : StageEventDetails
+public class BuffDetails : EventDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GainSkillEventDescriptor : EventDescriptor
+public class GainSkillRunEventDescriptor : RunEventDescriptor
 {
     public Func<GainSkillDetails, RunTech, bool> _cond;
 
@@ -17,7 +17,7 @@ public class GainSkillEventDescriptor : EventDescriptor
         RunManager.Instance.GainSkillEvent -= runTech.GainSkill;
     }
 
-    public GainSkillEventDescriptor(string description, Func<GainSkillDetails, RunTech, bool> cond) : base(description)
+    public GainSkillRunEventDescriptor(string description, Func<GainSkillDetails, RunTech, bool> cond) : base(description)
     {
         _cond = cond;
     }

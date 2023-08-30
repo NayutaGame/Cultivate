@@ -19,9 +19,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         int countEQ0 = WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] == 0);
                         return countGErequirement == 1 && countEQ0 == 4;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_FORMATION, CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -39,9 +39,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         int countEQ0 = WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] == 0);
                         return countGErequirement == 1 && countEQ0 == 4;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_FORMATION, CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -61,9 +61,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 2;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.DID_DISPEL, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_DISPEL, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             DispelDetails d = (DispelDetails)stageEventDetails;
@@ -85,9 +85,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 2;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.DID_DISPEL, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_DISPEL, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             DispelDetails d = (DispelDetails)stageEventDetails;
@@ -113,9 +113,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 3;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.WILL_BUFF, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.WILL_BUFF, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             BuffDetails d = (BuffDetails)stageEventDetails;
@@ -137,9 +137,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 3;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.WILL_BUFF, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.WILL_BUFF, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             BuffDetails d = (BuffDetails)stageEventDetails;
@@ -165,9 +165,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 4;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.FORMATION_WILL_ADD, -3, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.FORMATION_WILL_ADD, -3, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             FormationDetails d = (FormationDetails)stageEventDetails;
@@ -188,9 +188,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                             WuXing.Traversal.Count(wuXing => args.WuXingCounts[wuXing] >= requirement);
                         return countGErequirement == 5;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_FORMATION, CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -208,7 +208,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.BuffSelfProcedure("永久集中");
                         }),
-                        new StageEnvironmentEventCapture(CLEventDict.FORMATION_WILL_ADD, -2, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.FORMATION_WILL_ADD, -2, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             FormationDetails d = (FormationDetails)stageEventDetails;
@@ -228,9 +228,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.SwiftCount == 0 && entity.GetJingJie() >= JingJie.HuaShen;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_FORMATION, CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -243,9 +243,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.SwiftCount == 0 && entity.GetJingJie() >= JingJie.YuanYing;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageListenerEventCapture(CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_FORMATION, CLEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             GainFormationDetails d = (GainFormationDetails)stageEventDetails;
@@ -262,9 +262,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.SwiftCount >= 6;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -272,7 +272,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.BuffOppoProcedure("跳回合", 2);
                         }),
-                        new StageEnvironmentEventCapture(CLEventDict.START_ROUND, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_ROUND, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             RoundDetails d = (RoundDetails)stageEventDetails;
@@ -286,9 +286,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.SwiftCount >= 5;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -302,9 +302,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.SwiftCount >= 4;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -322,9 +322,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.ExhaustedCount == 0 && entity.GetJingJie() >= JingJie.HuaShen;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.DID_EXHAUST, -1, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_EXHAUST, -1, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             ExhaustDetails d = (ExhaustDetails)stageEventDetails;
@@ -339,9 +339,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.ExhaustedCount == 0 && entity.GetJingJie() >= JingJie.YuanYing;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.DID_EXHAUST, -1, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_EXHAUST, -1, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             ExhaustDetails d = (ExhaustDetails)stageEventDetails;
@@ -359,9 +359,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.NonAttackCount >= 9;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -369,7 +369,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(30);
                         }),
-                        new StageEnvironmentEventCapture(CLEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -383,9 +383,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.NonAttackCount >= 7;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -393,7 +393,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(20);
                         }),
-                        new StageEnvironmentEventCapture(CLEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -407,9 +407,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.NonAttackCount >= 5;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -417,7 +417,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                             await f.Owner.ArmorGainSelfProcedure(10);
                         }),
-                        new StageEnvironmentEventCapture(CLEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             TurnDetails d = (TurnDetails)stageEventDetails;
@@ -435,9 +435,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.TotalCostCount >= 20;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -451,9 +451,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.TotalCostCount >= 16;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -467,9 +467,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.TotalCostCount >= 12;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -487,9 +487,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.HighestConsecutiveAttackCount >= 7;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -503,9 +503,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.HighestConsecutiveAttackCount >= 6;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;
@@ -519,9 +519,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                     {
                         return args.HighestConsecutiveAttackCount >= 5;
                     },
-                    eventCaptures: new StageEventCapture[]
+                    eventDescriptors: new CLEventDescriptor[]
                     {
-                        new StageEnvironmentEventCapture(CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                        new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
                         {
                             Formation f = (Formation)listener;
                             StageDetails d = (StageDetails)stageEventDetails;

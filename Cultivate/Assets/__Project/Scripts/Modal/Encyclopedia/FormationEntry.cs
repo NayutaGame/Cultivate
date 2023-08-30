@@ -33,7 +33,7 @@ public class FormationEntry
     public bool CanActivate(RunEntity entity, FormationArguments args)
         => _canActivate(entity, args);
 
-    public Dictionary<int, StageEventCapture> _eventCaptureDict;
+    public Dictionary<int, CLEventDescriptor> _eventDescriptorDict;
 
     /// <summary>
     /// 定义一个Formation
@@ -41,9 +41,9 @@ public class FormationEntry
     /// <param name="jingJie">境界</param>
     /// <param name="conditionDescription">条件的描述</param>
     /// <param name="rewardDescription">奖励的描述</param>
-    /// <param name="eventCaptures">事件捕获</param>
+    /// <param name="eventDescriptors">事件捕获</param>
     public FormationEntry(JingJie jingJie, string conditionDescription, string rewardDescription, Func<RunEntity, FormationArguments, bool> canActivate,
-        params StageEventCapture[] eventCaptures
+        params CLEventDescriptor[] eventDescriptors
     )
     {
         _jingJie = jingJie;
@@ -52,8 +52,8 @@ public class FormationEntry
         _canActivate = canActivate;
         // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
 
-        _eventCaptureDict = new Dictionary<int, StageEventCapture>();
-        foreach (var stageEventCapture in eventCaptures)
-            _eventCaptureDict[stageEventCapture.EventId] = stageEventCapture;
+        _eventDescriptorDict = new Dictionary<int, CLEventDescriptor>();
+        foreach (var eventDescriptor in eventDescriptors)
+            _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
     }
 }

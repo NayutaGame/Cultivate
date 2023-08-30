@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoseFormationDetails : StageEventDetails
+public class LoseFormationDetails : EventDetails
 {
     public Formation _formation;
 

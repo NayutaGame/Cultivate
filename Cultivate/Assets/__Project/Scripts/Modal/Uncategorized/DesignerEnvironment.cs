@@ -53,9 +53,9 @@ public class DesignerEnvironment
         battleRunNode.AddReward(new DrawSkillRewardDescriptor("一些外功", jingJie: j, count: DrawCountPerJingJie[j]));
     }
 
-    public static async Task DefaultStartTurn(StageEntity owner, StageEventDetails stageEventDetails)
+    public static async Task DefaultStartTurn(StageEntity owner, EventDetails eventDetails)
     {
-        TurnDetails d = (TurnDetails)stageEventDetails;
+        TurnDetails d = (TurnDetails)eventDetails;
         // if (d.Owner == owner)
         //     await owner.ArmorLoseSelfProcedure(owner.Armor);
     }

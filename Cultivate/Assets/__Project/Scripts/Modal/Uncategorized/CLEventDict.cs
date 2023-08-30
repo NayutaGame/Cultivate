@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class CLEventDict : Dictionary<int, CLEvent<StageEventDetails>>
+public class CLEventDict : Dictionary<int, CLEventElement>
 {
     public static readonly int START_STAGE        = 0;
     public static readonly int END_STAGE          = 1;
@@ -49,28 +49,35 @@ public class CLEventDict : Dictionary<int, CLEvent<StageEventDetails>>
     public static readonly int DID_CHANNEL        = 40;
     public static readonly int COUNT              = 41;
 
-    public void Register(int eventId, int order, Func<StageEventDetails, Task> callback)
+    public static readonly int STAGE_ENVIRONMENT  = 0;
+    public static readonly int STAGE_ENTITY       = 1;
+    public static readonly int STAGE_BUFF         = 2;
+    public static readonly int STAGE_FORMATION    = 3;
+
+    public void Register(CLEventListener listener, CLEventDescriptor eventDescriptor)
     {
+        int eventId = eventDescriptor.EventId;
         if (!ContainsKey(eventId))
             this[eventId] = new();
 
-        this[eventId].Add(order, callback);
+        this[eventId].Add(eventDescriptor.Order, listener, eventDescriptor);
     }
 
-    public void Unregister(int eventId, Func<StageEventDetails, Task> callback)
+    public void Unregister(CLEventListener listener, CLEventDescriptor eventDescriptor)
     {
-        this[eventId].Remove(callback);
+        int eventId = eventDescriptor.EventId;
+        this[eventId].Remove(listener);
     }
 
-    public async Task FireEvent(int eventId, StageEventDetails stageEventDetails)
+    public async Task FireEvent(int eventId, EventDetails eventDetails)
     {
         if (!ContainsKey(eventId))
             return;
-        CLEvent<StageEventDetails> clEvent = this[eventId];
-        foreach (Func<StageEventDetails, Task> func in clEvent.Traversal())
+        CLEventElement eventElement = this[eventId];
+        foreach (Tuple<int, CLEventListener, CLEventDescriptor> tuple in eventElement.Traversal())
         {
-            if (stageEventDetails.Cancel) return;
-            await func(stageEventDetails);
+            if (eventDetails.Cancel) return;
+            await tuple.Item3.Invoke(tuple.Item2, eventDetails);
         }
     }
 }

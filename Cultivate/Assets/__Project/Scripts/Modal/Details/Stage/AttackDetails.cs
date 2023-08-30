@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-public class AttackDetails : StageEventDetails
+public class AttackDetails : EventDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

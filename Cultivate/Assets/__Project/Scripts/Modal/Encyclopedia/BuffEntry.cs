@@ -22,7 +22,7 @@ public class BuffEntry : Entry, IAnnotation
     private bool _dispellable;
     public bool Dispellable => _dispellable;
 
-    public Dictionary<int, StageEventCapture> _eventCaptureDict;
+    public Dictionary<int, CLEventDescriptor> _eventDescriptorDict;
 
     /// <summary>
     /// 定义一个Buff
@@ -32,9 +32,9 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="buffStackRule">堆叠规则</param>
     /// <param name="friendly">是否有益</param>
     /// <param name="dispellable">是否可驱散</param>
-    /// <param name="eventCaptures">事件捕获</param>
+    /// <param name="eventDescriptors">事件捕获</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
-        params StageEventCapture[] eventCaptures
+        params CLEventDescriptor[] eventDescriptors
     ) : base(name)
     {
         _description = description;
@@ -43,9 +43,9 @@ public class BuffEntry : Entry, IAnnotation
         _friendly = friendly;
         _dispellable = dispellable;
 
-        _eventCaptureDict = new Dictionary<int, StageEventCapture>();
-        foreach (var stageEventCapture in eventCaptures)
-            _eventCaptureDict[stageEventCapture.EventId] = stageEventCapture;
+        _eventDescriptorDict = new Dictionary<int, CLEventDescriptor>();
+        foreach (var eventDescriptor in eventDescriptors)
+            _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
     }
 
     // public void ConfigureNote(StringBuilder sb)
