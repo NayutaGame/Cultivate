@@ -25,8 +25,7 @@ public class DialogPanelDescriptor : PanelDescriptor
     public override void DefaultEnter()
     {
         base.DefaultEnter();
-        if (_reward != null)
-            _reward.Claim();
+        _reward?.Claim();
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)

@@ -22,12 +22,7 @@ public class DrawSkillRewardDescriptor : RewardDescriptor
     }
 
     public override void Claim()
-    {
-        bool success = RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, _pred, _wuXing, _jingJie, _count);
-        if (!success)
-            throw new Exception();
-        RunManager.Instance.Battle.SkillInventory.AddSkills(skills);
-    }
+        => RunManager.Instance.ForceDrawSkills(_pred, _wuXing, _jingJie, _count);
 
     public override string GetDescription() => _description;
 }

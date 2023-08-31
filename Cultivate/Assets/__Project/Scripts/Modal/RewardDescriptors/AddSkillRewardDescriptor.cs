@@ -4,27 +4,23 @@ using UnityEngine;
 
 public class AddSkillRewardDescriptor : RewardDescriptor
 {
-    public AddSkillRewardDescriptor(SkillEntry entry)
-    {
+    private SkillEntry _entry;
+    private JingJie _jingJie;
 
+    private string _description;
+
+    public AddSkillRewardDescriptor(SkillEntry entry, JingJie jingJie)
+    {
+        _entry = entry;
+        _jingJie = jingJie;
+
+        _description = $"获得《{_entry.GetName()} @ {_jingJie}》";
     }
 
-    // public override void Claim()
-    // {
-    //     bool success = RunManager.Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, _pred, _wuXing, _jingJie, _count);
-    //     if (!success)
-    //         throw new Exception();
-    //     RunManager.Instance.Battle.SkillInventory.AddSkills(skills);
-    // }
-    //
-    // public override string GetDescription() => _description;
     public override void Claim()
     {
-        throw new System.NotImplementedException();
+        RunManager.Instance.ForceAddSkill(new AddSkillDetails(_entry, _jingJie));
     }
 
-    public override string GetDescription()
-    {
-        throw new System.NotImplementedException();
-    }
+    public override string GetDescription() => _description;
 }

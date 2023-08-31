@@ -34,7 +34,7 @@ public class AppManager : Singleton<AppManager>, GDictionary
         Encyclopedia.FormationCategory.Traversal.Do(e => FormationInventory.Add(e));
 
         SkillInventory = new();
-        Encyclopedia.SkillCategory.Traversal.Map(e => new RunSkill(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));
+        Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.From(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));
 
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);

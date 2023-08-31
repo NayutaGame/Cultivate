@@ -14,9 +14,7 @@ public class TechInventory : GDictionary
     private List<RunTech> _lockedList;
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
+    public object Get(string s) => _accessors[s]();
     public TechInventory()
     {
         _accessors = new()

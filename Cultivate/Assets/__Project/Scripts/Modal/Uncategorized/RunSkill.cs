@@ -29,10 +29,13 @@ public class RunSkill : ISkillModel, EmulatedSkill, ISerializationCallbackReceiv
     public int GetRunEquippedTimes() => _runEquippedTimes;
     public void SetRunEquippedTimes(int value) => _runEquippedTimes = value;
 
-    public RunSkill(SkillEntry entry, JingJie jingJie)
+    public static RunSkill From(SkillEntry entry, JingJie jingJie)
+        => new(entry, jingJie);
+
+    private RunSkill(SkillEntry entry, JingJie jingJie)
     {
         _entry = entry;
-        _jingJie = jingJie;
+        _jingJie = Mathf.Clamp(jingJie, _entry.JingJieRange.Start, _entry.JingJieRange.End - 1);
     }
 
     private RunSkill(RunSkill prototype)

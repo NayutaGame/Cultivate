@@ -22,10 +22,10 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
     public StageAnimationDelegate Anim;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
+    private Task _task;
 
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
     public override void DidAwake()
     {
         base.DidAwake();
@@ -38,8 +38,6 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
         Anim = new();
     }
-
-    private Task _task;
 
     public async Task Enter()
     {

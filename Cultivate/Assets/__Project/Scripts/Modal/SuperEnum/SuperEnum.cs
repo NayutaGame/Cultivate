@@ -52,4 +52,6 @@ public class SuperEnum<T> : IEquatable<SuperEnum<T>>
         if (obj.GetType() != this.GetType()) return false;
         return Equals((SuperEnum<T>)obj);
     }
+
+    public static T FromIndex(int i) => _list[i];
 }

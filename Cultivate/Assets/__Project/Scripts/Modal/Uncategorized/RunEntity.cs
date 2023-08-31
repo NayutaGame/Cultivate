@@ -149,7 +149,7 @@ public class RunEntity : GDictionary, IEntityModel
 
         SkillEntry skill = skillName;
         JingJie jingJie = j ?? skill.JingJieRange.Start;
-        SetSlotContent(i, new RunSkill(skill, jingJie), j);
+        SetSlotContent(i, RunSkill.From(skill, jingJie), j);
     }
 
     public void SetSlotContent(int i, RunSkill skill, JingJie? j = null)
@@ -165,7 +165,7 @@ public class RunEntity : GDictionary, IEntityModel
             if (skillNames[i] != null && skillNames[i] != "")
             {
                 SkillEntry skill = skillNames[i];
-                SetSlotContent(diff + i, new RunSkill(skill, skill.JingJieRange.Start));
+                SetSlotContent(diff + i, RunSkill.From(skill, skill.JingJieRange.Start));
             }
         }
     }

@@ -19,7 +19,7 @@ public class SkillCategory : Category<SkillEntry>
 
             // 事件牌
 
-            new("一念", JingJie.ZhuJi, new SkillDescription((j, dj) => ($"消耗{8 - dj}生命\n") + (j <= JingJie.ZhuJi ? "二动" : "三动")),
+            new("一念", new Range(1, 5), new SkillDescription((j, dj) => ($"消耗{8 - dj}生命\n") + (j <= JingJie.ZhuJi ? "二动" : "三动")),
                 skillTypeComposite: SkillType.ErDong, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -30,13 +30,12 @@ public class SkillCategory : Category<SkillEntry>
                         caster.UltraSwift = true;
                 }),
 
-            new("无量劫", JingJie.ZhuJi, new SkillDescription((j, dj) => $"吟唱3\n治疗{18 + dj * 6}"),
+            new("无量劫", new Range(1, 5), new SkillDescription((j, dj) => $"吟唱3\n治疗{18 + dj * 6}"),
                 skillTypeComposite: SkillType.LingQi | SkillType.SunHao, withinPool: false, channelTimeEvaluator: 3,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.HealProcedure(18 + skill.Dj * 6);
                 }),
-
 
             // 机关牌
 

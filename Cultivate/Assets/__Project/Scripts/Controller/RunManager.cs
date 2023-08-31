@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CLLibrary;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class RunManager : Singleton<RunManager>, GDictionary
@@ -126,27 +127,41 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     #endregion
 
-    #region SkillPool
+    public void ForceDrawSkill(Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
+        => ForceDrawSkill(new DrawSkillDetails(pred, wuXing, jingJie));
 
-    // public bool TryDrawSkill(out RunSkill skill, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
-    //     => TryDrawSkill(out RunSkill skill, new DrawSkillDetails(pred, wuXing, jingJie));
-    //
-    // public bool TryDrawSkills(out List<RunSkill> skills, Predicate<SkillEntry> pred = null, WuXing? wuXing = null,
-    //     JingJie? jingJie = null, int count = 1, bool distinct = true, bool consume = true)
-    //     => TryDrawSkills(out List<RunSkill> skills, new DrawSkillsDetails(pred, wuXing, jingJie, count, distinct, consume));
-    //
-    // public bool TryDrawSkill()
-    // public bool TryDrawSkills(DrawSkillDescriptor d)
-    // {
-    //
-    // }
-    //
-    // public void AddSkill()
-    // {
-    //
-    // }
+    public void ForceDrawSkills(Predicate<SkillEntry> pred = null, WuXing? wuXing = null,
+        JingJie? jingJie = null, int count = 1, bool distinct = true, bool consume = true)
+        => ForceDrawSkills(new DrawSkillsDetails(pred, wuXing, jingJie, count, distinct, consume));
 
-    #endregion
+    public void ForceDrawSkill(DrawSkillDetails d)
+    {
+        bool success = Instance.SkillPool.TryDrawSkill(out RunSkill skill, d);
+        if (!success)
+            throw new Exception();
+
+        Instance.Battle.SkillInventory.AddSkill(skill);
+    }
+
+    public void ForceDrawSkills(DrawSkillsDetails d)
+    {
+        bool success = Instance.SkillPool.TryDrawSkills(out List<RunSkill> skills, d);
+        if (!success)
+            throw new Exception();
+
+        Instance.Battle.SkillInventory.AddSkills(skills);
+    }
+
+    public void ForceAddSkill(AddSkillDetails d)
+        => Instance.Battle.SkillInventory.AddSkill(RunSkill.From(d._entry, d._jingJie));
+
+    public void ForceAddMech([CanBeNull] MechType mechType = null, int count = 1)
+        => ForceAddMech(new(mechType, count));
+    public void ForceAddMech(AddMechDetails d)
+    {
+        MechType mechType = d._mechType ?? MechType.FromIndex(RandomManager.Range(0, MechType.Length));
+        Instance.Battle.MechBag.AddMech(mechType, d._count);
+    }
 
     public bool CanAffordTech(IndexPath indexPath)
     {

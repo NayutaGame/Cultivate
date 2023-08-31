@@ -95,14 +95,14 @@ public class ConsolePanel : Panel
 
     private void DrawSkill()
     {
-        RunManager.Instance.Battle.SkillInventory.TryDrawSkill(out RunSkill skill, jingJie: RunManager.Instance.Map.JingJie);
+        RunManager.Instance.ForceDrawSkill(jingJie: RunManager.Instance.Map.JingJie);
         RunCanvas.Instance.Refresh();
     }
 
     private void AddMech()
     {
         foreach(MechType m in MechType.Traversal)
-            RunManager.Instance.Battle.MechBag.AddMech(m);
+            RunManager.Instance.ForceAddMech(new(m));
         RunCanvas.Instance.Refresh();
     }
 }

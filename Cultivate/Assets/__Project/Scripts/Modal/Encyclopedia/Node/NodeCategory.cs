@@ -194,30 +194,36 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor B = new("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。\n\n得到《一念》");
                     DialogPanelDescriptor C = new("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。\n\n得到《无量劫》");
-                    DialogPanelDescriptor D = new("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。\n\n得到");
+                    DialogPanelDescriptor D = new("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。\n\n得到随机零件");
 
                     A[0]._select = option => B;
                     A[1]._select = option => C;
                     A[2]._select = option => D;
 
-                    // B._reward = new AddSkillRewardDescriptor("一念", jingJie : runNode.JingJie);
-                    //
-                    // A._reward = new DrawSkillRewardDescriptor()
+                    B._reward = new AddSkillRewardDescriptor("一念", jingJie: runNode.JingJie);
+                    C._reward = new AddSkillRewardDescriptor("无量劫", jingJie: runNode.JingJie);
+                    D._reward = new AddMechRewardDescriptor(new());
 
                     runNode.ChangePanel(A);
                 }),
-            //
+
             // new AdventureNodeEntry("论无穷", "论无穷",
             //     create: runNode =>
             //     {
-            //         DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？\n\n我跑步很快，如果有人跑步比我还快的话，只要他推着载我的车，我在车里跑，速度就比他还快，只要一直有人速度比我快，我的速度就是无穷的。\n\n我有一个木桩，我每天砍一半，过一万年也砍不完，这个叫做无穷。\n\n我养了一条蛇，他每天吃自己的尾巴，然后又能长出来新的蛇身，永远吃不完，这个叫做无穷。",
+            //         DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +
+            //                                       "\n\n我跑步很快，如果有人跑步比我还快的话，只要他推着载我的车，我在车里跑，速度就比他还快，只要一直有人速度比我快，我的速度就是无穷的。" +
+            //                                       "\n\n我有一个木桩，我每天砍一半，过一万年也砍不完，这个叫做无穷。" +
+            //                                       "\n\n我养了一条蛇，他每天吃自己的尾巴，然后又能长出来新的蛇身，永远吃不完，这个叫做无穷。",
             //             "用第一个想法",
             //             "用第二个想法",
             //             "用第三个想法");
             //
-            //         DialogPanelDescriptor B = new("你痛快写了800字，时间没过5分钟，已经写完了。\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
-            //         DialogPanelDescriptor C = new("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。考试结束时，你已经把所有能写字的地方都写满了话。\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
-            //         DialogPanelDescriptor D = new("你写了一段话。又换了个角度将你的观点重述了一遍，又再换了个角度将你的观点重述了一遍。。。你的角度还没用完，考试已经结束了。\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
+            //         DialogPanelDescriptor B = new("你痛快写了800字，时间没过5分钟，已经写完了。" +
+            //                                       "\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
+            //         DialogPanelDescriptor C = new("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。考试结束时，你已经把所有能写字的地方都写满了话。" +
+            //                                       "\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
+            //         DialogPanelDescriptor D = new("你写了一段话。又换了个角度将你的观点重述了一遍，又再换了个角度将你的观点重述了一遍。。。你的角度还没用完，考试已经结束了。" +
+            //                                       "\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
             //
             //         A[0]._select = option => B;
             //         A[1]._select = option => C;
