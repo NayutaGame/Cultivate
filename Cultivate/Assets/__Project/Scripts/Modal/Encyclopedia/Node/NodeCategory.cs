@@ -184,28 +184,28 @@ public class NodeCategory : Category<NodeEntry>
             //         runNode.ChangePanel(A);
             //     }),
             //
-            new AdventureNodeEntry("赤壁赋", "赤壁赋",
-                create: runNode =>
-                {
-                    DialogPanelDescriptor A = new("你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
-                        "赞同月亮是变化的",
-                        "赞同月亮是不变的",
-                        "变得不是月亮，而是人");
-
-                    DialogPanelDescriptor B = new("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。\n\n得到《一念》");
-                    DialogPanelDescriptor C = new("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。\n\n得到《无量劫》");
-                    DialogPanelDescriptor D = new("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。\n\n得到随机零件");
-
-                    A[0]._select = option => B;
-                    A[1]._select = option => C;
-                    A[2]._select = option => D;
-
-                    B._reward = new AddSkillRewardDescriptor("一念", jingJie: runNode.JingJie);
-                    C._reward = new AddSkillRewardDescriptor("无量劫", jingJie: runNode.JingJie);
-                    D._reward = new AddMechRewardDescriptor(new());
-
-                    runNode.ChangePanel(A);
-                }),
+            // new AdventureNodeEntry("赤壁赋", "赤壁赋",
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new("你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
+            //             "赞同月亮是变化的",
+            //             "赞同月亮是不变的",
+            //             "变得不是月亮，而是人");
+            //
+            //         DialogPanelDescriptor B = new("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。\n\n得到《一念》");
+            //         DialogPanelDescriptor C = new("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。\n\n得到《无量劫》");
+            //         DialogPanelDescriptor D = new("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。\n\n得到随机零件");
+            //
+            //         A[0]._select = option => B;
+            //         A[1]._select = option => C;
+            //         A[2]._select = option => D;
+            //
+            //         B._reward = new AddSkillRewardDescriptor("一念", jingJie: runNode.JingJie);
+            //         C._reward = new AddSkillRewardDescriptor("无量劫", jingJie: runNode.JingJie);
+            //         D._reward = new AddMechRewardDescriptor();
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
 
             // new AdventureNodeEntry("论无穷", "论无穷",
             //     create: runNode =>
@@ -222,19 +222,21 @@ public class NodeCategory : Category<NodeEntry>
             //                                       "\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
             //         DialogPanelDescriptor C = new("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。考试结束时，你已经把所有能写字的地方都写满了话。" +
             //                                       "\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
+            //         // 从前有座山，山里有座庙
             //         DialogPanelDescriptor D = new("你写了一段话。又换了个角度将你的观点重述了一遍，又再换了个角度将你的观点重述了一遍。。。你的角度还没用完，考试已经结束了。" +
             //                                       "\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。");
             //
             //         A[0]._select = option => B;
             //         A[1]._select = option => C;
             //         A[2]._select = option => D;
-            //         B[0]._select = option => null; // 加一张牌
-            //         C[0]._select = option => null; // 加一张牌
-            //         D[0]._select = option => null; // 加一张牌
+            //
+            //         B._reward = new DrawSkillRewardDescriptor("得到一张二动牌", pred: e => e.SkillTypeComposite.Contains(SkillType.ErDong), jingJie: runNode.JingJie);
+            //         C._reward = new DrawSkillRewardDescriptor("得到一张消耗牌", pred: e => e.SkillTypeComposite.Contains(SkillType.XiaoHao), jingJie: runNode.JingJie);
+            //         D._reward = new DrawSkillRewardDescriptor("得到一张自指牌", pred: e => e.SkillTypeComposite.Contains(SkillType.ZiZhi), jingJie: runNode.JingJie);
             //
             //         runNode.ChangePanel(A);
             //     }),
-            //
+
             // new AdventureNodeEntry("人间世", "人间世",
             //     create: runNode =>
             //     {
@@ -258,34 +260,47 @@ public class NodeCategory : Category<NodeEntry>
             //
             //         A[0]._select = option => B1;
             //         A[1]._select = option => C1;
-            //         B1[0]._select = option => B2; // 缺少大奖励
-            //         C1[0]._select = option => C2; // 缺少小奖励
+            //         B1[0]._select = option => B2;
+            //         C1[0]._select = option => C2;
             //         D[0]._select = option => D2;
-            //         D2[0]._select = option => E; // 缺少小奖励
-            //         D2[1]._select = option => F; // 缺少大奖励
+            //         D2[0]._select = option => E;
+            //         D2[1]._select = option => F;
+            //
+            //         B2._reward = new AddMechRewardDescriptor();
+            //         C2._reward = new ResourceRewardDescriptor(xiuWei: 50);
+            //
+            //         E._reward = new ResourceRewardDescriptor(xiuWei: 50);
+            //         F._reward = new AddMechRewardDescriptor();
             //
             //         bool isCatch = RandomManager.value < 0.5;
             //         runNode.ChangePanel(isCatch ? A : D);
             //     }),
             //
-            // new AdventureNodeEntry("神灯精灵", "神灯精灵",
-            //     create: runNode =>
-            //     {
-            //         DialogPanelDescriptor A = new("你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
-            //             "健康的体魄",
-            //             "钱币的富裕",
-            //             "这个愿望不被实现");
-            //
-            //         DialogPanelDescriptor B = new("实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮");
-            //         DialogPanelDescriptor C = new("实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币");
-            //         DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，要来干你了。");
-            //
-            //         A[0]._select = option => B;
-            //         A[1]._select = option => C;
-            //         A[2]._select = option => D;
-            //
-            //         runNode.ChangePanel(A);
-            //     }),
+            new AdventureNodeEntry("神灯精灵", "神灯精灵",
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
+                        "健康的体魄",
+                        "钱币的富裕",
+                        "这个愿望不被实现");
+
+                    DialogPanelDescriptor B = new("实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n生命上限+10");
+                    DialogPanelDescriptor C = new("实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+100");
+                    DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，要来干你了。");
+
+                    BattlePanelDescriptor E = new(null, null);
+                    DialogPanelDescriptor Ewin = new("胜利");
+                    DialogPanelDescriptor Elose = new("失败");
+
+                    A[0]._select = option => B;
+                    A[1]._select = option => C;
+                    A[2]._select = option => D;
+                    D[0]._select = option => E;
+                    E._win = () => Ewin;
+                    E._lose = () => Elose;
+
+                    runNode.ChangePanel(A);
+                }),
             //
             // new AdventureNodeEntry("分子打印机", "分子打印机",
             //     create: runNode =>

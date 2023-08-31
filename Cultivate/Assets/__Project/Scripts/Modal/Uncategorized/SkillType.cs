@@ -13,6 +13,7 @@ public class SkillType : SuperEnum<SkillType>
             new(1 << 3, "二动"),
             new(1 << 4, "消耗"),
             new(1 << 5, "损耗"),
+            new(1 << 6, "自指"),
         };
     }
 
@@ -22,6 +23,7 @@ public class SkillType : SuperEnum<SkillType>
     public static SkillType ErDong   => _list[3];
     public static SkillType XiaoHao  => _list[4];
     public static SkillType SunHao   => _list[5];
+    public static SkillType ZiZhi    => _list[6];
 
     public static implicit operator int(SkillType skillType) => skillType._index;
     // public static implicit operator SkillType(int index) => _list[index];

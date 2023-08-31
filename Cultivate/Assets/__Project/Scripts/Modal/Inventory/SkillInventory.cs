@@ -26,30 +26,6 @@ public class SkillInventory : Inventory<RunSkill>
         Replace(from, to);
     }
 
-    // public void RefreshChip()
-    // {
-    //     Clear();
-    //     foreach (var chip in Encyclopedia.SkillCategory.Traversal)
-    //         AddSkill(RunSkill.From(chip, chip.JingJieRange.Start));
-    // }
-
-    // public bool PickSkill(out RunSkill picked, SkillEntry e, JingJie? jingJie)
-    // {
-    //     picked = RunSkill.From(e, jingJie ?? e.JingJieRange.Start);
-    //     AddSkill(picked);
-    //     return true;
-    // }
-
-    // public bool TryDrawSkill(out RunSkill skill, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
-    // {
-    //     bool success = RunManager.Instance.SkillPool.TryDrawSkill(out skill, pred, wuXing, jingJie);
-    //     if (!success)
-    //         return false;
-    //
-    //     AddSkill(skill);
-    //     return true;
-    // }
-
     private static Comparison<RunSkill> JingJieComparison =
         (lhs, rhs) => lhs.JingJie - rhs.JingJie;
 

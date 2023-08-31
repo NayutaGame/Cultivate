@@ -6,9 +6,9 @@ public class AddMechRewardDescriptor : RewardDescriptor
 {
     private AddMechDetails _addMechDetails;
 
-    public AddMechRewardDescriptor(AddMechDetails addMechDetails)
+    public AddMechRewardDescriptor(AddMechDetails addMechDetails = null)
     {
-        _addMechDetails = addMechDetails;
+        _addMechDetails = addMechDetails ?? new();
     }
 
     public override void Claim()

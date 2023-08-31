@@ -65,10 +65,4 @@ public class SkillInventoryView : InventoryView<SkillView>, IDropHandler
         inventory.SortByComparisonId(i);
         RunCanvas.Instance.Refresh();
     }
-
-    // private void ClearChip()
-    // {
-    //     RunManager.Instance.ClearChip();
-    //     Refresh();
-    // }
 }
