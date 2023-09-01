@@ -57,10 +57,10 @@ public class NodeView : MonoBehaviour, IIndexPath
     private bool TryClickNode(IndexPath indexPath)
     {
         RunNode runNode = DataManager.Get<RunNode>(indexPath);
-        if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Map.Selecting)
+        if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Battle.Map.Selecting)
             return false;
 
-        PanelDescriptor panelDescriptor = RunManager.Instance.Map.SelectedNode(runNode);
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.SelectedNode(runNode);
         RunCanvas.Instance.SetNodeState(panelDescriptor);
         return true;
     }

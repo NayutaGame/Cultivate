@@ -14,14 +14,14 @@ public class BattleNodeEntry : NodeEntry
 
             int xiuWeiValue = Mathf.RoundToInt(battleRunNode.BaseXiuWeiReward() * RandomManager.Range(0.9f, 1.1f));
 
-            BattlePanelDescriptor A = new(battleRunNode.EntityEntry, battleRunNode.CreateEntityDetails);
+            BattlePanelDescriptor A = new(battleRunNode.EntityEntry);
             battleRunNode.AddReward(new ResourceRewardDescriptor(xiuWei: xiuWeiValue));
 
             DiscoverSkillPanelDescriptor B = new();
             DiscoverSkillPanelDescriptor C = new();
             DialogPanelDescriptor D = new($"按Esc退出游戏，游戏结束，感谢游玩");
 
-            if (!battleRunNode.CreateEntityDetails.AllowBoss)
+            if (!battleRunNode.DrawEntityDetails.AllowBoss)
             {
                 A._win = () =>
                 {
@@ -31,7 +31,7 @@ public class BattleNodeEntry : NodeEntry
 
                 A._lose = () =>
                 {
-                    RunManager.Instance.SetDMingYuan(-2);
+                    RunManager.Instance.Battle.SetDMingYuan(-2);
                     C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{xiuWeiValue}修为\n请选择一张卡作为奖励");
                     return C;
                 };
@@ -40,7 +40,7 @@ public class BattleNodeEntry : NodeEntry
             {
                 A._win = () =>
                 {
-                    RunManager.Instance.SetDMingYuan(3);
+                    RunManager.Instance.Battle.SetDMingYuan(3);
                     B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{xiuWeiValue}的修为\n请选择一张卡作为奖励");
                     return B;
                 };

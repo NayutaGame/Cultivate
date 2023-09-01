@@ -1,8 +1,5 @@
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using CLLibrary;
-using UnityEngine;
 
 public class DrawSkillRewardDescriptor : RewardDescriptor
 {
@@ -22,7 +19,7 @@ public class DrawSkillRewardDescriptor : RewardDescriptor
     }
 
     public override void Claim()
-        => RunManager.Instance.ForceDrawSkills(_pred, _wuXing, _jingJie, _count);
+        => RunManager.Instance.Battle.ForceDrawSkills(_pred, _wuXing, _jingJie, _count);
 
     public override string GetDescription() => _description;
 }

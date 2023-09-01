@@ -1,11 +1,9 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
-using DG.Tweening;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class ArbitraryCardPickerPanel : Panel
@@ -25,7 +23,7 @@ public class ArbitraryCardPickerPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        _indexPath = new IndexPath("Run.CurrentNode.CurrentPanel");
+        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
 
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
@@ -47,8 +45,7 @@ public class ArbitraryCardPickerPanel : Panel
     {
         base.Refresh();
 
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        ArbitraryCardPickerPanelDescriptor d = runNode.CurrentPanel as ArbitraryCardPickerPanelDescriptor;
+        ArbitraryCardPickerPanelDescriptor d = DataManager.Get<ArbitraryCardPickerPanelDescriptor>(_indexPath);
 
         InfoText.text = d.GetDetailedText();
         StatusText.text = $"可以选择 {d.Range.Start} ~ {d.Range.End - 1} 张卡\n已选   {_selections.Count}   张";
@@ -69,8 +66,7 @@ public class ArbitraryCardPickerPanel : Panel
 
     private bool ToggleSkill(IInteractable view)
     {
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        ArbitraryCardPickerPanelDescriptor d = runNode.CurrentPanel as ArbitraryCardPickerPanelDescriptor;
+        ArbitraryCardPickerPanelDescriptor d = DataManager.Get<ArbitraryCardPickerPanelDescriptor>(_indexPath);
 
         SkillView skillView = view as SkillView;
         bool isSelected = _selections.Contains(skillView);
@@ -102,11 +98,10 @@ public class ArbitraryCardPickerPanel : Panel
 
     private void ConfirmSelections()
     {
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        ArbitraryCardPickerPanelDescriptor d = runNode.CurrentPanel as ArbitraryCardPickerPanelDescriptor;
+        ArbitraryCardPickerPanelDescriptor d = DataManager.Get<ArbitraryCardPickerPanelDescriptor>(_indexPath);
         List<RunSkill> mapped = _selections.Map(v => DataManager.Get<RunSkill>(v.GetIndexPath())).ToList();
         d.ConfirmSelections(mapped);
-        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new Signal());
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

@@ -14,9 +14,13 @@ public class CardPickerPanel : Panel
     private List<SkillView> _skillSelections;
     private List<SlotView> _slotSelections;
 
+    private IndexPath _indexPath;
+
     public override void Configure()
     {
         base.Configure();
+
+        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
 
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
@@ -37,8 +41,7 @@ public class CardPickerPanel : Panel
     {
         base.Refresh();
 
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        CardPickerPanelDescriptor d = runNode.CurrentPanel as CardPickerPanelDescriptor;
+        CardPickerPanelDescriptor d = DataManager.Get<CardPickerPanelDescriptor>(_indexPath);
 
         InfoText.text = d.GetDetailedText();
         StatusText.text = $"可以选择 {d.Range.Start} ~ {d.Range.End - 1} 张卡\n已选   {SelectionCount}   张";
@@ -48,8 +51,7 @@ public class CardPickerPanel : Panel
 
     public bool ToggleSkill(IInteractable view)
     {
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        CardPickerPanelDescriptor d = runNode.CurrentPanel as CardPickerPanelDescriptor;
+        CardPickerPanelDescriptor d = DataManager.Get<CardPickerPanelDescriptor>(_indexPath);
 
         SkillView skillView = view as SkillView;
         bool isSelected = _skillSelections.Contains(skillView);
@@ -79,8 +81,7 @@ public class CardPickerPanel : Panel
 
     public bool ToggleSkillSlot(IInteractable view)
     {
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        CardPickerPanelDescriptor d = runNode.CurrentPanel as CardPickerPanelDescriptor;
+        CardPickerPanelDescriptor d = DataManager.Get<CardPickerPanelDescriptor>(_indexPath);
 
         SlotView slotView = view as SlotView;
         bool isSelected = _slotSelections.Contains(slotView);
@@ -110,13 +111,12 @@ public class CardPickerPanel : Panel
 
     private void ConfirmSelections()
     {
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        CardPickerPanelDescriptor d = runNode.CurrentPanel as CardPickerPanelDescriptor;
+        CardPickerPanelDescriptor d = DataManager.Get<CardPickerPanelDescriptor>(_indexPath);
         List<object> iRunSkillList = new List<object>();
         iRunSkillList.AddRange(_skillSelections.Map(v => DataManager.Get<object>(v.GetIndexPath())));
         iRunSkillList.AddRange(_slotSelections.Map(v => DataManager.Get<object>(v.GetIndexPath())));
         d.ConfirmSelections(iRunSkillList);
-        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new Signal());
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

@@ -8,19 +8,19 @@ public class EntityEntry : Entry
     private string _description;
     public string Description => _description;
 
-    private Func<CreateEntityDetails, bool> _canCreate;
-    private Action<RunEntity, CreateEntityDetails> _create;
+    private Func<DrawEntityDetails, bool> _canDraw;
+    private Action<RunEntity> _create;
 
-    public EntityEntry(string name, string description, Func<CreateEntityDetails, bool> canCreate, Action<RunEntity, CreateEntityDetails> create) : base(name)
+    public EntityEntry(string name, string description, Func<DrawEntityDetails, bool> canDraw, Action<RunEntity> create) : base(name)
     {
         _description = description;
 
-        _canCreate = canCreate;
+        _canDraw = canDraw;
         _create = create;
     }
 
-    public bool CanCreate(CreateEntityDetails d) => _canCreate(d);
-    public void Create(RunEntity entity, CreateEntityDetails d) => _create(entity, d);
+    public bool CanDraw(DrawEntityDetails d) => _canDraw(d);
+    public void Create(RunEntity entity) => _create(entity);
 
     public static implicit operator EntityEntry(string name) => Encyclopedia.EntityCategory[name];
 }

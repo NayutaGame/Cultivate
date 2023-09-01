@@ -55,9 +55,9 @@ public class ConsolePanel : Panel
     {
         base.Refresh();
 
-        RunManager rm = RunManager.Instance;
-        MingYuanText.text = rm.GetMingYuan().ToString();
-        GoldText.text = rm.XiuWei.ToString();
+        RunEnvironment env = RunManager.Instance.Battle;
+        MingYuanText.text = env.GetMingYuan().ToString();
+        GoldText.text = env.XiuWei.ToString();
 
         IEntityModel entity = RunManager.Instance.Battle.Hero;
         HealthInputField.SetTextWithoutNotify(entity.GetBaseHealth().ToString());
@@ -66,13 +66,13 @@ public class ConsolePanel : Panel
 
     public void AddMingYuan()
     {
-        RunManager.Instance.GetMingYuan().SetDiff();
+        RunManager.Instance.Battle.GetMingYuan().SetDiff();
         Refresh();
     }
 
     private void AddXiuWei()
     {
-        RunManager.Instance.AddXiuWei();
+        RunManager.Instance.Battle.AddXiuWei();
         Refresh();
     }
 
@@ -95,14 +95,14 @@ public class ConsolePanel : Panel
 
     private void DrawSkill()
     {
-        RunManager.Instance.ForceDrawSkill(jingJie: RunManager.Instance.Map.JingJie);
+        RunManager.Instance.Battle.ForceDrawSkill(jingJie: RunManager.Instance.Battle.Map.JingJie);
         RunCanvas.Instance.Refresh();
     }
 
     private void AddMech()
     {
         foreach(MechType m in MechType.Traversal)
-            RunManager.Instance.ForceAddMech(new(m));
+            RunManager.Instance.Battle.ForceAddMech(new(m));
         RunCanvas.Instance.Refresh();
     }
 }

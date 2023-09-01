@@ -11,9 +11,7 @@ public class Commodity : GDictionary
     public int FinalPrice;
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
+    public object Get(string s) => _accessors[s]();
     public Commodity(RunSkill skill, int price, float discount = 1f)
     {
         _accessors = new()
@@ -29,6 +27,6 @@ public class Commodity : GDictionary
 
     public bool Affordable()
     {
-        return RunManager.Instance.XiuWei >= FinalPrice;
+        return RunManager.Instance.Battle.XiuWei >= FinalPrice;
     }
 }

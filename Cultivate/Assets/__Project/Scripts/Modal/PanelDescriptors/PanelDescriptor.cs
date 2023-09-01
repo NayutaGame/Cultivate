@@ -19,6 +19,5 @@ public abstract class PanelDescriptor : GDictionary
     public virtual void DefaultExit() { }
 
     protected Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
+    public object Get(string s) => _accessors[s]();
 }

@@ -41,7 +41,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         for (int i = 0; i < skills.Length; i++)
         {
             RunSkill thisSkill = playerSkills[i];
-            RunManager.Instance.SkillPool.TryDrawSkill(out skills[i],
+            RunManager.Instance.Battle.SkillPool.TryDrawSkill(out skills[i],
                 pred: skillEntry => !skills.FilterObj(s => s != null).Map(s => s.GetEntry()).Contains(skillEntry) && skillEntry != thisSkill.GetEntry(), jingJie: playerSkills[i].JingJie);
         }
 
@@ -50,7 +50,7 @@ public class BarterPanelDescriptor : PanelDescriptor
             _inventory.Add(new BarterItem(playerSkills[i], skills[i]));
         }
 
-        RunManager.Instance.SkillPool.Populate(_inventory.Map(b => b.Skill.GetEntry()));
+        RunManager.Instance.Battle.SkillPool.Populate(_inventory.Map(b => b.Skill.GetEntry()));
     }
 
     public bool Exchange(BarterItem barterItem)
@@ -80,9 +80,5 @@ public class BarterPanelDescriptor : PanelDescriptor
         return true;
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
-    {
-        RunManager.Instance.Map.TryFinishNode();
-        return null;
-    }
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal) => null;
 }

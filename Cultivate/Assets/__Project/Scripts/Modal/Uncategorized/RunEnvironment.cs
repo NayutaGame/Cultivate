@@ -1,29 +1,23 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using JetBrains.Annotations;
 
 public class RunEnvironment : GDictionary
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
-    public MechBag MechBag { get; private set; }
-    public SkillInventory SkillInventory { get; private set; }
-
     public RunEntity Hero { get; private set; }
-    private RunEntity _enemy;
-    public RunEntity Enemy
-    {
-        get => _enemy;
-        set
-        {
-            if (_enemy != null) _enemy.EnvironmentChangedEvent -= EnvironmentChanged;
-            _enemy = value;
-            if (_enemy != null) _enemy.EnvironmentChangedEvent += EnvironmentChanged;
-            EnvironmentChanged();
-        }
-    }
+    public Map Map { get; private set; }
+
+    public TechInventory TechInventory { get; private set; }
+
+    public SkillPool SkillPool { get; private set; }
+    public SkillInventory SkillInventory { get; private set; }
+    public MechBag MechBag { get; private set; }
+
+    public EntityPool EntityPool { get; private set; }
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -31,27 +25,35 @@ public class RunEnvironment : GDictionary
     {
         _accessors = new()
         {
-            { "MechBag",               () => MechBag },
-            { "SkillInventory",        () => SkillInventory },
             { "Hero",                  () => Hero },
-            { "Enemy",                 () => Enemy },
+            { "Map",                   () => Map },
+            { "TechInventory",         () => TechInventory },
+            { "SkillInventory",        () => SkillInventory },
+            { "MechBag",               () => MechBag },
         };
 
-        MechBag = new();
-        SkillInventory = new();
-
-        Hero = new();
+        Hero = RunEntity.Default;
         Hero.EnvironmentChangedEvent += EnvironmentChanged;
 
-        EnvironmentChangedEvent += CalcReport;
+        Map = new();
+        TechInventory = new();
+
+        SkillPool = new();
+        SkillInventory = new();
+        MechBag = new();
+        EntityPool = new();
+
         EnvironmentChangedEvent += CalcManaShortageBrief;
+
+        _turn = 1;
+        _xiuWei = 0;
     }
 
     public void Enter()
     {
-        CreateEntityDetails d = new CreateEntityDetails(RunManager.Instance.Map.JingJie);
-        RunManager.Instance.EntityPool.ForceDrawEntityEntry(out EntityEntry entry, d);
-        Enemy = new RunEntity(entry, d);
+        // CreateEntityDetails d = new CreateEntityDetails(RunManager.Instance.Map.JingJie);
+        // RunManager.Instance.EntityPool.ForceDrawEntityEntry(out EntityEntry entry, d);
+        // Enemy = new RunEntity(entry, d);
     }
 
     public bool TryMerge(RunSkill lhs, RunSkill rhs)
@@ -108,7 +110,7 @@ public class RunEnvironment : GDictionary
             pred = s => s.WuXing.HasValue && s.WuXing != lWuXing && s.WuXing != rWuXing;
         }
 
-        bool success = RunManager.Instance.SkillPool.TryDrawSkill(out RunSkill newSkill, pred, wuXing, newJingJie);
+        bool success = SkillPool.TryDrawSkill(out RunSkill newSkill, pred, wuXing, newJingJie);
         if (!success)
             return false;
 
@@ -238,16 +240,92 @@ public class RunEnvironment : GDictionary
         return false;
     }
 
-    public StageReport Report;
-    private void CalcReport()
-    {
-        Report = StageManager.SimulateBrief(Hero, Enemy);
-    }
-
     private void CalcManaShortageBrief()
     {
-        bool[] manaShortageBrief = StageManager.ManaSimulate(Hero, Enemy);
+        bool[] manaShortageBrief = StageManager.ManaSimulate(Hero);
         for (int i = 0; i < manaShortageBrief.Length; i++)
             Hero.GetSlot(i).IsManaShortage = manaShortageBrief[i];
+    }
+
+    private int _turn;
+    public int Turn => _turn;
+
+    private float _xiuWei;
+    public float XiuWei => _xiuWei;
+
+    public void AddXiuWei(int xiuWei = 10)
+    {
+        _xiuWei += xiuWei;
+    }
+
+    public void RemoveXiuWei(int value)
+    {
+        _xiuWei -= value;
+    }
+
+    public void AddHealth(int health)
+    {
+        Hero.SetDHealth(Hero.GetDHealth() + health);
+    }
+
+    public MingYuan GetMingYuan()
+        => Hero.MingYuan;
+
+    public void SetDMingYuan(int value)
+    {
+        Hero.MingYuan.SetDiff(value);
+    }
+
+    public void ForceDrawSkill(Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
+        => ForceDrawSkill(new DrawSkillDetails(pred, wuXing, jingJie));
+
+    public void ForceDrawSkills(Predicate<SkillEntry> pred = null, WuXing? wuXing = null,
+        JingJie? jingJie = null, int count = 1, bool distinct = true, bool consume = true)
+        => ForceDrawSkills(new DrawSkillsDetails(pred, wuXing, jingJie, count, distinct, consume));
+
+    public void ForceDrawSkill(DrawSkillDetails d)
+    {
+        bool success = SkillPool.TryDrawSkill(out RunSkill skill, d);
+        if (!success)
+            throw new Exception();
+
+        SkillInventory.AddSkill(skill);
+    }
+
+    public void ForceDrawSkills(DrawSkillsDetails d)
+    {
+        bool success = SkillPool.TryDrawSkills(out List<RunSkill> skills, d);
+        if (!success)
+            throw new Exception();
+
+        SkillInventory.AddSkills(skills);
+    }
+
+    public void ForceAddSkill(AddSkillDetails d)
+        => SkillInventory.AddSkill(RunSkill.From(d._entry, d._jingJie));
+
+    public void ForceAddMech([CanBeNull] MechType mechType = null, int count = 1)
+        => ForceAddMech(new(mechType, count));
+    public void ForceAddMech(AddMechDetails d)
+    {
+        MechType mechType = d._mechType ?? MechType.FromIndex(RandomManager.Range(0, MechType.Length));
+        MechBag.AddMech(mechType, d._count);
+    }
+
+    public bool CanAffordTech(IndexPath indexPath)
+    {
+        RunTech runTech = DataManager.Get<RunTech>(indexPath);
+        return runTech.GetCost() <= _xiuWei;
+    }
+
+    public bool TrySetDoneTech(IndexPath indexPath)
+    {
+        if (!CanAffordTech(indexPath))
+            return false;
+
+        RunTech runTech = DataManager.Get<RunTech>(indexPath);
+        _xiuWei -= runTech.GetCost();
+        TechInventory.SetDone(runTech);
+        return true;
     }
 }

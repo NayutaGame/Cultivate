@@ -26,7 +26,7 @@ public class Arena : Inventory<RunEntity>, GDictionary
 
         ArenaSize.Do(item =>
         {
-            Add(new RunEntity());
+            Add(RunEntity.Default);
         });
 
         _reports = new StageReport[ArenaSize * ArenaSize];

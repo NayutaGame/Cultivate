@@ -48,39 +48,39 @@ public class SimulatePanel : Panel
 
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new(4,
-            getId: view =>
-            {
-                object item = DataManager.Get<object>(view.GetIndexPath());
-                if (item is RunSkill)
-                    return 0;
-                if (item is SkillInventory)
-                    return 1;
-                if (item is SkillSlot slot)
-                {
-                    RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-                    if (runEnvironment.Hero == slot.Owner)
-                        return 2;
-                    if (runEnvironment.Enemy == slot.Owner)
-                        return 3;
-                }
-                return null;
-            },
-            dragDropTable: new Func<IInteractable, IInteractable, bool>[]
-            {
-                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
-                /* RunSkill         */ TryMerge,   null,           TryEquip,        TryWrite,
-                /* SkillInventory   */ null,       null,           null,            null,
-                /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryWrite,
-                /* SkillSlot(Enemy) */ null,       null,           null,            null,
-            },
-            rMouseTable: new Func<IInteractable, bool>[]
-            {
-                /* RunSkill         */ TryIncreaseJingJie,
-                /* SkillInventory   */ null,
-                /* SkillSlot(Hero)  */ TryIncreaseJingJie,
-                /* SkillSlot(Enemy) */ TryIncreaseJingJie,
-            });
+        // InteractDelegate = new(4,
+        //     getId: view =>
+        //     {
+        //         object item = DataManager.Get<object>(view.GetIndexPath());
+        //         if (item is RunSkill)
+        //             return 0;
+        //         if (item is SkillInventory)
+        //             return 1;
+        //         if (item is SkillSlot slot)
+        //         {
+        //             RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        //             if (runEnvironment.Hero == slot.Owner)
+        //                 return 2;
+        //             if (runEnvironment.Enemy == slot.Owner)
+        //                 return 3;
+        //         }
+        //         return null;
+        //     },
+        //     dragDropTable: new Func<IInteractable, IInteractable, bool>[]
+        //     {
+        //         /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
+        //         /* RunSkill         */ TryMerge,   null,           TryEquip,        TryWrite,
+        //         /* SkillInventory   */ null,       null,           null,            null,
+        //         /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryWrite,
+        //         /* SkillSlot(Enemy) */ null,       null,           null,            null,
+        //     },
+        //     rMouseTable: new Func<IInteractable, bool>[]
+        //     {
+        //         /* RunSkill         */ TryIncreaseJingJie,
+        //         /* SkillInventory   */ null,
+        //         /* SkillSlot(Hero)  */ TryIncreaseJingJie,
+        //         /* SkillSlot(Enemy) */ TryIncreaseJingJie,
+        //     });
     }
 
     public override void Refresh()
@@ -89,30 +89,30 @@ public class SimulatePanel : Panel
         EnemyView.Refresh();
         SkillInventoryView.Refresh();
 
-        if (RunManager.Instance.Simulate.Report is { } report)
-        {
-            SimulatedHP.text = $"玩家 : 怪物\n{report.HomeLeftHp} : {report.AwayLeftHp}";
-            Light.color = report.HomeVictory ? Color.green : Color.red;
-            ReportText.text = report.ToString();
-        }
-        else
-        {
-            SimulatedHP.text = $"玩家 : 怪物\n无结果";
-            Light.color = Color.gray;
-            ReportText.text = "";
-        }
+        // if (RunManager.Instance.Simulate.Report is { } report)
+        // {
+        //     SimulatedHP.text = $"玩家 : 怪物\n{report.HomeLeftHp} : {report.AwayLeftHp}";
+        //     Light.color = report.HomeVictory ? Color.green : Color.red;
+        //     ReportText.text = report.ToString();
+        // }
+        // else
+        // {
+        //     SimulatedHP.text = $"玩家 : 怪物\n无结果";
+        //     Light.color = Color.gray;
+        //     ReportText.text = "";
+        // }
     }
 
     private void Report()
     {
-        RunManager.Instance.Combat(false, RunManager.Instance.Simulate);
-        RunCanvas.Instance.Refresh();
+        // RunManager.Instance.Combat(false, RunManager.Instance.Simulate);
+        // RunCanvas.Instance.Refresh();
     }
 
     private void Stream()
     {
-        RunManager.Instance.Combat(true, RunManager.Instance.Simulate);
-        RunCanvas.Instance.Refresh();
+        // RunManager.Instance.Combat(true, RunManager.Instance.Simulate);
+        // RunCanvas.Instance.Refresh();
     }
 
     private bool TryMerge(IInteractable from, IInteractable to)

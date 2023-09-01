@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
-using UnityEngine;
+
 using UnityEngine.UI;
 
 public class BarterPanel : Panel
@@ -16,7 +13,7 @@ public class BarterPanel : Panel
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.CurrentNode.CurrentPanel");
+        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
         BarterInventoryView.Configure(new IndexPath($"{_indexPath}.Inventory"));
 
         foreach (BarterItemView barterItemView in BarterInventoryView.Views)
@@ -44,7 +41,7 @@ public class BarterPanel : Panel
 
     private void Exit()
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new Signal());
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

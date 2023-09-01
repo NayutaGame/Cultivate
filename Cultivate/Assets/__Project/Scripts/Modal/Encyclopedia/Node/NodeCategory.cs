@@ -35,7 +35,7 @@ public class NodeCategory : Category<NodeEntry>
                         if (signal is SelectedOptionSignal selectedOptionSignal)
                         {
                             int index = selectedOptionSignal.Selected;
-                            new DrawSkillRewardDescriptor("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Map.JingJie).Claim();
+                            new DrawSkillRewardDescriptor("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Battle.Map.JingJie).Claim();
                         }
                         return null;
                     };
@@ -107,16 +107,16 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new RewardNodeEntry("算卦", "算卦", "算卦",
-                canCreate: x => RunManager.Instance.Map.HasAdventrueAfterwards(x),
+                canCreate: x => RunManager.Instance.Battle.Map.HasAdventureAfterwards(x),
                 create: runNode =>
                 {
-                    DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Map.NextAdventure().Name}",
+                    DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Battle.Map.NextAdventure().Name}",
                         "换一个",
                         "保持现状");
 
                     A[0]._select = option =>
                     {
-                        RunManager.Instance.Map.RerollNextAdventure();
+                        RunManager.Instance.Battle.Map.RedrawNextAdventure();
                         return null;
                     };
 
@@ -288,7 +288,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor C = new("实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+100");
                     DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，要来干你了。");
 
-                    BattlePanelDescriptor E = new(null, null);
+                    BattlePanelDescriptor E = new(null);
                     DialogPanelDescriptor Ewin = new("胜利");
                     DialogPanelDescriptor Elose = new("失败");
 

@@ -11,10 +11,10 @@ public class EntityPool : Pool<EntityEntry>
         Populate(Encyclopedia.EntityCategory.Traversal.FilterObj(entityEntry => entityEntry != Encyclopedia.EntityCategory[0]).ToList());
     }
 
-    public bool ForceDrawEntityEntry(out EntityEntry entityEntry, CreateEntityDetails d)
+    public bool TryDrawEntity(out EntityEntry entityEntry, DrawEntityDetails d)
     {
         Shuffle();
-        TryPopItem(out EntityEntry item, e => e.CanCreate(d));
+        TryPopItem(out EntityEntry item, e => e.CanDraw(d));
         entityEntry = item ?? Encyclopedia.EntityCategory[0];
         return true;
     }

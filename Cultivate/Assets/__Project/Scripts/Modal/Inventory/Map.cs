@@ -39,11 +39,14 @@ public class Map : GDictionary
     public bool Selecting { get; private set; }
     private Vector2Int _heroPosition;
 
-    public RunNode TryGetCurrentNode()
+    public RunNode CurrentNode
     {
-        if (_heroPosition.x < 0)
-            return null;
-        return this[_heroPosition];
+        get
+        {
+            if (_heroPosition.x < 0)
+                return null;
+            return this[_heroPosition];
+        }
     }
 
     public PanelDescriptor SelectedNode(RunNode selected)
@@ -62,15 +65,15 @@ public class Map : GDictionary
         }
 
         Selecting = false;
-        return TryGetCurrentNode().CurrentPanel;
+        return CurrentNode.CurrentPanel;
     }
 
     public PanelDescriptor ReceiveSignal(Signal signal)
     {
-        PanelDescriptor panelDescriptor = TryGetCurrentNode().CurrentPanel.ReceiveSignal(signal);
+        PanelDescriptor panelDescriptor = CurrentNode.CurrentPanel.ReceiveSignal(signal);
         if (panelDescriptor != null)
         {
-            TryGetCurrentNode().ChangePanel(panelDescriptor);
+            CurrentNode.ChangePanel(panelDescriptor);
         }
         else
         {
@@ -100,7 +103,7 @@ public class Map : GDictionary
 
         Selecting = true;
 
-        TryGetCurrentNode().ChangePanel(null);
+        CurrentNode.ChangePanel(null);
 
         if (isEnd)
             JingJie += 1;
@@ -134,9 +137,7 @@ public class Map : GDictionary
     }
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
+    public object Get(string s) => _accessors[s]();
     public Map()
     {
         _list = new RunNode[HEIGHT * WIDTH];
@@ -148,6 +149,7 @@ public class Map : GDictionary
         _accessors = new()
         {
             { "Nodes", () => _list },
+            { "CurrentNode", () => CurrentNode },
         };
 
         // _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
@@ -196,7 +198,7 @@ public class Map : GDictionary
                 NodeEntry nodeEntry = pool.ForcePopItem(pred: e => e.CanCreate(currX));
                 if (nodeEntry is BattleNodeEntry battleNodeEntry)
                 {
-                    CreateEntityDetails d = new CreateEntityDetails(_jingJie, x <= 2, 4 <= x && x <= 6, x >= 8);
+                    DrawEntityDetails d = new DrawEntityDetails(_jingJie, x <= 3, 3 < x && x <= 6, 6 < x);
                     this[x, y] = new BattleRunNode(new Vector2Int(x, y), _jingJie, battleNodeEntry, d);
                 }
                 else
@@ -226,7 +228,7 @@ public class Map : GDictionary
         return null;
     }
 
-    public bool HasAdventrueAfterwards(int currX)
+    public bool HasAdventureAfterwards(int currX)
     {
         for (int x = currX + 1; x < _poolConfiguration[_jingJie].Length; x++)
         {
@@ -237,7 +239,7 @@ public class Map : GDictionary
         return false;
     }
 
-    public bool RerollNextAdventure()
+    public bool RedrawNextAdventure()
     {
         int currX = _heroPosition.x;
         for (int x = currX + 1; x < _poolConfiguration[_jingJie].Length; x++)

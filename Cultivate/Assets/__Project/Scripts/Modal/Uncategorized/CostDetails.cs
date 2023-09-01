@@ -20,12 +20,12 @@ public class CostDetails
 
     public bool CanCost()
     {
-        return _xiuWei <= RunManager.Instance.XiuWei;
+        return _xiuWei <= RunManager.Instance.Battle.XiuWei;
     }
 
     public void Cost()
     {
-        RunManager.Instance.RemoveXiuWei(_xiuWei);
+        RunManager.Instance.Battle.RemoveXiuWei(_xiuWei);
         // RunManager.Instance.AddChanNeng(-_chanNeng);
         // RunManager.Instance.AddMingYuan(-_mingYuan);
         // RunManager.Instance.AddHealth(-_health);

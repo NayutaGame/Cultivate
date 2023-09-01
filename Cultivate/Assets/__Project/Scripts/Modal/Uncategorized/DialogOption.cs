@@ -31,7 +31,6 @@ public class DialogOption
     private PanelDescriptor DefaultSelect(DialogOption dialogOption)
     {
         Cost?.Cost();
-        RunManager.Instance.Map.TryFinishNode();
         return null;
     }
 

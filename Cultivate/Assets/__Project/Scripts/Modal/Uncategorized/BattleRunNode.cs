@@ -6,18 +6,18 @@ using UnityEngine;
 
 public class BattleRunNode : RunNode
 {
-    public CreateEntityDetails CreateEntityDetails;
+    public DrawEntityDetails DrawEntityDetails;
     private List<RewardDescriptor> _rewards;
     public EntityEntry EntityEntry;
 
-    public BattleRunNode(Vector2Int position, JingJie jingJie, BattleNodeEntry entry, CreateEntityDetails createEntityDetails) : base(position, jingJie, entry)
+    public BattleRunNode(Vector2Int position, JingJie jingJie, BattleNodeEntry entry, DrawEntityDetails drawEntityDetails) : base(position, jingJie, entry)
     {
-        CreateEntityDetails = createEntityDetails;
+        DrawEntityDetails = drawEntityDetails;
         _rewards = new();
-        RunManager.Instance.EntityPool.ForceDrawEntityEntry(out EntityEntry entityEntry, CreateEntityDetails);
+        RunManager.Instance.Battle.EntityPool.TryDrawEntity(out EntityEntry entityEntry, DrawEntityDetails);
         EntityEntry = entityEntry;
 
-        _spriteEntry = CreateEntityDetails.AllowBoss ? "Boss" : "战斗";
+        _spriteEntry = DrawEntityDetails.AllowBoss ? "Boss" : "战斗";
     }
 
     public override string GetTitle()

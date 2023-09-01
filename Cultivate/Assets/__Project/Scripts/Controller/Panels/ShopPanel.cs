@@ -17,7 +17,7 @@ public class ShopPanel : Panel
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.CurrentNode.CurrentPanel");
+        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
         CommodityInventoryView.Configure(new IndexPath($"{_indexPath}.Commodities"));
 
         foreach (CommodityView commodityView in CommodityInventoryView.Views)
@@ -45,7 +45,7 @@ public class ShopPanel : Panel
 
     private void Exit()
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new Signal());
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

@@ -102,15 +102,12 @@ public class RunEntity : GDictionary, IEntityModel
     public void SetEntry(EntityEntry entry)
     {
         _entry = entry;
-        FromEntity(new RunEntity(_entry, new CreateEntityDetails(GetJingJie())));
+        FromEntity(new RunEntity(_entry));
     }
-
-    private CreateEntityDetails _createEntityDetails;
-    public CreateEntityDetails CreateEntityDetails => _createEntityDetails;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public RunEntity(EntityEntry entry = null, CreateEntityDetails d = null)
+    private RunEntity(EntityEntry entry = null)
     {
         _accessors = new()
         {
@@ -119,7 +116,6 @@ public class RunEntity : GDictionary, IEntityModel
         };
 
         _entry = entry;
-        _createEntityDetails = d;
 
         _mingYuan = MingYuan.Default;
 
@@ -135,12 +131,26 @@ public class RunEntity : GDictionary, IEntityModel
         SetJingJie(JingJie.LianQi);
         SetBaseHealth(BaseHP[JingJie.LianQi]);
 
-        if (_entry != null && _createEntityDetails != null)
+        if (_entry != null)
         {
-            _entry.Create(this, _createEntityDetails);
+            _entry.Create(this);
             UpdateReveal();
         }
     }
+
+    public static RunEntity Default
+        => new();
+
+    public static RunEntity FromJingJieHealth(JingJie jingJie, int health)
+    {
+        RunEntity e = new();
+        e.SetJingJie(jingJie);
+        e.SetBaseHealth(health);
+        return e;
+    }
+
+    public static RunEntity FromEntry(EntityEntry entry)
+        => new(entry);
 
     public void SetSlotContent(int i, string skillName, JingJie? j = null)
     {

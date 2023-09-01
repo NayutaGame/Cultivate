@@ -13,9 +13,13 @@ public class DiscoverSkillPanel : Panel
 
     private InteractDelegate InteractDelegate;
 
+    private IndexPath _indexPath;
+
     public override void Configure()
     {
         base.Configure();
+
+        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
 
         ConfigureInteractDelegate();
         SkillViews.Do(v => v.SetDelegate(InteractDelegate));
@@ -36,30 +40,28 @@ public class DiscoverSkillPanel : Panel
     {
         base.Refresh();
 
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        DiscoverSkillPanelDescriptor d = runNode.CurrentPanel as DiscoverSkillPanelDescriptor;
+        DiscoverSkillPanelDescriptor d = DataManager.Get<DiscoverSkillPanelDescriptor>(_indexPath);
 
         DetailedText.text = d.GetDetailedText();
 
         for (int i = 0; i < SkillViews.Length; i++)
         {
-            bool active = i < d.GetSkillCount() && !RunManager.Instance.Map.Selecting;
+            bool active = i < d.GetSkillCount() && !RunManager.Instance.Battle.Map.Selecting;
             SkillViews[i].gameObject.SetActive(active);
             if(!active)
                 continue;
 
-            SkillViews[i].Configure(new IndexPath($"Run.CurrentNode.CurrentPanel.Skills#{i}"));
+            SkillViews[i].Configure(new IndexPath($"{_indexPath}.Skills#{i}"));
             SkillViews[i].Refresh();
         }
     }
 
     public bool TrySelectOption(IInteractable view)
     {
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        DiscoverSkillPanelDescriptor d = runNode.CurrentPanel as DiscoverSkillPanelDescriptor;
+        DiscoverSkillPanelDescriptor d = DataManager.Get<DiscoverSkillPanelDescriptor>(_indexPath);
 
         RunSkill skill = DataManager.Get<RunSkill>(view.GetIndexPath());
-        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
         RunCanvas.Instance.SetIndexPathForSkillPreview(null);
         return true;

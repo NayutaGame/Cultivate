@@ -33,7 +33,7 @@ public class BattlePanel : Panel
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.Battle");
+        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
 
         EnemyHand.Configure(new IndexPath($"{_indexPath}.Enemy.Slots"));
         EnemySubFormationInventory.Configure(new IndexPath($"{_indexPath}.Enemy.ActivatedSubFormations"));
@@ -47,7 +47,9 @@ public class BattlePanel : Panel
         EnemyHand.Refresh();
         EnemySubFormationInventory.Refresh();
 
-        if (RunManager.Instance.Battle.Report is { } report)
+        BattlePanelDescriptor d = DataManager.Get<BattlePanelDescriptor>(_indexPath);
+
+        if (d.Report is { } report)
         {
             HomeHP.text = report.HomeLeftHp.ToString();
             AwayHP.text = report.AwayLeftHp.ToString();
@@ -81,13 +83,15 @@ public class BattlePanel : Panel
 
     private void Report()
     {
-        RunManager.Instance.Combat(false, RunManager.Instance.Battle);
+        BattlePanelDescriptor d = DataManager.Get<BattlePanelDescriptor>(_indexPath);
+        d.Combat(false, true);
         RunCanvas.Instance.Refresh();
     }
 
     private void Act()
     {
-        RunManager.Instance.Combat(true, RunManager.Instance.Battle);
+        BattlePanelDescriptor d = DataManager.Get<BattlePanelDescriptor>(_indexPath);
+        d.Combat(true, true);
         RunCanvas.Instance.Refresh();
     }
 

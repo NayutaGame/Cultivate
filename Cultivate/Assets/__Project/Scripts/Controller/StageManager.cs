@@ -22,6 +22,7 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
     public StageAnimationDelegate Anim;
 
+    public CombatDetails CombatDetails;
     private Task _task;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -41,15 +42,15 @@ public class StageManager : Singleton<StageManager>, GDictionary
 
     public async Task Enter()
     {
-        CombatDetails d = RunManager.Instance.CombatDetails;
+        CombatDetails d = CombatDetails;
 
         EndEnv = new StageEnvironment(d.Home, d.Away, useTimeline: true, useSb: true);
         CurrEnv = new StageEnvironment(d.Home, d.Away, useTween: true);
         EndEnv.Simulate().GetAwaiter().GetResult();
         EndEnv.WriteResult();
-        RunManager.Instance.Report = EndEnv.Report;
+        d.Report = EndEnv.Report;
 
-        if (!d.UseAnim)
+        if (!d.Animated)
         {
             AppManager.Pop();
             return;
@@ -69,9 +70,9 @@ public class StageManager : Singleton<StageManager>, GDictionary
         return Instance.EndEnv.Report;
     }
 
-    public static bool[] ManaSimulate(RunEntity home, RunEntity away)
+    public static bool[] ManaSimulate(RunEntity home)
     {
-        Instance.EndEnv = new StageEnvironment(home, away);
+        Instance.EndEnv = new StageEnvironment(home, RunEntity.FromJingJieHealth(home.GetJingJie(), 1000000));
         return Instance.EndEnv.InnerManaSimulate().GetAwaiter().GetResult();
     }
 
@@ -79,14 +80,14 @@ public class StageManager : Singleton<StageManager>, GDictionary
     {
         DisableVFX();
 
-        CombatDetails d = RunManager.Instance.CombatDetails;
-        if (!d.FireSignal)
+        CombatDetails d = CombatDetails;
+        if (!d.WriteResult)
             return;
 
         Signal signal = new BattleResultSignal(EndEnv.Report.HomeVictory
             ? BattleResultSignal.BattleResultState.Win
             : BattleResultSignal.BattleResultState.Lose);
-        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(signal);
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(signal);
         RunCanvas.Instance.SetNodeState(panelDescriptor);
         EndEnv.WriteEffect();
     }

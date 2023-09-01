@@ -5,16 +5,20 @@ using UnityEngine;
 
 public class CombatDetails
 {
-    public bool UseAnim;
-    public bool FireSignal;
+    public bool Animated;
+    public bool WriteResult;
     public RunEntity Home;
     public RunEntity Away;
 
-    public CombatDetails(bool useAnim, bool fireSignal, RunEntity home, RunEntity away)
+    public StageReport Report;
+
+    public CombatDetails(bool animated, bool writeResult, RunEntity home, RunEntity away, StageReport report)
     {
-        UseAnim = useAnim;
-        FireSignal = fireSignal;
+        Animated = animated;
+        WriteResult = writeResult;
         Home = home;
         Away = away;
+
+        Report = report;
     }
 }

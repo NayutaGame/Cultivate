@@ -1,24 +1,48 @@
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class BattlePanelDescriptor : PanelDescriptor
 {
     private EntityEntry _entityEntry;
     public EntityEntry EntityEntry => _entityEntry;
 
-    private CreateEntityDetails _createEntityDetails;
-
-    public BattlePanelDescriptor(EntityEntry entityEntry, CreateEntityDetails createEntityDetails)
+    private RunEntity _enemy;
+    public RunEntity Enemy
     {
+        get => _enemy;
+        set
+        {
+            if (_enemy != null) _enemy.EnvironmentChangedEvent -= RunManager.Instance.Battle.EnvironmentChanged;
+            _enemy = value;
+            if (_enemy != null) _enemy.EnvironmentChangedEvent += RunManager.Instance.Battle.EnvironmentChanged;
+            _enemy?.EnvironmentChanged();
+        }
+    }
+
+    public StageReport Report;
+    public CombatDetails CombatDetails;
+
+    public BattlePanelDescriptor(EntityEntry entityEntry)
+    {
+        _accessors = new()
+        {
+            { "Enemy", () => Enemy },
+        };
         _entityEntry = entityEntry;
-        _createEntityDetails = createEntityDetails;
     }
 
     public override void DefaultEnter()
     {
-        RunManager.Instance.Battle.Enemy = new RunEntity(_entityEntry, _createEntityDetails);
+        base.DefaultEnter();
+        Enemy = RunEntity.FromEntry(_entityEntry);
+        RunManager.Instance.Battle.EnvironmentChangedEvent += CalcReport;
+    }
+
+    public override void DefaultExit()
+    {
+        base.DefaultExit();
+        RunManager.Instance.Battle.EnvironmentChangedEvent -= CalcReport;
+        Enemy = null;
     }
 
     public Func<PanelDescriptor> _win;
@@ -32,5 +56,16 @@ public class BattlePanelDescriptor : PanelDescriptor
         }
 
         return this;
+    }
+
+    public void Combat(bool animated, bool writeResult)
+    {
+        StageManager.Instance.CombatDetails = new CombatDetails(animated, writeResult, RunManager.Instance.Battle.Hero, Enemy, Report);
+        AppManager.Push(new AppStageS());
+    }
+
+    private void CalcReport()
+    {
+        Report = StageManager.SimulateBrief(RunManager.Instance.Battle.Hero, Enemy);
     }
 }

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class AddSkillRewardDescriptor : RewardDescriptor
 {
@@ -19,7 +16,7 @@ public class AddSkillRewardDescriptor : RewardDescriptor
 
     public override void Claim()
     {
-        RunManager.Instance.ForceAddSkill(new AddSkillDetails(_entry, _jingJie));
+        RunManager.Instance.Battle.ForceAddSkill(new AddSkillDetails(_entry, _jingJie));
     }
 
     public override string GetDescription() => _description;

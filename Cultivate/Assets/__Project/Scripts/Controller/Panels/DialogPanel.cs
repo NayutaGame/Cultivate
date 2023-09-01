@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using CLLibrary;
-using DG.Tweening;
+
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogPanel : Panel
@@ -13,9 +8,13 @@ public class DialogPanel : Panel
     public Button[] Buttons;
     public TMP_Text[] Texts;
 
+    private IndexPath _indexPath;
+
     public override void Configure()
     {
         base.Configure();
+
+        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
 
         Buttons[0].onClick.RemoveAllListeners();
         Buttons[1].onClick.RemoveAllListeners();
@@ -32,14 +31,13 @@ public class DialogPanel : Panel
     {
         base.Refresh();
 
-        RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        DialogPanelDescriptor d = runNode.CurrentPanel as DialogPanelDescriptor;
+        DialogPanelDescriptor d = DataManager.Get<DialogPanelDescriptor>(_indexPath);
 
         DetailedText.text = d.GetDetailedText();
 
         for (int i = 0; i < Buttons.Length; i++)
         {
-            bool active = i < d.GetOptionsCount() && !RunManager.Instance.Map.Selecting;
+            bool active = i < d.GetOptionsCount() && !RunManager.Instance.Battle.Map.Selecting;
             Buttons[i].gameObject.SetActive(active);
             if(!active)
                 continue;
@@ -51,7 +49,7 @@ public class DialogPanel : Panel
 
     private void SelectedOption(int i)
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Map.ReceiveSignal(new SelectedOptionSignal(i));
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedOptionSignal(i));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 

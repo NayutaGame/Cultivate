@@ -61,7 +61,7 @@ public class TechView : MonoBehaviour, IIndexPath
         if (!isCurrent) return;
 
         CostText.text = runTech.GetCost().ToString();
-        CostText.color = RunManager.Instance.CanAffordTech(GetIndexPath()) ? Color.black : Color.red;
+        CostText.color = RunManager.Instance.Battle.CanAffordTech(GetIndexPath()) ? Color.black : Color.red;
 
         if (runTech.HasEureka)
         {
@@ -75,7 +75,7 @@ public class TechView : MonoBehaviour, IIndexPath
 
     private void TrySetDone()
     {
-        RunManager.Instance.TrySetDoneTech(GetIndexPath());
+        RunManager.Instance.Battle.TrySetDoneTech(GetIndexPath());
         RunCanvas.Instance.Refresh();
     }
 }
