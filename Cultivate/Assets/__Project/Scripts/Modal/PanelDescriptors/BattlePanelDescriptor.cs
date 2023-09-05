@@ -46,8 +46,19 @@ public class BattlePanelDescriptor : PanelDescriptor
         Enemy = null;
     }
 
-    public Func<PanelDescriptor> _win;
-    public Func<PanelDescriptor> _lose;
+    private Func<PanelDescriptor> _win;
+    public BattlePanelDescriptor SetWin(Func<PanelDescriptor> win)
+    {
+        _win = win;
+        return this;
+    }
+
+    private Func<PanelDescriptor> _lose;
+    public BattlePanelDescriptor SetLose(Func<PanelDescriptor> lose)
+    {
+        _lose = lose;
+        return this;
+    }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {

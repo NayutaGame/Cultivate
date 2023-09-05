@@ -12,8 +12,8 @@ public class DesignerEnvironment
 
     public static void EnterRun()
     {
-        // Standard();
-        Custom();
+        Standard();
+        // Custom();
     }
 
     public static void Standard()

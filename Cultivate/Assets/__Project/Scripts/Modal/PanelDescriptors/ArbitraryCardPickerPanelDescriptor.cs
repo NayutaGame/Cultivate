@@ -13,7 +13,12 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
     private Range _range;
     public Range Range => _range;
 
-    public Func<List<RunSkill>, PanelDescriptor> _select;
+    private Func<List<RunSkill>, PanelDescriptor> _select;
+    public ArbitraryCardPickerPanelDescriptor SetSelect(Func<List<RunSkill>, PanelDescriptor> select)
+    {
+        _select = select;
+        return this;
+    }
 
     public ArbitraryCardPickerPanelDescriptor(string detailedText = null, Range range = null, Func<List<RunSkill>, PanelDescriptor> select = null)
     {

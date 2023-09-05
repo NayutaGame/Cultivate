@@ -11,7 +11,13 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     private Range _range;
     public Range Range => _range;
 
-    public Func<List<object>, PanelDescriptor> _select;
+    private Func<List<object>, PanelDescriptor> _select;
+    public CardPickerPanelDescriptor SetSelect(Func<List<object>, PanelDescriptor> select)
+    {
+        _select = select;
+        return this;
+    }
+
 
     public DrawSkillDetails _drawSkillDetails;
 

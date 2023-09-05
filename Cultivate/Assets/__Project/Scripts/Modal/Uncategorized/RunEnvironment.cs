@@ -308,8 +308,18 @@ public class RunEnvironment : GDictionary
         => ForceAddMech(new(mechType, count));
     public void ForceAddMech(AddMechDetails d)
     {
-        MechType mechType = d._mechType ?? MechType.FromIndex(RandomManager.Range(0, MechType.Length));
-        MechBag.AddMech(mechType, d._count);
+        if (d._mechType == null)
+        {
+            for (int i = 0; i < d._count; i++)
+            {
+                MechType mechType = MechType.FromIndex(RandomManager.Range(0, MechType.Length));
+                MechBag.AddMech(mechType);
+            }
+        }
+        else
+        {
+            MechBag.AddMech(d._mechType, d._count);
+        }
     }
 
     public bool CanAffordTech(IndexPath indexPath)
