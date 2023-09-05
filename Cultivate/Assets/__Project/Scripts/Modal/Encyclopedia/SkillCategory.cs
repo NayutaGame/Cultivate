@@ -31,10 +31,61 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("无量劫", new Range(1, 5), new SkillDescription((j, dj) => $"吟唱3\n治疗{18 + dj * 6}"),
-                skillTypeComposite: SkillType.LingQi | SkillType.SunHao, withinPool: false, channelTimeEvaluator: 3,
+                withinPool: false, channelTimeEvaluator: 3,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.HealProcedure(18 + skill.Dj * 6);
+                }),
+
+            new("百草集", new Range(3, 5), new SkillDescription((j, dj) => $"如果存在锋锐，格挡，力量，闪避，灼烧，层数+{1 + dj}"), manaCostEvaluator: 3,
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    BuffEntry[] buffEntries = new BuffEntry[] { "锋锐", "格挡", "力量", "闪避", "灼烧", };
+
+                    foreach (BuffEntry buffEntry in buffEntries)
+                    {
+                        Buff b = caster.FindBuff(buffEntry);
+                        if (b != null)
+                            await caster.BuffSelfProcedure(b.Entry, 1 + skill.Dj);
+                    }
+                }),
+
+            new("遗憾", new Range(2, 5), new SkillDescription((j, dj) => $"对手失去{3 + dj}灵气"),
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.DispelOppoProcedure("灵气", 3 + skill.Dj, false);
+                }),
+
+            new("爱恋", new Range(2, 5), new SkillDescription((j, dj) => $"获得{2 + dj}集中"),
+                withinPool: false,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.DispelOppoProcedure("集中", 2 + skill.Dj, false);
+                }),
+
+            new("射金乌", new Range(2, 5), new SkillDescription((j, dj) => $"5攻x{4 + 2 * dj}"), manaCostEvaluator: 6,
+                withinPool: false, skillTypeComposite: SkillType.Attack, wuXing: WuXing.Huo,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(5, times: 4 + 2 * skill.Dj, wuXing: skill.Entry.WuXing);
+                }),
+
+            new("春雨", new Range(2, 5), new SkillDescription((j, dj) => $"双方下{1 + dj}次治疗时，效果变为1.5倍"),
+                withinPool: false, wuXing: WuXing.Shui,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("春雨", 1 + skill.Dj);
+                    await caster.BuffOppoProcedure("春雨", 1 + skill.Dj);
+                }),
+
+            new("枯木", new Range(2, 5), new SkillDescription((j, dj) => $"双方回合结束时，受到{2 + dj}减甲"),
+                withinPool: false, wuXing: WuXing.Jin,
+                execute: async (caster, skill, recursive) =>
+                {
+                    await caster.BuffSelfProcedure("枯木", 2 + skill.Dj);
+                    await caster.BuffOppoProcedure("枯木", 2 + skill.Dj);
                 }),
 
             // 机关牌
@@ -154,7 +205,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             // 返虚
-            new("反应堆", JingJie.FanXu, "消耗\n生命上限设为1，无法收到治疗，永久双发+1", // 香香香
+            new("反应堆", JingJie.FanXu, "消耗\n生命上限设为1，无法受到治疗，永久双发+1", // 香香香
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>

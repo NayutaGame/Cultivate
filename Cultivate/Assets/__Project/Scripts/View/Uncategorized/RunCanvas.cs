@@ -64,7 +64,7 @@ public class RunCanvas : Singleton<RunCanvas>
                 /* Mech             */ null,       null,           TryEquipMech,    null,
             });
 
-        CardPickerInteractDelegate = new(3,
+        CardPickerInteractDelegate = new(4,
             getId: view =>
             {
                 object item = DataManager.Get<object>(view.GetIndexPath());

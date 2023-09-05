@@ -22,6 +22,12 @@ public class DialogOption
         return Cost?.CanCost() ?? true;
     }
 
+    public DialogOption SetSelect(Func<DialogOption, PanelDescriptor> select)
+    {
+        _select = select;
+        return this;
+    }
+
     public PanelDescriptor Select()
     {
         Cost?.Cost();

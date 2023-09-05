@@ -21,4 +21,18 @@ public class DrawSkillsDetails
         _distinct = distinct;
         _consume = consume;
     }
+
+    public bool CanDraw(SkillEntry skillEntry)
+    {
+        if (_pred != null && !_pred(skillEntry))
+            return false;
+
+        if (_wuXing != null && skillEntry.WuXing != _wuXing)
+            return false;
+
+        if (_jingJie != null && skillEntry.JingJieRange.Contains(_jingJie.Value))
+            return false;
+
+        return true;
+    }
 }

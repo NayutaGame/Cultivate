@@ -495,10 +495,10 @@ public class StageEntity : GDictionary, CLEventListener
     public async Task BuffOppoProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
         => await _env.BuffProcedure(new BuffDetails(this, Opponent(), buffEntry, stack, recursive));
 
-    public async Task DispelSelfProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive)
+    public async Task DispelSelfProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive = true)
         => await _env.DispelProcedure(new DispelDetails(this, this, buffEntry, stack, friendly, recursive));
 
-    public async Task DispelOppoProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive)
+    public async Task DispelOppoProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive = true)
         => await _env.DispelProcedure(new DispelDetails(this, Opponent(), buffEntry, stack, friendly, recursive));
 
     public async Task FormationProcedure(FormationEntry formationEntry, bool recursive = true)

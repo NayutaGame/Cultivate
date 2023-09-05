@@ -7,7 +7,7 @@ using UnityEngine;
 public class BattleRunNode : RunNode
 {
     public DrawEntityDetails DrawEntityDetails;
-    private List<RewardDescriptor> _rewards;
+    private List<Reward> _rewards;
     public EntityEntry EntityEntry;
 
     public BattleRunNode(Vector2Int position, JingJie jingJie, BattleNodeEntry entry, DrawEntityDetails drawEntityDetails) : base(position, jingJie, entry)
@@ -25,9 +25,9 @@ public class BattleRunNode : RunNode
         return EntityEntry.Name;
     }
 
-    public void AddReward(RewardDescriptor rewardDescriptor)
+    public void AddReward(Reward reward)
     {
-        _rewards.Add(rewardDescriptor);
+        _rewards.Add(reward);
     }
 
     public string GetRewardsString()

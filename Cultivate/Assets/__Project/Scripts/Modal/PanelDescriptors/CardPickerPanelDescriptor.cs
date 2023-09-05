@@ -1,7 +1,6 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Range = CLLibrary.Range;
 
 public class CardPickerPanelDescriptor : PanelDescriptor
@@ -12,27 +11,36 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     private Range _range;
     public Range Range => _range;
 
-    public Action<List<object>> _action;
+    public Func<List<object>, PanelDescriptor> _select;
 
-    public CardPickerPanelDescriptor(string detailedText = null, Range range = null, Action<List<object>> action = null)
+    public DrawSkillDetails _drawSkillDetails;
+
+    public CardPickerPanelDescriptor(string detailedText = null, Range range = null, Func<List<object>, PanelDescriptor> select = null,
+        DrawSkillDetails drawSkillDetails = null)
     {
         _detailedText = detailedText ?? "请选择卡";
         _range = range ?? new Range(1);
-        _action = action;
+        _select = select;
+        _drawSkillDetails = drawSkillDetails;
     }
 
     public bool CanSelect(EmulatedSkill skill)
     {
+        if (_drawSkillDetails != null && !_drawSkillDetails.CanDraw(skill.GetEntry()))
+            return false;
         return skill is RunSkill;
     }
 
     public bool CanSelect(SkillSlot slot)
         => slot.Skill != null && CanSelect(slot.Skill);
 
-    public void ConfirmSelections(List<object> iRunSkillList)
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {
-        _action?.Invoke(iRunSkillList);
-    }
+        if (signal is SelectedIRunSkillsSignal selectedIRunSkillsSignal && _select != null)
+        {
+            return _select(selectedIRunSkillsSignal.Selected);
+        }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal) => null;
+        return null;
+    }
 }

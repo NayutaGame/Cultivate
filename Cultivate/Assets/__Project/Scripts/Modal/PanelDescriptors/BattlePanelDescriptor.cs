@@ -36,6 +36,7 @@ public class BattlePanelDescriptor : PanelDescriptor
         base.DefaultEnter();
         Enemy = RunEntity.FromEntry(_entityEntry);
         RunManager.Instance.Battle.EnvironmentChangedEvent += CalcReport;
+        CalcReport();
     }
 
     public override void DefaultExit()

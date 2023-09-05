@@ -31,6 +31,35 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
+            new("春雨", "下1次治疗时，效果变为1.5倍", BuffStackRule.Add, true, false,
+                eventDescriptors: new CLEventDescriptor[]
+                {
+                    new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.WILL_HEAL, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        HealDetails d = (HealDetails)stageEventDetails;
+                        if (b.Owner == d.Tgt)
+                        {
+                            d.Value = (int)1.5f * d.Value;
+                            await b.SetDStack(-1);
+                        }
+                    }),
+                }),
+
+            new("枯木", "回合结束时，受到{2 + dj}减甲", BuffStackRule.Add, false, false,
+                eventDescriptors: new CLEventDescriptor[]
+                {
+                    new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.END_TURN, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+                        if (b.Owner == d.Owner)
+                        {
+                            await b.Owner.ArmorLoseSelfProcedure(b.Stack);
+                        }
+                    }),
+                }),
+
             new("脆弱", "受到攻击：攻击力+[层数]", BuffStackRule.Add, false, true,
                 eventDescriptors: new CLEventDescriptor[]
                 {

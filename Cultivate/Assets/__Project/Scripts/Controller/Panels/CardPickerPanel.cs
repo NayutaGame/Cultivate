@@ -45,6 +45,7 @@ public class CardPickerPanel : Panel
 
         InfoText.text = d.GetDetailedText();
         StatusText.text = $"可以选择 {d.Range.Start} ~ {d.Range.End - 1} 张卡\n已选   {SelectionCount}   张";
+        ConfirmButton.interactable = d.Range.Contains(SelectionCount);
     }
 
     private int SelectionCount => _skillSelections.Count + _slotSelections.Count;
@@ -75,7 +76,6 @@ public class CardPickerPanel : Panel
             _skillSelections.Add(skillView);
         }
 
-        ConfirmButton.interactable = d.Range.Contains(SelectionCount);
         return true;
     }
 
@@ -105,7 +105,6 @@ public class CardPickerPanel : Panel
             _slotSelections.Add(slotView);
         }
 
-        ConfirmButton.interactable = d.Range.Contains(SelectionCount);
         return true;
     }
 
@@ -115,8 +114,7 @@ public class CardPickerPanel : Panel
         List<object> iRunSkillList = new List<object>();
         iRunSkillList.AddRange(_skillSelections.Map(v => DataManager.Get<object>(v.GetIndexPath())));
         iRunSkillList.AddRange(_slotSelections.Map(v => DataManager.Get<object>(v.GetIndexPath())));
-        d.ConfirmSelections(iRunSkillList);
-        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedIRunSkillsSignal(iRunSkillList));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

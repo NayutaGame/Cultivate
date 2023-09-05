@@ -288,8 +288,9 @@ public class StageEnvironment : GDictionary, CLEventListener
         if (d.Cancel)
             return;
 
-        Buff b = d.Src.FindBuff(d._buffEntry);
-        await b.SetStack(Mathf.Max(0, b.Stack - d._stack));
+        Buff b = d.Tgt.FindBuff(d._buffEntry);
+        if (b != null)
+            await b.SetStack(Mathf.Max(0, b.Stack - d._stack));
 
         await _eventDict.SendEvent(CLEventDict.DID_DISPEL, d);
     }

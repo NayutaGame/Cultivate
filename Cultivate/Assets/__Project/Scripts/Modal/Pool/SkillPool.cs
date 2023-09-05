@@ -18,19 +18,7 @@ public class SkillPool : Pool<SkillEntry>
     {
         Shuffle();
 
-        TryPopItem(out SkillEntry item, s =>
-        {
-            if (d._pred != null && !d._pred(s))
-                return false;
-
-            if (d._wuXing != null && d._wuXing != s.WuXing)
-                return false;
-
-            if (d._jingJie != null && !s.JingJieRange.Contains(d._jingJie.Value))
-                return false;
-
-            return true;
-        });
+        TryPopItem(out SkillEntry item, d.CanDraw);
 
         item ??= Encyclopedia.SkillCategory[0];
 
@@ -54,13 +42,7 @@ public class SkillPool : Pool<SkillEntry>
         {
             TryPopItem(out SkillEntry item, s =>
             {
-                if (d._pred != null && !d._pred(s))
-                    return false;
-
-                if (d._wuXing != null && d._wuXing != s.WuXing)
-                    return false;
-
-                if (d._jingJie != null && !s.JingJieRange.Contains(d._jingJie.Value))
+                if (!d.CanDraw(s))
                     return false;
 
                 if (d._distinct && skillEntries.Contains(s))
@@ -79,7 +61,9 @@ public class SkillPool : Pool<SkillEntry>
         }
 
         if (!d._consume)
+        {
             Populate(skills.FilterObj(s => s.GetEntry() != Encyclopedia.SkillCategory[0]).Map(s => s.GetEntry()));
+        }
 
         return true;
     }

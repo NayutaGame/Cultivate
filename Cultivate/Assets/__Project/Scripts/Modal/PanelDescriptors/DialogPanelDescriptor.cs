@@ -14,7 +14,12 @@ public class DialogPanelDescriptor : PanelDescriptor
 
     public DialogOption this[int i] => _options[i];
 
-    public RewardDescriptor _reward;
+    public Reward _reward;
+    public DialogPanelDescriptor SetReward(Reward reward)
+    {
+        _reward = reward;
+        return this;
+    }
 
     public DialogPanelDescriptor(string detailedText, params DialogOption[] options)
     {

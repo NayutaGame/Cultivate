@@ -1,7 +1,6 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Range = CLLibrary.Range;
 
 public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
@@ -14,18 +13,18 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
     private Range _range;
     public Range Range => _range;
 
-    public Action<List<RunSkill>> _action;
+    public Func<List<RunSkill>, PanelDescriptor> _select;
 
-    public ArbitraryCardPickerPanelDescriptor(string detailedText = null, SkillInventory inventory = null, Range range = null, Action<List<RunSkill>> action = null)
+    public ArbitraryCardPickerPanelDescriptor(string detailedText = null, Range range = null, Func<List<RunSkill>, PanelDescriptor> select = null)
     {
         _accessors = new()
         {
             { "Inventory",                () => _inventory },
         };
         _detailedText = detailedText ?? "请选择卡";
-        _inventory = inventory ?? new SkillInventory();
+        _inventory = new SkillInventory();
         _range = range ?? new Range(1);
-        _action = action;
+        _select = select;
     }
 
     public bool CanSelect(RunSkill skill)
@@ -33,10 +32,18 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
         return true;
     }
 
-    public void ConfirmSelections(List<RunSkill> skills)
+    public void AddSkills(List<RunSkill> skills)
     {
-        _action?.Invoke(skills);
+        _inventory.AddSkills(skills);
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal) => null;
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    {
+        if (signal is SelectedSkillsSignal selectedSkillsSignal && _select != null)
+        {
+            return _select(selectedSkillsSignal.Selected);
+        }
+
+        return null;
+    }
 }

@@ -23,20 +23,20 @@ public class TechEntry : Entry
     private RunEventDescriptor _eureka;
     public RunEventDescriptor Eureka => _eureka;
 
-    private RewardDescriptor[] _rewards;
-    public RewardDescriptor[] Rewards => _rewards;
+    private Reward[] _rewards;
+    public Reward[] Rewards => _rewards;
 
     public TechEntry(string name, string description, Vector2Int position, int cost,
         string[] prerequisiteNames = null,
         RunEventDescriptor eureka = null,
-        RewardDescriptor[] rewards = null) : base(name)
+        Reward[] rewards = null) : base(name)
     {
         _description = description;
         _cost = cost;
         _position = position;
         _prerequisiteNames = prerequisiteNames;
         _eureka = eureka;
-        _rewards = rewards ?? Array.Empty<RewardDescriptor>();
+        _rewards = rewards ?? Array.Empty<Reward>();
     }
 
     public void Init()

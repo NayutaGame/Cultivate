@@ -49,6 +49,7 @@ public class ArbitraryCardPickerPanel : Panel
 
         InfoText.text = d.GetDetailedText();
         StatusText.text = $"可以选择 {d.Range.Start} ~ {d.Range.End - 1} 张卡\n已选   {_selections.Count}   张";
+        ConfirmButton.interactable = d.Range.Contains(_selections.Count);
 
         SkillInventoryView.Refresh();
     }
@@ -90,7 +91,6 @@ public class ArbitraryCardPickerPanel : Panel
             _selections.Add(skillView);
         }
 
-        ConfirmButton.interactable = d.Range.Contains(_selections.Count);
         Refresh();
 
         return true;
@@ -100,8 +100,7 @@ public class ArbitraryCardPickerPanel : Panel
     {
         ArbitraryCardPickerPanelDescriptor d = DataManager.Get<ArbitraryCardPickerPanelDescriptor>(_indexPath);
         List<RunSkill> mapped = _selections.Map(v => DataManager.Get<RunSkill>(v.GetIndexPath())).ToList();
-        d.ConfirmSelections(mapped);
-        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedSkillsSignal(mapped));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }
