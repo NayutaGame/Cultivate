@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public class CanvasManager : Singleton<CanvasManager>
 {
+    public AppCanvas AppCanvas;
     public RunCanvas RunCanvas;
     public StageCanvas StageCanvas;
-
-    // public RectTransform GhostHolder;
 
     public Color[] JingJieColors;
     public Sprite[] JingJieSprites;

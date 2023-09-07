@@ -26,18 +26,18 @@ namespace CLLibrary
 
         public void Push(S state)
         {
-            if (_stack.Count > 0)
-                _stack[^1].CEnter();
+            if (Current != null)
+                Current.CEnter();
             _stack.Add(state);
-            _stack[^1].Enter();
+            Current.Enter();
         }
 
         public void Pop()
         {
-            _stack[^1].Exit();
+            Current.Exit();
             _stack.RemoveAt(_stack.Count - 1);
-            if (_stack.Count > 0)
-                _stack[^1].CExit();
+            if (Current != null)
+                Current.CExit();
         }
     }
 }

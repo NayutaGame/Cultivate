@@ -22,12 +22,15 @@ public class TopBar : MonoBehaviour
     public Sprite MutedSprite;
     public Sprite MutedHoverSprite;
 
-    public Button SystemButton;
+    public Button MenuButton;
 
     public void Configure()
     {
         VolumeButton.onClick.RemoveAllListeners();
         VolumeButton.onClick.AddListener(ToggleAudible);
+
+        MenuButton.onClick.RemoveAllListeners();
+        MenuButton.onClick.AddListener(OpenMenu);
     }
 
     public void Refresh()
@@ -55,5 +58,10 @@ public class TopBar : MonoBehaviour
     {
         AudioManager.Instance.ToggleAudible();
         Refresh();
+    }
+
+    private void OpenMenu()
+    {
+        // push state
     }
 }

@@ -73,7 +73,7 @@ public class BattlePanelDescriptor : PanelDescriptor
     public void Combat(bool animated, bool writeResult)
     {
         StageManager.Instance.CombatDetails = new CombatDetails(animated, writeResult, RunManager.Instance.Battle.Hero, Enemy, Report);
-        AppManager.Push(new AppStageS());
+        AppManager.Push(new StageAppS());
     }
 
     private void CalcReport()

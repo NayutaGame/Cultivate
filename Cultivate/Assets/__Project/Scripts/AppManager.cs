@@ -1,8 +1,7 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
-using TMPro;
 using UnityEngine;
 
 public class AppManager : Singleton<AppManager>, GDictionary
@@ -11,24 +10,26 @@ public class AppManager : Singleton<AppManager>, GDictionary
     public RunManager RunManager;
     public StageManager StageManager;
 
+    public Settings Settings;
     public FormationInventory FormationInventory;
     public SkillInventory SkillInventory;
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
+    public object Get(string s) => _accessors[s]();
     public override void DidAwake()
     {
         base.DidAwake();
 
         _accessors = new Dictionary<string, Func<object>>()
         {
+            { "Settings", () => Settings },
             { "FormationInventory", () => FormationInventory },
             { "SkillInventory", () => SkillInventory },
         };
 
         Application.targetFrameRate = 120;
+
+        Settings = new();
 
         FormationInventory = new();
         Encyclopedia.FormationCategory.Traversal.Do(e => FormationInventory.Add(e));
@@ -40,7 +41,7 @@ public class AppManager : Singleton<AppManager>, GDictionary
         StageManager.gameObject.SetActive(false);
 
         _sm = new AppSM();
-        _sm.Push(new AppRunS());
+        _sm.Push(new RunAppS());
     }
 
     private void Update()
