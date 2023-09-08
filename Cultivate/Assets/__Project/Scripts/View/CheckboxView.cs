@@ -30,7 +30,7 @@ public class CheckboxView : MonoBehaviour, IIndexPath
         _model = _indexPath == null ? CheckboxModel.Default : DataManager.Get<CheckboxModel>(_indexPath);
 
         if (LabelText != null)
-            LabelText.text = _model.Label;
+            LabelText.text = _model.Name;
 
         Button.onClick.RemoveAllListeners();
         Button.onClick.AddListener(Toggle);

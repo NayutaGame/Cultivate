@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public abstract class InventoryView<T> : MonoBehaviour, IIndexPath, IInteractable where T : IIndexPath
+public abstract class ListView<T> : MonoBehaviour, IIndexPath, IInteractable where T : IIndexPath
 {
     public Transform Container;
     public GameObject Prefab;
+
+    public virtual GameObject GetPrefab(object element)
+        => Prefab;
 
     private List<T> _views;
     public List<T> Views => _views;
@@ -16,8 +19,10 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath, IInteractabl
     public IndexPath GetIndexPath() => _indexPath;
 
     private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate()
-        => InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+
+    public S GetModel<S>()
+        => DataManager.Get<S>(GetIndexPath());
 
     public virtual void SetDelegate(InteractDelegate interactDelegate)
     {
@@ -66,7 +71,7 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath, IInteractabl
     private void PopulateList()
     {
         int current = Container.childCount;
-        IList inventory = DataManager.Get<IList>(_indexPath);
+        IList inventory = GetModel<IList>();
         int need = inventory.Count;
 
         (need, _) = Numeric.Negate(need, current);
@@ -75,7 +80,8 @@ public abstract class InventoryView<T> : MonoBehaviour, IIndexPath, IInteractabl
         int length = Container.childCount;
         for (int i = length; i < need + length; i++)
         {
-            T view = Instantiate(Prefab, Container).GetComponent<T>();
+            GameObject prefab = GetPrefab(inventory[i]);
+            T view = Instantiate(prefab, Container).GetComponent<T>();
             RegisterNew(view, i);
         }
     }

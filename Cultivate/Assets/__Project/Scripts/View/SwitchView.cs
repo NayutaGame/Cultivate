@@ -28,7 +28,7 @@ public class SwitchView : MonoBehaviour, IIndexPath
         _model = _indexPath == null ? SwitchModel.Default : DataManager.Get<SwitchModel>(_indexPath);
 
         if (LabelText != null)
-            LabelText.text = _model.Label;
+            LabelText.text = _model.Name;
 
         PrevButton.onClick.RemoveAllListeners();
         PrevButton.onClick.AddListener(Prev);

@@ -13,7 +13,7 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
     public Button CopyButton;
     public Button PasteButton;
 
-    public InventoryView<SlotView> EquippedInventoryView;
+    public ListView<SlotView> EquippedInventoryView;
 
     private IndexPath _indexPath;
     public IndexPath GetIndexPath()

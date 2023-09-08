@@ -12,7 +12,7 @@ public class EntityView : MonoBehaviour, IIndexPath, IInteractable
     public TMP_Text HPText;
     public TMP_Text DescriptionText;
     public Button CopyButton;
-    public InventoryView<SkillView> EquippedInventoryView;
+    public ListView<SkillView> EquippedInventoryView;
 
     #region Interact
 

@@ -364,6 +364,7 @@ public class StageEnvironment : GDictionary, CLEventListener
     public void WriteEffect()
     {
         _entities[0].WriteEffect();
+        RunManager.Instance.Battle.Hero.TryExhaust();
     }
 
     public async Task Simulate()

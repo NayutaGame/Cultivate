@@ -1557,7 +1557,7 @@ GameObject:
   - component: {fileID: 1684170591416200130}
   - component: {fileID: 1684170591416200131}
   m_Layer: 0
-  m_Name: StackView
+  m_Name: WidgetContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

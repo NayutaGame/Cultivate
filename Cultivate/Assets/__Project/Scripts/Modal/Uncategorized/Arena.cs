@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class Arena : Inventory<RunEntity>, GDictionary
+public class Arena : ListModel<RunEntity>, GDictionary
 {
     private static readonly int ArenaSize = 6;
 

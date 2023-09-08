@@ -2,6 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlotInventoryView : InventoryView<SlotView>
+public class SlotInventoryView : ListView<SlotView>
 {
 }

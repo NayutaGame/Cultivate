@@ -62,6 +62,6 @@ public class TopBar : MonoBehaviour
 
     private void OpenMenu()
     {
-        // push state
+        AppManager.Push(new MenuAppS());
     }
 }

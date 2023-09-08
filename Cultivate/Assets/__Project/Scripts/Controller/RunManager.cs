@@ -50,7 +50,6 @@ public class RunManager : Singleton<RunManager>, GDictionary
 
     public void CExit()
     {
-        Battle.Hero.TryExhaust();
         RunCanvas.Instance.Refresh();
     }
 }

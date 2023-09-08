@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class CheckboxModel
+public class CheckboxModel : WidgetModel
 {
-    public string Label;
     public bool Value;
 
-    public CheckboxModel(string label)
-    {
-        Label = label;
-    }
+    public CheckboxModel(string name) : base(name) { }
 
     public void Toggle()
     {

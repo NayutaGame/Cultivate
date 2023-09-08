@@ -2,14 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonModel
+public class ButtonModel : WidgetModel
 {
-    public string Label;
-
-    public ButtonModel(string label)
-    {
-        Label = label;
-    }
+    public ButtonModel(string name) : base(name) { }
 
     public void Click()
     {

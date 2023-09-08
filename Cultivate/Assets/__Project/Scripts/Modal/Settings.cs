@@ -1,6 +1,5 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Settings
 {
@@ -11,9 +10,23 @@ public class Settings
     {
         _contents = new SettingsContentModel[]
         {
-            new("选项卡一"),
-            new("选项卡二"),
-            new("选项卡三"),
+            new("综合", new WidgetModel[]
+            {
+                new SwitchModel("语言", new List<string>() { "中文" }),
+                new CheckboxModel("这里有个开关"),
+            }),
+            new("画面", new WidgetModel[]
+            {
+                new SwitchModel("显示模式", new List<string>() { "窗口", "无边框全屏", "全屏" }),
+                new SwitchModel("分辨率", new List<string>() { "1920x1080" }),
+            }),
+            new("声音", new WidgetModel[]
+            {
+                new SliderModel("主音量", 0, 100, true),
+                new SliderModel("音乐", 0, 100, true),
+                new SliderModel("音效", 0, 100, true),
+                new ButtonModel("推荐音量"),
+            }),
         };
 
         _index = 0;

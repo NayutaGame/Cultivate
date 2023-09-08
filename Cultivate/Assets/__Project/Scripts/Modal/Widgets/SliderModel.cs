@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SliderModel
+public class SliderModel : WidgetModel
 {
-    public string Label;
     public float Value;
     public float MinValue;
     public float MaxValue;
     public bool WholeNumbers;
 
-    public SliderModel(string label, int minValue, int maxValue, bool wholeNumbers)
+    public SliderModel(string name, int minValue, int maxValue, bool wholeNumbers) : base(name)
     {
-        Label = label;
         MinValue = minValue;
         MaxValue = maxValue;
         WholeNumbers = wholeNumbers;

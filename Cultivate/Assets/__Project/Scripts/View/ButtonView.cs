@@ -26,7 +26,7 @@ public class ButtonView : MonoBehaviour, IIndexPath
         _model = _indexPath == null ? ButtonModel.Default : DataManager.Get<ButtonModel>(_indexPath);
 
         if (LabelText != null)
-            LabelText.text = _model.Label;
+            LabelText.text = _model.Name;
 
         Button.onClick.RemoveAllListeners();
         Button.onClick.AddListener(Click);

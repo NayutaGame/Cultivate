@@ -2,4 +2,4 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MechBagView : InventoryView<MechView> { }
+public class MechBagView : ListView<MechView> { }

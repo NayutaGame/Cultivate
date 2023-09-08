@@ -1,4 +1,4 @@
 
-public class RunChipInventoryView : InventoryView<SlotView>
+public class RunChipInventoryView : ListView<SlotView>
 {
 }

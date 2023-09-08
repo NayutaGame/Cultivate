@@ -19,16 +19,24 @@ public class SettingsPanel : MonoBehaviour
         _indexPath = new IndexPath("App.Settings");
         Settings settings = DataManager.Get<Settings>(_indexPath);
 
-        CurrLabel.text = settings.GetCurrentContentModel().Name;
+        CurrLabel.text = $"<rotate=90>{settings.GetCurrentContentModel().Name}";
 
         for (int i = 0; i < settings.GetOtherContentCount(); i++)
         {
             SettingsContentModel content = settings.GetOtherContent(i);
             OtherLabels[i].text = content.Name;
         }
+
+        ResumeButton.onClick.RemoveAllListeners();
+        ResumeButton.onClick.AddListener(Resume);
     }
 
     public void Refresh()
     {
+    }
+
+    private void Resume()
+    {
+        AppManager.Pop();
     }
 }

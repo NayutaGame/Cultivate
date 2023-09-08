@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwitchModel
+public class SwitchModel : WidgetModel
 {
-    public string Label;
     public List<string> Options;
     public int Index;
 
-    public SwitchModel(string label, List<string> options, int index)
+    public SwitchModel(string name, List<string> options, int index = 0) : base(name)
     {
-        Label = label;
         Options = options;
         Index = index;
     }

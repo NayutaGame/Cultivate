@@ -93,6 +93,8 @@ public class SkillSlot : GDictionary
 
     public bool TryExhaust()
     {
+        if (Skill == null)
+            return false;
         bool sunHao = Skill.GetEntry().SkillTypeComposite.Contains(SkillType.SunHao);
         if (!sunHao)
             return false;

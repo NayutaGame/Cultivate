@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class SkillInventory : Inventory<RunSkill>
+public class SkillInventory : ListModel<RunSkill>
 {
     public void AddSkill(RunSkill skill)
     {

@@ -26,7 +26,7 @@ public class SliderView : MonoBehaviour, IIndexPath
         _model = _indexPath == null ? SliderModel.Default : DataManager.Get<SliderModel>(_indexPath);
 
         if (LabelText != null)
-            LabelText.text = _model.Label;
+            LabelText.text = _model.Name;
         Slider.minValue = _model.MinValue;
         Slider.maxValue = _model.MaxValue;
         Slider.wholeNumbers = _model.WholeNumbers;
