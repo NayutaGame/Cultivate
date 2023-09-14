@@ -24,10 +24,10 @@ public class ArenaPanel : Panel
 
         ConfigureInteractDelegate();
 
-        SkillInventoryView.Configure(new Address("App.SkillInventory"));
+        SkillInventoryView.SetAddress(new Address("App.SkillInventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
 
-        ArenaEditorView.Configure(_address);
+        ArenaEditorView.SetAddress(_address);
         ArenaEditorView.SetDelegate(InteractDelegate);
 
         ArenaScoreboardView.Configure();

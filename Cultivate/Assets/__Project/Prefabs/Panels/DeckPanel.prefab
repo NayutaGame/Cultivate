@@ -1692,7 +1692,7 @@ GameObject:
   - component: {fileID: 8544147227664785236}
   - component: {fileID: 3931787399964468190}
   m_Layer: 0
-  m_Name: MechBagView
+  m_Name: MechListView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1969,7 +1969,7 @@ GameObject:
   - component: {fileID: 4772582155448831310}
   - component: {fileID: 540454619137409914}
   m_Layer: 5
-  m_Name: SubFormationInventoryView
+  m_Name: FormationListView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2090,14 +2090,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 819e6a992f91ef54bb476a0a793e8dfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OriginalImage: {fileID: 125915523105069918}
-  DeckToggle: {fileID: 4237995074627983992}
-  PlayerSprite: {fileID: 4718439203497973784}
+  ToggleImage: {fileID: 125915523105069918}
+  ToggleButton: {fileID: 4237995074627983992}
   SortButton: {fileID: 1938784317347958093}
   FieldView: {fileID: 3629931030634203753}
   HandView: {fileID: 1758414077547615882}
-  PlayerSubFormationInventory: {fileID: 540454619137409914}
-  MechBagView: {fileID: 3931787399964468190}
+  FormationListView: {fileID: 540454619137409914}
+  MechListView: {fileID: 3931787399964468190}
   _deckTransform: {fileID: 8985839602713860910}
   _spriteTransform: {fileID: 3319505717502363062}
   _handTransform: {fileID: 7574017152115262866}

@@ -20,10 +20,10 @@ public class SwitchView : MonoBehaviour, IAddress
     private void Awake()
     {
         if (_model == null)
-            Configure(null);
+            SetAddress(null);
     }
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
         _model = _address == null ? SwitchModel.Default : Get<SwitchModel>();

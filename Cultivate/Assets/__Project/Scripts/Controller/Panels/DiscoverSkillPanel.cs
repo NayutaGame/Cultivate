@@ -51,7 +51,7 @@ public class DiscoverSkillPanel : Panel
             if(!active)
                 continue;
 
-            SkillViews[i].Configure(_address.Append($".Skills#{i}"));
+            SkillViews[i].SetAddress(_address.Append($".Skills#{i}"));
             SkillViews[i].Refresh();
         }
     }

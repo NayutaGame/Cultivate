@@ -12,7 +12,7 @@ public class BuffView : MonoBehaviour, IAddress
     public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
     }

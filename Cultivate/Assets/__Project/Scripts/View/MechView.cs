@@ -21,7 +21,7 @@ public class MechView : MonoBehaviour, IAddress, IInteractable,
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text CountText;
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
         _rectTransform = GetComponent<RectTransform>();
@@ -71,7 +71,7 @@ public class MechView : MonoBehaviour, IAddress, IInteractable,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        RunCanvas.Instance.MechGhost.Configure(GetAddress());
+        RunCanvas.Instance.MechGhost.SetAddress(GetAddress());
         RunCanvas.Instance.MechGhost.Refresh();
 
         if (_image != null)
@@ -85,7 +85,7 @@ public class MechView : MonoBehaviour, IAddress, IInteractable,
     {
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
 
-        RunCanvas.Instance.MechGhost.Configure(null);
+        RunCanvas.Instance.MechGhost.SetAddress(null);
         RunCanvas.Instance.MechGhost.Refresh();
 
         if (_image != null)

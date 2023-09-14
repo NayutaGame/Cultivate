@@ -6,6 +6,6 @@ public interface IAddress
 {
     Address GetAddress();
     T Get<T>();
-    void Configure(Address address);
+    void SetAddress(Address address);
     void Refresh();
 }

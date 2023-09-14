@@ -125,7 +125,7 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public void SetIndexPathForSkillPreview(Address address)
     {
-        RunSkillPreview.Configure(address);
+        RunSkillPreview.SetAddress(address);
         RunSkillPreview.Refresh();
     }
 
@@ -137,7 +137,7 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public void SetIndexPathForSubFormationPreview(Address address)
     {
-        FormationPreview.Configure(address);
+        FormationPreview.SetAddress(address);
         FormationPreview.Refresh();
     }
 

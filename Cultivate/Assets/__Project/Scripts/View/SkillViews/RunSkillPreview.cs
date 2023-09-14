@@ -6,10 +6,10 @@ public class RunSkillPreview : SkillView
 {
     public RunSkillView SkillView;
 
-    public override void Configure(Address address)
+    public override void SetAddress(Address address)
     {
-        base.Configure(address);
-        SkillView.Configure(address);
+        base.SetAddress(address);
+        SkillView.SetAddress(address);
     }
 
     public override void Refresh()

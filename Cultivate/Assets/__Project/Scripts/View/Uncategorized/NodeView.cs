@@ -12,7 +12,7 @@ public class NodeView : MonoBehaviour, IAddress
     public JumpingButton _jumpingButton;
     public TMP_Text NameText;
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
 

@@ -40,12 +40,12 @@ public class SlotView : MonoBehaviour, IAddress, IInteractable,
             SkillView.SetSelected(selected);
     }
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
         _image = GetComponent<Image>();
 
-        SkillView.Configure(GetAddress().Append(".Skill"));
+        SkillView.SetAddress(GetAddress().Append(".Skill"));
         SkillView.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
         SkillView.ClearIsManaShortage();
@@ -109,7 +109,7 @@ public class SlotView : MonoBehaviour, IAddress, IInteractable,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        RunCanvas.Instance.SkillGhost.Configure(SkillView.GetAddress());
+        RunCanvas.Instance.SkillGhost.SetAddress(SkillView.GetAddress());
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
@@ -123,7 +123,7 @@ public class SlotView : MonoBehaviour, IAddress, IInteractable,
     {
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
 
-        RunCanvas.Instance.SkillGhost.Configure(null);
+        RunCanvas.Instance.SkillGhost.SetAddress(null);
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 

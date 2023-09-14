@@ -29,7 +29,7 @@ public class MapPanel : Panel, IAddress
             .Append(_backgroundTransform.DOAnchorPosX(1924f, 0.3f).SetEase(Ease.InQuad))
             .AppendCallback(() => gameObject.SetActive(false));
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
 
@@ -52,7 +52,7 @@ public class MapPanel : Panel, IAddress
             {
                 int i = x * HEIGHT + y;
                 _views[i] = levelTransform.GetChild(y).GetComponent<NodeView>();
-                _views[i].Configure(_address.Append($".Nodes#{i}"));
+                _views[i].SetAddress(_address.Append($".Nodes#{i}"));
             }
         }
     }

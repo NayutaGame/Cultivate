@@ -174,7 +174,7 @@ public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
 
     #endregion
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
         _rectTransform = GetComponent<RectTransform>();
@@ -246,7 +246,7 @@ public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        RunCanvas.Instance.SkillGhost.Configure(GetAddress());
+        RunCanvas.Instance.SkillGhost.SetAddress(GetAddress());
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
@@ -260,7 +260,7 @@ public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
     {
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
 
-        RunCanvas.Instance.SkillGhost.Configure(null);
+        RunCanvas.Instance.SkillGhost.SetAddress(null);
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 

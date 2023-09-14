@@ -18,11 +18,11 @@ public class BarterItemView : MonoBehaviour, IAddress
     public event Action<BarterItem> ExchangeEvent;
     public void ClearExchangeEvent() => ExchangeEvent = null;
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
-        PlayerSkillView.Configure(_address.Append(".PlayerSkill"));
-        SkillView.Configure(_address.Append(".Skill"));
+        PlayerSkillView.SetAddress(_address.Append(".PlayerSkill"));
+        SkillView.SetAddress(_address.Append(".Skill"));
 
         ExchangeButton.onClick.RemoveAllListeners();
         ExchangeButton.onClick.AddListener(Exchange);

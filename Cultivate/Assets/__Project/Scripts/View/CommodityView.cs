@@ -18,10 +18,10 @@ public class CommodityView : MonoBehaviour, IAddress
     public event Action<Commodity> BuyEvent;
     public void ClearBuyEvent() => BuyEvent = null;
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
-        SkillView.Configure(_address.Append(".Skill"));
+        SkillView.SetAddress(_address.Append(".Skill"));
 
         BuyButton.onClick.RemoveAllListeners();
         BuyButton.onClick.AddListener(Buy);

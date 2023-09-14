@@ -35,8 +35,8 @@ public class BattlePanel : Panel
 
         _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
 
-        FieldView.Configure(_address.Append(".Enemy.Slots"));
-        EnemySubFormationInventory.Configure(_address.Append(".Enemy.ActivatedSubFormations"));
+        FieldView.SetAddress(_address.Append(".Enemy.Slots"));
+        EnemySubFormationInventory.SetAddress(_address.Append(".Enemy.ActivatedSubFormations"));
 
         ActButton.onClick.RemoveAllListeners();
         ActButton.onClick.AddListener(Act);

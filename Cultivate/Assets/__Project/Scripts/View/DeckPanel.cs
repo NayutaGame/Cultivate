@@ -2,23 +2,20 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class DeckPanel : Panel
 {
-    public Image OriginalImage;
-    public Button DeckToggle;
-
-    public void ClearToggleDeckEvent() => ToggleDeckEvent = null;
-    public event Action ToggleDeckEvent;
-    private void ToggleDeck() => ToggleDeckEvent?.Invoke();
-
-    public Image PlayerSprite;
+    public Image ToggleImage;
+    public Button ToggleButton;
     public Button SortButton;
-    public ListView FieldView; // SlotView
+    [NonSerialized] public UnityEvent ToggleEvent;
+
+    public ListView FieldView;
     public SkillInventoryView HandView;
-    public ListView PlayerSubFormationInventory; // FormationView
-    public ListView MechBagView; // MechView
+    public ListView FormationListView;
+    public ListView MechListView;
 
     public RectTransform _deckTransform;
     public RectTransform _spriteTransform;
@@ -44,13 +41,13 @@ public class DeckPanel : Panel
 
     public override void Configure()
     {
-        FieldView.Configure(new Address("Run.Battle.Hero.Slots"));
-        HandView.Configure(new Address("Run.Battle.SkillInventory"));
-        PlayerSubFormationInventory.Configure(new Address("Run.Battle.Hero.ActivatedSubFormations"));
-        MechBagView.Configure(new Address("Run.Battle.MechBag.List"));
+        FieldView.SetAddress(new Address("Run.Battle.Hero.Slots"));
+        HandView.SetAddress(new Address("Run.Battle.SkillInventory"));
+        FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
+        MechListView.SetAddress(new Address("Run.Battle.MechBag.List"));
 
-        DeckToggle.onClick.RemoveAllListeners();
-        DeckToggle.onClick.AddListener(ToggleDeck);
+        ToggleButton.onClick.RemoveAllListeners();
+        ToggleButton.onClick.AddListener(ToggleEvent.Invoke);
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
@@ -60,21 +57,20 @@ public class DeckPanel : Panel
     {
         FieldView.Refresh();
         HandView.Refresh();
-        PlayerSubFormationInventory.Refresh();
-        MechBagView.Refresh();
+        FormationListView.Refresh();
+        MechListView.Refresh();
     }
 
     public void SetInteractDelegate(InteractDelegate interactDelegate)
     {
         FieldView.SetDelegate(interactDelegate);
         HandView.SetDelegate(interactDelegate);
-        MechBagView.SetDelegate(interactDelegate);
+        MechListView.SetDelegate(interactDelegate);
     }
 
     private void Sort()
     {
-        SkillInventory inventory = new Address("Run.Battle.SkillInventory").Get<SkillInventory>();
-        inventory.SortByComparisonId(0);
+        HandView.Get<SkillInventory>().SortByComparisonId(0);
         RunCanvas.Instance.Refresh();
     }
 
@@ -82,13 +78,13 @@ public class DeckPanel : Panel
     {
         if (locked)
         {
-            DeckToggle.interactable = false;
-            OriginalImage.color = new Color(0.6f, 0.6f, 0.6f, 0.43f);
+            ToggleButton.interactable = false;
+            ToggleImage.color = new Color(0.6f, 0.6f, 0.6f, 0.43f);
         }
         else
         {
-            DeckToggle.interactable = true;
-            OriginalImage.color = Color.white;
+            ToggleButton.interactable = true;
+            ToggleImage.color = Color.white;
         }
     }
 }

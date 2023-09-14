@@ -31,7 +31,7 @@ public class ArbitraryCardPickerPanel : Panel
         ConfigureInteractDelegate();
         _selections = new List<SkillView>();
 
-        SkillInventoryView.Configure(new Address($"{_address}.Inventory"));
+        SkillInventoryView.SetAddress(new Address($"{_address}.Inventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
     }
 

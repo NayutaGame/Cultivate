@@ -57,11 +57,11 @@ public class MMDMLayer : MonoBehaviour
 
         _state = MMDMState.N;
 
-        MapPanel.Configure(new Address("Run.Battle.Map"));
+        MapPanel.SetAddress(new Address("Run.Battle.Map"));
         DeckPanel.Configure();
 
-        DeckPanel.ClearToggleDeckEvent();
-        DeckPanel.ToggleDeckEvent += ToggleDeck;
+        DeckPanel.ToggleEvent.RemoveAllListeners();
+        DeckPanel.ToggleEvent.AddListener(ToggleDeck);
 
         MaskAboveDeck.GetComponent<Button>().onClick.RemoveAllListeners();
         MaskAboveDeck.GetComponent<Button>().onClick.AddListener(Close);

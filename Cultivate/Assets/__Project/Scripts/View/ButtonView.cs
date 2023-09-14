@@ -18,10 +18,10 @@ public class ButtonView : MonoBehaviour, IAddress
     private void Awake()
     {
         if (_model == null)
-            Configure(null);
+            SetAddress(null);
     }
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
         _model = _address == null ? ButtonModel.Default : Get<ButtonModel>();

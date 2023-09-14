@@ -18,7 +18,7 @@ public class FormationView : MonoBehaviour, IAddress,
     [SerializeField] private TMP_Text ConditionText;
     [SerializeField] private TMP_Text RewardText;
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
         _rectTransform = GetComponent<RectTransform>();

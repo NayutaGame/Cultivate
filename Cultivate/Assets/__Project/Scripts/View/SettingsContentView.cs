@@ -17,7 +17,7 @@ public class SettingsContentView : MonoBehaviour, IAddress
 
     private SettingsContentModel _model;
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
         _model = Get<SettingsContentModel>();

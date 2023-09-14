@@ -31,11 +31,11 @@ public class EntityView : MonoBehaviour, IAddress, IInteractable
     public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
         CopyButton.onClick.AddListener(Copy);
-        EquippedInventoryView.Configure(GetAddress().Append($"Slots"));
+        EquippedInventoryView.SetAddress(GetAddress().Append($"Slots"));
     }
 
     public void Refresh()

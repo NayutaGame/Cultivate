@@ -30,13 +30,13 @@ public class SimulatePanel : Panel
 
         ConfigureInteractDelegate();
 
-        HeroView.Configure(new Address($"{_address}.Hero"));
+        HeroView.SetAddress(new Address($"{_address}.Hero"));
         HeroView.SetDelegate(InteractDelegate);
 
-        EnemyView.Configure(new Address($"{_address}.Enemy"));
+        EnemyView.SetAddress(new Address($"{_address}.Enemy"));
         EnemyView.SetDelegate(InteractDelegate);
 
-        SkillInventoryView.Configure(new Address($"{_address}.SkillInventory"));
+        SkillInventoryView.SetAddress(new Address($"{_address}.SkillInventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
 
         ReportButton.onClick.RemoveAllListeners();

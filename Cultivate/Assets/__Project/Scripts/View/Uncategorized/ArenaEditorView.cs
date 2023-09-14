@@ -7,9 +7,9 @@ public class ArenaEditorView : ListView
     public Button RandomButton;
     public Button CompeteButton;
 
-    public override void Configure(Address address)
+    public override void SetAddress(Address address)
     {
-        base.Configure(address);
+        base.SetAddress(address);
 
         RandomButton.onClick.AddListener(Random);
         CompeteButton.onClick.AddListener(Compete);

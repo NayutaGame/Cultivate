@@ -14,7 +14,7 @@ public class BarterPanel : Panel
         base.Configure();
 
         _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
-        BarterInventoryView.Configure(_address.Append(".Inventory"));
+        BarterInventoryView.SetAddress(_address.Append(".Inventory"));
 
         foreach (BarterItemView barterItemView in BarterInventoryView.Views)
         {

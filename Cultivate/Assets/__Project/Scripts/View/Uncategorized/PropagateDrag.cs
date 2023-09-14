@@ -15,7 +15,7 @@ public class PropagateDrag : MonoBehaviour, IAddress, IPointerClickHandler, IBeg
     public Action<PointerEventData> _onEndDrag;
     public Action<PointerEventData> _onDrag;
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
     }

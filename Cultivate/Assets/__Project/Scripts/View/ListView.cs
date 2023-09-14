@@ -10,34 +10,29 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     public Transform Container;
     public GameObject[] Prefabs;
 
-    private Func<object, int> _prefabProvider;
-    public void SetPrefabProvider(Func<object, int> prefabProvider)
-        => _prefabProvider = prefabProvider;
-
-    private GameObject GetPrefab(object item)
-        => Prefabs[_prefabProvider?.Invoke(item) ?? 0];
-
     private List<IAddress> _views;
     public List<IAddress> Views => _views;
 
+    private Func<object, int> _prefabProvider;
+    public void SetPrefabProvider(Func<object, int> prefabProvider) => _prefabProvider = prefabProvider;
+    private GameObject GetPrefab(object item) => Prefabs[_prefabProvider?.Invoke(item) ?? 0];
+
     private Address _address;
     public Address GetAddress() => _address;
-    public T1 Get<T1>() => _address.Get<T1>();
+    public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate() => InteractDelegate;
     public virtual void SetDelegate(InteractDelegate interactDelegate)
     {
         InteractDelegate = interactDelegate;
-
-        _views.Do(
-            v => {
-                if (v is IInteractable interactable)
-                    interactable.SetDelegate(InteractDelegate);
-            });
+        _views.Do(v =>
+        {
+            if (v is IInteractable interactable) interactable.SetDelegate(InteractDelegate);
+        });
     }
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
         _views = new List<IAddress>();
@@ -63,8 +58,8 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         for (int i = length; i < need + length; i++)
         {
             GameObject prefab = GetPrefab(inventory[i]);
-            IAddress view = Instantiate(prefab, Container).GetComponent<IAddress>();
-            RegisterNew(view, i);
+            IAddress itemView = Instantiate(prefab, Container).GetComponent<IAddress>();
+            RegisterNew(itemView, i);
         }
     }
 
@@ -72,19 +67,15 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     {
         for (int i = 0; i < Container.childCount; i++)
         {
-            IAddress view = Container.GetChild(i).GetComponent<IAddress>();
-            RegisterNew(view, i);
+            IAddress itemView = Container.GetChild(i).GetComponent<IAddress>();
+            RegisterNew(itemView, i);
         }
     }
 
-    private void RegisterNew(IAddress view, int i)
+    private void RegisterNew(IAddress itemView, int i)
     {
-        if (!_views.Contains(view))
-            _views.Add(view);
-
-        view.Configure(_address.Append($"#{i}"));
-
-        if (view is IInteractable interactable)
-            interactable.SetDelegate(InteractDelegate);
+        if (!_views.Contains(itemView)) _views.Add(itemView);
+        itemView.SetAddress(_address.Append($"#{i}"));
+        if (itemView is IInteractable interactable) interactable.SetDelegate(InteractDelegate);
     }
 }

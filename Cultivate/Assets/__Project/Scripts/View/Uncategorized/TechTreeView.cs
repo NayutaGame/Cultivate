@@ -18,7 +18,7 @@ public class TechTreeView : MonoBehaviour, IAddress
     public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
         InitHolders();
@@ -61,7 +61,7 @@ public class TechTreeView : MonoBehaviour, IAddress
 
             TechView v = Instantiate(Prefab, parent).GetComponent<TechView>();
             _views.Add(v);
-            v.Configure(address);
+            v.SetAddress(address);
         }
     }
 }

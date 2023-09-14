@@ -19,7 +19,7 @@ public class TechView : MonoBehaviour, IAddress
     public TMP_Text CostText;
     public TMP_Text DiscountText;
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
         _image = GetComponent<Image>();

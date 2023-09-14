@@ -21,7 +21,7 @@ public class RunChipView : MonoBehaviour, IAddress,
         _image = GetComponent<Image>();
     }
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
     }
@@ -52,7 +52,7 @@ public class RunChipView : MonoBehaviour, IAddress,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragSkill(this);
 
-        RunCanvas.Instance.SkillGhost.Configure(GetAddress());
+        RunCanvas.Instance.SkillGhost.SetAddress(GetAddress());
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
@@ -65,7 +65,7 @@ public class RunChipView : MonoBehaviour, IAddress,
     {
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
 
-        RunCanvas.Instance.SkillGhost.Configure(null);
+        RunCanvas.Instance.SkillGhost.SetAddress(null);
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 

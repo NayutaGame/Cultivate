@@ -15,19 +15,21 @@ public class SkillInventoryView : ListView, IDropHandler
     public HoldButton LeftButton;
     public HoldButton RightButton;
 
-    public override void Configure(Address address)
+    public override void SetAddress(Address address)
     {
-        base.Configure(address);
+        base.SetAddress(address);
 
         DrawButtons.Length.Do(i =>
         {
             JingJie jingJie = i;
+            DrawButtons[i].onClick.RemoveAllListeners();
             DrawButtons[i].onClick.AddListener(() => DrawJingJie(jingJie));
         });
 
         SortButtons.Length.Do(i =>
         {
             int comparisonId = i;
+            SortButtons[i].onClick.RemoveAllListeners();
             SortButtons[i].onClick.AddListener(() => SortByComparisonId(comparisonId));
         });
 

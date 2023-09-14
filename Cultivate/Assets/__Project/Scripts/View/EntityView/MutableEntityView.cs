@@ -32,7 +32,7 @@ public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
 
     #endregion
 
-    public void Configure(Address address)
+    public void SetAddress(Address address)
     {
         _address = address;
 
@@ -49,7 +49,7 @@ public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
         CopyButton.onClick.AddListener(Copy);
         PasteButton.onClick.AddListener(Paste);
 
-        EquippedInventoryView.Configure(GetAddress().Append(".Slots"));
+        EquippedInventoryView.SetAddress(GetAddress().Append(".Slots"));
     }
 
     #region Accessors

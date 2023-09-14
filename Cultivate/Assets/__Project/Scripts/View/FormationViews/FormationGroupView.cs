@@ -31,7 +31,7 @@ public class FormationGroupView : MonoBehaviour, IAddress, IInteractable,
             SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
     }
 
-    public virtual void Configure(Address address)
+    public virtual void SetAddress(Address address)
     {
         _address = address;
     }
@@ -66,7 +66,7 @@ public class FormationGroupView : MonoBehaviour, IAddress, IInteractable,
     {
         if (SubFormationInventoryView == null)
             return;
-        SubFormationInventoryView.Configure(GetAddress().Append(".SubFormations"));
+        SubFormationInventoryView.SetAddress(GetAddress().Append(".SubFormations"));
         SubFormationInventoryView.Refresh();
     }
 
