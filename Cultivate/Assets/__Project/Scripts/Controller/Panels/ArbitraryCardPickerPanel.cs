@@ -83,7 +83,7 @@ public class ArbitraryCardPickerPanel : Panel
             if (space <= 0)
                 return false;
 
-            RunSkill skill = skillView.GetIndexPath().Get<RunSkill>();
+            RunSkill skill = skillView.Get<RunSkill>();
             if (!d.CanSelect(skill))
                 return false;
 
@@ -99,7 +99,7 @@ public class ArbitraryCardPickerPanel : Panel
     private void ConfirmSelections()
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
-        List<RunSkill> mapped = _selections.Map(v => v.GetIndexPath().Get<RunSkill>()).ToList();
+        List<RunSkill> mapped = _selections.Map(v => v.Get<RunSkill>()).ToList();
         PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedSkillsSignal(mapped));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }

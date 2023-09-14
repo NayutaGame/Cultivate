@@ -9,7 +9,7 @@ public class SlotView : MonoBehaviour, IAddress, IInteractable,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
@@ -45,7 +45,7 @@ public class SlotView : MonoBehaviour, IAddress, IInteractable,
         _address = address;
         _image = GetComponent<Image>();
 
-        SkillView.Configure(new Address($"{GetIndexPath()}.Skill"));
+        SkillView.Configure(GetAddress().Append(".Skill"));
         SkillView.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
         SkillView.ClearIsManaShortage();
@@ -109,7 +109,7 @@ public class SlotView : MonoBehaviour, IAddress, IInteractable,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        RunCanvas.Instance.SkillGhost.Configure(SkillView.GetIndexPath());
+        RunCanvas.Instance.SkillGhost.Configure(SkillView.GetAddress());
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
@@ -162,7 +162,7 @@ public class SlotView : MonoBehaviour, IAddress, IInteractable,
             return;
         }
 
-        RunCanvas.Instance.SetIndexPathForSkillPreview(SkillView.GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForSkillPreview(SkillView.GetAddress());
     }
 
     public void OnPointerExit(PointerEventData eventData)

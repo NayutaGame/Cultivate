@@ -18,7 +18,7 @@ public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
     protected Image _image;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
@@ -183,7 +183,7 @@ public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
 
     public virtual void Refresh()
     {
-        if (GetIndexPath() == null)
+        if (GetAddress() == null)
         {
             gameObject.SetActive(false);
             return;
@@ -246,7 +246,7 @@ public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        RunCanvas.Instance.SkillGhost.Configure(GetIndexPath());
+        RunCanvas.Instance.SkillGhost.Configure(GetAddress());
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
@@ -291,7 +291,7 @@ public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForSkillPreview(GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForSkillPreview(GetAddress());
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)

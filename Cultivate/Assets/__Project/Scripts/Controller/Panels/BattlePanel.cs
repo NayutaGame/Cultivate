@@ -98,31 +98,31 @@ public class BattlePanel : Panel
     private bool TryMerge(IInteractable from, IInteractable to)
     {
         RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
-        RunSkill lhs = from.GetIndexPath().Get<RunSkill>();
-        RunSkill rhs = to.GetIndexPath().Get<RunSkill>();
+        RunSkill lhs = from.Get<RunSkill>();
+        RunSkill rhs = to.Get<RunSkill>();
         return runEnvironment.TryMerge(lhs, rhs);
     }
 
     private bool TryEquip(IInteractable from, IInteractable to)
     {
         RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
-        RunSkill toEquip = from.GetIndexPath().Get<RunSkill>();
-        SkillSlot slot = to.GetIndexPath().Get<SkillSlot>();
+        RunSkill toEquip = from.Get<RunSkill>();
+        SkillSlot slot = to.Get<SkillSlot>();
         return runEnvironment.TryEquipSkill(toEquip, slot);
     }
 
     private bool TryUnequip(IInteractable from, IInteractable to)
     {
         RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
-        SkillSlot slot = from.GetIndexPath().Get<SkillSlot>();
+        SkillSlot slot = from.Get<SkillSlot>();
         return runEnvironment.TryUnequip(slot, null);
     }
 
     private bool TrySwap(IInteractable from, IInteractable to)
     {
         RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
-        SkillSlot fromSlot = from.GetIndexPath().Get<SkillSlot>();
-        SkillSlot toSlot = to.GetIndexPath().Get<SkillSlot>();
+        SkillSlot fromSlot = from.Get<SkillSlot>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
         return runEnvironment.TrySwap(fromSlot, toSlot);
     }
 }

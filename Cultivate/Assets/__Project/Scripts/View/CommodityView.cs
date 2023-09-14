@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class CommodityView : MonoBehaviour, IAddress
 {
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     public RunSkillView SkillView;
@@ -21,7 +21,7 @@ public class CommodityView : MonoBehaviour, IAddress
     public void Configure(Address address)
     {
         _address = address;
-        SkillView.Configure(new Address($"{_address}.Skill"));
+        SkillView.Configure(_address.Append(".Skill"));
 
         BuyButton.onClick.RemoveAllListeners();
         BuyButton.onClick.AddListener(Buy);

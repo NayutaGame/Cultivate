@@ -18,7 +18,7 @@ public class ShopPanel : Panel
         base.Configure();
 
         _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
-        CommodityInventoryView.Configure(new Address($"{_address}.Commodities"));
+        CommodityInventoryView.Configure(_address.Append(".Commodities"));
 
         foreach (CommodityView commodityView in CommodityInventoryView.Views)
         {

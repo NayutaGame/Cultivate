@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
@@ -7,16 +8,20 @@ using UnityEngine;
 public abstract class ListView<T> : MonoBehaviour, IAddress, IInteractable where T : IAddress
 {
     public Transform Container;
-    public GameObject Prefab;
+    public GameObject[] Prefabs;
 
-    public virtual GameObject GetPrefab(object element)
-        => Prefab;
+    private Func<object, int> _prefabProvider;
+    public void SetPrefabProvider(Func<object, int> prefabProvider)
+        => _prefabProvider = prefabProvider;
+
+    private GameObject GetPrefab(object item)
+        => Prefabs[_prefabProvider?.Invoke(item) ?? 0];
 
     private List<T> _views;
     public List<T> Views => _views;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T1 Get<T1>() => _address.Get<T1>();
 
     private InteractDelegate InteractDelegate;
@@ -45,6 +50,24 @@ public abstract class ListView<T> : MonoBehaviour, IAddress, IInteractable where
         foreach(T view in _views) view.Refresh();
     }
 
+    private void PopulateList()
+    {
+        int current = Container.childCount;
+        IList inventory = Get<IList>();
+        int need = inventory.Count;
+
+        (need, _) = Numeric.Negate(need, current);
+        if (need <= 0) return;
+
+        int length = Container.childCount;
+        for (int i = length; i < need + length; i++)
+        {
+            GameObject prefab = GetPrefab(inventory[i]);
+            T view = Instantiate(prefab, Container).GetComponent<T>();
+            RegisterNew(view, i);
+        }
+    }
+
     private void RegisterExists()
     {
         for (int i = 0; i < Container.childCount; i++)
@@ -63,23 +86,5 @@ public abstract class ListView<T> : MonoBehaviour, IAddress, IInteractable where
 
         if (view is IInteractable interactable)
             interactable.SetDelegate(InteractDelegate);
-    }
-
-    private void PopulateList()
-    {
-        int current = Container.childCount;
-        IList inventory = Get<IList>();
-        int need = inventory.Count;
-
-        (need, _) = Numeric.Negate(need, current);
-        if (need <= 0) return;
-
-        int length = Container.childCount;
-        for (int i = length; i < need + length; i++)
-        {
-            GameObject prefab = GetPrefab(inventory[i]);
-            T view = Instantiate(prefab, Container).GetComponent<T>();
-            RegisterNew(view, i);
-        }
     }
 }

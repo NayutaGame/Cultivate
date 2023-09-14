@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class PropagateDrag : MonoBehaviour, IAddress, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     public Action<PointerEventData> _onPointerClick;

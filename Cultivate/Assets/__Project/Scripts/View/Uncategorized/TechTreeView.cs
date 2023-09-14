@@ -15,7 +15,7 @@ public class TechTreeView : MonoBehaviour, IAddress
     private List<TechView> _views;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     public virtual void Configure(Address address)

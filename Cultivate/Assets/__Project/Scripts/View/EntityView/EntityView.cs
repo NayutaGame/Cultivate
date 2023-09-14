@@ -28,14 +28,14 @@ public class EntityView : MonoBehaviour, IAddress, IInteractable
     #endregion
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     public void Configure(Address address)
     {
         _address = address;
         CopyButton.onClick.AddListener(Copy);
-        EquippedInventoryView.Configure(new Address($"{GetIndexPath()}.Slots"));
+        EquippedInventoryView.Configure(GetAddress().Append($"Slots"));
     }
 
     public void Refresh()

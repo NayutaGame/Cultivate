@@ -7,6 +7,6 @@ public interface IInteractable
     InteractDelegate GetDelegate();
     void SetDelegate(InteractDelegate interactDelegate);
 
-    Address GetIndexPath();
+    Address GetAddress();
     T Get<T>();
 }

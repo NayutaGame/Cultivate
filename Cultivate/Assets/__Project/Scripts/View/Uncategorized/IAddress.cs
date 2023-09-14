@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IAddress
 {
-    Address GetIndexPath();
+    Address GetAddress();
     T Get<T>();
     void Configure(Address address);
     void Refresh();

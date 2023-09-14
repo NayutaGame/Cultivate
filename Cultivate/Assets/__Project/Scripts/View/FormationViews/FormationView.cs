@@ -10,7 +10,7 @@ public class FormationView : MonoBehaviour, IAddress,
     protected RectTransform _rectTransform;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     [SerializeField] private TMP_Text NameText;
@@ -51,7 +51,7 @@ public class FormationView : MonoBehaviour, IAddress,
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForSubFormationPreview(GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForSubFormationPreview(GetAddress());
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)

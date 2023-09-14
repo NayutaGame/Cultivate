@@ -14,7 +14,7 @@ public class FormationPreview : FormationView
 
     public override void Refresh()
     {
-        if (GetIndexPath() == null)
+        if (GetAddress() == null)
         {
             gameObject.SetActive(false);
             return;

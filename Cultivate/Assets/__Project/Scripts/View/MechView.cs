@@ -11,7 +11,7 @@ public class MechView : MonoBehaviour, IAddress, IInteractable,
     protected Image _image;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
@@ -30,7 +30,7 @@ public class MechView : MonoBehaviour, IAddress, IInteractable,
 
     public virtual void Refresh()
     {
-        if (GetIndexPath() == null)
+        if (GetAddress() == null)
         {
             gameObject.SetActive(false);
             return;
@@ -71,7 +71,7 @@ public class MechView : MonoBehaviour, IAddress, IInteractable,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        RunCanvas.Instance.MechGhost.Configure(GetIndexPath());
+        RunCanvas.Instance.MechGhost.Configure(GetAddress());
         RunCanvas.Instance.MechGhost.Refresh();
 
         if (_image != null)

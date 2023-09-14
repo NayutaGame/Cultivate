@@ -12,7 +12,7 @@ public class RunSkillView : SkillView
     public override void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForSkillPreview(GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForSkillPreview(GetAddress());
     }
 
     public override void OnPointerExit(PointerEventData eventData)

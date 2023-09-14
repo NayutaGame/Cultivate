@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2917389917619324302}
   - component: {fileID: 293528097626049904}
   m_Layer: 0
-  m_Name: HandView
+  m_Name: FieldView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Container: {fileID: 5034519349020965220}
   Prefab: {fileID: 1267362520892108290, guid: 0f459f846492318459f9901b0b0a1af9, type: 3}
+  Prefabs: []
 --- !u!114 &2917389917619324302
 MonoBehaviour:
   m_ObjectHideFlags: 0

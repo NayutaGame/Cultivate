@@ -16,7 +16,7 @@ public class MapPanel : Panel, IAddress
     private NodeView[] _views;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     public override Tween GetShowTween()

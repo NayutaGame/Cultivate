@@ -667,6 +667,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e110e803a466210418dc2b2d9d29233a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SliderWidget: {fileID: 0}
+  CheckboxWidget: {fileID: 0}
+  ButtonWidget: {fileID: 0}
+  SwitchWidget: {fileID: 0}
 --- !u!1 &1684170590488662179
 GameObject:
   m_ObjectHideFlags: 0
@@ -1557,7 +1561,7 @@ GameObject:
   - component: {fileID: 1684170591416200130}
   - component: {fileID: 1684170591416200131}
   m_Layer: 0
-  m_Name: WidgetContainer
+  m_Name: Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

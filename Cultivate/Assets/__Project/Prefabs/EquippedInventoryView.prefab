@@ -89,7 +89,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Container: {fileID: 8766397657843945370}
-  Prefab: {fileID: 2108923873393925487, guid: 13dd3d68fd5def744a838543d71ad03e, type: 3}
+  Prefabs:
+  - {fileID: 2108923873393925487, guid: 13dd3d68fd5def744a838543d71ad03e, type: 3}
 --- !u!1001 &1020535601554013811
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ public class CheckboxView : MonoBehaviour, IAddress
     [SerializeField] private Sprite OffImage;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     private CheckboxModel _model;

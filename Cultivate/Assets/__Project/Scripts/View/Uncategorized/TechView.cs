@@ -9,7 +9,7 @@ public class TechView : MonoBehaviour, IAddress
     private Image _image;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     public TMP_Text NameText;
@@ -62,7 +62,7 @@ public class TechView : MonoBehaviour, IAddress
         if (!isCurrent) return;
 
         CostText.text = runTech.GetCost().ToString();
-        CostText.color = RunManager.Instance.Battle.CanAffordTech(GetIndexPath()) ? Color.black : Color.red;
+        CostText.color = RunManager.Instance.Battle.CanAffordTech(GetAddress()) ? Color.black : Color.red;
 
         if (runTech.HasEureka)
         {
@@ -76,7 +76,7 @@ public class TechView : MonoBehaviour, IAddress
 
     private void TrySetDone()
     {
-        RunManager.Instance.Battle.TrySetDoneTech(GetIndexPath());
+        RunManager.Instance.Battle.TrySetDoneTech(GetAddress());
         RunCanvas.Instance.Refresh();
     }
 }

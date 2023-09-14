@@ -27,7 +27,7 @@ public class StageSkillView : SkillView
     public override void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        StageCanvas.Instance.SetIndexPathForPreview(GetIndexPath());
+        StageCanvas.Instance.SetIndexPathForPreview(GetAddress());
         StageManager.Instance.Pause();
     }
 

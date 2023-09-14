@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class BarterItemView : MonoBehaviour, IAddress
 {
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     public RunSkillView PlayerSkillView;

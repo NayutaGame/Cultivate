@@ -68,7 +68,7 @@ public class CardPickerPanel : Panel
             if (space <= 0)
                 return false;
 
-            RunSkill runSkill = skillView.GetIndexPath().Get<RunSkill>();
+            RunSkill runSkill = skillView.Get<RunSkill>();
             if (!d.CanSelect(runSkill))
                 return false;
 
@@ -97,7 +97,7 @@ public class CardPickerPanel : Panel
             if (space <= 0)
                 return false;
 
-            SkillSlot slot = slotView.GetIndexPath().Get<SkillSlot>();
+            SkillSlot slot = slotView.Get<SkillSlot>();
             if (!d.CanSelect(slot))
                 return false;
 

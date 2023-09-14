@@ -458,7 +458,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8985839602713860910}
   m_Layer: 0
-  m_Name: DeckView
+  m_Name: HandView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1446,6 +1446,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Container: {fileID: 1649180089318255579}
   Prefab: {fileID: 8085986264311966347, guid: e44696ec828211e4ca354a26000467b3, type: 3}
+  Prefabs:
+  - {fileID: 8085986264311966347, guid: e44696ec828211e4ca354a26000467b3, type: 3}
   ScrollRect: {fileID: 2429498794201133359}
   DrawButtons: []
   SortButtons: []
@@ -1761,6 +1763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Container: {fileID: 1006192765679943635}
   Prefab: {fileID: 1310687291449444112, guid: cb6de2a184392ce43beeac468ea4a73f, type: 3}
+  Prefabs: []
 --- !u!1 &8151584246288785177
 GameObject:
   m_ObjectHideFlags: 0
@@ -2033,6 +2036,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Container: {fileID: 7208699117368570340}
   Prefab: {fileID: 1953151215448478786, guid: d3f34e221a5aa07449a554dadb86d449, type: 3}
+  Prefabs: []
 --- !u!1 &8871326557372446772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2691,7 +2695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9010936378688091556, guid: 130616300a3db65489b22752e3147f0d, type: 3}
       propertyPath: m_Name
-      value: HandView
+      value: FieldView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 130616300a3db65489b22752e3147f0d, type: 3}

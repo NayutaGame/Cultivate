@@ -33,7 +33,7 @@ public class FormationBrowser : ListView<FormationGroupView>
         _selection = (FormationGroupView)view;
         if (_selection != null)
         {
-            _detailedGroupView.Configure(view.GetIndexPath());
+            _detailedGroupView.Configure(view.GetAddress());
             _detailedGroupView.Refresh();
             _selection.SetSelected(true);
         }

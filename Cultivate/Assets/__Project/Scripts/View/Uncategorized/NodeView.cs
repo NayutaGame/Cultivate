@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class NodeView : MonoBehaviour, IAddress
 {
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     public JumpingButton _jumpingButton;
@@ -51,7 +51,7 @@ public class NodeView : MonoBehaviour, IAddress
 
     private void OnPointerClick(PointerEventData eventData)
     {
-        TryClickNode(GetIndexPath());
+        TryClickNode(GetAddress());
         RunCanvas.Instance.Refresh();
     }
 

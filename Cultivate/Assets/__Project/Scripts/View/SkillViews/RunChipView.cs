@@ -13,7 +13,7 @@ public class RunChipView : MonoBehaviour, IAddress,
     protected Image _image;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     private void Awake()
@@ -52,7 +52,7 @@ public class RunChipView : MonoBehaviour, IAddress,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragSkill(this);
 
-        RunCanvas.Instance.SkillGhost.Configure(GetIndexPath());
+        RunCanvas.Instance.SkillGhost.Configure(GetAddress());
         RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
@@ -86,7 +86,7 @@ public class RunChipView : MonoBehaviour, IAddress,
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForSkillPreview(GetIndexPath());
+        RunCanvas.Instance.SetIndexPathForSkillPreview(GetAddress());
     }
 
     public void OnPointerExit(PointerEventData eventData)

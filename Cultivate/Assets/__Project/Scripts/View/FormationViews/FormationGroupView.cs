@@ -11,7 +11,7 @@ public class FormationGroupView : MonoBehaviour, IAddress, IInteractable,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
@@ -38,7 +38,7 @@ public class FormationGroupView : MonoBehaviour, IAddress, IInteractable,
 
     public virtual void Refresh()
     {
-        if (GetIndexPath() == null)
+        if (GetAddress() == null)
         {
             gameObject.SetActive(false);
             return;
@@ -66,7 +66,7 @@ public class FormationGroupView : MonoBehaviour, IAddress, IInteractable,
     {
         if (SubFormationInventoryView == null)
             return;
-        SubFormationInventoryView.Configure(new Address($"{GetIndexPath()}.SubFormations"));
+        SubFormationInventoryView.Configure(GetAddress().Append(".SubFormations"));
         SubFormationInventoryView.Refresh();
     }
 

@@ -16,7 +16,7 @@ public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
     public ListView<SlotView> EquippedInventoryView;
 
     private Address _address;
-    public Address GetIndexPath() => _address;
+    public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     #region Interact
@@ -49,7 +49,7 @@ public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
         CopyButton.onClick.AddListener(Copy);
         PasteButton.onClick.AddListener(Paste);
 
-        EquippedInventoryView.Configure(GetIndexPath().Append(".Slots"));
+        EquippedInventoryView.Configure(GetAddress().Append(".Slots"));
     }
 
     #region Accessors
