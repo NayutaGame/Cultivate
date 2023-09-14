@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
+public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
 {
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
@@ -15,9 +15,9 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
 
     public ListView<SlotView> EquippedInventoryView;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath()
-        => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     #region Interact
 
@@ -32,9 +32,9 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
 
     #endregion
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
 
         EntityDropdown.options = new();
         Encyclopedia.EntityCategory.Traversal.Do(entityEntry => EntityDropdown.options.Add(new TMP_Dropdown.OptionData(entityEntry.Name)));
@@ -49,7 +49,7 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
         CopyButton.onClick.AddListener(Copy);
         PasteButton.onClick.AddListener(Paste);
 
-        EquippedInventoryView.Configure(new IndexPath($"{GetIndexPath()}.Slots"));
+        EquippedInventoryView.Configure(GetIndexPath().Append(".Slots"));
     }
 
     #region Accessors
@@ -73,7 +73,7 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
 
     public void Refresh()
     {
-        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = Get<IEntityModel>();
         if (entity == null)
             return;
 
@@ -85,21 +85,21 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
 
     private void EntryChanged(int entityEntryIndex)
     {
-        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = Get<IEntityModel>();
         entity.SetEntry(Encyclopedia.EntityCategory[entityEntryIndex]);
         RunCanvas.Instance.Refresh();
     }
 
     private void JingJieChanged(int jingJie)
     {
-        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = Get<IEntityModel>();
         entity.SetJingJie(jingJie);
         RunCanvas.Instance.Refresh();
     }
 
     private void RandomEntity()
     {
-        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = Get<IEntityModel>();
         int r = RandomManager.Range(0, Encyclopedia.EntityCategory.GetCount());
         entity.SetEntry(Encyclopedia.EntityCategory[r]);
         RunCanvas.Instance.Refresh();
@@ -110,20 +110,20 @@ public class MutableEntityView : MonoBehaviour, IIndexPath, IInteractable
         int.TryParse(value, out int health);
         health = Mathf.Clamp(health, 1, 9999);
 
-        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = Get<IEntityModel>();
         entity.SetBaseHealth(health);
         RunCanvas.Instance.Refresh();
     }
 
     private void Copy()
     {
-        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = Get<IEntityModel>();
         GUIUtility.systemCopyBuffer = entity.ToJson();
     }
 
     private void Paste()
     {
-        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = Get<IEntityModel>();
         entity.FromJson(GUIUtility.systemCopyBuffer);
         RunCanvas.Instance.Refresh();
     }

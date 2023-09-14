@@ -8,13 +8,13 @@ public class DialogPanel : Panel
     public Button[] Buttons;
     public TMP_Text[] Texts;
 
-    private IndexPath _indexPath;
+    private Address _address;
 
     public override void Configure()
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
 
         Buttons[0].onClick.RemoveAllListeners();
         Buttons[1].onClick.RemoveAllListeners();
@@ -31,7 +31,7 @@ public class DialogPanel : Panel
     {
         base.Refresh();
 
-        DialogPanelDescriptor d = DataManager.Get<DialogPanelDescriptor>(_indexPath);
+        DialogPanelDescriptor d = _address.Get<DialogPanelDescriptor>();
 
         DetailedText.text = d.GetDetailedText();
 

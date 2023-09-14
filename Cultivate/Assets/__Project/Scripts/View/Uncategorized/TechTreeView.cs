@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class TechTreeView : MonoBehaviour, IIndexPath
+public class TechTreeView : MonoBehaviour, IAddress
 {
     private static readonly int HEIGHT = 8;
 
@@ -14,12 +14,13 @@ public class TechTreeView : MonoBehaviour, IIndexPath
     private List<Transform> _holders;
     private List<TechView> _views;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
         InitHolders();
         _views = new ();
         PopulateList();
@@ -49,18 +50,18 @@ public class TechTreeView : MonoBehaviour, IIndexPath
 
     private void PopulateList()
     {
-        IList inventory = DataManager.Get<IList>(_indexPath);
+        IList inventory = Get<IList>();
         for (int i = 0; i < inventory.Count; i++)
         {
-            IndexPath indexPath = new IndexPath($"{_indexPath}#{i}");
-            RunTech tech = DataManager.Get<RunTech>(indexPath);
+            Address address = _address.Append("#{i}");
+            RunTech tech = address.Get<RunTech>();
             Vector2Int position = tech.GetPosition();
             int index = position.x * HEIGHT + position.y;
             Transform parent = _holders[index];
 
             TechView v = Instantiate(Prefab, parent).GetComponent<TechView>();
             _views.Add(v);
-            v.Configure(indexPath);
+            v.Configure(address);
         }
     }
 }

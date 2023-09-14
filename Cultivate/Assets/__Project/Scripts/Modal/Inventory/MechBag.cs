@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class MechBag : GDictionary
+public class MechBag : Addressable
 {
     private Mech[] _meches;
 

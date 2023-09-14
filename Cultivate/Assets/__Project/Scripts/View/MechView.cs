@@ -4,27 +4,26 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MechView : MonoBehaviour, IIndexPath, IInteractable,
+public class MechView : MonoBehaviour, IAddress, IInteractable,
     IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
 {
     protected RectTransform _rectTransform;
     protected Image _image;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate()
-        => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate)
-        => InteractDelegate = interactDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
 
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text CountText;
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
         _rectTransform = GetComponent<RectTransform>();
         _image = GetComponent<Image>();
     }
@@ -37,7 +36,7 @@ public class MechView : MonoBehaviour, IIndexPath, IInteractable,
             return;
         }
 
-        Mech mech = DataManager.Get<Mech>(GetIndexPath());
+        Mech mech = Get<Mech>();
         if (mech == null)
         {
             gameObject.SetActive(false);

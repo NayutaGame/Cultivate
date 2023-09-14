@@ -13,13 +13,13 @@ public class DiscoverSkillPanel : Panel
 
     private InteractDelegate InteractDelegate;
 
-    private IndexPath _indexPath;
+    private Address _address;
 
     public override void Configure()
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
 
         ConfigureInteractDelegate();
         SkillViews.Do(v => v.SetDelegate(InteractDelegate));
@@ -40,7 +40,7 @@ public class DiscoverSkillPanel : Panel
     {
         base.Refresh();
 
-        DiscoverSkillPanelDescriptor d = DataManager.Get<DiscoverSkillPanelDescriptor>(_indexPath);
+        DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
         DetailedText.text = d.GetDetailedText();
 
@@ -51,16 +51,16 @@ public class DiscoverSkillPanel : Panel
             if(!active)
                 continue;
 
-            SkillViews[i].Configure(new IndexPath($"{_indexPath}.Skills#{i}"));
+            SkillViews[i].Configure(_address.Append($".Skills#{i}"));
             SkillViews[i].Refresh();
         }
     }
 
     public bool TrySelectOption(IInteractable view)
     {
-        DiscoverSkillPanelDescriptor d = DataManager.Get<DiscoverSkillPanelDescriptor>(_indexPath);
+        DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
-        RunSkill skill = DataManager.Get<RunSkill>(view.GetIndexPath());
+        RunSkill skill = view.Get<RunSkill>();
         PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
         RunCanvas.Instance.SetIndexPathForSkillPreview(null);

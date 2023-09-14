@@ -114,7 +114,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, HeroBuffContainerTransform).GetComponent<BuffView>();
             _heroBuffViews.Add(v);
-            v.Configure(new IndexPath($"Stage.CurrEnv.Home.Buffs#{i}"));
+            v.Configure(new Address($"Stage.CurrEnv.Home.Buffs#{i}"));
         }
     }
 
@@ -133,7 +133,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, EnemyBuffContainerTransform).GetComponent<BuffView>();
             _enemyBuffViews.Add(v);
-            v.Configure(new IndexPath($"Stage.CurrEnv.Away.Buffs#{i}"));
+            v.Configure(new Address($"Stage.CurrEnv.Away.Buffs#{i}"));
         }
     }
 
@@ -157,9 +157,9 @@ public class StageCanvas : Singleton<StageCanvas>
         _enemyArmorText.text = $"护甲：{value}";
     }
 
-    public void SetIndexPathForPreview(IndexPath indexPath)
+    public void SetIndexPathForPreview(Address address)
     {
-        Preview.Configure(indexPath);
+        Preview.Configure(address);
         Preview.Refresh();
     }
 

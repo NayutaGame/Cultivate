@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-public class RunEnvironment : GDictionary
+public class RunEnvironment : Addressable
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
@@ -322,18 +322,18 @@ public class RunEnvironment : GDictionary
         }
     }
 
-    public bool CanAffordTech(IndexPath indexPath)
+    public bool CanAffordTech(Address address)
     {
-        RunTech runTech = DataManager.Get<RunTech>(indexPath);
+        RunTech runTech = address.Get<RunTech>();
         return runTech.GetCost() <= _xiuWei;
     }
 
-    public bool TrySetDoneTech(IndexPath indexPath)
+    public bool TrySetDoneTech(Address address)
     {
-        if (!CanAffordTech(indexPath))
+        if (!CanAffordTech(address))
             return false;
 
-        RunTech runTech = DataManager.Get<RunTech>(indexPath);
+        RunTech runTech = address.Get<RunTech>();
         _xiuWei -= runTech.GetCost();
         TechInventory.SetDone(runTech);
         return true;

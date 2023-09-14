@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IInteractable
+public interface IAddress
 {
-    InteractDelegate GetDelegate();
-    void SetDelegate(InteractDelegate interactDelegate);
-
     Address GetIndexPath();
     T Get<T>();
+    void Configure(Address address);
+    void Refresh();
 }

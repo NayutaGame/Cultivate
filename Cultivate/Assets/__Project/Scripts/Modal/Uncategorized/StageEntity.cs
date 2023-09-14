@@ -9,7 +9,7 @@ using UnityEngine;
 using CLLibrary;
 using Unity.Mathematics;
 
-public class StageEntity : GDictionary, CLEventListener
+public class StageEntity : Addressable, CLEventListener
 {
     public MingYuan MingYuan;
 

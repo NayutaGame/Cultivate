@@ -4,7 +4,7 @@ using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 
-public class MapPanel : Panel, IIndexPath
+public class MapPanel : Panel, IAddress
 {
     private static readonly int HEIGHT = 3;
     private static readonly int WIDTH = 10;
@@ -14,8 +14,10 @@ public class MapPanel : Panel, IIndexPath
     public Transform Container;
 
     private NodeView[] _views;
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     public override Tween GetShowTween()
         => DOTween.Sequence()
@@ -27,9 +29,9 @@ public class MapPanel : Panel, IIndexPath
             .Append(_backgroundTransform.DOAnchorPosX(1924f, 0.3f).SetEase(Ease.InQuad))
             .AppendCallback(() => gameObject.SetActive(false));
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
 
         _views = new NodeView[HEIGHT * WIDTH];
         PopulateList();
@@ -50,7 +52,7 @@ public class MapPanel : Panel, IIndexPath
             {
                 int i = x * HEIGHT + y;
                 _views[i] = levelTransform.GetChild(y).GetComponent<NodeView>();
-                _views[i].Configure(new IndexPath($"{_indexPath}.Nodes#{i}"));
+                _views[i].Configure(_address.Append($".Nodes#{i}"));
             }
         }
     }

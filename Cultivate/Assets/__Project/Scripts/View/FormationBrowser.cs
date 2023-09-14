@@ -8,9 +8,9 @@ public class FormationBrowser : ListView<FormationGroupView>
     [SerializeField] private FormationGroupView _detailedGroupView;
     private FormationGroupView _selection;
 
-    public override void Configure(IndexPath indexPath)
+    public override void Configure(Address address)
     {
-        base.Configure(indexPath);
+        base.Configure(address);
         ConfigureInteractDelegate();
     }
 

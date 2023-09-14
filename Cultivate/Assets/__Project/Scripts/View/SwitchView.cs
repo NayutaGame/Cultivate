@@ -4,15 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SwitchView : MonoBehaviour, IIndexPath
+public class SwitchView : MonoBehaviour, IAddress
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private TMP_Text ContentText;
     [SerializeField] private Button PrevButton;
     [SerializeField] private Button NextButton;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private SwitchModel _model;
 
@@ -22,10 +23,10 @@ public class SwitchView : MonoBehaviour, IIndexPath
             Configure(null);
     }
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
-        _model = _indexPath == null ? SwitchModel.Default : DataManager.Get<SwitchModel>(_indexPath);
+        _address = address;
+        _model = _address == null ? SwitchModel.Default : Get<SwitchModel>();
 
         if (LabelText != null)
             LabelText.text = _model.Name;

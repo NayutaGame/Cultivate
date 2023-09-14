@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-public class StageReport : GDictionary
+public class StageReport : Addressable
 {
     private StageTimeline _timeline;
     public StageTimeline Timeline => _timeline;

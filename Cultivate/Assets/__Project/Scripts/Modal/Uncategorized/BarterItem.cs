@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 
-public class BarterItem : GDictionary
+public class BarterItem : Addressable
 {
     public RunSkill PlayerSkill;
     public RunSkill Skill;

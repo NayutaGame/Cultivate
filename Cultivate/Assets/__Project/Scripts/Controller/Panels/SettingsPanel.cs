@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SettingsPanel : MonoBehaviour
 {
-    private IndexPath _indexPath;
+    private Address _address;
 
     [SerializeField] private TMP_Text CurrLabel;
     [SerializeField] private TMP_Text[] OtherLabels;
@@ -16,8 +16,8 @@ public class SettingsPanel : MonoBehaviour
 
     public void Configure()
     {
-        _indexPath = new IndexPath("App.Settings");
-        Settings settings = DataManager.Get<Settings>(_indexPath);
+        _address = new Address("App.Settings");
+        Settings settings = _address.Get<Settings>();
 
         CurrLabel.text = $"<rotate=90>{settings.GetCurrentContentModel().Name}";
 

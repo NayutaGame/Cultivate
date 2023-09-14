@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public abstract class PanelDescriptor : GDictionary
+public abstract class PanelDescriptor : Addressable
 {
     public Func<Signal, PanelDescriptor> _receiveSignal;
     public PanelDescriptor ReceiveSignal(Signal signal) => (_receiveSignal ?? DefaultReceiveSignal).Invoke(signal);

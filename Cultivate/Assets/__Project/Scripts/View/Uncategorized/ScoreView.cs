@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreView : MonoBehaviour, IIndexPath
+public class ScoreView : MonoBehaviour, IAddress
 {
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
     }
 
     public void Refresh() { }

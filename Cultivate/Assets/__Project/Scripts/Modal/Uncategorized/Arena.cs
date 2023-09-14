@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class Arena : ListModel<RunEntity>, GDictionary
+public class Arena : ListModel<RunEntity>, Addressable
 {
     private static readonly int ArenaSize = 6;
 

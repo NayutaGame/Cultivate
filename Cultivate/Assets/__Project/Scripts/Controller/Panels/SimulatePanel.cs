@@ -20,23 +20,23 @@ public class SimulatePanel : Panel
 
     private InteractDelegate InteractDelegate;
 
-    private IndexPath _indexPath;
+    private Address _address;
 
     public override void Configure()
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.Simulate");
+        _address = new Address("Run.Simulate");
 
         ConfigureInteractDelegate();
 
-        HeroView.Configure(new IndexPath($"{_indexPath}.Hero"));
+        HeroView.Configure(new Address($"{_address}.Hero"));
         HeroView.SetDelegate(InteractDelegate);
 
-        EnemyView.Configure(new IndexPath($"{_indexPath}.Enemy"));
+        EnemyView.Configure(new Address($"{_address}.Enemy"));
         EnemyView.SetDelegate(InteractDelegate);
 
-        SkillInventoryView.Configure(new IndexPath($"{_indexPath}.SkillInventory"));
+        SkillInventoryView.Configure(new Address($"{_address}.SkillInventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
 
         ReportButton.onClick.RemoveAllListeners();
@@ -117,41 +117,41 @@ public class SimulatePanel : Panel
 
     private bool TryMerge(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-        RunSkill lhs = DataManager.Get<RunSkill>(from.GetIndexPath());
-        RunSkill rhs = DataManager.Get<RunSkill>(to.GetIndexPath());
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
+        RunSkill lhs = from.Get<RunSkill>();
+        RunSkill rhs = to.Get<RunSkill>();
         return runEnvironment.TryMerge(lhs, rhs);
     }
 
     private bool TryEquip(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-        RunSkill toEquip = DataManager.Get<RunSkill>(from.GetIndexPath());
-        SkillSlot slot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
+        RunSkill toEquip = from.Get<RunSkill>();
+        SkillSlot slot = to.Get<SkillSlot>();
         return runEnvironment.TryEquipSkill(toEquip, slot);
     }
 
     private bool TryUnequip(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-        SkillSlot slot = DataManager.Get<SkillSlot>(from.GetIndexPath());
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
+        SkillSlot slot = from.Get<SkillSlot>();
         return runEnvironment.TryUnequip(slot, null);
     }
 
     private bool TrySwap(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-        SkillSlot fromSlot = DataManager.Get<SkillSlot>(from.GetIndexPath());
-        SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
+        SkillSlot fromSlot = from.Get<SkillSlot>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
         return runEnvironment.TrySwap(fromSlot, toSlot);
     }
 
     private bool TryWrite(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
 
-        object fromItem = DataManager.Get<object>(from.GetIndexPath());
-        SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        object fromItem = from.Get<object>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
 
         if (fromItem is RunSkill fromSkill)
         {
@@ -167,9 +167,9 @@ public class SimulatePanel : Panel
 
     private bool TryIncreaseJingJie(IInteractable view)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
 
-        object item = DataManager.Get<object>(view.GetIndexPath());
+        object item = view.Get<object>();
 
         if (item is RunSkill skill)
         {

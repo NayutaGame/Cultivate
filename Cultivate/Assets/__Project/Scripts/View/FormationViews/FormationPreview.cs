@@ -5,11 +5,11 @@ public class FormationPreview : FormationView
 {
     public FormationView FormationView;
 
-    public override void Configure(IndexPath indexPath)
+    public override void Configure(Address address)
     {
-        base.Configure(indexPath);
+        base.Configure(address);
         if (FormationView != null)
-            FormationView.Configure(indexPath);
+            FormationView.Configure(address);
     }
 
     public override void Refresh()

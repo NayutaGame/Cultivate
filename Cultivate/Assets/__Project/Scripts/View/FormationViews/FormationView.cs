@@ -4,28 +4,29 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FormationView : MonoBehaviour, IIndexPath,
+public class FormationView : MonoBehaviour, IAddress,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected RectTransform _rectTransform;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text JingJieText;
     [SerializeField] private TMP_Text ConditionText;
     [SerializeField] private TMP_Text RewardText;
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
         _rectTransform = GetComponent<RectTransform>();
     }
 
     public virtual void Refresh()
     {
-        FormationEntry e = DataManager.Get<FormationEntry>(GetIndexPath());
+        FormationEntry e = Get<FormationEntry>();
         if (e == null)
         {
             gameObject.SetActive(false);

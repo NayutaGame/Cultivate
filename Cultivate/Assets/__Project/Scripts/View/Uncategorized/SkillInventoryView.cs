@@ -15,9 +15,9 @@ public class SkillInventoryView : ListView<SkillView>, IDropHandler
     public HoldButton LeftButton;
     public HoldButton RightButton;
 
-    public override void Configure(IndexPath indexPath)
+    public override void Configure(Address address)
     {
-        base.Configure(indexPath);
+        base.Configure(address);
 
         DrawButtons.Length.Do(i =>
         {
@@ -61,7 +61,7 @@ public class SkillInventoryView : ListView<SkillView>, IDropHandler
 
     private void SortByComparisonId(int i)
     {
-        SkillInventory inventory = DataManager.Get<SkillInventory>(GetIndexPath());
+        SkillInventory inventory = Get<SkillInventory>();
         inventory.SortByComparisonId(i);
         RunCanvas.Instance.Refresh();
     }

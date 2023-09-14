@@ -14,20 +14,20 @@ public class ArenaPanel : Panel
 
     private InteractDelegate InteractDelegate;
 
-    private IndexPath _indexPath;
+    private Address _address;
 
     public override void Configure()
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.Arena");
+        _address = new Address("Run.Arena");
 
         ConfigureInteractDelegate();
 
-        SkillInventoryView.Configure(new IndexPath("App.SkillInventory"));
+        SkillInventoryView.Configure(new Address("App.SkillInventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
 
-        ArenaEditorView.Configure(_indexPath);
+        ArenaEditorView.Configure(_address);
         ArenaEditorView.SetDelegate(InteractDelegate);
 
         ArenaScoreboardView.Configure();
@@ -38,7 +38,7 @@ public class ArenaPanel : Panel
         InteractDelegate = new(2,
             getId: view =>
             {
-                object item = DataManager.Get<object>(view.GetIndexPath());
+                object item = view.Get<object>();
                 if (item is RunSkill)
                     return 0;
                 if (item is SkillSlot)
@@ -70,10 +70,10 @@ public class ArenaPanel : Panel
 
     private bool TryWrite(IInteractable from, IInteractable to)
     {
-        Arena arena = DataManager.Get<Arena>(_indexPath);
+        Arena arena = _address.Get<Arena>();
 
-        object fromItem = DataManager.Get<object>(from.GetIndexPath());
-        SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        object fromItem = from.Get<object>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
 
         if (fromItem is RunSkill fromSkill)
         {
@@ -89,8 +89,8 @@ public class ArenaPanel : Panel
 
     private bool TryIncreaseJingJie(IInteractable view)
     {
-        Arena arena = DataManager.Get<Arena>(_indexPath);
-        SkillSlot slot = DataManager.Get<SkillSlot>(view.GetIndexPath());
+        Arena arena = _address.Get<Arena>();
+        SkillSlot slot = view.Get<SkillSlot>();
         return arena.TryIncreaseJingJie(slot);
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
-public class StageEnvironment : GDictionary, CLEventListener
+public class StageEnvironment : Addressable, CLEventListener
 {
     private static readonly int MAX_ACTION_COUNT = 120;
 

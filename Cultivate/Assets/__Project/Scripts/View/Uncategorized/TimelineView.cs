@@ -62,7 +62,7 @@ public class TimelineView : MonoBehaviour
             StageSkillView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillView>();
             v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
-            v.Configure(new IndexPath($"Stage.EndEnv.Report.Timeline.Notes#{note.TemporalIndex}"));
+            v.Configure(new Address($"Stage.EndEnv.Report.Timeline.Notes#{note.TemporalIndex}"));
             v.Refresh();
         }
     }
@@ -84,7 +84,7 @@ public class TimelineView : MonoBehaviour
         for (int i = 0; i < _views.Count; i++)
         {
             StageSkillView v = _views[i];
-            StageNote note = DataManager.Get<StageNote>(v.GetIndexPath());
+            StageNote note = v.Get<StageNote>();
             int spatialIndex = note.TemporalIndex - nextTime + 1 + IndexOfCurr;
 
             if (spatialIndex == 0)
@@ -131,7 +131,7 @@ public class TimelineView : MonoBehaviour
         StageSkillView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillView>();
         v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
-        v.Configure(new IndexPath($"Stage.EndEnv.Report.Timeline.Notes#{toCreate.TemporalIndex}"));
+        v.Configure(new Address($"Stage.EndEnv.Report.Timeline.Notes#{toCreate.TemporalIndex}"));
         v.Refresh();
     }
 }

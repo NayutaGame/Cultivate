@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SettingsContentView : MonoBehaviour, IIndexPath
+public class SettingsContentView : MonoBehaviour, IAddress
 {
     // [SerializeField] private WidgetListView Widgets;
 
@@ -11,15 +11,16 @@ public class SettingsContentView : MonoBehaviour, IIndexPath
     [SerializeField] private GameObject ButtonWidget;
     [SerializeField] private GameObject SwitchWidget;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private SettingsContentModel _model;
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
-        _model = DataManager.Get<SettingsContentModel>(_indexPath);
+        _address = address;
+        _model = Get<SettingsContentModel>();
 
         // _model.Widgets
     }

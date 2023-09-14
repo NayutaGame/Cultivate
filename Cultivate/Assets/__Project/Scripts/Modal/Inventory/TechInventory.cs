@@ -5,7 +5,7 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class TechInventory : GDictionary
+public class TechInventory : Addressable
 {
     private List<RunTech> _list;
 

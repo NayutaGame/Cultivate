@@ -27,16 +27,16 @@ public class BattlePanel : Panel
 
     private InteractDelegate InteractDelegate;
 
-    private IndexPath _indexPath;
+    private Address _address;
 
     public override void Configure()
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
 
-        EnemyHand.Configure(new IndexPath($"{_indexPath}.Enemy.Slots"));
-        EnemySubFormationInventory.Configure(new IndexPath($"{_indexPath}.Enemy.ActivatedSubFormations"));
+        EnemyHand.Configure(new Address($"{_address}.Enemy.Slots"));
+        EnemySubFormationInventory.Configure(new Address($"{_address}.Enemy.ActivatedSubFormations"));
 
         ActButton.onClick.RemoveAllListeners();
         ActButton.onClick.AddListener(Act);
@@ -47,7 +47,7 @@ public class BattlePanel : Panel
         EnemyHand.Refresh();
         EnemySubFormationInventory.Refresh();
 
-        BattlePanelDescriptor d = DataManager.Get<BattlePanelDescriptor>(_indexPath);
+        BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
 
         if (d.Report is { } report)
         {
@@ -83,46 +83,46 @@ public class BattlePanel : Panel
 
     private void Report()
     {
-        BattlePanelDescriptor d = DataManager.Get<BattlePanelDescriptor>(_indexPath);
+        BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat(false, true);
         RunCanvas.Instance.Refresh();
     }
 
     private void Act()
     {
-        BattlePanelDescriptor d = DataManager.Get<BattlePanelDescriptor>(_indexPath);
+        BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat(true, true);
         RunCanvas.Instance.Refresh();
     }
 
     private bool TryMerge(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-        RunSkill lhs = DataManager.Get<RunSkill>(from.GetIndexPath());
-        RunSkill rhs = DataManager.Get<RunSkill>(to.GetIndexPath());
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
+        RunSkill lhs = from.GetIndexPath().Get<RunSkill>();
+        RunSkill rhs = to.GetIndexPath().Get<RunSkill>();
         return runEnvironment.TryMerge(lhs, rhs);
     }
 
     private bool TryEquip(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-        RunSkill toEquip = DataManager.Get<RunSkill>(from.GetIndexPath());
-        SkillSlot slot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
+        RunSkill toEquip = from.GetIndexPath().Get<RunSkill>();
+        SkillSlot slot = to.GetIndexPath().Get<SkillSlot>();
         return runEnvironment.TryEquipSkill(toEquip, slot);
     }
 
     private bool TryUnequip(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-        SkillSlot slot = DataManager.Get<SkillSlot>(from.GetIndexPath());
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
+        SkillSlot slot = from.GetIndexPath().Get<SkillSlot>();
         return runEnvironment.TryUnequip(slot, null);
     }
 
     private bool TrySwap(IInteractable from, IInteractable to)
     {
-        RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-        SkillSlot fromSlot = DataManager.Get<SkillSlot>(from.GetIndexPath());
-        SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
+        SkillSlot fromSlot = from.GetIndexPath().Get<SkillSlot>();
+        SkillSlot toSlot = to.GetIndexPath().Get<SkillSlot>();
         return runEnvironment.TrySwap(fromSlot, toSlot);
     }
 }

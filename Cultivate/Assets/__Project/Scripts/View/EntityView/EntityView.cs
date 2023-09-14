@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntityView : MonoBehaviour, IIndexPath, IInteractable
+public class EntityView : MonoBehaviour, IAddress, IInteractable
 {
     public TMP_Text NameText;
     public TMP_Text JingJieText;
@@ -27,20 +27,20 @@ public class EntityView : MonoBehaviour, IIndexPath, IInteractable
 
     #endregion
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath()
-        => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
         CopyButton.onClick.AddListener(Copy);
-        EquippedInventoryView.Configure(new IndexPath($"{GetIndexPath()}.Slots"));
+        EquippedInventoryView.Configure(new Address($"{GetIndexPath()}.Slots"));
     }
 
     public void Refresh()
     {
-        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = Get<IEntityModel>();
 
         if (entity == null)
             return;
@@ -54,7 +54,7 @@ public class EntityView : MonoBehaviour, IIndexPath, IInteractable
 
     private void Copy()
     {
-        IEntityModel entity = DataManager.Get<IEntityModel>(GetIndexPath());
+        IEntityModel entity = Get<IEntityModel>();
         GUIUtility.systemCopyBuffer = entity.ToJson();
     }
 }

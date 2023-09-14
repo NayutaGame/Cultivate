@@ -9,7 +9,7 @@ public class FormationBrowserPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        FormationBrowser.Configure(new IndexPath("App.FormationInventory"));
+        FormationBrowser.Configure(new Address("App.FormationInventory"));
     }
 
     public override void Refresh()

@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
+public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
     IPointerClickHandler,
     IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
@@ -17,14 +17,13 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
     protected RectTransform _rectTransform;
     protected Image _image;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate()
-        => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate)
-        => InteractDelegate = interactDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
 
     [SerializeField] private Image CardImage;
     [SerializeField] private GameObject ManaCostView;
@@ -175,9 +174,9 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
 
     #endregion
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
         _rectTransform = GetComponent<RectTransform>();
         _image = GetComponent<Image>();
     }
@@ -190,7 +189,7 @@ public abstract class SkillView : MonoBehaviour, IIndexPath, IInteractable,
             return;
         }
 
-        ISkillModel skill = DataManager.Get<ISkillModel>(GetIndexPath());
+        ISkillModel skill = Get<ISkillModel>();
         if (skill == null)
         {
             gameObject.SetActive(false);

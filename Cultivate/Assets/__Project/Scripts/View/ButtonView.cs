@@ -4,13 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonView : MonoBehaviour, IIndexPath
+public class ButtonView : MonoBehaviour, IAddress
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private Button Button;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private ButtonModel _model;
 
@@ -20,10 +21,10 @@ public class ButtonView : MonoBehaviour, IIndexPath
             Configure(null);
     }
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
-        _model = _indexPath == null ? ButtonModel.Default : DataManager.Get<ButtonModel>(_indexPath);
+        _address = address;
+        _model = _address == null ? ButtonModel.Default : Get<ButtonModel>();
 
         if (LabelText != null)
             LabelText.text = _model.Name;

@@ -44,7 +44,7 @@ public class RunCanvas : Singleton<RunCanvas>
         DeckInteractDelegate = new(4,
             getId: view =>
             {
-                object item = DataManager.Get<object>(view.GetIndexPath());
+                object item = view.Get<object>();
                 if (item is RunSkill)
                     return 0;
                 if (item is SkillInventory)
@@ -67,7 +67,7 @@ public class RunCanvas : Singleton<RunCanvas>
         CardPickerInteractDelegate = new(4,
             getId: view =>
             {
-                object item = DataManager.Get<object>(view.GetIndexPath());
+                object item = view.Get<object>();
                 if (item is RunSkill)
                     return 0;
                 if (item is SkillInventory)
@@ -123,9 +123,9 @@ public class RunCanvas : Singleton<RunCanvas>
         MMDMLayer.Refresh();
     }
 
-    public void SetIndexPathForSkillPreview(IndexPath indexPath)
+    public void SetIndexPathForSkillPreview(Address address)
     {
-        RunSkillPreview.Configure(indexPath);
+        RunSkillPreview.Configure(address);
         RunSkillPreview.Refresh();
     }
 
@@ -135,9 +135,9 @@ public class RunCanvas : Singleton<RunCanvas>
         RunSkillPreview.Refresh();
     }
 
-    public void SetIndexPathForSubFormationPreview(IndexPath indexPath)
+    public void SetIndexPathForSubFormationPreview(Address address)
     {
-        FormationPreview.Configure(indexPath);
+        FormationPreview.Configure(address);
         FormationPreview.Refresh();
     }
 
@@ -186,40 +186,40 @@ public class RunCanvas : Singleton<RunCanvas>
 
     private bool TryMerge(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
-        RunSkill lhs = DataManager.Get<RunSkill>(from.GetIndexPath());
-        RunSkill rhs = DataManager.Get<RunSkill>(to.GetIndexPath());
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        RunSkill lhs = from.Get<RunSkill>();
+        RunSkill rhs = to.Get<RunSkill>();
         return env.TryMerge(lhs, rhs);
     }
 
     private bool TryEquipSkill(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
-        RunSkill toEquip = DataManager.Get<RunSkill>(from.GetIndexPath());
-        SkillSlot slot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        RunSkill toEquip = from.Get<RunSkill>();
+        SkillSlot slot = to.Get<SkillSlot>();
         return env.TryEquipSkill(toEquip, slot);
     }
 
     private bool TryEquipMech(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
-        Mech toEquip = DataManager.Get<Mech>(from.GetIndexPath());
-        SkillSlot slot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        Mech toEquip = from.Get<Mech>();
+        SkillSlot slot = to.Get<SkillSlot>();
         return env.TryEquipMech(toEquip, slot);
     }
 
     private bool TryUnequip(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
-        SkillSlot slot = DataManager.Get<SkillSlot>(from.GetIndexPath());
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        SkillSlot slot = from.Get<SkillSlot>();
         return env.TryUnequip(slot, null);
     }
 
     private bool TrySwap(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = DataManager.Get<RunEnvironment>(new IndexPath("Run.Battle"));
-        SkillSlot fromSlot = DataManager.Get<SkillSlot>(from.GetIndexPath());
-        SkillSlot toSlot = DataManager.Get<SkillSlot>(to.GetIndexPath());
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        SkillSlot fromSlot = from.Get<SkillSlot>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
         return env.TrySwap(fromSlot, toSlot);
     }
 

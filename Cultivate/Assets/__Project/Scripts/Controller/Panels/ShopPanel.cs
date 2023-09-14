@@ -11,14 +11,14 @@ public class ShopPanel : Panel
 
     public Button ExitButton;
 
-    private IndexPath _indexPath;
+    private Address _address;
 
     public override void Configure()
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
-        CommodityInventoryView.Configure(new IndexPath($"{_indexPath}.Commodities"));
+        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
+        CommodityInventoryView.Configure(new Address($"{_address}.Commodities"));
 
         foreach (CommodityView commodityView in CommodityInventoryView.Views)
         {
@@ -38,7 +38,7 @@ public class ShopPanel : Panel
 
     private void BuyEvent(Commodity commodity)
     {
-        ShopPanelDescriptor d = DataManager.Get<ShopPanelDescriptor>(_indexPath);
+        ShopPanelDescriptor d = _address.Get<ShopPanelDescriptor>();
         d.Buy(commodity);
         AudioManager.Instance.Play("钱币");
     }

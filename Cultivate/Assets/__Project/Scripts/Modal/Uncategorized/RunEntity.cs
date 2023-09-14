@@ -6,7 +6,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class RunEntity : GDictionary, IEntityModel
+public class RunEntity : Addressable, IEntityModel
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged()

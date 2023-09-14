@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunNode : GDictionary
+public class RunNode : Addressable
 {
     protected NodeEntry _entry;
     public NodeEntry Entry => _entry;

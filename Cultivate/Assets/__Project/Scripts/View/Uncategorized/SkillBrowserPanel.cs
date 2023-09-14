@@ -11,7 +11,7 @@ public class SkillBrowserPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        SkillInventoryView.Configure(new IndexPath("App.SkillInventory"));
+        SkillInventoryView.Configure(new Address("App.SkillInventory"));
     }
 
     public override void Refresh()

@@ -5,7 +5,7 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class FormationGroupEntry : Entry, GDictionary
+public class FormationGroupEntry : Entry, Addressable
 {
     private int _order;
     public int Order => _order;

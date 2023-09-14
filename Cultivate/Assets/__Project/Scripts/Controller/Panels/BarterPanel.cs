@@ -7,14 +7,14 @@ public class BarterPanel : Panel
 
     public Button ExitButton;
 
-    private IndexPath _indexPath;
+    private Address _address;
 
     public override void Configure()
     {
         base.Configure();
 
-        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
-        BarterInventoryView.Configure(new IndexPath($"{_indexPath}.Inventory"));
+        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
+        BarterInventoryView.Configure(_address.Append(".Inventory"));
 
         foreach (BarterItemView barterItemView in BarterInventoryView.Views)
         {
@@ -34,7 +34,7 @@ public class BarterPanel : Panel
 
     private void ExchangeEvent(BarterItem barterItem)
     {
-        BarterPanelDescriptor d = DataManager.Get<BarterPanelDescriptor>(_indexPath);
+        BarterPanelDescriptor d = _address.Get<BarterPanelDescriptor>();
         d.Exchange(barterItem);
         AudioManager.Instance.Play("钱币");
     }

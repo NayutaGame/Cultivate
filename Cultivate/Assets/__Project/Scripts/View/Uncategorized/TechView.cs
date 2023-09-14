@@ -4,12 +4,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TechView : MonoBehaviour, IIndexPath
+public class TechView : MonoBehaviour, IAddress
 {
     private Image _image;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     public TMP_Text NameText;
     public TMP_Text RewardText;
@@ -18,16 +19,16 @@ public class TechView : MonoBehaviour, IIndexPath
     public TMP_Text CostText;
     public TMP_Text DiscountText;
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
         _image = GetComponent<Image>();
         SetDoneButton.onClick.AddListener(TrySetDone);
     }
 
     public virtual void Refresh()
     {
-        RunTech runTech = DataManager.Get<RunTech>(GetIndexPath());
+        RunTech runTech = Get<RunTech>();
 
         NameText.text = runTech.GetName();
 

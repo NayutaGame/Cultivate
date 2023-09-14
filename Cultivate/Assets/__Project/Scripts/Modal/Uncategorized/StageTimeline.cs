@@ -5,7 +5,7 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
-public class StageTimeline : GDictionary
+public class StageTimeline : Addressable
 {
     private List<StageNote> _notes;
     private int _pointer;

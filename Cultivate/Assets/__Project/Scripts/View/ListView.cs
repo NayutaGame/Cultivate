@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public abstract class ListView<T> : MonoBehaviour, IIndexPath, IInteractable where T : IIndexPath
+public abstract class ListView<T> : MonoBehaviour, IAddress, IInteractable where T : IAddress
 {
     public Transform Container;
     public GameObject Prefab;
@@ -15,15 +15,12 @@ public abstract class ListView<T> : MonoBehaviour, IIndexPath, IInteractable whe
     private List<T> _views;
     public List<T> Views => _views;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T1 Get<T1>() => _address.Get<T1>();
 
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate() => InteractDelegate;
-
-    public S GetModel<S>()
-        => DataManager.Get<S>(GetIndexPath());
-
     public virtual void SetDelegate(InteractDelegate interactDelegate)
     {
         InteractDelegate = interactDelegate;
@@ -35,9 +32,9 @@ public abstract class ListView<T> : MonoBehaviour, IIndexPath, IInteractable whe
             });
     }
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
         _views = new List<T>();
         RegisterExists();
     }
@@ -62,7 +59,7 @@ public abstract class ListView<T> : MonoBehaviour, IIndexPath, IInteractable whe
         if (!_views.Contains(view))
             _views.Add(view);
 
-        view.Configure(new IndexPath($"{_indexPath}#{i}"));
+        view.Configure(_address.Append($"#{i}"));
 
         if (view is IInteractable interactable)
             interactable.SetDelegate(InteractDelegate);
@@ -71,7 +68,7 @@ public abstract class ListView<T> : MonoBehaviour, IIndexPath, IInteractable whe
     private void PopulateList()
     {
         int current = Container.childCount;
-        IList inventory = GetModel<IList>();
+        IList inventory = Get<IList>();
         int need = inventory.Count;
 
         (need, _) = Numeric.Negate(need, current);

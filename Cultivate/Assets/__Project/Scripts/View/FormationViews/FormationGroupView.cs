@@ -6,18 +6,17 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class FormationGroupView : MonoBehaviour, IIndexPath, IInteractable,
+public class FormationGroupView : MonoBehaviour, IAddress, IInteractable,
     IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate()
-        => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate)
-        => InteractDelegate = interactDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
 
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private SubFormationInventoryView SubFormationInventoryView;
@@ -32,9 +31,9 @@ public class FormationGroupView : MonoBehaviour, IIndexPath, IInteractable,
             SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
     }
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
     }
 
     public virtual void Refresh()
@@ -45,7 +44,7 @@ public class FormationGroupView : MonoBehaviour, IIndexPath, IInteractable,
             return;
         }
 
-        FormationGroupEntry formationGroup = DataManager.Get<FormationGroupEntry>(GetIndexPath());
+        FormationGroupEntry formationGroup = Get<FormationGroupEntry>();
         if (formationGroup == null)
         {
             gameObject.SetActive(false);
@@ -67,7 +66,7 @@ public class FormationGroupView : MonoBehaviour, IIndexPath, IInteractable,
     {
         if (SubFormationInventoryView == null)
             return;
-        SubFormationInventoryView.Configure(new IndexPath($"{GetIndexPath()}.SubFormations"));
+        SubFormationInventoryView.Configure(new Address($"{GetIndexPath()}.SubFormations"));
         SubFormationInventoryView.Refresh();
     }
 

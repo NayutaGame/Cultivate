@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
+public class SlotView : MonoBehaviour, IAddress, IInteractable,
     IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate()
@@ -22,7 +23,7 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
 
     private bool IsManaShortage()
     {
-        SkillSlot slot = DataManager.Get<SkillSlot>(GetIndexPath());
+        SkillSlot slot = Get<SkillSlot>();
         return slot.IsManaShortage;
     }
 
@@ -39,12 +40,12 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
             SkillView.SetSelected(selected);
     }
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
         _image = GetComponent<Image>();
 
-        SkillView.Configure(new IndexPath($"{GetIndexPath()}.Skill"));
+        SkillView.Configure(new Address($"{GetIndexPath()}.Skill"));
         SkillView.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
         SkillView.ClearIsManaShortage();
@@ -53,7 +54,7 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
 
     public void Refresh()
     {
-        SkillSlot slot = DataManager.Get<SkillSlot>(GetIndexPath());
+        SkillSlot slot = Get<SkillSlot>();
 
         bool locked = slot.State == SkillSlot.SkillSlotState.Locked;
         gameObject.SetActive(!locked);
@@ -98,7 +99,7 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
             return;
         }
 
-        SkillSlot slot = DataManager.Get<SkillSlot>(GetIndexPath());
+        SkillSlot slot = Get<SkillSlot>();
         if (slot.State != SkillSlot.SkillSlotState.Occupied)
         {
             eventData.pointerDrag = null;
@@ -154,7 +155,7 @@ public class SlotView : MonoBehaviour, IIndexPath, IInteractable,
     {
         if (eventData.dragging) return;
 
-        SkillSlot slot = DataManager.Get<SkillSlot>(GetIndexPath());
+        SkillSlot slot = Get<SkillSlot>();
         if (slot.State != SkillSlot.SkillSlotState.Occupied)
         {
             RunCanvas.Instance.SetIndexPathForSkillPreview(null);

@@ -6,10 +6,10 @@ public class StageSkillPreview : SkillView
 {
     public StageSkillView SkillView;
 
-    public override void Configure(IndexPath indexPath)
+    public override void Configure(Address address)
     {
-        base.Configure(indexPath);
-        SkillView.Configure(indexPath);
+        base.Configure(address);
+        SkillView.Configure(address);
     }
 
     public override void Refresh()

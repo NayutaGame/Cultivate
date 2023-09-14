@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class AppManager : Singleton<AppManager>, GDictionary
+public class AppManager : Singleton<AppManager>, Addressable
 {
     private AppSM _sm;
     public RunManager RunManager;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Commodity : GDictionary
+public class Commodity : Addressable
 {
     public RunSkill Skill;
     public int Price;

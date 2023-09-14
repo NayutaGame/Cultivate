@@ -3,14 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SliderView : MonoBehaviour, IIndexPath
+public class SliderView : MonoBehaviour, IAddress
 {
     [SerializeField] private Slider Slider;
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private TMP_Text NumberText;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private SliderModel _model;
 
@@ -20,10 +21,10 @@ public class SliderView : MonoBehaviour, IIndexPath
             Configure(null);
     }
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
-        _model = _indexPath == null ? SliderModel.Default : DataManager.Get<SliderModel>(_indexPath);
+        _address = address;
+        _model = _address == null ? SliderModel.Default : Get<SliderModel>();
 
         if (LabelText != null)
             LabelText.text = _model.Name;

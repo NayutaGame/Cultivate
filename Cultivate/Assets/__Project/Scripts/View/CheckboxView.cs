@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CheckboxView : MonoBehaviour, IIndexPath
+public class CheckboxView : MonoBehaviour, IAddress
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private Button Button;
@@ -13,8 +13,9 @@ public class CheckboxView : MonoBehaviour, IIndexPath
     [SerializeField] private Sprite OnImage;
     [SerializeField] private Sprite OffImage;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private CheckboxModel _model;
 
@@ -24,10 +25,10 @@ public class CheckboxView : MonoBehaviour, IIndexPath
             Configure(null);
     }
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
-        _model = _indexPath == null ? CheckboxModel.Default : DataManager.Get<CheckboxModel>(_indexPath);
+        _address = address;
+        _model = _address == null ? CheckboxModel.Default : Get<CheckboxModel>();
 
         if (LabelText != null)
             LabelText.text = _model.Name;

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, GDictionary
+public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, Addressable
 {
     public static SpriteCategory SpriteCategory;
     public static AudioCategory AudioCategory;

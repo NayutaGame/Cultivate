@@ -5,10 +5,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommodityView : MonoBehaviour, IIndexPath
+public class CommodityView : MonoBehaviour, IAddress
 {
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     public RunSkillView SkillView;
     public TMP_Text PriceText;
@@ -17,10 +18,10 @@ public class CommodityView : MonoBehaviour, IIndexPath
     public event Action<Commodity> BuyEvent;
     public void ClearBuyEvent() => BuyEvent = null;
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
-        SkillView.Configure(new IndexPath($"{_indexPath}.Skill"));
+        _address = address;
+        SkillView.Configure(new Address($"{_address}.Skill"));
 
         BuyButton.onClick.RemoveAllListeners();
         BuyButton.onClick.AddListener(Buy);
@@ -28,7 +29,7 @@ public class CommodityView : MonoBehaviour, IIndexPath
 
     public void Refresh()
     {
-        Commodity commodity = DataManager.Get<Commodity>(_indexPath);
+        Commodity commodity = Get<Commodity>();
 
         bool isReveal = commodity != null;
         gameObject.SetActive(isReveal);
@@ -42,7 +43,7 @@ public class CommodityView : MonoBehaviour, IIndexPath
 
     private void Buy()
     {
-        Commodity commodity = DataManager.Get<Commodity>(_indexPath);
+        Commodity commodity = Get<Commodity>();
         BuyEvent?.Invoke(commodity);
         RunCanvas.Instance.Refresh();
     }

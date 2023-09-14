@@ -44,10 +44,10 @@ public class DeckPanel : Panel
 
     public override void Configure()
     {
-        PlayerHand.Configure(new IndexPath("Run.Battle.Hero.Slots"));
-        PlayerInventory.Configure(new IndexPath("Run.Battle.SkillInventory"));
-        PlayerSubFormationInventory.Configure(new IndexPath("Run.Battle.Hero.ActivatedSubFormations"));
-        MechBagView.Configure(new IndexPath("Run.Battle.MechBag.List"));
+        PlayerHand.Configure(new Address("Run.Battle.Hero.Slots"));
+        PlayerInventory.Configure(new Address("Run.Battle.SkillInventory"));
+        PlayerSubFormationInventory.Configure(new Address("Run.Battle.Hero.ActivatedSubFormations"));
+        MechBagView.Configure(new Address("Run.Battle.MechBag.List"));
 
         DeckToggle.onClick.RemoveAllListeners();
         DeckToggle.onClick.AddListener(ToggleDeck);
@@ -73,7 +73,7 @@ public class DeckPanel : Panel
 
     private void Sort()
     {
-        SkillInventory inventory = DataManager.Get<SkillInventory>(new IndexPath("Run.Battle.SkillInventory"));
+        SkillInventory inventory = new Address("Run.Battle.SkillInventory").Get<SkillInventory>();
         inventory.SortByComparisonId(0);
         RunCanvas.Instance.Refresh();
     }

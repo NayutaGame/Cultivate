@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class BarterItemView : MonoBehaviour, IIndexPath
+public class BarterItemView : MonoBehaviour, IAddress
 {
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     public RunSkillView PlayerSkillView;
     public Button ExchangeButton;
@@ -17,11 +18,11 @@ public class BarterItemView : MonoBehaviour, IIndexPath
     public event Action<BarterItem> ExchangeEvent;
     public void ClearExchangeEvent() => ExchangeEvent = null;
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
-        PlayerSkillView.Configure(new IndexPath($"{_indexPath}.PlayerSkill"));
-        SkillView.Configure(new IndexPath($"{_indexPath}.Skill"));
+        _address = address;
+        PlayerSkillView.Configure(_address.Append(".PlayerSkill"));
+        SkillView.Configure(_address.Append(".Skill"));
 
         ExchangeButton.onClick.RemoveAllListeners();
         ExchangeButton.onClick.AddListener(Exchange);
@@ -29,7 +30,7 @@ public class BarterItemView : MonoBehaviour, IIndexPath
 
     public void Refresh()
     {
-        BarterItem barterItem = DataManager.Get<BarterItem>(_indexPath);
+        BarterItem barterItem = Get<BarterItem>();
 
         bool isReveal = barterItem != null;
         gameObject.SetActive(isReveal);
@@ -43,7 +44,7 @@ public class BarterItemView : MonoBehaviour, IIndexPath
 
     private void Exchange()
     {
-        BarterItem barterItem = DataManager.Get<BarterItem>(_indexPath);
+        BarterItem barterItem = Get<BarterItem>();
         ExchangeEvent?.Invoke(barterItem);
         RunCanvas.Instance.Refresh();
     }

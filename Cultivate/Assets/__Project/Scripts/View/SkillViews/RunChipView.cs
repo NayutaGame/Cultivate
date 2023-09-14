@@ -6,23 +6,24 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class RunChipView : MonoBehaviour, IIndexPath,
+public class RunChipView : MonoBehaviour, IAddress,
     IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected Image _image;
 
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     private void Awake()
     {
         _image = GetComponent<Image>();
     }
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
     }
 
     public virtual void Refresh()
@@ -31,7 +32,7 @@ public class RunChipView : MonoBehaviour, IIndexPath,
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (DataManager.Get<SkillSlot>(GetIndexPath()) is { } enemyChipSlot)
+        if (Get<SkillSlot>() is { } enemyChipSlot)
         {
             enemyChipSlot.TryIncreaseJingJie();
             RunCanvas.Instance.Refresh();
@@ -41,7 +42,7 @@ public class RunChipView : MonoBehaviour, IIndexPath,
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        if (DataManager.Get<SkillSlot>(GetIndexPath()) is { } enemyChipSlot)
+        if (Get<SkillSlot>() is { } enemyChipSlot)
         {
             eventData.pointerDrag = null;
 

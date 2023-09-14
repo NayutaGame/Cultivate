@@ -18,12 +18,12 @@ public class ArbitraryCardPickerPanel : Panel
 
     private InteractDelegate InteractDelegate;
 
-    private IndexPath _indexPath;
+    private Address _address;
 
     public override void Configure()
     {
         base.Configure();
-        _indexPath = new IndexPath("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
 
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
@@ -31,7 +31,7 @@ public class ArbitraryCardPickerPanel : Panel
         ConfigureInteractDelegate();
         _selections = new List<SkillView>();
 
-        SkillInventoryView.Configure(new IndexPath($"{_indexPath}.Inventory"));
+        SkillInventoryView.Configure(new Address($"{_address}.Inventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
     }
 
@@ -45,7 +45,7 @@ public class ArbitraryCardPickerPanel : Panel
     {
         base.Refresh();
 
-        ArbitraryCardPickerPanelDescriptor d = DataManager.Get<ArbitraryCardPickerPanelDescriptor>(_indexPath);
+        ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
         InfoText.text = d.GetDetailedText();
         StatusText.text = $"可以选择 {d.Range.Start} ~ {d.Range.End - 1} 张卡\n已选   {_selections.Count}   张";
@@ -67,7 +67,7 @@ public class ArbitraryCardPickerPanel : Panel
 
     private bool ToggleSkill(IInteractable view)
     {
-        ArbitraryCardPickerPanelDescriptor d = DataManager.Get<ArbitraryCardPickerPanelDescriptor>(_indexPath);
+        ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
         SkillView skillView = view as SkillView;
         bool isSelected = _selections.Contains(skillView);
@@ -83,7 +83,7 @@ public class ArbitraryCardPickerPanel : Panel
             if (space <= 0)
                 return false;
 
-            RunSkill skill = DataManager.Get<RunSkill>(skillView.GetIndexPath());
+            RunSkill skill = skillView.GetIndexPath().Get<RunSkill>();
             if (!d.CanSelect(skill))
                 return false;
 
@@ -98,8 +98,8 @@ public class ArbitraryCardPickerPanel : Panel
 
     private void ConfirmSelections()
     {
-        ArbitraryCardPickerPanelDescriptor d = DataManager.Get<ArbitraryCardPickerPanelDescriptor>(_indexPath);
-        List<RunSkill> mapped = _selections.Map(v => DataManager.Get<RunSkill>(v.GetIndexPath())).ToList();
+        ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
+        List<RunSkill> mapped = _selections.Map(v => v.GetIndexPath().Get<RunSkill>()).ToList();
         PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedSkillsSignal(mapped));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }

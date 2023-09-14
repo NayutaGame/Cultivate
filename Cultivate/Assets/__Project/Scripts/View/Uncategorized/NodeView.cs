@@ -3,17 +3,18 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class NodeView : MonoBehaviour, IIndexPath
+public class NodeView : MonoBehaviour, IAddress
 {
-    private IndexPath _indexPath;
-    public IndexPath GetIndexPath() => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
     public JumpingButton _jumpingButton;
     public TMP_Text NameText;
 
-    public virtual void Configure(IndexPath indexPath)
+    public virtual void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
 
         _jumpingButton.RemoveAllListeners();
         _jumpingButton.AddListener(OnPointerClick);
@@ -21,7 +22,7 @@ public class NodeView : MonoBehaviour, IIndexPath
 
     public virtual void Refresh()
     {
-        RunNode runNode = DataManager.Get<RunNode>(GetIndexPath());
+        RunNode runNode = Get<RunNode>();
 
         gameObject.SetActive(runNode != null);
         if (runNode == null)
@@ -54,9 +55,9 @@ public class NodeView : MonoBehaviour, IIndexPath
         RunCanvas.Instance.Refresh();
     }
 
-    private bool TryClickNode(IndexPath indexPath)
+    private bool TryClickNode(Address address)
     {
-        RunNode runNode = DataManager.Get<RunNode>(indexPath);
+        RunNode runNode = Get<RunNode>();
         if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Battle.Map.Selecting)
             return false;
 

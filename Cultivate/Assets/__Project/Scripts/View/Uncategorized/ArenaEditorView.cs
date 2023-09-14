@@ -9,9 +9,9 @@ public class ArenaEditorView : ListView<MutableEntityView>
     public Button RandomButton;
     public Button CompeteButton;
 
-    public override void Configure(IndexPath indexPath)
+    public override void Configure(Address address)
     {
-        base.Configure(indexPath);
+        base.Configure(address);
 
         RandomButton.onClick.AddListener(Random);
         CompeteButton.onClick.AddListener(Compete);
@@ -25,7 +25,7 @@ public class ArenaEditorView : ListView<MutableEntityView>
 
     private void Compete()
     {
-        Arena arena = DataManager.Get<Arena>(GetIndexPath());
+        Arena arena = Get<Arena>();
         arena.Compete();
         RunCanvas.Instance.Refresh();
     }

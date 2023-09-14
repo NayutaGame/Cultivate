@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
-public class StageManager : Singleton<StageManager>, GDictionary
+public class StageManager : Singleton<StageManager>, Addressable
 {
     public Transform VFXPool;
     public GameObject FlowTextVFXPrefab;

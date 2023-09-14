@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class BuffView : MonoBehaviour
+public class BuffView : MonoBehaviour, IAddress
 {
     public TMP_Text NameText;
     public TMP_Text StackText;
 
-    private IndexPath _indexPath;
-    public IndexPath IndexPath => _indexPath;
+    private Address _address;
+    public Address GetIndexPath() => _address;
+    public T Get<T>() => _address.Get<T>();
 
-    public void Configure(IndexPath indexPath)
+    public void Configure(Address address)
     {
-        _indexPath = indexPath;
+        _address = address;
     }
 
     public virtual void Refresh()
     {
         // TryGetHeroBuff
-        Buff b = DataManager.Get<Buff>(IndexPath);
+        Buff b = Get<Buff>();
 
         gameObject.SetActive(b != null);
         if (b == null) return;

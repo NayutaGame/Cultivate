@@ -6,7 +6,7 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class Map : GDictionary
+public class Map : Addressable
 {
     private static readonly int HEIGHT = 3;
     private static readonly int WIDTH = 10;

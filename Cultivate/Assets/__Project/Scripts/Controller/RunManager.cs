@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 
-public class RunManager : Singleton<RunManager>, GDictionary
+public class RunManager : Singleton<RunManager>, Addressable
 {
     public static readonly int SkillLimit = 12;
     public static readonly int[] SkillLimitFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
