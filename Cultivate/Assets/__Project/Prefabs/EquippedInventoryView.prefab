@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8766397657843945370}
   - component: {fileID: 8766397657843945371}
-  - component: {fileID: 6900231098855556688}
+  - component: {fileID: 3903290882373852492}
   m_Layer: 0
   m_Name: EquippedInventoryView
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &6900231098855556688
+--- !u!114 &3903290882373852492
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8766397657843945349}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5515d5ec431d044dae9d4346b03f289, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Container: {fileID: 8766397657843945370}

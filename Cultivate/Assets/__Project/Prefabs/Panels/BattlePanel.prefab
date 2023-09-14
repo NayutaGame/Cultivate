@@ -1306,7 +1306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5190579727053534794}
   - component: {fileID: 7942462201373592288}
-  - component: {fileID: 6788099340288339209}
+  - component: {fileID: 5866588595750847733}
   m_Layer: 5
   m_Name: SubFormationInventoryView
   m_TagString: Untagged
@@ -1365,7 +1365,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &6788099340288339209
+--- !u!114 &5866588595750847733
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1374,12 +1374,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6069018668158684395}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 897dc8dd169328647b4dec968b80b03c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Container: {fileID: 5190579727053534794}
-  Prefab: {fileID: 1953151215448478786, guid: d3f34e221a5aa07449a554dadb86d449, type: 3}
-  Prefabs: []
+  Prefabs:
+  - {fileID: 1953151215448478786, guid: d3f34e221a5aa07449a554dadb86d449, type: 3}
 --- !u!1 &6572312528975603442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1439,9 +1439,9 @@ MonoBehaviour:
   _enemySubFormationInventoryTransform: {fileID: 5190579727053534794}
   _operationViewTransform: {fileID: 7665437266873281576}
   _operationViewCanvasGroup: {fileID: 0}
-  EnemyHand: {fileID: 6247701954276030682}
+  FieldView: {fileID: 7973011603096707408}
   EnemySprite: {fileID: 206026047132001548}
-  EnemySubFormationInventory: {fileID: 6788099340288339209}
+  EnemySubFormationInventory: {fileID: 5866588595750847733}
   HomeHP: {fileID: 8250833450189444559}
   HomeHPSlash: {fileID: 1340965133896692152}
   AwayHP: {fileID: 8512709659461146825}
@@ -2828,15 +2828,15 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5034519349020965220, guid: 130616300a3db65489b22752e3147f0d, type: 3}
   m_PrefabInstance: {fileID: 8072610047022684111}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6247701954276030682 stripped
+--- !u!114 &7973011603096707408 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2788827416429834005, guid: 130616300a3db65489b22752e3147f0d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2207467360429602463, guid: 130616300a3db65489b22752e3147f0d, type: 3}
   m_PrefabInstance: {fileID: 8072610047022684111}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb6a64a0e8380f41aa6db72798597c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &9010397574126109680

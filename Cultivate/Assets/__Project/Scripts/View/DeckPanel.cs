@@ -15,10 +15,10 @@ public class DeckPanel : Panel
 
     public Image PlayerSprite;
     public Button SortButton;
-    public SlotInventoryView PlayerHand;
-    public SkillInventoryView PlayerInventory;
-    public SubFormationInventoryView PlayerSubFormationInventory;
-    public MechBagView MechBagView;
+    public ListView FieldView; // SlotView
+    public SkillInventoryView HandView;
+    public ListView PlayerSubFormationInventory; // FormationView
+    public ListView MechBagView; // MechView
 
     public RectTransform _deckTransform;
     public RectTransform _spriteTransform;
@@ -44,8 +44,8 @@ public class DeckPanel : Panel
 
     public override void Configure()
     {
-        PlayerHand.Configure(new Address("Run.Battle.Hero.Slots"));
-        PlayerInventory.Configure(new Address("Run.Battle.SkillInventory"));
+        FieldView.Configure(new Address("Run.Battle.Hero.Slots"));
+        HandView.Configure(new Address("Run.Battle.SkillInventory"));
         PlayerSubFormationInventory.Configure(new Address("Run.Battle.Hero.ActivatedSubFormations"));
         MechBagView.Configure(new Address("Run.Battle.MechBag.List"));
 
@@ -58,16 +58,16 @@ public class DeckPanel : Panel
 
     public override void Refresh()
     {
-        PlayerHand.Refresh();
-        PlayerInventory.Refresh();
+        FieldView.Refresh();
+        HandView.Refresh();
         PlayerSubFormationInventory.Refresh();
         MechBagView.Refresh();
     }
 
     public void SetInteractDelegate(InteractDelegate interactDelegate)
     {
-        PlayerHand.SetDelegate(interactDelegate);
-        PlayerInventory.SetDelegate(interactDelegate);
+        FieldView.SetDelegate(interactDelegate);
+        HandView.SetDelegate(interactDelegate);
         MechBagView.SetDelegate(interactDelegate);
     }
 

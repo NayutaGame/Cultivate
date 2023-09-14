@@ -2507,7 +2507,7 @@ MonoBehaviour:
   HealthInputField: {fileID: 6908596748620297286}
   CopyButton: {fileID: 4873114135953695425}
   PasteButton: {fileID: 1147565517630741360}
-  EquippedInventoryView: {fileID: 52300265237392316}
+  EquippedInventoryView: {fileID: 7588568743444983968}
 --- !u!1 &5900262046347886694
 GameObject:
   m_ObjectHideFlags: 0
@@ -4114,19 +4114,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 156821a7e765b2d40961f9fc4cd65aee, type: 3}
---- !u!114 &52300265237392316 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6900231098855556688, guid: 156821a7e765b2d40961f9fc4cd65aee, type: 3}
-  m_PrefabInstance: {fileID: 6880169204960570860}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5515d5ec431d044dae9d4346b03f289, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &2797796711988945526 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8766397657843945370, guid: 156821a7e765b2d40961f9fc4cd65aee, type: 3}
   m_PrefabInstance: {fileID: 6880169204960570860}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7588568743444983968 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3903290882373852492, guid: 156821a7e765b2d40961f9fc4cd65aee, type: 3}
+  m_PrefabInstance: {fileID: 6880169204960570860}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

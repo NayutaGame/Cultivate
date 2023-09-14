@@ -1213,7 +1213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Container: {fileID: 59190587108173445}
-  Prefab: {fileID: 8085986264311966347, guid: a7b602e43063ef049a52c87044816720, type: 3}
+  Prefabs:
+  - {fileID: 8085986264311966347, guid: a7b602e43063ef049a52c87044816720, type: 3}
   ScrollRect: {fileID: 0}
   DrawButtons: []
   SortButtons: []

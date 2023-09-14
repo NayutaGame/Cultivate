@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FormationBrowser : ListView<FormationGroupView>
+public class FormationBrowser : ListView // FormationGroupView
 {
     [SerializeField] private FormationGroupView _detailedGroupView;
     private FormationGroupView _selection;

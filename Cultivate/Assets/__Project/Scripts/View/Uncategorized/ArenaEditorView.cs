@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using CLLibrary;
-using UnityEngine;
 using UnityEngine.UI;
 
-public class ArenaEditorView : ListView<MutableEntityView>
+public class ArenaEditorView : ListView
 {
     public Button RandomButton;
     public Button CompeteButton;
@@ -19,7 +17,7 @@ public class ArenaEditorView : ListView<MutableEntityView>
 
     private void Random()
     {
-        Views.Do(v => v.RandomButton.onClick.Invoke());
+        Views.Do(v => ((MutableEntityView)v).RandomButton.onClick.Invoke());
         // multiple refreshes
     }
 

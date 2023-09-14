@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public abstract class ListView<T> : MonoBehaviour, IAddress, IInteractable where T : IAddress
+public class ListView : MonoBehaviour, IAddress, IInteractable
 {
     public Transform Container;
     public GameObject[] Prefabs;
@@ -17,8 +17,8 @@ public abstract class ListView<T> : MonoBehaviour, IAddress, IInteractable where
     private GameObject GetPrefab(object item)
         => Prefabs[_prefabProvider?.Invoke(item) ?? 0];
 
-    private List<T> _views;
-    public List<T> Views => _views;
+    private List<IAddress> _views;
+    public List<IAddress> Views => _views;
 
     private Address _address;
     public Address GetAddress() => _address;
@@ -40,14 +40,14 @@ public abstract class ListView<T> : MonoBehaviour, IAddress, IInteractable where
     public virtual void Configure(Address address)
     {
         _address = address;
-        _views = new List<T>();
+        _views = new List<IAddress>();
         RegisterExists();
     }
 
     public virtual void Refresh()
     {
         PopulateList();
-        foreach(T view in _views) view.Refresh();
+        foreach(IAddress view in _views) view.Refresh();
     }
 
     private void PopulateList()
@@ -63,7 +63,7 @@ public abstract class ListView<T> : MonoBehaviour, IAddress, IInteractable where
         for (int i = length; i < need + length; i++)
         {
             GameObject prefab = GetPrefab(inventory[i]);
-            T view = Instantiate(prefab, Container).GetComponent<T>();
+            IAddress view = Instantiate(prefab, Container).GetComponent<IAddress>();
             RegisterNew(view, i);
         }
     }
@@ -72,12 +72,12 @@ public abstract class ListView<T> : MonoBehaviour, IAddress, IInteractable where
     {
         for (int i = 0; i < Container.childCount; i++)
         {
-            T view = Container.GetChild(i).GetComponent<T>();
+            IAddress view = Container.GetChild(i).GetComponent<IAddress>();
             RegisterNew(view, i);
         }
     }
 
-    private void RegisterNew(T view, int i)
+    private void RegisterNew(IAddress view, int i)
     {
         if (!_views.Contains(view))
             _views.Add(view);

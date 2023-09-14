@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff73422f6ab07c43a84a3464f9e64d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BarterInventoryView: {fileID: 2695598903627781624}
+  BarterInventoryView: {fileID: 6253244928107489826}
   ExitButton: {fileID: 5686102582376832064}
 --- !u!1 &1754655154235369071
 GameObject:
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 1943760590420309675}
   - component: {fileID: 6021139233660981487}
   - component: {fileID: 3461776698938976771}
-  - component: {fileID: 2695598903627781624}
+  - component: {fileID: 6253244928107489826}
   m_Layer: 5
   m_Name: BarterInventoryView
   m_TagString: Untagged
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Spacing: {x: 100, y: 100}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &2695598903627781624
+--- !u!114 &6253244928107489826
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,11 +247,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3718509134014807488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c3a467a0ae5ea544845df89e7e2c5ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Container: {fileID: 3784941423410380100}
-  Prefab: {fileID: 4346345133279296566, guid: 53f8a017ed41e604aa020ca58f6b3830, type: 3}
+  Prefabs:
+  - {fileID: 5183178870378620801}
 --- !u!1 &7543051447826390804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1407,5 +1408,10 @@ PrefabInstance:
 --- !u!224 &150295538238004778 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8767097356885083549, guid: 53f8a017ed41e604aa020ca58f6b3830, type: 3}
+  m_PrefabInstance: {fileID: 8916855023483640759}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5183178870378620801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4346345133279296566, guid: 53f8a017ed41e604aa020ca58f6b3830, type: 3}
   m_PrefabInstance: {fileID: 8916855023483640759}
   m_PrefabAsset: {fileID: 0}

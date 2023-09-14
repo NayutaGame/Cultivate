@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillInventoryView : ListView<SkillView>, IDropHandler
+public class SkillInventoryView : ListView, IDropHandler
 {
     public ScrollRect ScrollRect;
 

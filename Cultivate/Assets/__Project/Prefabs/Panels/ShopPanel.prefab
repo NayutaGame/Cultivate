@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1f8fe5db160f348822dbebdf34ef22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CommodityInventoryView: {fileID: 3435784295115006933}
+  CommodityInventoryView: {fileID: 8325414514160304448}
   ExitButton: {fileID: 5686102582376832064}
 --- !u!1 &1754655154235369071
 GameObject:
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 1943760590420309675}
   - component: {fileID: 6021139233660981487}
   - component: {fileID: 3461776698938976771}
-  - component: {fileID: 3435784295115006933}
+  - component: {fileID: 8325414514160304448}
   m_Layer: 5
   m_Name: CommodityInventoryView
   m_TagString: Untagged
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Spacing: {x: 100, y: 40}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &3435784295115006933
+--- !u!114 &8325414514160304448
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,11 +247,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3718509134014807488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ee15034085892c40b0fb9847fd70256, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Container: {fileID: 3784941423410380100}
-  Prefab: {fileID: 4346345133279296566, guid: c10702343690895498dbfb731adfbf1f, type: 3}
+  Prefabs:
+  - {fileID: 4346345133279296566, guid: c10702343690895498dbfb731adfbf1f, type: 3}
 --- !u!1 &7543051447826390804
 GameObject:
   m_ObjectHideFlags: 0

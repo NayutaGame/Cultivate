@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class BarterPanel : Panel
 {
-    public BarterInventoryView BarterInventoryView;
+    public ListView BarterInventoryView; // BarterItemView
 
     public Button ExitButton;
 

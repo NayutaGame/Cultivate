@@ -19,7 +19,7 @@ public class FormationGroupView : MonoBehaviour, IAddress, IInteractable,
     public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
 
     [SerializeField] private TMP_Text NameText;
-    [SerializeField] private SubFormationInventoryView SubFormationInventoryView;
+    [SerializeField] private ListView SubFormationInventoryView; // FormationView
     [SerializeField] private Image SelectionImage;
 
     private bool _selected;

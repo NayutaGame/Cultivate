@@ -13,7 +13,7 @@ public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
     public Button CopyButton;
     public Button PasteButton;
 
-    public ListView<SlotView> EquippedInventoryView;
+    public ListView EquippedInventoryView; // SlotView
 
     private Address _address;
     public Address GetAddress() => _address;

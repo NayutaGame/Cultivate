@@ -14,9 +14,9 @@ public class BattlePanel : Panel
     public RectTransform _operationViewTransform;
     public CanvasGroup _operationViewCanvasGroup;
 
-    public SlotInventoryView EnemyHand;
+    public ListView FieldView; // SlotView
     public Image EnemySprite;
-    public SubFormationInventoryView EnemySubFormationInventory;
+    public ListView EnemySubFormationInventory; // FormationView
 
     public TMP_Text HomeHP;
     public GameObject HomeHPSlash;
@@ -35,8 +35,8 @@ public class BattlePanel : Panel
 
         _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
 
-        EnemyHand.Configure(new Address($"{_address}.Enemy.Slots"));
-        EnemySubFormationInventory.Configure(new Address($"{_address}.Enemy.ActivatedSubFormations"));
+        FieldView.Configure(_address.Append(".Enemy.Slots"));
+        EnemySubFormationInventory.Configure(_address.Append(".Enemy.ActivatedSubFormations"));
 
         ActButton.onClick.RemoveAllListeners();
         ActButton.onClick.AddListener(Act);
@@ -44,7 +44,7 @@ public class BattlePanel : Panel
 
     public override void Refresh()
     {
-        EnemyHand.Refresh();
+        FieldView.Refresh();
         EnemySubFormationInventory.Refresh();
 
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();

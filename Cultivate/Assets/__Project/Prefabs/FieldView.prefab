@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5034519349020965220}
   - component: {fileID: 6952784900136360044}
   - component: {fileID: 4248385765922657326}
-  - component: {fileID: 2788827416429834005}
   - component: {fileID: 2917389917619324302}
   - component: {fileID: 293528097626049904}
+  - component: {fileID: 2207467360429602463}
   m_Layer: 0
   m_Name: FieldView
   m_TagString: Untagged
@@ -91,21 +91,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2788827416429834005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9010936378688091556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb6a64a0e8380f41aa6db72798597c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Container: {fileID: 5034519349020965220}
-  Prefab: {fileID: 1267362520892108290, guid: 0f459f846492318459f9901b0b0a1af9, type: 3}
-  Prefabs: []
 --- !u!114 &2917389917619324302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +131,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2207467360429602463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9010936378688091556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Container: {fileID: 5034519349020965220}
+  Prefabs:
+  - {fileID: 1267362520892108290, guid: 0f459f846492318459f9901b0b0a1af9, type: 3}
 --- !u!1001 &589539333228747377
 PrefabInstance:
   m_ObjectHideFlags: 0

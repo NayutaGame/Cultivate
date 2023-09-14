@@ -769,7 +769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Container: {fileID: 7056146703687857991}
-  Prefab: {fileID: 2108923873393925487, guid: 13dd3d68fd5def744a838543d71ad03e, type: 3}
+  Prefabs: []
   ScrollRect: {fileID: 0}
   DrawButtons:
   - {fileID: 8228143368581675019}

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ShopPanel : Panel
 {
-    public CommodityInventoryView CommodityInventoryView;
+    public ListView CommodityInventoryView; // CommodityView
 
     public Button ExitButton;
 
