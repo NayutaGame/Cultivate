@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1f8fe5db160f348822dbebdf34ef22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CommodityInventoryView: {fileID: 8325414514160304448}
+  CommodityListView: {fileID: 8325414514160304448}
   ExitButton: {fileID: 5686102582376832064}
 --- !u!1 &1754655154235369071
 GameObject:
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 3461776698938976771}
   - component: {fileID: 8325414514160304448}
   m_Layer: 5
-  m_Name: CommodityInventoryView
+  m_Name: CommodityListView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,7 +519,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4346345133279296566, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Name
-      value: CommodityView
+      value: CommodityItemView
       objectReference: {fileID: 0}
     - target: {fileID: 8767097356885083549, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Pivot.x
@@ -621,7 +621,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4346345133279296566, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Name
-      value: CommodityView (5)
+      value: CommodityItemView
       objectReference: {fileID: 0}
     - target: {fileID: 8767097356885083549, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Pivot.x
@@ -723,7 +723,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4346345133279296566, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Name
-      value: CommodityView (3)
+      value: CommodityItemView
       objectReference: {fileID: 0}
     - target: {fileID: 8767097356885083549, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Pivot.x
@@ -825,7 +825,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4346345133279296566, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Name
-      value: CommodityView (1)
+      value: CommodityItemView
       objectReference: {fileID: 0}
     - target: {fileID: 8767097356885083549, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Pivot.x
@@ -927,7 +927,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4346345133279296566, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Name
-      value: CommodityView (4)
+      value: CommodityItemView
       objectReference: {fileID: 0}
     - target: {fileID: 8767097356885083549, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Pivot.x
@@ -1029,7 +1029,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4346345133279296566, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Name
-      value: CommodityView (2)
+      value: CommodityItemView
       objectReference: {fileID: 0}
     - target: {fileID: 8767097356885083549, guid: c10702343690895498dbfb731adfbf1f, type: 3}
       propertyPath: m_Pivot.x

@@ -16,7 +16,7 @@ public class BarterPanel : Panel
         _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
         BarterInventoryView.SetAddress(_address.Append(".Inventory"));
 
-        foreach (ItemView itemView in BarterInventoryView.Views)
+        foreach (ItemView itemView in BarterInventoryView.ActivePool)
         {
             BarterItemView barterItemView = (BarterItemView)itemView;
             barterItemView.ClearExchangeEvent();

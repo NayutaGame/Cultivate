@@ -245,7 +245,6 @@ public abstract class SkillView : ItemView, IInteractable,
 
         RunCanvas.Instance.SkillGhost.SetAddress(GetAddress());
         RunCanvas.Instance.SkillGhost.Refresh();
-        RunCanvas.Instance.Refresh();
 
         if (_image != null)
             _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);

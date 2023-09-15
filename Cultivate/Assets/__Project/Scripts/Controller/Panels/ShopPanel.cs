@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ShopPanel : Panel
 {
-    public ListView CommodityInventoryView;
+    public ListView CommodityListView;
 
     public Button ExitButton;
 
@@ -18,9 +18,9 @@ public class ShopPanel : Panel
         base.Configure();
 
         _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
-        CommodityInventoryView.SetAddress(_address.Append(".Commodities"));
+        CommodityListView.SetAddress(_address.Append(".Commodities"));
 
-        foreach (ItemView itemView in CommodityInventoryView.Views)
+        foreach (ItemView itemView in CommodityListView.ActivePool)
         {
             CommodityItemView commodityItemView = (CommodityItemView)itemView;
             commodityItemView.ClearBuyEvent();
@@ -34,7 +34,7 @@ public class ShopPanel : Panel
     public override void Refresh()
     {
         base.Refresh();
-        CommodityInventoryView.Refresh();
+        CommodityListView.Refresh();
     }
 
     private void BuyEvent(Commodity commodity)
