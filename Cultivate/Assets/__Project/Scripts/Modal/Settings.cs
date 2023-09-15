@@ -1,14 +1,22 @@
 
+using System;
 using System.Collections.Generic;
 
-public class Settings
+public class Settings : Addressable
 {
-    private SettingsContentModel[] _contents;
+    private SettingsContentModel[] _options;
     private int _index;
 
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
     public Settings()
     {
-        _contents = new SettingsContentModel[]
+        _accessors = new()
+        {
+            { "CurrentWidgets",                 () => GetCurrentContentModel().Widgets },
+        };
+
+        _options = new SettingsContentModel[]
         {
             new("综合", new WidgetModel[]
             {
@@ -33,13 +41,18 @@ public class Settings
     }
 
     public SettingsContentModel GetCurrentContentModel()
-        => _contents[_index];
+        => _options[_index];
 
     public int GetOtherContentCount()
-        => _contents.Length - 1;
+        => _options.Length - 1;
 
     public SettingsContentModel GetOtherContent(int i)
     {
-        return _contents[i + (_index <= i ? 1 : 0)];
+        return _options[i + (_index <= i ? 1 : 0)];
+    }
+
+    public void ChangeIndex(int i)
+    {
+        _index = i + (_index <= i ? 1 : 0);
     }
 }

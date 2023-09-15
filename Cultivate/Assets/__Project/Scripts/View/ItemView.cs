@@ -5,11 +5,7 @@ using UnityEngine;
 
 public class ItemView : MonoBehaviour, IAddress
 {
-    [SerializeField] public int PrefabIndex;
-
-    private int _siblingIndex;
-    public virtual int GetSiblingIndex() => _siblingIndex;
-    public virtual void SetSiblingIndex(int value) => _siblingIndex = value;
+    [NonSerialized] public int PrefabIndex;
 
     private Address _address;
     public Address GetAddress() => _address;

@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ListView : MonoBehaviour, IAddress, IInteractable
@@ -119,7 +118,6 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     private void EnableItemView(ItemView itemView, int siblingIndex)
     {
         itemView.transform.SetSiblingIndex(siblingIndex);
-        itemView.SetSiblingIndex(itemView.transform.GetSiblingIndex());
         _activePool.Add(itemView);
         itemView.gameObject.SetActive(true);
     }
@@ -129,6 +127,5 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         itemView.gameObject.SetActive(false);
         _inactivePools[itemView.PrefabIndex].Add(itemView);
         itemView.transform.SetAsLastSibling();
-        itemView.SetSiblingIndex(itemView.transform.GetSiblingIndex());
     }
 }

@@ -20,5 +20,6 @@ public class AppCanvas : Singleton<AppCanvas>
 
     public void Refresh()
     {
+        SettingsPanel.Refresh();
     }
 }
