@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ShopPanel : Panel
 {
-    public ListView CommodityInventoryView; // CommodityView
+    public ListView CommodityInventoryView;
 
     public Button ExitButton;
 
@@ -20,10 +20,11 @@ public class ShopPanel : Panel
         _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
         CommodityInventoryView.SetAddress(_address.Append(".Commodities"));
 
-        foreach (CommodityView commodityView in CommodityInventoryView.Views)
+        foreach (ItemView itemView in CommodityInventoryView.Views)
         {
-            commodityView.ClearBuyEvent();
-            commodityView.BuyEvent += BuyEvent;
+            CommodityItemView commodityItemView = (CommodityItemView)itemView;
+            commodityItemView.ClearBuyEvent();
+            commodityItemView.BuyEvent += BuyEvent;
         }
 
         ExitButton.onClick.RemoveAllListeners();

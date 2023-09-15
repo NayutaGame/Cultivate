@@ -6,28 +6,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class RunChipView : MonoBehaviour, IAddress,
+public class RunChipView : ItemView,
     IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected Image _image;
 
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
     private void Awake()
     {
         _image = GetComponent<Image>();
-    }
-
-    public virtual void SetAddress(Address address)
-    {
-        _address = address;
-    }
-
-    public virtual void Refresh()
-    {
     }
 
     public void OnPointerClick(PointerEventData eventData)

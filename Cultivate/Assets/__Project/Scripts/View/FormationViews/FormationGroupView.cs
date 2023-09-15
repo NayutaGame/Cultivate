@@ -6,14 +6,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class FormationGroupView : MonoBehaviour, IAddress, IInteractable,
+public class FormationGroupView : ItemView, IInteractable,
     IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate() => InteractDelegate;
     public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
@@ -31,13 +27,9 @@ public class FormationGroupView : MonoBehaviour, IAddress, IInteractable,
             SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
     }
 
-    public virtual void SetAddress(Address address)
+    public override void Refresh()
     {
-        _address = address;
-    }
-
-    public virtual void Refresh()
-    {
+        base.Refresh();
         if (GetAddress() == null)
         {
             gameObject.SetActive(false);

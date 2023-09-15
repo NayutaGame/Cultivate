@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class TechTreeView : MonoBehaviour, IAddress
+public class TechTreeView : ItemView
 {
     private static readonly int HEIGHT = 8;
 
@@ -14,20 +14,17 @@ public class TechTreeView : MonoBehaviour, IAddress
     private List<Transform> _holders;
     private List<TechView> _views;
 
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
         InitHolders();
         _views = new ();
         PopulateList();
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         foreach(TechView view in _views) view.Refresh();
     }
 
@@ -53,7 +50,7 @@ public class TechTreeView : MonoBehaviour, IAddress
         IList inventory = Get<IList>();
         for (int i = 0; i < inventory.Count; i++)
         {
-            Address address = _address.Append("#{i}");
+            Address address = GetAddress().Append("#{i}");
             RunTech tech = address.Get<RunTech>();
             Vector2Int position = tech.GetPosition();
             int index = position.x * HEIGHT + position.y;

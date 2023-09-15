@@ -3,21 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class BuffView : MonoBehaviour, IAddress
+public class BuffView : ItemView
 {
     public TMP_Text NameText;
     public TMP_Text StackText;
 
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
-    public void SetAddress(Address address)
-    {
-        _address = address;
-    }
-
-    public virtual void Refresh()
+    public override void Refresh()
     {
         // TryGetHeroBuff
         Buff b = Get<Buff>();

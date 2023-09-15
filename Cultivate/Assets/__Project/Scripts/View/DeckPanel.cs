@@ -10,7 +10,6 @@ public class DeckPanel : Panel
     public Image ToggleImage;
     public Button ToggleButton;
     public Button SortButton;
-    [NonSerialized] public UnityEvent ToggleEvent;
 
     public ListView FieldView;
     public SkillInventoryView HandView;
@@ -33,10 +32,10 @@ public class DeckPanel : Panel
 
     public override Tween GetHideTween()
         => DOTween.Sequence()
-            .Join(_deckTransform.                  DOAnchorPosY(-445f, 0.3f).SetEase(Ease.InQuad).SetDelay(0f))
-            .Join(_spriteTransform.                DOAnchorPosY(-626f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.03f))
-            .Join(_handTransform.                  DOAnchorPosY(-403f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.06f))
-            .Join(_subFormationInventoryTransform. DOAnchorPosY(-364f, 0.3f).SetEase(Ease.InQuad).SetDelay(0.09f))
+            .Join(_deckTransform.                  DOAnchorPosY(-445, 0.3f).SetEase(Ease.InQuad).SetDelay(0f))
+            .Join(_spriteTransform.                DOAnchorPosY(-626, 0.3f).SetEase(Ease.InQuad).SetDelay(0.03f))
+            .Join(_handTransform.                  DOAnchorPosY(-403, 0.3f).SetEase(Ease.InQuad).SetDelay(0.06f))
+            .Join(_subFormationInventoryTransform. DOAnchorPosY(-364, 0.3f).SetEase(Ease.InQuad).SetDelay(0.09f))
             .Join(_mechBagTransform.               DOAnchorPosY(-375, 0.3f).SetEase(Ease.InQuad).SetDelay(0.12f));
 
     public override void Configure()
@@ -45,9 +44,6 @@ public class DeckPanel : Panel
         HandView.SetAddress(new Address("Run.Battle.SkillInventory"));
         FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
         MechListView.SetAddress(new Address("Run.Battle.MechBag.List"));
-
-        ToggleButton.onClick.RemoveAllListeners();
-        ToggleButton.onClick.AddListener(ToggleEvent.Invoke);
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);

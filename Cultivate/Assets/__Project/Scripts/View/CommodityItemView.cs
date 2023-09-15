@@ -5,12 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommodityView : MonoBehaviour, IAddress
+public class CommodityItemView : ItemView
 {
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
     public RunSkillView SkillView;
     public TMP_Text PriceText;
     public Button BuyButton;
@@ -18,17 +14,18 @@ public class CommodityView : MonoBehaviour, IAddress
     public event Action<Commodity> BuyEvent;
     public void ClearBuyEvent() => BuyEvent = null;
 
-    public void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
-        SkillView.SetAddress(_address.Append(".Skill"));
+        base.SetAddress(address);
+        SkillView.SetAddress(GetAddress().Append(".Skill"));
 
         BuyButton.onClick.RemoveAllListeners();
         BuyButton.onClick.AddListener(Buy);
     }
 
-    public void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         Commodity commodity = Get<Commodity>();
 
         bool isReveal = commodity != null;

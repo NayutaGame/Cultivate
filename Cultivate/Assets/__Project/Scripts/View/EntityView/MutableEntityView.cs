@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
+public class MutableEntityView : ItemView, IInteractable
 {
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
@@ -15,15 +15,10 @@ public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
 
     public ListView EquippedInventoryView; // SlotView
 
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
     #region Interact
 
     private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate()
-        => InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
     public void SetDelegate(InteractDelegate interactDelegate)
     {
         InteractDelegate = interactDelegate;
@@ -32,9 +27,9 @@ public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
 
     #endregion
 
-    public void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
 
         EntityDropdown.options = new();
         Encyclopedia.EntityCategory.Traversal.Do(entityEntry => EntityDropdown.options.Add(new TMP_Dropdown.OptionData(entityEntry.Name)));
@@ -71,8 +66,9 @@ public class MutableEntityView : MonoBehaviour, IAddress, IInteractable
 
     #endregion
 
-    public void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         IEntityModel entity = Get<IEntityModel>();
         if (entity == null)
             return;

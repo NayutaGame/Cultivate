@@ -1,22 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SlotView : MonoBehaviour, IAddress, IInteractable,
+public class SlotView : ItemView, IInteractable,
     IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
     private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate()
-        => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate)
-        => InteractDelegate = interactDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
 
     public SkillView SkillView;
     private Image _image;
@@ -40,9 +35,9 @@ public class SlotView : MonoBehaviour, IAddress, IInteractable,
             SkillView.SetSelected(selected);
     }
 
-    public void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
         _image = GetComponent<Image>();
 
         SkillView.SetAddress(GetAddress().Append(".Skill"));
@@ -52,8 +47,9 @@ public class SlotView : MonoBehaviour, IAddress, IInteractable,
         SkillView.IsManaShortageDelegate += IsManaShortage;
     }
 
-    public void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         SkillSlot slot = Get<SkillSlot>();
 
         bool locked = slot.State == SkillSlot.SkillSlotState.Locked;

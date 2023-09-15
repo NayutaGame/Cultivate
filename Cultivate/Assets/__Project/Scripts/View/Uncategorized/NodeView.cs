@@ -3,25 +3,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class NodeView : MonoBehaviour, IAddress
+public class NodeView : ItemView
 {
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
     public JumpingButton _jumpingButton;
     public TMP_Text NameText;
 
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
-
+        base.SetAddress(address);
         _jumpingButton.RemoveAllListeners();
         _jumpingButton.AddListener(OnPointerClick);
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         RunNode runNode = Get<RunNode>();
 
         gameObject.SetActive(runNode != null);

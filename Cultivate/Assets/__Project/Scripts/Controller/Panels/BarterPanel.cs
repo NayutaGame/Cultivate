@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class BarterPanel : Panel
 {
-    public ListView BarterInventoryView; // BarterItemView
+    public ListView BarterInventoryView;
 
     public Button ExitButton;
 
@@ -16,8 +16,9 @@ public class BarterPanel : Panel
         _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
         BarterInventoryView.SetAddress(_address.Append(".Inventory"));
 
-        foreach (BarterItemView barterItemView in BarterInventoryView.Views)
+        foreach (ItemView itemView in BarterInventoryView.Views)
         {
+            BarterItemView barterItemView = (BarterItemView)itemView;
             barterItemView.ClearExchangeEvent();
             barterItemView.ExchangeEvent += ExchangeEvent;
         }

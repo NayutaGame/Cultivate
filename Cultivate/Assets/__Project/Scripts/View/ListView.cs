@@ -10,8 +10,8 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     public Transform Container;
     public GameObject[] Prefabs;
 
-    private List<IAddress> _views;
-    public List<IAddress> Views => _views;
+    private List<ItemView> _views;
+    public List<ItemView> Views => _views;
 
     private Func<object, int> _prefabProvider;
     public void SetPrefabProvider(Func<object, int> prefabProvider) => _prefabProvider = prefabProvider;
@@ -35,7 +35,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     public virtual void SetAddress(Address address)
     {
         _address = address;
-        _views = new List<IAddress>();
+        _views = new List<ItemView>();
         RegisterExists();
     }
 
@@ -58,7 +58,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         for (int i = length; i < need + length; i++)
         {
             GameObject prefab = GetPrefab(inventory[i]);
-            IAddress itemView = Instantiate(prefab, Container).GetComponent<IAddress>();
+            ItemView itemView = Instantiate(prefab, Container).GetComponent<ItemView>();
             RegisterNew(itemView, i);
         }
     }
@@ -67,12 +67,12 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     {
         for (int i = 0; i < Container.childCount; i++)
         {
-            IAddress itemView = Container.GetChild(i).GetComponent<IAddress>();
+            ItemView itemView = Container.GetChild(i).GetComponent<ItemView>();
             RegisterNew(itemView, i);
         }
     }
 
-    private void RegisterNew(IAddress itemView, int i)
+    private void RegisterNew(ItemView itemView, int i)
     {
         if (!_views.Contains(itemView)) _views.Add(itemView);
         itemView.SetAddress(_address.Append($"#{i}"));

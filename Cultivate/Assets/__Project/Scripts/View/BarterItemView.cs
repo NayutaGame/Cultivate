@@ -5,12 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class BarterItemView : MonoBehaviour, IAddress
+public class BarterItemView : ItemView
 {
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
     public RunSkillView PlayerSkillView;
     public Button ExchangeButton;
     public RunSkillView SkillView;
@@ -18,18 +14,19 @@ public class BarterItemView : MonoBehaviour, IAddress
     public event Action<BarterItem> ExchangeEvent;
     public void ClearExchangeEvent() => ExchangeEvent = null;
 
-    public void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
-        PlayerSkillView.SetAddress(_address.Append(".PlayerSkill"));
-        SkillView.SetAddress(_address.Append(".Skill"));
+        base.SetAddress(address);
+        PlayerSkillView.SetAddress(GetAddress().Append(".PlayerSkill"));
+        SkillView.SetAddress(GetAddress().Append(".Skill"));
 
         ExchangeButton.onClick.RemoveAllListeners();
         ExchangeButton.onClick.AddListener(Exchange);
     }
 
-    public void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         BarterItem barterItem = Get<BarterItem>();
 
         bool isReveal = barterItem != null;

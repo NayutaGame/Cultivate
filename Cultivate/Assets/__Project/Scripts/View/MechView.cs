@@ -1,18 +1,15 @@
 
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MechView : MonoBehaviour, IAddress, IInteractable,
+public class MechView : ItemView, IInteractable,
     IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
 {
     protected RectTransform _rectTransform;
     protected Image _image;
-
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate() => InteractDelegate;
@@ -21,14 +18,14 @@ public class MechView : MonoBehaviour, IAddress, IInteractable,
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text CountText;
 
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
         _rectTransform = GetComponent<RectTransform>();
         _image = GetComponent<Image>();
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
         if (GetAddress() == null)
         {

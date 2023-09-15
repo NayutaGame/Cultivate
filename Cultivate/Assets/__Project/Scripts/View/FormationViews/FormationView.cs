@@ -1,31 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FormationView : MonoBehaviour, IAddress,
+public class FormationView : ItemView,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected RectTransform _rectTransform;
-
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
 
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text JingJieText;
     [SerializeField] private TMP_Text ConditionText;
     [SerializeField] private TMP_Text RewardText;
 
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
         _rectTransform = GetComponent<RectTransform>();
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         FormationEntry e = Get<FormationEntry>();
         if (e == null)
         {

@@ -9,17 +9,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
+public abstract class SkillView : ItemView, IInteractable,
     IPointerClickHandler,
     IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected RectTransform _rectTransform;
     protected Image _image;
-
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
 
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate() => InteractDelegate;
@@ -174,15 +170,16 @@ public abstract class SkillView : MonoBehaviour, IAddress, IInteractable,
 
     #endregion
 
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
         _rectTransform = GetComponent<RectTransform>();
         _image = GetComponent<Image>();
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         if (GetAddress() == null)
         {
             gameObject.SetActive(false);

@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntityView : MonoBehaviour, IAddress, IInteractable
+public class EntityView : ItemView, IInteractable
 {
     public TMP_Text NameText;
     public TMP_Text JingJieText;
@@ -17,8 +17,7 @@ public class EntityView : MonoBehaviour, IAddress, IInteractable
     #region Interact
 
     private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate()
-        => InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
     public void SetDelegate(InteractDelegate interactDelegate)
     {
         InteractDelegate = interactDelegate;
@@ -27,19 +26,16 @@ public class EntityView : MonoBehaviour, IAddress, IInteractable
 
     #endregion
 
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
-    public void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
         CopyButton.onClick.AddListener(Copy);
         EquippedInventoryView.SetAddress(GetAddress().Append($"Slots"));
     }
 
-    public void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         IEntityModel entity = Get<IEntityModel>();
 
         if (entity == null)

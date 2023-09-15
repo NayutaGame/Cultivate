@@ -4,13 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TechView : MonoBehaviour, IAddress
+public class TechView : ItemView
 {
     private Image _image;
-
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
 
     public TMP_Text NameText;
     public TMP_Text RewardText;
@@ -19,15 +15,16 @@ public class TechView : MonoBehaviour, IAddress
     public TMP_Text CostText;
     public TMP_Text DiscountText;
 
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
         _image = GetComponent<Image>();
         SetDoneButton.onClick.AddListener(TrySetDone);
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
         RunTech runTech = Get<RunTech>();
 
         NameText.text = runTech.GetName();
