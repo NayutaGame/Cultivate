@@ -286,19 +286,22 @@ public abstract class SkillView : ItemView, IInteractable,
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForSkillPreview(GetAddress());
+        GetDelegate()?.Handle(InteractDelegate.POINTER_ENTER, this, eventData);
+        // if (eventData.dragging) return;
+        // RunCanvas.Instance.SetIndexPathForSkillPreview(GetAddress());
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
+        GetDelegate()?.Handle(InteractDelegate.POINTER_EXIT, this, eventData);
+        // if (eventData.dragging) return;
+        // RunCanvas.Instance.SetIndexPathForSkillPreview(null);
     }
 
     public virtual void OnPointerMove(PointerEventData eventData)
     {
-        if (eventData.dragging) return;
-        RunCanvas.Instance.UpdateMousePosForSkillPreview(eventData.position);
+        GetDelegate()?.Handle(InteractDelegate.POINTER_MOVE, this, eventData);
+        // if (eventData.dragging) return;
+        // RunCanvas.Instance.UpdateMousePosForSkillPreview(eventData.position);
     }
 }

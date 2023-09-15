@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InteractDelegate
 {
@@ -78,15 +79,39 @@ public class InteractDelegate
 
 
 
+    public static readonly int POINTER_ENTER = 0;
+    public static readonly int POINTER_EXIT = 1;
+    public static readonly int POINTER_MOVE = 2;
+
+    private Func<IInteractable, PointerEventData, bool>[] _handleTable;
+    private Func<IInteractable, PointerEventData, bool> GetHandle(int gestureId, int viewId)
+        => _handleTable?[gestureId * _distinctItems + viewId];
+    private Func<IInteractable, PointerEventData, bool> GetHandle(int gestureId, IInteractable view)
+    {
+        int? viewId = _getId(view);
+        if (!viewId.HasValue)
+            return null;
+
+        return GetHandle(gestureId, viewId.Value);
+    }
+
+    public bool Handle(int gestureId, IInteractable view, PointerEventData eventData)
+    {
+        Func<IInteractable, PointerEventData, bool> handle = GetHandle(gestureId, view);
+        return handle?.Invoke(view, eventData) ?? false;
+    }
+
     public InteractDelegate(int distinctItems,
         Func<IInteractable, int?> getId,
         Func<IInteractable, IInteractable, bool>[] dragDropTable = null,
+        Func<IInteractable, PointerEventData, bool>[] handleTable = null,
         Func<IInteractable, bool>[] lMouseTable = null,
         Func<IInteractable, bool>[] rMouseTable = null)
     {
         _distinctItems = distinctItems;
         _getId = getId;
         _dragDropTable = dragDropTable;
+        _handleTable = handleTable;
         _lMouseTable = lMouseTable;
         _rMouseTable = rMouseTable;
     }

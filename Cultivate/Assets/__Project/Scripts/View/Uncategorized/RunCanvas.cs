@@ -3,6 +3,7 @@ using System;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class RunCanvas : Singleton<RunCanvas>
@@ -62,6 +63,13 @@ public class RunCanvas : Singleton<RunCanvas>
                 /* SkillInventory   */ null,       null,           null,            null,
                 /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip,
                 /* Mech             */ null,       null,           TryEquipMech,    null,
+            },
+            handleTable: new Func<IInteractable, PointerEventData, bool>[]
+            {
+                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), Mech */
+                /* pointer enter    */ null,       null,           null,            null,
+                /* pointer exit     */ null,       null,           null,            null,
+                /* pointer move     */ null,       null,           null,            null,
             });
 
         CardPickerInteractDelegate = new(4,
