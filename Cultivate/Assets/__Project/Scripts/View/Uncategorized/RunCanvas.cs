@@ -23,7 +23,6 @@ public class RunCanvas : Singleton<RunCanvas>
     public Button ToggleShowingConsolePanelButton;
     public ConsolePanel ConsolePanel;
 
-    public SkillGhost SkillGhost;
     public MechGhost MechGhost;
     [SerializeField] private RunSkillPreview RunSkillPreview;
     [SerializeField] private FormationPreview FormationPreview;
@@ -56,21 +55,20 @@ public class RunCanvas : Singleton<RunCanvas>
                     return 3;
                 return null;
             },
-            dragDropTable: new Func<IInteractable, IInteractable, bool>[]
+            dragDropTable: new Action<IInteractable, IInteractable>[]
             {
                 /*                     RunSkill,   SkillInventory, SkillSlot(Hero), Mech */
                 /* RunSkill         */ TryMerge,   null,           TryEquipSkill,   null,
                 /* SkillInventory   */ null,       null,           null,            null,
                 /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip,
                 /* Mech             */ null,       null,           TryEquipMech,    null,
-            },
-            handleTable: new Func<IInteractable, PointerEventData, bool>[]
-            {
-                /*                     RunSkill,   SkillInventory, SkillSlot(Hero), Mech */
-                /* pointer enter    */ null,       null,           null,            null,
-                /* pointer exit     */ null,       null,           null,            null,
-                /* pointer move     */ null,       null,           null,            null,
             });
+
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((RunSkillView)v).HoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((RunSkillView)v).UnhoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 0, (v, d) => ((RunSkillView)v).BeginDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 0, (v, d) => ((RunSkillView)v).EndDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 0, (v, d) => ((RunSkillView)v).Drag(d));
 
         CardPickerInteractDelegate = new(4,
             getId: view =>
@@ -86,21 +84,16 @@ public class RunCanvas : Singleton<RunCanvas>
                     return 3;
                 return null;
             },
-            dragDropTable: new Func<IInteractable, IInteractable, bool>[]
+            dragDropTable: new Action<IInteractable, IInteractable>[]
             {
                 /*                     RunSkill,   SkillInventory, SkillSlot(Hero), Mech */
                 /* RunSkill         */ TryMerge,   null,           TryEquipSkill,   null,
                 /* SkillInventory   */ null,       null,           null,            null,
                 /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip,
                 /* Mech             */ null,       null,           TryEquipMech,    null,
-            },
-            lMouseTable: new Func<IInteractable, bool>[]
-            {
-                ToggleSkill,
-                null,
-                ToggleSkillSlot,
-                null,
             });
+        CardPickerInteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, ToggleSkill);
+        CardPickerInteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 2, ToggleSkillSlot);
 
         BackgroundButton.onClick.RemoveAllListeners();
         BackgroundButton.onClick.AddListener(MMDMLayer.ToggleMap);
@@ -192,52 +185,54 @@ public class RunCanvas : Singleton<RunCanvas>
         seq.Restart();
     }
 
-    private bool TryMerge(IInteractable from, IInteractable to)
+    private void TryMerge(IInteractable from, IInteractable to)
     {
         RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
         RunSkill lhs = from.Get<RunSkill>();
         RunSkill rhs = to.Get<RunSkill>();
-        return env.TryMerge(lhs, rhs);
+        env.TryMerge(lhs, rhs);
     }
 
-    private bool TryEquipSkill(IInteractable from, IInteractable to)
+    private void TryEquipSkill(IInteractable from, IInteractable to)
     {
         RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
         RunSkill toEquip = from.Get<RunSkill>();
         SkillSlot slot = to.Get<SkillSlot>();
-        return env.TryEquipSkill(toEquip, slot);
+        env.TryEquipSkill(toEquip, slot);
     }
 
-    private bool TryEquipMech(IInteractable from, IInteractable to)
+    private void TryEquipMech(IInteractable from, IInteractable to)
     {
         RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
         Mech toEquip = from.Get<Mech>();
         SkillSlot slot = to.Get<SkillSlot>();
-        return env.TryEquipMech(toEquip, slot);
+        env.TryEquipMech(toEquip, slot);
     }
 
-    private bool TryUnequip(IInteractable from, IInteractable to)
+    private void TryUnequip(IInteractable from, IInteractable to)
     {
         RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
         SkillSlot slot = from.Get<SkillSlot>();
-        return env.TryUnequip(slot, null);
+        env.TryUnequip(slot, null);
     }
 
-    private bool TrySwap(IInteractable from, IInteractable to)
+    private void TrySwap(IInteractable from, IInteractable to)
     {
         RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
         SkillSlot fromSlot = from.Get<SkillSlot>();
         SkillSlot toSlot = to.Get<SkillSlot>();
-        return env.TrySwap(fromSlot, toSlot);
+        env.TrySwap(fromSlot, toSlot);
     }
 
-    private bool ToggleSkill(IInteractable view)
+    private void ToggleSkill(IInteractable view, PointerEventData eventData)
     {
-        return NodeLayer.CardPickerPanel.ToggleSkill(view);
+        NodeLayer.CardPickerPanel.ToggleSkill(view);
+        // RunCanvas.Instance.Refresh();
     }
 
-    private bool ToggleSkillSlot(IInteractable view)
+    private void ToggleSkillSlot(IInteractable view, PointerEventData eventData)
     {
-        return NodeLayer.CardPickerPanel.ToggleSkillSlot(view);
+        NodeLayer.CardPickerPanel.ToggleSkillSlot(view);
+        // RunCanvas.Instance.Refresh();
     }
 }

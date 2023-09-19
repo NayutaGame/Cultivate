@@ -1,8 +1,5 @@
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using CLLibrary;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InteractDelegate
@@ -11,10 +8,16 @@ public class InteractDelegate
 
     private Func<IInteractable, int?> _getId;
 
-    private Func<IInteractable, IInteractable, bool>[] _dragDropTable;
-    private Func<IInteractable, IInteractable, bool> GetDragDrop(int fromId, int toId)
+    private Action<IInteractable, IInteractable>[] _dragDropTable;
+    private Action<IInteractable, IInteractable> GetDragDrop(int fromId, int toId)
         => _dragDropTable?[toId + fromId * _distinctItems];
-    private Func<IInteractable, IInteractable, bool> GetDragDrop(IInteractable fromView, IInteractable toView)
+    public void SetDragDrop(int fromId, int toId, Action<IInteractable, IInteractable> func)
+    {
+        _dragDropTable ??= new Action<IInteractable, IInteractable>[_distinctItems * _distinctItems];
+        _dragDropTable[toId + fromId * _distinctItems] = func;
+    }
+
+    private Action<IInteractable, IInteractable> GetDragDrop(IInteractable fromView, IInteractable toView)
     {
         if (fromView.GetDelegate() != toView.GetDelegate())
             return null;
@@ -34,7 +37,7 @@ public class InteractDelegate
 
         for (int i = 0; i < _distinctItems; i++)
         {
-            var func = GetDragDrop(viewId.Value, i);
+            Action<IInteractable, IInteractable> func = GetDragDrop(viewId.Value, i);
             if (func != null)
                 return true;
         }
@@ -42,51 +45,31 @@ public class InteractDelegate
         return false;
     }
 
-    public bool DragDrop(IInteractable fromView, IInteractable toView)
-        => GetDragDrop(fromView, toView)?.Invoke(fromView, toView) ?? false;
-
-
-
-    private Func<IInteractable, bool>[] _rMouseTable;
-    private Func<IInteractable, bool> GetRMouse(int viewId)
-        => _rMouseTable?[viewId];
-    private Func<IInteractable, bool> GetRMouse(IInteractable view)
-    {
-        int? viewId = _getId(view);
-        if (!viewId.HasValue)
-            return null;
-
-        return GetRMouse(viewId.Value);
-    }
-    public bool RMouse(IInteractable view)
-        => GetRMouse(view)?.Invoke(view) ?? false;
-
-
-
-    private Func<IInteractable, bool>[] _lMouseTable;
-    private Func<IInteractable, bool> GetLMouse(int viewId)
-        => _lMouseTable?[viewId];
-    private Func<IInteractable, bool> GetLMouse(IInteractable view)
-    {
-        int? viewId = _getId(view);
-        if (!viewId.HasValue)
-            return null;
-
-        return GetLMouse(viewId.Value);
-    }
-    public bool LMouse(IInteractable view)
-        => GetLMouse(view)?.Invoke(view) ?? false;
+    public void DragDrop(IInteractable fromView, IInteractable toView)
+        => GetDragDrop(fromView, toView)?.Invoke(fromView, toView);
 
 
 
     public static readonly int POINTER_ENTER = 0;
     public static readonly int POINTER_EXIT = 1;
     public static readonly int POINTER_MOVE = 2;
+    public static readonly int POINTER_LEFT_CLICK = 3;
+    public static readonly int POINTER_RIGHT_CLICK = 4;
+    public static readonly int BEGIN_DRAG = 5;
+    public static readonly int END_DRAG = 6;
+    public static readonly int DRAG = 7;
+    public static readonly int GESTURE_COUNT = 8;
 
-    private Func<IInteractable, PointerEventData, bool>[] _handleTable;
-    private Func<IInteractable, PointerEventData, bool> GetHandle(int gestureId, int viewId)
+    private Action<IInteractable, PointerEventData>[] _handleTable;
+    private Action<IInteractable, PointerEventData> GetHandle(int gestureId, int viewId)
         => _handleTable?[gestureId * _distinctItems + viewId];
-    private Func<IInteractable, PointerEventData, bool> GetHandle(int gestureId, IInteractable view)
+    public void SetHandle(int gestureId, int viewId, Action<IInteractable, PointerEventData> func)
+    {
+        _handleTable ??= new Action<IInteractable, PointerEventData>[_distinctItems * GESTURE_COUNT];
+        _handleTable[gestureId * _distinctItems + viewId] = func;
+    }
+
+    private Action<IInteractable, PointerEventData> GetHandle(int gestureId, IInteractable view)
     {
         int? viewId = _getId(view);
         if (!viewId.HasValue)
@@ -95,24 +78,17 @@ public class InteractDelegate
         return GetHandle(gestureId, viewId.Value);
     }
 
-    public bool Handle(int gestureId, IInteractable view, PointerEventData eventData)
-    {
-        Func<IInteractable, PointerEventData, bool> handle = GetHandle(gestureId, view);
-        return handle?.Invoke(view, eventData) ?? false;
-    }
+    public void Handle(int gestureId, IInteractable view, PointerEventData eventData)
+        => GetHandle(gestureId, view)?.Invoke(view, eventData);
 
     public InteractDelegate(int distinctItems,
         Func<IInteractable, int?> getId,
-        Func<IInteractable, IInteractable, bool>[] dragDropTable = null,
-        Func<IInteractable, PointerEventData, bool>[] handleTable = null,
-        Func<IInteractable, bool>[] lMouseTable = null,
-        Func<IInteractable, bool>[] rMouseTable = null)
+        Action<IInteractable, IInteractable>[] dragDropTable = null,
+        Action<IInteractable, PointerEventData>[] handleTable = null)
     {
         _distinctItems = distinctItems;
         _getId = getId;
         _dragDropTable = dragDropTable;
         _handleTable = handleTable;
-        _lMouseTable = lMouseTable;
-        _rMouseTable = rMouseTable;
     }
 }

@@ -5,6 +5,7 @@ using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DiscoverSkillPanel : Panel
 {
@@ -27,13 +28,9 @@ public class DiscoverSkillPanel : Panel
 
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new InteractDelegate(1,
-            getId: view => 0,
-            lMouseTable: new Func<IInteractable, bool>[]
-            {
-                TrySelectOption,
-            }
-        );
+        InteractDelegate = new InteractDelegate(1, getId: view => 0);
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, (v, d) => TrySelectOption(v, d));
     }
 
     public override void Refresh()
@@ -56,7 +53,7 @@ public class DiscoverSkillPanel : Panel
         }
     }
 
-    public bool TrySelectOption(IInteractable view)
+    public bool TrySelectOption(IInteractable view, PointerEventData eventData)
     {
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 

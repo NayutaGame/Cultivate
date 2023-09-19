@@ -89,7 +89,6 @@ GameObject:
   - component: {fileID: 889013984719348078}
   - component: {fileID: 6803450624826851906}
   - component: {fileID: 3788548522907496802}
-  - component: {fileID: 1290418455923722258}
   m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
@@ -156,19 +155,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1290418455923722258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 464980935897013813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 0
 --- !u!1 &1406472781527992661
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,7 +470,7 @@ RectTransform:
   - {fileID: 7300245336661423423}
   - {fileID: 8462392960136828843}
   m_Father: {fileID: 8871326557372446773}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2066,8 +2052,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3319505717502363062}
-  - {fileID: 8985839602713860910}
   - {fileID: 7574017152115262866}
+  - {fileID: 8985839602713860910}
   - {fileID: 7208699117368570340}
   - {fileID: 1006192765679943635}
   m_Father: {fileID: 0}
@@ -2553,7 +2539,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5034519349020965220, guid: 130616300a3db65489b22752e3147f0d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5034519349020965220, guid: 130616300a3db65489b22752e3147f0d, type: 3}
       propertyPath: m_AnchorMax.x

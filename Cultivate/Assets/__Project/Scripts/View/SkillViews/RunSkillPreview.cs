@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RunSkillPreview : SkillView
+public class RunSkillPreview : AbstractSkillView
 {
     public RunSkillView SkillView;
 

@@ -13,7 +13,7 @@ public class SlotView : ItemView, IInteractable,
     public InteractDelegate GetDelegate() => InteractDelegate;
     public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
 
-    public SkillView SkillView;
+    public AbstractSkillView SkillView;
     private Image _image;
 
     private bool IsManaShortage()
@@ -63,26 +63,18 @@ public class SlotView : ItemView, IInteractable,
             SkillView.Refresh();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public virtual void OnPointerClick(PointerEventData eventData)
     {
-        IInteractable item = GetComponent<IInteractable>();
-        if (item == null)
-            return;
+        int? gestureId = null;
 
-        InteractDelegate interactDelegate = item.GetDelegate();
-        if (interactDelegate == null)
-            return;
-
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            interactDelegate.LMouse(item);
-        }
-        else if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            interactDelegate.RMouse(item);
+        if (eventData.button == PointerEventData.InputButton.Left) {
+            gestureId = InteractDelegate.POINTER_LEFT_CLICK;
+        } else if (eventData.button == PointerEventData.InputButton.Right) {
+            gestureId = InteractDelegate.POINTER_RIGHT_CLICK;
         }
 
-        RunCanvas.Instance.Refresh();
+        if (gestureId.HasValue)
+            GetDelegate()?.Handle(gestureId.Value, this, eventData);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -105,8 +97,8 @@ public class SlotView : ItemView, IInteractable,
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
 
-        RunCanvas.Instance.SkillGhost.SetAddress(SkillView.GetAddress());
-        RunCanvas.Instance.SkillGhost.Refresh();
+        // RunCanvas.Instance.SkillGhost.SetAddress(SkillView.GetAddress());
+        // RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
         if (_image != null)
@@ -119,8 +111,8 @@ public class SlotView : ItemView, IInteractable,
     {
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
 
-        RunCanvas.Instance.SkillGhost.SetAddress(null);
-        RunCanvas.Instance.SkillGhost.Refresh();
+        // RunCanvas.Instance.SkillGhost.SetAddress(null);
+        // RunCanvas.Instance.SkillGhost.Refresh();
         RunCanvas.Instance.Refresh();
 
         if (_image != null)
@@ -131,7 +123,7 @@ public class SlotView : ItemView, IInteractable,
 
     public void OnDrag(PointerEventData eventData)
     {
-        RunCanvas.Instance.SkillGhost.UpdateMousePos(eventData.position);
+        // RunCanvas.Instance.SkillGhost.UpdateMousePos(eventData.position);
     }
 
     public void OnDrop(PointerEventData eventData)

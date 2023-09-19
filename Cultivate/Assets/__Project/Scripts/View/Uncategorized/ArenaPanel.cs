@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ArenaPanel : Panel
 {
@@ -45,17 +46,13 @@ public class ArenaPanel : Panel
                     return 1;
                 return null;
             },
-            dragDropTable: new Func<IInteractable, IInteractable, bool>[]
+            dragDropTable: new Action<IInteractable, IInteractable>[]
             {
                 /*               RunSkill,   SkillSlot */
                 /* RunSkill   */ null,       TryWrite,
                 /* SkillSlot  */ null,       TryWrite,
-            },
-            rMouseTable: new Func<IInteractable, bool>[]
-            {
-                /* RunSkill   */ null,
-                /* SkillSlot  */ TryIncreaseJingJie,
             });
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_RIGHT_CLICK, 1, (v, d) => TryIncreaseJingJie(v, d));
     }
 
     public override void Refresh()
@@ -68,7 +65,7 @@ public class ArenaPanel : Panel
         ReportView.text = RunManager.Instance.Arena.Report?.ToString();
     }
 
-    private bool TryWrite(IInteractable from, IInteractable to)
+    private void TryWrite(IInteractable from, IInteractable to)
     {
         Arena arena = _address.Get<Arena>();
 
@@ -77,17 +74,15 @@ public class ArenaPanel : Panel
 
         if (fromItem is RunSkill fromSkill)
         {
-            return arena.TryWrite(fromSkill, toSlot);
+            arena.TryWrite(fromSkill, toSlot);
         }
         else if (fromItem is SkillSlot fromSlot)
         {
-            return arena.TryWrite(fromSlot, toSlot);
+            arena.TryWrite(fromSlot, toSlot);
         }
-
-        return false;
     }
 
-    private bool TryIncreaseJingJie(IInteractable view)
+    private bool TryIncreaseJingJie(IInteractable view, PointerEventData eventData)
     {
         Arena arena = _address.Get<Arena>();
         SkillSlot slot = view.Get<SkillSlot>();

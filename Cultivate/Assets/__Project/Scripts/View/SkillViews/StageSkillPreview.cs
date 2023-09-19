@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class StageSkillPreview : SkillView
+public class StageSkillPreview : AbstractSkillView
 {
     public StageSkillView SkillView;
 

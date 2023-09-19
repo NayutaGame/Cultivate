@@ -64,24 +64,16 @@ public class FormationGroupView : ItemView, IInteractable,
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
-        IInteractable item = GetComponent<IInteractable>();
-        if (item == null)
-            return;
+        int? gestureId = null;
 
-        InteractDelegate interactDelegate = item.GetDelegate();
-        if (interactDelegate == null)
-            return;
-
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            interactDelegate.LMouse(item);
-        }
-        else if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            interactDelegate.RMouse(item);
+        if (eventData.button == PointerEventData.InputButton.Left) {
+            gestureId = InteractDelegate.POINTER_LEFT_CLICK;
+        } else if (eventData.button == PointerEventData.InputButton.Right) {
+            gestureId = InteractDelegate.POINTER_RIGHT_CLICK;
         }
 
-        RunCanvas.Instance.Refresh();
+        if (gestureId.HasValue)
+            GetDelegate()?.Handle(gestureId.Value, this, eventData);
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class FormationBrowser : ListView // FormationGroupView
 {
@@ -16,17 +17,12 @@ public class FormationBrowser : ListView // FormationGroupView
 
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate interactDelegate = new(1,
-            getId: view => 0,
-            lMouseTable: new Func<IInteractable, bool>[]
-            {
-                SelectFormation,
-            }
-        );
+        InteractDelegate interactDelegate = new(1, getId: view => 0);
+        interactDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, (v, d) => SelectFormation(v, d));
         SetDelegate(interactDelegate);
     }
 
-    private bool SelectFormation(IInteractable view)
+    private bool SelectFormation(IInteractable view, PointerEventData eventData)
     {
         if (_selection != null)
             _selection.SetSelected(false);

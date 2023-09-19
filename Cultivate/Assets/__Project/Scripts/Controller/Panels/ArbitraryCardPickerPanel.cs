@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using TMPro;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ArbitraryCardPickerPanel : Panel
@@ -14,7 +15,7 @@ public class ArbitraryCardPickerPanel : Panel
 
     public SkillInventoryView SkillInventoryView;
 
-    private List<SkillView> _selections;
+    private List<AbstractSkillView> _selections;
 
     private InteractDelegate InteractDelegate;
 
@@ -29,7 +30,7 @@ public class ArbitraryCardPickerPanel : Panel
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
         ConfigureInteractDelegate();
-        _selections = new List<SkillView>();
+        _selections = new List<AbstractSkillView>();
 
         SkillInventoryView.SetAddress(new Address($"{_address}.Inventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
@@ -57,19 +58,17 @@ public class ArbitraryCardPickerPanel : Panel
     private void ConfigureInteractDelegate()
     {
         InteractDelegate = new InteractDelegate(1,
-            getId: view => 0,
-            lMouseTable: new Func<IInteractable, bool>[]
-            {
-                ToggleSkill,
-            }
+            getId: view => 0
         );
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, (v, d) => ToggleSkill(v, d));
     }
 
-    private bool ToggleSkill(IInteractable view)
+    private bool ToggleSkill(IInteractable view, PointerEventData eventData)
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
-        SkillView skillView = view as SkillView;
+        AbstractSkillView skillView = view as AbstractSkillView;
         bool isSelected = _selections.Contains(skillView);
 
         if (isSelected)

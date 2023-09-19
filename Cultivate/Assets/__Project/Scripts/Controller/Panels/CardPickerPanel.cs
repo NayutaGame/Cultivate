@@ -11,7 +11,7 @@ public class CardPickerPanel : Panel
     public TMP_Text StatusText;
     public Button ConfirmButton;
 
-    private List<SkillView> _skillSelections;
+    private List<AbstractSkillView> _skillSelections;
     private List<SlotView> _slotSelections;
 
     private Address _address;
@@ -25,7 +25,7 @@ public class CardPickerPanel : Panel
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
-        _skillSelections = new List<SkillView>();
+        _skillSelections = new List<AbstractSkillView>();
         _slotSelections = new List<SlotView>();
     }
 
@@ -54,7 +54,7 @@ public class CardPickerPanel : Panel
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
-        SkillView skillView = view as SkillView;
+        AbstractSkillView skillView = view as AbstractSkillView;
         bool isSelected = _skillSelections.Contains(skillView);
 
         if (isSelected)
