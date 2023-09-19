@@ -24,6 +24,7 @@ public class DeckPanel : Panel
 
     public override Tween GetShowTween()
         => DOTween.Sequence()
+            .AppendCallback(HandView.BigRefresh)
             .Join(_deckTransform.                  DOAnchorPosY(-69.5f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0f))
             .Join(_spriteTransform.                DOAnchorPosY(0f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.03f))
             .Join(_handTransform.                  DOAnchorPosY(94f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.06f))
@@ -40,10 +41,10 @@ public class DeckPanel : Panel
 
     public override void Configure()
     {
-        FieldView.SetAddress(new Address("Run.Battle.Hero.Slots"));
+        // FieldView.SetAddress(new Address("Run.Battle.Hero.Slots"));
         HandView.SetAddress(new Address("Run.Battle.SkillInventory"));
-        FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
-        MechListView.SetAddress(new Address("Run.Battle.MechBag.List"));
+        // FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
+        // MechListView.SetAddress(new Address("Run.Battle.MechBag.List"));
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
@@ -51,17 +52,17 @@ public class DeckPanel : Panel
 
     public override void Refresh()
     {
-        FieldView.Refresh();
+        // FieldView.Refresh();
         HandView.Refresh();
-        FormationListView.Refresh();
-        MechListView.Refresh();
+        // FormationListView.Refresh();
+        // MechListView.Refresh();
     }
 
     public void SetInteractDelegate(InteractDelegate interactDelegate)
     {
-        FieldView.SetDelegate(interactDelegate);
+        // FieldView.SetDelegate(interactDelegate);
         HandView.SetDelegate(interactDelegate);
-        MechListView.SetDelegate(interactDelegate);
+        // MechListView.SetDelegate(interactDelegate);
     }
 
     private void Sort()

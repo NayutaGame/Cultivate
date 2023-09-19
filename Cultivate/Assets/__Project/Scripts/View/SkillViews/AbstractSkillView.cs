@@ -17,6 +17,7 @@ public abstract class AbstractSkillView : ItemView, IInteractable,
 {
     protected RectTransform _rectTransform;
     protected Image _image;
+    protected CanvasGroup _canvasGroup;
 
     [SerializeField] private Image CardImage;
     [SerializeField] private GameObject ManaCostView;
@@ -167,11 +168,11 @@ public abstract class AbstractSkillView : ItemView, IInteractable,
 
     #endregion
 
-    public override void SetAddress(Address address)
+    private void Awake()
     {
-        base.SetAddress(address);
         _rectTransform = GetComponent<RectTransform>();
         _image = GetComponent<Image>();
+        _canvasGroup = GetComponent<CanvasGroup>();
     }
 
     public override void Refresh()

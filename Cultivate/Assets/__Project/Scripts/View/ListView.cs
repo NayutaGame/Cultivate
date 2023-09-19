@@ -1,7 +1,7 @@
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 
@@ -23,6 +23,83 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
+    private IListModel _model;
+    private IListModel Model
+    {
+        get => _model;
+        set
+        {
+            if (_model != null)
+            {
+                _model.InsertEvent -= InvokeInsertGate;
+                _model.RemoveAtEvent -= InvokeRemoveAtGate;
+                _model.ModifiedEvent -= InvokeModifiedGate;
+            }
+            _model = value;
+            if (_model != null)
+            {
+                _model.InsertEvent += InvokeInsertGate;
+                _model.RemoveAtEvent += InvokeRemoveAtGate;
+                _model.ModifiedEvent += InvokeModifiedGate;
+            }
+        }
+    }
+
+    private event Func<int, object, Task> InsertGate;
+    private async Task InvokeInsertGate(int index, object item) { if (InsertGate != null) await InsertGate(index, item); }
+    private event Func<int, Task> RemoveAtGate;
+    private async Task InvokeRemoveAtGate(int index) { if (RemoveAtGate != null) await RemoveAtGate(index); }
+    private event Func<int, Task> ModifiedGate;
+    private async Task InvokeModifiedGate(int index) { if (ModifiedGate != null) await ModifiedGate(index); }
+
+    private void OnEnable()
+    {
+        InsertGate += InsertItem;
+        RemoveAtGate += RemoveAt;
+        ModifiedGate += Modified;
+    }
+    private void OnDisable()
+    {
+        InsertGate -= InsertItem;
+        RemoveAtGate -= RemoveAt;
+        ModifiedGate -= Modified;
+    }
+
+
+    // atomic
+    private async Task InsertItem(int index, object item)
+    {
+        Address address = _address.Append($"#{index}");
+        int prefabIndex = GetPrefabIndex(address.Get<object>());
+        FetchItemView(out ItemView itemView, prefabIndex);
+
+        _activePool.Insert(index, itemView);
+        _activePool[index].SetAddress(address);
+        _activePool[index].Refresh();
+
+        for (int i = index + 1; i < _activePool.Count; i++)
+        {
+            _activePool[i].SetAddress(_address.Append($"#{i}"));
+        }
+    }
+
+    // atomic
+    private async Task RemoveAt(int index)
+    {
+        PutIntoPool(index);
+
+        for (int i = index; i < _activePool.Count; i++)
+        {
+            _activePool[i].SetAddress(_address.Append($"#{i}"));
+        }
+    }
+
+    // atomic
+    private async Task Modified(int index)
+    {
+        _activePool[index].Refresh();
+    }
+
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate() => InteractDelegate;
 
@@ -42,11 +119,14 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     public virtual void SetAddress(Address address)
     {
         _address = address;
+        Model = Get<IListModel>();
+
         _activePool = new List<ItemView>();
         _inactivePools = new List<ItemView>[Prefabs.Length];
         for (int i = 0; i < _inactivePools.Length; i++)
             _inactivePools[i] = new List<ItemView>();
         RegisterExists();
+        BigRefresh();
     }
 
     private void RegisterExists()
@@ -62,16 +142,20 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
 
     public virtual void Refresh()
     {
-        RefreshList();
         _activePool.Do(v => v.Refresh());
+    }
+
+    public void BigRefresh()
+    {
+        RefreshList();
+        Refresh();
     }
 
     private void RefreshList()
     {
         PutAllIntoPool();
 
-        IList list = Get<IList>();
-        for (int i = 0; i < list.Count; i++)
+        for (int i = 0; i < _model.Count(); i++)
         {
             Address address = _address.Append($"#{i}");
             int prefabIndex = GetPrefabIndex(address.Get<object>());
@@ -79,6 +163,14 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
             EnableItemView(itemView, i);
             itemView.SetAddress(address);
         }
+    }
+
+    private void PutIntoPool(int index)
+    {
+        ItemView itemView = _activePool[index];
+        _activePool.RemoveAt(index);
+
+        DisableItemView(itemView);
     }
 
     private void PutAllIntoPool()

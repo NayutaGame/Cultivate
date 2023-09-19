@@ -1,8 +1,6 @@
 
+using System;
 using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,6 +13,12 @@ public class RunSkillView : AbstractSkillView
     [SerializeField] private RectTransform MousePivot;
 
     private Tweener _animationHandle;
+
+    private void OnEnable()
+    {
+        ContentTransform.anchoredPosition = IdlePivot.anchoredPosition;
+        _canvasGroup.blocksRaycasts = true;
+    }
 
     public void HoverAnimation(PointerEventData eventData)
     {
@@ -40,6 +44,7 @@ public class RunSkillView : AbstractSkillView
 
     public void BeginDrag(PointerEventData eventData)
     {
+        _canvasGroup.blocksRaycasts = false;
         _animationHandle?.Kill();
         FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = MousePivot };
         _animationHandle = f.GetHandle();
@@ -65,6 +70,7 @@ public class RunSkillView : AbstractSkillView
 
     public void EndDrag(PointerEventData eventData)
     {
+        _canvasGroup.blocksRaycasts = true;
         _animationHandle?.Kill();
         FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = IdlePivot };
         _animationHandle = f.GetHandle();

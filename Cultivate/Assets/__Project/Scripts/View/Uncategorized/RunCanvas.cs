@@ -92,6 +92,7 @@ public class RunCanvas : Singleton<RunCanvas>
                 /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip,
                 /* Mech             */ null,       null,           TryEquipMech,    null,
             });
+
         CardPickerInteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, ToggleSkill);
         CardPickerInteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 2, ToggleSkillSlot);
 

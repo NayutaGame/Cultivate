@@ -30,7 +30,7 @@ public class Address : IEquatable<Address>
 
     public T Get<T>()
     {
-        object curr = DataManager.Instance;
+        object curr = AppManager.Instance;
         foreach (var clKey in Values)
         {
             if (clKey is IntKey { Key: int i })
@@ -40,6 +40,12 @@ public class Address : IEquatable<Address>
                     if (l.Count <= i)
                         return default;
                     curr = l[i];
+                }
+                else if (curr is IListModel listModel)
+                {
+                    if (listModel.Count() <= i)
+                        return default;
+                    curr = listModel.Get(i);
                 }
                 else
                 {

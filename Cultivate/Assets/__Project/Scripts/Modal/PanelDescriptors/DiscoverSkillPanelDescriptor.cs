@@ -43,7 +43,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     {
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
-            RunManager.Instance.Battle.SkillInventory.AddSkill(_skills[selectedOptionSignal.Selected]);
+            RunManager.Instance.Battle.SkillInventory.Add(_skills[selectedOptionSignal.Selected]);
             return null;
         }
 

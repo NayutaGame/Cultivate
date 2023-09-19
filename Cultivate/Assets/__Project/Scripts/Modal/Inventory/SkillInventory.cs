@@ -1,29 +1,12 @@
 
 using System;
-using System.Collections.Generic;
 
 public class SkillInventory : ListModel<RunSkill>
 {
-    public void AddSkill(RunSkill skill)
+    public override void Add(RunSkill item)
     {
-        RunSkill clone = skill.Clone();
-        Add(clone);
-    }
-
-    public void AddSkills(List<RunSkill> skills)
-    {
-        foreach(RunSkill skill in skills)
-            AddSkill(skill);
-    }
-
-    public void RemoveSkill(RunSkill skill)
-    {
-        Remove(skill);
-    }
-
-    public void ReplaceSkill(RunSkill from, RunSkill to)
-    {
-        Replace(from, to);
+        RunSkill clone = item.Clone();
+        base.Add(clone);
     }
 
     private static Comparison<RunSkill> JingJieComparison =

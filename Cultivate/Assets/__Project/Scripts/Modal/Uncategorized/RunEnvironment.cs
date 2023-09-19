@@ -84,7 +84,8 @@ public class RunEnvironment : Addressable
         if (lhs.GetEntry() == rhs.GetEntry() && upgrade && lhs.GetEntry().JingJieRange.Contains(lhs.JingJie + 1))
         {
             rhs.JingJie = newJingJie;
-            SkillInventory.RemoveSkill(lhs);
+            SkillInventory.Remove(lhs);
+            SkillInventory.SetModified(rhs);
             EnvironmentChanged();
             return true;
         }
@@ -114,8 +115,8 @@ public class RunEnvironment : Addressable
         if (!success)
             return false;
 
-        SkillInventory.ReplaceSkill(rhs, newSkill);
-        SkillInventory.RemoveSkill(lhs);
+        SkillInventory.Replace(rhs, newSkill);
+        SkillInventory.Remove(lhs);
         EnvironmentChanged();
         return true;
     }
@@ -125,12 +126,12 @@ public class RunEnvironment : Addressable
         EmulatedSkill toUnequip = slot.Skill;
 
         if (toUnequip == null)
-            SkillInventory.RemoveSkill(toEquip);
+            SkillInventory.Remove(toEquip);
         else if (toUnequip is RunSkill runSkill)
-            SkillInventory.ReplaceSkill(toEquip, runSkill);
+            SkillInventory.Replace(toEquip, runSkill);
         else if (toUnequip is MechComposite mechComposite)
         {
-            SkillInventory.RemoveSkill(toEquip);
+            SkillInventory.Remove(toEquip);
             foreach(MechType m in mechComposite.MechTypes)
                 MechBag.AddMech(m);
         };
@@ -156,7 +157,7 @@ public class RunEnvironment : Addressable
             bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
             if (!success)
                 return false;
-            SkillInventory.AddSkill(runSkill);
+            SkillInventory.Add(runSkill);
             slot.Skill = new MechComposite(toEquip.GetMechType());
         }
         else if (currentSkill is MechComposite mechComposite)
@@ -183,7 +184,7 @@ public class RunEnvironment : Addressable
 
         if (toUnequip is RunSkill runSkill)
         {
-            SkillInventory.AddSkill(runSkill);
+            SkillInventory.Add(runSkill);
 
             slot.Skill = null;
             EnvironmentChanged();
@@ -276,21 +277,9 @@ public class RunEnvironment : Addressable
         Hero.MingYuan.SetDiff(value);
     }
 
-    public void ForceDrawSkill(Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
-        => ForceDrawSkill(new DrawSkillDetails(pred, wuXing, jingJie));
-
     public void ForceDrawSkills(Predicate<SkillEntry> pred = null, WuXing? wuXing = null,
         JingJie? jingJie = null, int count = 1, bool distinct = true, bool consume = true)
         => ForceDrawSkills(new DrawSkillsDetails(pred, wuXing, jingJie, count, distinct, consume));
-
-    public void ForceDrawSkill(DrawSkillDetails d)
-    {
-        bool success = SkillPool.TryDrawSkill(out RunSkill skill, d);
-        if (!success)
-            throw new Exception();
-
-        SkillInventory.AddSkill(skill);
-    }
 
     public void ForceDrawSkills(DrawSkillsDetails d)
     {
@@ -298,11 +287,32 @@ public class RunEnvironment : Addressable
         if (!success)
             throw new Exception();
 
-        SkillInventory.AddSkills(skills);
+        ForceAddSkills(skills);
+    }
+
+    public void ForceDrawSkill(Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
+        => ForceDrawSkill(new DrawSkillDetails(pred, wuXing, jingJie));
+
+    public void ForceDrawSkill(DrawSkillDetails d)
+    {
+        bool success = SkillPool.TryDrawSkill(out RunSkill skill, d);
+        if (!success)
+            throw new Exception();
+
+        ForceAddSkill(skill);
+    }
+
+    public void ForceAddSkills(List<RunSkill> skills)
+    {
+        foreach(RunSkill skill in skills)
+            ForceAddSkill(skill);
     }
 
     public void ForceAddSkill(AddSkillDetails d)
-        => SkillInventory.AddSkill(RunSkill.From(d._entry, d._jingJie));
+        => ForceAddSkill(RunSkill.From(d._entry, d._jingJie));
+
+    public void ForceAddSkill(RunSkill skill)
+        => SkillInventory.Add(skill);
 
     public void ForceAddMech([CanBeNull] MechType mechType = null, int count = 1)
         => ForceAddMech(new(mechType, count));

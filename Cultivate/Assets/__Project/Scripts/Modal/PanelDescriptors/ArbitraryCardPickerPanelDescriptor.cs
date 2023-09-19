@@ -39,7 +39,8 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
 
     public void AddSkills(List<RunSkill> skills)
     {
-        _inventory.AddSkills(skills);
+        foreach(RunSkill skill in skills)
+            _inventory.Add(skill);
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)

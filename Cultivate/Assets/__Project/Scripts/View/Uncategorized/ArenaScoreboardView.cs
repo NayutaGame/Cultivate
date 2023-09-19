@@ -42,7 +42,7 @@ public class ArenaScoreboardView : MonoBehaviour
     public void Refresh()
     {
         Arena arena = RunManager.Instance.Arena;
-        for (int i = 0; i < arena.Count; i++)
+        for (int i = 0; i < arena.Count(); i++)
         {
             VLayoutTexts[i].text = i.ToString();
             HLayoutTexts[i].text = i.ToString();

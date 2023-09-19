@@ -344,7 +344,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Battle.SkillInventory.RemoveSkill(skill);
+                                RunManager.Instance.Battle.SkillInventory.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -352,7 +352,7 @@ public class NodeCategory : Category<NodeEntry>
                             }
                         }
 
-                        count.Do(i => RunManager.Instance.Battle.SkillInventory.AddSkill(copyingSkill));
+                        count.Do(i => RunManager.Instance.Battle.SkillInventory.Add(copyingSkill));
                         return D;
                     });
 
@@ -474,7 +474,7 @@ public class NodeCategory : Category<NodeEntry>
                             slot.Skill = newSkill;
                         }
 
-                        for(int i = 0; i < RunManager.Instance.Battle.SkillInventory.Count; i++)
+                        for(int i = 0; i < RunManager.Instance.Battle.SkillInventory.Count(); i++)
                         {
                             RunSkill oldSkill = RunManager.Instance.Battle.SkillInventory[i];
                             WuXing? oldWuXing = oldSkill.GetEntry().WuXing;
@@ -486,7 +486,7 @@ public class NodeCategory : Category<NodeEntry>
                             JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
 
                             RunManager.Instance.Battle.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
-                            RunManager.Instance.Battle.SkillInventory.ReplaceSkill(oldSkill, newSkill);
+                            RunManager.Instance.Battle.SkillInventory.Replace(oldSkill, newSkill);
                         }
 
                         return C;
@@ -524,7 +524,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Battle.SkillInventory.RemoveSkill(skill);
+                                RunManager.Instance.Battle.SkillInventory.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -601,7 +601,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     B.SetSelect(toAdd =>
                     {
-                        RunManager.Instance.Battle.SkillInventory.AddSkills(toAdd);
+                        RunManager.Instance.Battle.ForceAddSkills(toAdd);
                         return C;
                     });
 
@@ -770,7 +770,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     C.SetSelect(skills =>
                     {
-                        RunManager.Instance.Battle.SkillInventory.AddSkills(skills);
+                        RunManager.Instance.Battle.ForceAddSkills(skills);
                         return D;
                     });
 
@@ -929,7 +929,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Battle.SkillInventory.RemoveSkill(skill);
+                                RunManager.Instance.Battle.SkillInventory.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -949,7 +949,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Battle.SkillInventory.RemoveSkill(skill);
+                                RunManager.Instance.Battle.SkillInventory.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {

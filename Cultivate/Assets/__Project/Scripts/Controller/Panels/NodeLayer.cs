@@ -58,27 +58,23 @@ public class NodeLayer : MonoBehaviour
 
     public void Configure()
     {
-        _panelDict = new()
-        {
-            { typeof(BattlePanelDescriptor), BattlePanel },
-            { typeof(DialogPanelDescriptor), DialogPanel },
-            { typeof(DiscoverSkillPanelDescriptor), DiscoverSkillPanel },
-            { typeof(CardPickerPanelDescriptor), CardPickerPanel },
-            { typeof(ShopPanelDescriptor), ShopPanel },
-            { typeof(BarterPanelDescriptor), BarterPanel },
-            { typeof(ArbitraryCardPickerPanelDescriptor), ArbitraryCardPickerPanel },
-        };
-
-        _panelDict.Do(kvp => kvp.Value.Configure());
+        // _panelDict = new()
+        // {
+        //     { typeof(BattlePanelDescriptor), BattlePanel },
+        //     { typeof(DialogPanelDescriptor), DialogPanel },
+        //     { typeof(DiscoverSkillPanelDescriptor), DiscoverSkillPanel },
+        //     { typeof(CardPickerPanelDescriptor), CardPickerPanel },
+        //     { typeof(ShopPanelDescriptor), ShopPanel },
+        //     { typeof(BarterPanelDescriptor), BarterPanel },
+        //     { typeof(ArbitraryCardPickerPanelDescriptor), ArbitraryCardPickerPanel },
+        // };
+        //
+        // _panelDict.Do(kvp => kvp.Value.Configure());
     }
 
     public void Refresh()
     {
-        if (_currentPanel != null)
-            _currentPanel.Refresh();
-        // RunNode runNode = RunManager.Instance.TryGetCurrentNode();
-        // PanelDescriptor d = runNode?.CurrentPanel;
-        // if (d != null)
-        //     SetPanel(_panelDict[d.GetType()]).Restart();
+        // if (_currentPanel != null)
+        //     _currentPanel.Refresh();
     }
 }

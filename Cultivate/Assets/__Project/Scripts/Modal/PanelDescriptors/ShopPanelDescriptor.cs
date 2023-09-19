@@ -47,7 +47,7 @@ public class ShopPanelDescriptor : PanelDescriptor
         RunManager.Instance.Battle.RemoveXiuWei(commodity.FinalPrice);
         _commodities.Remove(commodity);
 
-        RunManager.Instance.Battle.SkillInventory.AddSkill(commodity.Skill);
+        RunManager.Instance.Battle.SkillInventory.Add(commodity.Skill);
 
         return true;
     }

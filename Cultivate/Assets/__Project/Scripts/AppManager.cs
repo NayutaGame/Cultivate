@@ -22,6 +22,11 @@ public class AppManager : Singleton<AppManager>, Addressable
 
         _accessors = new Dictionary<string, Func<object>>()
         {
+            { "App", () => Instance },
+            { "Run", () => RunManager.Instance },
+            { "Stage", () => StageManager.Instance },
+            { "Encyclopedia", () => Encyclopedia.Instance },
+
             { "Settings", () => Settings },
             { "FormationInventory", () => FormationInventory },
             { "SkillInventory", () => SkillInventory },
@@ -35,7 +40,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         Encyclopedia.FormationCategory.Traversal.Do(e => FormationInventory.Add(e));
 
         SkillInventory = new();
-        Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.From(e, e.JingJieRange.Start)).Do(e => SkillInventory.AddSkill(e));
+        Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.From(e, e.JingJieRange.Start)).Do(s => SkillInventory.Add(s));
 
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);
