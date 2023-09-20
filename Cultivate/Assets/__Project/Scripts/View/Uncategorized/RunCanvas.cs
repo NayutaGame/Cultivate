@@ -24,7 +24,7 @@ public class RunCanvas : Singleton<RunCanvas>
     public ConsolePanel ConsolePanel;
 
     public MechGhost MechGhost;
-    [SerializeField] private RunSkillPreview RunSkillPreview;
+    public RunSkillPreview SkillPreview;
     [SerializeField] private FormationPreview FormationPreview;
 
     private InteractDelegate DeckInteractDelegate;
@@ -66,15 +66,21 @@ public class RunCanvas : Singleton<RunCanvas>
 
         DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((RunSkillView)v).HoverAnimation(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((RunSkillView)v).UnhoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((RunSkillView)v).PointerMove(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 0, (v, d) => ((RunSkillView)v).BeginDrag(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 0, (v, d) => ((RunSkillView)v).EndDrag(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 0, (v, d) => ((RunSkillView)v).Drag(d));
 
         DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, (v, d) => ((SlotView)v).HoverAnimation(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, (v, d) => ((SlotView)v).UnhoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 2, (v, d) => ((SlotView)v).PointerMove(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 2, (v, d) => ((SlotView)v).BeginDrag(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 2, (v, d) => ((SlotView)v).EndDrag(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 2, (v, d) => ((SlotView)v).Drag(d));
+
+        DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 3, (v, d) => ((MechView)v).BeginDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 3, (v, d) => ((MechView)v).EndDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 3, (v, d) => ((MechView)v).Drag(d));
 
         CardPickerInteractDelegate = new(4,
             getId: view =>
@@ -129,18 +135,6 @@ public class RunCanvas : Singleton<RunCanvas>
         ReservedLayer.Refresh();
         NodeLayer.Refresh();
         MMDMLayer.Refresh();
-    }
-
-    public void SetIndexPathForSkillPreview(Address address)
-    {
-        RunSkillPreview.SetAddress(address);
-        RunSkillPreview.Refresh();
-    }
-
-    public void UpdateMousePosForSkillPreview(Vector2 pos)
-    {
-        RunSkillPreview.UpdateMousePos(pos);
-        RunSkillPreview.Refresh();
     }
 
     public void SetIndexPathForSubFormationPreview(Address address)
@@ -215,6 +209,8 @@ public class RunCanvas : Singleton<RunCanvas>
         Mech toEquip = from.Get<Mech>();
         SkillSlot slot = to.Get<SkillSlot>();
         env.TryEquipMech(toEquip, slot);
+        from.Refresh();
+        to.Refresh();
     }
 
     private void TryUnequip(IInteractable from, IInteractable to)

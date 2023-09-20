@@ -1,9 +1,6 @@
 
-using System;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DeckPanel : Panel
@@ -45,7 +42,7 @@ public class DeckPanel : Panel
         FieldView.SetAddress(new Address("Run.Battle.Hero.Slots"));
         HandView.SetAddress(new Address("Run.Battle.SkillInventory"));
         FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
-        // MechListView.SetAddress(new Address("Run.Battle.MechBag.List"));
+        MechListView.SetAddress(new Address("Run.Battle.MechBag"));
 
         InteractDelegate formationIconInteractDelegate = new InteractDelegate(1, v => 0);
         formationIconInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((FormationView)v).PointerEnter(v, d));
@@ -62,14 +59,14 @@ public class DeckPanel : Panel
         FieldView.Refresh();
         HandView.Refresh();
         FormationListView.Refresh();
-        // MechListView.Refresh();
+        MechListView.Refresh();
     }
 
     public void SetInteractDelegate(InteractDelegate interactDelegate)
     {
         FieldView.SetDelegate(interactDelegate);
         HandView.SetDelegate(interactDelegate);
-        // MechListView.SetDelegate(interactDelegate);
+        MechListView.SetDelegate(interactDelegate);
     }
 
     private void Sort()

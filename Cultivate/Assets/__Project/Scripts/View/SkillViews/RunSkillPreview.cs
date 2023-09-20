@@ -24,14 +24,4 @@ public class RunSkillPreview : AbstractSkillView
         _rectTransform.pivot = pivot;
         _rectTransform.position = pos;
     }
-
-    public override void OnPointerClick(PointerEventData eventData) { }
-    public override void OnBeginDrag(PointerEventData eventData) { }
-    public override void OnEndDrag(PointerEventData eventData) { }
-    public override void OnDrag(PointerEventData eventData) { }
-    public override void OnDrop(PointerEventData eventData) { }
-
-    public override void OnPointerEnter(PointerEventData eventData) { }
-    public override void OnPointerExit(PointerEventData eventData) { }
-    public override void OnPointerMove(PointerEventData eventData) { }
 }

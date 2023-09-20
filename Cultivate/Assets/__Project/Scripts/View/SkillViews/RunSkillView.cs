@@ -28,7 +28,8 @@ public class RunSkillView : AbstractSkillView
         _animationHandle = ContentTransform.DOAnchorPos(HoverPivot.anchoredPosition, 0.15f);
         _animationHandle.Restart();
 
-        // RunCanvas.Instance.SetIndexPathForSkillPreview(GetAddress());
+        RunCanvas.Instance.SkillPreview.SetAddress(GetAddress());
+        RunCanvas.Instance.SkillPreview.Refresh();
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
@@ -39,7 +40,15 @@ public class RunSkillView : AbstractSkillView
         _animationHandle = ContentTransform.DOAnchorPos(IdlePivot.anchoredPosition, 0.15f);
         _animationHandle.Restart();
 
-        // RunCanvas.Instance.SetIndexPathForSkillPreview(null);
+        RunCanvas.Instance.SkillPreview.SetAddress(null);
+        RunCanvas.Instance.SkillPreview.Refresh();
+    }
+
+    public void PointerMove(PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        RunCanvas.Instance.SkillPreview.UpdateMousePos(eventData.position);
     }
 
     public void BeginDrag(PointerEventData eventData)

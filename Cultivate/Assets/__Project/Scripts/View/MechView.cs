@@ -6,14 +6,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MechView : ItemView, IInteractable,
-    IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
+    IBeginDragHandler, IEndDragHandler, IDragHandler,
+    IDropHandler
 {
     protected RectTransform _rectTransform;
     protected Image _image;
-
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
 
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text CountText;
@@ -56,56 +53,39 @@ public class MechView : ItemView, IInteractable,
         CountText.text = count.ToString();
     }
 
-    public virtual void OnBeginDrag(PointerEventData eventData)
+    #region IInteractable
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
+
+    public virtual void OnBeginDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.BEGIN_DRAG, this, eventData);
+    public virtual void OnEndDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.END_DRAG, this, eventData);
+    public virtual void OnDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.DRAG, this, eventData);
+    public virtual void OnDrop(PointerEventData eventData) => GetDelegate()?.DragDrop(eventData.pointerDrag.GetComponent<IInteractable>(), this);
+
+    #endregion
+
+    public void BeginDrag(PointerEventData eventData)
     {
-        IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
-        if(drag == null || drag.GetDelegate() == null || !drag.GetDelegate().CanDrag(drag))
-        {
-            eventData.pointerDrag = null;
-            RunCanvas.Instance.SetIndexPathForSkillPreview(null);
-            return;
-        }
-
-        // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
-
         RunCanvas.Instance.MechGhost.SetAddress(GetAddress());
         RunCanvas.Instance.MechGhost.Refresh();
 
         if (_image != null)
             _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
-
-        // RunCanvas.Instance.SetIndexPathForSkillPreview(null);
-        RunCanvas.Instance.Refresh();
     }
 
-    public virtual void OnEndDrag(PointerEventData eventData)
+    public void EndDrag(PointerEventData eventData)
     {
-        // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
-
         RunCanvas.Instance.MechGhost.SetAddress(null);
         RunCanvas.Instance.MechGhost.Refresh();
 
         if (_image != null)
             _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
-
-        RunCanvas.Instance.Refresh();
     }
 
-    public virtual void OnDrag(PointerEventData eventData)
+    public void Drag(PointerEventData eventData)
     {
         RunCanvas.Instance.MechGhost.UpdateMousePos(eventData.position);
-    }
-
-    public virtual void OnDrop(PointerEventData eventData)
-    {
-        IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
-        if (drag == null)
-            return;
-
-        IInteractable drop = GetComponent<IInteractable>();
-        if (drag == drop)
-            return;
-
-        drag.GetDelegate()?.DragDrop(drag, drop);
     }
 }

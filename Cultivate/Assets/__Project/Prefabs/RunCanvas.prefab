@@ -402,7 +402,7 @@ MonoBehaviour:
   ToggleShowingConsolePanelButton: {fileID: 4212255494254727701}
   ConsolePanel: {fileID: 955416620752398226}
   MechGhost: {fileID: 3570384485315626739}
-  RunSkillPreview: {fileID: 427471729097561689}
+  SkillPreview: {fileID: 427471729097561689}
   FormationPreview: {fileID: 4195929028488326489}
 --- !u!1 &6570500143329246657
 GameObject:

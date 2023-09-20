@@ -162,11 +162,11 @@ public class RunEnvironment : Addressable
         }
         else if (currentSkill is MechComposite mechComposite)
         {
-            bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
-            if (!success)
+            if (mechComposite.MechTypes.Count >= MechComposite.MAX_CHAIN)
                 return false;
 
-            if (mechComposite.MechTypes.Count >= MechComposite.MAX_CHAIN)
+            bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
+            if (!success)
                 return false;
 
             mechComposite.MechTypes.Add(toEquip.GetMechType());

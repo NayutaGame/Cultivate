@@ -1,38 +1,20 @@
 
-using System;
-using System.Collections.Generic;
-
-public class MechBag : Addressable
+public sealed class MechBag : ListModel<Mech>
 {
-    private Mech[] _meches;
-
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
     public MechBag()
     {
-        _meches = new Mech[MechType.Length];
-
-        int i = 0;
         foreach (MechType t in MechType.Traversal)
         {
-            _meches[i] = new(t);
-            i++;
+            Add(new(t));
         }
-
-        _accessors = new Dictionary<string, Func<object>>()
-        {
-            { "List", () => _meches },
-        };
     }
 
     public int GetCount(MechType mechType)
-        => _meches[mechType._index].Count;
+        => this[mechType._index].Count;
 
     public void AddMech(MechType mechType, int count = 1)
     {
-        _meches[mechType._index].Count += count;
+        this[mechType._index].Count += count;
     }
 
     public bool TryConsumeMech(MechType mechType, int count = 1)
@@ -40,12 +22,12 @@ public class MechBag : Addressable
         if (!CanConsumeMech(mechType, count))
             return false;
 
-        _meches[mechType._index].Count -= count;
+        this[mechType._index].Count -= count;
         return true;
     }
 
     public bool CanConsumeMech(MechType mechType, int count = 1)
     {
-        return _meches[mechType._index].Count >= count;
+        return this[mechType._index].Count >= count;
     }
 }
