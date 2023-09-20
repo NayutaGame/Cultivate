@@ -12,8 +12,8 @@ public class DesignerEnvironment
 
     public static void EnterRun()
     {
-        Standard();
-        // Custom();
+        // Standard();
+        Custom();
     }
 
     public static void Standard()
@@ -29,6 +29,7 @@ public class DesignerEnvironment
         RunEnvironment env = RunManager.Instance.Battle;
         env.Map.JingJie = JingJie.HuaShen;
         env.Hero.SetJingJie(JingJie.HuaShen);
+        env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
     }
 
     public static async Task DefaultStartTurn(StageEntity owner, EventDetails eventDetails)

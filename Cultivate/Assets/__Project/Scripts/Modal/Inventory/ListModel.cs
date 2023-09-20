@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class ListModel<T> : IListModel
 {
@@ -23,6 +24,12 @@ public class ListModel<T> : IListModel
             InsertEvent(Count() - 1, item).GetAwaiter().GetResult();
     }
 
+    public void AddRange(IEnumerable<T> items)
+    {
+        foreach(T item in items)
+            Add(item);
+    }
+
     public virtual void Insert(int index, T item)
     {
         _list.Insert(index, item);
@@ -42,6 +49,14 @@ public class ListModel<T> : IListModel
 
         if (RemoveAtEvent != null)
             RemoveAtEvent(index).GetAwaiter().GetResult();
+    }
+
+    public void Clear()
+    {
+        while (Count() > 0)
+        {
+            RemoveAt(0);
+        }
     }
 
     public virtual void SetModified(T item)

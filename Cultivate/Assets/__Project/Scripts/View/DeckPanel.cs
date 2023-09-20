@@ -43,7 +43,7 @@ public class DeckPanel : Panel
     {
         FieldView.SetAddress(new Address("Run.Battle.Hero.Slots"));
         HandView.SetAddress(new Address("Run.Battle.SkillInventory"));
-        // FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
+        FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
         // MechListView.SetAddress(new Address("Run.Battle.MechBag.List"));
 
         SortButton.onClick.RemoveAllListeners();
@@ -54,7 +54,7 @@ public class DeckPanel : Panel
     {
         FieldView.Refresh();
         HandView.Refresh();
-        // FormationListView.Refresh();
+        FormationListView.Refresh();
         // MechListView.Refresh();
     }
 

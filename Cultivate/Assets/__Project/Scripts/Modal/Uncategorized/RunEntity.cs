@@ -83,7 +83,7 @@ public class RunEntity : Addressable, IEntityModel
 
     #region Formation
 
-    private List<FormationEntry> _activatedFormations;
+    private ListModel<FormationEntry> _activatedFormations;
     public IEnumerable<FormationEntry> TraversalActivatedFormations => _activatedFormations.Traversal();
 
     private void RefreshFormations()
@@ -120,7 +120,7 @@ public class RunEntity : Addressable, IEntityModel
 
         _mingYuan = MingYuan.Default;
 
-        _activatedFormations = new List<FormationEntry>();
+        _activatedFormations = new ListModel<FormationEntry>();
 
         _slots = new ListModel<SkillSlot>();
         for (int i = 0; i < RunManager.SkillLimit; i++)

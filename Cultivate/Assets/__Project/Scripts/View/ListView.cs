@@ -119,13 +119,12 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     public virtual void SetAddress(Address address)
     {
         _address = address;
-        Model = Get<IListModel>();
-
         _activePool = new List<ItemView>();
         _inactivePools = new List<ItemView>[Prefabs.Length];
         for (int i = 0; i < _inactivePools.Length; i++)
             _inactivePools[i] = new List<ItemView>();
         RegisterExists();
+        Model = Get<IListModel>();
         BigRefresh();
     }
 
