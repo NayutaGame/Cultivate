@@ -11,7 +11,7 @@ public class RunSkillView : AbstractSkillView
     [SerializeField] private RectTransform HoverPivot;
     [SerializeField] private RectTransform MousePivot;
 
-    private Tweener _animationHandle;
+    private Tween _animationHandle;
 
     private void OnEnable()
     {

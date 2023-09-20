@@ -98,14 +98,16 @@ public class SlotView : ItemView, IInteractable,
     [SerializeField] private RectTransform HoverPivot;
     [SerializeField] private RectTransform MousePivot;
 
-    private Tweener _animationHandle;
+    private Tween _animationHandle;
 
     public void HoverAnimation(PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
         _animationHandle?.Kill();
-        _animationHandle = ContentTransform.DOScale(HoverPivot.localScale, 0.15f);
+        _animationHandle = DOTween.Sequence()
+            .Append(ContentTransform.DOAnchorPos(HoverPivot.anchoredPosition, 0.15f))
+            .Append(ContentTransform.DOScale(HoverPivot.localScale, 0.15f));
         _animationHandle.Restart();
 
         // RunCanvas.Instance.SetIndexPathForSkillPreview(SkillView.GetAddress());
@@ -116,7 +118,9 @@ public class SlotView : ItemView, IInteractable,
         if (eventData.dragging) return;
 
         _animationHandle?.Kill();
-        _animationHandle = ContentTransform.DOScale(IdlePivot.localScale, 0.15f);
+        _animationHandle = DOTween.Sequence()
+            .Append(ContentTransform.DOAnchorPos(IdlePivot.anchoredPosition, 0.15f))
+            .Append(ContentTransform.DOScale(IdlePivot.localScale, 0.15f));
         _animationHandle.Restart();
 
         // RunCanvas.Instance.SetIndexPathForSkillPreview(null);

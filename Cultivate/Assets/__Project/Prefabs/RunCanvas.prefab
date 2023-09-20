@@ -401,7 +401,6 @@ MonoBehaviour:
   TopBar: {fileID: 5967210524579795741}
   ToggleShowingConsolePanelButton: {fileID: 4212255494254727701}
   ConsolePanel: {fileID: 955416620752398226}
-  SkillGhost: {fileID: 0}
   MechGhost: {fileID: 3570384485315626739}
   RunSkillPreview: {fileID: 427471729097561689}
   FormationPreview: {fileID: 4195929028488326489}
@@ -2016,6 +2015,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7288022103437664780, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7675570563841033100, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7675570563841033100, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7675570563841033100, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7675570563841033100, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
