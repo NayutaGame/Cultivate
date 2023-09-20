@@ -94,35 +94,4 @@ public class BattlePanel : Panel
         d.Combat(true, true);
         RunCanvas.Instance.Refresh();
     }
-
-    private bool TryMerge(IInteractable from, IInteractable to)
-    {
-        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
-        RunSkill lhs = from.Get<RunSkill>();
-        RunSkill rhs = to.Get<RunSkill>();
-        return runEnvironment.TryMerge(lhs, rhs);
-    }
-
-    private bool TryEquip(IInteractable from, IInteractable to)
-    {
-        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
-        RunSkill toEquip = from.Get<RunSkill>();
-        SkillSlot slot = to.Get<SkillSlot>();
-        return runEnvironment.TryEquipSkill(toEquip, slot);
-    }
-
-    private bool TryUnequip(IInteractable from, IInteractable to)
-    {
-        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
-        SkillSlot slot = from.Get<SkillSlot>();
-        return runEnvironment.TryUnequip(slot, null);
-    }
-
-    private bool TrySwap(IInteractable from, IInteractable to)
-    {
-        RunEnvironment runEnvironment = _address.Get<RunEnvironment>();
-        SkillSlot fromSlot = from.Get<SkillSlot>();
-        SkillSlot toSlot = to.Get<SkillSlot>();
-        return runEnvironment.TrySwap(fromSlot, toSlot);
-    }
 }

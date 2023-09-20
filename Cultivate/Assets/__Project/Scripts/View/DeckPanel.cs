@@ -41,7 +41,7 @@ public class DeckPanel : Panel
 
     public override void Configure()
     {
-        // FieldView.SetAddress(new Address("Run.Battle.Hero.Slots"));
+        FieldView.SetAddress(new Address("Run.Battle.Hero.Slots"));
         HandView.SetAddress(new Address("Run.Battle.SkillInventory"));
         // FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
         // MechListView.SetAddress(new Address("Run.Battle.MechBag.List"));
@@ -52,7 +52,7 @@ public class DeckPanel : Panel
 
     public override void Refresh()
     {
-        // FieldView.Refresh();
+        FieldView.Refresh();
         HandView.Refresh();
         // FormationListView.Refresh();
         // MechListView.Refresh();
@@ -60,7 +60,7 @@ public class DeckPanel : Panel
 
     public void SetInteractDelegate(InteractDelegate interactDelegate)
     {
-        // FieldView.SetDelegate(interactDelegate);
+        FieldView.SetDelegate(interactDelegate);
         HandView.SetDelegate(interactDelegate);
         // MechListView.SetDelegate(interactDelegate);
     }

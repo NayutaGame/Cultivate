@@ -70,6 +70,12 @@ public class RunCanvas : Singleton<RunCanvas>
         DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 0, (v, d) => ((RunSkillView)v).EndDrag(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 0, (v, d) => ((RunSkillView)v).Drag(d));
 
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, (v, d) => ((SlotView)v).HoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, (v, d) => ((SlotView)v).UnhoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 2, (v, d) => ((SlotView)v).BeginDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 2, (v, d) => ((SlotView)v).EndDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 2, (v, d) => ((SlotView)v).Drag(d));
+
         CardPickerInteractDelegate = new(4,
             getId: view =>
             {
@@ -200,6 +206,7 @@ public class RunCanvas : Singleton<RunCanvas>
         RunSkill toEquip = from.Get<RunSkill>();
         SkillSlot slot = to.Get<SkillSlot>();
         env.TryEquipSkill(toEquip, slot);
+        to.Refresh();
     }
 
     private void TryEquipMech(IInteractable from, IInteractable to)
@@ -215,6 +222,7 @@ public class RunCanvas : Singleton<RunCanvas>
         RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
         SkillSlot slot = from.Get<SkillSlot>();
         env.TryUnequip(slot, null);
+        from.Refresh();
     }
 
     private void TrySwap(IInteractable from, IInteractable to)
@@ -223,6 +231,8 @@ public class RunCanvas : Singleton<RunCanvas>
         SkillSlot fromSlot = from.Get<SkillSlot>();
         SkillSlot toSlot = to.Get<SkillSlot>();
         env.TrySwap(fromSlot, toSlot);
+        from.Refresh();
+        to.Refresh();
     }
 
     private void ToggleSkill(IInteractable view, PointerEventData eventData)

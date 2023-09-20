@@ -2090,6 +2090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98b5d68c4403da547aea2cc9b3f7504c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 4033753853697497392}
   CardImage: {fileID: 6491160188919214174}
   ManaCostView: {fileID: 4027762838078502311}
   ManaCostText: {fileID: 7490044062009669243}

@@ -9,6 +9,7 @@ public interface IInteractable
 
     Address GetAddress();
     T Get<T>();
+    void Refresh();
 
     // #region IInteractable
     //

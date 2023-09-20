@@ -48,13 +48,14 @@ public class RunEntity : Addressable, IEntityModel
         Limit = RunManager.SkillLimitFromJingJie[_jingJie];
         int end = Start + Limit;
 
-        _slots.Length.Do(i =>
+        _slots.Count().Do(i =>
         {
             _slots[i].SetLocked(!(Start <= i && i < end));
         });
     }
 
-    [SerializeReference] private SkillSlot[] _slots;
+    [SerializeReference] private ListModel<SkillSlot> _slots;
+
     public SkillSlot GetSlot(int i)
         => _slots[i];
 
@@ -121,11 +122,12 @@ public class RunEntity : Addressable, IEntityModel
 
         _activatedFormations = new List<FormationEntry>();
 
-        _slots = new SkillSlot[RunManager.SkillLimit];
-        for (int i = 0; i < _slots.Length; i++)
+        _slots = new ListModel<SkillSlot>();
+        for (int i = 0; i < RunManager.SkillLimit; i++)
         {
-            _slots[i] = new SkillSlot(this, i);
-            _slots[i].EnvironmentChangedEvent += EnvironmentChanged;
+            SkillSlot slot = new SkillSlot(this, i);
+            slot.EnvironmentChangedEvent += EnvironmentChanged;
+            _slots.Add(slot);
         }
 
         SetJingJie(JingJie.LianQi);
@@ -169,7 +171,7 @@ public class RunEntity : Addressable, IEntityModel
 
     public void QuickSetSlotContent(params string[] skillNames)
     {
-        int diff = _slots.Length - skillNames.Length;
+        int diff = _slots.Count() - skillNames.Length;
         for (int i = skillNames.Length - 1; i >= 0; i--)
         {
             if (skillNames[i] != null && skillNames[i] != "")
@@ -200,14 +202,14 @@ public class RunEntity : Addressable, IEntityModel
 
     public void TryExhaust()
     {
-        _slots.Do(slot => slot.TryExhaust());
+        _slots.Traversal().Do(slot => slot.TryExhaust());
     }
 
     private void FromEntity(RunEntity entity)
     {
         SetJingJie(entity.GetJingJie());
         SetBaseHealth(entity.GetBaseHealth());
-        for (int i = 0; i < _slots.Length; i++)
+        for (int i = 0; i < _slots.Count(); i++)
             _slots[i].Skill = entity._slots[i].Skill;
     }
 }

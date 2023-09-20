@@ -1,20 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
+
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class SlotView : ItemView, IInteractable,
-    IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,
-    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
+    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
+    IPointerClickHandler,
+    IBeginDragHandler, IEndDragHandler, IDragHandler,
+    IDropHandler
 {
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
-
     public AbstractSkillView SkillView;
-    private Image _image;
+    [SerializeField] protected CanvasGroup _canvasGroup;
 
     private bool IsManaShortage()
     {
@@ -35,13 +31,16 @@ public class SlotView : ItemView, IInteractable,
             SkillView.SetSelected(selected);
     }
 
+    private void OnEnable()
+    {
+        if (_canvasGroup != null)
+            _canvasGroup.blocksRaycasts = true;
+    }
+
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        _image = GetComponent<Image>();
-
         SkillView.SetAddress(GetAddress().Append(".Skill"));
-        SkillView.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
         SkillView.ClearIsManaShortage();
         SkillView.IsManaShortageDelegate += IsManaShortage;
@@ -63,6 +62,15 @@ public class SlotView : ItemView, IInteractable,
             SkillView.Refresh();
     }
 
+    #region IInteractable
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
+
+    public virtual void OnPointerEnter(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_ENTER, this, eventData);
+    public virtual void OnPointerExit(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_EXIT, this, eventData);
+    public virtual void OnPointerMove(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_MOVE, this, eventData);
     public virtual void OnPointerClick(PointerEventData eventData)
     {
         int? gestureId = null;
@@ -77,91 +85,77 @@ public class SlotView : ItemView, IInteractable,
             GetDelegate()?.Handle(gestureId.Value, this, eventData);
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public virtual void OnBeginDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.BEGIN_DRAG, this, eventData);
+    public virtual void OnEndDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.END_DRAG, this, eventData);
+    public virtual void OnDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.DRAG, this, eventData);
+    public virtual void OnDrop(PointerEventData eventData) => GetDelegate()?.DragDrop(eventData.pointerDrag.GetComponent<IInteractable>(), this);
+
+    #endregion
+
+    [SerializeField] private RectTransform ContentTransform;
+
+    [SerializeField] private RectTransform IdlePivot;
+    [SerializeField] private RectTransform HoverPivot;
+    [SerializeField] private RectTransform MousePivot;
+
+    private Tweener _animationHandle;
+
+    public void HoverAnimation(PointerEventData eventData)
     {
-        IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
-        if(drag == null || drag.GetDelegate() == null || !drag.GetDelegate().CanDrag(drag))
-        {
-            eventData.pointerDrag = null;
-            RunCanvas.Instance.SetIndexPathForSkillPreview(null);
-            return;
-        }
+        if (eventData.dragging) return;
 
-        SkillSlot slot = Get<SkillSlot>();
-        if (slot.State != SkillSlot.SkillSlotState.Occupied)
-        {
-            eventData.pointerDrag = null;
-            RunCanvas.Instance.SetIndexPathForSkillPreview(null);
-            return;
-        }
+        _animationHandle?.Kill();
+        _animationHandle = ContentTransform.DOScale(HoverPivot.localScale, 0.15f);
+        _animationHandle.Restart();
 
+        // RunCanvas.Instance.SetIndexPathForSkillPreview(SkillView.GetAddress());
+    }
+
+    public void UnhoverAnimation(PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        _animationHandle?.Kill();
+        _animationHandle = ContentTransform.DOScale(IdlePivot.localScale, 0.15f);
+        _animationHandle.Restart();
+
+        // RunCanvas.Instance.SetIndexPathForSkillPreview(null);
+    }
+
+    // public void OnPointerMove(PointerEventData eventData)
+    // {
+    //     if (eventData.dragging) return;
+    //     RunCanvas.Instance.UpdateMousePosForSkillPreview(eventData.position);
+    // }
+
+    public void BeginDrag(PointerEventData eventData)
+    {
+        _canvasGroup.blocksRaycasts = false;
+        _animationHandle?.Kill();
+        FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = MousePivot };
+        _animationHandle = f.GetHandle();
+        _animationHandle.Restart();
+
+        // RunCanvas.Instance.SetIndexPathForSkillPreview(null);
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
-
-        // RunCanvas.Instance.SkillGhost.SetAddress(SkillView.GetAddress());
-        // RunCanvas.Instance.SkillGhost.Refresh();
-        RunCanvas.Instance.Refresh();
-
-        if (_image != null)
-            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
-
-        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public void EndDrag(PointerEventData eventData)
     {
+        _canvasGroup.blocksRaycasts = true;
+        _animationHandle?.Kill();
+        FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = IdlePivot };
+        _animationHandle = f.GetHandle();
+        _animationHandle.Restart();
+
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
-
-        // RunCanvas.Instance.SkillGhost.SetAddress(null);
-        // RunCanvas.Instance.SkillGhost.Refresh();
-        RunCanvas.Instance.Refresh();
-
-        if (_image != null)
-            _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
-
-        RunCanvas.Instance.Refresh();
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public void Drag(PointerEventData eventData)
     {
-        // RunCanvas.Instance.SkillGhost.UpdateMousePos(eventData.position);
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
-        if (drag == null)
+        MousePivot.position = eventData.position;
+        if (_animationHandle != null && _animationHandle.active)
             return;
-
-        IInteractable drop = GetComponent<IInteractable>();
-        if (drag == drop)
-            return;
-
-        drag.GetDelegate()?.DragDrop(drag, drop);
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        SkillSlot slot = Get<SkillSlot>();
-        if (slot.State != SkillSlot.SkillSlotState.Occupied)
-        {
-            RunCanvas.Instance.SetIndexPathForSkillPreview(null);
-            return;
-        }
-
-        RunCanvas.Instance.SetIndexPathForSkillPreview(SkillView.GetAddress());
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForSkillPreview(null);
-    }
-
-    public void OnPointerMove(PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-        RunCanvas.Instance.UpdateMousePosForSkillPreview(eventData.position);
+        ContentTransform.position = MousePivot.position;
     }
 }

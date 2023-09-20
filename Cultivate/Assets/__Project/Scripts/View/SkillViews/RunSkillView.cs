@@ -1,5 +1,4 @@
 
-using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,7 +16,8 @@ public class RunSkillView : AbstractSkillView
     private void OnEnable()
     {
         ContentTransform.anchoredPosition = IdlePivot.anchoredPosition;
-        _canvasGroup.blocksRaycasts = true;
+        if (_canvasGroup != null)
+            _canvasGroup.blocksRaycasts = true;
     }
 
     public void HoverAnimation(PointerEventData eventData)
@@ -49,23 +49,9 @@ public class RunSkillView : AbstractSkillView
         FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = MousePivot };
         _animationHandle = f.GetHandle();
         _animationHandle.Restart();
-        // IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
-        // if(drag == null || drag.GetDelegate() == null || !drag.GetDelegate().CanDrag(drag))
-        // {
-        //     eventData.pointerDrag = null;
-        //     RunCanvas.Instance.SetIndexPathForSkillPreview(null);
-        //     return;
-        // }
 
-        // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
-
-        // RunCanvas.Instance.SkillGhost.SetAddress(GetAddress());
-        // RunCanvas.Instance.SkillGhost.Refresh();
-        //
-        // if (_image != null)
-        //     _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
-        //
         // RunCanvas.Instance.SetIndexPathForSkillPreview(null);
+        // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
     }
 
     public void EndDrag(PointerEventData eventData)
@@ -75,6 +61,8 @@ public class RunSkillView : AbstractSkillView
         FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = IdlePivot };
         _animationHandle = f.GetHandle();
         _animationHandle.Restart();
+
+        // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
     }
 
     public void Drag(PointerEventData eventData)
@@ -84,21 +72,4 @@ public class RunSkillView : AbstractSkillView
             return;
         ContentTransform.position = MousePivot.position;
     }
-
-    // {
-    //     // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
-    //
-    //     RunCanvas.Instance.SkillGhost.SetAddress(null);
-    //     RunCanvas.Instance.SkillGhost.Refresh();
-    //     RunCanvas.Instance.Refresh();
-    //
-    //     if (_image != null)
-    //         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
-    //
-    //     RunCanvas.Instance.Refresh();
-    // }
-
-    // {
-    //     RunCanvas.Instance.SkillGhost.UpdateMousePos(eventData.position);
-    // }
 }

@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine;
 
-public abstract class ListModel<T> : IListModel
+public class ListModel<T> : IListModel
 {
     private List<T> _list;
 

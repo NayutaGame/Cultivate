@@ -17,7 +17,7 @@ public abstract class AbstractSkillView : ItemView, IInteractable,
 {
     protected RectTransform _rectTransform;
     protected Image _image;
-    protected CanvasGroup _canvasGroup;
+    [SerializeField] protected CanvasGroup _canvasGroup;
 
     [SerializeField] private Image CardImage;
     [SerializeField] private GameObject ManaCostView;
@@ -172,7 +172,6 @@ public abstract class AbstractSkillView : ItemView, IInteractable,
     {
         _rectTransform = GetComponent<RectTransform>();
         _image = GetComponent<Image>();
-        _canvasGroup = GetComponent<CanvasGroup>();
     }
 
     public override void Refresh()
@@ -236,18 +235,4 @@ public abstract class AbstractSkillView : ItemView, IInteractable,
     public virtual void OnDrop(PointerEventData eventData) => GetDelegate()?.DragDrop(eventData.pointerDrag.GetComponent<IInteractable>(), this);
 
     #endregion
-
-    // public virtual void OnDrop(PointerEventData eventData)
-    // {
-    //     GetDelegate()?.DragDrop(eventData.pointerDrag.GetComponent<IInteractable>(), this);
-    //     IInteractable drag = eventData.pointerDrag.GetComponent<IInteractable>();
-    //     if (drag == null)
-    //         return;
-    //
-    //     IInteractable drop = GetComponent<IInteractable>();
-    //     if (drag == drop)
-    //         return;
-    //
-    //     drag.GetDelegate()?.DragDrop(drag, drop);
-    // }
 }
