@@ -3,6 +3,7 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DeckPanel : Panel
@@ -45,6 +46,12 @@ public class DeckPanel : Panel
         HandView.SetAddress(new Address("Run.Battle.SkillInventory"));
         FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
         // MechListView.SetAddress(new Address("Run.Battle.MechBag.List"));
+
+        InteractDelegate formationIconInteractDelegate = new InteractDelegate(1, v => 0);
+        formationIconInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((FormationView)v).PointerEnter(v, d));
+        formationIconInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((FormationView)v).PointerExit(v, d));
+        formationIconInteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((FormationView)v).PointerMove(v, d));
+        FormationListView.SetDelegate(formationIconInteractDelegate);
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);

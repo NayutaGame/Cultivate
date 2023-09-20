@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FormationView : ItemView,
+public class FormationView : ItemView, IInteractable,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     protected RectTransform _rectTransform;
@@ -44,19 +44,31 @@ public class FormationView : ItemView,
             RewardText.text = e.GetRewardDescription();
     }
 
-    public virtual void OnPointerEnter(PointerEventData eventData)
+    #region IInteractable
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
+
+    public virtual void OnPointerEnter(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_ENTER, this, eventData);
+    public virtual void OnPointerExit(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_EXIT, this, eventData);
+    public virtual void OnPointerMove(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_MOVE, this, eventData);
+
+    #endregion
+
+    public void PointerEnter(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForSubFormationPreview(GetAddress());
+        RunCanvas.Instance.SetIndexPathForSubFormationPreview(view.GetAddress());
     }
 
-    public virtual void OnPointerExit(PointerEventData eventData)
+    public void PointerExit(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
         RunCanvas.Instance.SetIndexPathForSubFormationPreview(null);
     }
 
-    public virtual void OnPointerMove(PointerEventData eventData)
+    public void PointerMove(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
         RunCanvas.Instance.UpdateMousePosForSubFormationPreview(eventData.position);
