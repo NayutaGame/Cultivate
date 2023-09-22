@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class ReservedLayer : MonoBehaviour
 {
     public Button TechButton;
-    public Button SimulateButton;
+    public Button EntityEditorButton;
     public Button ArenaButton;
     public Button SkillBrowserButton;
     public Button FormationBrowserButton;
     public Button CloseButton;
 
     public TechTreePanel TechTreePanel;
-    public SimulatePanel SimulatePanel;
+    public EntityEditorPanel EntityEditorPanel;
     public ArenaPanel ArenaPanel;
     public SkillBrowserPanel SkillBrowserPanel;
     public FormationBrowserPanel FormationBrowserPanel;
@@ -25,8 +25,8 @@ public class ReservedLayer : MonoBehaviour
         TechButton.onClick.RemoveAllListeners();
         TechButton.onClick.AddListener(OpenTechTreePanel);
 
-        SimulateButton.onClick.RemoveAllListeners();
-        SimulateButton.onClick.AddListener(OpenSimulatePanel);
+        EntityEditorButton.onClick.RemoveAllListeners();
+        EntityEditorButton.onClick.AddListener(OpenEntityEditorPanel);
 
         ArenaButton.onClick.RemoveAllListeners();
         ArenaButton.onClick.AddListener(OpenArenaPanel);
@@ -48,7 +48,7 @@ public class ReservedLayer : MonoBehaviour
     }
 
     public void OpenTechTreePanel() => ChangePanel(TechTreePanel);
-    public void OpenSimulatePanel() => ChangePanel(SimulatePanel);
+    public void OpenEntityEditorPanel() => ChangePanel(EntityEditorPanel);
     public void OpenArenaPanel() => ChangePanel(ArenaPanel);
     public void OpenSkillBrowserPanel() => ChangePanel(SkillBrowserPanel);
     public void OpenFormationBrowserPanel() => ChangePanel(FormationBrowserPanel);

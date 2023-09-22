@@ -17,10 +17,10 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, Addressable
     public static NodeCategory NodeCategory;
     public static FormationCategory FormationCategory;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
+    public static EntityEditableList EntityEditableList;
 
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
     public override void DidAwake()
     {
         base.DidAwake();
@@ -50,5 +50,7 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, Addressable
         KeywordCategory.Init();
         BuffCategory.Init();
         SkillCategory.Init();
+
+        EntityEditableList = EntityEditableList.ReadFromFile();
     }
 }

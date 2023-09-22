@@ -135,7 +135,7 @@ public class RunEntity : Addressable, IEntityModel
 
         if (_entry != null)
         {
-            _entry.Create(this);
+            // _entry.Create(this);
             UpdateReveal();
         }
     }

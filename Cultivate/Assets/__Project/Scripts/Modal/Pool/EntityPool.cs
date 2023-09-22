@@ -14,7 +14,7 @@ public class EntityPool : Pool<EntityEntry>
     public bool TryDrawEntity(out EntityEntry entityEntry, DrawEntityDetails d)
     {
         Shuffle();
-        TryPopItem(out EntityEntry item, e => e.CanDraw(d));
+        TryPopItem(out EntityEntry item);
         entityEntry = item ?? Encyclopedia.EntityCategory[0];
         return true;
     }
