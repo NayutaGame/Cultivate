@@ -15,7 +15,7 @@ public class ArbitraryCardPickerPanel : Panel
 
     public SkillInventoryView SkillInventoryView;
 
-    private List<AbstractSkillView> _selections;
+    private List<SkillView> _selections;
 
     private InteractDelegate InteractDelegate;
 
@@ -30,7 +30,7 @@ public class ArbitraryCardPickerPanel : Panel
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
         ConfigureInteractDelegate();
-        _selections = new List<AbstractSkillView>();
+        _selections = new List<SkillView>();
 
         SkillInventoryView.SetAddress(new Address($"{_address}.Inventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
@@ -68,7 +68,7 @@ public class ArbitraryCardPickerPanel : Panel
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
-        AbstractSkillView skillView = view as AbstractSkillView;
+        SkillView skillView = view as SkillView;
         bool isSelected = _selections.Contains(skillView);
 
         if (isSelected)

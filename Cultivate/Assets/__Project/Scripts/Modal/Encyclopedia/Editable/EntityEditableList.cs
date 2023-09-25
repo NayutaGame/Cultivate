@@ -4,17 +4,17 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class EntityEditableList : ListModel<EntityEditable>
+public class EntityEditableList : ListModel<RunEntity>
 {
     public static EntityEditableList ReadFromFile()
     {
-        string fileName = "/EntityCategory.json";
-        string filePath = Application.persistentDataPath + fileName;
+        string filePath = "/EntityEditableList.json";
+        string fullFilePath = Application.persistentDataPath + filePath;
 
         string txt;
-        if (!TryLoadFile(out txt, filePath))
+        if (!TryLoadFile(out txt, fullFilePath))
         {
-            string defaultTxt = Resources.Load<TextAsset>(fileName)?.text;
+            string defaultTxt = Resources.Load<TextAsset>(filePath)?.text;
             if (defaultTxt != null)
                 txt = defaultTxt;
             else
@@ -27,12 +27,12 @@ public class EntityEditableList : ListModel<EntityEditable>
 
     public void WriteToFile()
     {
-        string fileName = "/EntityCategory.json";
-        string filePath = Application.persistentDataPath + fileName;
+        string filePath = "/EntityEditableList.json";
+        string fullFilePath = Application.persistentDataPath + filePath;
 
         string json = JsonUtility.ToJson(this);
         string txt = TxtFromJson(json);
-        SaveFile(filePath, txt);
+        SaveFile(fullFilePath, txt);
     }
 
     private static void SaveFile(string filePath, string txt)

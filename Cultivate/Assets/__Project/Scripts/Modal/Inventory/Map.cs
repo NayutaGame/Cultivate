@@ -128,7 +128,7 @@ public class Map : Addressable
             if (AppManager.Instance != null)
                 if (AppManager.Instance.StageManager != null)
                 {
-                    RunManager.Instance.Battle.Hero.SetBaseHealth(RunEntity.BaseHP[_jingJie]);
+                    RunManager.Instance.Battle.Hero.SetBaseHealth(RunEntity.BaseHealthFromJingJie[_jingJie]);
                     RunManager.Instance.Battle.Hero.SetJingJie(_jingJie);
                 }
             RefreshPools();

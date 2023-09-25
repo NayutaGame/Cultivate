@@ -8,21 +8,21 @@ public class BattleRunNode : RunNode
 {
     public DrawEntityDetails DrawEntityDetails;
     private List<Reward> _rewards;
-    public EntityEntry EntityEntry;
+    public RunEntity Template;
 
     public BattleRunNode(Vector2Int position, JingJie jingJie, BattleNodeEntry entry, DrawEntityDetails drawEntityDetails) : base(position, jingJie, entry)
     {
         DrawEntityDetails = drawEntityDetails;
         _rewards = new();
-        RunManager.Instance.Battle.EntityPool.TryDrawEntity(out EntityEntry entityEntry, DrawEntityDetails);
-        EntityEntry = entityEntry;
+        RunManager.Instance.Battle.EntityPool.TryDrawEntity(out RunEntity template, DrawEntityDetails);
+        Template = template;
 
         _spriteEntry = DrawEntityDetails.AllowBoss ? "Boss" : "战斗";
     }
 
     public override string GetTitle()
     {
-        return EntityEntry.Name;
+        return Template.GetEntry().Name;
     }
 
     public void AddReward(Reward reward)

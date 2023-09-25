@@ -24,7 +24,7 @@ public class RunCanvas : Singleton<RunCanvas>
     public ConsolePanel ConsolePanel;
 
     public MechGhost MechGhost;
-    public RunSkillPreview SkillPreview;
+    public SkillPreview SkillPreview;
     [SerializeField] private FormationPreview FormationPreview;
 
     private InteractDelegate DeckInteractDelegate;
@@ -44,14 +44,13 @@ public class RunCanvas : Singleton<RunCanvas>
         DeckInteractDelegate = new(4,
             getId: view =>
             {
-                object item = view.Get<object>();
-                if (item is RunSkill)
+                if (view is HandSkillView)
                     return 0;
-                if (item is SkillInventory)
+                if (view is SkillInventoryView)
                     return 1;
-                if (item is SkillSlot)
+                if (view is FieldSlotView)
                     return 2;
-                if (item is Mech)
+                if (view is MechView)
                     return 3;
                 return null;
             },
@@ -64,19 +63,19 @@ public class RunCanvas : Singleton<RunCanvas>
                 /* Mech             */ null,       null,           TryEquipMech,    null,
             });
 
-        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((RunSkillView)v).HoverAnimation(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((RunSkillView)v).UnhoverAnimation(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((RunSkillView)v).PointerMove(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 0, (v, d) => ((RunSkillView)v).BeginDrag(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 0, (v, d) => ((RunSkillView)v).EndDrag(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 0, (v, d) => ((RunSkillView)v).Drag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((HandSkillView)v).HoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((HandSkillView)v).UnhoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((HandSkillView)v).PointerMove(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 0, (v, d) => ((HandSkillView)v).BeginDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 0, (v, d) => ((HandSkillView)v).EndDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 0, (v, d) => ((HandSkillView)v).Drag(d));
 
-        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, (v, d) => ((SlotView)v).HoverAnimation(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, (v, d) => ((SlotView)v).UnhoverAnimation(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 2, (v, d) => ((SlotView)v).PointerMove(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 2, (v, d) => ((SlotView)v).BeginDrag(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 2, (v, d) => ((SlotView)v).EndDrag(d));
-        DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 2, (v, d) => ((SlotView)v).Drag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, (v, d) => ((FieldSlotView)v).HoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, (v, d) => ((FieldSlotView)v).UnhoverAnimation(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 2, (v, d) => ((FieldSlotView)v).PointerMove(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 2, (v, d) => ((FieldSlotView)v).BeginDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 2, (v, d) => ((FieldSlotView)v).EndDrag(d));
+        DeckInteractDelegate.SetHandle(InteractDelegate.DRAG, 2, (v, d) => ((FieldSlotView)v).Drag(d));
 
         DeckInteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 3, (v, d) => ((MechView)v).BeginDrag(d));
         DeckInteractDelegate.SetHandle(InteractDelegate.END_DRAG, 3, (v, d) => ((MechView)v).EndDrag(d));

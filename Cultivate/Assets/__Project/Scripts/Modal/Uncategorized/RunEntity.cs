@@ -15,21 +15,21 @@ public class RunEntity : Addressable, IEntityModel
         EnvironmentChangedEvent?.Invoke();
     }
 
-    public static readonly int[] BaseHP = new int[] { 40, 80, 140, 220, 340, 340 };
-    // public static readonly int[] BaseHP = new int[] { 40, 50, 70, 100, 140, 140 };
+    public static readonly int[] BaseHealthFromJingJie = new int[] { 40, 80, 140, 220, 340, 340 };
+    // public static readonly int[] BaseHealthFromJingJie = new int[] { 40, 50, 70, 100, 140, 140 };
 
     [SerializeField] private MingYuan _mingYuan;
     public MingYuan MingYuan => _mingYuan;
 
-    [SerializeField] private int _health;
-    public int GetBaseHealth() => _health;
-    public void SetBaseHealth(int health) => _health = health;
+    [SerializeField] private int _baseHealth;
+    public int GetBaseHealth() => _baseHealth;
+    public void SetBaseHealth(int health) => _baseHealth = health;
 
     [OptionalField(VersionAdded = 2)] private int _dHealth;
     public int GetDHealth() => _dHealth;
     public void SetDHealth(int dHealth) => _dHealth = dHealth;
 
-    public int GetFinalHealth() => _health + _dHealth;
+    public int GetFinalHealth() => _baseHealth + _dHealth;
 
     [SerializeField] private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
@@ -98,17 +98,12 @@ public class RunEntity : Addressable, IEntityModel
     #endregion
 
     private EntityEntry _entry;
-    public EntityEntry GetEntry()
-        => _entry;
-    public void SetEntry(EntityEntry entry)
-    {
-        _entry = entry;
-        FromEntity(new RunEntity(_entry));
-    }
+    public EntityEntry GetEntry() => _entry;
+    public void SetEntry(EntityEntry entry) => _entry = entry;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    private RunEntity(EntityEntry entry = null)
+    private RunEntity(RunEntity template = null)
     {
         _accessors = new()
         {
@@ -116,28 +111,46 @@ public class RunEntity : Addressable, IEntityModel
             { "ActivatedSubFormations", () => _activatedFormations },
         };
 
-        _entry = entry;
+        if (template != null)
+        {
+            _entry = template._entry;
+            _mingYuan = template._mingYuan;
+            _jingJie = template._jingJie;
+            _baseHealth = template._baseHealth;
+            _slots = new SlotListModel();
 
-        _mingYuan = MingYuan.Default;
+            for (int i = 0; i < RunManager.SkillLimit; i++)
+            {
+                SkillSlot slot = new SkillSlot(i);
+                slot.Skill = template._slots[i].Skill;
+                _slots.Add(slot);
+            }
+        }
+        else
+        {
+            _entry = Encyclopedia.EntityCategory.DefaultEntry();
+            _mingYuan = MingYuan.Default;
+            _jingJie = JingJie.LianQi;
+            _baseHealth = BaseHealthFromJingJie[JingJie.LianQi];
+            _slots = new SlotListModel();
+
+            for (int i = 0; i < RunManager.SkillLimit; i++)
+            {
+                SkillSlot slot = new SkillSlot(i);
+                _slots.Add(slot);
+            }
+        }
 
         _activatedFormations = new ListModel<FormationEntry>();
+        _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
 
-        _slots = new ListModel<SkillSlot>();
-        for (int i = 0; i < RunManager.SkillLimit; i++)
-        {
-            SkillSlot slot = new SkillSlot(this, i);
-            slot.EnvironmentChangedEvent += EnvironmentChanged;
-            _slots.Add(slot);
-        }
+        UpdateReveal();
+        EnvironmentChanged();
+    }
 
-        SetJingJie(JingJie.LianQi);
-        SetBaseHealth(BaseHP[JingJie.LianQi]);
-
-        if (_entry != null)
-        {
-            // _entry.Create(this);
-            UpdateReveal();
-        }
+    public void TryExhaust()
+    {
+        _slots.Traversal().Do(slot => slot.TryExhaust());
     }
 
     public static RunEntity Default
@@ -151,65 +164,60 @@ public class RunEntity : Addressable, IEntityModel
         return e;
     }
 
-    public static RunEntity FromEntry(EntityEntry entry)
-        => new(entry);
+    public static RunEntity FromTemplate(RunEntity template)
+        => new(template);
 
-    public void SetSlotContent(int i, string skillName, JingJie? j = null)
-    {
-        if (string.IsNullOrEmpty(skillName))
-            return;
+    // public void SetSlotContent(int i, string skillName, JingJie? j = null)
+    // {
+    //     if (string.IsNullOrEmpty(skillName))
+    //         return;
+    //
+    //     SkillEntry skill = skillName;
+    //     JingJie jingJie = j ?? skill.JingJieRange.Start;
+    //     SetSlotContent(i, RunSkill.From(skill, jingJie), j);
+    // }
+    //
+    // public void SetSlotContent(int i, RunSkill skill, JingJie? j = null)
+    // {
+    //     _slots[i].Skill = skill;
+    // }
+    //
+    // public void QuickSetSlotContent(params string[] skillNames)
+    // {
+    //     int diff = _slots.Count() - skillNames.Length;
+    //     for (int i = skillNames.Length - 1; i >= 0; i--)
+    //     {
+    //         if (skillNames[i] != null && skillNames[i] != "")
+    //         {
+    //             SkillEntry skill = skillNames[i];
+    //             SetSlotContent(diff + i, RunSkill.From(skill, skill.JingJieRange.Start));
+    //         }
+    //     }
+    // }
 
-        SkillEntry skill = skillName;
-        JingJie jingJie = j ?? skill.JingJieRange.Start;
-        SetSlotContent(i, RunSkill.From(skill, jingJie), j);
-    }
+    // public void FromJson(string json)
+    // {
+    //     try
+    //     {
+    //         FromEntity(JsonUtility.FromJson<RunEntity>(json.Replace('\'', '\"')));
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Console.WriteLine(e);
+    //         throw;
+    //     }
+    // }
+    //
+    // public string ToJson()
+    // {
+    //     return JsonUtility.ToJson(this).Replace('\"', '\'');
+    // }
 
-    public void SetSlotContent(int i, RunSkill skill, JingJie? j = null)
-    {
-        _slots[i].Skill = skill;
-    }
-
-    public void QuickSetSlotContent(params string[] skillNames)
-    {
-        int diff = _slots.Count() - skillNames.Length;
-        for (int i = skillNames.Length - 1; i >= 0; i--)
-        {
-            if (skillNames[i] != null && skillNames[i] != "")
-            {
-                SkillEntry skill = skillNames[i];
-                SetSlotContent(diff + i, RunSkill.From(skill, skill.JingJieRange.Start));
-            }
-        }
-    }
-
-    public void FromJson(string json)
-    {
-        try
-        {
-            FromEntity(JsonUtility.FromJson<RunEntity>(json.Replace('\'', '\"')));
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-    }
-
-    public string ToJson()
-    {
-        return JsonUtility.ToJson(this).Replace('\"', '\'');
-    }
-
-    public void TryExhaust()
-    {
-        _slots.Traversal().Do(slot => slot.TryExhaust());
-    }
-
-    private void FromEntity(RunEntity entity)
-    {
-        SetJingJie(entity.GetJingJie());
-        SetBaseHealth(entity.GetBaseHealth());
-        for (int i = 0; i < _slots.Count(); i++)
-            _slots[i].Skill = entity._slots[i].Skill;
-    }
+    // private void FromEntity(RunEntity entity)
+    // {
+    //     SetJingJie(entity.GetJingJie());
+    //     SetBaseHealth(entity.GetBaseHealth());
+    //     for (int i = 0; i < _slots.Count(); i++)
+    //         _slots[i].Skill = entity._slots[i].Skill;
+    // }
 }

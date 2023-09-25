@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface IInteractable
+    // , IInteractable,
+    // IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
+    // IPointerClickHandler,
+    // IBeginDragHandler, IEndDragHandler, IDragHandler,
+    // IDropHandler
 {
     InteractDelegate GetDelegate();
     void SetDelegate(InteractDelegate interactDelegate);

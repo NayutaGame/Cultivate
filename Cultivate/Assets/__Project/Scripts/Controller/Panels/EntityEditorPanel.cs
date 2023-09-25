@@ -1,18 +1,23 @@
 
 using System;
-using DG.Tweening;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class EntityEditorPanel : Panel
 {
+    public Button CreateNewEntityButton;
     public ListView EntityBrowser;
-    public ListView SkillBrowser;
+    private int? _selectionIndex;
+    private EntityBarView _selection;
 
-    public MutableEntityView AwayEntityView;
-    public MutableEntityView HomeEntityView;
+    public ListView SkillBrowser;
+    public SkillPreview SkillPreview;
+
+    public EntityEditorEntityView AwayEntityView;
+    public EntityEditorEntityView HomeEntityView;
+    public Button CopyToTopButton;
+    public Button SwapTopAndBottomButton;
+    public Button CopyToBottomButton;
 
     private InteractDelegate InteractDelegate;
 
@@ -20,19 +25,22 @@ public class EntityEditorPanel : Panel
     {
         base.Configure();
 
-        // _address = new Address("Run.Simulate");
-        //
-        // ConfigureInteractDelegate();
-        //
-        // HeroView.SetAddress(new Address($"{_address}.Hero"));
-        // HeroView.SetDelegate(InteractDelegate);
-        //
-        // EnemyView.SetAddress(new Address($"{_address}.Enemy"));
-        // EnemyView.SetDelegate(InteractDelegate);
-        //
-        // SkillInventoryView.SetAddress(new Address($"{_address}.SkillInventory"));
-        // SkillInventoryView.SetDelegate(InteractDelegate);
-        //
+        CreateNewEntityButton.onClick.RemoveAllListeners();
+        CreateNewEntityButton.onClick.AddListener(CreateNewEntity);
+        EntityBrowser.SetAddress(new Address("Encyclopedia.EntityEditableList"));
+        SkillBrowser.SetAddress(new Address("SkillInventory"));
+        AwayEntityView.SetAddress(null);
+        HomeEntityView.SetAddress(new Address("Encyclopedia.EntityEditorHomeEntity"));
+
+        ConfigureInteractDelegate();
+
+        CopyToTopButton.onClick.RemoveAllListeners();
+        CopyToTopButton.onClick.AddListener(CopyToTop);
+        SwapTopAndBottomButton.onClick.RemoveAllListeners();
+        SwapTopAndBottomButton.onClick.AddListener(SwapTopAndBottom);
+        CopyToBottomButton.onClick.RemoveAllListeners();
+        CopyToBottomButton.onClick.AddListener(CopyToBottom);
+
         // ReportButton.onClick.RemoveAllListeners();
         // ReportButton.onClick.AddListener(Report);
         //
@@ -40,41 +48,176 @@ public class EntityEditorPanel : Panel
         // StreamButton.onClick.AddListener(Stream);
     }
 
+    private void CreateNewEntity()
+    {
+        ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
+        model.Add(RunEntity.Default);
+    }
+
+    private void CopyToTop()
+    {
+        if (_selectionIndex == null)
+            return;
+
+        Encyclopedia.Instance.CopyToTop(_selectionIndex.Value);
+        HomeEntityView.Refresh();
+        AwayEntityView.Refresh();
+    }
+
+    private void SwapTopAndBottom()
+    {
+        if (_selectionIndex == null)
+            return;
+
+        Encyclopedia.Instance.SwapTopAndBottom(_selectionIndex.Value);
+        HomeEntityView.Refresh();
+        AwayEntityView.Refresh();
+    }
+
+    private void CopyToBottom()
+    {
+        if (_selectionIndex == null)
+            return;
+
+        Encyclopedia.Instance.CopyToBottom(_selectionIndex.Value);
+        HomeEntityView.Refresh();
+        AwayEntityView.Refresh();
+    }
+
     private void ConfigureInteractDelegate()
     {
-        // InteractDelegate = new(4,
-        //     getId: view =>
-        //     {
-        //         object item = DataManager.Get<object>(view.GetIndexPath());
-        //         if (item is RunSkill)
-        //             return 0;
-        //         if (item is SkillInventory)
-        //             return 1;
-        //         if (item is SkillSlot slot)
-        //         {
-        //             RunEnvironment runEnvironment = DataManager.Get<RunEnvironment>(_indexPath);
-        //             if (runEnvironment.Hero == slot.Owner)
-        //                 return 2;
-        //             if (runEnvironment.Enemy == slot.Owner)
-        //                 return 3;
-        //         }
-        //         return null;
-        //     },
-        //     dragDropTable: new Func<IInteractable, IInteractable, bool>[]
-        //     {
-        //         /*                     RunSkill,   SkillInventory, SkillSlot(Hero), SkillSlot(Enemy) */
-        //         /* RunSkill         */ TryMerge,   null,           TryEquip,        TryWrite,
-        //         /* SkillInventory   */ null,       null,           null,            null,
-        //         /* SkillSlot(Hero)  */ TryUnequip, TryUnequip,     TrySwap,         TryWrite,
-        //         /* SkillSlot(Enemy) */ null,       null,           null,            null,
-        //     },
-        //     rMouseTable: new Func<IInteractable, bool>[]
-        //     {
-        //         /* RunSkill         */ TryIncreaseJingJie,
-        //         /* SkillInventory   */ null,
-        //         /* SkillSlot(Hero)  */ TryIncreaseJingJie,
-        //         /* SkillSlot(Enemy) */ TryIncreaseJingJie,
-        //     });
+        InteractDelegate = new(3,
+            getId: view =>
+            {
+                if (view is EntityBarView)
+                    return 0;
+                if (view is EntityEditorSkillBarView)
+                    return 1;
+                if (view is EntityEditorSlotView)
+                    return 2;
+                return null;
+            },
+            dragDropTable: new Action<IInteractable, IInteractable>[]
+            {
+                /*                         EntityBarView, SkillBarView, EntityEditorSlotView */
+                /* EntityBarView        */ null,          null,         null,
+                /* SkillBarView         */ null,          null,         Equip,
+                /* EntityEditorSlotView */ null,          Unequip,      Swap,
+            });
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, SelectEntity);
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 1, ShowPreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 1, HidePreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 1, MovePreview);
+        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 1, BeginDrag);
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, ShowPreviewFromSlotView);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, HidePreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 2, MovePreview);
+        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 2, BeginDrag);
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_RIGHT_CLICK, 2, IncreaseJingJie);
+
+        EntityBrowser.SetDelegate(InteractDelegate);
+        SkillBrowser.SetDelegate(InteractDelegate);
+        AwayEntityView.SetDelegate(InteractDelegate);
+        HomeEntityView.SetDelegate(InteractDelegate);
+    }
+
+    private void Equip(IInteractable fromView, IInteractable toView)
+    {
+        // SkillBarView -> EntityEditorSlotView
+        RunSkill skill = fromView.Get<RunSkill>();
+        SkillSlot slot = toView.Get<SkillSlot>();
+
+        slot.Skill = skill;
+        toView.Refresh();
+    }
+
+    private void Unequip(IInteractable fromView, IInteractable toView)
+    {
+        // EntityEditorSlotView -> SkillBarView
+        SkillSlot slot = fromView.Get<SkillSlot>();
+
+        slot.Skill = null;
+        fromView.Refresh();
+    }
+
+    private void Swap(IInteractable fromView, IInteractable toView)
+    {
+        // EntityEditorSlotView -> EntityEditorSlotView
+        SkillSlot fromSlot = fromView.Get<SkillSlot>();
+        SkillSlot toSlot = toView.Get<SkillSlot>();
+
+        (fromSlot.Skill, toSlot.Skill) = (toSlot.Skill, fromSlot.Skill);
+        fromView.Refresh();
+        toView.Refresh();
+    }
+
+    private void IncreaseJingJie(IInteractable view, PointerEventData eventData)
+    {
+        SkillSlot slot = view.Get<SkillSlot>();
+        slot.TryIncreaseJingJie();
+        view.Refresh();
+        SkillPreview.Refresh();
+    }
+
+    private void ShowPreview(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        SkillPreview.SetAddress(view.GetAddress());
+        SkillPreview.Refresh();
+    }
+
+    private void ShowPreviewFromSlotView(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        SkillPreview.SetAddress(view.GetAddress().Append(".Skill"));
+        SkillPreview.Refresh();
+    }
+
+    private void HidePreview(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        SkillPreview.SetAddress(null);
+        SkillPreview.Refresh();
+    }
+
+    private void MovePreview(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        SkillPreview.UpdateMousePos(eventData.position);
+    }
+
+    private void BeginDrag(IInteractable view, PointerEventData eventData)
+    {
+        SkillPreview.SetAddress(null);
+        SkillPreview.Refresh();
+    }
+
+    private void SelectEntity(IInteractable view, PointerEventData eventData)
+    {
+        if (_selection != null)
+            _selection.SetSelected(false);
+
+        _selection = (EntityBarView)view;
+
+        if (_selection != null)
+            _selectionIndex = EntityBrowser.ActivePool.IndexOf(_selection);
+        else
+            _selectionIndex = null;
+
+        if (_selection != null)
+        {
+            AwayEntityView.SetAddress(view.GetAddress());
+            AwayEntityView.Refresh();
+            _selection.SetSelected(true);
+        }
     }
 
     public override void Refresh()

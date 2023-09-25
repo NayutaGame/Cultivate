@@ -55,7 +55,7 @@ public class MechComposite : EmulatedSkill, ISkillModel
         { MechType.Xia._hash + MechType.Lun._hash + MechType.Xiang._hash, "时光机" },
     };
 
-    [SerializeField] private SkillSlot _skillSlot;
+    [SerializeReference] private SkillSlot _skillSlot;
     public SkillSlot GetSkillSlot() => _skillSlot;
     public void SetSkillSlot(SkillSlot value) => _skillSlot = value;
 

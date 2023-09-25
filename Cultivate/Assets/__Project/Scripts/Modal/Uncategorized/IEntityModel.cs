@@ -11,6 +11,6 @@ public interface IEntityModel
     int GetBaseHealth();
     void SetBaseHealth(int health);
     int GetFinalHealth();
-    string ToJson();
-    void FromJson(string json);
+    // string ToJson();
+    // void FromJson(string json);
 }

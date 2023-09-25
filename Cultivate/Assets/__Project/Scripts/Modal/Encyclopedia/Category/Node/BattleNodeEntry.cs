@@ -14,7 +14,7 @@ public class BattleNodeEntry : NodeEntry
 
             int xiuWeiValue = Mathf.RoundToInt(battleRunNode.BaseXiuWeiReward() * RandomManager.Range(0.9f, 1.1f));
 
-            BattlePanelDescriptor A = new(battleRunNode.EntityEntry);
+            BattlePanelDescriptor A = new(battleRunNode.Template);
             battleRunNode.AddReward(new ResourceReward(xiuWei: xiuWeiValue));
 
             DiscoverSkillPanelDescriptor B = new();

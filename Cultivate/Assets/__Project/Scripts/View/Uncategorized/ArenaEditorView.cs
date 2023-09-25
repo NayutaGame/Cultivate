@@ -17,7 +17,7 @@ public class ArenaEditorView : ListView
 
     private void Random()
     {
-        ActivePool.Do(v => ((MutableEntityView)v).RandomButton.onClick.Invoke());
+        // ActivePool.Do(v => ((MutableEntityView)v).RandomButton.onClick.Invoke());
         // multiple refreshes
     }
 

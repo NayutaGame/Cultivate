@@ -3,8 +3,7 @@ using System;
 
 public class BattlePanelDescriptor : PanelDescriptor
 {
-    private EntityEntry _entityEntry;
-    public EntityEntry EntityEntry => _entityEntry;
+    private RunEntity _template;
 
     private RunEntity _enemy;
     public RunEntity Enemy
@@ -22,19 +21,19 @@ public class BattlePanelDescriptor : PanelDescriptor
     public StageReport Report;
     public CombatDetails CombatDetails;
 
-    public BattlePanelDescriptor(EntityEntry entityEntry)
+    public BattlePanelDescriptor(RunEntity template)
     {
         _accessors = new()
         {
             { "Enemy", () => Enemy },
         };
-        _entityEntry = entityEntry;
+        _template = template;
     }
 
     public override void DefaultEnter()
     {
         base.DefaultEnter();
-        Enemy = RunEntity.FromEntry(_entityEntry);
+        Enemy = RunEntity.FromTemplate(_template);
         RunManager.Instance.Battle.EnvironmentChangedEvent += CalcReport;
         CalcReport();
     }

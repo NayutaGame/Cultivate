@@ -9,8 +9,6 @@ public class SkillSlot : Addressable
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
-    [SerializeReference] private RunEntity _owner;
-    public RunEntity Owner => _owner;
     [SerializeField] private int _index;
 
     public enum SkillSlotState
@@ -59,17 +57,14 @@ public class SkillSlot : Addressable
     }
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
-    public SkillSlot(RunEntity owner, int index)
+    public object Get(string s) => _accessors[s]();
+    public SkillSlot(int index)
     {
         _accessors = new()
         {
             { "Skill",         () => _skill },
         };
 
-        _owner = owner;
         _index = index;
         _state = SkillSlotState.Locked;
     }

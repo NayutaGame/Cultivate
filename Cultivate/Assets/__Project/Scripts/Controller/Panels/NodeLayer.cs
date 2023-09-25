@@ -74,7 +74,7 @@ public class NodeLayer : MonoBehaviour
 
     public void Refresh()
     {
-        // if (_currentPanel != null)
-        //     _currentPanel.Refresh();
+        if (_currentPanel != null)
+            _currentPanel.Refresh();
     }
 }

@@ -294,8 +294,8 @@ public class NodeCategory : Category<NodeEntry>
                         .SetReward(Reward.FromGold(100));
                     DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
 
-                    RunManager.Instance.Battle.EntityPool.TryDrawEntity(out EntityEntry entityEntry, new DrawEntityDetails(runNode.JingJie, allowElite: true));
-                    BattlePanelDescriptor E = new(entityEntry);
+                    RunManager.Instance.Battle.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
+                    BattlePanelDescriptor E = new(template);
                     DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
                         .SetReward(new ResourceReward(xiuWei: 100, health: 10));
                     DialogPanelDescriptor ELose = new("哼，现在神灯精灵不好做了，就是因为经常碰见你这种人。下次别再让我遇见了。");
@@ -876,8 +876,8 @@ public class NodeCategory : Category<NodeEntry>
                         "和山贼战斗");
                     DialogPanelDescriptor C = new("他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n金+50");
 
-                    RunManager.Instance.Battle.EntityPool.TryDrawEntity(out EntityEntry entityEntry, new DrawEntityDetails(runNode.JingJie, allowElite: true));
-                    BattlePanelDescriptor B1 = new(entityEntry);
+                    RunManager.Instance.Battle.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
+                    BattlePanelDescriptor B1 = new(template);
                     DialogPanelDescriptor B1win = new DialogPanelDescriptor("你打过了山贼，商人对你十分感激。\n\n金+100")
                         .SetReward(Reward.FromGold(100));
                     DialogPanelDescriptor B1lose = new("你没打过山贼，货物被抢走了。索性没有人受伤。");

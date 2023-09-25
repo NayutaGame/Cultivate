@@ -65,7 +65,6 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         ModifiedGate -= Modified;
     }
 
-
     // atomic
     private async Task InsertItem(int index, object item)
     {
@@ -102,15 +101,14 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
 
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate() => InteractDelegate;
-
     public virtual void SetDelegate(InteractDelegate interactDelegate)
     {
         InteractDelegate = interactDelegate;
-        _activePool.Do(v =>
+        _activePool?.Do(v =>
         {
             if (v is IInteractable interactable) interactable.SetDelegate(InteractDelegate);
         });
-        _inactivePools.Do(p => p.Do(v =>
+        _inactivePools?.Do(p => p.Do(v =>
         {
             if (v is IInteractable interactable) interactable.SetDelegate(InteractDelegate);
         }));

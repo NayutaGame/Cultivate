@@ -1,8 +1,6 @@
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, Addressable
 {
@@ -18,6 +16,7 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, Addressable
     public static FormationCategory FormationCategory;
 
     public static EntityEditableList EntityEditableList;
+    public static RunEntity EntityEditorHomeEntity;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -29,6 +28,9 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, Addressable
         {
             { "FormationCategory", () => FormationCategory },
             { "SkillCategory", () => SkillCategory },
+
+            { "EntityEditableList", () => EntityEditableList },
+            { "EntityEditorHomeEntity", () => EntityEditorHomeEntity }
         };
 
         SkillType.Init();
@@ -52,5 +54,23 @@ public class Encyclopedia : CLLibrary.Singleton<Encyclopedia>, Addressable
         SkillCategory.Init();
 
         EntityEditableList = EntityEditableList.ReadFromFile();
+        EntityEditorHomeEntity = RunEntity.Default;
+    }
+
+    public void CopyToTop(int currentIndex)
+    {
+        EntityEditableList.Replace(EntityEditableList[currentIndex], RunEntity.FromTemplate(EntityEditorHomeEntity));
+    }
+
+    public void SwapTopAndBottom(int currentIndex)
+    {
+        RunEntity temp = EntityEditorHomeEntity;
+        EntityEditorHomeEntity = EntityEditableList[currentIndex];
+        EntityEditableList.Replace(EntityEditableList[currentIndex], temp);
+    }
+
+    public void CopyToBottom(int currentIndex)
+    {
+        EntityEditorHomeEntity = RunEntity.FromTemplate(EntityEditableList[currentIndex]);
     }
 }

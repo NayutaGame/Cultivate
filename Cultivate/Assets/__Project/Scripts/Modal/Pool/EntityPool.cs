@@ -4,18 +4,21 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class EntityPool : Pool<EntityEntry>
+public class EntityPool : Pool<RunEntity>
 {
     public EntityPool()
     {
-        Populate(Encyclopedia.EntityCategory.Traversal.FilterObj(entityEntry => entityEntry != Encyclopedia.EntityCategory[0]).ToList());
+        Populate(Encyclopedia.EntityEditableList.Traversal());
     }
 
-    public bool TryDrawEntity(out EntityEntry entityEntry, DrawEntityDetails d)
+    public bool TryDrawEntity(out RunEntity template, DrawEntityDetails d)
     {
         Shuffle();
-        TryPopItem(out EntityEntry item);
-        entityEntry = item ?? Encyclopedia.EntityCategory[0];
-        return true;
+        bool success = TryPopItem(out template);
+        if (success)
+            return true;
+
+        template = RunEntity.Default;
+        return false;
     }
 }
