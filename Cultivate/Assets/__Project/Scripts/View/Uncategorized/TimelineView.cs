@@ -53,7 +53,7 @@ public class TimelineView : MonoBehaviour
         ClearViews();
 
         _time = -1;
-        List<StageNote> batch = StageManager.Instance.EndEnv.Report.Timeline.GetNotes(0, FutureCount);
+        List<StageNote> batch = StageManager.Instance.Timeline.GetNotes(0, FutureCount);
 
         for (int i = 0; i < batch.Count; i++)
         {
@@ -62,7 +62,7 @@ public class TimelineView : MonoBehaviour
             StageSkillView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillView>();
             v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
-            v.SetAddress(new Address($"Stage.EndEnv.Report.Timeline.Notes#{note.TemporalIndex}"));
+            v.SetAddress(new Address($"Stage.Timeline.Notes#{note.TemporalIndex}"));
             v.Refresh();
         }
     }
@@ -123,7 +123,7 @@ public class TimelineView : MonoBehaviour
 
     private void TryCreate()
     {
-        StageNote toCreate = StageManager.Instance.EndEnv.Report.Timeline.GetNote(_time + FutureCount);
+        StageNote toCreate = StageManager.Instance.Timeline.GetNote(_time + FutureCount);
         if (toCreate == null)
             return;
 
@@ -131,7 +131,7 @@ public class TimelineView : MonoBehaviour
         StageSkillView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillView>();
         v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
-        v.SetAddress(new Address($"Stage.EndEnv.Report.Timeline.Notes#{toCreate.TemporalIndex}"));
+        v.SetAddress(new Address($"Stage.Timeline.Notes#{toCreate.TemporalIndex}"));
         v.Refresh();
     }
 }

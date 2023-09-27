@@ -43,10 +43,18 @@ public class RunEnvironment : Addressable
         MechBag = new();
         EntityPool = new();
 
-        EnvironmentChangedEvent += CalcManaShortageBrief;
+        EnvironmentChangedEvent += Simulate;
 
         _turn = 1;
         _xiuWei = 0;
+    }
+
+    public void Simulate()
+    {
+        StageEnvironmentDetails d = new StageEnvironmentDetails(false, false, false, false,
+            Hero, RunEntity.FromJingJieHealth(Hero.GetJingJie(), 1000000));
+        StageEnvironment environment = new StageEnvironment(d);
+        environment.Execute();
     }
 
     public void Enter()
@@ -239,13 +247,6 @@ public class RunEnvironment : Addressable
             return false;
         EnvironmentChanged();
         return false;
-    }
-
-    private void CalcManaShortageBrief()
-    {
-        bool[] manaShortageBrief = StageManager.ManaSimulate(Hero);
-        for (int i = 0; i < manaShortageBrief.Length; i++)
-            Hero.GetSlot(i).IsManaShortage = manaShortageBrief[i];
     }
 
     private int _turn;

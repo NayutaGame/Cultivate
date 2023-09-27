@@ -11,9 +11,7 @@ public class StageTimeline : Addressable
     private int _pointer;
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
+    public object Get(string s) => _accessors[s]();
     public StageTimeline()
     {
         _accessors = new()

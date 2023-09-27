@@ -47,8 +47,10 @@ public class CLEventDict : Dictionary<int, CLEventElement>
     public static readonly int DID_EXECUTE        = 38;
     public static readonly int WILL_CHANNEL       = 39;
     public static readonly int DID_CHANNEL        = 40;
-    public static readonly int WILL_MANA_SHORTAGE = 41;
-    public static readonly int DID_MANA_SHORTAGE  = 42;
+    public static readonly int WILL_MANA_COST     = 41;
+    public static readonly int DID_MANA_COST      = 42;
+    public static readonly int WILL_MANA_SHORTAGE = 43;
+    public static readonly int DID_MANA_SHORTAGE  = 44;
 
     public static readonly int STAGE_ENVIRONMENT  = 0;
     public static readonly int STAGE_ENTITY       = 1;

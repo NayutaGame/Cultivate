@@ -98,6 +98,6 @@ public class SkillSlot : Addressable
         return true;
     }
 
-    [NonSerialized] public bool IsManaShortage;
-    [NonSerialized] public bool IsJiaShi;
+    [NonSerialized] public ManaIndicator ManaIndicator;
+    [NonSerialized] public bool JiaShiIndicator;
 }

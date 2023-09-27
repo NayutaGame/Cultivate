@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class ChannelDetails : EventDetails
 {
+    public StageEntity _caster;
     public StageSkill _skill;
 
     private int _channelTime;
@@ -12,8 +10,9 @@ public class ChannelDetails : EventDetails
     private int _counter;
     public int GetCounter() => _counter;
 
-    public ChannelDetails(StageSkill skill)
+    public ChannelDetails(StageEntity caster, StageSkill skill)
     {
+        _caster = caster;
         _skill = skill;
         _channelTime = _skill.GetChannelTime();
         _counter = _channelTime;
@@ -28,4 +27,7 @@ public class ChannelDetails : EventDetails
     {
         return _counter <= 0;
     }
+
+    public ChannelDetails Clone()
+        => new ChannelDetails(_caster, _skill) { _channelTime = _channelTime, _counter = _counter };
 }

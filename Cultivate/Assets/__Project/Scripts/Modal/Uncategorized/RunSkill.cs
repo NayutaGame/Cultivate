@@ -77,10 +77,10 @@ public class RunSkill : ISkillModel, EmulatedSkill, ISerializationCallbackReceiv
         => _entry.Evaluate(JingJie, JingJie - _entry.JingJieRange.Start);
 
     public int GetManaCost()
-        => _entry.GetManaCost(JingJie, JingJie - _entry.JingJieRange.Start, GetSkillSlot()?.IsJiaShi ?? false);
+        => _entry.GetManaCost(JingJie, JingJie - _entry.JingJieRange.Start, GetSkillSlot()?.JiaShiIndicator ?? false);
 
     public int GetChannelTime()
-        => _entry.GetChannelTime(JingJie, JingJie - _entry.JingJieRange.Start, GetSkillSlot()?.IsJiaShi ?? false);
+        => _entry.GetChannelTime(JingJie, JingJie - _entry.JingJieRange.Start, GetSkillSlot()?.JiaShiIndicator ?? false);
 
     public string GetManaCostString()
     {

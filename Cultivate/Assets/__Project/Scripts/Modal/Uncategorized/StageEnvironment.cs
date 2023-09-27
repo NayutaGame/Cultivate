@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
+using DG.Tweening;
 
 public class StageEnvironment : Addressable, CLEventListener
 {
@@ -18,10 +19,9 @@ public class StageEnvironment : Addressable, CLEventListener
 
         await d.Owner.AddFormation(new GainFormationDetails(d._formation));
 
-        // if (_report.UseTween)
-        //     await _report.PlayTween(new BuffTweenDescriptor(d));
+        // await TryPlayTween(new BuffTweenDescriptor(d));
 
-        _report.Append($"    {d._formation.GetName()} is set");
+        _result.TryAppend($"    {d._formation.GetName()} is set");
 
         if (d.Cancel) return;
         await _eventDict.SendEvent(CLEventDict.FORMATION_DID_ADD, d);
@@ -59,14 +59,14 @@ public class StageEnvironment : Addressable, CLEventListener
 
             if (d.Cancel)
             {
-                _report.Append($"    攻击被取消");
+                _result.TryAppend($"    攻击被取消");
                 continue;
             }
 
             if (!d.Pierce && d.Evade)
             {
                 await _eventDict.SendEvent(CLEventDict.DID_EVADE, d);
-                _report.Append($"    攻击被闪避");
+                _result.TryAppend($"    攻击被闪避");
 
                 if (d.Undamaged != null)
                     await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0));
@@ -89,7 +89,7 @@ public class StageEnvironment : Addressable, CLEventListener
 
             if (d.Value == 0)
             {
-                _report.Append($"    攻击为0");
+                _result.TryAppend($"    攻击为0");
 
                 if (d.Undamaged != null)
                     await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0));
@@ -103,9 +103,8 @@ public class StageEnvironment : Addressable, CLEventListener
             DamageDetails damageDetails = new DamageDetails(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
             await DamageProcedure(damageDetails);
 
-            if (_report.UseTween)
-                await _report.PlayTween(new AttackTweenDescriptor(d));
-            _report.Append($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
+            await TryPlayTween(new AttackTweenDescriptor(d));
+            _result.TryAppend($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
 
             if (!damageDetails.Cancel)
             {
@@ -186,11 +185,8 @@ public class StageEnvironment : Addressable, CLEventListener
         tgt.Hp += actualHealed;
         tgt.HealedRecord += actualHealed;
 
-        if (_report.UseTween)
-        {
-            await _report.PlayTween(new HealTweenDescriptor(d));
-        }
-        _report.Append($"    生命变成了${tgt.Hp}");
+        await TryPlayTween(new HealTweenDescriptor(d));
+        _result.TryAppend($"    生命变成了${tgt.Hp}");
 
         await _eventDict.SendEvent(CLEventDict.DID_HEAL, d);
     }
@@ -226,21 +222,15 @@ public class StageEnvironment : Addressable, CLEventListener
                     break;
             }
 
-            if (_report.UseTween)
-            {
-                await _report.PlayTween(new BuffTweenDescriptor(d));
-            }
-            _report.Append($"    {d._buffEntry.Name}: {oldStack} -> {same.Stack}");
+            await TryPlayTween(new BuffTweenDescriptor(d));
+            _result.TryAppend($"    {d._buffEntry.Name}: {oldStack} -> {same.Stack}");
         }
         else
         {
             await d.Tgt.AddBuff(new GainBuffDetails(d._buffEntry, d._stack));
 
-            if (_report.UseTween)
-            {
-                await _report.PlayTween(new BuffTweenDescriptor(d));
-            }
-            _report.Append($"    {d._buffEntry.Name}: 0 -> {d._stack}");
+            await TryPlayTween(new BuffTweenDescriptor(d));
+            _result.TryAppend($"    {d._buffEntry.Name}: 0 -> {d._stack}");
         }
 
         await _eventDict.SendEvent(CLEventDict.DID_BUFF, d);
@@ -256,7 +246,7 @@ public class StageEnvironment : Addressable, CLEventListener
             return;
 
         d.Tgt.Armor += d.Value;
-        _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
+        _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
         await _eventDict.SendEvent(CLEventDict.ARMOR_DID_GAIN, d);
     }
@@ -274,7 +264,7 @@ public class StageEnvironment : Addressable, CLEventListener
             d.Tgt.LostArmorRecord += Mathf.Min(d.Tgt.Armor, d.Value);
 
         d.Tgt.Armor -= d.Value;
-        _report.Append($"    护甲变成了[{d.Tgt.Armor}]");
+        _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
         await _eventDict.SendEvent(CLEventDict.ARMOR_DID_LOSE, d);
     }
@@ -295,8 +285,8 @@ public class StageEnvironment : Addressable, CLEventListener
         await _eventDict.SendEvent(CLEventDict.DID_DISPEL, d);
     }
 
-    public async Task ManaShortageProcedure(StageEntity owner, int position, StageSkill skill)
-        => await ManaShortageProcedure(new ManaShortageDetails(owner, position, skill));
+    public async Task ManaShortageProcedure(StageEntity owner, int position, StageSkill skill, int actualCost)
+        => await ManaShortageProcedure(new ManaShortageDetails(owner, position, skill, actualCost));
     public async Task ManaShortageProcedure(ManaShortageDetails d)
     {
         await _eventDict.SendEvent(CLEventDict.WILL_MANA_SHORTAGE, d);
@@ -321,34 +311,75 @@ public class StageEnvironment : Addressable, CLEventListener
         await _eventDict.SendEvent(CLEventDict.DID_EXHAUST, d);
     }
 
-    private StageEntity[] _entities;
-    public StageEntity[] Entities => _entities;
-
-    private StageReport _report;
-    public StageReport Report => _report;
+    private StageEnvironmentDetails _details;
+    public StageEnvironmentDetails Details => _details;
 
     public CLEventDict _eventDict;
 
+    private StageEntity[] _entities;
+    public StageEntity[] Entities => _entities;
+
+    private StageEnvironmentResult _result;
+    public StageEnvironmentResult Result => _result;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public StageEnvironment(RunEntity home, RunEntity away, bool useTween = false, bool useTimeline = false, bool useSb = false)
+    public StageEnvironment(StageEnvironmentDetails details)
     {
         _accessors = new()
         {
             { "Home",                  () => _entities[0] },
             { "Away",                  () => _entities[1] },
-            { "Report",                () => _report },
+            { "Report",                () => _result },
         };
+
+        _details = details;
 
         _eventDict = new();
 
         _entities = new StageEntity[]
         {
-            new(this, home, 0),
-            new(this, away, 1),
+            new(this, _details.Home, 0),
+            new(this, _details.Away, 1),
         };
 
-        _report = new(useTween, useTimeline, useSb);
+        _result = new(_details.GenerateReport, _details.GenerateTimeline);
+    }
+
+    public void Execute()
+    {
+        if (!_details.Animated)
+        {
+            Simulate().GetAwaiter().GetResult();
+
+            if (_details.WriteResult)
+                WriteResult();
+
+            return;
+        }
+
+        StageEnvironment futureEnvironment =
+            new StageEnvironment(new StageEnvironmentDetails(false, false, false, true, _details.Home, _details.Away));
+        futureEnvironment.Simulate().GetAwaiter().GetResult();
+
+        StageManager.Instance.Environment = this;
+        StageManager.Instance.Timeline = futureEnvironment.Result.Timeline;
+
+        AppManager.Push(new StageAppS());
+    }
+
+    public async Task TryPlayTween(TweenDescriptor descriptor)
+    {
+        if (!_details.Animated)
+            return;
+        await StageManager.Instance.Anim.PlayTween(descriptor);
+    }
+
+    public async Task TryPlayTween(Tween tween)
+    {
+        if (!_details.Animated)
+            return;
+        await StageManager.Instance.Anim.PlayTween(tween);
     }
 
     public int GetHeroBuffCount() => _entities[0].GetBuffCount();
@@ -356,24 +387,78 @@ public class StageEnvironment : Addressable, CLEventListener
 
     public void WriteResult()
     {
-        _report.HomeLeftHp = _entities[0].Hp;
-        _report.AwayLeftHp = _entities[1].Hp;
-        _report.DMingYuan = _report.HomeVictory ? 0 : 1;
-    }
-
-    public void WriteEffect()
-    {
-        _entities[0].WriteEffect();
-        RunManager.Instance.Battle.Hero.TryExhaust();
+        _entities[0].WriteResult();
+        _details.Home.TryExhaust();
     }
 
     public async Task Simulate()
     {
+        CLEventDescriptor writeManaShortage = new CLEventDescriptor(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_MANA_SHORTAGE, 0,
+            async (listener, d) =>
+            {
+                ManaShortageDetails manaShortageDetails = (ManaShortageDetails)d;
+                RunEntity entity = manaShortageDetails.Owner.RunEntity;
+                int index = manaShortageDetails.Position + RunManager.SkillStartFromJingJie[entity.GetJingJie()];
+                SkillSlot slot = entity.GetSlot(index);
+
+                if (slot.ManaIndicator.State != ManaIndicator.ManaCostState.Unwritten)
+                    return;
+
+                slot.ManaIndicator = new ManaIndicator(ManaIndicator.ManaCostState.Shortage,
+                    manaShortageDetails.LiteralCost, manaShortageDetails.ActualCost);
+            });
+
+        CLEventDescriptor writeManaCost = new CLEventDescriptor(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_MANA_COST, 0,
+            async (listener, d) =>
+            {
+                ManaCostDetails manaCostDetails = (ManaCostDetails)d;
+
+                RunEntity entity = manaCostDetails.Caster.RunEntity;
+                int index = manaCostDetails.Skill.SlotIndex + RunManager.SkillStartFromJingJie[entity.GetJingJie()];
+                SkillSlot slot = entity.GetSlot(index);
+
+                if (slot.ManaIndicator.State != ManaIndicator.ManaCostState.Unwritten)
+                    return;
+
+                ManaIndicator.ManaCostState state = (manaCostDetails.ActualCost < manaCostDetails.LiteralCost)
+                    ? ManaIndicator.ManaCostState.Reduced
+                    : ManaIndicator.ManaCostState.Normal;
+
+                slot.ManaIndicator = new ManaIndicator(state,
+                    manaCostDetails.LiteralCost, manaCostDetails.ActualCost);
+            });
+
+        ClearManaIndicator();
+
         await MingYuanPenaltyProcedure();
         await FormationProcedure();
         await StartStageProcedure();
+
+        _eventDict.Register(this, writeManaShortage);
+        _eventDict.Register(this, writeManaCost);
+
         await TurnProcedure();
+
+        _eventDict.Unregister(this, writeManaShortage);
+        _eventDict.Unregister(this, writeManaCost);
+
         await EndStageProcedure();
+
+        _result.HomeLeftHp = _entities[0].Hp;
+        _result.AwayLeftHp = _entities[1].Hp;
+        _result.TryAppend(_result.HomeVictory ? $"主场胜利\n" : $"主场失败\n");
+    }
+
+    private void ClearManaIndicator()
+    {
+        _entities.Do(stageEntity =>
+        {
+            RunEntity e = stageEntity.RunEntity;
+            e.TraversalCurrentSlots().Do(s =>
+            {
+                s.ManaIndicator = ManaIndicator.Default();
+            });
+        });
     }
 
     private async Task MingYuanPenaltyProcedure()
@@ -414,15 +499,15 @@ public class StageEnvironment : Addressable, CLEventListener
         {
             StageEntity actor = _entities[whosTurn];
 
-            _report.Append($"--------第{i}回合, {actor.GetName()}行动--------\n");
+            _result.TryAppend($"--------第{i}回合, {actor.GetName()}行动--------\n");
             await actor.Turn();
 
             _entities.Do(e =>
             {
-                _report.Append($"{e.GetName()} {e.Hp}[{e.Armor}] Buff:");
+                _result.TryAppend($"{e.GetName()} {e.Hp}[{e.Armor}] Buff:");
                 foreach (Buff b in e.Buffs)
-                    _report.Append($"  {b.GetName()}*{b.Stack}");
-                _report.Append("\n");
+                    _result.TryAppend($"  {b.GetName()}*{b.Stack}");
+                _result.TryAppend("\n");
             });
 
             if (TryCommit(whosTurn))
@@ -439,65 +524,19 @@ public class StageEnvironment : Addressable, CLEventListener
         ForceCommit();
     }
 
-    private void ForceCommit()
-    {
-        _report.HomeVictory = _entities[0].Hp >= _entities[1].Hp;
-    }
-
-    public async Task<bool[]> InnerManaSimulate()
-    {
-        bool[] manaShortageBrief = new bool[RunManager.SkillLimit];
-        bool stopWriting = false;
-
-        CLEventDescriptor writeManaShortageEventDescriptor = new CLEventDescriptor(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_MANA_SHORTAGE, 0,
-            async (listener, d) =>
-            {
-                if (stopWriting)
-                    return;
-                ManaShortageDetails manaShortageDetails = (ManaShortageDetails)d;
-                manaShortageBrief[manaShortageDetails.Position + RunManager.SkillStartFromJingJie[_entities[0].RunEntity.GetJingJie()]] = true;
-            });
-
-        CLEventDescriptor stopWriteEventDescriptor = new CLEventDescriptor(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.END_ROUND, 0,
-            async (listener, d) => stopWriting = true);
-
-        StageEntity hero = _entities[0];
-
-        hero._p = -1;
-
-        await FormationProcedure();
-        await MingYuanPenaltyProcedure();
-        await _eventDict.SendEvent(CLEventDict.START_STAGE, new StageDetails(hero));
-
-        _eventDict.Register(this, writeManaShortageEventDescriptor);
-        _eventDict.Register(this, stopWriteEventDescriptor);
-
-        for (int i = 0; i < MAX_ACTION_COUNT; i++)
-        {
-            await hero.Turn();
-            if (stopWriting)
-                break;
-        }
-
-        _eventDict.Unregister(this, writeManaShortageEventDescriptor);
-        _eventDict.Unregister(this, stopWriteEventDescriptor);
-
-        return manaShortageBrief;
-    }
-
     private bool TryCommit(int whosTurn)
     {
         if (whosTurn == 0)
         {
             if (_entities[whosTurn].Hp <= 0)
             {
-                _report.HomeVictory = false;
+                _result.SetHomeVictory(false);
                 return true;
             }
 
             if (_entities[1 - whosTurn].Hp <= 0)
             {
-                _report.HomeVictory = true;
+                _result.SetHomeVictory(true);
                 return true;
             }
         }
@@ -505,16 +544,21 @@ public class StageEnvironment : Addressable, CLEventListener
         {
             if (_entities[whosTurn].Hp <= 0)
             {
-                _report.HomeVictory = true;
+                _result.SetHomeVictory(true);
                 return true;
             }
             if (_entities[1 - whosTurn].Hp <= 0)
             {
-                _report.HomeVictory = false;
+                _result.SetHomeVictory(false);
                 return true;
             }
         }
 
         return false;
+    }
+
+    private void ForceCommit()
+    {
+        _result.SetHomeVictory(_entities[0].Hp >= _entities[1].Hp);
     }
 }

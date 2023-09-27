@@ -62,7 +62,7 @@ public class ArenaPanel : Panel
         ArenaEditorView.Refresh();
         ArenaScoreboardView.Refresh();
 
-        ReportView.text = RunManager.Instance.Arena.Report?.ToString();
+        ReportView.text = RunManager.Instance.Arena.Result?.ToString();
     }
 
     private void TryWrite(IInteractable from, IInteractable to)

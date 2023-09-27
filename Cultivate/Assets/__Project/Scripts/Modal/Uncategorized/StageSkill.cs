@@ -34,6 +34,9 @@ public class StageSkill
     public SkillTypeComposite GetSkillTypeCollection()
         => _entry.SkillTypeComposite;
 
+    public int GetLiteralCost()
+        => _entry.GetManaCost(GetJingJie(), Dj, false);
+
     public int GetManaCost()
         => _entry.GetManaCost(GetJingJie(), Dj, JiaShi);
 
@@ -120,16 +123,16 @@ public class StageSkill
 
     public async Task Channel(StageEntity caster, ChannelDetails d)
     {
-        await caster.Env._eventDict.SendEvent(CLEventDict.WILL_CHANNEL, new ExecuteDetails(caster, this));
+        await caster.Env._eventDict.SendEvent(CLEventDict.WILL_CHANNEL, d.Clone());
         await _entry.Channel(caster, d);
-        await caster.Env._eventDict.SendEvent(CLEventDict.DID_CHANNEL, new ExecuteDetails(caster, this));
+        await caster.Env._eventDict.SendEvent(CLEventDict.DID_CHANNEL, d.Clone());
     }
 
     public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
     {
-        await caster.Env._eventDict.SendEvent(CLEventDict.WILL_CHANNEL, new ExecuteDetails(caster, this));
+        await caster.Env._eventDict.SendEvent(CLEventDict.WILL_CHANNEL, d);
         await _entry.ChannelWithoutTween(caster, d);
-        await caster.Env._eventDict.SendEvent(CLEventDict.DID_CHANNEL, new ExecuteDetails(caster, this));
+        await caster.Env._eventDict.SendEvent(CLEventDict.DID_CHANNEL, d);
     }
 
     public async Task Execute(StageEntity caster, bool recursive = true)

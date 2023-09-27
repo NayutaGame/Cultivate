@@ -9,9 +9,6 @@ public class SlotView : ItemView
     {
         base.SetAddress(address);
         SkillView.SetAddress(GetAddress().Append(".Skill"));
-
-        // SkillView.ClearIsManaShortage();
-        // SkillView.IsManaShortageDelegate += IsManaShortage;
     }
 
     public override void Refresh()
@@ -26,8 +23,11 @@ public class SlotView : ItemView
 
         bool occupied = slot.State == SkillSlot.SkillSlotState.Occupied;
         SkillView.gameObject.SetActive(occupied);
-        if (occupied)
-            SkillView.Refresh();
+        if (!occupied)
+            return;
+
+        SkillView.Refresh();
+        SkillView.SetManaCostState(slot.ManaIndicator.State);
     }
 
     // private void OnEnable()
@@ -35,12 +35,6 @@ public class SlotView : ItemView
     //     ContentTransform.anchoredPosition = IdlePivot.anchoredPosition;
     //     if (CanvasGroup != null)
     //         CanvasGroup.blocksRaycasts = true;
-    // }
-
-    // private bool IsManaShortage()
-    // {
-    //     SkillSlot slot = Get<SkillSlot>();
-    //     return slot.IsManaShortage;
     // }
     //
     // public virtual bool IsSelected()

@@ -49,11 +49,11 @@ public class BattlePanel : Panel
 
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
 
-        if (d.Report is { } report)
+        if (d.Result is { } result)
         {
-            HomeHP.text = report.HomeLeftHp.ToString();
-            AwayHP.text = report.AwayLeftHp.ToString();
-            if (report.HomeVictory)
+            HomeHP.text = result.HomeLeftHp.ToString();
+            AwayHP.text = result.AwayLeftHp.ToString();
+            if (result.HomeVictory)
             {
                 HomeHP.color = Color.white;
                 HomeHPSlash.SetActive(false);

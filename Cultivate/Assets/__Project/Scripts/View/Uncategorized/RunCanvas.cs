@@ -199,7 +199,7 @@ public class RunCanvas : Singleton<RunCanvas>
         RunSkill toEquip = from.Get<RunSkill>();
         SkillSlot slot = to.Get<SkillSlot>();
         env.TryEquipSkill(toEquip, slot);
-        to.Refresh();
+        MMDMLayer.DeckPanel.FieldView.Refresh();
     }
 
     private void TryEquipMech(IInteractable from, IInteractable to)
@@ -209,7 +209,7 @@ public class RunCanvas : Singleton<RunCanvas>
         SkillSlot slot = to.Get<SkillSlot>();
         env.TryEquipMech(toEquip, slot);
         from.Refresh();
-        to.Refresh();
+        MMDMLayer.DeckPanel.FieldView.Refresh();
     }
 
     private void TryUnequip(IInteractable from, IInteractable to)
@@ -217,7 +217,7 @@ public class RunCanvas : Singleton<RunCanvas>
         RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
         SkillSlot slot = from.Get<SkillSlot>();
         env.TryUnequip(slot, null);
-        from.Refresh();
+        MMDMLayer.DeckPanel.FieldView.Refresh();
     }
 
     private void TrySwap(IInteractable from, IInteractable to)
@@ -226,8 +226,7 @@ public class RunCanvas : Singleton<RunCanvas>
         SkillSlot fromSlot = from.Get<SkillSlot>();
         SkillSlot toSlot = to.Get<SkillSlot>();
         env.TrySwap(fromSlot, toSlot);
-        from.Refresh();
-        to.Refresh();
+        MMDMLayer.DeckPanel.FieldView.Refresh();
     }
 
     private void ToggleSkill(IInteractable view, PointerEventData eventData)

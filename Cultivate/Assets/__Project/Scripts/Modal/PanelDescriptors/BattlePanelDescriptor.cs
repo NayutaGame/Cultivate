@@ -18,8 +18,8 @@ public class BattlePanelDescriptor : PanelDescriptor
         }
     }
 
-    public StageReport Report;
-    public CombatDetails CombatDetails;
+    public StageEnvironmentResult Result;
+    public StageEnvironmentDetails StageEnvironmentDetails;
 
     public BattlePanelDescriptor(RunEntity template)
     {
@@ -34,14 +34,16 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         base.DefaultEnter();
         Enemy = RunEntity.FromTemplate(_template);
-        RunManager.Instance.Battle.EnvironmentChangedEvent += CalcReport;
-        CalcReport();
+        RunManager.Instance.Battle.EnvironmentChangedEvent -= RunManager.Instance.Battle.Simulate;
+        RunManager.Instance.Battle.EnvironmentChangedEvent += Simulate;
+        Simulate();
     }
 
     public override void DefaultExit()
     {
         base.DefaultExit();
-        RunManager.Instance.Battle.EnvironmentChangedEvent -= CalcReport;
+        RunManager.Instance.Battle.EnvironmentChangedEvent -= Simulate;
+        RunManager.Instance.Battle.EnvironmentChangedEvent += RunManager.Instance.Battle.Simulate;
         Enemy = null;
     }
 
@@ -71,12 +73,17 @@ public class BattlePanelDescriptor : PanelDescriptor
 
     public void Combat(bool animated, bool writeResult)
     {
-        StageManager.Instance.CombatDetails = new CombatDetails(animated, writeResult, RunManager.Instance.Battle.Hero, Enemy, Report);
-        AppManager.Push(new StageAppS());
+        StageEnvironmentDetails d = new StageEnvironmentDetails(animated, writeResult, false, false, RunManager.Instance.Battle.Hero, Enemy);
+        StageEnvironment environment = new StageEnvironment(d);
+        environment.Execute();
+        Result = environment.Result;
     }
 
-    private void CalcReport()
+    private void Simulate()
     {
-        Report = StageManager.SimulateBrief(RunManager.Instance.Battle.Hero, Enemy);
+        StageEnvironmentDetails d = new StageEnvironmentDetails(false, false, false, false, RunManager.Instance.Battle.Hero, Enemy);
+        StageEnvironment environment = new StageEnvironment(d);
+        environment.Execute();
+        Result = environment.Result;
     }
 }

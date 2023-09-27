@@ -8,10 +8,10 @@ public class Arena : ListModel<RunEntity>, Addressable
 {
     private static readonly int ArenaSize = 6;
 
-    private StageReport[] _reports;
-    public StageReport[] Reports => _reports;
+    private StageEnvironmentResult[] _reports;
+    public StageEnvironmentResult[] Reports => _reports;
 
-    public StageReport Report;
+    public StageEnvironmentResult Result;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s)
@@ -29,7 +29,7 @@ public class Arena : ListModel<RunEntity>, Addressable
             Add(RunEntity.Default);
         });
 
-        _reports = new StageReport[ArenaSize * ArenaSize];
+        _reports = new StageEnvironmentResult[ArenaSize * ArenaSize];
     }
 
     public bool TryWrite(RunSkill fromSkill, SkillSlot toSlot)
@@ -52,12 +52,15 @@ public class Arena : ListModel<RunEntity>, Addressable
         for (int y = 0; y < ArenaSize; y++)
         for (int x = 0; x < ArenaSize; x++)
         {
-            _reports[y * ArenaSize + x] = StageManager.SimulateBrief(this[y], this[x]);
+            StageEnvironmentDetails d = new StageEnvironmentDetails(false, false, true, false, this[y], this[x]);
+            StageEnvironment environment = new StageEnvironment(d);
+            environment.Execute();
+            _reports[y * ArenaSize + x] = environment.Result;
         }
     }
 
     public void ShowReport(int i)
     {
-        Report = Reports[i];
+        Result = Reports[i];
     }
 }

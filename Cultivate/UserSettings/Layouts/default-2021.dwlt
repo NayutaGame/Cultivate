@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1349.3334
   m_ShowMode: 4
-  m_Title: Inspector
+  m_Title: Project
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 52
+  controlID: 108
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 18
+  controlID: 113
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 30
+  controlID: 127
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -665,7 +665,7 @@ MonoBehaviour:
       index: 13
       layout: 4
   m_WindowGUID: 5a93ef5bf3b2cd744849f90329ef6199
-  m_Gizmos: 1
+  m_Gizmos: 0
   m_OverrideSceneCullingMask: 6917529027641081856
   m_SceneIsLit: 1
   m_SceneLighting: 1
@@ -676,7 +676,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: 728.28076, y: 555.78876, z: 14.322186}
     speed: 2
-    m_Value: {x: 960, y: 540, z: 0}
+    m_Value: {x: 728.28076, y: 555.78876, z: 14.322186}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -729,7 +729,7 @@ MonoBehaviour:
   m_Size:
     m_Target: 716.06744
     speed: 2
-    m_Value: 90.13878
+    m_Value: 716.06744
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -813,8 +813,8 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 187e0000
-      m_LastClickedID: 32280
+      m_SelectedIDs: 78560100
+      m_LastClickedID: 0
       m_ExpandedIDs: fcfaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -880,22 +880,22 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/__Project/Scripts/Controller
+    - Assets/__Project/Scripts/Modal
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/__Project/Scripts/Controller
+  - Assets/__Project/Scripts/Modal
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\86130\Documents\UnityWorkspace\Cultivate\Cultivate
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: e8650100
-    m_LastClickedID: 91624
-    m_ExpandedIDs: 000000001460010016600100cc650100e465010000ca9a3b
+    m_SelectedIDs: 52560100
+    m_LastClickedID: 87634
+    m_ExpandedIDs: 000000004e50010050500100585001005e50010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -923,7 +923,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000001460010016600100
+    m_ExpandedIDs: 000000004e50010050500100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -951,21 +951,21 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c62300000000000052ff0200a2460100924b01006cae0000
+    m_ExpandedInstanceIDs: c62300000000000052ff0200a2460100029f0000dcbe000016540100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: ManaIndicator
+      m_OriginalName: ManaIndicator
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 87672
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 11}
     m_CreateAssetUtility:

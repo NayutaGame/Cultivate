@@ -1,13 +1,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
-using Unity.Mathematics;
 
 public class StageEntity : Addressable, CLEventListener
 {
@@ -101,26 +98,46 @@ public class StageEntity : Addressable, CLEventListener
 
         await _env._eventDict.SendEvent(CLEventDict.START_STEP, new StepDetails(this, skill));
 
-        int manaCost = skill.GetManaCost() - GetStackOfBuff("心斋");
-        bool manaSufficient = skill.GetManaCost() == 0 || GetStackOfBuff("永久免费") > 0 || await TryConsumeProcedure("免费") || await TryConsumeProcedure("灵气", manaCost);
+
+
+
+
+        int actualCost = Mathf.Max(skill.GetManaCost() - GetStackOfBuff("心斋"), 0);
+        if (skill.GetManaCost() != 0)
+        {
+            bool hasFree = GetStackOfBuff("永久免费") > 0 || await TryConsumeProcedure("免费");
+            if (hasFree)
+                actualCost = 0;
+        }
+
+        await _env._eventDict.SendEvent(CLEventDict.WILL_MANA_COST, new ManaCostDetails(this, skill, actualCost));
+
+        bool manaSufficient = actualCost == 0 || await TryConsumeProcedure("灵气", actualCost);
+
         _manaShortage = !manaSufficient;
         if(_manaShortage)
         {
-            await ManaShortageProcedure(_p, skill);
+            await ManaShortageProcedure(_p, skill, actualCost);
             await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
             await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, null));
             return;
         }
 
+        await _env._eventDict.SendEvent(CLEventDict.DID_MANA_COST, new ManaCostDetails(this, skill, actualCost));
+
+
+
+
+
         if (skill.GetChannelTime() > 0)
         {
-            _channelDetails = new ChannelDetails(skill);
+            _channelDetails = new ChannelDetails(this, skill);
             await skill.Channel(this, _channelDetails);
             await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
             return;
         }
 
-        await Cast(skill);
+        await Execute(skill);
         await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
     }
 
@@ -130,7 +147,7 @@ public class StageEntity : Addressable, CLEventListener
         if (_channelDetails.FinishedChannelling())
         {
             await _channelDetails._skill.ChannelWithoutTween(this, _channelDetails);
-            await Cast(_channelDetails._skill);
+            await Execute(_channelDetails._skill);
             _channelDetails = null;
         }
         else
@@ -139,7 +156,7 @@ public class StageEntity : Addressable, CLEventListener
         }
     }
 
-    private async Task Cast(StageSkill skill)
+    private async Task Execute(StageSkill skill)
     {
         bool multicast = GetStackOfBuff("永久双发") > 0 || await TryConsumeProcedure("双发");
         if (multicast)
@@ -275,7 +292,7 @@ public class StageEntity : Addressable, CLEventListener
             _env._eventDict.Unregister(this, eventDescriptor);
     }
 
-    public void WriteEffect()
+    public void WriteResult()
     {
         // for (int i = 0; i < _skills.Length; i++)
         // {
@@ -504,8 +521,8 @@ public class StageEntity : Addressable, CLEventListener
     public async Task FormationProcedure(FormationEntry formationEntry, bool recursive = true)
         => await _env.FormationProcedure(this, formationEntry, recursive);
 
-    public async Task ManaShortageProcedure(int position, StageSkill skill)
-        => await _env.ManaShortageProcedure(this, position, skill);
+    public async Task ManaShortageProcedure(int position, StageSkill skill, int actualCost)
+        => await _env.ManaShortageProcedure(this, position, skill, actualCost);
 
     #endregion
 }

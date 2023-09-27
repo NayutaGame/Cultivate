@@ -120,40 +120,38 @@ public class SkillEntry : Entry, IAnnotation
 
     public async Task Channel(StageEntity caster, ChannelDetails d)
     {
-        StageReport r = caster.Env.Report;
-        if (r.UseTween)
-            await r.PlayTween(new ShiftTweenDescriptor());
-        r.Append($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
-        r.AppendChannelNote(caster.Index, d);
-        r.Append($"\n");
+        await caster.Env.TryPlayTween(new ShiftTweenDescriptor());
+
+        StageEnvironmentResult r = caster.Env.Result;
+        r.TryAppend($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
+        r.TryAppendChannelNote(caster.Index, d);
+        r.TryAppend($"\n");
     }
 
     public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
     {
-        StageReport r = caster.Env.Report;
-
-        r.Append($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
-        r.Append($"\n");
+        StageEnvironmentResult r = caster.Env.Result;
+        r.TryAppend($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
+        r.TryAppend($"\n");
     }
 
     public async Task Execute(StageEntity caster, StageSkill skill, bool recursive)
     {
-        StageReport r = caster.Env.Report;
-        if (r.UseTween)
-            await r.PlayTween(new ShiftTweenDescriptor());
-        r.Append($"{caster.GetName()}使用了{Name}");
-        r.AppendNote(caster.Index, skill);
+        await caster.Env.TryPlayTween(new ShiftTweenDescriptor());
+
+        StageEnvironmentResult r = caster.Env.Result;
+        r.TryAppend($"{caster.GetName()}使用了{Name}");
+        r.TryAppendNote(caster.Index, skill);
         await _execute(caster, skill, recursive);
-        r.Append($"\n");
+        r.TryAppend($"\n");
     }
 
     public async Task ExecuteWithoutTween(StageEntity caster, StageSkill skill, bool recursive)
     {
-        StageReport r = caster.Env.Report;
-
-        r.Append($"{caster.GetName()}使用了{Name}");
+        StageEnvironmentResult r = caster.Env.Result;
+        r.TryAppend($"{caster.GetName()}使用了{Name}");
         await _execute(caster, skill, recursive);
-        r.Append($"\n");
+        r.TryAppend($"\n");
     }
 
     private async Task DefaultExecute(StageEntity caster, StageSkill skill, bool recursive) { }

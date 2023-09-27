@@ -16,13 +16,9 @@ public class StageManager : Singleton<StageManager>, Addressable
     public GameObject HealVFXPrefab;
 
     public EntitySlot[] _slots;
-
-    public StageEnvironment CurrEnv;
-    public StageEnvironment EndEnv;
-
     public StageAnimationDelegate Anim;
-
-    public CombatDetails CombatDetails;
+    public StageEnvironment Environment;
+    public StageTimeline Timeline;
     private Task _task;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -33,8 +29,8 @@ public class StageManager : Singleton<StageManager>, Addressable
 
         _accessors = new()
         {
-            { "CurrEnv",               () => CurrEnv },
-            { "EndEnv",                () => EndEnv },
+            { "Environment", () => Environment },
+            { "Timeline",    () => Timeline },
         };
 
         Anim = new();
@@ -42,54 +38,25 @@ public class StageManager : Singleton<StageManager>, Addressable
 
     public async Task Enter()
     {
-        CombatDetails d = CombatDetails;
-
-        EndEnv = new StageEnvironment(d.Home, d.Away, useTimeline: true, useSb: true);
-        CurrEnv = new StageEnvironment(d.Home, d.Away, useTween: true);
-        EndEnv.Simulate().GetAwaiter().GetResult();
-        EndEnv.WriteResult();
-        d.Report = EndEnv.Report;
-
-        if (!d.Animated)
-        {
-            AppManager.Pop();
-            return;
-        }
-
         CanvasManager.Instance.StageCanvas.InitialSetup();
-        _task = CurrEnv.Simulate();
+        _task = Environment.Simulate();
         await _task;
         AppManager.Pop();
-    }
-
-    public static StageReport SimulateBrief(RunEntity home, RunEntity away)
-    {
-        Instance.EndEnv = new StageEnvironment(home, away, useSb: true);
-        Instance.EndEnv.Simulate().GetAwaiter().GetResult();
-        Instance.EndEnv.WriteResult();
-        return Instance.EndEnv.Report;
-    }
-
-    public static bool[] ManaSimulate(RunEntity home)
-    {
-        Instance.EndEnv = new StageEnvironment(home, RunEntity.FromJingJieHealth(home.GetJingJie(), 1000000));
-        return Instance.EndEnv.InnerManaSimulate().GetAwaiter().GetResult();
     }
 
     public void Exit()
     {
         DisableVFX();
 
-        CombatDetails d = CombatDetails;
-        if (!d.WriteResult)
+        if (!Environment.Details.WriteResult)
             return;
 
-        Signal signal = new BattleResultSignal(EndEnv.Report.HomeVictory
+        Signal signal = new BattleResultSignal(Environment.Result.HomeVictory
             ? BattleResultSignal.BattleResultState.Win
             : BattleResultSignal.BattleResultState.Lose);
         PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(signal);
         RunCanvas.Instance.SetNodeState(panelDescriptor);
-        EndEnv.WriteEffect();
+        Environment.WriteResult();
     }
 
     public void Pause()

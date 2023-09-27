@@ -82,12 +82,12 @@ public class StageCanvas : Singleton<StageCanvas>
     // TODO: Buff的改变全部都用Set, 不要用Refresh，因为Refresh没有办法描述状态的改变
     public void Refresh()
     {
-        StageEntity home = StageManager.Instance.CurrEnv.Entities[0];
+        StageEntity home = StageManager.Instance.Environment.Entities[0];
 
         SetHeroHealth(home.Hp);
         SetHeroArmor(home.Armor);
 
-        StageEntity away = StageManager.Instance.CurrEnv.Entities[1];
+        StageEntity away = StageManager.Instance.Environment.Entities[1];
 
         SetEnemyHealth(away.Hp);
         SetEnemyArmor(away.Armor);
@@ -102,7 +102,7 @@ public class StageCanvas : Singleton<StageCanvas>
     private void PopulateHeroBuffViews()
     {
         int current = HeroBuffContainerTransform.childCount;
-        int need = StageManager.Instance.CurrEnv.GetHeroBuffCount();
+        int need = StageManager.Instance.Environment.GetHeroBuffCount();
 
         (need, _) = Numeric.Negate(need, current);
 
@@ -121,7 +121,7 @@ public class StageCanvas : Singleton<StageCanvas>
     private void PopulateEnemyBuffViews()
     {
         int current = EnemyBuffContainerTransform.childCount;
-        int need = StageManager.Instance.CurrEnv.GetEnemyBuffCount();
+        int need = StageManager.Instance.Environment.GetEnemyBuffCount();
 
         (need, _) = Numeric.Negate(need, current);
 

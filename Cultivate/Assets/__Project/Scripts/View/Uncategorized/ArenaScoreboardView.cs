@@ -50,11 +50,11 @@ public class ArenaScoreboardView : MonoBehaviour
 
         for (int i = 0; i < GridLayoutTexts.Length; i++)
         {
-            StageReport report = arena.Reports[i];
-            if (report != null)
+            StageEnvironmentResult result = arena.Reports[i];
+            if (result != null)
             {
-                GridLayoutImages[i].color = report.HomeVictory ? Color.green : Color.red;
-                GridLayoutTexts[i].text = $"{report.HomeLeftHp} : {report.AwayLeftHp}";
+                GridLayoutImages[i].color = result.HomeVictory ? Color.green : Color.red;
+                GridLayoutTexts[i].text = $"{result.HomeLeftHp} : {result.AwayLeftHp}";
             }
         }
     }

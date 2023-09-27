@@ -83,10 +83,10 @@ public class MechComposite : EmulatedSkill, ISkillModel
         => GetEntry().Sprite;
 
     public int GetManaCost()
-        => GetEntry().GetManaCost(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start, GetSkillSlot()?.IsJiaShi ?? false);
+        => GetEntry().GetManaCost(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start, GetSkillSlot()?.JiaShiIndicator ?? false);
 
     public int GetChannelTime()
-        => GetEntry().GetChannelTime(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start, GetSkillSlot()?.IsJiaShi ?? false);
+        => GetEntry().GetChannelTime(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start, GetSkillSlot()?.JiaShiIndicator ?? false);
 
     public string GetName()
         => GetEntry().Name;

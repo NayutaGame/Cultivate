@@ -73,6 +73,25 @@ public class SkillView : ItemView
         }
     }
 
+    public virtual void SetManaCostState(ManaIndicator.ManaCostState state)
+    {
+        Color color = Color.white;
+        switch (state)
+        {
+            case ManaIndicator.ManaCostState.Unwritten:
+            case ManaIndicator.ManaCostState.Normal:
+                break;
+            case ManaIndicator.ManaCostState.Reduced:
+                color = Color.green;
+                break;
+            case ManaIndicator.ManaCostState.Shortage:
+                color = Color.red;
+                break;
+        }
+
+        ManaCostText.color = color;
+    }
+
     protected virtual void SetName(string name)
     {
         NameText.text = name;
@@ -133,22 +152,6 @@ public class SkillView : ItemView
     //     _selected = selected;
     //     if (SelectionImage != null)
     //         SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
-    // }
-    //
-    // public void ClearIsManaShortage() => IsManaShortageDelegate = null;
-    // public event Func<bool> IsManaShortageDelegate;
-
-    // public virtual void SetManaCostColor()
-    // {
-    //     if (ManaCostText == null)
-    //         return;
-    //
-    //     Color color = Color.white;
-    //
-    //     if (IsManaShortageDelegate != null && IsManaShortageDelegate())
-    //         color = Color.red;
-    //
-    //     ManaCostText.color = color;
     // }
 
     // public virtual void SetCounter(int currCounter, int maxCounter)
