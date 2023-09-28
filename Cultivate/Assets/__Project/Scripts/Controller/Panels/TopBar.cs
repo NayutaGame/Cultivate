@@ -35,7 +35,7 @@ public class TopBar : MonoBehaviour
 
     public void Refresh()
     {
-        IEntityModel entity = RunManager.Instance.Battle.Hero;
+        IEntityModel entity = RunManager.Instance.Battle.Home;
 
         MingYuanText.text = RunManager.Instance.Battle.GetMingYuan().ToString();
         GoldText.text = RunManager.Instance.Battle.XiuWei.ToString();

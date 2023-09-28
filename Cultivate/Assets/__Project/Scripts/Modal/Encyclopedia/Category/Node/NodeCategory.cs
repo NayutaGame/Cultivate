@@ -458,7 +458,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option =>
                     {
-                        foreach (var slot in RunManager.Instance.Battle.Hero.TraversalCurrentSlots())
+                        foreach (var slot in RunManager.Instance.Battle.Home.TraversalCurrentSlots())
                         {
                             if (slot.Skill == null)
                                 continue;

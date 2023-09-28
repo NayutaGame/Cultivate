@@ -32,8 +32,11 @@ public class EntityEditorSlotView : ItemView
 
         bool occupied = slot.State == SkillSlot.SkillSlotState.Occupied;
         SkillView.gameObject.SetActive(occupied);
-        if (occupied)
-            SkillView.Refresh();
+        if (!occupied)
+            return;
+
+        SkillView.Refresh();
+        SkillView.SetManaCostState(slot.ManaIndicator.State);
     }
 
     // private void OnEnable()

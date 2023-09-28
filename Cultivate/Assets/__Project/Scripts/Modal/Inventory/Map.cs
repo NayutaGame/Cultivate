@@ -128,8 +128,8 @@ public class Map : Addressable
             if (AppManager.Instance != null)
                 if (AppManager.Instance.StageManager != null)
                 {
-                    RunManager.Instance.Battle.Hero.SetBaseHealth(RunEntity.BaseHealthFromJingJie[_jingJie]);
-                    RunManager.Instance.Battle.Hero.SetJingJie(_jingJie);
+                    RunManager.Instance.Battle.Home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[_jingJie]);
+                    RunManager.Instance.Battle.Home.SetJingJie(_jingJie);
                 }
             RefreshPools();
             AudioManager.Instance.Play(JingJieToAudio[_jingJie]);

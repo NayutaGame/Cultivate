@@ -8,7 +8,7 @@ public class EntityPool : Pool<RunEntity>
 {
     public EntityPool()
     {
-        Populate(Encyclopedia.EntityEditableList.Traversal());
+        Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
     }
 
     public bool TryDrawEntity(out RunEntity template, DrawEntityDetails d)

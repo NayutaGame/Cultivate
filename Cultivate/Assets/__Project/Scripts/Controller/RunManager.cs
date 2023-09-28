@@ -20,7 +20,6 @@ public class RunManager : Singleton<RunManager>, Addressable
     public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
 
     public RunEnvironment Battle { get; private set; }
-    public RunEnvironment Simulate { get; private set; }
     public Arena Arena;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -30,20 +29,17 @@ public class RunManager : Singleton<RunManager>, Addressable
         base.DidAwake();
 
         Battle = new();
-        Simulate = new();
         Arena = new();
 
         _accessors = new()
         {
             { "Battle",                () => Battle },
-            { "Simulate",              () => Simulate },
             { "Arena",                 () => Arena },
         };
     }
 
     public void Enter()
     {
-        Simulate.Enter();
         Battle.Enter();
         DesignerEnvironment.EnterRun();
     }

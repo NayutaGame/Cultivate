@@ -1,23 +1,28 @@
 
 using System;
+using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class EntityEditorPanel : Panel
 {
-    public Button CreateNewEntityButton;
-    public ListView EntityBrowser;
+    [SerializeField] private Button CreateNewEntityButton;
+    [SerializeField] private ListView EntityBrowser;
     private int? _selectionIndex;
     private EntityBarView _selection;
 
-    public ListView SkillBrowser;
-    public SkillPreview SkillPreview;
+    [SerializeField] private ListView SkillBrowser;
+    [SerializeField] private SkillPreview SkillPreview;
 
-    public EntityEditorEntityView AwayEntityView;
-    public EntityEditorEntityView HomeEntityView;
-    public Button CopyToTopButton;
-    public Button SwapTopAndBottomButton;
-    public Button CopyToBottomButton;
+    [SerializeField] private EntityEditorEntityView AwayEntityView;
+    [SerializeField] private EntityEditorEntityView HomeEntityView;
+    [SerializeField] private Button CopyToTopButton;
+    [SerializeField] private Button SwapTopAndBottomButton;
+    [SerializeField] private Button CopyToBottomButton;
+
+    [SerializeField] private TMP_Text Result;
+    [SerializeField] private Button CombatButton;
 
     private InteractDelegate InteractDelegate;
 
@@ -27,10 +32,10 @@ public class EntityEditorPanel : Panel
 
         CreateNewEntityButton.onClick.RemoveAllListeners();
         CreateNewEntityButton.onClick.AddListener(CreateNewEntity);
-        EntityBrowser.SetAddress(new Address("Encyclopedia.EntityEditableList"));
+        EntityBrowser.SetAddress(new Address("Editor.EntityEditableList"));
         SkillBrowser.SetAddress(new Address("SkillInventory"));
         AwayEntityView.SetAddress(null);
-        HomeEntityView.SetAddress(new Address("Encyclopedia.EntityEditorHomeEntity"));
+        HomeEntityView.SetAddress(new Address("Editor.Home"));
 
         ConfigureInteractDelegate();
 
@@ -41,11 +46,8 @@ public class EntityEditorPanel : Panel
         CopyToBottomButton.onClick.RemoveAllListeners();
         CopyToBottomButton.onClick.AddListener(CopyToBottom);
 
-        // ReportButton.onClick.RemoveAllListeners();
-        // ReportButton.onClick.AddListener(Report);
-        //
-        // StreamButton.onClick.RemoveAllListeners();
-        // StreamButton.onClick.AddListener(Stream);
+        CombatButton.onClick.RemoveAllListeners();
+        CombatButton.onClick.AddListener(Combat);
     }
 
     private void CreateNewEntity()
@@ -56,30 +58,21 @@ public class EntityEditorPanel : Panel
 
     private void CopyToTop()
     {
-        if (_selectionIndex == null)
-            return;
-
-        Encyclopedia.Instance.CopyToTop(_selectionIndex.Value);
+        AppManager.Instance.EditorManager.CopyToTop();
         HomeEntityView.Refresh();
         AwayEntityView.Refresh();
     }
 
     private void SwapTopAndBottom()
     {
-        if (_selectionIndex == null)
-            return;
-
-        Encyclopedia.Instance.SwapTopAndBottom(_selectionIndex.Value);
+        AppManager.Instance.EditorManager.SwapTopAndBottom();
         HomeEntityView.Refresh();
         AwayEntityView.Refresh();
     }
 
     private void CopyToBottom()
     {
-        if (_selectionIndex == null)
-            return;
-
-        Encyclopedia.Instance.CopyToBottom(_selectionIndex.Value);
+        AppManager.Instance.EditorManager.CopyToBottom();
         HomeEntityView.Refresh();
         AwayEntityView.Refresh();
     }
@@ -132,7 +125,7 @@ public class EntityEditorPanel : Panel
         SkillSlot slot = toView.Get<SkillSlot>();
 
         slot.Skill = skill;
-        toView.Refresh();
+        Refresh();
     }
 
     private void Unequip(IInteractable fromView, IInteractable toView)
@@ -141,7 +134,7 @@ public class EntityEditorPanel : Panel
         SkillSlot slot = fromView.Get<SkillSlot>();
 
         slot.Skill = null;
-        fromView.Refresh();
+        Refresh();
     }
 
     private void Swap(IInteractable fromView, IInteractable toView)
@@ -151,8 +144,7 @@ public class EntityEditorPanel : Panel
         SkillSlot toSlot = toView.Get<SkillSlot>();
 
         (fromSlot.Skill, toSlot.Skill) = (toSlot.Skill, fromSlot.Skill);
-        fromView.Refresh();
-        toView.Refresh();
+        Refresh();
     }
 
     private void IncreaseJingJie(IInteractable view, PointerEventData eventData)
@@ -212,6 +204,8 @@ public class EntityEditorPanel : Panel
         else
             _selectionIndex = null;
 
+        EditorManager.Instance._selectionIndex = _selectionIndex;
+
         if (_selection != null)
         {
             AwayEntityView.SetAddress(view.GetAddress());
@@ -222,34 +216,24 @@ public class EntityEditorPanel : Panel
 
     public override void Refresh()
     {
-        // HeroView.Refresh();
-        // EnemyView.Refresh();
-        // SkillInventoryView.Refresh();
+        AwayEntityView.Refresh();
+        HomeEntityView.Refresh();
 
-        // if (RunManager.Instance.Simulate.Report is { } report)
-        // {
-        //     SimulatedHP.text = $"玩家 : 怪物\n{report.HomeLeftHp} : {report.AwayLeftHp}";
-        //     Light.color = report.HomeVictory ? Color.green : Color.red;
-        //     ReportText.text = report.ToString();
-        // }
-        // else
-        // {
-        //     SimulatedHP.text = $"玩家 : 怪物\n无结果";
-        //     Light.color = Color.gray;
-        //     ReportText.text = "";
-        // }
+        if (EditorManager.Instance.SimulateResult is { } result)
+        {
+            Result.text = $"玩家 : 怪物\n{result.HomeLeftHp} : {result.AwayLeftHp}";
+            Result.color = result.HomeVictory ? Color.green : Color.red;
+        }
+        else
+        {
+            Result.text = $"玩家 : 怪物\n无结果";
+            Result.color = Color.gray;
+        }
     }
 
-    private void Report()
+    private void Combat()
     {
-        // RunManager.Instance.Combat(false, RunManager.Instance.Simulate);
-        // RunCanvas.Instance.Refresh();
-    }
-
-    private void Stream()
-    {
-        // RunManager.Instance.Combat(true, RunManager.Instance.Simulate);
-        // RunCanvas.Instance.Refresh();
+        EditorManager.Instance.Combat();
     }
 
     // private bool TryMerge(IInteractable from, IInteractable to)

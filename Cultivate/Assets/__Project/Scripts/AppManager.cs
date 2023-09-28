@@ -7,10 +7,13 @@ using UnityEngine;
 public class AppManager : Singleton<AppManager>, Addressable
 {
     private AppSM _sm;
+    private Encyclopedia Encyclopedia;
+    public Settings Settings;
+
+    public EditorManager EditorManager;
     public RunManager RunManager;
     public StageManager StageManager;
 
-    public Settings Settings;
     public FormationInventory FormationInventory;
     public SkillInventory SkillInventory;
 
@@ -23,17 +26,20 @@ public class AppManager : Singleton<AppManager>, Addressable
         _accessors = new Dictionary<string, Func<object>>()
         {
             { "App", () => Instance },
+            { "Encyclopedia", () => Encyclopedia },
+            { "Settings", () => Settings },
+
+            { "Editor", () => EditorManager.Instance },
             { "Run", () => RunManager.Instance },
             { "Stage", () => StageManager.Instance },
-            { "Encyclopedia", () => Encyclopedia.Instance },
 
-            { "Settings", () => Settings },
             { "FormationInventory", () => FormationInventory },
             { "SkillInventory", () => SkillInventory },
         };
 
         Application.targetFrameRate = 120;
 
+        Encyclopedia = new();
         Settings = new();
 
         FormationInventory = new();
@@ -42,6 +48,8 @@ public class AppManager : Singleton<AppManager>, Addressable
         SkillInventory = new();
         Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.From(e, e.JingJieRange.Start)).Do(s => SkillInventory.Add(s));
 
+        EditorManager.gameObject.SetActive(true);
+        RunManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);
 

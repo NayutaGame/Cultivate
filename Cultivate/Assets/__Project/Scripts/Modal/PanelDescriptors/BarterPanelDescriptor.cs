@@ -24,7 +24,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         _inventory = new();
 
         Pool<RunSkill> pool = new Pool<RunSkill>();
-        pool.Populate(RunManager.Instance.Battle.Hero.TraversalCurrentSlots()
+        pool.Populate(RunManager.Instance.Battle.Home.TraversalCurrentSlots()
             .FilterObj(s => s.Skill != null && s.Skill is RunSkill).Map(s => s.Skill as RunSkill));
         pool.Populate(RunManager.Instance.Battle.SkillInventory.Traversal());
         pool.Shuffle();
@@ -58,7 +58,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         if (!_inventory.Contains(barterItem))
             return false;
 
-        bool inSlot = RunManager.Instance.Battle.Hero.TraversalCurrentSlots().Any(s => s.Skill == barterItem.PlayerSkill);
+        bool inSlot = RunManager.Instance.Battle.Home.TraversalCurrentSlots().Any(s => s.Skill == barterItem.PlayerSkill);
         bool inSkillInventory = RunManager.Instance.Battle.SkillInventory.Contains(barterItem.PlayerSkill);
 
         if (!inSlot && !inSkillInventory)
@@ -66,7 +66,7 @@ public class BarterPanelDescriptor : PanelDescriptor
 
         if (inSlot)
         {
-            SkillSlot slot = RunManager.Instance.Battle.Hero.TraversalCurrentSlots().First(s => s.Skill == barterItem.PlayerSkill);
+            SkillSlot slot = RunManager.Instance.Battle.Home.TraversalCurrentSlots().First(s => s.Skill == barterItem.PlayerSkill);
             slot.Skill = null;
         }
         else

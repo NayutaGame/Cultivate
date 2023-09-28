@@ -1188,7 +1188,7 @@ GameObject:
   - component: {fileID: 1268119623768512699}
   - component: {fileID: 8782019785652890663}
   m_Layer: 0
-  m_Name: ActHover
+  m_Name: CombatHover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1446,7 +1446,7 @@ MonoBehaviour:
   HomeHPSlash: {fileID: 1340965133896692152}
   AwayHP: {fileID: 8512709659461146825}
   AwayHPSlash: {fileID: 3139159004903528230}
-  ActButton: {fileID: 8782019785652890663}
+  CombatButton: {fileID: 8782019785652890663}
 --- !u!1 &6604004000938102332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1910,7 +1910,7 @@ GameObject:
   - component: {fileID: 7662710475668783464}
   - component: {fileID: 3524650574925682454}
   m_Layer: 0
-  m_Name: ActBackground
+  m_Name: CombatBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2062,7 +2062,7 @@ GameObject:
   - component: {fileID: 110487538808310915}
   - component: {fileID: 5209775861746433300}
   m_Layer: 0
-  m_Name: ActButton
+  m_Name: CombatButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

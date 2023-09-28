@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using CLLibrary;
 using TMPro;
@@ -8,7 +7,7 @@ using UnityEngine.UI;
 
 public class StageCanvas : Singleton<StageCanvas>
 {
-    [SerializeField] private StageSkillPreview Preview;
+    [SerializeField] private SkillPreview SkillPreview;
 
     public TMP_Text SpeedText;
     public Slider SpeedSlider;
@@ -114,7 +113,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, HeroBuffContainerTransform).GetComponent<BuffView>();
             _heroBuffViews.Add(v);
-            v.SetAddress(new Address($"Stage.CurrEnv.Home.Buffs#{i}"));
+            v.SetAddress(new Address($"Stage.Environment.Home.Buffs#{i}"));
         }
     }
 
@@ -133,7 +132,7 @@ public class StageCanvas : Singleton<StageCanvas>
         {
             BuffView v = Instantiate(BuffViewPrefab, EnemyBuffContainerTransform).GetComponent<BuffView>();
             _enemyBuffViews.Add(v);
-            v.SetAddress(new Address($"Stage.CurrEnv.Away.Buffs#{i}"));
+            v.SetAddress(new Address($"Stage.Environment.Away.Buffs#{i}"));
         }
     }
 
@@ -159,13 +158,13 @@ public class StageCanvas : Singleton<StageCanvas>
 
     public void SetIndexPathForPreview(Address address)
     {
-        Preview.SetAddress(address);
-        Preview.Refresh();
+        SkillPreview.SetAddress(address);
+        SkillPreview.Refresh();
     }
 
     public void UpdateMousePosForPreview(Vector2 pos)
     {
-        Preview.UpdateMousePos(pos);
-        Preview.Refresh();
+        SkillPreview.UpdateMousePos(pos);
+        SkillPreview.Refresh();
     }
 }

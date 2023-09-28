@@ -4,12 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class StageSkillView : SkillView, IInteractable,
-    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
-    IPointerClickHandler,
-    IBeginDragHandler, IEndDragHandler, IDragHandler,
-    IDropHandler
+    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
-    [SerializeField] protected RectTransform _rectTransform;
+    public RectTransform _rectTransform;
 
     public Tween GetExpandTween()
     {
@@ -54,24 +51,6 @@ public class StageSkillView : SkillView, IInteractable,
     public virtual void OnPointerEnter(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_ENTER, this, eventData);
     public virtual void OnPointerExit(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_EXIT, this, eventData);
     public virtual void OnPointerMove(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_MOVE, this, eventData);
-    public virtual void OnPointerClick(PointerEventData eventData)
-    {
-        int? gestureId = null;
-
-        if (eventData.button == PointerEventData.InputButton.Left) {
-            gestureId = InteractDelegate.POINTER_LEFT_CLICK;
-        } else if (eventData.button == PointerEventData.InputButton.Right) {
-            gestureId = InteractDelegate.POINTER_RIGHT_CLICK;
-        }
-
-        if (gestureId.HasValue)
-            GetDelegate()?.Handle(gestureId.Value, this, eventData);
-    }
-
-    public virtual void OnBeginDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.BEGIN_DRAG, this, eventData);
-    public virtual void OnEndDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.END_DRAG, this, eventData);
-    public virtual void OnDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.DRAG, this, eventData);
-    public virtual void OnDrop(PointerEventData eventData) => GetDelegate()?.DragDrop(eventData.pointerDrag.GetComponent<IInteractable>(), this);
 
     #endregion
 }

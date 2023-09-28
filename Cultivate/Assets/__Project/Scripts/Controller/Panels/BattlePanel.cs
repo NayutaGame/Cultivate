@@ -23,7 +23,7 @@ public class BattlePanel : Panel
     public TMP_Text AwayHP;
     public GameObject AwayHPSlash;
 
-    public Button ActButton;
+    public Button CombatButton;
 
     private InteractDelegate InteractDelegate;
 
@@ -38,8 +38,8 @@ public class BattlePanel : Panel
         FieldView.SetAddress(_address.Append(".Enemy.Slots"));
         EnemySubFormationInventory.SetAddress(_address.Append(".Enemy.ActivatedSubFormations"));
 
-        ActButton.onClick.RemoveAllListeners();
-        ActButton.onClick.AddListener(Act);
+        CombatButton.onClick.RemoveAllListeners();
+        CombatButton.onClick.AddListener(Combat);
     }
 
     public override void Refresh()
@@ -49,7 +49,7 @@ public class BattlePanel : Panel
 
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
 
-        if (d.Result is { } result)
+        if (d.GetResult() is { } result)
         {
             HomeHP.text = result.HomeLeftHp.ToString();
             AwayHP.text = result.AwayLeftHp.ToString();
@@ -81,17 +81,10 @@ public class BattlePanel : Panel
         }
     }
 
-    private void Report()
+    private void Combat()
     {
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-        d.Combat(false, true);
-        RunCanvas.Instance.Refresh();
-    }
-
-    private void Act()
-    {
-        BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-        d.Combat(true, true);
+        d.Combat();
         RunCanvas.Instance.Refresh();
     }
 }

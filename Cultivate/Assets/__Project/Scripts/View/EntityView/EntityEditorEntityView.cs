@@ -82,7 +82,11 @@ public class EntityEditorEntityView : ItemView, IInteractable
     public override void Refresh()
     {
         base.Refresh();
+        if (GetAddress() == null)
+            return;
         IEntityModel entity = Get<IEntityModel>();
+        if (entity == null)
+            return;
         SetEntry(entity.GetEntry());
         SetJingJie(entity.GetJingJie());
         SetHealth(entity.GetBaseHealth());

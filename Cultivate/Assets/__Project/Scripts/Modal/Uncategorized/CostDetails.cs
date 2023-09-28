@@ -20,14 +20,14 @@ public class CostDetails
     {
         return Gold <= RunManager.Instance.Battle.XiuWei &&
                MingYuan < RunManager.Instance.Battle.GetMingYuan().GetCurr() &&
-               Health < RunManager.Instance.Battle.Hero.GetFinalHealth();
+               Health < RunManager.Instance.Battle.Home.GetFinalHealth();
     }
 
     public void Cost()
     {
         RunManager.Instance.Battle.RemoveXiuWei(Gold);
         RunManager.Instance.Battle.SetDMingYuan(-MingYuan);
-        RunManager.Instance.Battle.Hero.SetDHealth(-Health);
+        RunManager.Instance.Battle.Home.SetDHealth(-Health);
     }
 
     public string GetDescription()

@@ -8,7 +8,9 @@ public class RunEnvironment : Addressable
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
-    public RunEntity Hero { get; private set; }
+    public RunEntity Home { get; private set; }
+    public RunEntity Away { get; set; }
+
     public Map Map { get; private set; }
 
     public TechInventory TechInventory { get; private set; }
@@ -19,21 +21,23 @@ public class RunEnvironment : Addressable
 
     public EntityPool EntityPool { get; private set; }
 
+    public StageEnvironmentResult SimulateResult;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public RunEnvironment()
     {
         _accessors = new()
         {
-            { "Hero",                  () => Hero },
+            { "Hero",                  () => Home },
             { "Map",                   () => Map },
             { "TechInventory",         () => TechInventory },
             { "SkillInventory",        () => SkillInventory },
             { "MechBag",               () => MechBag },
         };
 
-        Hero = RunEntity.Default;
-        Hero.EnvironmentChangedEvent += EnvironmentChanged;
+        Home = RunEntity.Default;
+        Home.EnvironmentChangedEvent += EnvironmentChanged;
 
         Map = new();
         TechInventory = new();
@@ -49,12 +53,20 @@ public class RunEnvironment : Addressable
         _xiuWei = 0;
     }
 
-    public void Simulate()
+    public void Combat()
     {
-        StageEnvironmentDetails d = new StageEnvironmentDetails(false, false, false, false,
-            Hero, RunEntity.FromJingJieHealth(Hero.GetJingJie(), 1000000));
+        StageEnvironmentDetails d = new StageEnvironmentDetails(true, true, false, false, RunManager.Instance.Battle.Home, Away);
         StageEnvironment environment = new StageEnvironment(d);
         environment.Execute();
+    }
+
+    public void Simulate()
+    {
+        RunEntity away = Away ?? RunEntity.FromJingJieHealth(Home.GetJingJie(), 1000000);
+        StageEnvironmentDetails d = new StageEnvironmentDetails(false, false, false, false, Home, away);
+        StageEnvironment environment = new StageEnvironment(d);
+        environment.Execute();
+        SimulateResult = environment.Result;
     }
 
     public void Enter()
@@ -267,15 +279,15 @@ public class RunEnvironment : Addressable
 
     public void AddHealth(int health)
     {
-        Hero.SetDHealth(Hero.GetDHealth() + health);
+        Home.SetDHealth(Home.GetDHealth() + health);
     }
 
     public MingYuan GetMingYuan()
-        => Hero.MingYuan;
+        => Home.MingYuan;
 
     public void SetDMingYuan(int value)
     {
-        Hero.MingYuan.SetDiff(value);
+        Home.MingYuan.SetDiff(value);
     }
 
     public void ForceDrawSkills(Predicate<SkillEntry> pred = null, WuXing? wuXing = null,

@@ -28,7 +28,7 @@ public class DesignerEnvironment
     {
         RunEnvironment env = RunManager.Instance.Battle;
         env.Map.JingJie = JingJie.HuaShen;
-        env.Hero.SetJingJie(JingJie.HuaShen);
+        env.Home.SetJingJie(JingJie.HuaShen);
         env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
     }
 
