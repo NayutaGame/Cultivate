@@ -81,4 +81,14 @@ public class EditorManager : Singleton<EditorManager>, Addressable
             return;
         Home = RunEntity.FromTemplate(EntityEditableList[_selectionIndex.Value]);
     }
+
+    public void Save()
+    {
+        EntityEditableList.WriteToFile();
+    }
+
+    public void Load()
+    {
+        EntityEditableList = EntityEditableList.ReadFromFile();
+    }
 }

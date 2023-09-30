@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class SkillSlot : Addressable
+public class SkillSlot : Addressable, ISerializationCallbackReceiver
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
@@ -18,7 +18,7 @@ public class SkillSlot : Addressable
         Occupied,
     }
 
-    private SkillSlotState _state;
+    [SerializeField] private SkillSlotState _state;
     public SkillSlotState State => _state;
     public void SetLocked(bool locked)
     {
@@ -100,4 +100,14 @@ public class SkillSlot : Addressable
 
     [NonSerialized] public ManaIndicator ManaIndicator;
     [NonSerialized] public bool JiaShiIndicator;
+
+    public void OnBeforeSerialize() { }
+
+    public void OnAfterDeserialize()
+    {
+        _accessors = new()
+        {
+            { "Skill",         () => _skill },
+        };
+    }
 }

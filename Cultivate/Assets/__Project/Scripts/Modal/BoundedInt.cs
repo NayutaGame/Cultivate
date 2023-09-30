@@ -6,8 +6,8 @@ using UnityEngine;
 [Serializable]
 public class BoundedInt
 {
-    private int _curr;
-    private int _max;
+    [SerializeField] private int _curr;
+    [SerializeField] private int _max;
 
     public int GetCurr() => _curr;
     public void SetCurr(int value) => _curr = Mathf.Min(_max, value);

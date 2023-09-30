@@ -10,6 +10,7 @@ public class EntityEditorEntityView : ItemView, IInteractable
     public TMP_Dropdown JingJieDropdown;
     public TMP_InputField HealthInputField;
     public ListView SlotListView;
+    public ListView FormationListView;
 
     public override void SetAddress(Address address)
     {
@@ -25,6 +26,7 @@ public class EntityEditorEntityView : ItemView, IInteractable
             JingJieDropdown.gameObject.SetActive(false);
             HealthInputField.gameObject.SetActive(false);
             SlotListView.gameObject.SetActive(false);
+            FormationListView.gameObject.SetActive(false);
 
             return;
         }
@@ -33,6 +35,7 @@ public class EntityEditorEntityView : ItemView, IInteractable
         JingJieDropdown.gameObject.SetActive(true);
         HealthInputField.gameObject.SetActive(true);
         SlotListView.gameObject.SetActive(true);
+        FormationListView.gameObject.SetActive(true);
 
         if (EntityDropdown != null)
         {
@@ -58,6 +61,9 @@ public class EntityEditorEntityView : ItemView, IInteractable
 
         if (SlotListView != null)
             SlotListView.SetAddress(GetAddress().Append(".Slots"));
+
+        if (FormationListView != null)
+            FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
     }
 
     #region Accessors
@@ -91,6 +97,7 @@ public class EntityEditorEntityView : ItemView, IInteractable
         SetJingJie(entity.GetJingJie());
         SetHealth(entity.GetBaseHealth());
         SlotListView.Refresh();
+        FormationListView.Refresh();
     }
 
     private void EntryChanged(int entityEntryIndex)
@@ -139,6 +146,8 @@ public class EntityEditorEntityView : ItemView, IInteractable
         InteractDelegate = interactDelegate;
         if (SlotListView != null)
             SlotListView.SetDelegate(InteractDelegate);
+        if (FormationListView != null)
+            FormationListView.SetDelegate(InteractDelegate);
     }
 
     #endregion

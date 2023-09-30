@@ -1,5 +1,4 @@
 
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,13 +6,13 @@ using UnityEngine.UI;
 
 public class EntityEditorPanel : Panel
 {
-    [SerializeField] private Button CreateNewEntityButton;
     [SerializeField] private ListView EntityBrowser;
     private int? _selectionIndex;
     private EntityBarView _selection;
 
     [SerializeField] private ListView SkillBrowser;
     [SerializeField] private SkillPreview SkillPreview;
+    [SerializeField] private FormationPreview FormationPreview;
 
     [SerializeField] private EntityEditorEntityView AwayEntityView;
     [SerializeField] private EntityEditorEntityView HomeEntityView;
@@ -24,14 +23,17 @@ public class EntityEditorPanel : Panel
     [SerializeField] private TMP_Text Result;
     [SerializeField] private Button CombatButton;
 
+    [SerializeField] private Button InsertButton;
+    [SerializeField] private Button RemoveButton;
+    [SerializeField] private Button SaveButton;
+    [SerializeField] private Button LoadButton;
+
     private InteractDelegate InteractDelegate;
 
     public override void Configure()
     {
         base.Configure();
 
-        CreateNewEntityButton.onClick.RemoveAllListeners();
-        CreateNewEntityButton.onClick.AddListener(CreateNewEntity);
         EntityBrowser.SetAddress(new Address("Editor.EntityEditableList"));
         SkillBrowser.SetAddress(new Address("SkillInventory"));
         AwayEntityView.SetAddress(null);
@@ -48,12 +50,18 @@ public class EntityEditorPanel : Panel
 
         CombatButton.onClick.RemoveAllListeners();
         CombatButton.onClick.AddListener(Combat);
-    }
 
-    private void CreateNewEntity()
-    {
-        ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
-        model.Add(RunEntity.Default);
+        InsertButton.onClick.RemoveAllListeners();
+        InsertButton.onClick.AddListener(Insert);
+
+        RemoveButton.onClick.RemoveAllListeners();
+        RemoveButton.onClick.AddListener(Remove);
+
+        SaveButton.onClick.RemoveAllListeners();
+        SaveButton.onClick.AddListener(Save);
+
+        LoadButton.onClick.RemoveAllListeners();
+        LoadButton.onClick.AddListener(Load);
     }
 
     private void CopyToTop()
@@ -79,7 +87,7 @@ public class EntityEditorPanel : Panel
 
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new(3,
+        InteractDelegate = new(4,
             getId: view =>
             {
                 if (view is EntityBarView)
@@ -88,29 +96,32 @@ public class EntityEditorPanel : Panel
                     return 1;
                 if (view is EntityEditorSlotView)
                     return 2;
+                if (view is FormationIconView)
+                    return 3;
                 return null;
-            },
-            dragDropTable: new Action<IInteractable, IInteractable>[]
-            {
-                /*                         EntityBarView, SkillBarView, EntityEditorSlotView */
-                /* EntityBarView        */ null,          null,         null,
-                /* SkillBarView         */ null,          null,         Equip,
-                /* EntityEditorSlotView */ null,          Unequip,      Swap,
             });
+
+        InteractDelegate.SetDragDrop(1, 2, Equip);
+        InteractDelegate.SetDragDrop(2, 1, Unequip);
+        InteractDelegate.SetDragDrop(2, 2, Swap);
 
         InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, SelectEntity);
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 1, ShowPreview);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 1, HidePreview);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 1, MovePreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 1, ShowSkillPreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 1, HideSkillPreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 1, MoveSkillPreview);
         InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 1, BeginDrag);
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, ShowPreviewFromSlotView);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, HidePreview);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 2, MovePreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, ShowSkillPreviewFromSlotView);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, HideSkillPreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 2, MoveSkillPreview);
         InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 2, BeginDrag);
 
         InteractDelegate.SetHandle(InteractDelegate.POINTER_RIGHT_CLICK, 2, IncreaseJingJie);
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 3, ShowFormationPreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 3, HideFormationPreview);
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 3, MoveFormationPreview);
 
         EntityBrowser.SetDelegate(InteractDelegate);
         SkillBrowser.SetDelegate(InteractDelegate);
@@ -155,7 +166,7 @@ public class EntityEditorPanel : Panel
         SkillPreview.Refresh();
     }
 
-    private void ShowPreview(IInteractable view, PointerEventData eventData)
+    private void ShowSkillPreview(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
@@ -163,7 +174,7 @@ public class EntityEditorPanel : Panel
         SkillPreview.Refresh();
     }
 
-    private void ShowPreviewFromSlotView(IInteractable view, PointerEventData eventData)
+    private void ShowSkillPreviewFromSlotView(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
@@ -171,7 +182,7 @@ public class EntityEditorPanel : Panel
         SkillPreview.Refresh();
     }
 
-    private void HidePreview(IInteractable view, PointerEventData eventData)
+    private void HideSkillPreview(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
@@ -179,17 +190,42 @@ public class EntityEditorPanel : Panel
         SkillPreview.Refresh();
     }
 
-    private void MovePreview(IInteractable view, PointerEventData eventData)
+    private void MoveSkillPreview(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
         SkillPreview.UpdateMousePos(eventData.position);
     }
 
+    private void ShowFormationPreview(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        FormationPreview.SetAddress(view.GetAddress());
+        FormationPreview.Refresh();
+    }
+
+    private void HideFormationPreview(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        FormationPreview.SetAddress(null);
+        FormationPreview.Refresh();
+    }
+
+    private void MoveFormationPreview(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        FormationPreview.UpdateMousePos(eventData.position);
+    }
+
     private void BeginDrag(IInteractable view, PointerEventData eventData)
     {
         SkillPreview.SetAddress(null);
         SkillPreview.Refresh();
+        FormationPreview.SetAddress(null);
+        FormationPreview.Refresh();
     }
 
     private void SelectEntity(IInteractable view, PointerEventData eventData)
@@ -234,6 +270,39 @@ public class EntityEditorPanel : Panel
     private void Combat()
     {
         EditorManager.Instance.Combat();
+    }
+
+    private void Insert()
+    {
+        ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
+        if (_selectionIndex.HasValue)
+        {
+            model.Insert(_selectionIndex.Value, RunEntity.Default);
+        }
+        else
+        {
+            model.Add(RunEntity.Default);
+        }
+    }
+
+    private void Remove()
+    {
+        ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
+        if (!_selectionIndex.HasValue || _selectionIndex.Value >= model.Count())
+            return;
+
+        model.RemoveAt(_selectionIndex.Value);
+    }
+
+    private void Save()
+    {
+        EditorManager.Instance.Save();
+    }
+
+    private void Load()
+    {
+        EditorManager.Instance.Load();
+        Configure();
     }
 
     // private bool TryMerge(IInteractable from, IInteractable to)

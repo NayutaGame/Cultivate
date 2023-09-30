@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+using System;
+
+[Serializable]
 public class EntityEntry : Entry
 {
     private string _description;

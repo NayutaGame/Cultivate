@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 
+[Serializable]
 public class ListModel<T> : IListModel
 {
-    private List<T> _list;
+    [SerializeField] private List<T> _list;
 
     public T this[int index] => _list[index];
 

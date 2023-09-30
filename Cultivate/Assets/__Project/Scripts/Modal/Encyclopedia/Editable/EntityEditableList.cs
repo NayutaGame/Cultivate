@@ -9,7 +9,8 @@ public class EntityEditableList : ListModel<RunEntity>
     public static EntityEditableList ReadFromFile()
     {
         string filePath = "/EntityEditableList.json";
-        string fullFilePath = Application.persistentDataPath + filePath;
+        // string fullFilePath = Application.persistentDataPath + filePath;
+        string fullFilePath = Application.streamingAssetsPath + filePath;
 
         string txt;
         if (!TryLoadFile(out txt, fullFilePath))
@@ -28,10 +29,12 @@ public class EntityEditableList : ListModel<RunEntity>
     public void WriteToFile()
     {
         string filePath = "/EntityEditableList.json";
-        string fullFilePath = Application.persistentDataPath + filePath;
+        // string fullFilePath = Application.persistentDataPath + filePath;
+        string fullFilePath = Application.streamingAssetsPath + filePath;
 
         string json = JsonUtility.ToJson(this);
         string txt = TxtFromJson(json);
+
         SaveFile(fullFilePath, txt);
     }
 

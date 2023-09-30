@@ -211,6 +211,85 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &842130445730018012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7751352406465485235}
+  - component: {fileID: 3497237185409118463}
+  - component: {fileID: 8449504887608185425}
+  m_Layer: 5
+  m_Name: FormationListView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7751352406465485235
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842130445730018012}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7778355132643012418}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 929.99, y: -45.303406}
+  m_SizeDelta: {x: 800.13, y: 41.4193}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3497237185409118463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842130445730018012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Container: {fileID: 7751352406465485235}
+  Prefabs:
+  - {fileID: 1953151215448478786, guid: d3f34e221a5aa07449a554dadb86d449, type: 3}
+--- !u!114 &8449504887608185425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842130445730018012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 3
+  m_Spacing: 20
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1640637253142895260
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,11 +873,11 @@ RectTransform:
   - {fileID: 7590458804441391881}
   - {fileID: 1007463530777824464}
   m_Father: {fileID: 7778355132643012418}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -104.655}
+  m_AnchoredPosition: {x: 0, y: -125}
   m_SizeDelta: {x: 1390.1667, y: 180}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2797796711988945527
@@ -1675,9 +1754,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -695, y: 90.34497}
-  m_SizeDelta: {x: 593.3578, y: 30}
-  m_Pivot: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: -414.0199, y: 82}
+  m_SizeDelta: {x: 442.0642, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6824150049304634072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1691,8 +1770,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 100
-    m_Right: 100
+    m_Left: 0
+    m_Right: 0
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
@@ -1925,6 +2004,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 543296394430956358}
+  - {fileID: 7751352406465485235}
   - {fileID: 2797796711988945526}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1958,6 +2038,7 @@ MonoBehaviour:
   JingJieDropdown: {fileID: 1916946225291987103}
   HealthInputField: {fileID: 6908596748620297286}
   SlotListView: {fileID: 7588568743444983968}
+  FormationListView: {fileID: 3497237185409118463}
 --- !u!114 &3623292578165185130
 MonoBehaviour:
   m_ObjectHideFlags: 0

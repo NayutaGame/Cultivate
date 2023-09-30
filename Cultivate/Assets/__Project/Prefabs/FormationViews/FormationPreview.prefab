@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4730531974322507744}
-  - component: {fileID: 5684184172524653968}
   - component: {fileID: 2326449694361845102}
   - component: {fileID: 7407330104503765421}
+  - component: {fileID: 5684184172524653968}
   m_Layer: 5
   m_Name: FormationPreview
   m_TagString: Untagged
@@ -43,23 +43,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 900, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5684184172524653968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1921744115998550485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef84b1a9ad3d50448b65839a6c057630, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NameText: {fileID: 3866518759152310213}
-  JingJieText: {fileID: 5649878430627966637}
-  ConditionText: {fileID: 1810275578448639503}
-  RewardText: {fileID: 4117085091428078354}
-  SubFormationView: {fileID: 0}
 --- !u!222 &2326449694361845102
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -98,6 +81,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5684184172524653968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921744115998550485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef84b1a9ad3d50448b65839a6c057630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameText: {fileID: 3866518759152310213}
+  JingJieText: {fileID: 5649878430627966637}
+  ConditionText: {fileID: 1810275578448639503}
+  RewardText: {fileID: 4117085091428078354}
 --- !u!1 &5785669185125993184
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class RunEntity : Addressable, IEntityModel
+public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiver
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged()
@@ -54,7 +54,7 @@ public class RunEntity : Addressable, IEntityModel
         });
     }
 
-    [SerializeReference] private ListModel<SkillSlot> _slots;
+    [SerializeReference] private SlotListModel _slots;
 
     public SkillSlot GetSlot(int i)
         => _slots[i];
@@ -97,7 +97,7 @@ public class RunEntity : Addressable, IEntityModel
 
     #endregion
 
-    private EntityEntry _entry;
+    [SerializeField] private EntityEntry _entry;
     public EntityEntry GetEntry() => _entry;
     public void SetEntry(EntityEntry entry) => _entry = entry;
 
@@ -167,57 +167,24 @@ public class RunEntity : Addressable, IEntityModel
     public static RunEntity FromTemplate(RunEntity template)
         => new(template);
 
-    // public void SetSlotContent(int i, string skillName, JingJie? j = null)
-    // {
-    //     if (string.IsNullOrEmpty(skillName))
-    //         return;
-    //
-    //     SkillEntry skill = skillName;
-    //     JingJie jingJie = j ?? skill.JingJieRange.Start;
-    //     SetSlotContent(i, RunSkill.From(skill, jingJie), j);
-    // }
-    //
-    // public void SetSlotContent(int i, RunSkill skill, JingJie? j = null)
-    // {
-    //     _slots[i].Skill = skill;
-    // }
-    //
-    // public void QuickSetSlotContent(params string[] skillNames)
-    // {
-    //     int diff = _slots.Count() - skillNames.Length;
-    //     for (int i = skillNames.Length - 1; i >= 0; i--)
-    //     {
-    //         if (skillNames[i] != null && skillNames[i] != "")
-    //         {
-    //             SkillEntry skill = skillNames[i];
-    //             SetSlotContent(diff + i, RunSkill.From(skill, skill.JingJieRange.Start));
-    //         }
-    //     }
-    // }
+    public void OnBeforeSerialize() { }
 
-    // public void FromJson(string json)
-    // {
-    //     try
-    //     {
-    //         FromEntity(JsonUtility.FromJson<RunEntity>(json.Replace('\'', '\"')));
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //         throw;
-    //     }
-    // }
-    //
-    // public string ToJson()
-    // {
-    //     return JsonUtility.ToJson(this).Replace('\"', '\'');
-    // }
+    public void OnAfterDeserialize()
+    {
+        _accessors = new()
+        {
+            { "Slots", () => _slots },
+            { "ActivatedSubFormations", () => _activatedFormations },
+        };
+        _entry = string.IsNullOrEmpty(_entry.Name) ? null : Encyclopedia.EntityCategory[_entry.Name];
 
-    // private void FromEntity(RunEntity entity)
-    // {
-    //     SetJingJie(entity.GetJingJie());
-    //     SetBaseHealth(entity.GetBaseHealth());
-    //     for (int i = 0; i < _slots.Count(); i++)
-    //         _slots[i].Skill = entity._slots[i].Skill;
-    // }
+
+
+
+        _activatedFormations = new ListModel<FormationEntry>();
+        _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
+
+        UpdateReveal();
+        EnvironmentChanged();
+    }
 }
