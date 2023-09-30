@@ -40,18 +40,22 @@ public class FormationIconView : ItemView, IInteractable,
     {
         if (eventData.dragging) return;
 
-        RunCanvas.Instance.SetIndexPathForSubFormationPreview(view.GetAddress());
+        RunCanvas.Instance.FormationPreview.SetAddress(view.GetAddress());
+        RunCanvas.Instance.FormationPreview.Refresh();
     }
 
     public void PointerExit(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.SetIndexPathForSubFormationPreview(null);
+
+        RunCanvas.Instance.FormationPreview.SetAddress(null);
+        RunCanvas.Instance.FormationPreview.Refresh();
     }
 
     public void PointerMove(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        RunCanvas.Instance.UpdateMousePosForSubFormationPreview(eventData.position);
+
+        RunCanvas.Instance.FormationPreview.UpdateMousePos(eventData.position);
     }
 }

@@ -842,7 +842,7 @@ GameObject:
   - component: {fileID: 2797796711988945527}
   - component: {fileID: 7588568743444983968}
   m_Layer: 0
-  m_Name: SlotListView
+  m_Name: FieldView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1982,8 +1982,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7778355132643012418}
   - component: {fileID: 5896712554100659081}
-  - component: {fileID: -711014571449497360}
   - component: {fileID: 3623292578165185130}
+  - component: {fileID: -711014571449497360}
   m_Layer: 5
   m_Name: EntityEditorEntityView
   m_TagString: Untagged
@@ -2022,23 +2022,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5815391005032935578}
   m_CullTransparentMesh: 1
---- !u!114 &-711014571449497360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5815391005032935578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 360ba141bae4e5f4693435cd6a8e1f60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EntityDropdown: {fileID: 3302334552529912147}
-  JingJieDropdown: {fileID: 1916946225291987103}
-  HealthInputField: {fileID: 6908596748620297286}
-  SlotListView: {fileID: 7588568743444983968}
-  FormationListView: {fileID: 3497237185409118463}
 --- !u!114 &3623292578165185130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2069,6 +2052,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-711014571449497360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5815391005032935578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 360ba141bae4e5f4693435cd6a8e1f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EntityDropdown: {fileID: 3302334552529912147}
+  JingJieDropdown: {fileID: 1916946225291987103}
+  HealthInputField: {fileID: 6908596748620297286}
+  FieldView: {fileID: 7588568743444983968}
+  FormationListView: {fileID: 3497237185409118463}
 --- !u!1 &5900262046347886694
 GameObject:
   m_ObjectHideFlags: 0

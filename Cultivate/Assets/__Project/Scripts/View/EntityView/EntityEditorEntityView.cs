@@ -9,7 +9,7 @@ public class EntityEditorEntityView : ItemView, IInteractable
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
     public TMP_InputField HealthInputField;
-    public ListView SlotListView;
+    public ListView FieldView;
     public ListView FormationListView;
 
     public override void SetAddress(Address address)
@@ -25,7 +25,7 @@ public class EntityEditorEntityView : ItemView, IInteractable
             EntityDropdown.gameObject.SetActive(false);
             JingJieDropdown.gameObject.SetActive(false);
             HealthInputField.gameObject.SetActive(false);
-            SlotListView.gameObject.SetActive(false);
+            FieldView.gameObject.SetActive(false);
             FormationListView.gameObject.SetActive(false);
 
             return;
@@ -34,7 +34,7 @@ public class EntityEditorEntityView : ItemView, IInteractable
         EntityDropdown.gameObject.SetActive(true);
         JingJieDropdown.gameObject.SetActive(true);
         HealthInputField.gameObject.SetActive(true);
-        SlotListView.gameObject.SetActive(true);
+        FieldView.gameObject.SetActive(true);
         FormationListView.gameObject.SetActive(true);
 
         if (EntityDropdown != null)
@@ -59,8 +59,8 @@ public class EntityEditorEntityView : ItemView, IInteractable
             HealthInputField.onValueChanged.AddListener(HealthChanged);
         }
 
-        if (SlotListView != null)
-            SlotListView.SetAddress(GetAddress().Append(".Slots"));
+        if (FieldView != null)
+            FieldView.SetAddress(GetAddress().Append(".Slots"));
 
         if (FormationListView != null)
             FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
@@ -96,7 +96,7 @@ public class EntityEditorEntityView : ItemView, IInteractable
         SetEntry(entity.GetEntry());
         SetJingJie(entity.GetJingJie());
         SetHealth(entity.GetBaseHealth());
-        SlotListView.Refresh();
+        FieldView.Refresh();
         FormationListView.Refresh();
     }
 
@@ -124,28 +124,15 @@ public class EntityEditorEntityView : ItemView, IInteractable
         Refresh();
     }
 
-    // private void Copy()
-    // {
-    //     IEntityModel entity = Get<IEntityModel>();
-    //     GUIUtility.systemCopyBuffer = entity.ToJson();
-    // }
-    //
-    // private void Paste()
-    // {
-    //     IEntityModel entity = Get<IEntityModel>();
-    //     entity.FromJson(GUIUtility.systemCopyBuffer);
-    //     RunCanvas.Instance.Refresh();
-    // }
-
-    #region Interact
+    #region IInteractable
 
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate() => InteractDelegate;
     public void SetDelegate(InteractDelegate interactDelegate)
     {
         InteractDelegate = interactDelegate;
-        if (SlotListView != null)
-            SlotListView.SetDelegate(InteractDelegate);
+        if (FieldView != null)
+            FieldView.SetDelegate(InteractDelegate);
         if (FormationListView != null)
             FormationListView.SetDelegate(InteractDelegate);
     }

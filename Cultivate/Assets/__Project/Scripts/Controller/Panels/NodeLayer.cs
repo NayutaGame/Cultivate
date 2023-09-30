@@ -50,6 +50,7 @@ public class NodeLayer : MonoBehaviour
         if (_currentPanel != null)
         {
             seq.Append(_currentPanel.GetShowTween());
+            _currentPanel.Configure();
             _currentPanel.Refresh();
         }
 
@@ -58,23 +59,26 @@ public class NodeLayer : MonoBehaviour
 
     public void Configure()
     {
-        // _panelDict = new()
-        // {
-        //     { typeof(BattlePanelDescriptor), BattlePanel },
-        //     { typeof(DialogPanelDescriptor), DialogPanel },
-        //     { typeof(DiscoverSkillPanelDescriptor), DiscoverSkillPanel },
-        //     { typeof(CardPickerPanelDescriptor), CardPickerPanel },
-        //     { typeof(ShopPanelDescriptor), ShopPanel },
-        //     { typeof(BarterPanelDescriptor), BarterPanel },
-        //     { typeof(ArbitraryCardPickerPanelDescriptor), ArbitraryCardPickerPanel },
-        // };
-        //
+        _panelDict = new()
+        {
+            { typeof(BattlePanelDescriptor), BattlePanel },
+            { typeof(DialogPanelDescriptor), DialogPanel },
+            { typeof(DiscoverSkillPanelDescriptor), DiscoverSkillPanel },
+            { typeof(CardPickerPanelDescriptor), CardPickerPanel },
+            { typeof(ShopPanelDescriptor), ShopPanel },
+            { typeof(BarterPanelDescriptor), BarterPanel },
+            { typeof(ArbitraryCardPickerPanelDescriptor), ArbitraryCardPickerPanel },
+        };
+
         // _panelDict.Do(kvp => kvp.Value.Configure());
     }
 
     public void Refresh()
     {
         if (_currentPanel != null)
+        {
+            _currentPanel.Configure();
             _currentPanel.Refresh();
+        }
     }
 }

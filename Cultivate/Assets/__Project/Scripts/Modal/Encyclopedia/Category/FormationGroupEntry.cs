@@ -10,8 +10,8 @@ public class FormationGroupEntry : Entry, Addressable
     private int _order;
     public int Order => _order;
 
-    private FormationEntry[] _subFormationEntries;
-    public FormationEntry[] SubFormationEntries => _subFormationEntries;
+    private ListModel<FormationEntry> _subFormationEntries;
+    public ListModel<FormationEntry> SubFormationEntries => _subFormationEntries;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s)
@@ -26,16 +26,20 @@ public class FormationGroupEntry : Entry, Addressable
 
         _order = order;
 
-        _subFormationEntries = formationEntries ?? new FormationEntry[] { };
-        foreach (FormationEntry f in _subFormationEntries)
+        _subFormationEntries = new ListModel<FormationEntry>();
+
+        if (formationEntries != null)
+            _subFormationEntries.AddRange(formationEntries);
+
+        _subFormationEntries.Traversal().Do(f =>
         {
             f.SetName(name);
             f.SetOrder(order);
-        }
+        });
     }
 
     public FormationEntry FirstActivatedFormation(RunEntity entity, FormationArguments args)
     {
-        return _subFormationEntries.FirstObj(f => f.CanActivate(entity, args));
+        return _subFormationEntries.Traversal().FirstObj(f => f.CanActivate(entity, args));
     }
 }

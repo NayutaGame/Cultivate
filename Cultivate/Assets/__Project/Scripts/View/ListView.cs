@@ -123,6 +123,8 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
             _inactivePools[i] = new List<ItemView>();
         RegisterExists();
         Model = Get<IListModel>();
+        if (_model == null)
+            ;
         BigRefresh();
     }
 

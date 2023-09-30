@@ -4,8 +4,8 @@ using UnityEngine.EventSystems;
 
 public class FormationBrowser : ListView
 {
-    [SerializeField] private FormationGroupView _detailedGroupView;
-    private FormationGroupView _selection;
+    [SerializeField] private FormationGroupDetailedView _detailedGroupView;
+    private FormationGroupBarView _selection;
 
     public override void SetAddress(Address address)
     {
@@ -15,7 +15,12 @@ public class FormationBrowser : ListView
 
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate interactDelegate = new(1, getId: view => 0);
+        InteractDelegate interactDelegate = new(1, getId: view =>
+        {
+            if (view is FormationGroupBarView)
+                return 0;
+            return null;
+        });
         interactDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, SelectFormation);
         SetDelegate(interactDelegate);
     }
@@ -24,7 +29,7 @@ public class FormationBrowser : ListView
     {
         if (_selection != null)
             _selection.SetSelected(false);
-        _selection = (FormationGroupView)view;
+        _selection = (FormationGroupBarView)view;
         if (_selection != null)
         {
             _detailedGroupView.SetAddress(view.GetAddress());

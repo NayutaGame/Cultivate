@@ -1,22 +1,11 @@
 
-using System;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BattlePanel : Panel
 {
-    public RectTransform _enemySpriteTransform;
-    public RectTransform _enemyHandTransform;
-    public RectTransform _enemySubFormationInventoryTransform;
-
-    public RectTransform _operationViewTransform;
-    public CanvasGroup _operationViewCanvasGroup;
-
-    public ListView FieldView; // SlotView
-    public Image EnemySprite;
-    public ListView EnemySubFormationInventory; // FormationView
+    [SerializeField] private BattleEntityView EnemyView;
 
     public TMP_Text HomeHP;
     public GameObject HomeHPSlash;
@@ -24,8 +13,6 @@ public class BattlePanel : Panel
     public GameObject AwayHPSlash;
 
     public Button CombatButton;
-
-    private InteractDelegate InteractDelegate;
 
     private Address _address;
 
@@ -35,8 +22,7 @@ public class BattlePanel : Panel
 
         _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
 
-        FieldView.SetAddress(_address.Append(".Enemy.Slots"));
-        EnemySubFormationInventory.SetAddress(_address.Append(".Enemy.ActivatedSubFormations"));
+        EnemyView.SetAddress(_address.Append(".Enemy"));
 
         CombatButton.onClick.RemoveAllListeners();
         CombatButton.onClick.AddListener(Combat);
@@ -44,8 +30,7 @@ public class BattlePanel : Panel
 
     public override void Refresh()
     {
-        FieldView.Refresh();
-        EnemySubFormationInventory.Refresh();
+        EnemyView.Refresh();
 
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
 
@@ -67,7 +52,6 @@ public class BattlePanel : Panel
                 AwayHP.color = Color.white;
                 AwayHPSlash.SetActive(false);
             }
-            // ReportText.text = report.ToString();
         }
         else
         {
@@ -77,7 +61,6 @@ public class BattlePanel : Panel
             HomeHPSlash.SetActive(false);
             AwayHP.color = Color.white;
             AwayHPSlash.SetActive(false);
-            // ReportText.text = "";
         }
     }
 

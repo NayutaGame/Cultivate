@@ -414,9 +414,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2224151803628044569}
-  - component: {fileID: 5670130994828124267}
   - component: {fileID: 9165610463350059927}
   - component: {fileID: 4159040134791333716}
+  - component: {fileID: 5670130994828124267}
   m_Layer: 5
   m_Name: FormationView
   m_TagString: Untagged
@@ -447,21 +447,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 900, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5670130994828124267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5030687476195256108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41cec051e29093e468d278a25e0decb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  JingJieText: {fileID: 1230496396393390164}
-  ConditionText: {fileID: 5072350056316369142}
-  RewardText: {fileID: 7374974929385889259}
 --- !u!222 &9165610463350059927
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -500,3 +485,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5670130994828124267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5030687476195256108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cec051e29093e468d278a25e0decb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameText: {fileID: 0}
+  JingJieText: {fileID: 1230496396393390164}
+  ConditionText: {fileID: 5072350056316369142}
+  RewardText: {fileID: 7374974929385889259}

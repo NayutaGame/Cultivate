@@ -1,4 +1,5 @@
 
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,11 +45,7 @@ public class DeckPanel : Panel
         FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
         MechListView.SetAddress(new Address("Run.Battle.MechBag"));
 
-        InteractDelegate formationIconInteractDelegate = new InteractDelegate(1, v => 0);
-        formationIconInteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((FormationView)v).PointerEnter(v, d));
-        formationIconInteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((FormationView)v).PointerExit(v, d));
-        formationIconInteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((FormationView)v).PointerMove(v, d));
-        FormationListView.SetDelegate(formationIconInteractDelegate);
+        ConfigureInteractDelegate();
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
@@ -62,12 +59,110 @@ public class DeckPanel : Panel
         MechListView.Refresh();
     }
 
-    public void SetInteractDelegate(InteractDelegate interactDelegate)
+    #region IInteractable
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    private void ConfigureInteractDelegate()
     {
-        FieldView.SetDelegate(interactDelegate);
-        HandView.SetDelegate(interactDelegate);
-        MechListView.SetDelegate(interactDelegate);
+        InteractDelegate = new(5,
+            getId: view =>
+            {
+                if (view is HandSkillView)
+                    return 0;
+                if (view is SkillInventoryView)
+                    return 1;
+                if (view is FieldSlotView)
+                    return 2;
+                if (view is MechView)
+                    return 3;
+                if (view is FormationIconView)
+                    return 4;
+                return null;
+            },
+            dragDropTable: new Action<IInteractable, IInteractable>[]
+            {
+                /*                      RunSkill,   SkillInventory, SkillSlot(Hero), Mech,       FormationIconView*/
+                /* RunSkill          */ TryMerge,   null,           TryEquipSkill,   null,       null,
+                /* SkillInventory    */ null,       null,           null,            null,       null,
+                /* SkillSlot(Hero)   */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip, null,
+                /* Mech              */ null,       null,           TryEquipMech,    null,       null,
+                /* FormationIconView */ null,       null,           null,            null,       null,
+            });
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((HandSkillView)v).HoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((HandSkillView)v).UnhoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((HandSkillView)v).PointerMove(d));
+        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 0, (v, d) => ((HandSkillView)v).BeginDrag(d));
+        InteractDelegate.SetHandle(InteractDelegate.END_DRAG, 0, (v, d) => ((HandSkillView)v).EndDrag(d));
+        InteractDelegate.SetHandle(InteractDelegate.DRAG, 0, (v, d) => ((HandSkillView)v).Drag(d));
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, (v, d) => ((FieldSlotView)v).HoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, (v, d) => ((FieldSlotView)v).UnhoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 2, (v, d) => ((FieldSlotView)v).PointerMove(d));
+        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 2, (v, d) => ((FieldSlotView)v).BeginDrag(d));
+        InteractDelegate.SetHandle(InteractDelegate.END_DRAG, 2, (v, d) => ((FieldSlotView)v).EndDrag(d));
+        InteractDelegate.SetHandle(InteractDelegate.DRAG, 2, (v, d) => ((FieldSlotView)v).Drag(d));
+
+        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 3, (v, d) => ((MechView)v).BeginDrag(d));
+        InteractDelegate.SetHandle(InteractDelegate.END_DRAG, 3, (v, d) => ((MechView)v).EndDrag(d));
+        InteractDelegate.SetHandle(InteractDelegate.DRAG, 3, (v, d) => ((MechView)v).Drag(d));
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 4, (v, d) => ((FormationIconView)v).PointerEnter(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 4, (v, d) => ((FormationIconView)v).PointerExit(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 4, (v, d) => ((FormationIconView)v).PointerMove(v, d));
+
+        FieldView.SetDelegate(InteractDelegate);
+        HandView.SetDelegate(InteractDelegate);
+        FormationListView.SetDelegate(InteractDelegate);
+        MechListView.SetDelegate(InteractDelegate);
     }
+
+    private void TryMerge(IInteractable from, IInteractable to)
+    {
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        RunSkill lhs = from.Get<RunSkill>();
+        RunSkill rhs = to.Get<RunSkill>();
+        env.TryMerge(lhs, rhs);
+    }
+
+    private void TryEquipSkill(IInteractable from, IInteractable to)
+    {
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        RunSkill toEquip = from.Get<RunSkill>();
+        SkillSlot slot = to.Get<SkillSlot>();
+        env.TryEquipSkill(toEquip, slot);
+        FieldView.Refresh();
+    }
+
+    private void TryEquipMech(IInteractable from, IInteractable to)
+    {
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        Mech toEquip = from.Get<Mech>();
+        SkillSlot slot = to.Get<SkillSlot>();
+        env.TryEquipMech(toEquip, slot);
+        from.Refresh();
+        FieldView.Refresh();
+    }
+
+    private void TryUnequip(IInteractable from, IInteractable to)
+    {
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        SkillSlot slot = from.Get<SkillSlot>();
+        env.TryUnequip(slot, null);
+        FieldView.Refresh();
+    }
+
+    private void TrySwap(IInteractable from, IInteractable to)
+    {
+        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        SkillSlot fromSlot = from.Get<SkillSlot>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
+        env.TrySwap(fromSlot, toSlot);
+        FieldView.Refresh();
+    }
+
+    #endregion
 
     private void Sort()
     {
