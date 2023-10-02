@@ -19,7 +19,9 @@ public class InteractDelegate
 
     private Action<IInteractable, IInteractable> GetDragDrop(IInteractable fromView, IInteractable toView)
     {
-        if (fromView.GetDelegate() != toView.GetDelegate())
+        InteractDelegate fromDelegate = fromView?.GetDelegate();
+        InteractDelegate toDelegate = toView?.GetDelegate();
+        if (fromDelegate == null || toDelegate == null || fromDelegate != toDelegate)
             return null;
 
         int? fromId = _getId(fromView);

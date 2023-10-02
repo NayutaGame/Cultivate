@@ -2,6 +2,7 @@
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [SelectionBase]
 public class EntityEditorSkillBarView : ItemView, IInteractable,
@@ -11,6 +12,8 @@ public class EntityEditorSkillBarView : ItemView, IInteractable,
     IDropHandler
 {
     [SerializeField] private TMP_Text NameText;
+    [SerializeField] private Image BackgroundImage;
+    [SerializeField] private Image WuXingImage;
 
     public override void Refresh()
     {
@@ -18,67 +21,9 @@ public class EntityEditorSkillBarView : ItemView, IInteractable,
 
         ISkillModel skill = Get<ISkillModel>();
         NameText.text = skill.GetName();
+        BackgroundImage.color = skill.GetColor();
+        WuXingImage.sprite = skill.GetWuXingSprite();
     }
-
-    // [SerializeField] protected RectTransform _rectTransform;
-    // [SerializeField] protected Image _image;
-    // [SerializeField] protected CanvasGroup _canvasGroup;
-
-    // [SerializeField] private TMP_Text AnnotationText;
-
-    // [SerializeField] private Image CounterImage;
-    // [SerializeField] private Image SelectionImage;
-    //
-    // private bool _selected;
-    // public virtual bool IsSelected() => _selected;
-    // public virtual void SetSelected(bool selected)
-    // {
-    //     _selected = selected;
-    //     if (SelectionImage != null)
-    //         SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
-    // }
-    //
-    // public void ClearIsManaShortage() => IsManaShortageDelegate = null;
-    // public event Func<bool> IsManaShortageDelegate;
-
-    // public virtual void SetManaCostColor()
-    // {
-    //     if (ManaCostText == null)
-    //         return;
-    //
-    //     Color color = Color.white;
-    //
-    //     if (IsManaShortageDelegate != null && IsManaShortageDelegate())
-    //         color = Color.red;
-    //
-    //     ManaCostText.color = color;
-    // }
-
-    // public virtual void SetCounter(int currCounter, int maxCounter)
-    // {
-    //     if (CounterImage == null)
-    //         return;
-    //
-    //     CounterImage.fillAmount = (float)currCounter / maxCounter;
-    // }
-
-    // public virtual void SetAnnotationText(string annotationText)
-    // {
-    //     if (AnnotationText == null)
-    //         return;
-    //
-    //     AnnotationText.text = annotationText;
-    // }
-
-    // public virtual void SetColor(Color color)
-    // {
-    //     // _image.color = color;
-    // }
-    //
-    // public virtual void SetCardFace(Sprite cardFace)
-    // {
-    //     // _image.sprite = cardFace;
-    // }
 
     #region IInteractable
 
