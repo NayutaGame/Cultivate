@@ -9,6 +9,10 @@ public class EntityEditorEntityView : ItemView, IInteractable
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
     public TMP_InputField HealthInputField;
+    public Toggle NormalToggle;
+    public Toggle EliteToggle;
+    public Toggle BossToggle;
+
     public ListView FieldView;
     public ListView FormationListView;
 
@@ -16,15 +20,21 @@ public class EntityEditorEntityView : ItemView, IInteractable
     {
         base.SetAddress(address);
 
+        EntityDropdown.onValueChanged.RemoveAllListeners();
+        JingJieDropdown.onValueChanged.RemoveAllListeners();
+        HealthInputField.onValueChanged.RemoveAllListeners();
+        NormalToggle.onValueChanged.RemoveAllListeners();
+        EliteToggle.onValueChanged.RemoveAllListeners();
+        BossToggle.onValueChanged.RemoveAllListeners();
+
         if (address == null)
         {
-            EntityDropdown.onValueChanged.RemoveAllListeners();
-            JingJieDropdown.onValueChanged.RemoveAllListeners();
-            HealthInputField.onValueChanged.RemoveAllListeners();
-
             EntityDropdown.gameObject.SetActive(false);
             JingJieDropdown.gameObject.SetActive(false);
             HealthInputField.gameObject.SetActive(false);
+            NormalToggle.gameObject.SetActive(false);
+            EliteToggle.gameObject.SetActive(false);
+            BossToggle.gameObject.SetActive(false);
             FieldView.gameObject.SetActive(false);
             FormationListView.gameObject.SetActive(false);
 
@@ -34,6 +44,9 @@ public class EntityEditorEntityView : ItemView, IInteractable
         EntityDropdown.gameObject.SetActive(true);
         JingJieDropdown.gameObject.SetActive(true);
         HealthInputField.gameObject.SetActive(true);
+        NormalToggle.gameObject.SetActive(true);
+        EliteToggle.gameObject.SetActive(true);
+        BossToggle.gameObject.SetActive(true);
         FieldView.gameObject.SetActive(true);
         FormationListView.gameObject.SetActive(true);
 
@@ -41,7 +54,6 @@ public class EntityEditorEntityView : ItemView, IInteractable
         {
             EntityDropdown.options = new();
             Encyclopedia.EntityCategory.Traversal.Do(entityEntry => EntityDropdown.options.Add(new TMP_Dropdown.OptionData(entityEntry.Name)));
-            EntityDropdown.onValueChanged.RemoveAllListeners();
             EntityDropdown.onValueChanged.AddListener(EntryChanged);
         }
 
@@ -49,15 +61,17 @@ public class EntityEditorEntityView : ItemView, IInteractable
         {
             JingJieDropdown.options = new();
             JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.ToString())));
-            JingJieDropdown.onValueChanged.RemoveAllListeners();
             JingJieDropdown.onValueChanged.AddListener(JingJieChanged);
         }
 
         if (HealthInputField != null)
         {
-            HealthInputField.onValueChanged.RemoveAllListeners();
             HealthInputField.onValueChanged.AddListener(HealthChanged);
         }
+
+        NormalToggle.onValueChanged.AddListener(NormalToggled);
+        EliteToggle.onValueChanged.AddListener(EliteToggled);
+        BossToggle.onValueChanged.AddListener(BossToggled);
 
         if (FieldView != null)
             FieldView.SetAddress(GetAddress().Append(".Slots"));
@@ -83,6 +97,21 @@ public class EntityEditorEntityView : ItemView, IInteractable
         HealthInputField.SetTextWithoutNotify(health.ToString());
     }
 
+    private void SetNormal(bool value)
+    {
+        NormalToggle.SetIsOnWithoutNotify(value);
+    }
+
+    private void SetElite(bool value)
+    {
+        EliteToggle.SetIsOnWithoutNotify(value);
+    }
+
+    private void SetBoss(bool value)
+    {
+        BossToggle.SetIsOnWithoutNotify(value);
+    }
+
     #endregion
 
     public override void Refresh()
@@ -96,6 +125,9 @@ public class EntityEditorEntityView : ItemView, IInteractable
         SetEntry(entity.GetEntry());
         SetJingJie(entity.GetJingJie());
         SetHealth(entity.GetBaseHealth());
+        SetNormal(entity.IsNormal());
+        SetElite(entity.IsElite());
+        SetBoss(entity.IsBoss());
         FieldView.Refresh();
         FormationListView.Refresh();
     }
@@ -121,6 +153,27 @@ public class EntityEditorEntityView : ItemView, IInteractable
 
         IEntityModel entity = Get<IEntityModel>();
         entity.SetBaseHealth(health);
+        Refresh();
+    }
+
+    private void NormalToggled(bool value)
+    {
+        IEntityModel entity = Get<IEntityModel>();
+        entity.SetNormal(value);
+        Refresh();
+    }
+
+    private void EliteToggled(bool value)
+    {
+        IEntityModel entity = Get<IEntityModel>();
+        entity.SetElite(value);
+        Refresh();
+    }
+
+    private void BossToggled(bool value)
+    {
+        IEntityModel entity = Get<IEntityModel>();
+        entity.SetBoss(value);
         Refresh();
     }
 

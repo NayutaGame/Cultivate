@@ -1,16 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public interface IEntityModel
 {
     EntityEntry GetEntry();
     void SetEntry(EntityEntry entry);
+
     JingJie GetJingJie();
     void SetJingJie(JingJie jingJie);
+
     int GetBaseHealth();
     void SetBaseHealth(int health);
+
     int GetFinalHealth();
-    // string ToJson();
-    // void FromJson(string json);
+
+    bool IsNormal();
+    void SetNormal(bool value);
+
+    bool IsElite();
+    void SetElite(bool value);
+
+    bool IsBoss();
+    void SetBoss(bool value);
 }

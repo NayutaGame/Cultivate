@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+
 using System.Threading.Tasks;
-using CLLibrary;
-using UnityEngine;
 
 public class DesignerEnvironment
 {
@@ -12,8 +7,8 @@ public class DesignerEnvironment
 
     public static void EnterRun()
     {
-        // Standard();
-        Custom();
+        Standard();
+        // Custom();
     }
 
     public static void Standard()

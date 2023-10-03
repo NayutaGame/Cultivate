@@ -25,11 +25,27 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
     public int GetBaseHealth() => _baseHealth;
     public void SetBaseHealth(int health) => _baseHealth = health;
 
-    [OptionalField(VersionAdded = 2)] private int _dHealth;
+    [SerializeField] [OptionalField(VersionAdded = 2)] private int _dHealth;
     public int GetDHealth() => _dHealth;
     public void SetDHealth(int dHealth) => _dHealth = dHealth;
 
     public int GetFinalHealth() => _baseHealth + _dHealth;
+
+    #region Only For Editable
+
+    [SerializeField] [OptionalField(VersionAdded = 2)] private bool _isNormal;
+    public bool IsNormal() => _isNormal;
+    public void SetNormal(bool value) => _isNormal = value;
+
+    [SerializeField] [OptionalField(VersionAdded = 2)] private bool _isElite;
+    public bool IsElite() => _isElite;
+    public void SetElite(bool value) => _isElite = value;
+
+    [SerializeField] [OptionalField(VersionAdded = 2)] private bool _isBoss;
+    public bool IsBoss() => _isBoss;
+    public void SetBoss(bool value) => _isBoss = value;
+
+    #endregion
 
     [SerializeField] private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
@@ -177,9 +193,6 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
             { "ActivatedSubFormations", () => _activatedFormations },
         };
         _entry = string.IsNullOrEmpty(_entry.Name) ? null : Encyclopedia.EntityCategory[_entry.Name];
-
-
-
 
         _activatedFormations = new ListModel<FormationEntry>();
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class DrawEntityDetails
 {
@@ -15,5 +12,14 @@ public class DrawEntityDetails
         AllowNormal = allowNormal;
         AllowElite = allowElite;
         AllowBoss = allowBoss;
+    }
+
+    public bool CanDraw(RunEntity entity)
+    {
+        bool jingJieIsMatch = entity.GetJingJie() == JingJie;
+        bool powerIsMatch = (entity.IsNormal() && AllowNormal)
+                            || (entity.IsElite() && AllowElite)
+                            || (entity.IsBoss() && AllowBoss);
+        return jingJieIsMatch && powerIsMatch;
     }
 }
