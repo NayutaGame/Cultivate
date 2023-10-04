@@ -14,6 +14,15 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     public List<ItemView> ActivePool => _activePool;
     private List<ItemView>[] _inactivePools;
 
+    public IEnumerable<ItemView> Traversal()
+    {
+        foreach (var itemView in _activePool)
+            yield return itemView;
+        foreach(var itemViewList in _inactivePools)
+        foreach (var itemView in itemViewList)
+            yield return itemView;
+    }
+
     private Func<object, int> _prefabProvider;
     public void SetPrefabProvider(Func<object, int> prefabProvider) => _prefabProvider = prefabProvider;
     private GameObject GetPrefab(object item) => Prefabs[_prefabProvider?.Invoke(item) ?? 0];

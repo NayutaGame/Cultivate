@@ -10,8 +10,11 @@ public class CardPickerPanel : Panel
     public TMP_Text StatusText;
     public Button ConfirmButton;
 
-    private List<SkillView> _skillSelections;
-    private List<SlotView> _slotSelections;
+    public ListView SkillListView;
+    public ListView SlotListView;
+
+    private List<int> _skillSelections;
+    private List<int> _slotSelections;
 
     private Address _address;
 
@@ -24,15 +27,18 @@ public class CardPickerPanel : Panel
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
-        _skillSelections = new List<SkillView>();
-        _slotSelections = new List<SlotView>();
+        SkillListView = RunCanvas.Instance.MMDMLayer.DeckPanel.HandView;
+        SlotListView = RunCanvas.Instance.MMDMLayer.DeckPanel.FieldView;
+
+        _skillSelections ??= new List<int>();
+        _slotSelections ??= new List<int>();
     }
 
     public void OnDisable()
     {
-        _skillSelections.Do(v => v.SetSelected(false));
+        SkillListView.Traversal().Do(v => ((SkillView)v).SetSelected(false));
         _skillSelections.Clear();
-        _slotSelections.Do(v => v.SetSelected(false));
+        SlotListView.Traversal().Do(v => ((SlotView)v).SetSelected(false));
         _slotSelections.Clear();
     }
 
@@ -54,12 +60,13 @@ public class CardPickerPanel : Panel
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
         SkillView skillView = view as SkillView;
-        bool isSelected = _skillSelections.Contains(skillView);
+        int index = SkillListView.ActivePool.FindIndex(v => v == skillView);
+        bool isSelected = _skillSelections.Contains(index);
 
         if (isSelected)
         {
             skillView.SetSelected(false);
-            _skillSelections.Remove(skillView);
+            _skillSelections.Remove(index);
         }
         else
         {
@@ -72,7 +79,7 @@ public class CardPickerPanel : Panel
                 return false;
 
             skillView.SetSelected(true);
-            _skillSelections.Add(skillView);
+            _skillSelections.Add(index);
         }
 
         return true;
@@ -83,12 +90,13 @@ public class CardPickerPanel : Panel
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
         SlotView slotView = view as SlotView;
-        bool isSelected = _slotSelections.Contains(slotView);
+        int index = SlotListView.ActivePool.FindIndex(v => v == slotView);
+        bool isSelected = _slotSelections.Contains(index);
 
         if (isSelected)
         {
             slotView.SetSelected(false);
-            _slotSelections.Remove(slotView);
+            _slotSelections.Remove(index);
         }
         else
         {
@@ -101,7 +109,7 @@ public class CardPickerPanel : Panel
                 return false;
 
             slotView.SetSelected(true);
-            _slotSelections.Add(slotView);
+            _slotSelections.Add(index);
         }
 
         return true;
@@ -111,8 +119,8 @@ public class CardPickerPanel : Panel
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
         List<object> iRunSkillList = new List<object>();
-        iRunSkillList.AddRange(_skillSelections.Map(v => v.Get<object>()));
-        iRunSkillList.AddRange(_slotSelections.Map(v => v.Get<object>()));
+        iRunSkillList.AddRange(_skillSelections.Map(i => SkillListView.ActivePool[i].Get<object>()));
+        iRunSkillList.AddRange(_slotSelections.Map(i => SlotListView.ActivePool[i].Get<object>()));
         PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedIRunSkillsSignal(iRunSkillList));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
