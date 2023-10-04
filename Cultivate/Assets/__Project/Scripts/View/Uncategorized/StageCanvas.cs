@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class StageCanvas : Singleton<StageCanvas>
 {
-    [SerializeField] private SkillPreview SkillPreview;
+    public SkillPreview SkillPreview;
 
     public TMP_Text SpeedText;
     public Slider SpeedSlider;
@@ -154,17 +154,5 @@ public class StageCanvas : Singleton<StageCanvas>
     public void SetEnemyArmor(int value)
     {
         _enemyArmorText.text = $"护甲：{value}";
-    }
-
-    public void SetIndexPathForPreview(Address address)
-    {
-        SkillPreview.SetAddress(address);
-        SkillPreview.Refresh();
-    }
-
-    public void UpdateMousePosForPreview(Vector2 pos)
-    {
-        SkillPreview.UpdateMousePos(pos);
-        SkillPreview.Refresh();
     }
 }

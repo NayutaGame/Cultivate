@@ -42,11 +42,36 @@ public class TimelineView : MonoBehaviour
     public void Configure()
     {
         _views = new List<StageSkillView>();
+        ConfigureInteractDelegate();
 
         TotalCount = HomeSlots.Length;
         FutureCount = HomeSlots.Length - (IndexOfCurr + 1);
         PastCount = IndexOfCurr;
     }
+
+    #region IInteractable
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    private void ConfigureInteractDelegate()
+    {
+        InteractDelegate = new(1,
+            getId: view =>
+            {
+                if (view is StageSkillView)
+                    return 0;
+                return null;
+            });
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((StageSkillView)v).PointerEnter(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((StageSkillView)v).PointerExit(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((StageSkillView)v).PointerMove(v, d));
+
+        foreach (var v in _views)
+            v.SetDelegate(InteractDelegate);
+    }
+
+    #endregion
 
     public void InitialSetup()
     {
@@ -63,6 +88,7 @@ public class TimelineView : MonoBehaviour
             v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
             v.SetAddress(new Address($"Stage.Timeline.Notes#{note.TemporalIndex}"));
+            v.SetDelegate(InteractDelegate);
             v.Refresh();
         }
     }
@@ -132,6 +158,7 @@ public class TimelineView : MonoBehaviour
         v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
         v.SetAddress(new Address($"Stage.Timeline.Notes#{toCreate.TemporalIndex}"));
+        v.SetDelegate(InteractDelegate);
         v.Refresh();
     }
 }

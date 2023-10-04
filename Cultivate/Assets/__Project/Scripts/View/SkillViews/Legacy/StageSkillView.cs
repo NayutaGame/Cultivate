@@ -22,26 +22,6 @@ public class StageSkillView : SkillView, IInteractable,
         return seq;
     }
 
-    // public override void OnPointerEnter(PointerEventData eventData)
-    // {
-    //     if (eventData.dragging) return;
-    //     StageCanvas.Instance.SetIndexPathForPreview(GetAddress());
-    //     StageManager.Instance.Pause();
-    // }
-    //
-    // public override void OnPointerExit(PointerEventData eventData)
-    // {
-    //     if (eventData.dragging) return;
-    //     StageCanvas.Instance.SetIndexPathForPreview(null);
-    //     StageManager.Instance.Resume();
-    // }
-    //
-    // public override void OnPointerMove(PointerEventData eventData)
-    // {
-    //     if (eventData.dragging) return;
-    //     StageCanvas.Instance.UpdateMousePosForPreview(eventData.position);
-    // }
-
     #region IInteractable
 
     private InteractDelegate InteractDelegate;
@@ -53,4 +33,27 @@ public class StageSkillView : SkillView, IInteractable,
     public virtual void OnPointerMove(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_MOVE, this, eventData);
 
     #endregion
+
+    public void PointerEnter(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        StageCanvas.Instance.SkillPreview.SetAddress(GetAddress());
+        StageCanvas.Instance.SkillPreview.Refresh();
+        StageManager.Instance.Pause();
+    }
+
+    public void PointerExit(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        StageCanvas.Instance.SkillPreview.SetAddress(null);
+        StageCanvas.Instance.SkillPreview.Refresh();
+        StageManager.Instance.Resume();
+    }
+
+    public void PointerMove(IInteractable view, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        StageCanvas.Instance.SkillPreview.UpdateMousePos(eventData.position);
+    }
 }
