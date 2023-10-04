@@ -133,6 +133,7 @@ public class DeckPanel : Panel
         SkillSlot slot = to.Get<SkillSlot>();
         env.TryEquipSkill(toEquip, slot);
         FieldView.Refresh();
+        RunCanvas.Instance.NodeLayer.Refresh();
     }
 
     private void TryEquipMech(IInteractable from, IInteractable to)
@@ -143,6 +144,7 @@ public class DeckPanel : Panel
         env.TryEquipMech(toEquip, slot);
         from.Refresh();
         FieldView.Refresh();
+        RunCanvas.Instance.NodeLayer.Refresh();
     }
 
     private void TryUnequip(IInteractable from, IInteractable to)
@@ -151,6 +153,7 @@ public class DeckPanel : Panel
         SkillSlot slot = from.Get<SkillSlot>();
         env.TryUnequip(slot, null);
         FieldView.Refresh();
+        RunCanvas.Instance.NodeLayer.Refresh();
     }
 
     private void TrySwap(IInteractable from, IInteractable to)
@@ -160,6 +163,7 @@ public class DeckPanel : Panel
         SkillSlot toSlot = to.Get<SkillSlot>();
         env.TrySwap(fromSlot, toSlot);
         FieldView.Refresh();
+        RunCanvas.Instance.NodeLayer.Refresh();
     }
 
     #endregion

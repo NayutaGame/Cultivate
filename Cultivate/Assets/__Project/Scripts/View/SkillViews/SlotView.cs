@@ -36,22 +36,19 @@ public class SlotView : ItemView
     //     if (CanvasGroup != null)
     //         CanvasGroup.blocksRaycasts = true;
     // }
-    //
-    // public virtual bool IsSelected()
-    // {
-    //     if (SkillView == null)
-    //         return false;
-    //     return SkillView.IsSelected();
-    // }
-    //
-    // public virtual void SetSelected(bool selected)
-    // {
-    //     if (SkillView != null)
-    //         SkillView.SetSelected(selected);
-    // }
 
-    public bool IsSelected() => false;
-    public void SetSelected(bool selected) { }
+    public bool IsSelected()
+    {
+        if (SkillView == null)
+            return false;
+        return SkillView.IsSelected();
+    }
+
+    public void SetSelected(bool selected)
+    {
+        if (SkillView != null)
+            SkillView.SetSelected(selected);
+    }
 
     // [SerializeField] private RectTransform ContentTransform;
     //

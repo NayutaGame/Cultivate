@@ -12,36 +12,36 @@ public class NodeCategory : Category<NodeEntry>
         {
             new BattleNodeEntry("敌人", "敌人"),
 
-            new RewardNodeEntry("选择一种五行，获得一张随机牌", "选择一种五行，获得一张随机牌", "悟道",
-                create: runNode =>
-                {
-                    Pool<WuXing> pool = new Pool<WuXing>();
-                    pool.Populate(WuXing.Traversal);
-                    pool.Shuffle();
-
-                    WuXing[] options = new WuXing[3];
-                    for (int i = 0; i < options.Length; i++)
-                    {
-                        pool.TryPopItem(out options[i]);
-                    }
-
-                    DialogPanelDescriptor A = new("选择一种五行，获得一张随机牌",
-                        options[0]._name,
-                        options[1]._name,
-                        options[2]._name);
-
-                    A._receiveSignal = signal =>
-                    {
-                        if (signal is SelectedOptionSignal selectedOptionSignal)
-                        {
-                            int index = selectedOptionSignal.Selected;
-                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Battle.Map.JingJie).Claim();
-                        }
-                        return null;
-                    };
-
-                    runNode.ChangePanel(A);
-                }),
+            // new RewardNodeEntry("选择一种五行，获得一张随机牌", "选择一种五行，获得一张随机牌", "悟道",
+            //     create: runNode =>
+            //     {
+            //         Pool<WuXing> pool = new Pool<WuXing>();
+            //         pool.Populate(WuXing.Traversal);
+            //         pool.Shuffle();
+            //
+            //         WuXing[] options = new WuXing[3];
+            //         for (int i = 0; i < options.Length; i++)
+            //         {
+            //             pool.TryPopItem(out options[i]);
+            //         }
+            //
+            //         DialogPanelDescriptor A = new("选择一种五行，获得一张随机牌",
+            //             options[0]._name,
+            //             options[1]._name,
+            //             options[2]._name);
+            //
+            //         A._receiveSignal = signal =>
+            //         {
+            //             if (signal is SelectedOptionSignal selectedOptionSignal)
+            //             {
+            //                 int index = selectedOptionSignal.Selected;
+            //                 new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Battle.Map.JingJie).Claim();
+            //             }
+            //             return null;
+            //         };
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
 
             new RewardNodeEntry("回复命元", "回复命元", "人参果",
                 create: runNode =>
@@ -86,46 +86,46 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("加生命上限", "加生命上限", "温泉",
-                create: runNode =>
-                {
-                    int health = (runNode.JingJie + 1) * 3;
-                    DialogPanelDescriptor A = new DialogPanelDescriptor($"找到了一个人参果，吃了之后获得了{health}点生命上限")
-                        .SetReward(Reward.FromHealth(health));
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("商店", "商店", "商店",
-                create: runNode =>
-                {
-                    ShopPanelDescriptor A = new(runNode.JingJie);
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("以物易物", "以物易物", "以物易物",
-                create: runNode =>
-                {
-                    BarterPanelDescriptor A = new();
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("算卦", "算卦", "算卦",
-                canCreate: x => RunManager.Instance.Battle.Map.HasAdventureAfterwards(x),
-                create: runNode =>
-                {
-                    DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Battle.Map.NextAdventure().Name}",
-                        "换一个",
-                        "保持现状");
-
-                    A[0].SetSelect(
-                        option =>
-                        {
-                            RunManager.Instance.Battle.Map.RedrawNextAdventure();
-                            return null;
-                        });
-
-                    runNode.ChangePanel(A);
-                }),
+            // new RewardNodeEntry("加生命上限", "加生命上限", "温泉",
+            //     create: runNode =>
+            //     {
+            //         int health = (runNode.JingJie + 1) * 3;
+            //         DialogPanelDescriptor A = new DialogPanelDescriptor($"找到了一个人参果，吃了之后获得了{health}点生命上限")
+            //             .SetReward(Reward.FromHealth(health));
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new RewardNodeEntry("商店", "商店", "商店",
+            //     create: runNode =>
+            //     {
+            //         ShopPanelDescriptor A = new(runNode.JingJie);
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new RewardNodeEntry("以物易物", "以物易物", "以物易物",
+            //     create: runNode =>
+            //     {
+            //         BarterPanelDescriptor A = new();
+            //         runNode.ChangePanel(A);
+            //     }),
+            //
+            // new RewardNodeEntry("算卦", "算卦", "算卦",
+            //     canCreate: x => RunManager.Instance.Battle.Map.HasAdventureAfterwards(x),
+            //     create: runNode =>
+            //     {
+            //         DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Battle.Map.NextAdventure().Name}",
+            //             "换一个",
+            //             "保持现状");
+            //
+            //         A[0].SetSelect(
+            //             option =>
+            //             {
+            //                 RunManager.Instance.Battle.Map.RedrawNextAdventure();
+            //                 return null;
+            //             });
+            //
+            //         runNode.ChangePanel(A);
+            //     }),
 
             // 复杂事件
 

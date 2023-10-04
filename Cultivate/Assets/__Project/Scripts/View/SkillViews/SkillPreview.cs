@@ -1,9 +1,11 @@
 
+using TMPro;
 using UnityEngine;
 
 public class SkillPreview : MonoBehaviour, IAddress
 {
     [SerializeField] protected RectTransform _rectTransform;
+    [SerializeField] private TMP_Text AnnotationText;
 
     public SkillView SkillView;
 
@@ -34,6 +36,7 @@ public class SkillPreview : MonoBehaviour, IAddress
 
         gameObject.SetActive(true);
 
+        AnnotationText.text = skill.GetAnnotationText();
         SkillView.Refresh();
     }
 

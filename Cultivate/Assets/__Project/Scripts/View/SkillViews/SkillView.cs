@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,8 +20,24 @@ public class SkillView : ItemView
     [SerializeField] private Image JingJieImage;
     [SerializeField] private Image WuXingImage;
 
-    public bool IsSelected() => false;
-    public void SetSelected(bool selected) { }
+    #region Select
+
+    [SerializeField] private Image SelectionImage;
+
+    private Tween _selectHandle;
+
+    private bool _selected;
+    public bool IsSelected() => _selected;
+    public void SetSelected(bool selected)
+    {
+        _selected = selected;
+
+        _selectHandle?.Kill();
+        _selectHandle = SelectionImage.DOFade(_selected ? 1 : 0, 0.15f);
+        _selectHandle.Restart();
+    }
+
+    #endregion
 
     public override void Refresh()
     {
@@ -47,11 +64,7 @@ public class SkillView : ItemView
         SetSkillTypeComposite(skill.GetSkillTypeComposite());
         SetJingJieSprite(skill.GetJingJieSprite());
         SetWuXingSprite(skill.GetWuXingSprite());
-        // SetColor(skill.GetColor());
-        // SetCardFace(skill.GetCardFace());
-        // SetManaCostColor();
         // SetCounter(skill.GetCurrCounter(), skill.GetMaxCounter());
-        // SetAnnotationText(skill.GetAnnotationText());
     }
 
     protected virtual void SetCardImage(Sprite sprite)
@@ -136,23 +149,7 @@ public class SkillView : ItemView
         }
     }
 
-    // [SerializeField] protected RectTransform _rectTransform;
-    // [SerializeField] protected Image _image;
-    // [SerializeField] protected CanvasGroup _canvasGroup;
-
-    // [SerializeField] private TMP_Text AnnotationText;
-
     // [SerializeField] private Image CounterImage;
-    // [SerializeField] private Image SelectionImage;
-    //
-    // private bool _selected;
-    // public virtual bool IsSelected() => _selected;
-    // public virtual void SetSelected(bool selected)
-    // {
-    //     _selected = selected;
-    //     if (SelectionImage != null)
-    //         SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
-    // }
 
     // public virtual void SetCounter(int currCounter, int maxCounter)
     // {
@@ -160,23 +157,5 @@ public class SkillView : ItemView
     //         return;
     //
     //     CounterImage.fillAmount = (float)currCounter / maxCounter;
-    // }
-
-    // public virtual void SetAnnotationText(string annotationText)
-    // {
-    //     if (AnnotationText == null)
-    //         return;
-    //
-    //     AnnotationText.text = annotationText;
-    // }
-
-    // public virtual void SetColor(Color color)
-    // {
-    //     // _image.color = color;
-    // }
-    //
-    // public virtual void SetCardFace(Sprite cardFace)
-    // {
-    //     // _image.sprite = cardFace;
     // }
 }

@@ -1,5 +1,4 @@
 
-using System;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
@@ -113,12 +112,12 @@ public class RunCanvas : Singleton<RunCanvas>
     private void ToggleSkill(IInteractable view, PointerEventData eventData)
     {
         NodeLayer.CardPickerPanel.ToggleSkill(view);
-        // RunCanvas.Instance.Refresh();
+        Refresh();
     }
 
     private void ToggleSkillSlot(IInteractable view, PointerEventData eventData)
     {
         NodeLayer.CardPickerPanel.ToggleSkillSlot(view);
-        // RunCanvas.Instance.Refresh();
+        Refresh();
     }
 }

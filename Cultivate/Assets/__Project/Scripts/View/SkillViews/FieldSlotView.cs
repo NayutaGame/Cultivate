@@ -13,9 +13,6 @@ public class FieldSlotView : SlotView, IInteractable,
     {
         base.SetAddress(address);
         SkillView.SetAddress(GetAddress().Append(".Skill"));
-
-        // SkillView.ClearIsManaShortage();
-        // SkillView.IsManaShortageDelegate += IsManaShortage;
     }
 
     public override void Refresh()
@@ -39,25 +36,6 @@ public class FieldSlotView : SlotView, IInteractable,
         ContentTransform.anchoredPosition = IdlePivot.anchoredPosition;
         CanvasGroup.blocksRaycasts = true;
     }
-
-    // private bool IsManaShortage()
-    // {
-    //     SkillSlot slot = Get<SkillSlot>();
-    //     return slot.IsManaShortage;
-    // }
-    //
-    // public virtual bool IsSelected()
-    // {
-    //     if (SkillView == null)
-    //         return false;
-    //     return SkillView.IsSelected();
-    // }
-    //
-    // public virtual void SetSelected(bool selected)
-    // {
-    //     if (SkillView != null)
-    //         SkillView.SetSelected(selected);
-    // }
 
     [SerializeField] private CanvasGroup CanvasGroup;
 

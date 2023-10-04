@@ -264,6 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 2278980885381287105}
+  AnnotationText: {fileID: 250219417020278456}
   SkillView: {fileID: 4504471302429050418}
 --- !u!1001 &3428164922458734245
 PrefabInstance:
