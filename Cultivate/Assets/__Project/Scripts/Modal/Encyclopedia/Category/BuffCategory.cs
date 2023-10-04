@@ -538,7 +538,7 @@ public class BuffCategory : Category<BuffEntry>
             new("穿透", "下一次攻击时，忽略对方护甲/闪避/格挡", BuffStackRule.Add, true, true,
                 eventDescriptors: new CLEventDescriptor[]
                 {
-                    new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.WILL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.WILL_ATTACK, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
