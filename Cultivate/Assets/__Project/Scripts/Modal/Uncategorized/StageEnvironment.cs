@@ -33,6 +33,7 @@ public class StageEnvironment : Addressable, CLEventListener
     /// <param name="src">攻击者</param>
     /// <param name="tgt">受攻击者</param>
     /// <param name="value">攻击数值</param>
+    /// <param name="wuXing">攻击特效的五行</param>
     /// <param name="times">攻击次数</param>
     /// <param name="lifeSteal">是否吸血</param>
     /// <param name="pierce">是否穿透</param>
@@ -117,7 +118,58 @@ public class StageEnvironment : Addressable, CLEventListener
     }
 
     /// <summary>
-    /// 发起一次直接伤害行为，不会结算目标的护甲
+    /// 发起一次间接攻击行为，例如锋锐，灼烧，会结算目标的护甲，不会继承攻击词条
+    /// </summary>
+    /// <param name="src">攻击者</param>
+    /// <param name="tgt">受攻击者</param>
+    /// <param name="value">攻击数值</param>
+    /// <param name="wuXing">攻击特效的五行</param>
+    /// <param name="recursive">是否会递归</param>
+    public async Task IndirectProcedure(StageEntity src, StageEntity tgt, int value, WuXing? wuXing = null, bool recursive = true)
+        => await IndirectProcedure(new IndirectDetails(src, tgt, value, wuXing, recursive));
+    public async Task IndirectProcedure(IndirectDetails indirectDetails)
+    {
+        IndirectDetails d = indirectDetails.Clone();
+
+        await _eventDict.SendEvent(CLEventDict.WILL_INDIRECT, d);
+
+        if (d.Cancel)
+        {
+            _result.TryAppend($"    攻击被取消");
+            return;
+        }
+
+        if (d.Tgt.Armor >= 0)
+        {
+            int negate = Mathf.Min(d.Value, d.Tgt.Armor);
+            d.Value -= negate;
+            await ArmorLoseProcedure(d.Src, d.Tgt, negate);
+        }
+
+        if (d.Tgt.Armor < 0)
+        {
+            d.Value += -d.Tgt.Armor;
+            d.Tgt.Armor = 0;
+        }
+
+        if (d.Value == 0)
+        {
+            _result.TryAppend($"    攻击为0");
+            await _eventDict.SendEvent(CLEventDict.DID_INDIRECT, d);
+            return;
+        }
+
+        DamageDetails damageDetails = new DamageDetails(d.Src, d.Tgt, d.Value);
+        await DamageProcedure(damageDetails);
+
+        // await TryPlayTween(new AttackTweenDescriptor(d));
+        _result.TryAppend($"    敌方生命[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
+
+        await _eventDict.SendEvent(CLEventDict.DID_INDIRECT, d);
+    }
+
+    /// <summary>
+    /// 发起一次伤害行为，不会结算目标的护甲
     /// </summary>
     /// <param name="src">伤害者</param>
     /// <param name="tgt">受伤害者</param>

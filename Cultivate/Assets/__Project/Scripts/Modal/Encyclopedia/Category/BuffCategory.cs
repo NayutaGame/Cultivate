@@ -340,7 +340,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("锋锐", "每回合：[层数]攻\n受到伤害后层数-1", BuffStackRule.Add, true, true,
+            new("锋锐", "每回合：[层数]间接攻击\n受到伤害后层数-1", BuffStackRule.Add, true, true,
                 eventDescriptors: new CLEventDescriptor[]
                 {
                     new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.END_TURN, 0, async (listener, stageEventDetails) =>
@@ -349,14 +349,14 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)stageEventDetails;
 
                         if (b.Owner != d.Owner) return;
-                        await b.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Jin);
+                        await b.Owner.IndirectProcedure(b.Stack, wuXing: WuXing.Jin);
                     }),
                     new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;
                         if (b.Owner == d.Tgt)
-                            b.SetDStack(-1);
+                            await b.SetDStack(-1);
                     }),
                 }),
             new("森罗万象", "奇偶同时激活两个效果", BuffStackRule.One, true, false),
@@ -718,7 +718,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("灼烧", "受到敌方攻击后：造成[层数]伤害", BuffStackRule.Add, true, false,
+            new("灼烧", "受到敌方攻击后：[层数]间接攻击", BuffStackRule.Add, true, false,
                 eventDescriptors: new CLEventDescriptor[]
                 {
                     new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_ATTACK, 0, async (listener, stageEventDetails) =>
@@ -728,7 +728,17 @@ public class BuffCategory : Category<BuffEntry>
                         if (!d.Recursive) return;
                         if (d.Src != b.Owner && d.Tgt == b.Owner)
                         {
-                            await b.Owner.DamageOppoProcedure(b.Stack, recursive: false);
+                            await b.Owner.IndirectProcedure(b.Stack, recursive: false);
+                        }
+                    }),
+                    new(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_INDIRECT, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        IndirectDetails d = (IndirectDetails)stageEventDetails;
+                        if (!d.Recursive) return;
+                        if (d.Src != b.Owner && d.Tgt == b.Owner)
+                        {
+                            await b.Owner.IndirectProcedure(b.Stack, recursive: false);
                         }
                     }),
                 }),

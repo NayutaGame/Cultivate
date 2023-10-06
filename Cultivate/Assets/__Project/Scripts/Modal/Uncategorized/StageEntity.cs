@@ -465,6 +465,9 @@ public class StageEntity : Addressable, CLEventListener
         Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
         => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
 
+    public async Task IndirectProcedure(int value, WuXing? wuXing = null, bool recursive = true)
+        => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, wuXing, recursive));
+
     public async Task DamageSelfProcedure(int value, bool recursive = true,
         Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
         => await _env.DamageProcedure(new DamageDetails(this, this, value, recursive, damaged, undamaged));

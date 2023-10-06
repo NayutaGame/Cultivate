@@ -978,6 +978,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("花舞", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"力量+{1 + (dj / 2)}\n{2 + 2 * dj}攻"), WuXing.Mu,
+                skillTypeComposite: SkillType.Attack,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.BuffSelfProcedure("力量", 1 + skill.Dj / 2);
@@ -1002,7 +1003,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("早春", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"力量+{1 + (dj / 2)}\n护甲+{6 + dj}\n初次：翻倍"), WuXing.Mu,
-                manaCostEvaluator: 1, skillTypeComposite: SkillType.Attack,
+                manaCostEvaluator: 1,
                 execute: async (caster, skill, recursive) =>
                 {
                     bool cond = skill.IsFirstTime || await caster.IsFocused();
@@ -1365,17 +1366,12 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("磐石剑阵", new CLLibrary.Range(2, 5),
-                new SkillDescription((j, dj) => $"护甲+{20 + 6 * dj}\n遭受1跳回合\n架势：无需跳回合"), WuXing.Tu, 0,
+                new SkillDescription((j, dj) => $"吟唱1\n护甲+{20 + 6 * dj}\n架势（无法集中）：无需吟唱"), WuXing.Tu,
+                channelTimeEvaluator: new ChannelTimeEvaluator((j, dj, jiaShi) => jiaShi ? 0 : 1),
                 skillTypeComposite: SkillType.JianZhen,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.ArmorGainSelfProcedure(20 + 6 * skill.Dj);
-                    if (skill.JiaShi || await caster.IsFocused())
-                    {
-
-                    }
-                    else
-                        await caster.BuffSelfProcedure("跳回合");
                 }),
 
             new("少阳", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"消耗\n获得护甲：额外+{3 + 2 * dj}"),
@@ -1402,18 +1398,14 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("重剑", new CLLibrary.Range(3, 5),
-                new SkillDescription((j, dj) => $"{22 + 8 * dj}攻\n击伤：护甲+击伤值\n遭受2跳回合\n架势：无需跳回合"), WuXing.Tu, 2,
+                new SkillDescription((j, dj) => $"吟唱2\n{22 + 8 * dj}攻\n击伤：护甲+击伤值\n架势（无法集中）：无需吟唱"), WuXing.Tu,
+                manaCostEvaluator: 2,
+                channelTimeEvaluator: new ChannelTimeEvaluator((j, dj, jiaShi) => jiaShi ? 0 : 2),
                 skillTypeComposite: SkillType.Attack,
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(22 + 8 * skill.Dj, wuXing: skill.Entry.WuXing,
                         damaged: d => caster.ArmorGainSelfProcedure(d.Value));
-                    if (skill.JiaShi || await caster.IsFocused())
-                    {
-
-                    }
-                    else
-                        await caster.BuffSelfProcedure("跳回合", 2);
                 }),
 
             new("金刚剑阵", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"1攻 每有一点护甲多1攻"), WuXing.Tu,
