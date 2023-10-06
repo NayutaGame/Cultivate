@@ -1,9 +1,12 @@
 
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 using UnityEditor;
+using Range = CLLibrary.Range;
 
 public class SkillCategory : Category<SkillEntry>
 {
@@ -575,14 +578,14 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure(5 + skill.Dj + add, wuXing: skill.Entry.WuXing);
                 }),
 
-            new("微风", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"护甲+{3 + dj}\n锋锐+1\n初次：翻倍"),
+            new("微风", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"护甲+{2 + dj}\n初次：锋锐+{3 + 2 * dj}"),
                 WuXing.Jin,
                 execute: async (caster, skill, recursive) =>
                 {
+                    await caster.ArmorGainSelfProcedure(2 + skill.Dj);
                     bool cond = skill.IsFirstTime || await caster.IsFocused();
-                    int mul = cond ? 2 : 1;
-                    await caster.ArmorGainSelfProcedure((3 + skill.Dj) * mul);
-                    await caster.BuffSelfProcedure("锋锐", mul);
+                    if (cond)
+                        await caster.BuffSelfProcedure("锋锐", 3 + 2 * skill.Dj);
                 }),
 
             new("金刃", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"{3 + dj}攻\n施加{3 + dj}减甲"),
@@ -604,14 +607,12 @@ public class SkillCategory : Category<SkillEntry>
                         await caster.ArmorGainSelfProcedure(value);
                 }),
 
-            new("起", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"{4 + dj}攻\n锋锐+{2 + dj}\n初次：翻倍"),
+            new("起", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"{3 + dj}攻\n锋锐+{3 + dj}"),
                 WuXing.Jin, skillTypeComposite: SkillType.Attack,
                 execute: async (caster, skill, recursive) =>
                 {
-                    bool cond = skill.IsFirstTime || await caster.IsFocused();
-                    int mul = cond ? 2 : 1;
-                    await caster.AttackProcedure((4 + skill.Dj) * mul, wuXing: skill.Entry.WuXing);
-                    await caster.BuffSelfProcedure("锋锐", (2 + skill.Dj) * mul);
+                    await caster.AttackProcedure(3 + skill.Dj, wuXing: skill.Entry.WuXing);
+                    await caster.BuffSelfProcedure("锋锐", 3 + skill.Dj);
                 }),
 
             new("金光罩", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"护甲+{4 + 2 * dj}\n施加{4 + 2 * dj}减甲"),
@@ -641,12 +642,11 @@ public class SkillCategory : Category<SkillEntry>
                         await caster.ArmorGainSelfProcedure(16 + 2 * skill.Dj);
                 }),
 
-            new("承", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"锋锐+{2 + dj}\n{9 + dj}攻\n每1锋锐，多1攻"),
+            new("承", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"{14 + 6 * dj}攻\n每1锋锐，多1攻"),
                 WuXing.Jin, manaCostEvaluator: 1, skillTypeComposite: SkillType.Attack,
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.BuffSelfProcedure("锋锐", 2 + skill.Dj);
-                    await caster.AttackProcedure(9 + caster.GetStackOfBuff("锋锐"), wuXing: skill.Entry.WuXing);
+                    await caster.AttackProcedure(14 + 6 * skill.Dj + caster.GetStackOfBuff("锋锐"), wuXing: skill.Entry.WuXing);
                 }),
 
             new("无常已至", new CLLibrary.Range(2, 5),
@@ -724,14 +724,21 @@ public class SkillCategory : Category<SkillEntry>
                     }
                 }),
 
-            new("合", new CLLibrary.Range(4, 5), new SkillDescription((j, dj) => $"奇偶：每1锋锐，施加1减甲/护甲+1"), WuXing.Jin, 1,
+            new("合", new CLLibrary.Range(4, 5), new SkillDescription((j, dj) => $"奇偶：暴击/击伤：每造成5伤害，锋锐+1"), WuXing.Jin, 1,
                 execute: async (caster, skill, recursive) =>
                 {
-                    int value = caster.GetStackOfBuff("锋锐");
-                    if (skill.IsOdd || await caster.IsFocused())
-                        await caster.ArmorLoseOppoProcedure(value);
-                    if (skill.IsEven || await caster.IsFocused())
-                        await caster.ArmorGainSelfProcedure(value);
+                    bool odd = skill.IsOdd || await caster.IsFocused();
+                    bool even = skill.IsEven || await caster.IsFocused();
+
+                    async Task<DamageDetails> Damaged(DamageDetails d)
+                    {
+                        await d.Src.BuffSelfProcedure("锋锐", d.Value / 5);
+                        return d;
+                    }
+
+                    Func<DamageDetails, Task<DamageDetails>> damaged = even ? null : Damaged;
+
+                    await caster.AttackProcedure(10, skill.Entry.WuXing, crit: odd, damaged: Damaged);
                 }),
 
             new("少阴", new CLLibrary.Range(4, 5), "消耗\n施加减甲：额外+3\n消耗少阳：额外层数", WuXing.Jin,
@@ -970,11 +977,11 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure(6 + 2 * skill.Dj, pierce: true, wuXing: skill.Entry.WuXing);
                 }),
 
-            new("花舞", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"护甲+{2 + 2 * dj}\n力量+1"), WuXing.Mu,
+            new("花舞", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"力量+{1 + (dj / 2)}\n{2 + 2 * dj}攻"), WuXing.Mu,
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.ArmorGainSelfProcedure(2 + 2 * skill.Dj);
-                    await caster.BuffSelfProcedure("力量");
+                    await caster.BuffSelfProcedure("力量", 1 + skill.Dj / 2);
+                    await caster.AttackProcedure(2 + 2 * skill.Dj, wuXing: skill.Entry.WuXing);
                 }),
 
             new("治愈", new CLLibrary.Range(0, 5), new SkillDescription((j, dj) => $"灵气+{1 + dj}\n生命+{3 + dj}"),
@@ -994,14 +1001,14 @@ public class SkillCategory : Category<SkillEntry>
                         await caster.BuffSelfProcedure("闪避");
                 }),
 
-            new("早春", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"力量+1\n{6 + dj}攻\n初次：翻倍"), WuXing.Mu,
+            new("早春", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"力量+{1 + (dj / 2)}\n护甲+{6 + dj}\n初次：翻倍"), WuXing.Mu,
                 manaCostEvaluator: 1, skillTypeComposite: SkillType.Attack,
                 execute: async (caster, skill, recursive) =>
                 {
                     bool cond = skill.IsFirstTime || await caster.IsFocused();
                     int mul = cond ? 2 : 1;
-                    await caster.BuffSelfProcedure("力量", mul);
-                    await caster.AttackProcedure((6 + skill.Dj) * mul, wuXing: skill.Entry.WuXing);
+                    await caster.BuffSelfProcedure("力量", (1 + (skill.Dj / 2)) * mul);
+                    await caster.ArmorGainSelfProcedure((6 + skill.Dj) * mul);
                 }),
 
             new("身骑白马", new CLLibrary.Range(1, 5),
@@ -1077,12 +1084,11 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("凝神", 1 + skill.Dj);
                 }),
 
-            new("摩利支天咒", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"力量+{4 + 5 * dj}\n遭受{1 + dj}跳回合"),
-                WuXing.Mu, manaCostEvaluator: 1,
+            new("摩利支天咒", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"吟唱{1 + dj}\n力量+{(2 + dj) * (2 + dj)}"),
+                WuXing.Mu, manaCostEvaluator: 1, channelTimeEvaluator: new ChannelTimeEvaluator((j, dj, jiaShi) => 1 + dj),
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.BuffSelfProcedure("力量", 4 + 5 * skill.Dj);
-                    await caster.BuffSelfProcedure("跳回合", 1 + skill.Dj);
+                    await caster.BuffSelfProcedure("力量", (2 + skill.Dj) * (2 + skill.Dj));
                 }),
 
             new("双发", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"下{1 + dj}张牌使用两次"), WuXing.Mu,

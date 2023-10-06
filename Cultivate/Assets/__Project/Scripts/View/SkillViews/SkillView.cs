@@ -64,7 +64,6 @@ public class SkillView : ItemView
         SetSkillTypeComposite(skill.GetSkillTypeComposite());
         SetJingJieSprite(skill.GetJingJieSprite());
         SetWuXingSprite(skill.GetWuXingSprite());
-        // SetCounter(skill.GetCurrCounter(), skill.GetMaxCounter());
     }
 
     protected virtual void SetCardImage(Sprite sprite)
@@ -148,14 +147,4 @@ public class SkillView : ItemView
             WuXingImage.enabled = false;
         }
     }
-
-    // [SerializeField] private Image CounterImage;
-
-    // public virtual void SetCounter(int currCounter, int maxCounter)
-    // {
-    //     if (CounterImage == null)
-    //         return;
-    //
-    //     CounterImage.fillAmount = (float)currCounter / maxCounter;
-    // }
 }

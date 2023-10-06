@@ -1,7 +1,6 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using CLLibrary;
-using UnityEngine;
 
 public class KeywordCategory : Category<KeywordEntry>
 {
@@ -22,6 +21,7 @@ public class KeywordCategory : Category<KeywordEntry>
             new("一次性", "本局对战后，将此卡移出玩家手牌"),
             new("每轮", "每轮触发一次效果"),
             new("每回合", "每回合触发一次效果"),
+            new("吟唱", "需要准备x回合才可以使用"),
         });
     }
 
