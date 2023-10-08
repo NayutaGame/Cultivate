@@ -649,12 +649,13 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure(14 + 6 * skill.Dj + caster.GetStackOfBuff("锋锐"), wuXing: skill.Entry.WuXing);
                 }),
 
-            new("无常已至", new CLLibrary.Range(2, 5),
-                new SkillDescription((j, dj) => $"消耗\n本场战斗中\n造成伤害时：施加{5 + 2 * dj}减甲，不高于伤害值"), WuXing.Jin, 4, skillTypeComposite: SkillType.XiaoHao,
+            new("无常已至", new CLLibrary.Range(1, 5),
+                new SkillDescription((j, dj) => $"消耗\n本场战斗中\n造成伤害时：施加{3 + 2 * dj}减甲，不高于伤害值"), WuXing.Jin,
+                manaCostEvaluator: 3, skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
                     await skill.ExhaustProcedure();
-                    await caster.BuffSelfProcedure("无常已至", 5 + 2 * skill.Dj);
+                    await caster.BuffSelfProcedure("无常已至", 3 + 2 * skill.Dj);
                 }),
 
             new("菊剑", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"{4 + 4 * dj}攻\n敌方有减甲：二动"),
@@ -1341,12 +1342,12 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("自动护甲", 1 + skill.Dj);
                 }),
 
-            new("巩固", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"灵气+{2 + dj}\n每1灵气，护甲+1"), WuXing.Tu,
+            new("巩固", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"灵气+{4 + 2 * dj}\n每2灵气，护甲+1"), WuXing.Tu,
                 skillTypeComposite: SkillType.LingQi,
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.BuffSelfProcedure("灵气", 2 + skill.Dj);
-                    await caster.ArmorGainSelfProcedure(caster.GetMana());
+                    await caster.BuffSelfProcedure("灵气", 4 + 2 * skill.Dj);
+                    await caster.ArmorGainSelfProcedure(caster.GetMana() / 2);
                 }),
 
             new("软剑", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"{9 + 4 * dj}攻\n击伤：施加1缠绕"), WuXing.Tu,
