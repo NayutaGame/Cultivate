@@ -482,7 +482,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
             new("万剑归宗阵", formationEntries: new[]
             {
-                new FormationEntry(JingJie.HuaShen, "连续7张攻击牌", "战斗开始时，力量+5",
+                new FormationEntry(JingJie.HuaShen, "连续7张攻击牌", "战斗开始时，力量+3",
                     canActivate: (entity, args) =>
                     {
                         return args.HighestConsecutiveAttackCount >= 7;
@@ -495,10 +495,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                             StageDetails d = (StageDetails)stageEventDetails;
                             if (f.Owner != d.Owner) return;
 
-                            await f.Owner.BuffSelfProcedure("力量", 5);
+                            await f.Owner.BuffSelfProcedure("力量", 3);
                         }),
                     }),
-                new FormationEntry(JingJie.YuanYing, "连续6张攻击牌", "战斗开始时，力量+4",
+                new FormationEntry(JingJie.YuanYing, "连续6张攻击牌", "战斗开始时，力量+2",
                     canActivate: (entity, args) =>
                     {
                         return args.HighestConsecutiveAttackCount >= 6;
@@ -511,10 +511,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                             StageDetails d = (StageDetails)stageEventDetails;
                             if (f.Owner != d.Owner) return;
 
-                            await f.Owner.BuffSelfProcedure("力量", 4);
+                            await f.Owner.BuffSelfProcedure("力量", 2);
                         }),
                     }),
-                new FormationEntry(JingJie.JinDan, "连续5张攻击牌", "战斗开始时，力量+3",
+                new FormationEntry(JingJie.JinDan, "连续5张攻击牌", "战斗开始时，力量+1",
                     canActivate: (entity, args) =>
                     {
                         return args.HighestConsecutiveAttackCount >= 5;
@@ -527,7 +527,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                             StageDetails d = (StageDetails)stageEventDetails;
                             if (f.Owner != d.Owner) return;
 
-                            await f.Owner.BuffSelfProcedure("力量", 3);
+                            await f.Owner.BuffSelfProcedure("力量");
                         }),
                     }),
             }),

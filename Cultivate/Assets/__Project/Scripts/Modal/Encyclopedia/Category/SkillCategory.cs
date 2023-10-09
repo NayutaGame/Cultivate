@@ -538,12 +538,6 @@ public class SkillCategory : Category<SkillEntry>
             //     {
             //     }),
             //
-            // new("土20", new CLLibrary.Range(2, 5), new ChipDescription((l, j, dj, p) => $"{10 + 4 * dj}攻\n每1灼烧，多{2 + dj}攻"), WuXing.Tu, 1, type: skillType.Attack,
-            //     execute: (caster, skill, recursive) =>
-            //     {
-            //         caster.AttackProcedure(10 + 4 * skill.Dj + (2 + skill.Dj) * caster.GetStackOfBuff("灼烧"), wuXing: skill.Entry.WuXing);
-            //     }),
-            //
             // new("木剑", new CLLibrary.Range(3, 5), new ChipDescription((l, j, dj, p) => $"{16 + 4 * dj}攻\n架势：暴击"), WuXing.Tu, 0, type: skillType.Attack,
             //     execute: (caster, skill, recursive) =>
             //     {
@@ -1342,11 +1336,11 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("自动护甲", 1 + skill.Dj);
                 }),
 
-            new("巩固", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"灵气+{4 + 2 * dj}\n每2灵气，护甲+1"), WuXing.Tu,
+            new("巩固", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"灵气+{2 + 2 * dj}\n每2灵气，护甲+1"), WuXing.Tu,
                 skillTypeComposite: SkillType.LingQi,
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.BuffSelfProcedure("灵气", 4 + 2 * skill.Dj);
+                    await caster.BuffSelfProcedure("灵气", 2 + 2 * skill.Dj);
                     await caster.ArmorGainSelfProcedure(caster.GetMana() / 2);
                 }),
 
