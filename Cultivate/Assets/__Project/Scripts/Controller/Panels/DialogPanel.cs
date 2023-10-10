@@ -14,7 +14,7 @@ public class DialogPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
 
         Buttons[0].onClick.RemoveAllListeners();
         Buttons[1].onClick.RemoveAllListeners();
@@ -37,7 +37,7 @@ public class DialogPanel : Panel
 
         for (int i = 0; i < Buttons.Length; i++)
         {
-            bool active = i < d.GetOptionsCount() && !RunManager.Instance.Battle.Map.Selecting;
+            bool active = i < d.GetOptionsCount() && !RunManager.Instance.Environment.Map.Selecting;
             Buttons[i].gameObject.SetActive(active);
             if(!active)
                 continue;
@@ -49,7 +49,7 @@ public class DialogPanel : Panel
 
     private void SelectedOption(int i)
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedOptionSignal(i));
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedOptionSignal(i));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 

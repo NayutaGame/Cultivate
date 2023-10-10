@@ -13,7 +13,7 @@ public class AddMechReward : Reward
 
     public override void Claim()
     {
-        RunManager.Instance.Battle.ForceAddMech(_addMechDetails);
+        RunManager.Instance.Environment.ForceAddMech(_addMechDetails);
     }
 
     public override string GetDescription()

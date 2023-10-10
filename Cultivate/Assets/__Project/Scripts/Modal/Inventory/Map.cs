@@ -11,26 +11,30 @@ public class Map : Addressable
     private static readonly int HEIGHT = 3;
     private static readonly int WIDTH = 10;
 
+    public event Action<JingJie> JingJieChangedEvent;
+    public void JingJieChanged(JingJie jingJie) => JingJieChangedEvent?.Invoke(jingJie);
+
     private RunNode[] _list;
 
-    public RunNode this[int x, int y]
+    private RunNode this[int x, int y]
     {
         get => _list[x * HEIGHT + y];
-        private set => _list[x * HEIGHT + y] = value;
+        set => _list[x * HEIGHT + y] = value;
     }
 
-    public bool InRange(int x, int y)
+    private bool InRange(int x, int y)
     {
         int i = x * HEIGHT + y;
         return 0 <= i && i < _list.Length;
     }
 
-    public RunNode this[Vector2Int pos]
+    private RunNode this[Vector2Int pos]
     {
         get => this[pos.x, pos.y];
-        private set => this[pos.x, pos.y] = value;
+        set => this[pos.x, pos.y] = value;
     }
 
+    public EntityPool EntityPool { get; }
     private AutoPool<NodeEntry> _b;
     private AutoPool<NodeEntry> _r;
     private AutoPool<NodeEntry> _a;
@@ -82,7 +86,7 @@ public class Map : Addressable
         return panelDescriptor;
     }
 
-    public void TryFinishNode()
+    private void TryFinishNode()
     {
         if (Selecting)
             return;
@@ -125,12 +129,7 @@ public class Map : Addressable
         set
         {
             _jingJie = value;
-            if (AppManager.Instance != null)
-                if (AppManager.Instance.StageManager != null)
-                {
-                    RunManager.Instance.Battle.Home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[_jingJie]);
-                    RunManager.Instance.Battle.Home.SetJingJie(_jingJie);
-                }
+            JingJieChanged(_jingJie);
             RefreshPools();
             AudioManager.Instance.Play(JingJieToAudio[_jingJie]);
         }
@@ -140,18 +139,18 @@ public class Map : Addressable
     public object Get(string s) => _accessors[s]();
     public Map()
     {
-        _list = new RunNode[HEIGHT * WIDTH];
-
-        _b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is BattleNodeEntry).ToList());
-        _r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is RewardNodeEntry).ToList());
-        _a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is AdventureNodeEntry).ToList());
-
         _accessors = new()
         {
             { "Nodes", () => _list },
             { "CurrentNode", () => CurrentNode },
         };
 
+        _list = new RunNode[HEIGHT * WIDTH];
+
+        EntityPool = new();
+        _b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is BattleNodeEntry).ToList());
+        _r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is RewardNodeEntry).ToList());
+        _a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is AdventureNodeEntry).ToList());
         _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
         {
             { JingJie.LianQi   , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
@@ -171,6 +170,7 @@ public class Map : Addressable
         //     { JingJie.HuaShen  , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
         //     { JingJie.FanXu    , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
         // };
+
     }
 
     private void RefreshPools()
@@ -195,15 +195,15 @@ public class Map : Addressable
                 }
 
                 int currX = x;
-                NodeEntry nodeEntry = pool.ForcePopItem(pred: e => e.CanCreate(currX));
+                NodeEntry nodeEntry = pool.ForcePopItem(pred: e => e.CanCreate(this, currX));
                 if (nodeEntry is BattleNodeEntry battleNodeEntry)
                 {
                     DrawEntityDetails d = new DrawEntityDetails(_jingJie, x <= 3, 3 < x && x <= 6, 6 < x);
-                    this[x, y] = new BattleRunNode(new Vector2Int(x, y), _jingJie, battleNodeEntry, d);
+                    this[x, y] = new BattleRunNode(this, new Vector2Int(x, y), _jingJie, battleNodeEntry, d);
                 }
                 else
                 {
-                    this[x, y] = new RunNode(new Vector2Int(x, y), _jingJie, nodeEntry);
+                    this[x, y] = new RunNode(this, new Vector2Int(x, y), _jingJie, nodeEntry);
                 }
 
                 if (x == 0)
@@ -249,7 +249,7 @@ public class Map : Addressable
             if (node is { Entry: AdventureNodeEntry adventureNodeEntry })
             {
                 NodeEntry newNodeEntry = _a.ForcePopItem(pred: n => n != adventureNodeEntry);
-                this[x, y] = new RunNode(new Vector2Int(x, y), _jingJie, newNodeEntry);
+                this[x, y] = new RunNode(this, new Vector2Int(x, y), _jingJie, newNodeEntry);
                 return true;
             }
         }

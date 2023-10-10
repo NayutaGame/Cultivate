@@ -20,7 +20,7 @@ public class DiscoverSkillPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
 
         ConfigureInteractDelegate();
         SkillViews.Do(v => v.SetDelegate(InteractDelegate));
@@ -43,7 +43,7 @@ public class DiscoverSkillPanel : Panel
 
         for (int i = 0; i < SkillViews.Length; i++)
         {
-            bool active = i < d.GetSkillCount() && !RunManager.Instance.Battle.Map.Selecting;
+            bool active = i < d.GetSkillCount() && !RunManager.Instance.Environment.Map.Selecting;
             SkillViews[i].gameObject.SetActive(active);
             if(!active)
                 continue;
@@ -58,7 +58,7 @@ public class DiscoverSkillPanel : Panel
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
         RunSkill skill = view.Get<RunSkill>();
-        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
         RunCanvas.Instance.SkillPreview.SetAddress(null);
         RunCanvas.Instance.SkillPreview.Refresh();

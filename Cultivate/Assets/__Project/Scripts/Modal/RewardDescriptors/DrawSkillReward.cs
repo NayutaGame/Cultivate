@@ -19,7 +19,7 @@ public class DrawSkillReward : Reward
     }
 
     public override void Claim()
-        => RunManager.Instance.Battle.ForceDrawSkills(_pred, _wuXing, _jingJie, _count);
+        => RunManager.Instance.Environment.ForceDrawSkills(_pred, _wuXing, _jingJie, _count);
 
     public override string GetDescription() => _description;
 }

@@ -8,6 +8,8 @@ public class RunNode : Addressable
     protected NodeEntry _entry;
     public NodeEntry Entry => _entry;
 
+    public Map _map;
+
     protected SpriteEntry _spriteEntry;
     public Sprite Sprite => _spriteEntry.Sprite;
 
@@ -30,10 +32,8 @@ public class RunNode : Addressable
     public virtual string GetTitle() => _entry.GetTitle();
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
-    public RunNode(Vector2Int position, JingJie jingJie, NodeEntry entry)
+    public object Get(string s) => _accessors[s]();
+    public RunNode(Map map, Vector2Int position, JingJie jingJie, NodeEntry entry)
     {
         _accessors = new()
         {
@@ -49,6 +49,7 @@ public class RunNode : Addressable
             _spriteEntry = "奇遇";
         }
 
+        _map = map;
         Position = position;
         JingJie = jingJie;
         _entry = entry;

@@ -29,7 +29,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
         EntityEditableList = EntityEditableList.ReadFromFile();
 
-        Home = RunEntity.Default;
+        Home = RunEntity.Default();
         Home.EnvironmentChangedEvent += EnvironmentChanged;
         EnvironmentChangedEvent += Simulate;
     }
@@ -45,7 +45,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     public void Combat()
     {
         RunEntity away = GetAway();
-        StageEnvironmentDetails d = new StageEnvironmentDetails(true, false, false, false, Home, away);
+        StageConfig d = new StageConfig(true, false, false, false, Home, away);
         StageEnvironment environment = new StageEnvironment(d);
         environment.Execute();
     }
@@ -53,7 +53,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     public void Simulate()
     {
         RunEntity away = GetAway();
-        StageEnvironmentDetails d = new StageEnvironmentDetails(false, false, false, false, Home, away);
+        StageConfig d = new StageConfig(false, false, false, false, Home, away);
         StageEnvironment environment = new StageEnvironment(d);
         environment.Execute();
         SimulateResult = environment.Result;
@@ -91,4 +91,42 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     {
         EntityEditableList = EntityEditableList.ReadFromFile();
     }
+
+    // public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
+    // {
+    //     EmulatedSkill temp = fromSlot.Skill;
+    //     fromSlot.Skill = toSlot.Skill;
+    //     toSlot.Skill = temp;
+    //     return true;
+    // }
+    //
+    // public bool TryWrite(RunSkill fromSkill, SkillSlot toSlot)
+    // {
+    //     toSlot.Skill = fromSkill;
+    //     return true;
+    // }
+    //
+    // public bool TryWrite(SkillSlot fromSlot, SkillSlot toSlot)
+    // {
+    //     toSlot.Skill = fromSlot.Skill;
+    //     return true;
+    // }
+    //
+    // public bool TryIncreaseJingJie(RunSkill skill)
+    // {
+    //     bool success = skill.TryIncreaseJingJie();
+    //     if (!success)
+    //         return false;
+    //     EnvironmentChanged();
+    //     return false;
+    // }
+    //
+    // public bool TryIncreaseJingJie(SkillSlot slot)
+    // {
+    //     bool success = slot.TryIncreaseJingJie();
+    //     if (!success)
+    //         return false;
+    //     EnvironmentChanged();
+    //     return false;
+    // }
 }

@@ -1,18 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TutorialPanel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Button ReturnButton;
+    [SerializeField] private ListView TutorialListView;
+
+    public void Configure()
     {
-        
+        ReturnButton.onClick.RemoveAllListeners();
+        ReturnButton.onClick.AddListener(CloseTutorial);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Refresh()
     {
-        
+
+    }
+
+    private void CloseTutorial()
+    {
+        gameObject.SetActive(false);
     }
 }

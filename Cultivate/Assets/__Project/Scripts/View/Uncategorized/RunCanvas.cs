@@ -74,7 +74,7 @@ public class RunCanvas : Singleton<RunCanvas>
 
         Sequence seq = DOTween.Sequence().SetAutoKill();
 
-        PanelDescriptor d = RunManager.Instance.Battle.Map.CurrentNode?.CurrentPanel;
+        PanelDescriptor d = RunManager.Instance.Environment.Map.CurrentNode?.CurrentPanel;
 
         if (panelDescriptor == null)
         {

@@ -18,16 +18,16 @@ public class CostDetails
 
     public bool CanCost()
     {
-        return Gold <= RunManager.Instance.Battle.XiuWei &&
-               MingYuan < RunManager.Instance.Battle.GetMingYuan().GetCurr() &&
-               Health < RunManager.Instance.Battle.Home.GetFinalHealth();
+        return Gold <= RunManager.Instance.Environment.XiuWei &&
+               MingYuan < RunManager.Instance.Environment.GetMingYuan().GetCurr() &&
+               Health < RunManager.Instance.Environment.Home.GetFinalHealth();
     }
 
     public void Cost()
     {
-        RunManager.Instance.Battle.RemoveXiuWei(Gold);
-        RunManager.Instance.Battle.SetDMingYuan(-MingYuan);
-        RunManager.Instance.Battle.Home.SetDHealth(-Health);
+        RunManager.Instance.Environment.RemoveXiuWei(Gold);
+        RunManager.Instance.Environment.SetDMingYuan(-MingYuan);
+        RunManager.Instance.Environment.Home.SetDHealth(-Health);
     }
 
     public string GetDescription()

@@ -20,7 +20,7 @@ public class BattlePanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
 
         EnemyView.SetAddress(_address.Append(".Enemy"));
 

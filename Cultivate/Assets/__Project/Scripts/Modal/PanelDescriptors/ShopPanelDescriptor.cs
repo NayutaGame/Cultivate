@@ -24,7 +24,7 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         _commodities = new CommodityInventory();
 
-        bool success = RunManager.Instance.Battle.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: _jingJie, count: 6, consume: false);
+        bool success = RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: _jingJie, count: 6, consume: false);
         if (success)
         {
             foreach (RunSkill skill in skills)
@@ -41,13 +41,13 @@ public class ShopPanelDescriptor : PanelDescriptor
         if (!_commodities.Contains(commodity))
             return false;
 
-        if (RunManager.Instance.Battle.XiuWei < commodity.FinalPrice)
+        if (RunManager.Instance.Environment.XiuWei < commodity.FinalPrice)
             return false;
 
-        RunManager.Instance.Battle.RemoveXiuWei(commodity.FinalPrice);
+        RunManager.Instance.Environment.RemoveXiuWei(commodity.FinalPrice);
         _commodities.Remove(commodity);
 
-        RunManager.Instance.Battle.SkillInventory.Add(commodity.Skill);
+        RunManager.Instance.Environment.SkillInventory.Add(commodity.Skill);
 
         return true;
     }

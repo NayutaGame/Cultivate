@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 722247658789493540}
   - component: {fileID: 4833253246761816674}
   m_Layer: 5
-  m_Name: ListView
+  m_Name: TutorialListView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -538,6 +538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7049dd621bcc03546b99b3869cb5bc35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ReturnButton: {fileID: 3277966256740352522}
+  TutorialListView: {fileID: 722247658789493540}
 --- !u!1 &4475557314279821823
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,7 +1028,7 @@ GameObject:
   m_Component:
   - component: {fileID: 806159281369542177}
   m_Layer: 5
-  m_Name: DetailedView
+  m_Name: TutorialDetailedView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

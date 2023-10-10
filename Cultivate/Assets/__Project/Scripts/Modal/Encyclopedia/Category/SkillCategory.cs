@@ -644,7 +644,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("无常已至", new CLLibrary.Range(1, 5),
-                new SkillDescription((j, dj) => $"消耗\n本场战斗中\n造成伤害时：施加{3 + 2 * dj}减甲，不高于伤害值"), WuXing.Jin,
+                new SkillDescription((j, dj) => $"消耗\n本场战斗中，造成伤害时：施加{3 + 2 * dj}减甲，不高于伤害值"), WuXing.Jin,
                 manaCostEvaluator: 3, skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {

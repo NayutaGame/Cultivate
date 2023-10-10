@@ -8,7 +8,7 @@ public class RewardNodeEntry : NodeEntry
     private SpriteEntry _spriteEntry;
     public SpriteEntry SpriteEntry => _spriteEntry;
 
-    public RewardNodeEntry(string name, string description, SpriteEntry spriteEntry, Action<RunNode> create, Predicate<int> canCreate = null) : base(name, description, create, canCreate)
+    public RewardNodeEntry(string name, string description, SpriteEntry spriteEntry, Action<RunNode> create, Func<Map, int, bool> canCreate = null) : base(name, description, create, canCreate)
     {
         _spriteEntry = spriteEntry;
     }

@@ -1,4 +1,4 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using System.Text;
 using CLLibrary;
@@ -10,11 +10,11 @@ public class BattleRunNode : RunNode
     private List<Reward> _rewards;
     public RunEntity Template;
 
-    public BattleRunNode(Vector2Int position, JingJie jingJie, BattleNodeEntry entry, DrawEntityDetails drawEntityDetails) : base(position, jingJie, entry)
+    public BattleRunNode(Map map, Vector2Int position, JingJie jingJie, BattleNodeEntry entry, DrawEntityDetails drawEntityDetails) : base(map, position, jingJie, entry)
     {
         DrawEntityDetails = drawEntityDetails;
         _rewards = new();
-        RunManager.Instance.Battle.EntityPool.TryDrawEntity(out RunEntity template, DrawEntityDetails);
+        map.EntityPool.TryDrawEntity(out RunEntity template, DrawEntityDetails);
         Template = template;
 
         _spriteEntry = DrawEntityDetails.AllowBoss ? "Boss" : "战斗";

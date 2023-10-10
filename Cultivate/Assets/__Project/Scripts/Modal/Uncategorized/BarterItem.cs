@@ -27,8 +27,8 @@ public class BarterItem : Addressable
 
     public bool Affordable()
     {
-        bool inSlot = RunManager.Instance.Battle.Home.TraversalCurrentSlots().Any(s => s.Skill == PlayerSkill);
-        bool inSkillInventory = RunManager.Instance.Battle.SkillInventory.Contains(PlayerSkill);
+        bool inSlot = RunManager.Instance.Environment.Home.TraversalCurrentSlots().Any(s => s.Skill == PlayerSkill);
+        bool inSkillInventory = RunManager.Instance.Environment.SkillInventory.Contains(PlayerSkill);
 
         return inSlot || inSkillInventory;
     }

@@ -13,7 +13,7 @@ public class BarterPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
         BarterInventoryView.SetAddress(_address.Append(".Inventory"));
 
         foreach (ItemView itemView in BarterInventoryView.ActivePool)
@@ -42,7 +42,8 @@ public class BarterPanel : Panel
 
     private void Exit()
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new Signal());
+        Map map = new Address("Run.Environment.Map").Get<Map>();
+        PanelDescriptor panelDescriptor = map.ReceiveSignal(new Signal());
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

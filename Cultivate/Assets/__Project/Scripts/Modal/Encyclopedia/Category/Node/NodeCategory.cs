@@ -1,4 +1,4 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
@@ -35,7 +35,7 @@ public class NodeCategory : Category<NodeEntry>
                         if (signal is SelectedOptionSignal selectedOptionSignal)
                         {
                             int index = selectedOptionSignal.Selected;
-                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Battle.Map.JingJie).Claim();
+                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Environment.Map.JingJie).Claim();
                         }
                         return null;
                     };
@@ -110,17 +110,17 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new RewardNodeEntry("算卦", "算卦", "算卦",
-                canCreate: x => RunManager.Instance.Battle.Map.HasAdventureAfterwards(x),
+                canCreate: (map, x) => map.HasAdventureAfterwards(x),
                 create: runNode =>
                 {
-                    DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Battle.Map.NextAdventure().Name}",
+                    DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Environment.Map.NextAdventure().Name}",
                         "换一个",
                         "保持现状");
 
                     A[0].SetSelect(
                         option =>
                         {
-                            RunManager.Instance.Battle.Map.RedrawNextAdventure();
+                            RunManager.Instance.Environment.Map.RedrawNextAdventure();
                             return null;
                         });
 
@@ -294,7 +294,7 @@ public class NodeCategory : Category<NodeEntry>
                         .SetReward(Reward.FromGold(100));
                     DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
 
-                    RunManager.Instance.Battle.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
+                    runNode._map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
                     BattlePanelDescriptor E = new(template);
                     DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
                         .SetReward(new ResourceReward(xiuWei: 100, health: 10));
@@ -344,7 +344,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Battle.SkillInventory.Remove(skill);
+                                RunManager.Instance.Environment.SkillInventory.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -352,7 +352,7 @@ public class NodeCategory : Category<NodeEntry>
                             }
                         }
 
-                        count.Do(i => RunManager.Instance.Battle.SkillInventory.Add(copyingSkill));
+                        count.Do(i => RunManager.Instance.Environment.SkillInventory.Add(copyingSkill));
                         return D;
                     });
 
@@ -458,7 +458,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option =>
                     {
-                        foreach (var slot in RunManager.Instance.Battle.Home.TraversalCurrentSlots())
+                        foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
                         {
                             if (slot.Skill == null)
                                 continue;
@@ -470,13 +470,13 @@ public class NodeCategory : Category<NodeEntry>
 
                             JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
 
-                            RunManager.Instance.Battle.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
+                            RunManager.Instance.Environment.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
                             slot.Skill = newSkill;
                         }
 
-                        for(int i = 0; i < RunManager.Instance.Battle.SkillInventory.Count(); i++)
+                        for(int i = 0; i < RunManager.Instance.Environment.SkillInventory.Count(); i++)
                         {
-                            RunSkill oldSkill = RunManager.Instance.Battle.SkillInventory[i];
+                            RunSkill oldSkill = RunManager.Instance.Environment.SkillInventory[i];
                             WuXing? oldWuXing = oldSkill.GetEntry().WuXing;
                             JingJie oldJingJie = oldSkill.JingJie;
 
@@ -485,8 +485,8 @@ public class NodeCategory : Category<NodeEntry>
 
                             JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
 
-                            RunManager.Instance.Battle.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
-                            RunManager.Instance.Battle.SkillInventory.Replace(oldSkill, newSkill);
+                            RunManager.Instance.Environment.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
+                            RunManager.Instance.Environment.SkillInventory.Replace(oldSkill, newSkill);
                         }
 
                         return C;
@@ -524,7 +524,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Battle.SkillInventory.Remove(skill);
+                                RunManager.Instance.Environment.SkillInventory.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -596,12 +596,12 @@ public class NodeCategory : Category<NodeEntry>
                     ArbitraryCardPickerPanelDescriptor B = new("请从10张牌中选1张获取");
                     DialogPanelDescriptor C = new("刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
 
-                    RunManager.Instance.Battle.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: runNode.JingJie, count: 10, consume: false);
+                    RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: runNode.JingJie, count: 10, consume: false);
                     B.AddSkills(skills);
 
                     B.SetSelect(toAdd =>
                     {
-                        RunManager.Instance.Battle.ForceAddSkills(toAdd);
+                        RunManager.Instance.Environment.ForceAddSkills(toAdd);
                         return C;
                     });
 
@@ -746,7 +746,7 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         Range manaCost = 0;
 
-                        RunManager.Instance.Battle.SkillPool.TryDrawSkills(out List<RunSkill> skills,
+                        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
                             pred: e => manaCost.Contains(e.GetBaseManaCost()), wuXing: wuXing, jingJie: runNode.JingJie, count: 3, distinct: true, consume: false);
                         C.AddSkills(skills);
                         return C;
@@ -755,14 +755,14 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         Range manaCost = new Range(1, 10);
 
-                        RunManager.Instance.Battle.SkillPool.TryDrawSkills(out List<RunSkill> skills,
+                        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
                             pred: e => manaCost.Contains(e.GetBaseManaCost()), wuXing: wuXing, jingJie: runNode.JingJie, count: 3, distinct: true, consume: false);
                         C.AddSkills(skills);
                         return C;
                     });
                     B[2].SetSelect(option =>
                     {
-                        RunManager.Instance.Battle.SkillPool.TryDrawSkills(out List<RunSkill> skills,
+                        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
                             pred: e => e.SkillTypeComposite.Contains(SkillType.LingQi), wuXing: wuXing, jingJie: runNode.JingJie, count: 3, distinct: true, consume: false);
                         C.AddSkills(skills);
                         return C;
@@ -770,7 +770,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     C.SetSelect(skills =>
                     {
-                        RunManager.Instance.Battle.ForceAddSkills(skills);
+                        RunManager.Instance.Environment.ForceAddSkills(skills);
                         return D;
                     });
 
@@ -876,7 +876,7 @@ public class NodeCategory : Category<NodeEntry>
                         "和山贼战斗");
                     DialogPanelDescriptor C = new("他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n金+50");
 
-                    RunManager.Instance.Battle.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
+                    runNode._map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
                     BattlePanelDescriptor B1 = new(template);
                     DialogPanelDescriptor B1win = new DialogPanelDescriptor("你打过了山贼，商人对你十分感激。\n\n金+100")
                         .SetReward(Reward.FromGold(100));
@@ -929,7 +929,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Battle.SkillInventory.Remove(skill);
+                                RunManager.Instance.Environment.SkillInventory.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -949,7 +949,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Battle.SkillInventory.Remove(skill);
+                                RunManager.Instance.Environment.SkillInventory.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {

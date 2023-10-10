@@ -22,7 +22,7 @@ public class CardPickerPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
 
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
@@ -121,7 +121,7 @@ public class CardPickerPanel : Panel
         List<object> iRunSkillList = new List<object>();
         iRunSkillList.AddRange(_skillSelections.Map(i => SkillListView.ActivePool[i].Get<object>()));
         iRunSkillList.AddRange(_slotSelections.Map(i => SlotListView.ActivePool[i].Get<object>()));
-        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedIRunSkillsSignal(iRunSkillList));
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedIRunSkillsSignal(iRunSkillList));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

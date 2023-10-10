@@ -3,25 +3,21 @@ using System.Threading.Tasks;
 
 public class DesignerEnvironment
 {
-    private static readonly int[] DrawCountPerJingJie = new int[] { 4, 4, 4, 4, 4, 4 };
-
-    public static void EnterRun()
+    public static RunConfig GetConfig()
     {
-        Standard();
-        // Custom();
+        return new RunConfig(Standard);
+        // return new RunConfig(Custom);
     }
 
-    public static void Standard()
+    private static void Standard(RunEnvironment env)
     {
-        RunEnvironment env = RunManager.Instance.Battle;
         env.Map.JingJie = JingJie.LianQi;
         env.AddXiuWei(50);
         env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
     }
 
-    public static void Custom()
+    private static void Custom(RunEnvironment env)
     {
-        RunEnvironment env = RunManager.Instance.Battle;
         env.Map.JingJie = JingJie.HuaShen;
         env.Home.SetJingJie(JingJie.HuaShen);
         env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);

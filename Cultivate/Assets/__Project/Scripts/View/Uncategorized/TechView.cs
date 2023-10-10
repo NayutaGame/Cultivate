@@ -59,7 +59,7 @@ public class TechView : ItemView
         if (!isCurrent) return;
 
         CostText.text = runTech.GetCost().ToString();
-        CostText.color = RunManager.Instance.Battle.CanAffordTech(GetAddress()) ? Color.black : Color.red;
+        CostText.color = RunManager.Instance.Environment.CanAffordTech(GetAddress()) ? Color.black : Color.red;
 
         if (runTech.HasEureka)
         {
@@ -73,7 +73,7 @@ public class TechView : ItemView
 
     private void TrySetDone()
     {
-        RunManager.Instance.Battle.TrySetDoneTech(GetAddress());
+        RunManager.Instance.Environment.TrySetDoneTech(GetAddress());
         RunCanvas.Instance.Refresh();
     }
 }

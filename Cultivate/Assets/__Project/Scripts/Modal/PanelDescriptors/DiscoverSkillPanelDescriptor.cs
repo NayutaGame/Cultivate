@@ -30,20 +30,20 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
         _pred = pred;
         _wuXing = wuXing;
-        _jingJie = jingJie ?? RunManager.Instance.Battle.Map.JingJie;
+        _jingJie = jingJie ?? RunManager.Instance.Environment.Map.JingJie;
     }
 
     public override void DefaultEnter()
     {
         base.DefaultEnter();
-        RunManager.Instance.Battle.SkillPool.TryDrawSkills(out _skills, pred: _pred, wuXing: _wuXing, jingJie: _jingJie , count: 3);
+        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out _skills, pred: _pred, wuXing: _wuXing, jingJie: _jingJie , count: 3);
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
-            RunManager.Instance.Battle.SkillInventory.Add(_skills[selectedOptionSignal.Selected]);
+            RunManager.Instance.Environment.SkillInventory.Add(_skills[selectedOptionSignal.Selected]);
             return null;
         }
 

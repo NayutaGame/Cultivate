@@ -169,7 +169,7 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
         _slots.Traversal().Do(slot => slot.TryExhaust());
     }
 
-    public static RunEntity Default
+    public static RunEntity Default()
         => new();
 
     public static RunEntity FromJingJieHealth(JingJie jingJie, int health)

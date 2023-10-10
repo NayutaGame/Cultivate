@@ -18,9 +18,9 @@ public class ResourceReward : Reward
 
     public override void Claim()
     {
-        RunManager.Instance.Battle.AddXiuWei(_xiuWei);
-        RunManager.Instance.Battle.SetDMingYuan(_mingYuan);
-        RunManager.Instance.Battle.AddHealth(_health);
+        RunManager.Instance.Environment.AddXiuWei(_xiuWei);
+        RunManager.Instance.Environment.SetDMingYuan(_mingYuan);
+        RunManager.Instance.Environment.AddHealth(_health);
     }
 
     public override string GetDescription()

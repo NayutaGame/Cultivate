@@ -11,14 +11,14 @@ public class BattlePanelDescriptor : PanelDescriptor
         get => _enemy;
         set
         {
-            if (_enemy != null) _enemy.EnvironmentChangedEvent -= RunManager.Instance.Battle.EnvironmentChanged;
+            if (_enemy != null) _enemy.EnvironmentChangedEvent -= RunManager.Instance.Environment.EnvironmentChanged;
             _enemy = value;
-            if (_enemy != null) _enemy.EnvironmentChangedEvent += RunManager.Instance.Battle.EnvironmentChanged;
+            if (_enemy != null) _enemy.EnvironmentChangedEvent += RunManager.Instance.Environment.EnvironmentChanged;
             _enemy?.EnvironmentChanged();
         }
     }
 
-    public StageEnvironmentResult GetResult() => RunManager.Instance.Battle.SimulateResult;
+    public StageEnvironmentResult GetResult() => RunManager.Instance.Environment.SimulateResult;
 
     public BattlePanelDescriptor(RunEntity template)
     {
@@ -33,14 +33,14 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         base.DefaultEnter();
         Enemy = RunEntity.FromTemplate(_template);
-        RunManager.Instance.Battle.Away = Enemy;
-        RunManager.Instance.Battle.Simulate();
+        RunManager.Instance.Environment.Away = Enemy;
+        RunManager.Instance.Environment.EnvironmentChanged();
     }
 
     public override void DefaultExit()
     {
         base.DefaultExit();
-        RunManager.Instance.Battle.Away = null;
+        RunManager.Instance.Environment.Away = null;
         Enemy = null;
     }
 
@@ -70,6 +70,6 @@ public class BattlePanelDescriptor : PanelDescriptor
 
     public void Combat()
     {
-        RunManager.Instance.Battle.Combat();
+        RunManager.Instance.Environment.Combat();
     }
 }

@@ -10,9 +10,12 @@ public class AppManager : Singleton<AppManager>, Addressable
     private Encyclopedia Encyclopedia;
     public Settings Settings;
 
+    [SerializeField] private AppCanvas AppCanvas;
     public EditorManager EditorManager;
     public RunManager RunManager;
     public StageManager StageManager;
+
+    private TutorialList TutorialList;
 
     public FormationInventory FormationInventory;
     public SkillInventory SkillInventory;
@@ -35,6 +38,7 @@ public class AppManager : Singleton<AppManager>, Addressable
 
             { "FormationInventory", () => FormationInventory },
             { "SkillInventory", () => SkillInventory },
+            { "TutorialList", () => TutorialList },
         };
 
         Application.targetFrameRate = 120;
@@ -48,13 +52,16 @@ public class AppManager : Singleton<AppManager>, Addressable
         SkillInventory = new();
         Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.From(e, e.JingJieRange.Start)).Do(s => SkillInventory.Add(s));
 
+        TutorialList = new();
+
+        AppCanvas.gameObject.SetActive(true);
         EditorManager.gameObject.SetActive(true);
         RunManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);
 
         _sm = new AppSM();
-        _sm.Push(new RunAppS());
+        _sm.Push(new TitleAppS());
     }
 
     private void Update()

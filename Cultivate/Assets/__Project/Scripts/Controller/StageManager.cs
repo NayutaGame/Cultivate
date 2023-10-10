@@ -48,13 +48,13 @@ public class StageManager : Singleton<StageManager>, Addressable
     {
         DisableVFX();
 
-        if (!Environment.Details.WriteResult)
+        if (!Environment.Config.WriteResult)
             return;
 
         Signal signal = new BattleResultSignal(Environment.Result.HomeVictory
             ? BattleResultSignal.BattleResultState.Win
             : BattleResultSignal.BattleResultState.Lose);
-        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(signal);
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(signal);
         RunCanvas.Instance.SetNodeState(panelDescriptor);
         Environment.WriteResult();
     }

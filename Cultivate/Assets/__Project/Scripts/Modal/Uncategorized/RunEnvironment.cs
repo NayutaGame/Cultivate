@@ -7,6 +7,22 @@ public class RunEnvironment : Addressable
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
+    private void Simulate()
+    {
+        RunEntity away = Away ?? RunEntity.FromJingJieHealth(Home.GetJingJie(), 1000000);
+        StageConfig d = new StageConfig(false, false, false, false, Home, away);
+        StageEnvironment environment = new StageEnvironment(d);
+        environment.Execute();
+        SimulateResult = environment.Result;
+    }
+
+    public event Action<JingJie> MapJingJieChangedEvent;
+    public void MapJingJieChanged(JingJie jingJie) => MapJingJieChangedEvent?.Invoke(jingJie);
+    private void SetHomeJingJieAndBaseHealth(JingJie jingJie)
+    {
+        Home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[jingJie]);
+        Home.SetJingJie(jingJie);
+    }
 
     public RunEntity Home { get; private set; }
     public RunEntity Away { get; set; }
@@ -19,13 +35,11 @@ public class RunEnvironment : Addressable
     public SkillInventory SkillInventory { get; private set; }
     public MechBag MechBag { get; private set; }
 
-    public EntityPool EntityPool { get; private set; }
-
     public StageEnvironmentResult SimulateResult;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public RunEnvironment()
+    private RunEnvironment(RunConfig config = null)
     {
         _accessors = new()
         {
@@ -36,50 +50,43 @@ public class RunEnvironment : Addressable
             { "MechBag",               () => MechBag },
         };
 
-        Home = RunEntity.Default;
+        Home = RunEntity.Default();
         Home.EnvironmentChangedEvent += EnvironmentChanged;
-
-        Map = new();
-        TechInventory = new();
-
-        SkillPool = new();
-        SkillInventory = new();
-        MechBag = new();
-        EntityPool = new();
-
         EnvironmentChangedEvent += Simulate;
 
-        _turn = 1;
+        Map = new();
+        Map.JingJieChangedEvent += MapJingJieChanged;
+        MapJingJieChangedEvent += SetHomeJingJieAndBaseHealth;
+
+        TechInventory = new();
+
+        SkillInventory = new();
+        MechBag = new();
+
+        SkillPool = new();
+
         _xiuWei = 0;
+
+        config?.Execute(this);
     }
+
+    public static RunEnvironment Default()
+        => new();
+
+    public static RunEnvironment FromConfig(RunConfig config)
+        => new(config);
 
     public void Combat()
     {
-        StageEnvironmentDetails d = new StageEnvironmentDetails(true, true, false, false, RunManager.Instance.Battle.Home, Away);
+        StageConfig d = new StageConfig(true, true, false, false, Home, Away);
         StageEnvironment environment = new StageEnvironment(d);
         environment.Execute();
-    }
-
-    public void Simulate()
-    {
-        RunEntity away = Away ?? RunEntity.FromJingJieHealth(Home.GetJingJie(), 1000000);
-        StageEnvironmentDetails d = new StageEnvironmentDetails(false, false, false, false, Home, away);
-        StageEnvironment environment = new StageEnvironment(d);
-        environment.Execute();
-        SimulateResult = environment.Result;
-    }
-
-    public void Enter()
-    {
-        // CreateEntityDetails d = new CreateEntityDetails(RunManager.Instance.Map.JingJie);
-        // RunManager.Instance.EntityPool.ForceDrawEntityEntry(out EntityEntry entry, d);
-        // Enemy = new RunEntity(entry, d);
     }
 
     public bool TryMerge(RunSkill lhs, RunSkill rhs)
     {
-        // if (lhs.GetJingJie() >= Hero.GetJingJie() && lhs.Entry != rhs.Entry)
-        //     return false;
+        if (lhs.GetJingJie() > Home.GetJingJie() && lhs.GetEntry() != rhs.GetEntry())
+            return false;
 
         if (lhs.GetJingJie() != rhs.GetJingJie())
             return false;
@@ -230,39 +237,6 @@ public class RunEnvironment : Addressable
         toSlot.Skill = temp;
         return true;
     }
-
-    public bool TryWrite(RunSkill fromSkill, SkillSlot toSlot)
-    {
-        toSlot.Skill = fromSkill;
-        return true;
-    }
-
-    public bool TryWrite(SkillSlot fromSlot, SkillSlot toSlot)
-    {
-        toSlot.Skill = fromSlot.Skill;
-        return true;
-    }
-
-    public bool TryIncreaseJingJie(RunSkill skill)
-    {
-        bool success = skill.TryIncreaseJingJie();
-        if (!success)
-            return false;
-        EnvironmentChanged();
-        return false;
-    }
-
-    public bool TryIncreaseJingJie(SkillSlot slot)
-    {
-        bool success = slot.TryIncreaseJingJie();
-        if (!success)
-            return false;
-        EnvironmentChanged();
-        return false;
-    }
-
-    private int _turn;
-    public int Turn => _turn;
 
     private float _xiuWei;
     public float XiuWei => _xiuWei;

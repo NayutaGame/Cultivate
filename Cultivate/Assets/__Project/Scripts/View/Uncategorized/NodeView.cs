@@ -54,10 +54,10 @@ public class NodeView : ItemView
     private bool TryClickNode(Address address)
     {
         RunNode runNode = Get<RunNode>();
-        if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Battle.Map.Selecting)
+        if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Environment.Map.Selecting)
             return false;
 
-        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.SelectedNode(runNode);
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.SelectedNode(runNode);
         RunCanvas.Instance.SetNodeState(panelDescriptor);
         return true;
     }

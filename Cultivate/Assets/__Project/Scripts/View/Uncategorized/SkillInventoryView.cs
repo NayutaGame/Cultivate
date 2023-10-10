@@ -57,7 +57,7 @@ public class SkillInventoryView : ListView, IDropHandler
 
     private void DrawJingJie(JingJie jingJie)
     {
-        RunManager.Instance.Battle.ForceDrawSkill(jingJie: jingJie);
+        RunManager.Instance.Environment.ForceDrawSkill(jingJie: jingJie);
         RunCanvas.Instance.Refresh();
     }
 

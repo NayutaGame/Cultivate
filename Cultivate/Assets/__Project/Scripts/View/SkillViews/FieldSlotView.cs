@@ -54,7 +54,7 @@ public class FieldSlotView : SlotView, IInteractable,
         _animationHandle?.Kill();
         _animationHandle = DOTween.Sequence()
             .Append(ContentTransform.DOAnchorPos(HoverPivot.anchoredPosition, 0.15f))
-            .Append(ContentTransform.DOScale(HoverPivot.localScale, 0.15f));
+            .Join(ContentTransform.DOScale(HoverPivot.localScale, 0.15f).SetEase(Ease.OutQuad));
         _animationHandle.Restart();
 
         RunCanvas.Instance.SkillPreview.SetAddress(SkillView.GetAddress());
@@ -68,7 +68,7 @@ public class FieldSlotView : SlotView, IInteractable,
         _animationHandle?.Kill();
         _animationHandle = DOTween.Sequence()
             .Append(ContentTransform.DOAnchorPos(IdlePivot.anchoredPosition, 0.15f))
-            .Append(ContentTransform.DOScale(IdlePivot.localScale, 0.15f));
+            .Join(ContentTransform.DOScale(IdlePivot.localScale, 0.15f).SetEase(Ease.InQuad));
         _animationHandle.Restart();
 
         RunCanvas.Instance.SkillPreview.SetAddress(null);

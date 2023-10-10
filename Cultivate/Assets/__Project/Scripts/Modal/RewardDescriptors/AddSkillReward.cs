@@ -16,7 +16,7 @@ public class AddSkillReward : Reward
 
     public override void Claim()
     {
-        RunManager.Instance.Battle.ForceAddSkill(new AddSkillDetails(_entry, _jingJie));
+        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails(_entry, _jingJie));
     }
 
     public override string GetDescription() => _description;

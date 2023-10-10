@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using CLLibrary;
+
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class BattleNodeEntry : NodeEntry
 {
@@ -31,7 +27,7 @@ public class BattleNodeEntry : NodeEntry
 
                 A.SetLose(() =>
                 {
-                    RunManager.Instance.Battle.SetDMingYuan(-2);
+                    RunManager.Instance.Environment.SetDMingYuan(-2);
                     C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{xiuWeiValue}修为\n请选择一张卡作为奖励");
                     return C;
                 });
@@ -40,7 +36,7 @@ public class BattleNodeEntry : NodeEntry
             {
                 A.SetWin(() =>
                 {
-                    RunManager.Instance.Battle.SetDMingYuan(3);
+                    RunManager.Instance.Environment.SetDMingYuan(3);
                     B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{xiuWeiValue}的修为\n请选择一张卡作为奖励");
                     return B;
                 });

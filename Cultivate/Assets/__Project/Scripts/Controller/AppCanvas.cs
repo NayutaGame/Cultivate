@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class AppCanvas : Singleton<AppCanvas>
 {
-    [SerializeField] private SettingsPanel SettingsPanel;
+    [SerializeField] public TitlePanel TitlePanel;
+    [SerializeField] public SettingsPanel SettingsPanel;
+    [SerializeField] public TutorialPanel TutorialPanel;
 
     public override void DidAwake()
     {
@@ -15,11 +17,15 @@ public class AppCanvas : Singleton<AppCanvas>
 
     public void Configure()
     {
-        SettingsPanel.Configure();
+        TitlePanel.Configure();
+        // SettingsPanel.Configure();
+        TutorialPanel.Configure();
     }
 
     public void Refresh()
     {
-        SettingsPanel.Refresh();
+        TitlePanel.Refresh();
+        // SettingsPanel.Refresh();
+        TutorialPanel.Refresh();
     }
 }

@@ -363,8 +363,8 @@ public class StageEnvironment : Addressable, CLEventListener
         await _eventDict.SendEvent(CLEventDict.DID_EXHAUST, d);
     }
 
-    private StageEnvironmentDetails _details;
-    public StageEnvironmentDetails Details => _details;
+    private StageConfig _config;
+    public StageConfig Config => _config;
 
     public CLEventDict _eventDict;
 
@@ -376,7 +376,7 @@ public class StageEnvironment : Addressable, CLEventListener
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public StageEnvironment(StageEnvironmentDetails details)
+    public StageEnvironment(StageConfig config)
     {
         _accessors = new()
         {
@@ -385,33 +385,33 @@ public class StageEnvironment : Addressable, CLEventListener
             { "Report",                () => _result },
         };
 
-        _details = details;
+        _config = config;
 
         _eventDict = new();
 
         _entities = new StageEntity[]
         {
-            new(this, _details.Home, 0),
-            new(this, _details.Away, 1),
+            new(this, _config.Home, 0),
+            new(this, _config.Away, 1),
         };
 
-        _result = new(_details.GenerateReport, _details.GenerateTimeline);
+        _result = new(_config.GenerateReport, _config.GenerateTimeline);
     }
 
     public void Execute()
     {
-        if (!_details.Animated)
+        if (!_config.Animated)
         {
             Simulate().GetAwaiter().GetResult();
 
-            if (_details.WriteResult)
+            if (_config.WriteResult)
                 WriteResult();
 
             return;
         }
 
         StageEnvironment futureEnvironment =
-            new StageEnvironment(new StageEnvironmentDetails(false, false, false, true, _details.Home, _details.Away));
+            new StageEnvironment(new StageConfig(false, false, false, true, _config.Home, _config.Away));
         futureEnvironment.Simulate().GetAwaiter().GetResult();
 
         StageManager.Instance.Environment = this;
@@ -422,14 +422,14 @@ public class StageEnvironment : Addressable, CLEventListener
 
     public async Task TryPlayTween(TweenDescriptor descriptor)
     {
-        if (!_details.Animated)
+        if (!_config.Animated)
             return;
         await StageManager.Instance.Anim.PlayTween(descriptor);
     }
 
     public async Task TryPlayTween(Tween tween)
     {
-        if (!_details.Animated)
+        if (!_config.Animated)
             return;
         await StageManager.Instance.Anim.PlayTween(tween);
     }
@@ -440,7 +440,7 @@ public class StageEnvironment : Addressable, CLEventListener
     public void WriteResult()
     {
         _entities[0].WriteResult();
-        _details.Home.TryExhaust();
+        _config.Home.TryExhaust();
     }
 
     public async Task Simulate()

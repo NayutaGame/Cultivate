@@ -277,11 +277,11 @@ public class EntityEditorPanel : Panel
         ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
         if (_selectionIndex.HasValue)
         {
-            model.Insert(_selectionIndex.Value, RunEntity.Default);
+            model.Insert(_selectionIndex.Value, RunEntity.Default());
         }
         else
         {
-            model.Add(RunEntity.Default);
+            model.Add(RunEntity.Default());
         }
     }
 

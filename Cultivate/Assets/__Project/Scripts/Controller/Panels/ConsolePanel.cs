@@ -55,24 +55,24 @@ public class ConsolePanel : Panel
     {
         base.Refresh();
 
-        RunEnvironment env = RunManager.Instance.Battle;
+        RunEnvironment env = RunManager.Instance.Environment;
         MingYuanText.text = env.GetMingYuan().ToString();
         GoldText.text = env.XiuWei.ToString();
 
-        IEntityModel entity = RunManager.Instance.Battle.Home;
+        IEntityModel entity = RunManager.Instance.Environment.Home;
         HealthInputField.SetTextWithoutNotify(entity.GetBaseHealth().ToString());
         JingJieDropdown.SetValueWithoutNotify(entity.GetJingJie());
     }
 
     public void AddMingYuan()
     {
-        RunManager.Instance.Battle.GetMingYuan().SetDiff();
+        RunManager.Instance.Environment.GetMingYuan().SetDiff();
         Refresh();
     }
 
     private void AddXiuWei()
     {
-        RunManager.Instance.Battle.AddXiuWei();
+        RunManager.Instance.Environment.AddXiuWei();
         Refresh();
     }
 
@@ -81,28 +81,28 @@ public class ConsolePanel : Panel
         int.TryParse(value, out int health);
         health = Mathf.Clamp(health, 1, 9999);
 
-        IEntityModel entity = RunManager.Instance.Battle.Home;
+        IEntityModel entity = RunManager.Instance.Environment.Home;
         entity.SetBaseHealth(health);
         RunCanvas.Instance.Refresh();
     }
 
     private void JingJieChanged(int jingJie)
     {
-        IEntityModel entity = RunManager.Instance.Battle.Home;
+        IEntityModel entity = RunManager.Instance.Environment.Home;
         entity.SetJingJie(jingJie);
         RunCanvas.Instance.Refresh();
     }
 
     private void DrawSkill()
     {
-        RunManager.Instance.Battle.ForceDrawSkill(jingJie: RunManager.Instance.Battle.Map.JingJie);
+        RunManager.Instance.Environment.ForceDrawSkill(jingJie: RunManager.Instance.Environment.Map.JingJie);
         RunCanvas.Instance.Refresh();
     }
 
     private void AddMech()
     {
         foreach(MechType m in MechType.Traversal)
-            RunManager.Instance.Battle.ForceAddMech(new(m));
+            RunManager.Instance.Environment.ForceAddMech(new(m));
         RunCanvas.Instance.Refresh();
     }
 }

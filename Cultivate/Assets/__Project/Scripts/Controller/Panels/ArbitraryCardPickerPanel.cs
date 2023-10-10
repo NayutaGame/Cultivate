@@ -24,7 +24,7 @@ public class ArbitraryCardPickerPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        _address = new Address("Run.Battle.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
 
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
@@ -32,7 +32,7 @@ public class ArbitraryCardPickerPanel : Panel
         ConfigureInteractDelegate();
         _selections = new List<SkillView>();
 
-        SkillInventoryView.SetAddress(new Address($"{_address}.Inventory"));
+        SkillInventoryView.SetAddress(_address.Append(".Inventory"));
         SkillInventoryView.SetDelegate(InteractDelegate);
     }
 
@@ -99,7 +99,7 @@ public class ArbitraryCardPickerPanel : Panel
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
         List<RunSkill> mapped = _selections.Map(v => v.Get<RunSkill>()).ToList();
-        PanelDescriptor panelDescriptor = RunManager.Instance.Battle.Map.ReceiveSignal(new SelectedSkillsSignal(mapped));
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedSkillsSignal(mapped));
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 }

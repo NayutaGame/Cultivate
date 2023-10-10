@@ -19,7 +19,7 @@ public class RunManager : Singleton<RunManager>, Addressable
     public event Action<StatusChangedDetails> StatusChangedEvent;
     public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
 
-    public RunEnvironment Battle { get; private set; }
+    public RunEnvironment Environment { get; private set; }
     public Arena Arena;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -28,20 +28,18 @@ public class RunManager : Singleton<RunManager>, Addressable
     {
         base.DidAwake();
 
-        Battle = new();
+        Environment = RunEnvironment.FromConfig(DesignerEnvironment.GetConfig());
         Arena = new();
 
         _accessors = new()
         {
-            { "Battle",                () => Battle },
+            { "Environment",           () => Environment },
             { "Arena",                 () => Arena },
         };
     }
 
     public void Enter()
     {
-        Battle.Enter();
-        DesignerEnvironment.EnterRun();
     }
 
     public void CExit()

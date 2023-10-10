@@ -40,10 +40,10 @@ public class DeckPanel : Panel
 
     public override void Configure()
     {
-        FieldView.SetAddress(new Address("Run.Battle.Hero.Slots"));
-        HandView.SetAddress(new Address("Run.Battle.SkillInventory"));
-        FormationListView.SetAddress(new Address("Run.Battle.Hero.ActivatedSubFormations"));
-        MechListView.SetAddress(new Address("Run.Battle.MechBag"));
+        FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
+        HandView.SetAddress(new Address("Run.Environment.SkillInventory"));
+        FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
+        MechListView.SetAddress(new Address("Run.Environment.MechBag"));
 
         ConfigureInteractDelegate();
 
@@ -120,7 +120,7 @@ public class DeckPanel : Panel
 
     private void TryMerge(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         RunSkill lhs = from.Get<RunSkill>();
         RunSkill rhs = to.Get<RunSkill>();
         env.TryMerge(lhs, rhs);
@@ -128,7 +128,7 @@ public class DeckPanel : Panel
 
     private void TryEquipSkill(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         RunSkill toEquip = from.Get<RunSkill>();
         SkillSlot slot = to.Get<SkillSlot>();
         env.TryEquipSkill(toEquip, slot);
@@ -138,7 +138,7 @@ public class DeckPanel : Panel
 
     private void TryEquipMech(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         Mech toEquip = from.Get<Mech>();
         SkillSlot slot = to.Get<SkillSlot>();
         env.TryEquipMech(toEquip, slot);
@@ -149,7 +149,7 @@ public class DeckPanel : Panel
 
     private void TryUnequip(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         SkillSlot slot = from.Get<SkillSlot>();
         env.TryUnequip(slot, null);
         FieldView.Refresh();
@@ -158,7 +158,7 @@ public class DeckPanel : Panel
 
     private void TrySwap(IInteractable from, IInteractable to)
     {
-        RunEnvironment env = new Address("Run.Battle").Get<RunEnvironment>();
+        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         SkillSlot fromSlot = from.Get<SkillSlot>();
         SkillSlot toSlot = to.Get<SkillSlot>();
         env.TrySwap(fromSlot, toSlot);

@@ -27,6 +27,6 @@ public class Commodity : Addressable
 
     public bool Affordable()
     {
-        return RunManager.Instance.Battle.XiuWei >= FinalPrice;
+        return RunManager.Instance.Environment.XiuWei >= FinalPrice;
     }
 }

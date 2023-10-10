@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+
 using CLLibrary;
-using UnityEngine;
 
 public class EntityPool : Pool<RunEntity>
 {
@@ -18,7 +15,7 @@ public class EntityPool : Pool<RunEntity>
         if (success)
             return true;
 
-        template = RunEntity.Default;
+        template = RunEntity.Default();
         return false;
     }
 }
