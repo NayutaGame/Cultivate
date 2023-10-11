@@ -3,11 +3,6 @@ using CLLibrary;
 
 public class EntityPool : Pool<RunEntity>
 {
-    public EntityPool()
-    {
-        Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
-    }
-
     public bool TryDrawEntity(out RunEntity template, DrawEntityDetails d)
     {
         Shuffle();

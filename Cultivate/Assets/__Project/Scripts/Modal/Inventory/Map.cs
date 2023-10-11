@@ -148,6 +148,7 @@ public class Map : Addressable
         _list = new RunNode[HEIGHT * WIDTH];
 
         EntityPool = new();
+        EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
         _b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is BattleNodeEntry).ToList());
         _r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is RewardNodeEntry).ToList());
         _a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is AdventureNodeEntry).ToList());
