@@ -15,6 +15,7 @@ public class NodeLayer : MonoBehaviour
     public ShopPanel ShopPanel;
     public BarterPanel BarterPanel;
     public ArbitraryCardPickerPanel ArbitraryCardPickerPanel;
+    public ImagePanel ImagePanel;
 
     private Panel _currentPanel;
 
@@ -68,6 +69,7 @@ public class NodeLayer : MonoBehaviour
             { typeof(ShopPanelDescriptor), ShopPanel },
             { typeof(BarterPanelDescriptor), BarterPanel },
             { typeof(ArbitraryCardPickerPanelDescriptor), ArbitraryCardPickerPanel },
+            { typeof(ImagePanelDescriptor), ImagePanel },
         };
 
         // _panelDict.Do(kvp => kvp.Value.Configure());

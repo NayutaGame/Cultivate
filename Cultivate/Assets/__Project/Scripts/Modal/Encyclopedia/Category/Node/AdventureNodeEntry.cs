@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AdventureNodeEntry : NodeEntry
 {
-    public AdventureNodeEntry(string name, string description, Action<RunNode> create, Func<Map, int, bool> canCreate = null) : base(name, description, create, canCreate)
+    public AdventureNodeEntry(string name, string description, bool normal, Action<RunNode> create, Func<Map, int, bool> canCreate = null) : base(name, description, normal, create, canCreate)
     {
     }
 

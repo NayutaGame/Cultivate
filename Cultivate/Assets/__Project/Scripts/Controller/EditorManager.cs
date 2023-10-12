@@ -92,6 +92,9 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         EntityEditableList = EntityEditableList.ReadFromFile();
     }
 
+    public static RunEntity FindEntity(string name)
+        => Instance.EntityEditableList.Traversal().FirstObj(e => e.GetEntry().Name == name);
+
     // public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
     // {
     //     EmulatedSkill temp = fromSlot.Skill;

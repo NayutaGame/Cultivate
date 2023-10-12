@@ -39,7 +39,7 @@ public class RunEnvironment : Addressable
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    private RunEnvironment(RunConfig config = null)
+    private RunEnvironment(RunConfig runConfig = null)
     {
         _accessors = new()
         {
@@ -54,7 +54,7 @@ public class RunEnvironment : Addressable
         Home.EnvironmentChangedEvent += EnvironmentChanged;
         EnvironmentChangedEvent += Simulate;
 
-        Map = new();
+        Map = new(runConfig);
         Map.JingJieChangedEvent += MapJingJieChanged;
         MapJingJieChangedEvent += SetHomeJingJieAndBaseHealth;
 
@@ -67,7 +67,7 @@ public class RunEnvironment : Addressable
 
         _xiuWei = 0;
 
-        config?.Execute(this);
+        runConfig?.Execute(this);
     }
 
     public static RunEnvironment Default()

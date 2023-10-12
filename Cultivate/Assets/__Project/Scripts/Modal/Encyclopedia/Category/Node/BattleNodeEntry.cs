@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BattleNodeEntry : NodeEntry
 {
-    public BattleNodeEntry(string name, string description) : base(name, description,
+    public BattleNodeEntry(string name, string description) : base(name, description, normal: true,
         create: runNode =>
         {
             BattleRunNode battleRunNode = runNode as BattleRunNode;

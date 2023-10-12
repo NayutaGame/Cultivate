@@ -1,6 +1,5 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SpriteCategory : Category<SpriteEntry>
 {
@@ -21,6 +20,17 @@ public class SpriteCategory : Category<SpriteEntry>
             new("悟道", "Images/NodeIcons/WuDao"),
             new("修炼", "Images/NodeIcons/XiuLian"),
             new("以物易物", "Images/NodeIcons/YiWuYiWu"),
+
+            // 漫画
+            new("漫画1", "Images/Large/漫画1"),
+            new("漫画2", "Images/Large/漫画2"),
+            new("漫画3", "Images/Large/漫画3"),
+            new("置入教学", "Images/Large/置入教学"),
+            new("灵气教学", "Images/Large/灵气教学"),
+            new("合成教学", "Images/Large/合成教学"),
+            new("战败教学", "Images/Large/战败教学"),
+            new("命元教学", "Images/Large/命元教学"),
+            new("准备出发", "Images/Large/准备出发"),
 
             // 卡牌
             new("一切皆苦", "Images/Cards/一切皆苦"),

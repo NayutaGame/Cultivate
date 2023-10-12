@@ -34,11 +34,12 @@ public class Map : Addressable
         set => this[pos.x, pos.y] = value;
     }
 
-    public EntityPool EntityPool { get; }
-    private AutoPool<NodeEntry> _b;
-    private AutoPool<NodeEntry> _r;
-    private AutoPool<NodeEntry> _a;
-    private Dictionary<JingJie, AutoPool<NodeEntry>[]> _poolConfiguration;
+    public EntityPool EntityPool;
+    public AutoPool<NodeEntry> _b;
+    public AutoPool<NodeEntry> _r;
+    public AutoPool<NodeEntry> _a;
+    public Dictionary<JingJie, NodeEntry[]> _priorityNodes;
+    public Dictionary<JingJie, AutoPool<NodeEntry>[]> _normalPools;
 
     public bool Selecting { get; private set; }
     private Vector2Int _heroPosition;
@@ -130,14 +131,14 @@ public class Map : Addressable
         {
             _jingJie = value;
             JingJieChanged(_jingJie);
-            RefreshPools();
+            RefreshNodes();
             AudioManager.Instance.Play(JingJieToAudio[_jingJie]);
         }
     }
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public Map()
+    public Map(RunConfig runConfig)
     {
         _accessors = new()
         {
@@ -147,39 +148,39 @@ public class Map : Addressable
 
         _list = new RunNode[HEIGHT * WIDTH];
 
-        EntityPool = new();
-        EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
-        _b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is BattleNodeEntry).ToList());
-        _r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is RewardNodeEntry).ToList());
-        _a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n is AdventureNodeEntry).ToList());
-        _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
-        {
-            { JingJie.LianQi   , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
-            { JingJie.ZhuJi    , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
-            { JingJie.JinDan   , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
-            { JingJie.YuanYing , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _b, _r } },
-            { JingJie.HuaShen  , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _r, _b } },
-            { JingJie.FanXu    , new[] { _b, _r, _b, _a, _b, _r, _b, _a, _r, _b } },
-        };
-
-        // _poolConfiguration = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
-        // {
-        //     { JingJie.LianQi   , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
-        //     { JingJie.ZhuJi    , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
-        //     { JingJie.JinDan   , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
-        //     { JingJie.YuanYing , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
-        //     { JingJie.HuaShen  , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
-        //     { JingJie.FanXu    , new[] { _a, _b, _b, _r, _b, _r, _b, _a, _r, _b } },
-        // };
-
+        runConfig.InitMapPools(this);
     }
 
-    private void RefreshPools()
+    private void RefreshNodes()
     {
-        AutoPool<NodeEntry>[] pools = _poolConfiguration[_jingJie];
+        NodeEntry[] priorityNodes = _priorityNodes[_jingJie];
+        AutoPool<NodeEntry>[] pools = _normalPools[_jingJie];
 
         for (int x = 0; x < WIDTH; x++)
         {
+            NodeEntry priorityNode = x < priorityNodes.Length ? priorityNodes[x] : null;
+            if (priorityNode != null)
+            {
+                if (priorityNode is BattleNodeEntry battleNode)
+                {
+                    DrawEntityDetails d = new DrawEntityDetails(_jingJie, x <= 3, 3 < x && x <= 6, 6 < x);
+                    this[x, 0] = new BattleRunNode(this, new Vector2Int(x, 0), _jingJie, battleNode, d);
+                }
+                else
+                {
+                    this[x, 0] = new RunNode(this, new Vector2Int(x, 0), _jingJie, priorityNode);
+                }
+
+                if (x == 0)
+                    this[x, 0].State = RunNode.RunNodeState.ToChoose;
+
+                for (int y = 1; y < HEIGHT; y++)
+                {
+                    this[x, y] = null;
+                }
+                continue;
+            }
+
             AutoPool<NodeEntry> pool = x < pools.Length ? pools[x] : null;
             for (int y = 0; y < HEIGHT; y++)
             {
@@ -219,7 +220,7 @@ public class Map : Addressable
     public AdventureNodeEntry NextAdventure()
     {
         int currX = _heroPosition.x;
-        for (int x = currX + 1; x < _poolConfiguration[_jingJie].Length; x++)
+        for (int x = currX + 1; x < _normalPools[_jingJie].Length; x++)
         for (int y = 0; y < 3; y++)
         {
             RunNode node = this[x, y];
@@ -231,9 +232,9 @@ public class Map : Addressable
 
     public bool HasAdventureAfterwards(int currX)
     {
-        for (int x = currX + 1; x < _poolConfiguration[_jingJie].Length; x++)
+        for (int x = currX + 1; x < _normalPools[_jingJie].Length; x++)
         {
-            if (_poolConfiguration[_jingJie][x] == _a)
+            if (_normalPools[_jingJie][x] == _a)
                 return true;
         }
 
@@ -243,7 +244,7 @@ public class Map : Addressable
     public bool RedrawNextAdventure()
     {
         int currX = _heroPosition.x;
-        for (int x = currX + 1; x < _poolConfiguration[_jingJie].Length; x++)
+        for (int x = currX + 1; x < _normalPools[_jingJie].Length; x++)
         for (int y = 0; y < 3; y++)
         {
             RunNode node = this[x, y];

@@ -6,7 +6,6 @@ public class AppCanvas : Singleton<AppCanvas>
 {
     [SerializeField] public TitlePanel TitlePanel;
     [SerializeField] public SettingsPanel SettingsPanel;
-    [SerializeField] public TutorialPanel TutorialPanel;
 
     public override void DidAwake()
     {
@@ -19,13 +18,11 @@ public class AppCanvas : Singleton<AppCanvas>
     {
         TitlePanel.Configure();
         // SettingsPanel.Configure();
-        TutorialPanel.Configure();
     }
 
     public void Refresh()
     {
         TitlePanel.Refresh();
         // SettingsPanel.Refresh();
-        TutorialPanel.Refresh();
     }
 }

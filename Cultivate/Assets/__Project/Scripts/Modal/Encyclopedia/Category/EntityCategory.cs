@@ -13,6 +13,10 @@ public class EntityCategory : Category<EntityEntry>
         AddRange(new List<EntityEntry>()
         {
             new("鶸", "除了聚气什么都不会的废物"),
+            new("置入教学怪物", "置入教学怪物"),
+            new("灵气教学怪物", "灵气教学怪物"),
+            new("合成教学怪物", "合成教学怪物"),
+            new("战败教学怪物", "战败教学怪物"),
             new("噬金甲", "普通金系减甲"),
             new("墨蛟", "普通水系吸血"),
             new("渊虾", "普通木系穿透"),
