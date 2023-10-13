@@ -1084,6 +1084,31 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
+            new AdventureNodeEntry("愿望单", "愿望单", normal: false,
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("游戏仍在制作中，请加入愿望单，以关注后续进展，感谢游玩！",
+                        "Q群：",
+                        "游戏名：蓬莱之旅",
+                        "返回标题");
+
+                    A[0].SetSelect(option =>
+                    {
+                        return A;
+                    });
+
+                    A[1].SetSelect(option =>
+                    {
+                        return A;
+                    });
+
+                    A[2].SetSelect(option =>
+                    {
+                        return null;
+                    });
+                    runNode.ChangePanel(A);
+                }),
+
             // new AdventureNodeEntry("神殿事件", "", normal: true,
             //     create: runNode =>
             //     {

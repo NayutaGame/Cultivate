@@ -54,17 +54,27 @@ public class DesignerEnvironment
 
         map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
         {
-            { JingJie.LianQi   , new NodeEntry[] { firstTime ? "初入蓬莱" : null, null, null, null, null, null, null, null, null, null } },
+            { JingJie.LianQi   , new NodeEntry[] { "愿望单", null, null, null, null, null, null, null, null, null } },
             { JingJie.ZhuJi    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
-            { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null/*Wishlist*/ } },
+            { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
             { JingJie.YuanYing , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
             { JingJie.HuaShen  , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
             { JingJie.FanXu    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
         };
 
+        // map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
+        // {
+        //     { JingJie.LianQi   , new NodeEntry[] { firstTime ? "初入蓬莱" : null, null, null, null, null, null, null, null, null, null } },
+        //     { JingJie.ZhuJi    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+        //     { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, exhibitionVersion ? "愿望单" : null } },
+        //     { JingJie.YuanYing , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+        //     { JingJie.HuaShen  , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+        //     { JingJie.FanXu    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+        // };
+
         map._normalPools = new Dictionary<JingJie, AutoPool<NodeEntry>[]>()
         {
-            { JingJie.LianQi   , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
+            { JingJie.LianQi   , new[] { map._r, map._r, map._r, map._r, map._b, map._r, map._b, map._a, map._b, map._r } },
             { JingJie.ZhuJi    , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
             { JingJie.JinDan   , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
             { JingJie.YuanYing , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
@@ -82,7 +92,7 @@ public class DesignerEnvironment
         env.AddXiuWei(50);
         if (firstTime)
         {
-
+            env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 6);
         }
         else
         {
