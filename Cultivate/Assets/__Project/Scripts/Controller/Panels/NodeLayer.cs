@@ -59,6 +59,15 @@ public class NodeLayer : MonoBehaviour
         return seq;
     }
 
+    public void DisableCurrentPanel()
+    {
+        if (_currentPanel == null)
+            return;
+
+        _currentPanel.gameObject.SetActive(false);
+        _currentPanel = null;
+    }
+
     public void Configure()
     {
         _panelDict = new()
@@ -71,7 +80,7 @@ public class NodeLayer : MonoBehaviour
             { typeof(BarterPanelDescriptor), BarterPanel },
             { typeof(ArbitraryCardPickerPanelDescriptor), ArbitraryCardPickerPanel },
             { typeof(ImagePanelDescriptor), ImagePanel },
-            { typeof(RunResultPanel), RunResultPanel },
+            { typeof(RunResultPanelDescriptor), RunResultPanel },
         };
 
         // _panelDict.Do(kvp => kvp.Value.Configure());

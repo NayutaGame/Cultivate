@@ -23,7 +23,7 @@ public class ArbitraryCardPickerPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.ActivePanel");
 
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);

@@ -20,11 +20,19 @@ public class RunResultPanel : Panel
     {
         base.Refresh();
 
-        // get run result and bind
+        RunResultPanelDescriptor panelDescriptor = RunManager.Instance.Environment.GetActivePanel() as RunResultPanelDescriptor;
+        if (panelDescriptor.RunCommitDetails.Victory)
+        {
+            ResultText.text = "胜利";
+        }
+        else
+        {
+            ResultText.text = "失败";
+        }
     }
 
     private void Return()
     {
-
+        RunManager.Instance.ReturnToTitle();
     }
 }

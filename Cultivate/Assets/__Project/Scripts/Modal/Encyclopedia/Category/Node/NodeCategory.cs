@@ -1104,6 +1104,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     A[2].SetSelect(option =>
                     {
+                        RunManager.Instance.ReturnToTitle();
                         return null;
                     });
                     runNode.ChangePanel(A);

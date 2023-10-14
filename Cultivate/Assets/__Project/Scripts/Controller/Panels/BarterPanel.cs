@@ -13,7 +13,7 @@ public class BarterPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.ActivePanel");
         BarterInventoryView.SetAddress(_address.Append(".Inventory"));
 
         foreach (ItemView itemView in BarterInventoryView.ActivePool)

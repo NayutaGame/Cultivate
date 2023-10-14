@@ -7,14 +7,16 @@ public class RunAppS : AppS
     public override void Enter()
     {
         base.Enter();
-        CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         RunManager.Instance.Enter();
+        CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
+        RunCanvas.Instance.NodeLayer.DisableCurrentPanel();
     }
 
     public override void Exit()
     {
         base.Exit();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
+        RunManager.Instance.Exit();
     }
 
     public override void CEnter()
@@ -26,7 +28,7 @@ public class RunAppS : AppS
     public override void CExit()
     {
         base.CExit();
-        CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         RunManager.Instance.CExit();
+        CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
     }
 }

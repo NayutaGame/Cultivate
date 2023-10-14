@@ -22,7 +22,7 @@ public class CardPickerPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.ActivePanel");
 
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);

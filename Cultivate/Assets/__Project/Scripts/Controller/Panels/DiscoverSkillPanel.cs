@@ -20,7 +20,7 @@ public class DiscoverSkillPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.ActivePanel");
 
         ConfigureInteractDelegate();
         SkillViews.Do(v => v.SetDelegate(InteractDelegate));

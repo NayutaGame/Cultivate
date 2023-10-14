@@ -12,7 +12,7 @@ public class ImagePanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.ActivePanel");
         ImageButton.onClick.RemoveAllListeners();
         ImageButton.onClick.AddListener(ClickedSignal);
     }

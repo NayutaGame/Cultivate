@@ -17,7 +17,7 @@ public class ShopPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.ActivePanel");
         CommodityListView.SetAddress(_address.Append(".Commodities"));
 
         foreach (ItemView itemView in CommodityListView.ActivePool)

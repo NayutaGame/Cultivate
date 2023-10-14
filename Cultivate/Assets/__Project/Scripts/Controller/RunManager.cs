@@ -28,7 +28,6 @@ public class RunManager : Singleton<RunManager>, Addressable
     {
         base.DidAwake();
 
-        Environment = RunEnvironment.FromConfig(DesignerEnvironment.GetConfig());
         Arena = new();
 
         _accessors = new()
@@ -40,10 +39,21 @@ public class RunManager : Singleton<RunManager>, Addressable
 
     public void Enter()
     {
+        Environment = RunEnvironment.FromConfig(DesignerEnvironment.GetConfig());
+    }
+
+    public void Exit()
+    {
+        Environment = null;
     }
 
     public void CExit()
     {
         RunCanvas.Instance.Refresh();
+    }
+
+    public void ReturnToTitle()
+    {
+        AppManager.Pop();
     }
 }

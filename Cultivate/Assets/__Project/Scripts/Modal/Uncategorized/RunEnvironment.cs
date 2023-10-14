@@ -37,6 +37,16 @@ public class RunEnvironment : Addressable
 
     public StageEnvironmentResult SimulateResult;
 
+    private RunCommitDetails _commitDetails;
+
+    public RunCommitDetails CommitDetails
+    {
+        get => _commitDetails;
+        set => _commitDetails = value;
+    }
+
+    private RunResultPanelDescriptor _runResultPanelDescriptor;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     private RunEnvironment(RunConfig runConfig = null)
@@ -48,6 +58,7 @@ public class RunEnvironment : Addressable
             { "TechInventory",         () => TechInventory },
             { "SkillInventory",        () => SkillInventory },
             { "MechBag",               () => MechBag },
+            { "ActivePanel",           GetActivePanel },
         };
 
         Home = RunEntity.Default();
@@ -262,6 +273,9 @@ public class RunEnvironment : Addressable
     public void SetDMingYuan(int value)
     {
         Home.MingYuan.SetDiff(value);
+
+        if (GetMingYuan().GetCurr() <= 0)
+            _commitDetails = new RunCommitDetails(false);
     }
 
     public void ForceDrawSkills(Predicate<SkillEntry> pred = null, WuXing? wuXing = null,
@@ -333,6 +347,18 @@ public class RunEnvironment : Addressable
         RunTech runTech = address.Get<RunTech>();
         _xiuWei -= runTech.GetCost();
         TechInventory.SetDone(runTech);
+        return true;
+    }
+
+    public PanelDescriptor GetActivePanel()
+        => _runResultPanelDescriptor ?? Map.CurrentNode?.CurrentPanel;
+
+    public bool TryCommit()
+    {
+        if (_commitDetails == null)
+            return false;
+
+        _runResultPanelDescriptor = new RunResultPanelDescriptor(_commitDetails);
         return true;
     }
 }

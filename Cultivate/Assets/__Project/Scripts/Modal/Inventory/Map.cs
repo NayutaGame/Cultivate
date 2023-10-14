@@ -84,6 +84,9 @@ public class Map : Addressable
         {
             TryFinishNode();
         }
+        bool commit = RunManager.Instance.Environment?.TryCommit() ?? false;
+        if (commit)
+            return RunManager.Instance.Environment.GetActivePanel();
         return panelDescriptor;
     }
 
@@ -143,7 +146,6 @@ public class Map : Addressable
         _accessors = new()
         {
             { "Nodes", () => _list },
-            { "CurrentNode", () => CurrentNode },
         };
 
         _list = new RunNode[HEIGHT * WIDTH];

@@ -1,5 +1,6 @@
 
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogPanel : Panel
@@ -14,7 +15,7 @@ public class DialogPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Environment.Map.CurrentNode.CurrentPanel");
+        _address = new Address("Run.Environment.ActivePanel");
 
         Buttons[0].onClick.RemoveAllListeners();
         Buttons[1].onClick.RemoveAllListeners();
@@ -50,6 +51,8 @@ public class DialogPanel : Panel
     private void SelectedOption(int i)
     {
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedOptionSignal(i));
+        if (RunManager.Instance.Environment == null)
+            return;
         RunCanvas.Instance.SetNodeState(panelDescriptor);
     }
 

@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
-public class RunNode : Addressable
+public class RunNode
 {
     protected NodeEntry _entry;
     public NodeEntry Entry => _entry;
@@ -31,15 +29,8 @@ public class RunNode : Addressable
 
     public virtual string GetTitle() => _entry.GetTitle();
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
     public RunNode(Map map, Vector2Int position, JingJie jingJie, NodeEntry entry)
     {
-        _accessors = new()
-        {
-            { "CurrentPanel",          () => CurrentPanel },
-        };
-
         if (entry is RewardNodeEntry r)
         {
             _spriteEntry = r.SpriteEntry;
