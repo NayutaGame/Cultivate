@@ -65,7 +65,7 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.DispelOppoProcedure("集中", 2 + skill.Dj, false);
+                    await caster.BuffSelfProcedure("集中", 2 + skill.Dj, false);
                 }),
 
             new("射金乌", new Range(2, 5), new SkillDescription((j, dj) => $"5攻x{4 + 2 * dj}"), manaCostEvaluator: 6,
