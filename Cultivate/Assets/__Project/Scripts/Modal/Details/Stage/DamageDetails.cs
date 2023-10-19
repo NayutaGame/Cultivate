@@ -28,4 +28,6 @@ public class DamageDetails : EventDetails
         Damaged = damaged;
         Undamaged = undamaged;
     }
+
+    public DamageDetails Clone() => new(Src, Tgt, Value, Recursive, Damaged, Undamaged);
 }

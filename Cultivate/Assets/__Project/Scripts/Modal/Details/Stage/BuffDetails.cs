@@ -15,4 +15,6 @@ public class BuffDetails : EventDetails
         _stack = stack;
         _recursive = recursive;
     }
+
+    public BuffDetails Clone() => new(Src, Tgt, _buffEntry, _stack, _recursive);
 }

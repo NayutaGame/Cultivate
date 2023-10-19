@@ -49,6 +49,8 @@ public class StageEnvironment : Addressable, CLEventListener
         if (await attackDetails.Src.TryConsumeProcedure("追击")) // 结算连击/追击
             times += 1;
 
+        await TryPlayTween(new PreAttackTweenDescriptor(true, attackDetails.Src));
+
         for (int i = 0; i < times; i++)
         {
             AttackDetails d = attackDetails.Clone();
@@ -57,17 +59,22 @@ public class StageEnvironment : Addressable, CLEventListener
             StageEntity tgt = d.Tgt;
 
             await _eventDict.SendEvent(CLEventDict.WILL_ATTACK, d);
+            // 添加穿透，应用吸血，应该在这个里面
 
             if (d.Cancel)
             {
+                // 演出很麻烦。攻击被取消，应该对应的是空手夺白刃
                 _result.TryAppend($"    攻击被取消");
                 continue;
             }
 
+            await TryPlayTween(new AttackTweenDescriptor(true, d));
+
             if (!d.Pierce && d.Evade)
             {
-                await _eventDict.SendEvent(CLEventDict.DID_EVADE, d);
+                await TryPlayTween(new EvadeTweenDescriptor(false, d.Tgt));
                 _result.TryAppend($"    攻击被闪避");
+                await _eventDict.SendEvent(CLEventDict.DID_EVADE, d);
 
                 if (d.Undamaged != null)
                     await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0));
@@ -98,13 +105,14 @@ public class StageEnvironment : Addressable, CLEventListener
                 continue;
             }
 
+            await TryPlayTween(new AttackedTweenDescriptor(false, d));
+
             if (d.Crit)
                 d.Value *= 2;
 
             DamageDetails damageDetails = new DamageDetails(d.Src, d.Tgt, d.Value, damaged: d.Damaged, undamaged: d.Undamaged);
             await DamageProcedure(damageDetails);
 
-            await TryPlayTween(new AttackTweenDescriptor(d));
             _result.TryAppend($"    敌方生命[护甲]变成了${tgt.Hp}[{tgt.Armor}]");
 
             if (!damageDetails.Cancel)
@@ -115,6 +123,8 @@ public class StageEnvironment : Addressable, CLEventListener
 
             await _eventDict.SendEvent(CLEventDict.DID_ATTACK, d);
         }
+
+        await TryPlayTween(new PostAttackTweenDescriptor(true, attackDetails.Src));
     }
 
     /// <summary>
@@ -186,11 +196,13 @@ public class StageEnvironment : Addressable, CLEventListener
 
         if (d.Cancel || d.Value == 0)
         {
+            await TryPlayTween(new UndamagedTweenDescriptor(false, d));
             if (d.Undamaged != null)
                 await d.Undamaged(d);
             return;
         }
 
+        await TryPlayTween(new DamagedTweenDescriptor(false, d));
         await LoseHealthProcedure(d.Tgt, d.Value);
         if (d.Damaged != null)
             await d.Damaged(d);
@@ -237,7 +249,7 @@ public class StageEnvironment : Addressable, CLEventListener
         tgt.Hp += actualHealed;
         tgt.HealedRecord += actualHealed;
 
-        await TryPlayTween(new HealTweenDescriptor(d));
+        await TryPlayTween(new HealTweenDescriptor(true, d));
         _result.TryAppend($"    生命变成了${tgt.Hp}");
 
         await _eventDict.SendEvent(CLEventDict.DID_HEAL, d);
@@ -274,14 +286,14 @@ public class StageEnvironment : Addressable, CLEventListener
                     break;
             }
 
-            await TryPlayTween(new BuffTweenDescriptor(d));
+            await TryPlayTween(new BuffTweenDescriptor(true, d));
             _result.TryAppend($"    {d._buffEntry.Name}: {oldStack} -> {same.Stack}");
         }
         else
         {
             await d.Tgt.AddBuff(new GainBuffDetails(d._buffEntry, d._stack));
 
-            await TryPlayTween(new BuffTweenDescriptor(d));
+            await TryPlayTween(new BuffTweenDescriptor(true, d));
             _result.TryAppend($"    {d._buffEntry.Name}: 0 -> {d._stack}");
         }
 
@@ -317,6 +329,10 @@ public class StageEnvironment : Addressable, CLEventListener
 
         d.Tgt.Armor -= d.Value;
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
+
+        // 正变正，护甲伤害
+        // 正变负，碎盾
+        // 负变负，减甲
 
         await _eventDict.SendEvent(CLEventDict.ARMOR_DID_LOSE, d);
     }
@@ -431,7 +447,7 @@ public class StageEnvironment : Addressable, CLEventListener
     {
         if (!_config.Animated)
             return;
-        await StageManager.Instance.Anim.PlayTween(tween);
+        await StageManager.Instance.Anim.PlayTween(true, tween);
     }
 
     public int GetHeroBuffCount() => _entities[0].GetBuffCount();

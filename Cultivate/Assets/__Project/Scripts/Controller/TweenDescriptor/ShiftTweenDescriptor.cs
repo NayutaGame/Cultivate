@@ -1,8 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
+using DG.Tweening;
 
 public class ShiftTweenDescriptor : TweenDescriptor
 {
+    public ShiftTweenDescriptor() : base(true)
+    {
+    }
 
+    public override Tween GetTween()
+    {
+        throw new System.NotImplementedException();
+    }
 }

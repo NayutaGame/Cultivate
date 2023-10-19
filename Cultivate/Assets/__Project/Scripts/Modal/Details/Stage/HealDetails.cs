@@ -18,4 +18,6 @@ public class HealDetails : EventDetails
         Value = value;
         Penetrate = penetrate;
     }
+
+    public HealDetails Clone() => new(Src, Tgt, Value, Penetrate);
 }
