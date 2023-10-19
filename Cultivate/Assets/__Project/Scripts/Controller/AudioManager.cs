@@ -1,13 +1,10 @@
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using CLLibrary;
+using FMODUnity;
+using FMOD.Studio;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    [SerializeField] private AudioSource _audioSource;
-
     public override void DidAwake()
     {
         base.DidAwake();
@@ -15,32 +12,35 @@ public class AudioManager : Singleton<AudioManager>
         SetAudible(true);
     }
 
-    public void Play(AudioEntry audioEntry)
+    private EventInstance BGMEventInstance;
+
+    public static void Play(AudioEntry audioEntry)
     {
         if (audioEntry._audioType == AudioEntry.AudioType.Music)
         {
-            PlayMusic(audioEntry);
+            Instance.PlayMusic(audioEntry);
         }
         else if (audioEntry._audioType == AudioEntry.AudioType.SFX)
         {
-            PlaySFX(audioEntry);
+            Instance.PlaySFX(audioEntry);
         }
     }
 
     public void Stop()
     {
-        _audioSource.Stop();
+        BGMEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     private void PlaySFX(AudioEntry audioEntry)
     {
-        _audioSource.PlayOneShot(audioEntry.AudioClip);
+        RuntimeManager.PlayOneShot(audioEntry.EventReference);
     }
 
     private void PlayMusic(AudioEntry audioEntry)
     {
-        _audioSource.clip = audioEntry.AudioClip;
-        _audioSource.Play();
+        // BGMEventInstance.release();
+        BGMEventInstance = RuntimeManager.CreateInstance(audioEntry.EventReference);
+        BGMEventInstance.start();
     }
 
     private bool _audible;
@@ -48,7 +48,7 @@ public class AudioManager : Singleton<AudioManager>
     public void SetAudible(bool audible)
     {
         _audible = audible;
-        _audioSource.volume = _audible ? 1 : 0;
+        // _audioSource.volume = _audible ? 1 : 0;
     }
 
     public void ToggleAudible()

@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
+using FMODUnity;
 
 public class AudioEntry : Entry
 {
     private string _path;
-    public AudioClip AudioClip { get; private set; }
+    public EventReference EventReference { get; private set; }
     public AudioType _audioType { get; private set; }
 
     public enum AudioType
@@ -17,7 +16,7 @@ public class AudioEntry : Entry
     public AudioEntry(string name, string path, AudioType audioType) : base(name)
     {
         _path = path;
-        AudioClip = Resources.Load<AudioClip>(_path);
+        EventReference = RuntimeManager.PathToEventReference(path);
         _audioType = audioType;
     }
 

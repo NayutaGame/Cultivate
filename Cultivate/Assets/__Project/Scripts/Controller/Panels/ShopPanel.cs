@@ -41,7 +41,7 @@ public class ShopPanel : Panel
     {
         ShopPanelDescriptor d = _address.Get<ShopPanelDescriptor>();
         d.Buy(commodity);
-        AudioManager.Instance.Play("钱币");
+        // AudioManager.Instance.Play("钱币");
     }
 
     private void Exit()

@@ -119,11 +119,11 @@ public class Map : Addressable
 
     private readonly Dictionary<JingJie, AudioEntry> JingJieToAudio = new()
     {
-        { JingJie.LianQi, "练气BGM" },
-        { JingJie.ZhuJi, "筑基BGM" },
-        { JingJie.JinDan, "金丹BGM" },
-        { JingJie.YuanYing, "元婴BGM" },
-        { JingJie.HuaShen, "化神BGM" },
+        { JingJie.LianQi, "BGMLianQi" },
+        { JingJie.ZhuJi, "BGMZhuJi" },
+        { JingJie.JinDan, "BGMJinDan" },
+        { JingJie.YuanYing, "BGMYuanYing" },
+        { JingJie.HuaShen, "BGMHuaShen" },
     };
 
     private JingJie _jingJie;
@@ -135,7 +135,7 @@ public class Map : Addressable
             _jingJie = value;
             JingJieChanged(_jingJie);
             RefreshNodes();
-            AudioManager.Instance.Play(JingJieToAudio[_jingJie]);
+            AudioManager.Play(JingJieToAudio[_jingJie]);
         }
     }
 

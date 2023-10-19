@@ -8,12 +8,19 @@ public class AudioCategory : Category<AudioEntry>
     {
         AddRange(new List<AudioEntry>()
         {
-            new("练气BGM", "Audios/Music/Welcome to Ming Dynasty", AudioEntry.AudioType.Music),
-            new("筑基BGM", "Audios/Music/Oriental Dubstep", AudioEntry.AudioType.Music),
-            new("金丹BGM", "Audios/Music/Explore Modern China", AudioEntry.AudioType.Music),
-            new("元婴BGM", "Audios/Music/Korean Chase", AudioEntry.AudioType.Music),
-            new("化神BGM", "Audios/Music/Japanese Car Chase", AudioEntry.AudioType.Music),
-            new("钱币", "Audios/SFX/Coins", AudioEntry.AudioType.SFX),
+            // new("钱币", "Audios/SFX/Coins", AudioEntry.AudioType.SFX),
+
+            new("BGMBoss", "event:/BGM/BGMBoss", AudioEntry.AudioType.Music),
+            new("BGMElite1", "event:/BGM/BGMElite1", AudioEntry.AudioType.Music),
+            new("BGMElite2", "event:/BGM/BGMElite2", AudioEntry.AudioType.Music),
+            new("BGMTitle", "event:/BGM/BGMTitle", AudioEntry.AudioType.Music),
+            new("BGMLianQi", "event:/BGM/BGMLianQi", AudioEntry.AudioType.Music),
+            new("BGMZhuJi", "event:/BGM/BGMZhuJi", AudioEntry.AudioType.Music),
+            new("BGMJinDan", "event:/BGM/BGMJinDan", AudioEntry.AudioType.Music),
+            new("BGMYuanYing", "event:/BGM/BGMYuanYing", AudioEntry.AudioType.Music),
+            new("BGMHuaShen", "event:/BGM/BGMHuaShen", AudioEntry.AudioType.Music),
+
+            // event:/CardMovement
         });
     }
 }
