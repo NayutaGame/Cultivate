@@ -29,6 +29,7 @@ public class HandSkillView : SkillView, IInteractable,
     {
         if (eventData.dragging) return;
 
+        AudioManager.Play("CardHover");
         _animationHandle?.Kill();
         _animationHandle = ContentTransform.DOAnchorPos(HoverPivot.anchoredPosition, 0.15f);
         _animationHandle.Restart();

@@ -21,11 +21,13 @@ public class MapPanel : Panel, IAddress
 
     public override Tween GetShowTween()
         => DOTween.Sequence()
+            .AppendCallback(PlaySFX)
             .AppendCallback(() => gameObject.SetActive(true))
             .Append(_backgroundTransform.DOAnchorPosX(4f, 0.3f).SetEase(Ease.OutQuad));
 
     public override Tween GetHideTween()
         => DOTween.Sequence()
+            .AppendCallback(PlaySFX)
             .Append(_backgroundTransform.DOAnchorPosX(1924f, 0.3f).SetEase(Ease.InQuad))
             .AppendCallback(() => gameObject.SetActive(false));
 
@@ -55,5 +57,9 @@ public class MapPanel : Panel, IAddress
                 _views[i].SetAddress(_address.Append($".Nodes#{i}"));
             }
         }
+    }
+
+    private void PlaySFX()
+    {
     }
 }

@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8613030984198408560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Forward
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Forward
+  Guid:
+    Data1: -1025671471
+    Data2: 1159526044
+    Data3: -1777727326
+    Data4: -58370403
+  Banks:
+  - {fileID: 7112402601572211614}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-7802142760481429083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,7 +42,7 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 638333472784599111
+  lastModified: 638334026405974859
   FileSizes:
   - Name: Desktop
     Value: 8286752
@@ -47,6 +74,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 76463
+--- !u!114 &-6075761281182256088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/CardUpgrade
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/CardUpgrade
+  Guid:
+    Data1: -779019318
+    Data2: 1152717298
+    Data3: 465345426
+    Data4: 586568139
+  Banks:
+  - {fileID: 7112402601572211614}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4719192906798784618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,10 +143,10 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638333472749712589
+  lastModified: 638334026406004796
   FileSizes:
   - Name: Desktop
-    Value: 1212
+    Value: 1462
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -112,7 +166,6 @@ MonoBehaviour:
   - {fileID: 7112402601572211614}
   - {fileID: -7802142760481429083}
   EditorEvents:
-  - {fileID: 8553674217601434545}
   - {fileID: 5200705778860753871}
   - {fileID: -4719192906798784618}
   - {fileID: 2290708271981889866}
@@ -122,12 +175,17 @@ MonoBehaviour:
   - {fileID: 1675693368839977479}
   - {fileID: 144236829208154482}
   - {fileID: 1157438845235451770}
+  - {fileID: 8647137174900334445}
+  - {fileID: -6075761281182256088}
+  - {fileID: 7695727518683041535}
+  - {fileID: 3522007325034772151}
+  - {fileID: -8613030984198408560}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1968976322667894922}
   StringsBanks:
   - {fileID: -1828829321055284054}
-  cacheTime: 638333472784599111
+  cacheTime: 638334026406246427
   cacheVersion: 131608
 --- !u!114 &144236829208154482
 MonoBehaviour:
@@ -252,10 +310,10 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638333472749702477
+  lastModified: 638334026405995083
   FileSizes:
   - Name: Desktop
-    Value: 1036
+    Value: 1340
   Exists: 1
 --- !u!114 &2290708271981889866
 MonoBehaviour:
@@ -284,6 +342,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 65520
+--- !u!114 &3522007325034772151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Backward
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Backward
+  Guid:
+    Data1: 242351647
+    Data2: 1126018684
+    Data3: 445241510
+    Data4: -1966350409
+  Banks:
+  - {fileID: 7112402601572211614}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5200705778860753871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,12 +438,12 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638333472750022302
+  lastModified: 638334026406246427
   FileSizes:
   - Name: Desktop
-    Value: 8800
+    Value: 36672
   Exists: 1
---- !u!114 &8553674217601434545
+--- !u!114 &7695727518683041535
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -368,14 +453,41 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/CardMovement
+  m_Name: event:/SFX/CardPlacement
   m_EditorClassIdentifier: 
-  Path: event:/CardMovement
+  Path: event:/SFX/CardPlacement
   Guid:
     Data1: -16696043
     Data2: 1181442919
     Data3: 662888382
     Data4: -1668960137
+  Banks:
+  - {fileID: 7112402601572211614}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8647137174900334445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/CardHover
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/CardHover
+  Guid:
+    Data1: 427996797
+    Data2: 1163113199
+    Data3: -1323057276
+    Data4: -655939889
   Banks:
   - {fileID: 7112402601572211614}
   IsStream: 0

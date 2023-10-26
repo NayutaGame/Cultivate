@@ -123,7 +123,11 @@ public class DeckPanel : Panel
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         RunSkill lhs = from.Get<RunSkill>();
         RunSkill rhs = to.Get<RunSkill>();
-        env.TryMerge(lhs, rhs);
+        bool success = env.TryMerge(lhs, rhs);
+        if (!success)
+            return;
+
+        AudioManager.Play("CardUpgrade");
     }
 
     private void TryEquipSkill(IInteractable from, IInteractable to)
@@ -131,7 +135,11 @@ public class DeckPanel : Panel
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         RunSkill toEquip = from.Get<RunSkill>();
         SkillSlot slot = to.Get<SkillSlot>();
-        env.TryEquipSkill(toEquip, slot);
+        bool success = env.TryEquipSkill(toEquip, slot);
+        if (!success)
+            return;
+
+        AudioManager.Play("CardPlacement");
         FieldView.Refresh();
         RunCanvas.Instance.NodeLayer.Refresh();
     }
@@ -141,7 +149,11 @@ public class DeckPanel : Panel
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         Mech toEquip = from.Get<Mech>();
         SkillSlot slot = to.Get<SkillSlot>();
-        env.TryEquipMech(toEquip, slot);
+        bool success = env.TryEquipMech(toEquip, slot);
+        if (!success)
+            return;
+
+        AudioManager.Play("CardPlacement");
         from.Refresh();
         FieldView.Refresh();
         RunCanvas.Instance.NodeLayer.Refresh();
@@ -151,7 +163,11 @@ public class DeckPanel : Panel
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         SkillSlot slot = from.Get<SkillSlot>();
-        env.TryUnequip(slot, null);
+        bool success = env.TryUnequip(slot, null);
+        if (!success)
+            return;
+
+        AudioManager.Play("CardPlacement");
         FieldView.Refresh();
         RunCanvas.Instance.NodeLayer.Refresh();
     }
@@ -161,7 +177,11 @@ public class DeckPanel : Panel
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         SkillSlot fromSlot = from.Get<SkillSlot>();
         SkillSlot toSlot = to.Get<SkillSlot>();
-        env.TrySwap(fromSlot, toSlot);
+        bool success = env.TrySwap(fromSlot, toSlot);
+        if (!success)
+            return;
+
+        AudioManager.Play("CardPlacement");
         FieldView.Refresh();
         RunCanvas.Instance.NodeLayer.Refresh();
     }

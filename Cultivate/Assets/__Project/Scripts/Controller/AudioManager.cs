@@ -5,9 +5,17 @@ using FMOD.Studio;
 
 public class AudioManager : Singleton<AudioManager>
 {
+    private Bus MasterBus;
+    private Bus MusicBus;
+    private Bus SFXBus;
+
     public override void DidAwake()
     {
         base.DidAwake();
+
+        MasterBus = RuntimeManager.GetBus("bus:/");
+        MusicBus = RuntimeManager.GetBus("bus:/Music");
+        SFXBus = RuntimeManager.GetBus("bus:/SFX");
 
         SetAudible(true);
     }
@@ -54,5 +62,20 @@ public class AudioManager : Singleton<AudioManager>
     public void ToggleAudible()
     {
         SetAudible(!IsAudible);
+    }
+
+    public void SetMasterVolume(int value)
+    {
+        MasterBus.setVolume(value);
+    }
+
+    public void SetMusicVolume(int value)
+    {
+        MusicBus.setVolume(value);
+    }
+
+    public void SetSFXVolume(int value)
+    {
+        SFXBus.setVolume(value);
     }
 }

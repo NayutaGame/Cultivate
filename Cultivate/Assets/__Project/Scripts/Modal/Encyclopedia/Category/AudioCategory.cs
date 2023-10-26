@@ -20,7 +20,11 @@ public class AudioCategory : Category<AudioEntry>
             new("BGMYuanYing", "event:/BGM/BGMYuanYing", AudioEntry.AudioType.Music),
             new("BGMHuaShen", "event:/BGM/BGMHuaShen", AudioEntry.AudioType.Music),
 
-            // event:/CardMovement
+            new("CardPlacement", "event:/SFX/CardPlacement", AudioEntry.AudioType.SFX),
+            new("CardHover", "event:/SFX/CardHover", AudioEntry.AudioType.SFX),
+            new("CardUpgrade", "event:/SFX/CardUpgrade", AudioEntry.AudioType.SFX),
+            new("Forward", "event:/SFX/Forward", AudioEntry.AudioType.SFX),
+            new("Backward", "event:/SFX/Backward", AudioEntry.AudioType.SFX),
         });
     }
 }
