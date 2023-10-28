@@ -1,11 +1,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using CLLibrary;
 using UnityEngine;
 
 public class AppManager : Singleton<AppManager>, Addressable
 {
+    private Thread _mainThread;
+    public bool IsMainThread() => _mainThread.Equals(Thread.CurrentThread);
+
     private AppSM _sm;
     private Encyclopedia Encyclopedia;
     public Settings Settings;
@@ -23,6 +27,8 @@ public class AppManager : Singleton<AppManager>, Addressable
     public override void DidAwake()
     {
         base.DidAwake();
+
+        _mainThread = Thread.CurrentThread;
 
         _accessors = new Dictionary<string, Func<object>>()
         {
@@ -56,7 +62,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         StageManager.gameObject.SetActive(false);
 
         _sm = new AppSM();
-        _sm.Push(new TitleAppS());
+        Push(new TitleAppS());
     }
 
     private void Update()

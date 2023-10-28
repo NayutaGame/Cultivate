@@ -17,11 +17,11 @@ public class ConsolePanel : Panel
     public Button DrawSkillButton;
     public Button AddMechButton;
 
-    public override Tween GetShowTween()
+    public override Tween ShowAnimation()
         => DOTween.Sequence().SetAutoKill()
             .Append(_rectTransform.DOAnchorPosY(243f, 0.3f).SetEase(Ease.OutQuad));
 
-    public override Tween GetHideTween()
+    public override Tween HideAnimation()
         => DOTween.Sequence().SetAutoKill()
             .Append(_rectTransform.DOAnchorPosY(771f, 0.3f).SetEase(Ease.InQuad));
 

@@ -1,11 +1,17 @@
 
+using System;
+using System.Threading.Tasks;
+using DG.Tweening;
+using DG.Tweening.Core;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsPanel : MonoBehaviour
+public class SettingsPanel : MonoBehaviour, IShowable
 {
+    [SerializeField] private RectTransform _rectTransform;
+    [SerializeField] private CanvasGroup _canvasGroup;
+
     [SerializeField] private ListView Widgets;
 
     [SerializeField] private Button CurrButton;
@@ -73,4 +79,47 @@ public class SettingsPanel : MonoBehaviour
     {
         AppManager.Pop();
     }
+
+    #region IShowable
+
+    private bool _showing;
+    public virtual bool IsShowing() => _showing;
+    public virtual async Task SetShowing(bool showing)
+    {
+        if (_showing == showing)
+            return;
+
+        _showing = showing;
+        await PlayTween(false, _showing ? ShowAnimation() : HideAnimation());
+    }
+
+    private async Task PlayTween(bool isAwait, Tween tween)
+    {
+        _showHandle?.Kill();
+        _showHandle = tween;
+        // _showHandle.timeScale = _speed;
+        _showHandle.SetAutoKill().Restart();
+        if (isAwait)
+            await _showHandle.AsyncWaitForCompletion();
+    }
+
+    private Tween _showHandle;
+
+    public virtual Tween ShowAnimation()
+    {
+        return DOTween.Sequence().SetAutoKill()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(_rectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
+            .Join(_canvasGroup.DOFade(1f, 0.15f));
+    }
+
+    public virtual Tween HideAnimation()
+    {
+        return DOTween.Sequence().SetAutoKill()
+            .Append(_rectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad))
+            .Join(_canvasGroup.DOFade(0f, 0.15f))
+            .AppendCallback(() => gameObject.SetActive(false));
+    }
+
+    #endregion
 }

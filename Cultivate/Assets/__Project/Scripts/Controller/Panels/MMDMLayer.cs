@@ -157,64 +157,64 @@ public class MMDMLayer : MonoBehaviour
     }
 
     private Tween NToD()
-        => DeckPanel.GetShowTween();
+        => DeckPanel.ShowAnimation();
 
     private Tween NToDM()
         => DOTween.Sequence().SetAutoKill()
-            .Join(DeckPanel.GetShowTween())
-            .Join(MaskUnderDeck.GetShowTween());
+            .Join(DeckPanel.ShowAnimation())
+            .Join(MaskUnderDeck.ShowAnimation());
 
     private Tween NToMM()
         => DOTween.Sequence().SetAutoKill()
-            .Join(MapPanel.GetShowTween())
-            .Join(MaskUnderDeck.GetShowTween());
+            .Join(MapPanel.ShowAnimation())
+            .Join(MaskUnderDeck.ShowAnimation());
 
     private Tween DToN()
-        => DeckPanel.GetHideTween();
+        => DeckPanel.HideAnimation();
 
     private Tween DToMMD()
         => DOTween.Sequence().SetAutoKill()
-            .Join(MapPanel.GetShowTween())
-            .Join(MaskAboveDeck.GetShowTween());
+            .Join(MapPanel.ShowAnimation())
+            .Join(MaskAboveDeck.ShowAnimation());
 
     private Tween DToMM()
         => DOTween.Sequence().SetAutoKill()
-            .Join(DeckPanel.GetHideTween())
+            .Join(DeckPanel.HideAnimation())
             .AppendInterval(0.25f)
-            .Join(MapPanel.GetShowTween())
-            .Join(MaskUnderDeck.GetShowTween());
+            .Join(MapPanel.ShowAnimation())
+            .Join(MaskUnderDeck.ShowAnimation());
 
     private Tween MMDToD()
         => DOTween.Sequence().SetAutoKill()
-            .Join(MapPanel.GetHideTween())
-            .Join(MaskAboveDeck.GetHideTween());
+            .Join(MapPanel.HideAnimation())
+            .Join(MaskAboveDeck.HideAnimation());
 
     private Tween DMToN()
         => DOTween.Sequence().SetAutoKill()
-            .Join(DeckPanel.GetHideTween())
-            .Join(MaskUnderDeck.GetHideTween());
+            .Join(DeckPanel.HideAnimation())
+            .Join(MaskUnderDeck.HideAnimation());
 
     private Tween DMToMM()
         => DOTween.Sequence().SetAutoKill()
-            .Join(DeckPanel.GetHideTween())
+            .Join(DeckPanel.HideAnimation())
             .AppendInterval(0.25f)
-            .Join(MapPanel.GetShowTween());
+            .Join(MapPanel.ShowAnimation());
 
     private Tween MMToN()
         => DOTween.Sequence().SetAutoKill()
-            .Join(MapPanel.GetHideTween())
-            .Join(MaskUnderDeck.GetHideTween());
+            .Join(MapPanel.HideAnimation())
+            .Join(MaskUnderDeck.HideAnimation());
 
     private Tween MMToD()
         => DOTween.Sequence().SetAutoKill()
-            .Join(MapPanel.GetHideTween())
+            .Join(MapPanel.HideAnimation())
             .AppendInterval(0.25f)
-            .Join(MaskUnderDeck.GetHideTween())
-            .Join(DeckPanel.GetShowTween());
+            .Join(MaskUnderDeck.HideAnimation())
+            .Join(DeckPanel.ShowAnimation());
 
     private Tween MMToDM()
         => DOTween.Sequence().SetAutoKill()
-            .Join(MapPanel.GetHideTween())
+            .Join(MapPanel.HideAnimation())
             .AppendInterval(0.25f)
-            .Join(DeckPanel.GetShowTween());
+            .Join(DeckPanel.ShowAnimation());
 }

@@ -21,7 +21,7 @@ public class DeckPanel : Panel
     public RectTransform _subFormationInventoryTransform;
     public RectTransform _mechBagTransform;
 
-    public override Tween GetShowTween()
+    public override Tween ShowAnimation()
         => DOTween.Sequence()
             .AppendCallback(HandView.BigRefresh)
             .Join(_deckTransform.                  DOAnchorPosY(-69.5f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0f))
@@ -30,7 +30,7 @@ public class DeckPanel : Panel
             .Join(_subFormationInventoryTransform. DOAnchorPosY(200f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.09f))
             .Join(_mechBagTransform.               DOAnchorPosY(-255f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.12f));
 
-    public override Tween GetHideTween()
+    public override Tween HideAnimation()
         => DOTween.Sequence()
             .Join(_deckTransform.                  DOAnchorPosY(-445, 0.3f).SetEase(Ease.InQuad).SetDelay(0f))
             .Join(_spriteTransform.                DOAnchorPosY(-626, 0.3f).SetEase(Ease.InQuad).SetDelay(0.03f))

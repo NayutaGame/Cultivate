@@ -33,7 +33,7 @@ public class RunCanvas : Singleton<RunCanvas>
         Refresh();
     }
 
-    private void ToggleConsolePanel() => ConsolePanel.Toggle();
+    private void ToggleConsolePanel() => ConsolePanel.SetShowing(!ConsolePanel.IsShowing());
 
     public void Configure()
     {

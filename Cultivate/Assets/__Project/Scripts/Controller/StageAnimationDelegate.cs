@@ -1,6 +1,7 @@
 
 using System.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine;
 
 public class StageAnimationDelegate : AnimationDelegate
 {

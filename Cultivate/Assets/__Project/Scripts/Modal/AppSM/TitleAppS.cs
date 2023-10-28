@@ -1,27 +1,29 @@
 
+using System.Threading.Tasks;
+
 public class TitleAppS : AppS
 {
-    public override void Enter()
+    public override async Task Enter()
     {
-        base.Enter();
+        await base.Enter();
         CanvasManager.Instance.AppCanvas.TitlePanel.gameObject.SetActive(true);
     }
 
-    public override void CEnter()
+    public override async Task CEnter()
     {
-        base.CEnter();
+        await base.CEnter();
         CanvasManager.Instance.AppCanvas.TitlePanel.gameObject.SetActive(false);
     }
 
-    public override void CExit()
+    public override async Task CExit()
     {
-        base.CExit();
+        await base.CExit();
         CanvasManager.Instance.AppCanvas.TitlePanel.gameObject.SetActive(true);
     }
 
-    public override void Exit()
+    public override async Task Exit()
     {
-        base.Exit();
+        await base.Exit();
         CanvasManager.Instance.AppCanvas.TitlePanel.gameObject.SetActive(false);
     }
 }

@@ -1,15 +1,17 @@
 
+using System.Threading.Tasks;
+
 public class MenuAppS : AppS
 {
-    public override void Enter()
+    public override async Task Enter()
     {
-        base.Enter();
-        CanvasManager.Instance.AppCanvas.SettingsPanel.gameObject.SetActive(true);
+        await base.Enter();
+        await CanvasManager.Instance.AppCanvas.SettingsPanel.SetShowing(true);
     }
 
-    public override void Exit()
+    public override async Task Exit()
     {
-        base.Exit();
-        CanvasManager.Instance.AppCanvas.SettingsPanel.gameObject.SetActive(false);
+        await base.Exit();
+        await CanvasManager.Instance.AppCanvas.SettingsPanel.SetShowing(false);
     }
 }

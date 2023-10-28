@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CLLibrary
 {
@@ -24,20 +25,20 @@ namespace CLLibrary
             _stack = new List<S>();
         }
 
-        public void Push(S state)
+        public async Task Push(S state)
         {
             if (Current != null)
-                Current.CEnter();
+                await Current.CEnter();
             _stack.Add(state);
-            Current.Enter();
+            await Current.Enter();
         }
 
-        public void Pop()
+        public async Task Pop()
         {
-            Current.Exit();
+            await Current.Exit();
             _stack.RemoveAt(_stack.Count - 1);
             if (Current != null)
-                Current.CExit();
+                await Current.CExit();
         }
     }
 }

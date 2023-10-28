@@ -47,11 +47,11 @@ public class NodeLayer : MonoBehaviour
         }
 
         if (_currentPanel != null)
-            seq.Append(_currentPanel.GetHideTween());
+            seq.Append(_currentPanel.HideAnimation());
         _currentPanel = panel;
         if (_currentPanel != null)
         {
-            seq.Append(_currentPanel.GetShowTween());
+            seq.Append(_currentPanel.ShowAnimation());
             _currentPanel.Configure();
             _currentPanel.Refresh();
         }

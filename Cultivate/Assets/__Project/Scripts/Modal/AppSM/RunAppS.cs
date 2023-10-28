@@ -1,33 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class RunAppS : AppS
 {
-    public override void Enter()
+    public override async Task Enter()
     {
-        base.Enter();
+        await base.Enter();
         RunManager.Instance.Enter();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         RunCanvas.Instance.NodeLayer.DisableCurrentPanel();
     }
 
-    public override void Exit()
+    public override async Task Exit()
     {
-        base.Exit();
+        await base.Exit();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
         RunManager.Instance.Exit();
     }
 
-    public override void CEnter()
+    public override async Task CEnter()
     {
-        base.CEnter();
+        await base.CEnter();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
     }
 
-    public override void CExit()
+    public override async Task CExit()
     {
-        base.CExit();
+        await base.CExit();
         RunManager.Instance.CExit();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
     }
