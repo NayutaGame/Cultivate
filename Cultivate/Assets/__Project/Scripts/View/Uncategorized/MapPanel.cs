@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using CLLibrary;
+
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MapPanel : Panel, IAddress
 {
@@ -11,6 +10,8 @@ public class MapPanel : Panel, IAddress
 
     public RectTransform _backgroundTransform;
 
+    public Image Mask;
+
     public Transform Container;
 
     private NodeView[] _views;
@@ -18,25 +19,35 @@ public class MapPanel : Panel, IAddress
     private Address _address;
     public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
+    public virtual void SetAddress(Address address)
+    {
+        _address = address;
+    }
 
     public override Tween ShowAnimation()
         => DOTween.Sequence()
+            .AppendCallback(Refresh)
             .AppendCallback(PlaySFX)
             .AppendCallback(() => gameObject.SetActive(true))
-            .Append(_backgroundTransform.DOAnchorPosX(4f, 0.3f).SetEase(Ease.OutQuad));
+            .Append(_backgroundTransform.DOAnchorPosX(4f, 0.3f).SetEase(Ease.OutQuad))
+            .Join(Mask.DOFade(0.8f, 0.4f).SetEase(Ease.OutQuad));
 
     public override Tween HideAnimation()
         => DOTween.Sequence()
             .AppendCallback(PlaySFX)
-            .Append(_backgroundTransform.DOAnchorPosX(1924f, 0.3f).SetEase(Ease.InQuad))
+            .Append(Mask.DOFade(0f, 0.4f).SetEase(Ease.InQuad))
+            .Join(_backgroundTransform.DOAnchorPosX(1924f, 0.3f).SetEase(Ease.InQuad))
             .AppendCallback(() => gameObject.SetActive(false));
 
-    public virtual void SetAddress(Address address)
+    public override void Configure()
     {
-        _address = address;
+        _address = new Address("Run.Environment.Map");
 
         _views = new NodeView[HEIGHT * WIDTH];
         PopulateList();
+
+        Mask.GetComponent<Button>().onClick.RemoveAllListeners();
+        Mask.GetComponent<Button>().onClick.AddListener(() => SetShowing(false));
     }
 
     public override void Refresh()

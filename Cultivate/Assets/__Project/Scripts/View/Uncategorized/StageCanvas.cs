@@ -5,10 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StageCanvas : Singleton<StageCanvas>
+public class StageCanvas : MonoBehaviour
 {
-    public SkillPreview SkillPreview;
-
     public TMP_Text SpeedText;
     public Slider SpeedSlider;
     public Button SkipButton;
@@ -26,12 +24,6 @@ public class StageCanvas : Singleton<StageCanvas>
     private List<BuffView> _enemyBuffViews;
 
     public GameObject BuffViewPrefab;
-
-    public override void DidAwake()
-    {
-        base.DidAwake();
-        Configure();
-    }
 
     public void Configure()
     {
@@ -78,7 +70,6 @@ public class StageCanvas : Singleton<StageCanvas>
         Refresh();
     }
 
-    // TODO: Buff的改变全部都用Set, 不要用Refresh，因为Refresh没有办法描述状态的改变
     public void Refresh()
     {
         StageEntity home = StageManager.Instance.Environment.Entities[0];

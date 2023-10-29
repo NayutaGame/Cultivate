@@ -7574,7 +7574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Container: {fileID: 3703120122636803344}
-  Prefab: {fileID: 7159749830029920091, guid: b10a7cf18931b744b8a54cf3e5f949d8, type: 3}
+  Prefabs: []
   RandomButton: {fileID: 7358060341215995719}
   CompeteButton: {fileID: 4242726613465938490}
 --- !u!1 &3267946785921072579
@@ -8135,7 +8135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Container: {fileID: 3267946785574050937}
-  Prefab: {fileID: 2108923873393925487, guid: 3509df315e11ecc45a4784e0ab99c518, type: 3}
+  Prefabs: []
   ScrollRect: {fileID: 0}
   DrawButtons: []
   SortButtons:
@@ -8519,6 +8519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c4c0e6e5db3d34daf7d14d18753c5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 3267946787128590159}
   SkillInventoryView: {fileID: 399622517343933097}
   ArenaEditorView: {fileID: 5658495762268743717}
   ArenaScoreboardView: {fileID: 1580183226315727530}

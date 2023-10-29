@@ -27,8 +27,8 @@ public class CardPickerPanel : Panel
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
-        SkillListView = RunCanvas.Instance.MMDMLayer.DeckPanel.HandView;
-        SlotListView = RunCanvas.Instance.MMDMLayer.DeckPanel.FieldView;
+        SkillListView = CanvasManager.Instance.RunCanvas.DeckPanel.HandView;
+        SlotListView = CanvasManager.Instance.RunCanvas.DeckPanel.FieldView;
 
         _skillSelections ??= new List<int>();
         _slotSelections ??= new List<int>();
@@ -122,6 +122,6 @@ public class CardPickerPanel : Panel
         iRunSkillList.AddRange(_skillSelections.Map(i => SkillListView.ActivePool[i].Get<object>()));
         iRunSkillList.AddRange(_slotSelections.Map(i => SlotListView.ActivePool[i].Get<object>()));
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedIRunSkillsSignal(iRunSkillList));
-        RunCanvas.Instance.SetNodeState(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
 }

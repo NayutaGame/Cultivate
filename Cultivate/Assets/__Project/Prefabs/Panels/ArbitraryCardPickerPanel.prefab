@@ -1350,6 +1350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86d2cc338b2c4e84e9b49146c8440a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 1825232190025974500}
   InfoText: {fileID: 318707451241275922}
   StatusText: {fileID: 6102899003729968637}
   ConfirmButton: {fileID: 3724562666869510201}

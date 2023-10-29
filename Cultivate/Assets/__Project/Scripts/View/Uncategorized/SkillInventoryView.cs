@@ -58,13 +58,13 @@ public class SkillInventoryView : ListView, IDropHandler
     private void DrawJingJie(JingJie jingJie)
     {
         RunManager.Instance.Environment.ForceDrawSkill(jingJie: jingJie);
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void SortByComparisonId(int i)
     {
         SkillInventory inventory = Get<SkillInventory>();
         inventory.SortByComparisonId(i);
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

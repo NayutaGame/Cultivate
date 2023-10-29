@@ -252,6 +252,7 @@ public class EntityEditorPanel : Panel
 
     public override void Refresh()
     {
+        base.Refresh();
         AwayEntityView.Refresh();
         HomeEntityView.Refresh();
 

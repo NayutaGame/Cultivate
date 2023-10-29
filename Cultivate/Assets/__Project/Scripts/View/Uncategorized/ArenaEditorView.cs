@@ -25,6 +25,6 @@ public class ArenaEditorView : ListView
     {
         Arena arena = Get<Arena>();
         arena.Compete();
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

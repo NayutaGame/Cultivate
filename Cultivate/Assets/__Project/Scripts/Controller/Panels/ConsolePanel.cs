@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using CLLibrary;
 using DG.Tweening;
 using TMPro;
@@ -83,26 +82,26 @@ public class ConsolePanel : Panel
 
         IEntityModel entity = RunManager.Instance.Environment.Home;
         entity.SetBaseHealth(health);
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void JingJieChanged(int jingJie)
     {
         IEntityModel entity = RunManager.Instance.Environment.Home;
         entity.SetJingJie(jingJie);
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void DrawSkill()
     {
         RunManager.Instance.Environment.ForceDrawSkill(jingJie: RunManager.Instance.Environment.Map.JingJie);
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void AddMech()
     {
         foreach(MechType m in MechType.Traversal)
             RunManager.Instance.Environment.ForceAddMech(new(m));
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

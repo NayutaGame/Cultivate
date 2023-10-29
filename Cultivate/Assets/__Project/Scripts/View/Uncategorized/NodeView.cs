@@ -47,18 +47,18 @@ public class NodeView : ItemView
 
     private void OnPointerClick(PointerEventData eventData)
     {
-        TryClickNode(GetAddress());
-        RunCanvas.Instance.Refresh();
+        TryClickNode();
+        // CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private bool TryClickNode(Address address)
+    private bool TryClickNode()
     {
         RunNode runNode = Get<RunNode>();
         if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Environment.Map.Selecting)
             return false;
 
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.SelectedNode(runNode);
-        RunCanvas.Instance.SetNodeState(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
         return true;
     }
 }

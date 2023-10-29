@@ -57,22 +57,22 @@ public class StageSkillView : SkillView, IInteractable,
     {
         if (eventData.dragging) return;
 
-        StageCanvas.Instance.SkillPreview.SetAddress(GetAddress());
-        StageCanvas.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillPreview.SetAddress(GetAddress());
+        CanvasManager.Instance.SkillPreview.Refresh();
         StageManager.Instance.Pause();
     }
 
     public void PointerExit(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        StageCanvas.Instance.SkillPreview.SetAddress(null);
-        StageCanvas.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillPreview.SetAddress(null);
+        CanvasManager.Instance.SkillPreview.Refresh();
         StageManager.Instance.Resume();
     }
 
     public void PointerMove(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        StageCanvas.Instance.SkillPreview.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.SkillPreview.UpdateMousePos(eventData.position);
     }
 }

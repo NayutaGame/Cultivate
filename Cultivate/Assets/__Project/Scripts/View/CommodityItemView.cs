@@ -42,6 +42,6 @@ public class CommodityItemView : ItemView
     {
         Commodity commodity = Get<Commodity>();
         BuyEvent?.Invoke(commodity);
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

@@ -43,6 +43,6 @@ public class BarterItemView : ItemView
     {
         BarterItem barterItem = Get<BarterItem>();
         ExchangeEvent?.Invoke(barterItem);
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

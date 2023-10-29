@@ -68,8 +68,8 @@ public class MechView : ItemView, IInteractable,
 
     public void BeginDrag(PointerEventData eventData)
     {
-        RunCanvas.Instance.MechGhost.SetAddress(GetAddress());
-        RunCanvas.Instance.MechGhost.Refresh();
+        CanvasManager.Instance.MechGhost.SetAddress(GetAddress());
+        CanvasManager.Instance.MechGhost.Refresh();
 
         if (_image != null)
             _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 0.5f);
@@ -77,8 +77,8 @@ public class MechView : ItemView, IInteractable,
 
     public void EndDrag(PointerEventData eventData)
     {
-        RunCanvas.Instance.MechGhost.SetAddress(null);
-        RunCanvas.Instance.MechGhost.Refresh();
+        CanvasManager.Instance.MechGhost.SetAddress(null);
+        CanvasManager.Instance.MechGhost.Refresh();
 
         if (_image != null)
             _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _image.color.a * 2f);
@@ -86,6 +86,6 @@ public class MechView : ItemView, IInteractable,
 
     public void Drag(PointerEventData eventData)
     {
-        RunCanvas.Instance.MechGhost.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.MechGhost.UpdateMousePos(eventData.position);
     }
 }

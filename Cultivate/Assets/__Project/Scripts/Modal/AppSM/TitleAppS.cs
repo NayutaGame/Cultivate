@@ -6,24 +6,25 @@ public class TitleAppS : AppS
     public override async Task Enter()
     {
         await base.Enter();
-        CanvasManager.Instance.AppCanvas.TitlePanel.gameObject.SetActive(true);
+        CanvasManager.Instance.AppCanvas.Configure();
+        await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(true);
     }
 
     public override async Task CEnter()
     {
         await base.CEnter();
-        CanvasManager.Instance.AppCanvas.TitlePanel.gameObject.SetActive(false);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(false);
     }
 
     public override async Task CExit()
     {
         await base.CExit();
-        CanvasManager.Instance.AppCanvas.TitlePanel.gameObject.SetActive(true);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(true);
     }
 
     public override async Task Exit()
     {
         await base.Exit();
-        CanvasManager.Instance.AppCanvas.TitlePanel.gameObject.SetActive(false);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(false);
     }
 }

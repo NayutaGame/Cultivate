@@ -53,7 +53,7 @@ public class DialogPanel : Panel
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedOptionSignal(i));
         if (RunManager.Instance.Environment == null)
             return;
-        RunCanvas.Instance.SetNodeState(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
 
     private void SelectOption0() => SelectedOption(0);

@@ -41,15 +41,15 @@ public class TechView : ItemView
         switch (runTech.State)
         {
             case RunTech.RunTechState.Done:
-                _image.color = RunCanvas.Instance.TechColorGreen;
+                _image.color = CanvasManager.Instance.TechColorGreen;
                 RewardText.text = "";
                 break;
             case RunTech.RunTechState.Current:
-                _image.color = RunCanvas.Instance.TechColorYellow;
+                _image.color = CanvasManager.Instance.TechColorYellow;
                 RewardText.text = runTech.GetRewardsString();
                 break;
             case RunTech.RunTechState.Locked:
-                _image.color = RunCanvas.Instance.TechColorRed;
+                _image.color = CanvasManager.Instance.TechColorRed;
                 RewardText.text = runTech.GetRewardsString();
                 break;
         }
@@ -74,6 +74,6 @@ public class TechView : ItemView
     private void TrySetDone()
     {
         RunManager.Instance.Environment.TrySetDoneTech(GetAddress());
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

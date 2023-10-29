@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using System.Threading.Tasks;
-using UnityEngine;
+using DG.Tweening;
 
 public class RunAppS : AppS
 {
@@ -9,8 +8,10 @@ public class RunAppS : AppS
     {
         await base.Enter();
         RunManager.Instance.Enter();
+        CanvasManager.Instance.RunCanvas.Configure();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
-        RunCanvas.Instance.NodeLayer.DisableCurrentPanel();
+        CanvasManager.Instance.RunCanvas.NodeLayer.DisableCurrentPanel();
+        CanvasManager.Instance.CurtainHide().SetAutoKill().Restart();
     }
 
     public override async Task Exit()
@@ -31,5 +32,6 @@ public class RunAppS : AppS
         await base.CExit();
         RunManager.Instance.CExit();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
+        CanvasManager.Instance.CurtainHide().SetAutoKill().Restart();
     }
 }

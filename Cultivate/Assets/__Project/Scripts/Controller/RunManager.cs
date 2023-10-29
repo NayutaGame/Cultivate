@@ -49,7 +49,7 @@ public class RunManager : Singleton<RunManager>, Addressable
 
     public void CExit()
     {
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     public void ReturnToTitle()

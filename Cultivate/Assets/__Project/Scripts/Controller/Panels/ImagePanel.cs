@@ -19,6 +19,7 @@ public class ImagePanel : Panel
 
     public override void Refresh()
     {
+        base.Refresh();
         ImagePanelDescriptor panelDescriptor = _address.Get<ImagePanelDescriptor>();
         ImageButton.image.sprite = panelDescriptor.GetSprite();
     }
@@ -26,6 +27,6 @@ public class ImagePanel : Panel
     private void ClickedSignal()
     {
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new ClickedSignal());
-        RunCanvas.Instance.SetNodeState(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
 }

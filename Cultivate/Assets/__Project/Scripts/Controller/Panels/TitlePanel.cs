@@ -1,15 +1,17 @@
 
-using UnityEngine;
+using DG.Tweening;
 using UnityEngine.UI;
 
-public class TitlePanel : MonoBehaviour
+public class TitlePanel : Panel
 {
     public Button StartRunButton;
     public Button SettingsButton;
     public Button ExitButton;
 
-    public void Configure()
+    public override void Configure()
     {
+        base.Configure();
+
         StartRunButton.onClick.RemoveAllListeners();
         SettingsButton.onClick.RemoveAllListeners();
         ExitButton.onClick.RemoveAllListeners();
@@ -28,8 +30,19 @@ public class TitlePanel : MonoBehaviour
         AppManager.Push(new MenuAppS());
     }
 
-    public void Refresh()
+    public override Tween ShowAnimation()
     {
+        return DOTween.Sequence()
+                .AppendCallback(() => gameObject.SetActive(true))
+                .Append(CanvasManager.Instance.CurtainHide())
+            ;
+    }
 
+    public override Tween HideAnimation()
+    {
+        return DOTween.Sequence()
+                .Append(CanvasManager.Instance.CurtainShow())
+                .AppendCallback(() => gameObject.SetActive(false))
+            ;
     }
 }

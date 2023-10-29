@@ -8,13 +8,11 @@ public abstract class Panel : MonoBehaviour, IShowable
 {
     [NonSerialized] public RectTransform _rectTransform;
 
-    private void Awake()
+    public virtual void Configure()
     {
-        _rectTransform = GetComponent<RectTransform>();
-        Configure();
+        _rectTransform ??= GetComponent<RectTransform>();
     }
 
-    public virtual void Configure() { }
     public virtual void Refresh() { }
 
     #region IShowable
@@ -27,8 +25,11 @@ public abstract class Panel : MonoBehaviour, IShowable
             return;
 
         _showing = showing;
-        await PlayTween(false, _showing ? ShowAnimation() : HideAnimation());
+        await PlayTween(true, _showing ? ShowAnimation() : HideAnimation());
     }
+
+    public async Task ToggleShowing()
+        => await SetShowing(!IsShowing());
 
     private async Task PlayTween(bool isAwait, Tween tween)
     {

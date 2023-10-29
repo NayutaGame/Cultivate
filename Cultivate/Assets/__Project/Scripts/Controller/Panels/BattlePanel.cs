@@ -68,6 +68,6 @@ public class BattlePanel : Panel
     {
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat();
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

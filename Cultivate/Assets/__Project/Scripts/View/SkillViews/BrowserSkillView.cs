@@ -20,22 +20,22 @@ public class BrowserSkillView : SkillView, IInteractable,
     {
         if (eventData.dragging) return;
 
-        RunCanvas.Instance.SkillPreview.SetAddress(GetAddress());
-        RunCanvas.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillPreview.SetAddress(GetAddress());
+        CanvasManager.Instance.SkillPreview.Refresh();
     }
 
     public void PointerExit(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        RunCanvas.Instance.SkillPreview.SetAddress(null);
-        RunCanvas.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillPreview.SetAddress(null);
+        CanvasManager.Instance.SkillPreview.Refresh();
     }
 
     public void PointerMove(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        RunCanvas.Instance.SkillPreview.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.SkillPreview.UpdateMousePos(eventData.position);
     }
 }

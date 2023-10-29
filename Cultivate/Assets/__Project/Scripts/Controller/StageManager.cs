@@ -44,7 +44,7 @@ public class StageManager : Singleton<StageManager>, Addressable
         AppManager.Pop();
     }
 
-    public void Exit()
+    public async Task Exit()
     {
         DisableVFX();
 
@@ -55,7 +55,7 @@ public class StageManager : Singleton<StageManager>, Addressable
             ? BattleResultSignal.BattleResultState.Win
             : BattleResultSignal.BattleResultState.Lose);
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(signal);
-        RunCanvas.Instance.SetNodeState(panelDescriptor);
+        await CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
         Environment.WriteResult();
     }
 

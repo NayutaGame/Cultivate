@@ -1,54 +1,41 @@
 
-using CLLibrary;
-using DG.Tweening;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RunCanvas : Singleton<RunCanvas>
+public class RunCanvas : MonoBehaviour
 {
-    public Color TechColorGreen;
-    public Color TechColorYellow;
-    public Color TechColorRed;
-
     public Button BackgroundButton;
-
-    public ReservedLayer ReservedLayer;
     public NodeLayer NodeLayer;
-    public MMDMLayer MMDMLayer;
 
+    public DeckPanel DeckPanel;
+    public MapPanel MapPanel;
+    public Button MapButton;
+    public ReservedLayer ReservedLayer;
     public TopBar TopBar;
-
-    public Button ToggleShowingConsolePanelButton;
+    public Button ConsoleButton;
     public ConsolePanel ConsolePanel;
-
-    public MechGhost MechGhost;
-    public SkillPreview SkillPreview;
-    public FormationPreview FormationPreview;
-
-    public override void DidAwake()
-    {
-        base.DidAwake();
-        Configure();
-        Refresh();
-    }
-
-    private void ToggleConsolePanel() => ConsolePanel.SetShowing(!ConsolePanel.IsShowing());
 
     public void Configure()
     {
         BackgroundButton.onClick.RemoveAllListeners();
-        BackgroundButton.onClick.AddListener(MMDMLayer.ToggleMap);
+        BackgroundButton.onClick.AddListener(() => MapPanel.ToggleShowing());
 
-        TopBar.Configure();
-        ConsolePanel.Configure();
+        NodeLayer.Configure();
+        DeckPanel.Configure();
+        MapPanel.Configure();
 
-        ToggleShowingConsolePanelButton.onClick.RemoveAllListeners();
-        ToggleShowingConsolePanelButton.onClick.AddListener(ToggleConsolePanel);
+        MapButton.onClick.RemoveAllListeners();
+        MapButton.onClick.AddListener(() => MapPanel.ToggleShowing());
 
         ReservedLayer.Configure();
-        MMDMLayer.Configure();
-        NodeLayer.Configure();
+        TopBar.Configure();
+
+        ConsoleButton.onClick.RemoveAllListeners();
+        ConsoleButton.onClick.AddListener(() => ConsolePanel.ToggleShowing());
+
+        ConsolePanel.Configure();
 
         if (!Application.isEditor)
             ConsolePanel.gameObject.SetActive(false);
@@ -56,15 +43,20 @@ public class RunCanvas : Singleton<RunCanvas>
 
     public void Refresh()
     {
+        NodeLayer.Refresh();
+        DeckPanel.Refresh();
+        MapPanel.Refresh();
+        ReservedLayer.Refresh();
         TopBar.Refresh();
         ConsolePanel.Refresh();
-
-        ReservedLayer.Refresh();
-        NodeLayer.Refresh();
-        MMDMLayer.Refresh();
     }
 
-    public void SetNodeState(PanelDescriptor panelDescriptor)
+    // AnimationMode
+    //   Await
+    //   Parallel
+    //   Skip
+
+    public async Task SetNodeState(PanelDescriptor panelDescriptor)
     {
         if (NodeLayer.CurrentIsDescriptor(panelDescriptor))
         {
@@ -72,29 +64,30 @@ public class RunCanvas : Singleton<RunCanvas>
             return;
         }
 
-        Sequence seq = DOTween.Sequence().SetAutoKill();
-
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
 
         if (panelDescriptor == null)
         {
-            seq.Join(NodeLayer.SetPanel(panel: null));
-
-            seq.AppendInterval(0.4f)
-                .Append(MMDMLayer.SetState(MMDMLayer.MMDMState.MM));
+            await NodeLayer.SetPanel(panel: null);
+            await MapPanel.SetShowing(true);
         }
         else
         {
-            if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor)
-                seq.Append(MMDMLayer.SetState(MMDMLayer.MMDMState.D));
-            else
-                seq.Append(MMDMLayer.SetState(MMDMLayer.MMDMState.N));
-
-            seq.AppendInterval(0.4f)
-                .Join(NodeLayer.SetPanel(d));
+            await MapPanel.SetShowing(false);
+            await NodeLayer.SetPanel(d);
         }
 
-        InteractDelegate interactDelegate = MMDMLayer.DeckPanel.GetDelegate();
+        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor)
+        {
+            DeckPanel.SetLocked(true);
+            await DeckPanel.SetShowing(true);
+        }
+        else
+        {
+            DeckPanel.SetLocked(false);
+        }
+
+        InteractDelegate interactDelegate = DeckPanel.GetDelegate();
         if (d is CardPickerPanelDescriptor)
         {
             interactDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, ToggleSkill);
@@ -105,8 +98,6 @@ public class RunCanvas : Singleton<RunCanvas>
             interactDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, null);
             interactDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 2, null);
         }
-
-        seq.Restart();
     }
 
     private void ToggleSkill(IInteractable view, PointerEventData eventData)

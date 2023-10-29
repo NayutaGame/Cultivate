@@ -44,6 +44,6 @@ public class BarterPanel : Panel
     {
         Map map = new Address("Run.Environment.Map").Get<Map>();
         PanelDescriptor panelDescriptor = map.ReceiveSignal(new Signal());
-        RunCanvas.Instance.SetNodeState(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
 }

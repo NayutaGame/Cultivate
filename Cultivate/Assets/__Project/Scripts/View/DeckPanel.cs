@@ -2,12 +2,14 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DeckPanel : Panel
 {
-    public Image ToggleImage;
-    public Button ToggleButton;
+    public PropagatePointerEnter DeckOpenZone;
+    public PropagatePointerEnter DeckCloseZone;
+
     public Button SortButton;
 
     public ListView FieldView;
@@ -15,31 +17,20 @@ public class DeckPanel : Panel
     public ListView FormationListView;
     public ListView MechListView;
 
-    public RectTransform _deckTransform;
-    public RectTransform _spriteTransform;
     public RectTransform _handTransform;
+    public RectTransform _spriteTransform;
+    public RectTransform _fieldTransform;
     public RectTransform _subFormationInventoryTransform;
     public RectTransform _mechBagTransform;
 
-    public override Tween ShowAnimation()
-        => DOTween.Sequence()
-            .AppendCallback(HandView.BigRefresh)
-            .Join(_deckTransform.                  DOAnchorPosY(-69.5f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0f))
-            .Join(_spriteTransform.                DOAnchorPosY(0f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.03f))
-            .Join(_handTransform.                  DOAnchorPosY(94f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.06f))
-            .Join(_subFormationInventoryTransform. DOAnchorPosY(200f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.09f))
-            .Join(_mechBagTransform.               DOAnchorPosY(-255f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.12f));
-
-    public override Tween HideAnimation()
-        => DOTween.Sequence()
-            .Join(_deckTransform.                  DOAnchorPosY(-445, 0.3f).SetEase(Ease.InQuad).SetDelay(0f))
-            .Join(_spriteTransform.                DOAnchorPosY(-626, 0.3f).SetEase(Ease.InQuad).SetDelay(0.03f))
-            .Join(_handTransform.                  DOAnchorPosY(-403, 0.3f).SetEase(Ease.InQuad).SetDelay(0.06f))
-            .Join(_subFormationInventoryTransform. DOAnchorPosY(-364, 0.3f).SetEase(Ease.InQuad).SetDelay(0.09f))
-            .Join(_mechBagTransform.               DOAnchorPosY(-375, 0.3f).SetEase(Ease.InQuad).SetDelay(0.12f));
-
     public override void Configure()
     {
+        base.Configure();
+
+        DeckOpenZone._onPointerEnter = TryShow;
+        DeckCloseZone._onPointerEnter = TryHide;
+        SetLocked(false);
+
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
         HandView.SetAddress(new Address("Run.Environment.SkillInventory"));
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
@@ -53,6 +44,7 @@ public class DeckPanel : Panel
 
     public override void Refresh()
     {
+        base.Refresh();
         FieldView.Refresh();
         HandView.Refresh();
         FormationListView.Refresh();
@@ -141,7 +133,7 @@ public class DeckPanel : Panel
 
         AudioManager.Play("CardPlacement");
         FieldView.Refresh();
-        RunCanvas.Instance.NodeLayer.Refresh();
+        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
     private void TryEquipMech(IInteractable from, IInteractable to)
@@ -156,7 +148,7 @@ public class DeckPanel : Panel
         AudioManager.Play("CardPlacement");
         from.Refresh();
         FieldView.Refresh();
-        RunCanvas.Instance.NodeLayer.Refresh();
+        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
     private void TryUnequip(IInteractable from, IInteractable to)
@@ -169,7 +161,7 @@ public class DeckPanel : Panel
 
         AudioManager.Play("CardPlacement");
         FieldView.Refresh();
-        RunCanvas.Instance.NodeLayer.Refresh();
+        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
     private void TrySwap(IInteractable from, IInteractable to)
@@ -183,7 +175,7 @@ public class DeckPanel : Panel
 
         AudioManager.Play("CardPlacement");
         FieldView.Refresh();
-        RunCanvas.Instance.NodeLayer.Refresh();
+        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
     #endregion
@@ -191,20 +183,46 @@ public class DeckPanel : Panel
     private void Sort()
     {
         HandView.Get<SkillInventory>().SortByComparisonId(0);
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
+    private void TryShow(PointerEventData eventData)
+    {
+        SetShowing(true);
+    }
+
+    private void TryHide(PointerEventData eventData)
+    {
+        SetShowing(false);
+    }
+
+    private bool _locked;
     public void SetLocked(bool locked)
     {
-        if (locked)
-        {
-            ToggleButton.interactable = false;
-            ToggleImage.color = new Color(0.6f, 0.6f, 0.6f, 0.43f);
-        }
-        else
-        {
-            ToggleButton.interactable = true;
-            ToggleImage.color = Color.white;
-        }
+        if (_locked == locked)
+            return;
+        _locked = locked;
+        DeckCloseZone.gameObject.SetActive(!_locked);
     }
+
+    public override Tween ShowAnimation()
+        => DOTween.Sequence()
+            .AppendCallback(HandView.BigRefresh)
+            .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
+            .AppendCallback(() => DeckCloseZone.gameObject.SetActive(!_locked))
+            .Join(_handTransform.                  DOAnchorPosY(-69.5f+445-672, 0.3f).SetEase(Ease.OutQuad).SetDelay(0f))
+            .Join(_spriteTransform.                DOAnchorPosY(0f+626-853, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.03f))
+            .Join(_fieldTransform.                 DOAnchorPosY(94f+403-630, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.06f))
+            .Join(_subFormationInventoryTransform. DOAnchorPosY(200f+364-591, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.09f))
+            .Join(_mechBagTransform.               DOAnchorPosY(-255f+375-602, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.12f));
+
+    public override Tween HideAnimation()
+        => DOTween.Sequence()
+            .AppendCallback(() => DeckOpenZone.gameObject.SetActive(true))
+            .AppendCallback(() => DeckCloseZone.gameObject.SetActive(false))
+            .Join(_handTransform.                  DOAnchorPosY(-672, 0.3f).SetEase(Ease.InQuad).SetDelay(0f))
+            .Join(_spriteTransform.                DOAnchorPosY(-853, 0.3f).SetEase(Ease.InQuad).SetDelay(0.03f))
+            .Join(_fieldTransform.                 DOAnchorPosY(-630, 0.3f).SetEase(Ease.InQuad).SetDelay(0.06f))
+            .Join(_subFormationInventoryTransform. DOAnchorPosY(-591, 0.3f).SetEase(Ease.InQuad).SetDelay(0.09f))
+            .Join(_mechBagTransform.               DOAnchorPosY(-602, 0.3f).SetEase(Ease.InQuad).SetDelay(0.12f));
 }

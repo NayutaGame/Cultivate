@@ -63,6 +63,6 @@ public class ArenaScoreboardView : MonoBehaviour
     {
         Arena arena = RunManager.Instance.Arena;
         arena.ShowReport(i);
-        RunCanvas.Instance.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

@@ -34,8 +34,8 @@ public class HandSkillView : SkillView, IInteractable,
         _animationHandle = ContentTransform.DOAnchorPos(HoverPivot.anchoredPosition, 0.15f);
         _animationHandle.Restart();
 
-        RunCanvas.Instance.SkillPreview.SetAddress(GetAddress());
-        RunCanvas.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillPreview.SetAddress(GetAddress());
+        CanvasManager.Instance.SkillPreview.Refresh();
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
@@ -46,21 +46,21 @@ public class HandSkillView : SkillView, IInteractable,
         _animationHandle = ContentTransform.DOAnchorPos(IdlePivot.anchoredPosition, 0.15f);
         _animationHandle.Restart();
 
-        RunCanvas.Instance.SkillPreview.SetAddress(null);
-        RunCanvas.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillPreview.SetAddress(null);
+        CanvasManager.Instance.SkillPreview.Refresh();
     }
 
     public void PointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        RunCanvas.Instance.SkillPreview.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.SkillPreview.UpdateMousePos(eventData.position);
     }
 
     public void BeginDrag(PointerEventData eventData)
     {
-        RunCanvas.Instance.SkillPreview.SetAddress(null);
-        RunCanvas.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillPreview.SetAddress(null);
+        CanvasManager.Instance.SkillPreview.Refresh();
 
         CanvasGroup.blocksRaycasts = false;
         _animationHandle?.Kill();

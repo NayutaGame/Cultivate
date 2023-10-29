@@ -1,9 +1,7 @@
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using CLLibrary;
-using DG.Tweening;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class NodeLayer : MonoBehaviour
@@ -33,30 +31,25 @@ public class NodeLayer : MonoBehaviour
         return false;
     }
 
-    public Tween SetPanel(PanelDescriptor panelDescriptor)
-        => SetPanel(_panelDict[panelDescriptor.GetType()]);
+    public async Task SetPanel(PanelDescriptor panelDescriptor)
+        => await SetPanel(_panelDict[panelDescriptor.GetType()]);
 
-    public Tween SetPanel(Panel panel)
+    public async Task SetPanel(Panel panel)
     {
-        Sequence seq = DOTween.Sequence().SetAutoKill();
-
         if (_currentPanel == panel && panel != null)
         {
             panel.Refresh();
-            return seq;
         }
 
         if (_currentPanel != null)
-            seq.Append(_currentPanel.HideAnimation());
+            await _currentPanel.SetShowing(false);
         _currentPanel = panel;
         if (_currentPanel != null)
         {
-            seq.Append(_currentPanel.ShowAnimation());
             _currentPanel.Configure();
             _currentPanel.Refresh();
+            await _currentPanel.SetShowing(true);
         }
-
-        return seq;
     }
 
     public void DisableCurrentPanel()
