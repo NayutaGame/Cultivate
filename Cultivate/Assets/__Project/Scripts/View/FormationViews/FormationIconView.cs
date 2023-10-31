@@ -7,6 +7,7 @@ public class FormationIconView : ItemView, IInteractable,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     [SerializeField] private TMP_Text NameText;
+    [SerializeField] private TMP_Text CountText;
 
     public override void Refresh()
     {

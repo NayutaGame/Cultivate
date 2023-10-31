@@ -1,4 +1,5 @@
 
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,13 +7,12 @@ using UnityEngine.UI;
 public class BattlePanel : Panel
 {
     [SerializeField] private BattleEntityView EnemyView;
+    [SerializeField] private TMP_Text HomeHealth;
+    [SerializeField] private TMP_Text AwayHealth;
+    [SerializeField] private Button CombatButton;
 
-    public TMP_Text HomeHP;
-    public GameObject HomeHPSlash;
-    public TMP_Text AwayHP;
-    public GameObject AwayHPSlash;
-
-    public Button CombatButton;
+    [SerializeField] private Image VictoryStamp;
+    [SerializeField] private Transform VictoryStampTranform;
 
     private Address _address;
 
@@ -36,31 +36,27 @@ public class BattlePanel : Panel
 
         if (d.GetResult() is { } result)
         {
-            HomeHP.text = result.HomeLeftHp.ToString();
-            AwayHP.text = result.AwayLeftHp.ToString();
+            HomeHealth.text = result.HomeLeftHp.ToString();
+            AwayHealth.text = result.AwayLeftHp.ToString();
+            SetVictory(result.HomeVictory);
             if (result.HomeVictory)
             {
-                HomeHP.color = Color.white;
-                HomeHPSlash.SetActive(false);
-                AwayHP.color = Color.black;
-                AwayHPSlash.SetActive(true);
+                HomeHealth.alpha = 1f;
+                AwayHealth.alpha = 0.6f;
             }
             else
             {
-                HomeHP.color = Color.black;
-                HomeHPSlash.SetActive(true);
-                AwayHP.color = Color.white;
-                AwayHPSlash.SetActive(false);
+                HomeHealth.alpha = 0.6f;
+                AwayHealth.alpha = 1f;
             }
         }
         else
         {
-            HomeHP.text = "玩家";
-            AwayHP.text = "怪物";
-            HomeHP.color = Color.white;
-            HomeHPSlash.SetActive(false);
-            AwayHP.color = Color.white;
-            AwayHPSlash.SetActive(false);
+            HomeHealth.text = "玩家";
+            AwayHealth.text = "怪物";
+            HomeHealth.alpha = 1f;
+            AwayHealth.alpha = 1f;
+            SetVictory(false);
         }
     }
 
@@ -69,5 +65,30 @@ public class BattlePanel : Panel
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat();
         CanvasManager.Instance.RunCanvas.Refresh();
+    }
+
+    private bool _homeVictory;
+    private Tween _handle;
+
+    private void SetVictory(bool victory)
+    {
+        if (_homeVictory == victory)
+            return;
+
+        _homeVictory = victory;
+
+        _handle?.Kill();
+
+        if (_homeVictory)
+        {
+            // AudioManager.Play("CardHover"); // VictoryStamp
+
+            VictoryStamp.color = new Color(1, 1, 1, 0);
+            VictoryStampTranform.localScale = Vector3.one * 1.5f;
+            _handle = DOTween.Sequence().SetAutoKill()
+                .Append(VictoryStamp.DOFade(1, 0.15f).SetEase(Ease.InQuad))
+                .Append(VictoryStampTranform.DOScale(1, 0.15f).SetEase(Ease.InQuad));
+            _handle.Restart();
+        }
     }
 }
