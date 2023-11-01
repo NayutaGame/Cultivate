@@ -10,13 +10,11 @@ using UnityEngine.UI;
 [SelectionBase]
 public class SkillView : ItemView
 {
-    [SerializeField] private Image CardImage;
-    [SerializeField] private GameObject ManaCostView;
+    [SerializeField] private Image Image;
+    // [SerializeField] private GameObject ManaCostView;
     [SerializeField] private TMP_Text ManaCostText;
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
-    [SerializeField] private GameObject[] TypeViews;
-    [SerializeField] private TMP_Text[] TypeTexts;
     [SerializeField] private Image JingJieImage;
     [SerializeField] private Image WuXingImage;
 
@@ -68,7 +66,7 @@ public class SkillView : ItemView
 
     protected virtual void SetCardImage(Sprite sprite)
     {
-        CardImage.sprite = sprite;
+        Image.sprite = sprite;
     }
 
     protected virtual void SetManaCost(int manaCost)
@@ -76,12 +74,12 @@ public class SkillView : ItemView
         if (manaCost == 0)
         {
             ManaCostText.text = "";
-            ManaCostView.SetActive(false);
+            // ManaCostView.SetActive(false);
         }
         else
         {
             ManaCostText.text = manaCost.ToString();
-            ManaCostView.SetActive(true);
+            // ManaCostView.SetActive(true);
         }
     }
 
@@ -116,18 +114,18 @@ public class SkillView : ItemView
 
     protected virtual void SetSkillTypeComposite(SkillTypeComposite skillTypeComposite)
     {
-        List<SkillType> skillTypes = skillTypeComposite.ContainedSkillTypes.FirstN(TypeViews.Length).ToList();
-
-        for (int i = 0; i < skillTypes.Count; i++)
-        {
-            TypeViews[i].SetActive(true);
-            TypeTexts[i].text = skillTypes[i].ToString();
-        }
-
-        for (int i = skillTypes.Count; i < TypeViews.Length; i++)
-        {
-            TypeViews[i].SetActive(false);
-        }
+        // List<SkillType> skillTypes = skillTypeComposite.ContainedSkillTypes.FirstN(TypeViews.Length).ToList();
+        //
+        // for (int i = 0; i < skillTypes.Count; i++)
+        // {
+        //     TypeViews[i].SetActive(true);
+        //     TypeTexts[i].text = skillTypes[i].ToString();
+        // }
+        //
+        // for (int i = skillTypes.Count; i < TypeViews.Length; i++)
+        // {
+        //     TypeViews[i].SetActive(false);
+        // }
     }
 
     protected virtual void SetJingJieSprite(Sprite jingJieSprite)

@@ -13,15 +13,14 @@ public class DeckPanel : Panel
     public Button SortButton;
 
     public ListView FieldView;
-    public SkillInventoryView HandView;
+    public ListView HandView;
     public ListView FormationListView;
     public ListView MechListView;
 
-    public RectTransform _handTransform;
-    public RectTransform _spriteTransform;
     public RectTransform _fieldTransform;
-    public RectTransform _subFormationInventoryTransform;
-    public RectTransform _mechBagTransform;
+    public RectTransform _handTransform;
+    public RectTransform _formationListTransform;
+    public RectTransform _mechListTransform;
 
     public override void Configure()
     {
@@ -32,7 +31,7 @@ public class DeckPanel : Panel
         SetLocked(false);
 
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
-        HandView.SetAddress(new Address("Run.Environment.SkillInventory"));
+        // HandView.SetAddress(new Address("Run.Environment.SkillInventory"));
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
         MechListView.SetAddress(new Address("Run.Environment.MechBag"));
 
@@ -211,18 +210,16 @@ public class DeckPanel : Panel
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(!_locked))
             .Join(_handTransform.                  DOAnchorPosY(-69.5f+445-672, 0.3f).SetEase(Ease.OutQuad).SetDelay(0f))
-            .Join(_spriteTransform.                DOAnchorPosY(0f+626-853, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.03f))
             .Join(_fieldTransform.                 DOAnchorPosY(94f+403-630, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.06f))
-            .Join(_subFormationInventoryTransform. DOAnchorPosY(200f+364-591, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.09f))
-            .Join(_mechBagTransform.               DOAnchorPosY(-255f+375-602, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.12f));
+            .Join(_formationListTransform. DOAnchorPosY(200f+364-591, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.09f))
+            .Join(_mechListTransform.               DOAnchorPosY(-255f+375-602, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.12f));
 
     public override Tween HideAnimation()
         => DOTween.Sequence()
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(true))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(false))
             .Join(_handTransform.                  DOAnchorPosY(-672, 0.3f).SetEase(Ease.InQuad).SetDelay(0f))
-            .Join(_spriteTransform.                DOAnchorPosY(-853, 0.3f).SetEase(Ease.InQuad).SetDelay(0.03f))
             .Join(_fieldTransform.                 DOAnchorPosY(-630, 0.3f).SetEase(Ease.InQuad).SetDelay(0.06f))
-            .Join(_subFormationInventoryTransform. DOAnchorPosY(-591, 0.3f).SetEase(Ease.InQuad).SetDelay(0.09f))
-            .Join(_mechBagTransform.               DOAnchorPosY(-602, 0.3f).SetEase(Ease.InQuad).SetDelay(0.12f));
+            .Join(_formationListTransform. DOAnchorPosY(-591, 0.3f).SetEase(Ease.InQuad).SetDelay(0.09f))
+            .Join(_mechListTransform.               DOAnchorPosY(-602, 0.3f).SetEase(Ease.InQuad).SetDelay(0.12f));
 }

@@ -1694,18 +1694,18 @@ MonoBehaviour:
   - {r: 0.8753333, g: 0.884, b: 0.50699997, a: 1}
   - {r: 0.864, g: 0.48470402, b: 0.48470402, a: 1}
   JingJieSprites:
-  - {fileID: -8002059469597653019, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
-  - {fileID: 2343180519818504324, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
-  - {fileID: 8717211752615702092, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
-  - {fileID: 6993151123101782196, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
-  - {fileID: 2013189819111367260, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
-  - {fileID: 8498834934565666074, guid: 8b13f4612884888488b92aaa1d8de0bb, type: 3}
+  - {fileID: -361211870641198198, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
+  - {fileID: 8652053834643930000, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
+  - {fileID: -2135311590084877284, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
+  - {fileID: 3457629362719344098, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
+  - {fileID: -8769523690462313024, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
+  - {fileID: 386617452577562726, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
   WuXingSprites:
-  - {fileID: 21300000, guid: 93c3b9cc96c1cb848b742f672dc6a8ce, type: 3}
-  - {fileID: 21300000, guid: 0d817e600e93bde41b5863fc63592b61, type: 3}
-  - {fileID: 21300000, guid: e94167d7a98116640a3510c1f4b54787, type: 3}
-  - {fileID: 21300000, guid: 2ea15b76fff00b74091c4fef057c9766, type: 3}
-  - {fileID: 21300000, guid: b445cbfd186c1af4c84a7c6bad744542, type: 3}
+  - {fileID: 927806504555314554, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
+  - {fileID: -7494664057698175860, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
+  - {fileID: -2720032169287569166, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
+  - {fileID: -8160596306523125204, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
+  - {fileID: 1382618821468082899, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
   TechColorGreen: {r: 0.62352943, g: 0.81960785, b: 0.6392157, a: 1}
   TechColorYellow: {r: 0.77254903, g: 0.78431374, b: 0.5647059, a: 1}
   TechColorRed: {r: 0.9137255, g: 0.6745098, b: 0.6745098, a: 1}
