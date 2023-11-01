@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 using JetBrains.Annotations;
 
 public class RunEnvironment : Addressable
@@ -32,7 +33,7 @@ public class RunEnvironment : Addressable
     public TechInventory TechInventory { get; private set; }
 
     public SkillPool SkillPool { get; private set; }
-    public SkillInventory SkillInventory { get; private set; }
+    public SkillInventory Hand { get; private set; }
     public MechBag MechBag { get; private set; }
 
     public StageEnvironmentResult SimulateResult;
@@ -56,7 +57,7 @@ public class RunEnvironment : Addressable
             { "Hero",                  () => Home },
             { "Map",                   () => Map },
             { "TechInventory",         () => TechInventory },
-            { "SkillInventory",        () => SkillInventory },
+            { "Hand",                  () => Hand },
             { "MechBag",               () => MechBag },
             { "ActivePanel",           GetActivePanel },
         };
@@ -71,7 +72,7 @@ public class RunEnvironment : Addressable
 
         TechInventory = new();
 
-        SkillInventory = new();
+        Hand = new();
         MechBag = new();
 
         SkillPool = new();
@@ -122,8 +123,8 @@ public class RunEnvironment : Addressable
         if (lhs.GetEntry() == rhs.GetEntry() && upgrade && lhs.GetEntry().JingJieRange.Contains(lhs.JingJie + 1))
         {
             rhs.JingJie = newJingJie;
-            SkillInventory.Remove(lhs);
-            SkillInventory.SetModified(rhs);
+            Hand.Remove(lhs);
+            Hand.SetModified(rhs);
             EnvironmentChanged();
             return true;
         }
@@ -153,8 +154,8 @@ public class RunEnvironment : Addressable
         if (!success)
             return false;
 
-        SkillInventory.Replace(rhs, newSkill);
-        SkillInventory.Remove(lhs);
+        Hand.Replace(rhs, newSkill);
+        Hand.Remove(lhs);
         EnvironmentChanged();
         return true;
     }
@@ -164,12 +165,12 @@ public class RunEnvironment : Addressable
         EmulatedSkill toUnequip = slot.Skill;
 
         if (toUnequip == null)
-            SkillInventory.Remove(toEquip);
+            Hand.Remove(toEquip);
         else if (toUnequip is RunSkill runSkill)
-            SkillInventory.Replace(toEquip, runSkill);
+            Hand.Replace(toEquip, runSkill);
         else if (toUnequip is MechComposite mechComposite)
         {
-            SkillInventory.Remove(toEquip);
+            Hand.Remove(toEquip);
             foreach(MechType m in mechComposite.MechTypes)
                 MechBag.AddMech(m);
         };
@@ -195,7 +196,7 @@ public class RunEnvironment : Addressable
             bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
             if (!success)
                 return false;
-            SkillInventory.Add(runSkill);
+            Hand.Add(runSkill);
             slot.Skill = new MechComposite(toEquip.GetMechType());
         }
         else if (currentSkill is MechComposite mechComposite)
@@ -222,7 +223,7 @@ public class RunEnvironment : Addressable
 
         if (toUnequip is RunSkill runSkill)
         {
-            SkillInventory.Add(runSkill);
+            Hand.Add(runSkill);
 
             slot.Skill = null;
             EnvironmentChanged();
@@ -313,7 +314,7 @@ public class RunEnvironment : Addressable
         => ForceAddSkill(RunSkill.From(d._entry, d._jingJie));
 
     public void ForceAddSkill(RunSkill skill)
-        => SkillInventory.Add(skill);
+        => Hand.Add(skill);
 
     public void ForceAddMech([CanBeNull] MechType mechType = null, int count = 1)
         => ForceAddMech(new(mechType, count));
@@ -360,5 +361,10 @@ public class RunEnvironment : Addressable
 
         _runResultPanelDescriptor = new RunResultPanelDescriptor(_commitDetails);
         return true;
+    }
+
+    public RunSkill FindSkillInHand(RunSkill skill)
+    {
+        return Hand.Traversal().FirstObj(s => s == skill);
     }
 }

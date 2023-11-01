@@ -344,7 +344,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Environment.SkillInventory.Remove(skill);
+                                RunManager.Instance.Environment.Hand.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -352,7 +352,7 @@ public class NodeCategory : Category<NodeEntry>
                             }
                         }
 
-                        count.Do(i => RunManager.Instance.Environment.SkillInventory.Add(copyingSkill));
+                        count.Do(i => RunManager.Instance.Environment.Hand.Add(copyingSkill));
                         return D;
                     });
 
@@ -474,9 +474,9 @@ public class NodeCategory : Category<NodeEntry>
                             slot.Skill = newSkill;
                         }
 
-                        for(int i = 0; i < RunManager.Instance.Environment.SkillInventory.Count(); i++)
+                        for(int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
                         {
-                            RunSkill oldSkill = RunManager.Instance.Environment.SkillInventory[i];
+                            RunSkill oldSkill = RunManager.Instance.Environment.Hand[i];
                             WuXing? oldWuXing = oldSkill.GetEntry().WuXing;
                             JingJie oldJingJie = oldSkill.JingJie;
 
@@ -486,7 +486,7 @@ public class NodeCategory : Category<NodeEntry>
                             JingJie newJingJie = RandomManager.Range(oldJingJie, runNode.JingJie + 1);
 
                             RunManager.Instance.Environment.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
-                            RunManager.Instance.Environment.SkillInventory.Replace(oldSkill, newSkill);
+                            RunManager.Instance.Environment.Hand.Replace(oldSkill, newSkill);
                         }
 
                         return C;
@@ -524,7 +524,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Environment.SkillInventory.Remove(skill);
+                                RunManager.Instance.Environment.Hand.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -929,7 +929,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Environment.SkillInventory.Remove(skill);
+                                RunManager.Instance.Environment.Hand.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -949,7 +949,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iSkill is RunSkill skill)
                             {
-                                RunManager.Instance.Environment.SkillInventory.Remove(skill);
+                                RunManager.Instance.Environment.Hand.Remove(skill);
                             }
                             else if (iSkill is SkillSlot slot)
                             {
@@ -1010,7 +1010,7 @@ public class NodeCategory : Category<NodeEntry>
                     });
                     ZhiRuBattle.SetLose(() =>
                     {
-                        RunManager.Instance.Environment.SkillInventory.Clear();
+                        RunManager.Instance.Environment.Hand.Clear();
                         RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
 
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("恋花", JingJie.LianQi));
@@ -1027,7 +1027,7 @@ public class NodeCategory : Category<NodeEntry>
                     });
                     LingQiBattle.SetLose(() =>
                     {
-                        RunManager.Instance.Environment.SkillInventory.Clear();
+                        RunManager.Instance.Environment.Hand.Clear();
                         RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
 
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("恋花", JingJie.LianQi));
@@ -1045,7 +1045,7 @@ public class NodeCategory : Category<NodeEntry>
                     });
                     HeChengBattle.SetLose(() =>
                     {
-                        RunManager.Instance.Environment.SkillInventory.Clear();
+                        RunManager.Instance.Environment.Hand.Clear();
                         RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
 
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("恋花", JingJie.LianQi));

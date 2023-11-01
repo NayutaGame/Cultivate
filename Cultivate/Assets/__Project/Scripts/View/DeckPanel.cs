@@ -43,7 +43,7 @@ public class DeckPanel : Panel
         SetLocked(false);
 
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
-        // HandView.SetAddress(new Address("Run.Environment.SkillInventory"));
+        HandView.SetAddress(new Address("Run.Environment.Hand"));
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
         MechListView.SetAddress(new Address("Run.Environment.MechBag"));
 

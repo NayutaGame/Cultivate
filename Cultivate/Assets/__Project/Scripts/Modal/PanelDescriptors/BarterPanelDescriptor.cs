@@ -26,7 +26,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         Pool<RunSkill> pool = new Pool<RunSkill>();
         pool.Populate(RunManager.Instance.Environment.Home.TraversalCurrentSlots()
             .FilterObj(s => s.Skill != null && s.Skill is RunSkill).Map(s => s.Skill as RunSkill));
-        pool.Populate(RunManager.Instance.Environment.SkillInventory.Traversal());
+        pool.Populate(RunManager.Instance.Environment.Hand.Traversal());
         pool.Shuffle();
 
         int count = Mathf.Min(pool.Count(), 6);
@@ -58,23 +58,24 @@ public class BarterPanelDescriptor : PanelDescriptor
         if (!_inventory.Contains(barterItem))
             return false;
 
-        bool inSlot = RunManager.Instance.Environment.Home.TraversalCurrentSlots().Any(s => s.Skill == barterItem.PlayerSkill);
-        bool inSkillInventory = RunManager.Instance.Environment.SkillInventory.Contains(barterItem.PlayerSkill);
+        SkillSlot slotWithSkill = RunManager.Instance.Environment.Home.FindSlotWithSkill(barterItem.PlayerSkill);
+        RunSkill skillInHand = RunManager.Instance.Environment.FindSkillInHand(barterItem.PlayerSkill);
+        bool inSlot = slotWithSkill != null;
+        bool inSkillInventory = skillInHand != null;
 
         if (!inSlot && !inSkillInventory)
             return false;
 
         if (inSlot)
         {
-            SkillSlot slot = RunManager.Instance.Environment.Home.TraversalCurrentSlots().First(s => s.Skill == barterItem.PlayerSkill);
-            slot.Skill = null;
+            slotWithSkill.Skill = null;
         }
         else
         {
-            RunManager.Instance.Environment.SkillInventory.Remove(barterItem.PlayerSkill);
+            RunManager.Instance.Environment.Hand.Remove(barterItem.PlayerSkill);
         }
 
-        RunManager.Instance.Environment.SkillInventory.Add(barterItem.Skill);
+        RunManager.Instance.Environment.Hand.Add(barterItem.Skill);
 
         _inventory.Remove(barterItem);
         return true;

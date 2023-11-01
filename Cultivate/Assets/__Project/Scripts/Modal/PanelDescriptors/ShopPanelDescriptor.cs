@@ -47,7 +47,7 @@ public class ShopPanelDescriptor : PanelDescriptor
         RunManager.Instance.Environment.RemoveXiuWei(commodity.FinalPrice);
         _commodities.Remove(commodity);
 
-        RunManager.Instance.Environment.SkillInventory.Add(commodity.Skill);
+        RunManager.Instance.Environment.Hand.Add(commodity.Skill);
 
         return true;
     }

@@ -12,7 +12,7 @@ public class ArbitraryCardPickerPanel : Panel
     public TMP_Text StatusText;
     public Button ConfirmButton;
 
-    public SkillInventoryView SkillInventoryView;
+    public ListView CardListView;
 
     private List<SkillView> _selections;
 
@@ -31,8 +31,8 @@ public class ArbitraryCardPickerPanel : Panel
         ConfigureInteractDelegate();
         _selections = new List<SkillView>();
 
-        SkillInventoryView.SetAddress(_address.Append(".Inventory"));
-        SkillInventoryView.SetDelegate(InteractDelegate);
+        CardListView.SetAddress(_address.Append(".Inventory"));
+        CardListView.SetDelegate(InteractDelegate);
     }
 
     public void OnDisable()
@@ -51,7 +51,7 @@ public class ArbitraryCardPickerPanel : Panel
         StatusText.text = $"可以选择 {d.Range.Start} ~ {d.Range.End - 1} 张卡\n已选   {_selections.Count}   张";
         ConfirmButton.interactable = d.Range.Contains(_selections.Count);
 
-        SkillInventoryView.Refresh();
+        CardListView.Refresh();
     }
 
     private void ConfigureInteractDelegate()
