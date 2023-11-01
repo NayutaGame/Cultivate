@@ -220,6 +220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4764906271622144058}
+  - component: {fileID: 6759746294405193550}
   m_Layer: 0
   m_Name: TopBar
   m_TagString: Untagged
@@ -268,6 +269,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 485}
   m_SizeDelta: {x: 1920, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6759746294405193550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303043515660387987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d0a0f06fc65854cabadced9a099fdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MingYuanText: {fileID: 649464964875215539}
+  GoldText: {fileID: 2518867345217271953}
+  HealthText: {fileID: 5768807469593871802}
+  JingJieText: {fileID: 2500656310281601456}
+  VolumeButton: {fileID: 0}
+  VolumeImage: {fileID: 0}
+  VolumeHoverImage: {fileID: 0}
+  AudibleSprite: {fileID: 0}
+  AudibleHoverSprite: {fileID: 0}
+  MutedSprite: {fileID: 0}
+  MutedHoverSprite: {fileID: 0}
+  MenuButton: {fileID: 3673891223710562803}
 --- !u!1 &1434331024091623987
 GameObject:
   m_ObjectHideFlags: 0

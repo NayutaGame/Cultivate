@@ -11,16 +11,28 @@ public class DeckPanel : Panel
     public PropagatePointerEnter DeckCloseZone;
 
     public Button SortButton;
-
     public ListView FieldView;
     public ListView HandView;
     public ListView FormationListView;
     public ListView MechListView;
 
-    public RectTransform _fieldTransform;
-    public RectTransform _handTransform;
-    public RectTransform _formationListTransform;
-    public RectTransform _mechListTransform;
+    [SerializeField] public RectTransform _sortButtonTransform;
+    [SerializeField] public RectTransform _fieldTransform;
+    [SerializeField] public RectTransform _handTransform;
+    [SerializeField] public RectTransform _formationListTransform;
+    [SerializeField] public RectTransform _mechListTransform;
+
+    [SerializeField] private RectTransform SortButtonShowPivot;
+    [SerializeField] private RectTransform FieldShowPivot;
+    [SerializeField] private RectTransform HandShowPivot;
+    [SerializeField] private RectTransform FormationListShowPivot;
+    [SerializeField] private RectTransform MechListShowPivot;
+
+    [SerializeField] private RectTransform SortButtonHidePivot;
+    [SerializeField] private RectTransform FieldHidePivot;
+    [SerializeField] private RectTransform HandHidePivot;
+    [SerializeField] private RectTransform FormationListHidePivot;
+    [SerializeField] private RectTransform MechListHidePivot;
 
     public override void Configure()
     {
@@ -206,20 +218,22 @@ public class DeckPanel : Panel
 
     public override Tween ShowAnimation()
         => DOTween.Sequence()
-            .AppendCallback(HandView.BigRefresh)
+            // .AppendCallback(HandView.BigRefresh)
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(!_locked))
-            .Join(_handTransform.                  DOAnchorPosY(-69.5f+445-672, 0.3f).SetEase(Ease.OutQuad).SetDelay(0f))
-            .Join(_fieldTransform.                 DOAnchorPosY(94f+403-630, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.06f))
-            .Join(_formationListTransform. DOAnchorPosY(200f+364-591, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.09f))
-            .Join(_mechListTransform.               DOAnchorPosY(-255f+375-602, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.12f));
+            .Join(_sortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(_fieldTransform.DOAnchorPos(FieldShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(_handTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(_formationListTransform.DOAnchorPos(FormationListShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(_mechListTransform.DOAnchorPos(MechListShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
 
     public override Tween HideAnimation()
         => DOTween.Sequence()
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(true))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(false))
-            .Join(_handTransform.                  DOAnchorPosY(-672, 0.3f).SetEase(Ease.InQuad).SetDelay(0f))
-            .Join(_fieldTransform.                 DOAnchorPosY(-630, 0.3f).SetEase(Ease.InQuad).SetDelay(0.06f))
-            .Join(_formationListTransform. DOAnchorPosY(-591, 0.3f).SetEase(Ease.InQuad).SetDelay(0.09f))
-            .Join(_mechListTransform.               DOAnchorPosY(-602, 0.3f).SetEase(Ease.InQuad).SetDelay(0.12f));
+            .Join(_sortButtonTransform.DOAnchorPos(SortButtonHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
+            .Join(_fieldTransform.DOAnchorPos(FieldHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
+            .Join(_handTransform.DOAnchorPos(HandHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
+            .Join(_formationListTransform.DOAnchorPos(FormationListHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
+            .Join(_mechListTransform.DOAnchorPos(MechListHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
 }

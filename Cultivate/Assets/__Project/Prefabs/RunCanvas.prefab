@@ -621,9 +621,9 @@ MonoBehaviour:
   NodeLayer: {fileID: 3833359034282269437}
   DeckPanel: {fileID: 251215213978163673}
   MapPanel: {fileID: 8297288508630953793}
-  MapButton: {fileID: 0}
+  MapButton: {fileID: 8904701696613196117}
   ReservedLayer: {fileID: 716594900314097153}
-  TopBar: {fileID: 0}
+  TopBar: {fileID: 2446552740629397335}
   ConsoleButton: {fileID: 4212255494254727701}
   ConsolePanel: {fileID: 955416620752398226}
 --- !u!1 &6570500143329246657
@@ -9800,11 +9800,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0528f1582e3fa9f4d9618098074c2cbd, type: 3}
+--- !u!114 &2446552740629397335 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6759746294405193550, guid: 0528f1582e3fa9f4d9618098074c2cbd, type: 3}
+  m_PrefabInstance: {fileID: 8952196950010224665}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d0a0f06fc65854cabadced9a099fdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4475679401394061347 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4764906271622144058, guid: 0528f1582e3fa9f4d9618098074c2cbd, type: 3}
   m_PrefabInstance: {fileID: 8952196950010224665}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8904701696613196117 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 553745608419262796, guid: 0528f1582e3fa9f4d9618098074c2cbd, type: 3}
+  m_PrefabInstance: {fileID: 8952196950010224665}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9076599896890275255
 PrefabInstance:
   m_ObjectHideFlags: 0

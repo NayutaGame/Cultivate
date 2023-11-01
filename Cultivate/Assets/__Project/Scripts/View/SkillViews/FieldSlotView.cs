@@ -2,6 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class FieldSlotView : SlotView, IInteractable,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
@@ -9,6 +10,8 @@ public class FieldSlotView : SlotView, IInteractable,
     IBeginDragHandler, IEndDragHandler, IDragHandler,
     IDropHandler
 {
+    [SerializeField] private Image SlotBackground;
+
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
@@ -17,18 +20,18 @@ public class FieldSlotView : SlotView, IInteractable,
 
     public override void Refresh()
     {
-        base.Refresh();
         SkillSlot slot = Get<SkillSlot>();
 
-        bool locked = slot.State == SkillSlot.SkillSlotState.Locked;
-        gameObject.SetActive(!locked);
-        if (locked)
-            return;
+        int locked = slot.State == SkillSlot.SkillSlotState.Locked ? 1 : 0;
+        SlotBackground.sprite = CanvasManager.Instance.SlotBackgrounds[locked];
 
         bool occupied = slot.State == SkillSlot.SkillSlotState.Occupied;
         SkillView.gameObject.SetActive(occupied);
-        if (occupied)
-            SkillView.Refresh();
+        if (!occupied)
+            return;
+
+        SkillView.Refresh();
+        SkillView.SetManaCostState(slot.ManaIndicator.State);
     }
 
     private void OnEnable()

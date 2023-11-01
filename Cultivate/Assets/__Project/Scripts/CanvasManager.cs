@@ -18,6 +18,7 @@ public class CanvasManager : Singleton<CanvasManager>
     public Color[] JingJieColors;
     public Sprite[] JingJieSprites;
     [SerializeField] private Sprite[] WuXingSprites;
+    public Sprite[] SlotBackgrounds;
 
     public Color TechColorGreen;
     public Color TechColorYellow;

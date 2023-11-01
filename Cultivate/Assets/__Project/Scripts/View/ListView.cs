@@ -145,6 +145,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
             itemView.gameObject.SetActive(false);
 
             BindItemView(itemView);
+            _activePool.Add(itemView);
         }
     }
 
