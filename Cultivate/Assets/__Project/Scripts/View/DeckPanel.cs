@@ -12,7 +12,7 @@ public class DeckPanel : Panel
 
     public Button SortButton;
     public ListView FieldView;
-    public ListView HandView;
+    public AnimatedListView HandView;
     public ListView FormationListView;
     public ListView MechListView;
 

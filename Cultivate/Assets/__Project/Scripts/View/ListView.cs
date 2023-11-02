@@ -26,14 +26,14 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     private Func<object, int> _prefabProvider;
     public void SetPrefabProvider(Func<object, int> prefabProvider) => _prefabProvider = prefabProvider;
     private GameObject GetPrefab(object item) => Prefabs[_prefabProvider?.Invoke(item) ?? 0];
-    private int GetPrefabIndex(object model) => _prefabProvider?.Invoke(model) ?? 0;
+    protected int GetPrefabIndex(object model) => _prefabProvider?.Invoke(model) ?? 0;
 
     private Address _address;
     public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
 
     private IListModel _model;
-    private IListModel Model
+    protected IListModel Model
     {
         get => _model;
         set
@@ -74,8 +74,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         ModifiedGate -= Modified;
     }
 
-    // atomic
-    private async Task InsertItem(int index, object item)
+    protected virtual async Task InsertItem(int index, object item)
     {
         Address address = _address.Append($"#{index}");
         int prefabIndex = GetPrefabIndex(address.Get<object>());
@@ -91,8 +90,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         }
     }
 
-    // atomic
-    private async Task RemoveAt(int index)
+    protected virtual async Task RemoveAt(int index)
     {
         PutIntoPool(index);
 
@@ -102,8 +100,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         }
     }
 
-    // atomic
-    private async Task Modified(int index)
+    protected virtual async Task Modified(int index)
     {
         _activePool[index].Refresh();
     }
@@ -134,7 +131,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         Model = Get<IListModel>();
         if (_model == null)
             ;
-        BigRefresh();
+        Sync();
     }
 
     private void RegisterExists()
@@ -154,13 +151,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         _activePool.Do(v => v.Refresh());
     }
 
-    public void BigRefresh()
-    {
-        RefreshList();
-        Refresh();
-    }
-
-    private void RefreshList()
+    public virtual void Sync()
     {
         PutAllIntoPool();
 
@@ -172,6 +163,8 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
             EnableItemView(itemView, i);
             itemView.SetAddress(address);
         }
+
+        Refresh();
     }
 
     private void PutIntoPool(int index)
@@ -182,7 +175,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         DisableItemView(itemView);
     }
 
-    private void PutAllIntoPool()
+    protected void PutAllIntoPool()
     {
         for (int i = 0; i < Container.childCount; i++)
             while (_activePool.Count != 0)
@@ -194,7 +187,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
             }
     }
 
-    private bool FetchItemView(out ItemView itemView, int prefabIndex)
+    protected bool FetchItemView(out ItemView itemView, int prefabIndex)
     {
         var pool = _inactivePools[prefabIndex];
         if (pool.Count != 0)
@@ -210,20 +203,20 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         return false;
     }
 
-    private void BindItemView(ItemView itemView, int prefabIndex = 0)
+    protected virtual void BindItemView(ItemView itemView, int prefabIndex = 0)
     {
         itemView.PrefabIndex = prefabIndex;
         if (itemView is IInteractable interactable) interactable.SetDelegate(InteractDelegate);
     }
 
-    private void EnableItemView(ItemView itemView, int siblingIndex)
+    protected void EnableItemView(ItemView itemView, int siblingIndex)
     {
         itemView.transform.SetSiblingIndex(siblingIndex);
         _activePool.Add(itemView);
         itemView.gameObject.SetActive(true);
     }
 
-    private void DisableItemView(ItemView itemView)
+    protected void DisableItemView(ItemView itemView)
     {
         itemView.gameObject.SetActive(false);
         _inactivePools[itemView.PrefabIndex].Add(itemView);

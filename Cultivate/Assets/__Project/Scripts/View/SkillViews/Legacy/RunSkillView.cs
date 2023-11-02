@@ -61,7 +61,7 @@ public class RunSkillView : SkillView, IInteractable,
     {
         CanvasGroup.blocksRaycasts = false;
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = MousePivot };
+        FollowAnimationAnchored f = new FollowAnimationAnchored() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = MousePivot };
         _animationHandle = f.GetHandle();
         _animationHandle.Restart();
 
@@ -73,7 +73,7 @@ public class RunSkillView : SkillView, IInteractable,
     {
         CanvasGroup.blocksRaycasts = true;
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = IdlePivot };
+        FollowAnimationAnchored f = new FollowAnimationAnchored() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = IdlePivot };
         _animationHandle = f.GetHandle();
         _animationHandle.Restart();
 

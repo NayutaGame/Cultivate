@@ -1,28 +1,25 @@
 
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class HandSkillView : SkillView, IInteractable,
-    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
-    IPointerClickHandler,
-    IBeginDragHandler, IEndDragHandler, IDragHandler,
-    IDropHandler
+public class HandSkillView : SkillView, IInteractable
 {
-    [SerializeField] protected CanvasGroup CanvasGroup;
-
-    [SerializeField] private RectTransform ContentTransform;
-
-    [SerializeField] private RectTransform IdlePivot;
-    [SerializeField] private RectTransform HoverPivot;
-    [SerializeField] private RectTransform MousePivot;
+    [SerializeField] private RectTransform RectTransform;
+    [NonSerialized] public HandPivot HandPivot;
 
     private Tween _animationHandle;
 
     private void OnEnable()
     {
-        ContentTransform.anchoredPosition = IdlePivot.anchoredPosition;
-        CanvasGroup.blocksRaycasts = true;
+        HandPivot.gameObject.SetActive(true);
+        GoToPivot(HandPivot.IdlePivot);
+    }
+
+    private void OnDisable()
+    {
+        HandPivot.gameObject.SetActive(false);
     }
 
     public void HoverAnimation(PointerEventData eventData)
@@ -30,9 +27,8 @@ public class HandSkillView : SkillView, IInteractable,
         if (eventData.dragging) return;
 
         AudioManager.Play("CardHover");
-        _animationHandle?.Kill();
-        _animationHandle = ContentTransform.DOAnchorPos(HoverPivot.anchoredPosition, 0.15f);
-        _animationHandle.Restart();
+
+        GoToPivot(HandPivot.HoverPivot);
 
         CanvasManager.Instance.SkillPreview.SetAddress(GetAddress());
         CanvasManager.Instance.SkillPreview.Refresh();
@@ -42,9 +38,7 @@ public class HandSkillView : SkillView, IInteractable,
     {
         if (eventData.dragging) return;
 
-        _animationHandle?.Kill();
-        _animationHandle = ContentTransform.DOAnchorPos(IdlePivot.anchoredPosition, 0.15f);
-        _animationHandle.Restart();
+        GoToPivot(HandPivot.IdlePivot);
 
         CanvasManager.Instance.SkillPreview.SetAddress(null);
         CanvasManager.Instance.SkillPreview.Refresh();
@@ -62,32 +56,36 @@ public class HandSkillView : SkillView, IInteractable,
         CanvasManager.Instance.SkillPreview.SetAddress(null);
         CanvasManager.Instance.SkillPreview.Refresh();
 
-        CanvasGroup.blocksRaycasts = false;
-        _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = MousePivot };
-        _animationHandle = f.GetHandle();
-        _animationHandle.Restart();
+        HandPivot.BlockRaycasts = false;
+
+        GoToPivot(HandPivot.MousePivot);
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
     }
 
     public void EndDrag(PointerEventData eventData)
     {
-        CanvasGroup.blocksRaycasts = true;
-        _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation() { Obj = ContentTransform, StartPosition = ContentTransform.anchoredPosition, Follow = IdlePivot };
-        _animationHandle = f.GetHandle();
-        _animationHandle.Restart();
+        HandPivot.BlockRaycasts = true;
+
+        GoToPivot(HandPivot.IdlePivot);
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
     }
 
     public void Drag(PointerEventData eventData)
     {
-        MousePivot.position = eventData.position;
+        HandPivot.MousePivot.position = eventData.position;
         if (_animationHandle != null && _animationHandle.active)
             return;
-        ContentTransform.position = MousePivot.position;
+        RectTransform.position = HandPivot.MousePivot.position;
+    }
+
+    private void GoToPivot(RectTransform pivot)
+    {
+        _animationHandle?.Kill();
+        FollowAnimation f = new FollowAnimation(RectTransform, pivot);
+        _animationHandle = f.GetHandle();
+        _animationHandle.SetAutoKill().Restart();
     }
 
     #region IInteractable
@@ -95,28 +93,6 @@ public class HandSkillView : SkillView, IInteractable,
     private InteractDelegate InteractDelegate;
     public InteractDelegate GetDelegate() => InteractDelegate;
     public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
-
-    public virtual void OnPointerEnter(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_ENTER, this, eventData);
-    public virtual void OnPointerExit(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_EXIT, this, eventData);
-    public virtual void OnPointerMove(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_MOVE, this, eventData);
-    public virtual void OnPointerClick(PointerEventData eventData)
-    {
-        int? gestureId = null;
-
-        if (eventData.button == PointerEventData.InputButton.Left) {
-            gestureId = InteractDelegate.POINTER_LEFT_CLICK;
-        } else if (eventData.button == PointerEventData.InputButton.Right) {
-            gestureId = InteractDelegate.POINTER_RIGHT_CLICK;
-        }
-
-        if (gestureId.HasValue)
-            GetDelegate()?.Handle(gestureId.Value, this, eventData);
-    }
-
-    public virtual void OnBeginDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.BEGIN_DRAG, this, eventData);
-    public virtual void OnEndDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.END_DRAG, this, eventData);
-    public virtual void OnDrag(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.DRAG, this, eventData);
-    public virtual void OnDrop(PointerEventData eventData) => GetDelegate()?.DragDrop(eventData.pointerDrag.GetComponent<IInteractable>(), this);
 
     #endregion
 }
