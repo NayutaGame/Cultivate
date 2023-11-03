@@ -1327,7 +1327,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c0650b5a3f5564dab471bac2e2b926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkillPreview: {fileID: 0}
   SpeedText: {fileID: 7603894956887360498}
   SpeedSlider: {fileID: 2904184105088012843}
   SkipButton: {fileID: 6501809851655264522}

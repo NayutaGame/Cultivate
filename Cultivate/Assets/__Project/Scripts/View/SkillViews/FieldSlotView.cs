@@ -22,8 +22,13 @@ public class FieldSlotView : SlotView, IInteractable,
     {
         SkillSlot slot = Get<SkillSlot>();
 
-        int locked = slot.State == SkillSlot.SkillSlotState.Locked ? 1 : 0;
-        SlotBackground.sprite = CanvasManager.Instance.SlotBackgrounds[locked];
+        // int locked = slot.State == SkillSlot.SkillSlotState.Locked ? 1 : 0;
+        // SlotBackground.sprite = CanvasManager.Instance.SlotBackgrounds[locked];
+
+        bool locked = slot.State == SkillSlot.SkillSlotState.Locked;
+        gameObject.SetActive(!locked);
+        if (locked)
+            return;
 
         bool occupied = slot.State == SkillSlot.SkillSlotState.Occupied;
         SkillView.gameObject.SetActive(occupied);
@@ -87,6 +92,13 @@ public class FieldSlotView : SlotView, IInteractable,
 
     public void BeginDrag(PointerEventData eventData)
     {
+        SkillSlot slot = Get<SkillSlot>();
+        if (slot.Skill == null)
+        {
+            eventData.pointerDrag = null;
+            return;
+        }
+
         CanvasManager.Instance.SkillPreview.SetAddress(null);
         CanvasManager.Instance.SkillPreview.Refresh();
 

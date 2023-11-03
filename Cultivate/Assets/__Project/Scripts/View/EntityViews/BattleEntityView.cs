@@ -1,6 +1,4 @@
 
-using System;
-
 public class BattleEntityView : ItemView
 {
     public ListView FieldView;

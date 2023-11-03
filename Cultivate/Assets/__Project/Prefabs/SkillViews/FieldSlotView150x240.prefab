@@ -1525,9 +1525,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Image: {fileID: 5817110619032848481}
-  ManaCostText: {fileID: 0}
-  NameText: {fileID: 0}
-  DescriptionText: {fileID: 0}
+  ManaCostText: {fileID: 5670357239290743127}
+  NameText: {fileID: 7153682870685391421}
+  DescriptionText: {fileID: 8798771333336179893}
   JingJieImage: {fileID: 7199109826795568734}
   WuXingImage: {fileID: 2116856959573339426}
   SelectionImage: {fileID: 7125890969065708248}

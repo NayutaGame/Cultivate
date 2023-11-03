@@ -71,9 +71,9 @@ public class DeckPanel : Panel
         InteractDelegate = new(5,
             getId: view =>
             {
-                if (view is HandSkillView)
+                if (view is HandSkillView || view is HandPivot)
                     return 0;
-                if (view is SkillInventoryView)
+                if (ReferenceEquals(view, HandView))
                     return 1;
                 if (view is FieldSlotView)
                     return 2;
@@ -85,12 +85,12 @@ public class DeckPanel : Panel
             },
             dragDropTable: new Action<IInteractable, IInteractable>[]
             {
-                /*                      RunSkill,   SkillInventory, SkillSlot(Hero), Mech,       FormationIconView*/
-                /* RunSkill          */ TryMerge,   null,           TryEquipSkill,   null,       null,
-                /* SkillInventory    */ null,       null,           null,            null,       null,
-                /* SkillSlot(Hero)   */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip, null,
-                /* Mech              */ null,       null,           TryEquipMech,    null,       null,
-                /* FormationIconView */ null,       null,           null,            null,       null,
+                /*                  SkillView,  HandView,       SlotView,        Mech,       FormationView */
+                /* SkillView     */ TryMerge,   null,           TryEquipSkill,   null,       null,
+                /* HandView      */ null,       null,           null,            null,       null,
+                /* SlotView      */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip, null,
+                /* Mech          */ null,       null,           TryEquipMech,    null,       null,
+                /* FormationView */ null,       null,           null,            null,       null,
             });
 
         InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((HandSkillView)v).HoverAnimation(d));

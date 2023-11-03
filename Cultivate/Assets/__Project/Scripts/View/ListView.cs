@@ -10,7 +10,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     public Transform Container;
     public GameObject[] Prefabs;
 
-    private List<ItemView> _activePool;
+    protected List<ItemView> _activePool;
     public List<ItemView> ActivePool => _activePool;
     private List<ItemView>[] _inactivePools;
 

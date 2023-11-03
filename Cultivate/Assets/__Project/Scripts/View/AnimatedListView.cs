@@ -1,8 +1,9 @@
 
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class AnimatedListView : ListView
+public class AnimatedListView : ListView, IDropHandler
 {
     [SerializeField] private Transform PivotHolder;
     [SerializeField] private GameObject PivotPrefab;
@@ -25,12 +26,20 @@ public class AnimatedListView : ListView
 
     protected override Task InsertItem(int index, object item)
     {
-        return base.InsertItem(index, item);
+        Task task = base.InsertItem(index, item);
+        foreach (var itemView in _activePool)
+            if (itemView is HandSkillView handSkillView)
+                handSkillView.GoToPivot(handSkillView.HandPivot.IdlePivot);
+        return task;
     }
 
     protected override Task RemoveAt(int index)
     {
-        return base.RemoveAt(index);
+        var task = base.RemoveAt(index);
+        foreach (var itemView in _activePool)
+            if (itemView is HandSkillView handSkillView)
+                handSkillView.GoToPivot(handSkillView.HandPivot.IdlePivot);
+        return task;
     }
 
     protected override Task Modified(int index)
@@ -46,4 +55,6 @@ public class AnimatedListView : ListView
         (itemView as HandSkillView).HandPivot = pivot;
         pivot.BindingView = itemView.GetComponent<IInteractable>();
     }
+
+    public virtual void OnDrop(PointerEventData eventData) => GetDelegate()?.DragDrop(eventData.pointerDrag.GetComponent<IInteractable>(), this);
 }

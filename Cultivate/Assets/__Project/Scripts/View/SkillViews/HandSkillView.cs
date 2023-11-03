@@ -13,6 +13,8 @@ public class HandSkillView : SkillView, IInteractable
 
     private void OnEnable()
     {
+        HandPivot.BlockRaycasts = true;
+        HandPivot.transform.SetAsLastSibling();
         HandPivot.gameObject.SetActive(true);
         GoToPivot(HandPivot.IdlePivot);
     }
@@ -80,7 +82,7 @@ public class HandSkillView : SkillView, IInteractable
         RectTransform.position = HandPivot.MousePivot.position;
     }
 
-    private void GoToPivot(RectTransform pivot)
+    public void GoToPivot(RectTransform pivot)
     {
         _animationHandle?.Kill();
         FollowAnimation f = new FollowAnimation(RectTransform, pivot);

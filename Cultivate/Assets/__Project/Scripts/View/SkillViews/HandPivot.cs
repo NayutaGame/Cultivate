@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class HandPivot : MonoBehaviour,
+public class HandPivot : MonoBehaviour, IInteractable,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     IPointerClickHandler,
     IBeginDragHandler, IEndDragHandler, IDragHandler,
@@ -23,6 +23,12 @@ public class HandPivot : MonoBehaviour,
     }
 
     #region IInteractable
+
+    public InteractDelegate GetDelegate() => BindingView.GetDelegate();
+    public void SetDelegate(InteractDelegate interactDelegate) { }
+    public Address GetAddress() => BindingView.GetAddress();
+    public T Get<T>() => BindingView.Get<T>();
+    public void Refresh() { }
 
     public virtual void OnPointerEnter(PointerEventData eventData) => BindingView.GetDelegate()?.Handle(InteractDelegate.POINTER_ENTER, BindingView, eventData);
     public virtual void OnPointerExit(PointerEventData eventData) => BindingView.GetDelegate()?.Handle(InteractDelegate.POINTER_EXIT, BindingView, eventData);
