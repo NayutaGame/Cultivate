@@ -1015,7 +1015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b167cdd00daddb045b9c48fbdcfb29ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyView: {fileID: 0}
+  EnemyView: {fileID: 6668809904686836719}
   HomeHealth: {fileID: 4066307989121596289}
   AwayHealth: {fileID: 252966509571371890}
   CombatButton: {fileID: 343470468315289454}
@@ -1275,6 +1275,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7574738621387063918, guid: 0d79e71b0b3b243458cfcd9072f16f36, type: 3}
   m_PrefabInstance: {fileID: 3054088012598525242}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6668809904686836719 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8569808698392811221, guid: 0d79e71b0b3b243458cfcd9072f16f36, type: 3}
+  m_PrefabInstance: {fileID: 3054088012598525242}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca138e1c889bbd4449449787eee2e7de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8907676612924688860
 PrefabInstance:
   m_ObjectHideFlags: 0

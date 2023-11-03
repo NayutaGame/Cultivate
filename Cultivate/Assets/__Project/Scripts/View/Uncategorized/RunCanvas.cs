@@ -51,11 +51,6 @@ public class RunCanvas : MonoBehaviour
         ConsolePanel.Refresh();
     }
 
-    // AnimationMode
-    //   Await
-    //   Parallel
-    //   Skip
-
     public async Task SetNodeState(PanelDescriptor panelDescriptor)
     {
         if (NodeLayer.CurrentIsDescriptor(panelDescriptor))
