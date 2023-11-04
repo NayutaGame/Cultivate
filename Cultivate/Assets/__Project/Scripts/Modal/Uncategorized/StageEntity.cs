@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
-public class StageEntity : Addressable, CLEventListener
+public class StageEntity : Addressable, CLEventListener, IStageEntityModel
 {
     public MingYuan MingYuan;
 

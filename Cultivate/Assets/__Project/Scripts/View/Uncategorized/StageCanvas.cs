@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CLLibrary;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,32 +12,34 @@ public class StageCanvas : MonoBehaviour
     public Slider SpeedSlider;
     public Button SkipButton;
 
-    public TMP_Text _heroHealthText;
-    public TMP_Text _heroArmorText;
-    public TMP_Text _enemyHealthText;
-    public TMP_Text _enemyArmorText;
+    [SerializeField] private StageEntityView HomeStageEntityView;
+    [SerializeField] private StageEntityView AwayStageEntityView;
 
     public TimelineView TimelineView;
 
-    public Transform HeroBuffContainerTransform;
-    public Transform EnemyBuffContainerTransform;
-    private List<BuffView> _heroBuffViews;
-    private List<BuffView> _enemyBuffViews;
-
-    public GameObject BuffViewPrefab;
+    private Address _address;
 
     public void Configure()
     {
-        TimelineView.Configure();
-
-        _heroBuffViews = new List<BuffView>();
-        _enemyBuffViews = new List<BuffView>();
+        _address = new Address("Stage");
 
         SpeedSlider.onValueChanged.RemoveAllListeners();
         SpeedSlider.onValueChanged.AddListener(SpeedChanged);
 
         SkipButton.onClick.RemoveAllListeners();
         SkipButton.onClick.AddListener(Skip);
+
+        HomeStageEntityView.SetAddress(_address.Append(".Environment.Home"));
+        AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));
+
+        TimelineView.Configure();
+        // _address.Append(".Timeline");
+    }
+
+    public void Refresh()
+    {
+        HomeStageEntityView.Refresh();
+        AwayStageEntityView.Refresh();
     }
 
     private void SpeedChanged(float value)
@@ -68,82 +71,5 @@ public class StageCanvas : MonoBehaviour
 
         SpeedSlider.value = 0;
         Refresh();
-    }
-
-    public void Refresh()
-    {
-        StageEntity home = StageManager.Instance.Environment.Entities[0];
-
-        SetHeroHealth(home.Hp);
-        SetHeroArmor(home.Armor);
-
-        StageEntity away = StageManager.Instance.Environment.Entities[1];
-
-        SetEnemyHealth(away.Hp);
-        SetEnemyArmor(away.Armor);
-
-        PopulateHeroBuffViews();
-        PopulateEnemyBuffViews();
-
-        foreach(var view in _heroBuffViews) view.Refresh();
-        foreach(var view in _enemyBuffViews) view.Refresh();
-    }
-
-    private void PopulateHeroBuffViews()
-    {
-        int current = HeroBuffContainerTransform.childCount;
-        int need = StageManager.Instance.Environment.GetHeroBuffCount();
-
-        (need, _) = Numeric.Negate(need, current);
-
-        if (need <= 0) return;
-
-        int length = HeroBuffContainerTransform.childCount;
-
-        for (int i = length; i < need + length; i++)
-        {
-            BuffView v = Instantiate(BuffViewPrefab, HeroBuffContainerTransform).GetComponent<BuffView>();
-            _heroBuffViews.Add(v);
-            v.SetAddress(new Address($"Stage.Environment.Home.Buffs#{i}"));
-        }
-    }
-
-    private void PopulateEnemyBuffViews()
-    {
-        int current = EnemyBuffContainerTransform.childCount;
-        int need = StageManager.Instance.Environment.GetEnemyBuffCount();
-
-        (need, _) = Numeric.Negate(need, current);
-
-        if (need <= 0) return;
-
-        int length = EnemyBuffContainerTransform.childCount;
-
-        for (int i = length; i < need + length; i++)
-        {
-            BuffView v = Instantiate(BuffViewPrefab, EnemyBuffContainerTransform).GetComponent<BuffView>();
-            _enemyBuffViews.Add(v);
-            v.SetAddress(new Address($"Stage.Environment.Away.Buffs#{i}"));
-        }
-    }
-
-    public void SetHeroHealth(int value)
-    {
-        _heroHealthText.text = $"生命：{value}";
-    }
-
-    public void SetHeroArmor(int value)
-    {
-        _heroArmorText.text = $"护甲：{value}";
-    }
-
-    public void SetEnemyHealth(int value)
-    {
-        _enemyHealthText.text = $"生命：{value}";
-    }
-
-    public void SetEnemyArmor(int value)
-    {
-        _enemyArmorText.text = $"护甲：{value}";
     }
 }
