@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
-public class StageEntity : Addressable, CLEventListener, IStageEntityModel
+public class StageEntity : Addressable, CLEventListener
 {
     public MingYuan MingYuan;
 
@@ -14,7 +14,10 @@ public class StageEntity : Addressable, CLEventListener, IStageEntityModel
     public int Hp
     {
         get => _hp;
-        set => _hp = Mathf.Min(value, MaxHp);
+        set
+        {
+            _hp = Mathf.Min(value, MaxHp);
+        }
     }
 
     private int _maxHp;
@@ -32,7 +35,10 @@ public class StageEntity : Addressable, CLEventListener, IStageEntityModel
     public int Armor
     {
         get => _armor;
-        set => _armor = value;
+        set
+        {
+            _armor = value;
+        }
     }
 
     public StageSkill[] _skills;
@@ -239,6 +245,7 @@ public class StageEntity : Addressable, CLEventListener, IStageEntityModel
         _accessors = new()
         {
             { "Skills", () => _skills },
+            { "Formations", () => _formations },
             { "Buffs", () => _buffs },
         };
 
@@ -246,8 +253,8 @@ public class StageEntity : Addressable, CLEventListener, IStageEntityModel
         _runEntity = runEntity;
         _index = index;
 
-        _formations = new List<Formation>();
-        _buffs = new List<Buff>();
+        _formations = new();
+        _buffs = new();
 
         _manaShortage = false;
 
@@ -335,7 +342,7 @@ public class StageEntity : Addressable, CLEventListener, IStageEntityModel
 
     #region Formation
 
-    private List<Formation> _formations;
+    private ListModel<Formation> _formations;
     public IEnumerable<Formation> Formations => _formations.Traversal();
 
     public async Task AddFormation(GainFormationDetails d)
@@ -355,19 +362,19 @@ public class StageEntity : Addressable, CLEventListener, IStageEntityModel
 
     public async Task RemoveAllFormations()
     {
-        await _formations.Do(async f =>
+        await _formations.Traversal().Do(async f =>
         {
             await f._eventDict.SendEvent(CLEventDict.LOSE_FORMATION, new LoseFormationDetails(f));
             f.Unregister();
         });
-        _formations.RemoveAll(f => true);
+        _formations.Clear();
     }
 
     #endregion
 
     #region Buff
 
-    private List<Buff> _buffs;
+    private ListModel<Buff> _buffs;
     public IEnumerable<Buff> Buffs => _buffs.Traversal();
 
     public async Task AddBuff(GainBuffDetails d)
@@ -393,23 +400,21 @@ public class StageEntity : Addressable, CLEventListener, IStageEntityModel
             await RemoveBuff(b);
     }
 
-    public async Task RemoveBuffs(Predicate<Buff> pred)
+    public async Task RemoveAllBuffs()
     {
-        await _buffs.Do(async b =>
+        await _buffs.Traversal().Do(async b =>
         {
             await b._eventDict.SendEvent(CLEventDict.LOSE_BUFF, new LoseBuffDetails(b));
             b.Unregister();
         });
-        _buffs.RemoveAll(pred);
+        _buffs.Clear();
     }
 
-    public async Task RemoveBuffs(params string[] names)
-    {
-        List<Buff> toRemove = _buffs.FilterObj(b => names.Contains(b.GetName())).ToList();
-        await toRemove.Do(RemoveBuff);
-    }
-
-    public async Task RemoveAllBuffs() => await RemoveBuffs(b => true);
+    // public async Task RemoveBuffs(params string[] names)
+    // {
+    //     List<Buff> toRemove = _buffs.FilterObj(b => names.Contains(b.GetName())).ToList();
+    //     await toRemove.Do(RemoveBuff);
+    // }
 
     public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.Entry == buffEntry);
 
@@ -420,14 +425,6 @@ public class StageEntity : Addressable, CLEventListener, IStageEntityModel
 
     public int GetMana() => GetStackOfBuff("灵气");
 
-    public int GetBuffCount() => _buffs.Count;
-    public Buff TryGetBuff(int i)
-    {
-        if (i < _buffs.Count)
-            return _buffs[i];
-        return null;
-    }
-
     public async Task<bool> IsFocused()
     {
         if (GetStackOfBuff("永久集中") > 0) return true;
@@ -435,29 +432,6 @@ public class StageEntity : Addressable, CLEventListener, IStageEntityModel
     }
 
     #endregion
-
-    // private List<INote> _notes;
-    //
-    // public void ConfigureNote(StringBuilder sb)
-    // {
-    //     sb.Append($"<style=\"EntityName\">{GetName()}</style>\n\n\n");
-    //
-    //     FetchNotes(_notes);
-    //     foreach (INote n in _notes)
-    //     {
-    //         n.ConfigureNote(sb);
-    //         sb.Append("\n\n");
-    //     }
-    //
-    //     ConfigureEntityDescription(sb);
-    // }
-    //
-    // protected abstract void ConfigureEntityDescription(StringBuilder sb);
-    //
-    // protected virtual void FetchNotes(List<INote> notes)
-    // {
-    //     notes.Clear();
-    // }
 
     #region Procedure
 

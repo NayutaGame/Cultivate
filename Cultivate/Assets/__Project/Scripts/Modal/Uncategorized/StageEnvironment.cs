@@ -450,9 +450,6 @@ public class StageEnvironment : Addressable, CLEventListener
         await StageManager.Instance.Anim.PlayTween(true, tween);
     }
 
-    public int GetHeroBuffCount() => _entities[0].GetBuffCount();
-    public int GetEnemyBuffCount() => _entities[1].GetBuffCount();
-
     public void WriteResult()
     {
         _entities[0].WriteResult();

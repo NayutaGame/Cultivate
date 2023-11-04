@@ -16,10 +16,18 @@ public class StageEntityView : MonoBehaviour, IAddress
     public virtual void SetAddress(Address address)
     {
         _address = address;
+
+        Formations.SetAddress(_address.Append(".Formations"));
+        Buffs.SetAddress(_address.Append(".Buffs"));
     }
 
     public virtual void Refresh()
     {
-        IStageEntityModel entity = Get<IStageEntityModel>();
+        Formations.Refresh();
+        Buffs.Refresh();
+
+        StageEntity entity = Get<StageEntity>();
+        HealthText.text = $"{entity.Hp}/{entity.MaxHp}";
+        ArmorText.text = $"{entity.Armor}";
     }
 }
