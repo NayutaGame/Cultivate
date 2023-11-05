@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class DiscoverSkillPanelDescriptor : PanelDescriptor
 {
+    private string _titleText;
+    public string GetTitleText() => _titleText;
+    public void SetTitleText(string value) => _titleText = value;
+
     private string _detailedText;
     public string GetDetailedText() => _detailedText;
     public void SetDetailedText(string value) => _detailedText = value;
@@ -19,13 +23,14 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     private WuXing? _wuXing;
     private JingJie? _jingJie;
 
-    public DiscoverSkillPanelDescriptor(string detailedText = null, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
+    public DiscoverSkillPanelDescriptor(string titleText = null, string detailedText = null, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
     {
         _accessors = new()
         {
             { "Skills",                () => _skills },
         };
 
+        _titleText = titleText ?? "";
         _detailedText = detailedText ?? "请选择一张卡作为奖励";
 
         _pred = pred;

@@ -169,7 +169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8838977114607417665
 RectTransform:
   m_ObjectHideFlags: 0
@@ -222,11 +222,7 @@ MonoBehaviour:
   JingJieImage: {fileID: 7199109826795568734}
   WuXingImage: {fileID: 2116856959573339426}
   SelectionImage: {fileID: 7125890969065708248}
-  CanvasGroup: {fileID: 6073153632119625175}
   RectTransform: {fileID: 8838977114607417665}
-  IdlePivot: {fileID: 0}
-  HoverPivot: {fileID: 0}
-  MousePivot: {fileID: 0}
 --- !u!1 &1610706102198694326
 GameObject:
   m_ObjectHideFlags: 0

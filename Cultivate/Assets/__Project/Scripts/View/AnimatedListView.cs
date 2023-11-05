@@ -27,18 +27,14 @@ public class AnimatedListView : ListView, IDropHandler
     protected override Task InsertItem(int index, object item)
     {
         Task task = base.InsertItem(index, item);
-        foreach (var itemView in _activePool)
-            if (itemView is HandSkillView handSkillView)
-                handSkillView.GoToPivot(handSkillView.HandPivot.IdlePivot);
+        RefreshPivots();
         return task;
     }
 
     protected override Task RemoveAt(int index)
     {
         var task = base.RemoveAt(index);
-        foreach (var itemView in _activePool)
-            if (itemView is HandSkillView handSkillView)
-                handSkillView.GoToPivot(handSkillView.HandPivot.IdlePivot);
+        RefreshPivots();
         return task;
     }
 
@@ -57,4 +53,11 @@ public class AnimatedListView : ListView, IDropHandler
     }
 
     public virtual void OnDrop(PointerEventData eventData) => GetDelegate()?.DragDrop(eventData.pointerDrag.GetComponent<IInteractable>(), this);
+
+    private void RefreshPivots()
+    {
+        foreach (var itemView in _activePool)
+            if (itemView is HandSkillView handSkillView)
+                handSkillView.GoToPivot(handSkillView.HandPivot.IdlePivot);
+    }
 }

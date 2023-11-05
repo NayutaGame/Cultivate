@@ -13,8 +13,8 @@ public class BattleNodeEntry : NodeEntry
             BattlePanelDescriptor A = new(battleRunNode.Template);
             battleRunNode.AddReward(new ResourceReward(xiuWei: xiuWeiValue));
 
-            DiscoverSkillPanelDescriptor B = new();
-            DiscoverSkillPanelDescriptor C = new();
+            DiscoverSkillPanelDescriptor B = new("胜利");
+            DiscoverSkillPanelDescriptor C = new("惜败");
             DialogPanelDescriptor D = new($"按Esc退出游戏，游戏结束，感谢游玩");
 
             if (!battleRunNode.DrawEntityDetails.AllowBoss)

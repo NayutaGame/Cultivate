@@ -18,7 +18,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     {
         foreach (var itemView in _activePool)
             yield return itemView;
-        foreach(var itemViewList in _inactivePools)
+        foreach (var itemViewList in _inactivePools)
         foreach (var itemView in itemViewList)
             yield return itemView;
     }
@@ -83,6 +83,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         _activePool.Insert(index, itemView);
         _activePool[index].SetAddress(address);
         _activePool[index].Refresh();
+        itemView.gameObject.SetActive(true);
 
         for (int i = index + 1; i < _activePool.Count; i++)
         {
@@ -110,14 +111,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     public virtual void SetDelegate(InteractDelegate interactDelegate)
     {
         InteractDelegate = interactDelegate;
-        _activePool?.Do(v =>
-        {
-            if (v is IInteractable interactable) interactable.SetDelegate(InteractDelegate);
-        });
-        _inactivePools?.Do(p => p.Do(v =>
-        {
-            if (v is IInteractable interactable) interactable.SetDelegate(InteractDelegate);
-        }));
+        Traversal().Do(v => ((IInteractable)v).SetDelegate(InteractDelegate));
     }
 
     public virtual void SetAddress(Address address)
@@ -125,6 +119,9 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
         _address = address;
         _activePool = new List<ItemView>();
         _inactivePools = new List<ItemView>[Prefabs.Length];
+
+        Prefabs.Do(prefab => prefab.SetActive(false));
+
         for (int i = 0; i < _inactivePools.Length; i++)
             _inactivePools[i] = new List<ItemView>();
         RegisterExists();
@@ -206,7 +203,8 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
     protected virtual void BindItemView(ItemView itemView, int prefabIndex = 0)
     {
         itemView.PrefabIndex = prefabIndex;
-        if (itemView is IInteractable interactable) interactable.SetDelegate(InteractDelegate);
+        if (itemView is IInteractable interactable)
+            interactable.SetDelegate(InteractDelegate);
     }
 
     protected void EnableItemView(ItemView itemView, int siblingIndex)

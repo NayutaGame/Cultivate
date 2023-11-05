@@ -22,8 +22,8 @@ public class BattlePanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
 
-        VictoryStamp.color = new Color(1, 1, 1, 0);
-        VictoryStampTranform.localScale = Vector3.one * 1.5f;
+        // VictoryStamp.color = new Color(1, 1, 1, 0);
+        // VictoryStampTranform.localScale = Vector3.one * 1.5f;
 
         EnemyView.SetAddress(_address.Append(".Enemy"));
 
@@ -86,7 +86,7 @@ public class BattlePanel : Panel
 
         if (_homeVictory)
         {
-            // AudioManager.Play("CardHover"); // VictoryStamp
+            // AudioManager.Play("Stamp");
 
             _handle = DOTween.Sequence().SetAutoKill()
                 .Append(VictoryStamp.DOFade(1, 0.15f).SetEase(Ease.InQuad))

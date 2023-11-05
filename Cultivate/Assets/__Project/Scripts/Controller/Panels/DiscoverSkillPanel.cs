@@ -5,8 +5,9 @@ using UnityEngine.EventSystems;
 
 public class DiscoverSkillPanel : Panel
 {
+    public TMP_Text TitleText;
     public TMP_Text DetailedText;
-    public RunSkillView[] SkillViews;
+    public DiscoverSkillPanelSkillView[] SkillViews;
 
     private InteractDelegate InteractDelegate;
 
@@ -35,6 +36,7 @@ public class DiscoverSkillPanel : Panel
 
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
+        TitleText.text = d.GetTitleText();
         DetailedText.text = d.GetDetailedText();
 
         for (int i = 0; i < SkillViews.Length; i++)
