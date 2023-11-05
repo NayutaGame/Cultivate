@@ -28,6 +28,13 @@ public class StageEntityView : MonoBehaviour, IAddress
 
         StageEntity entity = Get<StageEntity>();
         HealthText.text = $"{entity.Hp}/{entity.MaxHp}";
-        ArmorText.text = $"{entity.Armor}";
+        if (entity.Armor == 0)
+        {
+            ArmorText.text = "";
+        }
+        else
+        {
+            ArmorText.text = $"{entity.Armor}";
+        }
     }
 }

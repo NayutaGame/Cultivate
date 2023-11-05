@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using CLLibrary;
-using DG.Tweening;
 using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DiscoverSkillPanel : Panel

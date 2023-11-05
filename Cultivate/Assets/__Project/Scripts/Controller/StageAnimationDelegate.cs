@@ -29,7 +29,7 @@ public class StageAnimationDelegate : AnimationDelegate
             await PlayTween(descriptor.IsAwait(), descriptor.GetTween());
         }
 
-        CanvasManager.Instance.RunCanvas.Refresh();
+        CanvasManager.Instance.StageCanvas.Refresh();
 
         // opening
         // bullet time at killing moment
