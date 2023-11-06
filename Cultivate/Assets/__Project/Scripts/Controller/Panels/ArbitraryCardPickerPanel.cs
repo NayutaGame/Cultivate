@@ -8,16 +8,14 @@ using UnityEngine.UI;
 
 public class ArbitraryCardPickerPanel : Panel
 {
-    public TMP_Text InfoText;
-    public TMP_Text StatusText;
+    public TMP_Text Text1;
+    public TMP_Text Text2;
+    public TMP_Text Text3;
     public Button ConfirmButton;
-
     public ListView CardListView;
 
     private List<SkillView> _selections;
-
     private InteractDelegate InteractDelegate;
-
     private Address _address;
 
     public override void Configure()
@@ -47,8 +45,9 @@ public class ArbitraryCardPickerPanel : Panel
 
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
-        InfoText.text = d.GetDetailedText();
-        StatusText.text = $"可以选择 {d.Range.Start} ~ {d.Range.End - 1} 张卡\n已选   {_selections.Count}   张";
+        Text1.text = d.GetDetailedText();
+        Text2.text = $"可选择{d.Range.Start}~{d.Range.End - 1}张";
+        Text3.text = $"已选择 {_selections.Count} 张";
         ConfirmButton.interactable = d.Range.Contains(_selections.Count);
 
         CardListView.Refresh();

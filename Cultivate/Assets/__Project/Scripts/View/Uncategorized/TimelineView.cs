@@ -41,6 +41,7 @@ public class TimelineView : MonoBehaviour
 
     public void Configure()
     {
+        ClearViews();
         _views = new List<StageSkillView>();
         ConfigureInteractDelegate();
 
@@ -95,6 +96,9 @@ public class TimelineView : MonoBehaviour
 
     private void ClearViews()
     {
+        if (_views == null)
+            return;
+
         foreach (var v in _views)
             Destroy(v.gameObject);
         _views.Clear();

@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using CLLibrary;
 using TMPro;
@@ -8,10 +9,11 @@ public class CardPickerPanel : Panel
 {
     public TMP_Text InfoText;
     public TMP_Text StatusText;
+    public Button BackButton;
     public Button ConfirmButton;
 
-    public ListView SkillListView;
-    public ListView SlotListView;
+    [NonSerialized] public ListView SkillListView;
+    [NonSerialized] public ListView SlotListView;
 
     private List<int> _skillSelections;
     private List<int> _slotSelections;

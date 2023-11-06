@@ -27,6 +27,9 @@ public class DiscoverSkillPanel : Panel
     {
         InteractDelegate = new InteractDelegate(1, getId: view => 0);
 
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((DiscoverSkillPanelSkillView)v).HoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((DiscoverSkillPanelSkillView)v).UnhoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((DiscoverSkillPanelSkillView)v).PointerMove(d));
         InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, (v, d) => TrySelectOption(v, d));
     }
 

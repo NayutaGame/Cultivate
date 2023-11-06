@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class DialogPanel : Panel
 {
+    public TMP_Text TitleText;
     public TMP_Text DetailedText;
     public Button[] Buttons;
     public TMP_Text[] Texts;

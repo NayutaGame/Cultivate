@@ -1,14 +1,13 @@
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class CommodityItemView : ItemView
 {
-    public RunSkillView SkillView;
+    public SkillView SkillView;
     public TMP_Text PriceText;
+    public TMP_Text DiscountText;
     public Button BuyButton;
 
     public event Action<Commodity> BuyEvent;
@@ -19,8 +18,8 @@ public class CommodityItemView : ItemView
         base.SetAddress(address);
         SkillView.SetAddress(GetAddress().Append(".Skill"));
 
-        BuyButton.onClick.RemoveAllListeners();
-        BuyButton.onClick.AddListener(Buy);
+        // BuyButton.onClick.RemoveAllListeners();
+        // BuyButton.onClick.AddListener(Buy);
     }
 
     public override void Refresh()
@@ -35,7 +34,8 @@ public class CommodityItemView : ItemView
 
         SkillView.Refresh();
         PriceText.text = commodity.FinalPrice.ToString();
-        BuyButton.interactable = commodity.Affordable();
+        DiscountText.text = $"{commodity.Discount * 100}%OFF";
+        // BuyButton.interactable = commodity.Affordable();
     }
 
     private void Buy()

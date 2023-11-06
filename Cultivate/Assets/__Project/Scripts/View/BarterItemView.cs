@@ -1,15 +1,12 @@
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class BarterItemView : ItemView
 {
-    public RunSkillView PlayerSkillView;
+    public SkillView PlayerSkillView;
+    public SkillView SkillView;
     public Button ExchangeButton;
-    public RunSkillView SkillView;
 
     public event Action<BarterItem> ExchangeEvent;
     public void ClearExchangeEvent() => ExchangeEvent = null;
