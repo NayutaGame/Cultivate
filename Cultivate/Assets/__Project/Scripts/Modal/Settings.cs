@@ -20,8 +20,8 @@ public class Settings : Addressable
         {
             new("综合", new WidgetModel[]
             {
-                new SwitchModel("语言", new List<string>() { "中文" }),
-                new CheckboxModel("这里有个开关"),
+                new SwitchModel("语言", new List<string>() { "中文", "还是中文" }),
+                new ToggleModel("开关测试"),
             }),
             new("画面", new WidgetModel[]
             {
@@ -43,16 +43,8 @@ public class Settings : Addressable
     public SettingsContentModel GetCurrentContentModel()
         => _options[_index];
 
-    public int GetOtherContentCount()
-        => _options.Length - 1;
-
-    public SettingsContentModel GetOtherContent(int i)
-    {
-        return _options[i + (_index <= i ? 1 : 0)];
-    }
-
     public void ChangeIndex(int i)
     {
-        _index = i + (_index <= i ? 1 : 0);
+        _index = i;
     }
 }

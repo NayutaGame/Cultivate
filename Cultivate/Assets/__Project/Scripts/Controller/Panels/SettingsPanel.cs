@@ -1,21 +1,21 @@
 
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsPanel : Panel
 {
-    [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private CanvasGroup _canvasGroup;
 
     [SerializeField] private ListView Widgets;
 
-    [SerializeField] private Button CurrButton;
-    [SerializeField] private Button[] OtherButtons;
+    [SerializeField] private RectTransform[] TabRectTransforms;
+    [SerializeField] private Button[] TabButtons;
+    [SerializeField] private TMP_Text[] TabLabels;
 
-    [SerializeField] private TMP_Text CurrLabel;
-    [SerializeField] private TMP_Text[] OtherLabels;
+    [SerializeField] private RectTransform CurrentTabTransform;
 
     [SerializeField] private Button ToTitleButton;
     [SerializeField] private Button ToDesktopButton;
@@ -23,65 +23,74 @@ public class SettingsPanel : Panel
 
     private void Awake()
     {
-        Tween t = HideAnimation().SetAutoKill();
-        t.Restart();
-        t.Complete();
+        // Tween t = HideAnimation().SetAutoKill();
+        // t.Restart();
+        // t.Complete();
     }
 
     private Address _address;
     public override void Configure()
     {
-        // _address = new Address("App.Settings");
-        // Settings settings = _address.Get<Settings>();
-        //
-        // ResumeButton.onClick.RemoveAllListeners();
-        // ResumeButton.onClick.AddListener(Resume);
-        //
-        // for (int i = 0; i < OtherButtons.Length; i++)
-        // {
-        //     int index = i;
-        //     OtherButtons[i].onClick.RemoveAllListeners();
-        //     OtherButtons[i].onClick.AddListener(() =>
-        //     {
-        //         settings.ChangeIndex(index);
-        //         Refresh();
-        //     });
-        // }
-        //
-        // Widgets.SetPrefabProvider(model =>
-        // {
-        //     WidgetModel widgetModel = (WidgetModel)model;
-        //     if (widgetModel is SliderModel)
-        //         return 0;
-        //     if (widgetModel is SwitchModel)
-        //         return 1;
-        //     if (widgetModel is CheckboxModel)
-        //         return 2;
-        //     if (widgetModel is ButtonModel)
-        //         return 3;
-        //     return -1;
-        // });
-        // Widgets.SetAddress(_address.Append(".CurrentWidgets"));
-        // Widgets.Refresh();
+        base.Configure();
+        _address = new Address("App.Settings");
+
+        ResumeButton.onClick.RemoveAllListeners();
+        ResumeButton.onClick.AddListener(Resume);
+
+        for (int i = 0; i < TabButtons.Length; i++)
+        {
+            int index = i;
+            TabButtons[i].onClick.RemoveAllListeners();
+            TabButtons[i].onClick.AddListener(() => ClickedTab(index));
+        }
+
+        Widgets.SetPrefabProvider(model =>
+        {
+            WidgetModel widgetModel = (WidgetModel)model;
+            if (widgetModel is SliderModel)
+                return 0;
+            if (widgetModel is SwitchModel)
+                return 1;
+            if (widgetModel is ToggleModel)
+                return 2;
+            if (widgetModel is ButtonModel)
+                return 3;
+            return -1;
+        });
+        Widgets.SetAddress(_address.Append(".CurrentWidgets"));
+        Widgets.Refresh();
     }
 
     public override void Refresh()
     {
-        // Settings settings = _address.Get<Settings>();
-        // CurrLabel.text = $"<rotate=90>{settings.GetCurrentContentModel().Name}";
-        //
-        // for (int i = 0; i < settings.GetOtherContentCount(); i++)
-        // {
-        //     SettingsContentModel content = settings.GetOtherContent(i);
-        //     OtherLabels[i].text = content.Name;
-        // }
-        //
-        // Widgets.Refresh();
+        base.Refresh();
+        Widgets.Refresh();
     }
 
     private void Resume()
     {
         AppManager.Pop();
+    }
+
+    private void ClickedTab(int index)
+    {
+        Settings settings = _address.Get<Settings>();
+        settings.ChangeIndex(index);
+
+        if (_handle != null)
+            _handle.Kill();
+        _handle = TabChangedAnimation(index);
+        _handle.Restart();
+
+        Refresh();
+    }
+
+    private Tween _handle;
+
+    public Tween TabChangedAnimation(int index)
+    {
+        return DOTween.Sequence().SetAutoKill()
+            .Append(CurrentTabTransform.DOAnchorPos(TabRectTransforms[index].anchoredPosition, 0.15f));
     }
 
     public override Tween ShowAnimation()
