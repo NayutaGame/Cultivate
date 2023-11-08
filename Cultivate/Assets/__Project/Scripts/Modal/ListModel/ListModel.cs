@@ -9,7 +9,15 @@ public class ListModel<T> : IListModel
 {
     [SerializeField] private List<T> _list;
 
-    public T this[int index] => _list[index];
+    public T this[int index]
+    {
+        get => _list[index];
+        set
+        {
+            _list[index] = value;
+            SetModified(_list[index]);
+        }
+    }
 
     public event Func<int, object, Task> InsertEvent;
     public event Func<int, Task> RemoveAtEvent;
