@@ -82,6 +82,11 @@ public class ListModel<T> : IListModel
         _list = new();
     }
 
+    public ListModel(T[] initialItems)
+    {
+        _list = new List<T>(initialItems);
+    }
+
     public IEnumerable<T> Traversal()
     {
         foreach (T item in _list)

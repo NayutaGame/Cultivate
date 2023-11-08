@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1727532455107571941}
   - component: {fileID: 642452403494122455}
+  - component: {fileID: 8927687330081374585}
   m_Layer: 5
-  m_Name: SettingsItemListView
+  m_Name: Widgets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,6 +57,18 @@ MonoBehaviour:
   - {fileID: 4082247727251103363, guid: 7a3ea60f011e56f40a3f0e6a01697780, type: 3}
   - {fileID: 6010585920838065015, guid: 47941790c79fa014896c0682eb727f11, type: 3}
   - {fileID: 7916157574798411218, guid: d1daece450a5e1541aa0c081f36b0598, type: 3}
+--- !u!225 &8927687330081374585
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19535191817683655}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &172107706457597792
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,7 +81,7 @@ GameObject:
   - component: {fileID: 807082272560827180}
   - component: {fileID: 8620865187283942901}
   m_Layer: 0
-  m_Name: CurrentTabItem
+  m_Name: CurrentTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +105,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -173.16162, y: 169.84778}
+  m_AnchoredPosition: {x: -173.16162, y: 288.98193}
   m_SizeDelta: {x: 408.6767, y: 119.1341}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &807082272560827180
@@ -1808,7 +1821,7 @@ GameObject:
   - component: {fileID: 5173081345172245818}
   - component: {fileID: 5625609523763962216}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: CurrentTabLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1862,7 +1875,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u96BE\u5EA6"
+  m_text: "\u89D2\u8272"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
   m_sharedMaterial: {fileID: -9060274634148144086, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
@@ -2301,7 +2314,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_Spacing: 8
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -2932,10 +2945,10 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &6937937777983558717
 CanvasGroup:
@@ -2947,7 +2960,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
-  m_BlocksRaycasts: 0
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &8363799428354390296
 MonoBehaviour:
@@ -2963,6 +2976,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 6937937777983558717}
   Widgets: {fileID: 642452403494122455}
+  WidgetsTransform: {fileID: 1727532455107571941}
+  WidgetsCanvasGroup: {fileID: 8927687330081374585}
+  TabRectTransforms:
+  - {fileID: 5732632453849500564}
+  - {fileID: 4992698652564746359}
+  - {fileID: 8060826899506718655}
   TabButtons:
   - {fileID: 8695917643886832366}
   - {fileID: 6489517302998583502}
@@ -2971,7 +2990,8 @@ MonoBehaviour:
   - {fileID: 3626272567063697860}
   - {fileID: 6077858216528635981}
   - {fileID: 3990723375853377663}
-  CurrentTab: {fileID: 7535640253522095960}
+  CurrentTabTransform: {fileID: 7535640253522095960}
+  CurrentTabLabel: {fileID: 5625609523763962216}
   ToTitleButton: {fileID: 1684877859287424562}
   ToDesktopButton: {fileID: 5841910060579339179}
   ResumeButton: {fileID: 6756653867806557505}

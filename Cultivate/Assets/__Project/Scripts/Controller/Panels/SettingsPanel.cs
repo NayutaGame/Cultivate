@@ -10,12 +10,15 @@ public class SettingsPanel : Panel
     [SerializeField] private CanvasGroup _canvasGroup;
 
     [SerializeField] private ListView Widgets;
+    [SerializeField] private Transform WidgetsTransform;
+    [SerializeField] private CanvasGroup WidgetsCanvasGroup;
 
-    [SerializeField] private RectTransform[] TabRectTransforms;
+    [SerializeField] private Transform[] TabRectTransforms;
     [SerializeField] private Button[] TabButtons;
     [SerializeField] private TMP_Text[] TabLabels;
 
-    [SerializeField] private RectTransform CurrentTabTransform;
+    [SerializeField] private Transform CurrentTabTransform;
+    [SerializeField] private TMP_Text CurrentTabLabel;
 
     [SerializeField] private Button ToTitleButton;
     [SerializeField] private Button ToDesktopButton;
@@ -37,11 +40,15 @@ public class SettingsPanel : Panel
         ResumeButton.onClick.RemoveAllListeners();
         ResumeButton.onClick.AddListener(Resume);
 
+        Settings settings = _address.Get<Settings>();
+        settings.ChangeIndex(0);
+
         for (int i = 0; i < TabButtons.Length; i++)
         {
             int index = i;
             TabButtons[i].onClick.RemoveAllListeners();
             TabButtons[i].onClick.AddListener(() => ClickedTab(index));
+            TabLabels[i].text = settings.GetLabelForIndex(i);
         }
 
         Widgets.SetPrefabProvider(model =>
@@ -77,20 +84,30 @@ public class SettingsPanel : Panel
         Settings settings = _address.Get<Settings>();
         settings.ChangeIndex(index);
 
+        Widgets.SetAddress(_address.Append(".CurrentWidgets"));
+
         if (_handle != null)
             _handle.Kill();
-        _handle = TabChangedAnimation(index);
+        _handle = TabChangedAnimation(index, settings.GetCurrentContentModel().Name);
         _handle.Restart();
-
-        Refresh();
     }
 
     private Tween _handle;
 
-    public Tween TabChangedAnimation(int index)
+    public Tween TabChangedAnimation(int index, string newLabel)
     {
         return DOTween.Sequence().SetAutoKill()
-            .Append(CurrentTabTransform.DOAnchorPos(TabRectTransforms[index].anchoredPosition, 0.15f));
+            .Append(CurrentTabTransform.DOMove(TabRectTransforms[index].position, 0.15f))
+            .Join(DOTween.Sequence()
+                .Append(CurrentTabLabel.DOFade(0, 0.075f))
+                .AppendCallback(() => CurrentTabLabel.text = newLabel)
+                .Append(CurrentTabLabel.DOFade(1, 0.075f)))
+            .Join(DOTween.Sequence()
+                .Append(WidgetsCanvasGroup.DOFade(0, 0.075f).SetEase(Ease.OutQuad))
+                .Join(WidgetsTransform.DOScale(0.9f, 0.075f))
+                .AppendCallback(Refresh)
+                .Append(WidgetsTransform.DOScale(1f, 0.075f))
+                .Join(WidgetsCanvasGroup.DOFade(1, 0.075f)).SetEase(Ease.InQuad));
     }
 
     public override Tween ShowAnimation()

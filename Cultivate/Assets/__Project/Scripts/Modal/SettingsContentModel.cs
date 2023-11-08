@@ -5,9 +5,9 @@ using UnityEngine;
 public class SettingsContentModel
 {
     public string Name;
-    public WidgetModel[] Widgets;
+    public WidgetListModel Widgets;
 
-    public SettingsContentModel(string name, WidgetModel[] widgets)
+    public SettingsContentModel(string name, WidgetListModel widgets)
     {
         Name = name;
         Widgets = widgets;

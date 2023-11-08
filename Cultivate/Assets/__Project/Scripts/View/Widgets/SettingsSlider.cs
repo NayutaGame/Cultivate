@@ -41,5 +41,11 @@ public class SettingsSlider : ItemView
     private void OnValueChanged(float value)
     {
         NumberText.text = ((int)value).ToString();
+
+        SliderModel model = Get<SliderModel>();
+        if (model == null)
+            return;
+
+        model.Value = value;
     }
 }

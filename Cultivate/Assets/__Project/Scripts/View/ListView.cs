@@ -138,7 +138,7 @@ public class ListView : MonoBehaviour, IAddress, IInteractable
             ItemView itemView = Container.GetChild(i).GetComponent<ItemView>();
             itemView.gameObject.SetActive(false);
 
-            BindItemView(itemView);
+            BindItemView(itemView, itemView.PrefabIndex);
             _activePool.Add(itemView);
         }
     }

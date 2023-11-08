@@ -64,18 +64,33 @@ public class AudioManager : Singleton<AudioManager>
         SetAudible(!IsAudible);
     }
 
-    public void SetMasterVolume(int value)
+    public static void SetMasterVolume(int value)
     {
-        MasterBus.setVolume(value);
+        Instance.MasterBus.setVolume(value);
     }
 
-    public void SetMusicVolume(int value)
+    public static void SetMusicVolume(int value)
     {
-        MusicBus.setVolume(value);
+        Instance.MusicBus.setVolume(value);
     }
 
-    public void SetSFXVolume(int value)
+    public static void SetSFXVolume(int value)
     {
-        SFXBus.setVolume(value);
+        Instance.SFXBus.setVolume(value);
+    }
+
+    public static void SetMasterVolume(float value)
+    {
+        Instance.MasterBus.setVolume(value);
+    }
+
+    public static void SetMusicVolume(float value)
+    {
+        Instance.MusicBus.setVolume(value);
+    }
+
+    public static void SetSFXVolume(float value)
+    {
+        Instance.SFXBus.setVolume(value);
     }
 }

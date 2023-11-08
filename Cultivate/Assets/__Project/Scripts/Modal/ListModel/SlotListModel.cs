@@ -1,2 +1,2 @@
 
-public class SlotListModel : ListModel<SkillSlot>{}
+public class SlotListModel : ListModel<SkillSlot> { }
