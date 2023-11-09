@@ -15,7 +15,6 @@ public class BarterPanel : Panel
 
         ConfigureInteractDelegate();
 
-
         _address = new Address("Run.Environment.ActivePanel");
         BarterItemListView.SetAddress(_address.Append(".Inventory"));
         BarterItemListView.SetDelegate(InteractDelegate);
@@ -29,7 +28,6 @@ public class BarterPanel : Panel
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
-
     }
 
     private InteractDelegate InteractDelegate;

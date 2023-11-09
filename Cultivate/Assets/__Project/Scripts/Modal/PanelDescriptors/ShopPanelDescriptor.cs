@@ -1,13 +1,12 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using CLLibrary;
 using UnityEngine;
 
 public class ShopPanelDescriptor : PanelDescriptor
 {
     private static readonly int[] PriceTable = new int[] { 39, 59, 99, 149, 249 };
     private JingJie _jingJie;
-    private CommodityInventory _commodities;
+    private CommodityListModel _commodities;
 
     public ShopPanelDescriptor(JingJie jingJie)
     {
@@ -22,7 +21,7 @@ public class ShopPanelDescriptor : PanelDescriptor
     {
         base.DefaultEnter();
 
-        _commodities = new CommodityInventory();
+        _commodities = new CommodityListModel();
 
         bool success = RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: _jingJie, count: 6, consume: false);
         if (success)

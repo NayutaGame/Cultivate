@@ -54,11 +54,12 @@ public class DesignerEnvironment
 
         map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
         {
-            // { JingJie.LianQi   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+            { JingJie.LianQi   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
             // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["天机阁"], null, null, null, null, null, null, null, null, null } }, // Arbitrary
             // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["以物易物"], null, null, null, null, null, null, null, null, null } }, // Barter
             // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["提升境界"], null, null, null, null, null, null, null, null, null } }, // CardPickerPanel
-            { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["照相机"], null, null, null, null, null, null, null, null, null } }, // Dialog
+            // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["照相机"], null, null, null, null, null, null, null, null, null } }, // Dialog
+            // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["商店"], null, null, null, null, null, null, null, null, null } }, // Shop
             { JingJie.ZhuJi    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
             { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, exhibitionVersion ? "愿望单" : null } },
             { JingJie.YuanYing , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },

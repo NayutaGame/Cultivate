@@ -1,25 +1,19 @@
 
-using System;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class CommodityItemView : ItemView
+public class CommodityItemView : ItemView, IInteractable,
+    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
+    IPointerClickHandler
 {
-    public SkillView SkillView;
+    public PenetrateSkillView SkillView;
     public TMP_Text PriceText;
     public TMP_Text DiscountText;
-    public Button BuyButton;
-
-    public event Action<Commodity> BuyEvent;
-    public void ClearBuyEvent() => BuyEvent = null;
 
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
         SkillView.SetAddress(GetAddress().Append(".Skill"));
-
-        // BuyButton.onClick.RemoveAllListeners();
-        // BuyButton.onClick.AddListener(Buy);
     }
 
     public override void Refresh()
@@ -34,14 +28,43 @@ public class CommodityItemView : ItemView
 
         SkillView.Refresh();
         PriceText.text = commodity.FinalPrice.ToString();
-        DiscountText.text = $"{commodity.Discount * 100}%OFF";
+
+        float discount = 1 - commodity.Discount;
+        if (discount == 0)
+        {
+            DiscountText.gameObject.SetActive(false);
+        }
+        else
+        {
+            DiscountText.text = $"{discount * 100}%OFF";
+            DiscountText.gameObject.SetActive(true);
+        }
+
         // BuyButton.interactable = commodity.Affordable();
     }
 
-    private void Buy()
+    #region IInteractable
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
+
+    public virtual void OnPointerEnter(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_ENTER, this, eventData);
+    public virtual void OnPointerExit(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_EXIT, this, eventData);
+    public virtual void OnPointerMove(PointerEventData eventData) => GetDelegate()?.Handle(InteractDelegate.POINTER_MOVE, this, eventData);
+    public virtual void OnPointerClick(PointerEventData eventData)
     {
-        Commodity commodity = Get<Commodity>();
-        BuyEvent?.Invoke(commodity);
-        CanvasManager.Instance.RunCanvas.Refresh();
+        int? gestureId = null;
+
+        if (eventData.button == PointerEventData.InputButton.Left) {
+            gestureId = InteractDelegate.POINTER_LEFT_CLICK;
+        } else if (eventData.button == PointerEventData.InputButton.Right) {
+            gestureId = InteractDelegate.POINTER_RIGHT_CLICK;
+        }
+
+        if (gestureId.HasValue)
+            GetDelegate()?.Handle(gestureId.Value, this, eventData);
     }
+
+    #endregion
 }

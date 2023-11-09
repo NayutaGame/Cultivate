@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
-using UnityEngine;
+
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ShopPanel : Panel
@@ -17,18 +14,26 @@ public class ShopPanel : Panel
     {
         base.Configure();
 
+        ConfigureInteractDelegate();
+
         _address = new Address("Run.Environment.ActivePanel");
         CommodityListView.SetAddress(_address.Append(".Commodities"));
-
-        foreach (ItemView itemView in CommodityListView.ActivePool)
-        {
-            CommodityItemView commodityItemView = (CommodityItemView)itemView;
-            commodityItemView.ClearBuyEvent();
-            commodityItemView.BuyEvent += BuyEvent;
-        }
+        CommodityListView.SetDelegate(InteractDelegate);
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
+    }
+
+    private InteractDelegate InteractDelegate;
+    private void ConfigureInteractDelegate()
+    {
+        InteractDelegate = new InteractDelegate(1,
+            getId: view => 0);
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((CommodityItemView)v).SkillView.HoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((CommodityItemView)v).SkillView.UnhoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((CommodityItemView)v).SkillView.PointerMove(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, (v, d) => BuySkill(v, d));
     }
 
     public override void Refresh()
@@ -37,11 +42,20 @@ public class ShopPanel : Panel
         CommodityListView.Refresh();
     }
 
-    private void BuyEvent(Commodity commodity)
+    private bool BuySkill(IInteractable view, PointerEventData eventData)
     {
+        Commodity commodity = view.Get<Commodity>();
+
         ShopPanelDescriptor d = _address.Get<ShopPanelDescriptor>();
-        d.Buy(commodity);
+
+        bool success = d.Buy(commodity);
+        if (!success)
+            return false;
+
         // AudioManager.Instance.Play("钱币");
+        CanvasManager.Instance.RunCanvas.Refresh();
+
+        return true;
     }
 
     private void Exit()

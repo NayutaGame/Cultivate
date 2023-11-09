@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: MechViewName
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 1097260457
   material: {fileID: 8788189318762212677}
-  materialHashCode: 0
+  materialHashCode: 783045609
   m_Version: 1.1.0
-  m_SourceFontFileGUID: 21cf38a472fc8d34cbf64fcd271111af
-  m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 21cf38a472fc8d34cbf64fcd271111af, type: 3}
+  m_SourceFontFileGUID: e1a28dde13110bf479d2e917bd85c20a
+  m_SourceFontFile_EditorRef: {fileID: 12800000, guid: e1a28dde13110bf479d2e917bd85c20a, type: 3}
   m_SourceFontFile: {fileID: 12800000, guid: 21cf38a472fc8d34cbf64fcd271111af, type: 3}
   m_AtlasPopulationMode: 1
   m_FaceInfo:
@@ -46,8 +46,8 @@ MonoBehaviour:
   m_AtlasTextures:
   - {fileID: 9014193331678087720}
   m_AtlasTextureIndex: 0
-  m_IsMultiAtlasTexturesEnabled: 0
-  m_ClearDynamicDataOnBuild: 0
+  m_IsMultiAtlasTexturesEnabled: 1
+  m_ClearDynamicDataOnBuild: 1
   m_UsedGlyphRects: []
   m_FreeGlyphRects:
   - m_X: 0

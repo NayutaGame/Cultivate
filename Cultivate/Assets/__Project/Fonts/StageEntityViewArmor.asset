@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: StageEntityViewArmor
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -1193807151
   material: {fileID: 5955023702520612335}
-  materialHashCode: 0
+  materialHashCode: -232299951
   m_Version: 1.1.0
   m_SourceFontFileGUID: d625dad1919c72b4cbb990aa79e37bc8
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: d625dad1919c72b4cbb990aa79e37bc8, type: 3}
@@ -46,8 +46,8 @@ MonoBehaviour:
   m_AtlasTextures:
   - {fileID: 4021307692215331875}
   m_AtlasTextureIndex: 0
-  m_IsMultiAtlasTexturesEnabled: 0
-  m_ClearDynamicDataOnBuild: 0
+  m_IsMultiAtlasTexturesEnabled: 1
+  m_ClearDynamicDataOnBuild: 1
   m_UsedGlyphRects: []
   m_FreeGlyphRects:
   - m_X: 0
