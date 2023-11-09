@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff73422f6ab07c43a84a3464f9e64d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BarterInventoryView: {fileID: 797052842241743081}
+  BarterItemListView: {fileID: 797052842241743081}
   ExitButton: {fileID: 5318986468629580106}
 --- !u!1 &505597907860747873
 GameObject:

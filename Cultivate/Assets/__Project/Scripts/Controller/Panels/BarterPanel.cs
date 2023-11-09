@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class BarterPanel : Panel
 {
-    public ListView BarterInventoryView;
+    public ListView BarterItemListView;
 
     public Button ExitButton;
 
@@ -13,10 +13,14 @@ public class BarterPanel : Panel
     {
         base.Configure();
 
-        _address = new Address("Run.Environment.ActivePanel");
-        BarterInventoryView.SetAddress(_address.Append(".Inventory"));
+        ConfigureInteractDelegate();
 
-        foreach (ItemView itemView in BarterInventoryView.ActivePool)
+
+        _address = new Address("Run.Environment.ActivePanel");
+        BarterItemListView.SetAddress(_address.Append(".Inventory"));
+        BarterItemListView.SetDelegate(InteractDelegate);
+
+        foreach (ItemView itemView in BarterItemListView.ActivePool)
         {
             BarterItemView barterItemView = (BarterItemView)itemView;
             barterItemView.ClearExchangeEvent();
@@ -25,12 +29,25 @@ public class BarterPanel : Panel
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
+
+    }
+
+    private InteractDelegate InteractDelegate;
+    private void ConfigureInteractDelegate()
+    {
+        InteractDelegate = new InteractDelegate(1,
+            getId: view => 0
+        );
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((StandardSkillView)v).HoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((StandardSkillView)v).UnhoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((StandardSkillView)v).PointerMove(d));
     }
 
     public override void Refresh()
     {
         base.Refresh();
-        BarterInventoryView.Refresh();
+        BarterItemListView.Refresh();
     }
 
     private void ExchangeEvent(BarterItem barterItem)

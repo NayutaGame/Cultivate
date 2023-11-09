@@ -12,10 +12,9 @@ public class ArbitraryCardPickerPanel : Panel
     public TMP_Text Text2;
     public TMP_Text Text3;
     public Button ConfirmButton;
-    public ListView CardListView;
+    public ListView SkillListView;
 
     private List<SkillView> _selections;
-    private InteractDelegate InteractDelegate;
     private Address _address;
 
     public override void Configure()
@@ -29,8 +28,8 @@ public class ArbitraryCardPickerPanel : Panel
         ConfigureInteractDelegate();
         _selections = new List<SkillView>();
 
-        CardListView.SetAddress(_address.Append(".Inventory"));
-        CardListView.SetDelegate(InteractDelegate);
+        SkillListView.SetAddress(_address.Append(".Inventory"));
+        SkillListView.SetDelegate(InteractDelegate);
     }
 
     public void OnDisable()
@@ -50,15 +49,19 @@ public class ArbitraryCardPickerPanel : Panel
         Text3.text = $"已选择 {_selections.Count} 张";
         ConfirmButton.interactable = d.Range.Contains(_selections.Count);
 
-        CardListView.Refresh();
+        SkillListView.Refresh();
     }
 
+    private InteractDelegate InteractDelegate;
     private void ConfigureInteractDelegate()
     {
         InteractDelegate = new InteractDelegate(1,
             getId: view => 0
         );
 
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((StandardSkillView)v).HoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((StandardSkillView)v).UnhoverAnimation(d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((StandardSkillView)v).PointerMove(d));
         InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, (v, d) => ToggleSkill(v, d));
     }
 

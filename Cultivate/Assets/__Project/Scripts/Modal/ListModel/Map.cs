@@ -148,10 +148,9 @@ public class Map : Addressable
 
             AutoPool<NodeEntry> pool = x < pools.Length ? pools[x] : null;
             SetStepItemFromPool(x, pool);
-
-            if (x == 0)
-                _stepItems[x].SetToChoose();
         }
+
+        _stepItems[0].SetToChoose();
 
         Selecting = true;
         _heroPosition = new Vector2Int(-1, 0);

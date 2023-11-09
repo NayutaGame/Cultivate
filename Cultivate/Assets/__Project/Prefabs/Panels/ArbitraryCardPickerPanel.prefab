@@ -691,6 +691,7 @@ GameObject:
   m_Component:
   - component: {fileID: 59190587108173445}
   - component: {fileID: 5591612322140924923}
+  - component: {fileID: 8365299002881465654}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -713,11 +714,11 @@ RectTransform:
   m_Father: {fileID: 59190587042491296}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1316, y: 828}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 1316, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5591612322140924923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,6 +743,20 @@ MonoBehaviour:
   m_Spacing: {x: 69, y: 36}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &8365299002881465654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59190587108173446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 1
 --- !u!1 &1513217981543730171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,7 +1255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5577642561386513076
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1462,7 +1477,7 @@ GameObject:
   - component: {fileID: 4272376159820816608}
   - component: {fileID: 9006459978447632045}
   m_Layer: 5
-  m_Name: CardListView
+  m_Name: SkillListView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1648,7 +1663,7 @@ MonoBehaviour:
   Text2: {fileID: 2037291375743032289}
   Text3: {fileID: 2037291375645827170}
   ConfirmButton: {fileID: 543767712139221448}
-  CardListView: {fileID: 9006459978447632045}
+  SkillListView: {fileID: 9006459978447632045}
 --- !u!1 &6998534424517334053
 GameObject:
   m_ObjectHideFlags: 0
