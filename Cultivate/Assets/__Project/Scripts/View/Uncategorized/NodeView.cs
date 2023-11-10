@@ -5,14 +5,14 @@ using UnityEngine.EventSystems;
 
 public class NodeView : ItemView
 {
-    public JumpingButton _jumpingButton;
+    public BreathingButton _breathingButton;
     public TMP_Text NameText;
 
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        _jumpingButton.RemoveAllListeners();
-        _jumpingButton.AddListener(OnPointerClick);
+        _breathingButton.RemoveAllListeners();
+        _breathingButton.AddListener(OnPointerClick);
     }
 
     public override void Refresh()
@@ -27,22 +27,22 @@ public class NodeView : ItemView
         if (NameText != null)
             NameText.text = runNode.GetTitle() + runNode.State.ToString();
 
-        _jumpingButton.SetSprite(runNode.Sprite);
+        _breathingButton.SetSprite(runNode.Sprite);
 
         switch (runNode.State)
         {
             case RunNode.RunNodeState.Missed:
             case RunNode.RunNodeState.Passed:
             case RunNode.RunNodeState.Current:
-                _jumpingButton.SetColor(Color.black);
+                _breathingButton.SetColor(Color.black);
                 break;
             case RunNode.RunNodeState.ToChoose:
             case RunNode.RunNodeState.Future:
-                _jumpingButton.SetColor(Color.white);
+                _breathingButton.SetColor(Color.white);
                 break;
         }
 
-        _jumpingButton.SetJumping(runNode.State == RunNode.RunNodeState.ToChoose);
+        _breathingButton.SetBreathing(runNode.State == RunNode.RunNodeState.ToChoose);
     }
 
     private void OnPointerClick(PointerEventData eventData)

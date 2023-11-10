@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CLLibrary
@@ -14,8 +15,18 @@ namespace CLLibrary
         {
             get
             {
-                if (_stack.Count > 0)
+                if (_stack.Count >= 1)
                     return _stack[^1];
+                return null;
+            }
+        }
+
+        public S SecondCurrent
+        {
+            get
+            {
+                if (_stack.Count >= 2)
+                    return _stack[^2];
                 return null;
             }
         }
@@ -27,6 +38,7 @@ namespace CLLibrary
 
         public async Task Push(S state)
         {
+            // StackChangeDetails<SM, S> d = new StackChangeDetails<SM, S>(Current, state);
             if (Current != null)
                 await Current.CEnter();
             _stack.Add(state);
@@ -35,6 +47,7 @@ namespace CLLibrary
 
         public async Task Pop()
         {
+            // StackChangeDetails<SM, S> d = new StackChangeDetails<SM, S>(Current, SecondCurrent);
             await Current.Exit();
             _stack.RemoveAt(_stack.Count - 1);
             if (Current != null)

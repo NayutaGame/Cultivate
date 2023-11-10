@@ -2,6 +2,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BattlePanel : Panel
@@ -9,10 +10,14 @@ public class BattlePanel : Panel
     [SerializeField] private BattleEntityView EnemyView;
     [SerializeField] private TMP_Text HomeHealth;
     [SerializeField] private TMP_Text AwayHealth;
-    [SerializeField] private Button CombatButton;
+    [SerializeField] private BreathingButton CombatButton;
+    [SerializeField] private RectTransform CombatButtonTransform;
 
     [SerializeField] private Image VictoryStamp;
     [SerializeField] private Transform VictoryStampTranform;
+
+    private static readonly float WinBaseScale = 1f;
+    private static readonly float LoseBaseScale = 0.6f;
 
     private Address _address;
 
@@ -22,13 +27,13 @@ public class BattlePanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
 
-        // VictoryStamp.color = new Color(1, 1, 1, 0);
-        // VictoryStampTranform.localScale = Vector3.one * 1.5f;
-
         EnemyView.SetAddress(_address.Append(".Enemy"));
 
-        CombatButton.onClick.RemoveAllListeners();
-        CombatButton.onClick.AddListener(Combat);
+        CombatButton.RemoveAllListeners();
+        CombatButton.AddListener(Combat);
+
+        CombatButton.SetBreathing(true);
+        SetButtonScale(LoseBaseScale);
     }
 
     public override void Refresh()
@@ -63,7 +68,7 @@ public class BattlePanel : Panel
         }
     }
 
-    private void Combat()
+    private void Combat(PointerEventData eventData)
     {
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat();
@@ -92,6 +97,20 @@ public class BattlePanel : Panel
                 .Append(VictoryStamp.DOFade(1, 0.15f).SetEase(Ease.InQuad))
                 .Append(VictoryStampTranform.DOScale(1, 0.15f).SetEase(Ease.InQuad));
             _handle.Restart();
+
+            SetButtonScale(WinBaseScale);
         }
+        else
+        {
+            SetButtonScale(LoseBaseScale);
+        }
+    }
+
+    private Tween _buttonScaleHandle;
+    private void SetButtonScale(float scale)
+    {
+        _buttonScaleHandle?.Kill();
+        _buttonScaleHandle = CombatButtonTransform.DOScale(scale, 0.2f).SetAutoKill();
+        _buttonScaleHandle.Restart();
     }
 }

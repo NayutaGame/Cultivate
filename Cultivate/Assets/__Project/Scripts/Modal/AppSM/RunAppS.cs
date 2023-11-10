@@ -12,6 +12,7 @@ public class RunAppS : AppS
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         CanvasManager.Instance.RunCanvas.NodeLayer.DisableCurrentPanel();
         CanvasManager.Instance.CurtainHide().SetAutoKill().Restart();
+        CanvasManager.Instance.RunCanvas.MapPanel.SetShowing(true);
     }
 
     public override async Task Exit()

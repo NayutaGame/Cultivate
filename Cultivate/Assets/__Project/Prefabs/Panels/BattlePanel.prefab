@@ -1019,7 +1019,8 @@ MonoBehaviour:
   EnemyView: {fileID: 6668809904686836719}
   HomeHealth: {fileID: 4066307989121596289}
   AwayHealth: {fileID: 252966509571371890}
-  CombatButton: {fileID: 343470468315289454}
+  CombatButton: {fileID: 6917690703695577142}
+  CombatButtonTransform: {fileID: 343470468315289455}
   VictoryStamp: {fileID: 5864169723396435008}
   VictoryStampTranform: {fileID: 5467874453714136375}
 --- !u!1 &7529714294009736874
@@ -1460,19 +1461,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
---- !u!114 &343470468315289454 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9176695831387659954, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
-  m_PrefabInstance: {fileID: 8907676612924688860}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &343470468315289455 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9176695831387659955, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
   m_PrefabInstance: {fileID: 8907676612924688860}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6917690703695577142 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1990309165664455146, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
+  m_PrefabInstance: {fileID: 8907676612924688860}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411536c0a3aaf694eb40d3d0dff62ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b91215eddfca344097a470b0f5911ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpingButton: {fileID: 8067773079664509455}
+  _breathingButton: {fileID: 8067773079664509455}
   NameText: {fileID: 0}
 --- !u!1001 &8646099409064365641
 PrefabInstance:
@@ -61,7 +61,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1732585428422478912, guid: 7cbb2a3b61519e54789d34635a74824c, type: 3}
       propertyPath: m_Name
-      value: JumpingButton
+      value: BreathingButton
       objectReference: {fileID: 0}
     - target: {fileID: 1732585428422478913, guid: 7cbb2a3b61519e54789d34635a74824c, type: 3}
       propertyPath: m_Pivot.x

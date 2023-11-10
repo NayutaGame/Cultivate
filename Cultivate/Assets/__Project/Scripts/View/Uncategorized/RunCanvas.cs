@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class RunCanvas : MonoBehaviour
 {
-    public Button BackgroundButton;
     public NodeLayer NodeLayer;
 
     public DeckPanel DeckPanel;
@@ -19,9 +18,6 @@ public class RunCanvas : MonoBehaviour
 
     public void Configure()
     {
-        BackgroundButton.onClick.RemoveAllListeners();
-        BackgroundButton.onClick.AddListener(() => MapPanel.ToggleShowing());
-
         NodeLayer.Configure();
         DeckPanel.Configure();
         MapPanel.Configure();
@@ -80,6 +76,7 @@ public class RunCanvas : MonoBehaviour
         else
         {
             DeckPanel.SetLocked(false);
+            await DeckPanel.SetShowing(false);
         }
 
         InteractDelegate interactDelegate = DeckPanel.GetDelegate();
