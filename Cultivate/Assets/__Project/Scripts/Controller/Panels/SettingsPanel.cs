@@ -1,13 +1,14 @@
 
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsPanel : Panel
 {
-    [SerializeField] private CanvasGroup _canvasGroup;
+    [SerializeField] private CanvasGroup CoreCanvasGroup;
+    [SerializeField] private Image DarkCurtainImage;
+    [SerializeField] private Button DarkCurtainButton;
 
     [SerializeField] private ListView Widgets;
     [SerializeField] private Transform WidgetsTransform;
@@ -24,11 +25,23 @@ public class SettingsPanel : Panel
     [SerializeField] private Button ToDesktopButton;
     [SerializeField] private Button ResumeButton;
 
-    private void Awake()
+    public void SetHideState()
     {
-        // Tween t = HideAnimation().SetAutoKill();
-        // t.Restart();
-        // t.Complete();
+        Tween t = HideAnimation().SetAutoKill();
+        t.Restart();
+        t.Complete();
+    }
+
+    public void ShowExitButtons()
+    {
+        ToTitleButton.gameObject.SetActive(true);
+        ToDesktopButton.gameObject.SetActive(true);
+    }
+
+    public void HideExitButtons()
+    {
+        ToTitleButton.gameObject.SetActive(false);
+        ToDesktopButton.gameObject.SetActive(false);
     }
 
     private Address _address;
@@ -39,6 +52,9 @@ public class SettingsPanel : Panel
 
         ResumeButton.onClick.RemoveAllListeners();
         ResumeButton.onClick.AddListener(Resume);
+
+        DarkCurtainButton.onClick.RemoveAllListeners();
+        DarkCurtainButton.onClick.AddListener(Resume);
 
         Settings settings = _address.Get<Settings>();
         settings.ChangeIndex(0);
@@ -103,7 +119,7 @@ public class SettingsPanel : Panel
                 .AppendCallback(() => CurrentTabLabel.text = newLabel)
                 .Append(CurrentTabLabel.DOFade(1, 0.075f)))
             .Join(DOTween.Sequence()
-                .Append(WidgetsCanvasGroup.DOFade(0, 0.075f).SetEase(Ease.OutQuad))
+                .Append(WidgetsCanvasGroup.DOFade(0.4f, 0.075f).SetEase(Ease.OutQuad))
                 .Join(WidgetsTransform.DOScale(0.9f, 0.075f))
                 .AppendCallback(Refresh)
                 .Append(WidgetsTransform.DOScale(1f, 0.075f))
@@ -115,14 +131,16 @@ public class SettingsPanel : Panel
         return DOTween.Sequence().SetAutoKill()
             .AppendCallback(() => gameObject.SetActive(true))
             .Append(_rectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
-            .Join(_canvasGroup.DOFade(1f, 0.15f));
+            .Join(CoreCanvasGroup.DOFade(1f, 0.15f))
+            .Join(DarkCurtainImage.DOFade(0.2f, 0.15f));
     }
 
     public override Tween HideAnimation()
     {
         return DOTween.Sequence().SetAutoKill()
             .Append(_rectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad))
-            .Join(_canvasGroup.DOFade(0f, 0.15f))
+            .Join(CoreCanvasGroup.DOFade(0f, 0.15f))
+            .Join(DarkCurtainImage.DOFade(0f, 0.15f))
             .AppendCallback(() => gameObject.SetActive(false));
     }
 }

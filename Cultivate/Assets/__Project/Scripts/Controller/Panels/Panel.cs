@@ -33,15 +33,15 @@ public abstract class Panel : MonoBehaviour, IShowable
 
     private async Task PlayTween(bool isAwait, Tween tween)
     {
-        _showHandle?.Kill();
-        _showHandle = tween;
+        _handle?.Kill();
+        _handle = tween;
         // _showHandle.timeScale = _speed;
-        _showHandle.SetAutoKill().Restart();
+        _handle.SetAutoKill().Restart();
         if (isAwait)
-            await _showHandle.AsyncWaitForCompletion();
+            await _handle.AsyncWaitForCompletion();
     }
 
-    private Tween _showHandle;
+    private Tween _handle;
 
     public virtual Tween ShowAnimation()
     {

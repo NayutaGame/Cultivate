@@ -3,28 +3,36 @@ using System.Threading.Tasks;
 
 public class TitleAppS : AppS
 {
-    public override async Task Enter()
+    public override async Task Enter(NavigateDetails d)
     {
-        await base.Enter();
+        await base.Enter(d);
         CanvasManager.Instance.AppCanvas.Configure();
         await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(true);
     }
 
-    public override async Task CEnter()
+    public override async Task CEnter(NavigateDetails d)
     {
-        await base.CEnter();
+        await base.CEnter(d);
+
+        if (d.ToState is MenuAppS)
+            return;
+
         await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(false);
     }
 
-    public override async Task CExit()
+    public override async Task CExit(NavigateDetails d)
     {
-        await base.CExit();
+        await base.CExit(d);
+
+        if (d.FromState is MenuAppS)
+            return;
+
         await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(true);
     }
 
-    public override async Task Exit()
+    public override async Task Exit(NavigateDetails d)
     {
-        await base.Exit();
+        await base.Exit(d);
         await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(false);
     }
 }

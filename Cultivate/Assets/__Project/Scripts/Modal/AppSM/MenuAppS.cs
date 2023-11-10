@@ -4,27 +4,35 @@ using DG.Tweening;
 
 public class MenuAppS : AppS
 {
-    public override async Task Enter()
+    public override async Task Enter(NavigateDetails d)
     {
-        await base.Enter();
+        await base.Enter(d);
 
-        CanvasManager.Instance.AppCanvas.SettingsPanel.gameObject.SetActive(true);
+        if (d.FromState is TitleAppS)
+        {
+            CanvasManager.Instance.AppCanvas.SettingsPanel.HideExitButtons();
+        }
+        else
+        {
+            CanvasManager.Instance.AppCanvas.SettingsPanel.ShowExitButtons();
+        }
 
-        Tween handle = CanvasManager.Instance.CurtainHide().SetAutoKill();
-        handle.Restart();
-        await handle.AsyncWaitForCompletion();
-        // await CanvasManager.Instance.AppCanvas.SettingsPanel.SetShowing(true);
+        CanvasManager.Instance.AppCanvas.SettingsPanel.SetHideState();
+        await CanvasManager.Instance.AppCanvas.SettingsPanel.SetShowing(true);
+
+        // Tween handle = CanvasManager.Instance.CurtainHide().SetAutoKill();
+        // handle.Restart();
+        // await handle.AsyncWaitForCompletion();
     }
 
-    public override async Task Exit()
+    public override async Task Exit(NavigateDetails d)
     {
-        await base.Exit();
+        await base.Exit(d);
 
-        Tween handle = CanvasManager.Instance.CurtainShow().SetAutoKill();
-        handle.Restart();
-        await handle.AsyncWaitForCompletion();
+        await CanvasManager.Instance.AppCanvas.SettingsPanel.SetShowing(false);
 
-        CanvasManager.Instance.AppCanvas.SettingsPanel.gameObject.SetActive(false);
-        // await CanvasManager.Instance.AppCanvas.SettingsPanel.SetShowing(false);
+        // Tween handle = CanvasManager.Instance.CurtainShow().SetAutoKill();
+        // handle.Restart();
+        // await handle.AsyncWaitForCompletion();
     }
 }

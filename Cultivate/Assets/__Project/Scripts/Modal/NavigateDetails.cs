@@ -1,7 +1,12 @@
 
-public class NavigateDetails : StackChangeDetails<AppSM, AppS>
+public class NavigateDetails
 {
-    public NavigateDetails(AppS fromState, AppS toState) : base(fromState, toState)
+    public AppS FromState;
+    public AppS ToState;
+
+    public NavigateDetails(AppS fromState, AppS toState)
     {
+        FromState = fromState;
+        ToState = toState;
     }
 }

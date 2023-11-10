@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MapPanel : Panel, IAddress
 {
-    [SerializeField] private CanvasGroup CanvasGroup;
     [SerializeField] private ListView StepItemListView;
 
     private Address _address;
@@ -19,12 +18,12 @@ public class MapPanel : Panel, IAddress
         => DOTween.Sequence()
             .AppendCallback(Refresh)
             .AppendCallback(PlaySFX)
-            .AppendCallback(() => gameObject.SetActive(true));
+            .Append(base.ShowAnimation());
 
     public override Tween HideAnimation()
         => DOTween.Sequence()
             .AppendCallback(PlaySFX)
-            .AppendCallback(() => gameObject.SetActive(false));
+            .Append(base.HideAnimation());
 
     public override void Configure()
     {
