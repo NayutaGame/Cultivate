@@ -65,8 +65,8 @@ public class FieldSlotView : SlotView, IInteractable,
             .Join(ContentTransform.DOScale(HoverPivot.localScale, 0.15f).SetEase(Ease.OutQuad));
         _animationHandle.Restart();
 
-        CanvasManager.Instance.SkillPreview.SetAddress(SkillView.GetAddress());
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(SkillView.GetAddress());
+        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
@@ -79,15 +79,15 @@ public class FieldSlotView : SlotView, IInteractable,
             .Join(ContentTransform.DOScale(IdlePivot.localScale, 0.15f).SetEase(Ease.InQuad));
         _animationHandle.Restart();
 
-        CanvasManager.Instance.SkillPreview.SetAddress(null);
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
+        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void PointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.SkillPreview.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(eventData.position);
     }
 
     public void BeginDrag(PointerEventData eventData)
@@ -99,8 +99,8 @@ public class FieldSlotView : SlotView, IInteractable,
             return;
         }
 
-        CanvasManager.Instance.SkillPreview.SetAddress(null);
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
+        CanvasManager.Instance.SkillAnnotation.Refresh();
 
         CanvasGroup.blocksRaycasts = false;
         _animationHandle?.Kill();

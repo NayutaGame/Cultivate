@@ -12,7 +12,7 @@ public class CanvasManager : Singleton<CanvasManager>
 
     public Curtain Curtain;
 
-    public SkillPreview SkillPreview;
+    public SkillAnnotation SkillAnnotation;
     public FormationPreview FormationPreview;
     public MechGhost MechGhost;
 

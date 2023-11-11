@@ -28,8 +28,8 @@ public class DiscoverSkillPanelSkillView : SkillView, IInteractable,
 
         GoToPivot(HoverPivot);
 
-        CanvasManager.Instance.SkillPreview.SetAddress(GetAddress());
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(GetAddress());
+        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
@@ -38,15 +38,15 @@ public class DiscoverSkillPanelSkillView : SkillView, IInteractable,
 
         GoToPivot(IdlePivot);
 
-        CanvasManager.Instance.SkillPreview.SetAddress(null);
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
+        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void PointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.SkillPreview.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(eventData.position);
     }
 
     public void GoToPivot(RectTransform pivot)

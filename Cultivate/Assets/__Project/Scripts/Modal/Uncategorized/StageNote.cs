@@ -60,6 +60,9 @@ public class StageNote : ISkillModel
     public string GetAnnotationText()
         => Skill?.GetAnnotationText();
 
+    public string GetTrivia()
+        => Skill?.GetTrivia();
+
     private int _currCounter;
     public int GetCurrCounter() => _currCounter;
 

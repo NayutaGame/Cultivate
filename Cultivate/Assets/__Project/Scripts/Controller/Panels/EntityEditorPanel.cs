@@ -11,7 +11,7 @@ public class EntityEditorPanel : Panel
     private EntityBarView _selection;
 
     [SerializeField] private ListView SkillBrowser;
-    [SerializeField] private SkillPreview SkillPreview;
+    [SerializeField] private SkillAnnotation SkillAnnotation;
     [SerializeField] private FormationPreview FormationPreview;
 
     [SerializeField] private EntityEditorEntityView AwayEntityView;
@@ -163,38 +163,38 @@ public class EntityEditorPanel : Panel
         SkillSlot slot = view.Get<SkillSlot>();
         slot.TryIncreaseJingJie();
         view.Refresh();
-        SkillPreview.Refresh();
+        SkillAnnotation.Refresh();
     }
 
     private void ShowSkillPreview(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        SkillPreview.SetAddress(view.GetAddress());
-        SkillPreview.Refresh();
+        SkillAnnotation.SetAddress(view.GetAddress());
+        SkillAnnotation.Refresh();
     }
 
     private void ShowSkillPreviewFromSlotView(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        SkillPreview.SetAddress(view.GetAddress().Append(".Skill"));
-        SkillPreview.Refresh();
+        SkillAnnotation.SetAddress(view.GetAddress().Append(".Skill"));
+        SkillAnnotation.Refresh();
     }
 
     private void HideSkillPreview(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        SkillPreview.SetAddress(null);
-        SkillPreview.Refresh();
+        SkillAnnotation.SetAddress(null);
+        SkillAnnotation.Refresh();
     }
 
     private void MoveSkillPreview(IInteractable view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        SkillPreview.UpdateMousePos(eventData.position);
+        SkillAnnotation.UpdateMousePos(eventData.position);
     }
 
     private void ShowFormationPreview(IInteractable view, PointerEventData eventData)
@@ -222,8 +222,8 @@ public class EntityEditorPanel : Panel
 
     private void BeginDrag(IInteractable view, PointerEventData eventData)
     {
-        SkillPreview.SetAddress(null);
-        SkillPreview.Refresh();
+        SkillAnnotation.SetAddress(null);
+        SkillAnnotation.Refresh();
         FormationPreview.SetAddress(null);
         FormationPreview.Refresh();
     }

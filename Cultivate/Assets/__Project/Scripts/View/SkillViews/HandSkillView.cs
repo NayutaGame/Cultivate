@@ -32,8 +32,8 @@ public class HandSkillView : SkillView, IInteractable
 
         GoToPivot(HandPivot.HoverPivot);
 
-        CanvasManager.Instance.SkillPreview.SetAddress(GetAddress());
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(GetAddress());
+        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
@@ -42,21 +42,21 @@ public class HandSkillView : SkillView, IInteractable
 
         GoToPivot(HandPivot.IdlePivot);
 
-        CanvasManager.Instance.SkillPreview.SetAddress(null);
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
+        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void PointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.SkillPreview.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(eventData.position);
     }
 
     public void BeginDrag(PointerEventData eventData)
     {
-        CanvasManager.Instance.SkillPreview.SetAddress(null);
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
+        CanvasManager.Instance.SkillAnnotation.Refresh();
 
         HandPivot.BlockRaycasts = false;
 

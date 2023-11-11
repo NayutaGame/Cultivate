@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CLLibrary;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -18,6 +19,8 @@ public class SkillEntry : Entry, IAnnotation
 
     private IAnnotation[] _annotations;
     public IAnnotation[] GetAnnotations() => _annotations;
+
+    private string _trivia;
 
     private WuXing? _wuXing;
     public WuXing? WuXing => _wuXing;
@@ -55,6 +58,7 @@ public class SkillEntry : Entry, IAnnotation
     public SkillEntry(string name,
         CLLibrary.Range jingJieRange,
         SkillDescription description,
+        string trivia = null,
         WuXing? wuXing = null,
         ManaCostEvaluator manaCostEvaluator = null,
         ChannelTimeEvaluator channelTimeEvaluator = null,
@@ -65,6 +69,7 @@ public class SkillEntry : Entry, IAnnotation
     {
         _jingJieRange = jingJieRange;
         _description = description;
+        _trivia = trivia;
         _wuXing = wuXing;
         _manaCostEvaluator = manaCostEvaluator ?? 0;
         _channelTimeEvaluator = channelTimeEvaluator ?? 0;
@@ -116,6 +121,9 @@ public class SkillEntry : Entry, IAnnotation
 
         return toRet;
     }
+
+    public string GetTrivia()
+        => _trivia;
 
     public async Task Channel(StageEntity caster, ChannelDetails d)
     {

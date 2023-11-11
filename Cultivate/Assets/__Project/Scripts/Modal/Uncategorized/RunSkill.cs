@@ -92,10 +92,13 @@ public class RunSkill : ISkillModel, EmulatedSkill, ISerializationCallbackReceiv
     {
         StringBuilder sb = new();
         foreach (IAnnotation annotation in _entry.GetAnnotations())
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}\n");
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetAnnotatedDescription()}\n\n");
 
         return sb.ToString();
     }
+
+    public string GetTrivia()
+        => GetEntry().GetTrivia();
 
     public RunSkill Clone()
         => new(this);

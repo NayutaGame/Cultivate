@@ -116,10 +116,13 @@ public class MechComposite : EmulatedSkill, ISkillModel
     {
         StringBuilder sb = new();
         foreach (IAnnotation annotation in GetEntry().GetAnnotations())
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}\n");
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetAnnotatedDescription()}\n\n");
 
         return sb.ToString();
     }
+
+    public string GetTrivia()
+        => GetEntry().GetTrivia();
 
     public int GetCurrCounter() => 0;
     public int GetMaxCounter() => 0;

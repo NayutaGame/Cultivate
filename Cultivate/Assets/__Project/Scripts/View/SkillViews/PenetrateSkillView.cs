@@ -26,8 +26,8 @@ public class PenetrateSkillView : SkillView
 
         SetBlackFillColor(HoverAlpha);
 
-        CanvasManager.Instance.SkillPreview.SetAddress(GetAddress());
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(GetAddress());
+        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
@@ -36,15 +36,15 @@ public class PenetrateSkillView : SkillView
 
         SetBlackFillColor(IdleAlpha);
 
-        CanvasManager.Instance.SkillPreview.SetAddress(null);
-        CanvasManager.Instance.SkillPreview.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
+        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void PointerMove(PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.SkillPreview.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(eventData.position);
     }
 
     public void SetBlackFillColor(float alpha)

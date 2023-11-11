@@ -53,10 +53,13 @@ public class StageSkill
     {
         StringBuilder sb = new();
         foreach (IAnnotation annotation in _entry.GetAnnotations())
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>  {annotation.GetAnnotatedDescription()}\n");
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetAnnotatedDescription()}\n\n");
 
         return sb.ToString();
     }
+
+    public string GetTrivia()
+        => _entry.GetTrivia();
 
     public int RunUsedTimes { get; private set; }
     public int RunEquippedTimes { get; private set; }

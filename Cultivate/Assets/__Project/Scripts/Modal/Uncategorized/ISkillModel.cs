@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public interface ISkillModel
@@ -16,4 +15,5 @@ public interface ISkillModel
     Sprite GetJingJieSprite();
     Sprite GetWuXingSprite();
     string GetAnnotationText();
+    string GetTrivia();
 }
