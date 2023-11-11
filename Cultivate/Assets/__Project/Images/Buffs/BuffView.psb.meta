@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 15f32e5126226d04eb33c3c3dea17f22
+guid: 95c77dd7813e83243ad634fe2d09030c
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,18 +93,18 @@ ScriptedImporter:
     spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
-  - name: CountText
+  - name: StackTextRef
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 52
+      x: 76
+      y: 4
       width: 27
       height: 13
-    spriteID: adc7d1e1a6edece4a8921a26f869b5b5
+    spriteID: 6ddc52c1a2321ea43a892ba27646de3e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -113,9 +113,31 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 4, y: 52}
+    uvTransform: {x: 76, y: 4}
     spritePosition: {x: 32, y: 23}
-  - name: Background
+  - name: Body
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 76
+      width: 40
+      height: 40
+    spriteID: b07d459d7d800134fb6091efe854c231
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 76}
+    spritePosition: {x: 20, y: 20}
+  - name: Glow
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -124,9 +146,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 40
-      height: 40
-    spriteID: e7d2109ba26633c439f7c1586d84cbfb
+      width: 64
+      height: 64
+    spriteID: 99b141212bc483e4db184fdb4f009e25
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -136,7 +158,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 4, y: 4}
-    spritePosition: {x: 20, y: 20}
+    spritePosition: {x: 8, y: 8}
   characterData:
     bones: []
     parts: []
@@ -211,22 +233,32 @@ ScriptedImporter:
   resliceFromLayer: 0
   mosaicPSDLayers: []
   rigPSDLayers:
-  - name: CountText
-    spriteName: CountText
+  - name: StackTextRef
+    spriteName: StackTextRef
     isGroup: 0
     parentIndex: -1
-    spriteID: adc7d1e1a6edece4a8921a26f869b5b5
+    spriteID: 6ddc52c1a2321ea43a892ba27646de3e
     layerID: 6
-    mosaicPosition: {x: 4, y: 52}
+    mosaicPosition: {x: 76, y: 4}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Background
-    spriteName: Background
+  - name: Body
+    spriteName: Body
     isGroup: 0
     parentIndex: -1
-    spriteID: e7d2109ba26633c439f7c1586d84cbfb
-    layerID: 5
+    spriteID: b07d459d7d800134fb6091efe854c231
+    layerID: 21
+    mosaicPosition: {x: 4, y: 76}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Glow
+    spriteName: Glow
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 99b141212bc483e4db184fdb4f009e25
+    layerID: 18
     mosaicPosition: {x: 4, y: 4}
     flatten: 0
     isImported: 1
