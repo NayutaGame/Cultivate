@@ -17,6 +17,7 @@ public class TitlePanel : CurtainPanel
 
         StartRunButton.onClick.AddListener(StartRun);
         SettingsButton.onClick.AddListener(OpenMenu);
+        ExitButton.onClick.AddListener(ExitGame);
     }
 
     private void StartRun()
@@ -27,5 +28,10 @@ public class TitlePanel : CurtainPanel
     private void OpenMenu()
     {
         AppManager.Push(new MenuAppS());
+    }
+
+    private void ExitGame()
+    {
+        AppManager.ExitGame();
     }
 }

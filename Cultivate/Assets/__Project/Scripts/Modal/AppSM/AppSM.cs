@@ -6,24 +6,13 @@ public class AppSM
 {
     private List<AppS> _stack;
 
-    public AppS Current
-    {
-        get
-        {
-            if (_stack.Count >= 1)
-                return _stack[^1];
-            return null;
-        }
-    }
+    public AppS Current => Get(1);
 
-    public AppS SecondCurrent
+    public AppS Get(int i)
     {
-        get
-        {
-            if (_stack.Count >= 2)
-                return _stack[^2];
-            return null;
-        }
+        if (_stack.Count >= i)
+            return _stack[^i];
+        return null;
     }
 
     public AppSM()
@@ -42,10 +31,13 @@ public class AppSM
 
     public async Task Pop(int times = 1)
     {
-        NavigateDetails d = new NavigateDetails(Current, SecondCurrent);
-        await Current.Exit(d);
-        _stack.RemoveAt(_stack.Count - 1);
-        if (Current != null)
-            await Current.CExit(d);
+        for (int i = 0; i < times; i++)
+        {
+            NavigateDetails d = new NavigateDetails(Current, Get(2));
+            await Current.Exit(d);
+            _stack.RemoveAt(_stack.Count - 1);
+            if (Current != null)
+                await Current.CExit(d);
+        }
     }
 }

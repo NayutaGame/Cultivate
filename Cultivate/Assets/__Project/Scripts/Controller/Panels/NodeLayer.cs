@@ -58,6 +58,7 @@ public class NodeLayer : MonoBehaviour
             return;
 
         _currentPanel.gameObject.SetActive(false);
+        _currentPanel.SetShowing(false);
         _currentPanel = null;
     }
 

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Threading;
 using CLLibrary;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class AppManager : Singleton<AppManager>, Addressable
 {
@@ -68,9 +71,7 @@ public class AppManager : Singleton<AppManager>, Addressable
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
+            ExitGame();
     }
 
     public static void Push(AppS state)
@@ -81,5 +82,14 @@ public class AppManager : Singleton<AppManager>, Addressable
     public static void Pop(int times = 1)
     {
         Instance._sm.Pop(times);
+    }
+
+    public static void ExitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

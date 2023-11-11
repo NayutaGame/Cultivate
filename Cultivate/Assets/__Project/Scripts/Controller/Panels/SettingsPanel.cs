@@ -49,6 +49,12 @@ public class SettingsPanel : Panel
         DarkCurtainButton.onClick.RemoveAllListeners();
         DarkCurtainButton.onClick.AddListener(Resume);
 
+        ToTitleButton.onClick.RemoveAllListeners();
+        ToTitleButton.onClick.AddListener(ToTitle);
+
+        ToDesktopButton.onClick.RemoveAllListeners();
+        ToDesktopButton.onClick.AddListener(ToDesktop);
+
         Settings settings = _address.Get<Settings>();
         settings.ChangeIndex(0);
 
@@ -95,7 +101,7 @@ public class SettingsPanel : Panel
 
     private void ToDesktop()
     {
-        // pop infinity
+        AppManager.ExitGame();
     }
 
     private void ClickedTab(int index)
