@@ -33,7 +33,6 @@ public class BattlePanel : CurtainPanel
         CombatButton.AddListener(Combat);
 
         CombatButton.SetBreathing(true);
-        SetButtonScale(LoseBaseScale);
     }
 
     public override void Refresh()
@@ -41,7 +40,6 @@ public class BattlePanel : CurtainPanel
         EnemyView.Refresh();
 
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-
         if (d.GetResult() is { } result)
         {
             HomeHealth.text = result.HomeLeftHp.ToString();
@@ -80,6 +78,8 @@ public class BattlePanel : CurtainPanel
 
     private void SetVictory(bool victory)
     {
+        SetButtonScale(victory ? WinBaseScale : LoseBaseScale);
+
         if (_homeVictory == victory)
             return;
 
@@ -97,12 +97,6 @@ public class BattlePanel : CurtainPanel
                 .Append(VictoryStamp.DOFade(1, 0.15f).SetEase(Ease.InQuad))
                 .Append(VictoryStampTranform.DOScale(1, 0.15f).SetEase(Ease.InQuad));
             _handle.Restart();
-
-            SetButtonScale(WinBaseScale);
-        }
-        else
-        {
-            SetButtonScale(LoseBaseScale);
         }
     }
 

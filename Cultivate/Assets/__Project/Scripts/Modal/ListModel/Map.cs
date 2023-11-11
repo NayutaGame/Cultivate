@@ -204,11 +204,11 @@ public class Map : Addressable
     {
         int currX = _heroPosition.x;
         for (int x = currX + 1; x < _normalPools[_jingJie].Length; x++)
-        for (int y = 0; y < 3; y++)
         {
-            RunNode node = this[x, y];
-            if (node is { Entry: AdventureNodeEntry adventureNodeEntry })
-                return adventureNodeEntry;
+            StepItem stepItem = _stepItems[x];
+            RunNode node = stepItem._nodes.Traversal().FirstObj(node => node.Entry is AdventureNodeEntry);
+            if (node != null)
+                return node.Entry as AdventureNodeEntry;
         }
         return null;
     }
