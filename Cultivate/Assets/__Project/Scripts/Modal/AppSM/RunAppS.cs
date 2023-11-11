@@ -1,6 +1,5 @@
 
 using System.Threading.Tasks;
-using DG.Tweening;
 
 public class RunAppS : AppS
 {
@@ -10,6 +9,7 @@ public class RunAppS : AppS
         RunManager.Instance.Enter();
         CanvasManager.Instance.RunCanvas.Configure();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
+        CanvasManager.Instance.RunCanvas.MapPanel.SetHideState();
 
         Address address = new Address("Run.Environment.Map.StepItems");
         StepItemListModel stepItems = address.Get<StepItemListModel>();
@@ -30,7 +30,7 @@ public class RunAppS : AppS
     public override async Task Exit(NavigateDetails d)
     {
         await base.Exit(d);
-        CanvasManager.Instance.CurtainShow().SetAutoKill().Restart();
+        await CanvasManager.Instance.Curtain.PlayShowAnimation();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
         CanvasManager.Instance.RunCanvas.NodeLayer.DisableCurrentPanel();
         RunManager.Instance.Exit();
@@ -39,15 +39,23 @@ public class RunAppS : AppS
     public override async Task CEnter(NavigateDetails d)
     {
         await base.CEnter(d);
-        CanvasManager.Instance.CurtainShow().SetAutoKill().Restart();
+
+        if (d.ToState is MenuAppS)
+            return;
+
+        await CanvasManager.Instance.Curtain.PlayShowAnimation();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
     }
 
     public override async Task CExit(NavigateDetails d)
     {
         await base.CExit(d);
+
+        if (d.FromState is MenuAppS)
+            return;
+
         RunManager.Instance.CExit();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
-        CanvasManager.Instance.CurtainHide().SetAutoKill().Restart();
+        await CanvasManager.Instance.Curtain.PlayHideAnimation();
     }
 }

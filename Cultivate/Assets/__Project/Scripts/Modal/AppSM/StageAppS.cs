@@ -1,6 +1,5 @@
 
 using System.Threading.Tasks;
-using DG.Tweening;
 
 public class StageAppS : AppS
 {
@@ -11,15 +10,15 @@ public class StageAppS : AppS
         CanvasManager.Instance.StageCanvas.Configure();
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(true);
         StageManager.Instance.Enter();
-        CanvasManager.Instance.CurtainHide().SetAutoKill().Restart();
+        await CanvasManager.Instance.Curtain.PlayHideAnimation();
     }
 
     public override async Task Exit(NavigateDetails d)
     {
         await base.Exit(d);
+        await CanvasManager.Instance.Curtain.PlayShowAnimation();
         await StageManager.Instance.Exit();
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(false);
         AppManager.Instance.StageManager.gameObject.SetActive(false);
-        CanvasManager.Instance.CurtainShow().SetAutoKill().Restart();
     }
 }

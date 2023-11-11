@@ -55,5 +55,12 @@ public abstract class Panel : MonoBehaviour, IShowable
             .AppendCallback(() => gameObject.SetActive(false));
     }
 
+    public void SetHideState()
+    {
+        Tween t = HideAnimation().SetAutoKill();
+        t.Restart();
+        t.Complete();
+    }
+
     #endregion
 }

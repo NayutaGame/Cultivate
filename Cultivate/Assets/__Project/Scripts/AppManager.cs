@@ -78,8 +78,8 @@ public class AppManager : Singleton<AppManager>, Addressable
         Instance._sm.Push(state);
     }
 
-    public static void Pop()
+    public static void Pop(int times = 1)
     {
-        Instance._sm.Pop();
+        Instance._sm.Pop(times);
     }
 }

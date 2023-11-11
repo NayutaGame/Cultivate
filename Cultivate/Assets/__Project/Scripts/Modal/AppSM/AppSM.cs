@@ -1,8 +1,6 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CLLibrary;
-using UnityEngine;
 
 public class AppSM
 {
@@ -42,7 +40,7 @@ public class AppSM
         await Current.Enter(d);
     }
 
-    public async Task Pop()
+    public async Task Pop(int times = 1)
     {
         NavigateDetails d = new NavigateDetails(Current, SecondCurrent);
         await Current.Exit(d);

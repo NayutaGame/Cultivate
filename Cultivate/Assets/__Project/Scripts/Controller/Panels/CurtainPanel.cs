@@ -7,13 +7,13 @@ public class CurtainPanel : Panel
     {
         return DOTween.Sequence().SetAutoKill()
             .AppendCallback(() => gameObject.SetActive(true))
-            .Append(CanvasManager.Instance.CurtainHide());
+            .Append(CanvasManager.Instance.Curtain.HideAnimation());
     }
 
     public override Tween HideAnimation()
     {
         return DOTween.Sequence().SetAutoKill()
-            .AppendCallback(() => gameObject.SetActive(false))
-            .Append(CanvasManager.Instance.CurtainShow());
+            .Append(CanvasManager.Instance.Curtain.ShowAnimation())
+            .AppendCallback(() => gameObject.SetActive(false));
     }
 }

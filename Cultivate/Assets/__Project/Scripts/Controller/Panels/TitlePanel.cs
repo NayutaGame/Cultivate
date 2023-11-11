@@ -1,8 +1,7 @@
 
-using DG.Tweening;
 using UnityEngine.UI;
 
-public class TitlePanel : Panel
+public class TitlePanel : CurtainPanel
 {
     public Button StartRunButton;
     public Button SettingsButton;
@@ -28,21 +27,5 @@ public class TitlePanel : Panel
     private void OpenMenu()
     {
         AppManager.Push(new MenuAppS());
-    }
-
-    public override Tween ShowAnimation()
-    {
-        return DOTween.Sequence()
-                .AppendCallback(() => gameObject.SetActive(true))
-                .Append(CanvasManager.Instance.CurtainHide())
-            ;
-    }
-
-    public override Tween HideAnimation()
-    {
-        return DOTween.Sequence()
-                .Append(CanvasManager.Instance.CurtainShow())
-                .AppendCallback(() => gameObject.SetActive(false))
-            ;
     }
 }

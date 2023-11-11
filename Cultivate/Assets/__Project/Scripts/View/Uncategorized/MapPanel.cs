@@ -5,6 +5,7 @@ using UnityEngine;
 public class MapPanel : Panel, IAddress
 {
     [SerializeField] private ListView StepItemListView;
+    [SerializeField] private CanvasGroup CanvasGroup;
 
     private Address _address;
     public Address GetAddress() => _address;
@@ -15,24 +16,34 @@ public class MapPanel : Panel, IAddress
     }
 
     public override Tween ShowAnimation()
-        => DOTween.Sequence()
+    {
+        return DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(Refresh)
             .AppendCallback(PlaySFX)
-            .Append(base.ShowAnimation());
+            .Append(_rectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
+            .Join(CanvasGroup.DOFade(1f, 0.15f));
+    }
 
     public override Tween HideAnimation()
-        => DOTween.Sequence()
+    {
+        return DOTween.Sequence()
             .AppendCallback(PlaySFX)
-            .Append(base.HideAnimation());
+            .Append(_rectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad))
+            .Join(CanvasGroup.DOFade(0f, 0.15f))
+            .AppendCallback(() => gameObject.SetActive(false));
+    }
 
     public override void Configure()
     {
+        base.Configure();
         _address = new Address("Run.Environment.Map");
         StepItemListView.SetAddress(_address.Append(".StepItems"));
     }
 
     public override void Refresh()
     {
+        base.Refresh();
         StepItemListView.Refresh();
     }
 

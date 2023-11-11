@@ -9,7 +9,8 @@ public class CanvasManager : Singleton<CanvasManager>
     public AppCanvas AppCanvas;
     public RunCanvas RunCanvas;
     public StageCanvas StageCanvas;
-    public Image Curtain;
+
+    public Curtain Curtain;
 
     public SkillPreview SkillPreview;
     public FormationPreview FormationPreview;
@@ -32,18 +33,4 @@ public class CanvasManager : Singleton<CanvasManager>
     }
 
     public Sprite[] CardFaces;
-
-    public Tween CurtainShow()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(() => Curtain.gameObject.SetActive(true))
-            .Append(Curtain.DOFade(1, 0.3f).SetEase(Ease.OutQuad));
-    }
-
-    public Tween CurtainHide()
-    {
-        return DOTween.Sequence()
-            .Append(Curtain.DOFade(0, 0.3f).SetEase(Ease.InQuad))
-            .AppendCallback(() => Curtain.gameObject.SetActive(false));
-    }
 }

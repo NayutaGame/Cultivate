@@ -25,13 +25,6 @@ public class SettingsPanel : Panel
     [SerializeField] private Button ToDesktopButton;
     [SerializeField] private Button ResumeButton;
 
-    public void SetHideState()
-    {
-        Tween t = HideAnimation().SetAutoKill();
-        t.Restart();
-        t.Complete();
-    }
-
     public void ShowExitButtons()
     {
         ToTitleButton.gameObject.SetActive(true);
@@ -48,7 +41,7 @@ public class SettingsPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        _address = new Address("App.Settings");
+        _address = new Address("Settings");
 
         ResumeButton.onClick.RemoveAllListeners();
         ResumeButton.onClick.AddListener(Resume);
@@ -93,6 +86,16 @@ public class SettingsPanel : Panel
     private void Resume()
     {
         AppManager.Pop();
+    }
+
+    private void ToTitle()
+    {
+        AppManager.Pop(2);
+    }
+
+    private void ToDesktop()
+    {
+        // pop infinity
     }
 
     private void ClickedTab(int index)
