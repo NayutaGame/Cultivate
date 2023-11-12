@@ -15,6 +15,7 @@ public class CanvasManager : Singleton<CanvasManager>
     public SkillAnnotation SkillAnnotation;
     public BuffAnnotation BuffAnnotation;
     public FormationAnnotation FormationAnnotation;
+    public TextHint TextHint;
     public MechGhost MechGhost;
 
     public Color[] JingJieColors;

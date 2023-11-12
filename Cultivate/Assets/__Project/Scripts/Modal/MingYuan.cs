@@ -27,16 +27,18 @@ public class MingYuan : BoundedInt
 
     public string GetMingYuanPenaltyText()
     {
-        Tuple<int, int, int, int> penalty = MINGYUAN_PENALTY_TABLE[GetCurr()];
-        if (GetCurr() >= 10)
+        int count = GetCurr();
+        if (count >= MINGYUAN_PENALTY_TABLE.Length)
             return "健康";
+
+        Tuple<int, int, int, int> penalty = MINGYUAN_PENALTY_TABLE[count];
 
         StringBuilder sb = new();
 
-        if (penalty.Item1 != 0) sb.Append($"损失{penalty.Item1}%生命上限");
-        if (penalty.Item2 != 0) sb.Append($"遭受{penalty.Item2}脆弱");
-        if (penalty.Item3 != 0) sb.Append($"遭受{penalty.Item3}软弱");
-        if (penalty.Item4 != 0) sb.Append($"遭受{penalty.Item4}跳回合");
+        if (penalty.Item1 != 0) sb.Append($"损失{penalty.Item1}%生命上限\n");
+        if (penalty.Item2 != 0) sb.Append($"遭受{penalty.Item2}脆弱\n");
+        if (penalty.Item3 != 0) sb.Append($"遭受{penalty.Item3}软弱\n");
+        if (penalty.Item4 != 0) sb.Append($"遭受{penalty.Item4}跳回合\n");
 
         return sb.ToString();
     }
