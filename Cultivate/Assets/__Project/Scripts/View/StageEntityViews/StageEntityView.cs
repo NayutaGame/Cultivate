@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class StageEntityView : MonoBehaviour, IAddress
+public class StageEntityView : MonoBehaviour, IAddress, IInteractable
 {
     [SerializeField] private ListView Formations;
     [SerializeField] private ListView Buffs;
@@ -37,4 +37,17 @@ public class StageEntityView : MonoBehaviour, IAddress
             ArmorText.text = $"{entity.Armor}";
         }
     }
+
+    #region IInteractable
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    public void SetDelegate(InteractDelegate interactDelegate)
+    {
+        InteractDelegate = interactDelegate;
+        Formations.SetDelegate(InteractDelegate);
+        Buffs.SetDelegate(InteractDelegate);
+    }
+
+    #endregion
 }

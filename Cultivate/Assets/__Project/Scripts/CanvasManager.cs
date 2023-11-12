@@ -13,7 +13,8 @@ public class CanvasManager : Singleton<CanvasManager>
     public Curtain Curtain;
 
     public SkillAnnotation SkillAnnotation;
-    public FormationPreview FormationPreview;
+    public BuffAnnotation BuffAnnotation;
+    public FormationAnnotation FormationAnnotation;
     public MechGhost MechGhost;
 
     public Color[] JingJieColors;

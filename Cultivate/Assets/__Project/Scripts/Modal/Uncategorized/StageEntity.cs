@@ -343,7 +343,6 @@ public class StageEntity : Addressable, CLEventListener
     #region Formation
 
     private ListModel<Formation> _formations;
-    public IEnumerable<Formation> Formations => _formations.Traversal();
 
     public async Task AddFormation(GainFormationDetails d)
     {
@@ -416,7 +415,7 @@ public class StageEntity : Addressable, CLEventListener
     //     await toRemove.Do(RemoveBuff);
     // }
 
-    public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.Entry == buffEntry);
+    public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.GetEntry() == buffEntry);
 
     public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
 

@@ -31,7 +31,39 @@ public class StageCanvas : MonoBehaviour
 
         TimelineView.Configure();
         // _address.Append(".Timeline");
+
+        ConfigureInteractDelegate();
     }
+
+    #region IInteractable
+
+    private InteractDelegate InteractDelegate;
+    public InteractDelegate GetDelegate() => InteractDelegate;
+    private void ConfigureInteractDelegate()
+    {
+        InteractDelegate = new(2,
+            getId: view =>
+            {
+                if (view is BuffView)
+                    return 0;
+                if (view is StageFormationIconView)
+                    return 1;
+                return null;
+            });
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((BuffView)v).PointerEnter(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((BuffView)v).PointerExit(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((BuffView)v).PointerMove(v, d));
+
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 1, (v, d) => ((StageFormationIconView)v).PointerEnter(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 1, (v, d) => ((StageFormationIconView)v).PointerExit(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 1, (v, d) => ((StageFormationIconView)v).PointerMove(v, d));
+
+        HomeStageEntityView.SetDelegate(InteractDelegate);
+        AwayStageEntityView.SetDelegate(InteractDelegate);
+    }
+
+    #endregion
 
     public void Refresh()
     {

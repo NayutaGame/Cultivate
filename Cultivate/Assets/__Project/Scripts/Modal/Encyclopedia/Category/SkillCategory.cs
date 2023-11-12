@@ -50,7 +50,7 @@ public class SkillCategory : Category<SkillEntry>
                     {
                         Buff b = caster.FindBuff(buffEntry);
                         if (b != null)
-                            await caster.BuffSelfProcedure(b.Entry, 1 + skill.Dj);
+                            await caster.BuffSelfProcedure(b.GetEntry(), 1 + skill.Dj);
                     }
                 }),
 

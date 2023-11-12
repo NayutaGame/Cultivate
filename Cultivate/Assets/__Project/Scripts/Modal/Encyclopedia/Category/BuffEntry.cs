@@ -7,6 +7,8 @@ public class BuffEntry : Entry, IAnnotation
     private string _description;
     public string Description => _description;
 
+    private string _trivia;
+
     private IAnnotation[] _annotations;
     public IAnnotation[] GetAnnotations() => _annotations;
 
@@ -33,11 +35,12 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="friendly">是否有益</param>
     /// <param name="dispellable">是否可驱散</param>
     /// <param name="eventDescriptors">事件捕获</param>
-    public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable,
+    public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable, string trivia = null,
         params CLEventDescriptor[] eventDescriptors
     ) : base(name)
     {
         _description = description;
+        _trivia = trivia;
         // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
         _buffStackRule = buffStackRule;
         _friendly = friendly;
@@ -47,13 +50,6 @@ public class BuffEntry : Entry, IAnnotation
         foreach (var eventDescriptor in eventDescriptors)
             _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
     }
-
-    // public void ConfigureNote(StringBuilder sb)
-    // {
-    //     sb.Append($"<style=\"NoteName\">{Name}</style>\n");
-    //     sb.Append($"<style=\"NoteSeparator\">__________</style>\n");
-    //     sb.Append($"<style=\"NoteDescription\">{Description}</style>");
-    // }
 
     public static implicit operator BuffEntry(string name) => Encyclopedia.BuffCategory[name];
 
@@ -97,4 +93,7 @@ public class BuffEntry : Entry, IAnnotation
 
         return toRet;
     }
+
+    public string GetTrivia()
+        => _trivia;
 }

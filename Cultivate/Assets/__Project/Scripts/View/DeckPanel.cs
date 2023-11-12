@@ -79,7 +79,7 @@ public class DeckPanel : Panel
                     return 2;
                 if (view is MechView)
                     return 3;
-                if (view is FormationIconView)
+                if (view is RunFormationIconView)
                     return 4;
                 return null;
             },
@@ -111,9 +111,9 @@ public class DeckPanel : Panel
         InteractDelegate.SetHandle(InteractDelegate.END_DRAG, 3, (v, d) => ((MechView)v).EndDrag(d));
         InteractDelegate.SetHandle(InteractDelegate.DRAG, 3, (v, d) => ((MechView)v).Drag(d));
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 4, (v, d) => ((FormationIconView)v).PointerEnter(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 4, (v, d) => ((FormationIconView)v).PointerExit(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 4, (v, d) => ((FormationIconView)v).PointerMove(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 4, (v, d) => ((RunFormationIconView)v).PointerEnter(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 4, (v, d) => ((RunFormationIconView)v).PointerExit(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 4, (v, d) => ((RunFormationIconView)v).PointerMove(v, d));
 
         FieldView.SetDelegate(InteractDelegate);
         HandView.SetDelegate(InteractDelegate);

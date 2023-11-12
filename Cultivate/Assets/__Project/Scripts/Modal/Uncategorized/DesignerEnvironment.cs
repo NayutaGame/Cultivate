@@ -9,7 +9,8 @@ public class DesignerEnvironment
     public static RunConfig GetConfig()
     {
         // return new RunConfig(StandardInitMapPools, Standard);
-        return new RunConfig(CustomInitMapPools, Standard);
+        // return new RunConfig(CustomInitMapPools, Standard);
+        return new RunConfig(CustomInitMapPools, Custom);
     }
 
     private static void StandardInitMapPools(Map map)

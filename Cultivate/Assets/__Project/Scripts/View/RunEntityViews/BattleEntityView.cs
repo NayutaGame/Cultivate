@@ -31,7 +31,7 @@ public class BattleEntityView : ItemView
             {
                 if (view is FieldSlotView)
                     return 0;
-                if (view is FormationIconView)
+                if (view is RunFormationIconView)
                     return 1;
                 return null;
             });
@@ -40,9 +40,9 @@ public class BattleEntityView : ItemView
         InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((FieldSlotView)v).UnhoverAnimation(d));
         InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((FieldSlotView)v).PointerMove(d));
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 1, (v, d) => ((FormationIconView)v).PointerEnter(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 1, (v, d) => ((FormationIconView)v).PointerExit(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 1, (v, d) => ((FormationIconView)v).PointerMove(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 1, (v, d) => ((RunFormationIconView)v).PointerEnter(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 1, (v, d) => ((RunFormationIconView)v).PointerExit(v, d));
+        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 1, (v, d) => ((RunFormationIconView)v).PointerMove(v, d));
 
         FieldView.SetDelegate(InteractDelegate);
         FormationListView.SetDelegate(InteractDelegate);

@@ -91,7 +91,7 @@ public class RunSkill : ISkillModel, EmulatedSkill, ISerializationCallbackReceiv
     public string GetAnnotationText()
     {
         StringBuilder sb = new();
-        foreach (IAnnotation annotation in _entry.GetAnnotations())
+        foreach (IAnnotation annotation in GetEntry().GetAnnotations())
             sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetAnnotatedDescription()}\n\n");
 
         return sb.ToString();

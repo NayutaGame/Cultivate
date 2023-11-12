@@ -96,7 +96,7 @@ public class EntityEditorPanel : Panel
                     return 1;
                 if (view is EntityEditorSlotView)
                     return 2;
-                if (view is FormationIconView)
+                if (view is RunFormationIconView)
                     return 3;
                 return null;
             });
