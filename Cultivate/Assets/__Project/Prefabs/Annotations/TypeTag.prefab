@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u653B\u51FB\u653B\u51FB"
+  m_text: "\u4E24\u5B57"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 320014e958b0ca7439c34504a17657ef, type: 2}
   m_sharedMaterial: {fileID: -4617595189227868492, guid: 320014e958b0ca7439c34504a17657ef, type: 2}
@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 486124041247695378}
   - component: {fileID: 486124041247695376}
   - component: {fileID: 486124041247695377}
+  - component: {fileID: 7314853505460443647}
   m_Layer: 0
   m_Name: TypeTag
   m_TagString: Untagged
@@ -289,3 +290,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7314853505460443647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486124041247695379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f85e9eb2f0bf014dab7c4155debd1ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 3635815170791914744}

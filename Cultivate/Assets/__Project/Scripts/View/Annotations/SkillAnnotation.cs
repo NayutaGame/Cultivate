@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+using CLLibrary;
 using TMPro;
 using UnityEngine;
 
@@ -6,7 +8,7 @@ public class SkillAnnotation : MonoBehaviour, IAddress
 {
     [SerializeField] protected RectTransform _rectTransform;
     [SerializeField] private TMP_Text TitleText;
-    [SerializeField] private ListView TypeTagListView;
+    [SerializeField] private TypeTag[] TypeTagList;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private GameObject LowerSeparator;
     [SerializeField] private TMP_Text TriviaText;
@@ -38,6 +40,11 @@ public class SkillAnnotation : MonoBehaviour, IAddress
         gameObject.SetActive(true);
 
         TitleText.text = skill.GetName();
+
+        List<SkillType> skillTypes = skill.GetSkillTypeComposite().SkillTypes;
+        for (int i = 0; i < TypeTagList.Length; i++)
+            TypeTagList[i].SetText(i < skillTypes.Count ? skillTypes[i]._name : null);
+
         DescriptionText.text = skill.GetAnnotationText();
 
         string trivia = skill.GetTrivia();
