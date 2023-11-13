@@ -10,6 +10,7 @@ public class RunAppS : AppS
         CanvasManager.Instance.RunCanvas.Configure();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         CanvasManager.Instance.RunCanvas.MapPanel.SetHideState();
+        CanvasManager.Instance.RunCanvas.DeckPanel.SetHideState();
 
         Address address = new Address("Run.Environment.Map.StepItems");
         StepItemListModel stepItems = address.Get<StepItemListModel>();

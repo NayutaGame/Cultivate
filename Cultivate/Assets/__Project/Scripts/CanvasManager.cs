@@ -26,6 +26,8 @@ public class CanvasManager : Singleton<CanvasManager>
     public Color TechColorYellow;
     public Color TechColorRed;
 
+    public Color[] ManaCostColors;
+
     public Sprite GetWuXingSprite(WuXing? wuXing)
     {
         if (wuXing == null)

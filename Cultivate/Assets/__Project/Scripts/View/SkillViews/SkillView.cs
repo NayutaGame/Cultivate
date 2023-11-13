@@ -82,17 +82,20 @@ public class SkillView : ItemView
 
     public virtual void SetManaCostState(ManaIndicator.ManaCostState state)
     {
-        Color color = Color.white;
+        Color color = CanvasManager.Instance.ManaCostColors[0];
         switch (state)
         {
             case ManaIndicator.ManaCostState.Unwritten:
+                color = CanvasManager.Instance.ManaCostColors[0];
+                break;
             case ManaIndicator.ManaCostState.Normal:
+                color = CanvasManager.Instance.ManaCostColors[1];
                 break;
             case ManaIndicator.ManaCostState.Reduced:
-                color = Color.green;
+                color = CanvasManager.Instance.ManaCostColors[2];
                 break;
             case ManaIndicator.ManaCostState.Shortage:
-                color = Color.red;
+                color = CanvasManager.Instance.ManaCostColors[3];
                 break;
         }
 

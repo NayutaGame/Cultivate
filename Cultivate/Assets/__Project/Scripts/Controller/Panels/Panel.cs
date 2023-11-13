@@ -57,6 +57,7 @@ public abstract class Panel : MonoBehaviour, IShowable
 
     public void SetHideState()
     {
+        _showing = false;
         Tween t = HideAnimation().SetAutoKill();
         t.Restart();
         t.Complete();
