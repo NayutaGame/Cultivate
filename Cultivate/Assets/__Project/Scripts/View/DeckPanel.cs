@@ -218,7 +218,7 @@ public class DeckPanel : Panel
 
     public override Tween ShowAnimation()
         => DOTween.Sequence()
-            // .AppendCallback(HandView.BigRefresh)
+            .AppendCallback(HandView.Sync)
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(!_locked))
             .Join(_sortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
