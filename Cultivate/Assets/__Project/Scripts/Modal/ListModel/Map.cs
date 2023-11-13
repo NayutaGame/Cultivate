@@ -104,6 +104,9 @@ public class Map : Addressable
         { JingJie.HuaShen, "BGMHuaShen" },
     };
 
+    public AudioEntry AudioFromCurrentJingJie()
+        => JingJieToAudio[_jingJie];
+
     private JingJie _jingJie;
     public JingJie JingJie
     {

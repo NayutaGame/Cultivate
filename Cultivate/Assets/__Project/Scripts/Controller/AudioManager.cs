@@ -20,6 +20,7 @@ public class AudioManager : Singleton<AudioManager>
         SetAudible(true);
     }
 
+    private AudioEntry PlayingEntry;
     private EventInstance BGMEventInstance;
 
     public static void Play(AudioEntry audioEntry)
@@ -46,7 +47,12 @@ public class AudioManager : Singleton<AudioManager>
 
     private void PlayMusic(AudioEntry audioEntry)
     {
-        // BGMEventInstance.release();
+        if (PlayingEntry == audioEntry)
+            return;
+
+        Stop();
+        BGMEventInstance.release();
+        PlayingEntry = audioEntry;
         BGMEventInstance = RuntimeManager.CreateInstance(audioEntry.EventReference);
         BGMEventInstance.start();
     }
@@ -64,33 +70,18 @@ public class AudioManager : Singleton<AudioManager>
         SetAudible(!IsAudible);
     }
 
-    public static void SetMasterVolume(int value)
-    {
-        Instance.MasterBus.setVolume(value);
-    }
-
-    public static void SetMusicVolume(int value)
-    {
-        Instance.MusicBus.setVolume(value);
-    }
-
-    public static void SetSFXVolume(int value)
-    {
-        Instance.SFXBus.setVolume(value);
-    }
-
     public static void SetMasterVolume(float value)
     {
-        Instance.MasterBus.setVolume(value);
+        Instance.MasterBus.setVolume(value / 100);
     }
 
     public static void SetMusicVolume(float value)
     {
-        Instance.MusicBus.setVolume(value);
+        Instance.MusicBus.setVolume(value / 100);
     }
 
     public static void SetSFXVolume(float value)
     {
-        Instance.SFXBus.setVolume(value);
+        Instance.SFXBus.setVolume(value / 100);
     }
 }

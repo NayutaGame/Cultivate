@@ -1,4 +1,5 @@
 
+using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -106,5 +107,38 @@ public class BattlePanel : CurtainPanel
         _buttonScaleHandle?.Kill();
         _buttonScaleHandle = CombatButtonTransform.DOScale(scale, 0.2f).SetAutoKill();
         _buttonScaleHandle.Restart();
+    }
+
+    public override Tween ShowAnimation()
+    {
+        return DOTween.Sequence()
+            .AppendCallback(PlayBattleBGM)
+            .Append(base.ShowAnimation());
+    }
+
+    public override Tween HideAnimation()
+    {
+        return DOTween.Sequence()
+            .AppendCallback(PlayJingJieBGM)
+            .Append(base.HideAnimation());
+    }
+
+    private void PlayBattleBGM()
+    {
+        BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
+        if (d.Enemy.IsBoss())
+        {
+            AudioManager.Play("BGMBoss");
+        }
+        else if (d.Enemy.IsElite())
+        {
+            AudioManager.Play(RandomManager.value < 0.5f ? "BGMElite1" : "BGMElite2");
+        }
+    }
+
+    private void PlayJingJieBGM()
+    {
+        AudioEntry audio = RunManager.Instance.Environment.Map.AudioFromCurrentJingJie();
+        AudioManager.Play(audio);
     }
 }

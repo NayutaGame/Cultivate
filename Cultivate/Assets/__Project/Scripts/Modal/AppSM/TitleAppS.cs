@@ -7,6 +7,7 @@ public class TitleAppS : AppS
     {
         await base.Enter(d);
         CanvasManager.Instance.AppCanvas.Configure();
+        AudioManager.Play("BGMTitle");
         await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(true);
     }
 
@@ -27,6 +28,7 @@ public class TitleAppS : AppS
         if (d.FromState is MenuAppS)
             return;
 
+        AudioManager.Play("BGMTitle");
         await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(true);
     }
 
