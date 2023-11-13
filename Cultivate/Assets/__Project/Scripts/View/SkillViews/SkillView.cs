@@ -63,7 +63,7 @@ public class SkillView : ItemView
 
     protected virtual void SetCardImage(Sprite sprite)
     {
-        Image.sprite = sprite;
+        Image.sprite = sprite != null ? sprite : Encyclopedia.SpriteCategory["Default"].Sprite;
     }
 
     protected virtual void SetManaCost(int manaCost)

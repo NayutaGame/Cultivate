@@ -47,6 +47,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("置入教学6", "Images/Cutscenes/置入教学6"),
 
             // 卡牌
+            new("Default", "Images/SkillIllustrates/Default"),
             new("一切皆苦", "Images/Cards/一切皆苦"),
             new("一力降十会", "Images/Cards/一力降十会"),
             new("一虚一实", "Images/Cards/一虚一实"),
@@ -141,4 +142,6 @@ public class SpriteCategory : Category<SpriteEntry>
             new("鹤回翔", "Images/Cards/鹤回翔"),
         });
     }
+
+    public SpriteEntry DefaultSkillIllustrate() => this["Default"];
 }

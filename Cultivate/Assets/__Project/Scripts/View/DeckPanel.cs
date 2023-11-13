@@ -131,6 +131,8 @@ public class DeckPanel : Panel
             return;
 
         AudioManager.Play("CardUpgrade");
+        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
     private void TryEquipSkill(IInteractable from, IInteractable to)
@@ -144,6 +146,7 @@ public class DeckPanel : Panel
 
         AudioManager.Play("CardPlacement");
         FieldView.Refresh();
+        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
@@ -159,6 +162,7 @@ public class DeckPanel : Panel
         AudioManager.Play("CardPlacement");
         from.Refresh();
         FieldView.Refresh();
+        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
@@ -172,6 +176,7 @@ public class DeckPanel : Panel
 
         AudioManager.Play("CardPlacement");
         FieldView.Refresh();
+        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
@@ -186,6 +191,7 @@ public class DeckPanel : Panel
 
         AudioManager.Play("CardPlacement");
         FieldView.Refresh();
+        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 

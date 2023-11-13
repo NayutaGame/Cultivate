@@ -31,13 +31,20 @@ public class CardPickerPanel : Panel
 
         SkillListView = CanvasManager.Instance.RunCanvas.DeckPanel.HandView;
         SlotListView = CanvasManager.Instance.RunCanvas.DeckPanel.FieldView;
-
         _skillSelections ??= new List<int>();
         _slotSelections ??= new List<int>();
     }
 
     public void OnDisable()
     {
+        ClearAllSelections();
+    }
+
+    public void ClearAllSelections()
+    {
+        if (SkillListView == null)
+            return;
+
         SkillListView.Traversal().Do(v => ((SkillView)v).SetSelected(false));
         _skillSelections.Clear();
         SlotListView.Traversal().Do(v => ((SlotView)v).SetSelected(false));
