@@ -1,7 +1,7 @@
 
 using UnityEngine.UI;
 
-public class BarterPanel : Panel
+public class BarterPanel : CurtainPanel
 {
     public ListView BarterItemListView;
 

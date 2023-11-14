@@ -178,6 +178,7 @@ public class DeckPanel : Panel
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
+        MechListView.Refresh();
     }
 
     private void TrySwap(IInteractable from, IInteractable to)

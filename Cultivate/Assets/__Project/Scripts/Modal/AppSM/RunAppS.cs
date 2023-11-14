@@ -8,6 +8,7 @@ public class RunAppS : AppS
         await base.Enter(d);
         RunManager.Instance.Enter();
         CanvasManager.Instance.RunCanvas.Configure();
+        CanvasManager.Instance.RunCanvas.TopBar.Refresh();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         CanvasManager.Instance.RunCanvas.MapPanel.SetHideState();
         CanvasManager.Instance.RunCanvas.DeckPanel.SetHideState();
@@ -56,6 +57,7 @@ public class RunAppS : AppS
             return;
 
         RunManager.Instance.CExit();
+        CanvasManager.Instance.RunCanvas.TopBar.Refresh();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         await CanvasManager.Instance.Curtain.PlayHideAnimation();
     }

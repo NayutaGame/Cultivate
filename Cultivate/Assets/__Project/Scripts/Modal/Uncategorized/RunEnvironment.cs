@@ -25,6 +25,9 @@ public class RunEnvironment : Addressable
         Home.SetJingJie(jingJie);
     }
 
+    public event Action ResourceChangedEvent;
+    public void ResourceChanged() => ResourceChangedEvent?.Invoke();
+
     public RunEntity Home { get; private set; }
     public RunEntity Away { get; set; }
 
@@ -77,7 +80,7 @@ public class RunEnvironment : Addressable
 
         SkillPool = new();
 
-        _xiuWei = 0;
+        _gold = 0;
 
         runConfig?.Execute(this);
     }
@@ -250,22 +253,19 @@ public class RunEnvironment : Addressable
         return true;
     }
 
-    private float _xiuWei;
-    public float XiuWei => _xiuWei;
+    private float _gold;
+    public float Gold => _gold;
 
-    public void AddXiuWei(int xiuWei = 10)
+    public void SetDGold(int gold = 10)
     {
-        _xiuWei += xiuWei;
+        _gold += gold;
+        ResourceChanged();
     }
 
-    public void RemoveXiuWei(int value)
+    public void SetDDHealth(int dHealth)
     {
-        _xiuWei -= value;
-    }
-
-    public void AddHealth(int health)
-    {
-        Home.SetDHealth(Home.GetDHealth() + health);
+        Home.SetDHealth(Home.GetDHealth() + dHealth);
+        ResourceChanged();
     }
 
     public MingYuan GetMingYuan()
@@ -274,6 +274,7 @@ public class RunEnvironment : Addressable
     public void SetDMingYuan(int value)
     {
         Home.MingYuan.SetDiff(value);
+        ResourceChanged();
 
         if (GetMingYuan().GetCurr() <= 0)
             _commitDetails = new RunCommitDetails(false);
@@ -337,7 +338,7 @@ public class RunEnvironment : Addressable
     public bool CanAffordTech(Address address)
     {
         RunTech runTech = address.Get<RunTech>();
-        return runTech.GetCost() <= _xiuWei;
+        return runTech.GetCost() <= _gold;
     }
 
     public bool TrySetDoneTech(Address address)
@@ -346,7 +347,7 @@ public class RunEnvironment : Addressable
             return false;
 
         RunTech runTech = address.Get<RunTech>();
-        _xiuWei -= runTech.GetCost();
+        _gold -= runTech.GetCost();
         TechInventory.SetDone(runTech);
         return true;
     }

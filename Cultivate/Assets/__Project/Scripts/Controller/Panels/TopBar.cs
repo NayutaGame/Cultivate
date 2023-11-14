@@ -1,4 +1,5 @@
 
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -24,6 +25,16 @@ public class TopBar : MonoBehaviour
         MenuButton.onClick.AddListener(OpenMenu);
 
         ConfigurePropagators();
+    }
+
+    private void OnEnable()
+    {
+        RunManager.Instance.Environment.ResourceChangedEvent += Refresh;
+    }
+
+    private void OnDisable()
+    {
+        RunManager.Instance.Environment.ResourceChangedEvent -= Refresh;
     }
 
     private void ConfigurePropagators()
@@ -83,7 +94,7 @@ public class TopBar : MonoBehaviour
         IEntityModel entity = RunManager.Instance.Environment.Home;
 
         MingYuanText.text = RunManager.Instance.Environment.GetMingYuan().ToString();
-        GoldText.text = RunManager.Instance.Environment.XiuWei.ToString();
+        GoldText.text = RunManager.Instance.Environment.Gold.ToString();
         HealthText.text = entity.GetFinalHealth().ToString();
         JingJieText.text = $"{entity.GetJingJie().ToString()}期";
     }

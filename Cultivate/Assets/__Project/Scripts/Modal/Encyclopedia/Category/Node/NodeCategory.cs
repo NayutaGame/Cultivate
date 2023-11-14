@@ -297,7 +297,7 @@ public class NodeCategory : Category<NodeEntry>
                     runNode._map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
                     BattlePanelDescriptor E = new(template);
                     DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
-                        .SetReward(new ResourceReward(xiuWei: 100, health: 10));
+                        .SetReward(new ResourceReward(gold: 100, health: 10));
                     DialogPanelDescriptor ELose = new("哼，现在神灯精灵不好做了，就是因为经常碰见你这种人。下次别再让我遇见了。");
 
                     A[0].SetSelect(option => B);
@@ -833,7 +833,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor A = new("嘀嘀嘀。灵信响了，你看了一下。是之前委托你布阵的人发的消息。" +
                                                   "\n管家：大人，之前你帮我家设置的阵法，有一笔的长度不对。会不会引起问题？" +
                                                   "\n我：哪一笔，长度怎么不对了？" +
-                                                  "\n管家：坎位其中一划，我拿尺子量了，和其他的差了一分",
+                                                  "\n管家：坎位其中一划，我拿尺子量了，和其他的差了一分有余。",
                         "你多虑了，长度稍微差一点点没关系的。",
                         "可以把你的尺子丢了么？");
 

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RunResultPanel : Panel
+public class RunResultPanel : CurtainPanel
 {
     [SerializeField] private TMP_Text ResultText;
     [SerializeField] private Button ReturnButton;

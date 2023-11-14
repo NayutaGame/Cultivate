@@ -17,8 +17,8 @@ public class StageAppS : AppS
     {
         await base.Exit(d);
         await CanvasManager.Instance.Curtain.PlayShowAnimation();
-        await StageManager.Instance.Exit();
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(false);
         AppManager.Instance.StageManager.gameObject.SetActive(false);
+        await StageManager.Instance.Exit();
     }
 }

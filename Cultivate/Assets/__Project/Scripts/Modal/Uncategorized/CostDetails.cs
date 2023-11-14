@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using System.Text;
-using UnityEngine;
 
 public class CostDetails
 {
@@ -18,16 +16,16 @@ public class CostDetails
 
     public bool CanCost()
     {
-        return Gold <= RunManager.Instance.Environment.XiuWei &&
+        return Gold <= RunManager.Instance.Environment.Gold &&
                MingYuan < RunManager.Instance.Environment.GetMingYuan().GetCurr() &&
                Health < RunManager.Instance.Environment.Home.GetFinalHealth();
     }
 
     public void Cost()
     {
-        RunManager.Instance.Environment.RemoveXiuWei(Gold);
+        RunManager.Instance.Environment.SetDGold(-Gold);
         RunManager.Instance.Environment.SetDMingYuan(-MingYuan);
-        RunManager.Instance.Environment.Home.SetDHealth(-Health);
+        RunManager.Instance.Environment.SetDDHealth(-Health);
     }
 
     public string GetDescription()
@@ -35,7 +33,7 @@ public class CostDetails
         StringBuilder sb = new();
         if (Gold != 0)
         {
-            sb.Append($"{Gold}修为\t");
+            sb.Append($"{Gold}金钱\t");
         }
 
         if (MingYuan != 0)

@@ -1,34 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using System.Text;
-using UnityEngine;
 
 public class ResourceReward : Reward
 {
-    public int _xiuWei;
+    public int _gold;
     public int _mingYuan;
     public int _health;
 
-    public ResourceReward(int xiuWei = 0, int mingYuan = 0, int health = 0)
+    public ResourceReward(int gold = 0, int mingYuan = 0, int health = 0)
     {
-        _xiuWei = xiuWei;
+        _gold = gold;
         _mingYuan = mingYuan;
         _health = health;
     }
 
     public override void Claim()
     {
-        RunManager.Instance.Environment.AddXiuWei(_xiuWei);
+        RunManager.Instance.Environment.SetDGold(_gold);
         RunManager.Instance.Environment.SetDMingYuan(_mingYuan);
-        RunManager.Instance.Environment.AddHealth(_health);
+        RunManager.Instance.Environment.SetDDHealth(_health);
     }
 
     public override string GetDescription()
     {
         StringBuilder sb = new();
-        if (_xiuWei != 0)
+        if (_gold != 0)
         {
-            sb.Append($"{_xiuWei}修为\t");
+            sb.Append($"{_gold}金钱\t");
         }
 
         if (_mingYuan != 0)

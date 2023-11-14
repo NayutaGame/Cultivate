@@ -56,7 +56,7 @@ public class ConsolePanel : Panel
 
         RunEnvironment env = RunManager.Instance.Environment;
         MingYuanText.text = env.GetMingYuan().ToString();
-        GoldText.text = env.XiuWei.ToString();
+        GoldText.text = env.Gold.ToString();
 
         IEntityModel entity = RunManager.Instance.Environment.Home;
         HealthInputField.SetTextWithoutNotify(entity.GetBaseHealth().ToString());
@@ -71,7 +71,7 @@ public class ConsolePanel : Panel
 
     private void AddXiuWei()
     {
-        RunManager.Instance.Environment.AddXiuWei();
+        RunManager.Instance.Environment.SetDGold();
         Refresh();
     }
 

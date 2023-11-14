@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public abstract class Reward
 {
@@ -9,7 +6,7 @@ public abstract class Reward
 
     public static Reward FromGold(int xiuWei)
     {
-        return new ResourceReward(xiuWei: xiuWei);
+        return new ResourceReward(gold: xiuWei);
     }
 
     public static Reward FromHealth(int health)

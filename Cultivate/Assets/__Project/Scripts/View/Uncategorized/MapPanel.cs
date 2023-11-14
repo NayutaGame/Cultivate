@@ -21,6 +21,7 @@ public class MapPanel : Panel, IAddress
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(Refresh)
             .AppendCallback(PlaySFX)
+            .Append(CanvasManager.Instance.Curtain.HideAnimation())
             .Append(_rectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CanvasGroup.DOFade(1f, 0.15f));
     }

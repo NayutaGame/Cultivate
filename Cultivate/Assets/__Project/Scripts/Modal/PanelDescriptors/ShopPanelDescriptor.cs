@@ -40,10 +40,10 @@ public class ShopPanelDescriptor : PanelDescriptor
         if (!_commodities.Contains(commodity))
             return false;
 
-        if (RunManager.Instance.Environment.XiuWei < commodity.FinalPrice)
+        if (RunManager.Instance.Environment.Gold < commodity.FinalPrice)
             return false;
 
-        RunManager.Instance.Environment.RemoveXiuWei(commodity.FinalPrice);
+        RunManager.Instance.Environment.SetDGold(-commodity.FinalPrice);
         _commodities.Remove(commodity);
 
         RunManager.Instance.Environment.Hand.Add(commodity.Skill);
