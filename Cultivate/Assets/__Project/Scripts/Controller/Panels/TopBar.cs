@@ -29,12 +29,14 @@ public class TopBar : MonoBehaviour
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.ResourceChangedEvent += Refresh;
+        if (RunManager.Instance != null)
+            RunManager.Instance.Environment.ResourceChangedEvent += Refresh;
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.ResourceChangedEvent -= Refresh;
+        if (RunManager.Instance != null)
+            RunManager.Instance.Environment.ResourceChangedEvent -= Refresh;
     }
 
     private void ConfigurePropagators()
