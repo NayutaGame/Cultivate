@@ -231,13 +231,13 @@ public class Map : Addressable
     {
         int currX = _heroPosition.x;
         for (int x = currX + 1; x < _normalPools[_jingJie].Length; x++)
-        for (int y = 0; y < 3; y++)
         {
-            RunNode node = this[x, y];
+            StepItem stepItem = _stepItems[x];
+            RunNode node = stepItem._nodes[0];
             if (node is { Entry: AdventureNodeEntry adventureNodeEntry })
             {
                 NodeEntry newNodeEntry = _a.ForcePopItem(pred: n => n != adventureNodeEntry);
-                this[x, y] = new RunNode(this, new Vector2Int(x, y), _jingJie, newNodeEntry);
+                stepItem._nodes[0] = new RunNode(this, new Vector2Int(x, 0), _jingJie, newNodeEntry);
                 return true;
             }
         }

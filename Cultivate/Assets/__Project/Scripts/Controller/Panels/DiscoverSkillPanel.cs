@@ -3,7 +3,7 @@ using CLLibrary;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class DiscoverSkillPanel : CurtainPanel
+public class DiscoverSkillPanel : Panel
 {
     public TMP_Text TitleText;
     public TMP_Text DetailedText;

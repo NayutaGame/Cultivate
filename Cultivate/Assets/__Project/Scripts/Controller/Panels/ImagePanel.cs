@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ImagePanel : CurtainPanel
+public class ImagePanel : Panel
 {
     [SerializeField] private Button ImageButton;
 

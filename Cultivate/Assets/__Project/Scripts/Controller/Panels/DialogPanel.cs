@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogPanel : CurtainPanel
+public class DialogPanel : Panel
 {
     public TMP_Text TitleText;
     public TMP_Text DetailedText;

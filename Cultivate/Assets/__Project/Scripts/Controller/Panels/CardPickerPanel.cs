@@ -5,7 +5,7 @@ using CLLibrary;
 using TMPro;
 using UnityEngine.UI;
 
-public class CardPickerPanel : CurtainPanel
+public class CardPickerPanel : Panel
 {
     public TMP_Text InfoText;
     public TMP_Text StatusText;

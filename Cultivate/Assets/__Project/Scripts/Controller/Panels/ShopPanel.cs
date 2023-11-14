@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ShopPanel : CurtainPanel
+public class ShopPanel : Panel
 {
     public ListView CommodityListView;
 

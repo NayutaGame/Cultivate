@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BattlePanel : CurtainPanel
+public class BattlePanel : Panel
 {
     [SerializeField] private BattleEntityView EnemyView;
     [SerializeField] private TMP_Text HomeHealth;

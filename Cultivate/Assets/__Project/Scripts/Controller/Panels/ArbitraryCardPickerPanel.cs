@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ArbitraryCardPickerPanel : CurtainPanel
+public class ArbitraryCardPickerPanel : Panel
 {
     public TMP_Text Text1;
     public TMP_Text Text2;

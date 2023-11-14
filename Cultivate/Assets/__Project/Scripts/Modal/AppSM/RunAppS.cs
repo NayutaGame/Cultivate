@@ -27,6 +27,8 @@ public class RunAppS : AppS
         {
             CanvasManager.Instance.RunCanvas.MapPanel.SetShowing(true);
         }
+
+        await CanvasManager.Instance.Curtain.PlayHideAnimation();
     }
 
     public override async Task Exit(NavigateDetails d)
