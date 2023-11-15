@@ -12,7 +12,7 @@ public class NodeCategory : Category<NodeEntry>
         {
             new BattleNodeEntry("敌人", "敌人"),
 
-            new RewardNodeEntry("选择一种五行，获得一张随机牌", "选择一种五行，获得一张随机牌", "悟道",
+            new RewardNodeEntry("悟道", "悟道", "悟道",
                 create: runNode =>
                 {
                     Pool<WuXing> pool = new Pool<WuXing>();
@@ -219,7 +219,7 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
-            new AdventureNodeEntry("论无穷", "论无穷", normal: true,
+            new AdventureNodeEntry("论无穷", "论无穷", normal: false,
                 create: runNode =>
                 {
                     DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +

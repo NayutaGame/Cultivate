@@ -402,8 +402,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u5B87\u5B99\u65E0\u654C\u91CD\u5251"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 24212dad54a50a14f9001ff2cd004797, type: 2}
-  m_sharedMaterial: {fileID: 920707971042303996, guid: 24212dad54a50a14f9001ff2cd004797, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -561,8 +561,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -202.4}
-  m_SizeDelta: {x: 270, y: 220.28}
+  m_AnchoredPosition: {x: 150, y: -72.015}
+  m_SizeDelta: {x: 270, y: 19.51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6767457290463986807
 CanvasRenderer:
@@ -594,8 +594,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "<style=\"Highlight\">\u5947\u5076</style>\n\u5F53\u672C\u5361\u6240\u5728\u5361\u69FD\u4F4D\u7F6E\u4E3A\u5947\u6570\u65F6\u89E6\u53D1\u201C/\u201D\u524D\u6548\u679C\uFF0C\u5076\u6570\u65F6\u89E6\u53D1\u201C/\u201D\u540E\u6548\u679C\u3002\n\n<style=\"Highlight\">\u950B\u9510</style>\n\u6BCF\u4E2A\u51FA\u724C\u56DE\u5408\u6839\u636E\u51FA\u724C\u5947\u5076\u4F4D\u7F6E\u4EA7\u751F\u6548\u679C\uFF0C\u5947\u5076\uFF1A\u5BF9\u654C\u4EBA\u9020\u6210\u950B\u9510\u5C42\u6570\u70B9\u4F24\u5BB3/\u83B7\u5F97\u950B\u9510\u5C42\u6570\u70B9\u62A4\u7532\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 24212dad54a50a14f9001ff2cd004797, type: 2}
-  m_sharedMaterial: {fileID: 920707971042303996, guid: 24212dad54a50a14f9001ff2cd004797, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -729,8 +729,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u662F\u4E00\u6BB5\u89E3\u91CA\uFF0C\u662F\u4E00\u6BB5\u89E3\u91CA\uFF0C\u662F\u4E00\u6BB5\u89E3\u91CA\uFF0C\u662F\u4E00\u6BB5\u89E3\u91CA\uFF0C\u8FD9\u662F\u4E00\u6BB5\u89E3\u91CA\uFF0C\u8FD9\u662F\u4E00\u6BB5\u89E3\u91CA"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9ba82c49a08d89d429ba67fbb7212b7f, type: 2}
-  m_sharedMaterial: {fileID: 8160465131175822560, guid: 9ba82c49a08d89d429ba67fbb7212b7f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

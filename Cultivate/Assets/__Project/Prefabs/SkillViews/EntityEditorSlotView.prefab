@@ -296,6 +296,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5948866341397506550}
     m_Modifications:
+    - target: {fileID: 7570460864629865518, guid: 004cdf974587c0e499730776df2f7be0, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+    - target: {fileID: 7570460864629865518, guid: 004cdf974587c0e499730776df2f7be0, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
     - target: {fileID: 8085986264311966347, guid: 004cdf974587c0e499730776df2f7be0, type: 3}
       propertyPath: m_Name
       value: SkillView

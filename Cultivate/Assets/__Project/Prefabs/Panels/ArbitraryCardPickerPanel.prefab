@@ -1036,8 +1036,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u5DF2\u9009\u62E9 3 \u5F20"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 22fa96be06c68194a9af4c5815950dc1, type: 2}
-  m_sharedMaterial: {fileID: -8407730832460888018, guid: 22fa96be06c68194a9af4c5815950dc1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

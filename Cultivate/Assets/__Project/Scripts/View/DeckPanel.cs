@@ -66,6 +66,7 @@ public class DeckPanel : Panel
     {
         if (RunManager.Instance != null && RunManager.Instance.Environment != null)
             RunManager.Instance.Environment.MapJingJieChangedEvent += SyncSlot;
+        HandView.Sync();
     }
 
     private void OnDisable()
@@ -242,7 +243,7 @@ public class DeckPanel : Panel
 
     public override Tween ShowAnimation()
         => DOTween.Sequence()
-            .AppendCallback(HandView.Sync)
+            .AppendCallback(() => HandView.Sync())
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(!_locked))
             .Join(_sortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
