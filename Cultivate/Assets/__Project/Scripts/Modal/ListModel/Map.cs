@@ -13,17 +13,8 @@ public class Map : Addressable
 
     private StepItemListModel _stepItems;
 
-    private RunNode this[int x, int y]
-    {
-        get => _stepItems[x]._nodes[y];
-        set => _stepItems[x]._nodes[y] = value;
-    }
-
-    private RunNode this[Vector2Int pos]
-    {
-        get => this[pos.x, pos.y];
-        set => this[pos.x, pos.y] = value;
-    }
+    private RunNode this[int x, int y] => _stepItems[x]._nodes[y];
+    private RunNode this[Vector2Int pos] => this[pos.x, pos.y];
 
     public EntityPool EntityPool;
     public AutoPool<NodeEntry> _b;
@@ -82,7 +73,7 @@ public class Map : Addressable
 
         // if it is the last node, try goto next jingjie / commit run
 
-        bool isEndOfJingJie = _heroPosition.x >= _stepItems.Count();
+        bool isEndOfJingJie = IsEndOfJingJie(_heroPosition.x);
 
         if (!isEndOfJingJie)
             _stepItems[_heroPosition.x + 1].SetToChoose();
@@ -93,6 +84,11 @@ public class Map : Addressable
 
         if (isEndOfJingJie)
             JingJie += 1;
+    }
+
+    private bool IsEndOfJingJie(int currentX)
+    {
+        return currentX >= _normalPools[_jingJie].Length - 1;
     }
 
     private readonly Dictionary<JingJie, AudioEntry> JingJieToAudio = new()
@@ -149,7 +145,7 @@ public class Map : Addressable
                 continue;
             }
 
-            AutoPool<NodeEntry> pool = x < pools.Length ? pools[x] : null;
+            AutoPool<NodeEntry> pool = pools[x];
             SetStepItemFromPool(x, pool);
         }
 
@@ -182,23 +178,25 @@ public class Map : Addressable
 
         stepItem._nodes.Clear();
 
-        for (int y = 0; y < StepItem.Capacity; y++)
+        if (pool == _r)
         {
-            if (pool == null)
-                continue;
-
-            if (pool != _r && y != 0)
-                continue;
-
+            for (int y = 0; y < StepItem.Capacity; y++)
+            {
+                NodeEntry nodeEntry = pool.ForcePopItem(pred: e => e.CanCreate(this, x));
+                stepItem._nodes.Add(new RunNode(this, new Vector2Int(x, y), _jingJie, nodeEntry));
+            }
+        }
+        else
+        {
             NodeEntry nodeEntry = pool.ForcePopItem(pred: e => e.CanCreate(this, x));
             if (nodeEntry is BattleNodeEntry battleNodeEntry)
             {
                 DrawEntityDetails d = new DrawEntityDetails(_jingJie, x <= 3, 3 < x && x <= 6, 6 < x);
-                stepItem._nodes.Add(new BattleRunNode(this, new Vector2Int(x, y), _jingJie, battleNodeEntry, d));
+                stepItem._nodes.Add(new BattleRunNode(this, new Vector2Int(x, 0), _jingJie, battleNodeEntry, d));
             }
             else
             {
-                stepItem._nodes.Add(new RunNode(this, new Vector2Int(x, y), _jingJie, nodeEntry));
+                stepItem._nodes.Add(new RunNode(this, new Vector2Int(x, 0), _jingJie, nodeEntry));
             }
         }
     }

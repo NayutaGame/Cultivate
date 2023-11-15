@@ -58,8 +58,8 @@ public class BarterPanelDescriptor : PanelDescriptor
         if (!_inventory.Contains(barterItem))
             return false;
 
-        SkillSlot slotWithSkill = RunManager.Instance.Environment.Home.FindSlotWithSkill(barterItem.PlayerSkill);
-        RunSkill skillInHand = RunManager.Instance.Environment.FindSkillInHand(barterItem.PlayerSkill);
+        SkillSlot slotWithSkill = RunManager.Instance.Environment.Home.FindSlotWithSkillEntry(barterItem.PlayerSkill.GetEntry());
+        RunSkill skillInHand = RunManager.Instance.Environment.FindSkillInHandWithEntry(barterItem.PlayerSkill.GetEntry());
         bool inSlot = slotWithSkill != null;
         bool inSkillInventory = skillInHand != null;
 

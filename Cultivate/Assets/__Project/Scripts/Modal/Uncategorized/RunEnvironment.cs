@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using JetBrains.Annotations;
+using UnityEngine;
 
 public class RunEnvironment : Addressable
 {
@@ -364,8 +365,8 @@ public class RunEnvironment : Addressable
         return true;
     }
 
-    public RunSkill FindSkillInHand(RunSkill skill)
+    public RunSkill FindSkillInHandWithEntry(SkillEntry entry)
     {
-        return Hand.Traversal().FirstObj(s => s == skill);
+        return Hand.Traversal().FirstObj(s => s.GetEntry() == entry);
     }
 }

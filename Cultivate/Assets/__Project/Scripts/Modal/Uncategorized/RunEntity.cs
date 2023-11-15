@@ -201,8 +201,8 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
         EnvironmentChanged();
     }
 
-    public SkillSlot FindSlotWithSkill(RunSkill skill)
+    public SkillSlot FindSlotWithSkillEntry(SkillEntry entry)
     {
-        return TraversalCurrentSlots().FirstObj(slot => slot.Skill == skill);
+        return TraversalCurrentSlots().FirstObj(slot => slot.Skill?.GetEntry() == entry);
     }
 }

@@ -137,6 +137,8 @@ public class BattlePanel : Panel
 
     private void PlayJingJieBGM()
     {
+        if (RunManager.Instance == null || RunManager.Instance.Environment == null)
+            return;
         AudioEntry audio = RunManager.Instance.Environment.Map.AudioFromCurrentJingJie();
         AudioManager.Play(audio);
     }

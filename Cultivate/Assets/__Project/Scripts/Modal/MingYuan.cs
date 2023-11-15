@@ -10,19 +10,34 @@ public class MingYuan : BoundedInt
 
     public MingYuan(int curr, int max) : base(curr, max) { }
 
+    // private static Tuple<int, int, int, int>[] MINGYUAN_PENALTY_TABLE = new[]
+    // {
+    //     // hpPenalty, manaPenalty, powerPenalty, speedPenalty
+    //     new Tuple<int, int, int, int>(80, 5, 5, 3),
+    //     new Tuple<int, int, int, int>(40, 5, 5, 2),
+    //     new Tuple<int, int, int, int>(40, 5, 3, 2),
+    //     new Tuple<int, int, int, int>(40, 3, 3, 2),
+    //     new Tuple<int, int, int, int>(20, 3, 3, 1),
+    //     new Tuple<int, int, int, int>(20, 3, 1, 1),
+    //     new Tuple<int, int, int, int>(20, 1, 1, 1),
+    //     new Tuple<int, int, int, int>(10, 1, 1, 0),
+    //     new Tuple<int, int, int, int>(10, 1, 0, 0),
+    //     new Tuple<int, int, int, int>(10, 0, 0, 0),
+    // };
+
     private static Tuple<int, int, int, int>[] MINGYUAN_PENALTY_TABLE = new[]
     {
         // hpPenalty, manaPenalty, powerPenalty, speedPenalty
-        new Tuple<int, int, int, int>(80, 5, 5, 3),
-        new Tuple<int, int, int, int>(40, 5, 5, 2),
-        new Tuple<int, int, int, int>(40, 5, 3, 2),
-        new Tuple<int, int, int, int>(40, 3, 3, 2),
-        new Tuple<int, int, int, int>(20, 3, 3, 1),
-        new Tuple<int, int, int, int>(20, 3, 1, 1),
-        new Tuple<int, int, int, int>(20, 1, 1, 1),
-        new Tuple<int, int, int, int>(10, 1, 1, 0),
-        new Tuple<int, int, int, int>(10, 1, 0, 0),
+        new Tuple<int, int, int, int>(50, 0, 0, 0),
+        new Tuple<int, int, int, int>(45, 0, 0, 0),
+        new Tuple<int, int, int, int>(40, 0, 0, 0),
+        new Tuple<int, int, int, int>(35, 0, 0, 0),
+        new Tuple<int, int, int, int>(30, 0, 0, 0),
+        new Tuple<int, int, int, int>(25, 0, 0, 0),
+        new Tuple<int, int, int, int>(20, 0, 0, 0),
+        new Tuple<int, int, int, int>(15, 0, 0, 0),
         new Tuple<int, int, int, int>(10, 0, 0, 0),
+        new Tuple<int, int, int, int>(5, 0, 0, 0),
     };
 
     public string GetMingYuanPenaltyText()

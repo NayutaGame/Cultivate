@@ -117,8 +117,7 @@ public class DesignerEnvironment
 
         map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
         {
-            // { JingJie.LianQi   , new NodeEntry[] { "初入蓬莱", null, null, null, null, null, null, null, null, null } },
-            { JingJie.LianQi   , new NodeEntry[] { "以物易物", null, null, null, null, null, null, null, null, null } },
+            { JingJie.LianQi   , new NodeEntry[] { "初入蓬莱", null, null, null, null, null, null, null, null, null } },
             { JingJie.ZhuJi    , new NodeEntry[] { null, null, null, "同境界合成教学", null, null, null, null, null, null } },
             { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, "愿望单" } },
             { JingJie.YuanYing , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
@@ -141,8 +140,6 @@ public class DesignerEnvironment
     {
         env.Map.JingJie = JingJie.LianQi;
         env.SetDGold(50);
-
-        env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
     }
 
     public static async Task DefaultStartTurn(StageEntity owner, EventDetails eventDetails)

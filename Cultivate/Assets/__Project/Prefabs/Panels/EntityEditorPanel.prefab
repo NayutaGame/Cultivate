@@ -2075,7 +2075,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4247244697127790360}
   m_HandleRect: {fileID: 2837539244459707775}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3461,7 +3461,7 @@ MonoBehaviour:
   EntityBrowser: {fileID: 8227841219929257623}
   SkillBrowser: {fileID: 5462905554710129572}
   SkillAnnotation: {fileID: 658726023587373607}
-  FormationPreview: {fileID: 3416457051778114557}
+  FormationPreview: {fileID: 0}
   AwayEntityView: {fileID: 2916483814070359709}
   HomeEntityView: {fileID: 3241904465817800510}
   CopyToTopButton: {fileID: 2976650363799373712}
@@ -6855,14 +6855,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4730531974322507744, guid: 40b63534a0d640e43940cfd8a0287f75, type: 3}
   m_PrefabInstance: {fileID: 7028983179472416365}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3416457051778114557 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5684184172524653968, guid: 40b63534a0d640e43940cfd8a0287f75, type: 3}
-  m_PrefabInstance: {fileID: 7028983179472416365}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef84b1a9ad3d50448b65839a6c057630, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

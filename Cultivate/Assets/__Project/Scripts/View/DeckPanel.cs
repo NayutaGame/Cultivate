@@ -62,6 +62,23 @@ public class DeckPanel : Panel
         MechListView.Refresh();
     }
 
+    private void OnEnable()
+    {
+        if (RunManager.Instance != null && RunManager.Instance.Environment != null)
+            RunManager.Instance.Environment.MapJingJieChangedEvent += SyncSlot;
+    }
+
+    private void OnDisable()
+    {
+        if (RunManager.Instance != null && RunManager.Instance.Environment != null)
+            RunManager.Instance.Environment.MapJingJieChangedEvent -= SyncSlot;
+    }
+
+    private void SyncSlot(JingJie jingJie)
+    {
+        FieldView.Sync();
+    }
+
     #region IInteractable
 
     private InteractDelegate InteractDelegate;

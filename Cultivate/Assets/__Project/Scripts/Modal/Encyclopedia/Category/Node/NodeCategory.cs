@@ -1147,7 +1147,7 @@ public class NodeCategory : Category<NodeEntry>
                 create: runNode =>
                 {
                     DialogPanelDescriptor A = new("游戏仍在制作中，请加入愿望单，以关注后续进展，感谢游玩！",
-                        "Q群：",
+                        "Q群：216060477",
                         "游戏名：蓬莱之旅",
                         "返回标题");
 

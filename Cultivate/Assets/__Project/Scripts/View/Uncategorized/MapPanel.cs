@@ -39,6 +39,7 @@ public class MapPanel : Panel, IAddress
     {
         base.Configure();
         _address = new Address("Run.Environment.Map");
+
         StepItemListView.SetAddress(_address.Append(".StepItems"));
     }
 
