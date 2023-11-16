@@ -260,14 +260,16 @@ public class StageEnvironment : Addressable, CLEventListener
     public async Task BuffProcedure(BuffDetails d)
     {
         await _eventDict.SendEvent(CLEventDict.WILL_BUFF, d);
+
+        d.Cancel |= d._stack <= 0;
         if (d.Cancel) return;
 
         Buff same = d.Tgt.FindBuff(d._buffEntry);
 
-        int oldStack = same?.Stack ?? 0;
-
         if (same != null && d._buffEntry.BuffStackRule != BuffStackRule.Individual)
         {
+            int oldStack = same.Stack;
+
             switch (d._buffEntry.BuffStackRule)
             {
                 case BuffStackRule.One:

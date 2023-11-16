@@ -47,9 +47,15 @@ public class AnimatedListView : ListView, IDropHandler
     {
         base.BindItemView(itemView, prefabIndex);
 
-        HandPivot pivot = Instantiate(PivotPrefab, PivotHolder).GetComponent<HandPivot>();
-        (itemView as HandSkillView).HandPivot = pivot;
-        pivot.BindingView = itemView.GetComponent<IInteractable>();
+        if (itemView is HandSkillView handSkillView)
+        {
+            if (handSkillView.HandPivot != null)
+                return;
+
+            HandPivot pivot = Instantiate(PivotPrefab, PivotHolder).GetComponent<HandPivot>();
+            handSkillView.HandPivot = pivot;
+            pivot.BindingView = handSkillView.GetComponent<IInteractable>();
+        }
     }
 
     public virtual void OnDrop(PointerEventData eventData) => GetDelegate()?.DragDrop(eventData.pointerDrag.GetComponent<IInteractable>(), this);

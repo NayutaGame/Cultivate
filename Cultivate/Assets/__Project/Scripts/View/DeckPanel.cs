@@ -218,6 +218,7 @@ public class DeckPanel : Panel
 
     private void Sort()
     {
+        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         HandView.Get<SkillInventory>().SortByComparisonId(0);
         CanvasManager.Instance.RunCanvas.Refresh();
     }
