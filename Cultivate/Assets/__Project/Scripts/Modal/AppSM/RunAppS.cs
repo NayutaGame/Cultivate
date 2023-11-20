@@ -28,6 +28,8 @@ public class RunAppS : AppS
 
         CanvasManager.Instance.RunCanvas.MapPanel.SetHideState();
         CanvasManager.Instance.RunCanvas.DeckPanel.SetHideState();
+        CanvasManager.Instance.RunCanvas.DeckPanel.DeckOpenZone.gameObject.SetActive(true);
+        CanvasManager.Instance.RunCanvas.DeckPanel.DeckCloseZone.gameObject.SetActive(false);
 
         await CanvasManager.Instance.Curtain.PlayHideAnimation();
     }
