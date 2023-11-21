@@ -89,7 +89,7 @@ public class DeckPanel : Panel
         InteractDelegate = new(5,
             getId: view =>
             {
-                if (view is HandSkillView || view is HandPivot)
+                if (view is HandSkillView || view is PivotPropagate)
                     return 0;
                 if (ReferenceEquals(view, HandView))
                     return 1;

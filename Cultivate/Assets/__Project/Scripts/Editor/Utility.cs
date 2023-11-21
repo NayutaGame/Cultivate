@@ -5,9 +5,20 @@ using UnityEngine;
 public class Utility : MonoBehaviour
 {
     [MenuItem("GameObject/Create Custom/ListView", false, 0)]
-    static void CreateCustomGameObject(MenuCommand menuCommand)
+    static void CreateListView(MenuCommand menuCommand)
     {
         string path = "ListView";
+
+        GameObject go = PrefabUtility.InstantiatePrefab(Resources.Load(path)) as GameObject;
+        GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
+        Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
+        Selection.activeObject = go;
+    }
+
+    [MenuItem("GameObject/Create Custom/AnimatedListView", false, 1)]
+    static void CreateAnimatedListView(MenuCommand menuCommand)
+    {
+        string path = "AnimatedListView";
 
         GameObject go = PrefabUtility.InstantiatePrefab(Resources.Load(path)) as GameObject;
         GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);

@@ -7,21 +7,21 @@ using UnityEngine.EventSystems;
 public class HandSkillView : SkillView, IInteractable
 {
     [SerializeField] private RectTransform RectTransform;
-    [NonSerialized] public HandPivot HandPivot;
+    [NonSerialized] public PivotPropagate PivotPropagate;
 
     private Tween _animationHandle;
 
     private void OnEnable()
     {
-        HandPivot.BlockRaycasts = true;
-        HandPivot.transform.SetAsLastSibling();
-        HandPivot.gameObject.SetActive(true);
-        GoToPivot(HandPivot.IdlePivot);
+        PivotPropagate.RaycastTarget = true;
+        PivotPropagate.transform.SetAsLastSibling();
+        PivotPropagate.gameObject.SetActive(true);
+        GoToPivot(PivotPropagate.IdlePivot);
     }
 
     private void OnDisable()
     {
-        HandPivot.gameObject.SetActive(false);
+        PivotPropagate.gameObject.SetActive(false);
     }
 
     public void HoverAnimation(PointerEventData eventData)
@@ -30,7 +30,7 @@ public class HandSkillView : SkillView, IInteractable
 
         AudioManager.Play("CardHover");
 
-        GoToPivot(HandPivot.HoverPivot);
+        GoToPivot(PivotPropagate.HoverPivot);
 
         CanvasManager.Instance.SkillAnnotation.SetAddress(GetAddress());
         CanvasManager.Instance.SkillAnnotation.Refresh();
@@ -40,7 +40,7 @@ public class HandSkillView : SkillView, IInteractable
     {
         if (eventData.dragging) return;
 
-        GoToPivot(HandPivot.IdlePivot);
+        GoToPivot(PivotPropagate.IdlePivot);
 
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);
         CanvasManager.Instance.SkillAnnotation.Refresh();
@@ -58,28 +58,28 @@ public class HandSkillView : SkillView, IInteractable
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);
         CanvasManager.Instance.SkillAnnotation.Refresh();
 
-        HandPivot.BlockRaycasts = false;
+        PivotPropagate.RaycastTarget = false;
 
-        GoToPivot(HandPivot.MousePivot);
+        GoToPivot(PivotPropagate.MousePivot);
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateDragRunChip(this);
     }
 
     public void EndDrag(PointerEventData eventData)
     {
-        HandPivot.BlockRaycasts = true;
+        PivotPropagate.RaycastTarget = true;
 
-        GoToPivot(HandPivot.IdlePivot);
+        GoToPivot(PivotPropagate.IdlePivot);
 
         // RunCanvas.Instance.CharacterPanel._state = new CharacterPanelStateNormal();
     }
 
     public void Drag(PointerEventData eventData)
     {
-        HandPivot.MousePivot.position = eventData.position;
+        PivotPropagate.MousePivot.position = eventData.position;
         if (_animationHandle != null && _animationHandle.active)
             return;
-        RectTransform.position = HandPivot.MousePivot.position;
+        RectTransform.position = PivotPropagate.MousePivot.position;
     }
 
     public void GoToPivot(RectTransform pivot)

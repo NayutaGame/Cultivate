@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class AnimatedListView : ListView, IDropHandler
 {
-    [SerializeField] private Transform PivotHolder;
+    [SerializeField] private Transform PivotList;
     [SerializeField] private GameObject PivotPrefab;
 
     public override void Sync()
@@ -49,12 +49,12 @@ public class AnimatedListView : ListView, IDropHandler
 
         if (itemView is HandSkillView handSkillView)
         {
-            if (handSkillView.HandPivot != null)
+            if (handSkillView.PivotPropagate != null)
                 return;
 
-            HandPivot pivot = Instantiate(PivotPrefab, PivotHolder).GetComponent<HandPivot>();
-            handSkillView.HandPivot = pivot;
-            pivot.BindingView = handSkillView.GetComponent<IInteractable>();
+            PivotPropagate pivotPropagate = Instantiate(PivotPrefab, PivotList).GetComponent<PivotPropagate>();
+            handSkillView.PivotPropagate = pivotPropagate;
+            pivotPropagate.BindingView = handSkillView.GetComponent<IInteractable>();
         }
     }
 
@@ -64,6 +64,6 @@ public class AnimatedListView : ListView, IDropHandler
     {
         foreach (var itemView in _activePool)
             if (itemView is HandSkillView handSkillView)
-                handSkillView.GoToPivot(handSkillView.HandPivot.IdlePivot);
+                handSkillView.GoToPivot(handSkillView.PivotPropagate.IdlePivot);
     }
 }
