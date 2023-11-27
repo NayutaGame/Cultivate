@@ -9,7 +9,9 @@ public class PivotPropagate : MonoBehaviour, IInteractable,
     IDropHandler,
     IPointerClickHandler
 {
+    [SerializeField] public RectTransform RectTransform;
     [SerializeField] private Image Image;
+    [SerializeField] private LayoutElement LayoutElement;
 
     public RectTransform IdlePivot;
     public RectTransform HoverPivot;
@@ -24,7 +26,11 @@ public class PivotPropagate : MonoBehaviour, IInteractable,
     public bool RaycastTarget
     {
         get => Image.raycastTarget;
-        set => Image.raycastTarget = value;
+        set
+        {
+            Image.raycastTarget = value;
+            // LayoutElement.ignoreLayout = !value;
+        }
     }
 
     #region IInteractable

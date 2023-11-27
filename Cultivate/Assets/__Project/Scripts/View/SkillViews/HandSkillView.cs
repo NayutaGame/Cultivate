@@ -30,7 +30,7 @@ public class HandSkillView : SkillView, IInteractable
 
         AudioManager.Play("CardHover");
 
-        GoToPivot(PivotPropagate.HoverPivot);
+        // GoToPivot(PivotPropagate.HoverPivot);
 
         CanvasManager.Instance.SkillAnnotation.SetAddress(GetAddress());
         CanvasManager.Instance.SkillAnnotation.Refresh();
@@ -40,7 +40,7 @@ public class HandSkillView : SkillView, IInteractable
     {
         if (eventData.dragging) return;
 
-        GoToPivot(PivotPropagate.IdlePivot);
+        // GoToPivot(PivotPropagate.IdlePivot);
 
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);
         CanvasManager.Instance.SkillAnnotation.Refresh();
@@ -59,6 +59,7 @@ public class HandSkillView : SkillView, IInteractable
         CanvasManager.Instance.SkillAnnotation.Refresh();
 
         PivotPropagate.RaycastTarget = false;
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.RefreshPivots();
 
         GoToPivot(PivotPropagate.MousePivot);
 
@@ -68,6 +69,7 @@ public class HandSkillView : SkillView, IInteractable
     public void EndDrag(PointerEventData eventData)
     {
         PivotPropagate.RaycastTarget = true;
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.RefreshPivots();
 
         GoToPivot(PivotPropagate.IdlePivot);
 

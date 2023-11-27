@@ -164,7 +164,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0607c65ef2671814fb04fb50602c479c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RectTransform: {fileID: 8838977114607417665}
   Image: {fileID: 8316851963857106442}
+  LayoutElement: {fileID: 0}
   IdlePivot: {fileID: 3312237178211077714}
   HoverPivot: {fileID: 4639623538824358359}
   MousePivot: {fileID: 76338468651517059}
