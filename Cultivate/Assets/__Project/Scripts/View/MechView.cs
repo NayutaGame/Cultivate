@@ -9,18 +9,11 @@ public class MechView : ItemView, IInteractable,
     IBeginDragHandler, IEndDragHandler, IDragHandler,
     IDropHandler
 {
-    protected RectTransform _rectTransform;
-    protected Image _image;
+    public RectTransform _rectTransform;
+    public Image _image;
 
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text CountText;
-
-    public override void SetAddress(Address address)
-    {
-        base.SetAddress(address);
-        _rectTransform = GetComponent<RectTransform>();
-        _image = GetComponent<Image>();
-    }
 
     public override void Refresh()
     {
@@ -86,6 +79,6 @@ public class MechView : ItemView, IInteractable,
 
     public void Drag(PointerEventData eventData)
     {
-        CanvasManager.Instance.MechGhost.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.MechGhost._rectTransform.position = eventData.position;
     }
 }

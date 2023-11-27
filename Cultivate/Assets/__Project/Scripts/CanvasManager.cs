@@ -10,13 +10,19 @@ public class CanvasManager : Singleton<CanvasManager>
     public RunCanvas RunCanvas;
     public StageCanvas StageCanvas;
 
-    public Curtain Curtain;
-
+    [Header("Annotations")]
     public SkillAnnotation SkillAnnotation;
     public BuffAnnotation BuffAnnotation;
     public FormationAnnotation FormationAnnotation;
     public TextHint TextHint;
-    public MechGhost MechGhost;
+
+    [Header("Ghosts")]
+    public HandSkillView HandSkillGhost;
+    public FieldSlotView FieldSlotGhost;
+    public MechView MechGhost;
+
+    [Header("Curtain")]
+    public Curtain Curtain;
 
     public Color[] JingJieColors;
     public Sprite[] JingJieSprites;

@@ -10,8 +10,6 @@ public class FieldSlotView : SlotView, IInteractable,
     IBeginDragHandler, IEndDragHandler, IDragHandler,
     IDropHandler
 {
-    [SerializeField] private Image SlotBackground;
-
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);

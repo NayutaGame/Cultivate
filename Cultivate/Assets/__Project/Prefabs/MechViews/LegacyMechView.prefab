@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba95828adc050b40b5f763141518b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 7473717800460499930}
+  _image: {fileID: 4097292867141256717}
   NameText: {fileID: 3057079772761718752}
   CountText: {fileID: 5230345522273301014}
 --- !u!1 &5097738848572042598
@@ -161,8 +163,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 99
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
-  m_sharedMaterial: {fileID: -364229388345804397, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -296,8 +298,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u9999"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
-  m_sharedMaterial: {fileID: -364229388345804397, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
