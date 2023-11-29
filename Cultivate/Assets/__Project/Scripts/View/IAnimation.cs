@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using DG.Tweening;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ public struct FollowAnimationAnchored : IAnimation
 
     public Tween GetHandle()
     {
-        return DOTween.To(SetProgress, 0, 1, 0.15f);
+        return DOTween.To(SetProgress, 0, 1, 0.15f).SetEase(Ease.OutQuad);
     }
 
     public void SetProgress(float t)
@@ -45,7 +44,7 @@ public struct FollowAnimation : IAnimation
 
     public Tween GetHandle()
     {
-        return DOTween.To(SetProgress, 0, 1, 0.15f);
+        return DOTween.To(SetProgress, 0, 1, 0.15f).SetEase(Ease.OutQuad);
     }
 
     public void SetProgress(float t)

@@ -52,24 +52,24 @@ public class TimelineView : MonoBehaviour
 
     #region IInteractable
 
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
+    private InteractHandler _interactHandler;
+    public InteractHandler GetDelegate() => _interactHandler;
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new(1,
+        _interactHandler = new(1,
             getId: view =>
             {
-                if (view is StageSkillView)
+                if (view.GetComponent<StageSkillDelegate>() != null)
                     return 0;
                 return null;
             });
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((StageSkillView)v).PointerEnter(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((StageSkillView)v).PointerExit(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((StageSkillView)v).PointerMove(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StageSkillDelegate)v).PointerEnter(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StageSkillDelegate)v).PointerExit(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StageSkillDelegate)v).PointerMove(v, d));
 
         foreach (var v in _views)
-            v.SetDelegate(InteractDelegate);
+            v.GetComponent<StageSkillDelegate>().SetHandler(_interactHandler);
     }
 
     #endregion
@@ -89,7 +89,7 @@ public class TimelineView : MonoBehaviour
             v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
             v.SetAddress(new Address($"Stage.Timeline.Notes#{note.TemporalIndex}"));
-            v.SetDelegate(InteractDelegate);
+            v.GetComponent<StageSkillDelegate>().SetHandler(_interactHandler);
             v.Refresh();
         }
     }
@@ -162,7 +162,7 @@ public class TimelineView : MonoBehaviour
         v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
         v.SetAddress(new Address($"Stage.Timeline.Notes#{toCreate.TemporalIndex}"));
-        v.SetDelegate(InteractDelegate);
+        v.GetComponent<StageSkillDelegate>().SetHandler(_interactHandler);
         v.Refresh();
     }
 }

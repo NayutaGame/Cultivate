@@ -1,8 +1,9 @@
 
 using TMPro;
 
-public class EntityView : ItemView, IInteractable
+public class EntityView : ItemView
 {
+    public InteractDelegate InteractDelegate;
     public TMP_Text NameText;
     public TMP_Text JingJieText;
     public TMP_Text HPText;
@@ -35,13 +36,13 @@ public class EntityView : ItemView, IInteractable
 
     #region IInteractable
 
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate)
+    private InteractHandler _interactHandler;
+    public InteractHandler GetHandler() => _interactHandler;
+    public void SetHandler(InteractHandler interactHandler)
     {
-        InteractDelegate = interactDelegate;
+        _interactHandler = interactHandler;
         if (SlotListView != null)
-            SlotListView.SetDelegate(InteractDelegate);
+            SlotListView.SetHandler(_interactHandler);
     }
 
     #endregion

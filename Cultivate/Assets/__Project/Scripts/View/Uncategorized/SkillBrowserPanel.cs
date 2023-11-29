@@ -13,23 +13,23 @@ public class SkillBrowserPanel : Panel
 
     #region IInteractable
 
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
+    private InteractHandler _interactHandler;
+    public InteractHandler GetDelegate() => _interactHandler;
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new(1,
+        _interactHandler = new(1,
             getId: view =>
             {
-                if (view is BrowserSkillView)
+                if (view.GetComponent<BrowserSkillDelegate>() != null)
                     return 0;
                 return null;
             });
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((BrowserSkillView)v).PointerEnter(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((BrowserSkillView)v).PointerExit(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((BrowserSkillView)v).PointerMove(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((BrowserSkillDelegate)v).PointerEnter(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((BrowserSkillDelegate)v).PointerExit(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((BrowserSkillDelegate)v).PointerMove(v, d));
 
-        SkillInventoryView.SetDelegate(InteractDelegate);
+        SkillInventoryView.SetHandler(_interactHandler);
     }
 
     #endregion

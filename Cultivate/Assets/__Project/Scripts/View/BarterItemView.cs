@@ -2,7 +2,7 @@
 using System;
 using UnityEngine.UI;
 
-public class BarterItemView : ItemView, IInteractable
+public class BarterItemView : ItemView
 {
     public StandardSkillView PlayerSkillView;
     public StandardSkillView SkillView;
@@ -11,14 +11,13 @@ public class BarterItemView : ItemView, IInteractable
     public event Action<BarterItem> ExchangeEvent;
     public void ClearExchangeEvent() => ExchangeEvent = null;
 
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
-
-    public void SetDelegate(InteractDelegate interactDelegate)
+    private InteractHandler _interactHandler;
+    public InteractHandler GetHandler() => _interactHandler;
+    public void SetHandler(InteractHandler interactHandler)
     {
-        InteractDelegate = interactDelegate;
-        PlayerSkillView.SetDelegate(InteractDelegate);
-        SkillView.SetDelegate(InteractDelegate);
+        _interactHandler = interactHandler;
+        PlayerSkillView.GetComponent<InteractDelegate>()?.SetHandler(_interactHandler);
+        SkillView.GetComponent<InteractDelegate>()?.SetHandler(_interactHandler);
     }
 
     public override void SetAddress(Address address)

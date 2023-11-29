@@ -10,7 +10,7 @@ public class ArenaPanel : Panel
     public ArenaScoreboardView ArenaScoreboardView;
     public TMP_Text ReportView;
 
-    private InteractDelegate InteractDelegate;
+    private InteractHandler _interactHandler;
 
     private Address _address;
 
@@ -23,33 +23,33 @@ public class ArenaPanel : Panel
         ConfigureInteractDelegate();
 
         SkillInventoryView.SetAddress(new Address("App.SkillInventory"));
-        SkillInventoryView.SetDelegate(InteractDelegate);
+        SkillInventoryView.SetHandler(_interactHandler);
 
         ArenaEditorView.SetAddress(_address);
-        ArenaEditorView.SetDelegate(InteractDelegate);
+        ArenaEditorView.SetHandler(_interactHandler);
 
         ArenaScoreboardView.Configure();
     }
 
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new(2,
+        _interactHandler = new(2,
             getId: view =>
             {
-                object item = view.Get<object>();
+                object item = view.GetComponent<IAddress>().Get<object>();
                 if (item is RunSkill)
                     return 0;
                 if (item is SkillSlot)
                     return 1;
                 return null;
             },
-            dragDropTable: new Action<IInteractable, IInteractable>[]
+            dragDropTable: new Action<InteractDelegate, InteractDelegate>[]
             {
                 /*               RunSkill,   SkillSlot */
                 /* RunSkill   */ null,       TryWrite,
                 /* SkillSlot  */ null,       TryWrite,
             });
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_RIGHT_CLICK, 1, (v, d) => TryIncreaseJingJie(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_RIGHT_CLICK, 1, (v, d) => TryIncreaseJingJie(v, d));
     }
 
     public override void Refresh()
@@ -62,12 +62,12 @@ public class ArenaPanel : Panel
         ReportView.text = RunManager.Instance.Arena.Result?.ToString();
     }
 
-    private void TryWrite(IInteractable from, IInteractable to)
+    private void TryWrite(InteractDelegate from, InteractDelegate to)
     {
         Arena arena = _address.Get<Arena>();
 
-        object fromItem = from.Get<object>();
-        SkillSlot toSlot = to.Get<SkillSlot>();
+        object fromItem = from.GetComponent<IAddress>().Get<object>();
+        SkillSlot toSlot = to.GetComponent<IAddress>().Get<SkillSlot>();
 
         if (fromItem is RunSkill fromSkill)
         {
@@ -79,10 +79,10 @@ public class ArenaPanel : Panel
         }
     }
 
-    private bool TryIncreaseJingJie(IInteractable view, PointerEventData eventData)
+    private bool TryIncreaseJingJie(InteractDelegate view, PointerEventData eventData)
     {
         Arena arena = _address.Get<Arena>();
-        SkillSlot slot = view.Get<SkillSlot>();
+        SkillSlot slot = view.GetComponent<IAddress>().Get<SkillSlot>();
         return arena.TryIncreaseJingJie(slot);
     }
 }

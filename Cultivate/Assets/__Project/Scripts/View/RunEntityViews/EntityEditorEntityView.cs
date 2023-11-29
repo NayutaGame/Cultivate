@@ -4,8 +4,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntityEditorEntityView : ItemView, IInteractable
+public class EntityEditorEntityView : ItemView
 {
+    public InteractDelegate InteractDelegate;
+
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
     public TMP_InputField HealthInputField;
@@ -179,15 +181,15 @@ public class EntityEditorEntityView : ItemView, IInteractable
 
     #region IInteractable
 
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate)
+    private InteractHandler _interactHandler;
+    public InteractHandler GetHandler() => _interactHandler;
+    public void SetHandler(InteractHandler interactHandler)
     {
-        InteractDelegate = interactDelegate;
+        _interactHandler = interactHandler;
         if (FieldView != null)
-            FieldView.SetDelegate(InteractDelegate);
+            FieldView.SetHandler(_interactHandler);
         if (FormationListView != null)
-            FormationListView.SetDelegate(InteractDelegate);
+            FormationListView.SetHandler(_interactHandler);
     }
 
     #endregion

@@ -17,7 +17,7 @@ public class BarterPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         BarterItemListView.SetAddress(_address.Append(".Inventory"));
-        BarterItemListView.SetDelegate(InteractDelegate);
+        BarterItemListView.SetHandler(_interactHandler);
 
         foreach (ItemView itemView in BarterItemListView.ActivePool)
         {
@@ -30,16 +30,16 @@ public class BarterPanel : Panel
         ExitButton.onClick.AddListener(Exit);
     }
 
-    private InteractDelegate InteractDelegate;
+    private InteractHandler _interactHandler;
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new InteractDelegate(1,
+        _interactHandler = new InteractHandler(1,
             getId: view => 0
         );
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((StandardSkillView)v).HoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((StandardSkillView)v).UnhoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((StandardSkillView)v).PointerMove(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StandardSkillDelegate)v).HoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StandardSkillDelegate)v).UnhoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StandardSkillDelegate)v).PointerMove(d));
     }
 
     public override void Refresh()

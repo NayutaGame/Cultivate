@@ -37,30 +37,31 @@ public class StageCanvas : MonoBehaviour
 
     #region IInteractable
 
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
+    private InteractHandler _interactHandler;
+    public InteractHandler GetDelegate() => _interactHandler;
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new(2,
+        _interactHandler = new(2,
             getId: view =>
             {
-                if (view is BuffView)
+                InteractDelegate d = view.GetComponent<InteractDelegate>();
+                if (d is BuffDelegate)
                     return 0;
-                if (view is StageFormationIconView)
+                if (d is StageFormationIconDelegate)
                     return 1;
                 return null;
             });
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((BuffView)v).PointerEnter(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((BuffView)v).PointerExit(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((BuffView)v).PointerMove(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((BuffDelegate)v).PointerEnter(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((BuffDelegate)v).PointerExit(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((BuffDelegate)v).PointerMove(v, d));
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 1, (v, d) => ((StageFormationIconView)v).PointerEnter(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 1, (v, d) => ((StageFormationIconView)v).PointerExit(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 1, (v, d) => ((StageFormationIconView)v).PointerMove(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 1, (v, d) => ((StageFormationIconDelegate)v).PointerEnter(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 1, (v, d) => ((StageFormationIconDelegate)v).PointerExit(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 1, (v, d) => ((StageFormationIconDelegate)v).PointerMove(v, d));
 
-        HomeStageEntityView.SetDelegate(InteractDelegate);
-        AwayStageEntityView.SetDelegate(InteractDelegate);
+        HomeStageEntityView.SetHandler(_interactHandler);
+        AwayStageEntityView.SetHandler(_interactHandler);
     }
 
     #endregion

@@ -18,22 +18,22 @@ public class ShopPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         CommodityListView.SetAddress(_address.Append(".Commodities"));
-        CommodityListView.SetDelegate(InteractDelegate);
+        CommodityListView.SetHandler(_interactHandler);
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
     }
 
-    private InteractDelegate InteractDelegate;
+    private InteractHandler _interactHandler;
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new InteractDelegate(1,
+        _interactHandler = new InteractHandler(1,
             getId: view => 0);
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((CommodityItemView)v).SkillView.HoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((CommodityItemView)v).SkillView.UnhoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((CommodityItemView)v).SkillView.PointerMove(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, (v, d) => BuySkill(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((CommodityItemDelegate)v).SkillView.HoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((CommodityItemDelegate)v).SkillView.UnhoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((CommodityItemDelegate)v).SkillView.PointerMove(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, (v, d) => BuySkill(v, d));
     }
 
     public override void Refresh()
@@ -42,9 +42,9 @@ public class ShopPanel : Panel
         CommodityListView.Refresh();
     }
 
-    private bool BuySkill(IInteractable view, PointerEventData eventData)
+    private bool BuySkill(InteractDelegate interactDelegate, PointerEventData eventData)
     {
-        Commodity commodity = view.Get<Commodity>();
+        Commodity commodity = interactDelegate.AddressDelegate.Get<Commodity>();
 
         ShopPanelDescriptor d = _address.Get<ShopPanelDescriptor>();
 

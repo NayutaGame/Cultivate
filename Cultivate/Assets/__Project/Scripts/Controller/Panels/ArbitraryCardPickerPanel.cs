@@ -29,7 +29,7 @@ public class ArbitraryCardPickerPanel : Panel
         _selections = new List<SkillView>();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
-        SkillListView.SetDelegate(InteractDelegate);
+        SkillListView.SetHandler(_interactHandler);
     }
 
     public void OnDisable()
@@ -52,24 +52,24 @@ public class ArbitraryCardPickerPanel : Panel
         SkillListView.Refresh();
     }
 
-    private InteractDelegate InteractDelegate;
+    private InteractHandler _interactHandler;
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new InteractDelegate(1,
+        _interactHandler = new InteractHandler(1,
             getId: view => 0
         );
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((StandardSkillView)v).HoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((StandardSkillView)v).UnhoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((StandardSkillView)v).PointerMove(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, (v, d) => ToggleSkill(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StandardSkillDelegate)v).HoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StandardSkillDelegate)v).UnhoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StandardSkillDelegate)v).PointerMove(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, (v, d) => ToggleSkill(v, d));
     }
 
-    private bool ToggleSkill(IInteractable view, PointerEventData eventData)
+    private bool ToggleSkill(InteractDelegate view, PointerEventData eventData)
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
-        SkillView skillView = view as SkillView;
+        SkillView skillView = view.GetComponent<SkillView>();
         bool isSelected = _selections.Contains(skillView);
 
         if (isSelected)

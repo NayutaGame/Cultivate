@@ -1,97 +1,62 @@
 
-using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class InteractDelegate
+public class InteractDelegate : MonoBehaviour
+    // IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
+    // IBeginDragHandler, IEndDragHandler, IDragHandler,
+    // IDropHandler,
+    // IPointerClickHandler
 {
-    private int _distinctItems;
+    public IAddress AddressDelegate;
 
-    private Func<IInteractable, int?> _getId;
+    [SerializeField] private Image Image;
 
-    private Action<IInteractable, IInteractable>[] _dragDropTable;
-    private Action<IInteractable, IInteractable> GetDragDrop(int fromId, int toId)
-        => _dragDropTable?[toId + fromId * _distinctItems];
-    public void SetDragDrop(int fromId, int toId, Action<IInteractable, IInteractable> func)
+    public bool RaycastTarget
     {
-        _dragDropTable ??= new Action<IInteractable, IInteractable>[_distinctItems * _distinctItems];
-        _dragDropTable[toId + fromId * _distinctItems] = func;
+        get => Image.raycastTarget;
+        set => Image.raycastTarget = value;
     }
 
-    private Action<IInteractable, IInteractable> GetDragDrop(IInteractable fromView, IInteractable toView)
+    private void OnEnable()
     {
-        InteractDelegate fromDelegate = fromView?.GetDelegate();
-        InteractDelegate toDelegate = toView?.GetDelegate();
-        if (fromDelegate == null || toDelegate == null || fromDelegate != toDelegate)
-            return null;
-
-        int? fromId = _getId(fromView);
-        int? toId = _getId(toView);
-        if (!fromId.HasValue || !toId.HasValue)
-            return null;
-
-        return GetDragDrop(fromId.Value, toId.Value);
+        RaycastTarget = true;
     }
-    public bool CanDrag(IInteractable view)
-    {
-        int? viewId = _getId(view);
-        if (!viewId.HasValue)
-            return false;
 
-        for (int i = 0; i < _distinctItems; i++)
-        {
-            Action<IInteractable, IInteractable> func = GetDragDrop(viewId.Value, i);
-            if (func != null)
-                return true;
+    private InteractHandler _interactHandler;
+    public InteractHandler GetHandler() => _interactHandler;
+    public void SetHandler(InteractHandler interactHandler) => _interactHandler = interactHandler;
+
+    public virtual void OnPointerEnter(PointerEventData eventData) => GetHandler()?.Handle(InteractHandler.POINTER_ENTER, this, eventData);
+    public virtual void OnPointerExit(PointerEventData eventData)  => GetHandler()?.Handle(InteractHandler.POINTER_EXIT, this, eventData);
+    public virtual void OnPointerMove(PointerEventData eventData)  => GetHandler()?.Handle(InteractHandler.POINTER_MOVE, this, eventData);
+    public virtual void OnBeginDrag(PointerEventData eventData)    => GetHandler()?.Handle(InteractHandler.BEGIN_DRAG, this, eventData);
+    public virtual void OnEndDrag(PointerEventData eventData)      => GetHandler()?.Handle(InteractHandler.END_DRAG, this, eventData);
+    public virtual void OnDrag(PointerEventData eventData)         => GetHandler()?.Handle(InteractHandler.DRAG, this, eventData);
+    public virtual void OnDrop(PointerEventData eventData)         => GetHandler()?.DragDrop(eventData.pointerDrag.GetComponent<InteractDelegate>(), this);
+    public virtual void OnPointerClick(PointerEventData eventData)
+    {
+        int? gestureId = null;
+
+        if (eventData.button == PointerEventData.InputButton.Left) {
+            gestureId = InteractHandler.POINTER_LEFT_CLICK;
+        } else if (eventData.button == PointerEventData.InputButton.Right) {
+            gestureId = InteractHandler.POINTER_RIGHT_CLICK;
         }
 
-        return false;
+        if (gestureId.HasValue)
+            GetHandler()?.Handle(gestureId.Value, this, eventData);
     }
 
-    public void DragDrop(IInteractable fromView, IInteractable toView)
-        => GetDragDrop(fromView, toView)?.Invoke(fromView, toView);
+    private Tween _animationHandle;
 
-
-
-    public static readonly int POINTER_ENTER = 0;
-    public static readonly int POINTER_EXIT = 1;
-    public static readonly int POINTER_MOVE = 2;
-    public static readonly int POINTER_LEFT_CLICK = 3;
-    public static readonly int POINTER_RIGHT_CLICK = 4;
-    public static readonly int BEGIN_DRAG = 5;
-    public static readonly int END_DRAG = 6;
-    public static readonly int DRAG = 7;
-    public static readonly int GESTURE_COUNT = 8;
-
-    private Action<IInteractable, PointerEventData>[] _handleTable;
-    private Action<IInteractable, PointerEventData> GetHandle(int gestureId, int viewId)
-        => _handleTable?[gestureId * _distinctItems + viewId];
-    public void SetHandle(int gestureId, int viewId, Action<IInteractable, PointerEventData> func)
+    public void PlayFollowAnimation(RectTransform subject, RectTransform toFollow)
     {
-        _handleTable ??= new Action<IInteractable, PointerEventData>[_distinctItems * GESTURE_COUNT];
-        _handleTable[gestureId * _distinctItems + viewId] = func;
-    }
-
-    private Action<IInteractable, PointerEventData> GetHandle(int gestureId, IInteractable view)
-    {
-        int? viewId = _getId(view);
-        if (!viewId.HasValue)
-            return null;
-
-        return GetHandle(gestureId, viewId.Value);
-    }
-
-    public void Handle(int gestureId, IInteractable view, PointerEventData eventData)
-        => GetHandle(gestureId, view)?.Invoke(view, eventData);
-
-    public InteractDelegate(int distinctItems,
-        Func<IInteractable, int?> getId,
-        Action<IInteractable, IInteractable>[] dragDropTable = null,
-        Action<IInteractable, PointerEventData>[] handleTable = null)
-    {
-        _distinctItems = distinctItems;
-        _getId = getId;
-        _dragDropTable = dragDropTable;
-        _handleTable = handleTable;
+        _animationHandle?.Kill();
+        FollowAnimation f = new FollowAnimation(subject, toFollow);
+        _animationHandle = f.GetHandle();
+        _animationHandle.SetAutoKill().Restart();
     }
 }

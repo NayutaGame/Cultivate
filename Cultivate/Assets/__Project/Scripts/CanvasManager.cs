@@ -17,8 +17,8 @@ public class CanvasManager : Singleton<CanvasManager>
     public TextHint TextHint;
 
     [Header("Ghosts")]
-    public HandSkillView HandSkillGhost;
-    public FieldSlotView FieldSlotGhost;
+    public SkillGhost SkillGhost;
+    public SlotGhost SlotGhost;
     public MechView MechGhost;
 
     [Header("Curtain")]

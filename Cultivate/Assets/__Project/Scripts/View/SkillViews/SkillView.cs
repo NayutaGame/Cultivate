@@ -7,6 +7,8 @@ using UnityEngine.UI;
 [SelectionBase]
 public class SkillView : ItemView
 {
+    [SerializeField] public CanvasGroup CanvasGroup;
+
     [SerializeField] private Image Image;
     // [SerializeField] private GameObject ManaCostView;
     [SerializeField] private TMP_Text ManaCostText;
@@ -33,6 +35,11 @@ public class SkillView : ItemView
     }
 
     #endregion
+
+    private void OnEnable()
+    {
+        CanvasGroup.alpha = 1;
+    }
 
     public override void Refresh()
     {

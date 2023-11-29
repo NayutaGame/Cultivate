@@ -64,11 +64,11 @@ public class CardPickerPanel : Panel
 
     private int SelectionCount => _skillSelections.Count + _slotSelections.Count;
 
-    public bool ToggleSkill(IInteractable view)
+    public bool ToggleSkill(InteractDelegate view)
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
-        SkillView skillView = view as SkillView;
+        SkillView skillView = view.GetComponent<SkillView>();
         int index = SkillListView.ActivePool.FindIndex(v => v == skillView);
         bool isSelected = _skillSelections.Contains(index);
 
@@ -94,11 +94,11 @@ public class CardPickerPanel : Panel
         return true;
     }
 
-    public bool ToggleSkillSlot(IInteractable view)
+    public bool ToggleSkillSlot(InteractDelegate view)
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
-        SlotView slotView = view as SlotView;
+        SlotView slotView = view.GetComponent<SlotView>();
         int index = SlotListView.ActivePool.FindIndex(v => v == slotView);
         bool isSelected = _slotSelections.Contains(index);
 

@@ -2,8 +2,9 @@
 using TMPro;
 using UnityEngine;
 
-public class StageEntityView : MonoBehaviour, IAddress, IInteractable
+public class StageEntityView : MonoBehaviour, IAddress
 {
+    public InteractDelegate InteractDelegate;
     [SerializeField] private ListView Formations;
     [SerializeField] private ListView Buffs;
     [SerializeField] private TMP_Text HealthText;
@@ -40,13 +41,13 @@ public class StageEntityView : MonoBehaviour, IAddress, IInteractable
 
     #region IInteractable
 
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate)
+    private InteractHandler _interactHandler;
+    public InteractHandler GetHandler() => _interactHandler;
+    public void SetHandler(InteractHandler interactHandler)
     {
-        InteractDelegate = interactDelegate;
-        Formations.SetDelegate(InteractDelegate);
-        Buffs.SetDelegate(InteractDelegate);
+        _interactHandler = interactHandler;
+        Formations.SetHandler(_interactHandler);
+        Buffs.SetHandler(_interactHandler);
     }
 
     #endregion

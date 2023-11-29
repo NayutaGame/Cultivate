@@ -28,7 +28,7 @@ public class EntityEditorPanel : Panel
     [SerializeField] private Button SaveButton;
     [SerializeField] private Button LoadButton;
 
-    private InteractDelegate InteractDelegate;
+    private InteractHandler _interactHandler;
 
     public override void Configure()
     {
@@ -87,102 +87,103 @@ public class EntityEditorPanel : Panel
 
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new(4,
+        _interactHandler = new(4,
             getId: view =>
             {
-                if (view is EntityBarView)
+                InteractDelegate d = view.GetComponent<InteractDelegate>();
+                if (d is EntityBarDelegate)
                     return 0;
-                if (view is EntityEditorSkillBarView)
+                if (d is EntityEditorSkillBarDelegate)
                     return 1;
                 if (view is EntityEditorSlotView)
                     return 2;
-                if (view is RunFormationIconView)
+                if (d is RunFormationIconDelegate)
                     return 3;
                 return null;
             });
 
-        InteractDelegate.SetDragDrop(1, 2, Equip);
-        InteractDelegate.SetDragDrop(2, 1, Unequip);
-        InteractDelegate.SetDragDrop(2, 2, Swap);
+        _interactHandler.SetDragDrop(1, 2, Equip);
+        _interactHandler.SetDragDrop(2, 1, Unequip);
+        _interactHandler.SetDragDrop(2, 2, Swap);
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, SelectEntity);
+        _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, SelectEntity);
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 1, ShowSkillPreview);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 1, HideSkillPreview);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 1, MoveSkillPreview);
-        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 1, BeginDrag);
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 1, ShowSkillPreview);
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 1, HideSkillPreview);
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 1, MoveSkillPreview);
+        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 1, BeginDrag);
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, ShowSkillPreviewFromSlotView);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, HideSkillPreview);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 2, MoveSkillPreview);
-        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 2, BeginDrag);
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 2, ShowSkillPreviewFromSlotView);
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 2, HideSkillPreview);
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 2, MoveSkillPreview);
+        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 2, BeginDrag);
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_RIGHT_CLICK, 2, IncreaseJingJie);
+        _interactHandler.SetHandle(InteractHandler.POINTER_RIGHT_CLICK, 2, IncreaseJingJie);
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 3, ShowFormationPreview);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 3, HideFormationPreview);
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 3, MoveFormationPreview);
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 3, ShowFormationPreview);
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 3, HideFormationPreview);
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 3, MoveFormationPreview);
 
-        EntityBrowser.SetDelegate(InteractDelegate);
-        SkillBrowser.SetDelegate(InteractDelegate);
-        AwayEntityView.SetDelegate(InteractDelegate);
-        HomeEntityView.SetDelegate(InteractDelegate);
+        EntityBrowser.SetHandler(_interactHandler);
+        SkillBrowser.SetHandler(_interactHandler);
+        AwayEntityView.SetHandler(_interactHandler);
+        HomeEntityView.SetHandler(_interactHandler);
     }
 
-    private void Equip(IInteractable fromView, IInteractable toView)
+    private void Equip(InteractDelegate fromDelegate, InteractDelegate toDelegate)
     {
         // SkillBarView -> EntityEditorSlotView
-        RunSkill skill = fromView.Get<RunSkill>();
-        SkillSlot slot = toView.Get<SkillSlot>();
+        RunSkill skill = fromDelegate.AddressDelegate.Get<RunSkill>();
+        SkillSlot slot = toDelegate.AddressDelegate.Get<SkillSlot>();
 
         slot.Skill = skill;
         Refresh();
     }
 
-    private void Unequip(IInteractable fromView, IInteractable toView)
+    private void Unequip(InteractDelegate fromDelegate, InteractDelegate toDelegate)
     {
         // EntityEditorSlotView -> SkillBarView
-        SkillSlot slot = fromView.Get<SkillSlot>();
+        SkillSlot slot = fromDelegate.AddressDelegate.Get<SkillSlot>();
 
         slot.Skill = null;
         Refresh();
     }
 
-    private void Swap(IInteractable fromView, IInteractable toView)
+    private void Swap(InteractDelegate fromDelegate, InteractDelegate toDelegate)
     {
         // EntityEditorSlotView -> EntityEditorSlotView
-        SkillSlot fromSlot = fromView.Get<SkillSlot>();
-        SkillSlot toSlot = toView.Get<SkillSlot>();
+        SkillSlot fromSlot = fromDelegate.AddressDelegate.Get<SkillSlot>();
+        SkillSlot toSlot = toDelegate.AddressDelegate.Get<SkillSlot>();
 
         (fromSlot.Skill, toSlot.Skill) = (toSlot.Skill, fromSlot.Skill);
         Refresh();
     }
 
-    private void IncreaseJingJie(IInteractable view, PointerEventData eventData)
+    private void IncreaseJingJie(InteractDelegate interactDelegate, PointerEventData eventData)
     {
-        SkillSlot slot = view.Get<SkillSlot>();
+        SkillSlot slot = interactDelegate.AddressDelegate.Get<SkillSlot>();
         slot.TryIncreaseJingJie();
-        view.Refresh();
+        interactDelegate.AddressDelegate.Refresh();
         SkillAnnotation.Refresh();
     }
 
-    private void ShowSkillPreview(IInteractable view, PointerEventData eventData)
+    private void ShowSkillPreview(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        SkillAnnotation.SetAddress(view.GetAddress());
+        SkillAnnotation.SetAddress(interactDelegate.AddressDelegate.GetAddress());
         SkillAnnotation.Refresh();
     }
 
-    private void ShowSkillPreviewFromSlotView(IInteractable view, PointerEventData eventData)
+    private void ShowSkillPreviewFromSlotView(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        SkillAnnotation.SetAddress(view.GetAddress().Append(".Skill"));
+        SkillAnnotation.SetAddress(interactDelegate.AddressDelegate.GetAddress().Append(".Skill"));
         SkillAnnotation.Refresh();
     }
 
-    private void HideSkillPreview(IInteractable view, PointerEventData eventData)
+    private void HideSkillPreview(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
@@ -190,22 +191,22 @@ public class EntityEditorPanel : Panel
         SkillAnnotation.Refresh();
     }
 
-    private void MoveSkillPreview(IInteractable view, PointerEventData eventData)
+    private void MoveSkillPreview(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
         SkillAnnotation.UpdateMousePos(eventData.position);
     }
 
-    private void ShowFormationPreview(IInteractable view, PointerEventData eventData)
+    private void ShowFormationPreview(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        FormationPreview.SetAddress(view.GetAddress());
+        FormationPreview.SetAddress(interactDelegate.AddressDelegate.GetAddress());
         FormationPreview.Refresh();
     }
 
-    private void HideFormationPreview(IInteractable view, PointerEventData eventData)
+    private void HideFormationPreview(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
@@ -213,14 +214,14 @@ public class EntityEditorPanel : Panel
         FormationPreview.Refresh();
     }
 
-    private void MoveFormationPreview(IInteractable view, PointerEventData eventData)
+    private void MoveFormationPreview(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
         FormationPreview.UpdateMousePos(eventData.position);
     }
 
-    private void BeginDrag(IInteractable view, PointerEventData eventData)
+    private void BeginDrag(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         SkillAnnotation.SetAddress(null);
         SkillAnnotation.Refresh();
@@ -228,12 +229,12 @@ public class EntityEditorPanel : Panel
         FormationPreview.Refresh();
     }
 
-    private void SelectEntity(IInteractable view, PointerEventData eventData)
+    private void SelectEntity(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         if (_selection != null)
             _selection.SetSelected(false);
 
-        _selection = (EntityBarView)view;
+        _selection = interactDelegate.GetComponent<EntityBarView>();
 
         if (_selection != null)
             _selectionIndex = EntityBrowser.ActivePool.IndexOf(_selection);
@@ -244,7 +245,7 @@ public class EntityEditorPanel : Panel
 
         if (_selection != null)
         {
-            AwayEntityView.SetAddress(view.GetAddress());
+            AwayEntityView.SetAddress(interactDelegate.AddressDelegate.GetAddress());
             AwayEntityView.Refresh();
             _selection.SetSelected(true);
         }

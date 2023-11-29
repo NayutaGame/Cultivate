@@ -5,8 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class FormationGroupBarView : ItemView, IInteractable,
-    IPointerClickHandler
+public class FormationGroupBarView : ItemView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private Image SelectionImage;
@@ -40,26 +39,4 @@ public class FormationGroupBarView : ItemView, IInteractable,
 
         NameText.text = formationGroup.Name;
     }
-
-    #region IInteractable
-
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
-    public void SetDelegate(InteractDelegate interactDelegate) => InteractDelegate = interactDelegate;
-
-    public virtual void OnPointerClick(PointerEventData eventData)
-    {
-        int? gestureId = null;
-
-        if (eventData.button == PointerEventData.InputButton.Left) {
-            gestureId = InteractDelegate.POINTER_LEFT_CLICK;
-        } else if (eventData.button == PointerEventData.InputButton.Right) {
-            gestureId = InteractDelegate.POINTER_RIGHT_CLICK;
-        }
-
-        if (gestureId.HasValue)
-            GetDelegate()?.Handle(gestureId.Value, this, eventData);
-    }
-
-    #endregion
 }

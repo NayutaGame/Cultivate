@@ -9,7 +9,7 @@ public class DiscoverSkillPanel : Panel
     public TMP_Text DetailedText;
     public DiscoverSkillPanelSkillView[] SkillViews;
 
-    private InteractDelegate InteractDelegate;
+    private InteractHandler _interactHandler;
 
     private Address _address;
 
@@ -20,17 +20,17 @@ public class DiscoverSkillPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
 
         ConfigureInteractDelegate();
-        SkillViews.Do(v => v.SetDelegate(InteractDelegate));
+        SkillViews.Do(v => v.GetComponent<InteractDelegate>()?.SetHandler(_interactHandler));
     }
 
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new InteractDelegate(1, getId: view => 0);
+        _interactHandler = new InteractHandler(1, getId: view => 0);
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((DiscoverSkillPanelSkillView)v).HoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((DiscoverSkillPanelSkillView)v).UnhoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((DiscoverSkillPanelSkillView)v).PointerMove(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, (v, d) => TrySelectOption(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((DiscoverSkillDelegate)v).HoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((DiscoverSkillDelegate)v).UnhoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((DiscoverSkillDelegate)v).PointerMove(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, (v, d) => TrySelectOption(v, d));
     }
 
     public override void Refresh()
@@ -54,11 +54,11 @@ public class DiscoverSkillPanel : Panel
         }
     }
 
-    public bool TrySelectOption(IInteractable view, PointerEventData eventData)
+    public bool TrySelectOption(InteractDelegate interactDelegate, PointerEventData eventData)
     {
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
-        RunSkill skill = view.Get<RunSkill>();
+        RunSkill skill = interactDelegate.AddressDelegate.Get<RunSkill>();
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);

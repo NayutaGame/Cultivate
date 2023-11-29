@@ -11,7 +11,7 @@ public class DeckPanel : Panel
     public PropagatePointerEnter DeckCloseZone;
 
     public Button SortButton;
-    public ListView FieldView;
+    public AnimatedListView FieldView;
     public AnimatedListView HandView;
     public ListView FormationListView;
     public ListView MechListView;
@@ -82,26 +82,26 @@ public class DeckPanel : Panel
 
     #region IInteractable
 
-    private InteractDelegate InteractDelegate;
-    public InteractDelegate GetDelegate() => InteractDelegate;
+    private InteractHandler _interactHandler;
+    public InteractHandler GetDelegate() => _interactHandler;
     private void ConfigureInteractDelegate()
     {
-        InteractDelegate = new(5,
-            getId: view =>
+        _interactHandler = new(5,
+            getId: d =>
             {
-                if (view is HandSkillView || view is PivotPropagate)
+                if (d is HandSkillDelegate)
                     return 0;
-                if (ReferenceEquals(view, HandView))
+                if (d is AnimatedListDelegate)
                     return 1;
-                if (view is FieldSlotView)
+                if (d is FieldSlotDelegate)
                     return 2;
-                if (view is MechView)
+                if (d is MechDelegate)
                     return 3;
-                if (view is RunFormationIconView)
+                if (d is RunFormationIconDelegate)
                     return 4;
                 return null;
             },
-            dragDropTable: new Action<IInteractable, IInteractable>[]
+            dragDropTable: new Action<InteractDelegate, InteractDelegate>[]
             {
                 /*                  SkillView,  HandView,       SlotView,        Mech,       FormationView */
                 /* SkillView     */ TryMerge,   null,           TryEquipSkill,   null,       null,
@@ -111,39 +111,39 @@ public class DeckPanel : Panel
                 /* FormationView */ null,       null,           null,            null,       null,
             });
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 0, (v, d) => ((HandSkillView)v).HoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 0, (v, d) => ((HandSkillView)v).UnhoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 0, (v, d) => ((HandSkillView)v).PointerMove(d));
-        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 0, (v, d) => ((HandSkillView)v).BeginDrag(d));
-        InteractDelegate.SetHandle(InteractDelegate.END_DRAG, 0, (v, d) => ((HandSkillView)v).EndDrag(d));
-        InteractDelegate.SetHandle(InteractDelegate.DRAG, 0, (v, d) => ((HandSkillView)v).Drag(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((HandSkillDelegate)v).HoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((HandSkillDelegate)v).UnhoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((HandSkillDelegate)v).PointerMove(d));
+        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 0, (v, d) => ((HandSkillDelegate)v).BeginDrag(d));
+        _interactHandler.SetHandle(InteractHandler.END_DRAG, 0, (v, d) => ((HandSkillDelegate)v).EndDrag(d));
+        _interactHandler.SetHandle(InteractHandler.DRAG, 0, (v, d) => ((HandSkillDelegate)v).Drag(d));
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 2, (v, d) => ((FieldSlotView)v).HoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 2, (v, d) => ((FieldSlotView)v).UnhoverAnimation(d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 2, (v, d) => ((FieldSlotView)v).PointerMove(d));
-        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 2, (v, d) => ((FieldSlotView)v).BeginDrag(d));
-        InteractDelegate.SetHandle(InteractDelegate.END_DRAG, 2, (v, d) => ((FieldSlotView)v).EndDrag(d));
-        InteractDelegate.SetHandle(InteractDelegate.DRAG, 2, (v, d) => ((FieldSlotView)v).Drag(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 2, (v, d) => ((FieldSlotDelegate)v).HoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 2, (v, d) => ((FieldSlotDelegate)v).UnhoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 2, (v, d) => ((FieldSlotDelegate)v).PointerMove(d));
+        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 2, (v, d) => ((FieldSlotDelegate)v).BeginDrag(d));
+        _interactHandler.SetHandle(InteractHandler.END_DRAG, 2, (v, d) => ((FieldSlotDelegate)v).EndDrag(d));
+        _interactHandler.SetHandle(InteractHandler.DRAG, 2, (v, d) => ((FieldSlotDelegate)v).Drag(d));
 
-        InteractDelegate.SetHandle(InteractDelegate.BEGIN_DRAG, 3, (v, d) => ((MechView)v).BeginDrag(d));
-        InteractDelegate.SetHandle(InteractDelegate.END_DRAG, 3, (v, d) => ((MechView)v).EndDrag(d));
-        InteractDelegate.SetHandle(InteractDelegate.DRAG, 3, (v, d) => ((MechView)v).Drag(d));
+        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 3, (v, d) => ((MechDelegate)v).BeginDrag(d));
+        _interactHandler.SetHandle(InteractHandler.END_DRAG, 3, (v, d) => ((MechDelegate)v).EndDrag(d));
+        _interactHandler.SetHandle(InteractHandler.DRAG, 3, (v, d) => ((MechDelegate)v).Drag(d));
 
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_ENTER, 4, (v, d) => ((RunFormationIconView)v).PointerEnter(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_EXIT, 4, (v, d) => ((RunFormationIconView)v).PointerExit(v, d));
-        InteractDelegate.SetHandle(InteractDelegate.POINTER_MOVE, 4, (v, d) => ((RunFormationIconView)v).PointerMove(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 4, (v, d) => ((RunFormationIconDelegate)v).PointerEnter(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 4, (v, d) => ((RunFormationIconDelegate)v).PointerExit(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 4, (v, d) => ((RunFormationIconDelegate)v).PointerMove(v, d));
 
-        FieldView.SetDelegate(InteractDelegate);
-        HandView.SetDelegate(InteractDelegate);
-        FormationListView.SetDelegate(InteractDelegate);
-        MechListView.SetDelegate(InteractDelegate);
+        FieldView.SetHandler(_interactHandler);
+        HandView.SetHandler(_interactHandler);
+        FormationListView.SetHandler(_interactHandler);
+        MechListView.SetHandler(_interactHandler);
     }
 
-    private void TryMerge(IInteractable from, IInteractable to)
+    private void TryMerge(InteractDelegate from, InteractDelegate to)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        RunSkill lhs = from.Get<RunSkill>();
-        RunSkill rhs = to.Get<RunSkill>();
+        RunSkill lhs = from.AddressDelegate.Get<RunSkill>();
+        RunSkill rhs = to.AddressDelegate.Get<RunSkill>();
         bool success = env.TryMerge(lhs, rhs);
         if (!success)
             return;
@@ -153,11 +153,11 @@ public class DeckPanel : Panel
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
-    private void TryEquipSkill(IInteractable from, IInteractable to)
+    private void TryEquipSkill(InteractDelegate fromDelegate, InteractDelegate toDelegate)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        RunSkill toEquip = from.Get<RunSkill>();
-        SkillSlot slot = to.Get<SkillSlot>();
+        RunSkill toEquip = fromDelegate.AddressDelegate.Get<RunSkill>();
+        SkillSlot slot = toDelegate.AddressDelegate.Get<SkillSlot>();
         bool success = env.TryEquipSkill(toEquip, slot);
         if (!success)
             return;
@@ -168,26 +168,26 @@ public class DeckPanel : Panel
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
-    private void TryEquipMech(IInteractable from, IInteractable to)
+    private void TryEquipMech(InteractDelegate fromDelegate, InteractDelegate toDelegate)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        Mech toEquip = from.Get<Mech>();
-        SkillSlot slot = to.Get<SkillSlot>();
+        Mech toEquip = fromDelegate.AddressDelegate.Get<Mech>();
+        SkillSlot slot = toDelegate.AddressDelegate.Get<SkillSlot>();
         bool success = env.TryEquipMech(toEquip, slot);
         if (!success)
             return;
 
         AudioManager.Play("CardPlacement");
-        from.Refresh();
+        fromDelegate.AddressDelegate.Refresh();
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
-    private void TryUnequip(IInteractable from, IInteractable to)
+    private void TryUnequip(InteractDelegate fromDelegate, InteractDelegate toDelegate)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        SkillSlot slot = from.Get<SkillSlot>();
+        SkillSlot slot = fromDelegate.AddressDelegate.Get<SkillSlot>();
         bool success = env.TryUnequip(slot, null);
         if (!success)
             return;
@@ -199,11 +199,11 @@ public class DeckPanel : Panel
         MechListView.Refresh();
     }
 
-    private void TrySwap(IInteractable from, IInteractable to)
+    private void TrySwap(InteractDelegate fromDelegate, InteractDelegate toDelegate)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        SkillSlot fromSlot = from.Get<SkillSlot>();
-        SkillSlot toSlot = to.Get<SkillSlot>();
+        SkillSlot fromSlot = fromDelegate.AddressDelegate.Get<SkillSlot>();
+        SkillSlot toSlot = toDelegate.AddressDelegate.Get<SkillSlot>();
         bool success = env.TrySwap(fromSlot, toSlot);
         if (!success)
             return;

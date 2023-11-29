@@ -79,26 +79,26 @@ public class RunCanvas : MonoBehaviour
             await DeckPanel.SetShowing(false);
         }
 
-        InteractDelegate interactDelegate = DeckPanel.GetDelegate();
+        InteractHandler interactHandler = DeckPanel.GetDelegate();
         if (d is CardPickerPanelDescriptor)
         {
-            interactDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, ToggleSkill);
-            interactDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 2, ToggleSkillSlot);
+            interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, ToggleSkill);
+            interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 2, ToggleSkillSlot);
         }
         else
         {
-            interactDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 0, null);
-            interactDelegate.SetHandle(InteractDelegate.POINTER_LEFT_CLICK, 2, null);
+            interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, null);
+            interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 2, null);
         }
     }
 
-    private void ToggleSkill(IInteractable view, PointerEventData eventData)
+    private void ToggleSkill(InteractDelegate view, PointerEventData eventData)
     {
         NodeLayer.CardPickerPanel.ToggleSkill(view);
         Refresh();
     }
 
-    private void ToggleSkillSlot(IInteractable view, PointerEventData eventData)
+    private void ToggleSkillSlot(InteractDelegate view, PointerEventData eventData)
     {
         NodeLayer.CardPickerPanel.ToggleSkillSlot(view);
         Refresh();
