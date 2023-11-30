@@ -83,20 +83,49 @@ public class AnimatedListView : ListView, IDropHandler, IPointerMoveHandler
 
     public void RefreshPivots()
     {
-        float m = Mathf.Clamp01(MultiplyX(M, Input.mousePosition.x));
+        float m = Mathf.Clamp01(MultiplyX(M, Input.mousePosition.x)); // mouse position in normalized port space
         // float m2 = GetComponent<RectTransform>().InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition)).x;
         // Debug.Log($"m = {m}\nm2 = {m2}");
 
-        float L = 1134;
-        float D = 600;
-        float S = 300;
-        float c = _activePool.Count * D / L; // count contained in handle space
-        float p = Mathf.Min(-Mathf.Log(S / D) / Mathf.Log(c), 1);
+        float L = 1134; // TODO: max L and actual L
+        float H = 200; // half of size of handle space
 
-        // TODO: ignore dragging element
+        float C = 120;
+        float S = 40;
+        float G = 160; // half gap length
 
-        float hoverS = 1.5f;
-        float hoverY = 80;
+        float c = C / (C + S);
+        float s = S / (C + S);
+
+        float cardDistance_nPS = 1f / (_activePool.Count - 1);
+        float m_CS = m / cardDistance_nPS;
+        float q_CS = Mathf.Floor(m_CS);
+        float r_CS = m_CS - q_CS;
+
+        float mSnap_CS = q_CS;
+        if (r_CS < c / 2)
+        {
+        }
+        else if (r_CS < c / 2 + s)
+        {
+            mSnap_CS += 0.5f;
+            G = 100;
+        }
+        else
+        {
+            mSnap_CS += 1;
+        }
+
+        float mSnap = mSnap_CS * cardDistance_nPS;
+        float cc = _activePool.Count * 2 * H / L; // count contained in handle space
+
+
+        float p = Mathf.Min(-Mathf.Log(G / H) / Mathf.Log(cc), 1);
+
+        // TODO: ignoring dragging element
+
+        float hoverY = 140;
+        float hoverScale = 2f;
 
         for (int i = 0; i < _activePool.Count; i++)
         {
@@ -104,26 +133,26 @@ public class AnimatedListView : ListView, IDropHandler, IPointerMoveHandler
             if (handSkillView == null)
                 continue;
 
-            float d_nPS = (float)i / (_activePool.Count - 1) - m; // dist in normalized port space
-            float d_nHS = d_nPS / D * L * 2; // dist in normalized handle space
-            float x = -L / 2 + (i + 0.5f) / _activePool.Count * L; // position in port space, before magnifier
+            float d_nPS = i * cardDistance_nPS - mSnap; // dist in normalized port space
+            float d_nHS = d_nPS / H * L; // dist in normalized handle space
 
-            float v = Mathf.Clamp(d_nHS, -1, 1);
-            float w = v * v;
-
-            float y = (1 - w) * hoverY;
-
-            float s = (1 - w) * hoverS + w;
+            float x = (i * cardDistance_nPS - 0.5f) * L; // card position in port space, before magnifier
+            float w = Mathf.Abs(d_nHS) < 1E-2f ? 0 : 1;
 
             if (d_nHS is > -1 and < 1)
-                x += (Mathf.Sign(d_nHS) * Mathf.Pow(Mathf.Abs(d_nHS), p) - d_nHS) * D / 2;
+            {
+                x += (Mathf.Sign(d_nHS) * Mathf.Pow(Mathf.Abs(d_nHS), p) - d_nHS) * H;
+            }
+
+            float y = (1 - w) * hoverY;
+            float scale = (1 - w) * hoverScale + w;
 
             RectTransform t = handSkillView.PivotPropagate.RectTransform;
             t.anchoredPosition = new Vector2(x, t.anchoredPosition.y);
 
             RectTransform idle = handSkillView.PivotPropagate.IdlePivot;
             idle.anchoredPosition = new Vector2(idle.anchoredPosition.x, y);
-            idle.localScale = s * Vector3.one;
+            idle.localScale = scale * Vector3.one;
 
             handSkillView.GoToPivot(handSkillView.PivotPropagate.IdlePivot);
         }
