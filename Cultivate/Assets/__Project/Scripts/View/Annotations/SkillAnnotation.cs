@@ -1,29 +1,26 @@
 
 using System.Collections.Generic;
-using CLLibrary;
 using TMPro;
 using UnityEngine;
 
-public class SkillAnnotation : MonoBehaviour, IAddress
+public class SkillAnnotation : AnnotationBehaviour
 {
-    [SerializeField] protected RectTransform _rectTransform;
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TypeTag[] TypeTagList;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private GameObject LowerSeparator;
     [SerializeField] private TMP_Text TriviaText;
 
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
+        Refresh();
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
+
         if (GetAddress() == null)
         {
             gameObject.SetActive(false);
@@ -31,6 +28,7 @@ public class SkillAnnotation : MonoBehaviour, IAddress
         }
 
         ISkillModel skill = Get<ISkillModel>();
+
         if (skill == null)
         {
             gameObject.SetActive(false);
@@ -55,12 +53,5 @@ public class SkillAnnotation : MonoBehaviour, IAddress
 
         if (hasTrivia)
             TriviaText.text = trivia;
-    }
-
-    public void UpdateMousePos(Vector2 pos)
-    {
-        Vector2 pivot = new Vector2(Mathf.RoundToInt(pos.x / Screen.width), Mathf.RoundToInt(pos.y / Screen.height));
-        _rectTransform.pivot = pivot;
-        _rectTransform.position = pos;
     }
 }

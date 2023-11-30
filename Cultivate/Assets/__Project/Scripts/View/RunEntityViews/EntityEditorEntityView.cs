@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class EntityEditorEntityView : ItemView
 {
-    public InteractDelegate InteractDelegate;
+    public InteractBehaviour interactBehaviour;
 
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;

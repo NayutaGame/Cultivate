@@ -92,13 +92,13 @@ public class RunCanvas : MonoBehaviour
         }
     }
 
-    private void ToggleSkill(InteractDelegate view, PointerEventData eventData)
+    private void ToggleSkill(InteractBehaviour view, PointerEventData eventData)
     {
         NodeLayer.CardPickerPanel.ToggleSkill(view);
         Refresh();
     }
 
-    private void ToggleSkillSlot(InteractDelegate view, PointerEventData eventData)
+    private void ToggleSkillSlot(InteractBehaviour view, PointerEventData eventData)
     {
         NodeLayer.CardPickerPanel.ToggleSkillSlot(view);
         Refresh();

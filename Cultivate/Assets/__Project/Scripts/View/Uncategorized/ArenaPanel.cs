@@ -36,14 +36,14 @@ public class ArenaPanel : Panel
         _interactHandler = new(2,
             getId: view =>
             {
-                object item = view.GetComponent<IAddress>().Get<object>();
+                object item = view.GetComponent<AddressBehaviour>().Get<object>();
                 if (item is RunSkill)
                     return 0;
                 if (item is SkillSlot)
                     return 1;
                 return null;
             },
-            dragDropTable: new Action<InteractDelegate, InteractDelegate>[]
+            dragDropTable: new Action<InteractBehaviour, InteractBehaviour>[]
             {
                 /*               RunSkill,   SkillSlot */
                 /* RunSkill   */ null,       TryWrite,
@@ -62,12 +62,12 @@ public class ArenaPanel : Panel
         ReportView.text = RunManager.Instance.Arena.Result?.ToString();
     }
 
-    private void TryWrite(InteractDelegate from, InteractDelegate to)
+    private void TryWrite(InteractBehaviour from, InteractBehaviour to)
     {
         Arena arena = _address.Get<Arena>();
 
-        object fromItem = from.GetComponent<IAddress>().Get<object>();
-        SkillSlot toSlot = to.GetComponent<IAddress>().Get<SkillSlot>();
+        object fromItem = from.GetComponent<AddressBehaviour>().Get<object>();
+        SkillSlot toSlot = to.GetComponent<AddressBehaviour>().Get<SkillSlot>();
 
         if (fromItem is RunSkill fromSkill)
         {
@@ -79,10 +79,10 @@ public class ArenaPanel : Panel
         }
     }
 
-    private bool TryIncreaseJingJie(InteractDelegate view, PointerEventData eventData)
+    private bool TryIncreaseJingJie(InteractBehaviour view, PointerEventData eventData)
     {
         Arena arena = _address.Get<Arena>();
-        SkillSlot slot = view.GetComponent<IAddress>().Get<SkillSlot>();
+        SkillSlot slot = view.GetComponent<AddressBehaviour>().Get<SkillSlot>();
         return arena.TryIncreaseJingJie(slot);
     }
 }

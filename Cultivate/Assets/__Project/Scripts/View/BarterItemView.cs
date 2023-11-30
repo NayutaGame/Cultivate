@@ -16,8 +16,8 @@ public class BarterItemView : ItemView
     public void SetHandler(InteractHandler interactHandler)
     {
         _interactHandler = interactHandler;
-        PlayerSkillView.GetComponent<InteractDelegate>()?.SetHandler(_interactHandler);
-        SkillView.GetComponent<InteractDelegate>()?.SetHandler(_interactHandler);
+        PlayerSkillView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler);
+        SkillView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler);
     }
 
     public override void SetAddress(Address address)

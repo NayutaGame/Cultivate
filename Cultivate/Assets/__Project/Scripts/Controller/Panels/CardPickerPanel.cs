@@ -64,7 +64,7 @@ public class CardPickerPanel : Panel
 
     private int SelectionCount => _skillSelections.Count + _slotSelections.Count;
 
-    public bool ToggleSkill(InteractDelegate view)
+    public bool ToggleSkill(InteractBehaviour view)
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
@@ -94,7 +94,7 @@ public class CardPickerPanel : Panel
         return true;
     }
 
-    public bool ToggleSkillSlot(InteractDelegate view)
+    public bool ToggleSkillSlot(InteractBehaviour view)
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 

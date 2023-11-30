@@ -1,7 +1,7 @@
 
 using UnityEngine.EventSystems;
 
-public class RunSkillDelegate : InteractDelegate,
+public class RunSkillInteractBehaviour : InteractBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     IPointerClickHandler,
     IBeginDragHandler, IEndDragHandler, IDragHandler,
@@ -15,8 +15,7 @@ public class RunSkillDelegate : InteractDelegate,
         // _animationHandle = ContentTransform.DOAnchorPos(HoverPivot.anchoredPosition, 0.15f);
         // _animationHandle.Restart();
 
-        CanvasManager.Instance.SkillAnnotation.SetAddress(AddressDelegate.GetAddress());
-        CanvasManager.Instance.SkillAnnotation.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(AddressBehaviour.GetAddress());
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
@@ -28,7 +27,6 @@ public class RunSkillDelegate : InteractDelegate,
         // _animationHandle.Restart();
 
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);
-        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void PointerMove(PointerEventData eventData)

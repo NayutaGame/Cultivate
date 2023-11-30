@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PenetrateSkillView : SkillView
 {
+    // TODO: interact behaviour separation
     [SerializeField] private Image _blackFill;
 
     private static readonly float IdleAlpha = 0;

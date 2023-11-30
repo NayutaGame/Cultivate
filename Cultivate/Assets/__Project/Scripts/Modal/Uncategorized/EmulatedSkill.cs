@@ -1,5 +1,5 @@
 
-public interface EmulatedSkill
+public interface EmulatedSkill : ISkillModel
 {
     SkillSlot GetSkillSlot();
     void SetSkillSlot(SkillSlot value);

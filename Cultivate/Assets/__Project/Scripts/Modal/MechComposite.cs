@@ -7,7 +7,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class MechComposite : EmulatedSkill, ISkillModel
+public class MechComposite : EmulatedSkill
 {
     public static readonly int MAX_CHAIN = 3;
     private static Dictionary<int, SkillEntry> _composeDict = new()

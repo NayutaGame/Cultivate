@@ -5,18 +5,10 @@ using UnityEngine.EventSystems;
 
 public class FormationView : ItemView
 {
-    protected RectTransform _rectTransform;
-
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text JingJieText;
     [SerializeField] private TMP_Text ConditionText;
     [SerializeField] private TMP_Text RewardText;
-
-    public override void SetAddress(Address address)
-    {
-        base.SetAddress(address);
-        _rectTransform = GetComponent<RectTransform>();
-    }
 
     public override void Refresh()
     {

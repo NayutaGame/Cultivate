@@ -2,22 +2,29 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class DiscoverSkillDelegate : InteractDelegate,
+public class StandardSkillInteractBehaviour : InteractBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     IPointerClickHandler
 {
-    [SerializeField] private RectTransform ContentTransform;
+    private static readonly float IdleAlpha = 0;
+    private static readonly float HoverAlpha = 0.2f;
 
-    [SerializeField] private RectTransform IdlePivot;
-    [SerializeField] private RectTransform HoverPivot;
+    [SerializeField] private Image _blackFill;
 
     private Tween _animationHandle;
 
     private void OnEnable()
     {
-        ContentTransform.anchoredPosition = IdlePivot.anchoredPosition;
-        ContentTransform.localScale = IdlePivot.localScale;
+        _blackFill.color = new Color(1, 1, 1, IdleAlpha);
+    }
+
+    public void SetBlackFillColor(float alpha)
+    {
+        _animationHandle?.Kill();
+        _animationHandle = _blackFill.DOFade(alpha, 0.15f);
+        _animationHandle.SetAutoKill().Restart();
     }
 
     public void HoverAnimation(PointerEventData eventData)
@@ -26,20 +33,18 @@ public class DiscoverSkillDelegate : InteractDelegate,
 
         AudioManager.Play("CardHover");
 
-        PlayFollowAnimation(ContentTransform, HoverPivot);
+        SetBlackFillColor(HoverAlpha);
 
-        CanvasManager.Instance.SkillAnnotation.SetAddress(GetComponent<IAddress>().GetAddress());
-        CanvasManager.Instance.SkillAnnotation.Refresh();
+        CanvasManager.Instance.SkillAnnotation.SetAddress(AddressBehaviour.GetAddress());
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        PlayFollowAnimation(ContentTransform, IdlePivot);
+        SetBlackFillColor(IdleAlpha);
 
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);
-        CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     public void PointerMove(PointerEventData eventData)

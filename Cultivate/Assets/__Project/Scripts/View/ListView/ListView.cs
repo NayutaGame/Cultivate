@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 
-public class ListView : MonoBehaviour, IAddress
+public class ListView : AddressBehaviour
 {
     public Transform Container;
     public GameObject[] Prefabs;
@@ -27,10 +27,6 @@ public class ListView : MonoBehaviour, IAddress
     public void SetPrefabProvider(Func<object, int> prefabProvider) => _prefabProvider = prefabProvider;
     private GameObject GetPrefab(object item) => Prefabs[_prefabProvider?.Invoke(item) ?? 0];
     protected int GetPrefabIndex(object model) => _prefabProvider?.Invoke(model) ?? 0;
-
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
 
     private IListModel _model;
     protected IListModel Model
@@ -76,7 +72,7 @@ public class ListView : MonoBehaviour, IAddress
 
     protected virtual async Task InsertItem(int index, object item)
     {
-        Address address = _address.Append($"#{index}");
+        Address address = GetAddress().Append($"#{index}");
         int prefabIndex = GetPrefabIndex(address.Get<object>());
         FetchItemView(out ItemView itemView, prefabIndex);
 
@@ -87,7 +83,7 @@ public class ListView : MonoBehaviour, IAddress
 
         for (int i = index + 1; i < _activePool.Count; i++)
         {
-            _activePool[i].SetAddress(_address.Append($"#{i}"));
+            _activePool[i].SetAddress(GetAddress().Append($"#{i}"));
         }
     }
 
@@ -97,7 +93,7 @@ public class ListView : MonoBehaviour, IAddress
 
         for (int i = index; i < _activePool.Count; i++)
         {
-            _activePool[i].SetAddress(_address.Append($"#{i}"));
+            _activePool[i].SetAddress(GetAddress().Append($"#{i}"));
         }
     }
 
@@ -111,12 +107,13 @@ public class ListView : MonoBehaviour, IAddress
     public virtual void SetHandler(InteractHandler interactHandler)
     {
         _interactHandler = interactHandler;
-        Traversal().Do(v => v.GetComponent<InteractDelegate>()?.SetHandler(_interactHandler));
+        Traversal().Do(v => v.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
     }
 
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
+
         _activePool = new List<ItemView>();
         _inactivePools = new List<ItemView>[Prefabs.Length];
 
@@ -141,8 +138,10 @@ public class ListView : MonoBehaviour, IAddress
         }
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
+
         _activePool.Do(v => v.Refresh());
     }
 
@@ -152,7 +151,7 @@ public class ListView : MonoBehaviour, IAddress
 
         for (int i = 0; i < _model.Count(); i++)
         {
-            Address address = _address.Append($"#{i}");
+            Address address = GetAddress().Append($"#{i}");
             int prefabIndex = GetPrefabIndex(address.Get<object>());
             FetchItemView(out ItemView itemView, prefabIndex);
             EnableItemView(itemView, i);
@@ -201,7 +200,7 @@ public class ListView : MonoBehaviour, IAddress
     protected virtual void BindItemView(ItemView itemView, int prefabIndex = 0)
     {
         itemView.PrefabIndex = prefabIndex;
-        itemView.GetComponent<InteractDelegate>()?.SetHandler(_interactHandler);
+        itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler);
     }
 
     protected void EnableItemView(ItemView itemView, int siblingIndex)

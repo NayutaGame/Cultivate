@@ -1,11 +1,10 @@
 
 using UnityEngine.EventSystems;
 
-public class EntityEditorSlotDelegate : InteractDelegate,
+public class EntityEditorSkillBarInteractBehaviour : InteractBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     IPointerClickHandler,
     IBeginDragHandler, IEndDragHandler, IDragHandler,
     IDropHandler
 {
-
 }

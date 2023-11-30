@@ -10,7 +10,7 @@ public interface IAnimation
 
 public struct FollowAnimationAnchored : IAnimation
 {
-    public RectTransform Obj;
+    public RectTransform Subject;
     public Vector2 StartPosition;
     public RectTransform Follow;
 
@@ -21,25 +21,25 @@ public struct FollowAnimationAnchored : IAnimation
 
     public void SetProgress(float t)
     {
-        Obj.anchoredPosition = Vector2.Lerp(StartPosition, Follow.anchoredPosition, t);
+        Subject.anchoredPosition = Vector2.Lerp(StartPosition, Follow.anchoredPosition, t);
     }
 }
 
 public struct FollowAnimation : IAnimation
 {
-    private RectTransform Obj;
+    private RectTransform Subject;
     private RectTransform Follow;
 
     private Vector2 StartPosition;
     private Vector2 StartScale;
 
-    public FollowAnimation(RectTransform obj, RectTransform follow)
+    public FollowAnimation(RectTransform subject, RectTransform follow)
     {
-        Obj = obj;
+        Subject = subject;
         Follow = follow;
 
-        StartPosition = Obj.position;
-        StartScale = Obj.localScale;
+        StartPosition = Subject.position;
+        StartScale = Subject.localScale;
     }
 
     public Tween GetHandle()
@@ -49,7 +49,7 @@ public struct FollowAnimation : IAnimation
 
     public void SetProgress(float t)
     {
-        Obj.position = Vector2.Lerp(StartPosition, Follow.position, t);
-        Obj.localScale = Vector2.Lerp(StartScale, Follow.localScale, t);
+        Subject.position = Vector2.Lerp(StartPosition, Follow.position, t);
+        Subject.localScale = Vector2.Lerp(StartScale, Follow.localScale, t);
     }
 }

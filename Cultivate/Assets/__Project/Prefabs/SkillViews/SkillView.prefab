@@ -949,7 +949,7 @@ GameObject:
   - component: {fileID: 7645776037256928273}
   - component: {fileID: 4877023096222896378}
   m_Layer: 0
-  m_Name: Image
+  m_Name: CardImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1165,7 +1165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 8152188524626589071}
   CanvasGroup: {fileID: 7969793575853840762}
-  Image: {fileID: 4877023096222896378}
+  CardImage: {fileID: 4877023096222896378}
   ManaCostText: {fileID: 6747810882322665932}
   NameText: {fileID: 8093761589650981542}
   DescriptionText: {fileID: 7570460864629865518}

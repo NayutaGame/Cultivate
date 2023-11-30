@@ -25,14 +25,14 @@ public class FormationBrowser : ListView
         SetHandler(interactHandler);
     }
 
-    private void SelectFormation(InteractDelegate view, PointerEventData eventData)
+    private void SelectFormation(InteractBehaviour view, PointerEventData eventData)
     {
         if (_selection != null)
             _selection.SetSelected(false);
         _selection = view.GetComponent<FormationGroupBarView>();
         if (_selection != null)
         {
-            _detailedGroupView.SetAddress(view.GetComponent<IAddress>().GetAddress());
+            _detailedGroupView.SetAddress(view.GetComponent<AddressBehaviour>().GetAddress());
             _detailedGroupView.Refresh();
             _selection.SetSelected(true);
         }

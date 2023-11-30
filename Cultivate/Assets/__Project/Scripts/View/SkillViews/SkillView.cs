@@ -9,7 +9,7 @@ public class SkillView : ItemView
 {
     [SerializeField] public CanvasGroup CanvasGroup;
 
-    [SerializeField] private Image Image;
+    [SerializeField] private Image CardImage;
     // [SerializeField] private GameObject ManaCostView;
     [SerializeField] private TMP_Text ManaCostText;
     [SerializeField] private TMP_Text NameText;
@@ -70,7 +70,7 @@ public class SkillView : ItemView
 
     protected virtual void SetCardImage(Sprite sprite)
     {
-        Image.sprite = sprite != null ? sprite : Encyclopedia.SpriteCategory["Default"].Sprite;
+        CardImage.sprite = sprite != null ? sprite : Encyclopedia.SpriteCategory["Default"].Sprite;
     }
 
     protected virtual void SetManaCost(int manaCost)

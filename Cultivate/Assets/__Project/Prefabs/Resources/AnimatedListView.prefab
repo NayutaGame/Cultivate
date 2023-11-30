@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5832fb2677c78a4ab8c274dc09490d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RectTransform: {fileID: 3673873199850753449}
   Container: {fileID: 6525699802412133842}
   Prefabs: []
   PivotList: {fileID: 1067400902554512671}

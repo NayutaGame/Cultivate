@@ -29,21 +29,21 @@ public class BattleEntityView : ItemView
         _interactHandler = new(2,
             getId: view =>
             {
-                InteractDelegate d = view.GetComponent<InteractDelegate>();
-                if (d is FieldSlotDelegate)
+                InteractBehaviour d = view.GetComponent<InteractBehaviour>();
+                if (d is FieldSlotInteractBehaviour)
                     return 0;
-                if (d is RunFormationIconDelegate)
+                if (d is RunFormationIconInteractBehaviour)
                     return 1;
                 return null;
             });
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((FieldSlotDelegate)v).HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((FieldSlotDelegate)v).UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((FieldSlotDelegate)v).PointerMove(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((FieldSlotInteractBehaviour)v).HoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((FieldSlotInteractBehaviour)v).UnhoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((FieldSlotInteractBehaviour)v).PointerMove(d));
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 1, (v, d) => ((RunFormationIconDelegate)v).PointerEnter(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 1, (v, d) => ((RunFormationIconDelegate)v).PointerExit(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 1, (v, d) => ((RunFormationIconDelegate)v).PointerMove(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 1, (v, d) => ((RunFormationIconInteractBehaviour)v).PointerEnter(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 1, (v, d) => ((RunFormationIconInteractBehaviour)v).PointerExit(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 1, (v, d) => ((RunFormationIconInteractBehaviour)v).PointerMove(v, d));
 
         FieldView.SetHandler(_interactHandler);
         FormationListView.SetHandler(_interactHandler);

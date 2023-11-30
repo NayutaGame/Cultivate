@@ -3,7 +3,7 @@ using TMPro;
 
 public class EntityView : ItemView
 {
-    public InteractDelegate InteractDelegate;
+    public InteractBehaviour interactBehaviour;
     public TMP_Text NameText;
     public TMP_Text JingJieText;
     public TMP_Text HPText;

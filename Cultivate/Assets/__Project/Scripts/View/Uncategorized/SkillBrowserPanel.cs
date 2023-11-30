@@ -20,14 +20,14 @@ public class SkillBrowserPanel : Panel
         _interactHandler = new(1,
             getId: view =>
             {
-                if (view.GetComponent<BrowserSkillDelegate>() != null)
+                if (view.GetComponent<BrowserSkillInteractBehaviour>() != null)
                     return 0;
                 return null;
             });
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((BrowserSkillDelegate)v).PointerEnter(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((BrowserSkillDelegate)v).PointerExit(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((BrowserSkillDelegate)v).PointerMove(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((BrowserSkillInteractBehaviour)v).PointerEnter(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((BrowserSkillInteractBehaviour)v).PointerExit(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((BrowserSkillInteractBehaviour)v).PointerMove(v, d));
 
         SkillInventoryView.SetHandler(_interactHandler);
     }

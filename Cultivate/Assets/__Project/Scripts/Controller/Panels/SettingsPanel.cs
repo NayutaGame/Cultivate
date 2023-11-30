@@ -139,7 +139,7 @@ public class SettingsPanel : Panel
     {
         return DOTween.Sequence().SetAutoKill()
             .AppendCallback(() => gameObject.SetActive(true))
-            .Append(_rectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
+            .Append(RectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CoreCanvasGroup.DOFade(1f, 0.15f))
             .Join(DarkCurtainImage.DOFade(0.2f, 0.15f));
     }
@@ -147,7 +147,7 @@ public class SettingsPanel : Panel
     public override Tween HideAnimation()
     {
         return DOTween.Sequence().SetAutoKill()
-            .Append(_rectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad))
+            .Append(RectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CoreCanvasGroup.DOFade(0f, 0.15f))
             .Join(DarkCurtainImage.DOFade(0f, 0.15f))
             .AppendCallback(() => gameObject.SetActive(false));

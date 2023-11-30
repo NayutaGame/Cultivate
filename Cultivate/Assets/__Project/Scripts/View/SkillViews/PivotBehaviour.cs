@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class PivotDelegate : MonoBehaviour
+public class PivotBehaviour : MonoBehaviour
 {
     public RectTransform IdlePivot;
     public RectTransform HoverPivot;

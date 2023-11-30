@@ -6,11 +6,11 @@ using UnityEngine;
 
 public abstract class Panel : MonoBehaviour, IShowable
 {
-    [NonSerialized] public RectTransform _rectTransform;
+    [NonSerialized] public RectTransform RectTransform;
 
     public virtual void Configure()
     {
-        _rectTransform ??= GetComponent<RectTransform>();
+        RectTransform ??= GetComponent<RectTransform>();
     }
 
     public virtual void Refresh() { }

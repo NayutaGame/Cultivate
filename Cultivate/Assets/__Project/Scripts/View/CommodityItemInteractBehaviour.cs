@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
 using UnityEngine.EventSystems;
 
-public class CommodityItemDelegate : InteractDelegate,
+public class CommodityItemInteractBehaviour : InteractBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     IPointerClickHandler
 {

@@ -59,17 +59,17 @@ public class TimelineView : MonoBehaviour
         _interactHandler = new(1,
             getId: view =>
             {
-                if (view.GetComponent<StageSkillDelegate>() != null)
+                if (view.GetComponent<StageSkillInteractBehaviour>() != null)
                     return 0;
                 return null;
             });
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StageSkillDelegate)v).PointerEnter(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StageSkillDelegate)v).PointerExit(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StageSkillDelegate)v).PointerMove(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StageSkillInteractBehaviour)v).PointerEnter(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StageSkillInteractBehaviour)v).PointerExit(v, d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StageSkillInteractBehaviour)v).PointerMove(v, d));
 
         foreach (var v in _views)
-            v.GetComponent<StageSkillDelegate>().SetHandler(_interactHandler);
+            v.GetComponent<StageSkillInteractBehaviour>().SetHandler(_interactHandler);
     }
 
     #endregion
@@ -89,7 +89,7 @@ public class TimelineView : MonoBehaviour
             v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
             v.SetAddress(new Address($"Stage.Timeline.Notes#{note.TemporalIndex}"));
-            v.GetComponent<StageSkillDelegate>().SetHandler(_interactHandler);
+            v.GetComponent<StageSkillInteractBehaviour>().SetHandler(_interactHandler);
             v.Refresh();
         }
     }
@@ -162,7 +162,7 @@ public class TimelineView : MonoBehaviour
         v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
         v.SetAddress(new Address($"Stage.Timeline.Notes#{toCreate.TemporalIndex}"));
-        v.GetComponent<StageSkillDelegate>().SetHandler(_interactHandler);
+        v.GetComponent<StageSkillInteractBehaviour>().SetHandler(_interactHandler);
         v.Refresh();
     }
 }

@@ -18,11 +18,11 @@ public class ConsolePanel : Panel
 
     public override Tween ShowAnimation()
         => DOTween.Sequence().SetAutoKill()
-            .Append(_rectTransform.DOAnchorPosY(243f, 0.3f).SetEase(Ease.OutQuad));
+            .Append(RectTransform.DOAnchorPosY(243f, 0.3f).SetEase(Ease.OutQuad));
 
     public override Tween HideAnimation()
         => DOTween.Sequence().SetAutoKill()
-            .Append(_rectTransform.DOAnchorPosY(771f, 0.3f).SetEase(Ease.InQuad));
+            .Append(RectTransform.DOAnchorPosY(771f, 0.3f).SetEase(Ease.InQuad));
 
     public override void Configure()
     {

@@ -90,14 +90,14 @@ public class EntityEditorPanel : Panel
         _interactHandler = new(4,
             getId: view =>
             {
-                InteractDelegate d = view.GetComponent<InteractDelegate>();
-                if (d is EntityBarDelegate)
+                InteractBehaviour d = view.GetComponent<InteractBehaviour>();
+                if (d is EntityBarInteractBehaviour)
                     return 0;
-                if (d is EntityEditorSkillBarDelegate)
+                if (d is EntityEditorSkillBarInteractBehaviour)
                     return 1;
                 if (view is EntityEditorSlotView)
                     return 2;
-                if (d is RunFormationIconDelegate)
+                if (d is RunFormationIconInteractBehaviour)
                     return 3;
                 return null;
             });
@@ -130,60 +130,60 @@ public class EntityEditorPanel : Panel
         HomeEntityView.SetHandler(_interactHandler);
     }
 
-    private void Equip(InteractDelegate fromDelegate, InteractDelegate toDelegate)
+    private void Equip(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
     {
         // SkillBarView -> EntityEditorSlotView
-        RunSkill skill = fromDelegate.AddressDelegate.Get<RunSkill>();
-        SkillSlot slot = toDelegate.AddressDelegate.Get<SkillSlot>();
+        RunSkill skill = fromInteractBehaviour.AddressBehaviour.Get<RunSkill>();
+        SkillSlot slot = toInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
 
         slot.Skill = skill;
         Refresh();
     }
 
-    private void Unequip(InteractDelegate fromDelegate, InteractDelegate toDelegate)
+    private void Unequip(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
     {
         // EntityEditorSlotView -> SkillBarView
-        SkillSlot slot = fromDelegate.AddressDelegate.Get<SkillSlot>();
+        SkillSlot slot = fromInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
 
         slot.Skill = null;
         Refresh();
     }
 
-    private void Swap(InteractDelegate fromDelegate, InteractDelegate toDelegate)
+    private void Swap(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
     {
         // EntityEditorSlotView -> EntityEditorSlotView
-        SkillSlot fromSlot = fromDelegate.AddressDelegate.Get<SkillSlot>();
-        SkillSlot toSlot = toDelegate.AddressDelegate.Get<SkillSlot>();
+        SkillSlot fromSlot = fromInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot toSlot = toInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
 
         (fromSlot.Skill, toSlot.Skill) = (toSlot.Skill, fromSlot.Skill);
         Refresh();
     }
 
-    private void IncreaseJingJie(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void IncreaseJingJie(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
-        SkillSlot slot = interactDelegate.AddressDelegate.Get<SkillSlot>();
+        SkillSlot slot = interactBehaviour.AddressBehaviour.Get<SkillSlot>();
         slot.TryIncreaseJingJie();
-        interactDelegate.AddressDelegate.Refresh();
+        interactBehaviour.AddressBehaviour.Refresh();
         SkillAnnotation.Refresh();
     }
 
-    private void ShowSkillPreview(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void ShowSkillPreview(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        SkillAnnotation.SetAddress(interactDelegate.AddressDelegate.GetAddress());
+        SkillAnnotation.SetAddress(interactBehaviour.AddressBehaviour.GetAddress());
         SkillAnnotation.Refresh();
     }
 
-    private void ShowSkillPreviewFromSlotView(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void ShowSkillPreviewFromSlotView(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        SkillAnnotation.SetAddress(interactDelegate.AddressDelegate.GetAddress().Append(".Skill"));
+        SkillAnnotation.SetAddress(interactBehaviour.AddressBehaviour.GetAddress().Append(".Skill"));
         SkillAnnotation.Refresh();
     }
 
-    private void HideSkillPreview(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void HideSkillPreview(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
@@ -191,22 +191,22 @@ public class EntityEditorPanel : Panel
         SkillAnnotation.Refresh();
     }
 
-    private void MoveSkillPreview(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void MoveSkillPreview(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
         SkillAnnotation.UpdateMousePos(eventData.position);
     }
 
-    private void ShowFormationPreview(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void ShowFormationPreview(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        FormationPreview.SetAddress(interactDelegate.AddressDelegate.GetAddress());
+        FormationPreview.SetAddress(interactBehaviour.AddressBehaviour.GetAddress());
         FormationPreview.Refresh();
     }
 
-    private void HideFormationPreview(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void HideFormationPreview(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
@@ -214,14 +214,14 @@ public class EntityEditorPanel : Panel
         FormationPreview.Refresh();
     }
 
-    private void MoveFormationPreview(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void MoveFormationPreview(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
         FormationPreview.UpdateMousePos(eventData.position);
     }
 
-    private void BeginDrag(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void BeginDrag(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         SkillAnnotation.SetAddress(null);
         SkillAnnotation.Refresh();
@@ -229,12 +229,12 @@ public class EntityEditorPanel : Panel
         FormationPreview.Refresh();
     }
 
-    private void SelectEntity(InteractDelegate interactDelegate, PointerEventData eventData)
+    private void SelectEntity(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         if (_selection != null)
             _selection.SetSelected(false);
 
-        _selection = interactDelegate.GetComponent<EntityBarView>();
+        _selection = interactBehaviour.GetComponent<EntityBarView>();
 
         if (_selection != null)
             _selectionIndex = EntityBrowser.ActivePool.IndexOf(_selection);
@@ -245,7 +245,7 @@ public class EntityEditorPanel : Panel
 
         if (_selection != null)
         {
-            AwayEntityView.SetAddress(interactDelegate.AddressDelegate.GetAddress());
+            AwayEntityView.SetAddress(interactBehaviour.AddressBehaviour.GetAddress());
             AwayEntityView.Refresh();
             _selection.SetSelected(true);
         }

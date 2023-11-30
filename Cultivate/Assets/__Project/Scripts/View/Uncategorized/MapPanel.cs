@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class MapPanel : Panel, IAddress
+public class MapPanel : Panel
 {
     [SerializeField] private ListView StepItemListView;
     [SerializeField] private CanvasGroup CanvasGroup;
@@ -22,7 +22,7 @@ public class MapPanel : Panel, IAddress
             .AppendCallback(Refresh)
             .AppendCallback(PlaySFX)
             .Append(CanvasManager.Instance.Curtain.HideAnimation())
-            .Append(_rectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
+            .Append(RectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CanvasGroup.DOFade(1f, 0.15f));
     }
 
@@ -30,7 +30,7 @@ public class MapPanel : Panel, IAddress
     {
         return DOTween.Sequence()
             .AppendCallback(PlaySFX)
-            .Append(_rectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad))
+            .Append(RectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CanvasGroup.DOFade(0f, 0.15f))
             .AppendCallback(() => gameObject.SetActive(false));
     }

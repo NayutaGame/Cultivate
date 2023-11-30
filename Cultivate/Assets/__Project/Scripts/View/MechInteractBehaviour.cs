@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MechDelegate : InteractDelegate,
+public class MechInteractBehaviour : InteractBehaviour,
     IBeginDragHandler, IEndDragHandler, IDragHandler,
     IDropHandler
 {
@@ -11,7 +11,7 @@ public class MechDelegate : InteractDelegate,
 
     public void BeginDrag(PointerEventData eventData)
     {
-        CanvasManager.Instance.MechGhost.SetAddress(AddressDelegate.GetAddress());
+        CanvasManager.Instance.MechGhost.SetAddress(AddressBehaviour.GetAddress());
         CanvasManager.Instance.MechGhost.Refresh();
 
         if (_image != null)

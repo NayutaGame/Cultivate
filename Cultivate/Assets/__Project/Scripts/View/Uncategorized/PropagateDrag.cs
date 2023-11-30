@@ -3,23 +3,13 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PropagateDrag : MonoBehaviour, IAddress, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class PropagateDrag : AddressBehaviour,
+    IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
     public Action<PointerEventData> _onPointerClick;
     public Action<PointerEventData> _onBeginDrag;
     public Action<PointerEventData> _onEndDrag;
     public Action<PointerEventData> _onDrag;
-
-    public void SetAddress(Address address)
-    {
-        _address = address;
-    }
-
-    public void Refresh() { }
 
     public void OnPointerClick(PointerEventData eventData)
     {

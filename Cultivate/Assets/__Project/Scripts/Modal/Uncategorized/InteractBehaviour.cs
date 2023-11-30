@@ -2,28 +2,37 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class InteractDelegate : MonoBehaviour
+public abstract class InteractBehaviour : MonoBehaviour
     // IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     // IBeginDragHandler, IEndDragHandler, IDragHandler,
     // IDropHandler,
     // IPointerClickHandler
 {
-    public IAddress AddressDelegate;
+    public AddressBehaviour AddressBehaviour;
+    public PivotBehaviour PivotBehaviour;
 
-    [SerializeField] private Image Image;
-
-    public bool RaycastTarget
+    public virtual bool IsEnabled() => enabled;
+    public virtual void SetEnabled(bool value)
     {
-        get => Image.raycastTarget;
-        set => Image.raycastTarget = value;
+        enabled = value;
+        PivotBehaviour.gameObject.SetActive(value);
+        // SetPivot(PivotBehaviour.IdlePivot);
+        // SetPivotWithoutAnimation(PivotBehaviour.IdlePivot);
     }
 
-    private void OnEnable()
-    {
-        RaycastTarget = true;
-    }
+    // [SerializeField] private Image Image;
+    //
+    // public bool RaycastTarget
+    // {
+    //     get => Image.raycastTarget;
+    //     set => Image.raycastTarget = value;
+    // }
+    //
+    // private void OnEnable()
+    // {
+    //     RaycastTarget = true;
+    // }
 
     private InteractHandler _interactHandler;
     public InteractHandler GetHandler() => _interactHandler;
@@ -35,7 +44,7 @@ public class InteractDelegate : MonoBehaviour
     public virtual void OnBeginDrag(PointerEventData eventData)    => GetHandler()?.Handle(InteractHandler.BEGIN_DRAG, this, eventData);
     public virtual void OnEndDrag(PointerEventData eventData)      => GetHandler()?.Handle(InteractHandler.END_DRAG, this, eventData);
     public virtual void OnDrag(PointerEventData eventData)         => GetHandler()?.Handle(InteractHandler.DRAG, this, eventData);
-    public virtual void OnDrop(PointerEventData eventData)         => GetHandler()?.DragDrop(eventData.pointerDrag.GetComponent<InteractDelegate>(), this);
+    public virtual void OnDrop(PointerEventData eventData)         => GetHandler()?.DragDrop(eventData.pointerDrag.GetComponent<InteractBehaviour>(), this);
     public virtual void OnPointerClick(PointerEventData eventData)
     {
         int? gestureId = null;
@@ -52,11 +61,18 @@ public class InteractDelegate : MonoBehaviour
 
     private Tween _animationHandle;
 
-    public void PlayFollowAnimation(RectTransform subject, RectTransform toFollow)
+    public void SetPivot(RectTransform pivot)
     {
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(subject, toFollow);
+        FollowAnimation f = new FollowAnimation(AddressBehaviour.RectTransform, pivot);
         _animationHandle = f.GetHandle();
         _animationHandle.SetAutoKill().Restart();
+    }
+
+    public void SetPivotWithoutAnimation(RectTransform pivot)
+    {
+        _animationHandle?.Kill();
+        AddressBehaviour.RectTransform.position = pivot.position;
+        AddressBehaviour.RectTransform.localScale = pivot.localScale;
     }
 }

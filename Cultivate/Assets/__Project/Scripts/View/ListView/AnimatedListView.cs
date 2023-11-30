@@ -44,12 +44,12 @@ public class AnimatedListView : ListView
 
         if (itemView is AnimatedItemView animatedItemView)
         {
-            if (animatedItemView.PivotDelegate != null)
+            if (animatedItemView.InteractBehaviour != null)
                 return;
 
-            PivotDelegate pivotDelegate = Instantiate(PivotPrefab, PivotList).GetComponent<PivotDelegate>();
-            animatedItemView.PivotDelegate = pivotDelegate;
-            pivotDelegate.GetComponent<InteractDelegate>().AddressDelegate = itemView;
+            InteractBehaviour interactBehaviour = Instantiate(PivotPrefab, PivotList).GetComponent<InteractBehaviour>();
+            animatedItemView.InteractBehaviour = interactBehaviour;
+            interactBehaviour.AddressBehaviour = itemView;
         }
     }
 
@@ -57,6 +57,6 @@ public class AnimatedListView : ListView
     {
         foreach (var itemView in _activePool)
             if (itemView is AnimatedItemView animatedItemView)
-                animatedItemView.InteractDelegate.PlayFollowAnimation(animatedItemView.RectTransform, animatedItemView.PivotDelegate.IdlePivot);
+                animatedItemView.InteractBehaviour.SetPivot(animatedItemView.InteractBehaviour.PivotBehaviour.IdlePivot);
     }
 }

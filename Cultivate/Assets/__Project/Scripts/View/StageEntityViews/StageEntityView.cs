@@ -2,28 +2,25 @@
 using TMPro;
 using UnityEngine;
 
-public class StageEntityView : MonoBehaviour, IAddress
+public class StageEntityView : AddressBehaviour
 {
-    public InteractDelegate InteractDelegate;
     [SerializeField] private ListView Formations;
     [SerializeField] private ListView Buffs;
     [SerializeField] private TMP_Text HealthText;
     [SerializeField] private TMP_Text ArmorText;
 
-    private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
-        _address = address;
+        base.SetAddress(address);
 
-        Formations.SetAddress(_address.Append(".Formations"));
-        Buffs.SetAddress(_address.Append(".Buffs"));
+        Formations.SetAddress(GetAddress().Append(".Formations"));
+        Buffs.SetAddress(GetAddress().Append(".Buffs"));
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
+        base.Refresh();
+
         Formations.Refresh();
         Buffs.Refresh();
 
@@ -39,6 +36,7 @@ public class StageEntityView : MonoBehaviour, IAddress
         }
     }
 
+    // TODO: to be removed
     #region IInteractable
 
     private InteractHandler _interactHandler;

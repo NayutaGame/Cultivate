@@ -59,13 +59,13 @@ public class ArbitraryCardPickerPanel : Panel
             getId: view => 0
         );
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StandardSkillDelegate)v).HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StandardSkillDelegate)v).UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StandardSkillDelegate)v).PointerMove(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StandardSkillInteractBehaviour)v).HoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StandardSkillInteractBehaviour)v).UnhoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StandardSkillInteractBehaviour)v).PointerMove(d));
         _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, (v, d) => ToggleSkill(v, d));
     }
 
-    private bool ToggleSkill(InteractDelegate view, PointerEventData eventData)
+    private bool ToggleSkill(InteractBehaviour view, PointerEventData eventData)
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 

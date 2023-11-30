@@ -43,11 +43,11 @@ public class SkillInventoryView : ListView, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        InteractDelegate drag = eventData.pointerDrag.GetComponent<InteractDelegate>();
+        InteractBehaviour drag = eventData.pointerDrag.GetComponent<InteractBehaviour>();
         if (drag == null)
             return;
 
-        InteractDelegate drop = GetComponent<InteractDelegate>();
+        InteractBehaviour drop = GetComponent<InteractBehaviour>();
         if (drag == drop)
             return;
 

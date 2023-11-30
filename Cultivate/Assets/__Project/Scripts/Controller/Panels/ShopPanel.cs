@@ -30,9 +30,9 @@ public class ShopPanel : Panel
         _interactHandler = new InteractHandler(1,
             getId: view => 0);
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((CommodityItemDelegate)v).SkillView.HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((CommodityItemDelegate)v).SkillView.UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((CommodityItemDelegate)v).SkillView.PointerMove(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((CommodityItemInteractBehaviour)v).SkillView.HoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((CommodityItemInteractBehaviour)v).SkillView.UnhoverAnimation(d));
+        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((CommodityItemInteractBehaviour)v).SkillView.PointerMove(d));
         _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, (v, d) => BuySkill(v, d));
     }
 
@@ -42,9 +42,9 @@ public class ShopPanel : Panel
         CommodityListView.Refresh();
     }
 
-    private bool BuySkill(InteractDelegate interactDelegate, PointerEventData eventData)
+    private bool BuySkill(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
-        Commodity commodity = interactDelegate.AddressDelegate.Get<Commodity>();
+        Commodity commodity = interactBehaviour.AddressBehaviour.Get<Commodity>();
 
         ShopPanelDescriptor d = _address.Get<ShopPanelDescriptor>();
 

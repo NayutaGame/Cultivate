@@ -1,5 +1,4 @@
 
-using CLLibrary;
 using UnityEngine.UI;
 
 public class ArenaEditorView : ListView
