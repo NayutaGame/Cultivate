@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7574738621387063918}
   - component: {fileID: 8569808698392811221}
+  - component: {fileID: 7502427500042332917}
   m_Layer: 5
   m_Name: BattleEntityView
   m_TagString: Untagged
@@ -51,8 +52,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca138e1c889bbd4449449787eee2e7de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FieldView: {fileID: 4669422353781733046}
+  RectTransform: {fileID: 0}
+  FieldView: {fileID: 0}
   FormationListView: {fileID: 8865340141894433231}
+--- !u!114 &7502427500042332917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675693599365259794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9104924464099275217
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RectTransform: {fileID: 0}
   Container: {fileID: 7091735785084816240}
   Prefabs:
   - {fileID: 6193414529329671437, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
@@ -648,17 +663,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5034519349020965220, guid: 130616300a3db65489b22752e3147f0d, type: 3}
   m_PrefabInstance: {fileID: 6804764464802512937}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4669422353781733046 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2207467360429602463, guid: 130616300a3db65489b22752e3147f0d, type: 3}
-  m_PrefabInstance: {fileID: 6804764464802512937}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6842989767799736017
 PrefabInstance:
   m_ObjectHideFlags: 0

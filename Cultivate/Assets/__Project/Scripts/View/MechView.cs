@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MechView : ItemView
+public class MechView : AddressBehaviour
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text CountText;

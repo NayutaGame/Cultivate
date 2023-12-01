@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1349.3334
   m_ShowMode: 4
-  m_Title: Console
+  m_Title: Project
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 141
+  controlID: 112
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 147
+  controlID: 96
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 80
+  controlID: 39
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -665,7 +665,7 @@ MonoBehaviour:
       index: 13
       layout: 4
   m_WindowGUID: 5a93ef5bf3b2cd744849f90329ef6199
-  m_Gizmos: 0
+  m_Gizmos: 1
   m_OverrideSceneCullingMask: 6917529027641081856
   m_SceneIsLit: 1
   m_SceneLighting: 1
@@ -674,9 +674,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 884.49176, y: 528.5823, z: 17.125244}
+    m_Target: {x: 1031.3365, y: 545.62305, z: -8.765991}
     speed: 2
-    m_Value: {x: 884.49176, y: 528.5823, z: 17.125244}
+    m_Value: {x: 916.1152, y: 514.23615, z: -5.1951785}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -707,7 +707,7 @@ MonoBehaviour:
       m_Fade:
         m_Target: 1
         speed: 2
-        m_Value: 1
+        m_Value: 0
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
@@ -715,7 +715,7 @@ MonoBehaviour:
       m_Fade:
         m_Target: 0
         speed: 2
-        m_Value: 0
+        m_Value: 1
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
@@ -725,11 +725,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.005998384, y: 0.022498054, z: -0.00013513803, w: 0.9997312}
     speed: 2
-    m_Value: {x: 0.0059983707, y: 0.022498004, z: -0.00013513773, w: 0.9997289}
+    m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 727.08154
+    m_Target: 721.2553
     speed: 2
-    m_Value: 727.08154
+    m_Value: 296.4519
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -880,22 +880,22 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/__Project/Scripts/View/Annotations
+    - Assets/__Project/Prefabs/SkillViews/Legacy
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/__Project/Scripts/View/Annotations
+  - Assets/__Project/Prefabs/SkillViews/Legacy
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\86130\Documents\UnityWorkspace\Cultivate\Cultivate
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: ee3f0100
-    m_LastClickedID: 81902
-    m_ExpandedIDs: 00000000b03f0100b23f0100b43f0100b63f0100b83f0100ba3f0100bc3f0100be3f0100c03f010000ca9a3b
+    m_SelectedIDs: 66410100
+    m_LastClickedID: 82278
+    m_ExpandedIDs: 0000000000410100024101000441010006410100084101000a4101000c4101000e410100104101002a41010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -923,7 +923,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000b03f0100b23f0100b43f0100b63f0100b83f0100ba3f0100bc3f0100be3f0100c03f0100
+    m_ExpandedIDs: 0000000000410100024101000441010006410100084101000a4101000c4101000e41010010410100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

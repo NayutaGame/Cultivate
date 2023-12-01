@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3819011484994824159}
   - component: {fileID: 819999941540491389}
   - component: {fileID: 5881148967745909420}
+  - component: {fileID: 7147694563827767040}
   m_Layer: 5
   m_Name: LegacyFormationIconView
   m_TagString: Untagged
@@ -90,7 +91,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bb457b31aeda14f888785120077706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RectTransform: {fileID: 0}
   NameText: {fileID: 5045077740072967679}
+  CountText: {fileID: 0}
+--- !u!114 &7147694563827767040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953151215448478786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5066038944467382218
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,8 +174,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u4E00\u4E1A\u5E38\u7F6E\u9635"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
-  m_sharedMaterial: {fileID: -364229388345804397, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

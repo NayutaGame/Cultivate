@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class NodeView : ItemView
+public class NodeView : AddressBehaviour
 {
     public BreathingButton _breathingButton;
     public TMP_Text NameText;

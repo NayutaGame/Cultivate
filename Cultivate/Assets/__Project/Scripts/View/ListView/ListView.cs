@@ -10,11 +10,11 @@ public class ListView : AddressBehaviour
     public Transform Container;
     public GameObject[] Prefabs;
 
-    protected List<ItemView> _activePool;
-    public List<ItemView> ActivePool => _activePool;
-    private List<ItemView>[] _inactivePools;
+    protected List<AddressBehaviour> _activePool;
+    public List<AddressBehaviour> ActivePool => _activePool;
+    private List<AddressBehaviour>[] _inactivePools;
 
-    public IEnumerable<ItemView> Traversal()
+    public IEnumerable<AddressBehaviour> Traversal()
     {
         foreach (var itemView in _activePool)
             yield return itemView;
@@ -74,7 +74,7 @@ public class ListView : AddressBehaviour
     {
         Address address = GetAddress().Append($"#{index}");
         int prefabIndex = GetPrefabIndex(address.Get<object>());
-        FetchItemView(out ItemView itemView, prefabIndex);
+        FetchItemView(out AddressBehaviour itemView, prefabIndex);
 
         _activePool.Insert(index, itemView);
         _activePool[index].SetAddress(address);
@@ -102,25 +102,25 @@ public class ListView : AddressBehaviour
         _activePool[index].Refresh();
     }
 
-    private InteractHandler _interactHandler;
+    protected InteractHandler _interactHandler;
     public InteractHandler GetHandler() => _interactHandler;
     public virtual void SetHandler(InteractHandler interactHandler)
     {
         _interactHandler = interactHandler;
-        Traversal().Do(v => v.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
+        Traversal().Do(behaviour => behaviour.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
     }
 
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
 
-        _activePool = new List<ItemView>();
-        _inactivePools = new List<ItemView>[Prefabs.Length];
+        _activePool = new List<AddressBehaviour>();
+        _inactivePools = new List<AddressBehaviour>[Prefabs.Length];
 
         Prefabs.Do(prefab => prefab.SetActive(false));
 
         for (int i = 0; i < _inactivePools.Length; i++)
-            _inactivePools[i] = new List<ItemView>();
+            _inactivePools[i] = new List<AddressBehaviour>();
         RegisterExists();
         Model = Get<IListModel>();
         Sync();
@@ -130,11 +130,13 @@ public class ListView : AddressBehaviour
     {
         for (int i = 0; i < Container.childCount; i++)
         {
-            ItemView itemView = Container.GetChild(i).GetComponent<ItemView>();
-            itemView.gameObject.SetActive(false);
+            GameObject childGO = Container.GetChild(i).gameObject;
+            childGO.SetActive(false);
+            ItemView itemView = childGO.GetComponent<ItemView>();
+            AddressBehaviour addressBehaviour = childGO.GetComponent<AddressBehaviour>();
 
-            BindItemView(itemView, itemView.PrefabIndex);
-            _activePool.Add(itemView);
+            BindItemView(addressBehaviour, itemView.PrefabIndex);
+            _activePool.Add(addressBehaviour);
         }
     }
 
@@ -153,7 +155,7 @@ public class ListView : AddressBehaviour
         {
             Address address = GetAddress().Append($"#{i}");
             int prefabIndex = GetPrefabIndex(address.Get<object>());
-            FetchItemView(out ItemView itemView, prefabIndex);
+            FetchItemView(out AddressBehaviour itemView, prefabIndex);
             EnableItemView(itemView, i);
             itemView.SetAddress(address);
         }
@@ -163,7 +165,7 @@ public class ListView : AddressBehaviour
 
     private void PutIntoPool(int index)
     {
-        ItemView itemView = _activePool[index];
+        AddressBehaviour itemView = _activePool[index];
         _activePool.RemoveAt(index);
 
         DisableItemView(itemView);
@@ -174,14 +176,14 @@ public class ListView : AddressBehaviour
         for (int i = 0; i < Container.childCount; i++)
             while (_activePool.Count != 0)
             {
-                ItemView itemView = _activePool[0];
+                AddressBehaviour itemView = _activePool[0];
                 _activePool.RemoveAt(0);
 
                 DisableItemView(itemView);
             }
     }
 
-    protected bool FetchItemView(out ItemView itemView, int prefabIndex)
+    protected bool FetchItemView(out AddressBehaviour itemView, int prefabIndex)
     {
         var pool = _inactivePools[prefabIndex];
         if (pool.Count != 0)
@@ -192,28 +194,28 @@ public class ListView : AddressBehaviour
         }
 
         GameObject prefab = Prefabs[prefabIndex];
-        itemView = Instantiate(prefab, Container).GetComponent<ItemView>();
+        itemView = Instantiate(prefab, Container).GetComponent<AddressBehaviour>();
         BindItemView(itemView, prefabIndex);
         return false;
     }
 
-    protected virtual void BindItemView(ItemView itemView, int prefabIndex = 0)
+    protected virtual void BindItemView(AddressBehaviour behaviour, int prefabIndex = 0)
     {
-        itemView.PrefabIndex = prefabIndex;
-        itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler);
+        behaviour.GetComponent<ItemView>().PrefabIndex = prefabIndex;
+        behaviour.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler);
     }
 
-    protected void EnableItemView(ItemView itemView, int siblingIndex)
+    protected void EnableItemView(AddressBehaviour itemView, int siblingIndex)
     {
         itemView.transform.SetSiblingIndex(siblingIndex);
         _activePool.Add(itemView);
         itemView.gameObject.SetActive(true);
     }
 
-    protected void DisableItemView(ItemView itemView)
+    protected void DisableItemView(AddressBehaviour itemView)
     {
         itemView.gameObject.SetActive(false);
-        _inactivePools[itemView.PrefabIndex].Add(itemView);
+        _inactivePools[itemView.GetComponent<ItemView>().PrefabIndex].Add(itemView);
         itemView.transform.SetAsLastSibling();
     }
 }

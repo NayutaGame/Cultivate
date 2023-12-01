@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class BuffView : ItemView
+public class BuffView : AddressBehaviour
 {
     public TMP_Text NameText;
     public TMP_Text StackText;

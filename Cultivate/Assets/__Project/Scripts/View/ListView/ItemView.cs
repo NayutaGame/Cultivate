@@ -1,7 +1,9 @@
 
 using System;
+using UnityEngine;
 
-public class ItemView : AddressBehaviour
+[RequireComponent(typeof(AddressBehaviour))]
+public class ItemView : MonoBehaviour
 {
     [NonSerialized] public int PrefabIndex;
 }

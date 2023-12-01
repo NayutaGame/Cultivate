@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class SkillView : ItemView
+public class SkillView : AddressBehaviour
 {
     [SerializeField] public CanvasGroup CanvasGroup;
 

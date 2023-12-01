@@ -27,7 +27,13 @@ public class SkillAnnotation : AnnotationBehaviour
             return;
         }
 
-        ISkillModel skill = Get<ISkillModel>();
+        object obj = Get<object>();
+        ISkillModel skill;
+
+        if (obj is SkillSlot slot)
+            skill = slot.Skill;
+        else
+            skill = obj as ISkillModel;
 
         if (skill == null)
         {

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntityEditorEntityView : ItemView
+public class EntityEditorEntityView : AddressBehaviour
 {
     public InteractBehaviour interactBehaviour;
 

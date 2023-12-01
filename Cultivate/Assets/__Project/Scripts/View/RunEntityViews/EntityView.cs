@@ -1,7 +1,7 @@
 
 using TMPro;
 
-public class EntityView : ItemView
+public class EntityView : AddressBehaviour
 {
     public InteractBehaviour interactBehaviour;
     public TMP_Text NameText;

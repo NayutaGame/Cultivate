@@ -1,0 +1,2 @@
+
+public class FieldSlotInteractBehaviour : DeckSkillInteractBehaviour { }

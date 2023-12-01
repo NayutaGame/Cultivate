@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class FormationGroupBarView : ItemView
+public class FormationGroupBarView : AddressBehaviour
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private Image SelectionImage;

@@ -509,6 +509,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6628711938903181561}
   - component: {fileID: 6628711938903181558}
+  - component: {fileID: 4405763798203404102}
   m_Layer: 5
   m_Name: SettingsSlider
   m_TagString: Untagged
@@ -549,9 +550,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5adb3a1f663b84d9aedac18dedd66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RectTransform: {fileID: 0}
   LabelText: {fileID: 6628711938056921067}
   NumberText: {fileID: 6628711938418796218}
   Slider: {fileID: 6628711938945206591}
+--- !u!114 &4405763798203404102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6628711938903181560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6628711938927182511
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5289883777761886510}
   - component: {fileID: 6848013570014182107}
   - component: {fileID: 4949071253175414335}
+  - component: {fileID: 3545404654766287891}
   m_Layer: 5
   m_Name: FormationGroupBarView
   m_TagString: Untagged
@@ -91,8 +92,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eadf305d78ddc5d45b4a4035a765c3f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RectTransform: {fileID: 0}
   NameText: {fileID: 328300260318751242}
   SelectionImage: {fileID: 5193277129206774257}
+--- !u!114 &3545404654766287891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108923873393925487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3278545805871634747
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,8 +251,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u540D\u5B57\u540D\u5B57\u540D\u5B57"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
-  m_sharedMaterial: {fileID: -364229388345804397, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

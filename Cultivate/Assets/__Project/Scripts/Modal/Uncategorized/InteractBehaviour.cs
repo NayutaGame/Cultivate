@@ -75,4 +75,10 @@ public abstract class InteractBehaviour : MonoBehaviour
         AddressBehaviour.RectTransform.position = pivot.position;
         AddressBehaviour.RectTransform.localScale = pivot.localScale;
     }
+
+    public void SetStartAndPivot(RectTransform start, RectTransform pivot)
+    {
+        SetPivotWithoutAnimation(start);
+        SetPivot(pivot);
+    }
 }

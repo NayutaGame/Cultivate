@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class EntityEditorSkillBarView : ItemView
+public class EntityEditorSkillBarView : AddressBehaviour
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private Image BackgroundImage;

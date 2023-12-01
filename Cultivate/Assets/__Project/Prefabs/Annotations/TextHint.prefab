@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u5B87\u5B99\u65E0\u654C\u91CD\u5251"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 24212dad54a50a14f9001ff2cd004797, type: 2}
-  m_sharedMaterial: {fileID: 920707971042303996, guid: 24212dad54a50a14f9001ff2cd004797, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -267,5 +267,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3140aa0c64d60e7499c49a4185e98a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 2278980885381287105}
+  RectTransform: {fileID: 2278980885381287105}
   Text: {fileID: 514262015026149338}

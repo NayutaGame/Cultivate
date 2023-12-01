@@ -1,5 +1,5 @@
 
-public class BattleEntityView : ItemView
+public class BattleEntityView : AddressBehaviour
 {
     public ListView FieldView;
     public ListView FormationListView;

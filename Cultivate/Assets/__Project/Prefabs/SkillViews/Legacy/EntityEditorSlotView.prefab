@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77b88709b2c116543a0aea4a3724d747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RectTransform: {fileID: 0}
   SkillView: {fileID: 7830573750497389353}
 --- !u!1 &1844353422923098657
 GameObject:
@@ -243,7 +244,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -4932889361302535826, guid: 9a451b0c2240ed84ca6474dff2d97f8d, type: 3}
+  m_Sprite: {fileID: 6061858008805557238, guid: 1d98454569280fe4bbd8240a5aea28f1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

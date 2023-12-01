@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eff8016bc7e3cf4aa840c1343f2d90a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 4730531974322507744}
+  RectTransform: {fileID: 4730531974322507744}
   TitleText: {fileID: 6767457290001897709}
   DescriptionText: {fileID: 6767457290463986806}
   LowerSeparator: {fileID: 6767457289088463095}

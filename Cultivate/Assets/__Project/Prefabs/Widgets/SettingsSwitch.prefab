@@ -599,6 +599,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4082247727251103362}
   - component: {fileID: 4082247727251103361}
+  - component: {fileID: 7570433634511511479}
   m_Layer: 0
   m_Name: SettingsSwitch
   m_TagString: Untagged
@@ -639,10 +640,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 512cfa3b11630bb49bfc9ff4dcacc138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RectTransform: {fileID: 0}
   LabelText: {fileID: 4082247726351174728}
   ContentText: {fileID: 4082247726123854404}
   PrevButton: {fileID: 3500785905787628904}
   NextButton: {fileID: 1689282214067051568}
+--- !u!114 &7570433634511511479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4082247727251103363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4721171824381004072
 GameObject:
   m_ObjectHideFlags: 0

@@ -144,8 +144,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u7EC3\u6C14"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
-  m_sharedMaterial: {fileID: -364229388345804397, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -221,6 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 529978078669234200}
   - component: {fileID: 6422294263586690588}
+  - component: {fileID: 2564919834203992936}
   m_Layer: 5
   m_Name: EntityBarView
   m_TagString: Untagged
@@ -261,12 +262,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f2d254ef8932b4d95b7d67f1aa75ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RectTransform: {fileID: 0}
+  interactBehaviour: {fileID: 0}
   NameText: {fileID: 328300260318751242}
   JingJieText: {fileID: 330612139291796175}
   HPText: {fileID: 0}
   DescriptionText: {fileID: 0}
   SlotListView: {fileID: 0}
   SelectionImage: {fileID: 2574591580943650469}
+--- !u!114 &2564919834203992936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108923873393925487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2554135421041422778
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,8 +466,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u540D\u5B57\u540D\u5B57\u540D\u5B57"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
-  m_sharedMaterial: {fileID: -364229388345804397, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

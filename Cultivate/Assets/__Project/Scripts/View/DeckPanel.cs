@@ -47,7 +47,7 @@ public class DeckPanel : Panel
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
         MechListView.SetAddress(new Address("Run.Environment.MechBag"));
 
-        ConfigureInteractDelegate();
+        DefineInteractHandler();
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
@@ -84,14 +84,14 @@ public class DeckPanel : Panel
 
     private InteractHandler _interactHandler;
     public InteractHandler GetDelegate() => _interactHandler;
-    private void ConfigureInteractDelegate()
+    private void DefineInteractHandler()
     {
         _interactHandler = new(5,
             getId: d =>
             {
                 if (d is HandSkillInteractBehaviour)
                     return 0;
-                if (d is AnimatedListInteractBehaviour)
+                if (d is DropInteractBehaviour)
                     return 1;
                 if (d is FieldSlotInteractBehaviour)
                     return 2;

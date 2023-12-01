@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class EntityEditorSlotView : ItemView
+public class EntityEditorSlotView : AddressBehaviour
 {
     [SerializeField] protected SkillView SkillView;
 

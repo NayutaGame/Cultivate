@@ -1,5 +1,6 @@
 
 using System.Threading.Tasks;
+using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,7 +17,7 @@ public class AnimatedListView : ListView
         {
             Address address = GetAddress().Append($"#{i}");
             int prefabIndex = GetPrefabIndex(address.Get<object>());
-            FetchItemView(out ItemView itemView, prefabIndex);
+            FetchItemView(out AddressBehaviour itemView, prefabIndex);
             EnableItemView(itemView, i);
             itemView.SetAddress(address);
         }
@@ -38,25 +39,38 @@ public class AnimatedListView : ListView
         return task;
     }
 
-    protected override void BindItemView(ItemView itemView, int prefabIndex = 0)
+    public override void SetHandler(InteractHandler interactHandler)
     {
-        base.BindItemView(itemView, prefabIndex);
+        _interactHandler = interactHandler;
+        Traversal().Do(behaviour => behaviour.GetComponent<AnimatedItemView>().InteractBehaviour.SetHandler(_interactHandler));
+    }
 
-        if (itemView is AnimatedItemView animatedItemView)
-        {
-            if (animatedItemView.InteractBehaviour != null)
-                return;
+    protected override void BindItemView(AddressBehaviour behaviour, int prefabIndex = 0)
+    {
+        behaviour.GetComponent<ItemView>().PrefabIndex = prefabIndex;
 
-            InteractBehaviour interactBehaviour = Instantiate(PivotPrefab, PivotList).GetComponent<InteractBehaviour>();
-            animatedItemView.InteractBehaviour = interactBehaviour;
-            interactBehaviour.AddressBehaviour = itemView;
-        }
+        AnimatedItemView animatedItemView = behaviour.GetComponent<AnimatedItemView>();
+
+        if (animatedItemView == null)
+            return;
+
+        if (animatedItemView.InteractBehaviour != null)
+            return;
+
+        InteractBehaviour interactBehaviour = Instantiate(PivotPrefab, PivotList).GetComponent<InteractBehaviour>();
+        interactBehaviour.SetHandler(_interactHandler);
+        animatedItemView.InteractBehaviour = interactBehaviour;
+        interactBehaviour.AddressBehaviour = behaviour;
     }
 
     private void RefreshPivots()
     {
-        foreach (var itemView in _activePool)
-            if (itemView is AnimatedItemView animatedItemView)
+        foreach (var addressBehaviour in _activePool)
+        {
+            AnimatedItemView animatedItemView = addressBehaviour.GetComponent<AnimatedItemView>();
+
+            if(animatedItemView != null)
                 animatedItemView.InteractBehaviour.SetPivot(animatedItemView.InteractBehaviour.PivotBehaviour.IdlePivot);
+        }
     }
 }
