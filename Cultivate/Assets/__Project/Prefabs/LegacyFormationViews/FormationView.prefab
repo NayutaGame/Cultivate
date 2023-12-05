@@ -498,7 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cec051e29093e468d278a25e0decb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
+  RectTransform: {fileID: 2224151803628044569}
   NameText: {fileID: 0}
   JingJieText: {fileID: 1230496396393390164}
   ConditionText: {fileID: 5072350056316369142}
@@ -515,3 +515,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 5670130994828124267}

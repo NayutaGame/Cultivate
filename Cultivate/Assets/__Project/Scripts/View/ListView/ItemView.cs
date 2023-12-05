@@ -6,4 +6,5 @@ using UnityEngine;
 public class ItemView : MonoBehaviour
 {
     [NonSerialized] public int PrefabIndex;
+    public AddressBehaviour AddressBehaviour;
 }

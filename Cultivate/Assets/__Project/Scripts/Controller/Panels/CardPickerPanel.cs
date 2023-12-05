@@ -45,9 +45,9 @@ public class CardPickerPanel : Panel
         if (SkillListView == null)
             return;
 
-        SkillListView.Traversal().Do(v => ((SkillView)v).SetSelected(false));
+        SkillListView.Traversal().Do(v => ((SkillView)v.AddressBehaviour).SetSelected(false));
         _skillSelections.Clear();
-        SlotListView.Traversal().Do(v => ((SlotView)v).SetSelected(false));
+        SlotListView.Traversal().Do(v => ((SlotView)v.AddressBehaviour).SetSelected(false));
         _slotSelections.Clear();
     }
 
@@ -69,7 +69,7 @@ public class CardPickerPanel : Panel
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
         SkillView skillView = view.GetComponent<SkillView>();
-        int index = SkillListView.ActivePool.FindIndex(v => v == skillView);
+        int index = SkillListView.ActivePool.FindIndex(v => v.AddressBehaviour == skillView);
         bool isSelected = _skillSelections.Contains(index);
 
         if (isSelected)
@@ -99,7 +99,7 @@ public class CardPickerPanel : Panel
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
         SlotView slotView = view.GetComponent<SlotView>();
-        int index = SlotListView.ActivePool.FindIndex(v => v == slotView);
+        int index = SlotListView.ActivePool.FindIndex(v => v.AddressBehaviour == slotView);
         bool isSelected = _slotSelections.Contains(index);
 
         if (isSelected)
@@ -128,8 +128,8 @@ public class CardPickerPanel : Panel
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
         List<object> iRunSkillList = new List<object>();
-        iRunSkillList.AddRange(_skillSelections.Map(i => SkillListView.ActivePool[i].Get<object>()));
-        iRunSkillList.AddRange(_slotSelections.Map(i => SlotListView.ActivePool[i].Get<object>()));
+        iRunSkillList.AddRange(_skillSelections.Map(i => SkillListView.ActivePool[i].AddressBehaviour.Get<object>()));
+        iRunSkillList.AddRange(_slotSelections.Map(i => SlotListView.ActivePool[i].AddressBehaviour.Get<object>()));
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedIRunSkillsSignal(iRunSkillList));
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }

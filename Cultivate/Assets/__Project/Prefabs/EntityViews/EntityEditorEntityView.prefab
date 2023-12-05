@@ -3151,7 +3151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ba141bae4e5f4693435cd6a8e1f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
+  RectTransform: {fileID: 7778355132643012418}
   interactBehaviour: {fileID: 0}
   EntityDropdown: {fileID: 3302334552529912147}
   JingJieDropdown: {fileID: 1916946225291987103}
@@ -3173,6 +3173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: -711014571449497360}
 --- !u!1 &5900262046347886694
 GameObject:
   m_ObjectHideFlags: 0

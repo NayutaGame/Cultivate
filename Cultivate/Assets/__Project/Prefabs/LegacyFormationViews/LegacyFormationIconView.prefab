@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bb457b31aeda14f888785120077706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
+  RectTransform: {fileID: 409231966697183538}
   NameText: {fileID: 5045077740072967679}
   CountText: {fileID: 0}
 --- !u!114 &7147694563827767040
@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 5881148967745909420}
 --- !u!1 &5066038944467382218
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,6 @@ using TMPro;
 
 public class EntityView : AddressBehaviour
 {
-    public InteractBehaviour interactBehaviour;
     public TMP_Text NameText;
     public TMP_Text JingJieText;
     public TMP_Text HPText;

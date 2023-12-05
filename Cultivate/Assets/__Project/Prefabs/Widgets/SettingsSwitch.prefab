@@ -640,7 +640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 512cfa3b11630bb49bfc9ff4dcacc138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
+  RectTransform: {fileID: 4082247727251103362}
   LabelText: {fileID: 4082247726351174728}
   ContentText: {fileID: 4082247726123854404}
   PrevButton: {fileID: 3500785905787628904}
@@ -657,6 +657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 4082247727251103361}
 --- !u!1 &4721171824381004072
 GameObject:
   m_ObjectHideFlags: 0

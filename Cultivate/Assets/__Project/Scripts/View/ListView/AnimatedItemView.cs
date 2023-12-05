@@ -1,15 +1,8 @@
 
+using UnityEngine;
+
 public class AnimatedItemView : ItemView
 {
+    public RectTransform PivotTransform;
     public InteractBehaviour InteractBehaviour;
-
-    private void OnEnable()
-    {
-        InteractBehaviour.SetEnabled(true);
-    }
-
-    private void OnDisable()
-    {
-        InteractBehaviour.SetEnabled(false);
-    }
 }

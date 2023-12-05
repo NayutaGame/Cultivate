@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eadf305d78ddc5d45b4a4035a765c3f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
+  RectTransform: {fileID: 529978078669234200}
   NameText: {fileID: 328300260318751242}
   SelectionImage: {fileID: 5193277129206774257}
 --- !u!114 &3545404654766287891
@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 4949071253175414335}
 --- !u!1 &3278545805871634747
 GameObject:
   m_ObjectHideFlags: 0

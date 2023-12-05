@@ -550,7 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5adb3a1f663b84d9aedac18dedd66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
+  RectTransform: {fileID: 6628711938903181561}
   LabelText: {fileID: 6628711938056921067}
   NumberText: {fileID: 6628711938418796218}
   Slider: {fileID: 6628711938945206591}
@@ -566,6 +566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 6628711938903181558}
 --- !u!1 &6628711938927182511
 GameObject:
   m_ObjectHideFlags: 0

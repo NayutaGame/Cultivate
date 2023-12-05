@@ -606,9 +606,8 @@ MonoBehaviour:
   RectTransform: {fileID: 3623534058688685044}
   Container: {fileID: 6501694106712474511}
   Prefabs:
-  - {fileID: 4756024716262110058, guid: a0882b5361b43624a91e0f8847d49d87, type: 3}
-  PivotList: {fileID: 1037360933362778946}
-  PivotPrefab: {fileID: 1267362520892108290, guid: 4e2c1d72ae5b71f4a937c9f847293588, type: 3}
+  - {fileID: 2444767835459707755, guid: 6d53c11654c020648adec37286e410ae, type: 3}
+  PivotHolder: {fileID: 1037360933362778946}
 --- !u!1 &7599118483176115168
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,7 +826,7 @@ GameObject:
   - component: {fileID: 1037360933362778946}
   - component: {fileID: 7528905261680082668}
   m_Layer: 5
-  m_Name: PivotList
+  m_Name: PivotHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

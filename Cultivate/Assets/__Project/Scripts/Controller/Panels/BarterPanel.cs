@@ -19,9 +19,9 @@ public class BarterPanel : Panel
         BarterItemListView.SetAddress(_address.Append(".Inventory"));
         BarterItemListView.SetHandler(_interactHandler);
 
-        foreach (AddressBehaviour itemView in BarterItemListView.ActivePool)
+        foreach (ItemView itemView in BarterItemListView.ActivePool)
         {
-            BarterItemView barterItemView = (BarterItemView)itemView;
+            BarterItemView barterItemView = itemView.AddressBehaviour as BarterItemView;
             barterItemView.ClearExchangeEvent();
             barterItemView.ExchangeEvent += ExchangeEvent;
         }

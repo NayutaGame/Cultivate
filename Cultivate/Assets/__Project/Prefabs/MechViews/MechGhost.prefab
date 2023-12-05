@@ -95,7 +95,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: MechGhost
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8974904020438072693, guid: d84b8643c56641247b0c81ab90a91147, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d84b8643c56641247b0c81ab90a91147, type: 3}
 --- !u!1 &4392915531836922706 stripped
 GameObject:

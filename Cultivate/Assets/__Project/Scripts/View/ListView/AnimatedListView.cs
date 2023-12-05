@@ -2,28 +2,10 @@
 using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class AnimatedListView : ListView
 {
-    [SerializeField] private Transform PivotList;
-    [SerializeField] private GameObject PivotPrefab;
-
-    public override void Sync()
-    {
-        PutAllIntoPool();
-
-        for (int i = 0; i < Model.Count(); i++)
-        {
-            Address address = GetAddress().Append($"#{i}");
-            int prefabIndex = GetPrefabIndex(address.Get<object>());
-            FetchItemView(out AddressBehaviour itemView, prefabIndex);
-            EnableItemView(itemView, i);
-            itemView.SetAddress(address);
-        }
-
-        Refresh();
-    }
+    [SerializeField] private Transform PivotHolder;
 
     protected override Task InsertItem(int index, object item)
     {
@@ -42,25 +24,40 @@ public class AnimatedListView : ListView
     public override void SetHandler(InteractHandler interactHandler)
     {
         _interactHandler = interactHandler;
-        Traversal().Do(behaviour => behaviour.GetComponent<AnimatedItemView>().InteractBehaviour.SetHandler(_interactHandler));
+        Traversal().Do(itemView => itemView.GetComponent<AnimatedItemView>().InteractBehaviour.SetHandler(_interactHandler));
     }
 
-    protected override void BindItemView(AddressBehaviour behaviour, int prefabIndex = 0)
+    protected override void InitItemView(ItemView itemView, int prefabIndex)
     {
-        behaviour.GetComponent<ItemView>().PrefabIndex = prefabIndex;
+        base.InitItemView(itemView, prefabIndex);
 
-        AnimatedItemView animatedItemView = behaviour.GetComponent<AnimatedItemView>();
-
+        AnimatedItemView animatedItemView = itemView.GetComponent<AnimatedItemView>();
         if (animatedItemView == null)
             return;
 
-        if (animatedItemView.InteractBehaviour != null)
-            return;
-
-        InteractBehaviour interactBehaviour = Instantiate(PivotPrefab, PivotList).GetComponent<InteractBehaviour>();
+        InteractBehaviour interactBehaviour = animatedItemView.InteractBehaviour;
+        interactBehaviour.gameObject.transform.SetParent(PivotHolder);
         interactBehaviour.SetHandler(_interactHandler);
-        animatedItemView.InteractBehaviour = interactBehaviour;
-        interactBehaviour.AddressBehaviour = behaviour;
+    }
+
+    protected override ItemView EnableItemView(int prefabIndex, int orderInPool, int index)
+    {
+        ItemView itemView = base.EnableItemView(prefabIndex, orderInPool, index);
+
+        AnimatedItemView animatedItemView = itemView as AnimatedItemView;
+        animatedItemView.InteractBehaviour.SetEnabled(true);
+
+        return itemView;
+    }
+
+    protected override ItemView DisableItemView(int index)
+    {
+        ItemView itemView = base.DisableItemView(index);
+
+        AnimatedItemView animatedItemView = itemView as AnimatedItemView;
+        animatedItemView.InteractBehaviour.SetEnabled(false);
+
+        return itemView;
     }
 
     private void RefreshPivots()

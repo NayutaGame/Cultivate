@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf59adc78f2463d4695bd5e7ebb6c056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
+  RectTransform: {fileID: 7916157574798411217}
   LabelText: {fileID: 7916157573108638044}
   Button: {fileID: 7916157573280181437}
 --- !u!114 &6077542900890542473
@@ -536,3 +536,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 7916157574798411216}

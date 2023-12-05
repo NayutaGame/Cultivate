@@ -262,8 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f2d254ef8932b4d95b7d67f1aa75ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
-  interactBehaviour: {fileID: 0}
+  RectTransform: {fileID: 529978078669234200}
   NameText: {fileID: 328300260318751242}
   JingJieText: {fileID: 330612139291796175}
   HPText: {fileID: 0}
@@ -282,6 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 6422294263586690588}
 --- !u!1 &2554135421041422778
 GameObject:
   m_ObjectHideFlags: 0
