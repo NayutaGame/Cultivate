@@ -44,20 +44,8 @@ public class SkillView : AddressBehaviour
     public override void Refresh()
     {
         base.Refresh();
-        if (GetAddress() == null)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
 
         ISkillModel skill = Get<ISkillModel>();
-        if (skill == null)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-
-        gameObject.SetActive(true);
 
         SetCardImage(skill.GetSprite());
         SetManaCost(skill.GetManaCost());

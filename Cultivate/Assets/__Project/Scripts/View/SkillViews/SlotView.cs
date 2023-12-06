@@ -14,6 +14,7 @@ public class SlotView : AddressBehaviour
     public override void Refresh()
     {
         base.Refresh();
+
         SkillSlot slot = Get<SkillSlot>();
 
         bool locked = slot.State == SkillSlot.SkillSlotState.Locked;
