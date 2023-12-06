@@ -1,7 +1,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using CLLibrary;
 using UnityEngine;
 
 [Serializable]
@@ -84,6 +86,9 @@ public class ListModel<T> : IListModel
 
     public bool Contains(T item)
         => _list.Contains(item);
+
+    public List<T> Filter(Predicate<T> filter)
+        => _list.FilterObj(filter).ToList();
 
     public ListModel()
     {

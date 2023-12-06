@@ -68,9 +68,12 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
         {
             _slots[i].SetLocked(!(Start <= i && i < end));
         });
+
+        _filteredSlots?.Refresh();
     }
 
     [SerializeReference] private SlotListModel _slots;
+    private FilteredListModel<SkillSlot> _filteredSlots;
 
     public SkillSlot GetSlot(int i)
         => _slots[i];
@@ -123,7 +126,7 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
     {
         _accessors = new()
         {
-            { "Slots", () => _slots },
+            { "Slots", () => _filteredSlots },
             { "ActivatedSubFormations", () => _activatedFormations },
         };
 
@@ -156,6 +159,8 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
                 _slots.Add(slot);
             }
         }
+
+        _filteredSlots = new FilteredListModel<SkillSlot>(_slots, skillSlot => skillSlot.State != SkillSlot.SkillSlotState.Locked);
 
         _activatedFormations = new ListModel<FormationEntry>();
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);

@@ -17,11 +17,6 @@ public class SlotView : AddressBehaviour
 
         SkillSlot slot = Get<SkillSlot>();
 
-        bool locked = slot.State == SkillSlot.SkillSlotState.Locked;
-        gameObject.SetActive(!locked);
-        if (locked)
-            return;
-
         bool occupied = slot.State == SkillSlot.SkillSlotState.Occupied;
         SkillView.gameObject.SetActive(occupied);
         if (!occupied)
