@@ -114,6 +114,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 3809487136158471207}
     m_Modifications:
     - target: {fileID: 750622270153546803, guid: b8a1a8a1653e7664a80aac28502af7f0, type: 3}
+      propertyPath: CanvasGroup
+      value: 
+      objectReference: {fileID: 6190693024351877117}
+    - target: {fileID: 750622270153546803, guid: b8a1a8a1653e7664a80aac28502af7f0, type: 3}
       propertyPath: AddressBehaviour
       value: 
       objectReference: {fileID: 1229584458571549511}
@@ -155,11 +159,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8838977114607417665, guid: b8a1a8a1653e7664a80aac28502af7f0, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8838977114607417665, guid: b8a1a8a1653e7664a80aac28502af7f0, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 240
+      value: 480
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838977114607417665, guid: b8a1a8a1653e7664a80aac28502af7f0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838977114607417665, guid: b8a1a8a1653e7664a80aac28502af7f0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838977114607417665, guid: b8a1a8a1653e7664a80aac28502af7f0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8838977114607417665, guid: b8a1a8a1653e7664a80aac28502af7f0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -338,5 +354,10 @@ MonoBehaviour:
 --- !u!224 &5355276716760374024 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8152188524626589071, guid: 004cdf974587c0e499730776df2f7be0, type: 3}
+  m_PrefabInstance: {fileID: 4283951879694462599}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &6190693024351877117 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 7969793575853840762, guid: 004cdf974587c0e499730776df2f7be0, type: 3}
   m_PrefabInstance: {fileID: 4283951879694462599}
   m_PrefabAsset: {fileID: 0}

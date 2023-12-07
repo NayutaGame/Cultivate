@@ -11,19 +11,15 @@ public class GhostBehaviour : MonoBehaviour
 
     public void BeginDrag(Address address, RectTransform start, RectTransform pivot)
     {
-        gameObject.SetActive(true);
-        AddressBehaviour.GetComponent<CanvasGroup>().alpha = 1;
         AddressBehaviour.SetAddress(address);
         AddressBehaviour.Refresh();
+        gameObject.SetActive(true);
 
         SetStartAndPivot(start, pivot);
     }
 
     public void EndDrag()
     {
-        AddressBehaviour.GetComponent<CanvasGroup>().alpha = 0;
-        // AddressBehaviour.SetAddress(null);
-        // AddressBehaviour.Refresh();
         gameObject.SetActive(false);
     }
 

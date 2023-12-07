@@ -41,6 +41,8 @@ public class SkillInventoryView : ListView, IDropHandler
                 ScrollRect.horizontalNormalizedPosition += 2000f / ScrollRect.content.rect.width * Time.deltaTime;
     }
 
+    // TODO: to be removed
+
     public void OnDrop(PointerEventData eventData)
     {
         InteractBehaviour drag = eventData.pointerDrag.GetComponent<InteractBehaviour>();
@@ -51,7 +53,7 @@ public class SkillInventoryView : ListView, IDropHandler
         if (drag == drop)
             return;
 
-        drag.GetHandler()?.DragDrop(drag, drop);
+        drag.GetHandler()?.DragDrop(drag, drop, eventData);
     }
 
     private void DrawJingJie(JingJie jingJie)

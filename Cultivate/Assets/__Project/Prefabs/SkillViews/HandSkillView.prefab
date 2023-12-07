@@ -1234,6 +1234,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2375889096817179759}
     m_Modifications:
     - target: {fileID: 340333304691470025, guid: 4e2c1d72ae5b71f4a937c9f847293588, type: 3}
+      propertyPath: CanvasGroup
+      value: 
+      objectReference: {fileID: 4557884469638697114}
+    - target: {fileID: 340333304691470025, guid: 4e2c1d72ae5b71f4a937c9f847293588, type: 3}
       propertyPath: AddressBehaviour
       value: 
       objectReference: {fileID: 4668807653529629047}

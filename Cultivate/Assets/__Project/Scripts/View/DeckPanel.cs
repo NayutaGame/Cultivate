@@ -101,7 +101,7 @@ public class DeckPanel : Panel
                     return 4;
                 return null;
             },
-            dragDropTable: new Action<InteractBehaviour, InteractBehaviour>[]
+            dragDropTable: new Action<InteractBehaviour, InteractBehaviour, PointerEventData>[]
             {
                 /*                  SkillView,  HandView,       SlotView,        Mech,       FormationView */
                 /* SkillView     */ TryMerge,   null,           TryEquipSkill,   null,       null,
@@ -139,7 +139,7 @@ public class DeckPanel : Panel
         MechListView.SetHandler(_interactHandler);
     }
 
-    private void TryMerge(InteractBehaviour from, InteractBehaviour to)
+    private void TryMerge(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         RunSkill lhs = from.AddressBehaviour.Get<RunSkill>();
@@ -148,66 +148,80 @@ public class DeckPanel : Panel
         if (!success)
             return;
 
+        // Merge Animation
+        to.OnEndDrag(eventData);
         AudioManager.Play("CardUpgrade");
+
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
-    private void TryEquipSkill(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
+    private void TryEquipSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        RunSkill toEquip = fromInteractBehaviour.AddressBehaviour.Get<RunSkill>();
-        SkillSlot slot = toInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
+        RunSkill toEquip = from.AddressBehaviour.Get<RunSkill>();
+        SkillSlot slot = to.AddressBehaviour.Get<SkillSlot>();
         bool success = env.TryEquipSkill(toEquip, slot);
         if (!success)
             return;
 
+        // Equip Skill Animation
+        eventData.pointerDrag = null;
+        to.OnEndDrag(eventData);
+        from.OnEndDrag(eventData);
+        from.SetStartAndPivot(to.PivotBehaviour.IdlePivot, from.PivotBehaviour.IdlePivot);
         AudioManager.Play("CardPlacement");
+
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
-    private void TryEquipMech(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
+    private void TryEquipMech(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        Mech toEquip = fromInteractBehaviour.AddressBehaviour.Get<Mech>();
-        SkillSlot slot = toInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
+        Mech toEquip = from.AddressBehaviour.Get<Mech>();
+        SkillSlot slot = to.AddressBehaviour.Get<SkillSlot>();
         bool success = env.TryEquipMech(toEquip, slot);
         if (!success)
             return;
 
+        // Equip Mech Animation
         AudioManager.Play("CardPlacement");
-        fromInteractBehaviour.AddressBehaviour.Refresh();
+
+        from.AddressBehaviour.Refresh();
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
     }
 
-    private void TryUnequip(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
+    private void TryUnequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        SkillSlot slot = fromInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot slot = from.AddressBehaviour.Get<SkillSlot>();
         bool success = env.TryUnequip(slot, null);
         if (!success)
             return;
 
+        // Unequip Animation
         AudioManager.Play("CardPlacement");
+
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
         MechListView.Refresh();
     }
 
-    private void TrySwap(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
+    private void TrySwap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        SkillSlot fromSlot = fromInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
-        SkillSlot toSlot = toInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot fromSlot = from.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot toSlot = to.AddressBehaviour.Get<SkillSlot>();
         bool success = env.TrySwap(fromSlot, toSlot);
         if (!success)
             return;
 
+        // Swap Animation
         AudioManager.Play("CardPlacement");
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();

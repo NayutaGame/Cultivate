@@ -182,6 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 0}
   PivotBehaviour: {fileID: 8301825459270121207}
+  Image: {fileID: 8316851963857106442}
 --- !u!1 &6037150166461419401
 GameObject:
   m_ObjectHideFlags: 0

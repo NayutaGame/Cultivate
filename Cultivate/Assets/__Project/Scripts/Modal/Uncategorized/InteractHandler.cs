@@ -9,16 +9,16 @@ public class InteractHandler
 
     private Func<InteractBehaviour, int?> _getId;
 
-    private Action<InteractBehaviour, InteractBehaviour>[] _dragDropTable;
-    private Action<InteractBehaviour, InteractBehaviour> GetDragDrop(int fromId, int toId)
+    private Action<InteractBehaviour, InteractBehaviour, PointerEventData>[] _dragDropTable;
+    private Action<InteractBehaviour, InteractBehaviour, PointerEventData> GetDragDrop(int fromId, int toId)
         => _dragDropTable?[toId + fromId * _distinctItems];
-    public void SetDragDrop(int fromId, int toId, Action<InteractBehaviour, InteractBehaviour> func)
+    public void SetDragDrop(int fromId, int toId, Action<InteractBehaviour, InteractBehaviour, PointerEventData> func)
     {
-        _dragDropTable ??= new Action<InteractBehaviour, InteractBehaviour>[_distinctItems * _distinctItems];
+        _dragDropTable ??= new Action<InteractBehaviour, InteractBehaviour, PointerEventData>[_distinctItems * _distinctItems];
         _dragDropTable[toId + fromId * _distinctItems] = func;
     }
 
-    private Action<InteractBehaviour, InteractBehaviour> GetDragDrop(InteractBehaviour fromView, InteractBehaviour toView)
+    private Action<InteractBehaviour, InteractBehaviour, PointerEventData> GetDragDrop(InteractBehaviour fromView, InteractBehaviour toView)
     {
         InteractHandler fromHandler = fromView?.GetHandler();
         InteractHandler toHandler = toView?.GetHandler();
@@ -40,7 +40,7 @@ public class InteractHandler
 
         for (int i = 0; i < _distinctItems; i++)
         {
-            Action<InteractBehaviour, InteractBehaviour> func = GetDragDrop(viewId.Value, i);
+            Action<InteractBehaviour, InteractBehaviour, PointerEventData> func = GetDragDrop(viewId.Value, i);
             if (func != null)
                 return true;
         }
@@ -48,8 +48,8 @@ public class InteractHandler
         return false;
     }
 
-    public void DragDrop(InteractBehaviour fromView, InteractBehaviour toView)
-        => GetDragDrop(fromView, toView)?.Invoke(fromView, toView);
+    public void DragDrop(InteractBehaviour fromView, InteractBehaviour toView, PointerEventData eventData)
+        => GetDragDrop(fromView, toView)?.Invoke(fromView, toView, eventData);
 
 
 
@@ -86,7 +86,7 @@ public class InteractHandler
 
     public InteractHandler(int distinctItems,
         Func<InteractBehaviour, int?> getId,
-        Action<InteractBehaviour, InteractBehaviour>[] dragDropTable = null,
+        Action<InteractBehaviour, InteractBehaviour, PointerEventData>[] dragDropTable = null,
         Action<InteractBehaviour, PointerEventData>[] handleTable = null)
     {
         _distinctItems = distinctItems;

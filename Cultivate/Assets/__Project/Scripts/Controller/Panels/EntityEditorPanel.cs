@@ -131,30 +131,30 @@ public class EntityEditorPanel : Panel
         HomeEntityView.SetHandler(_interactHandler);
     }
 
-    private void Equip(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
+    private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         // SkillBarView -> EntityEditorSlotView
-        RunSkill skill = fromInteractBehaviour.AddressBehaviour.Get<RunSkill>();
-        SkillSlot slot = toInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
+        RunSkill skill = from.AddressBehaviour.Get<RunSkill>();
+        SkillSlot slot = to.AddressBehaviour.Get<SkillSlot>();
 
         slot.Skill = skill;
         Refresh();
     }
 
-    private void Unequip(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
+    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         // EntityEditorSlotView -> SkillBarView
-        SkillSlot slot = fromInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot slot = from.AddressBehaviour.Get<SkillSlot>();
 
         slot.Skill = null;
         Refresh();
     }
 
-    private void Swap(InteractBehaviour fromInteractBehaviour, InteractBehaviour toInteractBehaviour)
+    private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         // EntityEditorSlotView -> EntityEditorSlotView
-        SkillSlot fromSlot = fromInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
-        SkillSlot toSlot = toInteractBehaviour.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot fromSlot = from.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot toSlot = to.AddressBehaviour.Get<SkillSlot>();
 
         (fromSlot.Skill, toSlot.Skill) = (toSlot.Skill, fromSlot.Skill);
         Refresh();

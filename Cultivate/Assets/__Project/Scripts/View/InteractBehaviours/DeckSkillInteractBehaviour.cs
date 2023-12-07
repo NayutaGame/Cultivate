@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DeckSkillInteractBehaviour : InteractBehaviour,
+public abstract class DeckSkillInteractBehaviour : InteractBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     IBeginDragHandler, IEndDragHandler, IDragHandler,
     IDropHandler,
@@ -16,7 +16,7 @@ public class DeckSkillInteractBehaviour : InteractBehaviour,
 
         SetPivot(PivotBehaviour.HoverPivot);
 
-        CanvasManager.Instance.SkillAnnotation.SetAddress(AddressBehaviour.GetAddress());
+        CanvasManager.Instance.SkillAnnotation.SetAddress(GetSkillAddress());
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
@@ -38,21 +38,24 @@ public class DeckSkillInteractBehaviour : InteractBehaviour,
     public void BeginDrag(PointerEventData eventData)
     {
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);
-        CanvasManager.Instance.SkillGhost.BeginDrag(AddressBehaviour.GetAddress(), AddressBehaviour.RectTransform, PivotBehaviour.FollowPivot);
 
-        AddressBehaviour.GetComponent<CanvasGroup>().alpha = 0;
+        SetRaycastable(false);
+        SetOpaque(false);
+        CanvasManager.Instance.SkillGhost.BeginDrag(GetSkillAddress(), AddressBehaviour.RectTransform, PivotBehaviour.FollowPivot);
     }
 
     public void EndDrag(PointerEventData eventData)
     {
+        SetRaycastable(true);
+        SetOpaque(true);
         SetStartAndPivot(CanvasManager.Instance.SkillGhost.AddressBehaviour.RectTransform, PivotBehaviour.IdlePivot);
         CanvasManager.Instance.SkillGhost.EndDrag();
-
-        AddressBehaviour.GetComponent<CanvasGroup>().alpha = 1;
     }
 
     public void Drag(PointerEventData eventData)
     {
         CanvasManager.Instance.SkillGhost.Drag(PivotBehaviour.FollowPivot, eventData.position);
     }
+
+    protected abstract Address GetSkillAddress();
 }

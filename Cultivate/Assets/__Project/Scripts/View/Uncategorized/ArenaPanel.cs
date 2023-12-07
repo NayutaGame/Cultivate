@@ -43,7 +43,7 @@ public class ArenaPanel : Panel
                     return 1;
                 return null;
             },
-            dragDropTable: new Action<InteractBehaviour, InteractBehaviour>[]
+            dragDropTable: new Action<InteractBehaviour, InteractBehaviour, PointerEventData>[]
             {
                 /*               RunSkill,   SkillSlot */
                 /* RunSkill   */ null,       TryWrite,
@@ -62,7 +62,7 @@ public class ArenaPanel : Panel
         ReportView.text = RunManager.Instance.Arena.Result?.ToString();
     }
 
-    private void TryWrite(InteractBehaviour from, InteractBehaviour to)
+    private void TryWrite(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         Arena arena = _address.Get<Arena>();
 

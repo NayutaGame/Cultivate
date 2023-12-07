@@ -44,7 +44,8 @@ public struct FollowAnimation : IAnimation
 
     public Tween GetHandle()
     {
-        return DOTween.To(SetProgress, 0, 1, 0.15f).SetEase(Ease.OutQuad);
+        return DOTween.To(SetProgress, 0, 1, 1.5f).SetEase(Ease.OutQuad);
+        // return DOTween.To(SetProgress, 0, 1, 0.15f).SetEase(Ease.OutQuad);
     }
 
     public void SetProgress(float t)

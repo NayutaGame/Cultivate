@@ -12,42 +12,43 @@ public abstract class InteractBehaviour : MonoBehaviour
     public AddressBehaviour AddressBehaviour;
     public PivotBehaviour PivotBehaviour;
 
-    public virtual bool IsEnabled() => enabled;
-    public virtual void SetEnabled(bool value)
-    {
-        enabled = value;
-        PivotBehaviour.gameObject.SetActive(value);
+    public virtual void SetRaycastable(bool value) { }
+    public virtual void SetOpaque(bool value) { }
 
-        // if (!value)
-        //     PivotBehaviour.transform.SetAsLastSibling();
+    private void OnEnable()
+    {
+        SetRaycastable(true);
+        SetOpaque(true);
+
+        // PivotBehaviour.gameObject.SetActive(value);
+
         // SetPivot(PivotBehaviour.IdlePivot);
         // SetPivotWithoutAnimation(PivotBehaviour.IdlePivot);
     }
-
-    // [SerializeField] private Image Image;
-    //
-    // public bool RaycastTarget
-    // {
-    //     get => Image.raycastTarget;
-    //     set => Image.raycastTarget = value;
-    // }
-    //
-    // private void OnEnable()
-    // {
-    //     RaycastTarget = true;
-    // }
 
     private InteractHandler _interactHandler;
     public InteractHandler GetHandler() => _interactHandler;
     public void SetHandler(InteractHandler interactHandler) => _interactHandler = interactHandler;
 
-    public virtual void OnPointerEnter(PointerEventData eventData) => GetHandler()?.Handle(InteractHandler.POINTER_ENTER, this, eventData);
-    public virtual void OnPointerExit(PointerEventData eventData)  => GetHandler()?.Handle(InteractHandler.POINTER_EXIT, this, eventData);
-    public virtual void OnPointerMove(PointerEventData eventData)  => GetHandler()?.Handle(InteractHandler.POINTER_MOVE, this, eventData);
-    public virtual void OnBeginDrag(PointerEventData eventData)    => GetHandler()?.Handle(InteractHandler.BEGIN_DRAG, this, eventData);
-    public virtual void OnEndDrag(PointerEventData eventData)      => GetHandler()?.Handle(InteractHandler.END_DRAG, this, eventData);
-    public virtual void OnDrag(PointerEventData eventData)         => GetHandler()?.Handle(InteractHandler.DRAG, this, eventData);
-    public virtual void OnDrop(PointerEventData eventData)         => GetHandler()?.DragDrop(eventData.pointerDrag.GetComponent<InteractBehaviour>(), this);
+    public virtual void OnPointerEnter(PointerEventData eventData)
+        => GetHandler()?.Handle(InteractHandler.POINTER_ENTER, this, eventData);
+    public virtual void OnPointerExit(PointerEventData eventData)
+        => GetHandler()?.Handle(InteractHandler.POINTER_EXIT, this, eventData);
+    public virtual void OnPointerMove(PointerEventData eventData)
+        => GetHandler()?.Handle(InteractHandler.POINTER_MOVE, this, eventData);
+    public virtual void OnBeginDrag(PointerEventData eventData)
+        => GetHandler()?.Handle(InteractHandler.BEGIN_DRAG, this, eventData);
+    public virtual void OnEndDrag(PointerEventData eventData)
+        => GetHandler()?.Handle(InteractHandler.END_DRAG, this, eventData);
+    public virtual void OnDrag(PointerEventData eventData)
+        => GetHandler()?.Handle(InteractHandler.DRAG, this, eventData);
+    public virtual void OnDrop(PointerEventData eventData)
+    {
+        if (eventData.pointerDrag == gameObject)
+            return;
+        GetHandler()?.DragDrop(eventData.pointerDrag.GetComponent<InteractBehaviour>(), this, eventData);
+    }
+
     public virtual void OnPointerClick(PointerEventData eventData)
     {
         int? gestureId = null;

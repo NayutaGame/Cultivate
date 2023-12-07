@@ -49,8 +49,8 @@ public class AnimatedListView : ListView
         ItemView itemView = base.EnableItemView(prefabIndex, orderInPool, index);
 
         AnimatedItemView animatedItemView = itemView as AnimatedItemView;
-        animatedItemView.InteractBehaviour.SetEnabled(true);
         animatedItemView.PivotTransform.SetSiblingIndex(index);
+        animatedItemView.PivotTransform.gameObject.SetActive(true);
 
         return itemView;
     }
@@ -60,8 +60,8 @@ public class AnimatedListView : ListView
         ItemView itemView = base.DisableItemView(index);
 
         AnimatedItemView animatedItemView = itemView as AnimatedItemView;
-        animatedItemView.InteractBehaviour.SetEnabled(false);
         animatedItemView.PivotTransform.SetAsLastSibling();
+        animatedItemView.PivotTransform.gameObject.SetActive(false);
 
         return itemView;
     }
@@ -79,7 +79,7 @@ public class AnimatedListView : ListView
             _inactivePools[itemView.PrefabIndex].Insert(0, itemView);
 
             AnimatedItemView animatedItemView = itemView as AnimatedItemView;
-            animatedItemView.InteractBehaviour.SetEnabled(false);
+            animatedItemView.PivotTransform.gameObject.SetActive(false);
         }
     }
 
