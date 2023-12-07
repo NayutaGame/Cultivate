@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class ListView : AddressBehaviour
 
     protected List<ItemView> _activePool;
     public List<ItemView> ActivePool => _activePool;
-    private List<ItemView>[] _inactivePools;
+    protected List<ItemView>[] _inactivePools;
 
     public IEnumerable<ItemView> Traversal()
     {
@@ -78,7 +79,7 @@ public class ListView : AddressBehaviour
         Traversal().Do(itemView => itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
     }
 
-    // atomic operations
+    #region Atomic Operations
 
     private ItemView AllocItemView(int prefabIndex)
         => Instantiate(Prefabs[prefabIndex], Container).GetComponent<ItemView>();
@@ -94,6 +95,7 @@ public class ListView : AddressBehaviour
         itemView.PrefabIndex = prefabIndex;
         _inactivePools[prefabIndex].Add(itemView);
         itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler);
+        itemView.gameObject.name = Traversal().Count().ToString();
     }
 
     protected virtual ItemView EnableItemView(int prefabIndex, int orderInPool, int index)
@@ -129,21 +131,23 @@ public class ListView : AddressBehaviour
         return itemView;
     }
 
-    // helper operations
-
-    protected void DisableAllItemViews()
+    protected virtual void DisableAllItemViews()
     {
         while (_activePool.Count != 0)
         {
-            ItemView itemView = _activePool[0];
+            int index = _activePool.Count - 1;
+            ItemView itemView = _activePool[index];
 
             itemView.gameObject.SetActive(false);
-            itemView.transform.SetAsLastSibling();
 
-            _activePool.RemoveAt(0);
-            _inactivePools[itemView.PrefabIndex].Add(itemView);
+            _activePool.RemoveAt(index);
+            _inactivePools[itemView.PrefabIndex].Insert(0, itemView);
         }
     }
+
+    #endregion
+
+    // helper operations
 
     private int FetchItemView(int prefabIndex)
     {

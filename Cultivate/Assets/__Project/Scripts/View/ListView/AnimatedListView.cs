@@ -1,4 +1,5 @@
 
+using System.Linq;
 using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
@@ -27,6 +28,8 @@ public class AnimatedListView : ListView
         Traversal().Do(itemView => itemView.GetComponent<AnimatedItemView>().InteractBehaviour.SetHandler(_interactHandler));
     }
 
+    #region Atomic Operations
+
     protected override void InitItemView(ItemView itemView, int prefabIndex)
     {
         base.InitItemView(itemView, prefabIndex);
@@ -37,6 +40,7 @@ public class AnimatedListView : ListView
 
         InteractBehaviour interactBehaviour = animatedItemView.InteractBehaviour;
         interactBehaviour.gameObject.transform.SetParent(PivotHolder);
+        interactBehaviour.gameObject.name = Traversal().Count().ToString();
         interactBehaviour.SetHandler(_interactHandler);
     }
 
@@ -46,6 +50,7 @@ public class AnimatedListView : ListView
 
         AnimatedItemView animatedItemView = itemView as AnimatedItemView;
         animatedItemView.InteractBehaviour.SetEnabled(true);
+        animatedItemView.PivotTransform.SetSiblingIndex(index);
 
         return itemView;
     }
@@ -56,9 +61,29 @@ public class AnimatedListView : ListView
 
         AnimatedItemView animatedItemView = itemView as AnimatedItemView;
         animatedItemView.InteractBehaviour.SetEnabled(false);
+        animatedItemView.PivotTransform.SetAsLastSibling();
 
         return itemView;
     }
+
+    protected override void DisableAllItemViews()
+    {
+        while (_activePool.Count != 0)
+        {
+            int index = _activePool.Count - 1;
+            ItemView itemView = _activePool[index];
+
+            itemView.gameObject.SetActive(false);
+
+            _activePool.RemoveAt(index);
+            _inactivePools[itemView.PrefabIndex].Insert(0, itemView);
+
+            AnimatedItemView animatedItemView = itemView as AnimatedItemView;
+            animatedItemView.InteractBehaviour.SetEnabled(false);
+        }
+    }
+
+    #endregion
 
     private void RefreshPivots()
     {

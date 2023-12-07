@@ -17,6 +17,9 @@ public abstract class InteractBehaviour : MonoBehaviour
     {
         enabled = value;
         PivotBehaviour.gameObject.SetActive(value);
+
+        // if (!value)
+        //     PivotBehaviour.transform.SetAsLastSibling();
         // SetPivot(PivotBehaviour.IdlePivot);
         // SetPivotWithoutAnimation(PivotBehaviour.IdlePivot);
     }

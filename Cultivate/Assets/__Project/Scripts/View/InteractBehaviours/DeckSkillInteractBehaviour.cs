@@ -37,13 +37,10 @@ public class DeckSkillInteractBehaviour : InteractBehaviour,
 
     public void BeginDrag(PointerEventData eventData)
     {
-        eventData.pointerDrag = gameObject;
-
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);
         CanvasManager.Instance.SkillGhost.BeginDrag(AddressBehaviour.GetAddress(), AddressBehaviour.RectTransform, PivotBehaviour.FollowPivot);
 
         AddressBehaviour.GetComponent<CanvasGroup>().alpha = 0;
-        SetEnabled(false);
     }
 
     public void EndDrag(PointerEventData eventData)
@@ -52,7 +49,6 @@ public class DeckSkillInteractBehaviour : InteractBehaviour,
         CanvasManager.Instance.SkillGhost.EndDrag();
 
         AddressBehaviour.GetComponent<CanvasGroup>().alpha = 1;
-        SetEnabled(true);
     }
 
     public void Drag(PointerEventData eventData)
