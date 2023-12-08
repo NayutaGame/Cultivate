@@ -523,6 +523,7 @@ GameObject:
   - component: {fileID: 3623534058688685044}
   - component: {fileID: 906183976623172107}
   - component: {fileID: 2049939234995660363}
+  - component: {fileID: 1332224808765559322}
   - component: {fileID: 8247168710749353328}
   m_Layer: 0
   m_Name: HandView
@@ -591,6 +592,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1332224808765559322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7439028537000327204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40743f22ea5f6994aad81cfb0e5fec84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 0}
+  PivotBehaviour: {fileID: 0}
 --- !u!114 &8247168710749353328
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -107,7 +107,10 @@ public class ListView : AddressBehaviour
         _activePool.Insert(index, itemView);
 
         for (int i = index; i < _activePool.Count; i++)
+        {
             _activePool[i].AddressBehaviour.SetAddress(GetAddress().Append($"#{i}"));
+            _activePool[i].AddressBehaviour.Refresh();
+        }
 
         itemView.transform.SetSiblingIndex(index);
         itemView.gameObject.SetActive(true);

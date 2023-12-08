@@ -136,6 +136,7 @@ public class DeckPanel : Panel
 
         FieldView.SetHandler(_interactHandler);
         HandView.SetHandler(_interactHandler);
+        HandView.GetComponent<DropInteractBehaviour>().SetHandler(_interactHandler);
         FormationListView.SetHandler(_interactHandler);
         MechListView.SetHandler(_interactHandler);
     }
@@ -205,19 +206,17 @@ public class DeckPanel : Panel
             return;
 
         // Unequip Animation
-        // if (result.IsRunSkill)
-        // {
-        //     AudioManager.Play("CardPlacement");
-        //     // get the last active card
-        //     AnimatedItemView animatedItemView = HandView.ActivePool.Last() as AnimatedItemView;
-        //     Debug.Log(animatedItemView.AddressBehaviour.GetAddress());
-        //     // eventData.pointerDrag = null;
-        //     // animatedItemView.InteractBehaviour.OnEndDrag(eventData);
-        // }
-        // else
-        // {
-        //
-        // }
+        if (result.IsRunSkill)
+        {
+            AudioManager.Play("CardPlacement");
+            InteractBehaviour newIB = (HandView.ActivePool.Last() as AnimatedItemView).InteractBehaviour;
+            eventData.pointerDrag = null;
+            newIB.OnEndDrag(eventData);
+        }
+        else
+        {
+
+        }
 
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
