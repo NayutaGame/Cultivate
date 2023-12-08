@@ -234,7 +234,12 @@ public class DeckPanel : Panel
             return;
 
         // Swap Animation
+        eventData.pointerDrag = null;
+        to.OnEndDrag(eventData);
+        from.OnEndDrag(eventData);
+        from.SetStartAndPivot(to.PivotBehaviour.IdlePivot, from.PivotBehaviour.IdlePivot);
         AudioManager.Play("CardPlacement");
+
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
