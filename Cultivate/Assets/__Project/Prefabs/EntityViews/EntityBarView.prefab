@@ -222,13 +222,14 @@ GameObject:
   - component: {fileID: 529978078669234200}
   - component: {fileID: 6422294263586690588}
   - component: {fileID: 2564919834203992936}
+  - component: {fileID: -7385623940235665073}
   m_Layer: 5
   m_Name: EntityBarView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &529978078669234200
 RectTransform:
   m_ObjectHideFlags: 0
@@ -282,6 +283,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 6422294263586690588}
+--- !u!114 &-7385623940235665073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108923873393925487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ace2c3d8448cd41abe17e3d040b932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 6422294263586690588}
+  PivotBehaviour: {fileID: 0}
 --- !u!1 &2554135421041422778
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5749227821777104508}
   m_Layer: 5
-  m_Name: ContentTransform
+  m_Name: BaseScale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -16,7 +16,7 @@ public class RunSkillView : SkillView
     private void OnEnable()
     {
         ContentTransform.anchoredPosition = IdlePivot.anchoredPosition;
-        if (CanvasGroup != null)
-            CanvasGroup.blocksRaycasts = true;
+        // if (CanvasGroup != null)
+        //     CanvasGroup.blocksRaycasts = true;
     }
 }

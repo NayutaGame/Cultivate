@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -62,6 +61,7 @@ public class ReservedLayer : MonoBehaviour
         if (_currentPanel != null)
         {
             _currentPanel.gameObject.SetActive(true);
+            _currentPanel.Configure();
             _currentPanel.Refresh();
         }
     }

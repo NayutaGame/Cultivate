@@ -7,8 +7,6 @@ using UnityEngine.UI;
 [SelectionBase]
 public class SkillView : AddressBehaviour
 {
-    [SerializeField] public CanvasGroup CanvasGroup;
-
     [SerializeField] private Image CardImage;
     // [SerializeField] private GameObject ManaCostView;
     [SerializeField] private TMP_Text ManaCostText;
@@ -35,11 +33,6 @@ public class SkillView : AddressBehaviour
     }
 
     #endregion
-
-    private void OnEnable()
-    {
-        CanvasGroup.alpha = 1;
-    }
 
     public override void Refresh()
     {

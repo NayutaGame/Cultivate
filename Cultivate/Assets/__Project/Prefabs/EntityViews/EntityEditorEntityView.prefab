@@ -472,10 +472,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
+  RectTransform: {fileID: 7751352406465485235}
   Container: {fileID: 7751352406465485235}
   Prefabs:
-  - {fileID: 1953151215448478786, guid: d3f34e221a5aa07449a554dadb86d449, type: 3}
+  - {fileID: 6193414529329671437, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
 --- !u!114 &8449504887608185425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3152,7 +3152,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 7778355132643012418}
-  interactBehaviour: {fileID: 0}
   EntityDropdown: {fileID: 3302334552529912147}
   JingJieDropdown: {fileID: 1916946225291987103}
   HealthInputField: {fileID: 6908596748620297286}

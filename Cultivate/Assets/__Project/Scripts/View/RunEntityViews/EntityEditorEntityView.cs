@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class EntityEditorEntityView : AddressBehaviour
 {
-    public InteractBehaviour interactBehaviour;
-
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
     public TMP_InputField HealthInputField;

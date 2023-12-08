@@ -76,7 +76,8 @@ public class ListView : AddressBehaviour
     public virtual void SetHandler(InteractHandler interactHandler)
     {
         _interactHandler = interactHandler;
-        Traversal().Do(itemView => itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
+        if (IsInited())
+            Traversal().Do(itemView => itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
     }
 
     #region Atomic Operations
