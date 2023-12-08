@@ -35,6 +35,9 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform FormationListHidePivot;
     [SerializeField] private RectTransform MechListHidePivot;
 
+    [SerializeField] private RectTransform HandViewPivotTransform;
+    [SerializeField] private HorizontalLayoutGroup HandViewLayout;
+
     public override void Configure()
     {
         base.Configure();
@@ -247,11 +250,30 @@ public class DeckPanel : Panel
 
     #endregion
 
+    private Tween _animationHandle;
+
     private void Sort()
     {
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
-        HandView.Get<SkillInventory>().SortByComparisonId(0);
-        CanvasManager.Instance.RunCanvas.Refresh();
+
+        _animationHandle?.Kill();
+
+        _animationHandle = DOTween.Sequence()
+            .AppendCallback(() =>
+            {
+                HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 0);
+                HandView.RefreshPivots();
+            })
+            .AppendInterval(0.2f)
+            .AppendCallback(() =>
+            {
+                HandView.Get<SkillInventory>().SortByComparisonId(0);
+                CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+                HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 1134);
+                HandView.RefreshPivots();
+            });
+
+        _animationHandle.SetAutoKill().Restart();
     }
 
     private void TryShow(PointerEventData eventData)

@@ -85,7 +85,7 @@ public class AnimatedListView : ListView
 
     #endregion
 
-    private void RefreshPivots()
+    public void RefreshPivots()
     {
         foreach (var addressBehaviour in _activePool)
         {

@@ -1205,6 +1205,8 @@ MonoBehaviour:
   HandHidePivot: {fileID: 5569372839858942889}
   FormationListHidePivot: {fileID: 6051457652559215458}
   MechListHidePivot: {fileID: 4654419653823889128}
+  HandViewPivotTransform: {fileID: 1037360933362778946}
+  HandViewLayout: {fileID: 7528905261680082668}
 --- !u!1001 &141710187255949038
 PrefabInstance:
   m_ObjectHideFlags: 0

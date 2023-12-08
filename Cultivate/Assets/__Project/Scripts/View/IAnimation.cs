@@ -8,23 +8,6 @@ public interface IAnimation
     void SetProgress(float t);
 }
 
-public struct FollowAnimationAnchored : IAnimation
-{
-    public RectTransform Subject;
-    public Vector2 StartPosition;
-    public RectTransform Follow;
-
-    public Tween GetHandle()
-    {
-        return DOTween.To(SetProgress, 0, 1, 0.15f).SetEase(Ease.OutQuad);
-    }
-
-    public void SetProgress(float t)
-    {
-        Subject.anchoredPosition = Vector2.Lerp(StartPosition, Follow.anchoredPosition, t);
-    }
-}
-
 public struct FollowAnimation : IAnimation
 {
     private RectTransform Subject;
@@ -44,8 +27,8 @@ public struct FollowAnimation : IAnimation
 
     public Tween GetHandle()
     {
-        return DOTween.To(SetProgress, 0, 1, 1.5f).SetEase(Ease.OutQuad);
-        // return DOTween.To(SetProgress, 0, 1, 0.15f).SetEase(Ease.OutQuad);
+        // return DOTween.To(SetProgress, 0, 1, 1.5f).SetEase(Ease.OutQuad);
+        return DOTween.To(SetProgress, 0, 1, 0.15f).SetEase(Ease.OutQuad);
     }
 
     public void SetProgress(float t)
