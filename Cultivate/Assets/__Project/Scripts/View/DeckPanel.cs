@@ -1,5 +1,6 @@
 
 using System;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -199,12 +200,24 @@ public class DeckPanel : Panel
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         SkillSlot slot = from.AddressBehaviour.Get<SkillSlot>();
-        bool success = env.TryUnequip(slot, null);
-        if (!success)
+        UnequipResult result = env.TryUnequip(slot, null);
+        if (!result.Success)
             return;
 
         // Unequip Animation
-        AudioManager.Play("CardPlacement");
+        // if (result.IsRunSkill)
+        // {
+        //     AudioManager.Play("CardPlacement");
+        //     // get the last active card
+        //     AnimatedItemView animatedItemView = HandView.ActivePool.Last() as AnimatedItemView;
+        //     Debug.Log(animatedItemView.AddressBehaviour.GetAddress());
+        //     // eventData.pointerDrag = null;
+        //     // animatedItemView.InteractBehaviour.OnEndDrag(eventData);
+        // }
+        // else
+        // {
+        //
+        // }
 
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();

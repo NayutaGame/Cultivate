@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -219,11 +220,11 @@ public class RunEnvironment : Addressable
         return true;
     }
 
-    public bool TryUnequip(SkillSlot slot, object _)
+    public UnequipResult TryUnequip(SkillSlot slot, object _)
     {
         EmulatedSkill toUnequip = slot.Skill;
         if (toUnequip == null)
-            return false;
+            return new(false);
 
         if (toUnequip is RunSkill runSkill)
         {
@@ -231,19 +232,33 @@ public class RunEnvironment : Addressable
 
             slot.Skill = null;
             EnvironmentChanged();
-            return true;
+
+            UnequipResult result = new(true)
+            {
+                IsRunSkill = true,
+                RunSkill = runSkill.Clone()
+            };
+
+            return result;
         }
         else if (toUnequip is MechComposite mechComposite)
         {
-            foreach (var m in mechComposite.MechTypes)
+            foreach (MechType m in mechComposite.MechTypes)
                 MechBag.AddMech(m);
 
             slot.Skill = null;
             EnvironmentChanged();
-            return true;
+
+            UnequipResult result = new(true)
+            {
+                IsRunSkill = false,
+                MechTypes = mechComposite.MechTypes
+            };
+
+            return result;
         }
 
-        return false;
+        return new(false);
     }
 
     public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
