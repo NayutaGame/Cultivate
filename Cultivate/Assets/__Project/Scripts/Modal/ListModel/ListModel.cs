@@ -106,6 +106,9 @@ public class ListModel<T> : IListModel
             yield return item;
     }
 
+    public T First(Predicate<T> pred)
+        => _list.FirstObj(pred);
+
     public bool Swap(int from, int to)
     {
         (_list[from], _list[to]) = (_list[to], _list[from]);

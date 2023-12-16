@@ -1,5 +1,68 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &892250671638120231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6651309520172310833}
+  - component: {fileID: 2645232998618840358}
+  m_Layer: 5
+  m_Name: CharacterIconListView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6651309520172310833
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892250671638120231}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3070577058462533411}
+  - {fileID: 3070577057148797267}
+  - {fileID: 3070577057505922949}
+  - {fileID: 3070577057248818323}
+  - {fileID: 3070577058352213732}
+  - {fileID: 3070577057481741386}
+  - {fileID: 3070577057173197135}
+  - {fileID: 3070577057731018307}
+  - {fileID: 3070577056780372149}
+  - {fileID: 3070577057389700787}
+  m_Father: {fileID: 4902952995440866803}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 330, y: 245}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2645232998618840358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892250671638120231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RectTransform: {fileID: 6651309520172310833}
+  Container: {fileID: 6651309520172310833}
+  Prefabs:
+  - {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
 --- !u!1 &4902952994530785581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,6 +1230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e57263009a98f49a7d9b104bd54dba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CharacterListView: {fileID: 2645232998618840358}
   ReturnButton: {fileID: 4902952995579207540}
   StartRunButton: {fileID: 4902952995781841965}
 --- !u!1 &4902952995132341781
@@ -1919,17 +1983,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3070577058462533411}
-  - {fileID: 3070577057148797267}
-  - {fileID: 3070577057505922949}
-  - {fileID: 3070577057248818323}
-  - {fileID: 3070577058352213732}
   - {fileID: 3070577056771985290}
-  - {fileID: 3070577057481741386}
-  - {fileID: 3070577057173197135}
-  - {fileID: 3070577057731018307}
-  - {fileID: 3070577056780372149}
-  - {fileID: 3070577057389700787}
+  - {fileID: 6651309520172310833}
   - {fileID: 4902952996218163730}
   m_Father: {fileID: 4902952995318963827}
   m_RootOrder: 0
@@ -3466,7 +3521,7 @@ RectTransform:
   m_Children:
   - {fileID: 4902952996184249151}
   m_Father: {fileID: 4902952995440866803}
-  m_RootOrder: 11
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4191,7 +4246,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -4203,7 +4258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4279,7 +4334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -4293,7 +4348,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -4381,7 +4436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -4407,7 +4462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4483,7 +4538,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -4497,7 +4552,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -4509,7 +4564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4585,7 +4640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -4599,7 +4654,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -4611,7 +4666,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4687,7 +4742,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -4701,7 +4756,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -4789,7 +4844,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -4803,7 +4858,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -4815,7 +4870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4891,7 +4946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -4905,7 +4960,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -4917,7 +4972,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4993,7 +5048,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -5007,7 +5062,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -5095,7 +5150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -5109,7 +5164,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -5197,7 +5252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
@@ -5211,7 +5266,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4902952995440866803}
+    m_TransformParent: {fileID: 6651309520172310833}
     m_Modifications:
     - target: {fileID: 7968600936707381980, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Pivot.x
@@ -5299,7 +5354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968600936707381981, guid: d104f204547ce904ebbfa34b2220c738, type: 3}
       propertyPath: m_Name
-      value: EncyclopediaCharacterIconView
+      value: CharacterIconView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d104f204547ce904ebbfa34b2220c738, type: 3}

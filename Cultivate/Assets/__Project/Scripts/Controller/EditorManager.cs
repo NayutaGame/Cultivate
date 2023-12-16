@@ -27,7 +27,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
             { "Home", () => Home }
         };
 
-        EntityEditableList = EntityEditableList.ReadFromFile();
+        Load();
 
         Home = RunEntity.Default();
         Home.EnvironmentChangedEvent += EnvironmentChanged;
@@ -84,12 +84,12 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     public void Save()
     {
-        EntityEditableList.WriteToFile();
+        FileUtility.WriteToFile(EntityEditableList, EntityEditableList.Filename);
     }
 
     public void Load()
     {
-        EntityEditableList = EntityEditableList.ReadFromFile();
+        EntityEditableList = FileUtility.ReadFromFile<EntityEditableList>(EntityEditableList.Filename);
     }
 
     public static RunEntity FindEntity(string name)

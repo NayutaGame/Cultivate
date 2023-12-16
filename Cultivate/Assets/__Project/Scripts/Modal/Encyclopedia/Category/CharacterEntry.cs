@@ -9,4 +9,6 @@ public class CharacterEntry : Entry
         Description = description ?? "没有描述";
         AbilityDescription = abilityDescription ?? "没有技能描述";
     }
+
+    public static implicit operator CharacterEntry(string name) => Encyclopedia.CharacterCategory[name];
 }

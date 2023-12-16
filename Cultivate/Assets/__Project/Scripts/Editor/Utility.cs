@@ -1,4 +1,5 @@
 using System.IO;
+using CLLibrary;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,17 +27,10 @@ public class Utility : MonoBehaviour
         Selection.activeObject = go;
     }
 
-    [MenuItem("Utility/Clear Save", false, 0)]
-    static void ClearSave(MenuCommand menuCommand)
+    [MenuItem("Utility/Delete Profile", false, 0)]
+    static void DeleteProfile(MenuCommand menuCommand)
     {
-        string filePath = "/EntityEditableList.json";
-        // string fullFilePath = Application.persistentDataPath + filePath;
-        string fullFilePath = Application.streamingAssetsPath + filePath;
-
-        if (!File.Exists(fullFilePath))
-            return;
-
-        File.Delete(fullFilePath);
+        FileUtility.DeleteFile(ProfileList.Filename);
         AssetDatabase.Refresh();
     }
 }
