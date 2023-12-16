@@ -22,7 +22,7 @@ public class TitlePanel : CurtainPanel
 
     private void StartRun()
     {
-        AppManager.Push(new RunAppS());
+        CanvasManager.Instance.AppCanvas.OpenRunConfigPanel();
     }
 
     private void OpenMenu()

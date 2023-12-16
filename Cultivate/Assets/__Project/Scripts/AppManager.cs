@@ -14,11 +14,12 @@ public class AppManager : Singleton<AppManager>, Addressable
     public bool IsMainThread() => _mainThread.Equals(Thread.CurrentThread);
 
     private AppSM _sm;
-    private Encyclopedia Encyclopedia;
     public Settings Settings;
+    private Encyclopedia Encyclopedia;
 
     [SerializeField] private AppCanvas AppCanvas;
     public EditorManager EditorManager;
+    public ProfileManager ProfileManager;
     public RunManager RunManager;
     public StageManager StageManager;
 
@@ -36,10 +37,11 @@ public class AppManager : Singleton<AppManager>, Addressable
         _accessors = new Dictionary<string, Func<object>>()
         {
             { "App", () => Instance },
-            { "Encyclopedia", () => Encyclopedia },
             { "Settings", () => Settings },
+            { "Encyclopedia", () => Encyclopedia },
 
             { "Editor", () => EditorManager.Instance },
+            { "Profile", () => ProfileManager },
             { "Run", () => RunManager.Instance },
             { "Stage", () => StageManager.Instance },
 
@@ -49,8 +51,8 @@ public class AppManager : Singleton<AppManager>, Addressable
 
         Application.targetFrameRate = 120;
 
-        Encyclopedia = new();
         Settings = new();
+        Encyclopedia = new();
 
         FormationInventory = new();
         Encyclopedia.FormationCategory.Traversal.Do(e => FormationInventory.Add(e));
@@ -60,6 +62,9 @@ public class AppManager : Singleton<AppManager>, Addressable
 
         AppCanvas.gameObject.SetActive(true);
         EditorManager.gameObject.SetActive(true);
+
+        ProfileManager = new();
+
         RunManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);

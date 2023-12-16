@@ -19,6 +19,7 @@ public class TitleAppS : AppS
             return;
 
         await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(false);
+        await CanvasManager.Instance.AppCanvas.RunConfigPanel.SetShowing(false);
     }
 
     public override async Task CExit(NavigateDetails d)

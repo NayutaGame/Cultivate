@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class RunCanvas : MonoBehaviour
 {
-    public NodeLayer NodeLayer;
+    public RunPanelCollection RunPanelCollection;
 
     public DeckPanel DeckPanel;
     public MapPanel MapPanel;
@@ -18,7 +18,7 @@ public class RunCanvas : MonoBehaviour
 
     public void Configure()
     {
-        NodeLayer.Configure();
+        RunPanelCollection.Configure();
         DeckPanel.Configure();
         MapPanel.Configure();
 
@@ -39,7 +39,7 @@ public class RunCanvas : MonoBehaviour
 
     public void Refresh()
     {
-        NodeLayer.Refresh();
+        RunPanelCollection.Refresh();
         DeckPanel.Refresh();
         MapPanel.Refresh();
         ReservedLayer.Refresh();
@@ -49,9 +49,9 @@ public class RunCanvas : MonoBehaviour
 
     public async Task SetNodeState(PanelDescriptor panelDescriptor)
     {
-        if (NodeLayer.CurrentIsDescriptor(panelDescriptor))
+        if (RunPanelCollection.CurrentIsDescriptor(panelDescriptor))
         {
-            NodeLayer.Refresh();
+            RunPanelCollection.Refresh();
             return;
         }
 
@@ -59,13 +59,13 @@ public class RunCanvas : MonoBehaviour
 
         if (panelDescriptor == null)
         {
-            await NodeLayer.SetPanel(panel: null);
+            await RunPanelCollection.SetPanel(panel: null);
             await MapPanel.SetShowing(true);
         }
         else
         {
             await MapPanel.SetShowing(false);
-            await NodeLayer.SetPanel(d);
+            await RunPanelCollection.SetPanel(d);
         }
 
         if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor)
@@ -94,13 +94,13 @@ public class RunCanvas : MonoBehaviour
 
     private void ToggleSkill(InteractBehaviour view, PointerEventData eventData)
     {
-        NodeLayer.CardPickerPanel.ToggleSkill(view);
+        RunPanelCollection.CardPickerPanel.ToggleSkill(view);
         Refresh();
     }
 
     private void ToggleSkillSlot(InteractBehaviour view, PointerEventData eventData)
     {
-        NodeLayer.CardPickerPanel.ToggleSkillSlot(view);
+        RunPanelCollection.CardPickerPanel.ToggleSkillSlot(view);
         Refresh();
     }
 }

@@ -157,8 +157,8 @@ public class DeckPanel : Panel
         to.OnEndDrag(eventData);
         AudioManager.Play("CardUpgrade");
 
-        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
     private void TryEquipSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
@@ -178,8 +178,8 @@ public class DeckPanel : Panel
         AudioManager.Play("CardPlacement");
 
         FieldView.Refresh();
-        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
     private void TryEquipMech(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
@@ -196,8 +196,8 @@ public class DeckPanel : Panel
 
         from.AddressBehaviour.Refresh();
         FieldView.Refresh();
-        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
     private void TryUnequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
@@ -222,8 +222,8 @@ public class DeckPanel : Panel
         }
 
         FieldView.Refresh();
-        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
         MechListView.Refresh();
     }
 
@@ -244,8 +244,8 @@ public class DeckPanel : Panel
         AudioManager.Play("CardPlacement");
 
         FieldView.Refresh();
-        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.NodeLayer.Refresh();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
     #endregion
@@ -254,7 +254,7 @@ public class DeckPanel : Panel
 
     private void Sort()
     {
-        CanvasManager.Instance.RunCanvas.NodeLayer.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
 
         _animationHandle?.Kill();
 

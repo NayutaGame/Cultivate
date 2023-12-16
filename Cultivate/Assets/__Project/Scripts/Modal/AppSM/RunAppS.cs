@@ -39,7 +39,7 @@ public class RunAppS : AppS
         await base.Exit(d);
         await CanvasManager.Instance.Curtain.PlayShowAnimation();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
-        CanvasManager.Instance.RunCanvas.NodeLayer.DisableCurrentPanel();
+        CanvasManager.Instance.RunCanvas.RunPanelCollection.DisableCurrentPanel();
         RunManager.Instance.Exit();
     }
 

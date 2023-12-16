@@ -14,6 +14,8 @@ public class Encyclopedia : Addressable
     public static TechCategory TechCategory;
     public static NodeCategory NodeCategory;
     public static FormationCategory FormationCategory;
+    public static CharacterCategory CharacterCategory;
+    public static DifficultyCategory DifficultyCategory;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -38,6 +40,8 @@ public class Encyclopedia : Addressable
         TechCategory = new();
         NodeCategory = new();
         FormationCategory = new();
+        CharacterCategory = new();
+        DifficultyCategory = new();
 
         TechCategory.Init();
 
