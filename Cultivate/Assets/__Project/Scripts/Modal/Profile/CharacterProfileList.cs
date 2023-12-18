@@ -8,8 +8,10 @@ public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationC
 {
     private CharacterProfileList()
     {
-        Encyclopedia.CharacterCategory.Traversal.Do(entry => Add(new CharacterProfile(entry)));
-        Find("徐福").SetUnlocked(true);
+        Encyclopedia.CharacterCategory.Traversal.Do(entry => Add(new CharacterProfile(entry, true)));
+
+        // Encyclopedia.CharacterCategory.Traversal.Do(entry => Add(new CharacterProfile(entry)));
+        // Find("徐福").SetUnlocked(true);
     }
 
     private CharacterProfile Find(CharacterEntry entry)
@@ -24,6 +26,7 @@ public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationC
 
     public void OnAfterDeserialize()
     {
-        // if loaded, needs to fix order according to encyclopedia before using
+        // when new entry is added, order will be corrupted
+        // needs to fix order according to encyclopedia before using
     }
 }

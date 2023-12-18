@@ -131,9 +131,9 @@ namespace CLLibrary
             foreach (T e in enumerable) await func(e);
         }
 
-        public static void Do(this int times, Action<int> func)
+        public static void Do(this int counter, Action<int> func)
         {
-            for (int i = 0; i < times; i++) func(i);
+            for (int i = 0; i < counter; i++) func(i);
         }
 
         public static IEnumerable<S> Map<T, S>(this IEnumerable<T> enumerable, Func<T, S> func)
@@ -141,9 +141,9 @@ namespace CLLibrary
             foreach (T e in enumerable) yield return func(e);
         }
 
-        public static IEnumerable<T> Traversal<T>(this List<T> list)
+        public static IEnumerable<T> Traversal<T>(this IEnumerable<T> enumerable)
         {
-            foreach (T item in list) yield return item;
+            foreach (T item in enumerable) yield return item;
         }
     }
 }

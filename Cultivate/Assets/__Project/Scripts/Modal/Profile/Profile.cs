@@ -7,7 +7,7 @@ using UnityEngine;
 public class Profile : Addressable, ISerializationCallbackReceiver
 {
     private CharacterProfileList _characterProfileList;
-    // private List<DifficultyProfile> _difficultyProfiles;
+    private DifficultyProfileList _difficultyProfileList;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -16,9 +16,11 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         _accessors = new()
         {
             { "CharacterProfileList", () => _characterProfileList },
+            { "DifficultyProfileList", () => _difficultyProfileList },
         };
 
         _characterProfileList = CharacterProfileList.Default();
+        _difficultyProfileList = DifficultyProfileList.Default();
     }
 
     public static Profile Default()
@@ -30,6 +32,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        // when new character entry is added, auto complete profile for the new character
+        // when new entry is added, order will be corrupted
+        // needs to fix order according to encyclopedia before using
     }
 }

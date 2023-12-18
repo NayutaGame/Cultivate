@@ -1,5 +1,4 @@
 
-using CLLibrary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -226,15 +225,14 @@ public class EntityEditorPanel : Panel
         if (_selection != null)
             _selection.SetSelected(false);
 
-        _selection = interactBehaviour.GetComponent<EntityBarView>();
-
-        _selectionIndex = _selection != null ? EntityBrowser.ActivePool.Map(itemView => itemView.AddressBehaviour).FirstIdx(b => b == _selection) : null;
+        _selection = interactBehaviour.AddressBehaviour.GetComponent<EntityBarView>();
+        _selectionIndex = EntityBrowser.IndexFromBehaviour(_selection);
 
         EditorManager.Instance._selectionIndex = _selectionIndex;
 
         if (_selection != null)
         {
-            AwayEntityView.SetAddress(interactBehaviour.AddressBehaviour.GetAddress());
+            AwayEntityView.SetAddress(_selection.GetAddress());
             AwayEntityView.Refresh();
             _selection.SetSelected(true);
         }

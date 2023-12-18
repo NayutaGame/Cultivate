@@ -7,4 +7,6 @@ public class DifficultyEntry : Entry
     {
         Description = description ?? "没有描述";
     }
+
+    public static implicit operator DifficultyEntry(string name) => Encyclopedia.DifficultyCategory[name];
 }

@@ -181,6 +181,18 @@ public class ListView : AddressBehaviour
         _activePool[index].AddressBehaviour.Refresh();
     }
 
+    public int? IndexFromBehaviour(AddressBehaviour toGetIndex)
+    {
+        if (toGetIndex == null)
+            return null;
+        return _activePool.FirstIdx(itemView => itemView.AddressBehaviour == toGetIndex);
+    }
+
+    public AddressBehaviour BehaviourFromIndex(int i)
+    {
+        return _activePool[i].AddressBehaviour;
+    }
+
     // operations for list
 
     private bool IsInited()
