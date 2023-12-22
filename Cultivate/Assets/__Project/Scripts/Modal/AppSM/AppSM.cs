@@ -23,10 +23,12 @@ public class AppSM
     public async Task Push(AppS state)
     {
         NavigateDetails d = new NavigateDetails(Current, state);
+        Config config = null;
         if (Current != null)
-            await Current.CEnter(d);
+            config = await Current.CEnter(d);
+
         _stack.Add(state);
-        await Current.Enter(d);
+        await Current.Enter(d, config);
     }
 
     public async Task Pop(int times = 1)
@@ -34,10 +36,10 @@ public class AppSM
         for (int i = 0; i < times; i++)
         {
             NavigateDetails d = new NavigateDetails(Current, Get(2));
-            await Current.Exit(d);
+            Result result = await Current.Exit(d);
             _stack.RemoveAt(_stack.Count - 1);
             if (Current != null)
-                await Current.CExit(d);
+                await Current.CExit(d, result);
         }
     }
 }

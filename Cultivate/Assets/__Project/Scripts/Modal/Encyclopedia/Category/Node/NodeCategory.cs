@@ -35,7 +35,7 @@ public class NodeCategory : Category<NodeEntry>
                         if (signal is SelectedOptionSignal selectedOptionSignal)
                         {
                             int index = selectedOptionSignal.Selected;
-                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Environment.Map.JingJie).Claim();
+                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Environment.Map.GetJingJie()).Claim();
                         }
                         return null;
                     };

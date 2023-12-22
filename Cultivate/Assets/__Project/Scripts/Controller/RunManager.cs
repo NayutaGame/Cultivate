@@ -29,18 +29,18 @@ public class RunManager : Singleton<RunManager>, Addressable
     {
         base.DidAwake();
 
-        Arena = new();
-
         _accessors = new()
         {
             { "Environment",           () => Environment },
             { "Arena",                 () => Arena },
         };
+
+        Arena = new();
     }
 
-    public void Enter()
+    public void SetEnvironment(RunConfig runConfig)
     {
-        Environment = RunEnvironment.FromConfig(DesignerEnvironment.GetConfig());
+        Environment = RunEnvironment.FromConfig(runConfig);
     }
 
     public void Exit()

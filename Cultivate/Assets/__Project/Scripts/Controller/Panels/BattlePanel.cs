@@ -139,7 +139,8 @@ public class BattlePanel : Panel
     {
         if (RunManager.Instance == null || RunManager.Instance.Environment == null)
             return;
-        AudioEntry audio = RunManager.Instance.Environment.Map.AudioFromCurrentJingJie();
+        JingJie jingJie = RunManager.Instance.Environment.Map.GetJingJie();
+        AudioEntry audio = Encyclopedia.AudioFromJingJie(jingJie);
         AudioManager.Play(audio);
     }
 }

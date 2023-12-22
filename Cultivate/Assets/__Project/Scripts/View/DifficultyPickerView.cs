@@ -13,6 +13,9 @@ public class DifficultyPickerView : MonoBehaviour
 
     private int _selectionIndex;
 
+    public DifficultyProfile GetSelection()
+        => _address.Get<DifficultyProfileList>()[_selectionIndex];
+
     private Address _address;
 
     public void Configure()

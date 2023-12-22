@@ -1,12 +1,12 @@
 
 using System;
 
-public class RunConfig
+public class RunInitialCondition
 {
     private Action<Map> _initMapPools;
     private Action<RunEnvironment> _execute;
 
-    public RunConfig(Action<Map> initMapPools = null, Action<RunEnvironment> execute = null)
+    public RunInitialCondition(Action<Map> initMapPools = null, Action<RunEnvironment> execute = null)
     {
         _initMapPools = initMapPools;
         _execute = execute;

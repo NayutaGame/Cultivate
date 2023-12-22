@@ -1380,6 +1380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8152188524626589071}
   - component: {fileID: 4340962464578969089}
+  - component: {fileID: 8106355281593677907}
   m_Layer: 5
   m_Name: StageSkillView
   m_TagString: Untagged
@@ -1420,15 +1421,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d2af8476e12024c8ac31ec2fb4339a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Image: {fileID: 2651018990593199089}
+  RectTransform: {fileID: 8152188524626589071}
+  CardImage: {fileID: 2651018990593199089}
   ManaCostText: {fileID: 4233928103622675143}
   NameText: {fileID: 1672581877321144749}
   DescriptionText: {fileID: 1039006708424304421}
   JingJieImage: {fileID: 1700294466287975886}
   WuXingImage: {fileID: 7570655152909774514}
   SelectionImage: {fileID: 1627075881020627272}
-  _rectTransform: {fileID: 8152188524626589071}
   CounterImage: {fileID: 868353637407979949}
+--- !u!114 &8106355281593677907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85bd09a15bef8db498b38f51d28403f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 4340962464578969089}
+  PivotBehaviour: {fileID: 0}
 --- !u!1 &8133398099548211338
 GameObject:
   m_ObjectHideFlags: 0

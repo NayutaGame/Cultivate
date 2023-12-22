@@ -6,11 +6,11 @@ using CLLibrary;
 
 public class DesignerEnvironment
 {
-    public static RunConfig GetConfig()
+    public static RunInitialCondition GetInitialCondition()
     {
-        // return new RunConfig(StandardInitMapPools, Standard);
-        // return new RunConfig(CustomInitMapPools, Custom);
-        return new RunConfig(WeplayInitMapPools, Weplay);
+        // return new RunInitialCondition(StandardInitMapPools, Standard);
+        // return new RunInitialCondition(CustomInitMapPools, Custom);
+        return new RunInitialCondition(WeplayInitMapPools, Weplay);
     }
 
     private static void StandardInitMapPools(Map map)
@@ -48,7 +48,7 @@ public class DesignerEnvironment
     {
         bool firstTime = true;
 
-        env.Map.JingJie = JingJie.LianQi;
+        env.Map.SetJingJie(JingJie.LianQi);
         env.SetDGold(50);
         env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
     }
@@ -102,7 +102,7 @@ public class DesignerEnvironment
 
     private static void Custom(RunEnvironment env)
     {
-        env.Map.JingJie = JingJie.HuaShen;
+        env.Map.SetJingJie(JingJie.HuaShen);
         env.Home.SetJingJie(JingJie.HuaShen);
         env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
     }
@@ -139,7 +139,7 @@ public class DesignerEnvironment
 
     private static void Weplay(RunEnvironment env)
     {
-        env.Map.JingJie = JingJie.LianQi;
+        env.Map.SetJingJie(JingJie.LianQi);
         env.SetDGold(50);
     }
 

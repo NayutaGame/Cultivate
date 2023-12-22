@@ -10,6 +10,17 @@ public class StageEnvironment : Addressable, CLEventListener
 {
     private static readonly int MAX_ACTION_COUNT = 120;
 
+    // public async Task SimpleProcedure(Args args)
+    //     => await SimpleProcedure(new SimpleDetails(args));
+    // public async Task SimpleProcedure(SimpleDetails d)
+    // {
+    //     await _eventDict.SendEvent(CLEventDict.WILL_SIMPLE, d);
+    //
+    //     // actual work
+    //
+    //     await _eventDict.SendEvent(CLEventDict.DID_SIMPLE, d);
+    // }
+
     public async Task FormationProcedure(StageEntity owner, FormationEntry formation, bool recursive = true)
         => await FormationProcedure(new FormationDetails(owner, formation, recursive));
     public async Task FormationProcedure(FormationDetails d)
@@ -394,7 +405,7 @@ public class StageEnvironment : Addressable, CLEventListener
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public StageEnvironment(StageConfig config)
+    private StageEnvironment(StageConfig config)
     {
         _accessors = new()
         {
@@ -416,6 +427,9 @@ public class StageEnvironment : Addressable, CLEventListener
         _result = new(_config.GenerateReport, _config.GenerateTimeline);
     }
 
+    public static StageEnvironment FromConfig(StageConfig config)
+        => new(config);
+
     public void Execute()
     {
         if (!_config.Animated)
@@ -429,7 +443,7 @@ public class StageEnvironment : Addressable, CLEventListener
         }
 
         StageEnvironment futureEnvironment =
-            new StageEnvironment(new StageConfig(false, false, false, true, _config.Home, _config.Away));
+            FromConfig(new StageConfig(false, false, false, true, _config.Home, _config.Away));
         futureEnvironment.Simulate().GetAwaiter().GetResult();
 
         StageManager.Instance.Environment = this;

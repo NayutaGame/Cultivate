@@ -7,6 +7,8 @@ public class ProfileManager : Addressable
 {
     private ProfileList ProfileList;
 
+    public RunConfigForm RunConfigForm;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public ProfileManager()

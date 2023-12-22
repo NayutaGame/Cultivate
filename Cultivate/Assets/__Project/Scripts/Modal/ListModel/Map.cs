@@ -83,7 +83,7 @@ public class Map : Addressable
         CurrentNode.ChangePanel(null);
 
         if (isEndOfJingJie)
-            JingJie += 1;
+            SetJingJie(GetJingJie() + 1);
     }
 
     private bool IsEndOfJingJie(int currentX)
@@ -91,30 +91,16 @@ public class Map : Addressable
         return currentX >= _normalPools[_jingJie].Length - 1;
     }
 
-    private readonly Dictionary<JingJie, AudioEntry> JingJieToAudio = new()
-    {
-        { JingJie.LianQi, "BGMLianQi" },
-        { JingJie.ZhuJi, "BGMZhuJi" },
-        { JingJie.JinDan, "BGMJinDan" },
-        { JingJie.YuanYing, "BGMYuanYing" },
-        { JingJie.HuaShen, "BGMHuaShen" },
-    };
-
-    public AudioEntry AudioFromCurrentJingJie()
-        => JingJieToAudio[_jingJie];
-
     private JingJie _jingJie;
-    public JingJie JingJie
+    public JingJie GetJingJie() => _jingJie;
+    public void SetJingJie(JingJie jingJie)
     {
-        get => _jingJie;
-        set
-        {
-            _jingJie = value;
-            JingJieChanged(_jingJie);
-            RefreshNodes();
-            AudioManager.Play(JingJieToAudio[_jingJie]);
-        }
+        _jingJie = jingJie;
+        JingJieChanged(_jingJie);
+        RefreshNodes();
+        AudioManager.Play(Encyclopedia.AudioFromJingJie(_jingJie));
     }
+
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -128,7 +114,7 @@ public class Map : Addressable
         _stepItems = new StepItemListModel();
         StepItemCapacity.Do(i => _stepItems.Add(new StepItem()));
 
-        runConfig.InitMapPools(this);
+        runConfig.RunInitialCondition.InitMapPools(this);
     }
 
     private void RefreshNodes()

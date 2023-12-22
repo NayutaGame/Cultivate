@@ -48,5 +48,19 @@ public class Encyclopedia : Addressable
         KeywordCategory.Init();
         BuffCategory.Init();
         SkillCategory.Init();
+
+        JingJieToAudio = new()
+        {
+            { JingJie.LianQi, "BGMLianQi" },
+            { JingJie.ZhuJi, "BGMZhuJi" },
+            { JingJie.JinDan, "BGMJinDan" },
+            { JingJie.YuanYing, "BGMYuanYing" },
+            { JingJie.HuaShen, "BGMHuaShen" },
+        };
     }
+
+    private static Dictionary<JingJie, AudioEntry> JingJieToAudio;
+
+    public static AudioEntry AudioFromJingJie(JingJie jingJie)
+        => JingJieToAudio[jingJie];
 }

@@ -14,7 +14,7 @@ public class RunEnvironment : Addressable
     {
         RunEntity away = Away ?? RunEntity.FromJingJieHealth(Home.GetJingJie(), 1000000);
         StageConfig d = new StageConfig(false, false, false, false, Home, away);
-        StageEnvironment environment = new StageEnvironment(d);
+        StageEnvironment environment = StageEnvironment.FromConfig(d);
         environment.Execute();
         SimulateResult = environment.Result;
     }
@@ -41,6 +41,7 @@ public class RunEnvironment : Addressable
     public SkillInventory Hand { get; private set; }
     public MechBag MechBag { get; private set; }
 
+    public RunConfig _config;
     public StageEnvironmentResult SimulateResult;
 
     private RunCommitDetails _commitDetails;
@@ -55,7 +56,7 @@ public class RunEnvironment : Addressable
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    private RunEnvironment(RunConfig runConfig = null)
+    private RunEnvironment(RunConfig config)
     {
         _accessors = new()
         {
@@ -67,11 +68,13 @@ public class RunEnvironment : Addressable
             { "ActivePanel",           GetActivePanel },
         };
 
+        _config = config;
+
         Home = RunEntity.Default();
         Home.EnvironmentChangedEvent += EnvironmentChanged;
         EnvironmentChangedEvent += Simulate;
 
-        Map = new(runConfig);
+        Map = new(config);
         Map.JingJieChangedEvent += MapJingJieChanged;
         MapJingJieChangedEvent += SetHomeJingJieAndBaseHealth;
 
@@ -84,11 +87,8 @@ public class RunEnvironment : Addressable
 
         _gold = 0;
 
-        runConfig?.Execute(this);
+        config.RunInitialCondition.Execute(this);
     }
-
-    public static RunEnvironment Default()
-        => new();
 
     public static RunEnvironment FromConfig(RunConfig config)
         => new(config);
@@ -96,7 +96,7 @@ public class RunEnvironment : Addressable
     public void Combat()
     {
         StageConfig d = new StageConfig(true, true, false, false, Home, Away);
-        StageEnvironment environment = new StageEnvironment(d);
+        StageEnvironment environment = StageEnvironment.FromConfig(d);
         environment.Execute();
     }
 

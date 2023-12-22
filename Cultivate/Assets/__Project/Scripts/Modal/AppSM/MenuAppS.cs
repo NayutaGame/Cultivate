@@ -1,12 +1,11 @@
 
 using System.Threading.Tasks;
-using DG.Tweening;
 
 public class MenuAppS : AppS
 {
-    public override async Task Enter(NavigateDetails d)
+    public override async Task Enter(NavigateDetails d, Config config)
     {
-        await base.Enter(d);
+        await base.Enter(d, config);
 
         if (d.FromState is TitleAppS)
         {
@@ -25,7 +24,7 @@ public class MenuAppS : AppS
         // await handle.AsyncWaitForCompletion();
     }
 
-    public override async Task Exit(NavigateDetails d)
+    public override async Task<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
 
@@ -34,5 +33,6 @@ public class MenuAppS : AppS
         // Tween handle = CanvasManager.Instance.CurtainShow().SetAutoKill();
         // handle.Restart();
         // await handle.AsyncWaitForCompletion();
+        return new();
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class CLEventDict : Dictionary<int, CLEventElement>
 {
+    #region Stage
+
     public static readonly int START_STAGE        = 0;
     public static readonly int END_STAGE          = 1;
     public static readonly int START_ROUND        = 2;
@@ -58,6 +60,8 @@ public class CLEventDict : Dictionary<int, CLEventElement>
     public static readonly int STAGE_ENTITY       = 1;
     public static readonly int STAGE_BUFF         = 2;
     public static readonly int STAGE_FORMATION    = 3;
+
+    #endregion
 
     public void Register(CLEventListener listener, CLEventDescriptor eventDescriptor)
     {

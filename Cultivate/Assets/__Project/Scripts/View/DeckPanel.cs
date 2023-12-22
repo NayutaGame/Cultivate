@@ -68,15 +68,15 @@ public class DeckPanel : Panel
 
     private void OnEnable()
     {
-        if (RunManager.Instance != null && RunManager.Instance.Environment != null)
-            RunManager.Instance.Environment.MapJingJieChangedEvent += SyncSlot;
+        // if (RunManager.Instance != null && RunManager.Instance.Environment != null)
+        //     RunManager.Instance.Environment.MapJingJieChangedEvent += SyncSlot;
         HandView.Sync();
     }
 
     private void OnDisable()
     {
-        if (RunManager.Instance != null && RunManager.Instance.Environment != null)
-            RunManager.Instance.Environment.MapJingJieChangedEvent -= SyncSlot;
+        // if (RunManager.Instance != null && RunManager.Instance.Environment != null)
+        //     RunManager.Instance.Environment.MapJingJieChangedEvent -= SyncSlot;
     }
 
     private void SyncSlot(JingJie jingJie)

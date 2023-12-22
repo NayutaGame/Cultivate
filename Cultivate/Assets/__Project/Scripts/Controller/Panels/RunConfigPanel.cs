@@ -73,11 +73,10 @@ public class RunConfigPanel : CurtainPanel
 
     private void StartRun()
     {
-        // generate form from player chose condition, to avoid save ui variables inside model
         // this form should contains: selected character, selected difficulty, selected mutators, selected seed
 
-        // generate form
-        // new RunConfigForm();
+        AppManager.Instance.ProfileManager.RunConfigForm =
+            new RunConfigForm(_selection.Get<CharacterProfile>(), DifficultyPickerView.GetSelection());
 
         AppManager.Push(new RunAppS());
     }
