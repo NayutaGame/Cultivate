@@ -63,6 +63,15 @@ public class CLEventDict : Dictionary<int, CLEventElement>
 
     #endregion
 
+    #region Run
+
+    public static readonly int START_RUN          = 100;
+    public static readonly int END_RUN            = 101;
+
+    public static readonly int RUN_ENVIRONMENT    = 100;
+
+    #endregion
+
     public void Register(CLEventListener listener, CLEventDescriptor eventDescriptor)
     {
         int eventId = eventDescriptor.EventId;

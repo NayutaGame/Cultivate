@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using UnityEngine;
 
 public class CharacterCategory : Category<CharacterEntry>
 {
@@ -11,7 +12,17 @@ public class CharacterCategory : Category<CharacterEntry>
                                           "增加以物易物节点\n" +
                                           "金丹之后移除所有练气牌；化神后，所有筑基牌"),
             new("彼此卿", abilityDescription: "战后奖励可选择对方卡组中随机一张卡\n" +
-                                           "卡组中第一张空位将模仿对方对位的牌"),
+                                           "卡组中第一张空位将模仿对方对位的牌",
+                eventDescriptors: new CLEventDescriptor[]
+                {
+                    new(CLEventDict.RUN_ENVIRONMENT, CLEventDict.START_RUN, 0, async (listener, eventDetails) =>
+                    {
+                        RunEnvironment b = (RunEnvironment)listener;
+                        RunDetails d = (RunDetails)eventDetails;
+
+                        Debug.Log("彼此卿StartRun");
+                    }),
+                }),
             new("墨虚雪", abilityDescription: "游戏开始时以及境界提升时，获得一张机关牌\n" +
                                            "使用机关的战斗后，获得一张随机机关牌"),
             new("心斩心鬼", abilityDescription: "剑类卡牌获得集中\n" +

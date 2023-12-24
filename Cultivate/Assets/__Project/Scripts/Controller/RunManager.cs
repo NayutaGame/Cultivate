@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CLLibrary;
 
 public class RunManager : Singleton<RunManager>, Addressable
@@ -29,14 +30,16 @@ public class RunManager : Singleton<RunManager>, Addressable
         Arena = new();
     }
 
-    public void SetEnvironment(RunConfig config)
+    public async Task SetEnvironment(RunConfig config)
     {
+        Environment?.UnregisterProfile();
         Environment = RunEnvironment.FromConfig(config);
-    }
+        if (Environment == null)
+            return;
 
-    public void Exit()
-    {
-        Environment = null;
+        Environment.RegisterProfile();
+
+        await Environment.StartRunProcedure();
     }
 
     public void CExit()

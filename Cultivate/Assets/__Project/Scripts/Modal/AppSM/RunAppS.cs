@@ -8,7 +8,7 @@ public class RunAppS : AppS
         await base.Enter(d, config);
 
         RunConfig runConfig = config as RunConfig;
-        RunManager.Instance.SetEnvironment(runConfig);
+        RunManager.Instance.SetEnvironment(runConfig).GetAwaiter().GetResult();
 
         CanvasManager.Instance.RunCanvas.Configure();
         CanvasManager.Instance.RunCanvas.TopBar.Refresh();
@@ -43,7 +43,7 @@ public class RunAppS : AppS
         await CanvasManager.Instance.Curtain.PlayShowAnimation();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
         CanvasManager.Instance.RunCanvas.RunPanelCollection.DisableCurrentPanel();
-        RunManager.Instance.Exit();
+        RunManager.Instance.SetEnvironment(null);
         return new();
     }
 

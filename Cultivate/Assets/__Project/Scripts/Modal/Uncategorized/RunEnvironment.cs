@@ -1,13 +1,21 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using CLLibrary;
 using JetBrains.Annotations;
-using UnityEngine;
 
-public class RunEnvironment : Addressable
+public class RunEnvironment : Addressable, CLEventListener
 {
+    #region Procedures
+
+    public async Task StartRunProcedure()
+    {
+        await _eventDict.SendEvent(CLEventDict.START_RUN, new RunDetails());
+    }
+
+    #endregion
+
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
     private void Simulate()
@@ -54,6 +62,8 @@ public class RunEnvironment : Addressable
 
     private RunResultPanelDescriptor _runResultPanelDescriptor;
 
+    private CLEventDict _eventDict;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     private RunEnvironment(RunConfig config)
@@ -88,10 +98,62 @@ public class RunEnvironment : Addressable
         _gold = 0;
 
         config.RunInitialCondition.Execute(this);
+
+        _eventDict = new();
     }
 
     public static RunEnvironment FromConfig(RunConfig config)
-        => new(config);
+    {
+        return new(config);
+    }
+
+    public void RegisterProfile()
+    {
+        RegisterCharacterProfile();
+        RegisterDifficultyProfile();
+    }
+
+    private void RegisterCharacterProfile()
+    {
+        CharacterEntry entry = _config.CharacterProfile.GetEntry();
+
+        foreach (int eventId in entry._eventDescriptorDict.Keys)
+        {
+            CLEventDescriptor eventDescriptor = entry._eventDescriptorDict[eventId];
+            int senderId = eventDescriptor.ListenerId;
+
+            if (senderId == CLEventDict.RUN_ENVIRONMENT)
+                _eventDict.Register(this, eventDescriptor);
+        }
+    }
+
+    private void RegisterDifficultyProfile()
+    {
+    }
+
+    public void UnregisterProfile()
+    {
+        UnregisterCharacterProfile();
+        UnregisterDifficultyProfile();
+    }
+
+    private void UnregisterCharacterProfile()
+    {
+        CharacterEntry entry = _config.CharacterProfile.GetEntry();
+
+        foreach (int eventId in entry._eventDescriptorDict.Keys)
+        {
+            CLEventDescriptor eventDescriptor = entry._eventDescriptorDict[eventId];
+            int senderId = eventDescriptor.ListenerId;
+
+            if (senderId == CLEventDict.RUN_ENVIRONMENT)
+                _eventDict.Unregister(this, eventDescriptor);
+        }
+    }
+
+    private void UnregisterDifficultyProfile()
+    {
+    }
 
     public void Combat()
     {
