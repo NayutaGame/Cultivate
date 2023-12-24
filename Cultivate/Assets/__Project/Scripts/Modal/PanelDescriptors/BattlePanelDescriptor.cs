@@ -18,7 +18,7 @@ public class BattlePanelDescriptor : PanelDescriptor
         }
     }
 
-    public StageEnvironmentResult GetResult() => RunManager.Instance.Environment.SimulateResult;
+    public StageResult GetResult() => RunManager.Instance.Environment.SimulateResult;
 
     public BattlePanelDescriptor(RunEntity template)
     {

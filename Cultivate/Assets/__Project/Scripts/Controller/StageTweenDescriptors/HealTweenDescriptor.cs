@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class HealTweenDescriptor : TweenDescriptor
+public class HealTweenDescriptor : StageTweenDescriptor
 {
     private HealDetails _healDetails;
 

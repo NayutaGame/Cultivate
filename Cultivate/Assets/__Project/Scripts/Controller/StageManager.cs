@@ -14,8 +14,8 @@ public class StageManager : Singleton<StageManager>, Addressable
     public GameObject BuffVFXPrefab;
     public GameObject DebuffVFXPrefab;
     public GameObject HealVFXPrefab;
-
     public EntitySlot[] _slots;
+
     public StageAnimationDelegate Anim;
     public StageEnvironment Environment;
     public StageTimeline Timeline;

@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class EvadeTweenDescriptor : TweenDescriptor
+public class EvadeTweenDescriptor : StageTweenDescriptor
 {
     private StageEntity _tgt;
 

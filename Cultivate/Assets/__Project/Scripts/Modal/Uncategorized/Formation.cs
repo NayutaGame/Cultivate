@@ -35,7 +35,7 @@ public class Formation : CLEventListener
             int senderId = eventDescriptor.ListenerId;
 
             if (senderId == CLEventDict.STAGE_ENVIRONMENT)
-                _owner.Env._eventDict.Register(this, eventDescriptor);
+                _owner.Env.EventDict.Register(this, eventDescriptor);
             else if (senderId == CLEventDict.STAGE_ENTITY)
                 ;
             else if (senderId == CLEventDict.STAGE_BUFF)
@@ -53,7 +53,7 @@ public class Formation : CLEventListener
             int senderId = eventDescriptor.ListenerId;
 
             if (senderId == CLEventDict.STAGE_ENVIRONMENT)
-                _owner.Env._eventDict.Unregister(this, eventDescriptor);
+                _owner.Env.EventDict.Unregister(this, eventDescriptor);
             else if (senderId == CLEventDict.STAGE_ENTITY)
                 ;
             else if (senderId == CLEventDict.STAGE_BUFF)

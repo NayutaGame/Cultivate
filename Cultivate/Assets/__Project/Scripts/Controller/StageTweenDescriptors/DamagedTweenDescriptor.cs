@@ -3,7 +3,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class DamagedTweenDescriptor : TweenDescriptor
+public class DamagedTweenDescriptor : StageTweenDescriptor
 {
     private DamageDetails _damageDetails;
 

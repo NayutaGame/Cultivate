@@ -10,6 +10,8 @@ public class StageEnvironment : Addressable, CLEventListener
 {
     private static readonly int MAX_ACTION_COUNT = 120;
 
+    #region Procedures
+
     // public async Task SimpleProcedure(Args args)
     //     => await SimpleProcedure(new SimpleDetails(args));
     // public async Task SimpleProcedure(SimpleDetails d)
@@ -392,16 +394,19 @@ public class StageEnvironment : Addressable, CLEventListener
         await _eventDict.SendEvent(CLEventDict.DID_EXHAUST, d);
     }
 
+    #endregion
+
     private StageConfig _config;
     public StageConfig Config => _config;
 
-    public CLEventDict _eventDict;
+    private CLEventDict _eventDict;
+    public CLEventDict EventDict => _eventDict;
 
     private StageEntity[] _entities;
     public StageEntity[] Entities => _entities;
 
-    private StageEnvironmentResult _result;
-    public StageEnvironmentResult Result => _result;
+    private StageResult _result;
+    public StageResult Result => _result;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -452,7 +457,7 @@ public class StageEnvironment : Addressable, CLEventListener
         AppManager.Push(new StageAppS());
     }
 
-    public async Task TryPlayTween(TweenDescriptor descriptor)
+    public async Task TryPlayTween(StageTweenDescriptor descriptor)
     {
         if (!_config.Animated)
             return;

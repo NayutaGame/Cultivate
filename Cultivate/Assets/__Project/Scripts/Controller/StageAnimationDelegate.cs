@@ -1,9 +1,8 @@
 
 using System.Threading.Tasks;
 using DG.Tweening;
-using UnityEngine;
 
-public class StageAnimationDelegate : AnimationDelegate
+public class StageAnimationDelegate
 {
     public TimelineView TimelineView;
     private Tween _tween;
@@ -14,7 +13,7 @@ public class StageAnimationDelegate : AnimationDelegate
         _speed = 1;
     }
 
-    public async Task PlayTween(TweenDescriptor descriptor)
+    public async Task PlayTween(StageTweenDescriptor descriptor)
     {
         if (descriptor is ShiftTweenDescriptor shift)
         {

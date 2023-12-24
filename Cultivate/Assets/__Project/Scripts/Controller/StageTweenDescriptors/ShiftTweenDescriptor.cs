@@ -1,7 +1,7 @@
 
 using DG.Tweening;
 
-public class ShiftTweenDescriptor : TweenDescriptor
+public class ShiftTweenDescriptor : StageTweenDescriptor
 {
     public ShiftTweenDescriptor() : base(true)
     {

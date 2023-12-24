@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
-using UnityEngine;
 
 public class RunManager : Singleton<RunManager>, Addressable
 {
@@ -11,16 +10,8 @@ public class RunManager : Singleton<RunManager>, Addressable
     public static readonly int[] SkillStartFromJingJie = new[] { 9, 6, 4, 2, 0, 0 };
     public static readonly float EUREKA_DISCOUNT_RATE = 0.5f;
 
-    public event Action<StageCommitDetails> StageCommitEvent;
-    public void StageCommit(StageCommitDetails d) => StageCommitEvent?.Invoke(d);
-
-    public event Action<GainSkillDetails> GainSkillEvent;
-    public void Acquire(GainSkillDetails d) => GainSkillEvent?.Invoke(d);
-
-    public event Action<StatusChangedDetails> StatusChangedEvent;
-    public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
-
-    public RunEnvironment Environment { get; private set; }
+    public RunAnimationDelegate Anim;
+    public RunEnvironment Environment;
     public Arena Arena;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -38,9 +29,9 @@ public class RunManager : Singleton<RunManager>, Addressable
         Arena = new();
     }
 
-    public void SetEnvironment(RunConfig runConfig)
+    public void SetEnvironment(RunConfig config)
     {
-        Environment = RunEnvironment.FromConfig(runConfig);
+        Environment = RunEnvironment.FromConfig(config);
     }
 
     public void Exit()
@@ -57,4 +48,13 @@ public class RunManager : Singleton<RunManager>, Addressable
     {
         AppManager.Pop();
     }
+
+    public event Action<StageCommitDetails> StageCommitEvent;
+    public void StageCommit(StageCommitDetails d) => StageCommitEvent?.Invoke(d);
+
+    public event Action<GainSkillDetails> GainSkillEvent;
+    public void Acquire(GainSkillDetails d) => GainSkillEvent?.Invoke(d);
+
+    public event Action<StatusChangedDetails> StatusChangedEvent;
+    public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
 }

@@ -13,7 +13,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     [NonSerialized] public RunEntity Home;
 
-    [NonSerialized] public StageEnvironmentResult SimulateResult;
+    [NonSerialized] public StageResult SimulateResult;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();

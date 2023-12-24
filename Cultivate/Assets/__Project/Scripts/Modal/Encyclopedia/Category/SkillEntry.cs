@@ -129,7 +129,7 @@ public class SkillEntry : Entry, IAnnotation
     {
         await caster.Env.TryPlayTween(new ShiftTweenDescriptor());
 
-        StageEnvironmentResult r = caster.Env.Result;
+        StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
         r.TryAppendChannelNote(caster.Index, d);
         r.TryAppend($"\n");
@@ -137,7 +137,7 @@ public class SkillEntry : Entry, IAnnotation
 
     public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
     {
-        StageEnvironmentResult r = caster.Env.Result;
+        StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
         r.TryAppend($"\n");
     }
@@ -146,7 +146,7 @@ public class SkillEntry : Entry, IAnnotation
     {
         await caster.Env.TryPlayTween(new ShiftTweenDescriptor());
 
-        StageEnvironmentResult r = caster.Env.Result;
+        StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}使用了{Name}");
         r.TryAppendNote(caster.Index, skill);
         await _execute(caster, skill, recursive);
@@ -155,7 +155,7 @@ public class SkillEntry : Entry, IAnnotation
 
     public async Task ExecuteWithoutTween(StageEntity caster, StageSkill skill, bool recursive)
     {
-        StageEnvironmentResult r = caster.Env.Result;
+        StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}使用了{Name}");
         await _execute(caster, skill, recursive);
         r.TryAppend($"\n");

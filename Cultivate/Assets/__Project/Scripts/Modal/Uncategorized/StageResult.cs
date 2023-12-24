@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-public class StageEnvironmentResult : Addressable
+public class StageResult : Addressable
 {
     private StringBuilder _reportBuilder;
     private StageTimeline _timeline;
@@ -21,7 +21,7 @@ public class StageEnvironmentResult : Addressable
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public StageEnvironmentResult(bool generateReport, bool generateTimeline)
+    public StageResult(bool generateReport, bool generateTimeline)
     {
         _accessors = new()
         {

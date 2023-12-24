@@ -42,7 +42,7 @@ public class RunEnvironment : Addressable
     public MechBag MechBag { get; private set; }
 
     public RunConfig _config;
-    public StageEnvironmentResult SimulateResult;
+    public StageResult SimulateResult;
 
     private RunCommitDetails _commitDetails;
 

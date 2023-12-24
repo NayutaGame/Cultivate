@@ -54,21 +54,21 @@ public class StageEntity : Addressable, CLEventListener
         UltraSwift = false;
         Swift = false;
 
-        await _env._eventDict.SendEvent(CLEventDict.START_TURN, new TurnDetails(this, _p));
+        await _env.EventDict.SendEvent(CLEventDict.START_TURN, new TurnDetails(this, _p));
 
         bool skipTurn = await TryConsumeProcedure("跳回合");
         if (skipTurn)
         {
             if (GetStackOfBuff("浮空艇") > 0)
                 await BuffSelfProcedure("回合免疫");
-            await _env._eventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+            await _env.EventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
             return;
         }
 
         if (_channelDetails != null)
         {
             await ChannelProcedure();
-            await _env._eventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+            await _env.EventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
             return;
         }
 
@@ -77,12 +77,12 @@ public class StageEntity : Addressable, CLEventListener
         if (Swift || UltraSwift)
             await SwiftProcedure(new SwiftDetails(this, Swift, UltraSwift));
 
-        await _env._eventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+        await _env.EventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
     }
 
     private async Task SwiftProcedure(SwiftDetails d)
     {
-        await _env._eventDict.SendEvent(CLEventDict.WILL_SWIFT, d);
+        await _env.EventDict.SendEvent(CLEventDict.WILL_SWIFT, d);
         if (d.Cancel)
             return;
 
@@ -92,7 +92,7 @@ public class StageEntity : Addressable, CLEventListener
         if (d.UltraSwift)
             await Step();
 
-        await _env._eventDict.SendEvent(CLEventDict.DID_SWIFT, d);
+        await _env.EventDict.SendEvent(CLEventDict.DID_SWIFT, d);
     }
 
     private async Task Step()
@@ -102,7 +102,7 @@ public class StageEntity : Addressable, CLEventListener
 
         StageSkill skill = _skills[_p];
 
-        await _env._eventDict.SendEvent(CLEventDict.START_STEP, new StepDetails(this, skill));
+        await _env.EventDict.SendEvent(CLEventDict.START_STEP, new StepDetails(this, skill));
 
 
 
@@ -116,7 +116,7 @@ public class StageEntity : Addressable, CLEventListener
                 actualCost = 0;
         }
 
-        await _env._eventDict.SendEvent(CLEventDict.WILL_MANA_COST, new ManaCostDetails(this, skill, actualCost));
+        await _env.EventDict.SendEvent(CLEventDict.WILL_MANA_COST, new ManaCostDetails(this, skill, actualCost));
 
         bool manaSufficient = actualCost == 0 || await TryConsumeProcedure("灵气", actualCost);
 
@@ -125,11 +125,11 @@ public class StageEntity : Addressable, CLEventListener
         {
             await ManaShortageProcedure(_p, skill, actualCost);
             await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
-            await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, null));
+            await _env.EventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, null));
             return;
         }
 
-        await _env._eventDict.SendEvent(CLEventDict.DID_MANA_COST, new ManaCostDetails(this, skill, actualCost));
+        await _env.EventDict.SendEvent(CLEventDict.DID_MANA_COST, new ManaCostDetails(this, skill, actualCost));
 
 
 
@@ -139,12 +139,12 @@ public class StageEntity : Addressable, CLEventListener
         {
             _channelDetails = new ChannelDetails(this, skill);
             await skill.Channel(this, _channelDetails);
-            await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
+            await _env.EventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
             return;
         }
 
         await Execute(skill);
-        await _env._eventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
+        await _env.EventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
     }
 
     private async Task ChannelProcedure()
@@ -187,8 +187,8 @@ public class StageEntity : Addressable, CLEventListener
             if (!within)
             {
                 _p = (_p + _skills.Length) % _skills.Length;
-                await _env._eventDict.SendEvent(CLEventDict.END_ROUND, new RoundDetails(this));
-                await _env._eventDict.SendEvent(CLEventDict.START_ROUND, new RoundDetails(this));
+                await _env.EventDict.SendEvent(CLEventDict.END_ROUND, new RoundDetails(this));
+                await _env.EventDict.SendEvent(CLEventDict.START_ROUND, new RoundDetails(this));
             }
 
             if(_skills[_p].Exhausted)
@@ -273,7 +273,7 @@ public class StageEntity : Addressable, CLEventListener
         };
 
         foreach (var eventDescriptor in _eventDescriptors)
-            _env._eventDict.Register(this, eventDescriptor);
+            _env.EventDict.Register(this, eventDescriptor);
 
         MingYuan = _runEntity.MingYuan.Clone();
         MaxHp = _runEntity.GetFinalHealth();
@@ -296,7 +296,7 @@ public class StageEntity : Addressable, CLEventListener
         RemoveAllBuffs().GetAwaiter().GetResult();
 
         foreach (var eventDescriptor in _eventDescriptors)
-            _env._eventDict.Unregister(this, eventDescriptor);
+            _env.EventDict.Unregister(this, eventDescriptor);
     }
 
     public void WriteResult()

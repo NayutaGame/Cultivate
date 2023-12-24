@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class BuffTweenDescriptor : TweenDescriptor
+public class BuffTweenDescriptor : StageTweenDescriptor
 {
     public BuffDetails _buffDetails;
 
