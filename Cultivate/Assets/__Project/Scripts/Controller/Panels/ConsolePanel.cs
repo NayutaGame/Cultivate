@@ -65,7 +65,7 @@ public class ConsolePanel : Panel
 
     public void AddMingYuan()
     {
-        RunManager.Instance.Environment.GetMingYuan().SetDiff();
+        RunManager.Instance.Environment.GetMingYuan().SetDiff(1);
         Refresh();
     }
 

@@ -14,12 +14,8 @@ public class BoundedInt
     public void SetDiff(int value = 1) => SetCurr(_curr + value);
 
     public int GetMax() => _max;
-    public int SetMax(int value)
-    {
-        _max = value;
-        SetCurr(_curr);
-        return _max;
-    }
+    public void SetMax(int value) => _max = value;
+    public void SetDMax(int value) => SetMax(_max + value);
 
     public override string ToString()
         => $"{_curr}/{_max}";

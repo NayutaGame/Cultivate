@@ -7,15 +7,6 @@ using JetBrains.Annotations;
 
 public class RunEnvironment : Addressable, CLEventListener
 {
-    #region Procedures
-
-    public async Task StartRunProcedure()
-    {
-        await _eventDict.SendEvent(CLEventDict.START_RUN, new RunDetails());
-    }
-
-    #endregion
-
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
     private void Simulate()
@@ -27,42 +18,63 @@ public class RunEnvironment : Addressable, CLEventListener
         SimulateResult = environment.Result;
     }
 
-    public event Action<JingJie> MapJingJieChangedEvent;
-    public void MapJingJieChanged(JingJie jingJie) => MapJingJieChangedEvent?.Invoke(jingJie);
-    private void SetHomeJingJieAndBaseHealth(JingJie jingJie)
-    {
-        Home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[jingJie]);
-        Home.SetJingJie(jingJie);
-    }
-
     public event Action ResourceChangedEvent;
     public void ResourceChanged() => ResourceChangedEvent?.Invoke();
 
+    #region Procedures
+
+    public async Task StartRunProcedure(RunDetails d)
+    {
+        await _eventDict.SendEvent(CLEventDict.START_RUN, d);
+    }
+
+    public async Task SetJingJieProcedure(SetJingJieDetails d)
+    {
+        await _eventDict.SendEvent(CLEventDict.WILL_SET_JINGJIE, d);
+        if (d.Cancel)
+            return;
+
+        Map.SetJingJie(d.JingJie);
+        Home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.JingJie]);
+        Home.SetJingJie(d.JingJie);
+        AudioManager.Play(Encyclopedia.AudioFromJingJie(d.JingJie));
+
+        await _eventDict.SendEvent(CLEventDict.DID_SET_JINGJIE, d);
+    }
+
+    public async Task SetDMingYuanProcedure()
+    {
+
+    }
+
+    public void SetDMingYuan(int value)
+    {
+        Home.MingYuan.SetDiff(value);
+        ResourceChanged();
+
+        if (GetMingYuan().GetCurr() <= 0)
+            CommitDetails = new RunCommitDetails(false);
+    }
+
+    #endregion
+
+    public RunConfig _config;
     public RunEntity Home { get; private set; }
     public RunEntity Away { get; set; }
-
     public Map Map { get; private set; }
-
     public TechInventory TechInventory { get; private set; }
-
     public SkillPool SkillPool { get; private set; }
     public SkillInventory Hand { get; private set; }
     public MechBag MechBag { get; private set; }
+    public float Gold { get; private set; }
+    private CLEventDict _eventDict;
 
-    public RunConfig _config;
     public StageResult SimulateResult;
-
-    private RunCommitDetails _commitDetails;
-
-    public RunCommitDetails CommitDetails
-    {
-        get => _commitDetails;
-        set => _commitDetails = value;
-    }
-
+    public RunCommitDetails CommitDetails { get; private set; }
     private RunResultPanelDescriptor _runResultPanelDescriptor;
 
-    private CLEventDict _eventDict;
+    public MingYuan GetMingYuan()
+        => Home.MingYuan;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -83,22 +95,12 @@ public class RunEnvironment : Addressable, CLEventListener
         Home = RunEntity.Default();
         Home.EnvironmentChangedEvent += EnvironmentChanged;
         EnvironmentChangedEvent += Simulate;
-
         Map = new(config);
-        Map.JingJieChangedEvent += MapJingJieChanged;
-        MapJingJieChangedEvent += SetHomeJingJieAndBaseHealth;
-
         TechInventory = new();
-
+        SkillPool = new();
         Hand = new();
         MechBag = new();
-
-        SkillPool = new();
-
-        _gold = 0;
-
-        config.RunInitialCondition.Execute(this);
-
+        Gold = 0;
         _eventDict = new();
     }
 
@@ -107,10 +109,11 @@ public class RunEnvironment : Addressable, CLEventListener
         return new(config);
     }
 
-    public void RegisterProfile()
+    public void Register()
     {
         RegisterCharacterProfile();
         RegisterDifficultyProfile();
+        RegisterDesignerConfig();
     }
 
     private void RegisterCharacterProfile()
@@ -131,10 +134,24 @@ public class RunEnvironment : Addressable, CLEventListener
     {
     }
 
-    public void UnregisterProfile()
+    private void RegisterDesignerConfig()
+    {
+        Dictionary<int, CLEventDescriptor> dict = _config.DesignerConfig._eventDescriptorDict;
+        foreach (int eventId in dict.Keys)
+        {
+            CLEventDescriptor eventDescriptor = dict[eventId];
+            int senderId = eventDescriptor.ListenerId;
+
+            if (senderId == CLEventDict.RUN_ENVIRONMENT)
+                _eventDict.Register(this, eventDescriptor);
+        }
+    }
+
+    public void Unregister()
     {
         UnregisterCharacterProfile();
         UnregisterDifficultyProfile();
+        UnregisterDesignerConfig();
     }
 
     private void UnregisterCharacterProfile()
@@ -153,6 +170,19 @@ public class RunEnvironment : Addressable, CLEventListener
 
     private void UnregisterDifficultyProfile()
     {
+    }
+
+    private void UnregisterDesignerConfig()
+    {
+        Dictionary<int, CLEventDescriptor> dict = _config.DesignerConfig._eventDescriptorDict;
+        foreach (int eventId in dict.Keys)
+        {
+            CLEventDescriptor eventDescriptor = dict[eventId];
+            int senderId = eventDescriptor.ListenerId;
+
+            if (senderId == CLEventDict.RUN_ENVIRONMENT)
+                _eventDict.Unregister(this, eventDescriptor);
+        }
     }
 
     public void Combat()
@@ -331,12 +361,9 @@ public class RunEnvironment : Addressable, CLEventListener
         return true;
     }
 
-    private float _gold;
-    public float Gold => _gold;
-
     public void SetDGold(int gold = 10)
     {
-        _gold += gold;
+        Gold += gold;
         ResourceChanged();
     }
 
@@ -344,18 +371,6 @@ public class RunEnvironment : Addressable, CLEventListener
     {
         Home.SetDHealth(Home.GetDHealth() + dHealth);
         ResourceChanged();
-    }
-
-    public MingYuan GetMingYuan()
-        => Home.MingYuan;
-
-    public void SetDMingYuan(int value)
-    {
-        Home.MingYuan.SetDiff(value);
-        ResourceChanged();
-
-        if (GetMingYuan().GetCurr() <= 0)
-            _commitDetails = new RunCommitDetails(false);
     }
 
     public void ForceDrawSkills(Predicate<SkillEntry> pred = null, WuXing? wuXing = null,
@@ -416,7 +431,7 @@ public class RunEnvironment : Addressable, CLEventListener
     public bool CanAffordTech(Address address)
     {
         RunTech runTech = address.Get<RunTech>();
-        return runTech.GetCost() <= _gold;
+        return runTech.GetCost() <= Gold;
     }
 
     public bool TrySetDoneTech(Address address)
@@ -425,7 +440,7 @@ public class RunEnvironment : Addressable, CLEventListener
             return false;
 
         RunTech runTech = address.Get<RunTech>();
-        _gold -= runTech.GetCost();
+        Gold -= runTech.GetCost();
         TechInventory.SetDone(runTech);
         return true;
     }
@@ -435,10 +450,10 @@ public class RunEnvironment : Addressable, CLEventListener
 
     public bool TryCommit()
     {
-        if (_commitDetails == null)
+        if (CommitDetails == null)
             return false;
 
-        _runResultPanelDescriptor = new RunResultPanelDescriptor(_commitDetails);
+        _runResultPanelDescriptor = new RunResultPanelDescriptor(CommitDetails);
         return true;
     }
 

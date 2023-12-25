@@ -32,19 +32,17 @@ public class RunManager : Singleton<RunManager>, Addressable
 
     public async Task SetEnvironment(RunConfig config)
     {
-        Environment?.UnregisterProfile();
+        Environment?.Unregister();
         Environment = RunEnvironment.FromConfig(config);
-        if (Environment == null)
-            return;
+        Environment.Register();
 
-        Environment.RegisterProfile();
-
-        await Environment.StartRunProcedure();
+        await Environment.StartRunProcedure(new RunDetails());
     }
 
-    public void CExit()
+    public async Task SetEnvironmentToNull()
     {
-        CanvasManager.Instance.RunCanvas.Refresh();
+        Environment?.Unregister();
+        Environment = null;
     }
 
     public void ReturnToTitle()

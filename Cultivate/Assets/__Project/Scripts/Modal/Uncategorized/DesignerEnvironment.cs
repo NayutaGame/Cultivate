@@ -6,11 +6,12 @@ using CLLibrary;
 
 public class DesignerEnvironment
 {
-    public static RunInitialCondition GetInitialCondition()
+    public static DesignerConfig GetDesignerConfig()
     {
-        // return new RunInitialCondition(StandardInitMapPools, Standard);
-        // return new RunInitialCondition(CustomInitMapPools, Custom);
-        return new RunInitialCondition(WeplayInitMapPools, Weplay);
+        // return new RunInitialCondition(StandardInitMapPools);
+        // return new RunInitialCondition(CustomInitMapPools);
+        return new DesignerConfig(WeplayInitMapPools,
+            WeplayRun);
     }
 
     private static void StandardInitMapPools(Map map)
@@ -42,15 +43,6 @@ public class DesignerEnvironment
             { JingJie.HuaShen  , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
             { JingJie.FanXu    , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
         };
-    }
-
-    private static void Standard(RunEnvironment env)
-    {
-        bool firstTime = true;
-
-        env.Map.SetJingJie(JingJie.LianQi);
-        env.SetDGold(50);
-        env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
     }
 
     private static void CustomInitMapPools(Map map)
@@ -100,13 +92,6 @@ public class DesignerEnvironment
         };
     }
 
-    private static void Custom(RunEnvironment env)
-    {
-        env.Map.SetJingJie(JingJie.HuaShen);
-        env.Home.SetJingJie(JingJie.HuaShen);
-        env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
-    }
-
     private static void WeplayInitMapPools(Map map)
     {
         map.EntityPool = new();
@@ -137,11 +122,36 @@ public class DesignerEnvironment
         };
     }
 
-    private static void Weplay(RunEnvironment env)
-    {
-        env.Map.SetJingJie(JingJie.LianQi);
-        env.SetDGold(50);
-    }
+    private static readonly CLEventDescriptor StandardRun =
+        new(CLEventDict.RUN_ENVIRONMENT, CLEventDict.START_RUN, -1, async (listener, eventDetails) =>
+        {
+            RunEnvironment env = (RunEnvironment)listener;
+            RunDetails d = (RunDetails)eventDetails;
+
+            await env.SetJingJieProcedure(new SetJingJieDetails(JingJie.LianQi));
+            env.SetDGold(50);
+            env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
+        });
+
+    private static readonly CLEventDescriptor CustomRun =
+        new(CLEventDict.RUN_ENVIRONMENT, CLEventDict.START_RUN, -1, async (listener, eventDetails) =>
+        {
+            RunEnvironment env = (RunEnvironment)listener;
+            RunDetails d = (RunDetails)eventDetails;
+
+            await env.SetJingJieProcedure(new SetJingJieDetails(JingJie.HuaShen));
+            env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
+        });
+
+    private static readonly CLEventDescriptor WeplayRun =
+        new(CLEventDict.RUN_ENVIRONMENT, CLEventDict.START_RUN, -1, async (listener, eventDetails) =>
+        {
+            RunEnvironment env = (RunEnvironment)listener;
+            RunDetails d = (RunDetails)eventDetails;
+
+            await env.SetJingJieProcedure(new SetJingJieDetails(JingJie.LianQi));
+            env.SetDGold(50);
+        });
 
     public static async Task DefaultStartTurn(StageEntity owner, EventDetails eventDetails)
     {

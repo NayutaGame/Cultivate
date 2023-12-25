@@ -43,7 +43,7 @@ public class RunAppS : AppS
         await CanvasManager.Instance.Curtain.PlayShowAnimation();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
         CanvasManager.Instance.RunCanvas.RunPanelCollection.DisableCurrentPanel();
-        RunManager.Instance.SetEnvironment(null);
+        RunManager.Instance.SetEnvironmentToNull();
         return new();
     }
 
@@ -66,8 +66,7 @@ public class RunAppS : AppS
         if (d.FromState is MenuAppS)
             return;
 
-        RunManager.Instance.CExit();
-        CanvasManager.Instance.RunCanvas.TopBar.Refresh();
+        CanvasManager.Instance.RunCanvas.Refresh();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         await CanvasManager.Instance.Curtain.PlayHideAnimation();
     }

@@ -1,7 +1,6 @@
 
 using System;
 using System.Threading.Tasks;
-using UnityEngine;
 
 public class TitleAppS : AppS
 {
@@ -25,7 +24,7 @@ public class TitleAppS : AppS
             RunConfigForm form = AppManager.Instance.ProfileManager.RunConfigForm;
             await CanvasManager.Instance.AppCanvas.TitlePanel.SetShowing(false);
             await CanvasManager.Instance.AppCanvas.RunConfigPanel.SetShowing(false);
-            return new RunConfig(form, DesignerEnvironment.GetInitialCondition());
+            return new RunConfig(form, DesignerEnvironment.GetDesignerConfig());
         }
 
         throw new Exception($"Undefined navigation {GetType()} -> {d.ToState.GetType()}");

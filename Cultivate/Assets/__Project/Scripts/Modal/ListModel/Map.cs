@@ -8,9 +8,6 @@ public class Map : Addressable
 {
     public static readonly int StepItemCapacity = 15;
 
-    public event Action<JingJie> JingJieChangedEvent;
-    public void JingJieChanged(JingJie jingJie) => JingJieChangedEvent?.Invoke(jingJie);
-
     private StepItemListModel _stepItems;
 
     private RunNode this[int x, int y] => _stepItems[x]._nodes[y];
@@ -83,7 +80,7 @@ public class Map : Addressable
         CurrentNode.ChangePanel(null);
 
         if (isEndOfJingJie)
-            SetJingJie(GetJingJie() + 1);
+            RunManager.Instance.Environment.SetJingJieProcedure(new SetJingJieDetails(GetJingJie() + 1));
     }
 
     private bool IsEndOfJingJie(int currentX)
@@ -96,9 +93,7 @@ public class Map : Addressable
     public void SetJingJie(JingJie jingJie)
     {
         _jingJie = jingJie;
-        JingJieChanged(_jingJie);
         RefreshNodes();
-        AudioManager.Play(Encyclopedia.AudioFromJingJie(_jingJie));
     }
 
 
@@ -114,7 +109,7 @@ public class Map : Addressable
         _stepItems = new StepItemListModel();
         StepItemCapacity.Do(i => _stepItems.Add(new StepItem()));
 
-        runConfig.RunInitialCondition.InitMapPools(this);
+        runConfig.DesignerConfig.InitMapPools(this);
     }
 
     private void RefreshNodes()
