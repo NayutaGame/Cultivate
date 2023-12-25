@@ -42,7 +42,12 @@ public class RunEnvironment : Addressable, CLEventListener
         await _eventDict.SendEvent(CLEventDict.DID_SET_JINGJIE, d);
     }
 
-    public async Task SetDMingYuanProcedure()
+    public async Task SetMingYuanDiffProcedure()
+    {
+
+    }
+
+    public async Task SetMingYuanDMaxProcedure()
     {
 
     }

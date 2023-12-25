@@ -11,7 +11,7 @@ public class BoundedInt
 
     public int GetCurr() => _curr;
     public void SetCurr(int value) => _curr = Mathf.Min(_max, value);
-    public void SetDiff(int value = 1) => SetCurr(_curr + value);
+    public void SetDiff(int value) => SetCurr(_curr + value);
 
     public int GetMax() => _max;
     public void SetMax(int value) => _max = value;
