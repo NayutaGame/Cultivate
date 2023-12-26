@@ -7,22 +7,54 @@ using CLLibrary;
 public class DesignerEnvironment
 {
     public static DesignerConfig GetDesignerConfig()
-    {
-        // return new RunInitialCondition(StandardInitMapPools);
-        // return new RunInitialCondition(CustomInitMapPools);
-        return new DesignerConfig(WeplayInitMapPools,
-            WeplayRun);
-    }
+        => new(runEventDescriptors: new[] { WeplayRun });
 
-    private static void StandardInitMapPools(Map map)
+    private static readonly RunEventDescriptor StandardRun =
+        new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -1, (listener, eventDetails) =>
+        {
+            RunEnvironment env = (RunEnvironment)listener;
+            RunDetails d = (RunDetails)eventDetails;
+
+            StandardConfigMap(env.Map);
+            4.Do(i => env.SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
+            env.SetJingJieProcedure(JingJie.LianQi);
+            env.SetDGold(50);
+            env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
+        });
+
+    private static readonly RunEventDescriptor CustomRun =
+        new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -1, (listener, eventDetails) =>
+        {
+            RunEnvironment env = (RunEnvironment)listener;
+            RunDetails d = (RunDetails)eventDetails;
+
+            CustomConfigMap(env.Map);
+            4.Do(i => env.SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
+            env.SetJingJieProcedure(JingJie.HuaShen);
+            env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
+        });
+
+    private static readonly RunEventDescriptor WeplayRun =
+        new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -1, (listener, eventDetails) =>
+        {
+            RunEnvironment env = (RunEnvironment)listener;
+            RunDetails d = (RunDetails)eventDetails;
+
+            WeplayConfigMap(env.Map);
+            4.Do(i => env.SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
+            env.SetJingJieProcedure(JingJie.LianQi);
+            env.SetDGold(50);
+        });
+
+    private static void StandardConfigMap(Map map)
     {
         bool firstTime = true;
 
         map.EntityPool = new();
         map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
-        map._b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.Normal && n is BattleNodeEntry).ToList());
-        map._r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.Normal && n is RewardNodeEntry).ToList());
-        map._a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.Normal && n is AdventureNodeEntry).ToList());
+        map._b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is BattleNodeEntry).ToList());
+        map._r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is RewardNodeEntry).ToList());
+        map._a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is AdventureNodeEntry).ToList());
 
         map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
         {
@@ -45,16 +77,16 @@ public class DesignerEnvironment
         };
     }
 
-    private static void CustomInitMapPools(Map map)
+    private static void CustomConfigMap(Map map)
     {
         bool firstTime = true;
         bool exhibitionVersion = true;
 
         map.EntityPool = new();
         map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
-        map._b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.Normal && n is BattleNodeEntry).ToList());
-        map._r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.Normal && n is RewardNodeEntry).ToList());
-        map._a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.Normal && n is AdventureNodeEntry).ToList());
+        map._b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is BattleNodeEntry).ToList());
+        map._r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is RewardNodeEntry).ToList());
+        map._a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is AdventureNodeEntry).ToList());
 
         map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
         {
@@ -92,13 +124,13 @@ public class DesignerEnvironment
         };
     }
 
-    private static void WeplayInitMapPools(Map map)
+    private static void WeplayConfigMap(Map map)
     {
         map.EntityPool = new();
         map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
-        map._b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.Normal && n is BattleNodeEntry).ToList());
-        map._r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.Normal && n is RewardNodeEntry).ToList());
-        map._a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.Normal && n is AdventureNodeEntry).ToList());
+        map._b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(e => e.WithInPool && e is BattleNodeEntry).ToList());
+        map._r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(e => e.WithInPool && e is RewardNodeEntry).ToList());
+        map._a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(e => e.WithInPool && e is AdventureNodeEntry).ToList());
 
         map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
         {
@@ -121,37 +153,6 @@ public class DesignerEnvironment
             { JingJie.FanXu    , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
         };
     }
-
-    private static readonly CLEventDescriptor StandardRun =
-        new(CLEventDict.RUN_ENVIRONMENT, CLEventDict.START_RUN, -1, async (listener, eventDetails) =>
-        {
-            RunEnvironment env = (RunEnvironment)listener;
-            RunDetails d = (RunDetails)eventDetails;
-
-            await env.SetJingJieProcedure(new SetJingJieDetails(JingJie.LianQi));
-            env.SetDGold(50);
-            env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
-        });
-
-    private static readonly CLEventDescriptor CustomRun =
-        new(CLEventDict.RUN_ENVIRONMENT, CLEventDict.START_RUN, -1, async (listener, eventDetails) =>
-        {
-            RunEnvironment env = (RunEnvironment)listener;
-            RunDetails d = (RunDetails)eventDetails;
-
-            await env.SetJingJieProcedure(new SetJingJieDetails(JingJie.HuaShen));
-            env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
-        });
-
-    private static readonly CLEventDescriptor WeplayRun =
-        new(CLEventDict.RUN_ENVIRONMENT, CLEventDict.START_RUN, -1, async (listener, eventDetails) =>
-        {
-            RunEnvironment env = (RunEnvironment)listener;
-            RunDetails d = (RunDetails)eventDetails;
-
-            await env.SetJingJieProcedure(new SetJingJieDetails(JingJie.LianQi));
-            env.SetDGold(50);
-        });
 
     public static async Task DefaultStartTurn(StageEntity owner, EventDetails eventDetails)
     {

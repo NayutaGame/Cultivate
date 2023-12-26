@@ -6,7 +6,7 @@ using UnityEngine;
 using CLLibrary;
 using DG.Tweening;
 
-public class StageEnvironment : Addressable, CLEventListener
+public class StageEnvironment : Addressable, StageEventListener
 {
     private static readonly int MAX_ACTION_COUNT = 120;
 
@@ -27,7 +27,7 @@ public class StageEnvironment : Addressable, CLEventListener
         => await FormationProcedure(new FormationDetails(owner, formation, recursive));
     public async Task FormationProcedure(FormationDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.FORMATION_WILL_ADD, d);
+        await _eventDict.SendEvent(StageEventDict.FORMATION_WILL_ADD, d);
         if (d.Cancel) return;
 
         await d.Owner.AddFormation(new GainFormationDetails(d._formation));
@@ -37,7 +37,7 @@ public class StageEnvironment : Addressable, CLEventListener
         _result.TryAppend($"    {d._formation.GetName()} is set");
 
         if (d.Cancel) return;
-        await _eventDict.SendEvent(CLEventDict.FORMATION_DID_ADD, d);
+        await _eventDict.SendEvent(StageEventDict.FORMATION_DID_ADD, d);
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class StageEnvironment : Addressable, CLEventListener
             StageEntity src = d.Src;
             StageEntity tgt = d.Tgt;
 
-            await _eventDict.SendEvent(CLEventDict.WILL_ATTACK, d);
+            await _eventDict.SendEvent(StageEventDict.WILL_ATTACK, d);
             // 添加穿透，应用吸血，应该在这个里面
 
             if (d.Cancel)
@@ -87,11 +87,11 @@ public class StageEnvironment : Addressable, CLEventListener
             {
                 await TryPlayTween(new EvadeTweenDescriptor(false, d.Tgt));
                 _result.TryAppend($"    攻击被闪避");
-                await _eventDict.SendEvent(CLEventDict.DID_EVADE, d);
+                await _eventDict.SendEvent(StageEventDict.DID_EVADE, d);
 
                 if (d.Undamaged != null)
                     await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0));
-                await _eventDict.SendEvent(CLEventDict.DID_ATTACK, d);
+                await _eventDict.SendEvent(StageEventDict.DID_ATTACK, d);
                 continue;
             }
 
@@ -114,7 +114,7 @@ public class StageEnvironment : Addressable, CLEventListener
 
                 if (d.Undamaged != null)
                     await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0));
-                await _eventDict.SendEvent(CLEventDict.DID_ATTACK, d);
+                await _eventDict.SendEvent(StageEventDict.DID_ATTACK, d);
                 continue;
             }
 
@@ -134,7 +134,7 @@ public class StageEnvironment : Addressable, CLEventListener
                     await HealProcedure(src, src, damageDetails.Value);
             }
 
-            await _eventDict.SendEvent(CLEventDict.DID_ATTACK, d);
+            await _eventDict.SendEvent(StageEventDict.DID_ATTACK, d);
         }
 
         await TryPlayTween(new PostAttackTweenDescriptor(true, attackDetails.Src));
@@ -154,7 +154,7 @@ public class StageEnvironment : Addressable, CLEventListener
     {
         IndirectDetails d = indirectDetails.Clone();
 
-        await _eventDict.SendEvent(CLEventDict.WILL_INDIRECT, d);
+        await _eventDict.SendEvent(StageEventDict.WILL_INDIRECT, d);
 
         if (d.Cancel)
         {
@@ -178,7 +178,7 @@ public class StageEnvironment : Addressable, CLEventListener
         if (d.Value == 0)
         {
             _result.TryAppend($"    攻击为0");
-            await _eventDict.SendEvent(CLEventDict.DID_INDIRECT, d);
+            await _eventDict.SendEvent(StageEventDict.DID_INDIRECT, d);
             return;
         }
 
@@ -188,7 +188,7 @@ public class StageEnvironment : Addressable, CLEventListener
         // await TryPlayTween(new AttackTweenDescriptor(d));
         _result.TryAppend($"    敌方生命[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
 
-        await _eventDict.SendEvent(CLEventDict.DID_INDIRECT, d);
+        await _eventDict.SendEvent(StageEventDict.DID_INDIRECT, d);
     }
 
     /// <summary>
@@ -205,7 +205,7 @@ public class StageEnvironment : Addressable, CLEventListener
         => await DamageProcedure(new DamageDetails(src, tgt, value, recursive, damaged, undamaged));
     public async Task DamageProcedure(DamageDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.WILL_DAMAGE, d);
+        await _eventDict.SendEvent(StageEventDict.WILL_DAMAGE, d);
 
         if (d.Cancel || d.Value == 0)
         {
@@ -220,20 +220,20 @@ public class StageEnvironment : Addressable, CLEventListener
         if (d.Damaged != null)
             await d.Damaged(d);
 
-        await _eventDict.SendEvent(CLEventDict.DID_DAMAGE, d);
+        await _eventDict.SendEvent(StageEventDict.DID_DAMAGE, d);
     }
 
     public async Task LoseHealthProcedure(StageEntity owner, int value)
         => await LoseHealthProcedure(new LoseHealthDetails(owner, value));
     public async Task LoseHealthProcedure(LoseHealthDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.WILL_LOSE_HEALTH, d);
+        await _eventDict.SendEvent(StageEventDict.WILL_LOSE_HEALTH, d);
         if (d.Cancel)
             return;
 
         d.Owner.Hp -= d.Value;
 
-        await _eventDict.SendEvent(CLEventDict.DID_LOSE_HEALTH, d);
+        await _eventDict.SendEvent(StageEventDict.DID_LOSE_HEALTH, d);
     }
 
     public async Task HealProcedure(StageEntity src, StageEntity tgt, int value)
@@ -243,7 +243,7 @@ public class StageEnvironment : Addressable, CLEventListener
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
 
-        await _eventDict.SendEvent(CLEventDict.WILL_HEAL, d);
+        await _eventDict.SendEvent(StageEventDict.WILL_HEAL, d);
 
         if (d.Cancel)
             return;
@@ -265,14 +265,14 @@ public class StageEnvironment : Addressable, CLEventListener
         await TryPlayTween(new HealTweenDescriptor(true, d));
         _result.TryAppend($"    生命变成了${tgt.Hp}");
 
-        await _eventDict.SendEvent(CLEventDict.DID_HEAL, d);
+        await _eventDict.SendEvent(StageEventDict.DID_HEAL, d);
     }
 
     public async Task BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
         => await BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
     public async Task BuffProcedure(BuffDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.WILL_BUFF, d);
+        await _eventDict.SendEvent(StageEventDict.WILL_BUFF, d);
 
         d.Cancel |= d._stack <= 0;
         if (d.Cancel) return;
@@ -312,14 +312,14 @@ public class StageEnvironment : Addressable, CLEventListener
             _result.TryAppend($"    {d._buffEntry.Name}: 0 -> {d._stack}");
         }
 
-        await _eventDict.SendEvent(CLEventDict.DID_BUFF, d);
+        await _eventDict.SendEvent(StageEventDict.DID_BUFF, d);
     }
 
     public async Task ArmorGainProcedure(StageEntity src, StageEntity tgt, int value)
         => await ArmorGainProcedure(new ArmorGainDetails(src, tgt, value));
     public async Task ArmorGainProcedure(ArmorGainDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.ARMOR_WILL_GAIN, d);
+        await _eventDict.SendEvent(StageEventDict.ARMOR_WILL_GAIN, d);
 
         if (d.Cancel)
             return;
@@ -327,14 +327,14 @@ public class StageEnvironment : Addressable, CLEventListener
         d.Tgt.Armor += d.Value;
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
-        await _eventDict.SendEvent(CLEventDict.ARMOR_DID_GAIN, d);
+        await _eventDict.SendEvent(StageEventDict.ARMOR_DID_GAIN, d);
     }
 
     public async Task ArmorLoseProcedure(StageEntity src, StageEntity tgt, int value)
         => await ArmorLoseProcedure(new ArmorLoseDetails(src, tgt, value));
     public async Task ArmorLoseProcedure(ArmorLoseDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.ARMOR_WILL_LOSE, d);
+        await _eventDict.SendEvent(StageEventDict.ARMOR_WILL_LOSE, d);
 
         if (d.Cancel)
             return;
@@ -349,14 +349,14 @@ public class StageEnvironment : Addressable, CLEventListener
         // 正变负，碎盾
         // 负变负，减甲
 
-        await _eventDict.SendEvent(CLEventDict.ARMOR_DID_LOSE, d);
+        await _eventDict.SendEvent(StageEventDict.ARMOR_DID_LOSE, d);
     }
 
     public async Task DispelProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
         => await DispelProcedure(new DispelDetails(src, tgt, buffEntry, stack, friendly, recursive));
     public async Task DispelProcedure(DispelDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.WILL_DISPEL, d);
+        await _eventDict.SendEvent(StageEventDict.WILL_DISPEL, d);
 
         if (d.Cancel)
             return;
@@ -365,19 +365,19 @@ public class StageEnvironment : Addressable, CLEventListener
         if (b != null)
             await b.SetStack(Mathf.Max(0, b.Stack - d._stack));
 
-        await _eventDict.SendEvent(CLEventDict.DID_DISPEL, d);
+        await _eventDict.SendEvent(StageEventDict.DID_DISPEL, d);
     }
 
     public async Task ManaShortageProcedure(StageEntity owner, int position, StageSkill skill, int actualCost)
         => await ManaShortageProcedure(new ManaShortageDetails(owner, position, skill, actualCost));
     public async Task ManaShortageProcedure(ManaShortageDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.WILL_MANA_SHORTAGE, d);
+        await _eventDict.SendEvent(StageEventDict.WILL_MANA_SHORTAGE, d);
 
         if (d.Cancel)
             return;
 
-        await _eventDict.SendEvent(CLEventDict.DID_MANA_SHORTAGE, d);
+        await _eventDict.SendEvent(StageEventDict.DID_MANA_SHORTAGE, d);
     }
 
     public async Task ExhaustProcedure(StageEntity owner, StageSkill skill)
@@ -387,11 +387,11 @@ public class StageEnvironment : Addressable, CLEventListener
         if (d.Skill.Exhausted)
             return;
 
-        await _eventDict.SendEvent(CLEventDict.WILL_EXHAUST, d);
+        await _eventDict.SendEvent(StageEventDict.WILL_EXHAUST, d);
 
         d.Skill.Exhausted = true;
 
-        await _eventDict.SendEvent(CLEventDict.DID_EXHAUST, d);
+        await _eventDict.SendEvent(StageEventDict.DID_EXHAUST, d);
     }
 
     #endregion
@@ -399,8 +399,8 @@ public class StageEnvironment : Addressable, CLEventListener
     private StageConfig _config;
     public StageConfig Config => _config;
 
-    private CLEventDict _eventDict;
-    public CLEventDict EventDict => _eventDict;
+    private StageEventDict _eventDict;
+    public StageEventDict EventDict => _eventDict;
 
     private StageEntity[] _entities;
     public StageEntity[] Entities => _entities;
@@ -479,7 +479,7 @@ public class StageEnvironment : Addressable, CLEventListener
 
     public async Task Simulate()
     {
-        CLEventDescriptor writeManaShortage = new CLEventDescriptor(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_MANA_SHORTAGE, 0,
+        StageEventDescriptor writeManaShortage = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_SHORTAGE, 0,
             async (listener, d) =>
             {
                 ManaShortageDetails manaShortageDetails = (ManaShortageDetails)d;
@@ -494,7 +494,7 @@ public class StageEnvironment : Addressable, CLEventListener
                     manaShortageDetails.LiteralCost, manaShortageDetails.ActualCost);
             });
 
-        CLEventDescriptor writeManaCost = new CLEventDescriptor(CLEventDict.STAGE_ENVIRONMENT, CLEventDict.DID_MANA_COST, 0,
+        StageEventDescriptor writeManaCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_COST, 0,
             async (listener, d) =>
             {
                 ManaCostDetails manaCostDetails = (ManaCostDetails)d;
@@ -574,7 +574,7 @@ public class StageEnvironment : Addressable, CLEventListener
         foreach (var e in _entities)
         {
             e._p = -1;
-            await _eventDict.SendEvent(CLEventDict.START_STAGE, new StageDetails(e));
+            await _eventDict.SendEvent(StageEventDict.START_STAGE, new StageDetails(e));
         }
     }
 
@@ -605,8 +605,8 @@ public class StageEnvironment : Addressable, CLEventListener
 
     private async Task EndStageProcedure()
     {
-        await _eventDict.SendEvent(CLEventDict.END_STAGE, new StageDetails(_entities[1]));
-        await _eventDict.SendEvent(CLEventDict.END_STAGE, new StageDetails(_entities[0]));
+        await _eventDict.SendEvent(StageEventDict.END_STAGE, new StageDetails(_entities[1]));
+        await _eventDict.SendEvent(StageEventDict.END_STAGE, new StageDetails(_entities[0]));
         ForceCommit();
     }
 

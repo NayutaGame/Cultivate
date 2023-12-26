@@ -24,7 +24,7 @@ public class BuffEntry : Entry, IAnnotation
     private bool _dispellable;
     public bool Dispellable => _dispellable;
 
-    public Dictionary<int, CLEventDescriptor> _eventDescriptorDict;
+    public Dictionary<int, StageEventDescriptor> _eventDescriptorDict;
 
     /// <summary>
     /// 定义一个Buff
@@ -36,7 +36,7 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="dispellable">是否可驱散</param>
     /// <param name="eventDescriptors">事件捕获</param>
     public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable, string trivia = null,
-        params CLEventDescriptor[] eventDescriptors
+        params StageEventDescriptor[] eventDescriptors
     ) : base(name)
     {
         _description = description;
@@ -46,7 +46,7 @@ public class BuffEntry : Entry, IAnnotation
         _friendly = friendly;
         _dispellable = dispellable;
 
-        _eventDescriptorDict = new Dictionary<int, CLEventDescriptor>();
+        _eventDescriptorDict = new Dictionary<int, StageEventDescriptor>();
         foreach (var eventDescriptor in eventDescriptors)
             _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
     }

@@ -17,7 +17,7 @@ public class ResourceReward : Reward
     public override void Claim()
     {
         RunManager.Instance.Environment.SetDGold(_gold);
-        RunManager.Instance.Environment.SetDMingYuan(_mingYuan);
+        RunManager.Instance.Environment.SetDMingYuanProcedure(_mingYuan);
         RunManager.Instance.Environment.SetDDHealth(_health);
     }
 

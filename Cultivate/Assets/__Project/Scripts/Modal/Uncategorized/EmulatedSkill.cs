@@ -6,7 +6,7 @@ public interface EmulatedSkill : ISkillModel
 
     SkillEntry GetEntry();
     JingJie GetJingJie();
-    int GetManaCost();
+    // int GetManaCost();
     int GetChannelTime();
 
     int GetRunUsedTimes();

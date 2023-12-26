@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class CLEventDict : Dictionary<int, CLEventElement>
+public class StageEventDict : Dictionary<int, StageEventElement>
 {
-    #region Stage
-
     public static readonly int START_STAGE        = 0;
     public static readonly int END_STAGE          = 1;
     public static readonly int START_ROUND        = 2;
@@ -61,20 +59,7 @@ public class CLEventDict : Dictionary<int, CLEventElement>
     public static readonly int STAGE_BUFF         = 2;
     public static readonly int STAGE_FORMATION    = 3;
 
-    #endregion
-
-    #region Run
-
-    public static readonly int START_RUN          = 100;
-    public static readonly int END_RUN            = 101;
-    public static readonly int WILL_SET_JINGJIE   = 102;
-    public static readonly int DID_SET_JINGJIE    = 103;
-
-    public static readonly int RUN_ENVIRONMENT    = 100;
-
-    #endregion
-
-    public void Register(CLEventListener listener, CLEventDescriptor eventDescriptor)
+    public void Register(StageEventListener listener, StageEventDescriptor eventDescriptor)
     {
         int eventId = eventDescriptor.EventId;
         if (!ContainsKey(eventId))
@@ -83,7 +68,7 @@ public class CLEventDict : Dictionary<int, CLEventElement>
         this[eventId].Add(eventDescriptor.Order, listener, eventDescriptor);
     }
 
-    public void Unregister(CLEventListener listener, CLEventDescriptor eventDescriptor)
+    public void Unregister(StageEventListener listener, StageEventDescriptor eventDescriptor)
     {
         int eventId = eventDescriptor.EventId;
         this[eventId].Remove(listener);
@@ -93,8 +78,8 @@ public class CLEventDict : Dictionary<int, CLEventElement>
     {
         if (!ContainsKey(eventId))
             return;
-        CLEventElement eventElement = this[eventId];
-        foreach (Tuple<int, CLEventListener, CLEventDescriptor> tuple in eventElement.Traversal())
+        StageEventElement eventElement = this[eventId];
+        foreach (Tuple<int, StageEventListener, StageEventDescriptor> tuple in eventElement.Traversal())
         {
             if (eventDetails.Cancel) return;
             await tuple.Item3.Invoke(tuple.Item2, eventDetails);

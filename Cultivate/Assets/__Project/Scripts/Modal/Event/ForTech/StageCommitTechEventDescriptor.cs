@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageCommitRunEventDescriptor : RunEventDescriptor
+public class StageCommitTechEventDescriptor : TechEventDescriptor
 {
     public Func<StageCommitDetails, RunTech, bool> _cond;
 
@@ -17,7 +17,7 @@ public class StageCommitRunEventDescriptor : RunEventDescriptor
         RunManager.Instance.StageCommitEvent -= runTech.StageCommit;
     }
 
-    public StageCommitRunEventDescriptor(string description, Func<StageCommitDetails, RunTech, bool> cond) : base(description)
+    public StageCommitTechEventDescriptor(string description, Func<StageCommitDetails, RunTech, bool> cond) : base(description)
     {
         _cond = cond;
     }

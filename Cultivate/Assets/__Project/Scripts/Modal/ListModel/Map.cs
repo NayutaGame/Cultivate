@@ -80,7 +80,7 @@ public class Map : Addressable
         CurrentNode.ChangePanel(null);
 
         if (isEndOfJingJie)
-            RunManager.Instance.Environment.SetJingJieProcedure(new SetJingJieDetails(GetJingJie() + 1));
+            RunManager.Instance.Environment.SetJingJieProcedure(GetJingJie() + 1);
     }
 
     private bool IsEndOfJingJie(int currentX)
@@ -99,7 +99,7 @@ public class Map : Addressable
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public Map(RunConfig runConfig)
+    public Map()
     {
         _accessors = new()
         {
@@ -108,8 +108,6 @@ public class Map : Addressable
 
         _stepItems = new StepItemListModel();
         StepItemCapacity.Do(i => _stepItems.Add(new StepItem()));
-
-        runConfig.DesignerConfig.InitMapPools(this);
     }
 
     private void RefreshNodes()

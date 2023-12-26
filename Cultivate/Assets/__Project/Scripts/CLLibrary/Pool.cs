@@ -25,6 +25,11 @@ namespace CLLibrary
             _list.AddRange(list.FilterObj(pred));
         }
 
+        public void Depopulate(Predicate<T> pred)
+        {
+            _list.RemoveAll(pred);
+        }
+
         public void Shuffle()
         {
             for (int i = _list.Count; i > 0; i--)

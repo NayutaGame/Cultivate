@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BattleNodeEntry : NodeEntry
 {
-    public BattleNodeEntry(string name, string description) : base(name, description, normal: true,
+    public BattleNodeEntry(string name, string description) : base(name, description, withInPool: true,
         create: runNode =>
         {
             BattleRunNode battleRunNode = runNode as BattleRunNode;
@@ -27,7 +27,7 @@ public class BattleNodeEntry : NodeEntry
 
                 A.SetLose(() =>
                 {
-                    RunManager.Instance.Environment.SetDMingYuan(-2);
+                    RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
                     C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{xiuWeiValue}修为\n请选择一张卡作为奖励");
                     return C;
                 });
@@ -36,7 +36,7 @@ public class BattleNodeEntry : NodeEntry
             {
                 A.SetWin(() =>
                 {
-                    RunManager.Instance.Environment.SetDMingYuan(3);
+                    RunManager.Instance.Environment.SetDMingYuanProcedure(3);
                     B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{xiuWeiValue}的修为\n请选择一张卡作为奖励");
                     return B;
                 });

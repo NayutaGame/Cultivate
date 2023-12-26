@@ -24,7 +24,7 @@ public class TechCategory : Category<TechEntry>
             new ("两仪", "", new(2, 5), 10, new string[]{"四象"}),
             new ("太极", "", new(3, 5), 10, new string[]{"两仪"}),
             new("八", "第八科技", new(0, 7), 10,
-                eureka: new GainSkillRunEventDescriptor("学习任意技能", (d, runTech) =>
+                eureka: new GainSkillTechEventDescriptor("学习任意技能", (d, runTech) =>
                 {
                     return true;
                 })),

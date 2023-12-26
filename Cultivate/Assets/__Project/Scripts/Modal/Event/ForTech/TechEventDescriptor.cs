@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public abstract class RunEventDescriptor
+public abstract class TechEventDescriptor
 {
     private string _description;
     public string Description => _description;
 
-    protected RunEventDescriptor(string description)
+    protected TechEventDescriptor(string description)
     {
         _description = description;
     }

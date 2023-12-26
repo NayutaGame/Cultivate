@@ -126,40 +126,40 @@ public class StageSkill
 
     public async Task Channel(StageEntity caster, ChannelDetails d)
     {
-        await caster.Env.EventDict.SendEvent(CLEventDict.WILL_CHANNEL, d.Clone());
+        await caster.Env.EventDict.SendEvent(StageEventDict.WILL_CHANNEL, d.Clone());
         await _entry.Channel(caster, d);
-        await caster.Env.EventDict.SendEvent(CLEventDict.DID_CHANNEL, d.Clone());
+        await caster.Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, d.Clone());
     }
 
     public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
     {
-        await caster.Env.EventDict.SendEvent(CLEventDict.WILL_CHANNEL, d);
+        await caster.Env.EventDict.SendEvent(StageEventDict.WILL_CHANNEL, d);
         await _entry.ChannelWithoutTween(caster, d);
-        await caster.Env.EventDict.SendEvent(CLEventDict.DID_CHANNEL, d);
+        await caster.Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, d);
     }
 
     public async Task Execute(StageEntity caster, bool recursive = true)
     {
-        await caster.Env.EventDict.SendEvent(CLEventDict.WILL_EXECUTE, new ExecuteDetails(caster, this));
+        await caster.Env.EventDict.SendEvent(StageEventDict.WILL_EXECUTE, new ExecuteDetails(caster, this));
         await _entry.Execute(caster, this, recursive);
         if (_owner == caster)
         {
             RunUsedTimes += 1;
             StageUsedTimes += 1;
         }
-        await caster.Env.EventDict.SendEvent(CLEventDict.DID_EXECUTE, new ExecuteDetails(caster, this));
+        await caster.Env.EventDict.SendEvent(StageEventDict.DID_EXECUTE, new ExecuteDetails(caster, this));
     }
 
     public async Task ExecuteWithoutTween(StageEntity caster, bool recursive = true)
     {
-        await caster.Env.EventDict.SendEvent(CLEventDict.WILL_EXECUTE, new ExecuteDetails(caster, this));
+        await caster.Env.EventDict.SendEvent(StageEventDict.WILL_EXECUTE, new ExecuteDetails(caster, this));
         await _entry.ExecuteWithoutTween(caster, this, recursive);
         if (_owner == caster)
         {
             RunUsedTimes += 1;
             StageUsedTimes += 1;
         }
-        await caster.Env.EventDict.SendEvent(CLEventDict.DID_EXECUTE, new ExecuteDetails(caster, this));
+        await caster.Env.EventDict.SendEvent(StageEventDict.DID_EXECUTE, new ExecuteDetails(caster, this));
     }
 
     public IEnumerable<StageSkill> Nexts(bool loop = false)

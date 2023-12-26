@@ -11,19 +11,39 @@ public class CharacterCategory : Category<CharacterEntry>
             new("徐福", abilityDescription: "命元上限+2\n" +
                                           "增加以物易物节点\n" +
                                           "金丹之后移除所有练气牌；化神后，所有筑基牌",
-                eventDescriptors: new CLEventDescriptor[]
+                runEventDescriptors: new RunEventDescriptor[]
                 {
-                    new(CLEventDict.RUN_ENVIRONMENT, CLEventDict.START_RUN, 0, async (listener, eventDetails) =>
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         RunDetails d = (RunDetails)eventDetails;
+
+                        env.SetMaxMingYuanProcedure(12);
+                        env.SetDMingYuanProcedure(2);
+                    }),
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        SetJingJieDetails d = (SetJingJieDetails)eventDetails;
+
+                        if (d.JingJie == JingJie.JinDan)
+                        {
+                            env.SkillPool.Depopulate(e => e.JingJieRange.Contains(JingJie.LianQi));
+                            return;
+                        }
+
+                        if (d.JingJie == JingJie.HuaShen)
+                        {
+                            env.SkillPool.Depopulate(e => e.JingJieRange.Contains(JingJie.ZhuJi));
+                            return;
+                        }
                     }),
                 }),
             new("彼此卿", abilityDescription: "战后奖励可选择对方卡组中随机一张卡\n" +
                                            "卡组中第一张空位将模仿对方对位的牌",
-                eventDescriptors: new CLEventDescriptor[]
+                runEventDescriptors: new RunEventDescriptor[]
                 {
-                    new(CLEventDict.RUN_ENVIRONMENT, CLEventDict.START_RUN, 0, async (listener, eventDetails) =>
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         RunDetails d = (RunDetails)eventDetails;

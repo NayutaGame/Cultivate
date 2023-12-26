@@ -7,16 +7,16 @@ public abstract class NodeEntry : Entry
 {
     private string _description;
     public string Description => _description;
-    private bool _normal;
-    public bool Normal => _normal;
+    private bool _withInPool;
+    public bool WithInPool => _withInPool;
 
     private Func<Map, int, bool> _canCreate;
     private Action<RunNode> _create;
 
-    public NodeEntry(string name, string description, bool normal, Action<RunNode> create, Func<Map, int, bool> canCreate = null) : base(name)
+    public NodeEntry(string name, string description, bool withInPool, Action<RunNode> create, Func<Map, int, bool> canCreate = null) : base(name)
     {
         _description = description;
-        _normal = normal;
+        _withInPool = withInPool;
         _create = create;
         _canCreate = canCreate ?? ((map, x) => true);
     }

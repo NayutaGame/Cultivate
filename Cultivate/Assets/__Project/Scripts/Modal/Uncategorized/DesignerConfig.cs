@@ -1,25 +1,21 @@
 
-using System;
 using System.Collections.Generic;
 
 public class DesignerConfig
 {
-    private Action<Map> _initMapPools;
+    public Dictionary<int, RunEventDescriptor> _runEventDescriptorDict;
+    public Dictionary<int, StageEventDescriptor> _stageEventDescriptorDict;
 
-    public Dictionary<int, CLEventDescriptor> _eventDescriptorDict;
-
-    public DesignerConfig(Action<Map> initMapPools = null,
-        params CLEventDescriptor[] eventDescriptors)
+    public DesignerConfig(RunEventDescriptor[] runEventDescriptors = null, StageEventDescriptor[] stageEventDescriptors = null)
     {
-        _initMapPools = initMapPools;
+        _runEventDescriptorDict = new();
+        if (runEventDescriptors != null)
+            foreach (var d in runEventDescriptors)
+                _runEventDescriptorDict[d.EventId] = d;
 
-        _eventDescriptorDict = new Dictionary<int, CLEventDescriptor>();
-        foreach (var eventDescriptor in eventDescriptors)
-            _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
-    }
-
-    public void InitMapPools(Map map)
-    {
-        _initMapPools?.Invoke(map);
+        _stageEventDescriptorDict = new();
+        if (stageEventDescriptors != null)
+            foreach (var d in stageEventDescriptors)
+                _stageEventDescriptorDict[d.EventId] = d;
     }
 }

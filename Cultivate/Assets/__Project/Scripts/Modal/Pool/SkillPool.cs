@@ -7,11 +7,6 @@ using UnityEngine;
 
 public class SkillPool : Pool<SkillEntry>
 {
-    public SkillPool()
-    {
-        4.Do(i => Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
-    }
-
     public bool TryDrawSkill(out RunSkill skill, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
         => TryDrawSkill(out skill, new(pred, wuXing, jingJie));
     public bool TryDrawSkill(out RunSkill skill, DrawSkillDetails d)

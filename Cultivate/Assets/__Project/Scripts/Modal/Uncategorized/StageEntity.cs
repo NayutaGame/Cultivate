@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
-public class StageEntity : Addressable, CLEventListener
+public class StageEntity : Addressable, StageEventListener
 {
     public MingYuan MingYuan;
 
@@ -54,21 +54,21 @@ public class StageEntity : Addressable, CLEventListener
         UltraSwift = false;
         Swift = false;
 
-        await _env.EventDict.SendEvent(CLEventDict.START_TURN, new TurnDetails(this, _p));
+        await _env.EventDict.SendEvent(StageEventDict.START_TURN, new TurnDetails(this, _p));
 
         bool skipTurn = await TryConsumeProcedure("跳回合");
         if (skipTurn)
         {
             if (GetStackOfBuff("浮空艇") > 0)
                 await BuffSelfProcedure("回合免疫");
-            await _env.EventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+            await _env.EventDict.SendEvent(StageEventDict.END_TURN, new TurnDetails(this, _p));
             return;
         }
 
         if (_channelDetails != null)
         {
             await ChannelProcedure();
-            await _env.EventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+            await _env.EventDict.SendEvent(StageEventDict.END_TURN, new TurnDetails(this, _p));
             return;
         }
 
@@ -77,12 +77,12 @@ public class StageEntity : Addressable, CLEventListener
         if (Swift || UltraSwift)
             await SwiftProcedure(new SwiftDetails(this, Swift, UltraSwift));
 
-        await _env.EventDict.SendEvent(CLEventDict.END_TURN, new TurnDetails(this, _p));
+        await _env.EventDict.SendEvent(StageEventDict.END_TURN, new TurnDetails(this, _p));
     }
 
     private async Task SwiftProcedure(SwiftDetails d)
     {
-        await _env.EventDict.SendEvent(CLEventDict.WILL_SWIFT, d);
+        await _env.EventDict.SendEvent(StageEventDict.WILL_SWIFT, d);
         if (d.Cancel)
             return;
 
@@ -92,7 +92,7 @@ public class StageEntity : Addressable, CLEventListener
         if (d.UltraSwift)
             await Step();
 
-        await _env.EventDict.SendEvent(CLEventDict.DID_SWIFT, d);
+        await _env.EventDict.SendEvent(StageEventDict.DID_SWIFT, d);
     }
 
     private async Task Step()
@@ -102,7 +102,7 @@ public class StageEntity : Addressable, CLEventListener
 
         StageSkill skill = _skills[_p];
 
-        await _env.EventDict.SendEvent(CLEventDict.START_STEP, new StepDetails(this, skill));
+        await _env.EventDict.SendEvent(StageEventDict.START_STEP, new StepDetails(this, skill));
 
 
 
@@ -116,7 +116,7 @@ public class StageEntity : Addressable, CLEventListener
                 actualCost = 0;
         }
 
-        await _env.EventDict.SendEvent(CLEventDict.WILL_MANA_COST, new ManaCostDetails(this, skill, actualCost));
+        await _env.EventDict.SendEvent(StageEventDict.WILL_MANA_COST, new ManaCostDetails(this, skill, actualCost));
 
         bool manaSufficient = actualCost == 0 || await TryConsumeProcedure("灵气", actualCost);
 
@@ -125,11 +125,11 @@ public class StageEntity : Addressable, CLEventListener
         {
             await ManaShortageProcedure(_p, skill, actualCost);
             await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
-            await _env.EventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, null));
+            await _env.EventDict.SendEvent(StageEventDict.END_STEP, new StepDetails(this, null));
             return;
         }
 
-        await _env.EventDict.SendEvent(CLEventDict.DID_MANA_COST, new ManaCostDetails(this, skill, actualCost));
+        await _env.EventDict.SendEvent(StageEventDict.DID_MANA_COST, new ManaCostDetails(this, skill, actualCost));
 
 
 
@@ -139,12 +139,12 @@ public class StageEntity : Addressable, CLEventListener
         {
             _channelDetails = new ChannelDetails(this, skill);
             await skill.Channel(this, _channelDetails);
-            await _env.EventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
+            await _env.EventDict.SendEvent(StageEventDict.END_STEP, new StepDetails(this, skill));
             return;
         }
 
         await Execute(skill);
-        await _env.EventDict.SendEvent(CLEventDict.END_STEP, new StepDetails(this, skill));
+        await _env.EventDict.SendEvent(StageEventDict.END_STEP, new StepDetails(this, skill));
     }
 
     private async Task ChannelProcedure()
@@ -187,8 +187,8 @@ public class StageEntity : Addressable, CLEventListener
             if (!within)
             {
                 _p = (_p + _skills.Length) % _skills.Length;
-                await _env.EventDict.SendEvent(CLEventDict.END_ROUND, new RoundDetails(this));
-                await _env.EventDict.SendEvent(CLEventDict.START_ROUND, new RoundDetails(this));
+                await _env.EventDict.SendEvent(StageEventDict.END_ROUND, new RoundDetails(this));
+                await _env.EventDict.SendEvent(StageEventDict.START_ROUND, new RoundDetails(this));
             }
 
             if(_skills[_p].Exhausted)
@@ -236,7 +236,7 @@ public class StageEntity : Addressable, CLEventListener
     private StageEnvironment _env;
     public StageEnvironment Env => _env;
 
-    private CLEventDescriptor[] _eventDescriptors;
+    private StageEventDescriptor[] _eventDescriptors;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -264,12 +264,12 @@ public class StageEntity : Addressable, CLEventListener
         SelfDamageRecord = 0;
         HealedRecord = 0;
 
-        _eventDescriptors = new CLEventDescriptor[]
+        _eventDescriptors = new StageEventDescriptor[]
         {
-            new(CLEventDict.STAGE_ENTITY, CLEventDict.DID_BUFF, 0, HighestManaRecorder),
-            new(CLEventDict.STAGE_ENTITY, CLEventDict.DID_BUFF, 0, GainedEvadeRecorder),
-            new(CLEventDict.STAGE_ENTITY, CLEventDict.DID_BUFF, 0, GainedBurningRecorder),
-            new(CLEventDict.STAGE_ENTITY, CLEventDict.START_TURN, 0, DefaultStartTurn),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_BUFF, 0, HighestManaRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_BUFF, 0, GainedEvadeRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_BUFF, 0, GainedBurningRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.START_TURN, 0, DefaultStartTurn),
         };
 
         foreach (var eventDescriptor in _eventDescriptors)
@@ -307,7 +307,7 @@ public class StageEntity : Addressable, CLEventListener
         // }
     }
 
-    public async Task<BuffDetails> HighestManaRecorder(CLEventListener listener, EventDetails eventDetails)
+    public async Task<BuffDetails> HighestManaRecorder(StageEventListener listener, EventDetails eventDetails)
     {
         BuffDetails d = (BuffDetails)eventDetails;
         if (d._buffEntry.Name != "灵气")
@@ -317,7 +317,7 @@ public class StageEntity : Addressable, CLEventListener
         return d;
     }
 
-    public async Task<BuffDetails> GainedEvadeRecorder(CLEventListener listener, EventDetails eventDetails)
+    public async Task<BuffDetails> GainedEvadeRecorder(StageEventListener listener, EventDetails eventDetails)
     {
         BuffDetails d = (BuffDetails)eventDetails;
         if (d._buffEntry.Name != "闪避")
@@ -327,7 +327,7 @@ public class StageEntity : Addressable, CLEventListener
         return d;
     }
 
-    public async Task<BuffDetails> GainedBurningRecorder(CLEventListener listener, EventDetails eventDetails)
+    public async Task<BuffDetails> GainedBurningRecorder(StageEventListener listener, EventDetails eventDetails)
     {
         BuffDetails d = (BuffDetails)eventDetails;
         if (d._buffEntry.Name != "灼烧")
@@ -337,7 +337,7 @@ public class StageEntity : Addressable, CLEventListener
         return d;
     }
 
-    protected async Task DefaultStartTurn(CLEventListener listener, EventDetails d)
+    protected async Task DefaultStartTurn(StageEventListener listener, EventDetails d)
         => await DesignerEnvironment.DefaultStartTurn(this, d);
 
     #region Formation
@@ -348,13 +348,13 @@ public class StageEntity : Addressable, CLEventListener
     {
         Formation formation = new Formation(this, d._entry);
         formation.Register();
-        await formation._eventDict.SendEvent(CLEventDict.GAIN_FORMATION, d);
+        await formation._eventDict.SendEvent(StageEventDict.GAIN_FORMATION, d);
         _formations.Add(formation);
     }
 
     public async Task RemoveFormation(Formation f)
     {
-        await f._eventDict.SendEvent(CLEventDict.LOSE_FORMATION, new LoseFormationDetails(f));
+        await f._eventDict.SendEvent(StageEventDict.LOSE_FORMATION, new LoseFormationDetails(f));
         f.Unregister();
         _formations.Remove(f);
     }
@@ -363,7 +363,7 @@ public class StageEntity : Addressable, CLEventListener
     {
         await _formations.Traversal().Do(async f =>
         {
-            await f._eventDict.SendEvent(CLEventDict.LOSE_FORMATION, new LoseFormationDetails(f));
+            await f._eventDict.SendEvent(StageEventDict.LOSE_FORMATION, new LoseFormationDetails(f));
             f.Unregister();
         });
         _formations.Clear();
@@ -380,14 +380,14 @@ public class StageEntity : Addressable, CLEventListener
     {
         Buff buff = new Buff(this, d._entry);
         buff.Register();
-        await buff._eventDict.SendEvent(CLEventDict.GAIN_BUFF, d);
+        await buff._eventDict.SendEvent(StageEventDict.GAIN_BUFF, d);
         await buff.SetStack(d._initialStack);
         _buffs.Add(buff);
     }
 
     public async Task RemoveBuff(Buff b)
     {
-        await b._eventDict.SendEvent(CLEventDict.LOSE_BUFF, new LoseBuffDetails(b));
+        await b._eventDict.SendEvent(StageEventDict.LOSE_BUFF, new LoseBuffDetails(b));
         b.Unregister();
         _buffs.Remove(b);
     }
@@ -403,7 +403,7 @@ public class StageEntity : Addressable, CLEventListener
     {
         await _buffs.Traversal().Do(async b =>
         {
-            await b._eventDict.SendEvent(CLEventDict.LOSE_BUFF, new LoseBuffDetails(b));
+            await b._eventDict.SendEvent(StageEventDict.LOSE_BUFF, new LoseBuffDetails(b));
             b.Unregister();
         });
         _buffs.Clear();

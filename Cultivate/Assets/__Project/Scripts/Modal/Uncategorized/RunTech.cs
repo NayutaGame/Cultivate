@@ -74,7 +74,7 @@ public class RunTech
 
     public void StageCommit(StageCommitDetails d)
     {
-        StageCommitRunEventDescriptor eureka = _entry.Eureka as StageCommitRunEventDescriptor;
+        StageCommitTechEventDescriptor eureka = _entry.Eureka as StageCommitTechEventDescriptor;
         if (!eureka._cond(d, this)) return;
 
         _hasEureka = true;
@@ -83,7 +83,7 @@ public class RunTech
 
     public void GainSkill(GainSkillDetails d)
     {
-        GainSkillRunEventDescriptor eureka = _entry.Eureka as GainSkillRunEventDescriptor;
+        GainSkillTechEventDescriptor eureka = _entry.Eureka as GainSkillTechEventDescriptor;
         if (!eureka._cond(d, this)) return;
 
         _hasEureka = true;
@@ -92,7 +92,7 @@ public class RunTech
 
     public void StatusChanged(StatusChangedDetails d)
     {
-        StatusChangedRunEventDescriptor eureka = _entry.Eureka as StatusChangedRunEventDescriptor;
+        StatusChangedTechEventDescriptor eureka = _entry.Eureka as StatusChangedTechEventDescriptor;
         if (!eureka._cond(d, this)) return;
 
         _hasEureka = true;

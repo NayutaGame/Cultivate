@@ -1,11 +1,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using CLLibrary;
 using JetBrains.Annotations;
 
-public class RunEnvironment : Addressable, CLEventListener
+public class RunEnvironment : Addressable, RunEventListener
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
@@ -23,14 +22,16 @@ public class RunEnvironment : Addressable, CLEventListener
 
     #region Procedures
 
-    public async Task StartRunProcedure(RunDetails d)
+    public void StartRunProcedure(RunDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.START_RUN, d);
+        _eventDict.SendEvent(RunEventDict.START_RUN, d);
     }
 
-    public async Task SetJingJieProcedure(SetJingJieDetails d)
+    public void SetJingJieProcedure(JingJie jingJie)
+        => SetJingJieProcedure(new SetJingJieDetails(jingJie));
+    private void SetJingJieProcedure(SetJingJieDetails d)
     {
-        await _eventDict.SendEvent(CLEventDict.WILL_SET_JINGJIE, d);
+        _eventDict.SendEvent(RunEventDict.WILL_SET_JINGJIE, d);
         if (d.Cancel)
             return;
 
@@ -39,26 +40,43 @@ public class RunEnvironment : Addressable, CLEventListener
         Home.SetJingJie(d.JingJie);
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.JingJie));
 
-        await _eventDict.SendEvent(CLEventDict.DID_SET_JINGJIE, d);
+        _eventDict.SendEvent(RunEventDict.DID_SET_JINGJIE, d);
     }
 
-    public async Task SetMingYuanDiffProcedure()
+    public void SetDMingYuanProcedure(int value)
+        => SetDMingYuanProcedure(new SetDMingYuanDetails(value));
+    private void SetDMingYuanProcedure(SetDMingYuanDetails d)
     {
+        _eventDict.SendEvent(RunEventDict.WILL_SET_D_MINGYUAN, d);
 
-    }
+        if (d.Cancel)
+            return;
 
-    public async Task SetMingYuanDMaxProcedure()
-    {
-
-    }
-
-    public void SetDMingYuan(int value)
-    {
-        Home.MingYuan.SetDiff(value);
+        Home.MingYuan.SetDiff(d.Value);
         ResourceChanged();
+
+        _eventDict.SendEvent(RunEventDict.DID_SET_D_MINGYUAN, d);
 
         if (GetMingYuan().GetCurr() <= 0)
             CommitDetails = new RunCommitDetails(false);
+    }
+
+    public void SetMaxMingYuanProcedure(int value)
+        => SetMaxMingYuanProcedure(new SetMaxMingYuanDetails(value));
+    private void SetMaxMingYuanProcedure(SetMaxMingYuanDetails d)
+    {
+        _eventDict.SendEvent(RunEventDict.WILL_SET_MAX_MINGYUAN, d);
+
+        if (d.Cancel)
+            return;
+
+        int diff = Home.MingYuan.GetCurr() - d.Value;
+        if (diff > 0)
+            SetDMingYuanProcedure(diff);
+
+        Home.MingYuan.SetMax(d.Value);
+
+        _eventDict.SendEvent(RunEventDict.DID_SET_MAX_MINGYUAN, d);
     }
 
     #endregion
@@ -72,7 +90,7 @@ public class RunEnvironment : Addressable, CLEventListener
     public SkillInventory Hand { get; private set; }
     public MechBag MechBag { get; private set; }
     public float Gold { get; private set; }
-    private CLEventDict _eventDict;
+    private RunEventDict _eventDict;
 
     public StageResult SimulateResult;
     public RunCommitDetails CommitDetails { get; private set; }
@@ -100,7 +118,7 @@ public class RunEnvironment : Addressable, CLEventListener
         Home = RunEntity.Default();
         Home.EnvironmentChangedEvent += EnvironmentChanged;
         EnvironmentChangedEvent += Simulate;
-        Map = new(config);
+        Map = new();
         TechInventory = new();
         SkillPool = new();
         Hand = new();
@@ -124,15 +142,8 @@ public class RunEnvironment : Addressable, CLEventListener
     private void RegisterCharacterProfile()
     {
         CharacterEntry entry = _config.CharacterProfile.GetEntry();
-
-        foreach (int eventId in entry._eventDescriptorDict.Keys)
-        {
-            CLEventDescriptor eventDescriptor = entry._eventDescriptorDict[eventId];
-            int senderId = eventDescriptor.ListenerId;
-
-            if (senderId == CLEventDict.RUN_ENVIRONMENT)
-                _eventDict.Register(this, eventDescriptor);
-        }
+        Dictionary<int, RunEventDescriptor> dict = entry._runEventDescriptorDict;
+        RegisterDict(dict);
     }
 
     private void RegisterDifficultyProfile()
@@ -141,13 +152,18 @@ public class RunEnvironment : Addressable, CLEventListener
 
     private void RegisterDesignerConfig()
     {
-        Dictionary<int, CLEventDescriptor> dict = _config.DesignerConfig._eventDescriptorDict;
+        Dictionary<int, RunEventDescriptor> dict = _config.DesignerConfig._runEventDescriptorDict;
+        RegisterDict(dict);
+    }
+
+    private void RegisterDict(Dictionary<int, RunEventDescriptor> dict)
+    {
         foreach (int eventId in dict.Keys)
         {
-            CLEventDescriptor eventDescriptor = dict[eventId];
+            RunEventDescriptor eventDescriptor = dict[eventId];
             int senderId = eventDescriptor.ListenerId;
 
-            if (senderId == CLEventDict.RUN_ENVIRONMENT)
+            if (senderId == RunEventDict.RUN_ENVIRONMENT)
                 _eventDict.Register(this, eventDescriptor);
         }
     }
@@ -162,15 +178,8 @@ public class RunEnvironment : Addressable, CLEventListener
     private void UnregisterCharacterProfile()
     {
         CharacterEntry entry = _config.CharacterProfile.GetEntry();
-
-        foreach (int eventId in entry._eventDescriptorDict.Keys)
-        {
-            CLEventDescriptor eventDescriptor = entry._eventDescriptorDict[eventId];
-            int senderId = eventDescriptor.ListenerId;
-
-            if (senderId == CLEventDict.RUN_ENVIRONMENT)
-                _eventDict.Unregister(this, eventDescriptor);
-        }
+        Dictionary<int, RunEventDescriptor> dict = entry._runEventDescriptorDict;
+        UnregisterDict(dict);
     }
 
     private void UnregisterDifficultyProfile()
@@ -179,13 +188,18 @@ public class RunEnvironment : Addressable, CLEventListener
 
     private void UnregisterDesignerConfig()
     {
-        Dictionary<int, CLEventDescriptor> dict = _config.DesignerConfig._eventDescriptorDict;
+        Dictionary<int, RunEventDescriptor> dict = _config.DesignerConfig._runEventDescriptorDict;
+        RegisterDict(dict);
+    }
+
+    private void UnregisterDict(Dictionary<int, RunEventDescriptor> dict)
+    {
         foreach (int eventId in dict.Keys)
         {
-            CLEventDescriptor eventDescriptor = dict[eventId];
+            RunEventDescriptor eventDescriptor = dict[eventId];
             int senderId = eventDescriptor.ListenerId;
 
-            if (senderId == CLEventDict.RUN_ENVIRONMENT)
+            if (senderId == RunEventDict.RUN_ENVIRONMENT)
                 _eventDict.Unregister(this, eventDescriptor);
         }
     }

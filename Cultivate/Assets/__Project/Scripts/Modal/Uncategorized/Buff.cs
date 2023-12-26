@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 /// <summary>
 /// Buff
 /// </summary>
-public class Buff : CLEventListener
+public class Buff : StageEventListener
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -31,9 +31,9 @@ public class Buff : CLEventListener
     public int Stack => _stack;
     public async Task SetStack(int stack)
     {
-        await _eventDict.SendEvent(CLEventDict.STACK_WILL_CHANGE, new BuffStackChangeDetails(_stack, stack));
+        await _eventDict.SendEvent(StageEventDict.STACK_WILL_CHANGE, new BuffStackChangeDetails(_stack, stack));
         _stack = stack;
-        await _eventDict.SendEvent(CLEventDict.STACK_DID_CHANGE, new BuffStackChangeDetails(_stack, stack));
+        await _eventDict.SendEvent(StageEventDict.STACK_DID_CHANGE, new BuffStackChangeDetails(_stack, stack));
 
         if(_stack <= 0)
             await _owner.RemoveBuff(this);
@@ -52,7 +52,7 @@ public class Buff : CLEventListener
     /// </summary>
     public bool Dispellable => _entry.Dispellable;
 
-    public CLEventDict _eventDict;
+    public StageEventDict _eventDict;
 
     public Buff(StageEntity owner, BuffEntry entry)
     {
@@ -67,16 +67,16 @@ public class Buff : CLEventListener
     {
         foreach (int eventId in _entry._eventDescriptorDict.Keys)
         {
-            CLEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
+            StageEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
             int senderId = eventDescriptor.ListenerId;
 
-            if (senderId == CLEventDict.STAGE_ENVIRONMENT)
+            if (senderId == StageEventDict.STAGE_ENVIRONMENT)
                 _owner.Env.EventDict.Register(this, eventDescriptor);
-            else if (senderId == CLEventDict.STAGE_ENTITY)
+            else if (senderId == StageEventDict.STAGE_ENTITY)
                 ;
-            else if (senderId == CLEventDict.STAGE_BUFF)
+            else if (senderId == StageEventDict.STAGE_BUFF)
                 ;
-            else if (senderId == CLEventDict.STAGE_FORMATION)
+            else if (senderId == StageEventDict.STAGE_FORMATION)
                 _eventDict.Register(this, eventDescriptor);
         }
     }
@@ -85,16 +85,16 @@ public class Buff : CLEventListener
     {
         foreach (int eventId in _entry._eventDescriptorDict.Keys)
         {
-            CLEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
+            StageEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
             int senderId = eventDescriptor.ListenerId;
 
-            if (senderId == CLEventDict.STAGE_ENVIRONMENT)
+            if (senderId == StageEventDict.STAGE_ENVIRONMENT)
                 _owner.Env.EventDict.Unregister(this, eventDescriptor);
-            else if (senderId == CLEventDict.STAGE_ENTITY)
+            else if (senderId == StageEventDict.STAGE_ENTITY)
                 ;
-            else if (senderId == CLEventDict.STAGE_BUFF)
+            else if (senderId == StageEventDict.STAGE_BUFF)
                 ;
-            else if (senderId == CLEventDict.STAGE_FORMATION)
+            else if (senderId == StageEventDict.STAGE_FORMATION)
                 _eventDict.Unregister(this, eventDescriptor);
         }
     }

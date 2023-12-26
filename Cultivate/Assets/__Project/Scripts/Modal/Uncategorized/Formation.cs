@@ -7,7 +7,7 @@ using CLLibrary;
 /// <summary>
 /// Formation
 /// </summary>
-public class Formation : CLEventListener
+public class Formation : StageEventListener
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -17,7 +17,7 @@ public class Formation : CLEventListener
 
     public string GetName() => _entry.GetName();
 
-    public CLEventDict _eventDict;
+    public StageEventDict _eventDict;
 
     public Formation(StageEntity owner, FormationEntry entry)
     {
@@ -31,16 +31,16 @@ public class Formation : CLEventListener
     {
         foreach (int eventId in _entry._eventDescriptorDict.Keys)
         {
-            CLEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
+            StageEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
             int senderId = eventDescriptor.ListenerId;
 
-            if (senderId == CLEventDict.STAGE_ENVIRONMENT)
+            if (senderId == StageEventDict.STAGE_ENVIRONMENT)
                 _owner.Env.EventDict.Register(this, eventDescriptor);
-            else if (senderId == CLEventDict.STAGE_ENTITY)
+            else if (senderId == StageEventDict.STAGE_ENTITY)
                 ;
-            else if (senderId == CLEventDict.STAGE_BUFF)
+            else if (senderId == StageEventDict.STAGE_BUFF)
                 ;
-            else if (senderId == CLEventDict.STAGE_FORMATION)
+            else if (senderId == StageEventDict.STAGE_FORMATION)
                 _eventDict.Register(this, eventDescriptor);
         }
     }
@@ -49,16 +49,16 @@ public class Formation : CLEventListener
     {
         foreach (int eventId in _entry._eventDescriptorDict.Keys)
         {
-            CLEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
+            StageEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
             int senderId = eventDescriptor.ListenerId;
 
-            if (senderId == CLEventDict.STAGE_ENVIRONMENT)
+            if (senderId == StageEventDict.STAGE_ENVIRONMENT)
                 _owner.Env.EventDict.Unregister(this, eventDescriptor);
-            else if (senderId == CLEventDict.STAGE_ENTITY)
+            else if (senderId == StageEventDict.STAGE_ENTITY)
                 ;
-            else if (senderId == CLEventDict.STAGE_BUFF)
+            else if (senderId == StageEventDict.STAGE_BUFF)
                 ;
-            else if (senderId == CLEventDict.STAGE_FORMATION)
+            else if (senderId == StageEventDict.STAGE_FORMATION)
                 _eventDict.Unregister(this, eventDescriptor);
         }
     }
