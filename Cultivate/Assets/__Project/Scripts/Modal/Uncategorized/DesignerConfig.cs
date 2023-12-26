@@ -1,21 +1,14 @@
 
-using System.Collections.Generic;
+using System;
 
 public class DesignerConfig
 {
-    public Dictionary<int, RunEventDescriptor> _runEventDescriptorDict;
-    public Dictionary<int, StageEventDescriptor> _stageEventDescriptorDict;
+    public RunEventDescriptor[] _runEventDescriptors;
+    public StageEventDescriptor[] _stageEventDescriptors;
 
     public DesignerConfig(RunEventDescriptor[] runEventDescriptors = null, StageEventDescriptor[] stageEventDescriptors = null)
     {
-        _runEventDescriptorDict = new();
-        if (runEventDescriptors != null)
-            foreach (var d in runEventDescriptors)
-                _runEventDescriptorDict[d.EventId] = d;
-
-        _stageEventDescriptorDict = new();
-        if (stageEventDescriptors != null)
-            foreach (var d in stageEventDescriptors)
-                _stageEventDescriptorDict[d.EventId] = d;
+        _runEventDescriptors = runEventDescriptors ?? Array.Empty<RunEventDescriptor>();
+        _stageEventDescriptors = stageEventDescriptors ?? Array.Empty<StageEventDescriptor>();
     }
 }

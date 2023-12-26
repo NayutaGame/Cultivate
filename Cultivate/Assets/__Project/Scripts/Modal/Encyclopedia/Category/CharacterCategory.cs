@@ -38,6 +38,13 @@ public class CharacterCategory : Category<CharacterEntry>
                             return;
                         }
                     }),
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -2, (listener, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        RunDetails d = (RunDetails)eventDetails;
+
+                        env.Map._r.Generator.Add("以物易物");
+                    }),
                 }),
             new("彼此卿", abilityDescription: "战后奖励可选择对方卡组中随机一张卡\n" +
                                            "卡组中第一张空位将模仿对方对位的牌",

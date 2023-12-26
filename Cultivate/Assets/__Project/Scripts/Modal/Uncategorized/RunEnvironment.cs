@@ -141,9 +141,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     private void RegisterCharacterProfile()
     {
-        CharacterEntry entry = _config.CharacterProfile.GetEntry();
-        Dictionary<int, RunEventDescriptor> dict = entry._runEventDescriptorDict;
-        RegisterDict(dict);
+        RegisterList(_config.CharacterProfile.GetEntry()._runEventDescriptors);
     }
 
     private void RegisterDifficultyProfile()
@@ -152,20 +150,13 @@ public class RunEnvironment : Addressable, RunEventListener
 
     private void RegisterDesignerConfig()
     {
-        Dictionary<int, RunEventDescriptor> dict = _config.DesignerConfig._runEventDescriptorDict;
-        RegisterDict(dict);
+        RegisterList(_config.DesignerConfig._runEventDescriptors);
     }
 
-    private void RegisterDict(Dictionary<int, RunEventDescriptor> dict)
+    private void RegisterList(RunEventDescriptor[] list)
     {
-        foreach (int eventId in dict.Keys)
-        {
-            RunEventDescriptor eventDescriptor = dict[eventId];
-            int senderId = eventDescriptor.ListenerId;
-
-            if (senderId == RunEventDict.RUN_ENVIRONMENT)
-                _eventDict.Register(this, eventDescriptor);
-        }
+        list.FilterObj(d => d.ListenerId == RunEventDict.RUN_ENVIRONMENT)
+            .Do(e => _eventDict.Register(this, e));
     }
 
     public void Unregister()
@@ -177,9 +168,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     private void UnregisterCharacterProfile()
     {
-        CharacterEntry entry = _config.CharacterProfile.GetEntry();
-        Dictionary<int, RunEventDescriptor> dict = entry._runEventDescriptorDict;
-        UnregisterDict(dict);
+        UnregisterList(_config.CharacterProfile.GetEntry()._runEventDescriptors);
     }
 
     private void UnregisterDifficultyProfile()
@@ -188,20 +177,13 @@ public class RunEnvironment : Addressable, RunEventListener
 
     private void UnregisterDesignerConfig()
     {
-        Dictionary<int, RunEventDescriptor> dict = _config.DesignerConfig._runEventDescriptorDict;
-        RegisterDict(dict);
+        UnregisterList(_config.DesignerConfig._runEventDescriptors);
     }
 
-    private void UnregisterDict(Dictionary<int, RunEventDescriptor> dict)
+    private void UnregisterList(RunEventDescriptor[] list)
     {
-        foreach (int eventId in dict.Keys)
-        {
-            RunEventDescriptor eventDescriptor = dict[eventId];
-            int senderId = eventDescriptor.ListenerId;
-
-            if (senderId == RunEventDict.RUN_ENVIRONMENT)
-                _eventDict.Unregister(this, eventDescriptor);
-        }
+        list.FilterObj(d => d.ListenerId == RunEventDict.RUN_ENVIRONMENT)
+            .Do(e => _eventDict.Unregister(this, e));
     }
 
     public void Combat()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class StageEventDict : Dictionary<int, StageEventElement>
+public class StageEventDict : Dictionary<int, StageEventElementList>
 {
     public static readonly int START_STAGE        = 0;
     public static readonly int END_STAGE          = 1;
@@ -65,7 +65,7 @@ public class StageEventDict : Dictionary<int, StageEventElement>
         if (!ContainsKey(eventId))
             this[eventId] = new();
 
-        this[eventId].Add(eventDescriptor.Order, listener, eventDescriptor);
+        this[eventId].Add(listener, eventDescriptor);
     }
 
     public void Unregister(StageEventListener listener, StageEventDescriptor eventDescriptor)
@@ -78,11 +78,11 @@ public class StageEventDict : Dictionary<int, StageEventElement>
     {
         if (!ContainsKey(eventId))
             return;
-        StageEventElement eventElement = this[eventId];
-        foreach (Tuple<int, StageEventListener, StageEventDescriptor> tuple in eventElement.Traversal())
+        StageEventElementList eventElementList = this[eventId];
+        foreach (Tuple<StageEventListener, StageEventDescriptor> tuple in eventElementList.Traversal())
         {
             if (eventDetails.Cancel) return;
-            await tuple.Item3.Invoke(tuple.Item2, eventDetails);
+            await tuple.Item2.Invoke(tuple.Item1, eventDetails);
         }
     }
 }

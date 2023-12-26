@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class RunEventDict : Dictionary<int, RunEventElement>
+public class RunEventDict : Dictionary<int, RunEventElementList>
 {
     public static readonly int START_RUN             = 100;
     public static readonly int END_RUN               = 101;
@@ -12,8 +12,7 @@ public class RunEventDict : Dictionary<int, RunEventElement>
     public static readonly int WILL_SET_MAX_MINGYUAN = 106;
     public static readonly int DID_SET_MAX_MINGYUAN  = 107;
 
-
-    public static readonly int RUN_ENVIRONMENT    = 100;
+    public static readonly int RUN_ENVIRONMENT       = 100;
 
     public void Register(RunEventListener listener, RunEventDescriptor eventDescriptor)
     {
@@ -21,7 +20,7 @@ public class RunEventDict : Dictionary<int, RunEventElement>
         if (!ContainsKey(eventId))
             this[eventId] = new();
 
-        this[eventId].Add(eventDescriptor.Order, listener, eventDescriptor);
+        this[eventId].Add(listener, eventDescriptor);
     }
 
     public void Unregister(RunEventListener listener, RunEventDescriptor eventDescriptor)
@@ -34,11 +33,11 @@ public class RunEventDict : Dictionary<int, RunEventElement>
     {
         if (!ContainsKey(eventId))
             return;
-        RunEventElement eventElement = this[eventId];
-        foreach (Tuple<int, RunEventListener, RunEventDescriptor> tuple in eventElement.Traversal())
+        RunEventElementList eventElementList = this[eventId];
+        foreach (Tuple<RunEventListener, RunEventDescriptor> tuple in eventElementList.Traversal())
         {
             if (eventDetails.Cancel) return;
-            tuple.Item3.Invoke(tuple.Item2, eventDetails);
+            tuple.Item2.Invoke(tuple.Item1, eventDetails);
         }
     }
 }

@@ -1,24 +1,24 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace CLLibrary
 {
-    public class AutoPool<T> : Pool<T>
+    public class CyclicPool<T> : Pool<T>
     {
-        private List<T> _toPopulate;
+        private List<T> _generator;
+        public List<T> Generator => _generator;
 
-        public AutoPool(List<T> toPopulate)
+        public CyclicPool(List<T> generator)
         {
-            _toPopulate = toPopulate;
+            _generator = generator;
         }
 
         public T ForcePopItem()
         {
             if (!TryPopItem(out T item))
             {
-                Populate(_toPopulate);
+                Populate(_generator);
                 Shuffle();
                 TryPopItem(out item);
             }
@@ -30,7 +30,7 @@ namespace CLLibrary
         {
             if (!TryPopItem(out T item, pred))
             {
-                Populate(_toPopulate);
+                Populate(_generator);
                 Shuffle();
                 TryPopItem(out item, pred);
             }

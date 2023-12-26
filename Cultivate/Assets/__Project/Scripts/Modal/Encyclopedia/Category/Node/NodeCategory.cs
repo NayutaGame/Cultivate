@@ -12,7 +12,7 @@ public class NodeCategory : Category<NodeEntry>
         {
             new BattleNodeEntry("敌人", "敌人"),
 
-            new RewardNodeEntry("悟道", "悟道", "悟道",
+            new RewardNodeEntry("悟道", "悟道", "悟道", withInPool: true,
                 create: runNode =>
                 {
                     Pool<WuXing> pool = new Pool<WuXing>();
@@ -43,7 +43,7 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("回复命元", "回复命元", "人参果",
+            new RewardNodeEntry("回复命元", "回复命元", "人参果", withInPool: true,
                 create: runNode =>
                 {
                     DialogPanelDescriptor A = new DialogPanelDescriptor("回复了2点命元")
@@ -51,7 +51,7 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("获得金钱", "获得金钱", "金钱",
+            new RewardNodeEntry("获得金钱", "获得金钱", "金钱", withInPool: true,
                 create: runNode =>
                 {
                     int gold = Mathf.RoundToInt((runNode.JingJie + 1) * 21 * RandomManager.Range(0.8f, 1.2f));
@@ -60,7 +60,7 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("提升境界", "提升境界", "修炼",
+            new RewardNodeEntry("提升境界", "提升境界", "修炼", withInPool: true,
                 create: runNode =>
                 {
                     CardPickerPanelDescriptor A = new("可以将一张低于化神境界的牌提升到主角的下一境界，请选择想要提升的牌", new Range(0, 2));
@@ -93,7 +93,7 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("加生命上限", "加生命上限", "温泉",
+            new RewardNodeEntry("加生命上限", "加生命上限", "温泉", withInPool: true,
                 create: runNode =>
                 {
                     int health = (runNode.JingJie + 1) * 3;
@@ -102,21 +102,21 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("商店", "商店", "商店",
+            new RewardNodeEntry("商店", "商店", "商店", withInPool: true,
                 create: runNode =>
                 {
                     ShopPanelDescriptor A = new(runNode.JingJie);
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("以物易物", "以物易物", "以物易物",
+            new RewardNodeEntry("以物易物", "以物易物", "以物易物", withInPool: false,
                 create: runNode =>
                 {
                     BarterPanelDescriptor A = new();
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("算卦", "算卦", "算卦",
+            new RewardNodeEntry("算卦", "算卦", "算卦", withInPool: true,
                 canCreate: (map, x) => map.HasAdventureAfterwards(x),
                 create: runNode =>
                 {

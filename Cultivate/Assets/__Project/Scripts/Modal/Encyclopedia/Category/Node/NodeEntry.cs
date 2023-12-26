@@ -1,7 +1,5 @@
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public abstract class NodeEntry : Entry
 {
@@ -27,7 +25,5 @@ public abstract class NodeEntry : Entry
     public static implicit operator NodeEntry(string name) => Encyclopedia.NodeCategory[name];
 
     public virtual string GetTitle()
-    {
-        return Name;
-    }
+        => Name;
 }

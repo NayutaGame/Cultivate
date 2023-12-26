@@ -14,11 +14,11 @@ public class Map : Addressable
     private RunNode this[Vector2Int pos] => this[pos.x, pos.y];
 
     public EntityPool EntityPool;
-    public AutoPool<NodeEntry> _b;
-    public AutoPool<NodeEntry> _r;
-    public AutoPool<NodeEntry> _a;
+    public CyclicPool<NodeEntry> _b;
+    public CyclicPool<NodeEntry> _r;
+    public CyclicPool<NodeEntry> _a;
     public Dictionary<JingJie, NodeEntry[]> _priorityNodes;
-    public Dictionary<JingJie, AutoPool<NodeEntry>[]> _normalPools;
+    public Dictionary<JingJie, CyclicPool<NodeEntry>[]> _normalPools;
 
     public bool Selecting { get; private set; }
     private Vector2Int _heroPosition;
@@ -113,7 +113,7 @@ public class Map : Addressable
     private void RefreshNodes()
     {
         NodeEntry[] priorityNodes = _priorityNodes[_jingJie];
-        AutoPool<NodeEntry>[] pools = _normalPools[_jingJie];
+        CyclicPool<NodeEntry>[] pools = _normalPools[_jingJie];
 
         for (int x = 0; x < pools.Length; x++)
         {
@@ -124,7 +124,7 @@ public class Map : Addressable
                 continue;
             }
 
-            AutoPool<NodeEntry> pool = pools[x];
+            CyclicPool<NodeEntry> pool = pools[x];
             SetStepItemFromPool(x, pool);
         }
 
@@ -151,7 +151,7 @@ public class Map : Addressable
         }
     }
 
-    private void SetStepItemFromPool(int x, AutoPool<NodeEntry> pool)
+    private void SetStepItemFromPool(int x, CyclicPool<NodeEntry> pool)
     {
         StepItem stepItem = _stepItems[x];
 
