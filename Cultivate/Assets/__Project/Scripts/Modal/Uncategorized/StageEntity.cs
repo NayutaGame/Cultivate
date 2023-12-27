@@ -104,12 +104,8 @@ public class StageEntity : Addressable, StageEventListener
 
         await _env.EventDict.SendEvent(StageEventDict.START_STEP, new StepDetails(this, skill));
 
-
-
-
-
-        int actualCost = Mathf.Max(skill.GetManaCost() - GetStackOfBuff("心斋"), 0);
-        if (skill.GetManaCost() != 0)
+        int actualCost = (skill.GetManaCost() - GetStackOfBuff("心斋")).ClampLower(0);
+        if (actualCost > 0)
         {
             bool hasFree = GetStackOfBuff("永久免费") > 0 || await TryConsumeProcedure("免费");
             if (hasFree)
@@ -130,10 +126,6 @@ public class StageEntity : Addressable, StageEventListener
         }
 
         await _env.EventDict.SendEvent(StageEventDict.DID_MANA_COST, new ManaCostDetails(this, skill, actualCost));
-
-
-
-
 
         if (skill.GetChannelTime() > 0)
         {
@@ -181,6 +173,9 @@ public class StageEntity : Addressable, StageEventListener
         int dir = Forward ? 1 : -1;
         for (int i = 0; i < _skills.Length; i++)
         {
+            // START_ROUND logic should be here
+            // int prevP = _p - dir;
+
             _p += dir;
 
             bool within = 0 <= _p && _p < _skills.Length;

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 namespace CLLibrary
@@ -13,5 +12,11 @@ namespace CLLibrary
             i1 -= min;
             return (i0, i1);
         }
+
+        public static int ClampUpper(this int value, int bound)
+            => Mathf.Min(value, bound);
+
+        public static int ClampLower(this int value, int bound)
+            => Mathf.Max(value, bound);
     }
 }
