@@ -104,28 +104,12 @@ public class StageEntity : Addressable, StageEventListener
 
         await _env.EventDict.SendEvent(StageEventDict.START_STEP, new StepDetails(this, skill));
 
-        int actualCost = (skill.GetManaCost() - GetStackOfBuff("心斋")).ClampLower(0);
-        if (actualCost > 0)
+        _manaShortage = await ManaCostProcedure(skill);
+        if (_manaShortage)
         {
-            bool hasFree = GetStackOfBuff("永久免费") > 0 || await TryConsumeProcedure("免费");
-            if (hasFree)
-                actualCost = 0;
-        }
-
-        await _env.EventDict.SendEvent(StageEventDict.WILL_MANA_COST, new ManaCostDetails(this, skill, actualCost));
-
-        bool manaSufficient = actualCost == 0 || await TryConsumeProcedure("灵气", actualCost);
-
-        _manaShortage = !manaSufficient;
-        if(_manaShortage)
-        {
-            await ManaShortageProcedure(_p, skill, actualCost);
-            await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
             await _env.EventDict.SendEvent(StageEventDict.END_STEP, new StepDetails(this, null));
             return;
         }
-
-        await _env.EventDict.SendEvent(StageEventDict.DID_MANA_COST, new ManaCostDetails(this, skill, actualCost));
 
         if (skill.GetChannelTime() > 0)
         {
@@ -137,6 +121,35 @@ public class StageEntity : Addressable, StageEventListener
 
         await Execute(skill);
         await _env.EventDict.SendEvent(StageEventDict.END_STEP, new StepDetails(this, skill));
+    }
+
+    private async Task<bool> ManaCostProcedure(StageSkill skill)
+    {
+        int actualCost = (skill.GetManaCost() - GetStackOfBuff("心斋")).ClampLower(0);
+        if (actualCost > 0)
+        {
+            bool hasFree = GetStackOfBuff("永久免费") > 0 || await TryConsumeProcedure("免费");
+            if (hasFree)
+                actualCost = 0;
+        }
+
+        await _env.EventDict.SendEvent(StageEventDict.WILL_MANA_COST, new ManaCostDetails(this, skill, actualCost));
+
+        bool manaSufficient = actualCost == 0 || await TryConsumeProcedure("灵气", actualCost);
+        bool manaShortage = !manaSufficient;
+        if(manaShortage)
+        {
+            await ManaShortageProcedure(_p, skill, actualCost);
+            // await ManaShortageAction.Execute(this);
+            // 卡费行为
+            await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
+        }
+        else
+        {
+            await _env.EventDict.SendEvent(StageEventDict.DID_MANA_COST, new ManaCostDetails(this, skill, actualCost));
+        }
+
+        return manaShortage;
     }
 
     private async Task ChannelProcedure()
@@ -233,6 +246,8 @@ public class StageEntity : Addressable, StageEventListener
 
     private StageEventDescriptor[] _eventDescriptors;
 
+    private StageSkill ManaShortageAction;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public StageEntity(StageEnvironment env, RunEntity runEntity, int index)
@@ -281,6 +296,8 @@ public class StageEntity : Addressable, StageEventListener
             SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
             _skills[i] = new StageSkill(this, slot.Skill, i);
         }
+
+        // ManaShortageAction = StageSkill.FromSkillEntry(this, "聚气术");
 
         _p = 0;
     }
