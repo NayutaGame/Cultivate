@@ -203,7 +203,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (!(i < f.Owner.Opponent()._skills.Length)) continue;
 
                                 StageSkill opponentSkill = f.Owner.Opponent()._skills[i];
-                                f.Owner._skills[i] = new StageSkill(f.Owner, opponentSkill.Entry, opponentSkill.GetJingJie(), i);
+                                f.Owner._skills[i] = StageSkill.FromSkillEntry(f.Owner, opponentSkill.Entry, opponentSkill.GetJingJie(), i);
                             }
 
                             await f.Owner.BuffSelfProcedure("永久集中");

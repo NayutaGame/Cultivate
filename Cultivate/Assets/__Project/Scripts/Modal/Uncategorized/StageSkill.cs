@@ -94,28 +94,18 @@ public class StageSkill
     public bool NoAttackAdjacents
         => !Prev(false).GetSkillType().Contains(SkillType.Attack) && !Next(false).GetSkillType().Contains(SkillType.Attack);
 
-    // public static StageSkill FromRunSkill(StageEntity owner, EmulatedSkill runSkill, int slotIndex)
-    //     => new(owner, runSkill, runSkill.GetEntry(), runSkill.GetJingJie(), slotIndex);
-    //
-    // public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie? jingJie = null, int slotIndex = 0)
-    //     => new(owner, null, skillEntry, jingJie ?? skillEntry.JingJieRange.Start, slotIndex);
+    public static StageSkill FromRunSkill(StageEntity owner, EmulatedSkill runSkill, int slotIndex)
+        => new(owner, runSkill, runSkill.GetEntry(), runSkill.GetJingJie(), slotIndex);
 
-    public StageSkill(StageEntity owner, EmulatedSkill runSkill, int slotIndex) : this(owner, runSkill, "聚气术", null, slotIndex) { }
-    public StageSkill(StageEntity owner, SkillEntry skillEntry, JingJie jingJie, int slotIndex) : this(owner, null, skillEntry, jingJie, slotIndex) { }
-    private StageSkill(StageEntity owner, EmulatedSkill runSkill, SkillEntry skillEntry, JingJie? jingJie, int slotIndex)
+    public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie? jingJie = null, int slotIndex = 0)
+        => new(owner, null, skillEntry, jingJie ?? skillEntry.JingJieRange.Start, slotIndex);
+
+    private StageSkill(StageEntity owner, EmulatedSkill runSkill, SkillEntry skillEntry, JingJie jingJie, int slotIndex)
     {
         _owner = owner;
         _runSkill = runSkill;
-        _entry = _runSkill?.GetEntry() ?? skillEntry;
-
-        if (jingJie.HasValue) {
-            _jingJie = jingJie.Value;
-        } else if(_runSkill != null) {
-            _jingJie = _runSkill.GetJingJie();
-        } else {
-            _jingJie = _entry.JingJieRange.Start;
-        }
-
+        _entry = skillEntry;
+        _jingJie = jingJie;
         _slotIndex = slotIndex;
 
         _exhausted = false;

@@ -120,6 +120,20 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
     public EntityEntry GetEntry() => _entry;
     public void SetEntry(EntityEntry entry) => _entry = entry;
 
+    public static RunEntity Default()
+        => new();
+
+    public static RunEntity FromJingJieHealth(JingJie jingJie, int health)
+    {
+        RunEntity e = new();
+        e.SetJingJie(jingJie);
+        e.SetBaseHealth(health);
+        return e;
+    }
+
+    public static RunEntity FromTemplate(RunEntity template)
+        => new(template);
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     private RunEntity(RunEntity template = null)
@@ -173,20 +187,6 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
     {
         _slots.Traversal().Do(slot => slot.TryExhaust());
     }
-
-    public static RunEntity Default()
-        => new();
-
-    public static RunEntity FromJingJieHealth(JingJie jingJie, int health)
-    {
-        RunEntity e = new();
-        e.SetJingJie(jingJie);
-        e.SetBaseHealth(health);
-        return e;
-    }
-
-    public static RunEntity FromTemplate(RunEntity template)
-        => new(template);
 
     public void OnBeforeSerialize() { }
 

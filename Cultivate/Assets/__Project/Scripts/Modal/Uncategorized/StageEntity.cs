@@ -137,12 +137,10 @@ public class StageEntity : Addressable, StageEventListener
 
         bool manaSufficient = actualCost == 0 || await TryConsumeProcedure("灵气", actualCost);
         bool manaShortage = !manaSufficient;
-        if(manaShortage)
+        if (manaShortage)
         {
             await ManaShortageProcedure(_p, skill, actualCost);
-            // await ManaShortageAction.Execute(this);
-            // 卡费行为
-            await Encyclopedia.SkillCategory["聚气术"].Execute(this, null, true);
+            await ManaShortageAction.Execute(this);
         }
         else
         {
@@ -294,10 +292,13 @@ public class StageEntity : Addressable, StageEventListener
         for (int i = 0; i < _skills.Length; i++)
         {
             SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
-            _skills[i] = new StageSkill(this, slot.Skill, i);
+            if (slot.Skill != null)
+                _skills[i] = StageSkill.FromRunSkill(this, slot.Skill, i);
+            else
+                _skills[i] = StageSkill.FromSkillEntry(this, "聚气术", slotIndex: i);
         }
 
-        // ManaShortageAction = StageSkill.FromSkillEntry(this, "聚气术");
+        ManaShortageAction = StageSkill.FromSkillEntry(this, "聚气术");
 
         _p = 0;
     }
