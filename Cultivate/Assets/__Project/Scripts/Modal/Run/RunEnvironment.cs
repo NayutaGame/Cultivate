@@ -27,8 +27,8 @@ public class RunEnvironment : Addressable, RunEventListener
 
     private void PlacementProcedure()
     {
-        _home.PlacementProcedure(new());
-        _away.PlacementProcedure(new());
+        _home.PlacementProcedure();
+        _away.PlacementProcedure();
     }
 
     private void FormationProcedure()

@@ -96,19 +96,30 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
         return true;
     }
 
-    public void PlacementProcedure(PlacementDetails d)
+    public void PlacementProcedure()
     {
-        // TraversalCurrentSlots().Do(slot =>
-        // {
-        //     slot.PlacedSkill = null;
-        // });
+        PlacementDetails d = new(this);
+
+        TraversalCurrentSlots().Do(slot =>
+        {
+            slot.PlacedSkill = null;
+        });
 
         RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WILL_PLACEMENT, d);
 
-        // TraversalCurrentSlots().Do(slot =>
-        // {
-        //     slot.PlacedSkill ??= PlacedSkill.FromEntry("聚气术");
-        // });
+        TraversalCurrentSlots().Do(slot =>
+        {
+            if (slot.PlacedSkill != null)
+                return;
+
+            if (slot.Skill != null)
+            {
+                slot.PlacedSkill = PlacedSkill.FromRunSkill(slot.Skill);
+                return;
+            }
+
+            slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(d.OverridingSkillEntry, d.OverridingJingJie);
+        });
 
         RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_PLACEMENT, d);
     }

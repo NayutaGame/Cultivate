@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using CLLibrary;
 
 public class CharacterCategory : Category<CharacterEntry>
 {
@@ -59,7 +60,26 @@ public class CharacterCategory : Category<CharacterEntry>
             new("风雨晴", abilityDescription: "游戏开始时以及境界提升时，抽一张牌\n" +
                                            "金丹后，组成阵法时，需求-1；化神，变成-2"),
             new("彼此卿", abilityDescription: "卡组中第一张空位将模仿对方对位的牌\n" +
-                                           "战后奖励时可选择模仿对方的卡，没有模仿时则随机一张卡"),
+                                           "战后奖励时可选择模仿对方的卡，没有模仿时则随机一张卡",
+                runEventDescriptors: new RunEventDescriptor[]
+                {
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WILL_PLACEMENT, 0, (listener, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        PlacementDetails d = (PlacementDetails)eventDetails;
+
+                        RunEntity oppo = env.Home == d.Owner ? env.Away : d.Owner;
+                        SkillSlot slotToPaste = d.Owner.TraversalCurrentSlots()
+                            .FirstObj(slot => slot.Skill == null && oppo.GetSlot(slot.GetIndex()).Skill != null);
+
+                        if (slotToPaste == null)
+                            return;
+
+                        SkillSlot slotToCopy = oppo.GetSlot(slotToPaste.GetIndex());
+
+                        slotToPaste.PlacedSkill = PlacedSkill.FromEntryAndJingJie(slotToCopy.Skill.GetEntry(), slotToCopy.Skill.GetJingJie());
+                    }),
+                }),
         });
     }
 }

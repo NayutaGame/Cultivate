@@ -10,6 +10,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
     [SerializeField] private int _index;
+    public int GetIndex() => _index;
 
     public enum SkillSlotState
     {

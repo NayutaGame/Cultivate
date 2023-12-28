@@ -292,16 +292,7 @@ public class StageEntity : Addressable, StageEventListener
         for (int i = 0; i < _skills.Length; i++)
         {
             SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
-
-            // if (false)
-            // {
-            //     _skills[i] = StageSkill.FromPlaceSkill(this, slot.PlacedSkill, i);
-            // }
-
-            if (slot.Skill != null)
-                _skills[i] = StageSkill.FromRunSkill(this, slot.Skill, i);
-            else
-                _skills[i] = StageSkill.FromSkillEntry(this, "聚气术", slotIndex: i);
+            _skills[i] = StageSkill.FromPlacedSkill(this, slot.PlacedSkill, i);
         }
 
         ManaShortageAction = StageSkill.FromSkillEntry(this, "聚气术");
