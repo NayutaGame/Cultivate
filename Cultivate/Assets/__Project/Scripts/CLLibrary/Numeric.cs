@@ -13,6 +13,9 @@ namespace CLLibrary
             return (i0, i1);
         }
 
+        public static int Clamp(this int value, int min, int max)
+            => Mathf.Clamp(value, min, max);
+
         public static int ClampUpper(this int value, int bound)
             => Mathf.Min(value, bound);
 

@@ -8,19 +8,34 @@ public class RunEnvironment : Addressable, RunEventListener
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
-    private void Simulate()
-    {
-        RunEntity away = Away ?? RunEntity.FromJingJieHealth(Home.GetJingJie(), 1000000);
-        StageConfig d = new StageConfig(false, false, false, false, Home, away);
-        StageEnvironment environment = StageEnvironment.FromConfig(d);
-        environment.Execute();
-        SimulateResult = environment.Result;
-    }
 
     public event Action ResourceChangedEvent;
     public void ResourceChanged() => ResourceChangedEvent?.Invoke();
 
     #region Procedures
+
+    private void SimulateProcedure()
+    {
+        PlacementProcedure();
+        FormationProcedure();
+
+        StageConfig d = new StageConfig(false, false, false, false, _home, _away);
+        StageEnvironment environment = StageEnvironment.FromConfig(d);
+        environment.Execute();
+        SimulateResult = environment.Result;
+    }
+
+    private void PlacementProcedure()
+    {
+        _home.PlacementProcedure(new());
+        _away.PlacementProcedure(new());
+    }
+
+    private void FormationProcedure()
+    {
+        _home.RefreshFormations();
+        _away.RefreshFormations();
+    }
 
     public void StartRunProcedure(RunDetails d)
     {
@@ -36,8 +51,8 @@ public class RunEnvironment : Addressable, RunEventListener
             return;
 
         Map.SetJingJie(d.JingJie);
-        Home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.JingJie]);
-        Home.SetJingJie(d.JingJie);
+        _home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.JingJie]);
+        _home.SetJingJie(d.JingJie);
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.JingJie));
 
         _eventDict.SendEvent(RunEventDict.DID_SET_JINGJIE, d);
@@ -52,7 +67,7 @@ public class RunEnvironment : Addressable, RunEventListener
         if (d.Cancel)
             return;
 
-        Home.MingYuan.SetDiff(d.Value);
+        _home.MingYuan.SetDiff(d.Value);
         ResourceChanged();
 
         _eventDict.SendEvent(RunEventDict.DID_SET_D_MINGYUAN, d);
@@ -70,11 +85,11 @@ public class RunEnvironment : Addressable, RunEventListener
         if (d.Cancel)
             return;
 
-        int diff = Home.MingYuan.GetCurr() - d.Value;
+        int diff = _home.MingYuan.GetCurr() - d.Value;
         if (diff > 0)
             SetDMingYuanProcedure(diff);
 
-        Home.MingYuan.SetMax(d.Value);
+        _home.MingYuan.SetMax(d.Value);
 
         _eventDict.SendEvent(RunEventDict.DID_SET_MAX_MINGYUAN, d);
     }
@@ -82,22 +97,22 @@ public class RunEnvironment : Addressable, RunEventListener
     #endregion
 
     public RunConfig _config;
-    public RunEntity Home { get; private set; }
-    public RunEntity Away { get; set; }
+    private RunEntity _home; public RunEntity Home => _home;
+    private RunEntity _away; public RunEntity Away => _away;
     public Map Map { get; private set; }
     public TechInventory TechInventory { get; private set; }
     public SkillPool SkillPool { get; private set; }
     public SkillInventory Hand { get; private set; }
     public MechBag MechBag { get; private set; }
     public float Gold { get; private set; }
-    private RunEventDict _eventDict;
+    private RunEventDict _eventDict; public RunEventDict EventDict => _eventDict;
 
     public StageResult SimulateResult;
     public RunCommitDetails CommitDetails { get; private set; }
     private RunResultPanelDescriptor _runResultPanelDescriptor;
 
-    public MingYuan GetMingYuan()
-        => Home.MingYuan;
+    public static RunEnvironment FromConfig(RunConfig config)
+        => new(config);
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -105,7 +120,7 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         _accessors = new()
         {
-            { "Hero",                  () => Home },
+            { "Hero",                  () => _home },
             { "Map",                   () => Map },
             { "TechInventory",         () => TechInventory },
             { "Hand",                  () => Hand },
@@ -115,9 +130,9 @@ public class RunEnvironment : Addressable, RunEventListener
 
         _config = config;
 
-        Home = RunEntity.Default();
-        Home.EnvironmentChangedEvent += EnvironmentChanged;
-        EnvironmentChangedEvent += Simulate;
+        SetHome(RunEntity.Default());
+        SetAway(null);
+
         Map = new();
         TechInventory = new();
         SkillPool = new();
@@ -125,11 +140,27 @@ public class RunEnvironment : Addressable, RunEventListener
         MechBag = new();
         Gold = 0;
         _eventDict = new();
+
+        EnvironmentChangedEvent += SimulateProcedure;
     }
 
-    public static RunEnvironment FromConfig(RunConfig config)
+    public MingYuan GetMingYuan()
+        => _home.MingYuan;
+
+    public void SetHome(RunEntity home)
     {
-        return new(config);
+        if (_home != null) _home.EnvironmentChangedEvent -= EnvironmentChanged;
+        _home = home;
+        if (_home != null) _home.EnvironmentChangedEvent += EnvironmentChanged;
+    }
+
+    public void SetAway(RunEntity away)
+    {
+        away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
+
+        if (_away != null) _away.EnvironmentChangedEvent -= EnvironmentChanged;
+        _away = away;
+        if (_away != null) _away.EnvironmentChangedEvent += EnvironmentChanged;
     }
 
     public void Register()
@@ -188,14 +219,14 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void Combat()
     {
-        StageConfig d = new StageConfig(true, true, false, false, Home, Away);
+        StageConfig d = new StageConfig(true, true, false, false, _home, _away);
         StageEnvironment environment = StageEnvironment.FromConfig(d);
         environment.Execute();
     }
 
     public bool TryMerge(RunSkill lhs, RunSkill rhs)
     {
-        if (lhs.GetJingJie() > Home.GetJingJie() && lhs.GetEntry() != rhs.GetEntry())
+        if (lhs.GetJingJie() > _home.GetJingJie() && lhs.GetEntry() != rhs.GetEntry())
             return false;
 
         if (lhs.GetJingJie() != rhs.GetJingJie())
@@ -370,7 +401,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void SetDDHealth(int dHealth)
     {
-        Home.SetDHealth(Home.GetDHealth() + dHealth);
+        _home.SetDHealth(_home.GetDHealth() + dHealth);
         ResourceChanged();
     }
 

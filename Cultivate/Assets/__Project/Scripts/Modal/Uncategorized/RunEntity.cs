@@ -9,11 +9,7 @@ using UnityEngine;
 public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiver
 {
     public event Action EnvironmentChangedEvent;
-    public void EnvironmentChanged()
-    {
-        RefreshFormations();
-        EnvironmentChangedEvent?.Invoke();
-    }
+    public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
     public static readonly int[] BaseHealthFromJingJie = new int[] { 40, 80, 140, 220, 340, 340 };
     // public static readonly int[] BaseHealthFromJingJie = new int[] { 40, 50, 70, 100, 140, 140 };
@@ -100,12 +96,29 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
         return true;
     }
 
+    public void PlacementProcedure(PlacementDetails d)
+    {
+        // TraversalCurrentSlots().Do(slot =>
+        // {
+        //     slot.PlacedSkill = null;
+        // });
+
+        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WILL_PLACEMENT, d);
+
+        // TraversalCurrentSlots().Do(slot =>
+        // {
+        //     slot.PlacedSkill ??= "聚气术";
+        // });
+
+        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_PLACEMENT, d);
+    }
+
     #region Formation
 
     private ListModel<FormationEntry> _activatedFormations;
     public IEnumerable<FormationEntry> TraversalActivatedFormations => _activatedFormations.Traversal();
 
-    private void RefreshFormations()
+    public void RefreshFormations()
     {
         _activatedFormations.Clear();
         FormationArguments args = new FormationArguments(this);

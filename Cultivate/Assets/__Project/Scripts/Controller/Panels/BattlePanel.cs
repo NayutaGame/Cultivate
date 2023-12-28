@@ -125,11 +125,11 @@ public class BattlePanel : Panel
     private void PlayBattleBGM()
     {
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-        if (d.Enemy.IsBoss())
+        if (d.GetEnemy().IsBoss())
         {
             AudioManager.Play("BGMBoss");
         }
-        else if (d.Enemy.IsElite())
+        else if (d.GetEnemy().IsElite())
         {
             AudioManager.Play(RandomManager.value < 0.5f ? "BGMElite1" : "BGMElite2");
         }

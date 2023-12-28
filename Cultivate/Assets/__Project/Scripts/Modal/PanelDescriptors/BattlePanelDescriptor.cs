@@ -6,16 +6,13 @@ public class BattlePanelDescriptor : PanelDescriptor
     private RunEntity _template;
 
     private RunEntity _enemy;
-    public RunEntity Enemy
+    public RunEntity GetEnemy() => _enemy;
+
+    public void SetEnemy(RunEntity enemy)
     {
-        get => _enemy;
-        set
-        {
-            if (_enemy != null) _enemy.EnvironmentChangedEvent -= RunManager.Instance.Environment.EnvironmentChanged;
-            _enemy = value;
-            if (_enemy != null) _enemy.EnvironmentChangedEvent += RunManager.Instance.Environment.EnvironmentChanged;
-            _enemy?.EnvironmentChanged();
-        }
+        _enemy = enemy;
+        RunManager.Instance.Environment.SetAway(_enemy);
+        RunManager.Instance.Environment.EnvironmentChanged();
     }
 
     public StageResult GetResult() => RunManager.Instance.Environment.SimulateResult;
@@ -24,7 +21,7 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         _accessors = new()
         {
-            { "Enemy", () => Enemy },
+            { "Enemy", GetEnemy },
         };
         _template = template;
     }
@@ -32,16 +29,13 @@ public class BattlePanelDescriptor : PanelDescriptor
     public override void DefaultEnter()
     {
         base.DefaultEnter();
-        Enemy = RunEntity.FromTemplate(_template);
-        RunManager.Instance.Environment.Away = Enemy;
-        RunManager.Instance.Environment.EnvironmentChanged();
+        SetEnemy(RunEntity.FromTemplate(_template));
     }
 
     public override void DefaultExit()
     {
         base.DefaultExit();
-        RunManager.Instance.Environment.Away = null;
-        Enemy = null;
+        SetEnemy(null);
     }
 
     private Func<PanelDescriptor> _win;
