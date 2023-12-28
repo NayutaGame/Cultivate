@@ -1,22 +1,18 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FormationArguments
+public class RunFormationDetails : EventDetails
 {
     public int[] WuXingCounts;
+    public List<WuXing> WuXingOrder;
     public int SwiftCount;
     public int ExhaustedCount;
     public int NonAttackCount;
     public int TotalCostCount;
     public int HighestConsecutiveAttackCount;
 
-    public FormationArguments(RunEntity entity)
-    {
-        GenerateArguments(entity);
-    }
-
-    private void GenerateArguments(RunEntity entity)
+    public RunFormationDetails(RunEntity entity)
     {
         WuXingCounts = new int[WuXing.Length];
         SwiftCount = 0;
@@ -29,25 +25,20 @@ public class FormationArguments
 
         foreach (SkillSlot slot in entity.TraversalCurrentSlots())
         {
-            if (slot.Skill == null)
-            {
-                consecutiveAttackCount = 0;
-                continue;
-            }
+            SkillEntry entry = slot.PlacedSkill.Entry;
+            JingJie jingJie = slot.PlacedSkill.JingJie;
 
-            WuXing? wuXing = slot.Skill.GetEntry().WuXing;
+            WuXing? wuXing = entry.WuXing;
             if (wuXing != null)
                 WuXingCounts[wuXing.Value]++;
 
-            SkillTypeComposite skillTypeComposite = slot.Skill.GetEntry().SkillTypeComposite;
-
-            if (skillTypeComposite.Contains(SkillType.ErDong))
+            if (entry.SkillTypeComposite.Contains(SkillType.ErDong))
                 SwiftCount++;
 
-            if (skillTypeComposite.Contains(SkillType.XiaoHao))
+            if (entry.SkillTypeComposite.Contains(SkillType.XiaoHao))
                 ExhaustedCount++;
 
-            if (skillTypeComposite.Contains(SkillType.Attack))
+            if (entry.SkillTypeComposite.Contains(SkillType.Attack))
             {
                 consecutiveAttackCount++;
                 HighestConsecutiveAttackCount = Mathf.Max(HighestConsecutiveAttackCount, consecutiveAttackCount);
@@ -58,7 +49,10 @@ public class FormationArguments
                 NonAttackCount++;
             }
 
-            TotalCostCount += slot.Skill.GetManaCost();
+            TotalCostCount += entry.GetBaseManaCost(jingJie);
         }
+
+        WuXingOrder = new List<WuXing>(WuXing.Traversal);
+        WuXingOrder.Sort((lhs, rhs) => WuXingCounts[rhs] - WuXingCounts[lhs]);
     }
 }

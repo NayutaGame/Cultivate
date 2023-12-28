@@ -33,8 +33,8 @@ public class RunEnvironment : Addressable, RunEventListener
 
     private void FormationProcedure()
     {
-        _home.RefreshFormations();
-        _away.RefreshFormations();
+        _home.FormationProcedure();
+        _away.FormationProcedure();
     }
 
     public void StartRunProcedure(RunDetails d)

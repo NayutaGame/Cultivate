@@ -38,7 +38,7 @@ public class FormationGroupEntry : Entry, Addressable
         });
     }
 
-    public FormationEntry FirstActivatedFormation(RunEntity entity, FormationArguments args)
+    public FormationEntry FirstActivatedFormation(RunEntity entity, RunFormationDetails args)
     {
         return _subFormationEntries.Traversal().FirstObj(f => f.CanActivate(entity, args));
     }

@@ -43,6 +43,8 @@ public class SkillEntry : Entry, IAnnotation
     private ManaCostEvaluator _manaCostEvaluator;
     public int GetManaCost(JingJie jingJie, int dJingJie, bool jiaShi) => _manaCostEvaluator.Eval(jingJie, dJingJie, jiaShi);
 
+    public int GetBaseManaCost(JingJie jingJie) => _manaCostEvaluator.Eval(jingJie, jingJie - LowestJingJie, false);
+
     public int GetBaseManaCost() => _manaCostEvaluator.Eval(_jingJieRange.Start, 0, false);
 
     private ChannelTimeEvaluator _channelTimeEvaluator;

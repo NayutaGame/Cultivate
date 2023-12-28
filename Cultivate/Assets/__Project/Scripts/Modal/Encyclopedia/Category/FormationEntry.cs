@@ -32,8 +32,8 @@ public class FormationEntry
     private string _trivia;
     public string GetTrivia() => _trivia;
 
-    private Func<RunEntity, FormationArguments, bool> _canActivate;
-    public bool CanActivate(RunEntity entity, FormationArguments args)
+    private Func<RunEntity, RunFormationDetails, bool> _canActivate;
+    public bool CanActivate(RunEntity entity, RunFormationDetails args)
         => _canActivate(entity, args);
 
     public Dictionary<int, StageEventDescriptor> _eventDescriptorDict;
@@ -45,7 +45,7 @@ public class FormationEntry
     /// <param name="conditionDescription">条件的描述</param>
     /// <param name="rewardDescription">奖励的描述</param>
     /// <param name="eventDescriptors">事件捕获</param>
-    public FormationEntry(JingJie jingJie, string conditionDescription, string rewardDescription, string trivia, Func<RunEntity, FormationArguments, bool> canActivate,
+    public FormationEntry(JingJie jingJie, string conditionDescription, string rewardDescription, string trivia, Func<RunEntity, RunFormationDetails, bool> canActivate,
         params StageEventDescriptor[] eventDescriptors
     )
     {

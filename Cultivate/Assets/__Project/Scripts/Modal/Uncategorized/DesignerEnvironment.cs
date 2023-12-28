@@ -7,7 +7,8 @@ using CLLibrary;
 public class DesignerEnvironment
 {
     public static DesignerConfig GetDesignerConfig()
-        => new(runEventDescriptors: new[] { WeplayConfigMap, ConfigSkillPool, WeplayRun });
+        // => new(runEventDescriptors: new[] { WeplayConfigMap, ConfigSkillPool, WeplayRun });
+        => new(runEventDescriptors: new[] { WeplayConfigMap, ConfigSkillPool, CustomRun });
 
     private static readonly RunEventDescriptor StandardConfigMap =
         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -4, (listener, eventDetails) =>

@@ -129,13 +129,19 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
     private ListModel<FormationEntry> _activatedFormations;
     public IEnumerable<FormationEntry> TraversalActivatedFormations => _activatedFormations.Traversal();
 
-    public void RefreshFormations()
+    public void FormationProcedure()
     {
+        RunFormationDetails d = new(this);
+
         _activatedFormations.Clear();
-        FormationArguments args = new FormationArguments(this);
+
+        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WILL_FORMATION, d);
+
         _activatedFormations.AddRange(Encyclopedia.FormationCategory.Traversal
-            .Map(f => f.FirstActivatedFormation(this, args))
+            .Map(f => f.FirstActivatedFormation(this, d))
             .FilterObj(f => f != null));
+
+        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_FORMATION, d);
     }
 
     #endregion
