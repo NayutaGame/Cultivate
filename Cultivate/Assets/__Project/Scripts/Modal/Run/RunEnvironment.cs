@@ -249,7 +249,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         JingJie newJingJie = jingJie + (upgrade ? 1 : 0);
 
-        if (lhs.GetEntry() == rhs.GetEntry() && upgrade && lhs.GetEntry().JingJieRange.Contains(lhs.JingJie + 1))
+        if (lhs.GetEntry() == rhs.GetEntry() && upgrade && lhs.GetEntry().JingJieContains(lhs.JingJie + 1))
         {
             rhs.JingJie = newJingJie;
             Hand.Remove(lhs);

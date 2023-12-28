@@ -35,7 +35,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
     private RunSkill(SkillEntry entry, JingJie jingJie)
     {
         _entry = entry;
-        _jingJie = Mathf.Clamp(jingJie, _entry.JingJieRange.Start, _entry.JingJieRange.End - 1);
+        _jingJie = Mathf.Clamp(jingJie, _entry.LowestJingJie, _entry.HighestJingJie);
     }
 
     private RunSkill(RunSkill prototype)
@@ -74,13 +74,13 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         => CanvasManager.Instance.GetWuXingSprite(_entry.WuXing);
 
     public string GetDescription()
-        => _entry.Evaluate(JingJie, JingJie - _entry.JingJieRange.Start);
+        => _entry.Evaluate(JingJie, JingJie - _entry.LowestJingJie);
 
     public int GetManaCost()
-        => _entry.GetManaCost(JingJie, JingJie - _entry.JingJieRange.Start, GetSkillSlot()?.JiaShiIndicator ?? false);
+        => _entry.GetManaCost(JingJie, JingJie - _entry.LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
 
     public int GetChannelTime()
-        => _entry.GetChannelTime(JingJie, JingJie - _entry.JingJieRange.Start, GetSkillSlot()?.JiaShiIndicator ?? false);
+        => _entry.GetChannelTime(JingJie, JingJie - _entry.LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
 
     public string GetManaCostString()
     {
@@ -112,13 +112,13 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
 
     public bool TryIncreaseJingJie(bool loop = true)
     {
-        if (GetEntry().JingJieRange.Contains(JingJie + 1))
+        if (GetEntry().JingJieContains(JingJie + 1))
         {
             JingJie += 1;
         }
         else if (loop)
         {
-            JingJie = GetEntry().JingJieRange.Start;
+            JingJie = GetEntry().LowestJingJie;
         }
 
         return true;

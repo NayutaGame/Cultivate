@@ -27,13 +27,13 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         if (d.JingJie == JingJie.JinDan)
                         {
-                            env.SkillPool.Depopulate(e => e.JingJieRange.Contains(JingJie.LianQi));
+                            env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.LianQi));
                             return;
                         }
 
                         if (d.JingJie == JingJie.HuaShen)
                         {
-                            env.SkillPool.Depopulate(e => e.JingJieRange.Contains(JingJie.ZhuJi));
+                            env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.ZhuJi));
                             return;
                         }
                     }),

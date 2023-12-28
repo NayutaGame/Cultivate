@@ -18,7 +18,7 @@ public class SkillPool : Pool<SkillEntry>
         item ??= Encyclopedia.SkillCategory[0];
 
         JingJie jingJie = d._jingJie ?? JingJie.LianQi;
-        jingJie = Mathf.Clamp(jingJie, item.JingJieRange.Start, item.JingJieRange.End - 1);
+        jingJie = Mathf.Clamp(jingJie, item.LowestJingJie, item.HighestJingJie);
 
         skill = RunSkill.From(item, jingJie);
         return true;
@@ -50,7 +50,7 @@ public class SkillPool : Pool<SkillEntry>
             skillEntries.Add(item);
 
             JingJie jingJie = d._jingJie ?? JingJie.LianQi;
-            jingJie = Mathf.Clamp(jingJie, item.JingJieRange.Start, item.JingJieRange.End - 1);
+            jingJie = Mathf.Clamp(jingJie, item.LowestJingJie, item.HighestJingJie);
 
             skills.Add(RunSkill.From(item, jingJie));
         }

@@ -58,7 +58,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         Encyclopedia.FormationCategory.Traversal.Do(e => FormationInventory.Add(e));
 
         SkillInventory = new();
-        Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.From(e, e.JingJieRange.Start)).Do(s => SkillInventory.Add(s));
+        Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.From(e, e.LowestJingJie)).Do(s => SkillInventory.Add(s));
 
         AppCanvas.gameObject.SetActive(true);
         EditorManager.gameObject.SetActive(true);

@@ -29,7 +29,7 @@ public class StageSkill
         => _entry.GetAnnotatedDescription(evalutated ?? GetDescription());
 
     public string GetDescription()
-        => _entry.Evaluate(GetJingJie(), GetJingJie() - _entry.JingJieRange.Start);
+        => _entry.Evaluate(GetJingJie(), GetJingJie() - _entry.LowestJingJie);
 
     public SkillTypeComposite GetSkillTypeCollection()
         => _entry.SkillTypeComposite;
@@ -71,12 +71,12 @@ public class StageSkill
 
     public async Task TryUpgradeJingJie()
     {
-        if (_jingJie != _entry.JingJieRange.End - 1)
+        if (_jingJie != _entry.HighestJingJie)
             _jingJie += 1;
     }
 
     public int Dj
-        => GetJingJie() - _entry.JingJieRange.Start;
+        => GetJingJie() - _entry.LowestJingJie;
     public bool JiaShi
         => Next(true).Entry.Name == "收刀" || Prev(true).Entry.Name == "拔刀" || _owner.GetStackOfBuff("天人合一") > 0;
     public bool IsFirstTime
@@ -98,7 +98,7 @@ public class StageSkill
         => new(owner, runSkill, runSkill.GetEntry(), runSkill.GetJingJie(), slotIndex);
 
     public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie? jingJie = null, int slotIndex = 0)
-        => new(owner, null, skillEntry, jingJie ?? skillEntry.JingJieRange.Start, slotIndex);
+        => new(owner, null, skillEntry, jingJie ?? skillEntry.LowestJingJie, slotIndex);
 
     private StageSkill(StageEntity owner, EmulatedSkill runSkill, SkillEntry skillEntry, JingJie jingJie, int slotIndex)
     {
@@ -109,7 +109,7 @@ public class StageSkill
         _slotIndex = slotIndex;
 
         _exhausted = false;
-        RunUsedTimes = _runSkill?.GetRunEquippedTimes() ?? 0;
+        RunUsedTimes = _runSkill?.GetRunUsedTimes() ?? 0;
         RunEquippedTimes = _runSkill?.GetRunEquippedTimes() + 1 ?? 0;
         StageUsedTimes = 0;
     }

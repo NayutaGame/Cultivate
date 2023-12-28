@@ -107,7 +107,7 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
 
         // TraversalCurrentSlots().Do(slot =>
         // {
-        //     slot.PlacedSkill ??= "聚气术";
+        //     slot.PlacedSkill ??= PlacedSkill.FromEntry("聚气术");
         // });
 
         RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_PLACEMENT, d);

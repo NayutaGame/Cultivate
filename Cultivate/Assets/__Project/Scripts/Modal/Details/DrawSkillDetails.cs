@@ -24,7 +24,7 @@ public class DrawSkillDetails
         if (_wuXing != null && skillEntry.WuXing != _wuXing)
             return false;
 
-        if (_jingJie != null && !skillEntry.JingJieRange.Contains(_jingJie.Value))
+        if (_jingJie != null && !skillEntry.JingJieContains(_jingJie.Value))
             return false;
 
         return true;

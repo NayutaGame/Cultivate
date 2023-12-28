@@ -56,6 +56,14 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         }
     }
 
+    [NonSerialized] private PlacedSkill _placedSkill;
+
+    public PlacedSkill PlacedSkill
+    {
+        get => _placedSkill;
+        set => _placedSkill = value;
+    }
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public SkillSlot(int index)

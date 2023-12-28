@@ -77,16 +77,16 @@ public class MechComposite : EmulatedSkill
         => _composeDict[_mechTypes.Map(t => t?._hash ?? 0).Sum()];
 
     public JingJie GetJingJie()
-        => GetEntry().JingJieRange.Start;
+        => GetEntry().LowestJingJie;
 
     public Sprite GetSprite()
         => GetEntry().Sprite;
 
     public int GetManaCost()
-        => GetEntry().GetManaCost(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start, GetSkillSlot()?.JiaShiIndicator ?? false);
+        => GetEntry().GetManaCost(GetJingJie(), GetJingJie() - GetEntry().LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
 
     public int GetChannelTime()
-        => GetEntry().GetChannelTime(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start, GetSkillSlot()?.JiaShiIndicator ?? false);
+        => GetEntry().GetChannelTime(GetJingJie(), GetJingJie() - GetEntry().LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
 
     public string GetName()
         => GetEntry().Name;
@@ -110,7 +110,7 @@ public class MechComposite : EmulatedSkill
         => CanvasManager.Instance.GetWuXingSprite(GetEntry().WuXing);
 
     public string GetDescription()
-        => GetEntry().Evaluate(GetJingJie(), GetJingJie() - GetEntry().JingJieRange.Start);
+        => GetEntry().Evaluate(GetJingJie(), GetJingJie() - GetEntry().LowestJingJie);
 
     public string GetAnnotationText()
     {

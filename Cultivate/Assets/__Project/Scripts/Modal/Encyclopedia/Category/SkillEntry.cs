@@ -13,7 +13,9 @@ public class SkillEntry : Entry, IAnnotation
         => Name;
 
     private CLLibrary.Range _jingJieRange;
-    public CLLibrary.Range JingJieRange => _jingJieRange;
+    public bool JingJieContains(JingJie jingJie) => _jingJieRange.Contains(jingJie);
+    public JingJie LowestJingJie => _jingJieRange.Start;
+    public JingJie HighestJingJie => _jingJieRange.End - 1;
 
     private SkillDescription _description;
 
