@@ -401,7 +401,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 2375889096817179759}
-  CanvasGroup: {fileID: 4557884469638697114}
   CardImage: {fileID: 1329710211092257050}
   ManaCostText: {fileID: 900637394284009516}
   NameText: {fileID: 2416303824457812806}

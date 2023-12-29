@@ -7,10 +7,9 @@ using CLLibrary;
 public class DesignerEnvironment
 {
     public static DesignerConfig GetDesignerConfig()
-        // => new(runEventDescriptors: new[] { WeplayConfigMap, ConfigSkillPool, WeplayRun });
-        => new(runEventDescriptors: new[] { WeplayConfigMap, ConfigSkillPool, CustomRun });
+        => new(runEventDescriptors: new[] { CustomMap, StandardSkillPool, CustomRun });
 
-    private static readonly RunEventDescriptor StandardConfigMap =
+    private static readonly RunEventDescriptor StandardMap =
         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -4, (listener, eventDetails) =>
         {
             RunEnvironment env = (RunEnvironment)listener;
@@ -46,15 +45,13 @@ public class DesignerEnvironment
             };
         });
 
-    private static readonly RunEventDescriptor CustomConfigMap =
+    private static readonly RunEventDescriptor CustomMap =
         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -4, (listener, eventDetails) =>
         {
             RunEnvironment env = (RunEnvironment)listener;
             RunDetails d = (RunDetails)eventDetails;
 
             Map map = env.Map;
-            bool firstTime = true;
-            bool exhibitionVersion = true;
 
             map.EntityPool = new();
             map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
@@ -71,21 +68,11 @@ public class DesignerEnvironment
                 // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["照相机"], null, null, null, null, null, null, null, null, null } }, // Dialog
                 // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["商店"], null, null, null, null, null, null, null, null, null } }, // Shop
                 { JingJie.ZhuJi    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
-                { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, exhibitionVersion ? "愿望单" : null } },
+                { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
                 { JingJie.YuanYing , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
                 { JingJie.HuaShen  , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
                 { JingJie.FanXu    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
             };
-
-            // map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
-            // {
-            //     { JingJie.LianQi   , new NodeEntry[] { firstTime ? "初入蓬莱" : null, null, null, null, null, null, null, null, null, null } },
-            //     { JingJie.ZhuJi    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
-            //     { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, exhibitionVersion ? "愿望单" : null } },
-            //     { JingJie.YuanYing , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
-            //     { JingJie.HuaShen  , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
-            //     { JingJie.FanXu    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
-            // };
 
             map._normalPools = new Dictionary<JingJie, CyclicPool<NodeEntry>[]>()
             {
@@ -98,7 +85,7 @@ public class DesignerEnvironment
             };
         });
 
-    private static readonly RunEventDescriptor WeplayConfigMap =
+    private static readonly RunEventDescriptor WeplayMap =
         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -4, (listener, eventDetails) =>
         {
             RunEnvironment env = (RunEnvironment)listener;
@@ -133,7 +120,7 @@ public class DesignerEnvironment
             };
         });
 
-    private static readonly RunEventDescriptor ConfigSkillPool =
+    private static readonly RunEventDescriptor StandardSkillPool =
         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -3, (listener, eventDetails) =>
         {
             RunEnvironment env = (RunEnvironment)listener;
@@ -159,8 +146,11 @@ public class DesignerEnvironment
             RunEnvironment env = (RunEnvironment)listener;
             RunDetails d = (RunDetails)eventDetails;
 
-            env.SetJingJieProcedure(JingJie.HuaShen);
-            env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
+            // env.SetJingJieProcedure(JingJie.HuaShen);
+            // env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
+
+            env.SetJingJieProcedure(JingJie.LianQi);
+            env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
         });
 
     private static readonly RunEventDescriptor WeplayRun =
