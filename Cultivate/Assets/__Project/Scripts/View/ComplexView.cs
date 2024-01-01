@@ -22,20 +22,20 @@ public class ComplexView : MonoBehaviour
 
     private void OnEnable()
     {
-        if (AnimateBehaviour != null)
-        {
-            InteractBehaviour.PointerEnterEvent += AnimateBehaviour.Hover;
-            InteractBehaviour.PointerExitEvent += AnimateBehaviour.Unhover;
-        }
+        // if (AnimateBehaviour != null)
+        // {
+        //     InteractBehaviour.PointerEnterNeuron += AnimateBehaviour.Hover;
+        //     InteractBehaviour.PointerExitNeuron += AnimateBehaviour.Unhover;
+        // }
     }
 
     private void OnDisable()
     {
-        if (AnimateBehaviour != null)
-        {
-            InteractBehaviour.PointerEnterEvent -= AnimateBehaviour.Hover;
-            InteractBehaviour.PointerExitEvent -= AnimateBehaviour.Unhover;
-        }
+        // if (AnimateBehaviour != null)
+        // {
+        //     InteractBehaviour.PointerEnterNeuron -= AnimateBehaviour.Hover;
+        //     InteractBehaviour.PointerExitNeuron -= AnimateBehaviour.Unhover;
+        // }
     }
 
     public void HoverAnimation(PointerEventData eventData)

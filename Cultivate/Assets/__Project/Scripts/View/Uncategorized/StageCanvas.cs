@@ -1,6 +1,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class StageCanvas : MonoBehaviour
@@ -27,44 +28,24 @@ public class StageCanvas : MonoBehaviour
         SkipButton.onClick.AddListener(Skip);
 
         HomeStageEntityView.SetAddress(_address.Append(".Environment.Home"));
+        HomeStageEntityView.PointerEnterBuffNeuron.Set(PointerEnterBuff);
+        HomeStageEntityView.PointerExitBuffNeuron.Set(PointerExitBuff);
+        HomeStageEntityView.PointerMoveBuffNeuron.Set(PointerMoveBuff);
+        HomeStageEntityView.PointerEnterFormationNeuron.Set(PointerEnterFormation);
+        HomeStageEntityView.PointerExitFormationNeuron.Set(PointerExitFormation);
+        HomeStageEntityView.PointerMoveFormationNeuron.Set(PointerMoveFormation);
+
         AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));
+        AwayStageEntityView.PointerEnterBuffNeuron.Set(PointerEnterBuff);
+        AwayStageEntityView.PointerExitBuffNeuron.Set(PointerExitBuff);
+        AwayStageEntityView.PointerMoveBuffNeuron.Set(PointerMoveBuff);
+        AwayStageEntityView.PointerEnterFormationNeuron.Set(PointerEnterFormation);
+        AwayStageEntityView.PointerExitFormationNeuron.Set(PointerExitFormation);
+        AwayStageEntityView.PointerMoveFormationNeuron.Set(PointerMoveFormation);
 
         TimelineView.Configure();
         // _address.Append(".Timeline");
-
-        ConfigureInteractDelegate();
     }
-
-    #region IInteractable
-
-    private InteractHandler _interactHandler;
-    public InteractHandler GetDelegate() => _interactHandler;
-    private void ConfigureInteractDelegate()
-    {
-        _interactHandler = new(2,
-            getId: view =>
-            {
-                InteractBehaviour d = view.GetComponent<InteractBehaviour>();
-                if (d is BuffInteractBehaviour)
-                    return 0;
-                if (d is StageFormationIconInteractBehaviour)
-                    return 1;
-                return null;
-            });
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((BuffInteractBehaviour)v).PointerEnter(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((BuffInteractBehaviour)v).PointerExit(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((BuffInteractBehaviour)v).PointerMove(v, d));
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 1, (v, d) => ((StageFormationIconInteractBehaviour)v).PointerEnter(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 1, (v, d) => ((StageFormationIconInteractBehaviour)v).PointerExit(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 1, (v, d) => ((StageFormationIconInteractBehaviour)v).PointerMove(v, d));
-
-        HomeStageEntityView.SetHandler(_interactHandler);
-        AwayStageEntityView.SetHandler(_interactHandler);
-    }
-
-    #endregion
 
     public void Refresh()
     {
@@ -101,5 +82,51 @@ public class StageCanvas : MonoBehaviour
 
         SpeedSlider.value = 0;
         Refresh();
+    }
+
+    private void PointerEnterBuff(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        CanvasManager.Instance.BuffAnnotation.SetAddressFromIB(ib, eventData);
+        StageManager.Instance.Pause();
+    }
+
+    private void PointerExitBuff(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        CanvasManager.Instance.BuffAnnotation.SetAddressToNull(ib, eventData);
+        StageManager.Instance.Resume();
+    }
+
+    private void PointerMoveBuff(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        CanvasManager.Instance.BuffAnnotation.UpdateMousePos(eventData.position);
+    }
+
+    private void PointerEnterFormation(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        CanvasManager.Instance.FormationAnnotation.SetAddressFromIB(ib, eventData);
+        StageManager.Instance.Pause();
+    }
+
+    private void PointerExitFormation(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        CanvasManager.Instance.FormationAnnotation.SetAddressToNull(ib, eventData);
+        StageManager.Instance.Resume();
+    }
+
+    private void PointerMoveFormation(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        CanvasManager.Instance.FormationAnnotation.UpdateMousePos(eventData.position);
     }
 }

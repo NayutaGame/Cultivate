@@ -47,11 +47,38 @@ public class DeckPanel : Panel
         SetLocked(false);
 
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
-        HandView.SetAddress(new Address("Run.Environment.Hand"));
-        FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
-        MechListView.SetAddress(new Address("Run.Environment.MechBag"));
+        FieldView.PointerEnterNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).HoverAnimation(d));
+        FieldView.PointerExitNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).UnhoverAnimation(d));
+        FieldView.PointerMoveNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).PointerMove(d));
+        FieldView.BeginDragNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).BeginDrag(d));
+        FieldView.EndDragNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).EndDrag(d));
+        FieldView.DragNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).Drag(d));
 
-        DefineInteractHandler();
+        HandView.SetAddress(new Address("Run.Environment.Hand"));
+        HandView.PointerEnterNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).HoverAnimation(d));
+        HandView.PointerExitNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).UnhoverAnimation(d));
+        HandView.PointerMoveNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).PointerMove(d));
+        HandView.BeginDragNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).BeginDrag(d));
+        HandView.EndDragNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).EndDrag(d));
+        HandView.DragNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).Drag(d));
+
+        FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
+        FormationListView.PointerEnterNeuron.Set(PointerEnterFormation);
+        FormationListView.PointerExitNeuron.Set(PointerExitFormation);
+        FormationListView.PointerMoveNeuron.Set(PointerMoveFormation);
+
+        MechListView.SetAddress(new Address("Run.Environment.MechBag"));
+        MechListView.BeginDragNeuron.Set((ib, d) => ((MechInteractBehaviour)ib).BeginDrag(d));
+        MechListView.EndDragNeuron.Set((ib, d) => ((MechInteractBehaviour)ib).EndDrag(d));
+        MechListView.DragNeuron.Set((ib, d) => ((MechInteractBehaviour)ib).Drag(d));
+
+        HandView.DropNeuron.Set(TryMerge, TryUnequip);
+
+        HandView.GetComponent<DropInteractBehaviour>().DropNeuron.Set(TryUnequip);
+
+        FieldView.DropNeuron.Set(TryEquipSkill, TrySwap, TryEquipMech);
+
+        MechListView.DropNeuron.Set(TryUnequip);
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
@@ -86,66 +113,31 @@ public class DeckPanel : Panel
 
     #region IInteractable
 
-    private InteractHandler _interactHandler;
-    public InteractHandler GetDelegate() => _interactHandler;
-    private void DefineInteractHandler()
+    private void PointerEnterFormation(InteractBehaviour ib, PointerEventData eventData)
     {
-        _interactHandler = new(5,
-            getId: d =>
-            {
-                if (d is HandSkillInteractBehaviour)
-                    return 0;
-                if (d is DropInteractBehaviour)
-                    return 1;
-                if (d is FieldSlotInteractBehaviour)
-                    return 2;
-                if (d is MechInteractBehaviour)
-                    return 3;
-                if (d is RunFormationIconInteractBehaviour)
-                    return 4;
-                return null;
-            },
-            dragDropTable: new Action<InteractBehaviour, InteractBehaviour, PointerEventData>[]
-            {
-                /*                  SkillView,  HandView,       SlotView,        Mech,       FormationView */
-                /* SkillView     */ TryMerge,   null,           TryEquipSkill,   null,       null,
-                /* HandView      */ null,       null,           null,            null,       null,
-                /* SlotView      */ TryUnequip, TryUnequip,     TrySwap,         TryUnequip, null,
-                /* Mech          */ null,       null,           TryEquipMech,    null,       null,
-                /* FormationView */ null,       null,           null,            null,       null,
-            });
+        if (eventData.dragging) return;
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((HandSkillInteractBehaviour)v).HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((HandSkillInteractBehaviour)v).UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((HandSkillInteractBehaviour)v).PointerMove(d));
-        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 0, (v, d) => ((HandSkillInteractBehaviour)v).BeginDrag(d));
-        _interactHandler.SetHandle(InteractHandler.END_DRAG, 0, (v, d) => ((HandSkillInteractBehaviour)v).EndDrag(d));
-        _interactHandler.SetHandle(InteractHandler.DRAG, 0, (v, d) => ((HandSkillInteractBehaviour)v).Drag(d));
+        CanvasManager.Instance.FormationAnnotation.SetAddressFromIB(ib, eventData);
+    }
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 2, (v, d) => ((FieldSlotInteractBehaviour)v).HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 2, (v, d) => ((FieldSlotInteractBehaviour)v).UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 2, (v, d) => ((FieldSlotInteractBehaviour)v).PointerMove(d));
-        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 2, (v, d) => ((FieldSlotInteractBehaviour)v).BeginDrag(d));
-        _interactHandler.SetHandle(InteractHandler.END_DRAG, 2, (v, d) => ((FieldSlotInteractBehaviour)v).EndDrag(d));
-        _interactHandler.SetHandle(InteractHandler.DRAG, 2, (v, d) => ((FieldSlotInteractBehaviour)v).Drag(d));
+    private void PointerExitFormation(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
 
-        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 3, (v, d) => ((MechInteractBehaviour)v).BeginDrag(d));
-        _interactHandler.SetHandle(InteractHandler.END_DRAG, 3, (v, d) => ((MechInteractBehaviour)v).EndDrag(d));
-        _interactHandler.SetHandle(InteractHandler.DRAG, 3, (v, d) => ((MechInteractBehaviour)v).Drag(d));
+        CanvasManager.Instance.FormationAnnotation.SetAddressToNull(ib, eventData);
+    }
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 4, (v, d) => ((RunFormationIconInteractBehaviour)v).PointerEnter(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 4, (v, d) => ((RunFormationIconInteractBehaviour)v).PointerExit(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 4, (v, d) => ((RunFormationIconInteractBehaviour)v).PointerMove(v, d));
+    private void PointerMoveFormation(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
 
-        FieldView.SetHandler(_interactHandler);
-        HandView.SetHandler(_interactHandler);
-        HandView.GetComponent<DropInteractBehaviour>().SetHandler(_interactHandler);
-        FormationListView.SetHandler(_interactHandler);
-        MechListView.SetHandler(_interactHandler);
+        CanvasManager.Instance.FormationAnnotation.UpdateMousePos(eventData.position);
     }
 
     private void TryMerge(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
+        if (!(from is HandSkillInteractBehaviour))
+            return;
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         RunSkill lhs = from.ComplexView.AddressBehaviour.Get<RunSkill>();
         RunSkill rhs = to.ComplexView.AddressBehaviour.Get<RunSkill>();
@@ -163,6 +155,8 @@ public class DeckPanel : Panel
 
     private void TryEquipSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
+        if (!(from is HandSkillInteractBehaviour))
+            return;
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         RunSkill toEquip = from.ComplexView.AddressBehaviour.Get<RunSkill>();
         SkillSlot slot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
@@ -184,6 +178,8 @@ public class DeckPanel : Panel
 
     private void TryEquipMech(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
+        if (!(from is MechInteractBehaviour))
+            return;
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         Mech toEquip = from.ComplexView.AddressBehaviour.Get<Mech>();
         SkillSlot slot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
@@ -202,6 +198,8 @@ public class DeckPanel : Panel
 
     private void TryUnequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
+        if (!(from is FieldSlotInteractBehaviour))
+            return;
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         SkillSlot slot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
         UnequipResult result = env.TryUnequip(slot, null);
@@ -229,6 +227,9 @@ public class DeckPanel : Panel
 
     private void TrySwap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
+        if (!(from is FieldSlotInteractBehaviour))
+            return;
+
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         SkillSlot fromSlot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
         SkillSlot toSlot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();

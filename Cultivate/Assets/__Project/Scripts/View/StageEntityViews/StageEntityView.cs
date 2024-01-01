@@ -1,6 +1,8 @@
 
+using CLLibrary;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class StageEntityView : LegacyAddressBehaviour
 {
@@ -14,7 +16,14 @@ public class StageEntityView : LegacyAddressBehaviour
         base.SetAddress(address);
 
         Formations.SetAddress(GetAddress().Append(".Formations"));
+        Formations.PointerEnterNeuron.Set(PointerEnterBuffNeuron);
+        Formations.PointerEnterNeuron.Set(PointerExitBuffNeuron);
+        Formations.PointerEnterNeuron.Set(PointerMoveBuffNeuron);
+
         Buffs.SetAddress(GetAddress().Append(".Buffs"));
+        Buffs.PointerEnterNeuron.Set(PointerEnterFormationNeuron);
+        Buffs.PointerEnterNeuron.Set(PointerExitFormationNeuron);
+        Buffs.PointerEnterNeuron.Set(PointerMoveFormationNeuron);
     }
 
     public override void Refresh()
@@ -36,17 +45,11 @@ public class StageEntityView : LegacyAddressBehaviour
         }
     }
 
-    // TODO: to be removed
-    #region IInteractable
+    public Neuron<InteractBehaviour, PointerEventData> PointerEnterBuffNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerExitBuffNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerMoveBuffNeuron = new();
 
-    private InteractHandler _interactHandler;
-    public InteractHandler GetHandler() => _interactHandler;
-    public void SetHandler(InteractHandler interactHandler)
-    {
-        _interactHandler = interactHandler;
-        Formations.SetHandler(_interactHandler);
-        Buffs.SetHandler(_interactHandler);
-    }
-
-    #endregion
+    public Neuron<InteractBehaviour, PointerEventData> PointerEnterFormationNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerExitFormationNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerMoveFormationNeuron = new();
 }

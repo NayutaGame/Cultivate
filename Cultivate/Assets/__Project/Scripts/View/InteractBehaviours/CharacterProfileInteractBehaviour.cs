@@ -1,7 +1,4 @@
 
 using UnityEngine.EventSystems;
 
-public class CharacterProfileInteractBehaviour : InteractBehaviour, IPointerClickHandler
-{
-
-}
+public class CharacterProfileInteractBehaviour : InteractBehaviour, IPointerClickHandler { }

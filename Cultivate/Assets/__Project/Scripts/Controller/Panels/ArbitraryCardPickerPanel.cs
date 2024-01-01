@@ -25,11 +25,13 @@ public class ArbitraryCardPickerPanel : Panel
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
-        ConfigureInteractDelegate();
         _selections = new List<SkillView>();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
-        SkillListView.SetHandler(_interactHandler);
+        SkillListView.PointerEnterNeuron.Set((ib, d) => ((StandardSkillInteractBehaviour)ib).HoverAnimation(d));
+        SkillListView.PointerExitNeuron.Set((ib, d) => ((StandardSkillInteractBehaviour)ib).UnhoverAnimation(d));
+        SkillListView.PointerMoveNeuron.Set((ib, d) => ((StandardSkillInteractBehaviour)ib).PointerMove(d));
+        SkillListView.LeftClickNeuron.Set((ib, d) => ToggleSkill(ib, d));
     }
 
     public void OnDisable()
@@ -50,19 +52,6 @@ public class ArbitraryCardPickerPanel : Panel
         ConfirmButton.interactable = d.Range.Contains(_selections.Count);
 
         SkillListView.Refresh();
-    }
-
-    private InteractHandler _interactHandler;
-    private void ConfigureInteractDelegate()
-    {
-        _interactHandler = new InteractHandler(1,
-            getId: view => 0
-        );
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StandardSkillInteractBehaviour)v).HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StandardSkillInteractBehaviour)v).UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StandardSkillInteractBehaviour)v).PointerMove(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, (v, d) => ToggleSkill(v, d));
     }
 
     private bool ToggleSkill(InteractBehaviour view, PointerEventData eventData)

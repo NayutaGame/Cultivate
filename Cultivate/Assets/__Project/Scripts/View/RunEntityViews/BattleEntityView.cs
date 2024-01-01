@@ -1,4 +1,6 @@
 
+using UnityEngine.EventSystems;
+
 public class BattleEntityView : LegacyAddressBehaviour
 {
     public ListView FieldView;
@@ -8,9 +10,14 @@ public class BattleEntityView : LegacyAddressBehaviour
     {
         base.SetAddress(address);
         FieldView.SetAddress(GetAddress().Append(".Slots"));
-        FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
+        FieldView.PointerEnterNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).HoverAnimation(d));
+        FieldView.PointerExitNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).UnhoverAnimation(d));
+        FieldView.PointerMoveNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).PointerMove(d));
 
-        ConfigureInteractDelegate();
+        FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
+        FormationListView.PointerEnterNeuron.Set(PointerEnterFormation);
+        FormationListView.PointerExitNeuron.Set(PointerExitFormation);
+        FormationListView.PointerMoveNeuron.Set(PointerMoveFormation);
     }
 
     public override void Refresh()
@@ -20,34 +27,24 @@ public class BattleEntityView : LegacyAddressBehaviour
         FormationListView.Refresh();
     }
 
-    #region IInteractable
-
-    private InteractHandler _interactHandler;
-    public InteractHandler GetDelegate() => _interactHandler;
-    private void ConfigureInteractDelegate()
+    private void PointerEnterFormation(InteractBehaviour ib, PointerEventData eventData)
     {
-        _interactHandler = new(2,
-            getId: view =>
-            {
-                InteractBehaviour d = view.GetComponent<InteractBehaviour>();
-                if (d is FieldSlotInteractBehaviour)
-                    return 0;
-                if (d is RunFormationIconInteractBehaviour)
-                    return 1;
-                return null;
-            });
+        if (eventData.dragging) return;
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((FieldSlotInteractBehaviour)v).HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((FieldSlotInteractBehaviour)v).UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((FieldSlotInteractBehaviour)v).PointerMove(d));
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 1, (v, d) => ((RunFormationIconInteractBehaviour)v).PointerEnter(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 1, (v, d) => ((RunFormationIconInteractBehaviour)v).PointerExit(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 1, (v, d) => ((RunFormationIconInteractBehaviour)v).PointerMove(v, d));
-
-        FieldView.SetHandler(_interactHandler);
-        FormationListView.SetHandler(_interactHandler);
+        CanvasManager.Instance.FormationAnnotation.SetAddressFromIB(ib, eventData);
     }
 
-    #endregion
+    private void PointerExitFormation(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        CanvasManager.Instance.FormationAnnotation.SetAddressToNull(ib, eventData);
+    }
+
+    private void PointerMoveFormation(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        CanvasManager.Instance.FormationAnnotation.UpdateMousePos(eventData.position);
+    }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TimelineView : MonoBehaviour
@@ -43,36 +44,20 @@ public class TimelineView : MonoBehaviour
     {
         ClearViews();
         _views = new List<StageSkillView>();
-        ConfigureInteractDelegate();
+        foreach (var v in _views)
+            ConfigureNeuron(v.GetComponent<StageSkillInteractBehaviour>());
 
         TotalCount = HomeSlots.Length;
         FutureCount = HomeSlots.Length - (IndexOfCurr + 1);
         PastCount = IndexOfCurr;
     }
 
-    #region IInteractable
-
-    private InteractHandler _interactHandler;
-    public InteractHandler GetDelegate() => _interactHandler;
-    private void ConfigureInteractDelegate()
+    private void ConfigureNeuron(StageSkillInteractBehaviour stageSkillIb)
     {
-        _interactHandler = new(1,
-            getId: view =>
-            {
-                if (view.GetComponent<StageSkillInteractBehaviour>() != null)
-                    return 0;
-                return null;
-            });
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StageSkillInteractBehaviour)v).PointerEnter(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StageSkillInteractBehaviour)v).PointerExit(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StageSkillInteractBehaviour)v).PointerMove(v, d));
-
-        foreach (var v in _views)
-            v.GetComponent<StageSkillInteractBehaviour>().SetHandler(_interactHandler);
+        stageSkillIb.PointerEnterNeuron.Set(PointerEnter);
+        stageSkillIb.PointerExitNeuron.Set(PointerExit);
+        stageSkillIb.PointerMoveNeuron.Set(PointerMove);
     }
-
-    #endregion
 
     public void InitialSetup()
     {
@@ -89,7 +74,7 @@ public class TimelineView : MonoBehaviour
             v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
             v.SetAddress(new Address($"Stage.Timeline.Notes#{note.TemporalIndex}"));
-            v.GetComponent<StageSkillInteractBehaviour>().SetHandler(_interactHandler);
+            ConfigureNeuron(v.GetComponent<StageSkillInteractBehaviour>());
             v.Refresh();
         }
     }
@@ -162,7 +147,28 @@ public class TimelineView : MonoBehaviour
         v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
         v.SetAddress(new Address($"Stage.Timeline.Notes#{toCreate.TemporalIndex}"));
-        v.GetComponent<StageSkillInteractBehaviour>().SetHandler(_interactHandler);
+        ConfigureNeuron(v.GetComponent<StageSkillInteractBehaviour>());
         v.Refresh();
+    }
+
+    private void PointerEnter(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+
+        CanvasManager.Instance.SkillAnnotation.SetAddress(GetComponent<LegacyAddressBehaviour>().GetAddress());
+        StageManager.Instance.Pause();
+    }
+
+    private void PointerExit(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
+        StageManager.Instance.Resume();
+    }
+
+    private void PointerMove(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(eventData.position);
     }
 }

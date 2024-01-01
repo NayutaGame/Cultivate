@@ -26,18 +26,47 @@ public class EntityEditorPanel : Panel
     [SerializeField] private Button SaveButton;
     [SerializeField] private Button LoadButton;
 
-    private InteractHandler _interactHandler;
-
     public override void Configure()
     {
         base.Configure();
 
         EntityBrowser.SetAddress(new Address("Editor.EntityEditableList"));
-        SkillBrowser.SetAddress(new Address("SkillInventory"));
-        AwayEntityView.SetAddress(null);
-        HomeEntityView.SetAddress(new Address("Editor.Home"));
+        EntityBrowser.LeftClickNeuron.Set(SelectEntity);
 
-        DefineInteractHandler();
+        SkillBrowser.SetAddress(new Address("SkillInventory"));
+        SkillBrowser.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB);
+        SkillBrowser.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        SkillBrowser.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        SkillBrowser.BeginDragNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
+            CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+
+        AwayEntityView.SetAddress(null);
+        AwayEntityView.PointerEnterSlotNeuron.Set(ShowSkillAnnotationFromSlotView);
+        AwayEntityView.PointerExitSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        AwayEntityView.PointerMoveSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        AwayEntityView.BeginDragSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
+            CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        AwayEntityView.RightClickSlotNeuron.Set(IncreaseJingJie);
+        AwayEntityView.PointerEnterFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
+        AwayEntityView.PointerExitFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        AwayEntityView.PointerMoveFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
+
+        HomeEntityView.SetAddress(new Address("Editor.Home"));
+        HomeEntityView.PointerEnterSlotNeuron.Set(ShowSkillAnnotationFromSlotView);
+        HomeEntityView.PointerExitSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        HomeEntityView.PointerMoveSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        HomeEntityView.BeginDragSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
+            CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        HomeEntityView.RightClickSlotNeuron.Set(IncreaseJingJie);
+        HomeEntityView.PointerEnterFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
+        HomeEntityView.PointerExitFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        HomeEntityView.PointerMoveFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
+
+        AwayEntityView.DropSlotNeuron.Set(Equip, Swap);
+
+        HomeEntityView.DropSlotNeuron.Set(Equip, Swap);
+
+        SkillBrowser.DropNeuron.Set(Unequip);
 
         CopyToTopButton.onClick.RemoveAllListeners();
         CopyToTopButton.onClick.AddListener(CopyToTop);
@@ -83,53 +112,11 @@ public class EntityEditorPanel : Panel
         AwayEntityView.Refresh();
     }
 
-    private void DefineInteractHandler()
-    {
-        _interactHandler = new(4,
-            getId: view =>
-            {
-                InteractBehaviour d = view.GetComponent<InteractBehaviour>();
-                if (d is EntityBarInteractBehaviour)
-                    return 0;
-                if (d is EntityEditorSkillBarInteractBehaviour)
-                    return 1;
-                if (d is EntityEditorSlotInteractBehaviour)
-                    return 2;
-                if (d is RunFormationIconInteractBehaviour)
-                    return 3;
-                return null;
-            });
-
-        _interactHandler.SetDragDrop(1, 2, Equip);
-        _interactHandler.SetDragDrop(2, 1, Unequip);
-        _interactHandler.SetDragDrop(2, 2, Swap);
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, SelectEntity);
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 1, ShowSkillAnnotation);
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 1, HideSkillAnnotation);
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 1, MoveSkillAnnotation);
-        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 1, BeginDrag);
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 2, ShowSkillAnnotationFromSlotView);
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 2, HideSkillAnnotation);
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 2, MoveSkillAnnotation);
-        _interactHandler.SetHandle(InteractHandler.BEGIN_DRAG, 2, BeginDrag);
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_RIGHT_CLICK, 2, IncreaseJingJie);
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 3, ShowFormationAnnotation);
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 3, HideFormationAnnotation);
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 3, MoveFormationAnnotation);
-
-        EntityBrowser.SetHandler(_interactHandler);
-        SkillBrowser.SetHandler(_interactHandler);
-        AwayEntityView.SetHandler(_interactHandler);
-        HomeEntityView.SetHandler(_interactHandler);
-    }
-
     private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
+        if (!(from is EntityEditorSkillBarInteractBehaviour))
+            return;
+
         // SkillBarView -> EntityEditorSlotView
         RunSkill skill = from.ComplexView.AddressBehaviour.Get<RunSkill>();
         SkillSlot slot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
@@ -140,6 +127,9 @@ public class EntityEditorPanel : Panel
 
     private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
+        if (!(from is EntityEditorSlotInteractBehaviour))
+            return;
+
         // EntityEditorSlotView -> SkillBarView
         SkillSlot slot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
 
@@ -149,6 +139,9 @@ public class EntityEditorPanel : Panel
 
     private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
+        if (!(from is EntityEditorSlotInteractBehaviour))
+            return;
+
         // EntityEditorSlotView -> EntityEditorSlotView
         SkillSlot fromSlot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
         SkillSlot toSlot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
@@ -165,59 +158,9 @@ public class EntityEditorPanel : Panel
         CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
-    private void ShowSkillAnnotation(InteractBehaviour interactBehaviour, PointerEventData eventData)
+    private void ShowSkillAnnotationFromSlotView(InteractBehaviour ib, PointerEventData eventData)
     {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.SkillAnnotation.SetAddress(interactBehaviour.ComplexView.AddressBehaviour.GetAddress());
-    }
-
-    private void ShowSkillAnnotationFromSlotView(InteractBehaviour interactBehaviour, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.SkillAnnotation.SetAddress(interactBehaviour.ComplexView.AddressBehaviour.GetAddress().Append(".Skill"));
-    }
-
-    private void HideSkillAnnotation(InteractBehaviour interactBehaviour, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
-    }
-
-    private void MoveSkillAnnotation(InteractBehaviour interactBehaviour, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(eventData.position);
-    }
-
-    private void ShowFormationAnnotation(InteractBehaviour interactBehaviour, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.SetAddress(interactBehaviour.ComplexView.AddressBehaviour.GetAddress());
-    }
-
-    private void HideFormationAnnotation(InteractBehaviour interactBehaviour, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.SetAddress(null);
-    }
-
-    private void MoveFormationAnnotation(InteractBehaviour interactBehaviour, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.UpdateMousePos(eventData.position);
-    }
-
-    private void BeginDrag(InteractBehaviour interactBehaviour, PointerEventData eventData)
-    {
-        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
-        CanvasManager.Instance.FormationAnnotation.SetAddress(null);
+        CanvasManager.Instance.SkillAnnotation.SetAddress(ib.ComplexView.AddressBehaviour.GetAddress().Append(".Skill"));
     }
 
     private void SelectEntity(InteractBehaviour interactBehaviour, PointerEventData eventData)

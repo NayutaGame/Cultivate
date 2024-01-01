@@ -32,8 +32,8 @@ public class RunConfigPanel : CurtainPanel
         StartRunButton.onClick.RemoveAllListeners();
         StartRunButton.onClick.AddListener(StartRun);
 
-        DefineInteractHandler();
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
+        CharacterListView.LeftClickNeuron.Set(SelectCharacterProfile);
         SelectCharacterProfile(0);
     }
 
@@ -44,27 +44,6 @@ public class RunConfigPanel : CurtainPanel
         CharacterListView.Refresh();
         DetailedCharacterProfileView.Refresh();
     }
-
-    #region IInteractable
-
-    private InteractHandler _interactHandler;
-    public InteractHandler GetDelegate() => _interactHandler;
-    private void DefineInteractHandler()
-    {
-        _interactHandler = new(1,
-            getId: d =>
-            {
-                if (d is CharacterProfileInteractBehaviour)
-                    return 0;
-                return null;
-            });
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, SelectCharacterProfile);
-
-        CharacterListView.SetHandler(_interactHandler);
-    }
-
-    #endregion
 
     private void Return()
     {

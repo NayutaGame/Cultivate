@@ -1,5 +1,5 @@
 
-using System;
+using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -20,27 +20,38 @@ public abstract class InteractBehaviour : MonoBehaviour
         SetOpaque(true);
     }
 
-    private InteractHandler _interactHandler;
-    public InteractHandler GetHandler() => _interactHandler;
-    public void SetHandler(InteractHandler interactHandler) => _interactHandler = interactHandler;
+    public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerMoveNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> BeginDragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> EndDragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
 
-    public event Action<PointerEventData> PointerEnterEvent;
-    public event Action<PointerEventData> PointerExitEvent;
-    public event Action<PointerEventData> PointerMoveEvent;
-    public event Action<PointerEventData> BeginDragEvent;
-    public event Action<PointerEventData> EndDragEvent;
-    public event Action<PointerEventData> DragEvent;
-    public event Action<PointerEventData> LeftClickEvent;
-    public event Action<PointerEventData> RightClickEvent;
-    public event Action<PointerEventData, InteractBehaviour> DropEvent;
+    public virtual void OnPointerEnter(PointerEventData eventData)
+    {
+        if (!eventData.dragging)
+            PointerEnterNeuron.Invoke(this, eventData);
+    }
 
-    public virtual void OnPointerEnter(PointerEventData eventData) => PointerEnterEvent?.Invoke(eventData);
-    public virtual void OnPointerExit(PointerEventData eventData) => PointerExitEvent?.Invoke(eventData);
-    public virtual void OnPointerMove(PointerEventData eventData) => PointerMoveEvent?.Invoke(eventData);
-    public virtual void OnBeginDrag(PointerEventData eventData) => BeginDragEvent?.Invoke(eventData);
-    public virtual void OnEndDrag(PointerEventData eventData) => EndDragEvent?.Invoke(eventData);
-    public virtual void OnDrag(PointerEventData eventData) => DragEvent?.Invoke(eventData);
-    public virtual void OnDrop(PointerEventData eventData)
+    public virtual void OnPointerExit (PointerEventData eventData)
+    {
+        if (!eventData.dragging)
+            PointerExitNeuron.Invoke(this, eventData);
+    }
+
+    public virtual void OnPointerMove (PointerEventData eventData)
+    {
+        if (!eventData.dragging)
+            PointerMoveNeuron.Invoke(this, eventData);
+    }
+
+    public virtual void OnBeginDrag   (PointerEventData eventData) => BeginDragNeuron   .Invoke(this, eventData);
+    public virtual void OnEndDrag     (PointerEventData eventData) => EndDragNeuron     .Invoke(this, eventData);
+    public virtual void OnDrag        (PointerEventData eventData) => DragNeuron        .Invoke(this, eventData);
+    public virtual void OnDrop        (PointerEventData eventData)
     {
         if (eventData.pointerDrag == gameObject)
             return;
@@ -48,15 +59,15 @@ public abstract class InteractBehaviour : MonoBehaviour
         InteractBehaviour dragged = eventData.pointerDrag.GetComponent<InteractBehaviour>();
 
         if (dragged != null)
-            DropEvent?.Invoke(eventData, dragged);
+            DropNeuron.Invoke(this, dragged, eventData);
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left) {
-            LeftClickEvent?.Invoke(eventData);
+            LeftClickNeuron.Invoke(this, eventData);
         } else if (eventData.button == PointerEventData.InputButton.Right) {
-            RightClickEvent?.Invoke(eventData);
+            RightClickNeuron.Invoke(this, eventData);
         }
     }
 }

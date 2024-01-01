@@ -2,6 +2,7 @@
 using CLLibrary;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class EntityEditorEntityView : LegacyAddressBehaviour
@@ -27,28 +28,19 @@ public class EntityEditorEntityView : LegacyAddressBehaviour
         EliteToggle.onValueChanged.RemoveAllListeners();
         BossToggle.onValueChanged.RemoveAllListeners();
 
-        if (address == null)
-        {
-            EntityDropdown.gameObject.SetActive(false);
-            JingJieDropdown.gameObject.SetActive(false);
-            HealthInputField.gameObject.SetActive(false);
-            NormalToggle.gameObject.SetActive(false);
-            EliteToggle.gameObject.SetActive(false);
-            BossToggle.gameObject.SetActive(false);
-            FieldView.gameObject.SetActive(false);
-            FormationListView.gameObject.SetActive(false);
+        bool addressIsNull = address == null;
 
+        EntityDropdown.gameObject.SetActive(!addressIsNull);
+        JingJieDropdown.gameObject.SetActive(!addressIsNull);
+        HealthInputField.gameObject.SetActive(!addressIsNull);
+        NormalToggle.gameObject.SetActive(!addressIsNull);
+        EliteToggle.gameObject.SetActive(!addressIsNull);
+        BossToggle.gameObject.SetActive(!addressIsNull);
+        FieldView.gameObject.SetActive(!addressIsNull);
+        FormationListView.gameObject.SetActive(!addressIsNull);
+
+        if (addressIsNull)
             return;
-        }
-
-        EntityDropdown.gameObject.SetActive(true);
-        JingJieDropdown.gameObject.SetActive(true);
-        HealthInputField.gameObject.SetActive(true);
-        NormalToggle.gameObject.SetActive(true);
-        EliteToggle.gameObject.SetActive(true);
-        BossToggle.gameObject.SetActive(true);
-        FieldView.gameObject.SetActive(true);
-        FormationListView.gameObject.SetActive(true);
 
         if (EntityDropdown != null)
         {
@@ -74,10 +66,23 @@ public class EntityEditorEntityView : LegacyAddressBehaviour
         BossToggle.onValueChanged.AddListener(BossToggled);
 
         if (FieldView != null)
+        {
             FieldView.SetAddress(GetAddress().Append(".Slots"));
+            FieldView.PointerEnterNeuron.Set(PointerEnterSlotNeuron);
+            FieldView.PointerExitNeuron.Set(PointerExitSlotNeuron);
+            FieldView.PointerMoveNeuron.Set(PointerMoveSlotNeuron);
+            FieldView.BeginDragNeuron.Set(BeginDragSlotNeuron);
+            FieldView.RightClickNeuron.Set(RightClickSlotNeuron);
+            FieldView.DropNeuron.Set(DropSlotNeuron);
+        }
 
         if (FormationListView != null)
+        {
             FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
+            FormationListView.PointerEnterNeuron.Set(PointerEnterFormationNeuron);
+            FormationListView.PointerExitNeuron.Set(PointerExitFormationNeuron);
+            FormationListView.PointerMoveNeuron.Set(PointerMoveFormationNeuron);
+        }
     }
 
     #region Accessors
@@ -177,18 +182,13 @@ public class EntityEditorEntityView : LegacyAddressBehaviour
         Refresh();
     }
 
-    #region IInteractable
-
-    private InteractHandler _interactHandler;
-    public InteractHandler GetHandler() => _interactHandler;
-    public void SetHandler(InteractHandler interactHandler)
-    {
-        _interactHandler = interactHandler;
-        if (FieldView != null)
-            FieldView.SetHandler(_interactHandler);
-        if (FormationListView != null)
-            FormationListView.SetHandler(_interactHandler);
-    }
-
-    #endregion
+    public Neuron<InteractBehaviour, PointerEventData> PointerEnterSlotNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerExitSlotNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerMoveSlotNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> BeginDragSlotNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> RightClickSlotNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropSlotNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerEnterFormationNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerExitFormationNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerMoveFormationNeuron = new();
 }

@@ -1,5 +1,4 @@
 
-using System;
 using TMPro;
 using UnityEngine.EventSystems;
 
@@ -9,8 +8,6 @@ public class ArenaPanel : Panel
     public ArenaEditorView ArenaEditorView;
     public ArenaScoreboardView ArenaScoreboardView;
     public TMP_Text ReportView;
-
-    private InteractHandler _interactHandler;
 
     private Address _address;
 
@@ -23,33 +20,33 @@ public class ArenaPanel : Panel
         ConfigureInteractDelegate();
 
         SkillInventoryView.SetAddress(new Address("App.SkillInventory"));
-        SkillInventoryView.SetHandler(_interactHandler);
+        // SkillInventoryView.SetHandler(_interactHandler);
 
         ArenaEditorView.SetAddress(_address);
-        ArenaEditorView.SetHandler(_interactHandler);
+        // ArenaEditorView.SetHandler(_interactHandler);
 
         ArenaScoreboardView.Configure();
     }
 
     private void ConfigureInteractDelegate()
     {
-        _interactHandler = new(2,
-            getId: view =>
-            {
-                object item = view.GetComponent<LegacyAddressBehaviour>().Get<object>();
-                if (item is RunSkill)
-                    return 0;
-                if (item is SkillSlot)
-                    return 1;
-                return null;
-            },
-            dragDropTable: new Action<InteractBehaviour, InteractBehaviour, PointerEventData>[]
-            {
-                /*               RunSkill,   SkillSlot */
-                /* RunSkill   */ null,       TryWrite,
-                /* SkillSlot  */ null,       TryWrite,
-            });
-        _interactHandler.SetHandle(InteractHandler.POINTER_RIGHT_CLICK, 1, (v, d) => TryIncreaseJingJie(v, d));
+        // _interactHandler = new(2,
+        //     getId: view =>
+        //     {
+        //         object item = view.GetComponent<LegacyAddressBehaviour>().Get<object>();
+        //         if (item is RunSkill)
+        //             return 0;
+        //         if (item is SkillSlot)
+        //             return 1;
+        //         return null;
+        //     },
+        //     dragDropTable: new Action<InteractBehaviour, InteractBehaviour, PointerEventData>[]
+        //     {
+        //         /*               RunSkill,   SkillSlot */
+        //         /* RunSkill   */ null,       TryWrite,
+        //         /* SkillSlot  */ null,       TryWrite,
+        //     });
+        // _interactHandler.SetHandle(InteractHandler.POINTER_RIGHT_CLICK, 1, (v, d) => TryIncreaseJingJie(v, d));
     }
 
     public override void Refresh()

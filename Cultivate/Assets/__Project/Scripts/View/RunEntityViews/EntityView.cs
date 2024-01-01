@@ -33,16 +33,12 @@ public class EntityView : LegacyAddressBehaviour
             SlotListView.Refresh();
     }
 
-    #region IInteractable
-
-    private InteractHandler _interactHandler;
-    public InteractHandler GetHandler() => _interactHandler;
-    public void SetHandler(InteractHandler interactHandler)
-    {
-        _interactHandler = interactHandler;
-        if (SlotListView != null)
-            SlotListView.SetHandler(_interactHandler);
-    }
-
-    #endregion
+    // private InteractHandler _interactHandler;
+    // public InteractHandler GetHandler() => _interactHandler;
+    // public void SetHandler(InteractHandler interactHandler)
+    // {
+    //     _interactHandler = interactHandler;
+    //     if (SlotListView != null)
+    //         SlotListView.SetHandler(_interactHandler);
+    // }
 }

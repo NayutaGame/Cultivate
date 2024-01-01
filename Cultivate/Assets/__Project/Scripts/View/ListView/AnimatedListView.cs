@@ -22,11 +22,11 @@ public class AnimatedListView : ListView
         return task;
     }
 
-    public override void SetHandler(InteractHandler interactHandler)
-    {
-        _interactHandler = interactHandler;
-        Traversal().Do(itemView => itemView.GetComponent<AnimatedItemView>().InteractBehaviour.SetHandler(_interactHandler));
-    }
+    // public override void SetHandler(InteractHandler interactHandler)
+    // {
+    //     _interactHandler = interactHandler;
+    //     Traversal().Do(itemView => itemView.GetComponent<AnimatedItemView>().InteractBehaviour.SetHandler(_interactHandler));
+    // }
 
     #region Atomic Operations
 
@@ -41,7 +41,7 @@ public class AnimatedListView : ListView
         InteractBehaviour interactBehaviour = animatedItemView.InteractBehaviour;
         interactBehaviour.gameObject.transform.SetParent(PivotHolder);
         interactBehaviour.gameObject.name = Traversal().Count().ToString();
-        interactBehaviour.SetHandler(_interactHandler);
+        // interactBehaviour.SetHandler(_interactHandler);
     }
 
     protected override ItemView EnableItemView(int prefabIndex, int orderInPool, int index)

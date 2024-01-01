@@ -14,26 +14,15 @@ public class ShopPanel : Panel
     {
         base.Configure();
 
-        ConfigureInteractDelegate();
-
         _address = new Address("Run.Environment.ActivePanel");
         CommodityListView.SetAddress(_address.Append(".Commodities"));
-        CommodityListView.SetHandler(_interactHandler);
+        CommodityListView.PointerEnterNeuron.Set((ib, d) => ((CommodityItemInteractBehaviour)ib).SkillView.HoverAnimation(d));
+        CommodityListView.PointerExitNeuron.Set((ib, d) => ((CommodityItemInteractBehaviour)ib).SkillView.UnhoverAnimation(d));
+        CommodityListView.PointerMoveNeuron.Set((ib, d) => ((CommodityItemInteractBehaviour)ib).SkillView.PointerMove(d));
+        CommodityListView.LeftClickNeuron.Set((ib, d) => BuySkill(ib, d));
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
-    }
-
-    private InteractHandler _interactHandler;
-    private void ConfigureInteractDelegate()
-    {
-        _interactHandler = new InteractHandler(1,
-            getId: view => 0);
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((CommodityItemInteractBehaviour)v).SkillView.HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((CommodityItemInteractBehaviour)v).SkillView.UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((CommodityItemInteractBehaviour)v).SkillView.PointerMove(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, (v, d) => BuySkill(v, d));
     }
 
     public override void Refresh()

@@ -9,8 +9,6 @@ public class DiscoverSkillPanel : Panel
     public TMP_Text DetailedText;
     public SkillView[] SkillViews;
 
-    private InteractHandler _interactHandler;
-
     private Address _address;
 
     public override void Configure()
@@ -18,19 +16,23 @@ public class DiscoverSkillPanel : Panel
         base.Configure();
 
         _address = new Address("Run.Environment.ActivePanel");
+        SkillViews.Do(v =>
+        {
+            InteractBehaviour ib = v.GetComponent<InteractBehaviour>();
+            if (ib == null)
+                return;
 
-        ConfigureInteractDelegate();
-        SkillViews.Do(v => v.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
-    }
+            ib.PointerEnterNeuron.Set(
+                CanvasManager.Instance.SkillAnnotation.SetAddressFromIB,
+                PointerEnter);
 
-    private void ConfigureInteractDelegate()
-    {
-        _interactHandler = new InteractHandler(1, getId: view => 0);
+            ib.PointerExitNeuron.Set(
+                CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
+                PointerExit);
 
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((DiscoverSkillInteractBehaviour)v).HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((DiscoverSkillInteractBehaviour)v).UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((DiscoverSkillInteractBehaviour)v).PointerMove(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_LEFT_CLICK, 0, (v, d) => TrySelectOption(v, d));
+            ib.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+            ib.LeftClickNeuron.Set(TrySelectOption);
+        });
     }
 
     public override void Refresh()
@@ -54,15 +56,24 @@ public class DiscoverSkillPanel : Panel
         }
     }
 
-    public bool TrySelectOption(InteractBehaviour interactBehaviour, PointerEventData eventData)
+    private void PointerEnter(InteractBehaviour ib, PointerEventData eventData)
+    {
+        AudioManager.Play("CardHover");
+        ib.ComplexView.AnimateBehaviour.SetPivot(ib.ComplexView.PivotBehaviour.HoverPivot);
+    }
+
+    private void PointerExit(InteractBehaviour ib, PointerEventData eventData)
+    {
+        ib.ComplexView.AnimateBehaviour.SetPivot(ib.ComplexView.PivotBehaviour.IdlePivot);
+    }
+
+    private void TrySelectOption(InteractBehaviour ib, PointerEventData eventData)
     {
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
-        RunSkill skill = interactBehaviour.ComplexView.AddressBehaviour.Get<RunSkill>();
+        RunSkill skill = ib.ComplexView.AddressBehaviour.Get<RunSkill>();
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
-        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
-        CanvasManager.Instance.SkillAnnotation.Refresh();
-        return true;
+        CanvasManager.Instance.SkillAnnotation.SetAddressToNull(ib, eventData);
     }
 }

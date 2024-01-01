@@ -1,4 +1,6 @@
 
+using UnityEngine.EventSystems;
+
 public class SkillBrowserPanel : Panel
 {
     public SkillInventoryView SkillInventoryView;
@@ -7,36 +9,32 @@ public class SkillBrowserPanel : Panel
     {
         base.Configure();
         SkillInventoryView.SetAddress(new Address("App.SkillInventory"));
-
-        ConfigureInteractDelegate();
+        SkillInventoryView.PointerEnterNeuron.Set(PointerEnter);
+        SkillInventoryView.PointerExitNeuron.Set(PointerExit);
+        SkillInventoryView.PointerMoveNeuron.Set(PointerMove);
     }
-
-    #region IInteractable
-
-    private InteractHandler _interactHandler;
-    public InteractHandler GetDelegate() => _interactHandler;
-    private void ConfigureInteractDelegate()
-    {
-        _interactHandler = new(1,
-            getId: view =>
-            {
-                if (view.GetComponent<BrowserSkillInteractBehaviour>() != null)
-                    return 0;
-                return null;
-            });
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((BrowserSkillInteractBehaviour)v).PointerEnter(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((BrowserSkillInteractBehaviour)v).PointerExit(v, d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((BrowserSkillInteractBehaviour)v).PointerMove(v, d));
-
-        SkillInventoryView.SetHandler(_interactHandler);
-    }
-
-    #endregion
 
     public override void Refresh()
     {
         base.Refresh();
         SkillInventoryView.Refresh();
+    }
+
+    private void PointerEnter(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        CanvasManager.Instance.SkillAnnotation.SetAddressFromIB(ib, eventData);
+    }
+
+    private void PointerExit(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        CanvasManager.Instance.SkillAnnotation.SetAddressToNull(ib, eventData);
+    }
+
+    private void PointerMove(InteractBehaviour ib, PointerEventData eventData)
+    {
+        if (eventData.dragging) return;
+        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(ib, eventData);
     }
 }

@@ -95,7 +95,7 @@ public class ListView : LegacyAddressBehaviour
     {
         itemView.PrefabIndex = prefabIndex;
         _inactivePools[prefabIndex].Add(itemView);
-        itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler);
+        BindInteractHandler(itemView);
         itemView.gameObject.name = Traversal().Count().ToString();
     }
 
@@ -252,23 +252,31 @@ public class ListView : LegacyAddressBehaviour
 
     #region Interact
 
-    public event Action<int, PointerEventData> PointerEnterEvent;
-    public event Action<int, PointerEventData> PointerExitEvent;
-    public event Action<int, PointerEventData> PointerMoveEvent;
-    public event Action<int, PointerEventData> BeginDragEvent;
-    public event Action<int, PointerEventData> EndDragEvent;
-    public event Action<int, PointerEventData> DragEvent;
-    public event Action<int, PointerEventData> LeftClickEvent;
-    public event Action<int, PointerEventData> RightClickEvent;
-    public event Action<int, PointerEventData, InteractBehaviour> DropEvent;
+    public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerMoveNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> BeginDragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> EndDragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
 
-    protected InteractHandler _interactHandler;
-    public InteractHandler GetHandler() => _interactHandler;
-    public virtual void SetHandler(InteractHandler interactHandler)
+    private void BindInteractHandler(ItemView itemView)
     {
-        _interactHandler = interactHandler;
-        if (IsInited())
-            Traversal().Do(itemView => itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
+        InteractBehaviour ib = itemView.GetComponent<InteractBehaviour>();
+        if (ib == null)
+            return;
+
+        ib.PointerEnterNeuron.Set(PointerEnterNeuron);
+        ib.PointerExitNeuron.Set(PointerExitNeuron);
+        ib.PointerMoveNeuron.Set(PointerMoveNeuron);
+        ib.BeginDragNeuron.Set(BeginDragNeuron);
+        ib.EndDragNeuron.Set(EndDragNeuron);
+        ib.DragNeuron.Set(DragNeuron);
+        ib.LeftClickNeuron.Set(LeftClickNeuron);
+        ib.RightClickNeuron.Set(RightClickNeuron);
+        ib.DropNeuron.Set(DropNeuron);
     }
 
     #endregion

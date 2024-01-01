@@ -13,11 +13,11 @@ public class BarterPanel : Panel
     {
         base.Configure();
 
-        ConfigureInteractDelegate();
-
         _address = new Address("Run.Environment.ActivePanel");
         BarterItemListView.SetAddress(_address.Append(".Inventory"));
-        BarterItemListView.SetHandler(_interactHandler);
+        BarterItemListView.PointerEnterNeuron.Set((ib, d) => ((StandardSkillInteractBehaviour)ib).HoverAnimation(d));
+        BarterItemListView.PointerExitNeuron.Set((ib, d) => ((StandardSkillInteractBehaviour)ib).UnhoverAnimation(d));
+        BarterItemListView.PointerMoveNeuron.Set((ib, d) => ((StandardSkillInteractBehaviour)ib).PointerMove(d));
 
         foreach (ItemView itemView in BarterItemListView.ActivePool)
         {
@@ -28,18 +28,6 @@ public class BarterPanel : Panel
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
-    }
-
-    private InteractHandler _interactHandler;
-    private void ConfigureInteractDelegate()
-    {
-        _interactHandler = new InteractHandler(1,
-            getId: view => 0
-        );
-
-        _interactHandler.SetHandle(InteractHandler.POINTER_ENTER, 0, (v, d) => ((StandardSkillInteractBehaviour)v).HoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_EXIT, 0, (v, d) => ((StandardSkillInteractBehaviour)v).UnhoverAnimation(d));
-        _interactHandler.SetHandle(InteractHandler.POINTER_MOVE, 0, (v, d) => ((StandardSkillInteractBehaviour)v).PointerMove(d));
     }
 
     public override void Refresh()
