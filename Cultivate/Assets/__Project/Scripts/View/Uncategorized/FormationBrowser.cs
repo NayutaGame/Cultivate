@@ -32,7 +32,7 @@ public class FormationBrowser : ListView
         _selection = view.GetComponent<FormationGroupBarView>();
         if (_selection != null)
         {
-            _detailedGroupView.SetAddress(view.GetComponent<AddressBehaviour>().GetAddress());
+            _detailedGroupView.SetAddress(view.GetComponent<LegacyAddressBehaviour>().GetAddress());
             _detailedGroupView.Refresh();
             _selection.SetSelected(true);
         }

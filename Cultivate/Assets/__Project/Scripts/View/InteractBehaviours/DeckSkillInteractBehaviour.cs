@@ -13,7 +13,7 @@ public abstract class DeckSkillInteractBehaviour : InteractBehaviour,
 
         AudioManager.Play("CardHover");
 
-        SetPivot(PivotBehaviour.HoverPivot);
+        ComplexView.AnimateBehaviour.SetPivot(ComplexView.PivotBehaviour.HoverPivot);
 
         CanvasManager.Instance.SkillAnnotation.SetAddress(GetSkillAddress());
     }
@@ -22,7 +22,7 @@ public abstract class DeckSkillInteractBehaviour : InteractBehaviour,
     {
         if (eventData.dragging) return;
 
-        SetPivot(PivotBehaviour.IdlePivot);
+        ComplexView.AnimateBehaviour.SetPivot(ComplexView.PivotBehaviour.IdlePivot);
 
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);
     }
@@ -40,20 +40,20 @@ public abstract class DeckSkillInteractBehaviour : InteractBehaviour,
 
         SetRaycastable(false);
         SetOpaque(false);
-        CanvasManager.Instance.SkillGhost.BeginDrag(GetSkillAddress(), AddressBehaviour.RectTransform, PivotBehaviour.FollowPivot);
+        CanvasManager.Instance.SkillGhost.BeginDrag(GetSkillAddress(), ComplexView.AddressBehaviour.RectTransform, ComplexView.PivotBehaviour.FollowPivot);
     }
 
     public void EndDrag(PointerEventData eventData)
     {
         SetRaycastable(true);
         SetOpaque(true);
-        SetStartAndPivot(CanvasManager.Instance.SkillGhost.AddressBehaviour.RectTransform, PivotBehaviour.IdlePivot);
+        ComplexView.AnimateBehaviour.SetStartAndPivot(CanvasManager.Instance.SkillGhost.AddressBehaviour.RectTransform, ComplexView.PivotBehaviour.IdlePivot);
         CanvasManager.Instance.SkillGhost.EndDrag();
     }
 
     public void Drag(PointerEventData eventData)
     {
-        CanvasManager.Instance.SkillGhost.Drag(PivotBehaviour.FollowPivot, eventData.position);
+        CanvasManager.Instance.SkillGhost.Drag(ComplexView.PivotBehaviour.FollowPivot, eventData.position);
     }
 
     protected abstract Address GetSkillAddress();

@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ListView : AddressBehaviour
+public class ListView : LegacyAddressBehaviour
 {
     public Transform Container;
     public GameObject[] Prefabs;
@@ -14,6 +15,8 @@ public class ListView : AddressBehaviour
     protected List<ItemView> _activePool;
     public List<ItemView> ActivePool => _activePool;
     protected List<ItemView>[] _inactivePools;
+
+    #region List Operations
 
     public IEnumerable<ItemView> Traversal()
     {
@@ -24,61 +27,58 @@ public class ListView : AddressBehaviour
             yield return itemView;
     }
 
-    private Func<object, int> _prefabProvider;
-    public void SetPrefabProvider(Func<object, int> prefabProvider) => _prefabProvider = prefabProvider;
-    private GameObject GetPrefab(object item) => Prefabs[_prefabProvider?.Invoke(item) ?? 0];
-    protected int GetPrefabIndex(object model) => _prefabProvider?.Invoke(model) ?? 0;
+    private bool IsInited()
+        => _activePool != null;
 
-    private IListModel _model;
-    protected IListModel Model
+    private void Init()
     {
-        get => _model;
-        set
+        Prefabs.Do(prefab => prefab.SetActive(false));
+
+        _activePool = new List<ItemView>();
+        _inactivePools = new List<ItemView>[Prefabs.Length];
+        for (int i = 0; i < _inactivePools.Length; i++)
+            _inactivePools[i] = new List<ItemView>();
+
+        RegisterExists();
+    }
+
+    public override void SetAddress(Address address)
+    {
+        base.SetAddress(address);
+
+        if (!IsInited())
+            Init();
+
+        Model = Get<IListModel>();
+        Sync();
+    }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+        _activePool.Do(itemView => itemView.AddressBehaviour.Refresh());
+    }
+
+    private void RegisterExists()
+    {
+        for (int i = 0; i < Container.childCount; i++)
         {
-            if (_model != null)
-            {
-                _model.InsertEvent -= InvokeInsertGate;
-                _model.RemoveAtEvent -= InvokeRemoveAtGate;
-                _model.ModifiedEvent -= InvokeModifiedGate;
-            }
-            _model = value;
-            if (_model != null)
-            {
-                _model.InsertEvent += InvokeInsertGate;
-                _model.RemoveAtEvent += InvokeRemoveAtGate;
-                _model.ModifiedEvent += InvokeModifiedGate;
-            }
+            ItemView itemView = RegisterItemView(Container.GetChild(i).gameObject);
+            InitItemView(itemView, itemView.PrefabIndex);
         }
     }
 
-    private event Func<int, object, Task> InsertGate;
-    private async Task InvokeInsertGate(int index, object item) { if (InsertGate != null) await InsertGate(index, item); }
-    private event Func<int, Task> RemoveAtGate;
-    private async Task InvokeRemoveAtGate(int index) { if (RemoveAtGate != null) await RemoveAtGate(index); }
-    private event Func<int, Task> ModifiedGate;
-    private async Task InvokeModifiedGate(int index) { if (ModifiedGate != null) await ModifiedGate(index); }
+    public virtual void Sync()
+    {
+        DisableAllItemViews();
 
-    private void OnEnable()
-    {
-        InsertGate += InsertItem;
-        RemoveAtGate += RemoveAt;
-        ModifiedGate += Modified;
-    }
-    private void OnDisable()
-    {
-        InsertGate -= InsertItem;
-        RemoveAtGate -= RemoveAt;
-        ModifiedGate -= Modified;
+        for (int i = 0; i < _model.Count(); i++)
+            InsertItem(i, GetAddress().Append($"#{i}").Get<object>());
+
+        Refresh();
     }
 
-    protected InteractHandler _interactHandler;
-    public InteractHandler GetHandler() => _interactHandler;
-    public virtual void SetHandler(InteractHandler interactHandler)
-    {
-        _interactHandler = interactHandler;
-        if (IsInited())
-            Traversal().Do(itemView => itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
-    }
+    #endregion
 
     #region Atomic Operations
 
@@ -151,17 +151,57 @@ public class ListView : AddressBehaviour
 
     #endregion
 
-    // helper operations
+    #region Prefab Provider
 
-    private int FetchItemView(int prefabIndex)
+    private Func<object, int> _prefabProvider;
+    public void SetPrefabProvider(Func<object, int> prefabProvider) => _prefabProvider = prefabProvider;
+    private GameObject GetPrefab(object item) => Prefabs[_prefabProvider?.Invoke(item) ?? 0];
+    protected int GetPrefabIndex(object model) => _prefabProvider?.Invoke(model) ?? 0;
+
+    #endregion
+
+    #region Model Delegates
+
+    private IListModel _model;
+    protected IListModel Model
     {
-        List<ItemView> pool = _inactivePools[prefabIndex];
-        if (pool.Count != 0)
-            return 0;
+        get => _model;
+        set
+        {
+            if (_model != null)
+            {
+                _model.InsertEvent -= InvokeInsertGate;
+                _model.RemoveAtEvent -= InvokeRemoveAtGate;
+                _model.ModifiedEvent -= InvokeModifiedGate;
+            }
+            _model = value;
+            if (_model != null)
+            {
+                _model.InsertEvent += InvokeInsertGate;
+                _model.RemoveAtEvent += InvokeRemoveAtGate;
+                _model.ModifiedEvent += InvokeModifiedGate;
+            }
+        }
+    }
 
-        ItemView itemView = AllocItemView(prefabIndex);
-        InitItemView(itemView, prefabIndex);
-        return 0;
+    private event Func<int, object, Task> InsertGate;
+    private async Task InvokeInsertGate(int index, object item) { if (InsertGate != null) await InsertGate(index, item); }
+    private event Func<int, Task> RemoveAtGate;
+    private async Task InvokeRemoveAtGate(int index) { if (RemoveAtGate != null) await RemoveAtGate(index); }
+    private event Func<int, Task> ModifiedGate;
+    private async Task InvokeModifiedGate(int index) { if (ModifiedGate != null) await ModifiedGate(index); }
+
+    private void OnEnable()
+    {
+        InsertGate += InsertItem;
+        RemoveAtGate += RemoveAt;
+        ModifiedGate += Modified;
+    }
+    private void OnDisable()
+    {
+        InsertGate -= InsertItem;
+        RemoveAtGate -= RemoveAt;
+        ModifiedGate -= Modified;
     }
 
     protected virtual async Task InsertItem(int index, object item)
@@ -181,68 +221,55 @@ public class ListView : AddressBehaviour
         _activePool[index].AddressBehaviour.Refresh();
     }
 
-    public int? IndexFromBehaviour(AddressBehaviour toGetIndex)
+    #endregion
+
+    #region Helper Operations
+
+    private int FetchItemView(int prefabIndex)
+    {
+        List<ItemView> pool = _inactivePools[prefabIndex];
+        if (pool.Count != 0)
+            return 0;
+
+        ItemView itemView = AllocItemView(prefabIndex);
+        InitItemView(itemView, prefabIndex);
+        return 0;
+    }
+
+    public int? IndexFromBehaviour(LegacyAddressBehaviour toGetIndex)
     {
         if (toGetIndex == null)
             return null;
         return _activePool.FirstIdx(itemView => itemView.AddressBehaviour == toGetIndex);
     }
 
-    public AddressBehaviour BehaviourFromIndex(int i)
+    public LegacyAddressBehaviour BehaviourFromIndex(int i)
     {
         return _activePool[i].AddressBehaviour;
     }
 
-    // operations for list
+    #endregion
 
-    private bool IsInited()
-        => _activePool != null;
+    #region Interact
 
-    private void Init()
+    public event Action<int, PointerEventData> PointerEnterEvent;
+    public event Action<int, PointerEventData> PointerExitEvent;
+    public event Action<int, PointerEventData> PointerMoveEvent;
+    public event Action<int, PointerEventData> BeginDragEvent;
+    public event Action<int, PointerEventData> EndDragEvent;
+    public event Action<int, PointerEventData> DragEvent;
+    public event Action<int, PointerEventData> LeftClickEvent;
+    public event Action<int, PointerEventData> RightClickEvent;
+    public event Action<int, PointerEventData, InteractBehaviour> DropEvent;
+
+    protected InteractHandler _interactHandler;
+    public InteractHandler GetHandler() => _interactHandler;
+    public virtual void SetHandler(InteractHandler interactHandler)
     {
-        Prefabs.Do(prefab => prefab.SetActive(false));
-
-        _activePool = new List<ItemView>();
-        _inactivePools = new List<ItemView>[Prefabs.Length];
-        for (int i = 0; i < _inactivePools.Length; i++)
-            _inactivePools[i] = new List<ItemView>();
-
-        RegisterExists();
+        _interactHandler = interactHandler;
+        if (IsInited())
+            Traversal().Do(itemView => itemView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler));
     }
 
-    public override void SetAddress(Address address)
-    {
-        base.SetAddress(address);
-
-        if (!IsInited())
-            Init();
-
-        Model = Get<IListModel>();
-        Sync();
-    }
-
-    public override void Refresh()
-    {
-        base.Refresh();
-        _activePool.Do(itemView => itemView.AddressBehaviour.Refresh());
-    }
-
-    private void RegisterExists()
-    {
-        for (int i = 0; i < Container.childCount; i++)
-        {
-            ItemView itemView = RegisterItemView(Container.GetChild(i).gameObject);
-            InitItemView(itemView, itemView.PrefabIndex);
-        }
-    }
-
-    public virtual void Sync()
-    {
-        DisableAllItemViews();
-
-        for (int i = 0; i < _model.Count(); i++)
-            InsertItem(i, GetAddress().Append($"#{i}").Get<object>());
-
-        Refresh();
-    }
+    #endregion
 }

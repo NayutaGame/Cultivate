@@ -8,7 +8,7 @@ public class BuffInteractBehaviour : InteractBehaviour,
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.BuffAnnotation.SetAddress(AddressBehaviour.GetAddress());
+        CanvasManager.Instance.BuffAnnotation.SetAddress(ComplexView.AddressBehaviour.GetAddress());
         StageManager.Instance.Pause();
     }
 

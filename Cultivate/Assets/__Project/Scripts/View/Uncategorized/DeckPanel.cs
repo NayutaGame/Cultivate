@@ -147,8 +147,8 @@ public class DeckPanel : Panel
     private void TryMerge(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        RunSkill lhs = from.AddressBehaviour.Get<RunSkill>();
-        RunSkill rhs = to.AddressBehaviour.Get<RunSkill>();
+        RunSkill lhs = from.ComplexView.AddressBehaviour.Get<RunSkill>();
+        RunSkill rhs = to.ComplexView.AddressBehaviour.Get<RunSkill>();
         bool success = env.TryMerge(lhs, rhs);
         if (!success)
             return;
@@ -164,8 +164,8 @@ public class DeckPanel : Panel
     private void TryEquipSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        RunSkill toEquip = from.AddressBehaviour.Get<RunSkill>();
-        SkillSlot slot = to.AddressBehaviour.Get<SkillSlot>();
+        RunSkill toEquip = from.ComplexView.AddressBehaviour.Get<RunSkill>();
+        SkillSlot slot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
         bool success = env.TryEquipSkill(toEquip, slot);
         if (!success)
             return;
@@ -174,7 +174,7 @@ public class DeckPanel : Panel
         eventData.pointerDrag = null;
         to.OnEndDrag(eventData);
         from.OnEndDrag(eventData);
-        from.SetStartAndPivot(to.PivotBehaviour.IdlePivot, from.PivotBehaviour.IdlePivot);
+        from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
         AudioManager.Play("CardPlacement");
 
         FieldView.Refresh();
@@ -185,8 +185,8 @@ public class DeckPanel : Panel
     private void TryEquipMech(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        Mech toEquip = from.AddressBehaviour.Get<Mech>();
-        SkillSlot slot = to.AddressBehaviour.Get<SkillSlot>();
+        Mech toEquip = from.ComplexView.AddressBehaviour.Get<Mech>();
+        SkillSlot slot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
         bool success = env.TryEquipMech(toEquip, slot);
         if (!success)
             return;
@@ -194,7 +194,7 @@ public class DeckPanel : Panel
         // Equip Mech Animation
         AudioManager.Play("CardPlacement");
 
-        from.AddressBehaviour.Refresh();
+        from.ComplexView.AddressBehaviour.Refresh();
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
@@ -203,7 +203,7 @@ public class DeckPanel : Panel
     private void TryUnequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        SkillSlot slot = from.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot slot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
         UnequipResult result = env.TryUnequip(slot, null);
         if (!result.Success)
             return;
@@ -230,8 +230,8 @@ public class DeckPanel : Panel
     private void TrySwap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        SkillSlot fromSlot = from.AddressBehaviour.Get<SkillSlot>();
-        SkillSlot toSlot = to.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot fromSlot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot toSlot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
         bool success = env.TrySwap(fromSlot, toSlot);
         if (!success)
             return;
@@ -240,7 +240,7 @@ public class DeckPanel : Panel
         eventData.pointerDrag = null;
         to.OnEndDrag(eventData);
         from.OnEndDrag(eventData);
-        from.SetStartAndPivot(to.PivotBehaviour.IdlePivot, from.PivotBehaviour.IdlePivot);
+        from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
         AudioManager.Play("CardPlacement");
 
         FieldView.Refresh();

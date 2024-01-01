@@ -11,5 +11,5 @@ public class FieldSlotInteractBehaviour : DeckSkillInteractBehaviour
     }
 
     protected override Address GetSkillAddress()
-        => AddressBehaviour.GetAddress().Append(".Skill");
+        => ComplexView.AddressBehaviour.GetAddress().Append(".Skill");
 }

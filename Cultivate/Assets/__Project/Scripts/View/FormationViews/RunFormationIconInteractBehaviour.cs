@@ -8,7 +8,7 @@ public class RunFormationIconInteractBehaviour : InteractBehaviour,
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.FormationAnnotation.SetAddress(AddressBehaviour.GetAddress());
+        CanvasManager.Instance.FormationAnnotation.SetAddress(ComplexView.AddressBehaviour.GetAddress());
         // StageManager.Instance.Pause();
     }
 

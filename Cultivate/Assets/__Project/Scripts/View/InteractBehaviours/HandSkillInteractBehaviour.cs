@@ -18,5 +18,5 @@ public class HandSkillInteractBehaviour : DeckSkillInteractBehaviour
     }
 
     protected override Address GetSkillAddress()
-        => AddressBehaviour.GetAddress();
+        => ComplexView.AddressBehaviour.GetAddress();
 }

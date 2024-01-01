@@ -35,7 +35,7 @@ public class StandardSkillInteractBehaviour : InteractBehaviour,
 
         SetBlackFillColor(HoverAlpha);
 
-        CanvasManager.Instance.SkillAnnotation.SetAddress(AddressBehaviour.GetAddress());
+        CanvasManager.Instance.SkillAnnotation.SetAddress(ComplexView.AddressBehaviour.GetAddress());
     }
 
     public void UnhoverAnimation(PointerEventData eventData)

@@ -92,7 +92,7 @@ public class AnimatedListView : ListView
             AnimatedItemView animatedItemView = addressBehaviour.GetComponent<AnimatedItemView>();
 
             if(animatedItemView != null)
-                animatedItemView.InteractBehaviour.SetPivot(animatedItemView.InteractBehaviour.PivotBehaviour.IdlePivot);
+                animatedItemView.InteractBehaviour.ComplexView.AnimateBehaviour.SetPivot(animatedItemView.InteractBehaviour.ComplexView.PivotBehaviour.IdlePivot);
         }
     }
 }

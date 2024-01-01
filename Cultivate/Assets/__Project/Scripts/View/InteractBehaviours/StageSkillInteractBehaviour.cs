@@ -8,7 +8,7 @@ public class StageSkillInteractBehaviour : InteractBehaviour,
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.SkillAnnotation.SetAddress(GetComponent<AddressBehaviour>().GetAddress());
+        CanvasManager.Instance.SkillAnnotation.SetAddress(GetComponent<LegacyAddressBehaviour>().GetAddress());
         StageManager.Instance.Pause();
     }
 

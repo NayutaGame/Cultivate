@@ -7,7 +7,7 @@ public class BrowserSkillInteractBehaviour : InteractBehaviour,
     public void PointerEnter(InteractBehaviour view, PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        CanvasManager.Instance.SkillAnnotation.SetAddress(AddressBehaviour.GetAddress());
+        CanvasManager.Instance.SkillAnnotation.SetAddress(ComplexView.AddressBehaviour.GetAddress());
     }
 
     public void PointerExit(InteractBehaviour view, PointerEventData eventData)

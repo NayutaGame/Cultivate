@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class FormationGroupDetailedView : AddressBehaviour
+public class FormationGroupDetailedView : LegacyAddressBehaviour
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private ListView FormationListView;

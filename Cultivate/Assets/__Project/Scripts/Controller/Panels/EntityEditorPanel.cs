@@ -131,8 +131,8 @@ public class EntityEditorPanel : Panel
     private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         // SkillBarView -> EntityEditorSlotView
-        RunSkill skill = from.AddressBehaviour.Get<RunSkill>();
-        SkillSlot slot = to.AddressBehaviour.Get<SkillSlot>();
+        RunSkill skill = from.ComplexView.AddressBehaviour.Get<RunSkill>();
+        SkillSlot slot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
 
         slot.Skill = skill;
         Refresh();
@@ -141,7 +141,7 @@ public class EntityEditorPanel : Panel
     private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         // EntityEditorSlotView -> SkillBarView
-        SkillSlot slot = from.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot slot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
 
         slot.Skill = null;
         Refresh();
@@ -150,8 +150,8 @@ public class EntityEditorPanel : Panel
     private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         // EntityEditorSlotView -> EntityEditorSlotView
-        SkillSlot fromSlot = from.AddressBehaviour.Get<SkillSlot>();
-        SkillSlot toSlot = to.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot fromSlot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot toSlot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
 
         (fromSlot.Skill, toSlot.Skill) = (toSlot.Skill, fromSlot.Skill);
         Refresh();
@@ -159,9 +159,9 @@ public class EntityEditorPanel : Panel
 
     private void IncreaseJingJie(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
-        SkillSlot slot = interactBehaviour.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot slot = interactBehaviour.ComplexView.AddressBehaviour.Get<SkillSlot>();
         slot.TryIncreaseJingJie();
-        interactBehaviour.AddressBehaviour.Refresh();
+        interactBehaviour.ComplexView.AddressBehaviour.Refresh();
         CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
@@ -169,14 +169,14 @@ public class EntityEditorPanel : Panel
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.SkillAnnotation.SetAddress(interactBehaviour.AddressBehaviour.GetAddress());
+        CanvasManager.Instance.SkillAnnotation.SetAddress(interactBehaviour.ComplexView.AddressBehaviour.GetAddress());
     }
 
     private void ShowSkillAnnotationFromSlotView(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.SkillAnnotation.SetAddress(interactBehaviour.AddressBehaviour.GetAddress().Append(".Skill"));
+        CanvasManager.Instance.SkillAnnotation.SetAddress(interactBehaviour.ComplexView.AddressBehaviour.GetAddress().Append(".Skill"));
     }
 
     private void HideSkillAnnotation(InteractBehaviour interactBehaviour, PointerEventData eventData)
@@ -197,7 +197,7 @@ public class EntityEditorPanel : Panel
     {
         if (eventData.dragging) return;
 
-        CanvasManager.Instance.FormationAnnotation.SetAddress(interactBehaviour.AddressBehaviour.GetAddress());
+        CanvasManager.Instance.FormationAnnotation.SetAddress(interactBehaviour.ComplexView.AddressBehaviour.GetAddress());
     }
 
     private void HideFormationAnnotation(InteractBehaviour interactBehaviour, PointerEventData eventData)
@@ -225,7 +225,7 @@ public class EntityEditorPanel : Panel
         if (_selection != null)
             _selection.SetSelected(false);
 
-        _selection = interactBehaviour.AddressBehaviour.GetComponent<EntityBarView>();
+        _selection = interactBehaviour.ComplexView.AddressBehaviour.GetComponent<EntityBarView>();
         _selectionIndex = EntityBrowser.IndexFromBehaviour(_selection);
 
         EditorManager.Instance._selectionIndex = _selectionIndex;

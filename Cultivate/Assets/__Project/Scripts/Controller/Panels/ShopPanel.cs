@@ -44,7 +44,7 @@ public class ShopPanel : Panel
 
     private bool BuySkill(InteractBehaviour interactBehaviour, PointerEventData eventData)
     {
-        Commodity commodity = interactBehaviour.AddressBehaviour.Get<Commodity>();
+        Commodity commodity = interactBehaviour.ComplexView.AddressBehaviour.Get<Commodity>();
 
         ShopPanelDescriptor d = _address.Get<ShopPanelDescriptor>();
 

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntityEditorEntityView : AddressBehaviour
+public class EntityEditorEntityView : LegacyAddressBehaviour
 {
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;

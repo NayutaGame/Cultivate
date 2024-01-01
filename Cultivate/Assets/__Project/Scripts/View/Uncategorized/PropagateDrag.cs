@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PropagateDrag : AddressBehaviour,
+public class PropagateDrag : LegacyAddressBehaviour,
     IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public Action<PointerEventData> _onPointerClick;

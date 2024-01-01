@@ -11,7 +11,7 @@ public class MechInteractBehaviour : InteractBehaviour,
 
     public void BeginDrag(PointerEventData eventData)
     {
-        CanvasManager.Instance.MechGhost.SetAddress(AddressBehaviour.GetAddress());
+        CanvasManager.Instance.MechGhost.SetAddress(ComplexView.AddressBehaviour.GetAddress());
         CanvasManager.Instance.MechGhost.Refresh();
 
         if (_image != null)

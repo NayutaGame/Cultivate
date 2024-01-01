@@ -11,16 +11,16 @@ public class DiscoverSkillInteractBehaviour : InteractBehaviour,
 
         AudioManager.Play("CardHover");
 
-        SetPivot(PivotBehaviour.HoverPivot);
+        ComplexView.AnimateBehaviour.SetPivot(ComplexView.PivotBehaviour.HoverPivot);
 
-        CanvasManager.Instance.SkillAnnotation.SetAddress(AddressBehaviour.GetAddress());
+        CanvasManager.Instance.SkillAnnotation.SetAddress(ComplexView.AddressBehaviour.GetAddress());
     }
 
     public void UnhoverAnimation(PointerEventData eventData)
     {
         if (eventData.dragging) return;
 
-        SetPivot(PivotBehaviour.IdlePivot);
+        ComplexView.AnimateBehaviour.SetPivot(ComplexView.PivotBehaviour.IdlePivot);
 
         CanvasManager.Instance.SkillAnnotation.SetAddress(null);
     }

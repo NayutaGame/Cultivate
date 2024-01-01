@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class SlotView : AddressBehaviour
+public class SlotView : LegacyAddressBehaviour
 {
     [SerializeField] protected SkillView SkillView;
 

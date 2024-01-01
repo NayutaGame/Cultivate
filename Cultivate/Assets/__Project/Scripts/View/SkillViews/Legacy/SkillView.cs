@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class SkillView : AddressBehaviour
+public class SkillView : LegacyAddressBehaviour
 {
     [SerializeField] private Image CardImage;
     // [SerializeField] private GameObject ManaCostView;

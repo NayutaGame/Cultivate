@@ -102,7 +102,7 @@ public class RunConfigPanel : CurtainPanel
         if (_selection != null)
             _selection.SetSelected(false);
 
-        _selection = interactBehaviour.AddressBehaviour.GetComponent<CharacterProfileView>();
+        _selection = interactBehaviour.ComplexView.AddressBehaviour.GetComponent<CharacterProfileView>();
         _selectionIndex = CharacterListView.IndexFromBehaviour(_selection);
 
         if (_selection != null)

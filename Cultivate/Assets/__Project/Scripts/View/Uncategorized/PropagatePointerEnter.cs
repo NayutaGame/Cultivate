@@ -2,7 +2,7 @@
 using System;
 using UnityEngine.EventSystems;
 
-public class PropagatePointerEnter : AddressBehaviour,
+public class PropagatePointerEnter : LegacyAddressBehaviour,
     IPointerEnterHandler
 {
     public Action<PointerEventData> _onPointerEnter;
