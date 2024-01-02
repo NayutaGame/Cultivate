@@ -49,7 +49,7 @@ GameObject:
   m_Component:
   - component: {fileID: 529978078669234200}
   - component: {fileID: 3262810072712494902}
-  - component: {fileID: 131476414027868984}
+  - component: {fileID: -8858405569176453126}
   m_Layer: 5
   m_Name: SkillBarView
   m_TagString: Untagged
@@ -94,7 +94,7 @@ MonoBehaviour:
   BackgroundImage: {fileID: 8057001652395436342}
   WuXingImage: {fileID: 2752407993882631014}
   NameText: {fileID: 328300260318751242}
---- !u!114 &131476414027868984
+--- !u!114 &-8858405569176453126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2108923873393925487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 3262810072712494902}

@@ -3070,7 +3070,7 @@ GameObject:
   - component: {fileID: 5896712554100659081}
   - component: {fileID: 3623292578165185130}
   - component: {fileID: -711014571449497360}
-  - component: {fileID: 5330273680400170534}
+  - component: {fileID: -6949230460383628089}
   m_Layer: 5
   m_Name: EntityEditorEntityView
   m_TagString: Untagged
@@ -3160,7 +3160,7 @@ MonoBehaviour:
   BossToggle: {fileID: 93812247968343183}
   FieldView: {fileID: 7588568743444983968}
   FormationListView: {fileID: 3497237185409118463}
---- !u!114 &5330273680400170534
+--- !u!114 &-6949230460383628089
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3169,7 +3169,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5815391005032935578}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: -711014571449497360}

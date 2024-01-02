@@ -48,6 +48,9 @@ public class AnimateBehaviour : MonoBehaviour
     }
 
     private void GoToIdle(InteractBehaviour ib, PointerEventData eventData)
+        => GoToIdle();
+
+    public void GoToIdle()
     {
         SetPivot(IdlePivot);
         SetBlackFillColor(IdleAlpha);

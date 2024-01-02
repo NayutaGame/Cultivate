@@ -12,6 +12,9 @@ public class ComplexView : MonoBehaviour
     [SerializeField] protected PivotBehaviour PivotBehaviour;
     [SerializeField] protected SelectBehaviour SelectBehaviour;
 
+    public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
+    public SelectBehaviour GetSelectBehaviour() => SelectBehaviour;
+
     public RectTransform GetDisplayTransform()
         => AddressBehaviour.RectTransform;
 
@@ -20,6 +23,9 @@ public class ComplexView : MonoBehaviour
         AddressBehaviour.RectTransform.position = pivot.position;
         AddressBehaviour.RectTransform.localScale = pivot.localScale;
     }
+
+    public void RefreshPivots()
+        => AnimateBehaviour.GoToIdle();
 
     public Neuron<InteractBehaviour, PointerEventData> HoverNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> UnhoverNeuron = new();

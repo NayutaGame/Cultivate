@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 1803644322139811532}
   - component: {fileID: 1435584576304018519}
   - component: {fileID: 3605860052852787669}
-  - component: {fileID: 7955347776803716416}
+  - component: {fileID: -773140936030493324}
   m_Layer: 5
   m_Name: StepItemView
   m_TagString: Untagged
@@ -229,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 1803644322139811532}
   NodeListView: {fileID: 7075446180572749199}
---- !u!114 &7955347776803716416
+--- !u!114 &-773140936030493324
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4716401629613253585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 3605860052852787669}

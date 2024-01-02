@@ -480,7 +480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7916157574798411217}
   - component: {fileID: 7916157574798411216}
-  - component: {fileID: 6077542900890542473}
+  - component: {fileID: 760737423959242856}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -524,7 +524,7 @@ MonoBehaviour:
   RectTransform: {fileID: 7916157574798411217}
   LabelText: {fileID: 7916157573108638044}
   Button: {fileID: 7916157573280181437}
---- !u!114 &6077542900890542473
+--- !u!114 &760737423959242856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -533,7 +533,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7916157574798411218}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 7916157574798411216}

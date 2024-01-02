@@ -12,13 +12,13 @@ public class ListView : AddressBehaviour
     public Transform Container;
     public GameObject[] Prefabs;
 
-    protected List<ItemView> _activePool;
-    public List<ItemView> ActivePool => _activePool;
-    protected List<ItemView>[] _inactivePools;
+    protected List<ItemBehaviour> _activePool;
+    public List<ItemBehaviour> ActivePool => _activePool;
+    protected List<ItemBehaviour>[] _inactivePools;
 
     #region List Operations
 
-    public IEnumerable<ItemView> Traversal()
+    public IEnumerable<ItemBehaviour> Traversal()
     {
         foreach (var itemView in _activePool)
             yield return itemView;
@@ -34,10 +34,10 @@ public class ListView : AddressBehaviour
     {
         Prefabs.Do(prefab => prefab.SetActive(false));
 
-        _activePool = new List<ItemView>();
-        _inactivePools = new List<ItemView>[Prefabs.Length];
+        _activePool = new List<ItemBehaviour>();
+        _inactivePools = new List<ItemBehaviour>[Prefabs.Length];
         for (int i = 0; i < _inactivePools.Length; i++)
-            _inactivePools[i] = new List<ItemView>();
+            _inactivePools[i] = new List<ItemBehaviour>();
 
         RegisterExists();
     }
@@ -56,21 +56,21 @@ public class ListView : AddressBehaviour
     public override void Refresh()
     {
         base.Refresh();
-        _activePool.Do(itemView => itemView.AddressBehaviour.Refresh());
+        _activePool.Do(itemBehaviour => itemBehaviour.GetAddressBehaviour().Refresh());
     }
 
     private void RegisterExists()
     {
         for (int i = 0; i < Container.childCount; i++)
         {
-            ItemView itemView = RegisterItemView(Container.GetChild(i).gameObject);
-            InitItemView(itemView, itemView.PrefabIndex);
+            ItemBehaviour itemBehaviour = RegisterItemBehaviour(Container.GetChild(i).gameObject);
+            InitItemBehaviour(itemBehaviour, itemBehaviour.PrefabIndex);
         }
     }
 
     public virtual void Sync()
     {
-        DisableAllItemViews();
+        DisableAllItemBehaviours();
 
         for (int i = 0; i < _model.Count(); i++)
             InsertItem(i, GetAddress().Append($"#{i}").Get<object>());
@@ -82,70 +82,70 @@ public class ListView : AddressBehaviour
 
     #region Atomic Operations
 
-    private ItemView AllocItemView(int prefabIndex)
-        => Instantiate(Prefabs[prefabIndex], Container).GetComponent<ItemView>();
+    private ItemBehaviour AllocItemBehaviour(int prefabIndex)
+        => Instantiate(Prefabs[prefabIndex], Container).GetComponent<ItemBehaviour>();
 
-    private ItemView RegisterItemView(GameObject go)
+    private ItemBehaviour RegisterItemBehaviour(GameObject go)
     {
         go.SetActive(false);
-        return go.GetComponent<ItemView>();
+        return go.GetComponent<ItemBehaviour>();
     }
 
-    protected virtual void InitItemView(ItemView itemView, int prefabIndex)
+    protected virtual void InitItemBehaviour(ItemBehaviour itemBehaviour, int prefabIndex)
     {
-        itemView.PrefabIndex = prefabIndex;
-        _inactivePools[prefabIndex].Add(itemView);
-        BindInteractHandler(itemView);
-        itemView.gameObject.name = Traversal().Count().ToString();
+        itemBehaviour.PrefabIndex = prefabIndex;
+        _inactivePools[prefabIndex].Add(itemBehaviour);
+        BindInteractBehaviour(itemBehaviour);
+        itemBehaviour.name = Traversal().Count().ToString();
     }
 
-    protected virtual ItemView EnableItemView(int prefabIndex, int orderInPool, int index)
+    protected virtual ItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
     {
-        List<ItemView> pool = _inactivePools[prefabIndex];
-        ItemView itemView = pool[orderInPool];
+        List<ItemBehaviour> pool = _inactivePools[prefabIndex];
+        ItemBehaviour itemBehaviour = pool[orderInPool];
 
         pool.RemoveAt(orderInPool);
-        _activePool.Insert(index, itemView);
+        _activePool.Insert(index, itemBehaviour);
 
         for (int i = index; i < _activePool.Count; i++)
         {
-            _activePool[i].AddressBehaviour.SetAddress(GetAddress().Append($"#{i}"));
-            _activePool[i].AddressBehaviour.Refresh();
+            _activePool[i].GetAddressBehaviour().SetAddress(GetAddress().Append($"#{i}"));
+            _activePool[i].GetAddressBehaviour().Refresh();
         }
 
-        itemView.transform.SetSiblingIndex(index);
-        itemView.gameObject.SetActive(true);
+        itemBehaviour.transform.SetSiblingIndex(index);
+        itemBehaviour.gameObject.SetActive(true);
 
-        return itemView;
+        return itemBehaviour;
     }
 
-    protected virtual ItemView DisableItemView(int index)
+    protected virtual ItemBehaviour DisableItemBehaviour(int index)
     {
-        ItemView itemView = _activePool[index];
+        ItemBehaviour itemBehaviour = _activePool[index];
 
-        itemView.gameObject.SetActive(false);
-        itemView.transform.SetAsLastSibling();
+        itemBehaviour.gameObject.SetActive(false);
+        itemBehaviour.transform.SetAsLastSibling();
 
         _activePool.RemoveAt(index);
-        _inactivePools[itemView.PrefabIndex].Add(itemView);
+        _inactivePools[itemBehaviour.PrefabIndex].Add(itemBehaviour);
 
         for (int i = index; i < _activePool.Count; i++)
-            _activePool[i].AddressBehaviour.SetAddress(GetAddress().Append($"#{i}"));
+            _activePool[i].GetAddressBehaviour().SetAddress(GetAddress().Append($"#{i}"));
 
-        return itemView;
+        return itemBehaviour;
     }
 
-    protected virtual void DisableAllItemViews()
+    protected virtual void DisableAllItemBehaviours()
     {
         while (_activePool.Count != 0)
         {
             int index = _activePool.Count - 1;
-            ItemView itemView = _activePool[index];
+            ItemBehaviour itemBehaviour = _activePool[index];
 
-            itemView.gameObject.SetActive(false);
+            itemBehaviour.gameObject.SetActive(false);
 
             _activePool.RemoveAt(index);
-            _inactivePools[itemView.PrefabIndex].Insert(0, itemView);
+            _inactivePools[itemBehaviour.PrefabIndex].Insert(0, itemBehaviour);
         }
     }
 
@@ -207,32 +207,32 @@ public class ListView : AddressBehaviour
     protected virtual async Task InsertItem(int index, object item)
     {
         int prefabIndex = GetPrefabIndex(item);
-        int orderInPool = FetchItemView(prefabIndex);
-        EnableItemView(prefabIndex, orderInPool, index);
+        int orderInPool = FetchItemBehaviour(prefabIndex);
+        EnableItemBehaviour(prefabIndex, orderInPool, index);
     }
 
     protected virtual async Task RemoveAt(int index)
     {
-        DisableItemView(index);
+        DisableItemBehaviour(index);
     }
 
     protected virtual async Task Modified(int index)
     {
-        _activePool[index].AddressBehaviour.Refresh();
+        _activePool[index].GetAddressBehaviour().Refresh();
     }
 
     #endregion
 
     #region Helper Operations
 
-    private int FetchItemView(int prefabIndex)
+    private int FetchItemBehaviour(int prefabIndex)
     {
-        List<ItemView> pool = _inactivePools[prefabIndex];
+        List<ItemBehaviour> pool = _inactivePools[prefabIndex];
         if (pool.Count != 0)
             return 0;
 
-        ItemView itemView = AllocItemView(prefabIndex);
-        InitItemView(itemView, prefabIndex);
+        ItemBehaviour itemView = AllocItemBehaviour(prefabIndex);
+        InitItemBehaviour(itemView, prefabIndex);
         return 0;
     }
 
@@ -240,17 +240,17 @@ public class ListView : AddressBehaviour
     {
         if (toGetIndex == null)
             return null;
-        return _activePool.FirstIdx(itemView => itemView.AddressBehaviour == toGetIndex);
+        return _activePool.FirstIdx(itemView => itemView.GetAddressBehaviour() == toGetIndex);
     }
 
     public AddressBehaviour BehaviourFromIndex(int i)
     {
-        return _activePool[i].AddressBehaviour;
+        return _activePool[i].GetAddressBehaviour();
     }
 
     #endregion
 
-    #region Interact
+    #region Interact Behaviour
 
     public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();
@@ -262,9 +262,9 @@ public class ListView : AddressBehaviour
     public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
 
-    private void BindInteractHandler(ItemView itemView)
+    private void BindInteractBehaviour(ItemBehaviour itemBehaviour)
     {
-        InteractBehaviour ib = itemView.GetComponent<InteractBehaviour>();
+        InteractBehaviour ib = itemBehaviour.GetInteractBehaviour();
         if (ib == null)
             return;
 

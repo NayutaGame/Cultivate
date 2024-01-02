@@ -88,8 +88,8 @@ GameObject:
   - component: {fileID: 7968600936707381982}
   - component: {fileID: 7968600936707381983}
   - component: {fileID: 1703789366710609316}
-  - component: {fileID: 982070344623832419}
   - component: {fileID: 3793664883137531547}
+  - component: {fileID: 4954859968602246297}
   m_Layer: 5
   m_Name: CharacterIconView
   m_TagString: Untagged
@@ -173,19 +173,6 @@ MonoBehaviour:
   Image: {fileID: 7968600936707381983}
   NameText: {fileID: 5052737678209723403}
   SelectionImage: {fileID: 537023984187078009}
---- !u!114 &982070344623832419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7968600936707381981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 1703789366710609316}
 --- !u!114 &3793664883137531547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,8 +185,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f4bb81ca8731c24db428a105ba384fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ComplexView: {fileID: 0}
+--- !u!114 &4954859968602246297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7968600936707381981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 1703789366710609316}
-  PivotBehaviour: {fileID: 0}
 --- !u!1 &8999414490324792636
 GameObject:
   m_ObjectHideFlags: 0

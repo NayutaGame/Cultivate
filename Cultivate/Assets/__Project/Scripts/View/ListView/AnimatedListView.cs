@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AnimatedListView : ListView
 {
-    [SerializeField] private Transform PivotHolder;
+    [SerializeField] private RectTransform AddressBehaviourHolder;
 
     protected override Task InsertItem(int index, object item)
     {
@@ -24,69 +24,58 @@ public class AnimatedListView : ListView
 
     #region Atomic Operations
 
-    protected override void InitItemView(ItemView itemView, int prefabIndex)
+    protected override void InitItemBehaviour(ItemBehaviour itemBehaviour, int prefabIndex)
     {
-        base.InitItemView(itemView, prefabIndex);
-
-        AnimatedItemView animatedItemView = itemView.GetComponent<AnimatedItemView>();
-        if (animatedItemView == null)
-            return;
-
-        InteractBehaviour interactBehaviour = animatedItemView.InteractBehaviour;
-        interactBehaviour.gameObject.transform.SetParent(PivotHolder);
-        interactBehaviour.gameObject.name = Traversal().Count().ToString();
-        // interactBehaviour.SetHandler(_interactHandler);
+        base.InitItemBehaviour(itemBehaviour, prefabIndex);
+        ReparentAddressBehaviour(itemBehaviour);
     }
 
-    protected override ItemView EnableItemView(int prefabIndex, int orderInPool, int index)
+    private void ReparentAddressBehaviour(ItemBehaviour itemBehaviour)
     {
-        ItemView itemView = base.EnableItemView(prefabIndex, orderInPool, index);
-
-        AnimatedItemView animatedItemView = itemView as AnimatedItemView;
-        animatedItemView.PivotTransform.SetSiblingIndex(index);
-        animatedItemView.PivotTransform.gameObject.SetActive(true);
-
-        return itemView;
+        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().RectTransform;
+        addressTransform.SetParent(AddressBehaviourHolder);
+        addressTransform.name = Traversal().Count().ToString();
     }
 
-    protected override ItemView DisableItemView(int index)
+    protected override ItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
     {
-        ItemView itemView = base.DisableItemView(index);
+        ItemBehaviour itemBehaviour = base.EnableItemBehaviour(prefabIndex, orderInPool, index);
+        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().RectTransform;
+        addressTransform.SetSiblingIndex(index);
+        addressTransform.gameObject.SetActive(true);
 
-        AnimatedItemView animatedItemView = itemView as AnimatedItemView;
-        animatedItemView.PivotTransform.SetAsLastSibling();
-        animatedItemView.PivotTransform.gameObject.SetActive(false);
-
-        return itemView;
+        return itemBehaviour;
     }
 
-    protected override void DisableAllItemViews()
+    protected override ItemBehaviour DisableItemBehaviour(int index)
+    {
+        ItemBehaviour itemBehaviour = base.DisableItemBehaviour(index);
+        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().RectTransform;
+        addressTransform.SetSiblingIndex(index);
+        addressTransform.gameObject.SetActive(true);
+
+        return itemBehaviour;
+    }
+
+    protected override void DisableAllItemBehaviours()
     {
         while (_activePool.Count != 0)
         {
             int index = _activePool.Count - 1;
-            ItemView itemView = _activePool[index];
+            ItemBehaviour itemBehaviour = _activePool[index];
 
-            itemView.gameObject.SetActive(false);
+            itemBehaviour.gameObject.SetActive(false);
 
             _activePool.RemoveAt(index);
-            _inactivePools[itemView.PrefabIndex].Insert(0, itemView);
+            _inactivePools[itemBehaviour.PrefabIndex].Insert(0, itemBehaviour);
 
-            AnimatedItemView animatedItemView = itemView as AnimatedItemView;
-            animatedItemView.PivotTransform.gameObject.SetActive(false);
+            RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().RectTransform;
+            addressTransform.gameObject.SetActive(false);
         }
     }
 
     #endregion
 
     public void RefreshPivots()
-    {
-        foreach (ItemView itemView in _activePool)
-        {
-            AnimatedItemView animatedItemView = itemView.GetComponent<AnimatedItemView>();
-
-            // if (animatedItemView != null)
-            //     animatedItemView.InteractBehaviour.ComplexView.AnimateBehaviour.GoToIdle();
-        }
-    }
+        => _activePool.Do(itemBehaviour => itemBehaviour.RefreshPivots());
 }

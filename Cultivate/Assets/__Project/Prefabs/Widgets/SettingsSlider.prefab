@@ -509,7 +509,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6628711938903181561}
   - component: {fileID: 6628711938903181558}
-  - component: {fileID: 4405763798203404102}
+  - component: {fileID: -4756968663447644307}
   m_Layer: 5
   m_Name: SettingsSlider
   m_TagString: Untagged
@@ -554,7 +554,7 @@ MonoBehaviour:
   LabelText: {fileID: 6628711938056921067}
   NumberText: {fileID: 6628711938418796218}
   Slider: {fileID: 6628711938945206591}
---- !u!114 &4405763798203404102
+--- !u!114 &-4756968663447644307
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -563,7 +563,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6628711938903181560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 6628711938903181558}

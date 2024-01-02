@@ -280,7 +280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3730836485673369251}
   - component: {fileID: 211676871213138042}
-  - component: {fileID: 968837212751281691}
+  - component: {fileID: 7409851113202694414}
   m_Layer: 0
   m_Name: StageFormationIconView
   m_TagString: Untagged
@@ -328,7 +328,7 @@ MonoBehaviour:
   RectTransform: {fileID: 3730836485673369251}
   NameText: {fileID: 2294650745521803019}
   CountText: {fileID: 7889368887179445966}
---- !u!114 &968837212751281691
+--- !u!114 &7409851113202694414
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6193414529329671437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 211676871213138042}

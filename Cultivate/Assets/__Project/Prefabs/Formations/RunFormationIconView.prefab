@@ -280,8 +280,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3730836485673369251}
   - component: {fileID: 2699641931913962597}
-  - component: {fileID: 401633390686775245}
   - component: {fileID: 3089016274462092763}
+  - component: {fileID: 5242755636689433657}
   m_Layer: 0
   m_Name: RunFormationIconView
   m_TagString: Untagged
@@ -329,19 +329,6 @@ MonoBehaviour:
   RectTransform: {fileID: 3730836485673369251}
   NameText: {fileID: 2294650745521803019}
   CountText: {fileID: 7889368887179445966}
---- !u!114 &401633390686775245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193414529329671437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 2699641931913962597}
 --- !u!114 &3089016274462092763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,8 +341,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7c932967e4e3c848b47f34e1eba8b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ComplexView: {fileID: 0}
+--- !u!114 &5242755636689433657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193414529329671437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 2699641931913962597}
-  PivotBehaviour: {fileID: 0}
 --- !u!1 &6399636207394809419
 GameObject:
   m_ObjectHideFlags: 0

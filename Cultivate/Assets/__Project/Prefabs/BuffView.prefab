@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4912703874789696944}
   - component: {fileID: 2570990420335807749}
   - component: {fileID: 4589505260742817192}
-  - component: {fileID: 6443675909155886449}
+  - component: {fileID: -6212054365401148398}
   m_Layer: 5
   m_Name: BuffView
   m_TagString: Untagged
@@ -98,7 +98,7 @@ MonoBehaviour:
   RectTransform: {fileID: 7562609088413237544}
   NameText: {fileID: 7092610139616015992}
   StackText: {fileID: 6900333538600047134}
---- !u!114 &6443675909155886449
+--- !u!114 &-6212054365401148398
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2093651243853073121}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 4589505260742817192}

@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 8767097356885083549}
   - component: {fileID: 2848538456791811691}
   - component: {fileID: 4577034576067225391}
-  - component: {fileID: 2294525189816167164}
+  - component: {fileID: 7785813464613690992}
   m_Layer: 5
   m_Name: CommodityItemView
   m_TagString: Untagged
@@ -502,7 +502,7 @@ MonoBehaviour:
   SkillView: {fileID: 391445661527258646}
   PriceText: {fileID: 4457082311433452985}
   DiscountText: {fileID: 7686746271954019223}
---- !u!114 &2294525189816167164
+--- !u!114 &7785813464613690992
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -511,9 +511,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4346345133279296566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 4577034576067225391}
 --- !u!1 &5997650659463414451
 GameObject:
   m_ObjectHideFlags: 0

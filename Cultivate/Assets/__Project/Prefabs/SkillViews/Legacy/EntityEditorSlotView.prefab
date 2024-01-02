@@ -83,15 +83,15 @@ GameObject:
   - component: {fileID: 8838977114607417665}
   - component: {fileID: 6073153632119625175}
   - component: {fileID: 4089545282148707986}
-  - component: {fileID: 5737640881784663695}
   - component: {fileID: 4288755408499564588}
+  - component: {fileID: 8355620623800710837}
   m_Layer: 0
   m_Name: EntityEditorSlotView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8838977114607417665
 RectTransform:
   m_ObjectHideFlags: 0
@@ -143,19 +143,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 8838977114607417665}
   SkillView: {fileID: 7830573750497389353}
---- !u!114 &5737640881784663695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1267362520892108290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 4089545282148707986}
 --- !u!114 &4288755408499564588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,8 +155,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b323678a357112439e84408a51d354f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 4089545282148707986}
-  PivotBehaviour: {fileID: 0}
+  ComplexView: {fileID: 0}
+--- !u!114 &8355620623800710837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267362520892108290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 0}
 --- !u!1 &1844353422923098657
 GameObject:
   m_ObjectHideFlags: 0

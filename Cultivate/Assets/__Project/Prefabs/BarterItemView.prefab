@@ -86,14 +86,14 @@ GameObject:
   m_Component:
   - component: {fileID: 8767097356885083549}
   - component: {fileID: 2899127303335894075}
-  - component: {fileID: 6728954902772368041}
+  - component: {fileID: 1148442289460798107}
   m_Layer: 5
   m_Name: BarterItemView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8767097356885083549
 RectTransform:
   m_ObjectHideFlags: 0
@@ -134,7 +134,7 @@ MonoBehaviour:
   PlayerSkillView: {fileID: 6613482459292821811}
   SkillView: {fileID: 2820560060792866484}
   ExchangeButton: {fileID: 8930446124690946661}
---- !u!114 &6728954902772368041
+--- !u!114 &1148442289460798107
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,9 +143,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4346345133279296566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 2899127303335894075}
 --- !u!1001 &1837934970123362908
 PrefabInstance:
   m_ObjectHideFlags: 0

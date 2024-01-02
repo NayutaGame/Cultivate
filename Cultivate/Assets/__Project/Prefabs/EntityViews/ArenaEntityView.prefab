@@ -2996,7 +2996,7 @@ GameObject:
   - component: {fileID: 3724263608560962890}
   - component: {fileID: 1230494460477270508}
   - component: {fileID: 3508876315843785448}
-  - component: {fileID: 5275027078058864608}
+  - component: {fileID: -1798741454975335662}
   m_Layer: 5
   m_Name: ArenaEntityView
   m_TagString: Untagged
@@ -3103,7 +3103,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 0}
-  interactBehaviour: {fileID: 0}
   EntityDropdown: {fileID: 2178860415389202066}
   JingJieDropdown: {fileID: 2986658035967704926}
   HealthInputField: {fileID: 7784654355227722631}
@@ -3112,7 +3111,7 @@ MonoBehaviour:
   BossToggle: {fileID: 0}
   FieldView: {fileID: 0}
   FormationListView: {fileID: 0}
---- !u!114 &5275027078058864608
+--- !u!114 &-1798741454975335662
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3121,7 +3120,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7159749830029920091}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 3508876315843785448}

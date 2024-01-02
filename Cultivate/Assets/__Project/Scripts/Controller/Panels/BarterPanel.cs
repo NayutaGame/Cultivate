@@ -22,9 +22,9 @@ public class BarterPanel : Panel
         BarterItemListView.PointerMoveNeuron.Set((ib, d)
             => ((StandardSkillInteractBehaviour)ib).PointerMove(ib, d));
 
-        foreach (ItemView itemView in BarterItemListView.ActivePool)
+        foreach (ItemBehaviour itemBehaviour in BarterItemListView.ActivePool)
         {
-            BarterItemView barterItemView = itemView.AddressBehaviour as BarterItemView;
+            BarterItemView barterItemView = itemBehaviour.GetAddressBehaviour() as BarterItemView;
             barterItemView.ClearExchangeEvent();
             barterItemView.ExchangeEvent += ExchangeEvent;
         }

@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 36960541036400508}
-  ItemBehaviour: {fileID: 9026326027509961958}
+  ItemBehaviour: {fileID: 0}
   InteractBehaviour: {fileID: 0}
   AnimateBehaviour: {fileID: 2753047465682762412}
   PivotBehaviour: {fileID: 2039814876740525314}
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8085986264311966347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
+  m_Script: {fileID: 11500000, guid: b3576d9845242504580dc43ba3093944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2753047465682762412

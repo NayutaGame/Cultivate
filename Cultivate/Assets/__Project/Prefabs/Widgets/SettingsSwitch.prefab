@@ -599,7 +599,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4082247727251103362}
   - component: {fileID: 4082247727251103361}
-  - component: {fileID: 7570433634511511479}
+  - component: {fileID: 8292911013035224394}
   m_Layer: 0
   m_Name: SettingsSwitch
   m_TagString: Untagged
@@ -645,7 +645,7 @@ MonoBehaviour:
   ContentText: {fileID: 4082247726123854404}
   PrevButton: {fileID: 3500785905787628904}
   NextButton: {fileID: 1689282214067051568}
---- !u!114 &7570433634511511479
+--- !u!114 &8292911013035224394
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -654,7 +654,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4082247727251103363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 4082247727251103361}

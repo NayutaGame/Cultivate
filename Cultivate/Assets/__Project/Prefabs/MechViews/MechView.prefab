@@ -432,7 +432,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2734635719551763227}
   - component: {fileID: 4122201372033822306}
-  - component: {fileID: 8974904020438072693}
+  - component: {fileID: -3430915368257472375}
   m_Layer: 0
   m_Name: MechView
   m_TagString: Untagged
@@ -476,7 +476,7 @@ MonoBehaviour:
   RectTransform: {fileID: 2734635719551763227}
   NameText: {fileID: 1798051381755965334}
   CountText: {fileID: 2231452494983012487}
---- !u!114 &8974904020438072693
+--- !u!114 &-3430915368257472375
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -485,7 +485,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7193032900202738161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43289a6675283b7428862e69e533dfd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 4122201372033822306}
