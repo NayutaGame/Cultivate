@@ -1,31 +1,45 @@
 
+using CLLibrary;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ArenaPanel : Panel
 {
-    public SkillInventoryView SkillInventoryView;
-    public ArenaEditorView ArenaEditorView;
+    public ListView SkillInventoryView;
+    public ListView ArenaEditorView;
     public ArenaScoreboardView ArenaScoreboardView;
     public TMP_Text ReportView;
 
-    private Address _address;
+    public Button[] SortButtons;
+
+    public Button RandomButton;
+    public Button CompeteButton;
 
     public override void Configure()
     {
         base.Configure();
 
-        _address = new Address("Run.Arena");
-
         ConfigureInteractDelegate();
 
         SkillInventoryView.SetAddress(new Address("App.SkillInventory"));
-        // SkillInventoryView.SetHandler(_interactHandler);
 
-        ArenaEditorView.SetAddress(_address);
-        // ArenaEditorView.SetHandler(_interactHandler);
+        ArenaEditorView.SetAddress(new Address("Run.Arena"));
 
         ArenaScoreboardView.Configure();
+
+        RandomButton.onClick.RemoveAllListeners();
+        RandomButton.onClick.AddListener(Random);
+
+        CompeteButton.onClick.RemoveAllListeners();
+        CompeteButton.onClick.AddListener(Compete);
+
+        SortButtons.Length.Do(i =>
+        {
+            int comparisonId = i;
+            SortButtons[i].onClick.RemoveAllListeners();
+            SortButtons[i].onClick.AddListener(() => SortByComparisonId(comparisonId));
+        });
     }
 
     private void ConfigureInteractDelegate()
@@ -46,7 +60,7 @@ public class ArenaPanel : Panel
         //         /* RunSkill   */ null,       TryWrite,
         //         /* SkillSlot  */ null,       TryWrite,
         //     });
-        // _interactHandler.SetHandle(InteractHandler.POINTER_RIGHT_CLICK, 1, (v, d) => TryIncreaseJingJie(v, d));
+        // _interactHandler.SetHandle(InteractHandler.POINTER_RIGHT_CLICK, 1, (ib, d) => TryIncreaseJingJie(ib, d));
     }
 
     public override void Refresh()
@@ -61,7 +75,7 @@ public class ArenaPanel : Panel
 
     private void TryWrite(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
-        Arena arena = _address.Get<Arena>();
+        Arena arena = new Address("Run.Arena").Get<Arena>();
 
         object fromItem = from.GetComponent<AddressBehaviour>().Get<object>();
         SkillSlot toSlot = to.GetComponent<AddressBehaviour>().Get<SkillSlot>();
@@ -76,10 +90,30 @@ public class ArenaPanel : Panel
         }
     }
 
-    private bool TryIncreaseJingJie(InteractBehaviour view, PointerEventData eventData)
+    private bool TryIncreaseJingJie(InteractBehaviour ib, PointerEventData eventData)
     {
-        Arena arena = _address.Get<Arena>();
-        SkillSlot slot = view.GetComponent<AddressBehaviour>().Get<SkillSlot>();
+        Arena arena = new Address("Run.Arena").Get<Arena>();
+        SkillSlot slot = ib.GetComponent<AddressBehaviour>().Get<SkillSlot>();
         return arena.TryIncreaseJingJie(slot);
+    }
+
+    private void Random()
+    {
+        // ActivePool.Do(v => ((MutableEntityView)v).RandomButton.onClick.Invoke());
+        // multiple refreshes
+    }
+
+    private void Compete()
+    {
+        Arena arena = new Address("Run.Arena").Get<Arena>();
+        arena.Compete();
+        CanvasManager.Instance.RunCanvas.Refresh();
+    }
+
+    private void SortByComparisonId(int i)
+    {
+        SkillInventory inventory = new Address("App.SkillInventory").Get<SkillInventory>();
+        inventory.SortByComparisonId(i);
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

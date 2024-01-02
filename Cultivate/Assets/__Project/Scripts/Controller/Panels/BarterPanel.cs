@@ -1,4 +1,5 @@
 
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BarterPanel : Panel
@@ -15,12 +16,9 @@ public class BarterPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         BarterItemListView.SetAddress(_address.Append(".Inventory"));
-        BarterItemListView.PointerEnterNeuron.Set((ib, d)
-            => ((StandardSkillInteractBehaviour)ib).HoverAnimation(ib, d));
-        BarterItemListView.PointerExitNeuron.Set((ib, d)
-            => ((StandardSkillInteractBehaviour)ib).UnhoverAnimation(ib, d));
-        BarterItemListView.PointerMoveNeuron.Set((ib, d)
-            => ((StandardSkillInteractBehaviour)ib).PointerMove(ib, d));
+        BarterItemListView.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
+        BarterItemListView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        BarterItemListView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
 
         foreach (ItemBehaviour itemBehaviour in BarterItemListView.ActivePool)
         {
@@ -52,4 +50,7 @@ public class BarterPanel : Panel
         PanelDescriptor panelDescriptor = map.ReceiveSignal(new Signal());
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
+
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+        => AudioManager.Play("CardHover");
 }

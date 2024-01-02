@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CLLibrary
 {
@@ -12,11 +13,8 @@ namespace CLLibrary
 
         public void Add(Action action) => Action += action;
         public void Remove(Action action) => Action -= action;
-        public void Set(params Action[] actions)
-        {
-            Action = null;
-            actions.Do(action => Action += action);
-        }
+        public void Join(params Action[] actions)
+            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron> _neurons;
 
@@ -24,11 +22,8 @@ namespace CLLibrary
 
         public void Add(Neuron neuron) => _neurons.Add(neuron);
         public void Remove(Neuron neuron) => _neurons.Remove(neuron);
-        public void Set(params Neuron[] neurons)
-        {
-            _neurons.Clear();
-            _neurons.AddRange(neurons);
-        }
+        public void Join(params Neuron[] neurons)
+            => neurons.FilterObj(n => !_neurons.Contains(n)).Do(_neurons.Add);
 
         public void Invoke()
         {
@@ -50,11 +45,8 @@ namespace CLLibrary
 
         public void Add(Action<T1> action) => Action += action;
         public void Remove(Action<T1> action) => Action -= action;
-        public void Set(params Action<T1>[] actions)
-        {
-            Action = null;
-            actions.Do(action => Action += action);
-        }
+        public void Join(params Action<T1>[] actions)
+            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1>> _neurons;
 
@@ -62,11 +54,8 @@ namespace CLLibrary
 
         public void Add(Neuron<T1> neuron) => _neurons.Add(neuron);
         public void Remove(Neuron<T1> neuron) => _neurons.Remove(neuron);
-        public void Set(params Neuron<T1>[] neurons)
-        {
-            _neurons.Clear();
-            _neurons.AddRange(neurons);
-        }
+        public void Join(params Neuron<T1>[] neurons)
+            => neurons.FilterObj(n => !_neurons.Contains(n)).Do(_neurons.Add);
 
         public void Invoke(T1 t1)
         {
@@ -88,11 +77,8 @@ namespace CLLibrary
 
         public void Add(Action<T1, T2> action) => Action += action;
         public void Remove(Action<T1, T2> action) => Action -= action;
-        public void Set(params Action<T1, T2>[] actions)
-        {
-            Action = null;
-            actions.Do(action => Action += action);
-        }
+        public void Join(params Action<T1, T2>[] actions)
+            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2>> _neurons;
 
@@ -100,11 +86,8 @@ namespace CLLibrary
 
         public void Add(Neuron<T1, T2> neuron) => _neurons.Add(neuron);
         public void Remove(Neuron<T1, T2> neuron) => _neurons.Remove(neuron);
-        public void Set(params Neuron<T1, T2>[] neurons)
-        {
-            _neurons.Clear();
-            _neurons.AddRange(neurons);
-        }
+        public void Join(params Neuron<T1, T2>[] neurons)
+            => neurons.FilterObj(n => !_neurons.Contains(n)).Do(_neurons.Add);
 
         public void Invoke(T1 t1, T2 t2)
         {
@@ -126,11 +109,8 @@ namespace CLLibrary
 
         public void Add(Action<T1, T2, T3> action) => Action += action;
         public void Remove(Action<T1, T2, T3> action) => Action -= action;
-        public void Set(params Action<T1, T2, T3>[] actions)
-        {
-            Action = null;
-            actions.Do(action => Action += action);
-        }
+        public void Join(params Action<T1, T2, T3>[] actions)
+            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2, T3>> _neurons;
 
@@ -138,11 +118,8 @@ namespace CLLibrary
 
         public void Add(Neuron<T1, T2, T3> neuron) => _neurons.Add(neuron);
         public void Remove(Neuron<T1, T2, T3> neuron) => _neurons.Remove(neuron);
-        public void Set(params Neuron<T1, T2, T3>[] neurons)
-        {
-            _neurons.Clear();
-            _neurons.AddRange(neurons);
-        }
+        public void Join(params Neuron<T1, T2, T3>[] neurons)
+            => neurons.FilterObj(n => !_neurons.Contains(n)).Do(_neurons.Add);
 
         public void Invoke(T1 t1, T2 t2, T3 t3)
         {
@@ -164,11 +141,8 @@ namespace CLLibrary
 
         public void Add(Action<T1, T2, T3, T4> action) => Action += action;
         public void Remove(Action<T1, T2, T3, T4> action) => Action -= action;
-        public void Set(params Action<T1, T2, T3, T4>[] actions)
-        {
-            Action = null;
-            actions.Do(action => Action += action);
-        }
+        public void Join(params Action<T1, T2, T3, T4>[] actions)
+            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2, T3, T4>> _neurons;
 
@@ -176,11 +150,8 @@ namespace CLLibrary
 
         public void Add(Neuron<T1, T2, T3, T4> neuron) => _neurons.Add(neuron);
         public void Remove(Neuron<T1, T2, T3, T4> neuron) => _neurons.Remove(neuron);
-        public void Set(params Neuron<T1, T2, T3, T4>[] neurons)
-        {
-            _neurons.Clear();
-            _neurons.AddRange(neurons);
-        }
+        public void Join(params Neuron<T1, T2, T3, T4>[] neurons)
+            => neurons.FilterObj(n => !_neurons.Contains(n)).Do(_neurons.Add);
 
         public void Invoke(T1 t1, T2 t2, T3 t3, T4 t4)
         {
@@ -202,11 +173,8 @@ namespace CLLibrary
 
         public void Add(Action<T1, T2, T3, T4, T5> action) => Action += action;
         public void Remove(Action<T1, T2, T3, T4, T5> action) => Action -= action;
-        public void Set(params Action<T1, T2, T3, T4, T5>[] actions)
-        {
-            Action = null;
-            actions.Do(action => Action += action);
-        }
+        public void Join(params Action<T1, T2, T3, T4, T5>[] actions)
+            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2, T3, T4, T5>> _neurons;
 
@@ -214,11 +182,8 @@ namespace CLLibrary
 
         public void Add(Neuron<T1, T2, T3, T4, T5> neuron) => _neurons.Add(neuron);
         public void Remove(Neuron<T1, T2, T3, T4, T5> neuron) => _neurons.Remove(neuron);
-        public void Set(params Neuron<T1, T2, T3, T4, T5>[] neurons)
-        {
-            _neurons.Clear();
-            _neurons.AddRange(neurons);
-        }
+        public void Join(params Neuron<T1, T2, T3, T4, T5>[] neurons)
+            => neurons.FilterObj(n => !_neurons.Contains(n)).Do(_neurons.Add);
 
         public void Invoke(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5)
         {
@@ -240,11 +205,8 @@ namespace CLLibrary
 
         public void Add(Action<T1, T2, T3, T4, T5, T6> action) => Action += action;
         public void Remove(Action<T1, T2, T3, T4, T5, T6> action) => Action -= action;
-        public void Set(params Action<T1, T2, T3, T4, T5, T6>[] actions)
-        {
-            Action = null;
-            actions.Do(action => Action += action);
-        }
+        public void Join(params Action<T1, T2, T3, T4, T5, T6>[] actions)
+            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2, T3, T4, T5, T6>> _neurons;
 
@@ -252,11 +214,8 @@ namespace CLLibrary
 
         public void Add(Neuron<T1, T2, T3, T4, T5, T6> neuron) => _neurons.Add(neuron);
         public void Remove(Neuron<T1, T2, T3, T4, T5, T6> neuron) => _neurons.Remove(neuron);
-        public void Set(params Neuron<T1, T2, T3, T4, T5, T6>[] neurons)
-        {
-            _neurons.Clear();
-            _neurons.AddRange(neurons);
-        }
+        public void Join(params Neuron<T1, T2, T3, T4, T5, T6>[] neurons)
+            => neurons.FilterObj(n => !_neurons.Contains(n)).Do(_neurons.Add);
 
         public void Invoke(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6)
         {

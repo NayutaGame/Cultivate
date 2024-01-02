@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 
 public class ListView : AddressBehaviour
 {
-    public Transform Container;
     public GameObject[] Prefabs;
 
     protected List<ItemBehaviour> _activePool;
@@ -61,9 +60,9 @@ public class ListView : AddressBehaviour
 
     private void RegisterExists()
     {
-        for (int i = 0; i < Container.childCount; i++)
+        for (int i = 0; i < RectTransform.childCount; i++)
         {
-            ItemBehaviour itemBehaviour = RegisterItemBehaviour(Container.GetChild(i).gameObject);
+            ItemBehaviour itemBehaviour = RegisterItemBehaviour(RectTransform.GetChild(i).gameObject);
             InitItemBehaviour(itemBehaviour, itemBehaviour.PrefabIndex);
         }
     }
@@ -83,7 +82,7 @@ public class ListView : AddressBehaviour
     #region Atomic Operations
 
     private ItemBehaviour AllocItemBehaviour(int prefabIndex)
-        => Instantiate(Prefabs[prefabIndex], Container).GetComponent<ItemBehaviour>();
+        => Instantiate(Prefabs[prefabIndex], RectTransform).GetComponent<ItemBehaviour>();
 
     private ItemBehaviour RegisterItemBehaviour(GameObject go)
     {

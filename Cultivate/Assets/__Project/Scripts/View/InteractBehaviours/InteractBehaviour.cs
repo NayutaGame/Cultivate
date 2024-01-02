@@ -3,7 +3,7 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class InteractBehaviour : MonoBehaviour
+public class InteractBehaviour : MonoBehaviour
     // IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     // IBeginDragHandler, IEndDragHandler, IDragHandler,
     // IDropHandler,

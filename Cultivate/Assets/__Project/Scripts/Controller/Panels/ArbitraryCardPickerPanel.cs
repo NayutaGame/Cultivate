@@ -28,12 +28,9 @@ public class ArbitraryCardPickerPanel : Panel
         _selections = new List<SkillView>();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
-        SkillListView.PointerEnterNeuron.Set((ib, d)
-            => ((StandardSkillInteractBehaviour)ib).HoverAnimation(ib, d));
-        SkillListView.PointerExitNeuron.Set((ib, d)
-            => ((StandardSkillInteractBehaviour)ib).UnhoverAnimation(ib, d));
-        SkillListView.PointerMoveNeuron.Set((ib, d)
-            => ((StandardSkillInteractBehaviour)ib).PointerMove(ib, d));
+        SkillListView.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
+        SkillListView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        SkillListView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
         SkillListView.LeftClickNeuron.Set((ib, d) => ToggleSkill(ib, d));
     }
 
@@ -95,4 +92,7 @@ public class ArbitraryCardPickerPanel : Panel
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedSkillsSignal(mapped));
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
+
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+        => AudioManager.Play("CardHover");
 }

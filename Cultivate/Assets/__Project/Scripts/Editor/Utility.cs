@@ -1,4 +1,4 @@
-using System.IO;
+
 using CLLibrary;
 using UnityEditor;
 using UnityEngine;
@@ -20,6 +20,17 @@ public class Utility : MonoBehaviour
     static void CreateAnimatedListView(MenuCommand menuCommand)
     {
         string path = "AnimatedListView";
+
+        GameObject go = PrefabUtility.InstantiatePrefab(Resources.Load(path)) as GameObject;
+        GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
+        Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
+        Selection.activeObject = go;
+    }
+
+    [MenuItem("GameObject/Create Custom/ComplexView", false, 1)]
+    static void CreateComplexView(MenuCommand menuCommand)
+    {
+        string path = "ComplexView";
 
         GameObject go = PrefabUtility.InstantiatePrefab(Resources.Load(path)) as GameObject;
         GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);

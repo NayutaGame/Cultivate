@@ -324,6 +324,7 @@ GameObject:
   - component: {fileID: 7404021261528822207}
   - component: {fileID: 4312937186520654966}
   - component: {fileID: 5670514358094427683}
+  - component: {fileID: 2476151307313428062}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -396,6 +397,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &2476151307313428062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4082840614693837677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RectTransform: {fileID: 7404021261528822207}
+  Prefabs:
+  - {fileID: 6660759479478348986}
 --- !u!1 &5466396831437496947
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,7 +970,6 @@ GameObject:
   - component: {fileID: 6428075880864503935}
   - component: {fileID: 6428075880864503929}
   - component: {fileID: 6428075880864503934}
-  - component: {fileID: 6244070320139605977}
   m_Layer: 5
   m_Name: FormationBrowser
   m_TagString: Untagged
@@ -1023,22 +1038,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6244070320139605977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6428075880864503932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c766bf52f74143948b01278854a56dcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Container: {fileID: 7404021261528822207}
-  Prefabs:
-  - {fileID: 6660759479478348986}
-  _detailedGroupView: {fileID: 3407030177936121561}
 --- !u!1 &6428075880954596432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,8 +1216,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u9635\u6CD5\u4E00\u89C8"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
-  m_sharedMaterial: {fileID: -364229388345804397, guid: 23cbd4c809a7c7345b4e17e4cca5c783, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1410,7 +1409,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39d13c1a7c4a5640bcf2a2a13918b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FormationBrowser: {fileID: 6244070320139605977}
+  FormationBrowser: {fileID: 2476151307313428062}
+  _detailedGroupView: {fileID: 3407030177936121561}
 --- !u!1 &6428075881479895697
 GameObject:
   m_ObjectHideFlags: 0
@@ -2331,6 +2331,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7859647510315436327, guid: e8ec594d85f2f204a855e9b06d607961, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+    - target: {fileID: 7859647510315436327, guid: e8ec594d85f2f204a855e9b06d607961, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
     - target: {fileID: 8482789584359189933, guid: e8ec594d85f2f204a855e9b06d607961, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
