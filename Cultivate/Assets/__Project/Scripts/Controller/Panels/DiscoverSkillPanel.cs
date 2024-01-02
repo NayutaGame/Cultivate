@@ -24,11 +24,9 @@ public class DiscoverSkillPanel : Panel
 
             ib.PointerEnterNeuron.Set(
                 CanvasManager.Instance.SkillAnnotation.SetAddressFromIB,
-                PointerEnter);
+                PlayCardHoverSFX);
 
-            ib.PointerExitNeuron.Set(
-                CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
-                PointerExit);
+            ib.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
 
             ib.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
             ib.LeftClickNeuron.Set(TrySelectOption);
@@ -56,16 +54,8 @@ public class DiscoverSkillPanel : Panel
         }
     }
 
-    private void PointerEnter(InteractBehaviour ib, PointerEventData eventData)
-    {
-        AudioManager.Play("CardHover");
-        ib.ComplexView.AnimateBehaviour.SetPivot(ib.ComplexView.PivotBehaviour.HoverPivot);
-    }
-
-    private void PointerExit(InteractBehaviour ib, PointerEventData eventData)
-    {
-        ib.ComplexView.AnimateBehaviour.SetPivot(ib.ComplexView.PivotBehaviour.IdlePivot);
-    }
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+        => AudioManager.Play("CardHover");
 
     private void TrySelectOption(InteractBehaviour ib, PointerEventData eventData)
     {

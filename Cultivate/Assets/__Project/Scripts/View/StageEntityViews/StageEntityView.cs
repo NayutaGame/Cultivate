@@ -1,10 +1,8 @@
 
-using CLLibrary;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class StageEntityView : LegacyAddressBehaviour
+public class StageEntityView : AddressBehaviour
 {
     [SerializeField] private ListView Formations;
     [SerializeField] private ListView Buffs;
@@ -16,14 +14,14 @@ public class StageEntityView : LegacyAddressBehaviour
         base.SetAddress(address);
 
         Formations.SetAddress(GetAddress().Append(".Formations"));
-        Formations.PointerEnterNeuron.Set(PointerEnterBuffNeuron);
-        Formations.PointerEnterNeuron.Set(PointerExitBuffNeuron);
-        Formations.PointerEnterNeuron.Set(PointerMoveBuffNeuron);
+        Formations.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB, StageManager.Instance.Pause);
+        Formations.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull, StageManager.Instance.Resume);
+        Formations.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
 
         Buffs.SetAddress(GetAddress().Append(".Buffs"));
-        Buffs.PointerEnterNeuron.Set(PointerEnterFormationNeuron);
-        Buffs.PointerEnterNeuron.Set(PointerExitFormationNeuron);
-        Buffs.PointerEnterNeuron.Set(PointerMoveFormationNeuron);
+        Buffs.PointerEnterNeuron.Set(CanvasManager.Instance.BuffAnnotation.SetAddressFromIB, StageManager.Instance.Pause);
+        Buffs.PointerEnterNeuron.Set(CanvasManager.Instance.BuffAnnotation.SetAddressToNull, StageManager.Instance.Resume);
+        Buffs.PointerEnterNeuron.Set(CanvasManager.Instance.BuffAnnotation.UpdateMousePos);
     }
 
     public override void Refresh()
@@ -44,12 +42,4 @@ public class StageEntityView : LegacyAddressBehaviour
             ArmorText.text = $"{entity.Armor}";
         }
     }
-
-    public Neuron<InteractBehaviour, PointerEventData> PointerEnterBuffNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerExitBuffNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerMoveBuffNeuron = new();
-
-    public Neuron<InteractBehaviour, PointerEventData> PointerEnterFormationNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerExitFormationNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerMoveFormationNeuron = new();
 }

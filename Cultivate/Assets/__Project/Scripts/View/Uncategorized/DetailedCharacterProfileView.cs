@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class DetailedCharacterProfileView : LegacyAddressBehaviour
+public class DetailedCharacterProfileView : AddressBehaviour
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text AbilityDescriptionText;

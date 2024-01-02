@@ -22,12 +22,6 @@ public class AnimatedListView : ListView
         return task;
     }
 
-    // public override void SetHandler(InteractHandler interactHandler)
-    // {
-    //     _interactHandler = interactHandler;
-    //     Traversal().Do(itemView => itemView.GetComponent<AnimatedItemView>().InteractBehaviour.SetHandler(_interactHandler));
-    // }
-
     #region Atomic Operations
 
     protected override void InitItemView(ItemView itemView, int prefabIndex)
@@ -87,12 +81,12 @@ public class AnimatedListView : ListView
 
     public void RefreshPivots()
     {
-        foreach (var addressBehaviour in _activePool)
+        foreach (ItemView itemView in _activePool)
         {
-            AnimatedItemView animatedItemView = addressBehaviour.GetComponent<AnimatedItemView>();
+            AnimatedItemView animatedItemView = itemView.GetComponent<AnimatedItemView>();
 
-            if(animatedItemView != null)
-                animatedItemView.InteractBehaviour.ComplexView.AnimateBehaviour.SetPivot(animatedItemView.InteractBehaviour.ComplexView.PivotBehaviour.IdlePivot);
+            // if (animatedItemView != null)
+            //     animatedItemView.InteractBehaviour.ComplexView.AnimateBehaviour.GoToIdle();
         }
     }
 }

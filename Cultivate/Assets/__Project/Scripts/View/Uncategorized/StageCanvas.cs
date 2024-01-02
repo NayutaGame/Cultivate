@@ -28,20 +28,7 @@ public class StageCanvas : MonoBehaviour
         SkipButton.onClick.AddListener(Skip);
 
         HomeStageEntityView.SetAddress(_address.Append(".Environment.Home"));
-        HomeStageEntityView.PointerEnterBuffNeuron.Set(PointerEnterBuff);
-        HomeStageEntityView.PointerExitBuffNeuron.Set(PointerExitBuff);
-        HomeStageEntityView.PointerMoveBuffNeuron.Set(PointerMoveBuff);
-        HomeStageEntityView.PointerEnterFormationNeuron.Set(PointerEnterFormation);
-        HomeStageEntityView.PointerExitFormationNeuron.Set(PointerExitFormation);
-        HomeStageEntityView.PointerMoveFormationNeuron.Set(PointerMoveFormation);
-
         AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));
-        AwayStageEntityView.PointerEnterBuffNeuron.Set(PointerEnterBuff);
-        AwayStageEntityView.PointerExitBuffNeuron.Set(PointerExitBuff);
-        AwayStageEntityView.PointerMoveBuffNeuron.Set(PointerMoveBuff);
-        AwayStageEntityView.PointerEnterFormationNeuron.Set(PointerEnterFormation);
-        AwayStageEntityView.PointerExitFormationNeuron.Set(PointerExitFormation);
-        AwayStageEntityView.PointerMoveFormationNeuron.Set(PointerMoveFormation);
 
         TimelineView.Configure();
         // _address.Append(".Timeline");
@@ -82,51 +69,5 @@ public class StageCanvas : MonoBehaviour
 
         SpeedSlider.value = 0;
         Refresh();
-    }
-
-    private void PointerEnterBuff(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.BuffAnnotation.SetAddressFromIB(ib, eventData);
-        StageManager.Instance.Pause();
-    }
-
-    private void PointerExitBuff(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.BuffAnnotation.SetAddressToNull(ib, eventData);
-        StageManager.Instance.Resume();
-    }
-
-    private void PointerMoveBuff(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.BuffAnnotation.UpdateMousePos(eventData.position);
-    }
-
-    private void PointerEnterFormation(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.SetAddressFromIB(ib, eventData);
-        StageManager.Instance.Pause();
-    }
-
-    private void PointerExitFormation(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.SetAddressToNull(ib, eventData);
-        StageManager.Instance.Resume();
-    }
-
-    private void PointerMoveFormation(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.UpdateMousePos(eventData.position);
     }
 }

@@ -54,9 +54,9 @@ public class TimelineView : MonoBehaviour
 
     private void ConfigureNeuron(StageSkillInteractBehaviour stageSkillIb)
     {
-        stageSkillIb.PointerEnterNeuron.Set(PointerEnter);
-        stageSkillIb.PointerExitNeuron.Set(PointerExit);
-        stageSkillIb.PointerMoveNeuron.Set(PointerMove);
+        stageSkillIb.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, StageManager.Instance.Pause);
+        stageSkillIb.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull, StageManager.Instance.Resume);
+        stageSkillIb.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
     }
 
     public void InitialSetup()
@@ -149,26 +149,5 @@ public class TimelineView : MonoBehaviour
         v.SetAddress(new Address($"Stage.Timeline.Notes#{toCreate.TemporalIndex}"));
         ConfigureNeuron(v.GetComponent<StageSkillInteractBehaviour>());
         v.Refresh();
-    }
-
-    private void PointerEnter(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.SkillAnnotation.SetAddress(GetComponent<LegacyAddressBehaviour>().GetAddress());
-        StageManager.Instance.Pause();
-    }
-
-    private void PointerExit(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
-        StageManager.Instance.Resume();
-    }
-
-    private void PointerMove(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(eventData.position);
     }
 }

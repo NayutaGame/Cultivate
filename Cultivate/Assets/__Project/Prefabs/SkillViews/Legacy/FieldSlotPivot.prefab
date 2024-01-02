@@ -55,7 +55,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8838977114607417665
 RectTransform:
   m_ObjectHideFlags: 0
@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0607c65ef2671814fb04fb50602c479c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ComplexView: {fileID: 0}
   IdlePivot: {fileID: 7204412791362524503}
   HoverPivot: {fileID: 6716181124235609850}
   FollowPivot: {fileID: 8437739900080131040}
@@ -144,8 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20856fa918421a94cb33ee9e2a953168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 0}
-  PivotBehaviour: {fileID: 8301825459270121207}
+  ComplexView: {fileID: 0}
   CanvasGroup: {fileID: 0}
 --- !u!1 &2604275123752919018
 GameObject:

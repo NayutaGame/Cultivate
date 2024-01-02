@@ -28,9 +28,12 @@ public class ArbitraryCardPickerPanel : Panel
         _selections = new List<SkillView>();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
-        SkillListView.PointerEnterNeuron.Set((ib, d) => ((StandardSkillInteractBehaviour)ib).HoverAnimation(d));
-        SkillListView.PointerExitNeuron.Set((ib, d) => ((StandardSkillInteractBehaviour)ib).UnhoverAnimation(d));
-        SkillListView.PointerMoveNeuron.Set((ib, d) => ((StandardSkillInteractBehaviour)ib).PointerMove(d));
+        SkillListView.PointerEnterNeuron.Set((ib, d)
+            => ((StandardSkillInteractBehaviour)ib).HoverAnimation(ib, d));
+        SkillListView.PointerExitNeuron.Set((ib, d)
+            => ((StandardSkillInteractBehaviour)ib).UnhoverAnimation(ib, d));
+        SkillListView.PointerMoveNeuron.Set((ib, d)
+            => ((StandardSkillInteractBehaviour)ib).PointerMove(ib, d));
         SkillListView.LeftClickNeuron.Set((ib, d) => ToggleSkill(ib, d));
     }
 
@@ -54,11 +57,11 @@ public class ArbitraryCardPickerPanel : Panel
         SkillListView.Refresh();
     }
 
-    private bool ToggleSkill(InteractBehaviour view, PointerEventData eventData)
+    private bool ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
-        SkillView skillView = view.GetComponent<SkillView>();
+        SkillView skillView = ib.GetComponent<SkillView>();
         bool isSelected = _selections.Contains(skillView);
 
         if (isSelected)

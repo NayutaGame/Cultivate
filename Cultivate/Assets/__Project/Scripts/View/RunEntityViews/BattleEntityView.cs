@@ -1,7 +1,5 @@
 
-using UnityEngine.EventSystems;
-
-public class BattleEntityView : LegacyAddressBehaviour
+public class BattleEntityView : AddressBehaviour
 {
     public ListView FieldView;
     public ListView FormationListView;
@@ -10,14 +8,15 @@ public class BattleEntityView : LegacyAddressBehaviour
     {
         base.SetAddress(address);
         FieldView.SetAddress(GetAddress().Append(".Slots"));
-        FieldView.PointerEnterNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).HoverAnimation(d));
-        FieldView.PointerExitNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).UnhoverAnimation(d));
-        FieldView.PointerMoveNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).PointerMove(d));
+        FieldView.PointerEnterNeuron.Set((ib, d)
+            => ((FieldSlotInteractBehaviour)ib).HoverAnimation(ib, d));
+        FieldView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        FieldView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
 
         FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
-        FormationListView.PointerEnterNeuron.Set(PointerEnterFormation);
-        FormationListView.PointerExitNeuron.Set(PointerExitFormation);
-        FormationListView.PointerMoveNeuron.Set(PointerMoveFormation);
+        FormationListView.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
+        FormationListView.PointerExitNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        FormationListView.PointerMoveNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
     }
 
     public override void Refresh()
@@ -25,26 +24,5 @@ public class BattleEntityView : LegacyAddressBehaviour
         base.Refresh();
         FieldView.Refresh();
         FormationListView.Refresh();
-    }
-
-    private void PointerEnterFormation(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.SetAddressFromIB(ib, eventData);
-    }
-
-    private void PointerExitFormation(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.SetAddressToNull(ib, eventData);
-    }
-
-    private void PointerMoveFormation(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.UpdateMousePos(eventData.position);
     }
 }

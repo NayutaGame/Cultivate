@@ -1,7 +1,7 @@
 
 using TMPro;
 
-public class EntityView : LegacyAddressBehaviour
+public class EntityView : AddressBehaviour
 {
     public TMP_Text NameText;
     public TMP_Text JingJieText;

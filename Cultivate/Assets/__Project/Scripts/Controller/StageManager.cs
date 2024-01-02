@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
+using UnityEngine.EventSystems;
 
 public class StageManager : Singleton<StageManager>, Addressable
 {
@@ -64,10 +65,16 @@ public class StageManager : Singleton<StageManager>, Addressable
         Anim.PauseTween();
     }
 
+    public void Pause(InteractBehaviour ib, PointerEventData eventData)
+        => Pause();
+
     public void Resume()
     {
         Anim.ResumeTween();
     }
+
+    public void Resume(InteractBehaviour ib, PointerEventData eventData)
+        => Resume();
 
     public void SetSpeed(float speed)
     {

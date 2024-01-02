@@ -63,8 +63,8 @@ public class ArenaPanel : Panel
     {
         Arena arena = _address.Get<Arena>();
 
-        object fromItem = from.GetComponent<LegacyAddressBehaviour>().Get<object>();
-        SkillSlot toSlot = to.GetComponent<LegacyAddressBehaviour>().Get<SkillSlot>();
+        object fromItem = from.GetComponent<AddressBehaviour>().Get<object>();
+        SkillSlot toSlot = to.GetComponent<AddressBehaviour>().Get<SkillSlot>();
 
         if (fromItem is RunSkill fromSkill)
         {
@@ -79,7 +79,7 @@ public class ArenaPanel : Panel
     private bool TryIncreaseJingJie(InteractBehaviour view, PointerEventData eventData)
     {
         Arena arena = _address.Get<Arena>();
-        SkillSlot slot = view.GetComponent<LegacyAddressBehaviour>().Get<SkillSlot>();
+        SkillSlot slot = view.GetComponent<AddressBehaviour>().Get<SkillSlot>();
         return arena.TryIncreaseJingJie(slot);
     }
 }

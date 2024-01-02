@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AnnotationBehaviour : LegacyAddressBehaviour
+public class AnnotationBehaviour : AddressBehaviour
 {
     private void UpdateMousePos(Vector2 pos)
     {

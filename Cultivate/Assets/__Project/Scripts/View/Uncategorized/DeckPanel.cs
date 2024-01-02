@@ -1,5 +1,4 @@
 
-using System;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
@@ -47,25 +46,32 @@ public class DeckPanel : Panel
         SetLocked(false);
 
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
-        FieldView.PointerEnterNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).HoverAnimation(d));
-        FieldView.PointerExitNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).UnhoverAnimation(d));
-        FieldView.PointerMoveNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).PointerMove(d));
-        FieldView.BeginDragNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).BeginDrag(d));
-        FieldView.EndDragNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).EndDrag(d));
-        FieldView.DragNeuron.Set((ib, d) => ((FieldSlotInteractBehaviour)ib).Drag(d));
+        FieldView.PointerEnterNeuron.Set((ib, d)
+            => ((FieldSlotInteractBehaviour)ib).HoverAnimation(ib, d));
+        FieldView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        FieldView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        // FieldView.BeginDragNeuron.Set((ib, d)
+        //     => ((FieldSlotInteractBehaviour)ib).BeginDrag(ib, d));
+        // FieldView.EndDragNeuron.Set((ib, d)
+        //     => ((FieldSlotInteractBehaviour)ib).EndDrag(ib, d));
+        // FieldView.DragNeuron.Set((ib, d)
+        //     => ((FieldSlotInteractBehaviour)ib).Drag(ib, d));
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
-        HandView.PointerEnterNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).HoverAnimation(d));
-        HandView.PointerExitNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).UnhoverAnimation(d));
-        HandView.PointerMoveNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).PointerMove(d));
-        HandView.BeginDragNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).BeginDrag(d));
-        HandView.EndDragNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).EndDrag(d));
-        HandView.DragNeuron.Set((ib, d) => ((HandSkillInteractBehaviour)ib).Drag(d));
+        HandView.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
+        HandView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        HandView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        // HandView.BeginDragNeuron.Set((ib, d)
+        //     => ((HandSkillInteractBehaviour)ib).BeginDrag(ib, d));
+        // HandView.EndDragNeuron.Set((ib, d)
+        //     => ((HandSkillInteractBehaviour)ib).EndDrag(ib, d));
+        // HandView.DragNeuron.Set((ib, d)
+        //     => ((HandSkillInteractBehaviour)ib).Drag(ib, d));
 
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
-        FormationListView.PointerEnterNeuron.Set(PointerEnterFormation);
-        FormationListView.PointerExitNeuron.Set(PointerExitFormation);
-        FormationListView.PointerMoveNeuron.Set(PointerMoveFormation);
+        FormationListView.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
+        FormationListView.PointerExitNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        FormationListView.PointerMoveNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
 
         MechListView.SetAddress(new Address("Run.Environment.MechBag"));
         MechListView.BeginDragNeuron.Set((ib, d) => ((MechInteractBehaviour)ib).BeginDrag(d));
@@ -113,26 +119,8 @@ public class DeckPanel : Panel
 
     #region IInteractable
 
-    private void PointerEnterFormation(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.SetAddressFromIB(ib, eventData);
-    }
-
-    private void PointerExitFormation(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.SetAddressToNull(ib, eventData);
-    }
-
-    private void PointerMoveFormation(InteractBehaviour ib, PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.FormationAnnotation.UpdateMousePos(eventData.position);
-    }
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+        => AudioManager.Play("CardHover");
 
     private void TryMerge(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
@@ -168,7 +156,7 @@ public class DeckPanel : Panel
         eventData.pointerDrag = null;
         to.OnEndDrag(eventData);
         from.OnEndDrag(eventData);
-        from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
+        // from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
         AudioManager.Play("CardPlacement");
 
         FieldView.Refresh();
@@ -241,7 +229,7 @@ public class DeckPanel : Panel
         eventData.pointerDrag = null;
         to.OnEndDrag(eventData);
         from.OnEndDrag(eventData);
-        from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
+        // from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
         AudioManager.Play("CardPlacement");
 
         FieldView.Refresh();

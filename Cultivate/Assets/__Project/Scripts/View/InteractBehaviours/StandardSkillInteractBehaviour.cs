@@ -8,10 +8,10 @@ public class StandardSkillInteractBehaviour : InteractBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     IPointerClickHandler
 {
-    private static readonly float IdleAlpha = 0;
-    private static readonly float HoverAlpha = 0.2f;
+    public static readonly float IdleAlpha = 0;
+    public static readonly float HoverAlpha = 0.2f;
 
-    [SerializeField] private Image _blackFill;
+    [SerializeField] public Image _blackFill;
 
     private Tween _animationHandle;
 
@@ -27,30 +27,21 @@ public class StandardSkillInteractBehaviour : InteractBehaviour,
         _animationHandle.SetAutoKill().Restart();
     }
 
-    public void HoverAnimation(PointerEventData eventData)
+    public void HoverAnimation(InteractBehaviour ib, PointerEventData eventData)
     {
-        if (eventData.dragging) return;
-
         AudioManager.Play("CardHover");
-
         SetBlackFillColor(HoverAlpha);
-
-        CanvasManager.Instance.SkillAnnotation.SetAddress(ComplexView.AddressBehaviour.GetAddress());
+        CanvasManager.Instance.SkillAnnotation.SetAddressFromIB(ib, eventData);
     }
 
-    public void UnhoverAnimation(PointerEventData eventData)
+    public void UnhoverAnimation(InteractBehaviour ib, PointerEventData eventData)
     {
-        if (eventData.dragging) return;
-
         SetBlackFillColor(IdleAlpha);
-
-        CanvasManager.Instance.SkillAnnotation.SetAddress(null);
+        CanvasManager.Instance.SkillAnnotation.SetAddressToNull(ib, eventData);
     }
 
-    public void PointerMove(PointerEventData eventData)
+    public void PointerMove(InteractBehaviour ib, PointerEventData eventData)
     {
-        if (eventData.dragging) return;
-
-        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(eventData.position);
+        CanvasManager.Instance.SkillAnnotation.UpdateMousePos(ib, eventData);
     }
 }

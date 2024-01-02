@@ -7,7 +7,7 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ListView : LegacyAddressBehaviour
+public class ListView : AddressBehaviour
 {
     public Transform Container;
     public GameObject[] Prefabs;
@@ -236,14 +236,14 @@ public class ListView : LegacyAddressBehaviour
         return 0;
     }
 
-    public int? IndexFromBehaviour(LegacyAddressBehaviour toGetIndex)
+    public int? IndexFromBehaviour(AddressBehaviour toGetIndex)
     {
         if (toGetIndex == null)
             return null;
         return _activePool.FirstIdx(itemView => itemView.AddressBehaviour == toGetIndex);
     }
 
-    public LegacyAddressBehaviour BehaviourFromIndex(int i)
+    public AddressBehaviour BehaviourFromIndex(int i)
     {
         return _activePool[i].AddressBehaviour;
     }

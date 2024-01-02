@@ -2,9 +2,9 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(LegacyAddressBehaviour))]
+[RequireComponent(typeof(AddressBehaviour))]
 public class ItemView : MonoBehaviour
 {
     [NonSerialized] public int PrefabIndex;
-    public LegacyAddressBehaviour AddressBehaviour;
+    public AddressBehaviour AddressBehaviour;
 }

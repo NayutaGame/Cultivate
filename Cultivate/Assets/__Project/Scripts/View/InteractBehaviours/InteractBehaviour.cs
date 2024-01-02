@@ -18,6 +18,15 @@ public abstract class InteractBehaviour : MonoBehaviour
     {
         SetRaycastable(true);
         SetOpaque(true);
+
+        PointerEnterNeuron.Add(ComplexView.HoverNeuron);
+        PointerExitNeuron.Add(ComplexView.UnhoverNeuron);
+    }
+
+    private void OnDisable()
+    {
+        PointerEnterNeuron.Remove(ComplexView.HoverNeuron);
+        PointerExitNeuron.Remove(ComplexView.UnhoverNeuron);
     }
 
     public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();

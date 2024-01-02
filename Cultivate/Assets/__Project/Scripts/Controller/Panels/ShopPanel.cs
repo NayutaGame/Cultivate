@@ -16,9 +16,9 @@ public class ShopPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         CommodityListView.SetAddress(_address.Append(".Commodities"));
-        CommodityListView.PointerEnterNeuron.Set((ib, d) => ((CommodityItemInteractBehaviour)ib).SkillView.HoverAnimation(d));
-        CommodityListView.PointerExitNeuron.Set((ib, d) => ((CommodityItemInteractBehaviour)ib).SkillView.UnhoverAnimation(d));
-        CommodityListView.PointerMoveNeuron.Set((ib, d) => ((CommodityItemInteractBehaviour)ib).SkillView.PointerMove(d));
+        CommodityListView.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB);
+        CommodityListView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        CommodityListView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
         CommodityListView.LeftClickNeuron.Set((ib, d) => BuySkill(ib, d));
 
         ExitButton.onClick.RemoveAllListeners();
@@ -52,4 +52,7 @@ public class ShopPanel : Panel
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new Signal());
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
+
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+        => AudioManager.Play("CardHover");
 }

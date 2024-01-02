@@ -604,8 +604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40743f22ea5f6994aad81cfb0e5fec84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 0}
-  PivotBehaviour: {fileID: 0}
+  ComplexView: {fileID: 0}
 --- !u!114 &8247168710749353328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +620,7 @@ MonoBehaviour:
   RectTransform: {fileID: 3623534058688685044}
   Container: {fileID: 6501694106712474511}
   Prefabs:
-  - {fileID: 2444767835459707755, guid: 6d53c11654c020648adec37286e410ae, type: 3}
+  - {fileID: 8085986264311966347, guid: 7b07c48ae96beb54dbb44786ad1e5685, type: 3}
   PivotHolder: {fileID: 1037360933362778946}
 --- !u!1 &7599118483176115168
 GameObject:

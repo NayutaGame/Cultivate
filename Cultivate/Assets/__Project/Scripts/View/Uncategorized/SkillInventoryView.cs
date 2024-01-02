@@ -45,15 +45,15 @@ public class SkillInventoryView : ListView, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        InteractBehaviour drag = eventData.pointerDrag.GetComponent<InteractBehaviour>();
-        if (drag == null)
-            return;
-
-        InteractBehaviour drop = GetComponent<InteractBehaviour>();
-        if (drag == drop)
-            return;
-
-        drag.GetHandler()?.DragDrop(drag, drop, eventData);
+        // InteractBehaviour drag = eventData.pointerDrag.GetComponent<InteractBehaviour>();
+        // if (drag == null)
+        //     return;
+        //
+        // InteractBehaviour drop = GetComponent<InteractBehaviour>();
+        // if (drag == drop)
+        //     return;
+        //
+        // drag.GetHandler()?.DragDrop(drag, drop, eventData);
     }
 
     private void DrawJingJie(JingJie jingJie)

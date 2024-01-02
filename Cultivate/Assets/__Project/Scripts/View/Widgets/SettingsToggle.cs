@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsToggle : LegacyAddressBehaviour
+public class SettingsToggle : AddressBehaviour
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private Button Button;

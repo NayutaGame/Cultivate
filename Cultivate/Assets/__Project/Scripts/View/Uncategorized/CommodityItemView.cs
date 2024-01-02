@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class CommodityItemView : LegacyAddressBehaviour
+public class CommodityItemView : AddressBehaviour
 {
     public PenetrateSkillView SkillView;
     public TMP_Text PriceText;

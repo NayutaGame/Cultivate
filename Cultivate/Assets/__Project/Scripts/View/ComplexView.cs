@@ -1,4 +1,5 @@
 
+using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -20,41 +21,13 @@ public class ComplexView : MonoBehaviour
         AddressBehaviour.RectTransform.localScale = pivot.localScale;
     }
 
-    private void OnEnable()
-    {
-        // if (AnimateBehaviour != null)
-        // {
-        //     InteractBehaviour.PointerEnterNeuron += AnimateBehaviour.Hover;
-        //     InteractBehaviour.PointerExitNeuron += AnimateBehaviour.Unhover;
-        // }
-    }
-
-    private void OnDisable()
-    {
-        // if (AnimateBehaviour != null)
-        // {
-        //     InteractBehaviour.PointerEnterNeuron -= AnimateBehaviour.Hover;
-        //     InteractBehaviour.PointerExitNeuron -= AnimateBehaviour.Unhover;
-        // }
-    }
-
-    public void HoverAnimation(PointerEventData eventData)
-    {
-        // if (eventData.dragging) return;
-        //
-        // AudioManager.Play("CardHover");
-        //
-        // ComplexView.AnimateBehaviour.SetPivot(ComplexView.PivotBehaviour.HoverPivot);
-        //
-        // CanvasManager.Instance.SkillAnnotation.SetAddress(GetSkillAddress());
-    }
-
-    public void UnhoverAnimation(PointerEventData eventData)
-    {
-        // if (eventData.dragging) return;
-        //
-        // ComplexView.AnimateBehaviour.SetPivot(ComplexView.PivotBehaviour.IdlePivot);
-        //
-        // CanvasManager.Instance.SkillAnnotation.SetAddress(null);
-    }
+    public Neuron<InteractBehaviour, PointerEventData> HoverNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> UnhoverNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerMoveNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> BeginDragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> EndDragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
 }

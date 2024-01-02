@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TechView : LegacyAddressBehaviour
+public class TechView : AddressBehaviour
 {
     private Image _image;
 

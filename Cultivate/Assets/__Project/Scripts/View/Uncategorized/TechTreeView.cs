@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class TechTreeView : LegacyAddressBehaviour
+public class TechTreeView : AddressBehaviour
 {
     private static readonly int HEIGHT = 8;
 

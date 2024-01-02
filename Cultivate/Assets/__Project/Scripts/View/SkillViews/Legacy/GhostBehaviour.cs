@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GhostBehaviour : MonoBehaviour
 {
-    public LegacyAddressBehaviour AddressBehaviour;
+    public AddressBehaviour AddressBehaviour;
 
     private Tween _animationHandle;
     public bool IsAnimating => _animationHandle != null && _animationHandle.active;

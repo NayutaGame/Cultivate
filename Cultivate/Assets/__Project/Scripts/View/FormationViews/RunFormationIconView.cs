@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RunFormationIconView : LegacyAddressBehaviour
+public class RunFormationIconView : AddressBehaviour
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text CountText;

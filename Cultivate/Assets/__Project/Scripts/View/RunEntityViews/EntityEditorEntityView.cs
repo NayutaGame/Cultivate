@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EntityEditorEntityView : LegacyAddressBehaviour
+public class EntityEditorEntityView : AddressBehaviour
 {
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;

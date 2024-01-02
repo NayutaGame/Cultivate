@@ -2,7 +2,7 @@
 using System;
 using UnityEngine.UI;
 
-public class BarterItemView : LegacyAddressBehaviour
+public class BarterItemView : AddressBehaviour
 {
     public StandardSkillView PlayerSkillView;
     public StandardSkillView SkillView;
