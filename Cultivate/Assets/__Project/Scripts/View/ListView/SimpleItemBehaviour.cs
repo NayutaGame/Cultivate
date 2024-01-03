@@ -5,19 +5,17 @@ using UnityEngine;
 public class SimpleItemBehaviour : ItemBehaviour
 {
     [SerializeField] private AddressBehaviour AddressBehaviour;
+    [SerializeField] private InteractBehaviour InteractBehaviour;
+    [SerializeField] private SelectBehaviour SelectBehaviour;
 
     public override AddressBehaviour GetAddressBehaviour()
         => AddressBehaviour;
 
     public override SelectBehaviour GetSelectBehaviour()
-    {
-        throw new System.NotImplementedException();
-    }
+        => SelectBehaviour;
 
     public override InteractBehaviour GetInteractBehaviour()
-    {
-        throw new System.NotImplementedException();
-    }
+        => InteractBehaviour;
 
     public override void RefreshPivots() { }
 }

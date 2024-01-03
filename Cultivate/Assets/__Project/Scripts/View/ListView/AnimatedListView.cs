@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AnimatedListView : ListView
 {
-    [SerializeField] private RectTransform AddressBehaviourHolder;
+    [SerializeField] private RectTransform AddressBehaviourContainer;
 
     protected override Task InsertItem(int index, object item)
     {
@@ -33,7 +33,7 @@ public class AnimatedListView : ListView
     private void ReparentAddressBehaviour(ItemBehaviour itemBehaviour)
     {
         RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().RectTransform;
-        addressTransform.SetParent(AddressBehaviourHolder);
+        addressTransform.SetParent(AddressBehaviourContainer);
         addressTransform.name = Traversal().Count().ToString();
     }
 

@@ -104,6 +104,8 @@ public class SettingsPanel : Panel
         AppManager.ExitGame();
     }
 
+    private Tween _handle;
+
     private void ClickedTab(int index)
     {
         Settings settings = _address.Get<Settings>();
@@ -111,13 +113,10 @@ public class SettingsPanel : Panel
 
         Widgets.SetAddress(_address.Append(".CurrentWidgets"));
 
-        if (_handle != null)
-            _handle.Kill();
+        _handle?.Kill();
         _handle = TabChangedAnimation(index, settings.GetCurrentContentModel().Name);
         _handle.Restart();
     }
-
-    private Tween _handle;
 
     public Tween TabChangedAnimation(int index, string newLabel)
     {
