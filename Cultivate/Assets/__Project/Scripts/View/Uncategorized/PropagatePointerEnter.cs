@@ -1,8 +1,9 @@
 
 using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PropagatePointerEnter : AddressBehaviour,
+public class PropagatePointerEnter : MonoBehaviour,
     IPointerEnterHandler
 {
     public Action<PointerEventData> _onPointerEnter;

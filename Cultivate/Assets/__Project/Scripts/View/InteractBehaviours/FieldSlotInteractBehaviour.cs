@@ -1,5 +1,4 @@
 
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class FieldSlotInteractBehaviour : InteractBehaviour,
@@ -8,8 +7,6 @@ public class FieldSlotInteractBehaviour : InteractBehaviour,
     IDropHandler,
     IPointerClickHandler
 {
-    [SerializeField] private CanvasGroup CanvasGroup;
-
     public void HoverAnimation(InteractBehaviour ib, PointerEventData eventData)
     {
         AudioManager.Play("CardHover");
@@ -38,11 +35,6 @@ public class FieldSlotInteractBehaviour : InteractBehaviour,
     // {
     //     CanvasManager.Instance.SkillGhost.Drag(ComplexView.PivotBehaviour.FollowPivot, eventData.position);
     // }
-
-    public override void SetOpaque(bool value)
-    {
-        CanvasGroup.alpha = value ? 1 : 0;
-    }
 
     protected Address GetSkillAddress()
         => ComplexView.AddressBehaviour.GetAddress().Append(".Skill");

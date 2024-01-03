@@ -80,7 +80,7 @@ public class DeckPanel : Panel
 
         HandView.DropNeuron.Join(TryMerge, TryUnequip);
 
-        HandView.GetComponent<DropInteractBehaviour>().DropNeuron.Join(TryUnequip);
+        HandView.GetComponent<PropagateDrop>()._onDrop = TryUnequip;
 
         FieldView.DropNeuron.Join(TryEquipSkill, TrySwap, TryEquipMech);
 
@@ -183,6 +183,9 @@ public class DeckPanel : Panel
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
+
+    private void TryUnequip(InteractBehaviour from, MonoBehaviour to, PointerEventData eventData)
+        => TryUnequip(from, null, eventData);
 
     private void TryUnequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {

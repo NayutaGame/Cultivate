@@ -29,18 +29,19 @@ public class AnimateBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        ComplexView.HoverNeuron.Add(GoToHover);
-        ComplexView.UnhoverNeuron.Add(GoToIdle);
-        GoToIdleImmediately();
+        ComplexView.HoverNeuron.Add(AnimateToHover);
+        ComplexView.UnhoverNeuron.Add(AnimateToIdle);
+
+        SetToIdle();
     }
 
     private void OnDisable()
     {
-        ComplexView.HoverNeuron.Remove(GoToHover);
-        ComplexView.UnhoverNeuron.Remove(GoToIdle);
+        ComplexView.HoverNeuron.Remove(AnimateToHover);
+        ComplexView.UnhoverNeuron.Remove(AnimateToIdle);
     }
 
-    private void GoToIdleImmediately()
+    private void SetToIdle()
     {
         switch (_transitionType)
         {
@@ -53,10 +54,10 @@ public class AnimateBehaviour : MonoBehaviour
         }
     }
 
-    private void GoToIdle(InteractBehaviour ib, PointerEventData eventData)
-        => GoToIdle();
+    private void AnimateToIdle(InteractBehaviour ib, PointerEventData eventData)
+        => AnimateToIdle();
 
-    public void GoToIdle()
+    public void AnimateToIdle()
     {
         switch (_transitionType)
         {
@@ -69,7 +70,7 @@ public class AnimateBehaviour : MonoBehaviour
         }
     }
 
-    private void GoToHover(InteractBehaviour ib, PointerEventData eventData)
+    private void AnimateToHover(InteractBehaviour ib, PointerEventData eventData)
     {
         switch (_transitionType)
         {

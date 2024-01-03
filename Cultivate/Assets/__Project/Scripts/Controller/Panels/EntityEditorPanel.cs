@@ -152,11 +152,11 @@ public class EntityEditorPanel : Panel
         Refresh();
     }
 
-    private void IncreaseJingJie(InteractBehaviour interactBehaviour, PointerEventData eventData)
+    private void IncreaseJingJie(InteractBehaviour ib, PointerEventData eventData)
     {
-        SkillSlot slot = interactBehaviour.ComplexView.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot slot = ib.ComplexView.AddressBehaviour.Get<SkillSlot>();
         slot.TryIncreaseJingJie();
-        interactBehaviour.ComplexView.AddressBehaviour.Refresh();
+        ib.ComplexView.AddressBehaviour.Refresh();
         CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 

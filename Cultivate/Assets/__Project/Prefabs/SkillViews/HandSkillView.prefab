@@ -25,7 +25,7 @@ RectTransform:
   m_GameObject: {fileID: 4373178309398520956}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1572521862188012212}
@@ -61,7 +61,7 @@ RectTransform:
   m_GameObject: {fileID: 7442165237676867920}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1572521862188012212}
@@ -97,7 +97,7 @@ RectTransform:
   m_GameObject: {fileID: 7855075033176706420}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1572521862188012212}
@@ -105,7 +105,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 80}
+  m_AnchoredPosition: {x: 0, y: 160}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8085986264311966347
@@ -127,7 +127,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8152188524626589071
 RectTransform:
   m_ObjectHideFlags: 0
@@ -137,7 +137,7 @@ RectTransform:
   m_GameObject: {fileID: 8085986264311966347}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1572521862188012212}
@@ -194,13 +194,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ComplexView: {fileID: 667069671973666689}
-  _transitionType: 0
-  IdlePivot: {fileID: 0}
-  HoverPivot: {fileID: 0}
+  _transitionType: 1
+  IdlePivot: {fileID: 4796206874295199143}
+  HoverPivot: {fileID: 3394486588855632418}
   _blackFill: {fileID: 0}
   IdleAlpha: 0
   HoverAlpha: 0.2
-  FollowPivot: {fileID: 0}
+  FollowPivot: {fileID: 7960068332090044278}
 --- !u!114 &1832592112482970397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,7 +326,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ComplexView: {fileID: 667069671973666689}
   Image: {fileID: 2023108389119041023}
-  CanvasGroup: {fileID: 0}
 --- !u!1001 &4934103374562357215
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class ComplexView : MonoBehaviour
     }
 
     public void RefreshPivots()
-        => AnimateBehaviour.GoToIdle();
+        => AnimateBehaviour.AnimateToIdle();
 
     public Neuron<InteractBehaviour, PointerEventData> HoverNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> UnhoverNeuron = new();

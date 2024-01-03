@@ -10,7 +10,12 @@ public class HandSkillInteractBehaviour : InteractBehaviour,
     IPointerClickHandler
 {
     [SerializeField] private Image Image;
-    [SerializeField] private CanvasGroup CanvasGroup;
+
+    public override void SetInteractable(bool value)
+    {
+        base.SetInteractable(value);
+        Image.raycastTarget = value;
+    }
 
     // public void BeginDrag(InteractBehaviour ib, PointerEventData eventData)
     // {
@@ -34,14 +39,4 @@ public class HandSkillInteractBehaviour : InteractBehaviour,
     // {
     //     CanvasManager.Instance.SkillGhost.Drag(ComplexView.PivotBehaviour.FollowPivot, eventData.position);
     // }
-
-    public override void SetRaycastable(bool value)
-    {
-        Image.raycastTarget = value;
-    }
-
-    public override void SetOpaque(bool value)
-    {
-        CanvasGroup.alpha = value ? 1 : 0;
-    }
 }

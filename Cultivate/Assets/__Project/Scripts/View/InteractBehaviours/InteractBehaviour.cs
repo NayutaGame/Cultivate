@@ -11,13 +11,13 @@ public class InteractBehaviour : MonoBehaviour,
 {
     public ComplexView ComplexView;
 
-    public virtual void SetRaycastable(bool value) { }
-    public virtual void SetOpaque(bool value) { }
+    private bool _interactable;
+    public virtual bool IsInteractable() => _interactable;
+    public virtual void SetInteractable(bool value) => _interactable = value;
 
     private void OnEnable()
     {
-        SetRaycastable(true);
-        SetOpaque(true);
+        SetInteractable(true);
 
         PointerEnterNeuron.Add(ComplexView.HoverNeuron);
         PointerExitNeuron.Add(ComplexView.UnhoverNeuron);
@@ -68,7 +68,7 @@ public class InteractBehaviour : MonoBehaviour,
         InteractBehaviour dragged = eventData.pointerDrag.GetComponent<InteractBehaviour>();
 
         if (dragged != null)
-            DropNeuron.Invoke(this, dragged, eventData);
+            DropNeuron.Invoke(dragged, this, eventData);
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)
