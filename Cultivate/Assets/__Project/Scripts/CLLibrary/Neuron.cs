@@ -14,7 +14,7 @@ namespace CLLibrary
         public void Add(Action action) => Action += action;
         public void Remove(Action action) => Action -= action;
         public void Join(params Action[] actions)
-            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
+            => actions.FilterObj(action => Action == null || !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron> _neurons;
 
@@ -46,7 +46,7 @@ namespace CLLibrary
         public void Add(Action<T1> action) => Action += action;
         public void Remove(Action<T1> action) => Action -= action;
         public void Join(params Action<T1>[] actions)
-            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
+            => actions.FilterObj(action => Action == null || !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1>> _neurons;
 
@@ -78,7 +78,7 @@ namespace CLLibrary
         public void Add(Action<T1, T2> action) => Action += action;
         public void Remove(Action<T1, T2> action) => Action -= action;
         public void Join(params Action<T1, T2>[] actions)
-            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
+            => actions.FilterObj(action => Action == null || !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2>> _neurons;
 
@@ -110,7 +110,7 @@ namespace CLLibrary
         public void Add(Action<T1, T2, T3> action) => Action += action;
         public void Remove(Action<T1, T2, T3> action) => Action -= action;
         public void Join(params Action<T1, T2, T3>[] actions)
-            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
+            => actions.FilterObj(action => Action == null || !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2, T3>> _neurons;
 
@@ -142,7 +142,7 @@ namespace CLLibrary
         public void Add(Action<T1, T2, T3, T4> action) => Action += action;
         public void Remove(Action<T1, T2, T3, T4> action) => Action -= action;
         public void Join(params Action<T1, T2, T3, T4>[] actions)
-            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
+            => actions.FilterObj(action => Action == null || !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2, T3, T4>> _neurons;
 
@@ -174,7 +174,7 @@ namespace CLLibrary
         public void Add(Action<T1, T2, T3, T4, T5> action) => Action += action;
         public void Remove(Action<T1, T2, T3, T4, T5> action) => Action -= action;
         public void Join(params Action<T1, T2, T3, T4, T5>[] actions)
-            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
+            => actions.FilterObj(action => Action == null || !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2, T3, T4, T5>> _neurons;
 
@@ -206,7 +206,7 @@ namespace CLLibrary
         public void Add(Action<T1, T2, T3, T4, T5, T6> action) => Action += action;
         public void Remove(Action<T1, T2, T3, T4, T5, T6> action) => Action -= action;
         public void Join(params Action<T1, T2, T3, T4, T5, T6>[] actions)
-            => actions.FilterObj(action => !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
+            => actions.FilterObj(action => Action == null || !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<Neuron<T1, T2, T3, T4, T5, T6>> _neurons;
 

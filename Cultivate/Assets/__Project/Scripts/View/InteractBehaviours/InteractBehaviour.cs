@@ -3,11 +3,11 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InteractBehaviour : MonoBehaviour
-    // IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
-    // IBeginDragHandler, IEndDragHandler, IDragHandler,
-    // IDropHandler,
-    // IPointerClickHandler
+public class InteractBehaviour : MonoBehaviour,
+    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
+    IBeginDragHandler, IEndDragHandler, IDragHandler,
+    IDropHandler,
+    IPointerClickHandler
 {
     public ComplexView ComplexView;
 

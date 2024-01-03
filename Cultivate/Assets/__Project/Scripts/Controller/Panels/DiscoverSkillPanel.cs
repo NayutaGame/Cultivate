@@ -7,6 +7,8 @@ public class DiscoverSkillPanel : Panel
 {
     public TMP_Text TitleText;
     public TMP_Text DetailedText;
+
+    // TODO: use ListView
     public SkillView[] SkillViews;
 
     private Address _address;
@@ -22,14 +24,10 @@ public class DiscoverSkillPanel : Panel
             if (ib == null)
                 return;
 
-            ib.PointerEnterNeuron.Set(
-                CanvasManager.Instance.SkillAnnotation.SetAddressFromIB,
-                PlayCardHoverSFX);
-
-            ib.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-
-            ib.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
-            ib.LeftClickNeuron.Set(TrySelectOption);
+            ib.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
+            ib.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+            ib.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+            ib.LeftClickNeuron.Join(TrySelectOption);
         });
     }
 

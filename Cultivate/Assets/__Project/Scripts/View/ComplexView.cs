@@ -12,11 +12,11 @@ public class ComplexView : MonoBehaviour
     [SerializeField] protected PivotBehaviour PivotBehaviour;
     [SerializeField] protected SelectBehaviour SelectBehaviour;
 
+    public ItemBehaviour GetItemBehaviour() => ItemBehaviour;
     public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
+    public AnimateBehaviour GetAnimateBehaviour() => AnimateBehaviour;
     public SelectBehaviour GetSelectBehaviour() => SelectBehaviour;
-
-    public RectTransform GetDisplayTransform()
-        => AddressBehaviour.RectTransform;
+    public RectTransform GetDisplayTransform() => AddressBehaviour.RectTransform;
 
     public void SetDisplayTransform(RectTransform pivot)
     {

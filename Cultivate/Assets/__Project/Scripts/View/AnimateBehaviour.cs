@@ -16,7 +16,7 @@ public class AnimateBehaviour : MonoBehaviour
     }
 
     [SerializeField] private TransitionType _transitionType;
-    private Tween _animationHandle;
+    private Tween _handle;
 
     [Header("Pivot")]
     [SerializeField] private RectTransform IdlePivot;
@@ -42,9 +42,15 @@ public class AnimateBehaviour : MonoBehaviour
 
     private void GoToIdleImmediately()
     {
-        _animationHandle?.Kill();
-        ComplexView.SetDisplayTransform(IdlePivot);
-        _blackFill.color = new Color(1, 1, 1, IdleAlpha);
+        switch (_transitionType)
+        {
+            case TransitionType.Pivot:
+                SetDisplay(IdlePivot);
+                break;
+            case TransitionType.BlackFill:
+                SetBlackFill(IdleAlpha);
+                break;
+        }
     }
 
     private void GoToIdle(InteractBehaviour ib, PointerEventData eventData)
@@ -52,48 +58,70 @@ public class AnimateBehaviour : MonoBehaviour
 
     public void GoToIdle()
     {
-        SetPivot(IdlePivot);
-        SetBlackFillColor(IdleAlpha);
+        switch (_transitionType)
+        {
+            case TransitionType.Pivot:
+                AnimateDisplay(IdlePivot);
+                break;
+            case TransitionType.BlackFill:
+                AnimateBlackFill(IdleAlpha);
+                break;
+        }
     }
 
     private void GoToHover(InteractBehaviour ib, PointerEventData eventData)
     {
-        SetPivot(HoverPivot);
-        SetBlackFillColor(HoverAlpha);
+        switch (_transitionType)
+        {
+            case TransitionType.Pivot:
+                AnimateDisplay(HoverPivot);
+                break;
+            case TransitionType.BlackFill:
+                AnimateBlackFill(HoverAlpha);
+                break;
+        }
     }
 
 
 
-
-
-
-    private void SetPivot(RectTransform pivot)
+    public void SetDisplay(RectTransform end)
     {
-        _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(ComplexView.GetDisplayTransform(), pivot);
-        _animationHandle = f.GetHandle();
-        _animationHandle.SetAutoKill().Restart();
+        _handle?.Kill();
+        ComplexView.SetDisplayTransform(end);
     }
 
-    private void SetBlackFillColor(float alpha)
+    public void AnimateDisplay(RectTransform start, RectTransform end)
     {
-        _animationHandle?.Kill();
-        _animationHandle = _blackFill.DOFade(alpha, 0.15f);
-        _animationHandle.SetAutoKill().Restart();
+        SetDisplay(start);
+        AnimateDisplay(end);
     }
 
-    private void SetPivotWithoutAnimation(RectTransform pivot)
+    public void AnimateDisplay(RectTransform end)
     {
-        _animationHandle?.Kill();
-        ComplexView.SetDisplayTransform(pivot);
+        _handle?.Kill();
+        FollowAnimation f = new FollowAnimation(ComplexView.GetDisplayTransform(), end);
+        _handle = f.GetHandle();
+        _handle.SetAutoKill().Restart();
     }
 
-    private void SetStartAndPivot(RectTransform start, RectTransform pivot)
+    public void SetBlackFill(float end)
     {
-        SetPivotWithoutAnimation(start);
-        SetPivot(pivot);
+        _handle?.Kill();
+        _blackFill.color = new Color(_blackFill.color.r, _blackFill.color.g, _blackFill.color.b, end);
     }
 
+    public void AnimateBlackFill(float start, float end)
+    {
+        SetBlackFill(start);
+        AnimateBlackFill(end);
+    }
+
+    public void AnimateBlackFill(float end)
+    {
+        _handle?.Kill();
+        _handle = _blackFill.DOFade(end, 0.15f);
+        _handle.SetAutoKill().Restart();
+    }
 
 
 
@@ -127,7 +155,7 @@ public class AnimateBehaviour : MonoBehaviour
     {
         // SetRaycastable(true);
         // SetOpaque(true);
-        SetStartAndPivot(CanvasManager.Instance.SkillGhost.AddressBehaviour.RectTransform, IdlePivot);
+        AnimateDisplay(CanvasManager.Instance.SkillGhost.AddressBehaviour.RectTransform, IdlePivot);
         CanvasManager.Instance.SkillGhost.EndDrag();
     }
 
@@ -156,12 +184,10 @@ public class AnimateBehaviour : MonoBehaviour
 
     private Tween _selectHandle;
 
-    public void SetSelected(bool selected)
+    public void AnimateSelect(Image target, bool value)
     {
-        // _selected = selected;
-        //
-        // _selectHandle?.Kill();
-        // _selectHandle = SelectionImage.DOFade(_selected ? 1 : 0, 0.15f);
-        // _selectHandle.Restart();
+        _selectHandle?.Kill();
+        _selectHandle = target.DOFade(value ? 1 : 0, 0.15f);
+        _selectHandle.Restart();
     }
 }

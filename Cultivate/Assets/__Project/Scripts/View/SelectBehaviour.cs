@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class SelectBehaviour : MonoBehaviour
 {
+    public ComplexView ComplexView;
+
     [SerializeField] private Image SelectionImage;
 
     private bool _selected;
@@ -11,5 +13,11 @@ public class SelectBehaviour : MonoBehaviour
     public void SetSelected(bool selected)
     {
         _selected = selected;
+
+        AnimateBehaviour animateBehaviour = ComplexView.GetAnimateBehaviour();
+        if (animateBehaviour == null)
+            return;
+
+        animateBehaviour.AnimateSelect(SelectionImage, _selected);
     }
 }

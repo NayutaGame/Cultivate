@@ -8,7 +8,7 @@ public class EntityEditorPanel : Panel
 {
     [SerializeField] private ListView EntityBrowser;
     private int? _selectionIndex;
-    private EntityBarView _selection;
+    private SelectBehaviour _selection;
 
     [SerializeField] private ListView SkillBrowser;
 
@@ -31,42 +31,44 @@ public class EntityEditorPanel : Panel
         base.Configure();
 
         EntityBrowser.SetAddress(new Address("Editor.EntityEditableList"));
-        EntityBrowser.LeftClickNeuron.Set(SelectEntity);
+        EntityBrowser.LeftClickNeuron.Join(SelectEntity);
 
         SkillBrowser.SetAddress(new Address("SkillInventory"));
-        SkillBrowser.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB);
-        SkillBrowser.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        SkillBrowser.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
-        SkillBrowser.BeginDragNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
+        SkillBrowser.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB);
+        SkillBrowser.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        SkillBrowser.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
             CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
 
         AwayEntityView.SetAddress(null);
-        AwayEntityView.PointerEnterSlotNeuron.Set(ShowSkillAnnotationFromSlotView);
-        AwayEntityView.PointerExitSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        AwayEntityView.PointerMoveSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
-        AwayEntityView.BeginDragSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
+        AwayEntityView.PointerEnterSlotNeuron.Join(ShowSkillAnnotationFromSlotView);
+        AwayEntityView.PointerExitSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        AwayEntityView.PointerMoveSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        AwayEntityView.BeginDragSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
             CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
-        AwayEntityView.RightClickSlotNeuron.Set(IncreaseJingJie);
-        AwayEntityView.PointerEnterFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
-        AwayEntityView.PointerExitFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
-        AwayEntityView.PointerMoveFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
+
+        AwayEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
+        AwayEntityView.PointerEnterFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
+        AwayEntityView.PointerExitFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        AwayEntityView.PointerMoveFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
 
         HomeEntityView.SetAddress(new Address("Editor.Home"));
-        HomeEntityView.PointerEnterSlotNeuron.Set(ShowSkillAnnotationFromSlotView);
-        HomeEntityView.PointerExitSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        HomeEntityView.PointerMoveSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
-        HomeEntityView.BeginDragSlotNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
+        HomeEntityView.PointerEnterSlotNeuron.Join(ShowSkillAnnotationFromSlotView);
+        HomeEntityView.PointerExitSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        HomeEntityView.PointerMoveSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        HomeEntityView.BeginDragSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull,
             CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
-        HomeEntityView.RightClickSlotNeuron.Set(IncreaseJingJie);
-        HomeEntityView.PointerEnterFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
-        HomeEntityView.PointerExitFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
-        HomeEntityView.PointerMoveFormationNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
 
-        AwayEntityView.DropSlotNeuron.Set(Equip, Swap);
+        HomeEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
+        HomeEntityView.PointerEnterFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
+        HomeEntityView.PointerExitFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        HomeEntityView.PointerMoveFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
 
-        HomeEntityView.DropSlotNeuron.Set(Equip, Swap);
+        AwayEntityView.DropSlotNeuron.Join(Equip, Swap);
 
-        SkillBrowser.DropNeuron.Set(Unequip);
+        HomeEntityView.DropSlotNeuron.Join(Equip, Swap);
+
+        SkillBrowser.DropNeuron.Join(Unequip);
 
         CopyToTopButton.onClick.RemoveAllListeners();
         CopyToTopButton.onClick.AddListener(CopyToTop);
@@ -163,19 +165,23 @@ public class EntityEditorPanel : Panel
         CanvasManager.Instance.SkillAnnotation.SetAddress(ib.ComplexView.AddressBehaviour.GetAddress().Append(".Skill"));
     }
 
-    private void SelectEntity(InteractBehaviour interactBehaviour, PointerEventData eventData)
+    private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
+        => SelectEntity(ib.ComplexView.GetSelectBehaviour());
+
+    private void SelectEntity(SelectBehaviour selectBehaviour)
     {
         if (_selection != null)
             _selection.SetSelected(false);
 
-        _selection = interactBehaviour.ComplexView.AddressBehaviour.GetComponent<EntityBarView>();
-        _selectionIndex = EntityBrowser.IndexFromBehaviour(_selection);
+        _selection = selectBehaviour;
+        _selectionIndex = EntityBrowser.IndexFromItemBehaviour(_selection.ComplexView.GetItemBehaviour());
 
+        // TODO: submit form
         EditorManager.Instance._selectionIndex = _selectionIndex;
 
         if (_selection != null)
         {
-            AwayEntityView.SetAddress(_selection.GetAddress());
+            AwayEntityView.SetAddress(_selection.ComplexView.AddressBehaviour.GetAddress());
             AwayEntityView.Refresh();
             _selection.SetSelected(true);
         }

@@ -68,20 +68,20 @@ public class EntityEditorEntityView : AddressBehaviour
         if (FieldView != null)
         {
             FieldView.SetAddress(GetAddress().Append(".Slots"));
-            FieldView.PointerEnterNeuron.Set(PointerEnterSlotNeuron);
-            FieldView.PointerExitNeuron.Set(PointerExitSlotNeuron);
-            FieldView.PointerMoveNeuron.Set(PointerMoveSlotNeuron);
-            FieldView.BeginDragNeuron.Set(BeginDragSlotNeuron);
-            FieldView.RightClickNeuron.Set(RightClickSlotNeuron);
-            FieldView.DropNeuron.Set(DropSlotNeuron);
+            FieldView.PointerEnterNeuron.Join(PointerEnterSlotNeuron);
+            FieldView.PointerExitNeuron.Join(PointerExitSlotNeuron);
+            FieldView.PointerMoveNeuron.Join(PointerMoveSlotNeuron);
+            FieldView.BeginDragNeuron.Join(BeginDragSlotNeuron);
+            FieldView.RightClickNeuron.Join(RightClickSlotNeuron);
+            FieldView.DropNeuron.Join(DropSlotNeuron);
         }
 
         if (FormationListView != null)
         {
             FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
-            FormationListView.PointerEnterNeuron.Set(PointerEnterFormationNeuron);
-            FormationListView.PointerExitNeuron.Set(PointerExitFormationNeuron);
-            FormationListView.PointerMoveNeuron.Set(PointerMoveFormationNeuron);
+            FormationListView.PointerEnterNeuron.Join(PointerEnterFormationNeuron);
+            FormationListView.PointerExitNeuron.Join(PointerExitFormationNeuron);
+            FormationListView.PointerMoveNeuron.Join(PointerMoveFormationNeuron);
         }
     }
 

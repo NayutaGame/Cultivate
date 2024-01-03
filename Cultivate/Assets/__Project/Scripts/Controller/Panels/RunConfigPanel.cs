@@ -7,8 +7,9 @@ public class RunConfigPanel : CurtainPanel
 {
     [Header("Character Picker")]
     [SerializeField] private ListView CharacterListView;
-    private int? _selectionIndex;
-    private CharacterProfileView _selection;
+    // TODO: move select into ListView
+    private SelectBehaviour _selection;
+    [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
 
     [Header("Difficulty Picker")]
     [SerializeField] private DifficultyPickerView DifficultyPickerView;
@@ -16,9 +17,6 @@ public class RunConfigPanel : CurtainPanel
     [Header("Progress")]
     [SerializeField] private Button ReturnButton;
     [SerializeField] private Button StartRunButton;
-
-    [Header("Detailed")]
-    [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
 
     public override void Configure()
     {
@@ -33,8 +31,9 @@ public class RunConfigPanel : CurtainPanel
         StartRunButton.onClick.AddListener(StartRun);
 
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
-        CharacterListView.LeftClickNeuron.Set(SelectCharacterProfile);
-        SelectCharacterProfile(0);
+        CharacterListView.LeftClickNeuron.Join(Select);
+
+        Select(0);
     }
 
     public override void Refresh()
@@ -54,39 +53,29 @@ public class RunConfigPanel : CurtainPanel
     {
         // this form should contains: selected character, selected difficulty, selected mutators, selected seed
 
-        AppManager.Instance.ProfileManager.RunConfigForm =
-            new RunConfigForm(_selection.Get<CharacterProfile>(), DifficultyPickerView.GetSelection());
+        AppManager.Instance.ProfileManager.RunConfigForm = new RunConfigForm(
+            _selection.ComplexView.AddressBehaviour.Get<CharacterProfile>(),
+            DifficultyPickerView.GetSelection());
 
         AppManager.Push(new RunAppS());
     }
 
-    private void SelectCharacterProfile(int i)
+    private void Select(int i)
+        => Select(CharacterListView.ItemBehaviourFromIndex(i).GetSelectBehaviour());
+
+    private void Select(InteractBehaviour ib, PointerEventData eventData)
+        => Select(ib.ComplexView.GetSelectBehaviour());
+
+    private void Select(SelectBehaviour selectBehaviour)
     {
         if (_selection != null)
             _selection.SetSelected(false);
 
-        _selection = CharacterListView.BehaviourFromIndex(i).GetComponent<CharacterProfileView>();
-        _selectionIndex = i;
+        _selection = selectBehaviour;
 
         if (_selection != null)
         {
-            DetailedCharacterProfileView.SetAddress(_selection.GetAddress());
-            DetailedCharacterProfileView.Refresh();
-            _selection.SetSelected(true);
-        }
-    }
-
-    private void SelectCharacterProfile(InteractBehaviour interactBehaviour, PointerEventData eventData)
-    {
-        if (_selection != null)
-            _selection.SetSelected(false);
-
-        _selection = interactBehaviour.ComplexView.AddressBehaviour.GetComponent<CharacterProfileView>();
-        _selectionIndex = CharacterListView.IndexFromBehaviour(_selection);
-
-        if (_selection != null)
-        {
-            DetailedCharacterProfileView.SetAddress(_selection.GetAddress());
+            DetailedCharacterProfileView.SetAddress(_selection.ComplexView.AddressBehaviour.GetAddress());
             DetailedCharacterProfileView.Refresh();
             _selection.SetSelected(true);
         }

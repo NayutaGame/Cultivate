@@ -16,10 +16,10 @@ public class ShopPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         CommodityListView.SetAddress(_address.Append(".Commodities"));
-        CommodityListView.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB);
-        CommodityListView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        CommodityListView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
-        CommodityListView.LeftClickNeuron.Set((ib, d) => BuySkill(ib, d));
+        CommodityListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB);
+        CommodityListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        CommodityListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        CommodityListView.LeftClickNeuron.Join(BuySkill);
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
@@ -31,9 +31,12 @@ public class ShopPanel : Panel
         CommodityListView.Refresh();
     }
 
-    private bool BuySkill(InteractBehaviour interactBehaviour, PointerEventData eventData)
+    private void BuySkill(InteractBehaviour ib, PointerEventData eventData)
+        => BuySkill(ib);
+
+    private bool BuySkill(InteractBehaviour ib)
     {
-        Commodity commodity = interactBehaviour.ComplexView.AddressBehaviour.Get<Commodity>();
+        Commodity commodity = ib.ComplexView.AddressBehaviour.Get<Commodity>();
 
         ShopPanelDescriptor d = _address.Get<ShopPanelDescriptor>();
 

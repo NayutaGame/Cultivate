@@ -14,14 +14,14 @@ public class StageEntityView : AddressBehaviour
         base.SetAddress(address);
 
         Formations.SetAddress(GetAddress().Append(".Formations"));
-        Formations.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB, StageManager.Instance.Pause);
-        Formations.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull, StageManager.Instance.Resume);
-        Formations.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
+        Formations.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB, StageManager.Instance.Pause);
+        Formations.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressToNull, StageManager.Instance.Resume);
+        Formations.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
 
         Buffs.SetAddress(GetAddress().Append(".Buffs"));
-        Buffs.PointerEnterNeuron.Set(CanvasManager.Instance.BuffAnnotation.SetAddressFromIB, StageManager.Instance.Pause);
-        Buffs.PointerEnterNeuron.Set(CanvasManager.Instance.BuffAnnotation.SetAddressToNull, StageManager.Instance.Resume);
-        Buffs.PointerEnterNeuron.Set(CanvasManager.Instance.BuffAnnotation.UpdateMousePos);
+        Buffs.PointerEnterNeuron.Join(CanvasManager.Instance.BuffAnnotation.SetAddressFromIB, StageManager.Instance.Pause);
+        Buffs.PointerEnterNeuron.Join(CanvasManager.Instance.BuffAnnotation.SetAddressToNull, StageManager.Instance.Resume);
+        Buffs.PointerEnterNeuron.Join(CanvasManager.Instance.BuffAnnotation.UpdateMousePos);
     }
 
     public override void Refresh()

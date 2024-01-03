@@ -46,10 +46,10 @@ public class DeckPanel : Panel
         SetLocked(false);
 
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
-        FieldView.PointerEnterNeuron.Set((ib, d)
+        FieldView.PointerEnterNeuron.Join((ib, d)
             => ((FieldSlotInteractBehaviour)ib).HoverAnimation(ib, d));
-        FieldView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        FieldView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
         // FieldView.BeginDragNeuron.Set((ib, d)
         //     => ((FieldSlotInteractBehaviour)ib).BeginDrag(ib, d));
         // FieldView.EndDragNeuron.Set((ib, d)
@@ -58,9 +58,9 @@ public class DeckPanel : Panel
         //     => ((FieldSlotInteractBehaviour)ib).Drag(ib, d));
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
-        HandView.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
-        HandView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        HandView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        HandView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
+        HandView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        HandView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
         // HandView.BeginDragNeuron.Set((ib, d)
         //     => ((HandSkillInteractBehaviour)ib).BeginDrag(ib, d));
         // HandView.EndDragNeuron.Set((ib, d)
@@ -69,22 +69,22 @@ public class DeckPanel : Panel
         //     => ((HandSkillInteractBehaviour)ib).Drag(ib, d));
 
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
-        FormationListView.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
-        FormationListView.PointerExitNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
-        FormationListView.PointerMoveNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
+        FormationListView.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
+        FormationListView.PointerExitNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        FormationListView.PointerMoveNeuron.Join(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
 
         MechListView.SetAddress(new Address("Run.Environment.MechBag"));
-        MechListView.BeginDragNeuron.Set((ib, d) => ((MechInteractBehaviour)ib).BeginDrag(d));
-        MechListView.EndDragNeuron.Set((ib, d) => ((MechInteractBehaviour)ib).EndDrag(d));
-        MechListView.DragNeuron.Set((ib, d) => ((MechInteractBehaviour)ib).Drag(d));
+        MechListView.BeginDragNeuron.Join((ib, d) => ((MechInteractBehaviour)ib).BeginDrag(d));
+        MechListView.EndDragNeuron.Join((ib, d) => ((MechInteractBehaviour)ib).EndDrag(d));
+        MechListView.DragNeuron.Join((ib, d) => ((MechInteractBehaviour)ib).Drag(d));
 
-        HandView.DropNeuron.Set(TryMerge, TryUnequip);
+        HandView.DropNeuron.Join(TryMerge, TryUnequip);
 
-        HandView.GetComponent<DropInteractBehaviour>().DropNeuron.Set(TryUnequip);
+        HandView.GetComponent<DropInteractBehaviour>().DropNeuron.Join(TryUnequip);
 
-        FieldView.DropNeuron.Set(TryEquipSkill, TrySwap, TryEquipMech);
+        FieldView.DropNeuron.Join(TryEquipSkill, TrySwap, TryEquipMech);
 
-        MechListView.DropNeuron.Set(TryUnequip);
+        MechListView.DropNeuron.Join(TryUnequip);
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);

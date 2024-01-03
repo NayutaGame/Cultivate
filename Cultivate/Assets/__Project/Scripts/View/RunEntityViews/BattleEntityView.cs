@@ -8,15 +8,15 @@ public class BattleEntityView : AddressBehaviour
     {
         base.SetAddress(address);
         FieldView.SetAddress(GetAddress().Append(".Slots"));
-        FieldView.PointerEnterNeuron.Set((ib, d)
+        FieldView.PointerEnterNeuron.Join((ib, d)
             => ((FieldSlotInteractBehaviour)ib).HoverAnimation(ib, d));
-        FieldView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        FieldView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
 
         FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
-        FormationListView.PointerEnterNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
-        FormationListView.PointerExitNeuron.Set(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
-        FormationListView.PointerMoveNeuron.Set(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
+        FormationListView.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
+        FormationListView.PointerExitNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
+        FormationListView.PointerMoveNeuron.Join(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
     }
 
     public override void Refresh()

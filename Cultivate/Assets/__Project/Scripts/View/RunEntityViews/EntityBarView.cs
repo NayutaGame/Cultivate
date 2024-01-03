@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class EntityBarView : EntityView
 {
+    // TODO: move Select into SelectBehaviour
     [SerializeField] private Image SelectionImage;
 
     private bool _selected;

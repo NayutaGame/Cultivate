@@ -235,17 +235,15 @@ public class ListView : AddressBehaviour
         return 0;
     }
 
-    public int? IndexFromBehaviour(AddressBehaviour toGetIndex)
+    public int? IndexFromItemBehaviour(ItemBehaviour toGetIndex)
     {
         if (toGetIndex == null)
             return null;
-        return _activePool.FirstIdx(itemView => itemView.GetAddressBehaviour() == toGetIndex);
+        return _activePool.FirstIdx(itemBehaviour => itemBehaviour == toGetIndex);
     }
 
-    public AddressBehaviour BehaviourFromIndex(int i)
-    {
-        return _activePool[i].GetAddressBehaviour();
-    }
+    public ItemBehaviour ItemBehaviourFromIndex(int i)
+        => _activePool[i];
 
     #endregion
 
@@ -267,15 +265,15 @@ public class ListView : AddressBehaviour
         if (ib == null)
             return;
 
-        ib.PointerEnterNeuron.Set(PointerEnterNeuron);
-        ib.PointerExitNeuron.Set(PointerExitNeuron);
-        ib.PointerMoveNeuron.Set(PointerMoveNeuron);
-        ib.BeginDragNeuron.Set(BeginDragNeuron);
-        ib.EndDragNeuron.Set(EndDragNeuron);
-        ib.DragNeuron.Set(DragNeuron);
-        ib.LeftClickNeuron.Set(LeftClickNeuron);
-        ib.RightClickNeuron.Set(RightClickNeuron);
-        ib.DropNeuron.Set(DropNeuron);
+        ib.PointerEnterNeuron.Join(PointerEnterNeuron);
+        ib.PointerExitNeuron.Join(PointerExitNeuron);
+        ib.PointerMoveNeuron.Join(PointerMoveNeuron);
+        ib.BeginDragNeuron.Join(BeginDragNeuron);
+        ib.EndDragNeuron.Join(EndDragNeuron);
+        ib.DragNeuron.Join(DragNeuron);
+        ib.LeftClickNeuron.Join(LeftClickNeuron);
+        ib.RightClickNeuron.Join(RightClickNeuron);
+        ib.DropNeuron.Join(DropNeuron);
     }
 
     #endregion

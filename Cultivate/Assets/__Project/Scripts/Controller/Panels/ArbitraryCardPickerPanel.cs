@@ -28,10 +28,10 @@ public class ArbitraryCardPickerPanel : Panel
         _selections = new List<SkillView>();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
-        SkillListView.PointerEnterNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
-        SkillListView.PointerExitNeuron.Set(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        SkillListView.PointerMoveNeuron.Set(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
-        SkillListView.LeftClickNeuron.Set((ib, d) => ToggleSkill(ib, d));
+        SkillListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
+        SkillListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        SkillListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        SkillListView.LeftClickNeuron.Join(ToggleSkill);
     }
 
     public void OnDisable()
@@ -54,7 +54,10 @@ public class ArbitraryCardPickerPanel : Panel
         SkillListView.Refresh();
     }
 
-    private bool ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
+    private void ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
+        => ToggleSkill(ib);
+
+    private bool ToggleSkill(InteractBehaviour ib)
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
@@ -85,6 +88,9 @@ public class ArbitraryCardPickerPanel : Panel
         return true;
     }
 
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+        => AudioManager.Play("CardHover");
+
     private void ConfirmSelections()
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
@@ -92,7 +98,4 @@ public class ArbitraryCardPickerPanel : Panel
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedSkillsSignal(mapped));
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
-
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
-        => AudioManager.Play("CardHover");
 }
