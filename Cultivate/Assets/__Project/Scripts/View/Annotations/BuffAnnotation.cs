@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class BuffAnnotation : AnnotationBehaviour
+public class BuffAnnotation : AnnotationView
 {
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text DescriptionText;

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SkillAnnotation : AnnotationBehaviour
+public class SkillAnnotation : AnnotationView
 {
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TypeTag[] TypeTagList;

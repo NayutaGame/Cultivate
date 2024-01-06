@@ -17,4 +17,11 @@ public class AddressBehaviour : MonoBehaviour
     public virtual void Refresh()
     {
     }
+
+    // [SerializeField] private CanvasGroup CanvasGroup;
+    //
+    // public void SetVisible(bool visible)
+    // {
+    //     CanvasGroup.alpha = visible ? 1 : 0;
+    // }
 }

@@ -32,6 +32,17 @@ public class AnimateBehaviour : MonoBehaviour
         ComplexView.HoverNeuron.Add(AnimateToHover);
         ComplexView.UnhoverNeuron.Add(AnimateToIdle);
 
+        ComplexView.BeginDragNeuron.Add(ComplexView.SetInteractableToFalse);
+        ComplexView.BeginDragNeuron.Add(ComplexView.SetVisibleToFalse);
+        ComplexView.BeginDragNeuron.Add(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        // ComplexView.AddressBehaviour.GetAddress().Append(".Skill")
+        ComplexView.BeginDragNeuron.Add(CanvasManager.Instance.SkillGhost.SetAddressFromIB);
+        ComplexView.BeginDragNeuron.Add(CanvasManager.Instance.SkillGhost.BeginDrag);
+        ComplexView.EndDragNeuron.Add(ComplexView.SetInteractableToTrue);
+        ComplexView.EndDragNeuron.Add(ComplexView.SetVisibleToTrue);
+        ComplexView.EndDragNeuron.Add(CanvasManager.Instance.SkillGhost.EndDrag);
+        ComplexView.DragNeuron.Add(CanvasManager.Instance.SkillGhost.Drag);
+
         SetToIdle();
     }
 
@@ -39,6 +50,17 @@ public class AnimateBehaviour : MonoBehaviour
     {
         ComplexView.HoverNeuron.Remove(AnimateToHover);
         ComplexView.UnhoverNeuron.Remove(AnimateToIdle);
+
+        ComplexView.BeginDragNeuron.Remove(ComplexView.SetInteractableToFalse);
+        ComplexView.BeginDragNeuron.Remove(ComplexView.SetVisibleToFalse);
+        ComplexView.BeginDragNeuron.Remove(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
+        // ComplexView.AddressBehaviour.GetAddress().Append(".Skill")
+        ComplexView.BeginDragNeuron.Remove(CanvasManager.Instance.SkillGhost.SetAddressFromIB);
+        ComplexView.BeginDragNeuron.Remove(CanvasManager.Instance.SkillGhost.BeginDrag);
+        ComplexView.EndDragNeuron.Remove(ComplexView.SetInteractableToTrue);
+        ComplexView.EndDragNeuron.Remove(ComplexView.SetVisibleToTrue);
+        ComplexView.EndDragNeuron.Remove(CanvasManager.Instance.SkillGhost.EndDrag);
+        ComplexView.DragNeuron.Remove(CanvasManager.Instance.SkillGhost.Drag);
     }
 
     private void SetToIdle()
@@ -123,63 +145,6 @@ public class AnimateBehaviour : MonoBehaviour
         _handle = _blackFill.DOFade(end, 0.15f);
         _handle.SetAutoKill().Restart();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    [Header("Drag")]
-    [SerializeField] private RectTransform FollowPivot;
-
-
-    public void BeginDrag(InteractBehaviour ib, PointerEventData eventData)
-    {
-        CanvasManager.Instance.SkillAnnotation.SetAddressToNull(ib, eventData);
-
-        // SetRaycastable(false);
-        // SetOpaque(false);
-        CanvasManager.Instance.SkillGhost.BeginDrag(ComplexView.AddressBehaviour.GetAddress(),
-            ComplexView.GetDisplayTransform(), FollowPivot);
-    }
-
-    public void EndDrag(InteractBehaviour ib, PointerEventData eventData)
-    {
-        // SetRaycastable(true);
-        // SetOpaque(true);
-        AnimateDisplay(CanvasManager.Instance.SkillGhost.AddressBehaviour.RectTransform, IdlePivot);
-        CanvasManager.Instance.SkillGhost.EndDrag();
-    }
-
-    public void Drag(InteractBehaviour ib, PointerEventData eventData)
-    {
-        CanvasManager.Instance.SkillGhost.Drag(FollowPivot, eventData.position);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

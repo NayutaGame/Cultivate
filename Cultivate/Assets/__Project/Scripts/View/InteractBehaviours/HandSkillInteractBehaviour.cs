@@ -1,7 +1,5 @@
 
-using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class HandSkillInteractBehaviour : InteractBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
@@ -9,34 +7,4 @@ public class HandSkillInteractBehaviour : InteractBehaviour,
     IDropHandler,
     IPointerClickHandler
 {
-    [SerializeField] private Image Image;
-
-    public override void SetInteractable(bool value)
-    {
-        base.SetInteractable(value);
-        Image.raycastTarget = value;
-    }
-
-    // public void BeginDrag(InteractBehaviour ib, PointerEventData eventData)
-    // {
-    //     CanvasManager.Instance.SkillAnnotation.SetAddressToNull(ib, eventData);
-    //
-    //     SetRaycastable(false);
-    //     SetOpaque(false);
-    //     CanvasManager.Instance.SkillGhost.BeginDrag(ComplexView.AddressBehaviour.GetAddress(),
-    //         ComplexView.GetDisplayTransform(), ComplexView.PivotBehaviour.FollowPivot);
-    // }
-    //
-    // public void EndDrag(InteractBehaviour ib, PointerEventData eventData)
-    // {
-    //     SetRaycastable(true);
-    //     SetOpaque(true);
-    //     ComplexView.AnimateBehaviour.SetStartAndPivot(CanvasManager.Instance.SkillGhost.AddressBehaviour.RectTransform, ComplexView.PivotBehaviour.IdlePivot);
-    //     CanvasManager.Instance.SkillGhost.EndDrag();
-    // }
-    //
-    // public void Drag(InteractBehaviour ib, PointerEventData eventData)
-    // {
-    //     CanvasManager.Instance.SkillGhost.Drag(ComplexView.PivotBehaviour.FollowPivot, eventData.position);
-    // }
 }

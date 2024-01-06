@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class FormationAnnotation : AnnotationBehaviour
+public class FormationAnnotation : AnnotationView
 {
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text DescriptionText;

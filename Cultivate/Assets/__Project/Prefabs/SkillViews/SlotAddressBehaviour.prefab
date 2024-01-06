@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 8838977114607417665}
+  CanvasGroup: {fileID: 1792162689836057220}
   SkillAddressBehaviour: {fileID: 3656734857656040285}
 --- !u!1001 &8522340399221988350
 PrefabInstance:
@@ -152,6 +153,11 @@ PrefabInstance:
 --- !u!224 &533407407271079537 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8152188524626589071, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+  m_PrefabInstance: {fileID: 8522340399221988350}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1792162689836057220 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 7969793575853840762, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
   m_PrefabInstance: {fileID: 8522340399221988350}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &3656734857656040285 stripped

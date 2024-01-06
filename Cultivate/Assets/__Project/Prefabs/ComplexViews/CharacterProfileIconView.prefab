@@ -145,6 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2014851072390537510}
   - component: {fileID: 2014851072390537508}
+  - component: {fileID: 6648325100860750399}
   - component: {fileID: 2014851072390537509}
   - component: {fileID: 7117107241377947230}
   - component: {fileID: 1817739643310013979}
@@ -185,6 +186,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2014851072390537511}
   m_CullTransparentMesh: 1
+--- !u!225 &6648325100860750399
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014851072390537511}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &2014851072390537509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 2014851072390537510}
+  CanvasGroup: {fileID: 6648325100860750399}
   Image: {fileID: 2014851072390537509}
   NameText: {fileID: 3710673694876686321}
 --- !u!114 &1817739643310013979
@@ -243,6 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ComplexView: {fileID: 667069671973666689}
+  Image: {fileID: 2014851072390537509}
 --- !u!1 &5901313427687072217
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,7 +353,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8152188524626589071
 RectTransform:
   m_ObjectHideFlags: 0
@@ -410,7 +425,6 @@ MonoBehaviour:
   _blackFill: {fileID: 0}
   IdleAlpha: 0
   HoverAlpha: 0.2
-  FollowPivot: {fileID: 0}
 --- !u!114 &1832592112482970397
 MonoBehaviour:
   m_ObjectHideFlags: 0

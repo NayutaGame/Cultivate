@@ -474,6 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 2734635719551763227}
+  CanvasGroup: {fileID: 0}
   NameText: {fileID: 1798051381755965334}
   CountText: {fileID: 2231452494983012487}
 --- !u!114 &-3430915368257472375
@@ -489,6 +490,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AddressBehaviour: {fileID: 4122201372033822306}
+  InteractBehaviour: {fileID: 0}
+  SelectBehaviour: {fileID: 0}
 --- !u!1 &8685073808548796864
 GameObject:
   m_ObjectHideFlags: 0

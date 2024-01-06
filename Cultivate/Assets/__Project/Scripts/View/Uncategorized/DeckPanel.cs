@@ -46,27 +46,14 @@ public class DeckPanel : Panel
         SetLocked(false);
 
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
-        FieldView.PointerEnterNeuron.Join((ib, d)
-            => ((FieldSlotInteractBehaviour)ib).HoverAnimation(ib, d));
+        FieldView.PointerEnterNeuron.Join((ib, d) => ((FieldSlotInteractBehaviour)ib).HoverAnimation(ib, d));
         FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
         FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
-        // FieldView.BeginDragNeuron.Set((ib, d)
-        //     => ((FieldSlotInteractBehaviour)ib).BeginDrag(ib, d));
-        // FieldView.EndDragNeuron.Set((ib, d)
-        //     => ((FieldSlotInteractBehaviour)ib).EndDrag(ib, d));
-        // FieldView.DragNeuron.Set((ib, d)
-        //     => ((FieldSlotInteractBehaviour)ib).Drag(ib, d));
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
         HandView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
         HandView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
         HandView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
-        // HandView.BeginDragNeuron.Set((ib, d)
-        //     => ((HandSkillInteractBehaviour)ib).BeginDrag(ib, d));
-        // HandView.EndDragNeuron.Set((ib, d)
-        //     => ((HandSkillInteractBehaviour)ib).EndDrag(ib, d));
-        // HandView.DragNeuron.Set((ib, d)
-        //     => ((HandSkillInteractBehaviour)ib).Drag(ib, d));
 
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
         FormationListView.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);

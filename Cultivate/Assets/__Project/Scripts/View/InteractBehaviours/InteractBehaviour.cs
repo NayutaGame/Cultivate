@@ -2,6 +2,7 @@
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InteractBehaviour : MonoBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
@@ -11,9 +12,12 @@ public class InteractBehaviour : MonoBehaviour,
 {
     public ComplexView ComplexView;
 
-    private bool _interactable;
-    public virtual bool IsInteractable() => _interactable;
-    public virtual void SetInteractable(bool value) => _interactable = value;
+    // [SerializeField] private Image Image;
+    //
+    // public void SetInteractable(bool interactable)
+    // {
+    //     Image.raycastTarget = interactable;
+    // }
 
     private void OnEnable()
     {
@@ -21,12 +25,20 @@ public class InteractBehaviour : MonoBehaviour,
 
         PointerEnterNeuron.Add(ComplexView.HoverNeuron);
         PointerExitNeuron.Add(ComplexView.UnhoverNeuron);
+
+        BeginDragNeuron.Add(ComplexView.BeginDragNeuron);
+        EndDragNeuron.Add(ComplexView.EndDragNeuron);
+        DragNeuron.Add(ComplexView.DragNeuron);
     }
 
     private void OnDisable()
     {
         PointerEnterNeuron.Remove(ComplexView.HoverNeuron);
         PointerExitNeuron.Remove(ComplexView.UnhoverNeuron);
+
+        BeginDragNeuron.Remove(ComplexView.BeginDragNeuron);
+        EndDragNeuron.Remove(ComplexView.EndDragNeuron);
+        DragNeuron.Remove(ComplexView.DragNeuron);
     }
 
     public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();

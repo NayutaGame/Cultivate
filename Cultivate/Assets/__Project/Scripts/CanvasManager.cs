@@ -12,10 +12,11 @@ public class CanvasManager : Singleton<CanvasManager>
     public SkillAnnotation SkillAnnotation;
     public BuffAnnotation BuffAnnotation;
     public FormationAnnotation FormationAnnotation;
+    // public MechAnnotation MechAnnotation;
     public TextHint TextHint;
 
     [Header("Ghosts")]
-    public GhostBehaviour SkillGhost;
+    public GhostView SkillGhost;
     public MechView MechGhost;
 
     [Header("Curtain")]

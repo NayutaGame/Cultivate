@@ -200,7 +200,6 @@ MonoBehaviour:
   _blackFill: {fileID: 0}
   IdleAlpha: 0
   HoverAlpha: 0.2
-  FollowPivot: {fileID: 7960068332090044278}
 --- !u!114 &1832592112482970397
 MonoBehaviour:
   m_ObjectHideFlags: 0

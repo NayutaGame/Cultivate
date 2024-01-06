@@ -1100,8 +1100,9 @@ GameObject:
   - component: {fileID: 8152188524626589071}
   - component: {fileID: 7969793575853840762}
   - component: {fileID: 4970350602697973923}
+  - component: {fileID: 8244712644328544437}
   m_Layer: 5
-  m_Name: SkillAddressBehaviour
+  m_Name: SkillGhost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1171,3 +1172,16 @@ MonoBehaviour:
   DescriptionText: {fileID: 7570460864629865518}
   JingJieImage: {fileID: 8141467840311633605}
   WuXingImage: {fileID: 1041663930126595513}
+--- !u!114 &8244712644328544437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14fe7fea4744df4ebe49f4a99bb1874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AddressBehaviour: {fileID: 4970350602697973923}
