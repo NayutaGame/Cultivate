@@ -5,7 +5,42 @@ using UnityEngine.EventSystems;
 
 public class ComplexView : MonoBehaviour
 {
+    #region Address
+
     [SerializeField] public AddressBehaviour AddressBehaviour;
+
+    // state
+    // private Address _address;
+
+    // get
+    public Address GetAddress() => AddressBehaviour.GetAddress();
+    public T Get<T>() => AddressBehaviour.Get<T>();
+    public void Refresh() => AddressBehaviour.Refresh();
+
+    // set
+    public void SetAddress(Address address) => AddressBehaviour.SetAddress(address);
+
+    #endregion
+
+    #region Address Rect Transform
+
+    // SetParent
+    // SetName
+    // SetSiblingIndex
+    // gao.SetActive
+
+    public RectTransform GetDisplayTransform() => AddressBehaviour.Base;
+
+    public void SetDisplayTransform(RectTransform pivot)
+    {
+        AddressBehaviour.Base.position = pivot.position;
+        AddressBehaviour.Base.localScale = pivot.localScale;
+    }
+
+    #endregion
+
+
+
     [SerializeField] private ItemBehaviour ItemBehaviour;
     [SerializeField] private InteractBehaviour InteractBehaviour;
     [SerializeField] private AnimateBehaviour AnimateBehaviour;
@@ -17,13 +52,6 @@ public class ComplexView : MonoBehaviour
     public AnimateBehaviour GetAnimateBehaviour() => AnimateBehaviour;
     public SelectBehaviour GetSelectBehaviour() => SelectBehaviour;
     public PivotBehaviour GetPivotBehaviour() => PivotBehaviour;
-    public RectTransform GetDisplayTransform() => AddressBehaviour.RectTransform;
-
-    public void SetDisplayTransform(RectTransform pivot)
-    {
-        AddressBehaviour.RectTransform.position = pivot.position;
-        AddressBehaviour.RectTransform.localScale = pivot.localScale;
-    }
 
     public void RefreshPivots()
         => AnimateBehaviour.AnimateToIdle();
@@ -34,7 +62,7 @@ public class ComplexView : MonoBehaviour
     {
         _visible = visible;
 
-        AddressBehaviour.SetVisible(_visible);
+        // AddressBehaviour.SetVisible(_visible);
     }
 
     public void SetVisibleToTrue(InteractBehaviour ib, PointerEventData eventData)
@@ -49,8 +77,8 @@ public class ComplexView : MonoBehaviour
     {
         _interactable = interactable;
 
-        if (InteractBehaviour != null)
-            InteractBehaviour.SetInteractable(_interactable);
+        // if (InteractBehaviour != null)
+        //     InteractBehaviour.SetInteractable(_interactable);
     }
 
     public void SetInteractableToTrue(InteractBehaviour ib, PointerEventData eventData)

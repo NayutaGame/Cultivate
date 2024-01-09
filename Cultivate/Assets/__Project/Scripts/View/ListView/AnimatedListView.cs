@@ -32,7 +32,7 @@ public class AnimatedListView : ListView
 
     private void ReparentAddressBehaviour(ItemBehaviour itemBehaviour)
     {
-        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().RectTransform;
+        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().Base;
         addressTransform.SetParent(AddressBehaviourContainer);
         addressTransform.name = Traversal().Count().ToString();
     }
@@ -40,7 +40,7 @@ public class AnimatedListView : ListView
     protected override ItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
     {
         ItemBehaviour itemBehaviour = base.EnableItemBehaviour(prefabIndex, orderInPool, index);
-        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().RectTransform;
+        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().Base;
         addressTransform.SetSiblingIndex(index);
         addressTransform.gameObject.SetActive(true);
 
@@ -50,9 +50,9 @@ public class AnimatedListView : ListView
     protected override ItemBehaviour DisableItemBehaviour(int index)
     {
         ItemBehaviour itemBehaviour = base.DisableItemBehaviour(index);
-        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().RectTransform;
+        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().Base;
         addressTransform.SetSiblingIndex(index);
-        addressTransform.gameObject.SetActive(true);
+        addressTransform.gameObject.SetActive(true); // TODO: suspicious code
 
         return itemBehaviour;
     }
@@ -69,7 +69,7 @@ public class AnimatedListView : ListView
             _activePool.RemoveAt(index);
             _inactivePools[itemBehaviour.PrefabIndex].Insert(0, itemBehaviour);
 
-            RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().RectTransform;
+            RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().Base;
             addressTransform.gameObject.SetActive(false);
         }
     }

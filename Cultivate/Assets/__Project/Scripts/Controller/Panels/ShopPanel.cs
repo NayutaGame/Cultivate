@@ -36,7 +36,7 @@ public class ShopPanel : Panel
 
     private bool BuySkill(InteractBehaviour ib)
     {
-        Commodity commodity = ib.ComplexView.AddressBehaviour.Get<Commodity>();
+        Commodity commodity = ib.ComplexView.Get<Commodity>();
 
         ShopPanelDescriptor d = _address.Get<ShopPanelDescriptor>();
 

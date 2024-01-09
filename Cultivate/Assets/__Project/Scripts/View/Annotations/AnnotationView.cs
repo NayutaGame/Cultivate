@@ -7,8 +7,8 @@ public class AnnotationView : AddressBehaviour
     private void UpdateMousePos(Vector2 pos)
     {
         Vector2 pivot = new Vector2(Mathf.RoundToInt(pos.x / Screen.width), Mathf.RoundToInt(pos.y / Screen.height));
-        RectTransform.pivot = pivot;
-        RectTransform.position = pos;
+        Base.pivot = pivot;
+        Base.position = pos;
     }
 
     public void UpdateMousePos(InteractBehaviour ib, PointerEventData d)
@@ -16,10 +16,10 @@ public class AnnotationView : AddressBehaviour
 
     public void SetAddressFromIB(InteractBehaviour ib, PointerEventData d)
     {
-        SetAddress(ib.ComplexView.AddressBehaviour.GetAddress());
+        SetAddress(ib.ComplexView.GetAddress());
     }
 
-    public void SetAddressToNull(InteractBehaviour ib, PointerEventData d)
+    public void SetAddressToNull(MonoBehaviour behaviour, PointerEventData d)
     {
         SetAddress(null);
     }

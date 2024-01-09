@@ -1,6 +1,7 @@
 
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CanvasManager : Singleton<CanvasManager>
 {
@@ -41,4 +42,14 @@ public class CanvasManager : Singleton<CanvasManager>
     }
 
     public Sprite[] CardFaces;
+
+    public void ClearAnnotations(MonoBehaviour behaviour, PointerEventData eventData)
+    {
+        SkillAnnotation.SetAddressToNull(behaviour, eventData);
+        SkillAnnotation.SetAddressToNull(behaviour, eventData);
+        BuffAnnotation.SetAddressToNull(behaviour, eventData);
+        FormationAnnotation.SetAddressToNull(behaviour, eventData);
+        // MechAnnotation.SetAddressToNull(behaviour, eventData);
+        // TextHint.SetAddressToNull(behaviour, eventData);
+    }
 }

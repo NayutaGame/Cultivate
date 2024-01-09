@@ -18,7 +18,7 @@ public class GhostView : MonoBehaviour
 
     public void EndDrag(InteractBehaviour ib, PointerEventData eventData)
     {
-        ib.ComplexView.GetAnimateBehaviour().AnimateDisplay(AddressBehaviour.RectTransform, ib.ComplexView.GetPivotBehaviour().IdlePivot);
+        ib.ComplexView.GetAnimateBehaviour().AnimateDisplay(AddressBehaviour.Base, ib.ComplexView.GetPivotBehaviour().IdlePivot);
         gameObject.SetActive(false);
     }
 
@@ -32,8 +32,8 @@ public class GhostView : MonoBehaviour
         pivot.position = mouse;
         if (IsAnimating)
             return;
-        AddressBehaviour.RectTransform.position = pivot.position;
-        AddressBehaviour.RectTransform.localScale = pivot.localScale;
+        AddressBehaviour.Base.position = pivot.position;
+        AddressBehaviour.Base.localScale = pivot.localScale;
     }
 
 
@@ -41,12 +41,12 @@ public class GhostView : MonoBehaviour
 
 
 
-    public void SetAddressFromIB(InteractBehaviour ib, PointerEventData d)
+    public void SetAddressFromIB(AddressBehaviour ab, PointerEventData d)
     {
-        AddressBehaviour.SetAddress(ib.ComplexView.AddressBehaviour.GetAddress());
+        AddressBehaviour.SetAddress(ab.GetAddress());
     }
 
-    public void SetAddressToNull(InteractBehaviour ib, PointerEventData d)
+    public void SetAddressToNull(AddressBehaviour ab, PointerEventData d)
     {
         AddressBehaviour.SetAddress(null);
     }
@@ -54,8 +54,8 @@ public class GhostView : MonoBehaviour
     private void SetDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        AddressBehaviour.RectTransform.position = end.position;
-        AddressBehaviour.RectTransform.localScale = end.localScale;
+        AddressBehaviour.Base.position = end.position;
+        AddressBehaviour.Base.localScale = end.localScale;
     }
 
     private void AnimateDisplay(RectTransform start, RectTransform end)
@@ -67,7 +67,7 @@ public class GhostView : MonoBehaviour
     private void AnimateDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(AddressBehaviour.RectTransform, end);
+        FollowAnimation f = new FollowAnimation(AddressBehaviour.Base, end);
         _animationHandle = f.GetHandle();
         _animationHandle.SetAutoKill().Restart();
     }

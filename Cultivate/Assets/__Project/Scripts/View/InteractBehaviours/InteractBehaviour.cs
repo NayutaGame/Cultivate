@@ -2,7 +2,6 @@
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class InteractBehaviour : MonoBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
@@ -10,85 +9,56 @@ public class InteractBehaviour : MonoBehaviour,
     IDropHandler,
     IPointerClickHandler
 {
-    public ComplexView ComplexView;
+    private AddressBehaviour AddressBehaviour;
 
-    // [SerializeField] private Image Image;
-    //
-    // public void SetInteractable(bool interactable)
-    // {
-    //     Image.raycastTarget = interactable;
-    // }
-
-    private void OnEnable()
-    {
-        SetInteractable(true);
-
-        PointerEnterNeuron.Add(ComplexView.HoverNeuron);
-        PointerExitNeuron.Add(ComplexView.UnhoverNeuron);
-
-        BeginDragNeuron.Add(ComplexView.BeginDragNeuron);
-        EndDragNeuron.Add(ComplexView.EndDragNeuron);
-        DragNeuron.Add(ComplexView.DragNeuron);
-    }
-
-    private void OnDisable()
-    {
-        PointerEnterNeuron.Remove(ComplexView.HoverNeuron);
-        PointerExitNeuron.Remove(ComplexView.UnhoverNeuron);
-
-        BeginDragNeuron.Remove(ComplexView.BeginDragNeuron);
-        EndDragNeuron.Remove(ComplexView.EndDragNeuron);
-        DragNeuron.Remove(ComplexView.DragNeuron);
-    }
-
-    public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerMoveNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> BeginDragNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> EndDragNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
+    public Neuron<AddressBehaviour, PointerEventData> PointerEnterNeuron = new();
+    public Neuron<AddressBehaviour, PointerEventData> PointerExitNeuron = new();
+    public Neuron<AddressBehaviour, PointerEventData> PointerMoveNeuron = new();
+    public Neuron<AddressBehaviour, PointerEventData> BeginDragNeuron = new();
+    public Neuron<AddressBehaviour, PointerEventData> EndDragNeuron = new();
+    public Neuron<AddressBehaviour, PointerEventData> DragNeuron = new();
+    public Neuron<AddressBehaviour, PointerEventData> LeftClickNeuron = new();
+    public Neuron<AddressBehaviour, PointerEventData> RightClickNeuron = new();
+    public Neuron<AddressBehaviour, AddressBehaviour, PointerEventData> DropNeuron = new();
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (!eventData.dragging)
-            PointerEnterNeuron.Invoke(this, eventData);
+            PointerEnterNeuron.Invoke(AddressBehaviour, eventData);
     }
 
     public virtual void OnPointerExit (PointerEventData eventData)
     {
         if (!eventData.dragging)
-            PointerExitNeuron.Invoke(this, eventData);
+            PointerExitNeuron.Invoke(AddressBehaviour, eventData);
     }
 
     public virtual void OnPointerMove (PointerEventData eventData)
     {
         if (!eventData.dragging)
-            PointerMoveNeuron.Invoke(this, eventData);
+            PointerMoveNeuron.Invoke(AddressBehaviour, eventData);
     }
 
-    public virtual void OnBeginDrag   (PointerEventData eventData) => BeginDragNeuron   .Invoke(this, eventData);
-    public virtual void OnEndDrag     (PointerEventData eventData) => EndDragNeuron     .Invoke(this, eventData);
-    public virtual void OnDrag        (PointerEventData eventData) => DragNeuron        .Invoke(this, eventData);
+    public virtual void OnBeginDrag   (PointerEventData eventData) => BeginDragNeuron   .Invoke(AddressBehaviour, eventData);
+    public virtual void OnEndDrag     (PointerEventData eventData) => EndDragNeuron     .Invoke(AddressBehaviour, eventData);
+    public virtual void OnDrag        (PointerEventData eventData) => DragNeuron        .Invoke(AddressBehaviour, eventData);
     public virtual void OnDrop        (PointerEventData eventData)
     {
         if (eventData.pointerDrag == gameObject)
             return;
 
-        InteractBehaviour dragged = eventData.pointerDrag.GetComponent<InteractBehaviour>();
+        AddressBehaviour dragged = eventData.pointerDrag.GetComponent<InteractBehaviour>().AddressBehaviour;
 
         if (dragged != null)
-            DropNeuron.Invoke(dragged, this, eventData);
+            DropNeuron.Invoke(dragged, AddressBehaviour, eventData);
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left) {
-            LeftClickNeuron.Invoke(this, eventData);
+            LeftClickNeuron.Invoke(AddressBehaviour, eventData);
         } else if (eventData.button == PointerEventData.InputButton.Right) {
-            RightClickNeuron.Invoke(this, eventData);
+            RightClickNeuron.Invoke(AddressBehaviour, eventData);
         }
     }
 }

@@ -20,11 +20,11 @@ public class ListView : AddressBehaviour
 
     public IEnumerable<ItemBehaviour> Traversal()
     {
-        foreach (var itemView in _activePool)
-            yield return itemView;
-        foreach (var itemViewList in _inactivePools)
-        foreach (var itemView in itemViewList)
-            yield return itemView;
+        foreach (var itemBehaviour in _activePool)
+            yield return itemBehaviour;
+        foreach (var itemBehaviourList in _inactivePools)
+        foreach (var itemBehaviour in itemBehaviourList)
+            yield return itemBehaviour;
     }
 
     private bool IsInited()

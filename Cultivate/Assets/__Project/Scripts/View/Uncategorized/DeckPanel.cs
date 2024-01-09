@@ -114,8 +114,8 @@ public class DeckPanel : Panel
         if (!(from is HandSkillInteractBehaviour))
             return;
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        RunSkill lhs = from.ComplexView.AddressBehaviour.Get<RunSkill>();
-        RunSkill rhs = to.ComplexView.AddressBehaviour.Get<RunSkill>();
+        RunSkill lhs = from.ComplexView.Get<RunSkill>();
+        RunSkill rhs = to.ComplexView.Get<RunSkill>();
         bool success = env.TryMerge(lhs, rhs);
         if (!success)
             return;
@@ -133,8 +133,8 @@ public class DeckPanel : Panel
         if (!(from is HandSkillInteractBehaviour))
             return;
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        RunSkill toEquip = from.ComplexView.AddressBehaviour.Get<RunSkill>();
-        SkillSlot slot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
+        RunSkill toEquip = from.ComplexView.Get<RunSkill>();
+        SkillSlot slot = to.ComplexView.Get<SkillSlot>();
         bool success = env.TryEquipSkill(toEquip, slot);
         if (!success)
             return;
@@ -156,8 +156,8 @@ public class DeckPanel : Panel
         if (!(from is MechInteractBehaviour))
             return;
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        Mech toEquip = from.ComplexView.AddressBehaviour.Get<Mech>();
-        SkillSlot slot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
+        Mech toEquip = from.ComplexView.Get<Mech>();
+        SkillSlot slot = to.ComplexView.Get<SkillSlot>();
         bool success = env.TryEquipMech(toEquip, slot);
         if (!success)
             return;
@@ -165,7 +165,7 @@ public class DeckPanel : Panel
         // Equip Mech Animation
         AudioManager.Play("CardPlacement");
 
-        from.ComplexView.AddressBehaviour.Refresh();
+        from.ComplexView.Refresh();
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
@@ -179,7 +179,7 @@ public class DeckPanel : Panel
         if (!(from is FieldSlotInteractBehaviour))
             return;
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        SkillSlot slot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot slot = from.ComplexView.Get<SkillSlot>();
         UnequipResult result = env.TryUnequip(slot, null);
         if (!result.Success)
             return;
@@ -209,8 +209,8 @@ public class DeckPanel : Panel
             return;
 
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        SkillSlot fromSlot = from.ComplexView.AddressBehaviour.Get<SkillSlot>();
-        SkillSlot toSlot = to.ComplexView.AddressBehaviour.Get<SkillSlot>();
+        SkillSlot fromSlot = from.ComplexView.Get<SkillSlot>();
+        SkillSlot toSlot = to.ComplexView.Get<SkillSlot>();
         bool success = env.TrySwap(fromSlot, toSlot);
         if (!success)
             return;
