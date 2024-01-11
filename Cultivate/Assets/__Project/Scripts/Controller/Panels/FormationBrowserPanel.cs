@@ -24,7 +24,7 @@ public class FormationBrowserPanel : Panel
 
     private void SelectFormation(InteractBehaviour ib, PointerEventData eventData)
     {
-        FormationGroupBarView view = ib.GetComponent<FormationGroupBarView>();
+        FormationGroupBarView view = ib.GetSimpleView() as FormationGroupBarView;
         if (view == null)
             return;
 
@@ -33,7 +33,7 @@ public class FormationBrowserPanel : Panel
         _selection = view;
         if (_selection != null)
         {
-            _detailedGroupView.SetAddress(ib.GetComponent<AddressBehaviour>().GetAddress());
+            _detailedGroupView.SetAddress(ib.GetSimpleView().GetAddress());
             _detailedGroupView.Refresh();
             _selection.SetSelected(true);
         }

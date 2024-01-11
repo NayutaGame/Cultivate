@@ -55,13 +55,13 @@ public class ArbitraryCardPickerPanel : Panel
     }
 
     private void ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
-        => ToggleSkill(ib);
+        => ToggleSkill(ib.GetSimpleView());
 
-    private bool ToggleSkill(InteractBehaviour ib)
+    private bool ToggleSkill(SimpleView v)
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
-        SkillView skillView = ib.GetComponent<SkillView>();
+        SkillView skillView = v as SkillView;
         bool isSelected = _selections.Contains(skillView);
 
         if (isSelected)
@@ -88,7 +88,7 @@ public class ArbitraryCardPickerPanel : Panel
         return true;
     }
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 
     private void ConfirmSelections()

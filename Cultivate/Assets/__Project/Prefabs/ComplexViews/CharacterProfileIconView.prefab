@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 7117107241377947230}
   - component: {fileID: 1817739643310013979}
   m_Layer: 5
-  m_Name: AddressBehaviour
+  m_Name: SimpleView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,8 +240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a2e3c7cab71ee4ab5c44ede1ab8233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 2014851072390537510}
-  CanvasGroup: {fileID: 6648325100860750399}
   Image: {fileID: 2014851072390537509}
   NameText: {fileID: 3710673694876686321}
 --- !u!114 &1817739643310013979
@@ -256,8 +254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ComplexView: {fileID: 667069671973666689}
-  Image: {fileID: 2014851072390537509}
 --- !u!1 &5901313427687072217
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,8 +340,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8152188524626589071}
   - component: {fileID: 667069671973666689}
-  - component: {fileID: 9026326027509961958}
-  - component: {fileID: 2753047465682762412}
   - component: {fileID: 1832592112482970397}
   m_Layer: 5
   m_Name: CharacterProfileIconView
@@ -387,44 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05306d648c3bf6d409b497c36ff07309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 7117107241377947230}
-  ItemBehaviour: {fileID: 9026326027509961958}
-  InteractBehaviour: {fileID: 1817739643310013979}
-  AnimateBehaviour: {fileID: 2753047465682762412}
-  PivotBehaviour: {fileID: 0}
-  SelectBehaviour: {fileID: 1832592112482970397}
---- !u!114 &9026326027509961958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3576d9845242504580dc43ba3093944, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ComplexView: {fileID: 667069671973666689}
---- !u!114 &2753047465682762412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ad324d7768007a4884035b2df5b37d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ComplexView: {fileID: 667069671973666689}
-  _transitionType: 0
-  IdlePivot: {fileID: 0}
-  HoverPivot: {fileID: 0}
-  _blackFill: {fileID: 0}
-  IdleAlpha: 0
-  HoverAlpha: 0.2
+  SimpleView: {fileID: 0}
 --- !u!114 &1832592112482970397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,5 +394,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cec2e10fbbbaa4f8d492bd4770407d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ComplexView: {fileID: 667069671973666689}
   SelectionImage: {fileID: 8220191109393616515}

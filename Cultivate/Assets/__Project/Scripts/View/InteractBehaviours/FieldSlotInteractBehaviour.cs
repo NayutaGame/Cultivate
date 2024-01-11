@@ -10,6 +10,6 @@ public class FieldSlotInteractBehaviour : InteractBehaviour,
     public void HoverAnimation(InteractBehaviour ib, PointerEventData eventData)
     {
         AudioManager.Play("CardHover");
-        CanvasManager.Instance.SkillAnnotation.SetAddress(ComplexView.GetAddress().Append(".Skill"));
+        CanvasManager.Instance.SkillAnnotation.SetAddress(GetSimpleView().GetAddress().Append(".Skill"));
     }
 }

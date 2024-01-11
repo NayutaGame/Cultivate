@@ -43,13 +43,13 @@ public class CanvasManager : Singleton<CanvasManager>
 
     public Sprite[] CardFaces;
 
-    public void ClearAnnotations(MonoBehaviour behaviour, PointerEventData eventData)
+    public void ClearAnnotations(InteractBehaviour ib, PointerEventData d)
     {
-        SkillAnnotation.SetAddressToNull(behaviour, eventData);
-        SkillAnnotation.SetAddressToNull(behaviour, eventData);
-        BuffAnnotation.SetAddressToNull(behaviour, eventData);
-        FormationAnnotation.SetAddressToNull(behaviour, eventData);
-        // MechAnnotation.SetAddressToNull(behaviour, eventData);
-        // TextHint.SetAddressToNull(behaviour, eventData);
+        SkillAnnotation.SetAddressToNull(ib, d);
+        SkillAnnotation.SetAddressToNull(ib, d);
+        BuffAnnotation.SetAddressToNull(ib, d);
+        FormationAnnotation.SetAddressToNull(ib, d);
+        // MechAnnotation.SetAddressToNull(ib, d);
+        // TextHint.SetAddressToNull(ib, d);
     }
 }

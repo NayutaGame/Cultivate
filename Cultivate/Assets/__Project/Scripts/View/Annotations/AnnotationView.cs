@@ -2,13 +2,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AnnotationView : AddressBehaviour
+public class AnnotationView : SimpleView
 {
     private void UpdateMousePos(Vector2 pos)
     {
         Vector2 pivot = new Vector2(Mathf.RoundToInt(pos.x / Screen.width), Mathf.RoundToInt(pos.y / Screen.height));
-        Base.pivot = pivot;
-        Base.position = pos;
+        RectTransform.pivot = pivot;
+        RectTransform.position = pos;
     }
 
     public void UpdateMousePos(InteractBehaviour ib, PointerEventData d)
@@ -16,10 +16,10 @@ public class AnnotationView : AddressBehaviour
 
     public void SetAddressFromIB(InteractBehaviour ib, PointerEventData d)
     {
-        SetAddress(ib.ComplexView.GetAddress());
+        SetAddress(ib.GetSimpleView().GetAddress());
     }
 
-    public void SetAddressToNull(MonoBehaviour behaviour, PointerEventData d)
+    public void SetAddressToNull(InteractBehaviour ib, PointerEventData d)
     {
         SetAddress(null);
     }

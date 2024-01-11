@@ -184,8 +184,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u5DF2\u82B1\u8D39"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
-  m_sharedMaterial: {fileID: -9060274634148144086, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -319,8 +319,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 70
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
-  m_sharedMaterial: {fileID: -9060274634148144086, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -509,7 +509,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6628711938903181561}
   - component: {fileID: 6628711938903181558}
-  - component: {fileID: -4756968663447644307}
   m_Layer: 5
   m_Name: SettingsSlider
   m_TagString: Untagged
@@ -550,23 +549,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5adb3a1f663b84d9aedac18dedd66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 6628711938903181561}
   LabelText: {fileID: 6628711938056921067}
   NumberText: {fileID: 6628711938418796218}
   Slider: {fileID: 6628711938945206591}
---- !u!114 &-4756968663447644307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6628711938903181560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 6628711938903181558}
 --- !u!1 &6628711938927182511
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +586,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.7, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -767,8 +752,8 @@ RectTransform:
   m_Father: {fileID: 6628711937818292085}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.7, y: 0}
-  m_AnchorMax: {x: 0.7, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.000030517578, y: 0}
   m_SizeDelta: {x: 26, y: 26}
   m_Pivot: {x: 0.5, y: 0.5}

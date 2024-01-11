@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillAddressBehaviour : AddressBehaviour
+public class SkillSimpleView : SimpleView
 {
     [SerializeField] private Image CardImage;
     // [SerializeField] private GameObject ManaCostView;

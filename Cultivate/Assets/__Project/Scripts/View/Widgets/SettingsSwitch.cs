@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsSwitch : AddressBehaviour
+public class SettingsSwitch : SimpleView
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private TMP_Text ContentText;

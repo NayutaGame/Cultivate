@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3090333459586823845}
   - component: {fileID: 4059958619330092207}
   m_Layer: 5
-  m_Name: AddressBehaviour
+  m_Name: SimpleView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3dc41bf402e02749b28fbd338a48fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 3844685011734911568}
 --- !u!1 &4373178309398520956
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,9 +180,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8152188524626589071}
   - component: {fileID: 667069671973666689}
-  - component: {fileID: 9026326027509961958}
-  - component: {fileID: 2753047465682762412}
-  - component: {fileID: 1832592112482970397}
   m_Layer: 5
   m_Name: ComplexView
   m_TagString: Untagged
@@ -225,58 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05306d648c3bf6d409b497c36ff07309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 4059958619330092207}
-  ItemBehaviour: {fileID: 9026326027509961958}
-  InteractBehaviour: {fileID: 568225517561051659}
-  AnimateBehaviour: {fileID: 2753047465682762412}
-  PivotBehaviour: {fileID: 2039814876740525314}
-  SelectBehaviour: {fileID: 1832592112482970397}
---- !u!114 &9026326027509961958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3576d9845242504580dc43ba3093944, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ComplexView: {fileID: 667069671973666689}
---- !u!114 &2753047465682762412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ad324d7768007a4884035b2df5b37d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ComplexView: {fileID: 667069671973666689}
-  _transitionType: 0
-  IdlePivot: {fileID: 4796206874295199143}
-  HoverPivot: {fileID: 3394486588855632418}
-  _blackFill: {fileID: 2023108389119041023}
-  IdleAlpha: 0
-  HoverAlpha: 0.2
-  FollowPivot: {fileID: 7960068332090044278}
---- !u!114 &1832592112482970397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4cec2e10fbbbaa4f8d492bd4770407d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SelectionImage: {fileID: 0}
+  SimpleView: {fileID: 4059958619330092207}
 --- !u!1 &9146373138707187191
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +233,6 @@ GameObject:
   - component: {fileID: 1572521862188012212}
   - component: {fileID: 3797585231420267073}
   - component: {fileID: 2023108389119041023}
-  - component: {fileID: 2039814876740525314}
   - component: {fileID: 568225517561051659}
   m_Layer: 0
   m_Name: PivotBehaviour
@@ -358,22 +302,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2039814876740525314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9146373138707187191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0607c65ef2671814fb04fb50602c479c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ComplexView: {fileID: 667069671973666689}
-  IdlePivot: {fileID: 4796206874295199143}
-  HoverPivot: {fileID: 3394486588855632418}
-  FollowPivot: {fileID: 7960068332090044278}
 --- !u!114 &568225517561051659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,4 +314,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ComplexView: {fileID: 667069671973666689}

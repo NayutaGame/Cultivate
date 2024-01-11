@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class SlotView : AddressBehaviour
+public class SlotView : SimpleView
 {
     [SerializeField] protected SkillView SkillView;
 

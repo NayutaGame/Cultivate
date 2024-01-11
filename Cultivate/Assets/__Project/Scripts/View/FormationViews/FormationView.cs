@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FormationView : AddressBehaviour
+public class FormationView : SimpleView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text JingJieText;

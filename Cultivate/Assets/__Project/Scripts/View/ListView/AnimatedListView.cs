@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AnimatedListView : ListView
 {
-    [SerializeField] private RectTransform AddressBehaviourContainer;
+    [SerializeField] private RectTransform SimpleViews;
 
     protected override Task InsertItem(int index, object item)
     {
@@ -32,17 +32,17 @@ public class AnimatedListView : ListView
 
     private void ReparentAddressBehaviour(ItemBehaviour itemBehaviour)
     {
-        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().Base;
-        addressTransform.SetParent(AddressBehaviourContainer);
-        addressTransform.name = Traversal().Count().ToString();
+        RectTransform simpleViewTransform = itemBehaviour.GetSimpleView().RectTransform;
+        simpleViewTransform.SetParent(SimpleViews);
+        simpleViewTransform.name = Traversal().Count().ToString();
     }
 
     protected override ItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
     {
         ItemBehaviour itemBehaviour = base.EnableItemBehaviour(prefabIndex, orderInPool, index);
-        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().Base;
-        addressTransform.SetSiblingIndex(index);
-        addressTransform.gameObject.SetActive(true);
+        RectTransform simpleViewTransform = itemBehaviour.GetSimpleView().RectTransform;
+        simpleViewTransform.SetSiblingIndex(index);
+        simpleViewTransform.gameObject.SetActive(true);
 
         return itemBehaviour;
     }
@@ -50,9 +50,9 @@ public class AnimatedListView : ListView
     protected override ItemBehaviour DisableItemBehaviour(int index)
     {
         ItemBehaviour itemBehaviour = base.DisableItemBehaviour(index);
-        RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().Base;
-        addressTransform.SetSiblingIndex(index);
-        addressTransform.gameObject.SetActive(true); // TODO: suspicious code
+        RectTransform simpleViewTransform = itemBehaviour.GetSimpleView().RectTransform;
+        simpleViewTransform.SetSiblingIndex(index);
+        simpleViewTransform.gameObject.SetActive(true); // TODO: suspicious code
 
         return itemBehaviour;
     }
@@ -69,7 +69,7 @@ public class AnimatedListView : ListView
             _activePool.RemoveAt(index);
             _inactivePools[itemBehaviour.PrefabIndex].Insert(0, itemBehaviour);
 
-            RectTransform addressTransform = itemBehaviour.GetAddressBehaviour().Base;
+            RectTransform addressTransform = itemBehaviour.GetSimpleView().RectTransform;
             addressTransform.gameObject.SetActive(false);
         }
     }
@@ -77,5 +77,10 @@ public class AnimatedListView : ListView
     #endregion
 
     public void RefreshPivots()
-        => _activePool.Do(itemBehaviour => itemBehaviour.RefreshPivots());
+        => _activePool.Do(itemBehaviour =>
+        {
+            StateBehaviourPivot stateBehaviourPivot = itemBehaviour.GetSimpleView().GetStateBehaviour() as StateBehaviourPivot;
+            if (stateBehaviourPivot != null)
+                stateBehaviourPivot.RefreshPivots();
+        });
 }

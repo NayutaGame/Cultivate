@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6525699802412133842}
   m_Layer: 0
-  m_Name: AddressBehaviourList
+  m_Name: SimpleViews
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,10 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5832fb2677c78a4ab8c274dc09490d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 3673873199850753449}
   Container: {fileID: 1067400902554512671}
   Prefabs: []
-  AddressBehaviourHolder: {fileID: 6525699802412133842}
+  SimpleViews: {fileID: 6525699802412133842}
 --- !u!1 &7785967919369618002
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +141,7 @@ GameObject:
   - component: {fileID: 1067400902554512671}
   - component: {fileID: 7550656689042034865}
   m_Layer: 5
-  m_Name: ComplexViewList
+  m_Name: Pivots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

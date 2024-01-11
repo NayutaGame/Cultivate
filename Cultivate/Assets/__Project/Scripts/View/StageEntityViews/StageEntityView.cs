@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class StageEntityView : AddressBehaviour
+public class StageEntityView : SimpleView
 {
     [SerializeField] private ListView Formations;
     [SerializeField] private ListView Buffs;

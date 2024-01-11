@@ -212,7 +212,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6010585920838065014}
   - component: {fileID: 6010585920838065013}
-  - component: {fileID: 7419775741381676997}
   m_Layer: 0
   m_Name: SettingsToggle
   m_TagString: Untagged
@@ -253,24 +252,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec26631b579ca1741883b58390854113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 6010585920838065014}
   LabelText: {fileID: 6010585921017093687}
   Button: {fileID: 2533425285255626209}
   OpenSign: {fileID: 7680798612181530657}
   ClosedSign: {fileID: 6310001905451410943}
---- !u!114 &7419775741381676997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6010585920838065015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 6010585920838065013}
 --- !u!1 &6010585921017093673
 GameObject:
   m_ObjectHideFlags: 0

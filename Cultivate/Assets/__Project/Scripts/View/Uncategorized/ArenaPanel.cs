@@ -77,8 +77,8 @@ public class ArenaPanel : Panel
     {
         Arena arena = new Address("Run.Arena").Get<Arena>();
 
-        object fromItem = from.GetComponent<AddressBehaviour>().Get<object>();
-        SkillSlot toSlot = to.GetComponent<AddressBehaviour>().Get<SkillSlot>();
+        object fromItem = from.GetComponent<SimpleView>().Get<object>();
+        SkillSlot toSlot = to.GetComponent<SimpleView>().Get<SkillSlot>();
 
         if (fromItem is RunSkill fromSkill)
         {
@@ -93,7 +93,7 @@ public class ArenaPanel : Panel
     private bool TryIncreaseJingJie(InteractBehaviour ib, PointerEventData eventData)
     {
         Arena arena = new Address("Run.Arena").Get<Arena>();
-        SkillSlot slot = ib.GetComponent<AddressBehaviour>().Get<SkillSlot>();
+        SkillSlot slot = ib.GetComponent<SimpleView>().Get<SkillSlot>();
         return arena.TryIncreaseJingJie(slot);
     }
 

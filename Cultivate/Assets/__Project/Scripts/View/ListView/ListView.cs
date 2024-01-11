@@ -7,7 +7,7 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ListView : AddressBehaviour
+public class ListView : SimpleView
 {
     public RectTransform Container;
     public GameObject[] Prefabs;
@@ -56,7 +56,7 @@ public class ListView : AddressBehaviour
     public override void Refresh()
     {
         base.Refresh();
-        _activePool.Do(itemBehaviour => itemBehaviour.GetAddressBehaviour().Refresh());
+        _activePool.Do(itemBehaviour => itemBehaviour.GetSimpleView().Refresh());
     }
 
     private void RegisterExists()
@@ -109,8 +109,8 @@ public class ListView : AddressBehaviour
 
         for (int i = index; i < _activePool.Count; i++)
         {
-            _activePool[i].GetAddressBehaviour().SetAddress(GetAddress().Append($"#{i}"));
-            _activePool[i].GetAddressBehaviour().Refresh();
+            _activePool[i].GetSimpleView().SetAddress(GetAddress().Append($"#{i}"));
+            _activePool[i].GetSimpleView().Refresh();
         }
 
         itemBehaviour.transform.SetSiblingIndex(index);
@@ -130,7 +130,7 @@ public class ListView : AddressBehaviour
         _inactivePools[itemBehaviour.PrefabIndex].Add(itemBehaviour);
 
         for (int i = index; i < _activePool.Count; i++)
-            _activePool[i].GetAddressBehaviour().SetAddress(GetAddress().Append($"#{i}"));
+            _activePool[i].GetSimpleView().SetAddress(GetAddress().Append($"#{i}"));
 
         return itemBehaviour;
     }
@@ -218,7 +218,7 @@ public class ListView : AddressBehaviour
 
     protected virtual async Task Modified(int index)
     {
-        _activePool[index].GetAddressBehaviour().Refresh();
+        _activePool[index].GetSimpleView().Refresh();
     }
 
     #endregion
@@ -262,7 +262,7 @@ public class ListView : AddressBehaviour
 
     private void BindInteractBehaviour(ItemBehaviour itemBehaviour)
     {
-        InteractBehaviour ib = itemBehaviour.GetInteractBehaviour();
+        InteractBehaviour ib = itemBehaviour.GetSimpleView().GetInteractBehaviour();
         if (ib == null)
             return;
 

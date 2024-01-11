@@ -27,14 +27,14 @@ public class StageSkillView : SkillView
     public Tween GetExpandTween()
     {
         Sequence seq = DOTween.Sequence();
-        seq.Join(Base.DOScale(1, 0.6f).SetEase(Ease.InOutQuad));
+        seq.Join(RectTransform.DOScale(1, 0.6f).SetEase(Ease.InOutQuad));
         return seq;
     }
 
     public Tween GetShrinkTween()
     {
         Sequence seq = DOTween.Sequence();
-        seq.Join(Base.DOScale(0.5f, 0.6f).SetEase(Ease.InOutQuad));
+        seq.Join(RectTransform.DOScale(0.5f, 0.6f).SetEase(Ease.InOutQuad));
         return seq;
     }
 }

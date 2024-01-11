@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterProfileAddressBehaviour : AddressBehaviour
+public class CharacterProfileSimpleView : SimpleView
 {
     [SerializeField] private Image Image;
     [SerializeField] private TMP_Text NameText;

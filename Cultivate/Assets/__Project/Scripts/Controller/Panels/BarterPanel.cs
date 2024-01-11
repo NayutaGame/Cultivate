@@ -22,7 +22,7 @@ public class BarterPanel : Panel
 
         foreach (ItemBehaviour itemBehaviour in BarterItemListView.ActivePool)
         {
-            BarterItemView barterItemView = itemBehaviour.GetAddressBehaviour() as BarterItemView;
+            BarterItemView barterItemView = itemBehaviour.GetSimpleView() as BarterItemView;
             barterItemView.ClearExchangeEvent();
             barterItemView.ExchangeEvent += ExchangeEvent;
         }
@@ -51,6 +51,6 @@ public class BarterPanel : Panel
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 }

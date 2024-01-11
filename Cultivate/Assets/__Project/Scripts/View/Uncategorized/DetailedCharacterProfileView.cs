@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class DetailedCharacterProfileView : AddressBehaviour
+public class DetailedCharacterProfileView : SimpleView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text AbilityDescriptionText;

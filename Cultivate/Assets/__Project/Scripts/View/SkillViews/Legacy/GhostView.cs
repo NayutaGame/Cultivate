@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class GhostView : MonoBehaviour
 {
-    [SerializeField] private AddressBehaviour AddressBehaviour;
+    [SerializeField] private SimpleView SimpleView;
 
     private Tween _animationHandle;
     public bool IsAnimating => _animationHandle != null && _animationHandle.active;
@@ -13,18 +13,26 @@ public class GhostView : MonoBehaviour
     public void BeginDrag(InteractBehaviour ib, PointerEventData eventData)
     {
         gameObject.SetActive(true);
-        AnimateDisplay(ib.ComplexView.GetDisplayTransform(), ib.ComplexView.GetPivotBehaviour().FollowPivot);
+
+        StateBehaviourPivot stateBehaviourPivot = ib.GetCLView().GetStateBehaviour() as StateBehaviourPivot;
+        if (stateBehaviourPivot != null)
+            AnimateDisplay(stateBehaviourPivot.BaseTransform, stateBehaviourPivot.FollowTransform);
     }
 
     public void EndDrag(InteractBehaviour ib, PointerEventData eventData)
     {
-        ib.ComplexView.GetAnimateBehaviour().AnimateDisplay(AddressBehaviour.Base, ib.ComplexView.GetPivotBehaviour().IdlePivot);
+        StateBehaviourPivot stateBehaviourPivot = ib.GetCLView().GetStateBehaviour() as StateBehaviourPivot;
+        if (stateBehaviourPivot != null)
+            stateBehaviourPivot.AnimateState(SimpleView.RectTransform, stateBehaviourPivot.IdleTransform);
+
         gameObject.SetActive(false);
     }
 
     public void Drag(InteractBehaviour ib, PointerEventData eventData)
     {
-        Drag(ib.ComplexView.GetPivotBehaviour().FollowPivot, eventData.position);
+        StateBehaviourPivot stateBehaviourPivot = ib.GetCLView().GetStateBehaviour() as StateBehaviourPivot;
+        if (stateBehaviourPivot != null)
+            Drag(stateBehaviourPivot.FollowTransform, eventData.position);
     }
 
     private void Drag(RectTransform pivot, Vector2 mouse)
@@ -32,8 +40,8 @@ public class GhostView : MonoBehaviour
         pivot.position = mouse;
         if (IsAnimating)
             return;
-        AddressBehaviour.Base.position = pivot.position;
-        AddressBehaviour.Base.localScale = pivot.localScale;
+        SimpleView.RectTransform.position = pivot.position;
+        SimpleView.RectTransform.localScale = pivot.localScale;
     }
 
 
@@ -41,21 +49,21 @@ public class GhostView : MonoBehaviour
 
 
 
-    public void SetAddressFromIB(AddressBehaviour ab, PointerEventData d)
+    public void SetAddressFromIB(InteractBehaviour ib, PointerEventData d)
     {
-        AddressBehaviour.SetAddress(ab.GetAddress());
+        SimpleView.SetAddress(ib.GetSimpleView().GetAddress());
     }
 
-    public void SetAddressToNull(AddressBehaviour ab, PointerEventData d)
+    public void SetAddressToNull(InteractBehaviour ib, PointerEventData d)
     {
-        AddressBehaviour.SetAddress(null);
+        SimpleView.SetAddress(null);
     }
 
     private void SetDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        AddressBehaviour.Base.position = end.position;
-        AddressBehaviour.Base.localScale = end.localScale;
+        SimpleView.RectTransform.position = end.position;
+        SimpleView.RectTransform.localScale = end.localScale;
     }
 
     private void AnimateDisplay(RectTransform start, RectTransform end)
@@ -67,7 +75,7 @@ public class GhostView : MonoBehaviour
     private void AnimateDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(AddressBehaviour.Base, end);
+        FollowAnimation f = new FollowAnimation(SimpleView.RectTransform, end);
         _animationHandle = f.GetHandle();
         _animationHandle.SetAutoKill().Restart();
     }

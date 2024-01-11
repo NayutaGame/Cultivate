@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class StepItemView : AddressBehaviour
+public class StepItemView : SimpleView
 {
     [SerializeField] private ListView NodeListView;
 
