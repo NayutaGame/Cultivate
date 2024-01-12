@@ -5,31 +5,46 @@ public class SimpleView : MonoBehaviour, CLView
 {
     public SimpleView GetSimpleView() => this;
 
-    [SerializeField] private RectTransform RectTransform;
+    private RectTransform RectTransform;
     public RectTransform GetDisplayTransform() => RectTransform;
 
     [SerializeField] private InteractBehaviour InteractBehaviour;
     public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
 
-    [SerializeField] private ItemBehaviour ItemBehaviour;
+    private ItemBehaviour ItemBehaviour;
     public ItemBehaviour GetItemBehaviour() => ItemBehaviour;
 
-    [SerializeField] private SelectBehaviour SelectBehaviour;
+    private SelectBehaviour SelectBehaviour;
     public SelectBehaviour GetSelectBehaviour() => SelectBehaviour;
 
-    [SerializeField] private StateBehaviour StateBehaviour;
+    private StateBehaviour StateBehaviour;
     public StateBehaviour GetStateBehaviour() => StateBehaviour;
 
     public void Awake()
     {
+        RectTransform ??= GetComponent<RectTransform>();
+
+        InteractBehaviour ??= GetComponent<InteractBehaviour>();
         if (InteractBehaviour != null)
             InteractBehaviour.Init(this);
 
+        ItemBehaviour ??= GetComponent<ItemBehaviour>();
         if (ItemBehaviour != null)
             ItemBehaviour.Init(this);
 
+        SelectBehaviour ??= GetComponent<SelectBehaviour>();
         if (SelectBehaviour != null)
             SelectBehaviour.Init(this);
+
+        StateBehaviour ??= GetComponent<StateBehaviour>();
+        if (StateBehaviour != null)
+            StateBehaviour.Init(this);
+    }
+
+    public void SetDisplayTransform(RectTransform pivot)
+    {
+        RectTransform.position = pivot.position;
+        RectTransform.localScale = pivot.localScale;
     }
 
     private Address _address;

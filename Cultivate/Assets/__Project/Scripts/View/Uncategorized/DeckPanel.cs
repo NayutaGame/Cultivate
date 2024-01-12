@@ -66,11 +66,8 @@ public class DeckPanel : Panel
         MechListView.DragNeuron.Join((ib, d) => ((MechInteractBehaviour)ib).Drag(d));
 
         HandView.DropNeuron.Join(TryMerge, TryUnequip);
-
         HandView.GetComponent<PropagateDrop>()._onDrop = TryUnequip;
-
         FieldView.DropNeuron.Join(TryEquipSkill, TrySwap, TryEquipMech);
-
         MechListView.DropNeuron.Join(TryUnequip);
 
         SortButton.onClick.RemoveAllListeners();

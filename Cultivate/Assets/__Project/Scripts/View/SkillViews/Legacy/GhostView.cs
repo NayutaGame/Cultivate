@@ -16,7 +16,7 @@ public class GhostView : MonoBehaviour
 
         StateBehaviourPivot stateBehaviourPivot = ib.GetCLView().GetStateBehaviour() as StateBehaviourPivot;
         if (stateBehaviourPivot != null)
-            AnimateDisplay(stateBehaviourPivot.BaseTransform, stateBehaviourPivot.FollowTransform);
+            AnimateDisplay(stateBehaviourPivot.GetDisplayTransform(), stateBehaviourPivot.FollowTransform);
     }
 
     public void EndDrag(InteractBehaviour ib, PointerEventData eventData)

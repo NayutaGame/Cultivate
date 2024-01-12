@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6525699802412133842}
   m_Layer: 0
-  m_Name: SimpleViews
+  m_Name: Displays
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5832fb2677c78a4ab8c274dc09490d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractBehaviour: {fileID: 0}
   Container: {fileID: 1067400902554512671}
   Prefabs: []
   SimpleViews: {fileID: 6525699802412133842}

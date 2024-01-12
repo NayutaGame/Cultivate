@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8977942656677405977}
   m_Layer: 0
-  m_Name: FollowPivot
+  m_Name: FollowTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,13 +48,14 @@ GameObject:
   - component: {fileID: 3227768574806530679}
   - component: {fileID: 4419701240816622406}
   - component: {fileID: 7251691019053714116}
+  - component: {fileID: 6632588455849426417}
   m_Layer: 0
   m_Name: FieldSlotView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3809487136158471207
 RectTransform:
   m_ObjectHideFlags: 0
@@ -90,6 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SimpleView: {fileID: 650999001944790570}
+  InteractBehaviour: {fileID: 0}
 --- !u!114 &4419701240816622406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +117,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionImage: {fileID: 7844408286795029127}
+--- !u!114 &6632588455849426417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6909311244611928932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c65a4a36ff17a42b0cf06aa5e710bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IdleTransform: {fileID: 5791721495220957128}
+  HoverTransform: {fileID: 4464328574044997709}
+  FollowTransform: {fileID: 8977942656677405977}
 --- !u!1 &7782687821140348824
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +145,7 @@ GameObject:
   - component: {fileID: 1079842336768841616}
   - component: {fileID: 6366695378176641851}
   m_Layer: 0
-  m_Name: PivotBehaviour
+  m_Name: InteractBehaviour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -217,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5791721495220957128}
   m_Layer: 0
-  m_Name: IdlePivot
+  m_Name: IdleTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,7 +270,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4464328574044997709}
   m_Layer: 0
-  m_Name: HoverPivot
+  m_Name: HoverTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

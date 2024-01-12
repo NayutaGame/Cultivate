@@ -1,17 +1,19 @@
 
-using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class StateBehaviourPivot : StateBehaviour
 {
-    [NonSerialized] public RectTransform BaseTransform;
+    public RectTransform GetDisplayTransform()
+        => CLView.GetDisplayTransform();
 
-    [NonSerialized] public RectTransform PivotTransform;
-    [NonSerialized] public RectTransform IdleTransform;
-    [NonSerialized] public RectTransform HoverTransform;
-    [NonSerialized] public RectTransform FollowTransform;
+    public void SetDisplayTransform(RectTransform pivot)
+        => CLView.SetDisplayTransform(pivot);
+
+    public RectTransform IdleTransform;
+    public RectTransform HoverTransform;
+    public RectTransform FollowTransform;
 
     public override void PointerEnter(CLView v, PointerEventData d)
     {
@@ -30,8 +32,7 @@ public class StateBehaviourPivot : StateBehaviour
     private void SetState(RectTransform end)
     {
         _handle?.Kill();
-        BaseTransform.position = end.position;
-        BaseTransform.localScale = end.localScale;
+        SetDisplayTransform(end);
     }
 
     public void AnimateState(RectTransform start, RectTransform end)
@@ -43,7 +44,7 @@ public class StateBehaviourPivot : StateBehaviour
     private void AnimateState(RectTransform end)
     {
         _handle?.Kill();
-        FollowAnimation f = new FollowAnimation(BaseTransform, end);
+        FollowAnimation f = new FollowAnimation(GetDisplayTransform(), end);
         _handle = f.GetHandle();
         _handle.SetAutoKill().Restart();
     }

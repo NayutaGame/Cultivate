@@ -43,6 +43,17 @@ public class CanvasManager : Singleton<CanvasManager>
 
     public Sprite[] CardFaces;
 
+    public override void DidAwake()
+    {
+        base.DidAwake();
+
+        SkillAnnotation.Awake();
+        BuffAnnotation.Awake();
+        FormationAnnotation.Awake();
+        SkillGhost.GetComponent<SimpleView>().Awake();
+        MechGhost.Awake();
+    }
+
     public void ClearAnnotations(InteractBehaviour ib, PointerEventData d)
     {
         SkillAnnotation.SetAddressToNull(ib, d);
