@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2652166099196984583}
   - component: {fileID: 4816347138026782889}
   m_Layer: 0
-  m_Name: Container
+  m_Name: Pivots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8111467889083940298}
   m_Layer: 0
-  m_Name: AddressBehaviourContainer
+  m_Name: SimpleViews
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,8 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5832fb2677c78a4ab8c274dc09490d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 5034519349020965220}
   Container: {fileID: 2652166099196984583}
   Prefabs:
   - {fileID: 6909311244611928932, guid: a94192fc91db2ce4db9afc68edb2b307, type: 3}
-  AddressBehaviourContainer: {fileID: 8111467889083940298}
+  SimpleViews: {fileID: 8111467889083940298}

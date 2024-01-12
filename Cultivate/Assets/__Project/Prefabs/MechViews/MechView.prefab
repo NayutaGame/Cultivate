@@ -432,14 +432,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2734635719551763227}
   - component: {fileID: 4122201372033822306}
-  - component: {fileID: -3430915368257472375}
+  - component: {fileID: 2954560121953030245}
   m_Layer: 0
   m_Name: MechView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2734635719551763227
 RectTransform:
   m_ObjectHideFlags: 0
@@ -473,11 +473,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba95828adc050b40b5f763141518b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 2734635719551763227}
-  CanvasGroup: {fileID: 0}
   NameText: {fileID: 1798051381755965334}
   CountText: {fileID: 2231452494983012487}
---- !u!114 &-3430915368257472375
+--- !u!114 &2954560121953030245
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -486,12 +484,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7193032900202738161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 4122201372033822306}
-  InteractBehaviour: {fileID: 0}
-  SelectBehaviour: {fileID: 0}
 --- !u!1 &8685073808548796864
 GameObject:
   m_ObjectHideFlags: 0

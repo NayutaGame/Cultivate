@@ -23,7 +23,7 @@ public class GhostView : MonoBehaviour
     {
         StateBehaviourPivot stateBehaviourPivot = ib.GetCLView().GetStateBehaviour() as StateBehaviourPivot;
         if (stateBehaviourPivot != null)
-            stateBehaviourPivot.AnimateState(SimpleView.RectTransform, stateBehaviourPivot.IdleTransform);
+            stateBehaviourPivot.AnimateState(SimpleView.GetDisplayTransform(), stateBehaviourPivot.IdleTransform);
 
         gameObject.SetActive(false);
     }
@@ -40,8 +40,8 @@ public class GhostView : MonoBehaviour
         pivot.position = mouse;
         if (IsAnimating)
             return;
-        SimpleView.RectTransform.position = pivot.position;
-        SimpleView.RectTransform.localScale = pivot.localScale;
+        SimpleView.GetDisplayTransform().position = pivot.position;
+        SimpleView.GetDisplayTransform().localScale = pivot.localScale;
     }
 
 
@@ -62,8 +62,8 @@ public class GhostView : MonoBehaviour
     private void SetDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        SimpleView.RectTransform.position = end.position;
-        SimpleView.RectTransform.localScale = end.localScale;
+        SimpleView.GetDisplayTransform().position = end.position;
+        SimpleView.GetDisplayTransform().localScale = end.localScale;
     }
 
     private void AnimateDisplay(RectTransform start, RectTransform end)
@@ -75,7 +75,7 @@ public class GhostView : MonoBehaviour
     private void AnimateDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(SimpleView.RectTransform, end);
+        FollowAnimation f = new FollowAnimation(SimpleView.GetDisplayTransform(), end);
         _animationHandle = f.GetHandle();
         _animationHandle.SetAutoKill().Restart();
     }

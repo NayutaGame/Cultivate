@@ -7,8 +7,9 @@ public class AnnotationView : SimpleView
     private void UpdateMousePos(Vector2 pos)
     {
         Vector2 pivot = new Vector2(Mathf.RoundToInt(pos.x / Screen.width), Mathf.RoundToInt(pos.y / Screen.height));
-        RectTransform.pivot = pivot;
-        RectTransform.position = pos;
+        RectTransform rectTransform = GetDisplayTransform();
+        rectTransform.pivot = pivot;
+        rectTransform.position = pos;
     }
 
     public void UpdateMousePos(InteractBehaviour ib, PointerEventData d)

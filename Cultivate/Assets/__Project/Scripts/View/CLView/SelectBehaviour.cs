@@ -1,5 +1,4 @@
 
-using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +6,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CLView))]
 public class SelectBehaviour : MonoBehaviour
 {
-    [NonSerialized] public CLView CLView;
+    private CLView CLView;
     public SimpleView GetSimpleView() => CLView.GetSimpleView();
+
+    public void Init(CLView clView)
+    {
+        CLView = clView;
+    }
 
     [SerializeField] private Image SelectionImage;
 

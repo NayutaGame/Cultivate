@@ -27,22 +27,22 @@ public class AnimatedListView : ListView
     protected override void InitItemBehaviour(ItemBehaviour itemBehaviour, int prefabIndex)
     {
         base.InitItemBehaviour(itemBehaviour, prefabIndex);
-        ReparentAddressBehaviour(itemBehaviour);
+        ReparentSimpleView(itemBehaviour);
     }
 
-    private void ReparentAddressBehaviour(ItemBehaviour itemBehaviour)
+    private void ReparentSimpleView(ItemBehaviour itemBehaviour)
     {
-        RectTransform simpleViewTransform = itemBehaviour.GetSimpleView().RectTransform;
-        simpleViewTransform.SetParent(SimpleViews);
-        simpleViewTransform.name = Traversal().Count().ToString();
+        RectTransform baseTransform = itemBehaviour.GetSimpleView().GetDisplayTransform();
+        baseTransform.SetParent(SimpleViews);
+        baseTransform.name = Traversal().Count().ToString();
     }
 
     protected override ItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
     {
         ItemBehaviour itemBehaviour = base.EnableItemBehaviour(prefabIndex, orderInPool, index);
-        RectTransform simpleViewTransform = itemBehaviour.GetSimpleView().RectTransform;
-        simpleViewTransform.SetSiblingIndex(index);
-        simpleViewTransform.gameObject.SetActive(true);
+        RectTransform baseTransform = itemBehaviour.GetBaseTransform();
+        baseTransform.SetSiblingIndex(index);
+        baseTransform.gameObject.SetActive(true);
 
         return itemBehaviour;
     }
@@ -50,9 +50,9 @@ public class AnimatedListView : ListView
     protected override ItemBehaviour DisableItemBehaviour(int index)
     {
         ItemBehaviour itemBehaviour = base.DisableItemBehaviour(index);
-        RectTransform simpleViewTransform = itemBehaviour.GetSimpleView().RectTransform;
-        simpleViewTransform.SetSiblingIndex(index);
-        simpleViewTransform.gameObject.SetActive(true); // TODO: suspicious code
+        RectTransform baseTransform = itemBehaviour.GetBaseTransform();
+        baseTransform.SetSiblingIndex(index);
+        baseTransform.gameObject.SetActive(true); // TODO: suspicious code
 
         return itemBehaviour;
     }
@@ -69,8 +69,8 @@ public class AnimatedListView : ListView
             _activePool.RemoveAt(index);
             _inactivePools[itemBehaviour.PrefabIndex].Insert(0, itemBehaviour);
 
-            RectTransform addressTransform = itemBehaviour.GetSimpleView().RectTransform;
-            addressTransform.gameObject.SetActive(false);
+            RectTransform baseTransform = itemBehaviour.GetBaseTransform();
+            baseTransform.gameObject.SetActive(false);
         }
     }
 

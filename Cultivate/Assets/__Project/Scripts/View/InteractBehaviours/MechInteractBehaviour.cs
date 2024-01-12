@@ -29,6 +29,6 @@ public class MechInteractBehaviour : InteractBehaviour,
 
     public void Drag(PointerEventData eventData)
     {
-        CanvasManager.Instance.MechGhost.RectTransform.position = eventData.position;
+        CanvasManager.Instance.MechGhost.GetDisplayTransform().position = eventData.position;
     }
 }

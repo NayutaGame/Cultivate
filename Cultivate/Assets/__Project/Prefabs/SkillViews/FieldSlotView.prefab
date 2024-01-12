@@ -46,8 +46,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3809487136158471207}
   - component: {fileID: 3227768574806530679}
-  - component: {fileID: 6793296871181191946}
-  - component: {fileID: 8292390733334605666}
+  - component: {fileID: 4419701240816622406}
   - component: {fileID: 7251691019053714116}
   m_Layer: 0
   m_Name: FieldSlotView
@@ -90,13 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05306d648c3bf6d409b497c36ff07309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 650999001944790570}
-  ItemBehaviour: {fileID: 6793296871181191946}
-  InteractBehaviour: {fileID: 6366695378176641851}
-  AnimateBehaviour: {fileID: 8292390733334605666}
-  PivotBehaviour: {fileID: 1054185826783090541}
-  SelectBehaviour: {fileID: 7251691019053714116}
---- !u!114 &6793296871181191946
+  SimpleView: {fileID: 650999001944790570}
+--- !u!114 &4419701240816622406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,29 +99,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6909311244611928932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3576d9845242504580dc43ba3093944, type: 3}
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ComplexView: {fileID: 3227768574806530679}
---- !u!114 &8292390733334605666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6909311244611928932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ad324d7768007a4884035b2df5b37d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ComplexView: {fileID: 3227768574806530679}
-  _transitionType: 1
-  IdlePivot: {fileID: 5791721495220957128}
-  HoverPivot: {fileID: 4464328574044997709}
-  _blackFill: {fileID: 0}
-  IdleAlpha: 0
-  HoverAlpha: 0.2
 --- !u!114 &7251691019053714116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,7 +114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cec2e10fbbbaa4f8d492bd4770407d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ComplexView: {fileID: 3227768574806530679}
   SelectionImage: {fileID: 7844408286795029127}
 --- !u!1 &7782687821140348824
 GameObject:
@@ -153,7 +126,6 @@ GameObject:
   - component: {fileID: 521679730488236251}
   - component: {fileID: 2764193243076120622}
   - component: {fileID: 1079842336768841616}
-  - component: {fileID: 1054185826783090541}
   - component: {fileID: 6366695378176641851}
   m_Layer: 0
   m_Name: PivotBehaviour
@@ -223,22 +195,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1054185826783090541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7782687821140348824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0607c65ef2671814fb04fb50602c479c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ComplexView: {fileID: 3227768574806530679}
-  IdlePivot: {fileID: 5791721495220957128}
-  HoverPivot: {fileID: 4464328574044997709}
-  FollowPivot: {fileID: 8977942656677405977}
 --- !u!114 &6366695378176641851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,8 +207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20856fa918421a94cb33ee9e2a953168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ComplexView: {fileID: 3227768574806530679}
-  Image: {fileID: 1079842336768841616}
 --- !u!1 &8478089401467456319
 GameObject:
   m_ObjectHideFlags: 0

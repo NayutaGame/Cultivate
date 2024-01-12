@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 529978078669234200}
   - component: {fileID: 6422294263586690588}
   - component: {fileID: -7385623940235665073}
-  - component: {fileID: -116008790486758432}
+  - component: {fileID: 2535427580906110730}
   m_Layer: 5
   m_Name: EntityBarView
   m_TagString: Untagged
@@ -263,7 +263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f2d254ef8932b4d95b7d67f1aa75ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 529978078669234200}
   NameText: {fileID: 328300260318751242}
   JingJieText: {fileID: 330612139291796175}
   HPText: {fileID: 0}
@@ -282,8 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3ace2c3d8448cd41abe17e3d040b932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ComplexView: {fileID: 0}
---- !u!114 &-116008790486758432
+--- !u!114 &2535427580906110730
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -292,10 +290,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2108923873393925487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 6422294263586690588}
 --- !u!1 &2554135421041422778
 GameObject:
   m_ObjectHideFlags: 0

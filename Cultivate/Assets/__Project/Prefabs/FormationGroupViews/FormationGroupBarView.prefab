@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5289883777761886510}
   - component: {fileID: 6848013570014182107}
   - component: {fileID: 4949071253175414335}
-  - component: {fileID: 7746066080860401788}
+  - component: {fileID: 5334200365676447681}
   m_Layer: 5
   m_Name: FormationGroupBarView
   m_TagString: Untagged
@@ -92,10 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eadf305d78ddc5d45b4a4035a765c3f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 529978078669234200}
   NameText: {fileID: 328300260318751242}
   SelectionImage: {fileID: 5193277129206774257}
---- !u!114 &7746066080860401788
+--- !u!114 &5334200365676447681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,10 +103,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2108923873393925487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 4949071253175414335}
 --- !u!1 &3278545805871634747
 GameObject:
   m_ObjectHideFlags: 0

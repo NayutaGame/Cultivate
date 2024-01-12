@@ -45,9 +45,9 @@ public class CardPickerPanel : Panel
         if (SkillListView == null)
             return;
 
-        SkillListView.Traversal().Do(itemBehaviour => itemBehaviour.CLView.GetSelectBehaviour().SetSelected(false));
+        SkillListView.Traversal().Do(itemBehaviour => itemBehaviour.GetSelectBehaviour().SetSelected(false));
         _skillSelections.Clear();
-        SlotListView.Traversal().Do(itemBehaviour => itemBehaviour.CLView.GetSelectBehaviour().SetSelected(false));
+        SlotListView.Traversal().Do(itemBehaviour => itemBehaviour.GetSelectBehaviour().SetSelected(false));
         _slotSelections.Clear();
     }
 

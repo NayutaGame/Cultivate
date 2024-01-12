@@ -54,14 +54,14 @@ public class RunConfigPanel : CurtainPanel
         // this form should contains: selected character, selected difficulty, selected mutators, selected seed
 
         AppManager.Instance.ProfileManager.RunConfigForm = new RunConfigForm(
-            _selection.CLView.GetSimpleView().Get<CharacterProfile>(),
+            _selection.GetSimpleView().Get<CharacterProfile>(),
             DifficultyPickerView.GetSelection());
 
         AppManager.Push(new RunAppS());
     }
 
     private void Select(int i)
-        => Select(CharacterListView.ItemBehaviourFromIndex(i).GetSimpleView().GetSelectBehaviour());
+        => Select(CharacterListView.ItemBehaviourFromIndex(i).GetSelectBehaviour());
 
     private void Select(InteractBehaviour ib, PointerEventData eventData)
         => Select(ib.GetSimpleView().GetSelectBehaviour());
@@ -75,7 +75,7 @@ public class RunConfigPanel : CurtainPanel
 
         if (_selection != null)
         {
-            DetailedCharacterProfileView.SetAddress(_selection.CLView.GetSimpleView().GetAddress());
+            DetailedCharacterProfileView.SetAddress(_selection.GetSimpleView().GetAddress());
             DetailedCharacterProfileView.Refresh();
             _selection.SetSelected(true);
         }

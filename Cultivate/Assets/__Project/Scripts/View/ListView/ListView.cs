@@ -32,8 +32,6 @@ public class ListView : SimpleView
 
     private void Init()
     {
-        Prefabs.Do(prefab => prefab.SetActive(false));
-
         _activePool = new List<ItemBehaviour>();
         _inactivePools = new List<ItemBehaviour>[Prefabs.Length];
         for (int i = 0; i < _inactivePools.Length; i++)
@@ -86,13 +84,12 @@ public class ListView : SimpleView
         => Instantiate(Prefabs[prefabIndex], Container).GetComponent<ItemBehaviour>();
 
     private ItemBehaviour RegisterItemBehaviour(GameObject go)
-    {
-        go.SetActive(false);
-        return go.GetComponent<ItemBehaviour>();
-    }
+        => go.GetComponent<ItemBehaviour>();
 
     protected virtual void InitItemBehaviour(ItemBehaviour itemBehaviour, int prefabIndex)
     {
+        itemBehaviour.GetComponent<CLView>().Awake();
+
         itemBehaviour.PrefabIndex = prefabIndex;
         _inactivePools[prefabIndex].Add(itemBehaviour);
         BindInteractBehaviour(itemBehaviour);
@@ -262,7 +259,7 @@ public class ListView : SimpleView
 
     private void BindInteractBehaviour(ItemBehaviour itemBehaviour)
     {
-        InteractBehaviour ib = itemBehaviour.GetSimpleView().GetInteractBehaviour();
+        InteractBehaviour ib = itemBehaviour.GetInteractBehaviour();
         if (ib == null)
             return;
 

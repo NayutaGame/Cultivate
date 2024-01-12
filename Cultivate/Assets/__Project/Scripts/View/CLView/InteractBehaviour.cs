@@ -1,5 +1,4 @@
 
-using System;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,9 +9,14 @@ public class InteractBehaviour : MonoBehaviour,
     IDropHandler,
     IPointerClickHandler
 {
-    [NonSerialized] private CLView CLView;
+    private CLView CLView;
     public CLView GetCLView() => CLView;
     public SimpleView GetSimpleView() => CLView.GetSimpleView();
+
+    public void Init(CLView clView)
+    {
+        CLView = clView;
+    }
 
     public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();

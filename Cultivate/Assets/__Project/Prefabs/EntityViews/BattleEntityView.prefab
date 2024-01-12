@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7574738621387063918}
   - component: {fileID: 8569808698392811221}
-  - component: {fileID: 6014871974610688231}
   m_Layer: 5
   m_Name: BattleEntityView
   m_TagString: Untagged
@@ -52,22 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca138e1c889bbd4449449787eee2e7de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 7574738621387063918}
   FieldView: {fileID: 973860148774487305}
   FormationListView: {fileID: 8865340141894433231}
---- !u!114 &6014871974610688231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1675693599365259794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 8569808698392811221}
 --- !u!1 &9104924464099275217
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,7 +135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
   Container: {fileID: 7091735785084816240}
   Prefabs:
   - {fileID: 6193414529329671437, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
@@ -248,6 +232,10 @@ PrefabInstance:
     - target: {fileID: 6193414529329671437, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
       propertyPath: m_Name
       value: FormationIconView (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889368887179445966, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
@@ -351,6 +339,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FormationIconView (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7889368887179445966, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
 --- !u!224 &467143498378092101 stripped
@@ -453,6 +445,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FormationIconView (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7889368887179445966, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
 --- !u!224 &7664744815096737592 stripped
@@ -554,6 +550,10 @@ PrefabInstance:
     - target: {fileID: 6193414529329671437, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
       propertyPath: m_Name
       value: FormationIconView
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889368887179445966, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
@@ -770,6 +770,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FormationIconView (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7889368887179445966, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
 --- !u!224 &7868271185043568754 stripped
@@ -871,6 +875,10 @@ PrefabInstance:
     - target: {fileID: 6193414529329671437, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
       propertyPath: m_Name
       value: FormationIconView (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889368887179445966, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b17ac2899272ca3469077984b7c043fc, type: 3}

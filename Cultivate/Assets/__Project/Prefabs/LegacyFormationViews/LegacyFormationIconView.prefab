@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3819011484994824159}
   - component: {fileID: 819999941540491389}
   - component: {fileID: 5881148967745909420}
-  - component: {fileID: 5957363339312753608}
+  - component: {fileID: 6716971860429915133}
   m_Layer: 5
   m_Name: LegacyFormationIconView
   m_TagString: Untagged
@@ -91,10 +91,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bb457b31aeda14f888785120077706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 409231966697183538}
   NameText: {fileID: 5045077740072967679}
   CountText: {fileID: 0}
---- !u!114 &5957363339312753608
+--- !u!114 &6716971860429915133
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,10 +102,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1953151215448478786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 5881148967745909420}
 --- !u!1 &5066038944467382218
 GameObject:
   m_ObjectHideFlags: 0

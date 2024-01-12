@@ -7,19 +7,14 @@ public class ItemBehaviour : MonoBehaviour
 {
     [NonSerialized] public int PrefabIndex;
 
-    [NonSerialized] public CLView CLView;
+    private CLView CLView;
     public SimpleView GetSimpleView() => CLView.GetSimpleView();
+    public InteractBehaviour GetInteractBehaviour() => CLView.GetInteractBehaviour();
+    public SelectBehaviour GetSelectBehaviour() => CLView.GetSelectBehaviour();
+    public RectTransform GetBaseTransform() => CLView.GetDisplayTransform();
 
-
-
-
-
-
-
-
-
-
-    // public SelectBehaviour GetSelectBehaviour();
-    // public InteractBehaviour GetInteractBehaviour();
-    // public void RefreshPivots();
+    public void Init(CLView clView)
+    {
+        CLView = clView;
+    }
 }

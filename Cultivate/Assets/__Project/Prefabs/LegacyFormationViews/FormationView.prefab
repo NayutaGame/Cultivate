@@ -417,7 +417,7 @@ GameObject:
   - component: {fileID: 9165610463350059927}
   - component: {fileID: 4159040134791333716}
   - component: {fileID: 5670130994828124267}
-  - component: {fileID: 2554426859907433863}
+  - component: {fileID: 1093824278525418963}
   m_Layer: 5
   m_Name: FormationView
   m_TagString: Untagged
@@ -498,12 +498,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cec051e29093e468d278a25e0decb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 2224151803628044569}
   NameText: {fileID: 0}
   JingJieText: {fileID: 1230496396393390164}
   ConditionText: {fileID: 5072350056316369142}
   RewardText: {fileID: 7374974929385889259}
---- !u!114 &2554426859907433863
+--- !u!114 &1093824278525418963
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -512,7 +511,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 5030687476195256108}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 5670130994828124267}

@@ -1,24 +1,36 @@
 
-using System;
 using UnityEngine;
 
 public class SimpleView : MonoBehaviour, CLView
 {
     public SimpleView GetSimpleView() => this;
 
-    private InteractBehaviour InteractBehaviour;
+    [SerializeField] private RectTransform RectTransform;
+    public RectTransform GetDisplayTransform() => RectTransform;
+
+    [SerializeField] private InteractBehaviour InteractBehaviour;
     public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
 
-    private ItemBehaviour ItemBehaviour;
+    [SerializeField] private ItemBehaviour ItemBehaviour;
     public ItemBehaviour GetItemBehaviour() => ItemBehaviour;
 
-    private SelectBehaviour SelectBehaviour;
+    [SerializeField] private SelectBehaviour SelectBehaviour;
     public SelectBehaviour GetSelectBehaviour() => SelectBehaviour;
 
-    private StateBehaviour StateBehaviour;
+    [SerializeField] private StateBehaviour StateBehaviour;
     public StateBehaviour GetStateBehaviour() => StateBehaviour;
 
-    [NonSerialized] public RectTransform RectTransform;
+    public void Awake()
+    {
+        if (InteractBehaviour != null)
+            InteractBehaviour.Init(this);
+
+        if (ItemBehaviour != null)
+            ItemBehaviour.Init(this);
+
+        if (SelectBehaviour != null)
+            SelectBehaviour.Init(this);
+    }
 
     private Address _address;
     public Address GetAddress() => _address;

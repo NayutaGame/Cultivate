@@ -8,6 +8,7 @@ public class BarterItemView : SimpleView
     public StandardSkillView SkillView;
     public Button ExchangeButton;
 
+    // TODO: use Neuron
     public event Action<BarterItem> ExchangeEvent;
     public void ClearExchangeEvent() => ExchangeEvent = null;
 

@@ -188,7 +188,7 @@ public class DeckPanel : Panel
         if (result.IsRunSkill)
         {
             AudioManager.Play("CardPlacement");
-            InteractBehaviour newIB = HandView.ActivePool.Last().GetSimpleView().GetInteractBehaviour();
+            InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
             eventData.pointerDrag = null;
             newIB.OnEndDrag(eventData);
         }

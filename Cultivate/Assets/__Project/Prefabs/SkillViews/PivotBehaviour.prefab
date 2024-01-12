@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7912415039625666514}
   - component: {fileID: 5525785239978972967}
   - component: {fileID: 7210181226011136153}
-  - component: {fileID: 7229072423775440996}
   m_Layer: 0
   m_Name: PivotBehaviour
   m_TagString: Untagged
@@ -80,22 +79,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7229072423775440996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 500535261693282449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0607c65ef2671814fb04fb50602c479c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ComplexView: {fileID: 0}
-  IdlePivot: {fileID: 4220927825789511873}
-  HoverPivot: {fileID: 6271139690255568708}
-  FollowPivot: {fileID: 1615635831635583504}
 --- !u!1 &1521907557496619026
 GameObject:
   m_ObjectHideFlags: 0

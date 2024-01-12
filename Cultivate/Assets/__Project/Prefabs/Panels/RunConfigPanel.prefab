@@ -59,7 +59,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 6651309520172310833}
   Container: {fileID: 6651309520172310833}
   Prefabs:
   - {fileID: 8085986264311966347, guid: a3b962a9b80977f4d8c71e8b7ea34e56, type: 3}
@@ -249,7 +248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f130a7576fe78c34a8cdd5de433ffb9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 7406299030285551045}
   NameText: {fileID: 6264315051816130606}
   AbilityDescriptionText: {fileID: 4902952996442020554}
 --- !u!1 &3070577056771985291

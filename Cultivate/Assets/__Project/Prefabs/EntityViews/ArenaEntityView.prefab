@@ -585,7 +585,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
   Container: {fileID: 1034870889667672423}
   Prefabs:
   - {fileID: 1267362520892108290, guid: 1fbe7975783112342b5eea7042ccb537, type: 3}
@@ -2996,7 +2995,7 @@ GameObject:
   - component: {fileID: 3724263608560962890}
   - component: {fileID: 1230494460477270508}
   - component: {fileID: 3508876315843785448}
-  - component: {fileID: -1798741454975335662}
+  - component: {fileID: 171415351593130053}
   m_Layer: 5
   m_Name: ArenaEntityView
   m_TagString: Untagged
@@ -3102,7 +3101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ba141bae4e5f4693435cd6a8e1f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
   EntityDropdown: {fileID: 2178860415389202066}
   JingJieDropdown: {fileID: 2986658035967704926}
   HealthInputField: {fileID: 7784654355227722631}
@@ -3111,7 +3109,7 @@ MonoBehaviour:
   BossToggle: {fileID: 0}
   FieldView: {fileID: 0}
   FormationListView: {fileID: 0}
---- !u!114 &-1798741454975335662
+--- !u!114 &171415351593130053
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3120,10 +3118,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7159749830029920091}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 3508876315843785448}
 --- !u!1 &7905956487786707304
 GameObject:
   m_ObjectHideFlags: 0

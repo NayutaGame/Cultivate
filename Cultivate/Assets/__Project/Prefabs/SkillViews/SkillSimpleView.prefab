@@ -1101,7 +1101,7 @@ GameObject:
   - component: {fileID: 7969793575853840762}
   - component: {fileID: 4970350602697973923}
   m_Layer: 5
-  m_Name: SkillAddressBehaviour
+  m_Name: SkillSimpleView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8711588569530338169}
   - component: {fileID: 6125174661292220568}
-  - component: {fileID: 1185521361635066559}
+  - component: {fileID: 3638626191256278195}
   m_Layer: 5
   m_Name: NodeView
   m_TagString: Untagged
@@ -51,10 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b91215eddfca344097a470b0f5911ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 8711588569530338169}
   _breathingButton: {fileID: 8067773079664509455}
   NameText: {fileID: 0}
---- !u!114 &1185521361635066559
+--- !u!114 &3638626191256278195
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,10 +62,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3031602556791528253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 6125174661292220568}
 --- !u!1001 &8646099409064365641
 PrefabInstance:
   m_ObjectHideFlags: 0

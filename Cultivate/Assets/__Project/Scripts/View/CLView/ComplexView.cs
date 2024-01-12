@@ -6,6 +6,8 @@ public class ComplexView : MonoBehaviour, CLView
     [SerializeField] public SimpleView SimpleView;
     public SimpleView GetSimpleView() => SimpleView.GetSimpleView();
 
+    public RectTransform GetDisplayTransform() => SimpleView.GetDisplayTransform();
+
     private InteractBehaviour InteractBehaviour;
     public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
 
@@ -18,17 +20,28 @@ public class ComplexView : MonoBehaviour, CLView
     private StateBehaviour StateBehaviour;
     public StateBehaviour GetStateBehaviour() => StateBehaviour;
 
-    public RectTransform GetBaseTransform() => SimpleView.RectTransform;
     public void SetBaseTransform(RectTransform pivot)
     {
-        SimpleView.RectTransform.position = pivot.position;
-        SimpleView.RectTransform.localScale = pivot.localScale;
+        SimpleView.GetDisplayTransform().position = pivot.position;
+        SimpleView.GetDisplayTransform().localScale = pivot.localScale;
     }
 
     public Address GetAddress() => SimpleView.GetAddress();
     public T Get<T>() => SimpleView.Get<T>();
     public void SetAddress(Address address) => SimpleView.SetAddress(address);
     public void Refresh() => SimpleView.Refresh();
+
+    public void Awake()
+    {
+        if (InteractBehaviour != null)
+            InteractBehaviour.Init(this);
+
+        if (ItemBehaviour != null)
+            ItemBehaviour.Init(this);
+
+        if (SelectBehaviour != null)
+            SelectBehaviour.Init(this);
+    }
 
 
 

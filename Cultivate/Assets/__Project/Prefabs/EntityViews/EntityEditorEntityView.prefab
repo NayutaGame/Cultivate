@@ -472,7 +472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 7751352406465485235}
   Container: {fileID: 7751352406465485235}
   Prefabs:
   - {fileID: 6193414529329671437, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
@@ -1786,7 +1785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 0}
   Container: {fileID: 2797796711988945526}
   Prefabs:
   - {fileID: 1267362520892108290, guid: 5274f5be75762394bbd06ac2ab62e2cd, type: 3}
@@ -3070,7 +3068,6 @@ GameObject:
   - component: {fileID: 5896712554100659081}
   - component: {fileID: 3623292578165185130}
   - component: {fileID: -711014571449497360}
-  - component: {fileID: -6949230460383628089}
   m_Layer: 5
   m_Name: EntityEditorEntityView
   m_TagString: Untagged
@@ -3151,7 +3148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ba141bae4e5f4693435cd6a8e1f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 7778355132643012418}
   EntityDropdown: {fileID: 3302334552529912147}
   JingJieDropdown: {fileID: 1916946225291987103}
   HealthInputField: {fileID: 6908596748620297286}
@@ -3160,19 +3156,6 @@ MonoBehaviour:
   BossToggle: {fileID: 93812247968343183}
   FieldView: {fileID: 7588568743444983968}
   FormationListView: {fileID: 3497237185409118463}
---- !u!114 &-6949230460383628089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5815391005032935578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: -711014571449497360}
 --- !u!1 &5900262046347886694
 GameObject:
   m_ObjectHideFlags: 0

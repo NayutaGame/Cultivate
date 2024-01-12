@@ -280,14 +280,14 @@ GameObject:
   m_Component:
   - component: {fileID: 3730836485673369251}
   - component: {fileID: 211676871213138042}
-  - component: {fileID: 7409851113202694414}
+  - component: {fileID: 887358121484773844}
   m_Layer: 0
   m_Name: StageFormationIconView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3730836485673369251
 RectTransform:
   m_ObjectHideFlags: 0
@@ -325,10 +325,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ed7b9e37e16d84285676ca3cb62596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 3730836485673369251}
   NameText: {fileID: 2294650745521803019}
   CountText: {fileID: 7889368887179445966}
---- !u!114 &7409851113202694414
+--- !u!114 &887358121484773844
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -337,10 +336,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6193414529329671437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198ecf2adfdc1674d9b1c38ac8297029, type: 3}
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 211676871213138042}
 --- !u!1 &6399636207394809419
 GameObject:
   m_ObjectHideFlags: 0

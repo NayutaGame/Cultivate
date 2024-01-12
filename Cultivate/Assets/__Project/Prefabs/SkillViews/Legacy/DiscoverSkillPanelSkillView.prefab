@@ -1032,7 +1032,6 @@ GameObject:
   - component: {fileID: 1009646796314266082}
   - component: {fileID: 3414853875830604055}
   - component: {fileID: 559504600653186729}
-  - component: {fileID: 549057583336506964}
   - component: {fileID: 6115720847413208902}
   m_Layer: 0
   m_Name: HandSkillPivot
@@ -1102,21 +1101,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &549057583336506964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7295327600375619233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0607c65ef2671814fb04fb50602c479c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IdlePivot: {fileID: 6440086553833914097}
-  HoverPivot: {fileID: 3804389076904024436}
-  FollowPivot: {fileID: 8477907402786403360}
 --- !u!114 &6115720847413208902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1129,8 +1113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7abbe421a8d2b04e865ab3d44f4af25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 1229571886902605975}
-  PivotBehaviour: {fileID: 549057583336506964}
 --- !u!1 &7338607066491128752
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,7 +1329,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9156d6956989d774d975524bb5a9e1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 8152188524626589071}
   CardImage: {fileID: 4877023096222896378}
   ManaCostText: {fileID: 6747810882322665932}
   NameText: {fileID: 8093761589650981542}
