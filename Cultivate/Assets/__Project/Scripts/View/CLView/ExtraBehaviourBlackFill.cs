@@ -1,27 +1,38 @@
+
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class StateBehaviourBlackFill : StateBehaviour
+public class ExtraBehaviourBlackFill : ExtraBehaviour
 {
     [SerializeField] private Image _target;
 
     [SerializeField] [Range(0, 1)] private float IdleState = 0f;
     [SerializeField] [Range(0, 1)] private float HoverState = 0.2f;
 
-    public override void PointerEnter(CLView v, PointerEventData d)
+    private Tween _handle;
+
+    public override void Init(CLView clView)
+    {
+        base.Init(clView);
+
+        InteractBehaviour ib = CLView.GetInteractBehaviour();
+        if (ib == null)
+            return;
+
+        ib.PointerEnterNeuron.Add(PointerEnter);
+        ib.PointerExitNeuron.Add(PointerExit);
+    }
+
+    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
     {
         AnimateState(HoverState);
     }
 
-    public override void PointerExit(CLView v, PointerEventData d)
+    private void PointerExit(InteractBehaviour ib, PointerEventData d)
     {
         AnimateState(IdleState);
-    }
-
-    public override void PointerMove(CLView v, PointerEventData d)
-    {
     }
 
     private void SetState(float end)

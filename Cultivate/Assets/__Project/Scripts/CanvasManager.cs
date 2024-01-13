@@ -1,9 +1,11 @@
 
+using System;
+using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CanvasManager : Singleton<CanvasManager>
+public class CanvasManager : Singleton<CanvasManager>, Addressable
 {
     public AppCanvas AppCanvas;
     public RunCanvas RunCanvas;
@@ -43,20 +45,29 @@ public class CanvasManager : Singleton<CanvasManager>
 
     public Sprite[] CardFaces;
 
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
     public override void DidAwake()
     {
         base.DidAwake();
 
+        _accessors = new Dictionary<string, Func<object>>()
+        {
+            { "SkillAnnotation", () => SkillAnnotation },
+            { "BuffAnnotation", () => BuffAnnotation },
+            { "FormationAnnotation", () => FormationAnnotation },
+            { "SkillGhost", () => SkillGhost },
+        };
+
         SkillAnnotation.Awake();
         BuffAnnotation.Awake();
         FormationAnnotation.Awake();
-        SkillGhost.GetComponent<SimpleView>().Awake();
+        SkillGhost.Awake();
         MechGhost.Awake();
     }
 
     public void ClearAnnotations(InteractBehaviour ib, PointerEventData d)
     {
-        SkillAnnotation.SetAddressToNull(ib, d);
         SkillAnnotation.SetAddressToNull(ib, d);
         BuffAnnotation.SetAddressToNull(ib, d);
         FormationAnnotation.SetAddressToNull(ib, d);

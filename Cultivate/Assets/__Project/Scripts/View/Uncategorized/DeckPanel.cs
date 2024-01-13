@@ -46,19 +46,12 @@ public class DeckPanel : Panel
         SetLocked(false);
 
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
-        FieldView.PointerEnterNeuron.Join((ib, d) => ((FieldSlotInteractBehaviour)ib).HoverAnimation(ib, d));
-        FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
-        HandView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
-        HandView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        HandView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
 
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
-        FormationListView.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
-        FormationListView.PointerExitNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
-        FormationListView.PointerMoveNeuron.Join(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
 
         MechListView.SetAddress(new Address("Run.Environment.MechBag"));
         MechListView.BeginDragNeuron.Join((ib, d) => ((MechInteractBehaviour)ib).BeginDrag(d));
@@ -87,13 +80,19 @@ public class DeckPanel : Panel
     {
         // if (RunManager.Instance != null && RunManager.Instance.Environment != null)
         //     RunManager.Instance.Environment.MapJingJieChangedEvent += SyncSlot;
-        HandView.Sync();
+        Sync();
     }
 
     private void OnDisable()
     {
         // if (RunManager.Instance != null && RunManager.Instance.Environment != null)
         //     RunManager.Instance.Environment.MapJingJieChangedEvent -= SyncSlot;
+    }
+
+    private void Sync()
+    {
+        HandView.Sync();
+        FormationListView.Sync();
     }
 
     private void SyncSlot(JingJie jingJie)
@@ -273,7 +272,7 @@ public class DeckPanel : Panel
 
     public override Tween ShowAnimation()
         => DOTween.Sequence()
-            .AppendCallback(() => HandView.Sync())
+            .AppendCallback(Sync)
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(!_locked))
             .Join(_sortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))

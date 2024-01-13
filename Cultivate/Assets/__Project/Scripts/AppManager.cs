@@ -47,6 +47,8 @@ public class AppManager : Singleton<AppManager>, Addressable
 
             { "FormationInventory", () => FormationInventory },
             { "SkillInventory", () => SkillInventory },
+
+            { "Canvas", () => CanvasManager.Instance },
         };
 
         Application.targetFrameRate = 120;

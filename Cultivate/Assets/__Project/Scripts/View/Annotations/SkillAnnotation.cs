@@ -12,31 +12,28 @@ public class SkillAnnotation : AnnotationView
     [SerializeField] private GameObject LowerSeparator;
     [SerializeField] private TMP_Text TriviaText;
 
-    public override void SetAddress(Address address)
-    {
-        base.SetAddress(address);
-        Refresh();
-    }
-
     public override void Refresh()
     {
         base.Refresh();
 
-        if (GetAddress() == null)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
+        object obj = Get<object>();
 
-        ISkillModel skill = Get<ISkillModel>();
+        ISkillModel skill = null;
+
+        if (obj is ISkillModel s)
+        {
+            skill = s;
+        }
+        else if (obj is SkillSlot slot)
+        {
+            skill = slot.Skill;
+        }
 
         if (skill == null)
         {
             gameObject.SetActive(false);
             return;
         }
-
-        gameObject.SetActive(true);
 
         TitleText.text = skill.GetName();
 

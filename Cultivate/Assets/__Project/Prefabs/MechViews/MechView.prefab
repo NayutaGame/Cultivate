@@ -432,7 +432,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2734635719551763227}
   - component: {fileID: 4122201372033822306}
-  - component: {fileID: 2954560121953030245}
+  - component: {fileID: 6203187227438909998}
   m_Layer: 0
   m_Name: MechView
   m_TagString: Untagged
@@ -473,9 +473,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba95828adc050b40b5f763141518b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractBehaviour: {fileID: 0}
   NameText: {fileID: 1798051381755965334}
   CountText: {fileID: 2231452494983012487}
---- !u!114 &2954560121953030245
+--- !u!114 &6203187227438909998
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -3,31 +3,37 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class StateBehaviourPivot : StateBehaviour
+public class ExtraBehaviourPivot : ExtraBehaviour
 {
+    public RectTransform IdleTransform;
+    public RectTransform HoverTransform;
+    public RectTransform FollowTransform;
+
+    private Tween _handle;
+
+    public override void Init(CLView clView)
+    {
+        base.Init(clView);
+
+        InteractBehaviour ib = CLView.GetInteractBehaviour();
+        if (ib == null)
+            return;
+
+        ib.PointerEnterNeuron.Add(PointerEnter);
+        ib.PointerExitNeuron.Add(PointerExit);
+    }
+
     public RectTransform GetDisplayTransform()
         => CLView.GetDisplayTransform();
 
     public void SetDisplayTransform(RectTransform pivot)
         => CLView.SetDisplayTransform(pivot);
 
-    public RectTransform IdleTransform;
-    public RectTransform HoverTransform;
-    public RectTransform FollowTransform;
+    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
+        => AnimateState(HoverTransform);
 
-    public override void PointerEnter(CLView v, PointerEventData d)
-    {
-        AnimateState(HoverTransform);
-    }
-
-    public override void PointerExit(CLView v, PointerEventData d)
-    {
-        AnimateState(IdleTransform);
-    }
-
-    public override void PointerMove(CLView v, PointerEventData d)
-    {
-    }
+    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+        => AnimateState(IdleTransform);
 
     private void SetState(RectTransform end)
     {

@@ -13,20 +13,7 @@ public class BuffAnnotation : AnnotationView
     {
         base.Refresh();
 
-        if (GetAddress() == null)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-
         Buff buff = Get<Buff>();
-        if (buff == null)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-
-        gameObject.SetActive(true);
 
         TitleText.text = $"{buff.Stack} {buff.GetName()}\n\n{buff.GetEntry().Description}";
         DescriptionText.text = buff.GetAnnotationText();

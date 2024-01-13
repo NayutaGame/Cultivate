@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7960068332090044278}
   m_Layer: 0
-  m_Name: FollowPivot
+  m_Name: FollowTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4796206874295199143}
   m_Layer: 0
-  m_Name: IdlePivot
+  m_Name: IdleTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3394486588855632418}
   m_Layer: 0
-  m_Name: HoverPivot
+  m_Name: HoverTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,13 +120,16 @@ GameObject:
   - component: {fileID: 667069671973666689}
   - component: {fileID: 6235700318288661557}
   - component: {fileID: 1832592112482970397}
+  - component: {fileID: 7601611789361509271}
+  - component: {fileID: 8398556966840544696}
+  - component: {fileID: 1093431292185408473}
   m_Layer: 5
   m_Name: HandSkillView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8152188524626589071
 RectTransform:
   m_ObjectHideFlags: 0
@@ -161,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05306d648c3bf6d409b497c36ff07309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractBehaviour: {fileID: 8561154415829639275}
   SimpleView: {fileID: 36960541036400508}
 --- !u!114 &6235700318288661557
 MonoBehaviour:
@@ -187,6 +191,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionImage: {fileID: 3857642143932607900}
+--- !u!114 &7601611789361509271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c65a4a36ff17a42b0cf06aa5e710bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IdleTransform: {fileID: 4796206874295199143}
+  HoverTransform: {fileID: 3394486588855632418}
+  FollowTransform: {fileID: 7960068332090044278}
+--- !u!114 &8398556966840544696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aeb8b11309bd7c479de5b48e7068e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GhostAddress: Canvas.SkillGhost
+--- !u!114 &1093431292185408473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnnotationAddress: Canvas.SkillAnnotation
 --- !u!1 &9146373138707187191
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +245,7 @@ GameObject:
   - component: {fileID: 2023108389119041023}
   - component: {fileID: 8561154415829639275}
   m_Layer: 0
-  m_Name: PivotBehaviour
+  m_Name: InteractBehaviour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

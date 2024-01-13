@@ -5,7 +5,13 @@ using UnityEngine.EventSystems;
 
 public class GhostView : MonoBehaviour
 {
-    [SerializeField] private SimpleView SimpleView;
+    private SimpleView SimpleView;
+
+    public void Awake()
+    {
+        SimpleView ??= GetComponent<SimpleView>();
+        SimpleView.Awake();
+    }
 
     private Tween _animationHandle;
     public bool IsAnimating => _animationHandle != null && _animationHandle.active;
@@ -14,25 +20,28 @@ public class GhostView : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        StateBehaviourPivot stateBehaviourPivot = ib.GetCLView().GetStateBehaviour() as StateBehaviourPivot;
-        if (stateBehaviourPivot != null)
-            AnimateDisplay(stateBehaviourPivot.GetDisplayTransform(), stateBehaviourPivot.FollowTransform);
+        SimpleView.SetAddress(ib.GetSimpleView().GetAddress());
+        SimpleView.Refresh();
+
+        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+            AnimateDisplay(extraBehaviourPivot.GetDisplayTransform(), extraBehaviourPivot.FollowTransform);
     }
 
     public void EndDrag(InteractBehaviour ib, PointerEventData eventData)
     {
-        StateBehaviourPivot stateBehaviourPivot = ib.GetCLView().GetStateBehaviour() as StateBehaviourPivot;
-        if (stateBehaviourPivot != null)
-            stateBehaviourPivot.AnimateState(SimpleView.GetDisplayTransform(), stateBehaviourPivot.IdleTransform);
+        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+            extraBehaviourPivot.AnimateState(SimpleView.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
 
         gameObject.SetActive(false);
     }
 
     public void Drag(InteractBehaviour ib, PointerEventData eventData)
     {
-        StateBehaviourPivot stateBehaviourPivot = ib.GetCLView().GetStateBehaviour() as StateBehaviourPivot;
-        if (stateBehaviourPivot != null)
-            Drag(stateBehaviourPivot.FollowTransform, eventData.position);
+        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+            Drag(extraBehaviourPivot.FollowTransform, eventData.position);
     }
 
     private void Drag(RectTransform pivot, Vector2 mouse)
@@ -49,15 +58,6 @@ public class GhostView : MonoBehaviour
 
 
 
-    public void SetAddressFromIB(InteractBehaviour ib, PointerEventData d)
-    {
-        SimpleView.SetAddress(ib.GetSimpleView().GetAddress());
-    }
-
-    public void SetAddressToNull(InteractBehaviour ib, PointerEventData d)
-    {
-        SimpleView.SetAddress(null);
-    }
 
     private void SetDisplay(RectTransform end)
     {

@@ -9,9 +9,11 @@ public class ItemBehaviour : MonoBehaviour
 
     private CLView CLView;
     public SimpleView GetSimpleView() => CLView.GetSimpleView();
+    public RectTransform GetDisplayTransform() => CLView.GetDisplayTransform();
     public InteractBehaviour GetInteractBehaviour() => CLView.GetInteractBehaviour();
     public SelectBehaviour GetSelectBehaviour() => CLView.GetSelectBehaviour();
-    public RectTransform GetDisplayTransform() => CLView.GetDisplayTransform();
+    public ExtraBehaviour[] GetExtraBehaviours() => CLView.GetExtraBehaviours();
+    public T GetExtraBehaviour<T>() where T : ExtraBehaviour => CLView.GetExtraBehaviour<T>();
 
     public void Init(CLView clView)
     {

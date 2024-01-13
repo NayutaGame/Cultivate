@@ -81,8 +81,8 @@ public class AnimatedListView : ListView
     public void RefreshPivots()
         => _activePool.Do(itemBehaviour =>
         {
-            StateBehaviourPivot stateBehaviourPivot = itemBehaviour.GetSimpleView().GetStateBehaviour() as StateBehaviourPivot;
-            if (stateBehaviourPivot != null)
-                stateBehaviourPivot.RefreshPivots();
+            ExtraBehaviourPivot extraBehaviourPivot = itemBehaviour.GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+                extraBehaviourPivot.RefreshPivots();
         });
 }

@@ -653,7 +653,7 @@ MonoBehaviour:
   m_text: "\u5B87\u5B99\u65E0\u654C\u91CD\u5251"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bbd766602f9a8cc479df7ea88674cc22, type: 2}
-  m_sharedMaterial: {fileID: -8593398813306457586, guid: a171ce5d182134645b131997ca3a02de, type: 2}
+  m_sharedMaterial: {fileID: 6214740972003656616, guid: bbd766602f9a8cc479df7ea88674cc22, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -863,8 +863,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u541F\u55312\uFF0C22\u653B\n\u51FB\u4F24\uFF1A\u62A4\u7532+\u51FB\u4F24\u503C\n\u67B6\u52BF\uFF08\u65E0\u6CD5\u96C6\u4E2D\uFF09\uFF1A\u65E0\u9700\u541F\u5531"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9c8f0c7ebe91de942b529d355830ead2, type: 2}
-  m_sharedMaterial: {fileID: -8285687034441442221, guid: 9c8f0c7ebe91de942b529d355830ead2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -999,7 +999,7 @@ MonoBehaviour:
   m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bbd766602f9a8cc479df7ea88674cc22, type: 2}
-  m_sharedMaterial: {fileID: 5237511452417237027, guid: 4a8d20d900b3abd4aac4132d9b7a9328, type: 2}
+  m_sharedMaterial: {fileID: 6214740972003656616, guid: bbd766602f9a8cc479df7ea88674cc22, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1499,7 +1499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8152188524626589071
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1545,11 +1545,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc9122c2e23e224c8ab5cf33ba77430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Image: {fileID: 4877023096222896378}
+  InteractBehaviour: {fileID: 0}
+  CardImage: {fileID: 0}
   ManaCostText: {fileID: 6747810882322665932}
   NameText: {fileID: 8093761589650981542}
   DescriptionText: {fileID: 7570460864629865518}
   JingJieImage: {fileID: 8141467840311633605}
   WuXingImage: {fileID: 1041663930126595513}
   SelectionImage: {fileID: 8210183031918789187}
-  _blackFill: {fileID: 819578875478574489}

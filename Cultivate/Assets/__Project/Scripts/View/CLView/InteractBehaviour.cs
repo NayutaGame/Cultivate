@@ -2,6 +2,7 @@
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InteractBehaviour : MonoBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
@@ -16,6 +17,21 @@ public class InteractBehaviour : MonoBehaviour,
     public void Init(CLView clView)
     {
         CLView = clView;
+
+        Image ??= GetComponent<Image>();
+        CanvasGroup ??= GetComponent<CanvasGroup>();
+    }
+
+    private Image Image;
+    private CanvasGroup CanvasGroup;
+
+    public void SetInteractable(bool value)
+    {
+        if (Image != null)
+            Image.raycastTarget = value;
+
+        if (CanvasGroup != null)
+            CanvasGroup.interactable = value;
     }
 
     public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();

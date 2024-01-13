@@ -12,23 +12,18 @@ public class FormationAnnotation : AnnotationView
     {
         base.Refresh();
 
-        if (GetAddress() == null)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-
         object obj = Get<object>();
 
-        FormationEntry formationEntry = obj as FormationEntry ?? (obj as Formation)?.Entry;
+        FormationEntry formationEntry = null;
 
-        if (formationEntry == null)
+        if (obj is FormationEntry e)
         {
-            gameObject.SetActive(false);
-            return;
+            formationEntry = e;
         }
-
-        gameObject.SetActive(true);
+        else if (obj is Formation f)
+        {
+            formationEntry = f.Entry;
+        }
 
         TitleText.text = $"{formationEntry.GetJingJie()} {formationEntry.GetName()}\n\n{formationEntry.GetConditionDescription()}\n\n{formationEntry.GetRewardDescription()}";
         // DescriptionText.text = formation.GetAnnotationText();

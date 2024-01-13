@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AnnotationView : SimpleView
+public abstract class AnnotationView : SimpleView
 {
     private void UpdateMousePos(Vector2 pos)
     {
@@ -18,10 +18,10 @@ public class AnnotationView : SimpleView
     public void SetAddressFromIB(InteractBehaviour ib, PointerEventData d)
     {
         SetAddress(ib.GetSimpleView().GetAddress());
+        gameObject.SetActive(true);
+        Refresh();
     }
 
     public void SetAddressToNull(InteractBehaviour ib, PointerEventData d)
-    {
-        SetAddress(null);
-    }
+        => gameObject.SetActive(false);
 }
