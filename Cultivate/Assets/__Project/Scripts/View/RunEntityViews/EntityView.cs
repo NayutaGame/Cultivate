@@ -32,13 +32,4 @@ public class EntityView : SimpleView
         if (SlotListView != null)
             SlotListView.Refresh();
     }
-
-    // private InteractHandler _interactHandler;
-    // public InteractHandler GetHandler() => _interactHandler;
-    // public void SetHandler(InteractHandler interactHandler)
-    // {
-    //     _interactHandler = interactHandler;
-    //     if (SlotListView != null)
-    //         SlotListView.SetHandler(_interactHandler);
-    // }
 }

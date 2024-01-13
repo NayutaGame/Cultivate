@@ -1,6 +1,7 @@
 
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MapPanel : Panel
 {
@@ -8,12 +9,6 @@ public class MapPanel : Panel
     [SerializeField] private CanvasGroup CanvasGroup;
 
     private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
-    public virtual void SetAddress(Address address)
-    {
-        _address = address;
-    }
 
     public override Tween ShowAnimation()
     {

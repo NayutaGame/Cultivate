@@ -1276,7 +1276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 8084656439237487784}
+  InteractBehaviour: {fileID: 0}
   Container: {fileID: 8084656439237487784}
   Prefabs:
   - {fileID: 4117575424005972447, guid: a994542c79e2c32469be44b7fcdaf50f, type: 3}
@@ -2766,7 +2766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 497687231459915438}
+  InteractBehaviour: {fileID: 0}
   Container: {fileID: 497687231459915438}
   Prefabs:
   - {fileID: 2108923873393925487, guid: adc88f2ad91868548b696f5c4ca49e6a, type: 3}

@@ -487,7 +487,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7916157574798411217
 RectTransform:
   m_ObjectHideFlags: 0
@@ -521,11 +521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf59adc78f2463d4695bd5e7ebb6c056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 7916157574798411217}
   InteractBehaviour: {fileID: 0}
-  ItemBehaviour: {fileID: 6462617248016059707}
-  SelectBehaviour: {fileID: 0}
-  StateBehaviour: {fileID: 0}
   LabelText: {fileID: 7916157573108638044}
   Button: {fileID: 7916157573280181437}
 --- !u!114 &6462617248016059707

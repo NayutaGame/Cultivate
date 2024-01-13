@@ -1,15 +1,13 @@
 
-using CLLibrary;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DiscoverSkillPanel : Panel
 {
-    public TMP_Text TitleText;
-    public TMP_Text DetailedText;
-
-    // TODO: use ListView
-    public SkillView[] SkillViews;
+    [SerializeField] private TMP_Text TitleText;
+    [SerializeField] private TMP_Text DetailedText;
+    [SerializeField] private ListView SkillViews;
 
     private Address _address;
 
@@ -18,17 +16,9 @@ public class DiscoverSkillPanel : Panel
         base.Configure();
 
         _address = new Address("Run.Environment.ActivePanel");
-        SkillViews.Do(v =>
-        {
-            InteractBehaviour ib = v.GetComponent<InteractBehaviour>();
-            if (ib == null)
-                return;
-
-            ib.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
-            ib.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-            ib.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
-            ib.LeftClickNeuron.Join(TrySelectOption);
-        });
+        SkillViews.SetAddress(_address.Append(".Skills"));
+        SkillViews.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        SkillViews.LeftClickNeuron.Join(TrySelectOption);
     }
 
     public override void Refresh()
@@ -40,16 +30,18 @@ public class DiscoverSkillPanel : Panel
         TitleText.text = d.GetTitleText();
         DetailedText.text = d.GetDetailedText();
 
-        for (int i = 0; i < SkillViews.Length; i++)
-        {
-            bool active = i < d.GetSkillCount() && !RunManager.Instance.Environment.Map.Selecting;
-            SkillViews[i].gameObject.SetActive(active);
-            if(!active)
-                continue;
-
-            SkillViews[i].SetAddress(_address.Append($".Skills#{i}"));
-            SkillViews[i].Refresh();
-        }
+        // bool active = i < d.GetSkillCount() && !RunManager.Instance.Environment.Map.Selecting;
+        //
+        // for (int i = 0; i < SkillViews.Length; i++)
+        // {
+        //     bool active = i < d.GetSkillCount() && !RunManager.Instance.Environment.Map.Selecting;
+        //     SkillViews[i].gameObject.SetActive(active);
+        //     if(!active)
+        //         continue;
+        //
+        //     SkillViews[i].SetAddress(_address.Append($".Skills#{i}"));
+        //     SkillViews[i].Refresh();
+        // }
     }
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
@@ -62,6 +54,6 @@ public class DiscoverSkillPanel : Panel
         RunSkill skill = ib.GetSimpleView().Get<RunSkill>();
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
-        CanvasManager.Instance.SkillAnnotation.SetAddressToNull(ib, eventData);
+        CanvasManager.Instance.SkillAnnotation.PointerExit(ib, eventData);
     }
 }

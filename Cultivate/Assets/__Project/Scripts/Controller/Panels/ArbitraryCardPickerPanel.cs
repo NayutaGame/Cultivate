@@ -28,9 +28,9 @@ public class ArbitraryCardPickerPanel : Panel
         _selections = new List<SkillView>();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
-        SkillListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
-        SkillListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        SkillListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        SkillListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter, PlayCardHoverSFX);
+        SkillListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
+        SkillListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
         SkillListView.LeftClickNeuron.Join(ToggleSkill);
     }
 

@@ -8,15 +8,14 @@ public class BattleEntityView : SimpleView
     {
         base.SetAddress(address);
         FieldView.SetAddress(GetAddress().Append(".Slots"));
-        FieldView.PointerEnterNeuron.Join((ib, d)
-            => ((FieldSlotInteractBehaviour)ib).HoverAnimation(ib, d));
-        FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        FieldView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter);
+        FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
+        FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
 
         FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
-        FormationListView.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressFromIB);
-        FormationListView.PointerExitNeuron.Join(CanvasManager.Instance.FormationAnnotation.SetAddressToNull);
-        FormationListView.PointerMoveNeuron.Join(CanvasManager.Instance.FormationAnnotation.UpdateMousePos);
+        FormationListView.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerEnter);
+        FormationListView.PointerExitNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerExit);
+        FormationListView.PointerMoveNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerMove);
     }
 
     public override void Refresh()

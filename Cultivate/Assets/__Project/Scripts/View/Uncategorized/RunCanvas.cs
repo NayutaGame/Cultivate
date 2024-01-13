@@ -13,7 +13,6 @@ public class RunCanvas : MonoBehaviour
     public Button MapButton;
     public ReservedLayer ReservedLayer;
     public TopBar TopBar;
-    public Button ConsoleButton;
     public ConsolePanel ConsolePanel;
 
     public void Configure()
@@ -27,9 +26,6 @@ public class RunCanvas : MonoBehaviour
 
         ReservedLayer.Configure();
         TopBar.Configure();
-
-        ConsoleButton.onClick.RemoveAllListeners();
-        ConsoleButton.onClick.AddListener(() => ConsolePanel.ToggleShowing());
 
         ConsolePanel.Configure();
 
@@ -91,13 +87,13 @@ public class RunCanvas : MonoBehaviour
         }
     }
 
-    private void ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
+    private void ToggleSkill(InteractBehaviour ib, PointerEventData d)
     {
         RunPanelCollection.CardPickerPanel.ToggleSkill(ib);
         Refresh();
     }
 
-    private void ToggleSkillSlot(InteractBehaviour ib, PointerEventData eventData)
+    private void ToggleSkillSlot(InteractBehaviour ib, PointerEventData d)
     {
         RunPanelCollection.CardPickerPanel.ToggleSkillSlot(ib);
         Refresh();

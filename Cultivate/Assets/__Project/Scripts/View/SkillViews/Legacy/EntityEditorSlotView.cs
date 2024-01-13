@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EntityEditorSlotView : SimpleView
 {
-    [SerializeField] protected SkillView SkillView;
+    [SerializeField] protected SkillSimpleView SkillView;
 
     public override void SetAddress(Address address)
     {

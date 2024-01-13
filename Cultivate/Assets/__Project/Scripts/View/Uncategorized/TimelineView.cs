@@ -54,9 +54,9 @@ public class TimelineView : MonoBehaviour
 
     private void ConfigureNeuron(StageSkillInteractBehaviour stageSkillIb)
     {
-        stageSkillIb.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, StageManager.Instance.Pause);
-        stageSkillIb.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull, StageManager.Instance.Resume);
-        stageSkillIb.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        stageSkillIb.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter, StageManager.Instance.Pause);
+        stageSkillIb.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit, StageManager.Instance.Resume);
+        stageSkillIb.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
     }
 
     public void InitialSetup()

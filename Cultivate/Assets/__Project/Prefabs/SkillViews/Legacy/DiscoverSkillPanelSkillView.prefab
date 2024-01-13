@@ -314,7 +314,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8477907402786403360}
   m_Layer: 0
-  m_Name: FollowPivot
+  m_Name: FollowTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -983,7 +983,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1110541328534769349}
   m_Layer: 5
-  m_Name: BaseScale
+  m_Name: SkillSimpleView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1034,7 +1034,7 @@ GameObject:
   - component: {fileID: 559504600653186729}
   - component: {fileID: 6115720847413208902}
   m_Layer: 0
-  m_Name: HandSkillPivot
+  m_Name: InteractBehaviour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1329,6 +1329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9156d6956989d774d975524bb5a9e1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractBehaviour: {fileID: 0}
   CardImage: {fileID: 4877023096222896378}
   ManaCostText: {fileID: 6747810882322665932}
   NameText: {fileID: 8093761589650981542}
@@ -1346,7 +1347,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3804389076904024436}
   m_Layer: 0
-  m_Name: HoverPivot
+  m_Name: HoverTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1382,7 +1383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6440086553833914097}
   m_Layer: 0
-  m_Name: IdlePivot
+  m_Name: IdleTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

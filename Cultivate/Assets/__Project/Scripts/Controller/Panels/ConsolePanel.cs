@@ -16,6 +16,8 @@ public class ConsolePanel : Panel
     public Button DrawSkillButton;
     public Button AddMechButton;
 
+    public Button ToggleButton;
+
     public override Tween ShowAnimation()
         => DOTween.Sequence().SetAutoKill()
             .Append(RectTransform.DOAnchorPosY(243f, 0.3f).SetEase(Ease.OutQuad));
@@ -48,6 +50,9 @@ public class ConsolePanel : Panel
 
         AddMechButton.onClick.RemoveAllListeners();
         AddMechButton.onClick.AddListener(AddMech);
+
+        ToggleButton.onClick.RemoveAllListeners();
+        ToggleButton.onClick.AddListener(() => ToggleShowing());
     }
 
     public override void Refresh()

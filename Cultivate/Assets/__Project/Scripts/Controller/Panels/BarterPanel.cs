@@ -16,9 +16,9 @@ public class BarterPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         BarterItemListView.SetAddress(_address.Append(".Inventory"));
-        BarterItemListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB, PlayCardHoverSFX);
-        BarterItemListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        BarterItemListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        BarterItemListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter, PlayCardHoverSFX);
+        BarterItemListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
+        BarterItemListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
 
         foreach (ItemBehaviour itemBehaviour in BarterItemListView.ActivePool)
         {

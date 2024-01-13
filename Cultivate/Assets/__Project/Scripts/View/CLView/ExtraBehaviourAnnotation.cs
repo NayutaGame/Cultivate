@@ -19,9 +19,9 @@ public class ExtraBehaviourAnnotation : ExtraBehaviour
         if (ib == null)
             return;
 
-        ib.PointerEnterNeuron.Add(Annotation.SetAddressFromIB);
-        ib.PointerExitNeuron.Add(Annotation.SetAddressToNull);
-        ib.PointerMoveNeuron.Add(Annotation.UpdateMousePos);
-        ib.BeginDragNeuron.Add(Annotation.SetAddressToNull);
+        ib.PointerEnterNeuron.Add(Annotation.PointerEnter);
+        ib.PointerExitNeuron.Add(Annotation.PointerExit);
+        ib.PointerMoveNeuron.Add(Annotation.PointerMove);
+        ib.BeginDragNeuron.Add(Annotation.PointerExit);
     }
 }

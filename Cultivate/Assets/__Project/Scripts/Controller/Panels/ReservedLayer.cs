@@ -6,14 +6,12 @@ public class ReservedLayer : MonoBehaviour
 {
     public Button TechButton;
     public Button EntityEditorButton;
-    public Button ArenaButton;
     public Button SkillBrowserButton;
     public Button FormationBrowserButton;
     public Button CloseButton;
 
     public TechTreePanel TechTreePanel;
     public EntityEditorPanel EntityEditorPanel;
-    public ArenaPanel ArenaPanel;
     public SkillBrowserPanel SkillBrowserPanel;
     public FormationBrowserPanel FormationBrowserPanel;
 
@@ -26,9 +24,6 @@ public class ReservedLayer : MonoBehaviour
 
         EntityEditorButton.onClick.RemoveAllListeners();
         EntityEditorButton.onClick.AddListener(OpenEntityEditorPanel);
-
-        ArenaButton.onClick.RemoveAllListeners();
-        ArenaButton.onClick.AddListener(OpenArenaPanel);
 
         SkillBrowserButton.onClick.RemoveAllListeners();
         SkillBrowserButton.onClick.AddListener(OpenSkillBrowserPanel);
@@ -48,7 +43,6 @@ public class ReservedLayer : MonoBehaviour
 
     public void OpenTechTreePanel() => ChangePanel(TechTreePanel);
     public void OpenEntityEditorPanel() => ChangePanel(EntityEditorPanel);
-    public void OpenArenaPanel() => ChangePanel(ArenaPanel);
     public void OpenSkillBrowserPanel() => ChangePanel(SkillBrowserPanel);
     public void OpenFormationBrowserPanel() => ChangePanel(FormationBrowserPanel);
     public void ClosePanel() => ChangePanel(null);

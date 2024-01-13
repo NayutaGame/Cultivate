@@ -1,18 +1,18 @@
 
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BuffView : SimpleView
 {
-    public TMP_Text NameText;
-    public TMP_Text StackText;
+    [SerializeField] private TMP_Text NameText;
+    [SerializeField] private TMP_Text StackText;
 
     public override void Refresh()
     {
-        Buff b = Get<Buff>();
+        base.Refresh();
 
-        gameObject.SetActive(b != null);
-        if (b == null) return;
+        Buff b = Get<Buff>();
 
         NameText.text = $"{b.GetName()}";
         StackText.text = $"{b.Stack}";

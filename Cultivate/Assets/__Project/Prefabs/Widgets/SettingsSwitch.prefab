@@ -387,8 +387,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u4E2D\u7B49"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
-  m_sharedMaterial: {fileID: -9060274634148144086, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -522,8 +522,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u753B\u8D28"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
-  m_sharedMaterial: {fileID: -9060274634148144086, guid: d9ee33501b6e24444b8c7b0b4c639e04, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -606,7 +606,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4082247727251103362
 RectTransform:
   m_ObjectHideFlags: 0
@@ -640,11 +640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 512cfa3b11630bb49bfc9ff4dcacc138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 4082247727251103362}
   InteractBehaviour: {fileID: 0}
-  ItemBehaviour: {fileID: 2644563719798711967}
-  SelectBehaviour: {fileID: 0}
-  StateBehaviour: {fileID: 0}
   LabelText: {fileID: 4082247726351174728}
   ContentText: {fileID: 4082247726123854404}
   PrevButton: {fileID: 3500785905787628904}

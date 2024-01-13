@@ -15,9 +15,6 @@ public class SkillBrowserPanel : Panel
 
         _address = new Address("App.SkillInventory");
         SkillInventoryView.SetAddress(_address);
-        SkillInventoryView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB);
-        SkillInventoryView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        SkillInventoryView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
 
         SortButtons.Length.Do(i =>
         {
@@ -37,6 +34,6 @@ public class SkillBrowserPanel : Panel
     {
         SkillInventory inventory = _address.Get<SkillInventory>();
         inventory.SortByComparisonId(i);
-        CanvasManager.Instance.RunCanvas.Refresh();
+        Refresh();
     }
 }

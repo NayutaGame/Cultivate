@@ -1,19 +1,18 @@
 
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using TMPro;
 
-public class EntityBarView : EntityView
+public class EntityBarView : SimpleView
 {
-    // TODO: move Select into SelectBehaviour
-    [SerializeField] private Image SelectionImage;
+    public TMP_Text NameText;
+    public TMP_Text JingJieText;
 
-    private bool _selected;
-    public virtual bool IsSelected() => _selected;
-    public virtual void SetSelected(bool selected)
+    public override void Refresh()
     {
-        _selected = selected;
-        if (SelectionImage != null)
-            SelectionImage.color = new Color(1, 1, 1, selected ? 1 : 0);
+        base.Refresh();
+
+        IEntityModel entity = Get<IEntityModel>();
+
+        NameText.text = entity.GetEntry()?.Name ?? "未命名";
+        JingJieText.text = entity.GetJingJie().ToString();
     }
 }

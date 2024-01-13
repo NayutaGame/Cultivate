@@ -16,9 +16,9 @@ public class ShopPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         CommodityListView.SetAddress(_address.Append(".Commodities"));
-        CommodityListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressFromIB);
-        CommodityListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.SetAddressToNull);
-        CommodityListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.UpdateMousePos);
+        CommodityListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter);
+        CommodityListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
+        CommodityListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
         CommodityListView.LeftClickNeuron.Join(BuySkill);
 
         ExitButton.onClick.RemoveAllListeners();

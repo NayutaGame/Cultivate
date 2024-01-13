@@ -52,11 +52,7 @@ public class DeckPanel : Panel
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
 
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
-
         MechListView.SetAddress(new Address("Run.Environment.MechBag"));
-        MechListView.BeginDragNeuron.Join((ib, d) => ((MechInteractBehaviour)ib).BeginDrag(d));
-        MechListView.EndDragNeuron.Join((ib, d) => ((MechInteractBehaviour)ib).EndDrag(d));
-        MechListView.DragNeuron.Join((ib, d) => ((MechInteractBehaviour)ib).Drag(d));
 
         HandView.DropNeuron.Join(TryMerge, TryUnequip);
         HandView.GetComponent<PropagateDrop>()._onDrop = TryUnequip;

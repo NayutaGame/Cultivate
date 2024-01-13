@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CanvasManager : Singleton<CanvasManager>, Addressable
 {
@@ -12,15 +11,15 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public StageCanvas StageCanvas;
 
     [Header("Annotations")]
-    public SkillAnnotation SkillAnnotation;
-    public BuffAnnotation BuffAnnotation;
-    public FormationAnnotation FormationAnnotation;
-    // public MechAnnotation MechAnnotation;
+    public AnnotationView SkillAnnotation;
+    public AnnotationView BuffAnnotation;
+    public AnnotationView FormationAnnotation;
+    // public AnnotationView MechAnnotation;
     public TextHint TextHint;
 
     [Header("Ghosts")]
     public GhostView SkillGhost;
-    public MechView MechGhost;
+    public GhostView MechGhost;
 
     [Header("Curtain")]
     public Curtain Curtain;
@@ -57,6 +56,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "BuffAnnotation", () => BuffAnnotation },
             { "FormationAnnotation", () => FormationAnnotation },
             { "SkillGhost", () => SkillGhost },
+            { "MechGhost", () => MechGhost },
         };
 
         SkillAnnotation.Awake();
@@ -64,14 +64,5 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         FormationAnnotation.Awake();
         SkillGhost.Awake();
         MechGhost.Awake();
-    }
-
-    public void ClearAnnotations(InteractBehaviour ib, PointerEventData d)
-    {
-        SkillAnnotation.SetAddressToNull(ib, d);
-        BuffAnnotation.SetAddressToNull(ib, d);
-        FormationAnnotation.SetAddressToNull(ib, d);
-        // MechAnnotation.SetAddressToNull(ib, d);
-        // TextHint.SetAddressToNull(ib, d);
     }
 }
