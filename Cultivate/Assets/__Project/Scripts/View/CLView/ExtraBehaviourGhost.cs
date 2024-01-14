@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class ExtraBehaviourGhost : ExtraBehaviour
 {
     public string GhostAddress;
@@ -28,4 +30,14 @@ public class ExtraBehaviourGhost : ExtraBehaviour
         ib.EndDragNeuron.Add(CLView.SetInteractableToTrue);
         ib.EndDragNeuron.Add(CLView.SetVisibleToTrue);
     }
+
+    public void FromDrop()
+    {
+        CLView.SetInteractableToTrue();
+        CLView.SetVisibleToTrue();
+        Ghost.FromDrop();
+    }
+
+    public RectTransform GetDisplayTransform()
+        => Ghost.GetDisplayTransform();
 }

@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 8398556966840544696}
   - component: {fileID: 1093431292185408473}
   m_Layer: 5
-  m_Name: HandSkillView
+  m_Name: HandSkillCardView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

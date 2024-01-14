@@ -19,6 +19,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     [Header("Ghosts")]
     public GhostView SkillGhost;
+    public GhostView SlotGhost;
     public GhostView MechGhost;
 
     [Header("Curtain")]
@@ -56,6 +57,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "BuffAnnotation", () => BuffAnnotation },
             { "FormationAnnotation", () => FormationAnnotation },
             { "SkillGhost", () => SkillGhost },
+            { "SlotGhost", () => SlotGhost },
             { "MechGhost", () => MechGhost },
         };
 
@@ -63,6 +65,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         BuffAnnotation.Awake();
         FormationAnnotation.Awake();
         SkillGhost.Awake();
+        SlotGhost.Awake();
         MechGhost.Awake();
     }
 }

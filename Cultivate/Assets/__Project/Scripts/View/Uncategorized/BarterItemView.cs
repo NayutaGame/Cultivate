@@ -12,15 +12,6 @@ public class BarterItemView : SimpleView
     public event Action<BarterItem> ExchangeEvent;
     public void ClearExchangeEvent() => ExchangeEvent = null;
 
-    // private InteractHandler _interactHandler;
-    // public InteractHandler GetHandler() => _interactHandler;
-    // public void SetHandler(InteractHandler interactHandler)
-    // {
-    //     _interactHandler = interactHandler;
-    //     PlayerSkillView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler);
-    //     SkillView.GetComponent<InteractBehaviour>()?.SetHandler(_interactHandler);
-    // }
-
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);

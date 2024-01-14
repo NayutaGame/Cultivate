@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class FormationAnnotationSimpleView : SimpleView
+public class FormationAnnotationView : SimpleView
 {
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text DescriptionText;

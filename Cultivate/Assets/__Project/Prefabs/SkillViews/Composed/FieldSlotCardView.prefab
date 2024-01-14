@@ -52,7 +52,7 @@ GameObject:
   - component: {fileID: 2805574848568216759}
   - component: {fileID: 4204281414060978771}
   m_Layer: 0
-  m_Name: FieldSlotView
+  m_Name: FieldSlotCardView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aeb8b11309bd7c479de5b48e7068e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GhostAddress: Canvas.SkillGhost
+  GhostAddress: Canvas.SlotGhost
 --- !u!114 &4204281414060978771
 MonoBehaviour:
   m_ObjectHideFlags: 0

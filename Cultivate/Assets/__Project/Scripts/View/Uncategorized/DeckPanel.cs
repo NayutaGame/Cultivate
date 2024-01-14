@@ -47,16 +47,16 @@ public class DeckPanel : Panel
 
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
         FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        FieldView.DropNeuron.Join(TryEquipSkill, TrySwap, TryEquipMech);
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
-
-        FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
-        MechListView.SetAddress(new Address("Run.Environment.MechBag"));
-
         HandView.DropNeuron.Join(TryMerge, TryUnequip);
         HandView.GetComponent<PropagateDrop>()._onDrop = TryUnequip;
-        FieldView.DropNeuron.Join(TryEquipSkill, TrySwap, TryEquipMech);
+
+        FormationListView.SetAddress(new Address("Run.Environment.Hero.ActivatedSubFormations"));
+
+        MechListView.SetAddress(new Address("Run.Environment.MechBag"));
         MechListView.DropNeuron.Join(TryUnequip);
 
         SortButton.onClick.RemoveAllListeners();
@@ -120,7 +120,7 @@ public class DeckPanel : Panel
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
-    private void TryEquipSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    private void TryEquipSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
         if (!(from is HandSkillInteractBehaviour))
             return;
@@ -131,12 +131,15 @@ public class DeckPanel : Panel
         if (!success)
             return;
 
-        // Equip Skill Animation
-        eventData.pointerDrag = null;
-        to.OnEndDrag(eventData);
-        from.OnEndDrag(eventData);
-        // from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
-        AudioManager.Play("CardPlacement");
+        {
+            // Equip Skill Animation
+            ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+            ExtraBehaviourPivot pivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            ghost.FromDrop();
+            pivot.AnimateState(ghost.GetDisplayTransform(), pivot.IdleTransform);
+
+            AudioManager.Play("CardPlacement");
+        }
 
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
@@ -176,17 +179,20 @@ public class DeckPanel : Panel
         if (!result.Success)
             return;
 
-        // Unequip Animation
         if (result.IsRunSkill)
         {
-            AudioManager.Play("CardPlacement");
+            // Unequip Skill Animation
             InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
-            eventData.pointerDrag = null;
-            newIB.OnEndDrag(eventData);
+            ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+            ExtraBehaviourPivot pivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            ghost.FromDrop();
+            pivot.AnimateState(ghost.GetDisplayTransform(), pivot.IdleTransform);
+
+            AudioManager.Play("CardPlacement");
         }
         else
         {
-
+            // Unequip Mech Animation
         }
 
         FieldView.Refresh();
@@ -207,12 +213,15 @@ public class DeckPanel : Panel
         if (!success)
             return;
 
-        // Swap Animation
-        eventData.pointerDrag = null;
-        to.OnEndDrag(eventData);
-        from.OnEndDrag(eventData);
-        // from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
-        AudioManager.Play("CardPlacement");
+        {
+            // Swap Animation
+            eventData.pointerDrag = null;
+            to.OnEndDrag(eventData);
+            from.OnEndDrag(eventData);
+            // from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
+
+            AudioManager.Play("CardPlacement");
+        }
 
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class SkillAnnotationSimpleView : SimpleView
+public class SkillAnnotationView : SimpleView
 {
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TypeTag[] TypeTagList;

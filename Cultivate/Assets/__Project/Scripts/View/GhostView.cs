@@ -52,6 +52,15 @@ public class GhostView : MonoBehaviour
         SimpleView.SetDisplayTransform(pivot);
     }
 
+    public void FromDrop()
+    {
+        _animationHandle?.Kill();
+        gameObject.SetActive(false);
+    }
+
+    public RectTransform GetDisplayTransform()
+        => SimpleView.GetDisplayTransform();
+
 
 
 

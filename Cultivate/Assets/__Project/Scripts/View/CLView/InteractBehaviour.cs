@@ -71,9 +71,10 @@ public class InteractBehaviour : MonoBehaviour,
             return;
 
         InteractBehaviour dragged = eventData.pointerDrag.GetComponent<InteractBehaviour>();
+        if (dragged == null)
+            return;
 
-        if (dragged != null)
-            DropNeuron.Invoke(dragged, this, eventData);
+        DropNeuron.Invoke(dragged, this, eventData);
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)

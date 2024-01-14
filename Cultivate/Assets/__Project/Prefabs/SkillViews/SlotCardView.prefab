@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 981941239966407486}
   - component: {fileID: 7089014795065758992}
   m_Layer: 0
-  m_Name: SlotSimpleView
+  m_Name: SlotCardView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractBehaviour: {fileID: 0}
-  SkillSimpleView: {fileID: 3656734857656040285}
+  SkillCardView: {fileID: 3656734857656040285}
 --- !u!1001 &8522340399221988350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -74,7 +74,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8085986264311966347, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
       propertyPath: m_Name
-      value: SkillSimpleView
+      value: SkillCardView
       objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
       propertyPath: m_Pivot.x

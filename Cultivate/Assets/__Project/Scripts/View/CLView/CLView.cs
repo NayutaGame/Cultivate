@@ -53,10 +53,16 @@ public abstract class CLView : MonoBehaviour
     public void SetInteractableToTrue(InteractBehaviour ib, PointerEventData d)
         => SetInteractable(true);
 
+    public void SetInteractableToTrue()
+        => SetInteractable(true);
+
     public void SetInteractableToFalse(InteractBehaviour ib, PointerEventData d)
         => SetInteractable(false);
 
     public void SetVisibleToTrue(InteractBehaviour ib, PointerEventData d)
+        => SetVisible(true);
+
+    public void SetVisibleToTrue()
         => SetVisible(true);
 
     public void SetVisibleToFalse(InteractBehaviour ib, PointerEventData d)
