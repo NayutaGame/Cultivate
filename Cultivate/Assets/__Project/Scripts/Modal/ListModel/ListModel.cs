@@ -123,6 +123,9 @@ public class ListModel<T> : IListModel
         _list[index] = to;
         SetModified(index);
     }
+
+    public int IndexOf(T item)
+        => _list.IndexOf(item);
 }
 
 public interface IListModel

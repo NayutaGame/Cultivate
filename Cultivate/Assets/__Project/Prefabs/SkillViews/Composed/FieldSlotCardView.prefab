@@ -333,7 +333,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1267362520892108290, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
       propertyPath: m_Name
-      value: SlotSimpleView
+      value: SlotCardView
       objectReference: {fileID: 0}
     - target: {fileID: 8838977114607417665, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
       propertyPath: m_Pivot.x

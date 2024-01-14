@@ -14,8 +14,8 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     public string GetDetailedText() => _detailedText;
     public void SetDetailedText(string value) => _detailedText = value;
 
-    private List<RunSkill> _skills;
-    public int GetSkillCount() => _skills.Count;
+    private ListModel<RunSkill> _skills;
+    public int GetSkillCount() => _skills.Count();
     public RunSkill GetSkill(int i) => _skills[i];
     public int GetIndexOfSkill(RunSkill skill) => _skills.IndexOf(skill);
 
@@ -36,12 +36,16 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         _pred = pred;
         _wuXing = wuXing;
         _jingJie = jingJie ?? RunManager.Instance.Environment.Map.GetJingJie();
+        _skills = new();
     }
 
     public override void DefaultEnter()
     {
         base.DefaultEnter();
-        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out _skills, pred: _pred, wuXing: _wuXing, jingJie: _jingJie , count: 3);
+        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills, pred: _pred, wuXing: _wuXing, jingJie: _jingJie , count: 3);
+
+        _skills.Clear();
+        _skills.AddRange(skills);
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)
