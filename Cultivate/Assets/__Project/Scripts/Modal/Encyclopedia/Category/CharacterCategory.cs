@@ -1,6 +1,8 @@
 
 using System.Collections.Generic;
+using System.Text;
 using CLLibrary;
+using UnityEngine;
 
 public class CharacterCategory : Category<CharacterEntry>
 {
@@ -60,7 +62,7 @@ public class CharacterCategory : Category<CharacterEntry>
             new("风雨晴", abilityDescription: "游戏开始时以及境界提升时，抽一张牌\n" +
                                            "金丹后，组成阵法时，需求-1；化神，变成-2"),
             new("彼此卿", abilityDescription: "卡组中第一张空位将模仿对方对位的牌\n" +
-                                           "战后奖励时可选择模仿对方的卡，没有模仿时则随机一张卡",
+                                           "如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿对方的卡",
                 runEventDescriptors: new RunEventDescriptor[]
                 {
                     new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WILL_PLACEMENT, 0, (listener, eventDetails) =>
@@ -68,16 +70,40 @@ public class CharacterCategory : Category<CharacterEntry>
                         RunEnvironment env = (RunEnvironment)listener;
                         PlacementDetails d = (PlacementDetails)eventDetails;
 
-                        RunEntity oppo = env.Home == d.Owner ? env.Away : d.Owner;
+                        bool ownerIsHome = env.Home == d.Owner;
+                        if (!ownerIsHome)
+                            return;
+
+                        if (env.AwayIsDummy())
+                            return;
+
+                        RunEntity oppo = env.Away;
                         SkillSlot slotToPaste = d.Owner.TraversalCurrentSlots()
                             .FirstObj(slot => slot.Skill == null && oppo.GetSlot(slot.GetIndex()).Skill != null);
 
                         if (slotToPaste == null)
+                        {
+                            env.SetVariable<RunSkill>("CopiedSkill", null);
                             return;
+                        }
 
                         SkillSlot slotToCopy = oppo.GetSlot(slotToPaste.GetIndex());
 
                         slotToPaste.PlacedSkill = PlacedSkill.FromEntryAndJingJie(slotToCopy.Skill.GetEntry(), slotToCopy.Skill.GetJingJie());
+
+                        env.SetVariable("CopiedSkill", slotToCopy.Skill as RunSkill);
+                    }),
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WILL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
+
+                        RunSkill copiedSkill = env.GetVariable<RunSkill>("CopiedSkill");
+                        if (copiedSkill == null)
+                            return;
+
+                        d.Skills.Add(copiedSkill);
+                        env.SetVariable<RunSkill>("CopiedSkill", null);
                     }),
                 }),
         });

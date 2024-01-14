@@ -43,18 +43,23 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         get => _skill;
         set
         {
-            if (_skill != null) _skill.SetSkillSlot(null);
-
-            if (value is RunSkill runSkill)
-                _skill = runSkill.Clone();
-            else
-                _skill = value;
-
-            if (_skill != null) _skill.SetSkillSlot(this);
-
-            _state = _skill == null ? SkillSlotState.Empty : SkillSlotState.Occupied;
+            SetSkillWithoutInvokeChange(value);
             EnvironmentChanged();
         }
+    }
+
+    public void SetSkillWithoutInvokeChange(EmulatedSkill skill)
+    {
+        if (_skill != null) _skill.SetSkillSlot(null);
+
+        if (skill is RunSkill runSkill)
+            _skill = runSkill.Clone();
+        else
+            _skill = skill;
+
+        if (_skill != null) _skill.SetSkillSlot(this);
+
+        _state = _skill == null ? SkillSlotState.Empty : SkillSlotState.Occupied;
     }
 
     [NonSerialized] private PlacedSkill _placedSkill;

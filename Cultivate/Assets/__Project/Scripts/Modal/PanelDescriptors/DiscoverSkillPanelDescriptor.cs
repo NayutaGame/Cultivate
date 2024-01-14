@@ -42,10 +42,12 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     public override void DefaultEnter()
     {
         base.DefaultEnter();
-        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills, pred: _pred, wuXing: _wuXing, jingJie: _jingJie , count: 3);
+
+        DiscoverSkillDetails d = new DiscoverSkillDetails(_pred, _wuXing, _jingJie, 3);
+        RunManager.Instance.Environment.DiscoverSkillProcedure(d);
 
         _skills.Clear();
-        _skills.AddRange(skills);
+        _skills.AddRange(d.Skills);
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)
@@ -53,6 +55,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
             RunManager.Instance.Environment.Hand.Add(_skills[selectedOptionSignal.Selected]);
+            // TODO: Discover Animation
             return null;
         }
 

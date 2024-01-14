@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using JetBrains.Annotations;
+using UnityEngine;
 
 public class RunEnvironment : Addressable, RunEventListener
 {
@@ -12,8 +13,21 @@ public class RunEnvironment : Addressable, RunEventListener
     public event Action ResourceChangedEvent;
     public void ResourceChanged() => ResourceChangedEvent?.Invoke();
 
+    #region Memory
+
+    private Dictionary<string, object> Memory;
+
+    public void SetVariable<T>(string key, T value)
+        => Memory[key] = value;
+
+    public T GetVariable<T>(string key)
+        => (T)Memory[key];
+
+    #endregion
+
     #region Procedures
 
+    // TODO: cache result
     private void SimulateProcedure()
     {
         PlacementProcedure();
@@ -94,6 +108,16 @@ public class RunEnvironment : Addressable, RunEventListener
         _eventDict.SendEvent(RunEventDict.DID_SET_MAX_MINGYUAN, d);
     }
 
+    public void DiscoverSkillProcedure(DiscoverSkillDetails d)
+    {
+        _eventDict.SendEvent(RunEventDict.WILL_DISCOVER_SKILL, d);
+
+        SkillPool.TryDrawSkills(out List<RunSkill> skills, pred: d.Pred, wuXing: d.WuXing, jingJie: d.JingJie , count: d.Count);
+        d.Skills.AddRange(skills);
+
+        _eventDict.SendEvent(RunEventDict.DID_DISCOVER_SKILL, d);
+    }
+
     #endregion
 
     public RunConfig _config;
@@ -130,6 +154,8 @@ public class RunEnvironment : Addressable, RunEventListener
 
         _config = config;
 
+        Memory = new();
+
         SetHome(RunEntity.Default());
         SetAway(null);
 
@@ -156,12 +182,17 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void SetAway(RunEntity away)
     {
+        _awayIsDummy = away == null;
         away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
 
         if (_away != null) _away.EnvironmentChangedEvent -= EnvironmentChanged;
         _away = away;
         if (_away != null) _away.EnvironmentChangedEvent += EnvironmentChanged;
     }
+
+    [NonSerialized] private bool _awayIsDummy;
+    public bool AwayIsDummy()
+        => _awayIsDummy;
 
     public void Register()
     {
@@ -305,7 +336,6 @@ public class RunEnvironment : Addressable, RunEventListener
         };
 
         slot.Skill = toEquip;
-        EnvironmentChanged();
         return true;
     }
 
@@ -355,7 +385,6 @@ public class RunEnvironment : Addressable, RunEventListener
             Hand.Add(runSkill);
 
             slot.Skill = null;
-            EnvironmentChanged();
 
             UnequipResult result = new(true)
             {
@@ -371,7 +400,6 @@ public class RunEnvironment : Addressable, RunEventListener
                 MechBag.AddMech(m);
 
             slot.Skill = null;
-            EnvironmentChanged();
 
             UnequipResult result = new(true)
             {
@@ -388,8 +416,9 @@ public class RunEnvironment : Addressable, RunEventListener
     public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
     {
         EmulatedSkill temp = fromSlot.Skill;
-        fromSlot.Skill = toSlot.Skill;
-        toSlot.Skill = temp;
+        fromSlot.SetSkillWithoutInvokeChange(toSlot.Skill);
+        toSlot.SetSkillWithoutInvokeChange(temp);
+        EnvironmentChanged();
         return true;
     }
 

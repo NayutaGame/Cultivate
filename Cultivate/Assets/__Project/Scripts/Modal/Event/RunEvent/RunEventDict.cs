@@ -15,6 +15,9 @@ public class RunEventDict : Dictionary<int, RunEventElementList>
     public static readonly int DID_PLACEMENT         = 109;
     public static readonly int WILL_FORMATION        = 110;
     public static readonly int DID_FORMATION         = 111;
+    public static readonly int WILL_DISCOVER_SKILL   = 112;
+    public static readonly int DID_DISCOVER_SKILL    = 113;
+
 
     public static readonly int RUN_ENVIRONMENT       = 100;
 
