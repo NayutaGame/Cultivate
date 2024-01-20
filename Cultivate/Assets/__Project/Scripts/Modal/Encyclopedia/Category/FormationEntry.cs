@@ -1,5 +1,4 @@
 
-using System;
 using System.Collections.Generic;
 
 public class FormationEntry
@@ -17,13 +16,15 @@ public class FormationEntry
     public void SetOrder(int order)
         => _order = order;
 
+    public string _conditionDescription;
+    public string GetConditionDescription()
+        => _conditionDescription;
+    public void SetConditionDescription(string conditionDescription)
+        => _conditionDescription = conditionDescription;
+
     private JingJie _jingJie;
     public JingJie GetJingJie()
         => _jingJie;
-
-    private string _conditionDescription;
-    public string GetConditionDescription()
-        => _conditionDescription;
 
     private string _rewardDescription;
     public string GetRewardDescription()
@@ -32,9 +33,8 @@ public class FormationEntry
     private string _trivia;
     public string GetTrivia() => _trivia;
 
-    private Func<RunEntity, RunFormationDetails, bool> _canActivate;
-    public bool CanActivate(RunEntity entity, RunFormationDetails args)
-        => _canActivate(entity, args);
+    private int _requirement;
+    public int GetRequirement() => _requirement;
 
     public Dictionary<int, StageEventDescriptor> _eventDescriptorDict;
 
@@ -45,15 +45,14 @@ public class FormationEntry
     /// <param name="conditionDescription">条件的描述</param>
     /// <param name="rewardDescription">奖励的描述</param>
     /// <param name="eventDescriptors">事件捕获</param>
-    public FormationEntry(JingJie jingJie, string conditionDescription, string rewardDescription, string trivia, Func<RunEntity, RunFormationDetails, bool> canActivate,
+    public FormationEntry(JingJie jingJie, string rewardDescription, string trivia, int requirement,
         params StageEventDescriptor[] eventDescriptors
     )
     {
         _jingJie = jingJie;
-        _conditionDescription = conditionDescription;
         _rewardDescription = rewardDescription;
         _trivia = trivia;
-        _canActivate = canActivate;
+        _requirement = requirement;
         // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
 
         _eventDescriptorDict = new Dictionary<int, StageEventDescriptor>();

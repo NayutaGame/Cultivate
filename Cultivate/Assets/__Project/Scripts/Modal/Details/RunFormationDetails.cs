@@ -6,9 +6,16 @@ public class RunFormationDetails : EventDetails
 {
     public int[] WuXingCounts;
     public List<WuXing> WuXingOrder;
+
     public int SwiftCount;
+    public int NonSwiftCount;
+
     public int ExhaustedCount;
+    public int NonExhaustedCount;
+
+    public int AttackCount;
     public int NonAttackCount;
+
     public int TotalCostCount;
     public int HighestConsecutiveAttackCount;
 
@@ -17,7 +24,7 @@ public class RunFormationDetails : EventDetails
         WuXingCounts = new int[WuXing.Length];
         SwiftCount = 0;
         ExhaustedCount = 0;
-        NonAttackCount = 0;
+        AttackCount = 0;
         TotalCostCount = 0;
         HighestConsecutiveAttackCount = 0;
 
@@ -42,11 +49,12 @@ public class RunFormationDetails : EventDetails
             {
                 consecutiveAttackCount++;
                 HighestConsecutiveAttackCount = Mathf.Max(HighestConsecutiveAttackCount, consecutiveAttackCount);
+
+                AttackCount++;
             }
             else
             {
                 consecutiveAttackCount = 0;
-                NonAttackCount++;
             }
 
             TotalCostCount += entry.GetBaseManaCost(jingJie);
@@ -54,5 +62,9 @@ public class RunFormationDetails : EventDetails
 
         WuXingOrder = new List<WuXing>(WuXing.Traversal);
         WuXingOrder.Sort((lhs, rhs) => WuXingCounts[rhs] - WuXingCounts[lhs]);
+
+        NonSwiftCount = entity.GetSlotLimit() - SwiftCount;
+        NonExhaustedCount = entity.GetSlotLimit() - ExhaustedCount;
+        NonAttackCount = entity.GetSlotLimit() - AttackCount;
     }
 }

@@ -71,6 +71,9 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
     [SerializeReference] private SlotListModel _slots;
     private FilteredListModel<SkillSlot> _filteredSlots;
 
+    public int GetSlotLimit()
+        => Limit;
+
     public SkillSlot GetSlot(int i)
         => _slots[i];
 
