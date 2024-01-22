@@ -45,7 +45,7 @@ public class EntityEditorEntityView : SimpleView
         if (EntityDropdown != null)
         {
             EntityDropdown.options = new();
-            Encyclopedia.EntityCategory.Traversal.Do(entityEntry => EntityDropdown.options.Add(new TMP_Dropdown.OptionData(entityEntry.Name)));
+            Encyclopedia.EntityCategory.Traversal.Do(entityEntry => EntityDropdown.options.Add(new TMP_Dropdown.OptionData(entityEntry.GetName())));
             EntityDropdown.onValueChanged.AddListener(EntryChanged);
         }
 
@@ -78,7 +78,7 @@ public class EntityEditorEntityView : SimpleView
 
         if (FormationListView != null)
         {
-            FormationListView.SetAddress(GetAddress().Append(".ActivatedSubFormations"));
+            FormationListView.SetAddress(GetAddress().Append(".RunFormations"));
             FormationListView.PointerEnterNeuron.Join(PointerEnterFormationNeuron);
             FormationListView.PointerExitNeuron.Join(PointerExitFormationNeuron);
             FormationListView.PointerMoveNeuron.Join(PointerMoveFormationNeuron);
@@ -124,7 +124,7 @@ public class EntityEditorEntityView : SimpleView
         base.Refresh();
         if (GetAddress() == null)
             return;
-        IEntityModel entity = Get<IEntityModel>();
+        EntityModel entity = Get<EntityModel>();
         if (entity == null)
             return;
         SetEntry(entity.GetEntry());
@@ -139,14 +139,14 @@ public class EntityEditorEntityView : SimpleView
 
     private void EntryChanged(int entityEntryIndex)
     {
-        IEntityModel entity = Get<IEntityModel>();
+        EntityModel entity = Get<EntityModel>();
         entity.SetEntry(Encyclopedia.EntityCategory[entityEntryIndex]);
         Refresh();
     }
 
     private void JingJieChanged(int jingJie)
     {
-        IEntityModel entity = Get<IEntityModel>();
+        EntityModel entity = Get<EntityModel>();
         entity.SetJingJie(jingJie);
         Refresh();
     }
@@ -156,28 +156,28 @@ public class EntityEditorEntityView : SimpleView
         int.TryParse(value, out int health);
         health = Mathf.Clamp(health, 1, 9999);
 
-        IEntityModel entity = Get<IEntityModel>();
+        EntityModel entity = Get<EntityModel>();
         entity.SetBaseHealth(health);
         Refresh();
     }
 
     private void NormalToggled(bool value)
     {
-        IEntityModel entity = Get<IEntityModel>();
+        EntityModel entity = Get<EntityModel>();
         entity.SetNormal(value);
         Refresh();
     }
 
     private void EliteToggled(bool value)
     {
-        IEntityModel entity = Get<IEntityModel>();
+        EntityModel entity = Get<EntityModel>();
         entity.SetElite(value);
         Refresh();
     }
 
     private void BossToggled(bool value)
     {
-        IEntityModel entity = Get<IEntityModel>();
+        EntityModel entity = Get<EntityModel>();
         entity.SetBoss(value);
         Refresh();
     }

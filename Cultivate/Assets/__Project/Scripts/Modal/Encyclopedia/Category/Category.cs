@@ -25,7 +25,7 @@ public class Category<T> where T : Entry
         _dict.Clear();
 
         foreach (T item in _list)
-            _dict[item.Name] = item;
+            _dict[item.GetName()] = item;
     }
 
     public IEnumerable<T> Traversal

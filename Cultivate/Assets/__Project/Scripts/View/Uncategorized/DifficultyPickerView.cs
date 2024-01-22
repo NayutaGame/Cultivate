@@ -51,7 +51,7 @@ public class DifficultyPickerView : MonoBehaviour
 
         DifficultyProfile curr = profiles[_selectionIndex];
 
-        DifficultyText.text = curr.GetEntry().Name;
+        DifficultyText.text = curr.GetEntry().GetName();
         DifficultyDescriptionText.text = curr.GetEntry().Description;
 
         int prevIndex = _selectionIndex - 1;

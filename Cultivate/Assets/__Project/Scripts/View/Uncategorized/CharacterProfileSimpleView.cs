@@ -14,6 +14,6 @@ public class CharacterProfileSimpleView : SimpleView
 
         CharacterProfile p = Get<CharacterProfile>();
         Image.color = p.IsUnlocked() ? Color.white : Color.gray;
-        NameText.text = p.GetEntry().Name;
+        NameText.text = p.GetEntry().GetName();
     }
 }

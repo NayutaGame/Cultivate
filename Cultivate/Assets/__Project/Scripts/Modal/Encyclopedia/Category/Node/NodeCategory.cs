@@ -120,7 +120,7 @@ public class NodeCategory : Category<NodeEntry>
                 canCreate: (map, x) => map.HasAdventureAfterwards(x),
                 create: runNode =>
                 {
-                    DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Environment.Map.NextAdventure().Name}",
+                    DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Environment.Map.NextAdventure().GetName()}",
                         "换一个",
                         "保持现状");
 

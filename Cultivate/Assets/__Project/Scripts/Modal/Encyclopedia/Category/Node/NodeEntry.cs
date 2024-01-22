@@ -25,5 +25,5 @@ public abstract class NodeEntry : Entry
     public static implicit operator NodeEntry(string name) => Encyclopedia.NodeCategory[name];
 
     public virtual string GetTitle()
-        => Name;
+        => GetName();
 }

@@ -9,9 +9,6 @@ using UnityEngine;
 [Serializable]
 public class SkillEntry : Entry, IAnnotation
 {
-    public string GetName()
-        => Name;
-
     private CLLibrary.Range _jingJieRange;
     public bool JingJieContains(JingJie jingJie) => _jingJieRange.Contains(jingJie);
     public JingJie LowestJingJie => _jingJieRange.Start;
@@ -96,7 +93,7 @@ public class SkillEntry : Entry, IAnnotation
 
         foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
         {
-            if (!evaluated.Contains(keywordEntry.Name))
+            if (!evaluated.Contains(keywordEntry.GetName()))
                 continue;
 
             annotations.Add(keywordEntry);
@@ -104,10 +101,10 @@ public class SkillEntry : Entry, IAnnotation
 
         foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
         {
-            if (!evaluated.Contains(buffEntry.Name))
+            if (!evaluated.Contains(buffEntry.GetName()))
                 continue;
 
-            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.Name);
+            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
             if (duplicate != null)
                 continue;
 
@@ -134,7 +131,7 @@ public class SkillEntry : Entry, IAnnotation
         await caster.Env.TryPlayTween(new ShiftTweenDescriptor());
 
         StageResult r = caster.Env.Result;
-        r.TryAppend($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
+        r.TryAppend($"{caster.GetName()}吟唱了{GetName()} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
         r.TryAppendChannelNote(caster.Index, d);
         r.TryAppend($"\n");
     }
@@ -142,7 +139,7 @@ public class SkillEntry : Entry, IAnnotation
     public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
     {
         StageResult r = caster.Env.Result;
-        r.TryAppend($"{caster.GetName()}吟唱了{Name} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
+        r.TryAppend($"{caster.GetName()}吟唱了{GetName()} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
         r.TryAppend($"\n");
     }
 
@@ -151,7 +148,7 @@ public class SkillEntry : Entry, IAnnotation
         await caster.Env.TryPlayTween(new ShiftTweenDescriptor());
 
         StageResult r = caster.Env.Result;
-        r.TryAppend($"{caster.GetName()}使用了{Name}");
+        r.TryAppend($"{caster.GetName()}使用了{GetName()}");
         r.TryAppendNote(caster.Index, skill);
         await _execute(caster, skill, recursive);
         r.TryAppend($"\n");
@@ -160,7 +157,7 @@ public class SkillEntry : Entry, IAnnotation
     public async Task ExecuteWithoutTween(StageEntity caster, StageSkill skill, bool recursive)
     {
         StageResult r = caster.Env.Result;
-        r.TryAppend($"{caster.GetName()}使用了{Name}");
+        r.TryAppend($"{caster.GetName()}使用了{GetName()}");
         await _execute(caster, skill, recursive);
         r.TryAppend($"\n");
     }

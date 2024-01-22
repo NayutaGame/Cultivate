@@ -9,7 +9,7 @@ public class KeywordCategory : Category<KeywordEntry>
         AddRange(new List<KeywordEntry>()
         {
             new("奇偶", "此牌位置是奇数时触发前一个效果，是偶数时触发后一个效果"),
-            new("架势", "需要激活架势的牌以触发特殊效果"),
+            new("架势", "需要激活架势的牌以触发特殊效果，无法使用集中"),
             new("暴击", "造成伤害时，对方受到的伤害翻倍"),
             new("初次", "第一次使用时触发效果"),
             new("击伤", "攻击造成伤害时触发效果"),

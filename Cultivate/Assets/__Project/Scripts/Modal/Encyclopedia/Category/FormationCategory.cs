@@ -9,7 +9,7 @@ public class FormationCategory : Category<FormationGroupEntry>
     {
         AddRange(new List<FormationGroupEntry>()
         {
-            new("一业常置阵", order: 1, conditionDescription: "最多的五行越多越好", scoreEvaluator: (e, d) => d.WuXingCounts[d.WuXingOrder[0]],
+            new("一业常置阵", order: 1, conditionDescription: "最多的五行越多越好", progressEvaluator: (e, d) => d.WuXingCounts[d.WuXingOrder[0]],
                 formationEntries: new[]
                 {
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "战斗开始时，使用前两位的卡", trivia: null, requirement: 11,
@@ -37,7 +37,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("二律无相阵", order: 0, conditionDescription: "张数前二多的五行，各占卡组的一半", scoreEvaluator:
+            new("二律无相阵", order: 0, conditionDescription: "张数前二多的五行，各占卡组的一半", progressEvaluator:
                 (e, d) =>
                     d.WuXingCounts[d.WuXingOrder[0]].ClampUpper(e.GetSlotLimit() / 2) +
                     d.WuXingCounts[d.WuXingOrder[1]].ClampUpper(e.GetSlotLimit() / 2),
@@ -79,7 +79,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("三才流转阵", order: 0, conditionDescription: "张数前三多的五行，各占卡组的三分之一", scoreEvaluator:
+            new("三才流转阵", order: 0, conditionDescription: "张数前三多的五行，各占卡组的三分之一", progressEvaluator:
                 (e, d) =>
                     d.WuXingCounts[d.WuXingOrder[0]].ClampUpper(e.GetSlotLimit() / 3) +
                     d.WuXingCounts[d.WuXingOrder[1]].ClampUpper(e.GetSlotLimit() / 3) +
@@ -122,7 +122,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("四元禁法阵", order: -3, conditionDescription: "有四种五行，每种有三张", scoreEvaluator:
+            new("四元禁法阵", order: -3, conditionDescription: "有四种五行，每种有三张", progressEvaluator:
                 (e, d) =>
                     d.WuXingCounts[d.WuXingOrder[0]].ClampUpper(3) +
                     d.WuXingCounts[d.WuXingOrder[1]].ClampUpper(3) +
@@ -144,7 +144,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("五行颠倒阵", order: -2, conditionDescription: "有五种五行，每种有两张", scoreEvaluator:
+            new("五行颠倒阵", order: -2, conditionDescription: "有五种五行，每种有两张", progressEvaluator:
                 (e, d) =>
                 {
                     int score = 0;
@@ -187,7 +187,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("六爻化劫阵", order: 0, conditionDescription: "非二动牌的数量越多越好", scoreEvaluator: (e, d) => d.NonSwiftCount,
+            new("六爻化劫阵", order: 0, conditionDescription: "非二动牌的数量越多越好", progressEvaluator: (e, d) => d.NonSwiftCount,
                 formationEntries: new[]
                 {
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "第二轮开始时，双方重置生命上限，回100%血", trivia: null, requirement: 12,
@@ -214,7 +214,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("七曜移星阵", order: 0, conditionDescription: "二动牌的数量越多越好", scoreEvaluator: (e, d) => d.SwiftCount,
+            new("七曜移星阵", order: 0, conditionDescription: "二动牌的数量越多越好", progressEvaluator: (e, d) => d.SwiftCount,
                 formationEntries: new[]
                 {
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "轮开始时，对方遭受1跳回合\n战斗开始时，对方遭受2跳回合", trivia: null, requirement: 6,
@@ -263,7 +263,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("八卦奇门阵", order: -1, conditionDescription: "非消耗牌的数量越多越好", scoreEvaluator: (e, d) => d.NonExhaustedCount,
+            new("八卦奇门阵", order: -1, conditionDescription: "非消耗牌的数量越多越好", progressEvaluator: (e, d) => d.NonExhaustedCount,
                 formationEntries: new[]
                 {
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "对方使用消耗牌后，自己也使用2次", trivia: null, requirement: 12,
@@ -293,7 +293,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("九宫迷踪阵", order: 0, conditionDescription: "非攻击牌越多越好", scoreEvaluator: (e, d) => d.NonAttackCount,
+            new("九宫迷踪阵", order: 0, conditionDescription: "非攻击牌越多越好", progressEvaluator: (e, d) => d.NonAttackCount,
                 formationEntries: new[]
                 {
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "战斗开始护甲+30，每回合护甲+3", trivia: null, requirement: 9,
@@ -358,7 +358,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("千界聚灵阵", order: 0, conditionDescription: "卡牌原始费用之和越高越好", scoreEvaluator: (e, d) => d.TotalCostCount,
+            new("千界聚灵阵", order: 0, conditionDescription: "卡牌原始费用之和越高越好", progressEvaluator: (e, d) => d.TotalCostCount,
                 formationEntries: new[]
                 {
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "战斗开始时，灵气+7", trivia: null, requirement: 20,
@@ -399,7 +399,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("万剑归宗阵", order: 0, conditionDescription: "连续攻击牌越多越好", scoreEvaluator: (e, d) => d.HighestConsecutiveAttackCount,
+            new("万剑归宗阵", order: 0, conditionDescription: "连续攻击牌越多越好", progressEvaluator: (e, d) => d.HighestConsecutiveAttackCount,
                 formationEntries: new[]
                 {
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "战斗开始时，力量+3", trivia: null, requirement: 7,

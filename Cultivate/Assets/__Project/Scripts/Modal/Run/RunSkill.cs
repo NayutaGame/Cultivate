@@ -50,7 +50,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         => _entry.Sprite;
 
     public string GetName()
-        => _entry.Name;
+        => _entry.GetName();
 
     public string GetAnnotatedDescription(string evaluated = null)
         => _entry.GetAnnotatedDescription(evaluated ?? GetDescription());
@@ -107,7 +107,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.Name) ? null : Encyclopedia.SkillCategory[_entry.Name];
+        _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.SkillCategory[_entry.GetName()];
     }
 
     public bool TryIncreaseJingJie(bool loop = true)

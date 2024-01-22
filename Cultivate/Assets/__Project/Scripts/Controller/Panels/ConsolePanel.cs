@@ -63,7 +63,7 @@ public class ConsolePanel : Panel
         MingYuanText.text = env.GetMingYuan().ToString();
         GoldText.text = env.Gold.ToString();
 
-        IEntityModel entity = RunManager.Instance.Environment.Home;
+        EntityModel entity = RunManager.Instance.Environment.Home;
         HealthInputField.SetTextWithoutNotify(entity.GetBaseHealth().ToString());
         JingJieDropdown.SetValueWithoutNotify(entity.GetJingJie());
     }
@@ -85,14 +85,14 @@ public class ConsolePanel : Panel
         int.TryParse(value, out int health);
         health = Mathf.Clamp(health, 1, 9999);
 
-        IEntityModel entity = RunManager.Instance.Environment.Home;
+        EntityModel entity = RunManager.Instance.Environment.Home;
         entity.SetBaseHealth(health);
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void JingJieChanged(int jingJie)
     {
-        IEntityModel entity = RunManager.Instance.Environment.Home;
+        EntityModel entity = RunManager.Instance.Environment.Home;
         entity.SetJingJie(jingJie);
         CanvasManager.Instance.RunCanvas.Refresh();
     }

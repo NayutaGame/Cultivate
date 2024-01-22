@@ -37,6 +37,6 @@ public class BuffTweenDescriptor : StageTweenDescriptor
 
         GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, d.Tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
-        gao.GetComponent<FlowTextVFX>().Text.text = $"{d._buffEntry.Name} +{d._stack}";
+        gao.GetComponent<FlowTextVFX>().Text.text = $"{d._buffEntry.GetName()} +{d._stack}";
     }
 }

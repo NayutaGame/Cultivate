@@ -19,7 +19,7 @@ public class DetailedCharacterProfileView : SimpleView
         }
 
         CharacterProfile p = Get<CharacterProfile>();
-        NameText.text = p.GetEntry().Name;
+        NameText.text = p.GetEntry().GetName();
         AbilityDescriptionText.text = p.GetEntry().AbilityDescription;
     }
 }

@@ -93,7 +93,7 @@ public class TopBar : MonoBehaviour
 
     public void Refresh()
     {
-        IEntityModel entity = RunManager.Instance.Environment.Home;
+        EntityModel entity = RunManager.Instance.Environment.Home;
 
         MingYuanText.text = RunManager.Instance.Environment.GetMingYuan().ToString();
         GoldText.text = RunManager.Instance.Environment.Gold.ToString();

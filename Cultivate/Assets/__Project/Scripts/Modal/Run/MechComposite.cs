@@ -89,7 +89,7 @@ public class MechComposite : EmulatedSkill
         => GetEntry().GetChannelTime(GetJingJie(), GetJingJie() - GetEntry().LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
 
     public string GetName()
-        => GetEntry().Name;
+        => GetEntry().GetName();
 
     public string GetAnnotatedDescription(string evaluated = null)
         => GetEntry().GetAnnotatedDescription(evaluated ?? GetDescription());

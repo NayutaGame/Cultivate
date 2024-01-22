@@ -13,7 +13,7 @@ public class Buff : StageEventListener
     private BuffEntry _entry;
     public BuffEntry GetEntry() => _entry;
 
-    public string GetName() => _entry.Name;
+    public string GetName() => _entry.GetName();
 
     public string GetAnnotationText()
     {

@@ -21,14 +21,10 @@ public class BattleRunNode : RunNode
     }
 
     public override string GetTitle()
-    {
-        return Template.GetEntry().Name;
-    }
+        => Template.GetEntry().GetName();
 
     public void AddReward(Reward reward)
-    {
-        _rewards.Add(reward);
-    }
+        => _rewards.Add(reward);
 
     public string GetRewardsString()
     {

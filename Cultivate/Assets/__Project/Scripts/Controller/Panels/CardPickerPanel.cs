@@ -98,13 +98,13 @@ public class CardPickerPanel : Panel
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
-        SlotView slotView = view.GetComponent<SlotView>();
+        SlotCardView slotView = view.GetComponent<SlotCardView>();
         int index = SlotListView.ActivePool.FindIndex(itemBehaviour => itemBehaviour.GetSimpleView() == slotView);
         bool isSelected = _slotSelections.Contains(index);
 
         if (isSelected)
         {
-            slotView.SetSelected(false);
+            slotView.GetSelectBehaviour().SetSelected(false);
             _slotSelections.Remove(index);
         }
         else
@@ -117,7 +117,7 @@ public class CardPickerPanel : Panel
             if (!d.CanSelect(slot))
                 return false;
 
-            slotView.SetSelected(true);
+            slotView.GetSelectBehaviour().SetSelected(true);
             _slotSelections.Add(index);
         }
 

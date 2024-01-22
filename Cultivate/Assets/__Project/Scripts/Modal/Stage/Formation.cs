@@ -1,37 +1,31 @@
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CLLibrary;
-
 /// <summary>
 /// Formation
 /// </summary>
-public class Formation : StageEventListener
+public class Formation : StageEventListener, IFormationModel
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
 
-    private FormationEntry _entry;
-    public FormationEntry Entry => _entry;
+    private RunFormation _runFormation;
 
-    public string GetName() => _entry.GetName();
+    public FormationEntry GetEntry() => _runFormation.GetEntry();
 
     public StageEventDict _eventDict;
 
-    public Formation(StageEntity owner, FormationEntry entry)
+    public Formation(StageEntity owner, RunFormation runFormation)
     {
         _owner = owner;
-        _entry = entry;
+        _runFormation = runFormation;
 
         _eventDict = new();
     }
 
     public void Register()
     {
-        foreach (int eventId in _entry._eventDescriptorDict.Keys)
+        foreach (int eventId in GetEntry()._eventDescriptorDict.Keys)
         {
-            StageEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
+            StageEventDescriptor eventDescriptor = GetEntry()._eventDescriptorDict[eventId];
             int senderId = eventDescriptor.ListenerId;
 
             if (senderId == StageEventDict.STAGE_ENVIRONMENT)
@@ -47,9 +41,9 @@ public class Formation : StageEventListener
 
     public void Unregister()
     {
-        foreach (int eventId in _entry._eventDescriptorDict.Keys)
+        foreach (int eventId in GetEntry()._eventDescriptorDict.Keys)
         {
-            StageEventDescriptor eventDescriptor = _entry._eventDescriptorDict[eventId];
+            StageEventDescriptor eventDescriptor = GetEntry()._eventDescriptorDict[eventId];
             int senderId = eventDescriptor.ListenerId;
 
             if (senderId == StageEventDict.STAGE_ENVIRONMENT)
@@ -62,4 +56,23 @@ public class Formation : StageEventListener
                 _eventDict.Unregister(this, eventDescriptor);
         }
     }
+
+    #region IFormationModel
+
+    public string GetName() => _runFormation.GetName();
+    public JingJie GetJingJie() => _runFormation.GetJingJie();
+    public string GetConditionDescription() => _runFormation.GetConditionDescription();
+    public string GetRewardDescriptionFromJingJie(JingJie jingJie) => _runFormation.GetRewardDescriptionFromJingJie(jingJie);
+    public int? GetProgress() => _runFormation.GetProgress();
+    public string GetTriviaFromJingJie(JingJie jingJie) => _runFormation.GetTriviaFromJingJie(jingJie);
+
+    #endregion
+
+    #region IMarkedSliderModel
+
+    public int GetMin() => _runFormation.GetMin();
+    public int GetMax() => _runFormation.GetMax();
+    public int GetValue() => _runFormation.GetValue();
+
+    #endregion
 }

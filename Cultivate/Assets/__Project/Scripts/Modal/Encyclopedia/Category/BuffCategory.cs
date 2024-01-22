@@ -144,7 +144,7 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)listener;
                         DispelDetails d = (DispelDetails)eventDetails;
                         if (b.Owner != d.Tgt) return;
-                        if (d._buffEntry.Name != "灵气") return;
+                        if (d._buffEntry.GetName() != "灵气") return;
 
                         await d.Tgt.BuffSelfProcedure("灵气", d._stack);
                         await b.SetDStack(-1);
@@ -203,7 +203,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("回合力量", "每回合：力量+[层数]", BuffStackRule.Add, true, false,
+            new("回合力量", "回合开始时：力量+[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_TURN, 0, async (listener, eventDetails) =>
@@ -340,7 +340,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("锋锐", "每回合：[层数]间接攻击\n受到伤害后层数-1", BuffStackRule.Add, true, true,
+            new("锋锐", "回合结束时：[层数]间接攻击\n受到伤害后层数-1", BuffStackRule.Add, true, true,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.END_TURN, 0, async (listener, stageEventDetails) =>
@@ -361,7 +361,7 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             new("森罗万象", "奇偶同时激活两个效果", BuffStackRule.One, true, false),
 
-            new("自动灵气", "每回合：灵气+[层数]", BuffStackRule.Add, true, true,
+            new("自动灵气", "回合开始时：灵气+[层数]", BuffStackRule.Add, true, true,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
@@ -442,7 +442,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("缠绕", "无法二动/三动\n每回合：层数-1", BuffStackRule.Add, false, true,
+            new("缠绕", "无法二动/三动\n回合结束时：层数-1", BuffStackRule.Add, false, true,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_SWIFT, 0, async (listener, stageEventDetails) =>
@@ -587,7 +587,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,
+            new("天衣无缝", "回合开始时：[层数]攻", BuffStackRule.Max, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
@@ -705,7 +705,7 @@ public class BuffCategory : Category<BuffEntry>
                             await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
                     }),
                 }),
-            new("抱元守一", "每回合：消耗[层数]生命，护甲+[层数]", BuffStackRule.One, true, false,
+            new("抱元守一", "回合开始时：消耗[层数]生命，护甲+[层数]", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
@@ -743,7 +743,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("自动护甲", "每回合：护甲+[层数]", BuffStackRule.Add, true, false,
+            new("自动护甲", "回合结束时：护甲+[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.END_TURN, 0, async (listener, stageEventDetails) =>

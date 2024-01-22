@@ -1,7 +1,6 @@
 
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [SelectionBase]
@@ -28,15 +27,13 @@ public class FormationGroupBarView : SimpleView
             return;
         }
 
-        FormationGroupEntry formationGroup = Get<FormationGroupEntry>();
-        if (formationGroup == null)
-        {
-            gameObject.SetActive(false);
+        IFormationModel formation = Get<IFormationModel>();
+
+        bool formationIsNull = formation == null;
+        gameObject.SetActive(!formationIsNull);
+        if (formationIsNull)
             return;
-        }
 
-        gameObject.SetActive(true);
-
-        NameText.text = formationGroup.Name;
+        NameText.text = formation.GetName();
     }
 }

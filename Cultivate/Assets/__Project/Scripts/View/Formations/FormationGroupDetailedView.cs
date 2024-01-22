@@ -1,14 +1,19 @@
 
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 [SelectionBase]
 public class FormationGroupDetailedView : SimpleView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private ListView FormationListView;
+
+    public override void SetAddress(Address address)
+    {
+        base.SetAddress(address);
+
+        FormationListView.SetAddress(GetAddress().Append(".SubFormations"));
+    }
 
     public override void Refresh()
     {
@@ -20,26 +25,13 @@ public class FormationGroupDetailedView : SimpleView
         }
 
         FormationGroupEntry formationGroup = Get<FormationGroupEntry>();
-        if (formationGroup == null)
-        {
-            gameObject.SetActive(false);
+
+        bool formationIsNull = formationGroup == null;
+        gameObject.SetActive(!formationIsNull);
+        if (formationIsNull)
             return;
-        }
 
-        gameObject.SetActive(true);
-
-        SetName(formationGroup.Name);
-        SetSubFormations();
-    }
-
-    public virtual void SetName(string s)
-    {
-        NameText.text = s;
-    }
-
-    public virtual void SetSubFormations()
-    {
-        FormationListView.SetAddress(GetAddress().Append(".SubFormations"));
+        NameText.text = formationGroup.GetName();
         FormationListView.Refresh();
     }
 }

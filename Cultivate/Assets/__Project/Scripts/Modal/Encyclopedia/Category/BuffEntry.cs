@@ -53,9 +53,6 @@ public class BuffEntry : Entry, IAnnotation
 
     public static implicit operator BuffEntry(string name) => Encyclopedia.BuffCategory[name];
 
-    public string GetName()
-        => Name;
-
     public void Generate()
     {
         string description = Description;
@@ -64,7 +61,7 @@ public class BuffEntry : Entry, IAnnotation
 
         foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
         {
-            if (!description.Contains(keywordEntry.Name))
+            if (!description.Contains(keywordEntry.GetName()))
                 continue;
 
             annotations.Add(keywordEntry);
@@ -72,10 +69,10 @@ public class BuffEntry : Entry, IAnnotation
 
         foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
         {
-            if (!description.Contains(buffEntry.Name))
+            if (!description.Contains(buffEntry.GetName()))
                 continue;
 
-            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.Name);
+            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
             if (duplicate != null)
                 continue;
 

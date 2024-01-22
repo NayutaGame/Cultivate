@@ -20,9 +20,9 @@ public class EntityView : SimpleView
     public override void Refresh()
     {
         base.Refresh();
-        IEntityModel entity = Get<IEntityModel>();
+        EntityModel entity = Get<EntityModel>();
         if (NameText != null)
-            NameText.text = entity.GetEntry()?.Name ?? "未命名";
+            NameText.text = entity.GetEntry()?.GetName() ?? "未命名";
         if (JingJieText != null)
             JingJieText.text = entity.GetJingJie().ToString();
         if (HPText != null)

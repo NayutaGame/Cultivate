@@ -1,6 +1,5 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using CLLibrary;
 using UnityEngine;
 
 public class RunTech
@@ -40,7 +39,7 @@ public class RunTech
         Unregister();
     }
 
-    public string GetName() => _entry.Name;
+    public string GetName() => _entry.GetName();
     public int GetCost() => Mathf.FloorToInt((_hasEureka ? RunManager.EUREKA_DISCOUNT_RATE : 1) * _entry.Cost);
     public string GetRewardsString() => _entry.GetRewardsString();
     public string GetEurekaString() => _entry.GetEurekaString();

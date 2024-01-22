@@ -78,7 +78,7 @@ public class StageSkill
     public int Dj
         => GetJingJie() - _entry.LowestJingJie;
     public bool JiaShi
-        => Next(true).Entry.Name == "收刀" || Prev(true).Entry.Name == "拔刀" || _owner.GetStackOfBuff("天人合一") > 0;
+        => Next(true).Entry.GetName() == "收刀" || Prev(true).Entry.GetName() == "拔刀" || _owner.GetStackOfBuff("天人合一") > 0;
     public bool IsFirstTime
         => StageUsedTimes == 0;
     public bool IsOdd
@@ -115,7 +115,7 @@ public class StageSkill
     }
 
     public string GetName()
-        => _entry.Name;
+        => _entry.GetName();
 
     public SkillTypeComposite GetSkillType()
         => _entry.SkillTypeComposite;

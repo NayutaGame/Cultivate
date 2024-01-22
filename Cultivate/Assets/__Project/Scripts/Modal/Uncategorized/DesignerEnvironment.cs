@@ -146,11 +146,11 @@ public class DesignerEnvironment
             RunEnvironment env = (RunEnvironment)listener;
             RunDetails d = (RunDetails)eventDetails;
 
-            // env.SetJingJieProcedure(JingJie.HuaShen);
-            // env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
+            env.SetJingJieProcedure(JingJie.HuaShen);
+            env.ForceDrawSkills(jingJie: JingJie.HuaShen, count: 12);
 
-            env.SetJingJieProcedure(JingJie.LianQi);
-            env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
+            // env.SetJingJieProcedure(JingJie.LianQi);
+            // env.ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
         });
 
     private static readonly RunEventDescriptor WeplayRun =

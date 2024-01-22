@@ -1,6 +1,5 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using UnityEngine;
 
 public class KeywordEntry : Entry, IAnnotation
 {
@@ -15,9 +14,6 @@ public class KeywordEntry : Entry, IAnnotation
         _description = description;
     }
 
-    public string GetName()
-        => Name;
-
     public void Generate()
     {
         string description = Description;
@@ -26,13 +22,13 @@ public class KeywordEntry : Entry, IAnnotation
 
         foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
         {
-            if (description.Contains(buffEntry.Name))
+            if (description.Contains(buffEntry.GetName()))
                 annotations.Add(buffEntry);
         }
 
         foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
         {
-            if (description.Contains(keywordEntry.Name))
+            if (description.Contains(keywordEntry.GetName()))
                 annotations.Add(keywordEntry);
         }
 

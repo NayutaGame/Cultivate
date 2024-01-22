@@ -6,7 +6,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiver
+public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceiver
 {
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
@@ -129,20 +129,19 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
 
     #region Formation
 
-    private ListModel<FormationEntry> _activatedFormations;
-    public IEnumerable<FormationEntry> TraversalActivatedFormations => _activatedFormations.Traversal();
+    private ListModel<RunFormation> _formations;
+    public IEnumerable<RunFormation> TraversalFormations => _formations.Traversal();
 
     public void FormationProcedure()
     {
         RunFormationDetails d = new(this);
 
-        _activatedFormations.Clear();
+        _formations.Clear();
 
         RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WILL_FORMATION, d);
 
-        _activatedFormations.AddRange(Encyclopedia.FormationCategory.Traversal
-            .Map(f => f.FirstActivatedFormation(this, d))
-            .FilterObj(f => f != null));
+        _formations.AddRange(Encyclopedia.FormationCategory.Traversal
+            .Map(e => RunFormation.From(e, e.GetProgress(this, d))));
 
         RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_FORMATION, d);
     }
@@ -174,7 +173,7 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
         _accessors = new()
         {
             { "Slots", () => _filteredSlots },
-            { "ActivatedSubFormations", () => _activatedFormations },
+            { "RunFormations", () => _formations },
         };
 
         if (template != null)
@@ -209,7 +208,7 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
 
         _filteredSlots = new FilteredListModel<SkillSlot>(_slots, skillSlot => skillSlot.State != SkillSlot.SkillSlotState.Locked);
 
-        _activatedFormations = new ListModel<FormationEntry>();
+        _formations = new();
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
 
         UpdateReveal();
@@ -228,11 +227,11 @@ public class RunEntity : Addressable, IEntityModel, ISerializationCallbackReceiv
         _accessors = new()
         {
             { "Slots", () => _slots },
-            { "ActivatedSubFormations", () => _activatedFormations },
+            { "RunFormations", () => _formations },
         };
-        _entry = string.IsNullOrEmpty(_entry.Name) ? null : Encyclopedia.EntityCategory[_entry.Name];
+        _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.EntityCategory[_entry.GetName()];
 
-        _activatedFormations = new ListModel<FormationEntry>();
+        _formations = new();
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
 
         UpdateReveal();

@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class GainFormationDetails : EventDetails
 {
-    public FormationEntry _entry;
+    public RunFormation _formation;
 
-    public GainFormationDetails(FormationEntry entry)
+    public GainFormationDetails(RunFormation formation)
     {
-        _entry = entry;
+        _formation = formation;
     }
 }

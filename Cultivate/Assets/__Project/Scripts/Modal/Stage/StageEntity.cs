@@ -237,7 +237,7 @@ public class StageEntity : Addressable, StageEventListener
     private RunEntity _runEntity;
     public RunEntity RunEntity => _runEntity;
 
-    public IEnumerable<FormationEntry> RunFormations() => _runEntity.TraversalActivatedFormations;
+    public IEnumerable<RunFormation> RunFormations() => _runEntity.TraversalFormations;
 
     private StageEnvironment _env;
     public StageEnvironment Env => _env;
@@ -320,7 +320,7 @@ public class StageEntity : Addressable, StageEventListener
     public async Task<BuffDetails> HighestManaRecorder(StageEventListener listener, EventDetails eventDetails)
     {
         BuffDetails d = (BuffDetails)eventDetails;
-        if (d._buffEntry.Name != "灵气")
+        if (d._buffEntry.GetName() != "灵气")
             return d;
 
         HighestManaRecord = Mathf.Max(HighestManaRecord, GetStackOfBuff("灵气"));
@@ -330,7 +330,7 @@ public class StageEntity : Addressable, StageEventListener
     public async Task<BuffDetails> GainedEvadeRecorder(StageEventListener listener, EventDetails eventDetails)
     {
         BuffDetails d = (BuffDetails)eventDetails;
-        if (d._buffEntry.Name != "闪避")
+        if (d._buffEntry.GetName() != "闪避")
             return d;
 
         GainedEvadeRecord += d._stack;
@@ -340,7 +340,7 @@ public class StageEntity : Addressable, StageEventListener
     public async Task<BuffDetails> GainedBurningRecorder(StageEventListener listener, EventDetails eventDetails)
     {
         BuffDetails d = (BuffDetails)eventDetails;
-        if (d._buffEntry.Name != "灼烧")
+        if (d._buffEntry.GetName() != "灼烧")
             return d;
 
         GainedBurningRecord += d._stack;
@@ -356,7 +356,7 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task AddFormation(GainFormationDetails d)
     {
-        Formation formation = new Formation(this, d._entry);
+        Formation formation = new Formation(this, d._formation);
         formation.Register();
         await formation._eventDict.SendEvent(StageEventDict.GAIN_FORMATION, d);
         _formations.Add(formation);
@@ -504,8 +504,8 @@ public class StageEntity : Addressable, StageEventListener
     public async Task DispelOppoProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive = true)
         => await _env.DispelProcedure(new DispelDetails(this, Opponent(), buffEntry, stack, friendly, recursive));
 
-    public async Task FormationProcedure(FormationEntry formationEntry, bool recursive = true)
-        => await _env.FormationProcedure(this, formationEntry, recursive);
+    public async Task FormationProcedure(RunFormation runFormation, bool recursive = true)
+        => await _env.FormationProcedure(this, runFormation, recursive);
 
     public async Task ManaShortageProcedure(int position, StageSkill skill, int actualCost)
         => await _env.ManaShortageProcedure(this, position, skill, actualCost);

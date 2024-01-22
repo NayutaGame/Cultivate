@@ -3,27 +3,29 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 
-public class FormationGroupEntry : Entry, Addressable
+public class FormationGroupEntry : Entry, Addressable, IFormationModel
 {
+    private static readonly int RESERVED_PROGRESS = 4;
+
     private int _order;
     public int Order => _order;
 
     private string _conditionDescription;
-    public string GetConditionDescription()
-        => _conditionDescription;
 
-    private Func<RunEntity, RunFormationDetails, int> _scoreEvaluator;
-    public int GetScore(RunEntity e, RunFormationDetails d)
-        => _scoreEvaluator(e, d);
+    private Func<RunEntity, RunFormationDetails, int> _progressEvaluator;
+    public int GetProgress(RunEntity e, RunFormationDetails d) => _progressEvaluator(e, d);
 
     private ListModel<FormationEntry> _subFormationEntries;
     public ListModel<FormationEntry> SubFormationEntries => _subFormationEntries;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
+    private int _min;
+    private int _max;
 
-    public FormationGroupEntry(string name, int order, string conditionDescription, Func<RunEntity, RunFormationDetails, int> scoreEvaluator, FormationEntry[] formationEntries = null) : base(name)
+    private ListModel<MarkModel> _markListModel;
+
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
+    public FormationGroupEntry(string name, int order, string conditionDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(name)
     {
         _accessors = new Dictionary<string, Func<object>>()
         {
@@ -32,23 +34,50 @@ public class FormationGroupEntry : Entry, Addressable
 
         _order = order;
         _conditionDescription = conditionDescription;
-        _scoreEvaluator = scoreEvaluator;
+        _progressEvaluator = progressEvaluator;
 
         _subFormationEntries = new ListModel<FormationEntry>();
 
         if (formationEntries != null)
             _subFormationEntries.AddRange(formationEntries);
 
-        _subFormationEntries.Traversal().Do(f =>
-        {
-            f.SetName(name);
-            f.SetOrder(order);
-            f.SetConditionDescription(conditionDescription);
-        });
+        _subFormationEntries.Traversal().Do(f => f.SetFormationGroupEntry(this));
+
+        _min = FormationWithLowestJingJie().GetRequirement() - RESERVED_PROGRESS;
+        _max = FormationWithHighestJingJie().GetRequirement();
+
+        _markListModel = new();
+        _markListModel.AddRange(_subFormationEntries.Traversal().Map(e =>
+            new MarkModel(e.GetRequirement(), e.GetJingJie().ToString())));
     }
 
-    public FormationEntry FirstActivatedFormation(RunEntity e, RunFormationDetails d)
-    {
-        return _subFormationEntries.Traversal().FirstObj(f => GetScore(e, d) >= f.GetRequirement());
-    }
+    public FormationEntry FirstActivatedFormation(int progress)
+        => _subFormationEntries.First(e => progress >= e.GetRequirement());
+
+    public FormationEntry FormationWithLowestJingJie()
+        => _subFormationEntries[_subFormationEntries.Count() - 1];
+
+    public FormationEntry FormationWithHighestJingJie()
+        => _subFormationEntries[0];
+
+    public FormationEntry FirstFormationWithJingJie(JingJie jingJie)
+        => _subFormationEntries.First(e => e.GetJingJie() == jingJie);
+
+    #region IFormationModel
+
+    public JingJie GetJingJie() => FormationWithLowestJingJie().GetJingJie();
+    public string GetConditionDescription() => _conditionDescription;
+    public string GetRewardDescriptionFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetRewardDescription();
+    public int? GetProgress() => null;
+    public string GetTriviaFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetTrivia();
+
+    #endregion
+
+    #region IMarkedSliderModel
+
+    public int GetMin() => _min;
+    public int GetMax() => _max;
+    public int GetValue() => _min;
+
+    #endregion
 }

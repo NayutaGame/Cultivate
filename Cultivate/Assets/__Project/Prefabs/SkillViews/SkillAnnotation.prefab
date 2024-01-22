@@ -960,7 +960,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40822abb166f25a4993209689eb275cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SimpleView: {fileID: 0}
 --- !u!1001 &96746594008316878
 PrefabInstance:
   m_ObjectHideFlags: 0

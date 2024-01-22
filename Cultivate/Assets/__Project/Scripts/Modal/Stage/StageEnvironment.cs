@@ -23,7 +23,7 @@ public class StageEnvironment : Addressable, StageEventListener
     //     await _eventDict.SendEvent(CLEventDict.DID_SIMPLE, d);
     // }
 
-    public async Task FormationProcedure(StageEntity owner, FormationEntry formation, bool recursive = true)
+    public async Task FormationProcedure(StageEntity owner, RunFormation formation, bool recursive = true)
         => await FormationProcedure(new FormationDetails(owner, formation, recursive));
     public async Task FormationProcedure(FormationDetails d)
     {
@@ -302,14 +302,14 @@ public class StageEnvironment : Addressable, StageEventListener
             }
 
             await TryPlayTween(new BuffTweenDescriptor(true, d));
-            _result.TryAppend($"    {d._buffEntry.Name}: {oldStack} -> {same.Stack}");
+            _result.TryAppend($"    {d._buffEntry.GetName()}: {oldStack} -> {same.Stack}");
         }
         else
         {
             await d.Tgt.AddBuff(new GainBuffDetails(d._buffEntry, d._stack));
 
             await TryPlayTween(new BuffTweenDescriptor(true, d));
-            _result.TryAppend($"    {d._buffEntry.Name}: 0 -> {d._stack}");
+            _result.TryAppend($"    {d._buffEntry.GetName()}: 0 -> {d._stack}");
         }
 
         await _eventDict.SendEvent(StageEventDict.DID_BUFF, d);
@@ -557,16 +557,15 @@ public class StageEnvironment : Addressable, StageEventListener
     {
         List<FormationDetails> details = new List<FormationDetails>();
 
-        foreach (var e in _entities)
-        foreach (var f in e.RunFormations())
-            details.Add(new FormationDetails(e, f));
+        foreach (var entity in _entities)
+        foreach (var runFormation in entity.RunFormations())
+            if(runFormation.IsActivated())
+                details.Add(new FormationDetails(entity, runFormation));
 
-        details.Sort((lhs, rhs) => lhs._formation.GetOrder() - rhs._formation.GetOrder());
+        details.Sort((lhs, rhs) => lhs._formation.GetEntry().GetOrder() - rhs._formation.GetEntry().GetOrder());
 
         foreach (var d in details)
-        {
             await FormationProcedure(d);
-        }
     }
 
     private async Task StartStageProcedure()

@@ -132,7 +132,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("灵气", 8);
                 }),
 
-            new("净魂刀", JingJie.YuanYing, "10攻 击伤：灵气+1，对手灵气-1", // 香刃
+            new("净魂刀", JingJie.YuanYing, "10攻\n击伤：灵气+1，对手灵气-1", // 香刃
                 skillTypeComposite: SkillType.Attack | SkillType.LingQi | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -167,7 +167,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure(25);
                 }),
 
-            new("机关人偶", JingJie.YuanYing, "10攻 护甲+12", // 刃匣
+            new("机关人偶", JingJie.YuanYing, "10攻\n护甲+12", // 刃匣
                 skillTypeComposite: SkillType.Attack | SkillType.SunHao, withinPool: false,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -231,7 +231,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("力量", stack);
                 }),
 
-            new("长明灯", JingJie.FanXu, "消耗\n本场战斗中，获得灵气时：每1，生命+3", // 香香匣
+            new("长明灯", JingJie.FanXu, "消耗\n获得灵气时：每1，生命+3", // 香香匣
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -293,7 +293,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure(1, times: 10);
                 }),
 
-            new("炼丹炉", JingJie.FanXu, "消耗\n本场战斗中，每回合：力量+1", // 香刃匣
+            new("炼丹炉", JingJie.FanXu, "消耗\n回合开始时：力量+1", // 香刃匣
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -302,7 +302,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("回合力量");
                 }),
 
-            new("浮空艇", JingJie.FanXu, "消耗\n本场战斗中，回合被跳过后，该回合无法受到伤害\n遭受12跳回合", // 匣匣匣
+            new("浮空艇", JingJie.FanXu, "消耗\n回合被跳过时，该回合无法受到伤害\n遭受12跳回合", // 匣匣匣
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -339,7 +339,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("闪避", 6);
                 }),
 
-            new("外骨骼", JingJie.FanXu, "消耗\n本场战斗中，每次攻击时，护甲+3", // 刃匣轮
+            new("外骨骼", JingJie.FanXu, "消耗\n攻击时，护甲+3", // 刃匣轮
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -359,7 +359,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("永动机", 8);
                 }),
 
-            new("火箭靴", JingJie.FanXu, "消耗\n本场战斗中，使用灵气牌时，获得二动", // 轮轮香
+            new("火箭靴", JingJie.FanXu, "消耗\n使用灵气牌时，获得二动", // 轮轮香
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -368,7 +368,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("火箭靴");
                 }),
 
-            new("定龙桩", JingJie.FanXu, "消耗\n本场战斗中，对方二动时，如果没有暴击，获得1", // 轮轮刃
+            new("定龙桩", JingJie.FanXu, "消耗\n对方二动时，如果没有暴击，获得1", // 轮轮刃
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -377,7 +377,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("定龙桩");
                 }),
 
-            new("飞行器", JingJie.FanXu, "消耗\n本场战斗中，成功闪避时，如果对方没有跳回合，施加1", // 轮轮匣
+            new("飞行器", JingJie.FanXu, "消耗\n成功闪避时，如果对方没有跳回合，施加1", // 轮轮匣
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -386,7 +386,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("飞行器");
                 }),
 
-            new("时光机", JingJie.FanXu, "消耗\n本场战斗中，使用一张牌前，升级", // 匣轮香
+            new("时光机", JingJie.FanXu, "消耗\n使用一张牌前，升级", // 匣轮香
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -514,14 +514,14 @@ public class SkillCategory : Category<SkillEntry>
             //             caster.Opponent().Hp = 0;
             //     }),
             //
-            // new("水41", new CLLibrary.Range(4, 5), "消耗\n本场战斗中，治疗被代替，每有10点，格挡+1\n格挡效果翻倍", WuXing.Shui,
+            // new("水41", new CLLibrary.Range(4, 5), "消耗\n本场战斗中治疗被代替，受到治疗时，每有10点，格挡+1\n格挡效果翻倍", WuXing.Shui,
             //     execute: (caster, skill, recursive) =>
             //     {
             //         await skill.ConsumeProcedure();
             //         caster.BuffSelfProcedure("强化格挡");
             //     }),
             //
-            // new("水42", new CLLibrary.Range(4, 5), "消耗\n本场战斗中，被治疗时，如果实际治疗>=20，二动", WuXing.Shui,
+            // new("水42", new CLLibrary.Range(4, 5), "消耗\n被治疗时，如果实际治疗>=20，二动", WuXing.Shui,
             //     execute: (caster, skill, recursive) =>
             //     {
             //         await skill.ConsumeProcedure();
@@ -644,7 +644,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("无常已至", new CLLibrary.Range(1, 5),
-                new SkillDescription((j, dj) => $"消耗\n本场战斗中，造成伤害时：施加{3 + 2 * dj}减甲，不高于伤害值"), wuXing: WuXing.Jin,
+                new SkillDescription((j, dj) => $"消耗\n造成伤害时：施加{3 + 2 * dj}减甲，不高于伤害值"), wuXing: WuXing.Jin,
                 manaCostEvaluator: 3, skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -755,7 +755,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure(5, crit: cond || caster.Opponent().Armor < 0 || await caster.IsFocused(), wuXing: skill.Entry.WuXing);
                 }),
 
-            new("森罗万象", new CLLibrary.Range(4, 5), new SkillDescription((j, dj) => $"消耗\n本场战斗中：奇偶同时激活两个效果"), wuXing: WuXing.Jin,
+            new("森罗万象", new CLLibrary.Range(4, 5), new SkillDescription((j, dj) => $"消耗\n奇偶同时激活两个效果"), wuXing: WuXing.Jin,
                 skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -873,7 +873,7 @@ public class SkillCategory : Category<SkillEntry>
                         await caster.BuffSelfProcedure("跳卡牌");
                 }),
 
-            // new("治疗转灵气", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"消耗\n本场战斗中\n受到治疗时：灵气+{1 + dj}"), WuXing.Shui, skillTypeCollection: SkillTypeCollection.LingQi,
+            // new("治疗转灵气", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"消耗\n受到治疗时：灵气+{1 + dj}"), WuXing.Shui, skillTypeCollection: SkillTypeCollection.LingQi,
             //     execute: async (caster, skill, recursive) =>
             //     {
             //         await caster.BuffSelfProcedure("治疗转灵气", 1 + skill.Dj);
@@ -921,7 +921,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure(10, crit: true, lifeSteal: true, wuXing: skill.Entry.WuXing);
                 }),
 
-            new("玄武吐息法", new CLLibrary.Range(4, 5), "消耗\n本场战斗中：治疗可以穿上限", wuXing: WuXing.Shui, manaCostEvaluator: 2,
+            new("玄武吐息法", new CLLibrary.Range(4, 5), "消耗\n治疗可以穿上限", wuXing: WuXing.Shui, manaCostEvaluator: 2,
                 skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -938,7 +938,7 @@ public class SkillCategory : Category<SkillEntry>
                     caster.Swift = true;
                 }),
 
-            new("不动明王咒", new CLLibrary.Range(4, 5), "消耗\n格挡翻倍\n本场战斗中：无法二动", wuXing: WuXing.Shui, manaCostEvaluator: 3,
+            new("不动明王咒", new CLLibrary.Range(4, 5), "消耗\n格挡翻倍\n无法二动", wuXing: WuXing.Shui, manaCostEvaluator: 3,
                 skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -1094,7 +1094,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("双发", 1 + skill.Dj);
                 }),
 
-            new("心斋", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"消耗\n本场战斗中：所有耗蓝-1"), wuXing: WuXing.Mu,
+            new("心斋", new CLLibrary.Range(3, 5), new SkillDescription((j, dj) => $"消耗\n所有耗蓝-1"), wuXing: WuXing.Mu,
                 manaCostEvaluator: new ManaCostEvaluator((j, dj, jiaShi) => 2 - dj), skillTypeComposite: SkillType.LingQi | SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -1114,7 +1114,7 @@ public class SkillCategory : Category<SkillEntry>
                         await skill.ExhaustProcedure();
                 }),
 
-            new("盛开", new CLLibrary.Range(4, 5), "消耗\n本场战斗中：\n受到治疗时：力量+1", wuXing: WuXing.Mu,
+            new("盛开", new CLLibrary.Range(4, 5), "消耗\n受到治疗时：力量+1", wuXing: WuXing.Mu,
                 skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -1122,7 +1122,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("盛开");
                 }),
 
-            // new("通透世界", new CLLibrary.Range(4, 5), "消耗\n本场战斗中：攻击具有穿透", WuXing.Mu, manaCost: 1,
+            // new("通透世界", new CLLibrary.Range(4, 5), "消耗\n攻击具有穿透", WuXing.Mu, manaCost: 1,
             //     execute: async (caster, skill, recursive) =>
             //     {
             //         await skill.ConsumeProcedure();
@@ -1196,7 +1196,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("灼烧", 2 + skill.Dj);
                 }),
 
-            new("一切皆苦", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"消耗\n唯一灵气牌（无法使用集中）：每回合灵气+1"), wuXing: WuXing.Huo,
+            new("一切皆苦", new CLLibrary.Range(1, 5), new SkillDescription((j, dj) => $"消耗\n唯一灵气牌（无法使用集中）：回合开始时：灵气+1"), wuXing: WuXing.Huo,
                 manaCostEvaluator: new ManaCostEvaluator((j, dj, jiaShi) => 3 - dj), skillTypeComposite: SkillType.LingQi | SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -1215,7 +1215,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure((4 + skill.Dj) * mul, wuXing: skill.Entry.WuXing);
                 }),
 
-            new("天衣无缝", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"消耗\n若无攻击牌（无法使用集中），每回合：{6 + 2 * dj}攻"),
+            new("天衣无缝", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"消耗\n若无攻击牌（无法使用集中）：回合开始时：{6 + 2 * dj}攻"),
                 wuXing: WuXing.Huo, manaCostEvaluator: 4, skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -1234,7 +1234,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("灼烧", (2 + skill.Dj) * d);
                 }),
 
-            new("业火", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"消耗\n本场战斗中\n消耗牌时：使用2次"), wuXing: WuXing.Huo,
+            new("业火", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"消耗\n消耗牌时：使用2次"), wuXing: WuXing.Huo,
                 manaCostEvaluator: new ManaCostEvaluator((j, dj, jiaShi) => 4 - dj), skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -1242,7 +1242,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("业火");
                 }),
 
-            new("淬体", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"消耗\n本场战斗中\n消耗生命时：灼烧+1"), wuXing: WuXing.Huo,
+            new("淬体", new CLLibrary.Range(2, 5), new SkillDescription((j, dj) => $"消耗\n消耗生命时：灼烧+1"), wuXing: WuXing.Huo,
                 manaCostEvaluator: new ManaCostEvaluator((j, dj, jiaShi) => 5 - dj), skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -1258,7 +1258,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("抱元守一", new CLLibrary.Range(3, 5),
-                new SkillDescription((j, dj) => $"消耗\n每回合：消耗{3 + 3 * dj}生命，护甲+{3 + 3 * dj}"), wuXing: WuXing.Huo,
+                new SkillDescription((j, dj) => $"消耗\n回合开始时：消耗{3 + 3 * dj}生命，护甲+{3 + 3 * dj}"), wuXing: WuXing.Huo,
                 skillTypeComposite: SkillType.XiaoHao,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -1361,7 +1361,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("磐石剑阵", new CLLibrary.Range(2, 5),
-                new SkillDescription((j, dj) => $"吟唱1\n护甲+{20 + 6 * dj}\n架势（无法集中）：无需吟唱"), wuXing: WuXing.Tu,
+                new SkillDescription((j, dj) => $"吟唱1\n护甲+{20 + 6 * dj}\n架势：无需吟唱"), wuXing: WuXing.Tu,
                 channelTimeEvaluator: new ChannelTimeEvaluator((j, dj, jiaShi) => jiaShi ? 0 : 1),
                 skillTypeComposite: SkillType.JianZhen,
                 execute: async (caster, skill, recursive) =>
@@ -1393,7 +1393,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new("重剑", new CLLibrary.Range(3, 5),
-                new SkillDescription((j, dj) => $"吟唱2\n{22 + 8 * dj}攻\n击伤：护甲+击伤值\n架势（无法集中）：无需吟唱"), wuXing: WuXing.Tu,
+                new SkillDescription((j, dj) => $"吟唱2\n{22 + 8 * dj}攻\n击伤：护甲+击伤值\n架势：无需吟唱"), wuXing: WuXing.Tu,
                 manaCostEvaluator: 2,
                 channelTimeEvaluator: new ChannelTimeEvaluator((j, dj, jiaShi) => jiaShi ? 0 : 2),
                 skillTypeComposite: SkillType.Attack,
@@ -1494,7 +1494,7 @@ public class SkillCategory : Category<SkillEntry>
                         });
                 }),
 
-            new("缠枝：周天结", 5, "消耗6格挡\n消耗\n本场战斗中，灵气消耗后加回", wuXing: WuXing.Shui,
+            new("缠枝：周天结", 5, "消耗6格挡\n消耗\n灵气消耗后加回", wuXing: WuXing.Shui,
                 skillTypeComposite: SkillType.LingQi,
                 execute: async (caster, skill, recursive) =>
                 {
@@ -1507,7 +1507,7 @@ public class SkillCategory : Category<SkillEntry>
                     await skill.ExhaustProcedure();
                 }),
 
-            new("轰炎：焚天", 5, "消耗，本场战斗中，自己的所有攻击具有穿透", wuXing: WuXing.Mu,
+            new("轰炎：焚天", 5, "消耗，自己的所有攻击具有穿透", wuXing: WuXing.Mu,
                 execute: async (caster, skill, recursive) =>
                 {
                     await skill.ExhaustProcedure();
