@@ -131,6 +131,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
     private ListModel<RunFormation> _formations;
     public IEnumerable<RunFormation> TraversalFormations => _formations.Traversal();
+    private FilteredListModel<RunFormation> _showingFormations;
 
     public void FormationProcedure()
     {
@@ -144,6 +145,8 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             .Map(e => RunFormation.From(e, e.GetProgress(this, d))));
 
         RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_FORMATION, d);
+
+        _showingFormations.Refresh();
     }
 
     #endregion
@@ -174,6 +177,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         {
             { "Slots", () => _filteredSlots },
             { "RunFormations", () => _formations },
+            { "ShowingFormations", () => _showingFormations },
         };
 
         if (template != null)
@@ -209,6 +213,8 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         _filteredSlots = new FilteredListModel<SkillSlot>(_slots, skillSlot => skillSlot.State != SkillSlot.SkillSlotState.Locked);
 
         _formations = new();
+        _showingFormations = new(_formations, f =>
+            f.GetMin() <= f.GetProgress() && f.GetProgress() <= f.GetMax());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
 
         UpdateReveal();

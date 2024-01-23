@@ -54,7 +54,7 @@ public class DeckPanel : Panel
         HandView.DropNeuron.Join(TryMerge, TryUnequip);
         HandView.GetComponent<PropagateDrop>()._onDrop = TryUnequip;
 
-        FormationListView.SetAddress(new Address("Run.Environment.Hero.RunFormations"));
+        FormationListView.SetAddress(new Address("Run.Environment.Hero.ShowingFormations"));
 
         MechListView.SetAddress(new Address("Run.Environment.MechBag"));
         MechListView.DropNeuron.Join(TryUnequip);

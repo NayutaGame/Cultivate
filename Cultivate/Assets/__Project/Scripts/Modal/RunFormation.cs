@@ -11,6 +11,7 @@ public class RunFormation : IFormationModel, Addressable
     private FormationEntry _formationEntry;
 
     public FormationEntry GetEntry() => _formationEntry;
+    public int GetProgress() => _progress;
     public bool IsActivated() => _activated;
 
     private Dictionary<string, Func<object>> _accessors;

@@ -12,7 +12,7 @@ public class BattleEntityView : SimpleView
         FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
         FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
 
-        FormationListView.SetAddress(GetAddress().Append(".RunFormations"));
+        FormationListView.SetAddress(GetAddress().Append(".ShowingFormations"));
         FormationListView.PointerEnterNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerEnter);
         FormationListView.PointerExitNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerExit);
         FormationListView.PointerMoveNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerMove);
