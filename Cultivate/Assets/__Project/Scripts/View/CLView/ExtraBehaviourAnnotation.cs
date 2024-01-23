@@ -3,6 +3,7 @@ public class ExtraBehaviourAnnotation : ExtraBehaviour
 {
     public string AnnotationAddress;
     private AnnotationView Annotation;
+    public AnnotationView GetAnnotationView() => Annotation;
 
     public override void Init(CLView clView)
     {
@@ -19,9 +20,9 @@ public class ExtraBehaviourAnnotation : ExtraBehaviour
         if (ib == null)
             return;
 
-        ib.PointerEnterNeuron.Add(Annotation.PointerEnter);
-        ib.PointerExitNeuron.Add(Annotation.PointerExit);
-        ib.PointerMoveNeuron.Add(Annotation.PointerMove);
-        ib.BeginDragNeuron.Add(Annotation.PointerExit);
+        ib.PointerEnterNeuron.Join(Annotation.PointerEnter);
+        ib.PointerExitNeuron.Join(Annotation.PointerExit);
+        ib.PointerMoveNeuron.Join(Annotation.PointerMove);
+        ib.BeginDragNeuron.Join(Annotation.PointerExit);
     }
 }

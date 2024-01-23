@@ -27,6 +27,12 @@ public class ListView : SimpleView
             yield return itemBehaviour;
     }
 
+    public IEnumerable<ItemBehaviour> TraversalActive()
+    {
+        foreach (var itemBehaviour in _activePool)
+            yield return itemBehaviour;
+    }
+
     private bool IsInited()
         => _activePool != null;
 

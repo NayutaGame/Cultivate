@@ -1,7 +1,8 @@
 
+using System;
 using System.Collections.Generic;
 
-public class FormationEntry : IFormationModel
+public class FormationEntry : IFormationModel, Addressable
 {
     private FormationGroupEntry _formationGroupEntry;
     public FormationGroupEntry GetFormationGroupEntry() => _formationGroupEntry;
@@ -10,6 +11,7 @@ public class FormationEntry : IFormationModel
     public int GetOrder() => _formationGroupEntry.Order;
 
     private JingJie _jingJie;
+    public JingJie GetJingJie() => _jingJie;
 
     private string _rewardDescription;
     public string GetRewardDescription() => _rewardDescription;
@@ -22,6 +24,10 @@ public class FormationEntry : IFormationModel
 
     public Dictionary<int, StageEventDescriptor> _eventDescriptorDict;
 
+    public ListModel<MarkModel> GetMarks() => _formationGroupEntry.GetMarks();
+
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
     /// <summary>
     /// 定义一个Formation
     /// </summary>
@@ -33,6 +39,11 @@ public class FormationEntry : IFormationModel
         params StageEventDescriptor[] eventDescriptors
     )
     {
+        _accessors = new Dictionary<string, Func<object>>()
+        {
+            { "Marks", GetMarks },
+        };
+
         _jingJie = jingJie;
         _rewardDescription = rewardDescription;
         _trivia = trivia;
@@ -47,11 +58,13 @@ public class FormationEntry : IFormationModel
     #region IFormationModel
 
     public string GetName() => _formationGroupEntry.GetName();
-    public JingJie GetJingJie() => _jingJie;
+    public JingJie GetLowestJingJie() => _formationGroupEntry.GetLowestJingJie();
+    public JingJie? GetActivatedJingJie() => _jingJie;
     public string GetConditionDescription() => _formationGroupEntry.GetConditionDescription();
     public string GetRewardDescriptionFromJingJie(JingJie jingJie) => _formationGroupEntry.GetRewardDescriptionFromJingJie(jingJie);
-    public int? GetProgress() => null;
     public string GetTriviaFromJingJie(JingJie jingJie) => _formationGroupEntry.GetTriviaFromJingJie(jingJie);
+    public JingJie GetIncrementedJingJie(JingJie jingJie) => _formationGroupEntry.GetIncrementedJingJie(jingJie);
+    public int GetRequirementFromJingJie(JingJie jingJie) => _formationGroupEntry.GetRequirementFromJingJie(jingJie);
 
     #endregion
 
@@ -59,7 +72,9 @@ public class FormationEntry : IFormationModel
 
     public int GetMin() => _formationGroupEntry.GetMin();
     public int GetMax() => _formationGroupEntry.GetMax();
-    public int GetValue() => _formationGroupEntry.GetValue();
+    public int? GetValue() => null;
+    public Address GetMarkListModelAddress(Address address)
+        => address.Append(".Marks");
 
     #endregion
 }

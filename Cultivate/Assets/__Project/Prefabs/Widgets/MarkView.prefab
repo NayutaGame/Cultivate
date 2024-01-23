@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 3541377369024671219}
   - component: {fileID: 5362519501570828202}
   - component: {fileID: 5267761837269203069}
+  - component: {fileID: 3787906973723639146}
   m_Layer: 5
   m_Name: MarkView
   m_TagString: Untagged
@@ -228,3 +229,15 @@ MonoBehaviour:
   InteractBehaviour: {fileID: 0}
   BackgroundImage: {fileID: 5362519501570828202}
   TagText: {fileID: 6940694312763131993}
+--- !u!114 &3787906973723639146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4496934150554996026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

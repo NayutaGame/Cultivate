@@ -2,9 +2,11 @@
 public interface IFormationModel : IMarkedSliderModel
 {
     string GetName();
-    JingJie GetJingJie();
+    JingJie GetLowestJingJie();
+    JingJie? GetActivatedJingJie();
     string GetConditionDescription();
     string GetRewardDescriptionFromJingJie(JingJie jingJie);
-    int? GetProgress();
     string GetTriviaFromJingJie(JingJie jingJie);
+    JingJie GetIncrementedJingJie(JingJie jingJie);
+    int GetRequirementFromJingJie(JingJie jingJie);
 }

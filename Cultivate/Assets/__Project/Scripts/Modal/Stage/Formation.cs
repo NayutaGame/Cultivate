@@ -1,8 +1,11 @@
 
+using System;
+using System.Collections.Generic;
+
 /// <summary>
 /// Formation
 /// </summary>
-public class Formation : StageEventListener, IFormationModel
+public class Formation : StageEventListener, IFormationModel, Addressable
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -13,8 +16,15 @@ public class Formation : StageEventListener, IFormationModel
 
     public StageEventDict _eventDict;
 
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
     public Formation(StageEntity owner, RunFormation runFormation)
     {
+        _accessors = new Dictionary<string, Func<object>>()
+        {
+            { "Marks", () => GetEntry().GetMarks() },
+        };
+
         _owner = owner;
         _runFormation = runFormation;
 
@@ -60,11 +70,13 @@ public class Formation : StageEventListener, IFormationModel
     #region IFormationModel
 
     public string GetName() => _runFormation.GetName();
-    public JingJie GetJingJie() => _runFormation.GetJingJie();
+    public JingJie GetLowestJingJie() => _runFormation.GetLowestJingJie();
+    public JingJie? GetActivatedJingJie() => _runFormation.GetActivatedJingJie();
     public string GetConditionDescription() => _runFormation.GetConditionDescription();
     public string GetRewardDescriptionFromJingJie(JingJie jingJie) => _runFormation.GetRewardDescriptionFromJingJie(jingJie);
-    public int? GetProgress() => _runFormation.GetProgress();
     public string GetTriviaFromJingJie(JingJie jingJie) => _runFormation.GetTriviaFromJingJie(jingJie);
+    public JingJie GetIncrementedJingJie(JingJie jingJie) => _runFormation.GetIncrementedJingJie(jingJie);
+    public int GetRequirementFromJingJie(JingJie jingJie) => _runFormation.GetRequirementFromJingJie(jingJie);
 
     #endregion
 
@@ -72,7 +84,9 @@ public class Formation : StageEventListener, IFormationModel
 
     public int GetMin() => _runFormation.GetMin();
     public int GetMax() => _runFormation.GetMax();
-    public int GetValue() => _runFormation.GetValue();
+    public int? GetValue() => _runFormation.GetValue();
+    public Address GetMarkListModelAddress(Address address)
+        => address.Append(".Marks");
 
     #endregion
 }

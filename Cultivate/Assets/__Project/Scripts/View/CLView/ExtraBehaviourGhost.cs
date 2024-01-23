@@ -21,14 +21,14 @@ public class ExtraBehaviourGhost : ExtraBehaviour
         if (ib == null)
             return;
 
-        ib.BeginDragNeuron.Add(Ghost.BeginDrag);
-        ib.EndDragNeuron.Add(Ghost.EndDrag);
-        ib.DragNeuron.Add(Ghost.Drag);
+        ib.BeginDragNeuron.Join(Ghost.BeginDrag);
+        ib.EndDragNeuron.Join(Ghost.EndDrag);
+        ib.DragNeuron.Join(Ghost.Drag);
 
-        ib.BeginDragNeuron.Add(CLView.SetInteractableToFalse);
-        ib.BeginDragNeuron.Add(CLView.SetVisibleToFalse);
-        ib.EndDragNeuron.Add(CLView.SetInteractableToTrue);
-        ib.EndDragNeuron.Add(CLView.SetVisibleToTrue);
+        ib.BeginDragNeuron.Join(CLView.SetInteractableToFalse);
+        ib.BeginDragNeuron.Join(CLView.SetVisibleToFalse);
+        ib.EndDragNeuron.Join(CLView.SetInteractableToTrue);
+        ib.EndDragNeuron.Join(CLView.SetVisibleToTrue);
     }
 
     public void FromDrop()

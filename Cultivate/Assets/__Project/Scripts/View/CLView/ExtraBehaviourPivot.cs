@@ -19,8 +19,8 @@ public class ExtraBehaviourPivot : ExtraBehaviour
         if (ib == null)
             return;
 
-        ib.PointerEnterNeuron.Add(PointerEnter);
-        ib.PointerExitNeuron.Add(PointerExit);
+        ib.PointerEnterNeuron.Join(PointerEnter);
+        ib.PointerExitNeuron.Join(PointerExit);
     }
 
     public RectTransform GetDisplayTransform()

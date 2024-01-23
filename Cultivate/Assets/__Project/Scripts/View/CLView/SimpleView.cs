@@ -13,6 +13,11 @@ public class SimpleView : CLView
         RectTransform.localScale = pivot.localScale;
     }
 
+    public void SetLocalPosition(Vector3 localPosition)
+    {
+        RectTransform.localPosition = localPosition;
+    }
+
     private CanvasGroup CanvasGroup;
     public void SetVisible(bool value)
     {

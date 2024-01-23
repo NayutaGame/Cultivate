@@ -22,6 +22,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
     private int _max;
 
     private ListModel<MarkModel> _markListModel;
+    public ListModel<MarkModel> GetMarks() => _markListModel;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -30,6 +31,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
         _accessors = new Dictionary<string, Func<object>>()
         {
             { "SubFormations", () => _subFormationEntries },
+            { "Marks", () => _markListModel },
         };
 
         _order = order;
@@ -65,11 +67,20 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
     #region IFormationModel
 
-    public JingJie GetJingJie() => FormationWithLowestJingJie().GetJingJie();
+    public JingJie GetLowestJingJie() => FormationWithLowestJingJie().GetJingJie();
+    public JingJie? GetActivatedJingJie() => null;
     public string GetConditionDescription() => _conditionDescription;
     public string GetRewardDescriptionFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetRewardDescription();
-    public int? GetProgress() => null;
     public string GetTriviaFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetTrivia();
+    public JingJie GetIncrementedJingJie(JingJie jingJie)
+    {
+        int index = _subFormationEntries.Traversal().FirstIdx(e => e.GetJingJie() == jingJie).Value;
+        index--;
+        if (index < 0)
+            index += _subFormationEntries.Count();
+        return _subFormationEntries[index].GetJingJie();
+    }
+    public int GetRequirementFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetRequirement();
 
     #endregion
 
@@ -77,7 +88,9 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
     public int GetMin() => _min;
     public int GetMax() => _max;
-    public int GetValue() => _min;
+    public int? GetValue() => null;
+    public Address GetMarkListModelAddress(Address address)
+        => address.Append(".Marks");
 
     #endregion
 }

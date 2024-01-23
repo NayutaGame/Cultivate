@@ -21,8 +21,8 @@ public class ExtraBehaviourBlackFill : ExtraBehaviour
         if (ib == null)
             return;
 
-        ib.PointerEnterNeuron.Add(PointerEnter);
-        ib.PointerExitNeuron.Add(PointerExit);
+        ib.PointerEnterNeuron.Join(PointerEnter);
+        ib.PointerExitNeuron.Join(PointerExit);
     }
 
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)

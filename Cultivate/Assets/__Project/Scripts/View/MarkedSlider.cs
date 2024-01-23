@@ -1,26 +1,31 @@
 
+using CLLibrary;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MarkedSlider : SimpleView
 {
-    [SerializeField] private ListView MarkList;
+    [SerializeField] public ListView MarkList;
     [SerializeField] private Slider _slider;
-    [SerializeField] private MonoBehaviour CurrMark;
+    [SerializeField] private RectTransform FillRect;
+    [SerializeField] private MarkCursorView MarkCursorView;
 
-    public void hehe()
+    private float XFromMark(float mark)
     {
-        int curr = 7;
-        int halfCount = 6;
-
-        float x = Mathf.Lerp(_slider.handleRect.rect.xMin, _slider.handleRect.rect.xMax, (float)(curr - halfCount) / halfCount);
+        float t = Mathf.InverseLerp(_slider.minValue, _slider.maxValue, mark);
+        return Mathf.Lerp(FillRect.rect.xMin, FillRect.rect.xMax, t);
     }
 
-    public void haha()
+    private void SetPositionForMarkView(MarkView markView, int mark)
     {
-        // 1. min and max
-        // 2. mark objects
-        // 3. curr value, which is progress, can be null
+        Vector3 oldPosition = markView.GetDisplayTransform().localPosition;
+        markView.SetLocalPosition(new Vector3(XFromMark(mark), oldPosition.y, oldPosition.z));
+    }
+
+    private void SetPositionForMarkCursor(float mark)
+    {
+        Vector3 oldPosition = MarkCursorView.GetLocalPosition();
+        MarkCursorView.SetLocalPosition(new Vector3(XFromMark(mark), oldPosition.y, oldPosition.z));
     }
 
     public override void SetAddress(Address address)
@@ -28,7 +33,8 @@ public class MarkedSlider : SimpleView
         base.SetAddress(address);
 
         IMarkedSliderModel model = Get<IMarkedSliderModel>();
-        // MarkList.SetAddress(model.GetMarkListModelAddressSuffix());
+        Address markListModelAddress = model.GetMarkListModelAddress(address);
+        MarkList.SetAddress(markListModelAddress);
     }
 
     public override void Refresh()
@@ -38,8 +44,27 @@ public class MarkedSlider : SimpleView
         IMarkedSliderModel model = Get<IMarkedSliderModel>();
         _slider.minValue = model.GetMin();
         _slider.maxValue = model.GetMax();
-        _slider.value = model.GetValue();
 
-        // MarkList.Refresh();
+        MarkList.Refresh();
+        MarkList.TraversalActive().Do(itemBehaviour =>
+        {
+            MarkView markView = itemBehaviour.GetSimpleView() as MarkView;
+            MarkModel markModel = markView.Get<MarkModel>();
+            SetPositionForMarkView(markView, markModel._mark);
+        });
+
+        SetValue(model.GetValue());
+    }
+
+    private void SetValue(int? value)
+    {
+        MarkCursorView.gameObject.SetActive(value.HasValue);
+
+        if (!value.HasValue)
+            return;
+
+        _slider.value = value.Value;
+        SetPositionForMarkCursor(_slider.value);
+        MarkCursorView.SetText(_slider.value.ToString());
     }
 }

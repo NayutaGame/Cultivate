@@ -1,10 +1,13 @@
 
+using CLLibrary;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class FormationAnnotationView : SimpleView
 {
-    private JingJie _jingJie;
+    private JingJie _showingJingJie;
+    private int _showingMark;
 
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text ConditionDescriptionText;
@@ -18,7 +21,11 @@ public class FormationAnnotationView : SimpleView
     {
         base.SetAddress(address);
         IFormationModel formation = Get<IFormationModel>();
-        _jingJie = formation.GetJingJie();
+
+        _showingJingJie = formation.GetActivatedJingJie() ?? formation.GetLowestJingJie();
+        _showingMark = formation.GetRequirementFromJingJie(_showingJingJie);
+
+        MarkedSlider.SetAddress(GetAddress());
     }
 
     public override void Refresh()
@@ -27,15 +34,34 @@ public class FormationAnnotationView : SimpleView
 
         IFormationModel formation = Get<IFormationModel>();
 
-        TitleText.text = $"{_jingJie} {formation.GetName()}";
+        TitleText.text = $"{_showingJingJie} {formation.GetName()}";
         ConditionDescriptionText.text = formation.GetConditionDescription();
 
-        MarkedSlider.SetAddress(GetAddress());
+        MarkedSlider.Refresh();
+        MarkedSlider.MarkList.TraversalActive().Do(itemBehaviour =>
+        {
+            MarkView markView = itemBehaviour.GetSimpleView() as MarkView;
+            MarkModel markModel = markView.Get<MarkModel>();
 
-        RewardDescriptionText.text = formation.GetRewardDescriptionFromJingJie(_jingJie);
+            bool activated = IsActivatedFromFormation(formation, markModel._mark);
+            bool showing = markModel._mark == _showingMark;
+
+            markView.SetState(activated, showing);
+        });
+
+        RewardDescriptionText.text = formation.GetRewardDescriptionFromJingJie(_showingJingJie);
         // AnnotationText.text = formationEntry.GetAnnotationText();
 
-        SetTrivia(formation.GetTriviaFromJingJie(_jingJie));
+        SetTrivia(formation.GetTriviaFromJingJie(_showingJingJie));
+    }
+
+    private bool IsActivatedFromFormation(IFormationModel formation, int mark)
+    {
+        JingJie? activatedJingJie = formation.GetActivatedJingJie();
+        if (activatedJingJie.HasValue)
+            return formation.GetRequirementFromJingJie(activatedJingJie.Value) == mark;
+
+        return false;
     }
 
     private void SetTrivia(string trivia)
@@ -47,5 +73,13 @@ public class FormationAnnotationView : SimpleView
 
         if (hasTrivia)
             TriviaText.text = trivia;
+    }
+
+    public void SwitchShowingJingJie(InteractBehaviour ib, PointerEventData d)
+    {
+        IFormationModel formation = Get<IFormationModel>();
+        _showingJingJie = formation.GetIncrementedJingJie(_showingJingJie);
+        _showingMark = formation.GetRequirementFromJingJie(_showingJingJie);
+        Refresh();
     }
 }

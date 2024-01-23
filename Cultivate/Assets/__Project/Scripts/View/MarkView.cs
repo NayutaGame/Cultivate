@@ -15,4 +15,21 @@ public class MarkView : SimpleView
         MarkModel mark = Get<MarkModel>();
         TagText.text = $"{mark._tag}{mark._mark}";
     }
+
+    public void SetState(bool activated, bool showing)
+    {
+        if (activated)
+        {
+            BackgroundImage.color = Color.green;
+            return;
+        }
+
+        if (showing)
+        {
+            BackgroundImage.color = Color.yellow;
+            return;
+        }
+
+        BackgroundImage.color = Color.red;
+    }
 }
