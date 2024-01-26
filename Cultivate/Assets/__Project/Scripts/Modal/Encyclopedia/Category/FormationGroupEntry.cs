@@ -5,7 +5,7 @@ using CLLibrary;
 
 public class FormationGroupEntry : Entry, Addressable, IFormationModel
 {
-    private static readonly int RESERVED_PROGRESS = 4;
+    private static readonly int TOLERANCE = 4;
 
     private int _order;
     public int Order => _order;
@@ -45,7 +45,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
         _subFormationEntries.Traversal().Do(f => f.SetFormationGroupEntry(this));
 
-        _min = FormationWithLowestJingJie().GetRequirement() - RESERVED_PROGRESS;
+        _min = FormationWithLowestJingJie().GetRequirement() - TOLERANCE;
         _max = FormationWithHighestJingJie().GetRequirement();
 
         _markListModel = new();

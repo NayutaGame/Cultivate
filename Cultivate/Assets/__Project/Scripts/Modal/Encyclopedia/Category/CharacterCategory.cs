@@ -60,7 +60,30 @@ public class CharacterCategory : Category<CharacterEntry>
                                            "战斗后，可返还至多一张被使用的机关牌"),
             new("念无劫", abilityDescription: "生命上限增加，战斗开始时，力量-1/2/3/4/5"),
             new("风雨晴", abilityDescription: "游戏开始时以及境界提升时，抽一张牌\n" +
-                                           "金丹后，组成阵法时，需求-1；化神，变成-2"),
+                                           "金丹后，组成阵法时，需求-1；化神，变成-2",
+                runEventDescriptors: new RunEventDescriptor[]
+                {
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WILL_FORMATION, 0, (listener, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        RunFormationDetails d = (RunFormationDetails)eventDetails;
+
+                        bool ownerIsHome = env.Home == d.Owner;
+                        if (!ownerIsHome)
+                            return;
+
+                        if (d.Owner.GetJingJie() < JingJie.JinDan)
+                            return;
+
+                        if (d.Owner.GetJingJie() < JingJie.HuaShen)
+                        {
+                            d.Proficiency = 1;
+                            return;
+                        }
+
+                        d.Proficiency = 2;
+                    }),
+                }),
             new("彼此卿", abilityDescription: "卡组中第一张空位将模仿对方对位的牌\n" +
                                            "如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿对方的卡",
                 runEventDescriptors: new RunEventDescriptor[]

@@ -214,7 +214,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
         _formations = new();
         _showingFormations = new(_formations, f =>
-            f.GetMin() <= f.GetProgress() && f.GetProgress() <= f.GetMax());
+            f.GetMin() <= f.GetProgress());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
 
         UpdateReveal();
@@ -234,6 +234,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         {
             { "Slots", () => _slots },
             { "RunFormations", () => _formations },
+            { "ShowingFormations", () => _showingFormations },
         };
         _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.EntityCategory[_entry.GetName()];
 

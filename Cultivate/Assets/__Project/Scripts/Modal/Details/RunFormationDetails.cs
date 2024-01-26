@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RunFormationDetails : EventDetails
 {
+    public RunEntity Owner;
+
     public int[] WuXingCounts;
     public List<WuXing> WuXingOrder;
 
@@ -19,8 +21,12 @@ public class RunFormationDetails : EventDetails
     public int TotalCostCount;
     public int HighestConsecutiveAttackCount;
 
+    public int Proficiency;
+
     public RunFormationDetails(RunEntity entity)
     {
+        Owner = entity;
+
         WuXingCounts = new int[WuXing.Length];
         SwiftCount = 0;
         ExhaustedCount = 0;
@@ -66,5 +72,7 @@ public class RunFormationDetails : EventDetails
         NonSwiftCount = entity.GetSlotLimit() - SwiftCount;
         NonExhaustedCount = entity.GetSlotLimit() - ExhaustedCount;
         NonAttackCount = entity.GetSlotLimit() - AttackCount;
+
+        Proficiency = 0;
     }
 }

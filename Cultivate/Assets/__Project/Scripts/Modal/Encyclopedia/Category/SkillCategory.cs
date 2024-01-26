@@ -249,7 +249,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("永久免费");
                 }),
 
-            new("地府通讯器", JingJie.FanXu, "失去一半生命，每8，灵气+1", // 轮香刃
+            new("地府通讯器", JingJie.FanXu, "失去一半生命，每8，灵气+1", // 轮香刃，缺少匣
                 skillTypeComposite: SkillType.LingQi | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -293,7 +293,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.AttackProcedure(1, times: 10);
                 }),
 
-            new("炼丹炉", JingJie.FanXu, "消耗\n回合开始时：力量+1", // 香刃匣
+            new("炼丹炉", JingJie.FanXu, "消耗\n回合开始时：力量+1", // 香刃匣，缺少轮
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -339,7 +339,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("闪避", 6);
                 }),
 
-            new("外骨骼", JingJie.FanXu, "消耗\n攻击时，护甲+3", // 刃匣轮
+            new("外骨骼", JingJie.FanXu, "消耗\n攻击时，护甲+3", // 刃匣轮，缺少香
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>
@@ -386,7 +386,7 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.BuffSelfProcedure("飞行器");
                 }),
 
-            new("时光机", JingJie.FanXu, "消耗\n使用一张牌前，升级", // 匣轮香
+            new("时光机", JingJie.FanXu, "消耗\n使用一张牌前，升级", // 匣轮香，缺少刃
                 skillTypeComposite: SkillType.XiaoHao | SkillType.SunHao, withinPool: false,
                 channelTimeEvaluator: 2,
                 execute: async (caster, skill, recursive) =>

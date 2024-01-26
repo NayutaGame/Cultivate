@@ -8,6 +8,7 @@ public class FilteredListModel<T> : IListModel
     public event Func<int, object, Task> InsertEvent;
     public event Func<int, Task> RemoveAtEvent;
     public event Func<int, Task> ModifiedEvent;
+    public event Func<Task> ResyncEvent;
 
     public int Count()
         => _filteredList.Count;
@@ -29,6 +30,7 @@ public class FilteredListModel<T> : IListModel
     public void Refresh()
     {
         _filteredList = _list.Filter(_filter);
+        ResyncEvent?.Invoke();
     }
 
     public FilteredListModel(ListModel<T> list, Predicate<T> filter = null)

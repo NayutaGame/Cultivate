@@ -177,6 +177,7 @@ public class ListView : SimpleView
                 _model.InsertEvent -= InvokeInsertGate;
                 _model.RemoveAtEvent -= InvokeRemoveAtGate;
                 _model.ModifiedEvent -= InvokeModifiedGate;
+                _model.ResyncEvent -= InvokeResyncGate;
             }
             _model = value;
             if (_model != null)
@@ -184,6 +185,7 @@ public class ListView : SimpleView
                 _model.InsertEvent += InvokeInsertGate;
                 _model.RemoveAtEvent += InvokeRemoveAtGate;
                 _model.ModifiedEvent += InvokeModifiedGate;
+                _model.ResyncEvent += InvokeResyncGate;
             }
         }
     }
@@ -194,18 +196,22 @@ public class ListView : SimpleView
     private async Task InvokeRemoveAtGate(int index) { if (RemoveAtGate != null) await RemoveAtGate(index); }
     private event Func<int, Task> ModifiedGate;
     private async Task InvokeModifiedGate(int index) { if (ModifiedGate != null) await ModifiedGate(index); }
+    private event Func<Task> ResyncGate;
+    private async Task InvokeResyncGate() { if (ResyncGate != null) await ResyncGate(); }
 
     private void OnEnable()
     {
         InsertGate += InsertItem;
         RemoveAtGate += RemoveAt;
         ModifiedGate += Modified;
+        ResyncGate += Resync;
     }
     private void OnDisable()
     {
         InsertGate -= InsertItem;
         RemoveAtGate -= RemoveAt;
         ModifiedGate -= Modified;
+        ResyncGate -= Resync;
     }
 
     protected virtual async Task InsertItem(int index, object item)
@@ -224,6 +230,9 @@ public class ListView : SimpleView
     {
         _activePool[index].GetSimpleView().Refresh();
     }
+
+    protected virtual async Task Resync()
+        => Sync();
 
     #endregion
 

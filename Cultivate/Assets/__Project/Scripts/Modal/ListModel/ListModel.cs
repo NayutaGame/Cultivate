@@ -24,6 +24,7 @@ public class ListModel<T> : IListModel
     public event Func<int, object, Task> InsertEvent;
     public event Func<int, Task> RemoveAtEvent;
     public event Func<int, Task> ModifiedEvent;
+    public event Func<Task> ResyncEvent;
     public int Count() => _list.Count;
     public object Get(int index) => _list[index];
 
@@ -133,6 +134,7 @@ public interface IListModel
     event Func<int, object, Task> InsertEvent;
     event Func<int, Task> RemoveAtEvent;
     event Func<int, Task> ModifiedEvent;
+    event Func<Task> ResyncEvent;
     int Count();
     object Get(int index);
 }

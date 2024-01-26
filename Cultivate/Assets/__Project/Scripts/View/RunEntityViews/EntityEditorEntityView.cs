@@ -78,7 +78,7 @@ public class EntityEditorEntityView : SimpleView
 
         if (FormationListView != null)
         {
-            FormationListView.SetAddress(GetAddress().Append(".RunFormations"));
+            FormationListView.SetAddress(GetAddress().Append(".ShowingFormations"));
             FormationListView.PointerEnterNeuron.Join(PointerEnterFormationNeuron);
             FormationListView.PointerExitNeuron.Join(PointerExitFormationNeuron);
             FormationListView.PointerMoveNeuron.Join(PointerMoveFormationNeuron);

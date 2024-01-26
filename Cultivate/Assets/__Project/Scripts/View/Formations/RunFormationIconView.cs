@@ -1,7 +1,6 @@
 
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class RunFormationIconView : SimpleView
 {
@@ -17,7 +16,11 @@ public class RunFormationIconView : SimpleView
         if (formationIsNull)
             return;
 
-        NameText.text = formation.GetName();
+        JingJie? jingJie = formation.GetActivatedJingJie();
+        if (jingJie != null)
+            NameText.text = $"<style={jingJie.ToString()}>{formation.GetName()}</style>";
+        else
+            NameText.text = formation.GetName();
     }
 }
 
