@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using CLLibrary;
+using FMOD;
 using UnityEngine;
 
 [Serializable]
@@ -127,6 +128,17 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_PLACEMENT, d);
     }
 
+    public void DepleteProcedure()
+    {
+        DepleteDetails d = new(this);
+
+        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WILL_DEPLETE, d);
+
+        _slots.Traversal().Do(slot => slot.TryDeplete(d));
+
+        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_DEPLETE, d);
+    }
+
     #region Formation
 
     private ListModel<RunFormation> _formations;
@@ -219,11 +231,6 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
         UpdateReveal();
         EnvironmentChanged();
-    }
-
-    public void TryExhaust()
-    {
-        _slots.Traversal().Do(slot => slot.TryExhaust());
     }
 
     public void OnBeforeSerialize() { }

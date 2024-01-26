@@ -57,7 +57,24 @@ public class CharacterCategory : Category<CharacterEntry>
             new("子非鱼", abilityDescription: "获得2暴击"),
             new("子非燕", abilityDescription: "战斗中，第三轮开始时，获得通透世界"),
             new("墨虚雪", abilityDescription: "游戏开始时以及境界提升时，获得一张机关牌\n" +
-                                           "战斗后，可返还至多一张被使用的机关牌"),
+                                           "战斗后，可返还至多一张被使用的机关牌",
+                runEventDescriptors: new RunEventDescriptor[]
+                {
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_DEPLETE, 0, (listener, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        DepleteDetails d = (DepleteDetails)eventDetails;
+
+                        bool ownerIsHome = env.Home == d.Owner;
+                        if (!ownerIsHome)
+                            return;
+
+                        foreach (var item in d.DepletedSkills)
+                        {
+                            Debug.Log(item.GetName());
+                        }
+                    }),
+                }),
             new("念无劫", abilityDescription: "生命上限增加，战斗开始时，力量-1/2/3/4/5"),
             new("风雨晴", abilityDescription: "游戏开始时以及境界提升时，抽一张牌\n" +
                                            "金丹后，组成阵法时，需求-1；化神，变成-2",

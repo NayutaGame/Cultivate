@@ -100,7 +100,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         return true;
     }
 
-    public bool TryExhaust()
+    public bool TryDeplete(DepleteDetails d)
     {
         if (Skill == null)
             return false;
@@ -108,6 +108,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         if (!sunHao)
             return false;
 
+        d.DepletedSkills.Add(Skill);
         Skill = null;
         return true;
     }

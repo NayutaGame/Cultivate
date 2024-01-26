@@ -474,7 +474,7 @@ public class StageEnvironment : Addressable, StageEventListener
     public void WriteResult()
     {
         _entities[0].WriteResult();
-        _config.Home.TryExhaust();
+        _config.Home.DepleteProcedure();
     }
 
     public async Task Simulate()
