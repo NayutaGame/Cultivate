@@ -18,7 +18,9 @@ public class StageManager : Singleton<StageManager>, Addressable
     public EntitySlot[] _slots;
 
     public StageAnimationDelegate Anim;
-    public StageEnvironment Environment;
+    private StageEnvironment _environment;
+    public StageEnvironment GetEnvironment() => _environment;
+    public void SetEnvironment(StageEnvironment env) => _environment = env;
     public StageTimeline Timeline;
     private Task _task;
 
@@ -30,7 +32,7 @@ public class StageManager : Singleton<StageManager>, Addressable
 
         _accessors = new()
         {
-            { "Environment", () => Environment },
+            { "Environment", () => _environment },
             { "Timeline",    () => Timeline },
         };
 
@@ -40,7 +42,7 @@ public class StageManager : Singleton<StageManager>, Addressable
     public async Task Enter()
     {
         CanvasManager.Instance.StageCanvas.InitialSetup();
-        _task = Environment.Simulate();
+        _task = _environment.Simulate();
         await _task;
         AppManager.Pop();
     }
@@ -49,42 +51,34 @@ public class StageManager : Singleton<StageManager>, Addressable
     {
         DisableVFX();
 
-        if (!Environment.Config.WriteResult)
+        if (!_environment.Config.WriteResult)
             return;
 
-        Signal signal = new BattleResultSignal(Environment.Result.HomeVictory
+        Signal signal = new BattleResultSignal(_environment.Result.HomeVictory
             ? BattleResultSignal.BattleResultState.Win
             : BattleResultSignal.BattleResultState.Lose);
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(signal);
         await CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
-        Environment.WriteResult();
+        _environment.WriteResult();
     }
 
     public void Pause()
-    {
-        Anim.PauseTween();
-    }
+        => Anim.PauseTween();
 
     public void Pause(InteractBehaviour ib, PointerEventData eventData)
         => Pause();
 
     public void Resume()
-    {
-        Anim.ResumeTween();
-    }
+        => Anim.ResumeTween();
 
     public void Resume(InteractBehaviour ib, PointerEventData eventData)
         => Resume();
 
     public void SetSpeed(float speed)
-    {
-        Anim.SetSpeed(speed);
-    }
+        => Anim.SetSpeed(speed);
 
     public void Skip()
-    {
-        Anim.Skip();
-    }
+        => Anim.Skip();
 
     public void DisableVFX()
     {

@@ -45,7 +45,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     public void Combat()
     {
         RunEntity away = GetAway();
-        StageConfig d = new StageConfig(true, false, false, false, Home, away);
+        StageConfig d = new StageConfig(true, false, false, false, Home, away, null);
         StageEnvironment environment = StageEnvironment.FromConfig(d);
         environment.Execute();
     }
@@ -53,7 +53,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     public void Simulate()
     {
         RunEntity away = GetAway();
-        StageConfig d = new StageConfig(false, false, false, false, Home, away);
+        StageConfig d = new StageConfig(false, false, false, false, Home, away, null);
         StageEnvironment environment = StageEnvironment.FromConfig(d);
         environment.Execute();
         SimulateResult = environment.Result;

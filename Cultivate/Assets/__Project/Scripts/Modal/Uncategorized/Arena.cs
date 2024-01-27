@@ -51,7 +51,7 @@ public class Arena : ListModel<RunEntity>, Addressable
         for (int y = 0; y < ArenaSize; y++)
         for (int x = 0; x < ArenaSize; x++)
         {
-            StageConfig d = new StageConfig(false, false, true, false, this[y], this[x]);
+            StageConfig d = new StageConfig(false, false, true, false, this[y], this[x], null);
             StageEnvironment environment = StageEnvironment.FromConfig(d);
             environment.Execute();
             _reports[y * ArenaSize + x] = environment.Result;

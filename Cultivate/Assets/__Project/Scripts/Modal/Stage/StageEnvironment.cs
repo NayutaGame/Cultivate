@@ -448,10 +448,10 @@ public class StageEnvironment : Addressable, StageEventListener
         }
 
         StageEnvironment futureEnvironment =
-            FromConfig(new StageConfig(false, false, false, true, _config.Home, _config.Away));
+            FromConfig(new StageConfig(false, false, false, true, _config.Home, _config.Away, _config.RunConfig));
         futureEnvironment.Simulate().GetAwaiter().GetResult();
 
-        StageManager.Instance.Environment = this;
+        StageManager.Instance.SetEnvironment(this);
         StageManager.Instance.Timeline = futureEnvironment.Result.Timeline;
 
         AppManager.Push(new StageAppS());
@@ -516,6 +516,8 @@ public class StageEnvironment : Addressable, StageEventListener
 
         ClearManaIndicator();
 
+        Register();
+
         await MingYuanPenaltyProcedure();
         await FormationProcedure();
         await StartStageProcedure();
@@ -530,9 +532,53 @@ public class StageEnvironment : Addressable, StageEventListener
 
         await EndStageProcedure();
 
+        Unregister();
+
         _result.HomeLeftHp = _entities[0].Hp;
         _result.AwayLeftHp = _entities[1].Hp;
         _result.TryAppend(_result.HomeVictory ? $"主场胜利\n" : $"主场失败\n");
+    }
+
+    public void Register()
+    {
+        if (_config.RunConfig == null)
+            return;
+
+        RegisterList(_config.RunConfig.CharacterProfile.GetEntry()._stageEventDescriptors);
+
+        DifficultyEntry difficultyEntry = _config.RunConfig.DifficultyProfile.GetEntry();
+        RegisterList(difficultyEntry._stageEventDescriptors);
+        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+            RegisterList(additionalDifficultyEntry._stageEventDescriptors);
+
+        RegisterList(_config.RunConfig.DesignerConfig._stageEventDescriptors);
+    }
+
+    private void RegisterList(StageEventDescriptor[] list)
+    {
+        list.FilterObj(d => d.ListenerId == StageEventDict.STAGE_ENVIRONMENT)
+            .Do(e => _eventDict.Register(this, e));
+    }
+
+    public void Unregister()
+    {
+        if (_config.RunConfig == null)
+            return;
+
+        UnregisterList(_config.RunConfig.CharacterProfile.GetEntry()._stageEventDescriptors);
+
+        DifficultyEntry difficultyEntry = _config.RunConfig.DifficultyProfile.GetEntry();
+        UnregisterList(difficultyEntry._stageEventDescriptors);
+        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+            UnregisterList(additionalDifficultyEntry._stageEventDescriptors);
+
+        UnregisterList(_config.RunConfig.DesignerConfig._stageEventDescriptors);
+    }
+
+    private void UnregisterList(StageEventDescriptor[] list)
+    {
+        list.FilterObj(d => d.ListenerId == StageEventDict.STAGE_ENVIRONMENT)
+            .Do(e => _eventDict.Unregister(this, e));
     }
 
     private void ClearManaIndicator()

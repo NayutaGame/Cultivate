@@ -32,7 +32,7 @@ public class RunEnvironment : Addressable, RunEventListener
         PlacementProcedure();
         FormationProcedure();
 
-        StageConfig d = new StageConfig(false, false, false, false, _home, _away);
+        StageConfig d = new StageConfig(false, false, false, false, _home, _away, _config);
         StageEnvironment environment = StageEnvironment.FromConfig(d);
         environment.Execute();
         SimulateResult = environment.Result;
@@ -195,22 +195,13 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void Register()
     {
-        RegisterCharacterProfile();
-        RegisterDifficultyProfile();
-        RegisterDesignerConfig();
-    }
-
-    private void RegisterCharacterProfile()
-    {
         RegisterList(_config.CharacterProfile.GetEntry()._runEventDescriptors);
-    }
 
-    private void RegisterDifficultyProfile()
-    {
-    }
+        DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
+        RegisterList(difficultyEntry._runEventDescriptors);
+        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+            RegisterList(additionalDifficultyEntry._runEventDescriptors);
 
-    private void RegisterDesignerConfig()
-    {
         RegisterList(_config.DesignerConfig._runEventDescriptors);
     }
 
@@ -222,22 +213,13 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void Unregister()
     {
-        UnregisterCharacterProfile();
-        UnregisterDifficultyProfile();
-        UnregisterDesignerConfig();
-    }
-
-    private void UnregisterCharacterProfile()
-    {
         UnregisterList(_config.CharacterProfile.GetEntry()._runEventDescriptors);
-    }
 
-    private void UnregisterDifficultyProfile()
-    {
-    }
+        DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
+        UnregisterList(difficultyEntry._runEventDescriptors);
+        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+            UnregisterList(additionalDifficultyEntry._runEventDescriptors);
 
-    private void UnregisterDesignerConfig()
-    {
         UnregisterList(_config.DesignerConfig._runEventDescriptors);
     }
 
@@ -249,7 +231,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void Combat()
     {
-        StageConfig d = new StageConfig(true, true, false, false, _home, _away);
+        StageConfig d = new StageConfig(true, true, false, false, _home, _away, _config);
         StageEnvironment environment = StageEnvironment.FromConfig(d);
         environment.Execute();
     }
