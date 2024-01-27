@@ -6,6 +6,7 @@ public class StageAppS : AppS
     public override async Task Enter(NavigateDetails d, Config config)
     {
         await base.Enter(d, config);
+
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         CanvasManager.Instance.StageCanvas.Configure();
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(true);

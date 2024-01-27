@@ -21,7 +21,7 @@ public class RunResultPanel : Panel
         base.Refresh();
 
         RunResultPanelDescriptor panelDescriptor = RunManager.Instance.Environment.GetActivePanel() as RunResultPanelDescriptor;
-        if (panelDescriptor.RunCommitDetails.Victory)
+        if (panelDescriptor.RunResult.State == RunResult.RunResultState.Victory)
         {
             ResultText.text = "胜利";
         }

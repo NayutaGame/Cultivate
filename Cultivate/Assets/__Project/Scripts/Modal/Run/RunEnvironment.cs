@@ -86,7 +86,7 @@ public class RunEnvironment : Addressable, RunEventListener
         _eventDict.SendEvent(RunEventDict.DID_SET_D_MINGYUAN, d);
 
         if (GetMingYuan().GetCurr() <= 0)
-            CommitDetails = new RunCommitDetails(false);
+            Result.State = RunResult.RunResultState.Defeat;
     }
 
     public void SetMaxMingYuanProcedure(int value)
@@ -131,7 +131,7 @@ public class RunEnvironment : Addressable, RunEventListener
     private RunEventDict _eventDict; public RunEventDict EventDict => _eventDict;
 
     public StageResult SimulateResult;
-    public RunCommitDetails CommitDetails { get; private set; }
+    public RunResult Result { get; }
     private RunResultPanelDescriptor _runResultPanelDescriptor;
 
     public static RunEnvironment FromConfig(RunConfig config)
@@ -165,6 +165,8 @@ public class RunEnvironment : Addressable, RunEventListener
         MechBag = new();
         Gold = 0;
         _eventDict = new();
+
+        Result = new RunResult();
 
         EnvironmentChangedEvent += SimulateProcedure;
     }
@@ -492,10 +494,10 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public bool TryCommit()
     {
-        if (CommitDetails == null)
+        if (Result.State == RunResult.RunResultState.Unfinished)
             return false;
 
-        _runResultPanelDescriptor = new RunResultPanelDescriptor(CommitDetails);
+        _runResultPanelDescriptor = new RunResultPanelDescriptor(Result);
         return true;
     }
 

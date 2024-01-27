@@ -1,11 +1,18 @@
 
 public class RunResultPanelDescriptor : PanelDescriptor
 {
-    public RunCommitDetails RunCommitDetails;
+    public RunResult RunResult;
 
-    public RunResultPanelDescriptor(RunCommitDetails runCommitDetails)
+    public RunResultPanelDescriptor(RunResult runResult)
     {
-        RunCommitDetails = runCommitDetails;
+        RunResult = runResult;
+    }
+
+    public override void DefaultEnter()
+    {
+        base.DefaultEnter();
+
+        // Write Unlocks to profile and save profile
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)

@@ -43,8 +43,10 @@ public class RunAppS : AppS
         await CanvasManager.Instance.Curtain.PlayShowAnimation();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
         CanvasManager.Instance.RunCanvas.RunPanelCollection.DisableCurrentPanel();
+        RunResult result = RunManager.Instance.Environment.Result;
         RunManager.Instance.SetEnvironmentToNull();
-        return new();
+
+        return result;
     }
 
     public override async Task<Config> CEnter(NavigateDetails d)

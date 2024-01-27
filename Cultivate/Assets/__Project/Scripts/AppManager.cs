@@ -13,18 +13,20 @@ public class AppManager : Singleton<AppManager>, Addressable
     private Thread _mainThread;
     public bool IsMainThread() => _mainThread.Equals(Thread.CurrentThread);
 
+    [SerializeField] private AppCanvas AppCanvas;
+
     private AppSM _sm;
     public Settings Settings;
-    private Encyclopedia Encyclopedia;
 
-    [SerializeField] private AppCanvas AppCanvas;
+    private Encyclopedia Encyclopedia;
     public EditorManager EditorManager;
-    public ProfileManager ProfileManager;
-    public RunManager RunManager;
-    public StageManager StageManager;
 
     public FormationInventory FormationInventory;
     public SkillInventory SkillInventory;
+
+    public ProfileManager ProfileManager;
+    public RunManager RunManager;
+    public StageManager StageManager;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -38,15 +40,17 @@ public class AppManager : Singleton<AppManager>, Addressable
         {
             { "App", () => Instance },
             { "Settings", () => Settings },
-            { "Encyclopedia", () => Encyclopedia },
 
+            { "Encyclopedia", () => Encyclopedia },
             { "Editor", () => EditorManager.Instance },
-            { "Profile", () => ProfileManager },
-            { "Run", () => RunManager.Instance },
-            { "Stage", () => StageManager.Instance },
+            // Designer
 
             { "FormationInventory", () => FormationInventory },
             { "SkillInventory", () => SkillInventory },
+
+            { "Profile", () => ProfileManager },
+            { "Run", () => RunManager.Instance },
+            { "Stage", () => StageManager.Instance },
 
             { "Canvas", () => CanvasManager.Instance },
         };
@@ -66,7 +70,6 @@ public class AppManager : Singleton<AppManager>, Addressable
         EditorManager.gameObject.SetActive(true);
 
         ProfileManager = new();
-
         RunManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);
