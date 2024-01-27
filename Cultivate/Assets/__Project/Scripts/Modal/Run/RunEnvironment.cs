@@ -32,10 +32,7 @@ public class RunEnvironment : Addressable, RunEventListener
         PlacementProcedure();
         FormationProcedure();
 
-        StageConfig d = new StageConfig(false, false, false, false, _home, _away, _config);
-        StageEnvironment environment = StageEnvironment.FromConfig(d);
-        environment.Execute();
-        SimulateResult = environment.Result;
+        SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(_home, _away, _config));
     }
 
     private void PlacementProcedure()
@@ -233,9 +230,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void Combat()
     {
-        StageConfig d = new StageConfig(true, true, false, false, _home, _away, _config);
-        StageEnvironment environment = StageEnvironment.FromConfig(d);
-        environment.Execute();
+        StageEnvironment.Combat(StageConfig.ForCombat(_home, _away, _config));
     }
 
     public bool TryMerge(RunSkill lhs, RunSkill rhs)

@@ -44,19 +44,12 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     public void Combat()
     {
-        RunEntity away = GetAway();
-        StageConfig d = new StageConfig(true, false, false, false, Home, away, null);
-        StageEnvironment environment = StageEnvironment.FromConfig(d);
-        environment.Execute();
+        StageEnvironment.Combat(StageConfig.ForEditor(Home, GetAway(), null));
     }
 
     public void Simulate()
     {
-        RunEntity away = GetAway();
-        StageConfig d = new StageConfig(false, false, false, false, Home, away, null);
-        StageEnvironment environment = StageEnvironment.FromConfig(d);
-        environment.Execute();
-        SimulateResult = environment.Result;
+        SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(Home, GetAway(), null));
     }
 
     public void CopyToTop()

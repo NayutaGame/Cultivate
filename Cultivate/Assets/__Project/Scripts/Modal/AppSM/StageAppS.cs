@@ -3,13 +3,22 @@ using System.Threading.Tasks;
 
 public class StageAppS : AppS
 {
+    private StageConfig _config;
+
+    public StageAppS(StageConfig config)
+    {
+        _config = config;
+    }
+
     public override async Task Enter(NavigateDetails d, Config config)
     {
         await base.Enter(d, config);
 
         AppManager.Instance.StageManager.gameObject.SetActive(true);
+        StageManager.Instance.SetEnvironmentFromConfig(_config);
         CanvasManager.Instance.StageCanvas.Configure();
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(true);
+        CanvasManager.Instance.StageCanvas.InitialSetup();
         StageManager.Instance.Enter();
         await CanvasManager.Instance.Curtain.PlayHideAnimation();
     }

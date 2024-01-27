@@ -19,8 +19,6 @@ public class StageManager : Singleton<StageManager>, Addressable
 
     public StageAnimationDelegate Anim;
     private StageEnvironment _environment;
-    public StageEnvironment GetEnvironment() => _environment;
-    public void SetEnvironment(StageEnvironment env) => _environment = env;
     public StageTimeline Timeline;
     private Task _task;
 
@@ -39,10 +37,15 @@ public class StageManager : Singleton<StageManager>, Addressable
         Anim = new();
     }
 
+    public void SetEnvironmentFromConfig(StageConfig config)
+    {
+        _environment = StageEnvironment.FromConfig(config);
+        Timeline = StageEnvironment.CalcTimeline(config);
+    }
+
     public async Task Enter()
     {
-        CanvasManager.Instance.StageCanvas.InitialSetup();
-        _task = _environment.Simulate();
+        _task = _environment.Execute();
         await _task;
         AppManager.Pop();
     }

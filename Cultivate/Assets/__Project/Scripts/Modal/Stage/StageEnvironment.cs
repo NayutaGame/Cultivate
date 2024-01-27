@@ -435,26 +435,21 @@ public class StageEnvironment : Addressable, StageEventListener
     public static StageEnvironment FromConfig(StageConfig config)
         => new(config);
 
-    public void Execute()
+    public static StageTimeline CalcTimeline(StageConfig config)
+        => CalcSimulateResult(StageConfig.ForTimeline(config.Home, config.Away, config.RunConfig)).Timeline;
+
+    public static StageResult CalcSimulateResult(StageConfig config)
     {
-        if (!_config.Animated)
-        {
-            Simulate().GetAwaiter().GetResult();
+        StageEnvironment env = new(config);
+        env.Execute().GetAwaiter().GetResult();
+        if (env._config.WriteResult)
+            env.WriteResult();
+        return env._result;
+    }
 
-            if (_config.WriteResult)
-                WriteResult();
-
-            return;
-        }
-
-        StageEnvironment futureEnvironment =
-            FromConfig(new StageConfig(false, false, false, true, _config.Home, _config.Away, _config.RunConfig));
-        futureEnvironment.Simulate().GetAwaiter().GetResult();
-
-        StageManager.Instance.SetEnvironment(this);
-        StageManager.Instance.Timeline = futureEnvironment.Result.Timeline;
-
-        AppManager.Push(new StageAppS());
+    public static void Combat(StageConfig config)
+    {
+        AppManager.Push(new StageAppS(config));
     }
 
     public async Task TryPlayTween(StageTweenDescriptor descriptor)
@@ -477,7 +472,7 @@ public class StageEnvironment : Addressable, StageEventListener
         _config.Home.DepleteProcedure();
     }
 
-    public async Task Simulate()
+    public async Task Execute()
     {
         StageEventDescriptor writeManaShortage = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_SHORTAGE, 0,
             async (listener, d) =>

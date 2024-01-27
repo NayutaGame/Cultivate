@@ -7,8 +7,8 @@ public class Arena : ListModel<RunEntity>, Addressable
 {
     private static readonly int ArenaSize = 6;
 
-    private StageResult[] _reports;
-    public StageResult[] Reports => _reports;
+    private StageResult[] _results;
+    public StageResult[] Results => _results;
 
     public StageResult Result;
 
@@ -20,7 +20,7 @@ public class Arena : ListModel<RunEntity>, Addressable
     {
         _accessors = new()
         {
-            { "Briefs", () => _reports },
+            { "Briefs", () => _results },
         };
 
         ArenaSize.Do(item =>
@@ -28,7 +28,7 @@ public class Arena : ListModel<RunEntity>, Addressable
             Add(RunEntity.Default());
         });
 
-        _reports = new StageResult[ArenaSize * ArenaSize];
+        _results = new StageResult[ArenaSize * ArenaSize];
     }
 
     public bool TryWrite(RunSkill fromSkill, SkillSlot toSlot)
@@ -50,16 +50,11 @@ public class Arena : ListModel<RunEntity>, Addressable
     {
         for (int y = 0; y < ArenaSize; y++)
         for (int x = 0; x < ArenaSize; x++)
-        {
-            StageConfig d = new StageConfig(false, false, true, false, this[y], this[x], null);
-            StageEnvironment environment = StageEnvironment.FromConfig(d);
-            environment.Execute();
-            _reports[y * ArenaSize + x] = environment.Result;
-        }
+            _results[y * ArenaSize + x] = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(this[y], this[x], null));
     }
 
     public void ShowReport(int i)
     {
-        Result = Reports[i];
+        Result = Results[i];
     }
 }

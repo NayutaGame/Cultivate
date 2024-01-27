@@ -32,6 +32,8 @@ public class StageResult : Addressable
             _timeline = new StageTimeline();
     }
 
+    // use Neuron
+
     public void TryAppend(string s)
         => _reportBuilder?.Append(s);
 
