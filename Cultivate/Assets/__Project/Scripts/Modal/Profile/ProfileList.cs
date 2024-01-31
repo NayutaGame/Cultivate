@@ -8,6 +8,7 @@ public class ProfileList : ListModel<Profile>, Addressable
     public static readonly string Filename = "/ProfileList.json";
 
     private int CurrentIndex;
+    public Profile GetCurrent() => Get(CurrentIndex) as Profile;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -15,7 +16,7 @@ public class ProfileList : ListModel<Profile>, Addressable
     {
         _accessors = new()
         {
-            { "Current",           () => Get(CurrentIndex) },
+            { "Current",           GetCurrent },
         };
 
         Add(Profile.Default());

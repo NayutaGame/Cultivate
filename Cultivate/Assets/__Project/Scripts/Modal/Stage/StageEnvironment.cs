@@ -429,7 +429,7 @@ public class StageEnvironment : Addressable, StageEventListener
             new(this, _config.Away, 1),
         };
 
-        _result = new(_config.GenerateReport, _config.GenerateTimeline);
+        _result = new(_config);
     }
 
     public static StageEnvironment FromConfig(StageConfig config)
@@ -442,7 +442,7 @@ public class StageEnvironment : Addressable, StageEventListener
     {
         StageEnvironment env = new(config);
         env.Execute().GetAwaiter().GetResult();
-        if (env._config.WriteResult)
+        if (env._result.WriteResult)
             env.WriteResult();
         return env._result;
     }

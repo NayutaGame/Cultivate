@@ -35,4 +35,9 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         // when new entry is added, order will be corrupted
         // needs to fix order according to encyclopedia before using
     }
+
+    public void WriteRunResult(RunResult result)
+    {
+        Debug.Log(result.State);
+    }
 }

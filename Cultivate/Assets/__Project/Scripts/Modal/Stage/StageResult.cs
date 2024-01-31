@@ -9,6 +9,8 @@ public class StageResult : Addressable
     private StageTimeline _timeline;
     public StageTimeline Timeline => _timeline;
 
+    public bool WriteResult;
+
     public int HomeLeftHp;
     public int AwayLeftHp;
 
@@ -18,21 +20,23 @@ public class StageResult : Addressable
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public StageResult(bool generateReport, bool generateTimeline)
+    public StageResult(StageConfig config)
     {
         _accessors = new()
         {
             { "Timeline",              () => _timeline },
         };
 
-        if (generateReport)
+        if (config.GenerateReport)
             _reportBuilder = new StringBuilder();
 
-        if (generateTimeline)
+        if (config.GenerateTimeline)
             _timeline = new StageTimeline();
+
+        WriteResult = config.WriteResult;
     }
 
-    // use Neuron
+    // use Neuron (observer pattern)
 
     public void TryAppend(string s)
         => _reportBuilder?.Append(s);

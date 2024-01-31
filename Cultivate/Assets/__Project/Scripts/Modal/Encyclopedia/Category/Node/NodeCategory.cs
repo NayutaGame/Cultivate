@@ -1169,6 +1169,28 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
+            new AdventureNodeEntry("快速结算", "快速结算", withInPool: false,
+                create: runNode =>
+                {
+                    DialogPanelDescriptor A = new("用于测试Run结算",
+                        "胜利结算",
+                        "失败结算");
+
+                    A[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.Result.State = RunResult.RunResultState.Victory;
+                        return null;
+                    });
+
+                    A[1].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.Result.State = RunResult.RunResultState.Defeat;
+                        return null;
+                    });
+
+                    runNode.ChangePanel(A);
+                }),
+
             // new AdventureNodeEntry("神殿事件", "", normal: true,
             //     create: runNode =>
             //     {

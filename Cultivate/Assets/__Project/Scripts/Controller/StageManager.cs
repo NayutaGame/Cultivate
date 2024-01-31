@@ -54,7 +54,7 @@ public class StageManager : Singleton<StageManager>, Addressable
     {
         DisableVFX();
 
-        if (!_environment.Config.WriteResult)
+        if (!_environment.Result.WriteResult)
             return;
 
         Signal signal = new BattleResultSignal(_environment.Result.HomeVictory

@@ -7,7 +7,7 @@ using CLLibrary;
 public class DesignerEnvironment
 {
     public static DesignerConfig GetDesignerConfig()
-        => new(runEventDescriptors: new[] { CustomMap, StandardSkillPool, CustomRun });
+        => new(runEventDescriptors: new[] { QuickRunMap, StandardSkillPool, StandardRun });
 
     private static readonly RunEventDescriptor StandardMap =
         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -4, (listener, eventDetails) =>
@@ -67,6 +67,41 @@ public class DesignerEnvironment
                 // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["提升境界"], null, null, null, null, null, null, null, null, null } }, // CardPickerPanel
                 // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["照相机"], null, null, null, null, null, null, null, null, null } }, // Dialog
                 // { JingJie.LianQi   , new NodeEntry[] { Encyclopedia.NodeCategory["商店"], null, null, null, null, null, null, null, null, null } }, // Shop
+                { JingJie.ZhuJi    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+                { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+                { JingJie.YuanYing , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+                { JingJie.HuaShen  , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+                { JingJie.FanXu    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
+            };
+
+            map._normalPools = new Dictionary<JingJie, CyclicPool<NodeEntry>[]>()
+            {
+                { JingJie.LianQi   , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
+                { JingJie.ZhuJi    , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
+                { JingJie.JinDan   , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
+                { JingJie.YuanYing , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
+                { JingJie.HuaShen  , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._r, map._b } },
+                { JingJie.FanXu    , new[] { map._b, map._r, map._b, map._a, map._b, map._r, map._b, map._a, map._b, map._r } },
+            };
+        });
+
+    private static readonly RunEventDescriptor QuickRunMap =
+        new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -4, (listener, eventDetails) =>
+        {
+            RunEnvironment env = (RunEnvironment)listener;
+            RunDetails d = (RunDetails)eventDetails;
+
+            Map map = env.Map;
+
+            map.EntityPool = new();
+            map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
+            map._b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is BattleNodeEntry).ToList());
+            map._r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is RewardNodeEntry).ToList());
+            map._a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is AdventureNodeEntry).ToList());
+
+            map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
+            {
+                { JingJie.LianQi   , new NodeEntry[] { "快速结算", null, null, null, null, null, null, null, null, null } },
                 { JingJie.ZhuJi    , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
                 { JingJie.JinDan   , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },
                 { JingJie.YuanYing , new NodeEntry[] { null, null, null, null, null, null, null, null, null, null } },

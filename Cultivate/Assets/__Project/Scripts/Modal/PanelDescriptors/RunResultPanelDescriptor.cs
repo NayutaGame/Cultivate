@@ -12,7 +12,7 @@ public class RunResultPanelDescriptor : PanelDescriptor
     {
         base.DefaultEnter();
 
-        // Write Unlocks to profile and save profile
+        ProfileManager.WriteRunResultToCurrent(RunResult);
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)

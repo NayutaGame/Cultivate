@@ -57,9 +57,13 @@ public class Map : Addressable
         {
             TryFinishNode();
         }
+
         bool commit = RunManager.Instance.Environment?.TryCommit() ?? false;
-        if (commit)
-            return RunManager.Instance.Environment.GetActivePanel();
+        if (!commit)
+            return panelDescriptor;
+
+        panelDescriptor = RunManager.Instance.Environment.GetActivePanel();
+        CurrentNode.ChangePanel(panelDescriptor);
         return panelDescriptor;
     }
 

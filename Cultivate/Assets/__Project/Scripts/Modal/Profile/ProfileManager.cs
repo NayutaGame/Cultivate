@@ -30,4 +30,7 @@ public class ProfileManager : Addressable
     {
         ProfileList = FileUtility.ReadFromFile<ProfileList>(ProfileList.Filename);
     }
+
+    public static void WriteRunResultToCurrent(RunResult result)
+        => AppManager.Instance.ProfileManager.ProfileList.GetCurrent().WriteRunResult(result);
 }
