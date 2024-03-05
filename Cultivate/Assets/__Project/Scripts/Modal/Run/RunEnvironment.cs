@@ -26,6 +26,11 @@ public class RunEnvironment : Addressable, RunEventListener
 
     #region Procedures
 
+    public void Combat()
+    {
+        StageEnvironment.Combat(StageConfig.ForCombat(_home, _away, _config));
+    }
+
     // TODO: cache result
     private void SimulateProcedure()
     {
@@ -226,11 +231,6 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         list.FilterObj(d => d.ListenerId == RunEventDict.RUN_ENVIRONMENT)
             .Do(e => _eventDict.Unregister(this, e));
-    }
-
-    public void Combat()
-    {
-        StageEnvironment.Combat(StageConfig.ForCombat(_home, _away, _config));
     }
 
     public bool TryMerge(RunSkill lhs, RunSkill rhs)

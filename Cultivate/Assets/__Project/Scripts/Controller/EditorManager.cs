@@ -9,7 +9,13 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
     [NonSerialized] public EntityEditableList EntityEditableList;
-    [NonSerialized] public int? _selectionIndex;
+    [NonSerialized] private int? _selectionIndex;
+    public int? GetSelectionIndex() => _selectionIndex;
+    public void SetSelectionIndex(int? value)
+    {
+        _selectionIndex = value;
+        EnvironmentChanged();
+    }
 
     [NonSerialized] public RunEntity Home;
 
@@ -31,7 +37,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
         Home = RunEntity.Default();
         Home.EnvironmentChangedEvent += EnvironmentChanged;
-        EnvironmentChangedEvent += Simulate;
+        EnvironmentChangedEvent += SimulateProcedure;
     }
 
     private RunEntity GetAway()
@@ -47,9 +53,24 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         StageEnvironment.Combat(StageConfig.ForEditor(Home, GetAway(), null));
     }
 
-    public void Simulate()
+    public void SimulateProcedure()
     {
+        PlacementProcedure();
+        FormationProcedure();
+        
         SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(Home, GetAway(), null));
+    }
+
+    private void PlacementProcedure()
+    {
+        Home.PlacementProcedure();
+        GetAway().PlacementProcedure();
+    }
+
+    private void FormationProcedure()
+    {
+        Home.FormationProcedure();
+        GetAway().FormationProcedure();
     }
 
     public void CopyToTop()

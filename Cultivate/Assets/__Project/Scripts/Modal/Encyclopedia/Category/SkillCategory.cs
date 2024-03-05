@@ -1,11 +1,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
-using UnityEditor;
 using Range = CLLibrary.Range;
 
 public class SkillCategory : Category<SkillEntry>

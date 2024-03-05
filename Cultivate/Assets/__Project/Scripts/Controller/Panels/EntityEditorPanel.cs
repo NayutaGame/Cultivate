@@ -177,7 +177,7 @@ public class EntityEditorPanel : Panel
         _selectionIndex = EntityBrowser.IndexFromItemBehaviour(_selection.GetSimpleView().GetItemBehaviour());
 
         // TODO: submit form
-        EditorManager.Instance._selectionIndex = _selectionIndex;
+        EditorManager.Instance.SetSelectionIndex(_selectionIndex);
 
         if (_selection != null)
         {

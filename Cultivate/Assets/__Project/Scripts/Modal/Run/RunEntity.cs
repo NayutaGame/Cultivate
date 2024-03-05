@@ -246,6 +246,8 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.EntityCategory[_entry.GetName()];
 
         _formations = new();
+        _showingFormations = new(_formations, f =>
+            f.GetMin() <= f.GetProgress());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
 
         UpdateReveal();
