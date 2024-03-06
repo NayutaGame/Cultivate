@@ -52,7 +52,7 @@ public class SkillCardView : SimpleView
         Color color = CanvasManager.Instance.ManaCostColors[0];
         switch (state)
         {
-            case ManaIndicator.ManaCostState.Unwritten:
+            case ManaIndicator.ManaCostState.Unaccessed:
                 color = CanvasManager.Instance.ManaCostColors[0];
                 break;
             case ManaIndicator.ManaCostState.Normal:

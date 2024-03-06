@@ -590,7 +590,8 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.HealProcedure(6 + 4 * skill.Dj);
-                    if (skill.IsFirstTime || await caster.IsFocused())
+                    bool cond = skill.IsFirstTime || await caster.IsFocused();
+                    if (cond)
                         await caster.GainBuffProcedure("闪避");
                 }),
 
@@ -1069,7 +1070,8 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, skill, recursive) =>
                 {
                     int d = (caster.MaxHp / 2 >= caster.Hp) ? 2 : 1;
-                    d *= skill.JiaShi ? 2 : 1;
+                    bool jiaShi = await caster.ToggleJiaShiProcedure();
+                    d *= jiaShi ? 2 : 1;
                     await caster.GainBuffProcedure("灵气", 2 * d);
                 }),
 
@@ -1127,17 +1129,19 @@ public class SkillCategory : Category<SkillEntry>
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.GainBuffProcedure("灵气", 4 + skill.Dj);
-                    caster.Swift = caster.Swift || skill.JiaShi || await caster.IsFocused();
+                    caster.Swift = caster.Swift || await caster.ToggleJiaShiProcedure();
                 }),
 
             new(name:                       "收刀",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
-                skillTypeComposite:         SkillType.LingQi | SkillType.ErDong,
-                description:                new SkillDescription((j, dj) => $"下回合护甲+{8 + 4 * dj}\n上张牌激活架势"),
+                skillTypeComposite:         SkillType.LingQi,
+                description:                new SkillDescription((j, dj) => $"下回合护甲+{8 + 4 * dj}\n架势：翻倍"),
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.GainBuffProcedure("延迟护甲", 8 + 4 * skill.Dj);
+                    bool jiaShi = await caster.ToggleJiaShiProcedure();
+                    int d = jiaShi ? 2 : 1;
+                    await caster.GainBuffProcedure("延迟护甲", d * (8 + 4 * skill.Dj));
                 }),
 
             new(name:                       "摩利支天咒",
@@ -1190,7 +1194,7 @@ public class SkillCategory : Category<SkillEntry>
                 description:                new SkillDescription((j, dj) => $"1次，受伤时：护甲+[受伤值]，架势：2次"),
                 execute: async (caster, skill, recursive) =>
                 {
-                    int stack = skill.JiaShi ? 2 : 1;
+                    int stack = await caster.ToggleJiaShiProcedure() ? 2 : 1;
                     await caster.GainBuffProcedure("铁布衫", stack);
                 }),
 
@@ -1198,10 +1202,12 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                description:                new SkillDescription((j, dj) => $"{10 + 5 * dj}攻\n下张牌激活架势"),
+                description:                new SkillDescription((j, dj) => $"{10 + 5 * dj}攻\n架势：翻倍"),
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.AttackProcedure(10 + 5 * skill.Dj, wuXing: skill.Entry.WuXing);
+                    bool jiaShi = await caster.ToggleJiaShiProcedure();
+                    int d = jiaShi ? 2 : 1;
+                    await caster.AttackProcedure(d * (10 + 5 * skill.Dj), wuXing: skill.Entry.WuXing);
                 }),
 
             new(name:                       "天人合一",

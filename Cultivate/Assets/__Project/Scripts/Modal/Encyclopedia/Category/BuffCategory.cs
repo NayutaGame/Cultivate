@@ -38,6 +38,7 @@ public class BuffCategory : Category<BuffEntry>
             new("集中",      "下一次使用牌时，条件算作激活",                BuffStackRule.Add, true, false),
             new("永久集中",    "所有牌，条件算作激活",                    BuffStackRule.Add, true, false),
             new("浮空艇",     "回合被跳过时：生命及上线无法下降",              BuffStackRule.Add, true, false),
+            new("架势",     "消耗架势激活效果，没有架势时获得架势",              BuffStackRule.One, true, false),
             
             new(name:                       "滞气",
                 description:                "每回合：失去[层数]灵气，层数-1",
@@ -135,6 +136,23 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         await b.Owner.LoseArmorProcedure(b.Stack);
                         await b.SetDStack(-1);
+                    }),
+                }),
+            
+            new(name:                       "不堪一击",
+                description:                "受击伤：生命降至0",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                true,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        DamageDetails d = (DamageDetails)stageEventDetails;
+                        if (b.Owner != d.Tgt) return;
+                        if (b.Owner.Hp > 0)
+                            await b.Owner.LoseHealthProcedure(b.Owner.Hp);
                     }),
                 }),
             

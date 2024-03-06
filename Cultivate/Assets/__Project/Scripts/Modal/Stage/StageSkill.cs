@@ -8,7 +8,6 @@ public class StageSkill
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
-    private PlacedSkill _placedSkill;
     private SkillEntry _entry;
     public SkillEntry Entry => _entry;
 
@@ -25,8 +24,8 @@ public class StageSkill
     public async Task ExhaustProcedure()
         => await _owner.Env.ExhaustProcedure(_owner, this);
 
-    public string GetAnnotatedDescription(string evalutated = null)
-        => _entry.GetAnnotatedDescription(evalutated ?? GetDescription());
+    public string GetAnnotatedDescription(string evaluated = null)
+        => _entry.GetAnnotatedDescription(evaluated ?? GetDescription());
 
     public string GetDescription()
         => _entry.Evaluate(GetJingJie(), GetJingJie() - _entry.LowestJingJie);
@@ -88,9 +87,9 @@ public class StageSkill
     public bool IsEnd
         => SlotIndex == _owner._skills.Length - 1;
     public bool NoOtherAttack
-        => _owner._skills.All(wg => wg == this || !wg.GetSkillType().Contains(SkillType.Attack));
+        => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Attack));
     public bool NoOtherLingQi
-        => _owner._skills.All(wg => wg == this || !wg.GetSkillType().Contains(SkillType.LingQi));
+        => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.LingQi));
     public bool NoAttackAdjacents
         => !Prev(false).GetSkillType().Contains(SkillType.Attack) && !Next(false).GetSkillType().Contains(SkillType.Attack);
 
@@ -103,14 +102,13 @@ public class StageSkill
     private StageSkill(StageEntity owner, PlacedSkill placedSkill, SkillEntry skillEntry, JingJie jingJie, int slotIndex)
     {
         _owner = owner;
-        _placedSkill = placedSkill;
         _entry = skillEntry;
         _jingJie = jingJie;
         _slotIndex = slotIndex;
 
         _exhausted = false;
-        RunUsedTimes = _placedSkill?.RunSkill?.GetRunUsedTimes() ?? 0;
-        RunEquippedTimes = _placedSkill?.RunSkill?.GetRunEquippedTimes() + 1 ?? 0;
+        RunUsedTimes = placedSkill?.RunSkill?.GetRunUsedTimes() ?? 0;
+        RunEquippedTimes = placedSkill?.RunSkill?.GetRunEquippedTimes() + 1 ?? 0;
         StageUsedTimes = 0;
     }
 

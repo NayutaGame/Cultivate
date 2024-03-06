@@ -521,5 +521,23 @@ public class StageEntity : Addressable, StageEventListener
         await GainBuffProcedure(toBuff, flow * toStack);
     }
 
+    public async Task<bool> ToggleJiaShiProcedure()
+    {
+        if (GetStackOfBuff("天人合一") > 0)
+            return true;
+
+        if (GetStackOfBuff("架势") > 0)
+        {
+            await LoseBuffProcedure("架势");
+            return true;
+        }
+
+        if (await TryConsumeProcedure("集中"))
+            return true;
+
+        await GainBuffProcedure("架势");
+        return false;
+    }
+
     #endregion
 }
