@@ -8,22 +8,24 @@ public struct WuXing : IEquatable<WuXing>
 
     public readonly int _index;
     public readonly string _name;
+    public readonly string _elementaryBuff;
 
-    private WuXing(int index, string name)
+    private WuXing(int index, string name, string elementaryBuff)
     {
         _index = index;
         _name = name;
+        _elementaryBuff = elementaryBuff;
     }
 
     static WuXing()
     {
         _list = new WuXing[]
         {
-            new(0, "金"),
-            new(1, "水"),
-            new(2, "木"),
-            new(3, "火"),
-            new(4, "土"),
+            new(0, "金", "锋锐"),
+            new(1, "水", "格挡"),
+            new(2, "木", "力量"),
+            new(3, "火", "灼烧"),
+            new(4, "土", "柔韧"),
         };
     }
 

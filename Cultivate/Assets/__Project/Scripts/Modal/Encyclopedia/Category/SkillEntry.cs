@@ -57,24 +57,24 @@ public class SkillEntry : Entry, IAnnotation
     public Sprite Sprite => _spriteEntry?.Sprite;
 
     public SkillEntry(string name,
+        WuXing? wuXing,
         CLLibrary.Range jingJieRange,
-        SkillDescription description,
-        string trivia = null,
-        WuXing? wuXing = null,
-        ManaCostEvaluator manaCostEvaluator = null,
         ChannelTimeEvaluator channelTimeEvaluator = null,
+        ManaCostEvaluator manaCostEvaluator = null,
         SkillTypeComposite skillTypeComposite = null,
+        SkillDescription description = null,
+        string trivia = null,
         bool withinPool = true,
         Func<StageEntity, StageSkill, bool, Task> execute = null
         ) : base(name)
     {
+        _wuXing = wuXing;
         _jingJieRange = jingJieRange;
+        _channelTimeEvaluator = channelTimeEvaluator ?? 0;
+        _manaCostEvaluator = manaCostEvaluator ?? 0;
+        SkillTypeComposite = skillTypeComposite ?? 0;
         _description = description;
         _trivia = trivia;
-        _wuXing = wuXing;
-        _manaCostEvaluator = manaCostEvaluator ?? 0;
-        _channelTimeEvaluator = channelTimeEvaluator ?? 0;
-        SkillTypeComposite = skillTypeComposite ?? 0;
         _withinPool = withinPool;
         _execute = execute ?? DefaultExecute;
 

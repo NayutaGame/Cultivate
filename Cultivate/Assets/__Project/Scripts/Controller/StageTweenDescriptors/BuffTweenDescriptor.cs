@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class BuffTweenDescriptor : StageTweenDescriptor
 {
-    public BuffDetails _buffDetails;
+    public GainBuffDetails GainBuffDetails;
 
-    public BuffTweenDescriptor(bool isAwait, BuffDetails buffDetails) : base(isAwait)
+    public BuffTweenDescriptor(bool isAwait, GainBuffDetails gainBuffDetails) : base(isAwait)
     {
-        _buffDetails = buffDetails.Clone();
+        GainBuffDetails = gainBuffDetails.Clone();
     }
 
     public override Tween GetTween()
@@ -20,7 +20,7 @@ public class BuffTweenDescriptor : StageTweenDescriptor
 
     private void SpawnBuffVFX()
     {
-        BuffDetails d = _buffDetails;
+        GainBuffDetails d = GainBuffDetails;
 
         GameObject prefab = d._buffEntry.Friendly
             ? StageManager.Instance.BuffVFXPrefab
@@ -33,7 +33,7 @@ public class BuffTweenDescriptor : StageTweenDescriptor
 
     private void SpawnBuffedText()
     {
-        BuffDetails d = _buffDetails;
+        GainBuffDetails d = GainBuffDetails;
 
         GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, d.Tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);

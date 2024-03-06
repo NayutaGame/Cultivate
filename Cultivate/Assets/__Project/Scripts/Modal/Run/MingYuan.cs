@@ -68,11 +68,11 @@ public class MingYuan : BoundedInt
         if (penalty.Item1 != 0)
             entity.MaxHp = (int)((float)entity.MaxHp * (100 - penalty.Item1) / 100);
         if (penalty.Item2 != 0)
-            await entity.BuffSelfProcedure("脆弱", penalty.Item2);
+            await entity.GainBuffProcedure("脆弱", penalty.Item2);
         if (penalty.Item3 != 0)
-            await entity.BuffSelfProcedure("软弱", penalty.Item3);
+            await entity.GainBuffProcedure("软弱", penalty.Item3);
         if (penalty.Item4 != 0)
-            await entity.BuffSelfProcedure("跳回合", penalty.Item4);
+            await entity.GainBuffProcedure("跳回合", penalty.Item4);
     }
 
     public MingYuan Clone()

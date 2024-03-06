@@ -1,10 +1,11 @@
 
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine;
 using CLLibrary;
 using DG.Tweening;
+using UnityEngine;
 
 public class StageEnvironment : Addressable, StageEventListener
 {
@@ -99,7 +100,7 @@ public class StageEnvironment : Addressable, StageEventListener
             {
                 int negate = Mathf.Min(d.Value, tgt.Armor);
                 d.Value -= negate;
-                await ArmorLoseProcedure(d.Src, d.Tgt, negate);
+                await LoseArmorProcedure(d.Src, d.Tgt, negate);
             }
 
             if (tgt.Armor < 0)
@@ -166,7 +167,7 @@ public class StageEnvironment : Addressable, StageEventListener
         {
             int negate = Mathf.Min(d.Value, d.Tgt.Armor);
             d.Value -= negate;
-            await ArmorLoseProcedure(d.Src, d.Tgt, negate);
+            await LoseArmorProcedure(d.Src, d.Tgt, negate);
         }
 
         if (d.Tgt.Armor < 0)
@@ -268,11 +269,11 @@ public class StageEnvironment : Addressable, StageEventListener
         await _eventDict.SendEvent(StageEventDict.DID_HEAL, d);
     }
 
-    public async Task BuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => await BuffProcedure(new BuffDetails(src, tgt, buffEntry, stack, recursive));
-    public async Task BuffProcedure(BuffDetails d)
+    public async Task GainBuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await GainBuffProcedure(new GainBuffDetails(src, tgt, buffEntry, stack, recursive));
+    public async Task GainBuffProcedure(GainBuffDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.WILL_BUFF, d);
+        await _eventDict.SendEvent(StageEventDict.BUFF_WILL_GAIN, d);
 
         d.Cancel |= d._stack <= 0;
         if (d.Cancel) return;
@@ -306,18 +307,34 @@ public class StageEnvironment : Addressable, StageEventListener
         }
         else
         {
-            await d.Tgt.AddBuff(new GainBuffDetails(d._buffEntry, d._stack));
+            await d.Tgt.AddBuff(new BuffAppearDetails(d._buffEntry, d._stack));
 
             await TryPlayTween(new BuffTweenDescriptor(true, d));
             _result.TryAppend($"    {d._buffEntry.GetName()}: 0 -> {d._stack}");
         }
 
-        await _eventDict.SendEvent(StageEventDict.DID_BUFF, d);
+        await _eventDict.SendEvent(StageEventDict.BUFF_DID_GAIN, d);
     }
 
-    public async Task ArmorGainProcedure(StageEntity src, StageEntity tgt, int value)
-        => await ArmorGainProcedure(new ArmorGainDetails(src, tgt, value));
-    public async Task ArmorGainProcedure(ArmorGainDetails d)
+    public async Task LoseBuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await LoseBuffProcedure(new LoseBuffDetails(src, tgt, buffEntry, stack, recursive));
+    public async Task LoseBuffProcedure(LoseBuffDetails d)
+    {
+        await _eventDict.SendEvent(StageEventDict.BUFF_WILL_LOSE, d);
+
+        if (d.Cancel)
+            return;
+
+        Buff b = d.Tgt.FindBuff(d._buffEntry);
+        if (b != null)
+            await b.SetStack(Mathf.Max(0, b.Stack - d._stack));
+
+        await _eventDict.SendEvent(StageEventDict.BUFF_DID_LOSE, d);
+    }
+
+    public async Task GainArmorProcedure(StageEntity src, StageEntity tgt, int value)
+        => await GainArmorProcedure(new GainArmorDetails(src, tgt, value));
+    public async Task GainArmorProcedure(GainArmorDetails d)
     {
         await _eventDict.SendEvent(StageEventDict.ARMOR_WILL_GAIN, d);
 
@@ -330,9 +347,9 @@ public class StageEnvironment : Addressable, StageEventListener
         await _eventDict.SendEvent(StageEventDict.ARMOR_DID_GAIN, d);
     }
 
-    public async Task ArmorLoseProcedure(StageEntity src, StageEntity tgt, int value)
-        => await ArmorLoseProcedure(new ArmorLoseDetails(src, tgt, value));
-    public async Task ArmorLoseProcedure(ArmorLoseDetails d)
+    public async Task LoseArmorProcedure(StageEntity src, StageEntity tgt, int value)
+        => await LoseArmorProcedure(new LoseArmorDetails(src, tgt, value));
+    public async Task LoseArmorProcedure(LoseArmorDetails d)
     {
         await _eventDict.SendEvent(StageEventDict.ARMOR_WILL_LOSE, d);
 
@@ -350,22 +367,6 @@ public class StageEnvironment : Addressable, StageEventListener
         // 负变负，减甲
 
         await _eventDict.SendEvent(StageEventDict.ARMOR_DID_LOSE, d);
-    }
-
-    public async Task DispelProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
-        => await DispelProcedure(new DispelDetails(src, tgt, buffEntry, stack, friendly, recursive));
-    public async Task DispelProcedure(DispelDetails d)
-    {
-        await _eventDict.SendEvent(StageEventDict.WILL_DISPEL, d);
-
-        if (d.Cancel)
-            return;
-
-        Buff b = d.Tgt.FindBuff(d._buffEntry);
-        if (b != null)
-            await b.SetStack(Mathf.Max(0, b.Stack - d._stack));
-
-        await _eventDict.SendEvent(StageEventDict.DID_DISPEL, d);
     }
 
     public async Task ManaShortageProcedure(StageEntity owner, int position, StageSkill skill, int actualCost)
@@ -392,6 +393,25 @@ public class StageEnvironment : Addressable, StageEventListener
         d.Skill.Exhausted = true;
 
         await _eventDict.SendEvent(StageEventDict.DID_EXHAUST, d);
+    }
+
+    public async Task CycleProcedure(StageEntity owner, WuXing wuXing, int gain, int recover)
+        => await CycleProcedure(new CycleDetails(owner, wuXing, gain, recover));
+    public async Task CycleProcedure(CycleDetails d)
+    {
+        await _eventDict.SendEvent(StageEventDict.WILL_CYCLE, d);
+
+        if (d.Cancel)
+            return;
+
+        WuXing fromWuXing = d.WuXing.Prev;
+        int flow = d.Owner.GetStackOfBuff(fromWuXing._elementaryBuff);
+        await d.Owner.TryConsumeProcedure(fromWuXing._elementaryBuff, flow);
+
+        await d.Owner.GainBuffProcedure(fromWuXing._elementaryBuff, Mathf.Min(flow, d.Recover));
+        await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, flow + Mathf.Min(flow, d.Gain));
+
+        await _eventDict.SendEvent(StageEventDict.DID_CYCLE, d);
     }
 
     #endregion

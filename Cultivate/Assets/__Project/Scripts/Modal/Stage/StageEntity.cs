@@ -60,7 +60,7 @@ public class StageEntity : Addressable, StageEventListener
         if (skipTurn)
         {
             if (GetStackOfBuff("浮空艇") > 0)
-                await BuffSelfProcedure("回合免疫");
+                await GainBuffProcedure("回合免疫");
             await _env.EventDict.SendEvent(StageEventDict.END_TURN, new TurnDetails(this, _p));
             return;
         }
@@ -222,6 +222,8 @@ public class StageEntity : Addressable, StageEventListener
         => GetStackOfBuff("鹤回翔") == 0;
     public int ExhaustedCount
         => _skills.Count(skill => skill.Exhausted);
+    public int AttackCount
+        => _skills.Count(skill => skill.GetSkillType().Contains(SkillType.Attack));
 
     public int LostArmorRecord;
     public int GeneratedManaRecord;
@@ -274,9 +276,9 @@ public class StageEntity : Addressable, StageEventListener
 
         _eventDescriptors = new StageEventDescriptor[]
         {
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_BUFF, 0, HighestManaRecorder),
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_BUFF, 0, GainedEvadeRecorder),
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_BUFF, 0, GainedBurningRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.BUFF_DID_GAIN, 0, HighestManaRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.BUFF_DID_GAIN, 0, GainedEvadeRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.BUFF_DID_GAIN, 0, GainedBurningRecorder),
             new(StageEventDict.STAGE_ENTITY, StageEventDict.START_TURN, 0, DefaultStartTurn),
         };
 
@@ -317,9 +319,9 @@ public class StageEntity : Addressable, StageEventListener
         // }
     }
 
-    public async Task<BuffDetails> HighestManaRecorder(StageEventListener listener, EventDetails eventDetails)
+    public async Task<GainBuffDetails> HighestManaRecorder(StageEventListener listener, EventDetails eventDetails)
     {
-        BuffDetails d = (BuffDetails)eventDetails;
+        GainBuffDetails d = (GainBuffDetails)eventDetails;
         if (d._buffEntry.GetName() != "灵气")
             return d;
 
@@ -327,9 +329,9 @@ public class StageEntity : Addressable, StageEventListener
         return d;
     }
 
-    public async Task<BuffDetails> GainedEvadeRecorder(StageEventListener listener, EventDetails eventDetails)
+    public async Task<GainBuffDetails> GainedEvadeRecorder(StageEventListener listener, EventDetails eventDetails)
     {
-        BuffDetails d = (BuffDetails)eventDetails;
+        GainBuffDetails d = (GainBuffDetails)eventDetails;
         if (d._buffEntry.GetName() != "闪避")
             return d;
 
@@ -337,9 +339,9 @@ public class StageEntity : Addressable, StageEventListener
         return d;
     }
 
-    public async Task<BuffDetails> GainedBurningRecorder(StageEventListener listener, EventDetails eventDetails)
+    public async Task<GainBuffDetails> GainedBurningRecorder(StageEventListener listener, EventDetails eventDetails)
     {
-        BuffDetails d = (BuffDetails)eventDetails;
+        GainBuffDetails d = (GainBuffDetails)eventDetails;
         if (d._buffEntry.GetName() != "灼烧")
             return d;
 
@@ -386,18 +388,18 @@ public class StageEntity : Addressable, StageEventListener
     private ListModel<Buff> _buffs;
     public IEnumerable<Buff> Buffs => _buffs.Traversal();
 
-    public async Task AddBuff(GainBuffDetails d)
+    public async Task AddBuff(BuffAppearDetails d)
     {
         Buff buff = new Buff(this, d._entry);
         buff.Register();
-        await buff._eventDict.SendEvent(StageEventDict.GAIN_BUFF, d);
+        await buff._eventDict.SendEvent(StageEventDict.BUFF_APPEAR, d);
         await buff.SetStack(d._initialStack);
         _buffs.Add(buff);
     }
 
     public async Task RemoveBuff(Buff b)
     {
-        await b._eventDict.SendEvent(StageEventDict.LOSE_BUFF, new LoseBuffDetails(b));
+        await b._eventDict.SendEvent(StageEventDict.BUFF_DISAPPEAR, new BuffDisappearDetails(b));
         b.Unregister();
         _buffs.Remove(b);
     }
@@ -413,24 +415,15 @@ public class StageEntity : Addressable, StageEventListener
     {
         await _buffs.Traversal().Do(async b =>
         {
-            await b._eventDict.SendEvent(StageEventDict.LOSE_BUFF, new LoseBuffDetails(b));
+            await b._eventDict.SendEvent(StageEventDict.BUFF_DISAPPEAR, new BuffDisappearDetails(b));
             b.Unregister();
         });
         _buffs.Clear();
     }
 
-    // public async Task RemoveBuffs(params string[] names)
-    // {
-    //     List<Buff> toRemove = _buffs.FilterObj(b => names.Contains(b.GetName())).ToList();
-    //     await toRemove.Do(RemoveBuff);
-    // }
-
     public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.GetEntry() == buffEntry);
 
     public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
-
-    public int GetSumOfStackOfBuffs(params string[] names)
-        => names.Map(name => GetStackOfBuff(name)).Aggregate((a, b) => a + b);
 
     public int GetMana() => GetStackOfBuff("灵气");
 
@@ -465,19 +458,43 @@ public class StageEntity : Addressable, StageEventListener
     public async Task HealProcedure(int value)
         => await _env.HealProcedure(new HealDetails(this, this, value));
 
-    public async Task ArmorGainSelfProcedure(int value)
-        => await _env.ArmorGainProcedure(new ArmorGainDetails(this, this, value));
+    public async Task HealOppoProcedure(int value)
+        => await _env.HealProcedure(new HealDetails(this, Opponent(), value));
 
-    public async Task ArmorGainOppoProcedure(int value)
-        => await _env.ArmorGainProcedure(new ArmorGainDetails(this, Opponent(), value));
+    public async Task GainArmorProcedure(int value)
+        => await _env.GainArmorProcedure(new GainArmorDetails(this, this, value));
 
-    public async Task ArmorLoseSelfProcedure(int value)
-        => await _env.ArmorLoseProcedure(new ArmorLoseDetails(this, this, value));
+    public async Task GiveArmorProcedure(int value)
+        => await _env.GainArmorProcedure(new GainArmorDetails(this, Opponent(), value));
 
-    public async Task ArmorLoseOppoProcedure(int value)
-        => await _env.ArmorLoseProcedure(new ArmorLoseDetails(this, Opponent(), value));
+    public async Task LoseArmorProcedure(int value)
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, this, value));
 
-    public async Task<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool friendly = true, bool recursive = true)
+    public async Task RemoveArmorProcedure(int value)
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, Opponent(), value));
+
+    public async Task GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await _env.GainBuffProcedure(new GainBuffDetails(this, this, buffEntry, stack, recursive));
+
+    public async Task GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await _env.GainBuffProcedure(new GainBuffDetails(this, Opponent(), buffEntry, stack, recursive));
+
+    public async Task LoseBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await _env.LoseBuffProcedure(new LoseBuffDetails(this, this, buffEntry, stack, recursive));
+
+    public async Task RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+        => await _env.LoseBuffProcedure(new LoseBuffDetails(this, Opponent(), buffEntry, stack, recursive));
+
+    public async Task FormationProcedure(RunFormation runFormation, bool recursive = true)
+        => await _env.FormationProcedure(this, runFormation, recursive);
+
+    public async Task ManaShortageProcedure(int position, StageSkill skill, int actualCost)
+        => await _env.ManaShortageProcedure(this, position, skill, actualCost);
+
+    public async Task CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0)
+        => await _env.CycleProcedure(this, wuXing, gain, recover);
+
+    public async Task<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {
         if (stack == 0)
             return true;
@@ -485,30 +502,21 @@ public class StageEntity : Addressable, StageEventListener
         Buff b = FindBuff(buffEntry);
         if (b != null && b.Stack >= stack)
         {
-            await DispelSelfProcedure(buffEntry, stack, friendly, recursive);
+            await LoseBuffProcedure(buffEntry, stack, recursive);
             return true;
         }
 
         return false;
     }
 
-    public async Task BuffSelfProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => await _env.BuffProcedure(new BuffDetails(this, this, buffEntry, stack, recursive));
+    public async Task TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming)
+    {
+        int flow = GetStackOfBuff(fromBuff) / fromStack;
+        if (consuming)
+            await LoseBuffProcedure(fromBuff, flow * fromStack);
 
-    public async Task BuffOppoProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => await _env.BuffProcedure(new BuffDetails(this, Opponent(), buffEntry, stack, recursive));
-
-    public async Task DispelSelfProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive = true)
-        => await _env.DispelProcedure(new DispelDetails(this, this, buffEntry, stack, friendly, recursive));
-
-    public async Task DispelOppoProcedure(BuffEntry buffEntry, int stack, bool friendly, bool recursive = true)
-        => await _env.DispelProcedure(new DispelDetails(this, Opponent(), buffEntry, stack, friendly, recursive));
-
-    public async Task FormationProcedure(RunFormation runFormation, bool recursive = true)
-        => await _env.FormationProcedure(this, runFormation, recursive);
-
-    public async Task ManaShortageProcedure(int position, StageSkill skill, int actualCost)
-        => await _env.ManaShortageProcedure(this, position, skill, actualCost);
+        await GainBuffProcedure(toBuff, flow * toStack);
+    }
 
     #endregion
 }

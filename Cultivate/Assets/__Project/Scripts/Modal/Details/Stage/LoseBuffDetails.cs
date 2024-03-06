@@ -1,13 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class LoseBuffDetails : EventDetails
 {
-    public Buff _buff;
+    public StageEntity Src;
+    public StageEntity Tgt;
+    public BuffEntry _buffEntry;
+    public int _stack;
+    public bool _recursive;
 
-    public LoseBuffDetails(Buff buff)
+    public LoseBuffDetails(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {
-        _buff = buff;
+        Src = src;
+        Tgt = tgt;
+        _buffEntry = buffEntry;
+        _stack = stack;
+        _recursive = recursive;
     }
 }

@@ -1,15 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class GainBuffDetails : EventDetails
 {
-    public BuffEntry _entry;
-    public int _initialStack;
+    public StageEntity Src;
+    public StageEntity Tgt;
+    public BuffEntry _buffEntry;
+    public int _stack;
+    public bool _recursive;
 
-    public GainBuffDetails(BuffEntry entry, int initialStack)
+    public GainBuffDetails(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {
-        _entry = entry;
-        _initialStack = initialStack;
+        Src = src;
+        Tgt = tgt;
+        _buffEntry = buffEntry;
+        _stack = stack;
+        _recursive = recursive;
     }
+
+    public GainBuffDetails Clone() => new(Src, Tgt, _buffEntry, _stack, _recursive);
 }

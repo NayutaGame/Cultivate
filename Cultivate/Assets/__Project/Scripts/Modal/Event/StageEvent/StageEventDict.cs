@@ -27,18 +27,18 @@ public class StageEventDict : Dictionary<int, StageEventElementList>
     public static readonly int DID_LOSE_HEALTH    = 18;
     public static readonly int WILL_HEAL          = 19;
     public static readonly int DID_HEAL           = 20;
-    public static readonly int WILL_BUFF          = 21;
-    public static readonly int DID_BUFF           = 22;
+    public static readonly int BUFF_WILL_GAIN          = 21;
+    public static readonly int BUFF_DID_GAIN           = 22;
     public static readonly int ARMOR_WILL_GAIN    = 23;
     public static readonly int ARMOR_DID_GAIN     = 24;
     public static readonly int ARMOR_WILL_LOSE    = 25;
     public static readonly int ARMOR_DID_LOSE     = 26;
-    public static readonly int WILL_DISPEL        = 27;
-    public static readonly int DID_DISPEL         = 28;
+    public static readonly int BUFF_WILL_LOSE        = 27;
+    public static readonly int BUFF_DID_LOSE         = 28;
     public static readonly int WILL_EXHAUST       = 29;
     public static readonly int DID_EXHAUST        = 30;
-    public static readonly int GAIN_BUFF          = 31;
-    public static readonly int LOSE_BUFF          = 32;
+    public static readonly int BUFF_APPEAR          = 31;
+    public static readonly int BUFF_DISAPPEAR          = 32;
     public static readonly int STACK_WILL_CHANGE  = 33;
     public static readonly int STACK_DID_CHANGE   = 34;
     public static readonly int GAIN_FORMATION     = 35;
@@ -53,6 +53,8 @@ public class StageEventDict : Dictionary<int, StageEventElementList>
     public static readonly int DID_MANA_COST      = 44;
     public static readonly int WILL_MANA_SHORTAGE = 45;
     public static readonly int DID_MANA_SHORTAGE  = 46;
+    public static readonly int WILL_CYCLE         = 47;
+    public static readonly int DID_CYCLE          = 48;
 
     public static readonly int STAGE_ENVIRONMENT  = 0;
     public static readonly int STAGE_ENTITY       = 1;
