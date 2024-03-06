@@ -493,6 +493,9 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0)
         => await _env.CycleProcedure(this, wuXing, gain, recover);
+    
+    public async Task DispelProcedure(int stack)
+        => await _env.DispelProcedure(this, stack);
 
     public async Task<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {

@@ -951,13 +951,13 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
-                description:                new SkillDescription((j, dj) => $"灵气+{2 + dj}，灼烧+{2 + dj}，每5灼烧：驱散1"),
+                description:                new SkillDescription((j, dj) => $"灵气+{2 + dj}，灼烧+{2 + dj}，每5灼烧：净化1"),
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.GainBuffProcedure("灵气", 2 + skill.Dj);
                     await caster.GainBuffProcedure("灼烧", 2 + skill.Dj);
                     int dispel = caster.GetStackOfBuff("灼烧") / 5;
-                    // await caster.DispelProcedure(dispel);
+                    await caster.DispelProcedure(dispel);
                 }),
 
             new(name:                       "天女散花",
@@ -1347,12 +1347,12 @@ public class SkillCategory : Category<SkillEntry>
             new(name:                       "枯木",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.JinDan2HuaShen,
-                description:                new SkillDescription((j, dj) => $"双方回合结束时，受到{2 + dj}减甲"),
+                description:                new SkillDescription((j, dj) => $"双方遭受{5 + dj}腐朽"),
                 withinPool:                 false,
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.GainBuffProcedure("枯木", 2 + skill.Dj);
-                    await caster.GiveBuffProcedure("枯木", 2 + skill.Dj);
+                    await caster.GainBuffProcedure("腐朽", 5 + skill.Dj);
+                    await caster.GiveBuffProcedure("腐朽", 5 + skill.Dj);
                 }),
 
             #endregion

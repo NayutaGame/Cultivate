@@ -55,6 +55,8 @@ public class StageEventDict : Dictionary<int, StageEventElementList>
     public static readonly int DID_MANA_SHORTAGE  = 46;
     public static readonly int WILL_CYCLE         = 47;
     public static readonly int DID_CYCLE          = 48;
+    public static readonly int WILL_DISPEL        = 49;
+    public static readonly int DID_DISPEL         = 50;
 
     public static readonly int STAGE_ENVIRONMENT  = 0;
     public static readonly int STAGE_ENTITY       = 1;

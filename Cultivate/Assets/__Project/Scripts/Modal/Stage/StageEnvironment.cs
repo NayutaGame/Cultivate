@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CLLibrary;
 using DG.Tweening;
@@ -412,6 +413,23 @@ public class StageEnvironment : Addressable, StageEventListener
         await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, flow + Mathf.Min(flow, d.Gain));
 
         await _eventDict.SendEvent(StageEventDict.DID_CYCLE, d);
+    }
+
+    public async Task DispelProcedure(StageEntity owner, int stack)
+        => await DispelProcedure(new DispelDetails(owner, stack));
+    public async Task DispelProcedure(DispelDetails d)
+    {
+        await _eventDict.SendEvent(StageEventDict.WILL_DISPEL, d);
+
+        if (d.Cancel)
+            return;
+
+        List<Buff> buffs = d.Owner.Buffs.FilterObj(b => !b.Friendly && b.Dispellable).ToList();
+
+        foreach (Buff b in buffs)
+            await d.Owner.RemoveBuffProcedure(b.GetEntry(), d.Stack);
+
+        await _eventDict.SendEvent(StageEventDict.DID_DISPEL, d);
     }
 
     #endregion
