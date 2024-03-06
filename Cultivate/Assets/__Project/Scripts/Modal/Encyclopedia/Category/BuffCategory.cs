@@ -23,20 +23,120 @@ public class BuffCategory : Category<BuffEntry>
                 dispellable:                false,
                 eventDescriptors:           null),
 
-            new("齐物论", "奇偶同时激活两个效果", BuffStackRule.One, true, false),
-            new("追击", "持续[层数]次，下次攻击时，次数+1", BuffStackRule.Add, true, true),
-            new("鹤回翔", "反转出牌顺序", BuffStackRule.One, true, false),
-            new("永久暴击", "攻击附带暴击", BuffStackRule.One, true, false),
-            new("天人合一", "激活所有架势", BuffStackRule.One, true, false),
-            new("跳回合", "跳过回合", BuffStackRule.Add, false, false),
-            new("跳卡牌", "行动时跳过下张卡牌", BuffStackRule.Add, false, false),
-            new("双发", "下一张牌使用两次", BuffStackRule.Add, true, false),
-            new("永久双发", "所有牌使用两次", BuffStackRule.One, true, false),
-            new("免费", "下一次耗蓝时无需灵气", BuffStackRule.Add, true, false),
-            new("永久免费", "所有牌无需灵气", BuffStackRule.One, true, false),
-            new("集中", "下一次使用牌时，条件算作激活", BuffStackRule.Add, true, false),
-            new("永久集中", "所有牌，条件算作激活", BuffStackRule.Add, true, false),
-            new("浮空艇", "本场战斗中，回合被跳过后，生命及上线无法下降", BuffStackRule.Add, true, false),
+            new("齐物论",     "奇偶同时激活两个效果",                    BuffStackRule.One, true, false),
+            new("追击",      "持续[层数]次，下次攻击时，次数+1",            BuffStackRule.Add, true, true),
+            new("心斋",      "所有耗蓝-[层数]",                     BuffStackRule.Add, true, false),
+            new("鹤回翔",     "反转出牌顺序",                        BuffStackRule.One, true, false),
+            new("永久暴击",    "攻击附带暴击",                        BuffStackRule.One, true, false),
+            new("天人合一",    "激活所有架势",                        BuffStackRule.One, true, false),
+            new("跳回合",     "跳过回合",                          BuffStackRule.Add, false, false),
+            new("跳卡牌",     "行动时跳过下张卡牌",                     BuffStackRule.Add, false, false),
+            new("双发",      "下一张牌使用两次",                      BuffStackRule.Add, true, false),
+            new("永久双发",    "所有牌使用两次",                       BuffStackRule.One, true, false),
+            new("免费",      "下一次耗蓝时无需灵气",                    BuffStackRule.Add, true, false),
+            new("永久免费",    "所有牌无需灵气",                       BuffStackRule.One, true, false),
+            new("集中",      "下一次使用牌时，条件算作激活",                BuffStackRule.Add, true, false),
+            new("永久集中",    "所有牌，条件算作激活",                    BuffStackRule.Add, true, false),
+            new("浮空艇",     "回合被跳过时：生命及上线无法下降",              BuffStackRule.Add, true, false),
+            
+            new(name:                       "滞气",
+                description:                "每回合：失去[层数]灵气，层数-1",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                true,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+                        await d.Owner.RemoveBuffProcedure("灵气", b.Stack);
+                        await b.SetDStack(-1);
+                    }),
+                }),
+            
+            new(name:                       "缠绕",
+                description:                "无法二动/三动\n回合结束/二动时：-1层",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                true,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_SWIFT, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        SwiftDetails d = (SwiftDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+                        d.Cancel = true;
+                        await b.SetDStack(-1);
+                    }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.END_TURN, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+                        await b.SetDStack(-1);
+                    }),
+                }),
+            
+            new(name:                       "软弱",
+                description:                "攻击时：少[层数]攻\n回合结束/攻击时：-1层",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                true,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner != d.Src) return;
+                        d.Value -= b.Stack;
+                        await b.SetDStack(-1);
+                    }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.END_TURN, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+                        await b.SetDStack(-1);
+                    }),
+                }),
+            
+            new(name:                       "内伤",
+                description:                "每回合：失去[层数]生命，层数-1",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                true,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+                        await d.Owner.DamageSelfProcedure(b.Stack);
+                        await b.SetDStack(-1);
+                    }),
+                }),
+            
+            new(name:                       "腐朽",
+                description:                "每回合：失去[层数]护甲，层数-1",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                true,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.END_TURN, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+                        await b.Owner.LoseArmorProcedure(b.Stack);
+                        await b.SetDStack(-1);
+                    }),
+                }),
             
             new("二动", "下一张牌二动", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
@@ -358,37 +458,6 @@ public class BuffCategory : Category<BuffEntry>
                         }
                     }),
                 }),
-
-            new("缠绕", "无法二动/三动\n回合结束时：层数-1", BuffStackRule.Add, false, true,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_SWIFT, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        SwiftDetails d = (SwiftDetails)stageEventDetails;
-                        if (b.Owner == d.Owner)
-                            d.Cancel = true;
-                    }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.END_TURN, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        TurnDetails d = (TurnDetails)stageEventDetails;
-                        if (b.Owner != d.Owner) return;
-                        await b.SetDStack(-1);
-                    }),
-                }),
-            
-            new("永久缠绕", "无法二动/三动", BuffStackRule.One, false, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_SWIFT, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        SwiftDetails d = (SwiftDetails)stageEventDetails;
-                        if (b.Owner == d.Owner)
-                            d.Cancel = true;
-                    }),
-                }),
             
             new("玄武吐息法", "治疗可以穿上限", BuffStackRule.Add, true, true,
                 eventDescriptors: new StageEventDescriptor[]
@@ -570,8 +639,6 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("心斋", "所有耗蓝-[层数]", BuffStackRule.Add, true, false),
-
             new("盛开", "受到治疗时：力量+[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
@@ -657,18 +724,6 @@ public class BuffCategory : Category<BuffEntry>
                         }
                     }),
                 }),
-
-            new("自动护甲", "回合结束时：护甲+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.END_TURN, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        TurnDetails d = (TurnDetails)stageEventDetails;
-                        if (b.Owner != d.Owner) return;
-                        await d.Owner.GainArmorProcedure(b.Stack);
-                    }),
-                }),
             
             new("两仪", "获得护甲时/施加减甲时：额外+[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
@@ -702,33 +757,6 @@ public class BuffCategory : Category<BuffEntry>
                             await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Pierce, d.Crit, false, d.Damaged);
                             d.Cancel = true;
                         }
-                    }),
-                }),
-
-            new("脆弱", "受到攻击：攻击力+[层数]", BuffStackRule.Add, false, true,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_ATTACK, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (d.Pierce) return;
-                        if (b.Owner == d.Tgt && d.Src != d.Tgt)
-                        {
-                            d.Value += b.Stack;
-                        }
-                    }),
-                }),
-
-            new("软弱", "攻击时：少[层数]攻", BuffStackRule.Add, false, true,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_ATTACK, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (b.Owner == d.Src && d.Src != d.Tgt)
-                            d.Value -= b.Stack;
                     }),
                 }),
             

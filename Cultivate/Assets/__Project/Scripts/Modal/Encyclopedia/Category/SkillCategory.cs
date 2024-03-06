@@ -1238,7 +1238,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
-                description:                new SkillDescription((j, dj) => $"1攻 对方生命高|攻击牌多|护甲高|灵气高|Debuff少：翻倍"),
+                description:                new SkillDescription((j, dj) => $"1攻 对方生命高|攻击牌多|护甲高|灵气高|Debuff少|架势|终结|初次：翻倍"),
                 execute: async (caster, skill, recursive) =>
                 {
                     int bitShift = 0;
@@ -1246,7 +1246,11 @@ public class SkillCategory : Category<SkillEntry>
                     bitShift += (caster.AttackCount < caster.Opponent().AttackCount) ? 1 : 0;
                     bitShift += (caster.Armor < caster.Opponent().Armor) ? 1 : 0;
                     bitShift += (caster.GetMana() < caster.Opponent().GetMana()) ? 1 : 0;
-                    // 对方Debuff少于自己
+                    bitShift += caster.GetStackOfBuff("滞气") > caster.Opponent().GetStackOfBuff("滞气") ? 1 : 0;
+                    bitShift += caster.GetStackOfBuff("缠绕") > caster.Opponent().GetStackOfBuff("缠绕") ? 1 : 0;
+                    bitShift += caster.GetStackOfBuff("软弱") > caster.Opponent().GetStackOfBuff("软弱") ? 1 : 0;
+                    bitShift += caster.GetStackOfBuff("内伤") > caster.Opponent().GetStackOfBuff("内伤") ? 1 : 0;
+                    bitShift += caster.GetStackOfBuff("腐朽") > caster.Opponent().GetStackOfBuff("腐朽") ? 1 : 0;
                     await caster.AttackProcedure(1 << bitShift, wuXing: skill.Entry.WuXing);
                 }),
 

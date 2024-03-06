@@ -51,7 +51,7 @@ public class MingYuan : BoundedInt
         StringBuilder sb = new();
 
         if (penalty.Item1 != 0) sb.Append($"损失{penalty.Item1}%生命上限\n");
-        if (penalty.Item2 != 0) sb.Append($"遭受{penalty.Item2}脆弱\n");
+        if (penalty.Item2 != 0) sb.Append($"遭受{penalty.Item2}腐朽\n");
         if (penalty.Item3 != 0) sb.Append($"遭受{penalty.Item3}软弱\n");
         if (penalty.Item4 != 0) sb.Append($"遭受{penalty.Item4}跳回合\n");
 
@@ -68,7 +68,7 @@ public class MingYuan : BoundedInt
         if (penalty.Item1 != 0)
             entity.MaxHp = (int)((float)entity.MaxHp * (100 - penalty.Item1) / 100);
         if (penalty.Item2 != 0)
-            await entity.GainBuffProcedure("脆弱", penalty.Item2);
+            await entity.GainBuffProcedure("腐朽", penalty.Item2);
         if (penalty.Item3 != 0)
             await entity.GainBuffProcedure("软弱", penalty.Item3);
         if (penalty.Item4 != 0)
