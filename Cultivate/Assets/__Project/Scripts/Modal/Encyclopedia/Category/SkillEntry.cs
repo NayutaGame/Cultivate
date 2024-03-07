@@ -3,26 +3,51 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CLLibrary;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
 public class SkillEntry : Entry, IAnnotation
 {
+    private WuXing? _wuXing;
+    public WuXing? WuXing => _wuXing;
+    
     private CLLibrary.Range _jingJieRange;
     public bool JingJieContains(JingJie jingJie) => _jingJieRange.Contains(jingJie);
     public JingJie LowestJingJie => _jingJieRange.Start;
     public JingJie HighestJingJie => _jingJieRange.End - 1;
 
+    #region Cost
+    
+    private ManaCostEvaluator _manaCostEvaluator;
+    public int GetManaCost(JingJie jingJie, int dJingJie, bool jiaShi) => _manaCostEvaluator.Eval(jingJie, dJingJie, jiaShi);
+    public int GetBaseManaCost(JingJie jingJie) => _manaCostEvaluator.Eval(jingJie, jingJie - LowestJingJie, false);
+    public int GetBaseManaCost() => GetBaseManaCost(LowestJingJie);
+    private ChannelTimeEvaluator _channelTimeEvaluator;
+    public int GetChannelTime(JingJie jingJie, int dJingJie, bool jiaShi) => _channelTimeEvaluator.Eval(jingJie, dJingJie, jiaShi);
+
+    #endregion
+
+    public SkillTypeComposite SkillTypeComposite { get; private set; }
+
     private SkillDescription _description;
+    public string DescriptionFromJingJie(JingJie j) => _description.FromJDJ(j, j - LowestJingJie);
+    public string DescriptionFromLowestJingJie() => DescriptionFromJingJie(LowestJingJie);
+    public string DescriptionFromIndicator(JingJie j, int dj, Dictionary<string, object> indicator) =>
+        _description.FromIndicator(j, dj, indicator);
+
+    private string _trivia;
+    public string GetTrivia() => _trivia;
+
+    private bool _withinPool;
+    public bool WithinPool => _withinPool;
+    
+    private Func<StageEntity, StageSkill, bool, Task> _execute;
 
     private IAnnotation[] _annotations;
     public IAnnotation[] GetAnnotations() => _annotations;
 
-    private string _trivia;
-
-    private WuXing? _wuXing;
-    public WuXing? WuXing => _wuXing;
+    private SpriteEntry _spriteEntry;
+    public Sprite Sprite => _spriteEntry?.Sprite;
 
     private Sprite _cardFace;
     public Sprite CardFace
@@ -36,25 +61,6 @@ public class SkillEntry : Entry, IAnnotation
             return _cardFace;
         }
     }
-
-    private ManaCostEvaluator _manaCostEvaluator;
-    public int GetManaCost(JingJie jingJie, int dJingJie, bool jiaShi) => _manaCostEvaluator.Eval(jingJie, dJingJie, jiaShi);
-
-    public int GetBaseManaCost(JingJie jingJie) => _manaCostEvaluator.Eval(jingJie, jingJie - LowestJingJie, false);
-
-    public int GetBaseManaCost() => _manaCostEvaluator.Eval(_jingJieRange.Start, 0, false);
-
-    private ChannelTimeEvaluator _channelTimeEvaluator;
-    public int GetChannelTime(JingJie jingJie, int dJingJie, bool jiaShi) => _channelTimeEvaluator.Eval(jingJie, dJingJie, jiaShi);
-
-    public SkillTypeComposite SkillTypeComposite { get; private set; }
-    private Func<StageEntity, StageSkill, bool, Task> _execute;
-
-    private bool _withinPool;
-    public bool WithinPool => _withinPool;
-
-    private SpriteEntry _spriteEntry;
-    public Sprite Sprite => _spriteEntry?.Sprite;
 
     public SkillEntry(string name,
         WuXing? wuXing,
@@ -83,11 +89,9 @@ public class SkillEntry : Entry, IAnnotation
 
     public static implicit operator SkillEntry(string name) => Encyclopedia.SkillCategory[name];
 
-    public string Evaluate(int j, int dj) => _description.Eval(j, dj);
-
     public void Generate()
     {
-        string evaluated = Evaluate(0, 0);
+        string evaluated = DescriptionFromLowestJingJie();
 
         List<IAnnotation> annotations = new();
 
@@ -116,15 +120,12 @@ public class SkillEntry : Entry, IAnnotation
 
     public string GetAnnotatedDescription(string evaluated = null)
     {
-        string toRet = evaluated ?? Evaluate(0, 0);
+        string toRet = evaluated ?? DescriptionFromLowestJingJie();
         foreach (var annotation in _annotations)
             toRet = toRet.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
 
         return toRet;
     }
-
-    public string GetTrivia()
-        => _trivia;
 
     public async Task Channel(StageEntity caster, ChannelDetails d)
     {

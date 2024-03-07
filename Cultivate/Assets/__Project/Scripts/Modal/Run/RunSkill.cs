@@ -52,9 +52,6 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
     public string GetName()
         => _entry.GetName();
 
-    public string GetAnnotatedDescription(string evaluated = null)
-        => _entry.GetAnnotatedDescription(evaluated ?? GetDescription());
-
     public SkillTypeComposite GetSkillTypeComposite()
         => _entry.SkillTypeComposite;
 
@@ -74,7 +71,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         => CanvasManager.Instance.GetWuXingSprite(_entry.WuXing);
 
     public string GetDescription()
-        => _entry.Evaluate(JingJie, JingJie - _entry.LowestJingJie);
+        => _entry.DescriptionFromJingJie(JingJie);
 
     public int GetManaCost()
         => _entry.GetManaCost(JingJie, JingJie - _entry.LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
@@ -87,6 +84,9 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         int manaCost = GetManaCost();
         return manaCost == 0 ? "" : manaCost.ToString();
     }
+
+    public string GetAnnotatedDescription(string evaluated = null)
+        => _entry.GetAnnotatedDescription(evaluated ?? GetDescription());
 
     public string GetAnnotationText()
     {

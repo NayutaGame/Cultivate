@@ -75,7 +75,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("化焰", "Images/Cards/化焰"),
             new("千年笋", "Images/Cards/千年笋"),
             new("千里神行符", "Images/Cards/千里神行符"),
-            new("双发", "Images/Cards/双发"),
+            new("二重", "Images/Cards/二重"),
             new("合", "Images/Cards/合"),
             new("吐纳", "Images/Cards/吐纳"),
             new("吞天", "Images/Cards/吞天"),

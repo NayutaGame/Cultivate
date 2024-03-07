@@ -19,8 +19,6 @@ public class SkillCategory : Category<SkillEntry>
             new(name:                       "聚气术",
                 wuXing:                     null,
                 jingJieRange:               JingJie.LianQiOnly,
-                channelTimeEvaluator:       0,
-                manaCostEvaluator:          0,
                 skillTypeComposite:         null,
                 description:                new SkillDescription((j, dj) => "灵气+1"),
                 withinPool:                 false,
@@ -526,7 +524,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     caster.Swift = true;
                     if (await caster.TryConsumeProcedure("灵气", 2) || await caster.IsFocused())
-                        caster.UltraSwift = true;
+                        caster.TriSwift = true;
                 }),
 
             new(name:                       "摩诃钵特摩",
@@ -713,14 +711,14 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.GainBuffProcedure("飞龙在天");
                 }),
 
-            new(name:                       "双发",
+            new(name:                       "二重",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 channelTimeEvaluator:       new ChannelTimeEvaluator((j, dj, jiaShi) => 1 - dj),
                 description:                new SkillDescription((j, dj) => $"下{1 + dj}张牌使用两次"),
                 execute: async (caster, skill, recursive) =>
                 {
-                    await caster.GainBuffProcedure("双发", 1 + skill.Dj);
+                    await caster.GainBuffProcedure("二重", 1 + skill.Dj);
                 }),
 
             new(name:                       "心斋",
@@ -1274,7 +1272,7 @@ public class SkillCategory : Category<SkillEntry>
                     if (skill.GetJingJie() <= JingJie.ZhuJi)
                         caster.Swift = true;
                     else
-                        caster.UltraSwift = true;
+                        caster.TriSwift = true;
                 }),
 
             new(name:                       "无量劫",
@@ -1408,7 +1406,7 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 execute: async (caster, skill, recursive) =>
                 {
-                    caster.UltraSwift = true;
+                    caster.TriSwift = true;
                     await skill.ExhaustProcedure();
                 }),
 
@@ -1525,12 +1523,12 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.ErDong,
-                description:                "二动 双发",
+                description:                "二动 二重",
                 withinPool:                 false,
                 execute: async (caster, skill, recursive) =>
                 {
                     caster.Swift = true;
-                    await caster.GainBuffProcedure("双发");
+                    await caster.GainBuffProcedure("二重");
                 }),
 
             // 返虚

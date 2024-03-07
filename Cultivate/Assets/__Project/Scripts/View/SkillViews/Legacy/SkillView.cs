@@ -73,7 +73,7 @@ public class SkillView : SimpleView
         Color color = CanvasManager.Instance.ManaCostColors[0];
         switch (state)
         {
-            case ManaIndicator.ManaCostState.Unaccessed:
+            case ManaIndicator.ManaCostState.Unwritten:
                 color = CanvasManager.Instance.ManaCostColors[0];
                 break;
             case ManaIndicator.ManaCostState.Normal:

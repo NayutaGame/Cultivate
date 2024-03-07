@@ -1,19 +1,21 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SkillDescription
 {
-    public Func<JingJie, int, string> _func;
+    public Func<JingJie, int, Dictionary<string, object>, string> _func;
 
-    public SkillDescription(Func<JingJie, int, string> func)
+    public SkillDescription(Func<JingJie, int, Dictionary<string, object>, string> func)
     {
         _func = func;
     }
 
-    public string Eval(JingJie jingJie, int dJingJie)
-        => _func(jingJie, dJingJie);
+    public string FromJDJ(JingJie jingJie, int dJingJie)
+        => _func(jingJie, dJingJie, null);
 
-    public static implicit operator SkillDescription(string s) => new((jingJie, dJingJie) => s);
+    public string FromIndicator(JingJie jingJie, int dJingJie, Dictionary<string, object> indicator)
+        => _func(jingJie, dJingJie, indicator);
+
+    public static implicit operator SkillDescription(string s) => new((jingJie, dJingJie, indicator) => s);
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
+using UnityEngine.Serialization;
 
 public class StageEntity : Addressable, StageEventListener
 {
@@ -51,8 +52,9 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task Turn()
     {
-        UltraSwift = false;
         Swift = false;
+        TriSwift = false;
+        OctSwift = false;
 
         await _env.EventDict.SendEvent(StageEventDict.START_TURN, new TurnDetails(this, _p));
 
@@ -74,25 +76,10 @@ public class StageEntity : Addressable, StageEventListener
 
         await Step();
 
-        if (Swift || UltraSwift)
-            await SwiftProcedure(new SwiftDetails(this, Swift, UltraSwift));
+        if (Swift || TriSwift || OctSwift)
+            await SwiftProcedure(new SwiftDetails(this, Swift, TriSwift, OctSwift));
 
         await _env.EventDict.SendEvent(StageEventDict.END_TURN, new TurnDetails(this, _p));
-    }
-
-    private async Task SwiftProcedure(SwiftDetails d)
-    {
-        await _env.EventDict.SendEvent(StageEventDict.WILL_SWIFT, d);
-        if (d.Cancel)
-            return;
-
-        if (d.Swift || d.UltraSwift)
-            await Step();
-
-        if (d.UltraSwift)
-            await Step();
-
-        await _env.EventDict.SendEvent(StageEventDict.DID_SWIFT, d);
     }
 
     private async Task Step()
@@ -121,6 +108,30 @@ public class StageEntity : Addressable, StageEventListener
 
         await Execute(skill);
         await _env.EventDict.SendEvent(StageEventDict.END_STEP, new StepDetails(this, skill));
+    }
+
+    private async Task SwiftProcedure(SwiftDetails d)
+    {
+        await _env.EventDict.SendEvent(StageEventDict.WILL_SWIFT, d);
+        if (d.Cancel)
+            return;
+
+        if (d.Swift || d.TriSwift || d.OctSwift)
+            await Step();
+
+        if (d.TriSwift || d.OctSwift)
+            await Step();
+
+        if (d.OctSwift)
+        {
+            await Step();
+            await Step();
+            await Step();
+            await Step();
+            await Step();
+        }
+
+        await _env.EventDict.SendEvent(StageEventDict.DID_SWIFT, d);
     }
 
     private async Task<bool> ManaCostProcedure(StageSkill skill)
@@ -167,16 +178,18 @@ public class StageEntity : Addressable, StageEventListener
 
     private async Task Execute(StageSkill skill)
     {
-        bool multicast = GetStackOfBuff("永久双发") > 0 || await TryConsumeProcedure("双发");
-        if (multicast)
-        {
+        bool duoCast = GetStackOfBuff("永久二重") > 0 || await TryConsumeProcedure("二重");
+
+        int multiCast = GetStackOfBuff("多重");
+        await RemoveBuffProcedure("多重");
+        
+        if (duoCast)
             await skill.Execute(this);
+
+        for (int i = 0; i < multiCast; i++)
             await skill.Execute(this);
-        }
-        else
-        {
-            await skill.Execute(this);
-        }
+        
+        await skill.Execute(this);
     }
 
     private async Task MoveP()
@@ -214,8 +227,9 @@ public class StageEntity : Addressable, StageEventListener
 
     public int _p;
     private ChannelDetails _channelDetails;
-    public bool UltraSwift;
     public bool Swift;
+    public bool TriSwift;
+    public bool OctSwift;
     private bool _manaShortage;
 
     public bool Forward

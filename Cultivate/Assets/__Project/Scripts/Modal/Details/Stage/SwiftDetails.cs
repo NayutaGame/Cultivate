@@ -1,17 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class SwiftDetails : EventDetails
 {
     public StageEntity Owner;
     public bool Swift;
-    public bool UltraSwift;
+    public bool TriSwift;
+    public bool OctSwift;
 
-    public SwiftDetails(StageEntity owner, bool swift, bool ultraSwift)
+    public SwiftDetails(StageEntity owner, bool swift, bool triSwift, bool octSwift)
     {
         Owner = owner;
         Swift = swift;
-        UltraSwift = ultraSwift;
+        TriSwift = triSwift;
+        OctSwift = octSwift;
     }
 }

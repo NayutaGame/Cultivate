@@ -39,7 +39,7 @@ public class StageNote : ISkillModel
         => Skill?.GetName() ?? Encyclopedia.SkillCategory["聚气术"].GetName();
 
     public string GetAnnotatedDescription(string evaluated = null)
-        => Skill?.GetAnnotatedDescription() ?? Encyclopedia.SkillCategory["聚气术"].Evaluate(0, 0);
+        => Skill?.GetAnnotatedDescription() ?? Encyclopedia.SkillCategory["聚气术"].DescriptionFromLowestJingJie();
 
     public SkillTypeComposite GetSkillTypeComposite()
         => Skill?.GetSkillTypeCollection() ?? 0;

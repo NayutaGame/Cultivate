@@ -110,7 +110,7 @@ public class MechComposite : EmulatedSkill
         => CanvasManager.Instance.GetWuXingSprite(GetEntry().WuXing);
 
     public string GetDescription()
-        => GetEntry().Evaluate(GetJingJie(), GetJingJie() - GetEntry().LowestJingJie);
+        => GetEntry().DescriptionFromJingJie(GetJingJie());
 
     public string GetAnnotationText()
     {

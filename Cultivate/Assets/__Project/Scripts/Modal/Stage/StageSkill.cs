@@ -24,11 +24,8 @@ public class StageSkill
     public async Task ExhaustProcedure()
         => await _owner.Env.ExhaustProcedure(_owner, this);
 
-    public string GetAnnotatedDescription(string evaluated = null)
-        => _entry.GetAnnotatedDescription(evaluated ?? GetDescription());
-
     public string GetDescription()
-        => _entry.Evaluate(GetJingJie(), GetJingJie() - _entry.LowestJingJie);
+        => _entry.DescriptionFromJingJie(GetJingJie());
 
     public SkillTypeComposite GetSkillTypeCollection()
         => _entry.SkillTypeComposite;
@@ -47,6 +44,9 @@ public class StageSkill
         int manaCost = GetManaCost();
         return manaCost == 0 ? "" : manaCost.ToString();
     }
+
+    public string GetAnnotatedDescription(string evaluated = null)
+        => _entry.GetAnnotatedDescription(evaluated ?? GetDescription());
 
     public string GetAnnotationText()
     {
