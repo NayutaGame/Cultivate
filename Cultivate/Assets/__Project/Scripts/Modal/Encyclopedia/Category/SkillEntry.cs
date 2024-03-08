@@ -167,10 +167,6 @@ public class SkillEntry : Entry, IAnnotation
         StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}使用了{GetName()}");
         Dictionary<string, string> indicator = await _execute(caster, skill, recursive);
-        if (indicator != null)
-        {
-            
-        }
         r.TryAppendNote(caster.Index, skill, indicator);
         // write indicator to slot, here
         r.TryAppend($"\n");
