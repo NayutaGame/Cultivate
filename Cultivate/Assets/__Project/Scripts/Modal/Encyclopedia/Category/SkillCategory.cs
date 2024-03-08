@@ -42,7 +42,7 @@ public class SkillCategory : Category<SkillEntry>
                     bool cond = skill.IsFirstTime || await caster.IsFocused();
                     if (cond)
                         await caster.GainBuffProcedure("锋锐", 3 + 2 * skill.Dj);
-                    
+
                     return cond.ToIndicator();
                 }),
 
@@ -536,14 +536,15 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 description:                new SkillDescription((j, dj, indicator) =>
-                    $"护甲+{10 + 4 * dj}\n初次：遭受1跳回合"),
+                    $"护甲+{10 + 4 * dj}\n" +
+                    $"初次：遭受1跳回合".ApplyCond(indicator)),
                 execute:                    async (caster, skill, recursive) =>
                 {
                     await caster.GainArmorProcedure(10 + 4 * skill.Dj);
                     bool cond = !skill.IsFirstTime || await caster.IsFocused();
                     if (!cond)
                         await caster.GainBuffProcedure("跳回合");
-                    return null;
+                    return cond.ToIndicator();
                 }),
 
             new(name:                       "秋水",
@@ -751,14 +752,15 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 description:                new SkillDescription((j, dj, indicator) =>
-                    $"生命+{6 + 4 * dj}\n初次：闪避+1"),
+                    $"生命+{6 + 4 * dj}\n" +
+                    $"初次：闪避+1".ApplyCond(indicator)),
                 execute: async (caster, skill, recursive) =>
                 {
                     await caster.HealProcedure(6 + 4 * skill.Dj);
                     bool cond = skill.IsFirstTime || await caster.IsFocused();
                     if (cond)
                         await caster.GainBuffProcedure("闪避");
-                    return null;
+                    return cond.ToIndicator();
                 }),
 
             new(name:                       "早春",
@@ -766,14 +768,15 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 manaCostEvaluator:          1,
                 description:                new SkillDescription((j, dj, indicator) =>
-                    $"力量+{1 + (dj / 2)}\n护甲+{6 + dj}\n初次：翻倍"),
+                    $"力量+{1 + (dj / 2)}\n护甲+{6 + dj}\n" +
+                    $"初次：翻倍".ApplyCond(indicator)),
                 execute: async (caster, skill, recursive) =>
                 {
                     bool cond = skill.IsFirstTime || await caster.IsFocused();
                     int mul = cond ? 2 : 1;
                     await caster.GainBuffProcedure("力量", (1 + (skill.Dj / 2)) * mul);
                     await caster.GainArmorProcedure((6 + skill.Dj) * mul);
-                    return null;
+                    return cond.ToIndicator();
                 }),
 
             new(name:                       "身骑白马",

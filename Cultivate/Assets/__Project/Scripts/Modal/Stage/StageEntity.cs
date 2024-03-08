@@ -445,7 +445,8 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task<bool> IsFocused()
     {
-        if (GetStackOfBuff("永久集中") > 0) return true;
+        if (GetStackOfBuff("永久集中") > 0)
+            return true;
         return await TryConsumeProcedure("集中");
     }
 

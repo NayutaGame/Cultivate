@@ -8,11 +8,14 @@ public static class Style
         if (indicator == null)
             return s;
 
+        if (!indicator.ContainsKey(styleName))
+            return s;
+        
         string style = indicator[styleName];
         if (string.IsNullOrEmpty(style))
             return s;
         
-        return $"<style=\"{styleName}\">{s}</style>";
+        return $"<style=\"{style}\">{s}</style>";
     }
 
     public static string ApplyCond(this string s, Dictionary<string, string> indicator) =>
@@ -29,7 +32,7 @@ public static class Style
     public static Dictionary<string, string> Append(this Dictionary<string, string> indicator, string key, bool cond)
     {
         if (!cond)
-            indicator[key] = "grey";
+            indicator[key] = "Grey";
         return indicator;
     }
 

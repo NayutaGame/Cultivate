@@ -37,7 +37,7 @@ public class BuffCategory : Category<BuffEntry>
             new("免费",      "下一次耗蓝时无需灵气",                    BuffStackRule.Add, true, false),
             new("永久免费",    "所有牌无需灵气",                       BuffStackRule.One, true, false),
             new("集中",      "下一次使用牌时，条件算作激活",                BuffStackRule.Add, true, false),
-            new("永久集中",    "所有牌，条件算作激活",                    BuffStackRule.Add, true, false),
+            new("永久集中",    "所有牌，条件算作激活",                    BuffStackRule.One, true, false),
             new("浮空艇",     "回合被跳过时：生命及上线无法下降",              BuffStackRule.Add, true, false),
             new("架势",     "消耗架势激活效果，没有架势时获得架势",              BuffStackRule.One, true, false),
             
