@@ -238,6 +238,8 @@ public class StageEntity : Addressable, StageEventListener
         => _skills.Count(skill => skill.Exhausted);
     public int AttackCount
         => _skills.Count(skill => skill.GetSkillType().Contains(SkillType.Attack));
+    public bool HasJiaShi
+        => GetStackOfBuff("架势") > 0;
 
     public int LostArmorRecord;
     public int GeneratedManaRecord;
@@ -546,7 +548,7 @@ public class StageEntity : Addressable, StageEventListener
             return true;
         }
 
-        if (await TryConsumeProcedure("集中"))
+        if (await IsFocused())
             return true;
 
         await GainBuffProcedure("架势");

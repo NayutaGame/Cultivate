@@ -770,7 +770,7 @@ public class BuffCategory : Category<BuffEntry>
 
     public void Init()
     {
-        List.Do(entry => entry.Generate());
+        List.Do(entry => entry.GenerateAnnotations());
     }
 
     public override BuffEntry DefaultEntry() => this["不存在的Buff"];

@@ -24,9 +24,6 @@ public class StageSkill
     public async Task ExhaustProcedure()
         => await _owner.Env.ExhaustProcedure(_owner, this);
 
-    public string GetDescription()
-        => _entry.DescriptionFromJingJie(GetJingJie());
-
     public SkillTypeComposite GetSkillTypeCollection()
         => _entry.SkillTypeComposite;
 
@@ -45,17 +42,14 @@ public class StageSkill
         return manaCost == 0 ? "" : manaCost.ToString();
     }
 
-    public string GetAnnotatedDescription(string evaluated = null)
-        => _entry.GetAnnotatedDescription(evaluated ?? GetDescription());
+    public string GetName()
+        => _entry.GetName();
 
-    public string GetAnnotationText()
-    {
-        StringBuilder sb = new();
-        foreach (IAnnotation annotation in _entry.GetAnnotations())
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetAnnotatedDescription()}\n\n");
+    public string GetHighlight(Dictionary<string, string> indicator)
+        => _entry.GetHighlight(GetJingJie(), indicator);
 
-        return sb.ToString();
-    }
+    public string GetExplanation()
+        => _entry.GetExplanation();
 
     public string GetTrivia()
         => _entry.GetTrivia();
@@ -111,9 +105,6 @@ public class StageSkill
         RunEquippedTimes = placedSkill?.RunSkill?.GetRunEquippedTimes() + 1 ?? 0;
         StageUsedTimes = 0;
     }
-
-    public string GetName()
-        => _entry.GetName();
 
     public SkillTypeComposite GetSkillType()
         => _entry.SkillTypeComposite;

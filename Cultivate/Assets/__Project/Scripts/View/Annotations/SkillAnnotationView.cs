@@ -29,7 +29,7 @@ public class SkillAnnotationView : SimpleView
         for (int i = 0; i < TypeTagList.Length; i++)
             TypeTagList[i].SetText(i < skillTypes.Count ? skillTypes[i]._name : null);
 
-        DescriptionText.text = skill.GetAnnotationText();
+        DescriptionText.text = skill.GetExplanation();
 
         SetTrivia(skill.GetTrivia());
     }

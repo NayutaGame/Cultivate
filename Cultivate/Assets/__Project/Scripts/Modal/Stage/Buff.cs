@@ -1,5 +1,4 @@
 
-using System.Text;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -14,18 +13,8 @@ public class Buff : StageEventListener
     public BuffEntry GetEntry() => _entry;
 
     public string GetName() => _entry.GetName();
-
-    public string GetAnnotationText()
-    {
-        StringBuilder sb = new();
-        foreach (IAnnotation annotation in GetEntry().GetAnnotations())
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetAnnotatedDescription()}\n\n");
-
-        return sb.ToString();
-    }
-
-    public string GetTrivia()
-        => GetEntry().GetTrivia();
+    public string GetExplanation() => _entry.GetExplanation();
+    public string GetTrivia() => _entry.GetTrivia();
 
     private int _stack;
     public int Stack => _stack;

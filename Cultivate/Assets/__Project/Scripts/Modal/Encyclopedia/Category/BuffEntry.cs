@@ -1,16 +1,17 @@
 
 using System.Collections.Generic;
+using System.Text;
 using CLLibrary;
+using FMOD;
 
 public class BuffEntry : Entry, IAnnotation
 {
     private string _description;
-    public string Description => _description;
+    public string GetDescription() => _description;
 
     private string _trivia;
 
     private IAnnotation[] _annotations;
-    public IAnnotation[] GetAnnotations() => _annotations;
 
     // private Sprite _sprite;
     // public Sprite Sprite => _sprite;
@@ -47,15 +48,16 @@ public class BuffEntry : Entry, IAnnotation
         _dispellable = dispellable;
 
         _eventDescriptorDict = new Dictionary<int, StageEventDescriptor>();
-        foreach (var eventDescriptor in eventDescriptors)
-            _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
+        if (eventDescriptors != null)
+            foreach (var eventDescriptor in eventDescriptors)
+                _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
     }
 
     public static implicit operator BuffEntry(string name) => Encyclopedia.BuffCategory[name];
-
-    public void Generate()
+    
+    public void GenerateAnnotations()
     {
-        string description = Description;
+        string description = GetDescription();
 
         List<IAnnotation> annotations = new();
 
@@ -82,13 +84,22 @@ public class BuffEntry : Entry, IAnnotation
         _annotations = annotations.ToArray();
     }
 
-    public string GetAnnotatedDescription(string evaluated = null)
+    public string GetHighlight() => GetHighlight(GetDescription());
+    public string GetHighlight(string description)
     {
-        string toRet = evaluated ?? _description;
-        foreach (var annotation in _annotations)
-            toRet = toRet.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
+        StringBuilder sb = new(description);
+        foreach (IAnnotation annotation in _annotations)
+            sb = sb.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
 
-        return toRet;
+        return sb.ToString();
+    }
+    public string GetExplanation()
+    {
+        StringBuilder sb = new();
+        foreach (IAnnotation annotation in _annotations)
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetHighlight()}\n\n");
+
+        return sb.ToString();
     }
 
     public string GetTrivia()

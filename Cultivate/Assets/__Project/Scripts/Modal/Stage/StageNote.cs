@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StageNote : ISkillModel
@@ -7,16 +8,19 @@ public class StageNote : ISkillModel
     public int TemporalIndex;
     public StageSkill Skill;
 
-    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, ChannelDetails d = null)
+    private Dictionary<string, string> _indicator;
+
+    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, Dictionary<string, string> indicator = null, ChannelDetails channelDetails = null)
     {
         EntityIndex = entityIndex;
         TemporalIndex = temporalIndex;
         Skill = skill;
+        _indicator = indicator;
 
-        if (d != null)
+        if (channelDetails != null)
         {
-            _currCounter = d.GetCounter();
-            _maxCounter = d.GetChannelTime();
+            _currCounter = channelDetails.GetCounter();
+            _maxCounter = channelDetails.GetChannelTime();
         }
         else
         {
@@ -29,39 +33,37 @@ public class StageNote : ISkillModel
         => EntityIndex == 0;
 
     public Sprite GetSprite()
-        // => Skill?.Entry.Sprite ?? Encyclopedia.SkillCategory["聚气术"].Sprite;
-        => Skill?.Entry.Sprite;
+        => Skill.Entry.Sprite;
 
     public int GetManaCost()
-        => Skill?.GetManaCost() ?? 0;
+        => Skill.GetManaCost();
 
     public string GetName()
-        => Skill?.GetName() ?? Encyclopedia.SkillCategory["聚气术"].GetName();
+        => Skill.GetName();
 
-    public string GetAnnotatedDescription(string evaluated = null)
-        => Skill?.GetAnnotatedDescription() ?? Encyclopedia.SkillCategory["聚气术"].DescriptionFromLowestJingJie();
+    public string GetHighlight()
+        => Skill.GetHighlight(_indicator);
 
-    public SkillTypeComposite GetSkillTypeComposite()
-        => Skill?.GetSkillTypeCollection() ?? 0;
-
-    public Color GetColor()
-        // => Skill?.GetColor() ?? CanvasManager.Instance.JingJieColors[JingJie.LianQi];
-        => CanvasManager.Instance.JingJieColors[Skill?.GetJingJie() ?? JingJie.LianQi];
-
-    public Sprite GetCardFace()
-        => Skill?.Entry.CardFace;
-
-    public Sprite GetJingJieSprite()
-        => CanvasManager.Instance.JingJieSprites[Skill?.GetJingJie() ?? JingJie.LianQi];
-
-    public Sprite GetWuXingSprite()
-        => CanvasManager.Instance.GetWuXingSprite(Skill?.Entry.WuXing);
-
-    public string GetAnnotationText()
-        => Skill?.GetAnnotationText();
+    public string GetExplanation()
+        => Skill.GetExplanation();
 
     public string GetTrivia()
-        => Skill?.GetTrivia();
+        => Skill.GetTrivia();
+
+    public SkillTypeComposite GetSkillTypeComposite()
+        => Skill.GetSkillTypeCollection();
+
+    public Color GetColor()
+        => CanvasManager.Instance.JingJieColors[Skill.GetJingJie()];
+
+    public Sprite GetCardFace()
+        => Skill.Entry.CardFace;
+
+    public Sprite GetJingJieSprite()
+        => CanvasManager.Instance.JingJieSprites[Skill.GetJingJie()];
+
+    public Sprite GetWuXingSprite()
+        => CanvasManager.Instance.GetWuXingSprite(Skill.Entry.WuXing);
 
     private int _currCounter;
     public int GetCurrCounter() => _currCounter;

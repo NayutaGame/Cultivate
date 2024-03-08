@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
@@ -28,12 +29,64 @@ public class SkillEntry : Entry, IAnnotation
     #endregion
 
     public SkillTypeComposite SkillTypeComposite { get; private set; }
-
+    
     private SkillDescription _description;
-    public string DescriptionFromJingJie(JingJie j) => _description.FromJDJ(j, j - LowestJingJie);
-    public string DescriptionFromLowestJingJie() => DescriptionFromJingJie(LowestJingJie);
-    public string DescriptionFromIndicator(JingJie j, int dj, Dictionary<string, object> indicator) =>
-        _description.FromIndicator(j, dj, indicator);
+
+    public string GetDescription() => GetDescription(LowestJingJie);
+    public string GetDescription(JingJie j, Dictionary<string, string> indicator = null) =>
+        _description.Get(j, j - LowestJingJie, indicator);
+
+    public void GenerateAnnotations()
+    {
+        string description = GetDescription();
+
+        List<IAnnotation> annotations = new();
+
+        foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
+        {
+            if (!description.Contains(keywordEntry.GetName()))
+                continue;
+
+            annotations.Add(keywordEntry);
+        }
+
+        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
+        {
+            if (!description.Contains(buffEntry.GetName()))
+                continue;
+
+            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
+            if (duplicate != null)
+                continue;
+
+            annotations.Add(buffEntry);
+        }
+
+        _annotations = annotations.ToArray();
+    }
+
+    public string GetHighlight() => GetHighlight(GetDescription());
+    
+    public string GetHighlight(string description)
+    {
+        StringBuilder sb = new(description);
+        foreach (IAnnotation annotation in _annotations)
+            sb = sb.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
+
+        return sb.ToString();
+    }
+
+    public string GetHighlight(JingJie jingJie, Dictionary<string, string> indicator)
+        => GetHighlight(GetDescription(jingJie, indicator));
+    
+    public string GetExplanation()
+    {
+        StringBuilder sb = new();
+        foreach (IAnnotation annotation in _annotations)
+            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetHighlight()}\n\n");
+
+        return sb.ToString();
+    }
 
     private string _trivia;
     public string GetTrivia() => _trivia;
@@ -41,10 +94,9 @@ public class SkillEntry : Entry, IAnnotation
     private bool _withinPool;
     public bool WithinPool => _withinPool;
     
-    private Func<StageEntity, StageSkill, bool, Task> _execute;
+    private Func<StageEntity, StageSkill, bool, Task<Dictionary<string, string>>> _execute;
 
     private IAnnotation[] _annotations;
-    public IAnnotation[] GetAnnotations() => _annotations;
 
     private SpriteEntry _spriteEntry;
     public Sprite Sprite => _spriteEntry?.Sprite;
@@ -71,7 +123,7 @@ public class SkillEntry : Entry, IAnnotation
         SkillDescription description = null,
         string trivia = null,
         bool withinPool = true,
-        Func<StageEntity, StageSkill, bool, Task> execute = null
+        Func<StageEntity, StageSkill, bool, Task<Dictionary<string, string>>> execute = null
         ) : base(name)
     {
         _wuXing = wuXing;
@@ -88,44 +140,8 @@ public class SkillEntry : Entry, IAnnotation
     }
 
     public static implicit operator SkillEntry(string name) => Encyclopedia.SkillCategory[name];
-
-    public void Generate()
-    {
-        string evaluated = DescriptionFromLowestJingJie();
-
-        List<IAnnotation> annotations = new();
-
-        foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
-        {
-            if (!evaluated.Contains(keywordEntry.GetName()))
-                continue;
-
-            annotations.Add(keywordEntry);
-        }
-
-        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
-        {
-            if (!evaluated.Contains(buffEntry.GetName()))
-                continue;
-
-            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
-            if (duplicate != null)
-                continue;
-
-            annotations.Add(buffEntry);
-        }
-
-        _annotations = annotations.ToArray();
-    }
-
-    public string GetAnnotatedDescription(string evaluated = null)
-    {
-        string toRet = evaluated ?? DescriptionFromLowestJingJie();
-        foreach (var annotation in _annotations)
-            toRet = toRet.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
-
-        return toRet;
-    }
+    
+    // Cost Procedure
 
     public async Task Channel(StageEntity caster, ChannelDetails d)
     {
@@ -150,8 +166,9 @@ public class SkillEntry : Entry, IAnnotation
 
         StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}使用了{GetName()}");
-        r.TryAppendNote(caster.Index, skill);
-        await _execute(caster, skill, recursive);
+        Dictionary<string, string> indicator = await _execute(caster, skill, recursive);
+        r.TryAppendNote(caster.Index, skill, indicator);
+        // write indicator to slot, here
         r.TryAppend($"\n");
     }
 
@@ -160,8 +177,10 @@ public class SkillEntry : Entry, IAnnotation
         StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}使用了{GetName()}");
         await _execute(caster, skill, recursive);
+        // indicator
         r.TryAppend($"\n");
     }
 
-    private async Task DefaultExecute(StageEntity caster, StageSkill skill, bool recursive) { }
+    private async Task<Dictionary<string, string>>
+        DefaultExecute(StageEntity caster, StageSkill skill, bool recursive) => null;
 }

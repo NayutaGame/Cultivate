@@ -2,7 +2,10 @@
 public interface IAnnotation
 {
     string GetName();
-    void Generate();
-    IAnnotation[] GetAnnotations();
-    string GetAnnotatedDescription(string evaluated = null);
+    string GetDescription();
+    
+    void GenerateAnnotations();
+    string GetHighlight();
+    string GetHighlight(string description);
+    string GetExplanation();
 }

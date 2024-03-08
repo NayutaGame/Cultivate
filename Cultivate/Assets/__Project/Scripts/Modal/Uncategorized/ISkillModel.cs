@@ -8,12 +8,12 @@ public interface ISkillModel
     Sprite GetSprite();
     int GetManaCost();
     string GetName();
-    string GetAnnotatedDescription(string evaluated = null);
+    string GetHighlight();
+    string GetExplanation();
+    string GetTrivia();
     SkillTypeComposite GetSkillTypeComposite();
     Color GetColor();
     Sprite GetCardFace();
     Sprite GetJingJieSprite();
     Sprite GetWuXingSprite();
-    string GetAnnotationText();
-    string GetTrivia();
 }

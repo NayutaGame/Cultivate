@@ -1,7 +1,5 @@
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 [Serializable]
@@ -49,9 +47,6 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
     public Sprite GetSprite()
         => _entry.Sprite;
 
-    public string GetName()
-        => _entry.GetName();
-
     public SkillTypeComposite GetSkillTypeComposite()
         => _entry.SkillTypeComposite;
 
@@ -70,9 +65,6 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
     public Sprite GetWuXingSprite()
         => CanvasManager.Instance.GetWuXingSprite(_entry.WuXing);
 
-    public string GetDescription()
-        => _entry.DescriptionFromJingJie(JingJie);
-
     public int GetManaCost()
         => _entry.GetManaCost(JingJie, JingJie - _entry.LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
 
@@ -85,20 +77,20 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         return manaCost == 0 ? "" : manaCost.ToString();
     }
 
-    public string GetAnnotatedDescription(string evaluated = null)
-        => _entry.GetAnnotatedDescription(evaluated ?? GetDescription());
+    public string GetName()
+        => _entry.GetName();
 
-    public string GetAnnotationText()
-    {
-        StringBuilder sb = new();
-        foreach (IAnnotation annotation in GetEntry().GetAnnotations())
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetAnnotatedDescription()}\n\n");
+    public string GetDescription()
+        => _entry.GetDescription(JingJie);
 
-        return sb.ToString();
-    }
+    public string GetHighlight()
+        => _entry.GetHighlight(GetJingJie(), _skillSlot?.Indicator);
+
+    public string GetExplanation()
+        => _entry.GetExplanation();
 
     public string GetTrivia()
-        => GetEntry().GetTrivia();
+        => _entry.GetTrivia();
 
     public RunSkill Clone()
         => new(this);

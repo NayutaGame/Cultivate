@@ -15,8 +15,8 @@ public class BuffAnnotationView : SimpleView
 
         Buff buff = Get<Buff>();
 
-        TitleText.text = $"{buff.Stack} {buff.GetName()}\n\n{buff.GetEntry().Description}";
-        DescriptionText.text = buff.GetAnnotationText();
+        TitleText.text = $"{buff.Stack} {buff.GetName()}\n\n{buff.GetEntry().GetDescription()}";
+        DescriptionText.text = buff.GetExplanation();
 
         string trivia = buff.GetTrivia();
         bool hasTrivia = trivia != null;

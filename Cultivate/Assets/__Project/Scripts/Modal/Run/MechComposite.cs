@@ -91,8 +91,14 @@ public class MechComposite : EmulatedSkill
     public string GetName()
         => GetEntry().GetName();
 
-    public string GetAnnotatedDescription(string evaluated = null)
-        => GetEntry().GetAnnotatedDescription(evaluated ?? GetDescription());
+    public string GetHighlight()
+        => GetEntry().GetHighlight(GetJingJie(), _skillSlot?.Indicator);
+
+    public string GetExplanation()
+        => GetEntry().GetExplanation();
+
+    public string GetTrivia()
+        => GetEntry().GetTrivia();
 
     public SkillTypeComposite GetSkillTypeComposite()
         => GetEntry().SkillTypeComposite;
@@ -110,19 +116,7 @@ public class MechComposite : EmulatedSkill
         => CanvasManager.Instance.GetWuXingSprite(GetEntry().WuXing);
 
     public string GetDescription()
-        => GetEntry().DescriptionFromJingJie(GetJingJie());
-
-    public string GetAnnotationText()
-    {
-        StringBuilder sb = new();
-        foreach (IAnnotation annotation in GetEntry().GetAnnotations())
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetAnnotatedDescription()}\n\n");
-
-        return sb.ToString();
-    }
-
-    public string GetTrivia()
-        => GetEntry().GetTrivia();
+        => GetEntry().GetDescription(GetJingJie());
 
     public int GetCurrCounter() => 0;
     public int GetMaxCounter() => 0;

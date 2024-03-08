@@ -43,7 +43,7 @@ public class SkillView : SimpleView
         SetCardImage(skill.GetSprite());
         SetManaCost(skill.GetManaCost());
         SetName(skill.GetName());
-        SetDescription(skill.GetAnnotatedDescription());
+        SetDescription(skill.GetHighlight());
         SetSkillTypeComposite(skill.GetSkillTypeComposite());
         SetJingJieSprite(skill.GetJingJieSprite());
         SetWuXingSprite(skill.GetWuXingSprite());
