@@ -523,8 +523,12 @@ public class StageEnvironment : Addressable, StageEventListener
                 if (slot.ManaIndicator.State != ManaIndicator.ManaCostState.Unwritten)
                     return;
 
+                StageSkill skill = manaShortageDetails.Skill;
+                CostDescription costDescription = skill.Entry.GetCostDescription(skill.GetJingJie());
+                int literalCost = costDescription.ByType(CostDescription.CostType.Mana);
+
                 slot.ManaIndicator = new ManaIndicator(ManaIndicator.ManaCostState.Shortage,
-                    manaShortageDetails.LiteralCost, manaShortageDetails.ActualCost);
+                    literalCost, manaShortageDetails.Cost);
             });
 
         StageEventDescriptor writeManaCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_COST, 0,
@@ -539,12 +543,16 @@ public class StageEnvironment : Addressable, StageEventListener
                 if (slot.ManaIndicator.State != ManaIndicator.ManaCostState.Unwritten)
                     return;
 
-                ManaIndicator.ManaCostState state = (manaCostDetails.ActualCost < manaCostDetails.LiteralCost)
+                StageSkill skill = manaCostDetails.Skill;
+                CostDescription costDescription = skill.Entry.GetCostDescription(skill.GetJingJie());
+                int literalCost = costDescription.ByType(CostDescription.CostType.Mana);
+                
+                ManaIndicator.ManaCostState state = (manaCostDetails.Cost < literalCost)
                     ? ManaIndicator.ManaCostState.Reduced
                     : ManaIndicator.ManaCostState.Normal;
 
                 slot.ManaIndicator = new ManaIndicator(state,
-                    manaCostDetails.LiteralCost, manaCostDetails.ActualCost);
+                    literalCost, manaCostDetails.Cost);
             });
 
         ClearManaIndicator();
@@ -558,7 +566,7 @@ public class StageEnvironment : Addressable, StageEventListener
         _eventDict.Register(this, writeManaShortage);
         _eventDict.Register(this, writeManaCost);
 
-        await TurnProcedure();
+        await BodyProcedure();
 
         _eventDict.Unregister(this, writeManaShortage);
         _eventDict.Unregister(this, writeManaCost);
@@ -650,13 +658,10 @@ public class StageEnvironment : Addressable, StageEventListener
     private async Task StartStageProcedure()
     {
         foreach (var e in _entities)
-        {
-            e._p = -1;
             await _eventDict.SendEvent(StageEventDict.START_STAGE, new StageDetails(e));
-        }
     }
 
-    private async Task TurnProcedure()
+    private async Task BodyProcedure()
     {
         int whosTurn = 0;
         for (int i = 0; i < MAX_ACTION_COUNT; i++)
@@ -664,7 +669,7 @@ public class StageEnvironment : Addressable, StageEventListener
             StageEntity actor = _entities[whosTurn];
 
             _result.TryAppend($"--------第{i}回合, {actor.GetName()}行动--------\n");
-            await actor.Turn();
+            await actor.TurnProcedure();
 
             _entities.Do(e =>
             {

@@ -26,26 +26,14 @@ public class StageSkill
     public SkillTypeComposite GetSkillTypeCollection()
         => _entry.SkillTypeComposite;
 
-    public int GetLiteralCost()
-        => _entry.GetManaCost(GetJingJie(), Dj, false);
-
-    public int GetManaCost()
-        => _entry.GetManaCost(GetJingJie(), Dj, JiaShi);
-
-    public int GetChannelTime()
-        => _entry.GetChannelTime(GetJingJie(), Dj, JiaShi);
-
-    public string GetManaCostString()
-    {
-        int manaCost = GetManaCost();
-        return manaCost == 0 ? "" : manaCost.ToString();
-    }
+    public async Task<CostResult> CostProcedure(StageEnvironment env, StageEntity caster, bool recursive = true)
+        => await _entry.CostProcedure(env, caster, this, recursive);
 
     public string GetName()
         => _entry.GetName();
 
-    public string GetHighlight(Dictionary<string, string> indicator)
-        => _entry.GetHighlight(GetJingJie(), indicator);
+    public string GetHighlight(ExecuteResult executeResult)
+        => _entry.GetHighlight(GetJingJie(), executeResult);
 
     public string GetExplanation()
         => _entry.GetExplanation();
@@ -69,8 +57,6 @@ public class StageSkill
 
     public int Dj
         => GetJingJie() - _entry.LowestJingJie;
-    public bool JiaShi
-        => Next(true).Entry.GetName() == "收刀" || Prev(true).Entry.GetName() == "拔刀" || _owner.GetStackOfBuff("天人合一") > 0;
     public bool IsFirstTime
         => StageUsedTimes == 0;
     public bool IsOdd
@@ -108,14 +94,14 @@ public class StageSkill
     public SkillTypeComposite GetSkillType()
         => _entry.SkillTypeComposite;
 
-    public async Task Channel(StageEntity caster, ChannelDetails d)
+    public async Task Channel(StageEntity caster, ChannelCostDetails d)
     {
         await caster.Env.EventDict.SendEvent(StageEventDict.WILL_CHANNEL, d.Clone());
         await _entry.Channel(caster, d);
         await caster.Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, d.Clone());
     }
 
-    public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
+    public async Task ChannelWithoutTween(StageEntity caster, ChannelCostDetails d)
     {
         await caster.Env.EventDict.SendEvent(StageEventDict.WILL_CHANNEL, d);
         await _entry.ChannelWithoutTween(caster, d);

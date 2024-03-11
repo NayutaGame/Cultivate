@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
-using UnityEngine.Serialization;
 
 public class StageEntity : Addressable, StageEventListener
 {
@@ -50,7 +49,7 @@ public class StageEntity : Addressable, StageEventListener
         return null;
     }
 
-    public async Task Turn()
+    public async Task TurnProcedure()
     {
         Swift = false;
         TriSwift = false;
@@ -67,14 +66,7 @@ public class StageEntity : Addressable, StageEventListener
             return;
         }
 
-        if (_channelDetails != null)
-        {
-            await ChannelProcedure();
-            await _env.EventDict.SendEvent(StageEventDict.END_TURN, new TurnDetails(this, _p));
-            return;
-        }
-
-        await Step();
+        await ActionProcedure();
 
         if (Swift || TriSwift || OctSwift)
             await SwiftProcedure(new SwiftDetails(this, Swift, TriSwift, OctSwift));
@@ -82,101 +74,28 @@ public class StageEntity : Addressable, StageEventListener
         await _env.EventDict.SendEvent(StageEventDict.END_TURN, new TurnDetails(this, _p));
     }
 
-    private async Task Step()
+    private async Task ActionProcedure()
     {
-        if (!_manaShortage)
-            await MoveP();
-
-        StageSkill skill = _skills[_p];
-
-        await _env.EventDict.SendEvent(StageEventDict.START_STEP, new StepDetails(this, skill));
-
-        _manaShortage = await ManaCostProcedure(skill);
-        if (_manaShortage)
+        if (_costResult == null)
         {
-            await _env.EventDict.SendEvent(StageEventDict.END_STEP, new StepDetails(this, null));
+            _costResult = await CostResult.FromEnvironment(_env, this, _skills[_p]);
+            await _costResult.WillCostEvent(); // write value
+        }
+        
+        await _costResult.ApplyCost(); // if shortage, write state
+
+        if (_costResult.Blocking)
             return;
-        }
+        await _costResult.DidCostEvent();
+        
+        await ExecuteProcedure(_skills[_p]);
+        
+        await StepProcedure();
 
-        if (skill.GetChannelTime() > 0)
-        {
-            _channelDetails = new ChannelDetails(this, skill);
-            await skill.Channel(this, _channelDetails);
-            await _env.EventDict.SendEvent(StageEventDict.END_STEP, new StepDetails(this, skill));
-            return;
-        }
-
-        await Execute(skill);
-        await _env.EventDict.SendEvent(StageEventDict.END_STEP, new StepDetails(this, skill));
+        _costResult = null;
     }
 
-    private async Task SwiftProcedure(SwiftDetails d)
-    {
-        await _env.EventDict.SendEvent(StageEventDict.WILL_SWIFT, d);
-        if (d.Cancel)
-            return;
-
-        if (d.Swift || d.TriSwift || d.OctSwift)
-            await Step();
-
-        if (d.TriSwift || d.OctSwift)
-            await Step();
-
-        if (d.OctSwift)
-        {
-            await Step();
-            await Step();
-            await Step();
-            await Step();
-            await Step();
-        }
-
-        await _env.EventDict.SendEvent(StageEventDict.DID_SWIFT, d);
-    }
-
-    private async Task<bool> ManaCostProcedure(StageSkill skill)
-    {
-        int actualCost = (skill.GetManaCost() - GetStackOfBuff("心斋")).ClampLower(0);
-        if (actualCost > 0)
-        {
-            bool hasFree = GetStackOfBuff("永久免费") > 0 || await TryConsumeProcedure("免费");
-            if (hasFree)
-                actualCost = 0;
-        }
-
-        await _env.EventDict.SendEvent(StageEventDict.WILL_MANA_COST, new ManaCostDetails(this, skill, actualCost));
-
-        bool manaSufficient = actualCost == 0 || await TryConsumeProcedure("灵气", actualCost);
-        bool manaShortage = !manaSufficient;
-        if (manaShortage)
-        {
-            await ManaShortageProcedure(_p, skill, actualCost);
-            await ManaShortageAction.Execute(this);
-        }
-        else
-        {
-            await _env.EventDict.SendEvent(StageEventDict.DID_MANA_COST, new ManaCostDetails(this, skill, actualCost));
-        }
-
-        return manaShortage;
-    }
-
-    private async Task ChannelProcedure()
-    {
-        _channelDetails.IncrementProgress();
-        if (_channelDetails.FinishedChannelling())
-        {
-            await _channelDetails._skill.ChannelWithoutTween(this, _channelDetails);
-            await Execute(_channelDetails._skill);
-            _channelDetails = null;
-        }
-        else
-        {
-            await _channelDetails._skill.Channel(this, _channelDetails);
-        }
-    }
-
-    private async Task Execute(StageSkill skill)
+    private async Task ExecuteProcedure(StageSkill skill)
     {
         bool duoCast = GetStackOfBuff("永久二重") > 0 || await TryConsumeProcedure("二重");
 
@@ -192,8 +111,10 @@ public class StageEntity : Addressable, StageEventListener
         await skill.Execute(this);
     }
 
-    private async Task MoveP()
+    private async Task StepProcedure()
     {
+        await _env.EventDict.SendEvent(StageEventDict.START_STEP, new StartStepDetails(this, _p));
+        
         int dir = Forward ? 1 : -1;
         for (int i = 0; i < _skills.Length; i++)
         {
@@ -216,8 +137,34 @@ public class StageEntity : Addressable, StageEventListener
             if(await TryConsumeProcedure("跳卡牌"))
                 continue;
 
-            return;
+            break;
         }
+        
+        await _env.EventDict.SendEvent(StageEventDict.END_STEP, new EndStepDetails(this, _p));
+    }
+
+    private async Task SwiftProcedure(SwiftDetails d)
+    {
+        await _env.EventDict.SendEvent(StageEventDict.WILL_SWIFT, d);
+        if (d.Cancel)
+            return;
+
+        if (d.Swift || d.TriSwift || d.OctSwift)
+            await ActionProcedure();
+
+        if (d.TriSwift || d.OctSwift)
+            await ActionProcedure();
+
+        if (d.OctSwift)
+        {
+            await ActionProcedure();
+            await ActionProcedure();
+            await ActionProcedure();
+            await ActionProcedure();
+            await ActionProcedure();
+        }
+
+        await _env.EventDict.SendEvent(StageEventDict.DID_SWIFT, d);
     }
 
     // public abstract GameObject GetPrefab();
@@ -226,11 +173,10 @@ public class StageEntity : Addressable, StageEventListener
     public StageEntity Opponent() => _env.Entities[1 - _index];
 
     public int _p;
-    private ChannelDetails _channelDetails;
     public bool Swift;
     public bool TriSwift;
     public bool OctSwift;
-    private bool _manaShortage;
+    private CostResult _costResult;
 
     public bool Forward
         => GetStackOfBuff("鹤回翔") == 0;
@@ -262,7 +208,8 @@ public class StageEntity : Addressable, StageEventListener
 
     private StageEventDescriptor[] _eventDescriptors;
 
-    private StageSkill ManaShortageAction;
+    private StageSkill _manaShortageAction;
+    public StageSkill ManaShortageAction => _manaShortageAction;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -281,8 +228,6 @@ public class StageEntity : Addressable, StageEventListener
 
         _formations = new();
         _buffs = new();
-
-        _manaShortage = false;
 
         LostArmorRecord = 0;
         GeneratedManaRecord = 0;
@@ -313,7 +258,7 @@ public class StageEntity : Addressable, StageEventListener
             _skills[i] = StageSkill.FromPlacedSkill(this, slot.PlacedSkill, i);
         }
 
-        ManaShortageAction = StageSkill.FromSkillEntry(this, "聚气术");
+        _manaShortageAction = StageSkill.FromSkillEntry(this, "聚气术");
 
         _p = 0;
     }

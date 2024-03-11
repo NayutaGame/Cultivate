@@ -63,7 +63,7 @@ public class RunFormationDetails : EventDetails
                 consecutiveAttackCount = 0;
             }
 
-            TotalCostCount += entry.GetBaseManaCost(jingJie);
+            TotalCostCount += entry.GetCostDescription(jingJie).ByType(CostDescription.CostType.Mana);
         }
 
         WuXingOrder = new List<WuXing>(WuXing.Traversal);

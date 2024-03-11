@@ -65,17 +65,8 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
     public Sprite GetWuXingSprite()
         => CanvasManager.Instance.GetWuXingSprite(_entry.WuXing);
 
-    public int GetManaCost()
-        => _entry.GetManaCost(JingJie, JingJie - _entry.LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
-
-    public int GetChannelTime()
-        => _entry.GetChannelTime(JingJie, JingJie - _entry.LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
-
-    public string GetManaCostString()
-    {
-        int manaCost = GetManaCost();
-        return manaCost == 0 ? "" : manaCost.ToString();
-    }
+    public CostDescription GetCostDescription()
+        => _entry.GetCostDescription(JingJie, GetSkillSlot()?.CostResult);
 
     public string GetName()
         => _entry.GetName();
@@ -84,7 +75,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         => _entry.GetDescription(JingJie);
 
     public string GetHighlight()
-        => _entry.GetHighlight(GetJingJie(), _skillSlot?.Indicator);
+        => _entry.GetHighlight(GetJingJie(), _skillSlot?.ExecuteResult);
 
     public string GetExplanation()
         => _entry.GetExplanation();

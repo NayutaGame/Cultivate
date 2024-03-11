@@ -754,7 +754,7 @@ public class NodeCategory : Category<NodeEntry>
                         Range manaCost = 0;
 
                         RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
-                            pred: e => manaCost.Contains(e.GetBaseManaCost()), wuXing: wuXing, jingJie: runNode.JingJie, count: 3, distinct: true, consume: false);
+                            pred: e => manaCost.Contains(e.GetCostDescription(runNode.JingJie).ByType(CostDescription.CostType.Mana)), wuXing: wuXing, jingJie: runNode.JingJie, count: 3, distinct: true, consume: false);
                         C.AddSkills(skills);
                         return C;
                     });
@@ -763,7 +763,7 @@ public class NodeCategory : Category<NodeEntry>
                         Range manaCost = new Range(1, 10);
 
                         RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
-                            pred: e => manaCost.Contains(e.GetBaseManaCost()), wuXing: wuXing, jingJie: runNode.JingJie, count: 3, distinct: true, consume: false);
+                            pred: e => manaCost.Contains(e.GetCostDescription(runNode.JingJie).ByType(CostDescription.CostType.Mana)), wuXing: wuXing, jingJie: runNode.JingJie, count: 3, distinct: true, consume: false);
                         C.AddSkills(skills);
                         return C;
                     });

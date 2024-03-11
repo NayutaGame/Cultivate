@@ -6,7 +6,7 @@ public interface ISkillModel
     int GetCurrCounter();
     int GetMaxCounter();
     Sprite GetSprite();
-    int GetManaCost();
+    CostDescription GetCostDescription();
     string GetName();
     string GetHighlight();
     string GetExplanation();

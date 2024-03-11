@@ -82,17 +82,14 @@ public class MechComposite : EmulatedSkill
     public Sprite GetSprite()
         => GetEntry().Sprite;
 
-    public int GetManaCost()
-        => GetEntry().GetManaCost(GetJingJie(), GetJingJie() - GetEntry().LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
-
-    public int GetChannelTime()
-        => GetEntry().GetChannelTime(GetJingJie(), GetJingJie() - GetEntry().LowestJingJie, GetSkillSlot()?.JiaShiIndicator ?? false);
+    public CostDescription GetCostDescription()
+        => GetEntry().GetCostDescription(GetJingJie(), GetSkillSlot()?.CostResult);
 
     public string GetName()
         => GetEntry().GetName();
 
     public string GetHighlight()
-        => GetEntry().GetHighlight(GetJingJie(), _skillSlot?.Indicator);
+        => GetEntry().GetHighlight(GetJingJie(), _skillSlot?.ExecuteResult);
 
     public string GetExplanation()
         => GetEntry().GetExplanation();

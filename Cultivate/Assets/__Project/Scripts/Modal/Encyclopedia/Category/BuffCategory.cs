@@ -25,7 +25,6 @@ public class BuffCategory : Category<BuffEntry>
 
             new("齐物论",     "奇偶同时激活两个效果",                    BuffStackRule.One, true, false),
             new("追击",      "持续[层数]次，下次攻击时，次数+1",            BuffStackRule.Add, true, false),
-            new("心斋",      "所有耗蓝-[层数]",                     BuffStackRule.Add, true, false),
             new("鹤回翔",     "反转出牌顺序",                        BuffStackRule.One, true, false),
             new("永久暴击",    "攻击附带暴击",                        BuffStackRule.One, true, false),
             new("天人合一",    "激活所有架势",                        BuffStackRule.One, true, false),
@@ -34,8 +33,6 @@ public class BuffCategory : Category<BuffEntry>
             new("二重",      "下一张牌使用两次",                      BuffStackRule.Add, true, false),
             new("永久二重",    "所有牌使用两次",                       BuffStackRule.One, true, false),
             new("多重",    "下一张牌额外使用[层数]次",                  BuffStackRule.Add, true, false),
-            new("免费",      "下一次耗蓝时无需灵气",                    BuffStackRule.Add, true, false),
-            new("永久免费",    "所有牌无需灵气",                       BuffStackRule.One, true, false),
             new("集中",      "下一次使用牌时，条件算作激活",                BuffStackRule.Add, true, false),
             new("永久集中",    "所有牌，条件算作激活",                    BuffStackRule.One, true, false),
             new("浮空艇",     "回合被跳过时：生命及上线无法下降",              BuffStackRule.Add, true, false),
@@ -136,6 +133,60 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)stageEventDetails;
                         if (b.Owner != d.Owner) return;
                         await b.Owner.LoseArmorProcedure(b.Stack);
+                        await b.SetDStack(-1);
+                    }),
+                }),
+            
+            new(name:                       "心斋",
+                description:                "所有耗蓝-[层数]",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   true,
+                dispellable:                false,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_MANA_COST, -3, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        ManaCostDetails d = (ManaCostDetails)stageEventDetails;
+
+                        if (b.Owner != d.Caster) return;
+                        d.Cost = (d.Cost - b.Stack).ClampLower(0);
+                    }),
+                }),
+            
+            new(name:                       "永久免费",
+                description:                "使用牌时：无需消耗灵气",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   true,
+                dispellable:                false,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_MANA_COST, -2, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        ManaCostDetails d = (ManaCostDetails)stageEventDetails;
+
+                        if (b.Owner != d.Caster) return;
+                        d.Cost = 0;
+                    }),
+                }),
+            
+            new(name:                       "免费",
+                description:                "持续[层数]次，使用牌时：无需消耗灵气",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   true,
+                dispellable:                false,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WILL_MANA_COST, -1, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        ManaCostDetails d = (ManaCostDetails)stageEventDetails;
+
+                        if (b.Owner != d.Caster) return;
+                        if (d.Cost <= 0) return;
+                        
+                        d.Cost = 0;
                         await b.SetDStack(-1);
                     }),
                 }),
@@ -317,7 +368,7 @@ public class BuffCategory : Category<BuffEntry>
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.END_STEP, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
-                        StepDetails d = (StepDetails)eventDetails;
+                        EndStepDetails d = (EndStepDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
                         if (d.Skill != null && d.Skill.GetSkillType().Contains(SkillType.LingQi))
                             b.Owner.Swift = true;
@@ -457,10 +508,10 @@ public class BuffCategory : Category<BuffEntry>
             new("幻月狂乱", "攻击一直具有吸血，使用非攻击牌时：遭受1跳回合", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STEP, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.END_STEP, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
-                        StepDetails d = (StepDetails)stageEventDetails;
+                        EndStepDetails d = (EndStepDetails)stageEventDetails;
                         if (b.Owner == d.Owner)
                         {
                             if (!d.Skill.GetSkillType().Contains(SkillType.Attack))
@@ -630,18 +681,18 @@ public class BuffCategory : Category<BuffEntry>
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STEP, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
-                        StepDetails d = (StepDetails)stageEventDetails;
+                        StartStepDetails d = (StartStepDetails)stageEventDetails;
 
-                        if (b.Owner != d.Owner) return;
-                        if (d.Skill.GetSkillType().Contains(SkillType.Attack))
-                            return;
-
-                        await d.Skill.ExhaustProcedure();
-                        bool noBuff = b.Owner.GetStackOfBuff("免费") == 0;
-                        if (noBuff)
-                            await b.Owner.GainBuffProcedure("免费");
-
-                        await b.SetDStack(-1);
+                        // if (b.Owner != d.Owner) return;
+                        // if (d.Skill.GetSkillType().Contains(SkillType.Attack))
+                        //     return;
+                        //
+                        // await d.Skill.ExhaustProcedure();
+                        // bool noBuff = b.Owner.GetStackOfBuff("免费") == 0;
+                        // if (noBuff)
+                        //     await b.Owner.GainBuffProcedure("免费");
+                        //
+                        // await b.SetDStack(-1);
                     }),
                 }),
 

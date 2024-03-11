@@ -1,5 +1,4 @@
 
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StageNote : ISkillModel
@@ -8,19 +7,20 @@ public class StageNote : ISkillModel
     public int TemporalIndex;
     public StageSkill Skill;
 
-    private Dictionary<string, string> _indicator;
+    private CostResult _costResult;
+    private ExecuteResult _executeResult;
 
-    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, Dictionary<string, string> indicator = null, ChannelDetails channelDetails = null)
+    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, ExecuteResult executeResult = null, ChannelCostDetails channelCostDetails = null)
     {
         EntityIndex = entityIndex;
         TemporalIndex = temporalIndex;
         Skill = skill;
-        _indicator = indicator;
+        _executeResult = executeResult;
 
-        if (channelDetails != null)
+        if (channelCostDetails != null)
         {
-            _currCounter = channelDetails.GetCounter();
-            _maxCounter = channelDetails.GetChannelTime();
+            _currCounter = channelCostDetails.GetCounter();
+            _maxCounter = channelCostDetails.GetChannelTime();
         }
         else
         {
@@ -35,14 +35,14 @@ public class StageNote : ISkillModel
     public Sprite GetSprite()
         => Skill.Entry.Sprite;
 
-    public int GetManaCost()
-        => Skill.GetManaCost();
+    public CostDescription GetCostDescription()
+        => Skill.Entry.GetCostDescription(Skill.GetJingJie(), _costResult);
 
     public string GetName()
         => Skill.GetName();
 
     public string GetHighlight()
-        => Skill.GetHighlight(_indicator);
+        => Skill.GetHighlight(_executeResult);
 
     public string GetExplanation()
         => Skill.GetExplanation();

@@ -11,13 +11,13 @@ public struct ManaIndicator
 
     public ManaCostState State;
     public int LiteralCost;
-    public int ActualCost;
+    public int Cost;
 
-    public ManaIndicator(ManaCostState state, int literalCost, int actualCost)
+    public ManaIndicator(ManaCostState state, int literalCost, int cost)
     {
         State = state;
         LiteralCost = literalCost;
-        ActualCost = actualCost;
+        Cost = cost;
     }
 
     public static ManaIndicator Default() => new() { State = ManaCostState.Unwritten };

@@ -19,22 +19,23 @@ public class SkillEntry : Entry, IAnnotation
 
     #region Cost
     
-    private ManaCostEvaluator _manaCostEvaluator;
-    public int GetManaCost(JingJie jingJie, int dJingJie, bool jiaShi) => _manaCostEvaluator.Eval(jingJie, dJingJie, jiaShi);
-    public int GetBaseManaCost(JingJie jingJie) => _manaCostEvaluator.Eval(jingJie, jingJie - LowestJingJie, false);
-    public int GetBaseManaCost() => GetBaseManaCost(LowestJingJie);
-    private ChannelTimeEvaluator _channelTimeEvaluator;
-    public int GetChannelTime(JingJie jingJie, int dJingJie, bool jiaShi) => _channelTimeEvaluator.Eval(jingJie, dJingJie, jiaShi);
+    private Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> _costProcedure;
+    private Func<JingJie, int, CostResult, CostDescription> _costDescription;
+    public CostDescription GetCostDescription() => GetCostDescription(LowestJingJie);
+    public CostDescription GetCostDescription(JingJie j, CostResult costResult = null)
+        => _costDescription(j, j - LowestJingJie, costResult);
 
     #endregion
 
     public SkillTypeComposite SkillTypeComposite { get; private set; }
-    
-    private SkillDescription _description;
 
+    #region Description
+    
+    private Func<JingJie, int, ExecuteResult, string> _description;
+    
     public string GetDescription() => GetDescription(LowestJingJie);
-    public string GetDescription(JingJie j, Dictionary<string, string> indicator = null) =>
-        _description.Get(j, j - LowestJingJie, indicator);
+    public string GetDescription(JingJie j, ExecuteResult executeResult = null)
+        => _description(j, j - LowestJingJie, executeResult);
 
     public void GenerateAnnotations()
     {
@@ -76,8 +77,8 @@ public class SkillEntry : Entry, IAnnotation
         return sb.ToString();
     }
 
-    public string GetHighlight(JingJie jingJie, Dictionary<string, string> indicator)
-        => GetHighlight(GetDescription(jingJie, indicator));
+    public string GetHighlight(JingJie jingJie, ExecuteResult executeResult)
+        => GetHighlight(GetDescription(jingJie, executeResult));
     
     public string GetExplanation()
     {
@@ -87,14 +88,16 @@ public class SkillEntry : Entry, IAnnotation
 
         return sb.ToString();
     }
-
+    
+    #endregion
+    
     private string _trivia;
     public string GetTrivia() => _trivia;
 
     private bool _withinPool;
     public bool WithinPool => _withinPool;
     
-    private Func<StageEntity, StageSkill, bool, Task<Dictionary<string, string>>> _execute;
+    private Func<StageEntity, StageSkill, bool, Task<ExecuteResult>> _executeProcedure;
 
     private IAnnotation[] _annotations;
 
@@ -117,33 +120,42 @@ public class SkillEntry : Entry, IAnnotation
     public SkillEntry(string name,
         WuXing? wuXing,
         CLLibrary.Range jingJieRange,
+        Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> costProcedure = null,
+        Func<JingJie, int, CostResult, CostDescription> costDescription = null,
         ChannelTimeEvaluator channelTimeEvaluator = null,
         ManaCostEvaluator manaCostEvaluator = null,
         SkillTypeComposite skillTypeComposite = null,
-        SkillDescription description = null,
+        Func<JingJie, int, ExecuteResult, string> description = null,
         string trivia = null,
         bool withinPool = true,
-        Func<StageEntity, StageSkill, bool, Task<Dictionary<string, string>>> execute = null
+        Func<StageEntity, StageSkill, bool, Task<ExecuteResult>> executeProcedure = null
         ) : base(name)
     {
         _wuXing = wuXing;
         _jingJieRange = jingJieRange;
-        _channelTimeEvaluator = channelTimeEvaluator ?? 0;
-        _manaCostEvaluator = manaCostEvaluator ?? 0;
+        _costProcedure = costProcedure ?? CostResult.Empty;
+        _costDescription = costDescription;
         SkillTypeComposite = skillTypeComposite ?? 0;
         _description = description;
         _trivia = trivia;
         _withinPool = withinPool;
-        _execute = execute ?? DefaultExecute;
+        _executeProcedure = executeProcedure ?? DefaultExecuteProcedure;
 
         _spriteEntry = name;
     }
 
     public static implicit operator SkillEntry(string name) => Encyclopedia.SkillCategory[name];
-    
-    // Cost Procedure
 
-    public async Task Channel(StageEntity caster, ChannelDetails d)
+    public async Task<CostResult> CostProcedure(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
+    {
+        CostResult result = await _costProcedure(env, caster, skill, recursive);
+        result.Env = env;
+        result.Entity = caster;
+        result.Skill = skill;
+        return result;
+    }
+
+    public async Task Channel(StageEntity caster, ChannelCostDetails d)
     {
         await caster.Env.TryPlayTween(new ShiftTweenDescriptor());
 
@@ -153,7 +165,7 @@ public class SkillEntry : Entry, IAnnotation
         r.TryAppend($"\n");
     }
 
-    public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
+    public async Task ChannelWithoutTween(StageEntity caster, ChannelCostDetails d)
     {
         StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}吟唱了{GetName()} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
@@ -166,9 +178,9 @@ public class SkillEntry : Entry, IAnnotation
 
         StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}使用了{GetName()}");
-        Dictionary<string, string> indicator = await _execute(caster, skill, recursive);
-        r.TryAppendNote(caster.Index, skill, indicator);
-        // write indicator to slot, here
+        ExecuteResult result = await _executeProcedure(caster, skill, recursive);
+        r.TryAppendNote(caster.Index, skill, result);
+        // write result to slot, here
         r.TryAppend($"\n");
     }
 
@@ -176,11 +188,10 @@ public class SkillEntry : Entry, IAnnotation
     {
         StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}使用了{GetName()}");
-        await _execute(caster, skill, recursive);
-        // indicator
+        await _executeProcedure(caster, skill, recursive);
+        // write result
         r.TryAppend($"\n");
     }
 
-    private async Task<Dictionary<string, string>>
-        DefaultExecute(StageEntity caster, StageSkill skill, bool recursive) => null;
+    private async Task<ExecuteResult> DefaultExecuteProcedure(StageEntity caster, StageSkill skill, bool recursive) => null;
 }

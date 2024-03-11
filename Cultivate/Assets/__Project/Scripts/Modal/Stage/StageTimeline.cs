@@ -49,15 +49,15 @@ public class StageTimeline : Addressable
         return null;
     }
 
-    public void AppendNote(int entityIndex, StageSkill skill, Dictionary<string, string> indicator)
+    public void AppendNote(int entityIndex, StageSkill skill, ExecuteResult executeResult)
     {
         int count = _notes.Count;
-        _notes.Add(new StageNote(entityIndex, count, skill, indicator: indicator));
+        _notes.Add(new StageNote(entityIndex, count, skill, executeResult: executeResult));
     }
 
-    public void AppendChannelNote(int entityIndex, ChannelDetails d)
+    public void AppendChannelNote(int entityIndex, ChannelCostDetails d)
     {
         int count = _notes.Count;
-        _notes.Add(new StageNote(entityIndex, count, d._skill, channelDetails: d));
+        _notes.Add(new StageNote(entityIndex, count, d.Skill, channelCostDetails: d));
     }
 }

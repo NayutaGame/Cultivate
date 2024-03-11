@@ -20,7 +20,7 @@ public class SkillCardView : SimpleView
         ISkillModel skill = Get<ISkillModel>();
 
         SetCardImage(skill.GetSprite());
-        SetManaCost(skill.GetManaCost());
+        SetCostDescription(skill.GetCostDescription());
         SetName(skill.GetName());
         SetDescription(skill.GetHighlight());
         SetSkillTypeComposite(skill.GetSkillTypeComposite());
@@ -33,8 +33,9 @@ public class SkillCardView : SimpleView
         CardImage.sprite = sprite != null ? sprite : Encyclopedia.SpriteCategory["Default"].Sprite;
     }
 
-    protected virtual void SetManaCost(int manaCost)
+    protected virtual void SetCostDescription(CostDescription costDescription)
     {
+        int manaCost = costDescription.ByType(CostDescription.CostType.Mana);
         if (manaCost == 0)
         {
             ManaCostText.text = "";

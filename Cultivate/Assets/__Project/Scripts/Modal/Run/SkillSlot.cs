@@ -114,8 +114,8 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     }
 
     [NonSerialized] public ManaIndicator ManaIndicator;
-    [NonSerialized] public bool JiaShiIndicator;
-    [NonSerialized] public Dictionary<string, string> Indicator;
+    [NonSerialized] public ExecuteResult ExecuteResult;
+    [NonSerialized] public CostResult CostResult;
 
     public void OnBeforeSerialize() { }
 
