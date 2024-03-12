@@ -1,32 +1,24 @@
 
+using System;
 using System.Threading.Tasks;
 
 public class ManaCostResult : CostResult
 {
-    private int _value;
-    private ManaCostDetails _costDetails;
-
-    public ManaCostResult(int value)
-    {
-        _value = value;
-    }
-
     public override async Task WillCostEvent()
     {
-        _costDetails = new ManaCostDetails(Entity, Skill, _value);
-        await Env.EventDict.SendEvent(StageEventDict.WILL_MANA_COST, _costDetails);
+        await Env.EventDict.SendEvent(StageEventDict.WILL_MANA_COST, this);
     }
 
     public override async Task ApplyCost()
     {
-        bool manaSufficient = Entity.GetStackOfBuff("灵气") >= _costDetails.Cost;
+        bool manaSufficient = Entity.GetStackOfBuff("灵气") >= Value;
         if (manaSufficient)
         {
-            await Entity.TryConsumeProcedure("灵气", _costDetails.Cost);
+            await Entity.TryConsumeProcedure("灵气", Value);
         }
         else
         {
-            await Entity.ManaShortageProcedure(Entity._p, Skill, _costDetails.Cost);
+            await Env.ManaShortageProcedure(this);
             await Entity.ManaShortageAction.Execute(Entity);
         }
         
@@ -35,7 +27,16 @@ public class ManaCostResult : CostResult
 
     public override async Task DidCostEvent()
     {
-        await Env.EventDict.SendEvent(StageEventDict.DID_MANA_COST, _costDetails);
-        _costDetails = null;
+        await Env.EventDict.SendEvent(StageEventDict.DID_MANA_COST, this);
     }
+
+    protected ManaCostResult(int value) : base(value)
+    {
+    }
+
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromValue(int value)
+        => async (env, entity, skill, recursive) => new ManaCostResult(value);
+    
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromDj(Func<int, int> dj)
+        => async (env, entity, skill, recursive) => new ManaCostResult(dj(skill.Dj));
 }

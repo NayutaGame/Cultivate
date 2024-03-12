@@ -10,17 +10,17 @@ public class StageNote : ISkillModel
     private CostResult _costResult;
     private ExecuteResult _executeResult;
 
-    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, ExecuteResult executeResult = null, ChannelCostDetails channelCostDetails = null)
+    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, ExecuteResult executeResult = null, ChannelDetails channelDetails = null)
     {
         EntityIndex = entityIndex;
         TemporalIndex = temporalIndex;
         Skill = skill;
         _executeResult = executeResult;
 
-        if (channelCostDetails != null)
+        if (channelDetails != null)
         {
-            _currCounter = channelCostDetails.GetCounter();
-            _maxCounter = channelCostDetails.GetChannelTime();
+            _currCounter = channelDetails.GetCounter();
+            _maxCounter = channelDetails.GetChannelTime();
         }
         else
         {

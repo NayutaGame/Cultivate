@@ -13,6 +13,13 @@ public class StageSkill
     private int _slotIndex;
     public int SlotIndex => _slotIndex;
 
+    public SkillSlot GetSlot()
+    {
+        RunEntity entity = _owner.RunEntity;
+        int index = _owner._p + entity.Start;
+        return entity.GetSlot(index);
+    }
+
     private bool _exhausted;
     public bool Exhausted
     {
@@ -94,14 +101,14 @@ public class StageSkill
     public SkillTypeComposite GetSkillType()
         => _entry.SkillTypeComposite;
 
-    public async Task Channel(StageEntity caster, ChannelCostDetails d)
+    public async Task Channel(StageEntity caster, ChannelDetails d)
     {
         await caster.Env.EventDict.SendEvent(StageEventDict.WILL_CHANNEL, d.Clone());
         await _entry.Channel(caster, d);
         await caster.Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, d.Clone());
     }
 
-    public async Task ChannelWithoutTween(StageEntity caster, ChannelCostDetails d)
+    public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
     {
         await caster.Env.EventDict.SendEvent(StageEventDict.WILL_CHANNEL, d);
         await _entry.ChannelWithoutTween(caster, d);

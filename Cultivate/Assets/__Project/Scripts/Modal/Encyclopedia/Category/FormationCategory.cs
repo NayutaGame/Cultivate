@@ -220,7 +220,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "轮开始时，对方遭受1跳回合\n战斗开始时，对方遭受2跳回合", trivia: null, requirement: 6,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -228,7 +228,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GiveBuffProcedure("跳回合", 2);
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_ROUND, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 RoundDetails d = (RoundDetails)stageEventDetails;
@@ -240,7 +240,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "战斗开始时，对方遭受2跳回合", trivia: null, requirement: 5,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -252,7 +252,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.JinDan, rewardDescription: "战斗开始时，对方遭受1跳回合", trivia: null, requirement: 4,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -299,7 +299,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "战斗开始护甲+30，每回合护甲+3", trivia: null, requirement: 9,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -307,7 +307,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainArmorProcedure(30);
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 TurnDetails d = (TurnDetails)stageEventDetails;
@@ -319,7 +319,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "战斗开始护甲+20，每回合护甲+2", trivia: null, requirement: 7,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -327,7 +327,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainArmorProcedure(20);
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 TurnDetails d = (TurnDetails)stageEventDetails;
@@ -339,7 +339,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.JinDan, rewardDescription: "战斗开始护甲+10，每回合护甲+1", trivia: null, requirement: 5,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -347,7 +347,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainArmorProcedure(10);
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_TURN, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 TurnDetails d = (TurnDetails)stageEventDetails;
@@ -364,7 +364,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "战斗开始时，灵气+7", trivia: null, requirement: 20,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -376,7 +376,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "战斗开始时，灵气+5", trivia: null, requirement: 16,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -388,7 +388,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.JinDan, rewardDescription: "战斗开始时，灵气+3", trivia: null, requirement: 12,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -405,7 +405,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "战斗开始时，力量+3", trivia: null, requirement: 7,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -417,7 +417,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "战斗开始时，力量+2", trivia: null, requirement: 6,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -429,7 +429,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.JinDan, rewardDescription: "战斗开始时，力量+1", trivia: null, requirement: 5,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.START_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;

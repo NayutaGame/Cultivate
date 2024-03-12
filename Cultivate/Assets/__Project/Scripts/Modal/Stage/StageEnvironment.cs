@@ -18,11 +18,13 @@ public class StageEnvironment : Addressable, StageEventListener
     //     => await SimpleProcedure(new SimpleDetails(args));
     // public async Task SimpleProcedure(SimpleDetails d)
     // {
-    //     await _eventDict.SendEvent(CLEventDict.WILL_SIMPLE, d);
+    //     await _eventDict.SendEvent(StageEventDict.WILL_SIMPLE, d);
+    //     if (d.Cancel)
+    //         return;
     //
     //     // actual work
     //
-    //     await _eventDict.SendEvent(CLEventDict.DID_SIMPLE, d);
+    //     await _eventDict.SendEvent(StageEventDict.DID_SIMPLE, d);
     // }
 
     public async Task FormationProcedure(StageEntity owner, RunFormation formation, bool recursive = true)
@@ -370,9 +372,7 @@ public class StageEnvironment : Addressable, StageEventListener
         await _eventDict.SendEvent(StageEventDict.ARMOR_DID_LOSE, d);
     }
 
-    public async Task ManaShortageProcedure(StageEntity owner, int position, StageSkill skill, int actualCost)
-        => await ManaShortageProcedure(new ManaShortageDetails(owner, position, skill, actualCost));
-    public async Task ManaShortageProcedure(ManaShortageDetails d)
+    public async Task ManaShortageProcedure(ManaCostResult d)
     {
         await _eventDict.SendEvent(StageEventDict.WILL_MANA_SHORTAGE, d);
 
@@ -380,6 +380,16 @@ public class StageEnvironment : Addressable, StageEventListener
             return;
 
         await _eventDict.SendEvent(StageEventDict.DID_MANA_SHORTAGE, d);
+    }
+
+    public async Task ArmorShortageProcedure(ArmorCostResult d)
+    {
+        await _eventDict.SendEvent(StageEventDict.WILL_ARMOR_SHORTAGE, d);
+
+        if (d.Cancel)
+            return;
+
+        await _eventDict.SendEvent(StageEventDict.DID_ARMOR_SHORTAGE, d);
     }
 
     public async Task ExhaustProcedure(StageEntity owner, StageSkill skill)
@@ -510,52 +520,39 @@ public class StageEnvironment : Addressable, StageEventListener
         _config.Home.DepleteProcedure();
     }
 
+    private async Task WriteShortage(StageEventListener listener, EventDetails stageEventDetails)
+    {
+        CostResult d = (CostResult)stageEventDetails;
+        d.State = CostResult.CostState.Shortage;
+    }
+
+    private async Task WriteCost(StageEventListener listener, EventDetails stageEventDetails)
+    {
+        CostResult d = (CostResult)stageEventDetails;
+        if (d.State == CostResult.CostState.Shortage)
+            return;
+
+        StageSkill skill = d.Skill;
+        CostDescription costDescription = skill.Entry.GetCostDescription(skill.GetJingJie());
+        int literalCost = costDescription.Value;
+
+        CostResult.CostState state = d.Value < literalCost
+            ? CostResult.CostState.Reduced
+            : CostResult.CostState.Normal;
+
+        d.State = state;
+    }
+
     public async Task Execute()
     {
-        StageEventDescriptor writeManaShortage = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_SHORTAGE, 0,
-            async (listener, d) =>
-            {
-                ManaShortageDetails manaShortageDetails = (ManaShortageDetails)d;
-                RunEntity entity = manaShortageDetails.Owner.RunEntity;
-                int index = manaShortageDetails.Position + RunManager.SkillStartFromJingJie[entity.GetJingJie()];
-                SkillSlot slot = entity.GetSlot(index);
+        StageEventDescriptor writeManaShortage = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_SHORTAGE, 0, WriteShortage);
+        StageEventDescriptor writeArmorShortage = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ARMOR_SHORTAGE, 0, WriteShortage);
+        StageEventDescriptor writeManaCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_COST, 0, WriteCost);
+        StageEventDescriptor writeChannelCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_CHANNEL_COST, 0, WriteCost);
+        StageEventDescriptor writeHealthCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_HEALTH_COST, 0, WriteCost);
+        StageEventDescriptor writeArmorCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ARMOR_COST, 0, WriteCost);
 
-                if (slot.ManaIndicator.State != ManaIndicator.ManaCostState.Unwritten)
-                    return;
-
-                StageSkill skill = manaShortageDetails.Skill;
-                CostDescription costDescription = skill.Entry.GetCostDescription(skill.GetJingJie());
-                int literalCost = costDescription.ByType(CostDescription.CostType.Mana);
-
-                slot.ManaIndicator = new ManaIndicator(ManaIndicator.ManaCostState.Shortage,
-                    literalCost, manaShortageDetails.Cost);
-            });
-
-        StageEventDescriptor writeManaCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_COST, 0,
-            async (listener, d) =>
-            {
-                ManaCostDetails manaCostDetails = (ManaCostDetails)d;
-
-                RunEntity entity = manaCostDetails.Caster.RunEntity;
-                int index = manaCostDetails.Skill.SlotIndex + RunManager.SkillStartFromJingJie[entity.GetJingJie()];
-                SkillSlot slot = entity.GetSlot(index);
-
-                if (slot.ManaIndicator.State != ManaIndicator.ManaCostState.Unwritten)
-                    return;
-
-                StageSkill skill = manaCostDetails.Skill;
-                CostDescription costDescription = skill.Entry.GetCostDescription(skill.GetJingJie());
-                int literalCost = costDescription.ByType(CostDescription.CostType.Mana);
-                
-                ManaIndicator.ManaCostState state = (manaCostDetails.Cost < literalCost)
-                    ? ManaIndicator.ManaCostState.Reduced
-                    : ManaIndicator.ManaCostState.Normal;
-
-                slot.ManaIndicator = new ManaIndicator(state,
-                    literalCost, manaCostDetails.Cost);
-            });
-
-        ClearManaIndicator();
+        ClearResults();
 
         Register();
 
@@ -564,12 +561,20 @@ public class StageEnvironment : Addressable, StageEventListener
         await StartStageProcedure();
 
         _eventDict.Register(this, writeManaShortage);
+        _eventDict.Register(this, writeArmorShortage);
         _eventDict.Register(this, writeManaCost);
+        _eventDict.Register(this, writeChannelCost);
+        _eventDict.Register(this, writeHealthCost);
+        _eventDict.Register(this, writeArmorCost);
 
         await BodyProcedure();
 
         _eventDict.Unregister(this, writeManaShortage);
+        _eventDict.Unregister(this, writeArmorShortage);
         _eventDict.Unregister(this, writeManaCost);
+        _eventDict.Unregister(this, writeChannelCost);
+        _eventDict.Unregister(this, writeHealthCost);
+        _eventDict.Unregister(this, writeArmorCost);
 
         await EndStageProcedure();
 
@@ -622,15 +627,12 @@ public class StageEnvironment : Addressable, StageEventListener
             .Do(e => _eventDict.Unregister(this, e));
     }
 
-    private void ClearManaIndicator()
+    private void ClearResults()
     {
         _entities.Do(stageEntity =>
         {
             RunEntity e = stageEntity.RunEntity;
-            e.TraversalCurrentSlots().Do(s =>
-            {
-                s.ManaIndicator = ManaIndicator.Default();
-            });
+            e.TraversalCurrentSlots().Do(s => s.ClearResults());
         });
     }
 
@@ -658,7 +660,7 @@ public class StageEnvironment : Addressable, StageEventListener
     private async Task StartStageProcedure()
     {
         foreach (var e in _entities)
-            await _eventDict.SendEvent(StageEventDict.START_STAGE, new StageDetails(e));
+            await _eventDict.SendEvent(StageEventDict.WIL_STAGE, new StageDetails(e));
     }
 
     private async Task BodyProcedure()
@@ -688,8 +690,8 @@ public class StageEnvironment : Addressable, StageEventListener
 
     private async Task EndStageProcedure()
     {
-        await _eventDict.SendEvent(StageEventDict.END_STAGE, new StageDetails(_entities[1]));
-        await _eventDict.SendEvent(StageEventDict.END_STAGE, new StageDetails(_entities[0]));
+        await _eventDict.SendEvent(StageEventDict.DID_STAGE, new StageDetails(_entities[1]));
+        await _eventDict.SendEvent(StageEventDict.DID_STAGE, new StageDetails(_entities[0]));
         ForceCommit();
     }
 

@@ -122,8 +122,6 @@ public class SkillEntry : Entry, IAnnotation
         CLLibrary.Range jingJieRange,
         Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> costProcedure = null,
         Func<JingJie, int, CostResult, CostDescription> costDescription = null,
-        ChannelTimeEvaluator channelTimeEvaluator = null,
-        ManaCostEvaluator manaCostEvaluator = null,
         SkillTypeComposite skillTypeComposite = null,
         Func<JingJie, int, ExecuteResult, string> description = null,
         string trivia = null,
@@ -155,7 +153,7 @@ public class SkillEntry : Entry, IAnnotation
         return result;
     }
 
-    public async Task Channel(StageEntity caster, ChannelCostDetails d)
+    public async Task Channel(StageEntity caster, ChannelDetails d)
     {
         await caster.Env.TryPlayTween(new ShiftTweenDescriptor());
 
@@ -165,7 +163,7 @@ public class SkillEntry : Entry, IAnnotation
         r.TryAppend($"\n");
     }
 
-    public async Task ChannelWithoutTween(StageEntity caster, ChannelCostDetails d)
+    public async Task ChannelWithoutTween(StageEntity caster, ChannelDetails d)
     {
         StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}吟唱了{GetName()} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
@@ -178,8 +176,10 @@ public class SkillEntry : Entry, IAnnotation
 
         StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}使用了{GetName()}");
+        
         ExecuteResult result = await _executeProcedure(caster, skill, recursive);
         r.TryAppendNote(caster.Index, skill, result);
+        
         // write result to slot, here
         r.TryAppend($"\n");
     }
@@ -188,7 +188,9 @@ public class SkillEntry : Entry, IAnnotation
     {
         StageResult r = caster.Env.Result;
         r.TryAppend($"{caster.GetName()}使用了{GetName()}");
+        
         await _executeProcedure(caster, skill, recursive);
+        
         // write result
         r.TryAppend($"\n");
     }

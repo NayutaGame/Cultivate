@@ -2,13 +2,29 @@
 using System;
 using System.Threading.Tasks;
 
-public abstract class CostResult
+public abstract class CostResult : EventDetails
 {
+    public enum CostState
+    {
+        Unwritten,
+        Normal,
+        Reduced,
+        Shortage,
+    }
+    
     public StageEnvironment Env;
     public StageEntity Entity;
     public StageSkill Skill;
 
+    public int Value;
+    public CostState State;
+
     public bool Blocking = false;
+
+    protected CostResult(int value)
+    {
+        Value = value;
+    }
 
     public virtual async Task WillCostEvent()
     {

@@ -28,6 +28,6 @@ public class SlotCardView : SimpleView
             return;
 
         SkillCardView.Refresh();
-        SkillCardView.SetManaCostState(slot.ManaIndicator.State);
+        // SkillCardView.SetManaCostState(slot.ManaIndicator.State);
     }
 }

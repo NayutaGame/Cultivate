@@ -8,107 +8,67 @@ using CLLibrary;
 
 public class StageEntity : Addressable, StageEventListener
 {
-    public MingYuan MingYuan;
-
-    private int _hp;
-    public int Hp
-    {
-        get => _hp;
-        set
-        {
-            _hp = Mathf.Min(value, MaxHp);
-        }
-    }
-
-    private int _maxHp;
-    public int MaxHp
-    {
-        get => _maxHp;
-        set
-        {
-            _maxHp = Mathf.Max(value, 0);
-            Hp = Hp;
-        }
-    }
-
-    private int _armor;
-    public int Armor
-    {
-        get => _armor;
-        set
-        {
-            _armor = value;
-        }
-    }
-
-    public StageSkill[] _skills;
-    public StageSkill TryGetSkill(int i)
-    {
-        if (i < _skills.Length)
-            return _skills[i];
-        return null;
-    }
-
     public async Task TurnProcedure()
     {
-        Swift = false;
-        TriSwift = false;
-        OctSwift = false;
-
-        await _env.EventDict.SendEvent(StageEventDict.START_TURN, new TurnDetails(this, _p));
-
-        bool skipTurn = await TryConsumeProcedure("跳回合");
-        if (skipTurn)
-        {
-            if (GetStackOfBuff("浮空艇") > 0)
-                await GainBuffProcedure("回合免疫");
-            await _env.EventDict.SendEvent(StageEventDict.END_TURN, new TurnDetails(this, _p));
-            return;
-        }
-
-        await ActionProcedure();
-
-        if (Swift || TriSwift || OctSwift)
-            await SwiftProcedure(new SwiftDetails(this, Swift, TriSwift, OctSwift));
-
-        await _env.EventDict.SendEvent(StageEventDict.END_TURN, new TurnDetails(this, _p));
+        TurnDetails d = new TurnDetails(this);
+        ActionPoint = 1;
+        
+        await _env.EventDict.SendEvent(StageEventDict.WIL_TURN, d);
+        if (!d.Cancel)
+            for (int i = 0; i < ActionPoint; i++)
+                await ActionProcedure(i);
+        
+        await _env.EventDict.SendEvent(StageEventDict.DID_TURN, d);
     }
 
-    private async Task ActionProcedure()
+    private async Task ActionProcedure(int currActionCount)
+    {
+        ActionDetails d = new ActionDetails(this, currActionCount);
+        await _env.EventDict.SendEvent(StageEventDict.WIL_ACTION, d);
+        if (d.Cancel)
+            return;
+
+        if (!await CostProcedure()) return;
+        await ExecuteProcedure();
+        await StepProcedure();
+
+        _costResult = null;
+        
+        await _env.EventDict.SendEvent(StageEventDict.DID_ACTION, d);
+    }
+
+    private async Task<bool> CostProcedure()
     {
         if (_costResult == null)
         {
             _costResult = await CostResult.FromEnvironment(_env, this, _skills[_p]);
-            await _costResult.WillCostEvent(); // write value
+            await _costResult.WillCostEvent();
         }
         
-        await _costResult.ApplyCost(); // if shortage, write state
+        await _costResult.ApplyCost();
 
         if (_costResult.Blocking)
-            return;
+            return false;
+        
         await _costResult.DidCostEvent();
-        
-        await ExecuteProcedure(_skills[_p]);
-        
-        await StepProcedure();
-
-        _costResult = null;
+        return true;
     }
 
-    private async Task ExecuteProcedure(StageSkill skill)
+    private async Task ExecuteProcedure()
     {
         bool duoCast = GetStackOfBuff("永久二重") > 0 || await TryConsumeProcedure("二重");
 
         int multiCast = GetStackOfBuff("多重");
         await RemoveBuffProcedure("多重");
-        
-        if (duoCast)
-            await skill.Execute(this);
 
-        for (int i = 0; i < multiCast; i++)
-            await skill.Execute(this);
+        int castCount = 1 + (duoCast ? 1 : 0) + multiCast;
         
-        await skill.Execute(this);
+        for (int i = 0; i < castCount; i++)
+            await _skills[_p].Execute(this);
+        
+        SkillSlot slot = _skills[_p].GetSlot();
+        slot.CostResult = _costResult;
+        slot.ExecuteResult = null;
     }
 
     private async Task StepProcedure()
@@ -127,8 +87,8 @@ public class StageEntity : Addressable, StageEventListener
             if (!within)
             {
                 _p = (_p + _skills.Length) % _skills.Length;
-                await _env.EventDict.SendEvent(StageEventDict.END_ROUND, new RoundDetails(this));
-                await _env.EventDict.SendEvent(StageEventDict.START_ROUND, new RoundDetails(this));
+                await _env.EventDict.SendEvent(StageEventDict.DID_ROUND, new RoundDetails(this));
+                await _env.EventDict.SendEvent(StageEventDict.WIL_ROUND, new RoundDetails(this));
             }
 
             if(_skills[_p].Exhausted)
@@ -142,30 +102,35 @@ public class StageEntity : Addressable, StageEventListener
         
         await _env.EventDict.SendEvent(StageEventDict.END_STEP, new EndStepDetails(this, _p));
     }
+    
+    public MingYuan MingYuan;
 
-    private async Task SwiftProcedure(SwiftDetails d)
+    private int _hp;
+    public int Hp
     {
-        await _env.EventDict.SendEvent(StageEventDict.WILL_SWIFT, d);
-        if (d.Cancel)
-            return;
-
-        if (d.Swift || d.TriSwift || d.OctSwift)
-            await ActionProcedure();
-
-        if (d.TriSwift || d.OctSwift)
-            await ActionProcedure();
-
-        if (d.OctSwift)
-        {
-            await ActionProcedure();
-            await ActionProcedure();
-            await ActionProcedure();
-            await ActionProcedure();
-            await ActionProcedure();
-        }
-
-        await _env.EventDict.SendEvent(StageEventDict.DID_SWIFT, d);
+        get => _hp;
+        set => _hp = Mathf.Min(value, MaxHp);
     }
+
+    private int _maxHp;
+    public int MaxHp
+    {
+        get => _maxHp;
+        set
+        {
+            _maxHp = Mathf.Max(value, 0);
+            Hp = Hp;
+        }
+    }
+
+    private int _armor;
+    public int Armor
+    {
+        get => _armor;
+        set => _armor = value;
+    }
+
+    public StageSkill[] _skills;
 
     // public abstract GameObject GetPrefab();
     public string GetName() => _index == 0 ? "主场" : "客场";
@@ -173,9 +138,12 @@ public class StageEntity : Addressable, StageEventListener
     public StageEntity Opponent() => _env.Entities[1 - _index];
 
     public int _p;
-    public bool Swift;
-    public bool TriSwift;
-    public bool OctSwift;
+    private int _actionPoint;
+    public int ActionPoint
+    {
+        get => _actionPoint;
+        set => _actionPoint = Mathf.Max(_actionPoint, value);
+    }
     private CostResult _costResult;
 
     public bool Forward
@@ -240,7 +208,7 @@ public class StageEntity : Addressable, StageEventListener
             new(StageEventDict.STAGE_ENTITY, StageEventDict.BUFF_DID_GAIN, 0, HighestManaRecorder),
             new(StageEventDict.STAGE_ENTITY, StageEventDict.BUFF_DID_GAIN, 0, GainedEvadeRecorder),
             new(StageEventDict.STAGE_ENTITY, StageEventDict.BUFF_DID_GAIN, 0, GainedBurningRecorder),
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.START_TURN, 0, DefaultStartTurn),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.WIL_TURN, 0, DefaultStartTurn),
         };
 
         foreach (var eventDescriptor in _eventDescriptors)
@@ -449,9 +417,6 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task FormationProcedure(RunFormation runFormation, bool recursive = true)
         => await _env.FormationProcedure(this, runFormation, recursive);
-
-    public async Task ManaShortageProcedure(int position, StageSkill skill, int actualCost)
-        => await _env.ManaShortageProcedure(this, position, skill, actualCost);
 
     public async Task CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0)
         => await _env.CycleProcedure(this, wuXing, gain, recover);

@@ -30,7 +30,7 @@ public class EntityEditorSlotView : SimpleView
             return;
 
         SkillView.Refresh();
-        SkillView.SetManaCostState(slot.ManaIndicator.State);
+        // SkillView.SetManaCostState(slot.ManaIndicator.State);
     }
 
     // private void OnEnable()

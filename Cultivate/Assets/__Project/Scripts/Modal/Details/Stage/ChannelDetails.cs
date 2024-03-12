@@ -1,5 +1,5 @@
 
-public class ChannelCostDetails : EventDetails
+public class ChannelDetails : EventDetails
 {
     public StageEntity Caster;
     public StageSkill Skill;
@@ -10,7 +10,7 @@ public class ChannelCostDetails : EventDetails
     private int _counter;
     public int GetCounter() => _counter;
 
-    public ChannelCostDetails(StageEntity caster, StageSkill skill, int channelTime)
+    public ChannelDetails(StageEntity caster, StageSkill skill, int channelTime)
     {
         Caster = caster;
         Skill = skill;
@@ -29,6 +29,6 @@ public class ChannelCostDetails : EventDetails
         return _counter <= 0;
     }
 
-    public ChannelCostDetails Clone()
+    public ChannelDetails Clone()
         => new(Caster, Skill, _channelTime) { _counter = _counter };
 }

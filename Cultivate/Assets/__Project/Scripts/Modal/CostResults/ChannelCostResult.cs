@@ -1,33 +1,32 @@
 
+using System;
 using System.Threading.Tasks;
 
 public class ChannelCostResult : CostResult
 {
-    private int _value;
-    private ChannelCostDetails _costDetails;
-    
-    public ChannelCostResult(int value)
+    private ChannelDetails _details;
+
+    public ChannelCostResult(int value) : base(value)
     {
-        _value = value;
     }
 
     public override async Task WillCostEvent()
     {
-        _costDetails = new ChannelCostDetails(Entity, Skill, _value);
-        await Env.EventDict.SendEvent(StageEventDict.WILL_CHANNEL, _costDetails);
+        _details = new ChannelDetails(Entity, Skill, Value);
+        await Env.EventDict.SendEvent(StageEventDict.WILL_CHANNEL_COST, _details);
     }
     
     public override async Task ApplyCost()
     {
-        _costDetails.IncrementProgress();
-        bool finished = _costDetails.FinishedChannelling();
+        _details.IncrementProgress();
+        bool finished = _details.FinishedChannelling();
         if (finished)
         {
-            await _costDetails.Skill.ChannelWithoutTween(Entity, _costDetails);
+            await _details.Skill.ChannelWithoutTween(Entity, _details);
         }
         else
         {
-            await _costDetails.Skill.Channel(Entity, _costDetails);
+            await _details.Skill.Channel(Entity, _details);
         }
 
         Blocking = !finished;
@@ -35,7 +34,20 @@ public class ChannelCostResult : CostResult
 
     public override async Task DidCostEvent()
     {
-        await Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, _costDetails);
-        _costDetails = null;
+        await Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL_COST, _details);
+        _details = null;
     }
+
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromValue(int value)
+        => async (env, entity, skill, recursive) => new ChannelCostResult(value);
+    
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromDj(Func<int, int> dj)
+        => async (env, entity, skill, recursive) => new ChannelCostResult(dj(skill.Dj));
+
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromJiaShi(Func<bool, int> jiaShi)
+        => async (env, entity, skill, recursive) =>
+        {
+            bool j = await entity.ToggleJiaShiProcedure();
+            return new ChannelCostResult(jiaShi(j));
+        };
 }

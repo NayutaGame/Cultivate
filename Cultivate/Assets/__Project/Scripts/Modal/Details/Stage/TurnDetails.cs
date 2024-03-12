@@ -2,11 +2,9 @@
 public class TurnDetails : EventDetails
 {
     public StageEntity Owner;
-    public int SlotIndex;
 
-    public TurnDetails(StageEntity owner, int slotIndex)
+    public TurnDetails(StageEntity owner)
     {
         Owner = owner;
-        SlotIndex = slotIndex;
     }
 }

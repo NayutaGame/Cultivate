@@ -55,9 +55,9 @@ public class StageTimeline : Addressable
         _notes.Add(new StageNote(entityIndex, count, skill, executeResult: executeResult));
     }
 
-    public void AppendChannelNote(int entityIndex, ChannelCostDetails d)
+    public void AppendChannelNote(int entityIndex, ChannelDetails d)
     {
         int count = _notes.Count;
-        _notes.Add(new StageNote(entityIndex, count, d.Skill, channelCostDetails: d));
+        _notes.Add(new StageNote(entityIndex, count, d.Skill, channelDetails: d));
     }
 }

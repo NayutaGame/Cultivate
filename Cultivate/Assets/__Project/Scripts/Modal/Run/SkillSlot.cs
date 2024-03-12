@@ -113,7 +113,12 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         return true;
     }
 
-    [NonSerialized] public ManaIndicator ManaIndicator;
+    public void ClearResults()
+    {
+        ExecuteResult = null;
+        CostResult = null;
+    }
+
     [NonSerialized] public ExecuteResult ExecuteResult;
     [NonSerialized] public CostResult CostResult;
 
