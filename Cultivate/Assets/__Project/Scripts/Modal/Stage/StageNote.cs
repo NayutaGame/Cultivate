@@ -10,22 +10,14 @@ public class StageNote : ISkillModel
     public CostResult CostResult;
     public CastResult CastResult;
 
-    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, ChannelDetails channelDetails = null)
+    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, int currCounter = 0, int maxCounter = 0)
     {
         EntityIndex = entityIndex;
         TemporalIndex = temporalIndex;
         Skill = skill;
 
-        if (channelDetails != null)
-        {
-            _currCounter = channelDetails.GetCounter();
-            _maxCounter = channelDetails.GetChannelTime();
-        }
-        else
-        {
-            _currCounter = 0;
-            _maxCounter = 0;
-        }
+        _currCounter = currCounter;
+        _maxCounter = maxCounter;
     }
 
     public bool IsHome

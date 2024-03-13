@@ -33,9 +33,6 @@ public class StageSkill
     public SkillTypeComposite GetSkillTypeCollection()
         => _entry.SkillTypeComposite;
 
-    public async Task<CostResult> CostProcedure(StageEnvironment env, StageEntity caster, bool recursive = true)
-        => await _entry.Cost(env, caster, this, recursive);
-
     public string GetName()
         => _entry.GetName();
 
@@ -105,20 +102,6 @@ public class StageSkill
     {
         RunCastedCount += 1;
         StageCastedCount += 1;
-    }
-
-    public async Task Channel(StageEntity caster, ChannelDetails d)
-    {
-        await caster.Env.EventDict.SendEvent(StageEventDict.WIL_CHANNEL, d.Clone());
-        await _entry.Channel(caster, d);
-        await caster.Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, d.Clone());
-    }
-
-    public async Task ChannelNoTween(StageEntity caster, ChannelDetails d)
-    {
-        await caster.Env.EventDict.SendEvent(StageEventDict.WIL_CHANNEL, d);
-        await _entry.ChannelNoTween(caster, d);
-        await caster.Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, d);
     }
 
     public IEnumerable<StageSkill> Nexts(bool loop = false)

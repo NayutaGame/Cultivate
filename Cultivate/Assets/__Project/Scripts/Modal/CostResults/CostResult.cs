@@ -39,11 +39,8 @@ public abstract class CostResult : EventDetails
         
     }
 
-    public static async Task<CostResult> FromEnvironment(StageEnvironment env, StageEntity entity, StageSkill skill)
-    {
-        CostResult result = await skill.CostProcedure(env, entity);
-        return result;
-    }
+    public static async Task<CostResult> FromEnvironment(StageEnvironment env, StageEntity entity, StageSkill skill, bool recursive = true)
+        => await skill.Entry.Cost(env, entity, skill, recursive);
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> Empty
         => async (env, entity, skill, recursive) => new EmptyCostResult();

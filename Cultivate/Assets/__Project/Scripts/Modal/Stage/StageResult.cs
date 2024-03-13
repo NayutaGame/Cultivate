@@ -41,11 +41,11 @@ public class StageResult : Addressable
     public void TryAppend(string s)
         => _reportBuilder?.Append(s);
 
-    public void TryAppendNote(int entityIndex, StageSkill skill)
-        => _timeline?.AppendNote(entityIndex, skill);
+    public void TryAppendNote(int entityIndex, StageSkill skill, CostResult costResult, CastResult castResult)
+        => _timeline?.AppendNote(entityIndex, skill, costResult, castResult);
 
-    public void TryAppendChannelNote(int entityIndex, ChannelDetails d)
-        => _timeline?.AppendChannelNote(entityIndex, d);
+    public void TryAppendChannelNote(int entityIndex, StageSkill skill, int currCounter, int maxCounter)
+        => _timeline?.AppendChannelNote(entityIndex, skill, currCounter, maxCounter);
 
     public override string ToString()
         => _reportBuilder?.ToString();

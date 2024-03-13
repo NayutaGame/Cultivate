@@ -39,4 +39,11 @@ public class ManaCostResult : CostResult
     
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromDj(Func<int, int> dj)
         => async (env, entity, skill, recursive) => new ManaCostResult(dj(skill.Dj));
+
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromJiaShi(Func<bool, int> jiaShi)
+        => async (env, entity, skill, recursive) =>
+        {
+            bool j = await entity.ToggleJiaShiProcedure();
+            return new ManaCostResult(jiaShi(j));
+        };
 }

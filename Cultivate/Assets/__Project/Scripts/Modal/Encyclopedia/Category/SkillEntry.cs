@@ -132,7 +132,7 @@ public class SkillEntry : Entry, IAnnotation
         _wuXing = wuXing;
         _jingJieRange = jingJieRange;
         _cost = cost ?? CostResult.Empty;
-        _costDescription = costDescription;
+        _costDescription = costDescription ?? DefaultCostDescription;
         SkillTypeComposite = skillTypeComposite ?? 0;
         _description = description;
         _trivia = trivia;
@@ -156,22 +156,7 @@ public class SkillEntry : Entry, IAnnotation
     public async Task<CastResult> Cast(StageEntity caster, StageSkill skill, bool recursive)
         => await _cast(caster, skill, recursive);
 
-    public async Task Channel(StageEntity caster, ChannelDetails d)
-    {
-        await caster.Env.TryPlayTween(new ShiftTweenDescriptor());
-
-        StageResult r = caster.Env.Result;
-        r.TryAppend($"{caster.GetName()}吟唱了{GetName()} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
-        r.TryAppendChannelNote(caster.Index, d);
-        r.TryAppend($"\n");
-    }
-
-    public async Task ChannelNoTween(StageEntity caster, ChannelDetails d)
-    {
-        StageResult r = caster.Env.Result;
-        r.TryAppend($"{caster.GetName()}吟唱了{GetName()} 进度: {d.GetCounter()}//{d.GetChannelTime()}");
-        r.TryAppend($"\n");
-    }
-
-    private async Task<CastResult> DefaultCast(StageEntity caster, StageSkill skill, bool recursive) => null;
+    private async Task<CastResult> DefaultCast(StageEntity caster, StageSkill skill, bool recursive) => new();
+    
+    private CostDescription DefaultCostDescription(JingJie j, int dj, CostResult costResult) => CostDescription.Default();
 }

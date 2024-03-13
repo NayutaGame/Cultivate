@@ -82,8 +82,7 @@ public class StageEntity : Addressable, StageEventListener
         
         
         CastResult castResult = await skill.Entry.Cast(this, skill, recursive);
-        _env.Result.TryAppendNote(Index, skill);
-        WriteResultToStageNote(null, _costResult, castResult);
+        _env.Result.TryAppendNote(Index, skill, _costResult, castResult);
         
         
         _env.Result.TryAppend($"\n");
@@ -157,12 +156,6 @@ public class StageEntity : Addressable, StageEventListener
     {
         slot.CostResult = costResult;
         slot.CastResult = castResult;
-    }
-
-    private void WriteResultToStageNote(StageNote stageNote, CostResult costResult, CastResult castResult)
-    {
-        stageNote.CostResult = costResult;
-        stageNote.CastResult = castResult;
     }
 
     public MingYuan MingYuan;

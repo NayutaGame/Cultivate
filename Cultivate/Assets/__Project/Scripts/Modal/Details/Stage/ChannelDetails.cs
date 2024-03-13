@@ -3,32 +3,14 @@ public class ChannelDetails : EventDetails
 {
     public StageEntity Caster;
     public StageSkill Skill;
-
-    private int _channelTime;
-    public int GetChannelTime() => _channelTime;
-
-    private int _counter;
-    public int GetCounter() => _counter;
-
-    public ChannelDetails(StageEntity caster, StageSkill skill, int channelTime)
+    public int CurrCounter;
+    public int MaxCounter;
+    
+    public ChannelDetails(StageEntity caster, StageSkill skill, int currCounter, int maxCounter)
     {
         Caster = caster;
         Skill = skill;
-        _channelTime = channelTime;
-        
-        _counter = _channelTime;
+        CurrCounter = currCounter;
+        MaxCounter = maxCounter;
     }
-
-    public void IncrementProgress()
-    {
-        _counter -= 1;
-    }
-
-    public bool FinishedChannelling()
-    {
-        return _counter <= 0;
-    }
-
-    public ChannelDetails Clone()
-        => new(Caster, Skill, _channelTime) { _counter = _counter };
 }
