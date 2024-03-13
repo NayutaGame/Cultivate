@@ -115,11 +115,11 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
 
     public void ClearResults()
     {
-        ExecuteResult = null;
+        CastResult = null;
         CostResult = null;
     }
 
-    [NonSerialized] public ExecuteResult ExecuteResult;
+    [NonSerialized] public CastResult CastResult;
     [NonSerialized] public CostResult CostResult;
 
     public void OnBeforeSerialize() { }

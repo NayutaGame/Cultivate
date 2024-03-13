@@ -7,15 +7,14 @@ public class StageNote : ISkillModel
     public int TemporalIndex;
     public StageSkill Skill;
 
-    private CostResult _costResult;
-    private ExecuteResult _executeResult;
+    public CostResult CostResult;
+    public CastResult CastResult;
 
-    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, ExecuteResult executeResult = null, ChannelDetails channelDetails = null)
+    public StageNote(int entityIndex, int temporalIndex, StageSkill skill, ChannelDetails channelDetails = null)
     {
         EntityIndex = entityIndex;
         TemporalIndex = temporalIndex;
         Skill = skill;
-        _executeResult = executeResult;
 
         if (channelDetails != null)
         {
@@ -36,13 +35,13 @@ public class StageNote : ISkillModel
         => Skill.Entry.Sprite;
 
     public CostDescription GetCostDescription()
-        => Skill.Entry.GetCostDescription(Skill.GetJingJie(), _costResult);
+        => Skill.Entry.GetCostDescription(Skill.GetJingJie(), CostResult);
 
     public string GetName()
         => Skill.GetName();
 
     public string GetHighlight()
-        => Skill.GetHighlight(_executeResult);
+        => Skill.GetHighlight(CastResult);
 
     public string GetExplanation()
         => Skill.GetExplanation();

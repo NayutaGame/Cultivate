@@ -20,9 +20,9 @@ public class Buff : StageEventListener
     public int Stack => _stack;
     public async Task SetStack(int stack)
     {
-        await _eventDict.SendEvent(StageEventDict.STACK_WILL_CHANGE, new BuffStackChangeDetails(_stack, stack));
+        await _eventDict.SendEvent(StageEventDict.WIL_CHANGE_STACK, new BuffStackChangeDetails(_stack, stack));
         _stack = stack;
-        await _eventDict.SendEvent(StageEventDict.STACK_DID_CHANGE, new BuffStackChangeDetails(_stack, stack));
+        await _eventDict.SendEvent(StageEventDict.DID_CHANGE_STACK, new BuffStackChangeDetails(_stack, stack));
 
         if(_stack <= 0)
             await _owner.RemoveBuff(this);

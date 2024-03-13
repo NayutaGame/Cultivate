@@ -75,7 +75,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         => _entry.GetDescription(JingJie);
 
     public string GetHighlight()
-        => _entry.GetHighlight(GetJingJie(), _skillSlot?.ExecuteResult);
+        => _entry.GetHighlight(GetJingJie(), _skillSlot?.CastResult);
 
     public string GetExplanation()
         => _entry.GetExplanation();

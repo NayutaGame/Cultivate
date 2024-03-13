@@ -6,7 +6,7 @@ public class ManaCostResult : CostResult
 {
     public override async Task WillCostEvent()
     {
-        await Env.EventDict.SendEvent(StageEventDict.WILL_MANA_COST, this);
+        await Env.EventDict.SendEvent(StageEventDict.WIL_MANA_COST, this);
     }
 
     public override async Task ApplyCost()
@@ -19,7 +19,7 @@ public class ManaCostResult : CostResult
         else
         {
             await Env.ManaShortageProcedure(this);
-            await Entity.ManaShortageAction.Execute(Entity);
+            await Entity.CastProcedure(Entity.ManaShortageAction);
         }
         
         Blocking = !manaSufficient;

@@ -41,8 +41,8 @@ public class StageResult : Addressable
     public void TryAppend(string s)
         => _reportBuilder?.Append(s);
 
-    public void TryAppendNote(int entityIndex, StageSkill skill, ExecuteResult executeResult)
-        => _timeline?.AppendNote(entityIndex, skill, executeResult);
+    public void TryAppendNote(int entityIndex, StageSkill skill)
+        => _timeline?.AppendNote(entityIndex, skill);
 
     public void TryAppendChannelNote(int entityIndex, ChannelDetails d)
         => _timeline?.AppendChannelNote(entityIndex, d);

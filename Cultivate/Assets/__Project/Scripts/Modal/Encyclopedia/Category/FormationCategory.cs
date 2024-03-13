@@ -20,8 +20,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 Formation f = (Formation)listener;
                                 GainFormationDetails d = (GainFormationDetails)stageEventDetails;
 
-                                await f.Owner._skills[0].ExecuteWithoutTween(f.Owner);
-                                await f.Owner._skills[1].ExecuteWithoutTween(f.Owner);
+                                await f.Owner.CastProcedureNoTween(f.Owner._skills[0]);
+                                await f.Owner.CastProcedureNoTween(f.Owner._skills[1]);
                             }),
                         }),
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "战斗开始时，使用第一位的卡", trivia: null, requirement: 9,
@@ -32,7 +32,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 Formation f = (Formation)listener;
                                 GainFormationDetails d = (GainFormationDetails)stageEventDetails;
 
-                                await f.Owner._skills[0].ExecuteWithoutTween(f.Owner);
+                                await f.Owner.CastProcedureNoTween(f.Owner._skills[0]);
                             }),
                         }),
                 }),
@@ -46,7 +46,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "主动消耗锋锐\\格挡\\闪避\\力量\\灼烧时，返还2点", trivia: null, requirement: 12,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_DID_LOSE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_LOSE_BUFF, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 LoseBuffDetails d = (LoseBuffDetails)stageEventDetails;
@@ -63,7 +63,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "主动消耗锋锐\\格挡\\闪避\\力量\\灼烧时，返还1点", trivia: null, requirement: 10,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_DID_LOSE, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_LOSE_BUFF, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 LoseBuffDetails d = (LoseBuffDetails)stageEventDetails;
@@ -89,7 +89,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "获得锋锐\\格挡\\闪避\\力量\\灼烧时，额外2点", trivia: null, requirement: 12,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_WILL_GAIN, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -106,7 +106,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "获得锋锐\\格挡\\闪避\\力量\\灼烧时，额外1点", trivia: null, requirement: 9,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_WILL_GAIN, 0, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -133,7 +133,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "双方所有阵法失效", trivia: null, requirement: 12,
                         eventDescriptors: new StageEventDescriptor[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.FORMATION_WILL_ADD, -3, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ADD_FORMATION, -3, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 FormationDetails d = (FormationDetails)stageEventDetails;
@@ -174,7 +174,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("永久集中");
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.FORMATION_WILL_ADD, -2, async (listener, stageEventDetails) =>
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ADD_FORMATION, -2, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 FormationDetails d = (FormationDetails)stageEventDetails;
@@ -275,8 +275,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 ExhaustDetails d = (ExhaustDetails)stageEventDetails;
                                 if (f.Owner != d.Owner.Opponent())
                                     return;
-                                await d.Skill.Execute(f.Owner);
-                                await d.Skill.Execute(f.Owner);
+                                await f.Owner.CastProcedure(d.Skill);
+                                await f.Owner.CastProcedure(d.Skill);
                             }),
                         }),
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "对方使用消耗牌后，自己也使用1次", trivia: null, requirement: 10,
@@ -288,7 +288,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 ExhaustDetails d = (ExhaustDetails)stageEventDetails;
                                 if (f.Owner != d.Owner.Opponent())
                                     return;
-                                await d.Skill.Execute(f.Owner);
+                                await f.Owner.CastProcedure(d.Skill);
                             }),
                         }),
                 }),

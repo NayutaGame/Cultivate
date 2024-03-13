@@ -12,12 +12,12 @@ public class StageEntity : Addressable, StageEventListener
     {
         TurnDetails d = new TurnDetails(this);
         ActionPoint = 1;
-        
+
         await _env.EventDict.SendEvent(StageEventDict.WIL_TURN, d);
         if (!d.Cancel)
             for (int i = 0; i < ActionPoint; i++)
                 await ActionProcedure(i);
-        
+
         await _env.EventDict.SendEvent(StageEventDict.DID_TURN, d);
     }
 
@@ -33,7 +33,7 @@ public class StageEntity : Addressable, StageEventListener
         await StepProcedure();
 
         _costResult = null;
-        
+
         await _env.EventDict.SendEvent(StageEventDict.DID_ACTION, d);
     }
 
@@ -44,37 +44,87 @@ public class StageEntity : Addressable, StageEventListener
             _costResult = await CostResult.FromEnvironment(_env, this, _skills[_p]);
             await _costResult.WillCostEvent();
         }
-        
+
         await _costResult.ApplyCost();
 
         if (_costResult.Blocking)
             return false;
-        
+
         await _costResult.DidCostEvent();
         return true;
     }
 
     private async Task ExecuteProcedure()
     {
-        bool duoCast = GetStackOfBuff("永久二重") > 0 || await TryConsumeProcedure("二重");
+        StageSkill skill = _skills[_p];
+        ExecuteDetails d = new ExecuteDetails(this, skill);
+        await _env.EventDict.SendEvent(StageEventDict.WIL_EXECUTE, d);
 
-        int multiCast = GetStackOfBuff("多重");
-        await RemoveBuffProcedure("多重");
+        CastResult firstCastResult = null;
 
-        int castCount = 1 + (duoCast ? 1 : 0) + multiCast;
+        for (int i = 0; i < d.CastTimes; i++)
+            firstCastResult ??= await CastProcedure(skill);
+
+        WriteResultToSlot(skill.GetSlot(), _costResult, firstCastResult);
+
+        await _env.EventDict.SendEvent(StageEventDict.DID_EXECUTE, d);
+    }
+
+    public async Task<CastResult> CastProcedure(StageSkill skill, bool recursive = true)
+    {
+        CastDetails d = new CastDetails(this, skill);
+        await _env.EventDict.SendEvent(StageEventDict.WIL_CAST, d);
         
-        for (int i = 0; i < castCount; i++)
-            await _skills[_p].Execute(this);
         
-        SkillSlot slot = _skills[_p].GetSlot();
-        slot.CostResult = _costResult;
-        slot.ExecuteResult = null;
+        // will cast report
+        await _env.TryPlayTween(new ShiftTweenDescriptor());
+        _env.Result.TryAppend($"{GetName()}使用了{skill.GetName()}");
+        
+        
+        CastResult castResult = await skill.Entry.Cast(this, skill, recursive);
+        _env.Result.TryAppendNote(Index, skill);
+        WriteResultToStageNote(null, _costResult, castResult);
+        
+        
+        _env.Result.TryAppend($"\n");
+        // did cast report
+        
+
+        if (this == skill.Owner)
+            skill.IncreaseCastedCount();
+        await _env.EventDict.SendEvent(StageEventDict.DID_CAST, d);
+
+        return castResult;
+    }
+
+    public async Task<CastResult> CastProcedureNoTween(StageSkill skill, bool recursive = true)
+    {
+        CastDetails d = new CastDetails(this, skill);
+        await _env.EventDict.SendEvent(StageEventDict.WIL_CAST, d);
+
+        
+        // will cast report
+        _env.Result.TryAppend($"{GetName()}使用了{skill.GetName()}");
+
+        
+        CastResult castResult = await skill.Entry.Cast(this, skill, recursive);
+        
+        
+        _env.Result.TryAppend($"\n");
+        // did cast report
+        
+        
+        if (this == skill.Owner)
+            skill.IncreaseCastedCount();
+        await _env.EventDict.SendEvent(StageEventDict.DID_CAST, d);
+
+        return castResult;
     }
 
     private async Task StepProcedure()
     {
-        await _env.EventDict.SendEvent(StageEventDict.START_STEP, new StartStepDetails(this, _p));
-        
+        await _env.EventDict.SendEvent(StageEventDict.WIL_STEP, new StartStepDetails(this, _p));
+
         int dir = Forward ? 1 : -1;
         for (int i = 0; i < _skills.Length; i++)
         {
@@ -91,18 +141,30 @@ public class StageEntity : Addressable, StageEventListener
                 await _env.EventDict.SendEvent(StageEventDict.WIL_ROUND, new RoundDetails(this));
             }
 
-            if(_skills[_p].Exhausted)
+            if (_skills[_p].Exhausted)
                 continue;
 
-            if(await TryConsumeProcedure("跳卡牌"))
+            if (await TryConsumeProcedure("跳卡牌"))
                 continue;
 
             break;
         }
-        
-        await _env.EventDict.SendEvent(StageEventDict.END_STEP, new EndStepDetails(this, _p));
+
+        await _env.EventDict.SendEvent(StageEventDict.DID_STEP, new EndStepDetails(this, _p));
     }
-    
+
+    private void WriteResultToSlot(SkillSlot slot, CostResult costResult, CastResult castResult)
+    {
+        slot.CostResult = costResult;
+        slot.CastResult = castResult;
+    }
+
+    private void WriteResultToStageNote(StageNote stageNote, CostResult costResult, CastResult castResult)
+    {
+        stageNote.CostResult = costResult;
+        stageNote.CastResult = castResult;
+    }
+
     public MingYuan MingYuan;
 
     private int _hp;
@@ -205,9 +267,9 @@ public class StageEntity : Addressable, StageEventListener
 
         _eventDescriptors = new StageEventDescriptor[]
         {
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.BUFF_DID_GAIN, 0, HighestManaRecorder),
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.BUFF_DID_GAIN, 0, GainedEvadeRecorder),
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.BUFF_DID_GAIN, 0, GainedBurningRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_GAIN_BUFF, 0, HighestManaRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_GAIN_BUFF, 0, GainedEvadeRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_GAIN_BUFF, 0, GainedBurningRecorder),
             new(StageEventDict.STAGE_ENTITY, StageEventDict.WIL_TURN, 0, DefaultStartTurn),
         };
 

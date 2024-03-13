@@ -31,7 +31,7 @@ public class StageEnvironment : Addressable, StageEventListener
         => await FormationProcedure(new FormationDetails(owner, formation, recursive));
     public async Task FormationProcedure(FormationDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.FORMATION_WILL_ADD, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_ADD_FORMATION, d);
         if (d.Cancel) return;
 
         await d.Owner.AddFormation(new GainFormationDetails(d._formation));
@@ -41,7 +41,7 @@ public class StageEnvironment : Addressable, StageEventListener
         _result.TryAppend($"    {d._formation.GetName()} is set");
 
         if (d.Cancel) return;
-        await _eventDict.SendEvent(StageEventDict.FORMATION_DID_ADD, d);
+        await _eventDict.SendEvent(StageEventDict.DID_ADD_FORMATION, d);
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public class StageEnvironment : Addressable, StageEventListener
             StageEntity src = d.Src;
             StageEntity tgt = d.Tgt;
 
-            await _eventDict.SendEvent(StageEventDict.WILL_ATTACK, d);
+            await _eventDict.SendEvent(StageEventDict.WIL_ATTACK, d);
             // 添加穿透，应用吸血，应该在这个里面
 
             if (d.Cancel)
@@ -158,7 +158,7 @@ public class StageEnvironment : Addressable, StageEventListener
     {
         IndirectDetails d = indirectDetails.Clone();
 
-        await _eventDict.SendEvent(StageEventDict.WILL_INDIRECT, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_INDIRECT, d);
 
         if (d.Cancel)
         {
@@ -209,7 +209,7 @@ public class StageEnvironment : Addressable, StageEventListener
         => await DamageProcedure(new DamageDetails(src, tgt, value, recursive, damaged, undamaged));
     public async Task DamageProcedure(DamageDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.WILL_DAMAGE, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_DAMAGE, d);
 
         if (d.Cancel || d.Value == 0)
         {
@@ -231,7 +231,7 @@ public class StageEnvironment : Addressable, StageEventListener
         => await LoseHealthProcedure(new LoseHealthDetails(owner, value));
     public async Task LoseHealthProcedure(LoseHealthDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.WILL_LOSE_HEALTH, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_LOSE_HEALTH, d);
         if (d.Cancel)
             return;
 
@@ -247,7 +247,7 @@ public class StageEnvironment : Addressable, StageEventListener
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
 
-        await _eventDict.SendEvent(StageEventDict.WILL_HEAL, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_HEAL, d);
 
         if (d.Cancel)
             return;
@@ -276,7 +276,7 @@ public class StageEnvironment : Addressable, StageEventListener
         => await GainBuffProcedure(new GainBuffDetails(src, tgt, buffEntry, stack, recursive));
     public async Task GainBuffProcedure(GainBuffDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.BUFF_WILL_GAIN, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_GAIN_BUFF, d);
 
         d.Cancel |= d._stack <= 0;
         if (d.Cancel) return;
@@ -316,14 +316,14 @@ public class StageEnvironment : Addressable, StageEventListener
             _result.TryAppend($"    {d._buffEntry.GetName()}: 0 -> {d._stack}");
         }
 
-        await _eventDict.SendEvent(StageEventDict.BUFF_DID_GAIN, d);
+        await _eventDict.SendEvent(StageEventDict.DID_GAIN_BUFF, d);
     }
 
     public async Task LoseBuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
         => await LoseBuffProcedure(new LoseBuffDetails(src, tgt, buffEntry, stack, recursive));
     public async Task LoseBuffProcedure(LoseBuffDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.BUFF_WILL_LOSE, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_LOSE_BUFF, d);
 
         if (d.Cancel)
             return;
@@ -332,14 +332,14 @@ public class StageEnvironment : Addressable, StageEventListener
         if (b != null)
             await b.SetStack(Mathf.Max(0, b.Stack - d._stack));
 
-        await _eventDict.SendEvent(StageEventDict.BUFF_DID_LOSE, d);
+        await _eventDict.SendEvent(StageEventDict.DID_LOSE_BUFF, d);
     }
 
     public async Task GainArmorProcedure(StageEntity src, StageEntity tgt, int value)
         => await GainArmorProcedure(new GainArmorDetails(src, tgt, value));
     public async Task GainArmorProcedure(GainArmorDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.ARMOR_WILL_GAIN, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_GAIN_ARMOR, d);
 
         if (d.Cancel)
             return;
@@ -347,14 +347,14 @@ public class StageEnvironment : Addressable, StageEventListener
         d.Tgt.Armor += d.Value;
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
-        await _eventDict.SendEvent(StageEventDict.ARMOR_DID_GAIN, d);
+        await _eventDict.SendEvent(StageEventDict.DID_GAIN_ARMOR, d);
     }
 
     public async Task LoseArmorProcedure(StageEntity src, StageEntity tgt, int value)
         => await LoseArmorProcedure(new LoseArmorDetails(src, tgt, value));
     public async Task LoseArmorProcedure(LoseArmorDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.ARMOR_WILL_LOSE, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_LOSE_ARMOR, d);
 
         if (d.Cancel)
             return;
@@ -369,12 +369,12 @@ public class StageEnvironment : Addressable, StageEventListener
         // 正变负，碎盾
         // 负变负，减甲
 
-        await _eventDict.SendEvent(StageEventDict.ARMOR_DID_LOSE, d);
+        await _eventDict.SendEvent(StageEventDict.DID_LOSE_ARMOR, d);
     }
 
     public async Task ManaShortageProcedure(ManaCostResult d)
     {
-        await _eventDict.SendEvent(StageEventDict.WILL_MANA_SHORTAGE, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_MANA_SHORTAGE, d);
 
         if (d.Cancel)
             return;
@@ -384,7 +384,7 @@ public class StageEnvironment : Addressable, StageEventListener
 
     public async Task ArmorShortageProcedure(ArmorCostResult d)
     {
-        await _eventDict.SendEvent(StageEventDict.WILL_ARMOR_SHORTAGE, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_ARMOR_SHORTAGE, d);
 
         if (d.Cancel)
             return;
@@ -399,7 +399,7 @@ public class StageEnvironment : Addressable, StageEventListener
         if (d.Skill.Exhausted)
             return;
 
-        await _eventDict.SendEvent(StageEventDict.WILL_EXHAUST, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_EXHAUST, d);
 
         d.Skill.Exhausted = true;
 
@@ -410,7 +410,7 @@ public class StageEnvironment : Addressable, StageEventListener
         => await CycleProcedure(new CycleDetails(owner, wuXing, gain, recover));
     public async Task CycleProcedure(CycleDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.WILL_CYCLE, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_CYCLE, d);
 
         if (d.Cancel)
             return;
@@ -429,7 +429,7 @@ public class StageEnvironment : Addressable, StageEventListener
         => await DispelProcedure(new DispelDetails(owner, stack));
     public async Task DispelProcedure(DispelDetails d)
     {
-        await _eventDict.SendEvent(StageEventDict.WILL_DISPEL, d);
+        await _eventDict.SendEvent(StageEventDict.WIL_DISPEL, d);
 
         if (d.Cancel)
             return;

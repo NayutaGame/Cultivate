@@ -89,7 +89,7 @@ public class MechComposite : EmulatedSkill
         => GetEntry().GetName();
 
     public string GetHighlight()
-        => GetEntry().GetHighlight(GetJingJie(), _skillSlot?.ExecuteResult);
+        => GetEntry().GetHighlight(GetJingJie(), _skillSlot?.CastResult);
 
     public string GetExplanation()
         => GetEntry().GetExplanation();

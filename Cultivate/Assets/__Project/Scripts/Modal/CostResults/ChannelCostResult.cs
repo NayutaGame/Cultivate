@@ -13,7 +13,7 @@ public class ChannelCostResult : CostResult
     public override async Task WillCostEvent()
     {
         _details = new ChannelDetails(Entity, Skill, Value);
-        await Env.EventDict.SendEvent(StageEventDict.WILL_CHANNEL_COST, _details);
+        await Env.EventDict.SendEvent(StageEventDict.WIL_CHANNEL_COST, _details);
     }
     
     public override async Task ApplyCost()
@@ -22,7 +22,7 @@ public class ChannelCostResult : CostResult
         bool finished = _details.FinishedChannelling();
         if (finished)
         {
-            await _details.Skill.ChannelWithoutTween(Entity, _details);
+            await _details.Skill.ChannelNoTween(Entity, _details);
         }
         else
         {
