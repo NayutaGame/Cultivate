@@ -774,55 +774,6 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("通透世界", "攻击具有穿透", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (b.Owner == d.Src && d.Src != d.Tgt)
-                            d.Pierce = true;
-                    }),
-                }),
-
-            new("待激活的凤凰涅槃", "20灼烧激活", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
-
-                        if (b.Owner != d.Tgt) return;
-                        if (b.Owner.GainedBurningRecord < 20) return;
-
-                        await b.Owner.GainBuffProcedure("涅槃");
-                        await b.Owner.RemoveBuff(b);
-                    }),
-                }),
-            
-            new("涅槃", "每轮以及强制结算前：生命恢复至上限", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_STAGE, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        StageDetails d = (StageDetails)stageEventDetails;
-
-                        if (b.Owner != d.Owner) return;
-                        await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
-                    }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        RoundDetails d = (RoundDetails)stageEventDetails;
-
-                        if (b.Owner == d.Owner)
-                            await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
-                    }),
-                }),
-
             new("灼烧", "受到敌方攻击后：[层数]间接攻击", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
@@ -880,6 +831,185 @@ public class BuffCategory : Category<BuffEntry>
                             await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Pierce, d.Crit, false, d.Damaged);
                             d.Cancel = true;
                         }
+                    }),
+                }),
+
+            new("待激活的人间无戈", "20锋锐觉醒：死亡不会导致战斗结算", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        if (b.Owner.GainedFengRuiRecord < 20) return;
+
+                        await b.Owner.GainBuffProcedure("人间无戈");
+                        await b.Owner.RemoveBuff(b);
+                    }),
+                }),
+            
+            new("人间无戈", "死亡不会导致战斗结算", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TRY_COMMIT, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TryCommitDetails d = (TryCommitDetails)stageEventDetails;
+
+                        d.Cancel = true;
+                    }),
+                }),
+
+            new("待激活的摩诃钵特摩", "20格挡觉醒：八动，之后死亡", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        if (b.Owner.GainedGeDangRecord < 20) return;
+
+                        await b.Owner.GainBuffProcedure("摩诃钵特摩", 8);
+                        await b.Owner.RemoveBuff(b);
+                    }),
+                }),
+            
+            new("摩诃钵特摩", "八动，之后死亡", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_APPEAR, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        BuffAppearDetails d = (BuffAppearDetails)stageEventDetails;
+
+                        if (b.Owner != d.Owner) return;
+                        d.Owner.SetActionPoint(d.Owner.GetActionPoint() + 8);
+                    }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+
+                        if (b.Owner != d.Owner) return;
+                        await b.Owner.LoseHealthProcedure(b.Owner.Hp);
+                    }),
+                }),
+
+            new("待激活的通透世界", "20力量觉醒：攻击具有穿透", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        if (b.Owner.GainedLiLiangRecord < 20) return;
+
+                        await b.Owner.GainBuffProcedure("通透世界");
+                        await b.Owner.RemoveBuff(b);
+                    }),
+                }),
+
+            new("通透世界", "攻击具有穿透", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                            d.Pierce = true;
+                    }),
+                }),
+            
+            new("待激活的凤凰涅槃", "20灼烧觉醒：每轮生命恢复至上限", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        if (b.Owner.GainedZhuoShaoRecord < 20) return;
+
+                        await b.Owner.GainBuffProcedure("凤凰涅槃");
+                        await b.Owner.RemoveBuff(b);
+                    }),
+                }),
+            
+            new("凤凰涅槃", "每轮以及强制结算前：生命恢复至上限", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_STAGE, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        StageDetails d = (StageDetails)stageEventDetails;
+
+                        if (b.Owner != d.Owner) return;
+                        await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
+                    }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)stageEventDetails;
+
+                        if (b.Owner == d.Owner)
+                            await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
+                    }),
+                }),
+
+            new("待激活的那由他", "20柔韧觉醒：灵气消耗为零，Step阶段无法受影响，所有Buff层数不会再变化", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        if (b.Owner.GainedRouRenRecord < 20) return;
+
+                        await b.Owner.GainBuffProcedure("那由他");
+                        await b.Owner.RemoveBuff(b);
+                    }),
+                }),
+            
+            new("那由他", "灵气/吟唱消耗为零，Step阶段无法受影响，所有Buff层数不会再变化", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_MANA_COST, -4, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        ManaCostResult d = (ManaCostResult)stageEventDetails;
+
+                        d.Value = 0;
+                    }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
+
+                        d._stack = 0;
+                    }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_LOSE_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        LoseBuffDetails d = (LoseBuffDetails)stageEventDetails;
+
+                        d._stack = 0;
+                    }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 101, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+
+                        d.Cancel = false;
                     }),
                 }),
         });

@@ -1220,7 +1220,7 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "少女空舞",
+            new(name:                       "净秽",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,

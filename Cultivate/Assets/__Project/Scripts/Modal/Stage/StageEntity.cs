@@ -213,7 +213,12 @@ public class StageEntity : Addressable, StageEventListener
     public int SelfDamageRecord;
     public int HealedRecord;
     public int GainedEvadeRecord;
-    public int GainedBurningRecord;
+
+    public int GainedFengRuiRecord;
+    public int GainedGeDangRecord;
+    public int GainedLiLiangRecord;
+    public int GainedZhuoShaoRecord;
+    public int GainedRouRenRecord;
 
     private int _index;
     public int Index => _index;
@@ -257,10 +262,10 @@ public class StageEntity : Addressable, StageEventListener
 
         _eventDescriptors = new StageEventDescriptor[]
         {
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_GAIN_BUFF, 0, HighestManaRecorder),
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_GAIN_BUFF, 0, GainedEvadeRecorder),
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_GAIN_BUFF, 0, GainedBurningRecorder),
-            new(StageEventDict.STAGE_ENTITY, StageEventDict.WIL_TURN, 0, DefaultStartTurn),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_GAIN_BUFF, -1, HighestManaRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_GAIN_BUFF, -1, GainedEvadeRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.DID_GAIN_BUFF, -1, BuffRecorder),
+            new(StageEventDict.STAGE_ENTITY, StageEventDict.WIL_TURN, -1, DefaultStartTurn),
         };
 
         foreach (var eventDescriptor in _eventDescriptors)
@@ -320,13 +325,20 @@ public class StageEntity : Addressable, StageEventListener
         return d;
     }
 
-    public async Task<GainBuffDetails> GainedBurningRecorder(StageEventListener listener, EventDetails eventDetails)
+    public async Task<GainBuffDetails> BuffRecorder(StageEventListener listener, EventDetails eventDetails)
     {
         GainBuffDetails d = (GainBuffDetails)eventDetails;
-        if (d._buffEntry.GetName() != "灼烧")
-            return d;
+        if (d._buffEntry.GetName() == "锋锐")
+            GainedFengRuiRecord += d._stack;
+        else if (d._buffEntry.GetName() == "格挡")
+            GainedGeDangRecord += d._stack;
+        else if (d._buffEntry.GetName() == "力量")
+            GainedLiLiangRecord += d._stack;
+        else if (d._buffEntry.GetName() == "灼烧")
+            GainedZhuoShaoRecord += d._stack;
+        else if (d._buffEntry.GetName() == "柔韧")
+            GainedRouRenRecord += d._stack;
 
-        GainedBurningRecord += d._stack;
         return d;
     }
 
@@ -371,10 +383,10 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task AddBuff(BuffAppearDetails d)
     {
-        Buff buff = new Buff(this, d._entry);
+        Buff buff = new Buff(this, d.Entry);
         buff.Register();
         await buff._eventDict.SendEvent(StageEventDict.BUFF_APPEAR, d);
-        await buff.SetStack(d._initialStack);
+        await buff.SetStack(d.InitialStack);
         _buffs.Add(buff);
     }
 

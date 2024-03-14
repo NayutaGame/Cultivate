@@ -310,7 +310,7 @@ public class StageEnvironment : Addressable, StageEventListener
         }
         else
         {
-            await d.Tgt.AddBuff(new BuffAppearDetails(d._buffEntry, d._stack));
+            await d.Tgt.AddBuff(new BuffAppearDetails(d.Tgt, d._buffEntry, d._stack));
 
             await TryPlayTween(new BuffTweenDescriptor(true, d));
             _result.TryAppend($"    {d._buffEntry.GetName()}: 0 -> {d._stack}");
@@ -681,7 +681,7 @@ public class StageEnvironment : Addressable, StageEventListener
                 _result.TryAppend("\n");
             });
 
-            if (TryCommit(whosTurn))
+            if (await TryCommit(whosTurn))
                 return;
 
             whosTurn = 1 - whosTurn;
@@ -695,37 +695,47 @@ public class StageEnvironment : Addressable, StageEventListener
         ForceCommit();
     }
 
-    private bool TryCommit(int whosTurn)
+    private async Task<bool> TryCommit(int whosTurn)
     {
+        TryCommitDetails d = new TryCommitDetails(_entities[whosTurn]);
+        
+        await _eventDict.SendEvent(StageEventDict.WIL_TRY_COMMIT, d);
+
+        if (d.Cancel)
+            return false;
+        
         if (whosTurn == 0)
         {
             if (_entities[whosTurn].Hp <= 0)
             {
-                _result.SetHomeVictory(false);
-                return true;
+                d.State = TryCommitDetails.StageState.HomeFailure;
             }
 
             if (_entities[1 - whosTurn].Hp <= 0)
             {
-                _result.SetHomeVictory(true);
-                return true;
+                d.State = TryCommitDetails.StageState.HomeVictory;
             }
         }
         else
         {
             if (_entities[whosTurn].Hp <= 0)
             {
-                _result.SetHomeVictory(true);
-                return true;
+                d.State = TryCommitDetails.StageState.HomeVictory;
             }
             if (_entities[1 - whosTurn].Hp <= 0)
             {
-                _result.SetHomeVictory(false);
-                return true;
+                d.State = TryCommitDetails.StageState.HomeFailure;
             }
         }
 
-        return false;
+        if (d.State == TryCommitDetails.StageState.HomeVictory)
+            _result.SetHomeVictory(true);
+        else if (d.State == TryCommitDetails.StageState.HomeFailure)
+            _result.SetHomeVictory(false);
+        
+        await _eventDict.SendEvent(StageEventDict.DID_TRY_COMMIT, d);
+        
+        return d.State != TryCommitDetails.StageState.OnGoing;
     }
 
     private void ForceCommit()

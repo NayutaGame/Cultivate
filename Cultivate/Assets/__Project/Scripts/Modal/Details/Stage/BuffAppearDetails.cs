@@ -1,12 +1,14 @@
 
 public class BuffAppearDetails : EventDetails
 {
-    public BuffEntry _entry;
-    public int _initialStack;
+    public StageEntity Owner;
+    public BuffEntry Entry;
+    public int InitialStack;
 
-    public BuffAppearDetails(BuffEntry entry, int initialStack)
+    public BuffAppearDetails(StageEntity owner, BuffEntry entry, int initialStack)
     {
-        _entry = entry;
-        _initialStack = initialStack;
+        Owner = owner;
+        Entry = entry;
+        InitialStack = initialStack;
     }
 }
