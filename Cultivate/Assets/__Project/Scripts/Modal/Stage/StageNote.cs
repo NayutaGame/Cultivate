@@ -24,16 +24,16 @@ public class StageNote : ISkillModel
         => EntityIndex == 0;
 
     public Sprite GetSprite()
-        => Skill.Entry.Sprite;
+        => Skill.GetSprite();
 
     public CostDescription GetCostDescription()
-        => Skill.Entry.GetCostDescription(Skill.GetJingJie(), CostResult);
+        => Skill.GetCostDescription(CostResult);
 
     public string GetName()
         => Skill.GetName();
 
     public string GetHighlight()
-        => Skill.GetHighlight(CastResult);
+        => Skill.GetHighlight(CostResult, CastResult);
 
     public string GetExplanation()
         => Skill.GetExplanation();
@@ -48,7 +48,7 @@ public class StageNote : ISkillModel
         => CanvasManager.Instance.JingJieColors[Skill.GetJingJie()];
 
     public Sprite GetCardFace()
-        => Skill.Entry.CardFace;
+        => Skill.GetCardFace();
 
     public Sprite GetJingJieSprite()
         => CanvasManager.Instance.JingJieSprites[Skill.GetJingJie()];

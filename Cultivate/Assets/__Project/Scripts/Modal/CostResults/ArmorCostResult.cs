@@ -1,5 +1,4 @@
 
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -8,6 +7,9 @@ public class ArmorCostResult : CostResult
     public ArmorCostResult(int value) : base(value)
     {
     }
+
+    public override CostDescription.CostType ToType()
+        => CostDescription.CostType.Armor;
 
     public override async Task WillCostEvent()
     {
@@ -31,17 +33,4 @@ public class ArmorCostResult : CostResult
     {
         await Env.EventDict.SendEvent(StageEventDict.DID_ARMOR_COST, this);
     }
-
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromValue(int value)
-        => async (env, entity, skill, recursive) => new ArmorCostResult(value);
-    
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromDj(Func<int, int> dj)
-        => async (env, entity, skill, recursive) => new ArmorCostResult(dj(skill.Dj));
-
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromJiaShi(Func<bool, int> jiaShi)
-        => async (env, entity, skill, recursive) =>
-        {
-            bool j = await entity.ToggleJiaShiProcedure();
-            return new ArmorCostResult(jiaShi(j));
-        };
 }

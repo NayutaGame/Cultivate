@@ -1,5 +1,4 @@
 
-using System;
 using System.Threading.Tasks;
 
 public class ChannelCostResult : CostResult
@@ -9,6 +8,9 @@ public class ChannelCostResult : CostResult
     public ChannelCostResult(int value) : base(value)
     {
     }
+
+    public override CostDescription.CostType ToType()
+        => CostDescription.CostType.Channel;
 
     public override async Task WillCostEvent()
     {
@@ -46,17 +48,4 @@ public class ChannelCostResult : CostResult
     }
 
     public bool IsFinished => Counter <= 0;
-
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromValue(int value)
-        => async (env, entity, skill, recursive) => new ChannelCostResult(value);
-    
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromDj(Func<int, int> dj)
-        => async (env, entity, skill, recursive) => new ChannelCostResult(dj(skill.Dj));
-
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromJiaShi(Func<bool, int> jiaShi)
-        => async (env, entity, skill, recursive) =>
-        {
-            bool j = await entity.ToggleJiaShiProcedure();
-            return new ChannelCostResult(jiaShi(j));
-        };
 }

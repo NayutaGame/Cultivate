@@ -66,16 +66,16 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         => CanvasManager.Instance.GetWuXingSprite(_entry.WuXing);
 
     public CostDescription GetCostDescription()
-        => _entry.GetCostDescription(JingJie, GetSkillSlot()?.CostResult);
+        => _entry.GetCostDescription(JingJie, _skillSlot?.CostResult);
 
     public string GetName()
         => _entry.GetName();
 
     public string GetDescription()
-        => _entry.GetDescription(JingJie);
+        => _entry.GetDescription(JingJie, _skillSlot?.CostResult, _skillSlot?.CastResult);
 
     public string GetHighlight()
-        => _entry.GetHighlight(GetJingJie(), _skillSlot?.CastResult);
+        => _entry.GetHighlight(JingJie, _skillSlot?.CostResult, _skillSlot?.CastResult);
 
     public string GetExplanation()
         => _entry.GetExplanation();

@@ -282,7 +282,7 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)stageEventDetails;
 
                         if (b.Owner != d.Owner) return;
-                        b.Owner.ActionPoint = 2;
+                        b.Owner.SetActionPoint(2);
                         await b.SetDStack(-1);
                     }),
                 }),
@@ -436,7 +436,7 @@ public class BuffCategory : Category<BuffEntry>
                         EndStepDetails d = (EndStepDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
                         if (d.Skill != null && d.Skill.GetSkillType().Contains(SkillType.LingQi))
-                            b.Owner.ActionPoint = 2;
+                            b.Owner.SetActionPoint(2);
                     }),
                 }),
 

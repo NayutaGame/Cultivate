@@ -11,11 +11,11 @@ public class StageEntity : Addressable, StageEventListener
     public async Task TurnProcedure()
     {
         TurnDetails d = new TurnDetails(this);
-        ActionPoint = 1;
+        SetActionPoint(1);
 
         await _env.EventDict.SendEvent(StageEventDict.WIL_TURN, d);
         if (!d.Cancel)
-            for (int i = 0; i < ActionPoint; i++)
+            for (int i = 0; i < GetActionPoint(); i++)
                 await ActionProcedure(i);
 
         await _env.EventDict.SendEvent(StageEventDict.DID_TURN, d);
@@ -81,7 +81,7 @@ public class StageEntity : Addressable, StageEventListener
         _env.Result.TryAppend($"{GetName()}使用了{skill.GetName()}");
         
         
-        CastResult castResult = await skill.Entry.Cast(this, skill, recursive);
+        CastResult castResult = await skill.Entry.Cast(_env, this, skill, recursive);
         _env.Result.TryAppendNote(Index, skill, _costResult, castResult);
         
         
@@ -106,7 +106,7 @@ public class StageEntity : Addressable, StageEventListener
         _env.Result.TryAppend($"{GetName()}使用了{skill.GetName()}");
 
         
-        CastResult castResult = await skill.Entry.Cast(this, skill, recursive);
+        CastResult castResult = await skill.Entry.Cast(_env, this, skill, recursive);
         
         
         _env.Result.TryAppend($"\n");
@@ -194,11 +194,8 @@ public class StageEntity : Addressable, StageEventListener
 
     public int _p;
     private int _actionPoint;
-    public int ActionPoint
-    {
-        get => _actionPoint;
-        set => _actionPoint = Mathf.Max(_actionPoint, value);
-    }
+    public int GetActionPoint() => _actionPoint;
+    public void SetActionPoint(int value) => _actionPoint = Mathf.Max(_actionPoint, value);
     private CostResult _costResult;
 
     public bool Forward

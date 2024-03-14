@@ -45,7 +45,7 @@ public static class Style
         return castResult;
     }
 
-    public static CastResult ExecuteResultFromBools(params bool[] bools)
+    public static CastResult CastResultFromBools(params bool[] bools)
     {
         var executeResult = New();
         for (int i = 0; i < bools.Length; i++)
@@ -53,8 +53,8 @@ public static class Style
         return executeResult;
     }
 
-    public static CastResult ToExecuteResult(this bool cond) => New().Append("cond", cond);
+    public static CastResult ToCastResult(this bool cond) => New().Append("cond", cond);
 
-    public static CastResult ExecuteResultFromOddEven(bool odd, bool even) =>
+    public static CastResult CastResultFromOddEven(bool odd, bool even) =>
         New().Append("odd", odd).Append("even", even);
 }

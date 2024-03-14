@@ -83,13 +83,13 @@ public class MechComposite : EmulatedSkill
         => GetEntry().Sprite;
 
     public CostDescription GetCostDescription()
-        => GetEntry().GetCostDescription(GetJingJie(), GetSkillSlot()?.CostResult);
+        => GetEntry().GetCostDescription(GetJingJie(), _skillSlot?.CostResult);
 
     public string GetName()
         => GetEntry().GetName();
 
     public string GetHighlight()
-        => GetEntry().GetHighlight(GetJingJie(), _skillSlot?.CastResult);
+        => GetEntry().GetHighlight(GetJingJie(), _skillSlot?.CostResult, _skillSlot?.CastResult);
 
     public string GetExplanation()
         => GetEntry().GetExplanation();
@@ -113,7 +113,7 @@ public class MechComposite : EmulatedSkill
         => CanvasManager.Instance.GetWuXingSprite(GetEntry().WuXing);
 
     public string GetDescription()
-        => GetEntry().GetDescription(GetJingJie());
+        => GetEntry().GetDescription(GetJingJie(), _skillSlot?.CostResult, _skillSlot?.CastResult);
 
     public int GetCurrCounter() => 0;
     public int GetMaxCounter() => 0;

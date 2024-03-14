@@ -1,105 +1,73 @@
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using CLLibrary;
 using UnityEngine;
 
 [Serializable]
 public class SkillEntry : Entry, IAnnotation
 {
+    // wuXing
     private WuXing? _wuXing;
     public WuXing? WuXing => _wuXing;
     
+    // jingJieRange
     private CLLibrary.Range _jingJieRange;
     public bool JingJieContains(JingJie jingJie) => _jingJieRange.Contains(jingJie);
     public JingJie LowestJingJie => _jingJieRange.Start;
     public JingJie HighestJingJie => _jingJieRange.End - 1;
 
-    #region Cost
-    
+    // skillTypeComposite
+    private SkillTypeComposite _skillTypeComposite;
+    public SkillTypeComposite SkillTypeComposite => _skillTypeComposite;
+
+    // cost
     private Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> _cost;
+    public async Task<CostResult> Cost(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
+    {
+        CostResult result = await _cost(env, caster, skill, recursive);
+        result.Env = env;
+        result.Entity = caster;
+        result.Skill = skill;
+        return result;
+    }
+    
+    // costDescription
     private Func<JingJie, int, CostResult, CostDescription> _costDescription;
     public CostDescription GetCostDescription() => GetCostDescription(LowestJingJie);
     public CostDescription GetCostDescription(JingJie j, CostResult costResult = null)
         => _costDescription(j, j - LowestJingJie, costResult);
-
-    #endregion
-
-    public SkillTypeComposite SkillTypeComposite { get; private set; }
-
-    #region Description
     
-    private Func<JingJie, int, CastResult, string> _description;
-    
+    // cast
+    private Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CastResult>> _cast;
+    public async Task<CastResult> Cast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
+        => await _cast(env, caster, skill, recursive);
+    private async Task<CastResult> DefaultCast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
+        => new();
+
+    // castDescription
+    private Func<JingJie, int, CostResult, CastResult, string> _castDescription;
+    public string GetDescription(JingJie j, CostResult costResult = null, CastResult castResult = null)
+        => _castDescription(j, j - LowestJingJie, costResult, castResult);
     public string GetDescription() => GetDescription(LowestJingJie);
-    public string GetDescription(JingJie j, CastResult castResult = null)
-        => _description(j, j - LowestJingJie, castResult);
 
+    private AnnotationArray _annotationArray;
     public void GenerateAnnotations()
-    {
-        string description = GetDescription();
-
-        List<IAnnotation> annotations = new();
-
-        foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
-        {
-            if (!description.Contains(keywordEntry.GetName()))
-                continue;
-
-            annotations.Add(keywordEntry);
-        }
-
-        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
-        {
-            if (!description.Contains(buffEntry.GetName()))
-                continue;
-
-            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
-            if (duplicate != null)
-                continue;
-
-            annotations.Add(buffEntry);
-        }
-
-        _annotations = annotations.ToArray();
-    }
-
-    public string GetHighlight() => GetHighlight(GetDescription());
-    
+        => _annotationArray = AnnotationArray.FromDescription(GetDescription());
     public string GetHighlight(string description)
-    {
-        StringBuilder sb = new(description);
-        foreach (IAnnotation annotation in _annotations)
-            sb = sb.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
-
-        return sb.ToString();
-    }
-
-    public string GetHighlight(JingJie jingJie, CastResult castResult)
-        => GetHighlight(GetDescription(jingJie, castResult));
+        => _annotationArray.HighlightFromDescription(description);
+    public string GetHighlight()
+        => GetHighlight(GetDescription());
+    public string GetHighlight(JingJie jingJie, CostResult costResult, CastResult castResult)
+        => GetHighlight(GetDescription(jingJie, costResult, castResult));
     
     public string GetExplanation()
-    {
-        StringBuilder sb = new();
-        foreach (IAnnotation annotation in _annotations)
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetHighlight()}\n\n");
-
-        return sb.ToString();
-    }
-    
-    #endregion
+        => _annotationArray.GetExplanation();
     
     private string _trivia;
     public string GetTrivia() => _trivia;
 
     private bool _withinPool;
     public bool WithinPool => _withinPool;
-    
-    private Func<StageEntity, StageSkill, bool, Task<CastResult>> _cast;
-
-    private IAnnotation[] _annotations;
 
     private SpriteEntry _spriteEntry;
     public Sprite Sprite => _spriteEntry?.Sprite;
@@ -120,43 +88,31 @@ public class SkillEntry : Entry, IAnnotation
     public SkillEntry(string name,
         WuXing? wuXing,
         CLLibrary.Range jingJieRange,
+        SkillTypeComposite skillTypeComposite = null,
+        
         Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> cost = null,
         Func<JingJie, int, CostResult, CostDescription> costDescription = null,
-        SkillTypeComposite skillTypeComposite = null,
-        Func<JingJie, int, CastResult, string> description = null,
+        Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CastResult>> cast = null,
+        Func<JingJie, int, CostResult, CastResult, string> castDescription = null,
+        
         string trivia = null,
-        bool withinPool = true,
-        Func<StageEntity, StageSkill, bool, Task<CastResult>> cast = null
+        bool withinPool = true
         ) : base(name)
     {
         _wuXing = wuXing;
         _jingJieRange = jingJieRange;
+        _skillTypeComposite = skillTypeComposite ?? 0;
+        
         _cost = cost ?? CostResult.Empty;
-        _costDescription = costDescription ?? DefaultCostDescription;
-        SkillTypeComposite = skillTypeComposite ?? 0;
-        _description = description;
+        _costDescription = costDescription ?? CostDescription.Empty;
+        _cast = cast ?? DefaultCast;
+        _castDescription = castDescription;
+        
         _trivia = trivia;
         _withinPool = withinPool;
-        _cast = cast ?? DefaultCast;
 
         _spriteEntry = name;
     }
 
     public static implicit operator SkillEntry(string name) => Encyclopedia.SkillCategory[name];
-
-    public async Task<CostResult> Cost(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
-    {
-        CostResult result = await _cost(env, caster, skill, recursive);
-        result.Env = env;
-        result.Entity = caster;
-        result.Skill = skill;
-        return result;
-    }
-
-    public async Task<CastResult> Cast(StageEntity caster, StageSkill skill, bool recursive)
-        => await _cast(caster, skill, recursive);
-
-    private async Task<CastResult> DefaultCast(StageEntity caster, StageSkill skill, bool recursive) => new();
-    
-    private CostDescription DefaultCostDescription(JingJie j, int dj, CostResult costResult) => CostDescription.Default();
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class StageSkill
 {
@@ -36,14 +37,23 @@ public class StageSkill
     public string GetName()
         => _entry.GetName();
 
-    public string GetHighlight(CastResult castResult)
-        => _entry.GetHighlight(GetJingJie(), castResult);
+    public string GetHighlight(CostResult costResult, CastResult castResult)
+        => _entry.GetHighlight(GetJingJie(), costResult, castResult);
 
     public string GetExplanation()
         => _entry.GetExplanation();
 
+    public CostDescription GetCostDescription(CostResult costResult)
+        => _entry.GetCostDescription(GetJingJie(), costResult);
+
     public string GetTrivia()
         => _entry.GetTrivia();
+
+    public Sprite GetSprite()
+        => _entry.Sprite;
+
+    public Sprite GetCardFace()
+        => _entry.CardFace;
 
     public int RunCastedCount { get; private set; }
     public int RunEquippedTimes { get; private set; }

@@ -1,9 +1,15 @@
 
-using System;
 using System.Threading.Tasks;
 
 public class ManaCostResult : CostResult
 {
+    public ManaCostResult(int value) : base(value)
+    {
+    }
+    
+    public override CostDescription.CostType ToType()
+        => CostDescription.CostType.Mana;
+    
     public override async Task WillCostEvent()
     {
         await Env.EventDict.SendEvent(StageEventDict.WIL_MANA_COST, this);
@@ -29,21 +35,4 @@ public class ManaCostResult : CostResult
     {
         await Env.EventDict.SendEvent(StageEventDict.DID_MANA_COST, this);
     }
-
-    protected ManaCostResult(int value) : base(value)
-    {
-    }
-
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromValue(int value)
-        => async (env, entity, skill, recursive) => new ManaCostResult(value);
-    
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromDj(Func<int, int> dj)
-        => async (env, entity, skill, recursive) => new ManaCostResult(dj(skill.Dj));
-
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromJiaShi(Func<bool, int> jiaShi)
-        => async (env, entity, skill, recursive) =>
-        {
-            bool j = await entity.ToggleJiaShiProcedure();
-            return new ManaCostResult(jiaShi(j));
-        };
 }

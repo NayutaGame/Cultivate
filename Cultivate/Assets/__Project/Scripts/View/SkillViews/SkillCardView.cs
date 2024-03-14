@@ -46,29 +46,26 @@ public class SkillCardView : SimpleView
             ManaCostText.text = manaCost.ToString();
             // ManaCostView.SetActive(true);
         }
+        
+        Color color = CanvasManager.Instance.ManaCostColors[0];
+        switch (costDescription.State)
+        {
+            case CostResult.CostState.Unwritten:
+                color = CanvasManager.Instance.ManaCostColors[0];
+                break;
+            case CostResult.CostState.Normal:
+                color = CanvasManager.Instance.ManaCostColors[1];
+                break;
+            case CostResult.CostState.Reduced:
+                color = CanvasManager.Instance.ManaCostColors[2];
+                break;
+            case CostResult.CostState.Shortage:
+                color = CanvasManager.Instance.ManaCostColors[3];
+                break;
+        }
+    
+        ManaCostText.color = color;
     }
-
-    // public virtual void SetManaCostState(ManaIndicator.ManaCostState state)
-    // {
-    //     Color color = CanvasManager.Instance.ManaCostColors[0];
-    //     switch (state)
-    //     {
-    //         case ManaIndicator.ManaCostState.Unwritten:
-    //             color = CanvasManager.Instance.ManaCostColors[0];
-    //             break;
-    //         case ManaIndicator.ManaCostState.Normal:
-    //             color = CanvasManager.Instance.ManaCostColors[1];
-    //             break;
-    //         case ManaIndicator.ManaCostState.Reduced:
-    //             color = CanvasManager.Instance.ManaCostColors[2];
-    //             break;
-    //         case ManaIndicator.ManaCostState.Shortage:
-    //             color = CanvasManager.Instance.ManaCostColors[3];
-    //             break;
-    //     }
-    //
-    //     ManaCostText.color = color;
-    // }
 
     protected virtual void SetName(string name)
     {

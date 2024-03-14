@@ -1,5 +1,4 @@
 
-using System;
 using System.Threading.Tasks;
 
 public class HealthCostResult : CostResult
@@ -7,6 +6,9 @@ public class HealthCostResult : CostResult
     public HealthCostResult(int value) : base(value)
     {
     }
+
+    public override CostDescription.CostType ToType()
+        => CostDescription.CostType.Health;
 
     public override async Task WillCostEvent()
     {
@@ -23,17 +25,4 @@ public class HealthCostResult : CostResult
     {
         await Env.EventDict.SendEvent(StageEventDict.DID_HEALTH_COST, this);
     }
-
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromValue(int value)
-        => async (env, entity, skill, recursive) => new HealthCostResult(value);
-    
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromDj(Func<int, int> dj)
-        => async (env, entity, skill, recursive) => new HealthCostResult(dj(skill.Dj));
-
-    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> FromJiaShi(Func<bool, int> jiaShi)
-        => async (env, entity, skill, recursive) =>
-        {
-            bool j = await entity.ToggleJiaShiProcedure();
-            return new HealthCostResult(jiaShi(j));
-        };
 }
