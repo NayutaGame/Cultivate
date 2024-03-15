@@ -6,6 +6,10 @@ using UnityEngine;
 [Serializable]
 public class SkillEntry : Entry, IAnnotation
 {
+    // name
+    private string _name;
+    public string GetName() => _name;
+    
     // wuXing
     private WuXing? _wuXing;
     public WuXing? WuXing => _wuXing;
@@ -85,7 +89,8 @@ public class SkillEntry : Entry, IAnnotation
         }
     }
 
-    public SkillEntry(string name,
+    public SkillEntry(string id,
+        string name,
         WuXing? wuXing,
         CLLibrary.Range jingJieRange,
         SkillTypeComposite skillTypeComposite = null,
@@ -97,8 +102,9 @@ public class SkillEntry : Entry, IAnnotation
         
         string trivia = null,
         bool withinPool = true
-        ) : base(name)
+        ) : base(id)
     {
+        _name = name;
         _wuXing = wuXing;
         _jingJieRange = jingJieRange;
         _skillTypeComposite = skillTypeComposite ?? 0;
@@ -111,8 +117,8 @@ public class SkillEntry : Entry, IAnnotation
         _trivia = trivia;
         _withinPool = withinPool;
 
-        _spriteEntry = name;
+        _spriteEntry = id;
     }
 
-    public static implicit operator SkillEntry(string name) => Encyclopedia.SkillCategory[name];
+    public static implicit operator SkillEntry(string id) => Encyclopedia.SkillCategory[id];
 }

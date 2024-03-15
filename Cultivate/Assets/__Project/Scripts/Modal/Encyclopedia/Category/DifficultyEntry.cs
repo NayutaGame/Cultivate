@@ -3,6 +3,8 @@ using System;
 
 public class DifficultyEntry : Entry
 {
+    public string GetName() => GetId();
+    
     public string Description;
 
     public RunEventDescriptor[] _runEventDescriptors;
@@ -11,9 +13,9 @@ public class DifficultyEntry : Entry
     private string[] AdditionalDifficultyNames;
     public DifficultyEntry[] AdditionalDifficulties;
 
-    public DifficultyEntry(string name, string description = null, string[] _additionalDifficultyNames = null,
+    public DifficultyEntry(string id, string description = null, string[] _additionalDifficultyNames = null,
         RunEventDescriptor[] runEventDescriptors = null,
-        StageEventDescriptor[] stageEventDescriptors = null) : base(name)
+        StageEventDescriptor[] stageEventDescriptors = null) : base(id)
     {
         Description = description ?? "没有描述";
         AdditionalDifficultyNames = _additionalDifficultyNames ?? Array.Empty<string>();
@@ -29,5 +31,5 @@ public class DifficultyEntry : Entry
             AdditionalDifficulties[i] = AdditionalDifficultyNames[i];
     }
 
-    public static implicit operator DifficultyEntry(string name) => Encyclopedia.DifficultyCategory[name];
+    public static implicit operator DifficultyEntry(string id) => Encyclopedia.DifficultyCategory[id];
 }

@@ -10,13 +10,16 @@ public class SkillCategory : Category<SkillEntry>
     {
         AddRange(new List<SkillEntry>()
         {
-            new(name:                       "不存在的技能",
+            // O JSMHT E
+            new(id:                         "0000",
+                name:                       "不存在的技能",
                 wuXing:                     null,
                 jingJieRange:               JingJie.LianQiOnly,
                 castDescription:            (j, dj, costResult, castResult) => "不存在的技能",
                 withinPool:                 false),
 
-            new(name:                       "聚气术",
+            new(id:                         "0001",
+                name:                       "聚气术",
                 wuXing:                     null,
                 jingJieRange:               JingJie.LianQiOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -28,7 +31,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "信风",
+            new(id:                         "0100",
+                name:                       "信风",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -45,7 +49,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "乘风",
+            new(id:                         "0101",
+                name:                       "乘风",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -61,7 +66,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "金刃",
+            new(id:                         "0102",
+                name:                       "金刃",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -75,7 +81,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "寻猎",
+            new(id:                         "0103",
+                name:                       "寻猎",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -95,7 +102,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "掠影",
+            new(id:                         "0104",
+                name:                       "掠影",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -116,7 +124,8 @@ public class SkillCategory : Category<SkillEntry>
                     return Style.CastResultFromOddEven(odd, even);
                 }),
 
-            new(name:                       "盘旋",
+            new(id:                         "0105",
+                name:                       "盘旋",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         null,
@@ -129,7 +138,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "灵动",
+            new(id:                         "0106",
+                name:                       "灵动",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -146,7 +156,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "飞絮",
+            new(id:                         "0107",
+                name:                       "飞絮",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         null,
@@ -168,7 +179,8 @@ public class SkillCategory : Category<SkillEntry>
                     return Style.CastResultFromOddEven(odd, even);
                 }),
 
-            new(name:                       "诸行无常",
+            new(id:                         "0108",
+                name:                       "诸行无常",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -183,7 +195,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "讯风",
+            new(id:                         "0109",
+                name:                       "讯风",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -203,7 +216,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "刺穴",
+            new(id:                         "0110",
+                name:                       "刺穴",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -216,7 +230,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "两仪",
+            new(id:                         "0111",
+                name:                       "两仪",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -229,7 +244,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "敛息",
+            new(id:                         "0112",
+                name:                       "敛息",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ManaFromValue(2),
@@ -242,7 +258,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "凝水",
+            new(id:                         "0113",
+                name:                       "凝水",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi | SkillType.XiaoHao,
@@ -257,7 +274,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "袖里乾坤",
+            new(id:                         "0114",
+                name:                       "袖里乾坤",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ChannelFromValue(1),
@@ -284,7 +302,8 @@ public class SkillCategory : Category<SkillEntry>
                     return Style.CastResultFromBools(cond0, cond1);
                 }),
 
-            new(name:                       "流云",
+            new(id:                         "0115",
+                name:                       "流云",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.ErDong,
@@ -307,7 +326,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "无妄",
+            new(id:                         "0116",
+                name:                       "无妄",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -323,7 +343,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "天地同寿",
+            new(id:                         "0117",
+                name:                       "天地同寿",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -336,7 +357,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "山风",
+            new(id:                         "0118",
+                name:                       "山风",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -351,7 +373,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "追命",
+            new(id:                         "0119",
+                name:                       "追命",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -362,7 +385,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "千里神行符",
+            new(id:                         "0120",
+                name:                       "千里神行符",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao | SkillType.ErDong,
@@ -385,7 +409,8 @@ public class SkillCategory : Category<SkillEntry>
                     return Style.CastResultFromOddEven(odd, even);
                 }),
 
-            new(name:                       "齐物论",
+            new(id:                         "0121",
+                name:                       "齐物论",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -398,7 +423,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "人间无戈",
+            new(id:                         "0122",
+                name:                       "人间无戈",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -410,7 +436,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "一闪罗刹",
+            new(id:                         "0123",
+                name:                       "一闪罗刹",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
@@ -437,7 +464,8 @@ public class SkillCategory : Category<SkillEntry>
                     return Style.CastResultFromOddEven(odd, even);
                 }),
 
-            new(name:                       "恋花",
+            new(id:                         "0200",
+                name:                       "恋花",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -449,7 +477,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "冰弹",
+            new(id:                         "0201",
+                name:                       "冰弹",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -464,7 +493,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "满招损",
+            new(id:                         "0202",
+                name:                       "满招损",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -479,7 +509,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "清泉",
+            new(id:                         "0203",
+                name:                       "清泉",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -491,7 +522,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "归意",
+            new(id:                         "0204",
+                name:                       "归意",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -508,7 +540,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "吐纳",
+            new(id:                         "0205",
+                name:                       "吐纳",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -522,7 +555,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "冰雨",
+            new(id:                         "0206",
+                name:                       "冰雨",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -540,7 +574,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "勤能补拙",
+            new(id:                         "0207",
+                name:                       "勤能补拙",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -555,7 +590,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "秋水",
+            new(id:                         "0208",
+                name:                       "秋水",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -576,7 +612,8 @@ public class SkillCategory : Category<SkillEntry>
                     return Style.CastResultFromBools(cond0, cond1);
                 }),
 
-            new(name:                       "玄冰刺",
+            new(id:                         "0209",
+                name:                       "玄冰刺",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -592,7 +629,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "腾跃",
+            new(id:                         "0210",
+                name:                       "腾跃",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.ErDong,
@@ -609,7 +647,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "观棋烂柯",
+            new(id:                         "0211",
+                name:                       "观棋烂柯",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ManaFromDj(dj => 1 - dj),
@@ -622,7 +661,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "激流",
+            new(id:                         "0212",
+                name:                       "激流",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ManaFromDj(dj => 1 - dj),
@@ -636,7 +676,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "气吞山河",
+            new(id:                         "0213",
+                name:                       "气吞山河",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -649,7 +690,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "幻月狂乱",
+            new(id:                         "0214",
+                name:                       "幻月狂乱",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -662,7 +704,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "一梦如是",
+            new(id:                         "0215",
+                name:                       "一梦如是",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack | SkillType.XiaoHao,
@@ -682,7 +725,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "奔腾",
+            new(id:                         "0216",
+                name:                       "奔腾",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.ErDong,
@@ -695,7 +739,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "摩诃钵特摩",
+            new(id:                         "0217",
+                name:                       "摩诃钵特摩",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.LingQi | SkillType.ErDong,
@@ -706,7 +751,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "若竹",
+            new(id:                         "0300",
+                name:                       "若竹",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -719,7 +765,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "突刺",
+            new(id:                         "0301",
+                name:                       "突刺",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -733,7 +780,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "花舞",
+            new(id:                         "0302",
+                name:                       "花舞",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -748,7 +796,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "初桃",
+            new(id:                         "0303",
+                name:                       "初桃",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -761,7 +810,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "潜龙在渊",
+            new(id:                         "0304",
+                name:                       "潜龙在渊",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -776,7 +826,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "早春",
+            new(id:                         "0305",
+                name:                       "早春",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 cost:                       CostResult.ManaFromValue(1),
@@ -793,7 +844,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "身骑白马",
+            new(id:                         "0306",
+                name:                       "身骑白马",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -810,7 +862,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "回马枪",
+            new(id:                         "0307",
+                name:                       "回马枪",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -821,7 +874,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "千年笋",
+            new(id:                         "0308",
+                name:                       "千年笋",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -838,7 +892,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "见龙在田",
+            new(id:                         "0309",
+                name:                       "见龙在田",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 cost:                       CostResult.ManaFromValue(2),
@@ -854,7 +909,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "一虚一实",
+            new(id:                         "0310",
+                name:                       "一虚一实",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -876,7 +932,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "瑞雪丰年",
+            new(id:                         "0311",
+                name:                       "瑞雪丰年",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -888,7 +945,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "盛开",
+            new(id:                         "0312",
+                name:                       "盛开",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -903,7 +961,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "百花缭乱",
+            new(id:                         "0313",
+                name:                       "百花缭乱",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -915,7 +974,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "飞龙在天",
+            new(id:                         "0314",
+                name:                       "飞龙在天",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -930,7 +990,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "二重",
+            new(id:                         "0315",
+                name:                       "二重",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ChannelFromDj(dj => 1 - dj),
@@ -943,7 +1004,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "心斋",
+            new(id:                         "0316",
+                name:                       "心斋",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi | SkillType.XiaoHao,
@@ -958,7 +1020,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "亢龙有悔",
+            new(id:                         "0317",
+                name:                       "亢龙有悔",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack | SkillType.XiaoHao,
@@ -977,7 +1040,8 @@ public class SkillCategory : Category<SkillEntry>
                     return (!cond).ToCastResult();
                 }),
 
-            new(name:                       "回响",
+            new(id:                         "0318",
+                name:                       "回响",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -990,7 +1054,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "鹤回翔",
+            new(id:                         "0319",
+                name:                       "鹤回翔",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -1006,7 +1071,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "通透世界",
+            new(id:                         "0320",
+                name:                       "通透世界",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -1017,7 +1083,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "刷新球",
+            new(id:                         "0321",
+                name:                       "刷新球",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1028,7 +1095,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "云袖",
+            new(id:                         "0400",
+                name:                       "云袖",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1041,7 +1109,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "化焰",
+            new(id:                         "0401",
+                name:                       "化焰",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1056,7 +1125,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "吐焰",
+            new(id:                         "0402",
+                name:                       "吐焰",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1069,7 +1139,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "燃命",
+            new(id:                         "0403",
+                name:                       "燃命",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.LingQi,
@@ -1083,7 +1154,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "凤来朝",
+            new(id:                         "0404",
+                name:                       "凤来朝",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1097,7 +1169,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "聚火",
+            new(id:                         "0405",
+                name:                       "聚火",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -1112,7 +1185,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "一切皆苦",
+            new(id:                         "0406",
+                name:                       "一切皆苦",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao | SkillType.LingQi,
@@ -1130,7 +1204,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "常夏",
+            new(id:                         "0407",
+                name:                       "常夏",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1145,7 +1220,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "天衣无缝",
+            new(id:                         "0408",
+                name:                       "天衣无缝",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -1163,7 +1239,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "化劲",
+            new(id:                         "0409",
+                name:                       "化劲",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1178,7 +1255,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "淬体",
+            new(id:                         "0410",
+                name:                       "淬体",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -1193,7 +1271,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "轰天",
+            new(id:                         "0411",
+                name:                       "轰天",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1207,7 +1286,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "燃灯留烬",
+            new(id:                         "0412",
+                name:                       "燃灯留烬",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ManaFromValue(1),
@@ -1220,7 +1300,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "净秽",
+            new(id:                         "0413",
+                name:                       "净秽",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -1235,7 +1316,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "天女散花",
+            new(id:                         "0414",
+                name:                       "天女散花",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
@@ -1247,7 +1329,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "凤凰涅槃",
+            new(id:                         "0415",
+                name:                       "凤凰涅槃",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -1260,7 +1343,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "净天地",
+            new(id:                         "0416",
+                name:                       "净天地",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -1272,7 +1356,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "落石",
+            new(id:                         "0500",
+                name:                       "落石",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1286,7 +1371,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "流沙",
+            new(id:                         "0501",
+                name:                       "流沙",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.LingQi,
@@ -1299,7 +1385,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "土墙",
+            new(id:                         "0502",
+                name:                       "土墙",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -1312,7 +1399,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "地龙",
+            new(id:                         "0503",
+                name:                       "地龙",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1333,7 +1421,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "铁骨",
+            new(id:                         "0504",
+                name:                       "铁骨",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -1346,7 +1435,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "点星",
+            new(id:                         "0505",
+                name:                       "点星",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1366,7 +1456,8 @@ public class SkillCategory : Category<SkillEntry>
                     return Style.CastResultFromBools(cond0, cond1);
                 }),
 
-            new(name:                       "一莲托生",
+            new(id:                         "0506",
+                name:                       "一莲托生",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -1386,7 +1477,8 @@ public class SkillCategory : Category<SkillEntry>
                     return Style.CastResultFromBools(cond0, cond1);
                 }),
 
-            new(name:                       "巩固",
+            new(id:                         "0507",
+                name:                       "巩固",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -1399,7 +1491,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "软剑",
+            new(id:                         "0508",
+                name:                       "软剑",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1419,7 +1512,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "一力降十会",
+            new(id:                         "0509",
+                name:                       "一力降十会",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1436,7 +1530,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "金钟罩",
+            new(id:                         "0510",
+                name:                       "金钟罩",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 cost:                       CostResult.ChannelFromJiaShi(jiaShi => jiaShi ? 0 : 1),
@@ -1454,7 +1549,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "腾云",
+            new(id:                         "0511",
+                name:                       "腾云",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.LingQi | SkillType.ErDong,
@@ -1470,7 +1566,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "收刀",
+            new(id:                         "0512",
+                name:                       "收刀",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
@@ -1485,7 +1582,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "摩利支天咒",
+            new(id:                         "0513",
+                name:                       "摩利支天咒",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ChannelFromDj(dj => 1 + dj),
@@ -1498,7 +1596,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "抱元守一",
+            new(id:                         "0514",
+                name:                       "抱元守一",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1510,7 +1609,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "骑象",
+            new(id:                         "0515",
+                name:                       "骑象",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1533,7 +1633,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "金刚",
+            new(id:                         "0516",
+                name:                       "金刚",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1547,7 +1648,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "铁布衫",
+            new(id:                         "0517",
+                name:                       "铁布衫",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1562,7 +1664,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "拔刀",
+            new(id:                         "0518",
+                name:                       "拔刀",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1577,7 +1680,8 @@ public class SkillCategory : Category<SkillEntry>
                     return cond.ToCastResult();
                 }),
 
-            new(name:                       "天人合一",
+            new(id:                         "0519",
+                name:                       "天人合一",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
@@ -1592,7 +1696,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "窑土",
+            new(id:                         "0520",
+                name:                       "窑土",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1604,7 +1709,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "那由他",
+            new(id:                         "0521",
+                name:                       "那由他",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1614,7 +1720,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "一诺五岳",
+            new(id:                         "0522",
+                name:                       "一诺五岳",
                 wuXing:                     WuXing.Tu,
                 jingJieRange:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
@@ -1678,7 +1785,8 @@ public class SkillCategory : Category<SkillEntry>
 
             #region 事件牌
 
-            new(name:                       "一念",
+            new(id:                         "0600",
+                name:                       "一念",
                 wuXing:                     null,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.ErDong,
@@ -1693,7 +1801,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "无量劫",
+            new(id:                         "0601",
+                name:                       "无量劫",
                 wuXing:                     null,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 cost:                       CostResult.ChannelFromValue(3),
@@ -1707,7 +1816,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "百草集",
+            new(id:                         "0602",
+                name:                       "百草集",
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ChannelFromValue(3),
@@ -1729,7 +1839,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "遗憾",
+            new(id:                         "0603",
+                name:                       "遗憾",
                 wuXing:                     null,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1741,7 +1852,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "爱恋",
+            new(id:                         "0604",
+                name:                       "爱恋",
                 wuXing:                     null,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1753,7 +1865,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "射金乌",
+            new(id:                         "0605",
+                name:                       "射金乌",
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1768,7 +1881,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "春雨",
+            new(id:                         "0606",
+                name:                       "春雨",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 cost:                       CostResult.ChannelFromValue(2),
@@ -1783,7 +1897,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(name:                       "枯木",
+            new(id:                         "0607",
+                name:                       "枯木",
                 wuXing:                     WuXing.Jin,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1796,13 +1911,26 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
+            new(id:                         "0608",
+                name:                       "玄武吐息法",
+                wuXing:                     WuXing.Shui,
+                jingJieRange:               JingJie.JinDan2HuaShen,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"玄武吐息法",
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    return null;
+                }),
+
             #endregion
 
             #region 机关牌
 
             // 筑基
             
-            new(name:                       "醒神香", // 香
+            new(id:                         "0700", // 香
+                name:                       "醒神香", // 香
                 wuXing:                     null,
                 jingJieRange:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi,
@@ -1814,7 +1942,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "飞镖", // 刃
+            new(id:                         "0701", // 刃
+                name:                       "飞镖", // 刃
                 wuXing:                     null,
                 jingJieRange:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
@@ -1826,7 +1955,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "铁匣", // 匣
+            new(id:                         "0702", // 匣
+                name:                       "铁匣", // 匣
                 wuXing:                     null,
                 jingJieRange:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.SunHao,
@@ -1838,7 +1968,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "滑索", // 轮
+            new(id:                         "0703", // 轮
+                name:                       "滑索", // 轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.ErDong | SkillType.XiaoHao,
@@ -1853,7 +1984,8 @@ public class SkillCategory : Category<SkillEntry>
 
             // 元婴
             
-            new(name:                       "还魂香", // 香香
+            new(id:                         "0704", // 香香
+                name:                       "还魂香", // 香香
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi,
@@ -1865,7 +1997,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "净魂刀", // 香刃
+            new(id:                         "0705", // 香刃
+                name:                       "净魂刀", // 香刃
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi | SkillType.LingQi,
@@ -1882,7 +2015,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "防护罩", // 香匣
+            new(id:                         "0706", // 香匣
+                name:                       "防护罩", // 香匣
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao,
@@ -1895,7 +2029,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "能量饮料", // 香轮
+            new(id:                         "0707", // 香轮
+                name:                       "能量饮料", // 香轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi,
@@ -1907,7 +2042,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "炎铳", // 刃刃
+            new(id:                         "0708", // 刃刃
+                name:                       "炎铳", // 刃刃
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
@@ -1919,7 +2055,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "机关人偶", // 刃匣
+            new(id:                         "0709", // 刃匣
+                name:                       "机关人偶", // 刃匣
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
@@ -1932,7 +2069,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "铁陀螺", // 刃轮
+            new(id:                         "0710", // 刃轮
+                name:                       "铁陀螺", // 刃轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
@@ -1944,7 +2082,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "防壁", // 匣匣
+            new(id:                         "0711", // 匣匣
+                name:                       "防壁", // 匣匣
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao,
@@ -1957,7 +2096,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "不倒翁", // 匣轮
+            new(id:                         "0712", // 匣轮
+                name:                       "不倒翁", // 匣轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao,
@@ -1969,7 +2109,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "助推器", // 轮轮
+            new(id:                         "0713", // 轮轮
+                name:                       "助推器", // 轮轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.ErDong,
@@ -1984,7 +2125,8 @@ public class SkillCategory : Category<SkillEntry>
 
             // 返虚
             
-            new(name:                       "反应堆", // 香香香
+            new(id:                         "0714", // 香香香
+                name:                       "反应堆", // 香香香
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
@@ -1999,7 +2141,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "烟花", // 香香刃
+            new(id:                         "0715", // 香香刃
+                name:                       "烟花", // 香香刃
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
@@ -2015,7 +2158,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "长明灯", // 香香匣
+            new(id:                         "0716", // 香香匣
+                name:                       "长明灯", // 香香匣
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
@@ -2030,7 +2174,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "大往生香", // 香香轮
+            new(id:                         "0717", // 香香轮
+                name:                       "大往生香", // 香香轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao | SkillType.LingQi,
@@ -2045,7 +2190,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "地府通讯器", // 缺少匣
+            new(id:                         "0718", // 缺少匣
+                name:                       "地府通讯器", // 缺少匣
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi,
@@ -2061,7 +2207,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "无人机阵列", // 刃刃刃
+            new(id:                         "0719", // 刃刃刃
+                name:                       "无人机阵列", // 刃刃刃
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
@@ -2076,7 +2223,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "弩炮", // 刃刃香
+            new(id:                         "0720", // 刃刃香
+                name:                       "弩炮", // 刃刃香
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
@@ -2090,7 +2238,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "尖刺陷阱", // 刃刃匣
+            new(id:                         "0721", // 刃刃匣
+                name:                       "尖刺陷阱", // 刃刃匣
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
@@ -2104,7 +2253,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "暴雨梨花针", // 刃刃轮
+            new(id:                         "0722", // 刃刃轮
+                name:                       "暴雨梨花针", // 刃刃轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
@@ -2118,7 +2268,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "炼丹炉", // 缺少轮
+            new(id:                         "0723", // 缺少轮
+                name:                       "炼丹炉", // 缺少轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
@@ -2133,7 +2284,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "浮空艇", // 匣匣匣
+            new(id:                         "0724", // 匣匣匣
+                name:                       "浮空艇", // 匣匣匣
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
@@ -2149,7 +2301,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "动量中和器", // 匣匣香
+            new(id:                         "0725", // 匣匣香
+                name:                       "动量中和器", // 匣匣香
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
@@ -2163,7 +2316,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "机关伞", // 匣匣刃
+            new(id:                         "0726", // 匣匣刃
+                name:                       "机关伞", // 匣匣刃
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
@@ -2177,7 +2331,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "一轮马", // 匣匣轮
+            new(id:                         "0727", // 匣匣轮
+                name:                       "一轮马", // 匣匣轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
@@ -2191,7 +2346,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "外骨骼", // 缺少香
+            new(id:                         "0728", // 缺少香
+                name:                       "外骨骼", // 缺少香
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
@@ -2206,7 +2362,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "永动机", // 轮轮轮
+            new(id:                         "0729", // 轮轮轮
+                name:                       "永动机", // 轮轮轮
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao | SkillType.LingQi,
@@ -2223,7 +2380,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "火箭靴", // 轮轮香
+            new(id:                         "0730", // 轮轮香
+                name:                       "火箭靴", // 轮轮香
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
@@ -2238,7 +2396,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "定龙桩", // 轮轮刃
+            new(id:                         "0731", // 轮轮刃
+                name:                       "定龙桩", // 轮轮刃
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
@@ -2253,7 +2412,8 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "飞行器", // 轮轮匣
+            new(id:                         "0732", // 轮轮匣
+                name:                       "飞行器", // 轮轮匣
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
@@ -2268,13 +2428,14 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
             
-            new(name:                       "时光机", // 缺少刃
+            new(id:                         "0733", // 缺少刃
+                name:                       "时光机", // 缺少刃
                 wuXing:                     null,
                 jingJieRange:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "消耗\n使用一张牌前，升级",
+                castDescription:            (j, dj, costResult, castResult) => "消耗\n使用一张牌前：升级",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -2292,5 +2453,5 @@ public class SkillCategory : Category<SkillEntry>
         List.Do(entry => entry.GenerateAnnotations());
     }
 
-    public override SkillEntry DefaultEntry() => this["不存在的技能"];
+    public override SkillEntry DefaultEntry() => this["0000"];
 }

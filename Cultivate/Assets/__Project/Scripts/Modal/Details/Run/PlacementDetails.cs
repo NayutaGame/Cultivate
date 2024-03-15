@@ -8,7 +8,7 @@ public class PlacementDetails : EventDetails
     public PlacementDetails(RunEntity owner)
     {
         Owner = owner;
-        OverridingSkillEntry = "聚气术";
+        OverridingSkillEntry = "0001";
         OverridingJingJie = JingJie.LianQi;
     }
 }

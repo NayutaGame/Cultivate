@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class BuffEntry : Entry, IAnnotation
 {
+    public string GetName() => GetId();
+    
     private string _description;
     public string GetDescription() => _description;
 
@@ -26,15 +28,15 @@ public class BuffEntry : Entry, IAnnotation
     /// <summary>
     /// 定义一个Buff
     /// </summary>
-    /// <param name="name">名称</param>
+    /// <param name="id">名称</param>
     /// <param name="description">描述</param>
     /// <param name="buffStackRule">堆叠规则</param>
     /// <param name="friendly">是否有益</param>
     /// <param name="dispellable">是否可驱散</param>
     /// <param name="eventDescriptors">事件捕获</param>
-    public BuffEntry(string name, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable, string trivia = null,
+    public BuffEntry(string id, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable, string trivia = null,
         params StageEventDescriptor[] eventDescriptors
-    ) : base(name)
+    ) : base(id)
     {
         _description = description;
         _trivia = trivia;
@@ -48,8 +50,6 @@ public class BuffEntry : Entry, IAnnotation
             foreach (var eventDescriptor in eventDescriptors)
                 _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
     }
-
-    public static implicit operator BuffEntry(string name) => Encyclopedia.BuffCategory[name];
     
     private AnnotationArray _annotationArray;
     public void GenerateAnnotations()
@@ -61,4 +61,6 @@ public class BuffEntry : Entry, IAnnotation
     
     public string GetExplanation()
         => _annotationArray.GetExplanation();
+
+    public static implicit operator BuffEntry(string id) => Encyclopedia.BuffCategory[id];
 }

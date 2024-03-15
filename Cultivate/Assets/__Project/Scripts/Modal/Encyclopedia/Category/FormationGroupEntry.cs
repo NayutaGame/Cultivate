@@ -5,6 +5,8 @@ using CLLibrary;
 
 public class FormationGroupEntry : Entry, Addressable, IFormationModel
 {
+    public string GetName() => GetId();
+    
     private static readonly int TOLERANCE = 4;
 
     private int _order;
@@ -26,7 +28,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public FormationGroupEntry(string name, int order, string conditionDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(name)
+    public FormationGroupEntry(string id, int order, string conditionDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(id)
     {
         _accessors = new Dictionary<string, Func<object>>()
         {

@@ -13,12 +13,12 @@ public class AudioEntry : Entry
         SFX,
     }
 
-    public AudioEntry(string name, string path, AudioType audioType) : base(name)
+    public AudioEntry(string id, string path, AudioType audioType) : base(id)
     {
         _path = path;
         EventReference = RuntimeManager.PathToEventReference(path);
         _audioType = audioType;
     }
 
-    public static implicit operator AudioEntry(string name) => Encyclopedia.AudioCategory[name];
+    public static implicit operator AudioEntry(string id) => Encyclopedia.AudioCategory[id];
 }

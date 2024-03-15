@@ -204,10 +204,10 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。" +
                                                   "\n\n得到《一念》")
-                        .SetReward(new AddSkillReward("一念", jingJie: runNode.JingJie));
+                        .SetReward(new AddSkillReward("0600", jingJie: runNode.JingJie));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。" +
                                                   "\n\n得到《无量劫》")
-                        .SetReward(new AddSkillReward("无量劫", jingJie: runNode.JingJie));
+                        .SetReward(new AddSkillReward("0601", jingJie: runNode.JingJie));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。" +
                                                   "\n\n得到随机零件")
                         .SetReward(new AddMechReward());
@@ -389,7 +389,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor F = new("你又一次吃下了可疑的蘑菇，感觉五脏俱焚\n\n命元-2", "又过了三十年");
 
                     DialogPanelDescriptor G = new DialogPanelDescriptor("你又故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
-                        .SetReward(new AddSkillReward("百草集", JingJie.YuanYing));
+                        .SetReward(new AddSkillReward("0602", JingJie.YuanYing));
 
                     A[1].SetCost(new CostDetails(mingYuan: 1));
                     D[1].SetCost(new CostDetails(mingYuan: 2));
@@ -413,11 +413,11 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor B = new("书生表情平静，实际上满心欢喜，说：“我去尝试追求她看看。”", "过了三十年");
                     DialogPanelDescriptor B1 = new DialogPanelDescriptor("你又见到了当初的书生，他说没有在当年找到合适的姻缘。他给你留下了一些东西。\n\n得到《遗憾》天津四 著")
-                        .SetReward(new AddSkillReward("遗憾", JingJie.JinDan));
+                        .SetReward(new AddSkillReward("0603", JingJie.JinDan));
 
                     DialogPanelDescriptor C = new("书生表情平静，实际上内心忧愁，然后默默离开了", "过了三十年");
                     DialogPanelDescriptor C1 = new DialogPanelDescriptor("你又见到了当初的书生，他虽然当时放弃了，但是后来和其他人结成了姻缘。他给你留下了一些东西。\n\n得到《爱恋》天津四 著")
-                        .SetReward(new AddSkillReward("爱恋", JingJie.JinDan));
+                        .SetReward(new AddSkillReward("0604", JingJie.JinDan));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -441,7 +441,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor C = new("你给了少年一些钱，对少年说，去置办一身新的行头对你更加有帮助。少年谢过你了", "过了三十年");
                     DialogPanelDescriptor C1 = new DialogPanelDescriptor("少年感激你当初的指导，说：“现在感觉自己已经非常厉害了，哪怕是太阳也能射中”。于是把不需要的秘笈给你了。\n\n获得《射金乌》")
-                        .SetReward(new AddSkillReward("射金乌", JingJie.JinDan));
+                        .SetReward(new AddSkillReward("0605", JingJie.JinDan));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -564,9 +564,9 @@ public class NodeCategory : Category<NodeEntry>
                         "赶路着急，没时间留下来听曲子了");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("那人哈哈大笑，然后弹了一首欢快的曲子。你回想起这一生，第一次这么有满足感，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《春雨》")
-                        .SetReward(new AddSkillReward("春雨", runNode.JingJie));
+                        .SetReward(new AddSkillReward("0606", runNode.JingJie));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《枯木》")
-                        .SetReward(new AddSkillReward("枯木", runNode.JingJie));
+                        .SetReward(new AddSkillReward("0607", runNode.JingJie));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("之前赶路省下的时间，正好可以用于修炼。\n\n获得一个技能")
                         .SetReward(new DrawSkillReward("获得一个技能", jingJie: runNode.JingJie));
 
@@ -910,7 +910,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor BWin = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
                     DialogPanelDescriptor BWin2 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
-                    BWin2.SetReward(new AddSkillReward("观棋烂柯", runNode.JingJie));
+                    BWin2.SetReward(new AddSkillReward("0211", runNode.JingJie));
 
                     DialogPanelDescriptor BLose = new("虽然你沉下心来想要理解棋盘中发生了什么事，只见两人下棋越来越快，一息之间，那二人已下出千百步，你想说些什么，但是身体却来不及动。", "不知过了多久");
                     DialogPanelDescriptor BLose2 = new("你醒来时，那两人已经不在了。但是莫要紧，美美睡上一觉比什么都重要。命元+2。");
@@ -918,7 +918,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor CWin = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，你回想起了一段关于呼吸的功法，开始强迫自己吐纳，努力在这种环境下获取一些空气。", "不知过了多久");
                     DialogPanelDescriptor CWin2 = new("即使空气非常粘稠，你也可以呼吸自如。慢慢回到了正常的感觉，你悟出了一个关于吐纳的功法。");
-                    CWin2.SetReward(new AddSkillReward("玄武吐息法", runNode.JingJie));
+                    CWin2.SetReward(new AddSkillReward("0608", runNode.JingJie));
 
                     DialogPanelDescriptor CLose = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，肺部在不断哀嚎。", "不知过了多久");
                     DialogPanelDescriptor CLose2 = new("空气中的粘稠感终于消失。你赶紧大口吸气呼气，第一次感到空气是这么美好。生命值上限+10。");
@@ -978,9 +978,9 @@ public class NodeCategory : Category<NodeEntry>
             new AdventureNodeEntry("初入蓬莱", "初入蓬莱", withInPool: false,
                 create: runNode =>
                 {
-                    RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("恋花", JingJie.LianQi));
-                    RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("流沙", JingJie.LianQi));
-                    RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("落石", JingJie.LianQi));
+                    RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+                    RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
+                    RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
 
                     ImagePanelDescriptor ManHua1 = new("漫画1");
                     ImagePanelDescriptor ManHua2 = new("漫画2");
@@ -1038,7 +1038,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     ZhiRuBattle.SetWin(() =>
                     {
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("清泉", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
                         return ZhanDouJiaoXue1;
                     });
                     ZhiRuBattle.SetLose(() =>
@@ -1046,9 +1046,9 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.Environment.Hand.Clear();
                         RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
 
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("恋花", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("流沙", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("落石", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
                         return ZhiRuJiaoXue1;
                     });
 
@@ -1062,7 +1062,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     LingQiBattle.SetWin(() =>
                     {
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("恋花", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
                         return HeChengJiaoXue1;
                     });
                     LingQiBattle.SetLose(() =>
@@ -1070,10 +1070,10 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.Environment.Hand.Clear();
                         RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
 
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("恋花", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("流沙", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("落石", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("清泉", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
                         return LingQiJiaoXue1;
                     });
 
@@ -1092,11 +1092,11 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.Environment.Hand.Clear();
                         RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
 
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("恋花", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("恋花", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("流沙", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("落石", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("清泉", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
+                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
                         return HeChengJiaoXue1;
                     });
 

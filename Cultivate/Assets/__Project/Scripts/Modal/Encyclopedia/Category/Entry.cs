@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Entry
 {
-    [SerializeField] private string _name;
-    public string GetName() => _name;
+    [SerializeField] private string _id;
+    public string GetId() => _id;
 
-    public Entry(string name)
+    public Entry(string id)
     {
-        _name = name;
+        _id = id;
     }
 }

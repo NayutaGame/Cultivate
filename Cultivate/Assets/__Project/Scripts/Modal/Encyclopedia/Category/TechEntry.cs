@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class TechEntry : Entry
 {
+    public string GetName() => GetId();
+    
     private string _description;
     public string Description;
 
@@ -26,10 +28,10 @@ public class TechEntry : Entry
     private Reward[] _rewards;
     public Reward[] Rewards => _rewards;
 
-    public TechEntry(string name, string description, Vector2Int position, int cost,
+    public TechEntry(string id, string description, Vector2Int position, int cost,
         string[] prerequisiteNames = null,
         TechEventDescriptor eureka = null,
-        Reward[] rewards = null) : base(name)
+        Reward[] rewards = null) : base(id)
     {
         _description = description;
         _cost = cost;

@@ -1,10 +1,13 @@
 
 public class KeywordEntry : Entry, IAnnotation
 {
+    public string GetName() => GetId();
+    
     private string _description;
+
     public string GetDescription() => _description;
 
-    public KeywordEntry(string name, string description) : base(name)
+    public KeywordEntry(string id, string description) : base(id)
     {
         _description = description;
     }

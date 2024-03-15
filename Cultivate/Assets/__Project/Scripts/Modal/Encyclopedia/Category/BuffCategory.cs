@@ -9,14 +9,14 @@ public class BuffCategory : Category<BuffEntry>
     {
         AddRange(new List<BuffEntry>()
         {
-            new(name:                       "不存在的Buff",
+            new(id:                       "不存在的Buff",
                 description:                "不存在的Buff",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
                 eventDescriptors:           null),
             
-            new(name:                       "灵气",
+            new(id:                       "灵气",
                 description:                "可以消耗灵气使用技能",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
@@ -34,7 +34,7 @@ public class BuffCategory : Category<BuffEntry>
             new("浮空艇",     "回合被跳过时：生命及上线无法下降",              BuffStackRule.Add, true, false),
             new("架势",     "消耗架势激活效果，没有架势时获得架势",              BuffStackRule.One, true, false),
             
-            new(name:                       "滞气",
+            new(id:                       "滞气",
                 description:                "每回合：失去[层数]灵气，层数-1",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
@@ -51,7 +51,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "缠绕",
+            new(id:                       "缠绕",
                 description:                "无法二动/三动\n回合结束/二动时：-1层",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
@@ -76,7 +76,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "软弱",
+            new(id:                       "软弱",
                 description:                "攻击时：少[层数]攻\n回合结束/攻击时：-1层",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
@@ -100,7 +100,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "内伤",
+            new(id:                       "内伤",
                 description:                "每回合：失去[层数]生命，层数-1",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
@@ -117,7 +117,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "腐朽",
+            new(id:                       "腐朽",
                 description:                "每回合：失去[层数]护甲，层数-1",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
@@ -134,7 +134,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "永久二重",
+            new(id:                       "永久二重",
                 description:                "所有牌使用两次",
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
@@ -150,7 +150,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "二重",
+            new(id:                       "二重",
                 description:                "下[层数]张牌使用两次",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
@@ -168,7 +168,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "多重",
+            new(id:                       "多重",
                 description:                "下一张牌额外使用[层数]次",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
@@ -185,7 +185,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "跳回合",
+            new(id:                       "跳回合",
                 description:                "跳过[层数]次回合",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
@@ -202,7 +202,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "心斋",
+            new(id:                       "心斋",
                 description:                "所有耗蓝-[层数]",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
@@ -219,7 +219,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "永久免费",
+            new(id:                       "永久免费",
                 description:                "使用牌时：无需消耗灵气",
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
@@ -236,7 +236,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "免费",
+            new(id:                       "免费",
                 description:                "持续[层数]次，使用牌时：无需消耗灵气",
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
@@ -256,7 +256,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(name:                       "不堪一击",
+            new(id:                       "不堪一击",
                 description:                "受击伤：生命降至0",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
@@ -467,7 +467,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("时光机", "使用一张牌前，升级", BuffStackRule.One, true, false,
+            new("时光机", "使用一张牌前：升级", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CAST, 0, async (listener, eventDetails) =>

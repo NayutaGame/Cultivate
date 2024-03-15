@@ -283,7 +283,7 @@ public class StageEntity : Addressable, StageEventListener
             _skills[i] = StageSkill.FromPlacedSkill(this, slot.PlacedSkill, i);
         }
 
-        _manaShortageAction = StageSkill.FromSkillEntry(this, "聚气术");
+        _manaShortageAction = StageSkill.FromSkillEntry(this, "0001");
 
         _p = 0;
     }
