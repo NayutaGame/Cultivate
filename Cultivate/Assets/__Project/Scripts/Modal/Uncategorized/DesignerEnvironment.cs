@@ -8,7 +8,7 @@ using FMOD;
 public class DesignerEnvironment
 {
     public static DesignerConfig GetDesignerConfig()
-        => new(runEventDescriptors: new[] { QuickRunMap, StandardSkillPool, StandardRun });
+        => new(runEventDescriptors: new[] { StandardMap, StandardSkillPool, StandardRun });
 
     private static readonly RunEventDescriptor StandardMap =
         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -4, (listener, eventDetails) =>
@@ -18,12 +18,77 @@ public class DesignerEnvironment
 
             Map map = env.Map;
             bool firstTime = true;
+            NodeEntry firstNode = firstTime ? "初入蓬莱" : null;
 
             map.EntityPool = new();
             map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
             map._b = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is BattleNodeEntry).ToList());
             map._r = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is RewardNodeEntry).ToList());
             map._a = new(Encyclopedia.NodeCategory.Traversal.FilterObj(n => n.WithInPool && n is AdventureNodeEntry).ToList());
+            
+            DrawDescriptor[][] drawDescriptors = new DrawDescriptor[][]
+            {
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Adventure, firstNode),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Boss),
+                    new(DrawDescriptor.NodeType.Ascension),
+                },
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Shop),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Boss),
+                    new(DrawDescriptor.NodeType.Ascension),
+                },
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Shop),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Boss),
+                    new(DrawDescriptor.NodeType.Ascension),
+                },
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Shop),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Boss),
+                    new(DrawDescriptor.NodeType.Ascension),
+                },
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Shop),
+                    new(DrawDescriptor.NodeType.Boss),
+                },
+            };
 
             map._priorityNodes = new Dictionary<JingJie, NodeEntry[]>()
             {
