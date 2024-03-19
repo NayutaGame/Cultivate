@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
-using UnityEngine;
 
 public class Map : Addressable
 {
@@ -10,48 +9,70 @@ public class Map : Addressable
 
     private StepItemListModel _stepItems;
 
-    private RunNode this[int x, int y] => _stepItems[x]._nodes[y];
-    private RunNode this[Vector2Int pos] => this[pos.x, pos.y];
-
-    public EntityPool EntityPool;
-    public CyclicPool<NodeEntry> _b;
-    public CyclicPool<NodeEntry> _r;
-    public CyclicPool<NodeEntry> _a;
-    public Dictionary<JingJie, NodeEntry[]> _priorityNodes;
-    public Dictionary<JingJie, CyclicPool<NodeEntry>[]> _normalPools;
-
-    public bool Selecting { get; private set; }
-    private Vector2Int _heroPosition;
-
-    public RunNode CurrentNode
+    private int _level;
+    public int GetLevel() => _level;
+    public void SetLevel(int value)
     {
-        get
+        _level = value;
+        GenerateStepItems();
+    }
+
+    private int _step;
+    private StepItem CurrStepItem => _stepItems[_step];
+
+    private int _choice;
+    private void SetChoice(int value)
+    {
+        _choice = value;
+        NodeListModel nodes = CurrStepItem._nodes;
+        for (int i = 0; i < nodes.Count(); i++)
         {
-            if (_heroPosition.x < 0)
-                return null;
-            return this[_heroPosition];
+            RunNode node = nodes[i];
+            if (i == _choice)
+            {
+                node.SetState(RunNode.RunNodeState.Current);
+                node.Entry.Create(this, node);
+            }
+            else
+            {
+                node.SetState(RunNode.RunNodeState.Missed);
+            }
         }
     }
+    public RunNode CurrNode => _step < 0 ? null : CurrStepItem._nodes[_choice];
+    
+    public DrawDescriptor[][] DrawDescriptors;
+    public EntityPool EntityPool;
+    public Pool<NodeEntry> AdventurePool;
+
+    public bool Selecting { get; private set; }
 
     public PanelDescriptor SelectedNode(RunNode selected)
     {
-        if (_heroPosition.x >= 0)
-            this[_heroPosition].State = RunNode.RunNodeState.Passed;
+        if (_step >= 0)
+            CurrNode.SetState(RunNode.RunNodeState.Passed);
 
-        _heroPosition = new(_heroPosition.x + 1, selected.Position.y);
+        _step++;
 
-        _stepItems[_heroPosition.x].SelectedNode(selected.Position.y);
+        SetChoice(selected.Position.y);
 
         Selecting = false;
-        return CurrentNode.CurrentPanel;
+        return CurrNode.CurrentPanel;
+    }
+
+    public void SetToChoose(int step)
+    {
+        NodeListModel nodes = _stepItems[step]._nodes;
+        for (int i = 0; i < nodes.Count(); i++)
+            nodes[i].SetState(RunNode.RunNodeState.ToChoose);
     }
 
     public PanelDescriptor ReceiveSignal(Signal signal)
     {
-        PanelDescriptor panelDescriptor = CurrentNode.CurrentPanel.ReceiveSignal(signal);
+        PanelDescriptor panelDescriptor = CurrNode.CurrentPanel.ReceiveSignal(signal);
         if (panelDescriptor != null)
         {
-            CurrentNode.ChangePanel(panelDescriptor);
+            CurrNode.ChangePanel(panelDescriptor);
         }
         else
         {
@@ -63,7 +84,7 @@ public class Map : Addressable
             return panelDescriptor;
 
         panelDescriptor = RunManager.Instance.Environment.GetActivePanel();
-        CurrentNode.ChangePanel(panelDescriptor);
+        CurrNode.ChangePanel(panelDescriptor);
         return panelDescriptor;
     }
 
@@ -74,32 +95,23 @@ public class Map : Addressable
 
         // if it is the last node, try goto next jingjie / commit run
 
-        bool isEndOfJingJie = IsEndOfJingJie(_heroPosition.x);
+        bool isEndOfJingJie = IsEndOfJingJie(_step);
 
         if (!isEndOfJingJie)
-            _stepItems[_heroPosition.x + 1].SetToChoose();
+            SetToChoose(_step + 1);
 
         Selecting = true;
 
-        CurrentNode.ChangePanel(null);
+        CurrNode.ChangePanel(null);
 
         if (isEndOfJingJie)
-            RunManager.Instance.Environment.SetJingJieProcedure(GetJingJie() + 1);
+            RunManager.Instance.Environment.SetJingJieProcedure(GetLevel() + 1);
     }
 
     private bool IsEndOfJingJie(int currentX)
     {
-        return currentX >= _normalPools[_jingJie].Length - 1;
+        return currentX >= DrawDescriptors[_level].Length - 1;
     }
-
-    private JingJie _jingJie;
-    public JingJie GetJingJie() => _jingJie;
-    public void SetJingJie(JingJie jingJie)
-    {
-        _jingJie = jingJie;
-        RefreshNodes();
-    }
-
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -114,82 +126,29 @@ public class Map : Addressable
         StepItemCapacity.Do(i => _stepItems.Add(new StepItem()));
     }
 
-    private void RefreshNodes()
+    private void GenerateStepItems()
     {
-        NodeEntry[] priorityNodes = _priorityNodes[_jingJie];
-        CyclicPool<NodeEntry>[] pools = _normalPools[_jingJie];
+        DrawDescriptor[] drawDescriptors = DrawDescriptors[_level];
 
-        for (int x = 0; x < pools.Length; x++)
+        for (int i = 0; i < drawDescriptors.Length; i++)
         {
-            NodeEntry priorityNode = x < priorityNodes.Length ? priorityNodes[x] : null;
-            if (priorityNode != null)
-            {
-                SetStepItemFromPriority(x, priorityNode);
-                continue;
-            }
-
-            CyclicPool<NodeEntry> pool = pools[x];
-            SetStepItemFromPool(x, pool);
+            drawDescriptors[i].Draw(this, _stepItems[i], _level, i);
         }
 
-        _stepItems[0].SetToChoose();
+        SetToChoose(0);
 
         Selecting = true;
-        _heroPosition = new Vector2Int(-1, 0);
-    }
 
-    private void SetStepItemFromPriority(int x, NodeEntry nodeEntry)
-    {
-        StepItem stepItem = _stepItems[x];
-
-        stepItem._nodes.Clear();
-
-        if (nodeEntry is BattleNodeEntry battleNode)
-        {
-            DrawEntityDetails d = new DrawEntityDetails(_jingJie, x <= 3, 3 < x && x <= 6, 6 < x);
-            stepItem._nodes.Add(new BattleRunNode(this, new Vector2Int(x, 0), _jingJie, battleNode, d));
-        }
-        else
-        {
-            stepItem._nodes.Add(new RunNode(this, new Vector2Int(x, 0), _jingJie, nodeEntry));
-        }
-    }
-
-    private void SetStepItemFromPool(int x, CyclicPool<NodeEntry> pool)
-    {
-        StepItem stepItem = _stepItems[x];
-
-        stepItem._nodes.Clear();
-
-        if (pool == _r)
-        {
-            for (int y = 0; y < StepItem.Capacity; y++)
-            {
-                NodeEntry nodeEntry = pool.ForcePopItem(pred: e => e.CanCreate(this, x));
-                stepItem._nodes.Add(new RunNode(this, new Vector2Int(x, y), _jingJie, nodeEntry));
-            }
-        }
-        else
-        {
-            NodeEntry nodeEntry = pool.ForcePopItem(pred: e => e.CanCreate(this, x));
-            if (nodeEntry is BattleNodeEntry battleNodeEntry)
-            {
-                DrawEntityDetails d = new DrawEntityDetails(_jingJie, x <= 3, 3 < x && x <= 6, 6 < x);
-                stepItem._nodes.Add(new BattleRunNode(this, new Vector2Int(x, 0), _jingJie, battleNodeEntry, d));
-            }
-            else
-            {
-                stepItem._nodes.Add(new RunNode(this, new Vector2Int(x, 0), _jingJie, nodeEntry));
-            }
-        }
+        _step = -1;
+        _choice = 0;
     }
 
     public AdventureNodeEntry NextAdventure()
     {
-        int currX = _heroPosition.x;
-        for (int x = currX + 1; x < _normalPools[_jingJie].Length; x++)
+        int currStep = _step;
+        for (int step = currStep + 1; step < DrawDescriptors[_level].Length; step++)
         {
-            StepItem stepItem = _stepItems[x];
+            StepItem stepItem = _stepItems[step];
             RunNode node = stepItem._nodes.Traversal().FirstObj(node => node.Entry is AdventureNodeEntry);
             if (node != null)
                 return node.Entry as AdventureNodeEntry;
@@ -197,11 +156,11 @@ public class Map : Addressable
         return null;
     }
 
-    public bool HasAdventureAfterwards(int currX)
+    public bool HasAdventureAfterwards(int currStep)
     {
-        for (int x = currX + 1; x < _normalPools[_jingJie].Length; x++)
+        for (int step = currStep + 1; step < DrawDescriptors[_level].Length; step++)
         {
-            if (_normalPools[_jingJie][x] == _a)
+            if (DrawDescriptors[_level][step].GetNodeType() == DrawDescriptor.NodeType.Adventure)
                 return true;
         }
 
@@ -210,15 +169,15 @@ public class Map : Addressable
 
     public bool RedrawNextAdventure()
     {
-        int currX = _heroPosition.x;
-        for (int x = currX + 1; x < _normalPools[_jingJie].Length; x++)
+        int currStep = _step;
+        for (int step = currStep + 1; step < DrawDescriptors[_level].Length; step++)
         {
-            StepItem stepItem = _stepItems[x];
+            StepItem stepItem = _stepItems[step];
             RunNode node = stepItem._nodes[0];
             if (node is { Entry: AdventureNodeEntry adventureNodeEntry })
             {
-                NodeEntry newNodeEntry = _a.ForcePopItem(pred: n => n != adventureNodeEntry);
-                stepItem._nodes[0] = new RunNode(this, new Vector2Int(x, 0), _jingJie, newNodeEntry);
+                AdventurePool.TryPopItem(out NodeEntry newNodeEntry, pred: n => n != adventureNodeEntry);
+                stepItem._nodes[0] = new RunNode(_level, step, 0, newNodeEntry);
                 return true;
             }
         }

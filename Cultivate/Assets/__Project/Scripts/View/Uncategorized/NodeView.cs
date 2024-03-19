@@ -25,11 +25,11 @@ public class NodeView : SimpleView
             return;
 
         if (NameText != null)
-            NameText.text = runNode.GetTitle() + runNode.State.ToString();
+            NameText.text = runNode.GetTitle() + runNode.GetState().ToString();
 
         _breathingButton.SetSprite(runNode.Sprite);
 
-        switch (runNode.State)
+        switch (runNode.GetState())
         {
             case RunNode.RunNodeState.Missed:
             case RunNode.RunNodeState.Passed:
@@ -42,7 +42,7 @@ public class NodeView : SimpleView
                 break;
         }
 
-        _breathingButton.SetBreathing(runNode.State == RunNode.RunNodeState.ToChoose);
+        _breathingButton.SetBreathing(runNode.GetState() == RunNode.RunNodeState.ToChoose);
     }
 
     private void OnPointerClick(PointerEventData eventData)
@@ -54,7 +54,7 @@ public class NodeView : SimpleView
     private bool TryClickNode()
     {
         RunNode runNode = Get<RunNode>();
-        if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Environment.Map.Selecting)
+        if (runNode.GetState() != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Environment.Map.Selecting)
             return false;
 
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.SelectedNode(runNode);

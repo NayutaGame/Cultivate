@@ -21,16 +21,4 @@ public class StepItem : Addressable
 
         _nodes = new NodeListModel();
     }
-
-    public void SelectedNode(int index)
-    {
-        for (int y = 0; y < _nodes.Count(); y++)
-            _nodes[y].State = y == index ? RunNode.RunNodeState.Current : RunNode.RunNodeState.Missed;
-    }
-
-    public void SetToChoose()
-    {
-        for (int y = 0; y < _nodes.Count(); y++)
-            _nodes[y].State = RunNode.RunNodeState.ToChoose;
-    }
 }

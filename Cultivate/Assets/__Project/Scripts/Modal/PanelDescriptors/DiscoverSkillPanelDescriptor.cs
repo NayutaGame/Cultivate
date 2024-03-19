@@ -35,7 +35,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
         _pred = pred;
         _wuXing = wuXing;
-        _jingJie = jingJie ?? RunManager.Instance.Environment.Map.GetJingJie();
+        _jingJie = jingJie ?? RunManager.Instance.Environment.Map.GetLevel();
         _skills = new();
     }
 

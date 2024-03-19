@@ -10,58 +10,18 @@ public class NodeCategory : Category<NodeEntry>
     {
         AddRange(new List<NodeEntry>()
         {
-            new BattleNodeEntry("敌人", "敌人"),
+            new BattleNodeEntry("战斗", "战斗"),
 
-            new RewardNodeEntry("悟道", "悟道", "悟道", withInPool: true,
-                create: runNode =>
-                {
-                    Pool<WuXing> pool = new Pool<WuXing>();
-                    pool.Populate(WuXing.Traversal);
-                    pool.Shuffle();
-
-                    WuXing[] options = new WuXing[3];
-                    for (int i = 0; i < options.Length; i++)
-                    {
-                        pool.TryPopItem(out options[i]);
-                    }
-
-                    DialogPanelDescriptor A = new("选择一种五行，获得一张随机牌",
-                        options[0]._name,
-                        options[1]._name,
-                        options[2]._name);
-
-                    A._receiveSignal = signal =>
-                    {
-                        if (signal is SelectedOptionSignal selectedOptionSignal)
-                        {
-                            int index = selectedOptionSignal.Selected;
-                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Environment.Map.GetJingJie()).Claim();
-                        }
-                        return null;
-                    };
-
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("回复命元", "回复命元", "人参果", withInPool: true,
-                create: runNode =>
+            new RewardNodeEntry("休息", "休息", "人参果", withInPool: true,
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new DialogPanelDescriptor("回复了2点命元")
                         .SetReward(Reward.FromMingYuan(2));
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("获得金钱", "获得金钱", "金钱", withInPool: true,
-                create: runNode =>
-                {
-                    int gold = Mathf.RoundToInt((runNode.JingJie + 1) * 21 * RandomManager.Range(0.8f, 1.2f));
-                    DialogPanelDescriptor A = new DialogPanelDescriptor($"获得了{gold}金钱")
-                        .SetReward(Reward.FromGold(gold));
-                    runNode.ChangePanel(A);
-                }),
-
             new RewardNodeEntry("提升境界", "提升境界", "修炼", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     CardPickerPanelDescriptor A = new("可以将一张低于化神境界的牌提升到主角的下一境界，请选择想要提升的牌", new Range(0, 2));
                     A.SetSelect(iRunSkillList =>
@@ -93,8 +53,15 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
+            new RewardNodeEntry("商店", "商店", "商店", withInPool: true,
+                create: (map, runNode) =>
+                {
+                    ShopPanelDescriptor A = new(runNode.JingJie);
+                    runNode.ChangePanel(A);
+                }),
+
             new RewardNodeEntry("加生命上限", "加生命上限", "温泉", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     int health = (runNode.JingJie + 1) * 3;
                     DialogPanelDescriptor A = new DialogPanelDescriptor($"找到了一个人参果，吃了之后获得了{health}点生命上限")
@@ -102,15 +69,48 @@ public class NodeCategory : Category<NodeEntry>
                     runNode.ChangePanel(A);
                 }),
 
-            new RewardNodeEntry("商店", "商店", "商店", withInPool: true,
-                create: runNode =>
+            new RewardNodeEntry("悟道", "悟道", "悟道", withInPool: true,
+                create: (map, runNode) =>
                 {
-                    ShopPanelDescriptor A = new(runNode.JingJie);
+                    Pool<WuXing> pool = new Pool<WuXing>();
+                    pool.Populate(WuXing.Traversal);
+                    pool.Shuffle();
+
+                    WuXing[] options = new WuXing[3];
+                    for (int i = 0; i < options.Length; i++)
+                    {
+                        pool.TryPopItem(out options[i]);
+                    }
+
+                    DialogPanelDescriptor A = new("选择一种五行，获得一张随机牌",
+                        options[0]._name,
+                        options[1]._name,
+                        options[2]._name);
+
+                    A._receiveSignal = signal =>
+                    {
+                        if (signal is SelectedOptionSignal selectedOptionSignal)
+                        {
+                            int index = selectedOptionSignal.Selected;
+                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Environment.Map.GetLevel()).Claim();
+                        }
+                        return null;
+                    };
+
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("获得金钱", "获得金钱", "金钱", withInPool: true,
+                create: (map, runNode) =>
+                {
+                    int gold = Mathf.RoundToInt((runNode.JingJie + 1) * 21 * RandomManager.Range(0.8f, 1.2f));
+                    DialogPanelDescriptor A = new DialogPanelDescriptor($"获得了{gold}金钱")
+                        .SetReward(Reward.FromGold(gold));
                     runNode.ChangePanel(A);
                 }),
 
             new RewardNodeEntry("以物易物", "以物易物", "以物易物", withInPool: false,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     BarterPanelDescriptor A = new();
                     runNode.ChangePanel(A);
@@ -118,7 +118,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new RewardNodeEntry("算卦", "算卦", "算卦", withInPool: true,
                 canCreate: (map, x) => map.HasAdventureAfterwards(x),
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Environment.Map.NextAdventure().GetName()}",
                         "换一个",
@@ -137,7 +137,7 @@ public class NodeCategory : Category<NodeEntry>
             // 复杂事件
 
             new AdventureNodeEntry("山木", "山木", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     int trial = 0;
                     int rage = RandomManager.Range(0, 7);
@@ -195,7 +195,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("赤壁赋", "赤壁赋", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
                         "赞同月亮是变化的",
@@ -220,7 +220,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("论无穷", "论无穷", withInPool: false,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +
                                                   "\n\n我跑步很快，如果有人跑步比我还快的话，只要他推着载我的车，我在车里跑，速度就比他还快，只要一直有人速度比我快，我的速度就是无穷的。" +
@@ -251,7 +251,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("人间世", "人间世", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你追上了他，看出他事业心很重，于是对他说：\n\n成名要趁早，我看你将来肯定是做宰相的料。\n\n你看这些树，长了果子的树枝遭人摧残而早死，木质良好的被人砍去做成船了，就这棵无用的树才活得长久。即使如此，你还是要追求功名么？",
                         "用第一个想法",
@@ -288,7 +288,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("神灯精灵", "神灯精灵", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
                         "健康的体魄",
@@ -301,7 +301,7 @@ public class NodeCategory : Category<NodeEntry>
                         .SetReward(Reward.FromGold(100));
                     DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
 
-                    runNode._map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
+                    map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
                     BattlePanelDescriptor E = new(template);
                     DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
                         .SetReward(new ResourceReward(gold: 100, health: 10));
@@ -318,7 +318,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("分子打印机", "分子打印机", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你发现了一个机器，有两个插槽。中间写着一行说明，一边放原料，一边放卡牌。",
                         "试试这个机器可以做什么",
@@ -370,7 +370,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("神农氏", "神农氏", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你看见一个人向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
                         "选择仙草",
@@ -405,7 +405,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("天津四", "天津四", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你看见一个书生，悄悄看着一个织布的少女，应该是对她有意思。他看你道士打扮，于是问道：“先生可否帮我算一卦，算姻缘。”",
                         "祝福他的缘分",
@@ -428,7 +428,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("后羿", "后羿", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你看到了一个少年在幸苦的练习射箭，但是进度缓慢，你决定",
                         "我来教你一招",
@@ -452,7 +452,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("天界树", "天界树", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
                         "吃树上的果子",
@@ -503,7 +503,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("鬼兵", "鬼兵", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你看到鬼兵打算带走一个将死之人，但是那人请求鬼兵在给自己一点时间。鬼兵说那人的命元已尽，不该继续留在阳间",
                         "助他炼丹（需要一张牌）",
@@ -556,7 +556,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("琴仙", "琴仙", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你遇到了一个弹琴的人，他双目失明，衣衫褴褛，举手投足之间却让人感到大方得体，应该是一名隐士。正好前一首曲毕。向你的方向看了过来，好像知道你来了。",
                         "来一首欢快的曲子吧",
@@ -578,7 +578,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("连抽五张", "连抽五张", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你近日练功，隐约感到一个瓶颈，心里略有不快。想着，如果全力一博，说不定就多一分机会窥见大道的真貌。",
                         "欲速则不达",
@@ -597,7 +597,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("天机阁", "天机阁", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你在沙漠中行走，突然眼前出来了一栋华丽的建筑，上面写着天机阁。你走入其中，前面有个牌子，请选择一张。你正在想是选择什么时，发现有十张卡牌浮在空中。");
                     ArbitraryCardPickerPanelDescriptor B = new("请从10张牌中选1张获取");
@@ -618,7 +618,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("酿造仙岛玉液酒", "酿造仙岛玉液酒", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     bool mixWater = false;
                     bool yellNoLie = false;
@@ -693,7 +693,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("解梦师", "解梦师", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     WuXing? wuXing = null;
 
@@ -785,7 +785,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("夏虫语冰", "夏虫语冰", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你要过一个桥，桥上站了一人，问你，什么时候河会变得可以行走。你说在冬季的时候。他说你是胡说八道：“一年只有三个季节，春夏秋，哪里来的冬季？”",
                         "赞同他，说一年只有三个季节",
@@ -807,7 +807,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("照相机", "照相机", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("到了桃花盛开的季节，你也来欣赏桃花。见到一名机关师，向人们介绍自己最近的新发明。按一下按钮，这个机关就可以将眼前美景永远记录下来。" +
                                                   "\n周围人看了那个机关，觉得画过于真实，害怕这个机关能够摄人心魄。都纷纷不敢上前。" +
@@ -835,7 +835,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("丢尺子", "丢尺子", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("嘀嘀嘀。灵信响了，你看了一下。是之前委托你布阵的人发的消息。" +
                                                   "\n管家：大人，之前你帮我家设置的阵法，有一笔的长度不对。会不会引起问题？" +
@@ -871,7 +871,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("曹操三笑", "曹操三笑", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("有个商人要去其他国家，听闻中间有一个险道，常常有山贼出没，托你保护他和一些货物的安全。一路上没有什么障碍，赶了几天的路之后，终于快要到目的地了。" +
                                                   "面前是一处山谷。这时候，他突然大笑起来：“哈哈哈哈哈哈哈哈。。。”",
@@ -883,7 +883,7 @@ public class NodeCategory : Category<NodeEntry>
                         "和山贼战斗");
                     DialogPanelDescriptor C = new("他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n金+50");
 
-                    runNode._map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
+                    map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));
                     BattlePanelDescriptor B1 = new(template);
                     DialogPanelDescriptor B1win = new DialogPanelDescriptor("你打过了山贼，商人对你十分感激。\n\n金+100")
                         .SetReward(Reward.FromGold(100));
@@ -899,7 +899,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("仙人下棋", "仙人下棋", withInPool: true,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("你在竹林里迷路了，走了一阵遇到两个人在下棋，其中一个人发现了你，然后继续看棋盘去了。",
                         "尝试观看两人对弈（需要一张二动牌）",
@@ -976,7 +976,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("初入蓬莱", "初入蓬莱", withInPool: false,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
                     RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
@@ -1133,7 +1133,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("同境界合成教学", "同境界合成教学", withInPool: false,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     ImagePanelDescriptor A = new("同境界合成教学1");
                     ImagePanelDescriptor B = new("同境界合成教学2");
@@ -1144,7 +1144,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("愿望单", "愿望单", withInPool: false,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("游戏仍在制作中，请加入愿望单，以关注后续进展，感谢游玩！",
                         "Q群：216060477",
@@ -1170,7 +1170,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             new AdventureNodeEntry("快速结算", "快速结算", withInPool: false,
-                create: runNode =>
+                create: (map, runNode) =>
                 {
                     DialogPanelDescriptor A = new("用于测试Run结算",
                         "胜利结算",
@@ -1192,7 +1192,7 @@ public class NodeCategory : Category<NodeEntry>
                 }),
 
             // new AdventureNodeEntry("神殿事件", "", normal: true,
-            //     create: runNode =>
+            //     create: (map, runNode) =>
             //     {
             //         DialogPanelDescriptor A = new DialogPanelDescriptor("来到一处神殿", "我必凯旋", "我已膨胀");
             //         runNode._map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(runNode.JingJie, allowElite: true));

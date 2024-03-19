@@ -4,20 +4,20 @@ using UnityEngine;
 public class BattleNodeEntry : NodeEntry
 {
     public BattleNodeEntry(string id, string description) : base(id, description, withInPool: true,
-        create: runNode =>
+        create: (map, runNode) =>
         {
             BattleRunNode battleRunNode = runNode as BattleRunNode;
 
             int xiuWeiValue = Mathf.RoundToInt(battleRunNode.BaseXiuWeiReward() * RandomManager.Range(0.9f, 1.1f));
 
-            BattlePanelDescriptor A = new(battleRunNode.Template);
+            BattlePanelDescriptor A = new(battleRunNode.Entity);
             battleRunNode.AddReward(new ResourceReward(gold: xiuWeiValue));
 
             DiscoverSkillPanelDescriptor B = new("胜利");
             DiscoverSkillPanelDescriptor C = new("惜败");
             DialogPanelDescriptor D = new($"按Esc退出游戏，游戏结束，感谢游玩");
 
-            if (!battleRunNode.DrawEntityDetails.AllowBoss)
+            if (!battleRunNode.IsBoss)
             {
                 A.SetWin(() =>
                 {

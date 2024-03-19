@@ -12,9 +12,10 @@ public abstract class NodeEntry : Entry
     public bool WithInPool => _withInPool;
 
     private Func<Map, int, bool> _canCreate;
-    private Action<RunNode> _create;
+    private Action<Map, RunNode> _create;
 
-    public NodeEntry(string id, string description, bool withInPool, Action<RunNode> create, Func<Map, int, bool> canCreate = null) : base(id)
+    public NodeEntry(string id, string description, bool withInPool, Action<Map, RunNode> create, Func<Map, int, bool> canCreate = null)
+        : base(id)
     {
         _description = description;
         _withInPool = withInPool;
@@ -23,7 +24,7 @@ public abstract class NodeEntry : Entry
     }
 
     public bool CanCreate(Map map, int x) => _canCreate(map, x);
-    public void Create(RunNode runNode) => _create(runNode);
+    public void Create(Map map, RunNode runNode) => _create(map, runNode);
 
     public static implicit operator NodeEntry(string id) => Encyclopedia.NodeCategory[id];
 }

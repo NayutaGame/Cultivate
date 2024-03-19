@@ -6,22 +6,23 @@ using UnityEngine;
 
 public class BattleRunNode : RunNode
 {
-    public DrawEntityDetails DrawEntityDetails;
+    private RunEntity _entity;
+    public RunEntity Entity => _entity;
+    private bool _isBoss;
+    public bool IsBoss => _isBoss;
     private List<Reward> _rewards;
-    public RunEntity Template;
 
-    public BattleRunNode(Map map, Vector2Int position, JingJie jingJie, BattleNodeEntry entry, DrawEntityDetails drawEntityDetails) : base(map, position, jingJie, entry)
+    public BattleRunNode(int level, int step, int choice, RunEntity entity) : base(level, step, choice, "战斗")
     {
-        DrawEntityDetails = drawEntityDetails;
+        _entity = entity;
+        _isBoss = entity.IsBoss();
         _rewards = new();
-        map.EntityPool.TryDrawEntity(out RunEntity template, DrawEntityDetails);
-        Template = template;
 
-        _spriteEntry = DrawEntityDetails.AllowBoss ? "Boss" : "战斗";
+        _spriteEntry = _isBoss ? "Boss" : "战斗";
     }
 
     public override string GetTitle()
-        => Template.GetEntry().GetName();
+        => _entity.GetEntry().GetName();
 
     public void AddReward(Reward reward)
         => _rewards.Add(reward);
@@ -45,8 +46,9 @@ public class BattleRunNode : RunNode
 
     public int Ladder()
     {
-        int x = Position.x;
-        return JingJie * 3 + (4 <= x && x <= 6 ? 1 : 0) + (x >= 8 ? 2 : 0);
+        int level = GetLevel();
+        int step = GetStep();
+        return level * 3 + (4 <= step && step <= 6 ? 1 : 0) + (step >= 8 ? 2 : 0);
     }
 
     private int[] XiuWeiRewardTable = new int[]

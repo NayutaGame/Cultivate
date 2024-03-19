@@ -60,7 +60,8 @@ public class ListView : SimpleView
     public override void Refresh()
     {
         base.Refresh();
-        _activePool.Do(itemBehaviour => itemBehaviour.GetSimpleView().Refresh());
+        _activePool.Do(itemBehaviour =>
+            itemBehaviour.GetSimpleView().Refresh());
     }
 
     private void RegisterExists()

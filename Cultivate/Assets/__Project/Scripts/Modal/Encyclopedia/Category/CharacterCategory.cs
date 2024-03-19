@@ -45,7 +45,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         RunEnvironment env = (RunEnvironment)listener;
                         RunDetails d = (RunDetails)eventDetails;
 
-                        env.Map._r.Generator.Add("以物易物");
+                        // env.Map._r.Generator.Add("以物易物");
                     }),
                 }),
             new("浮千舟", abilityDescription: "战斗开始时，获得1/2/3/4/5灵气\n" +

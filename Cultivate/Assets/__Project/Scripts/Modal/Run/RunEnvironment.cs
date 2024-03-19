@@ -65,7 +65,7 @@ public class RunEnvironment : Addressable, RunEventListener
         if (d.Cancel)
             return;
 
-        Map.SetJingJie(d.JingJie);
+        Map.SetLevel(d.JingJie);
         _home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.JingJie]);
         _home.SetJingJie(d.JingJie);
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.JingJie));
@@ -485,7 +485,7 @@ public class RunEnvironment : Addressable, RunEventListener
     }
 
     public PanelDescriptor GetActivePanel()
-        => _runResultPanelDescriptor ?? Map.CurrentNode?.CurrentPanel;
+        => _runResultPanelDescriptor ?? Map.CurrNode?.CurrentPanel;
 
     public bool TryCommit()
     {
