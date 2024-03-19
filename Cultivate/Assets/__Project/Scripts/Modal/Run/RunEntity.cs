@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [Serializable]
 public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceiver
@@ -29,15 +30,15 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
     #region Only For Editable
 
-    [SerializeField] [OptionalField(VersionAdded = 2)] private bool _isNormal;
+    [SerializeField] private bool _isNormal;
     public bool IsNormal() => _isNormal;
     public void SetNormal(bool value) => _isNormal = value;
 
-    [SerializeField] [OptionalField(VersionAdded = 2)] private bool _isElite;
+    [SerializeField] private bool _isElite;
     public bool IsElite() => _isElite;
     public void SetElite(bool value) => _isElite = value;
 
-    [SerializeField] [OptionalField(VersionAdded = 2)] private bool _isBoss;
+    [SerializeField] private bool _isBoss;
     public bool IsBoss() => _isBoss;
     public void SetBoss(bool value) => _isBoss = value;
 
@@ -48,38 +49,34 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     public void SetJingJie(JingJie jingJie)
     {
         _jingJie = jingJie;
-        UpdateReveal();
-        EnvironmentChanged();
+        SetSlotCount(RunManager.SlotCountFromJingJie[_jingJie]);
     }
 
-    [NonSerialized] public int Start;
-    [NonSerialized] public int Limit;
-    private void UpdateReveal()
+    [SerializeField] private int _slotCount;
+    public int GetSlotCount() => _slotCount;
+    public void SetSlotCount(int slotCount)
     {
-        Start = RunManager.SkillStartFromJingJie[_jingJie];
-        Limit = RunManager.SkillLimitFromJingJie[_jingJie];
-        int end = Start + Limit;
+        _slotCount = slotCount;
 
         _slots.Count().Do(i =>
         {
-            _slots[i].SetLocked(!(Start <= i && i < end));
+            _slots[i].SetLocked(i >= _slotCount);
         });
 
         _filteredSlots?.Refresh();
+        
+        EnvironmentChanged();
     }
 
     [SerializeReference] private SlotListModel _slots;
     private FilteredListModel<SkillSlot> _filteredSlots;
-
-    public int GetSlotLimit()
-        => Limit;
 
     public SkillSlot GetSlot(int i)
         => _slots[i];
 
     public IEnumerable<SkillSlot> TraversalCurrentSlots()
     {
-        for (int i = Start; i < Start + Limit; i++)
+        for (int i = 0; i < _slotCount; i++)
             yield return _slots[i];
     }
 
@@ -199,7 +196,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             _baseHealth = template._baseHealth;
             _slots = new SlotListModel();
 
-            for (int i = 0; i < RunManager.SkillLimit; i++)
+            for (int i = 0; i < RunManager.MaxSlotCount; i++)
             {
                 SkillSlot slot = new SkillSlot(i);
                 slot.Skill = template._slots[i].Skill;
@@ -214,7 +211,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             _baseHealth = BaseHealthFromJingJie[JingJie.LianQi];
             _slots = new SlotListModel();
 
-            for (int i = 0; i < RunManager.SkillLimit; i++)
+            for (int i = 0; i < RunManager.MaxSlotCount; i++)
             {
                 SkillSlot slot = new SkillSlot(i);
                 _slots.Add(slot);
@@ -228,8 +225,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             f.GetMin() <= f.GetProgress());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
 
-        UpdateReveal();
-        EnvironmentChanged();
+        SetJingJie(GetJingJie());
     }
 
     public void OnBeforeSerialize() { }
@@ -248,9 +244,8 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         _showingFormations = new(_formations, f =>
             f.GetMin() <= f.GetProgress());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
-
-        UpdateReveal();
-        EnvironmentChanged();
+        
+        SetJingJie(GetJingJie());
     }
 
     public SkillSlot FindSlotWithSkillEntry(SkillEntry entry)

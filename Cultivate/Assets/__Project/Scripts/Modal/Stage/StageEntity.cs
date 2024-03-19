@@ -276,10 +276,10 @@ public class StageEntity : Addressable, StageEventListener
         Hp = _runEntity.GetFinalHealth();
         Armor = 0;
 
-        _skills = new StageSkill[_runEntity.Limit];
+        _skills = new StageSkill[_runEntity.GetSlotCount()];
         for (int i = 0; i < _skills.Length; i++)
         {
-            SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
+            SkillSlot slot = _runEntity.GetSlot(i + 0);
             _skills[i] = StageSkill.FromPlacedSkill(this, slot.PlacedSkill, i);
         }
 

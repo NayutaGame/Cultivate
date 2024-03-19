@@ -69,9 +69,9 @@ public class RunFormationDetails : EventDetails
         WuXingOrder = new List<WuXing>(WuXing.Traversal);
         WuXingOrder.Sort((lhs, rhs) => WuXingCounts[rhs] - WuXingCounts[lhs]);
 
-        NonSwiftCount = entity.GetSlotLimit() - SwiftCount;
-        NonExhaustedCount = entity.GetSlotLimit() - ExhaustedCount;
-        NonAttackCount = entity.GetSlotLimit() - AttackCount;
+        NonSwiftCount = entity.GetSlotCount() - SwiftCount;
+        NonExhaustedCount = entity.GetSlotCount() - ExhaustedCount;
+        NonAttackCount = entity.GetSlotCount() - AttackCount;
 
         Proficiency = 0;
     }

@@ -15,11 +15,7 @@ public class StageSkill
     public int SlotIndex => _slotIndex;
 
     public SkillSlot GetSlot()
-    {
-        RunEntity entity = _owner.RunEntity;
-        int index = _owner._p + entity.Start;
-        return entity.GetSlot(index);
-    }
+        => _owner.RunEntity.GetSlot(_owner._p + 0);
 
     private bool _exhausted;
     public bool Exhausted

@@ -9,6 +9,8 @@ public class EntityEditorEntityView : SimpleView
 {
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
+    public Slider SlotCountSlider;
+    public TMP_Text SlotCountText;
     public TMP_InputField HealthInputField;
     public Toggle NormalToggle;
     public Toggle EliteToggle;
@@ -23,6 +25,7 @@ public class EntityEditorEntityView : SimpleView
 
         EntityDropdown.onValueChanged.RemoveAllListeners();
         JingJieDropdown.onValueChanged.RemoveAllListeners();
+        SlotCountSlider.onValueChanged.RemoveAllListeners();
         HealthInputField.onValueChanged.RemoveAllListeners();
         NormalToggle.onValueChanged.RemoveAllListeners();
         EliteToggle.onValueChanged.RemoveAllListeners();
@@ -32,6 +35,7 @@ public class EntityEditorEntityView : SimpleView
 
         EntityDropdown.gameObject.SetActive(!addressIsNull);
         JingJieDropdown.gameObject.SetActive(!addressIsNull);
+        SlotCountSlider.gameObject.SetActive(!addressIsNull);
         HealthInputField.gameObject.SetActive(!addressIsNull);
         NormalToggle.gameObject.SetActive(!addressIsNull);
         EliteToggle.gameObject.SetActive(!addressIsNull);
@@ -54,6 +58,11 @@ public class EntityEditorEntityView : SimpleView
             JingJieDropdown.options = new();
             JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.ToString())));
             JingJieDropdown.onValueChanged.AddListener(JingJieChanged);
+        }
+
+        if (SlotCountSlider != null)
+        {
+            SlotCountSlider.onValueChanged.AddListener(SlotCountChanged);
         }
 
         if (HealthInputField != null)
@@ -97,6 +106,12 @@ public class EntityEditorEntityView : SimpleView
         JingJieDropdown.SetValueWithoutNotify(jingJie);
     }
 
+    private void SetSlotCount(int value)
+    {
+        SlotCountSlider.SetValueWithoutNotify(value);
+        SlotCountText.text = value.ToString();
+    }
+
     private void SetHealth(int health)
     {
         HealthInputField.SetTextWithoutNotify(health.ToString());
@@ -129,6 +144,7 @@ public class EntityEditorEntityView : SimpleView
             return;
         SetEntry(entity.GetEntry());
         SetJingJie(entity.GetJingJie());
+        SetSlotCount(entity.GetSlotCount());
         SetHealth(entity.GetBaseHealth());
         SetNormal(entity.IsNormal());
         SetElite(entity.IsElite());
@@ -148,6 +164,13 @@ public class EntityEditorEntityView : SimpleView
     {
         EntityModel entity = Get<EntityModel>();
         entity.SetJingJie(jingJie);
+        Refresh();
+    }
+
+    private void SlotCountChanged(float value)
+    {
+        EntityModel entity = Get<EntityModel>();
+        entity.SetSlotCount((int)value);
         Refresh();
     }
 

@@ -39,8 +39,8 @@ public class FormationCategory : Category<FormationGroupEntry>
 
             new("二律无相阵", order: 0, conditionDescription: "张数前二多的五行，各占卡组的一半", progressEvaluator:
                 (e, d) =>
-                    d.WuXingCounts[d.WuXingOrder[0]].ClampUpper(e.GetSlotLimit() / 2) +
-                    d.WuXingCounts[d.WuXingOrder[1]].ClampUpper(e.GetSlotLimit() / 2) + d.Proficiency,
+                    d.WuXingCounts[d.WuXingOrder[0]].ClampUpper(e.GetSlotCount() / 2) +
+                    d.WuXingCounts[d.WuXingOrder[1]].ClampUpper(e.GetSlotCount() / 2) + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "主动消耗锋锐\\格挡\\闪避\\力量\\灼烧时，返还2点", trivia: null, requirement: 12,
@@ -81,9 +81,9 @@ public class FormationCategory : Category<FormationGroupEntry>
 
             new("三才流转阵", order: 0, conditionDescription: "张数前三多的五行，各占卡组的三分之一", progressEvaluator:
                 (e, d) =>
-                    d.WuXingCounts[d.WuXingOrder[0]].ClampUpper(e.GetSlotLimit() / 3) +
-                    d.WuXingCounts[d.WuXingOrder[1]].ClampUpper(e.GetSlotLimit() / 3) +
-                    d.WuXingCounts[d.WuXingOrder[2]].ClampUpper(e.GetSlotLimit() / 3) + d.Proficiency,
+                    d.WuXingCounts[d.WuXingOrder[0]].ClampUpper(e.GetSlotCount() / 3) +
+                    d.WuXingCounts[d.WuXingOrder[1]].ClampUpper(e.GetSlotCount() / 3) +
+                    d.WuXingCounts[d.WuXingOrder[2]].ClampUpper(e.GetSlotCount() / 3) + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(JingJie.HuaShen, rewardDescription: "获得锋锐\\格挡\\闪避\\力量\\灼烧时，额外2点", trivia: null, requirement: 12,

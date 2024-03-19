@@ -7,6 +7,9 @@ public interface EntityModel
     JingJie GetJingJie();
     void SetJingJie(JingJie jingJie);
 
+    int GetSlotCount();
+    void SetSlotCount(int slotCount);
+
     int GetBaseHealth();
     void SetBaseHealth(int health);
 

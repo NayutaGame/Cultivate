@@ -5,9 +5,8 @@ using CLLibrary;
 
 public class RunManager : Singleton<RunManager>, Addressable
 {
-    public static readonly int SkillLimit = 12;
-    public static readonly int[] SkillLimitFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
-    public static readonly int[] SkillStartFromJingJie = new[] { 9, 6, 4, 2, 0, 0 };
+    public static readonly int MaxSlotCount = 12;
+    public static readonly int[] SlotCountFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
     public static readonly float EUREKA_DISCOUNT_RATE = 0.5f;
 
     public RunAnimationDelegate Anim;
