@@ -19,9 +19,11 @@ public class DesignerEnvironment
 
             map.EntityPool = new();
             map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
+            map.EntityPool.Shuffle();
 
             map.AdventurePool = new();
             map.AdventurePool.Populate(Encyclopedia.NodeCategory.Traversal.FilterObj(e => e.WithInPool && e is AdventureNodeEntry));
+            map.AdventurePool.Shuffle();
             
             map.DrawDescriptors = new DrawDescriptor[][]
             {
@@ -100,9 +102,11 @@ public class DesignerEnvironment
 
             map.EntityPool = new();
             map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
+            map.EntityPool.Shuffle();
 
             map.AdventurePool = new();
             map.AdventurePool.Populate(Encyclopedia.NodeCategory.Traversal.FilterObj(e => e.WithInPool && e is AdventureNodeEntry));
+            map.AdventurePool.Shuffle();
             
             map.DrawDescriptors = new DrawDescriptor[][]
             {

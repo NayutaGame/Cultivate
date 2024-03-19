@@ -144,8 +144,8 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor A = new("一位老者做在石头上向周围人传教，虚己以游世，其孰能害之。说的是，只要你不把别人当个人，别人就不会引起你生气。你突然想逗他一下。", "朝他作鬼脸", "戳他一下");
 
-                    DialogPanelDescriptor B1 = new("他看起来有点生气了。", "朝他作鬼脸", "戳他一下"); // 玩家不知道那个是大量，那个是小量
-                    DialogPanelDescriptor B2 = new("他看起来非常生气了。", "朝他作鬼脸", "戳他一下");
+                    DialogPanelDescriptor B1 = new("他看起来有点生气了。", "朝他作鬼脸", "狠狠戳他一下");
+                    DialogPanelDescriptor B2 = new("他看起来非常生气了。", "朝他作鬼脸", "狠狠戳他一下");
 
                     DialogPanelDescriptor D = new DialogPanelDescriptor("你上去为自已的恶作剧道歉，他说还好，不会放在心上，这位学子应该学到了什么。\n\n获得50金")
                         .SetReward(Reward.FromGold(50));
