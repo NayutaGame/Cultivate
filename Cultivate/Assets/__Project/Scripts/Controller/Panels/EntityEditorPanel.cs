@@ -32,6 +32,7 @@ public class EntityEditorPanel : Panel
 
         EntityBrowser.SetAddress(new Address("Editor.EntityEditableList"));
         EntityBrowser.LeftClickNeuron.Join(SelectEntity);
+        EntityBrowser.RightClickNeuron.Join(DeselectEntity);
 
         SkillBrowser.SetAddress(new Address("SkillInventory"));
         SkillBrowser.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter);
@@ -91,25 +92,33 @@ public class EntityEditorPanel : Panel
         LoadButton.onClick.AddListener(Load);
     }
 
+    public override void Refresh()
+    {
+        base.Refresh();
+        AwayEntityView.Refresh();
+        RefreshOperationBoard();
+        HomeEntityView.Refresh();
+    }
+
     private void CopyToTop()
     {
         AppManager.Instance.EditorManager.CopyToTop();
-        HomeEntityView.Refresh();
-        AwayEntityView.Refresh();
+        Configure();
+        Refresh();
     }
 
     private void SwapTopAndBottom()
     {
         AppManager.Instance.EditorManager.SwapTopAndBottom();
-        HomeEntityView.Refresh();
-        AwayEntityView.Refresh();
+        Configure();
+        Refresh();
     }
 
     private void CopyToBottom()
     {
         AppManager.Instance.EditorManager.CopyToBottom();
-        HomeEntityView.Refresh();
-        AwayEntityView.Refresh();
+        HomeEntityView.SetAddress(new Address("Editor.Home"));
+        Refresh();
     }
 
     private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
@@ -162,13 +171,16 @@ public class EntityEditorPanel : Panel
     private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
         => SelectEntity(ib.GetSimpleView().GetSelectBehaviour());
 
+    private void DeselectEntity(InteractBehaviour ib, PointerEventData eventData)
+        => SelectEntity(null);
+
     private void SelectEntity(SelectBehaviour selectBehaviour)
     {
         if (_selection != null)
             _selection.SetSelected(false);
 
         _selection = selectBehaviour;
-        _selectionIndex = EntityBrowser.IndexFromItemBehaviour(_selection.GetSimpleView().GetItemBehaviour());
+        _selectionIndex = EntityBrowser.IndexFromItemBehaviour(_selection == null ? null : _selection.GetSimpleView().GetItemBehaviour());
 
         // TODO: submit form
         EditorManager.Instance.SetSelectionIndex(_selectionIndex);
@@ -179,15 +191,6 @@ public class EntityEditorPanel : Panel
             AwayEntityView.Refresh();
             _selection.SetSelected(true);
         }
-        
-        RefreshOperationBoard();
-    }
-
-    public override void Refresh()
-    {
-        base.Refresh();
-        AwayEntityView.Refresh();
-        HomeEntityView.Refresh();
         
         RefreshOperationBoard();
     }

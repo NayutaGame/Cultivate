@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
+using UnityEditor.Search;
 
 public class EditorManager : Singleton<EditorManager>, Addressable
 {
@@ -9,36 +10,52 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
     [NonSerialized] public EntityEditableList EntityEditableList;
+    
+    [NonSerialized] private RunEntity _home;
+    private RunEntity Home
+    {
+        get => _home;
+        set
+        {
+            if (_home != null)
+                _home.EnvironmentChangedEvent -= EnvironmentChanged;
+        
+            _home = value;
+        
+            if (_home != null)
+                _home.EnvironmentChangedEvent += EnvironmentChanged;
+        }
+    }
+
+    [NonSerialized] private RunEntity _away;
+    private RunEntity Away
+    {
+        get => _away;
+        set
+        {
+            if (_away != null)
+                _away.EnvironmentChangedEvent -= EnvironmentChanged;
+        
+            _away = value;
+        
+            if (_away != null)
+                _away.EnvironmentChangedEvent += EnvironmentChanged;
+        }
+    }
+    
     [NonSerialized] private int? _selectionIndex;
     public int? GetSelectionIndex() => _selectionIndex;
     public void SetSelectionIndex(int? value)
     {
         _selectionIndex = value;
-        
         SetAwayFromSelectionIndex(value);
-        
         EnvironmentChanged();
     }
-
-    [NonSerialized] private RunEntity _home;
-    [NonSerialized] private RunEntity _away;
-
-    private void SetAway(RunEntity away)
-    {
-        if (_away != null)
-            _away.EnvironmentChangedEvent -= EnvironmentChanged;
-        
-        _away = away;
-        
-        if (_away != null)
-            _away.EnvironmentChangedEvent += EnvironmentChanged;
-    }
-
     private void SetAwayFromSelectionIndex(int? selectionIndex)
     {
-        SetAway(_selectionIndex.HasValue
-            ? EntityEditableList[_selectionIndex.Value]
-            : RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000));
+        Away = selectionIndex.HasValue
+            ? EntityEditableList[selectionIndex.Value]
+            : RunEntity.Trainer();
     }
 
     [NonSerialized] public StageResult SimulateResult;
@@ -52,54 +69,55 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         _accessors = new()
         {
             { "EntityEditableList", () => EntityEditableList },
-            { "Home", () => _home }
+            { "Home", () => Home }
         };
 
         Load();
-
-        _home = RunEntity.Default();
-        _home.EnvironmentChangedEvent += EnvironmentChanged;
+        
+        Home = RunEntity.Default();
+        Away = RunEntity.Trainer();
+        
         EnvironmentChangedEvent += SimulateProcedure;
     }
 
     public void Combat()
     {
-        StageEnvironment.Combat(StageConfig.ForEditor(_home, _away, null));
+        StageEnvironment.Combat(StageConfig.ForEditor(Home, Away, null));
     }
 
-    public void SimulateProcedure()
+    private void SimulateProcedure()
     {
         PlacementProcedure();
         FormationProcedure();
         
-        SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(_home, _away, null));
+        SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(Home, Away, null));
     }
 
     private void PlacementProcedure()
     {
-        _home.PlacementProcedure();
-        _away.PlacementProcedure();
+        Home.PlacementProcedure();
+        Away.PlacementProcedure();
     }
 
     private void FormationProcedure()
     {
-        _home.FormationProcedure();
-        _away.FormationProcedure();
+        Home.FormationProcedure();
+        Away.FormationProcedure();
     }
 
     public void CopyToTop()
     {
         if (_selectionIndex == null)
             return;
-        EntityEditableList.Replace(EntityEditableList[_selectionIndex.Value], RunEntity.FromTemplate(_home));
+        EntityEditableList.Replace(EntityEditableList[_selectionIndex.Value], RunEntity.FromTemplate(Home));
     }
 
     public void SwapTopAndBottom()
     {
         if (_selectionIndex == null)
             return;
-        RunEntity temp = _home;
-        _home = EntityEditableList[_selectionIndex.Value];
+        RunEntity temp = Home;
+        Home = EntityEditableList[_selectionIndex.Value];
         EntityEditableList.Replace(EntityEditableList[_selectionIndex.Value], temp);
     }
 
@@ -107,7 +125,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     {
         if (_selectionIndex == null)
             return;
-        _home = RunEntity.FromTemplate(EntityEditableList[_selectionIndex.Value]);
+        Home = RunEntity.FromTemplate(EntityEditableList[_selectionIndex.Value]);
     }
 
     public void Save()

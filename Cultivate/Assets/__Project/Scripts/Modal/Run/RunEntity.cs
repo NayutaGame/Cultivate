@@ -169,6 +169,9 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     public static RunEntity Default()
         => new();
 
+    public static RunEntity Trainer()
+        => FromJingJieHealth(JingJie.LianQi, 1000000);
+
     public static RunEntity FromJingJieHealth(JingJie jingJie, int health)
     {
         RunEntity e = new();
