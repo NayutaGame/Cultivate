@@ -90,7 +90,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.SkillCategory[_entry.GetName()];
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.SkillCategory[_entry.GetId()];
     }
 
     public bool TryIncreaseJingJie(bool loop = true)
