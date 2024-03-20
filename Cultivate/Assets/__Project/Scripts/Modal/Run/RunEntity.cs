@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using CLLibrary;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [Serializable]
 public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceiver

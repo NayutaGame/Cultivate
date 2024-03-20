@@ -41,7 +41,6 @@ public class EntityEditorPanel : Panel
             CanvasManager.Instance.FormationAnnotation.PointerExit);
 
         AwayEntityView.SetAddress(null);
-        AwayEntityView.PointerEnterSlotNeuron.Join(ShowSkillAnnotationFromSlotView);
         AwayEntityView.PointerExitSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
         AwayEntityView.PointerMoveSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
         AwayEntityView.BeginDragSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
@@ -53,7 +52,6 @@ public class EntityEditorPanel : Panel
         AwayEntityView.PointerMoveFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerMove);
 
         HomeEntityView.SetAddress(new Address("Editor.Home"));
-        HomeEntityView.PointerEnterSlotNeuron.Join(ShowSkillAnnotationFromSlotView);
         HomeEntityView.PointerExitSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
         HomeEntityView.PointerMoveSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
         HomeEntityView.BeginDragSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
@@ -157,12 +155,8 @@ public class EntityEditorPanel : Panel
         SkillSlot slot = ib.GetSimpleView().Get<SkillSlot>();
         slot.TryIncreaseJingJie();
         ib.GetSimpleView().Refresh();
+        RefreshOperationBoard();
         // CanvasManager.Instance.SkillAnnotation.Refresh();
-    }
-
-    private void ShowSkillAnnotationFromSlotView(InteractBehaviour ib, PointerEventData eventData)
-    {
-        // CanvasManager.Instance.SkillAnnotation.SetAddress(ib.GetSimpleView().GetAddress().Append(".Skill"));
     }
 
     private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
@@ -185,6 +179,8 @@ public class EntityEditorPanel : Panel
             AwayEntityView.Refresh();
             _selection.SetSelected(true);
         }
+        
+        RefreshOperationBoard();
     }
 
     public override void Refresh()
@@ -192,7 +188,12 @@ public class EntityEditorPanel : Panel
         base.Refresh();
         AwayEntityView.Refresh();
         HomeEntityView.Refresh();
+        
+        RefreshOperationBoard();
+    }
 
+    private void RefreshOperationBoard()
+    {
         if (EditorManager.Instance.SimulateResult is { } result)
         {
             Result.text = $"玩家 : 怪物\n{result.HomeLeftHp} : {result.AwayLeftHp}";
