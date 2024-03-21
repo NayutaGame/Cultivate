@@ -844,6 +844,7 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Tgt) return;
                         if (b.Owner.GainedFengRuiRecord < 20) return;
+                        if (b.Owner.GetStackOfBuff("人间无戈") != 0) return;
 
                         await b.Owner.GainBuffProcedure("人间无戈");
                         await b.Owner.RemoveBuff(b);
@@ -872,8 +873,9 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Tgt) return;
                         if (b.Owner.GainedGeDangRecord < 20) return;
+                        if (b.Owner.GetStackOfBuff("摩诃钵特摩") != 0) return;
 
-                        await b.Owner.GainBuffProcedure("摩诃钵特摩", 8);
+                        await b.Owner.GainBuffProcedure("摩诃钵特摩");
                         await b.Owner.RemoveBuff(b);
                     }),
                 }),
@@ -909,6 +911,7 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Tgt) return;
                         if (b.Owner.GainedLiLiangRecord < 20) return;
+                        if (b.Owner.GetStackOfBuff("通透世界") != 0) return;
 
                         await b.Owner.GainBuffProcedure("通透世界");
                         await b.Owner.RemoveBuff(b);
@@ -975,6 +978,7 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Tgt) return;
                         if (b.Owner.GainedRouRenRecord < 20) return;
+                        if (b.Owner.GetStackOfBuff("那由他") != 0) return;
 
                         await b.Owner.GainBuffProcedure("那由他");
                         await b.Owner.RemoveBuff(b);

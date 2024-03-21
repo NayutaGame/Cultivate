@@ -433,6 +433,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await skill.ExhaustProcedure();
+                    await caster.GainBuffProcedure("待激活的人间无戈");
                     return null;
                 }),
 
@@ -748,6 +749,9 @@ public class SkillCategory : Category<SkillEntry>
                     $"灵气+4，格挡+4\n20格挡觉醒：八动，回合结束死亡",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
+                    await caster.GainBuffProcedure("灵气", 4);
+                    await caster.GainBuffProcedure("格挡", 4);
+                    await caster.GainBuffProcedure("待激活的摩诃钵特摩");
                     return null;
                 }),
 
@@ -1080,6 +1084,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"消耗\n20力量觉醒：攻击具有穿透",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
+                    await skill.ExhaustProcedure();
+                    await caster.GainBuffProcedure("待激活的通透世界");
                     return null;
                 }),
 
@@ -1717,6 +1723,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"20柔韧觉醒：没有耗蓝阶段，Step阶段无法受影响，所有Buff层数不会再变化",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
+                    await skill.ExhaustProcedure();
+                    await caster.GainBuffProcedure("待激活的那由他");
                     return null;
                 }),
 
