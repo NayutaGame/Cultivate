@@ -937,6 +937,7 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Tgt) return;
                         if (b.Owner.GainedZhuoShaoRecord < 20) return;
+                        if (b.Owner.GetStackOfBuff("凤凰涅槃") != 0) return;
 
                         await b.Owner.GainBuffProcedure("凤凰涅槃");
                         await b.Owner.RemoveBuff(b);

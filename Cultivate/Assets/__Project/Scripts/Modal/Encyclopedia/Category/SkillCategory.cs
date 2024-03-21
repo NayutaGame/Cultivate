@@ -365,8 +365,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"消耗所有护甲，每{6 - dj}，锋锐+1\n金流转",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    int stack = caster.Armor / (skill.Dj - 1);
-                    await caster.LoseArmorProcedure((skill.Dj - 1) * stack);
+                    int stack = caster.Armor / (6 - skill.Dj);
+                    await caster.LoseArmorProcedure((6 - skill.Dj) * stack);
                     await caster.GainBuffProcedure("锋锐", stack);
 
                     await caster.CycleProcedure(WuXing.Jin);
