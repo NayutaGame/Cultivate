@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using JetBrains.Annotations;
+using UnityEngine;
 
 public class RunEnvironment : Addressable, RunEventListener
 {
@@ -233,69 +234,82 @@ public class RunEnvironment : Addressable, RunEventListener
             .Do(e => _eventDict.Unregister(this, e));
     }
 
-    public bool TryMerge(RunSkill lhs, RunSkill rhs)
+    public bool MergeProcedure(RunSkill lhs, RunSkill rhs)
     {
-        if (lhs.GetJingJie() > _home.GetJingJie() && lhs.GetEntry() != rhs.GetEntry())
+        SkillEntry lEntry = lhs.GetEntry();
+        SkillEntry rEntry = rhs.GetEntry();
+        JingJie lJingJie = lhs.GetJingJie();
+        JingJie rJingJie = rhs.GetJingJie();
+        WuXing? lWuXing = lEntry.WuXing;
+        WuXing? rWuXing = rEntry.WuXing;
+
+        if (rJingJie > _home.GetJingJie() || lJingJie > _home.GetJingJie())
             return false;
-
-        if (lhs.GetJingJie() != rhs.GetJingJie())
-            return false;
-
-        JingJie jingJie = lhs.GetJingJie();
-        WuXing? lWuXing = lhs.GetEntry().WuXing;
-        WuXing? rWuXing = rhs.GetEntry().WuXing;
-
-        bool upgrade;
-
-        if (jingJie == JingJie.FanXu) {
-            upgrade = false;
-        } else if (jingJie == JingJie.HuaShen) {
-            // upgrade = RandomManager.value < 0.05;
-            upgrade = false;
-        } else {
-            upgrade = true;
-        }
-
-        JingJie newJingJie = jingJie + (upgrade ? 1 : 0);
-
-        if (lhs.GetEntry() == rhs.GetEntry() && upgrade && lhs.GetEntry().JingJieContains(lhs.JingJie + 1))
+        
+        // Congruent
+        if (lEntry == rEntry && lJingJie == rJingJie && lJingJie < rEntry.HighestJingJie)
         {
-            rhs.JingJie = newJingJie;
+            rhs.JingJie = (rJingJie + 2).ClampUpper(rEntry.HighestJingJie);
             Hand.Remove(lhs);
             Hand.SetModified(rhs);
             EnvironmentChanged();
             return true;
         }
-        else if (!lWuXing.HasValue || !rWuXing.HasValue)
+        
+        // Same Name
+        if (lEntry == rEntry && Mathf.Max(lJingJie, rJingJie) < rEntry.HighestJingJie)
+        {
+            rhs.JingJie = (Mathf.Max(lJingJie, rJingJie) + 1).ClampUpper(rEntry.HighestJingJie);
+            Hand.Remove(lhs);
+            Hand.SetModified(rhs);
+            EnvironmentChanged();
+            return true;
+        }
+        
+        // Formula
+        if (false && lJingJie == rJingJie)
         {
             return false;
         }
-
-        Predicate<SkillEntry> pred = null;
-        WuXing? wuXing = null;
-
-        if (WuXing.SameWuXing(lWuXing, rWuXing))
+        
+        // Same WuXing
+        if (lWuXing == rWuXing && lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
         {
-            pred = s => s != lhs.GetEntry() && s != rhs.GetEntry();
-            wuXing = lWuXing;
+            SkillPool.TryDrawSkill(out RunSkill newSkill,
+                pred: skillEntry => skillEntry != lEntry && skillEntry != rEntry,
+                wuXing: rWuXing,
+                jingJie: (rJingJie + 1).ClampUpper(rEntry.HighestJingJie));
+            Hand.Remove(lhs);
+            Hand.Replace(rhs, newSkill);
+            EnvironmentChanged();
+            return true;
         }
-        else if (WuXing.XiangSheng(lWuXing, rWuXing))
+        
+        // XiangSheng WuXing
+        if (WuXing.XiangSheng(lWuXing, rWuXing) && lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
         {
-            wuXing = WuXing.XiangShengNext(lWuXing, rWuXing).Value;
+            SkillPool.TryDrawSkill(out RunSkill newSkill,
+                wuXing: WuXing.XiangShengNext(lWuXing, rWuXing).Value,
+                jingJie: (rJingJie + 1).ClampUpper(rEntry.HighestJingJie));
+            Hand.Remove(lhs);
+            Hand.Replace(rhs, newSkill);
+            EnvironmentChanged();
+            return true;
         }
-        else
+        
+        // Same JingJie
+        if (lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
         {
-            pred = s => s.WuXing.HasValue && s.WuXing != lWuXing && s.WuXing != rWuXing;
+            SkillPool.TryDrawSkill(out RunSkill newSkill,
+                pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing && skillEntry.WuXing != rWuXing,
+                jingJie: (rJingJie + 1).ClampUpper(rEntry.HighestJingJie));
+            Hand.Remove(lhs);
+            Hand.Replace(rhs, newSkill);
+            EnvironmentChanged();
+            return true;
         }
-
-        bool success = SkillPool.TryDrawSkill(out RunSkill newSkill, pred, wuXing, newJingJie);
-        if (!success)
-            return false;
-
-        Hand.Replace(rhs, newSkill);
-        Hand.Remove(lhs);
-        EnvironmentChanged();
-        return true;
+        
+        return false;
     }
 
     public bool TryEquipSkill(RunSkill toEquip, SkillSlot slot)

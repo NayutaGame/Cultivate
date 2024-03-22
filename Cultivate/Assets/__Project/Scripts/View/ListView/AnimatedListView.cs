@@ -44,9 +44,6 @@ public class AnimatedListView : ListView
         RectTransform displayTransform = itemBehaviour.GetDisplayTransform();
         displayTransform.SetSiblingIndex(index);
         displayTransform.gameObject.SetActive(true);
-        
-        if (name == "HandView")
-            Debug.Log($"{name}: {itemBehaviour.gameObject.name} is enabled");
 
         return itemBehaviour;
     }
@@ -58,9 +55,6 @@ public class AnimatedListView : ListView
         RectTransform displayTransform = itemBehaviour.GetDisplayTransform();
         displayTransform.gameObject.SetActive(false);
         displayTransform.SetAsLastSibling();
-        
-        if (name == "HandView")
-            Debug.Log($"{name}: {itemBehaviour.gameObject.name} is disabled");
 
         return itemBehaviour;
     }

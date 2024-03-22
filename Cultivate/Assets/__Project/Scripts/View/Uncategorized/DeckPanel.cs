@@ -108,7 +108,7 @@ public class DeckPanel : Panel
         RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
         RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
         RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
-        bool success = env.TryMerge(lhs, rhs);
+        bool success = env.MergeProcedure(lhs, rhs);
         if (!success)
             return;
 
