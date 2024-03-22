@@ -112,6 +112,9 @@ public class DeckPanel : Panel
         if (!success)
             return;
 
+        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        ghost.FromDrop();
+        
         // Merge Animation
         to.OnEndDrag(eventData);
         AudioManager.Play("CardUpgrade");
