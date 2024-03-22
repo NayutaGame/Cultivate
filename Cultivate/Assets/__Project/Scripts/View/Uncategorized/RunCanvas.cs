@@ -74,28 +74,5 @@ public class RunCanvas : MonoBehaviour
             DeckPanel.SetLocked(false);
             await DeckPanel.SetShowing(false);
         }
-
-        if (d is CardPickerPanelDescriptor)
-        {
-            DeckPanel.HandView.LeftClickNeuron.Add(ToggleSkill);
-            DeckPanel.FieldView.LeftClickNeuron.Add(ToggleSkillSlot);
-        }
-        else
-        {
-            DeckPanel.HandView.LeftClickNeuron.Remove(ToggleSkill);
-            DeckPanel.FieldView.LeftClickNeuron.Remove(ToggleSkillSlot);
-        }
-    }
-
-    private void ToggleSkill(InteractBehaviour ib, PointerEventData d)
-    {
-        RunPanelCollection.CardPickerPanel.ToggleSkill(ib);
-        Refresh();
-    }
-
-    private void ToggleSkillSlot(InteractBehaviour ib, PointerEventData d)
-    {
-        RunPanelCollection.CardPickerPanel.ToggleSkillSlot(ib);
-        Refresh();
     }
 }

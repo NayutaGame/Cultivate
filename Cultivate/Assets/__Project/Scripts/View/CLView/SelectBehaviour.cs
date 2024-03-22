@@ -18,10 +18,13 @@ public class SelectBehaviour : MonoBehaviour
 
     private bool _selected;
     public bool IsSelected() => _selected;
-    public void SetSelected(bool selected)
+    public void SetSelected(bool selected, bool animated = true)
     {
         _selected = selected;
-        AnimateSelect(SelectionImage, _selected);
+        if (animated)
+            AnimateSelect(SelectionImage, _selected);
+        else
+            NonAnimateSelect(SelectionImage, _selected);
     }
 
     private Tween _selectHandle;
@@ -31,5 +34,10 @@ public class SelectBehaviour : MonoBehaviour
         _selectHandle?.Kill();
         _selectHandle = target.DOFade(value ? 1 : 0, 0.15f);
         _selectHandle.Restart();
+    }
+
+    private void NonAnimateSelect(Image target, bool value)
+    {
+        target.color = new Color(target.color.r, target.color.g, target.color.b, value ? 1 : 0);
     }
 }
