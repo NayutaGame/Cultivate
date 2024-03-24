@@ -14,7 +14,7 @@ public class ArbitraryCardPickerPanel : Panel
     public Button ConfirmButton;
     public ListView SkillListView;
 
-    private List<SkillView> _selections;
+    private List<SimpleView> _selections;
     private Address _address;
 
     public override void Configure()
@@ -25,7 +25,7 @@ public class ArbitraryCardPickerPanel : Panel
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
-        _selections = new List<SkillView>();
+        _selections = new List<SimpleView>();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
         SkillListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter, PlayCardHoverSFX);
@@ -36,7 +36,7 @@ public class ArbitraryCardPickerPanel : Panel
 
     public void OnDisable()
     {
-        _selections.Do(v => v.SetSelected(false));
+        _selections.Do(v => v.GetSelectBehaviour().SetSelected(false));
         _selections.Clear();
     }
 
@@ -61,13 +61,12 @@ public class ArbitraryCardPickerPanel : Panel
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
-        SkillView skillView = v as SkillView;
-        bool isSelected = _selections.Contains(skillView);
+        bool isSelected = _selections.Contains(v);
 
         if (isSelected)
         {
-            skillView.SetSelected(false);
-            _selections.Remove(skillView);
+            v.GetSelectBehaviour().SetSelected(false);
+            _selections.Remove(v);
         }
         else
         {
@@ -75,12 +74,12 @@ public class ArbitraryCardPickerPanel : Panel
             if (space <= 0)
                 return false;
 
-            RunSkill skill = skillView.Get<RunSkill>();
+            RunSkill skill = v.Get<RunSkill>();
             if (!d.CanSelect(skill))
                 return false;
 
-            skillView.SetSelected(true);
-            _selections.Add(skillView);
+            v.GetSelectBehaviour().SetSelected(true);
+            _selections.Add(v);
         }
 
         Refresh();
