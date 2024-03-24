@@ -111,7 +111,7 @@ public class DesignerEnvironment
             map.DrawDescriptors = new DrawDescriptor[][]
             {
                 new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Adventure, "天机阁"),
+                    new(DrawDescriptor.NodeType.Adventure),
                     new(DrawDescriptor.NodeType.Battle),
                     new(DrawDescriptor.NodeType.Adventure),
                     new(DrawDescriptor.NodeType.Rest),

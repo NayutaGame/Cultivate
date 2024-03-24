@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
-using UnityEditor.Search;
 
 public class EditorManager : Singleton<EditorManager>, Addressable
 {
