@@ -16,14 +16,29 @@ public class ShopPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         CommodityListView.SetAddress(_address.Append(".Commodities"));
-        CommodityListView.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter);
-        CommodityListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-        CommodityListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
+        CommodityListView.PointerEnterNeuron.Join(PointerEnter);
+        CommodityListView.PointerExitNeuron.Join(PointerExit);
+        CommodityListView.PointerMoveNeuron.Join(PointerMove);
         CommodityListView.LeftClickNeuron.Join(BuySkill);
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
     }
+
+    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
+    {
+        // Hover Animation
+        CanvasManager.Instance.SkillAnnotation.PointerEnter(ib.GetSimpleView().GetAddress().Append(".Skill"), d);
+    }
+
+    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+    {
+        // Unhover Animation
+        CanvasManager.Instance.SkillAnnotation.PointerExit(ib.GetSimpleView().GetAddress().Append(".Skill"), d);
+    }
+
+    private void PointerMove(InteractBehaviour ib, PointerEventData d)
+        => CanvasManager.Instance.SkillAnnotation.PointerMove(ib.GetSimpleView().GetAddress().Append(".Skill"), d);
 
     public override void Refresh()
     {
@@ -45,8 +60,8 @@ public class ShopPanel : Panel
             return false;
 
         // AudioManager.Instance.Play("钱币");
+        // Buy Animation
         CanvasManager.Instance.RunCanvas.Refresh();
-
         return true;
     }
 

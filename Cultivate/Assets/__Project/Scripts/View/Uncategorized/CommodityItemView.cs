@@ -1,12 +1,17 @@
 
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CommodityItemView : SimpleView
 {
-    public PenetrateSkillView SkillView;
+    public SimpleView SkillView;
     public TMP_Text PriceText;
+    public Image Icon;
     public TMP_Text DiscountText;
+
+    public Color NormalDiscountColor;
 
     public override void SetAddress(Address address)
     {
@@ -38,6 +43,17 @@ public class CommodityItemView : SimpleView
             DiscountText.gameObject.SetActive(true);
         }
 
-        // BuyButton.interactable = commodity.Affordable();
+        if (commodity.Affordable())
+        {
+            DiscountText.color = NormalDiscountColor;
+            Icon.color = Color.white;
+            PriceText.color = Color.white;
+        }
+        else
+        {
+            DiscountText.color = Color.red;
+            Icon.color = Color.red;
+            PriceText.color = Color.red;
+        }
     }
 }

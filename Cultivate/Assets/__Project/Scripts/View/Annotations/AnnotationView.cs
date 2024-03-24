@@ -26,6 +26,19 @@ public class AnnotationView : MonoBehaviour
     public void PointerMove(InteractBehaviour ib, PointerEventData d)
         => UpdateMousePos(d.position);
 
+    public void PointerEnter(Address address, PointerEventData d)
+    {
+        SimpleView.SetAddress(address);
+        gameObject.SetActive(true);
+        SimpleView.Refresh();
+    }
+
+    public void PointerExit(Address address, PointerEventData d)
+        => gameObject.SetActive(false);
+
+    public void PointerMove(Address address, PointerEventData d)
+        => UpdateMousePos(d.position);
+
     private void UpdateMousePos(Vector2 pos)
     {
         Vector2 pivot = new Vector2(Mathf.RoundToInt(pos.x / Screen.width), Mathf.RoundToInt(pos.y / Screen.height));
