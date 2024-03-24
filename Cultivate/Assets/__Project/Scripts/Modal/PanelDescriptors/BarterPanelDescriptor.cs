@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using System.Linq;
 using CLLibrary;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BarterPanelDescriptor : PanelDescriptor

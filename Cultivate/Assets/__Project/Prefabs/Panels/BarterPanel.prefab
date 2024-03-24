@@ -263,9 +263,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractBehaviour: {fileID: 0}
   Container: {fileID: 8584042798352517313}
   Prefabs:
-  - {fileID: 4346345133279296566, guid: 53f8a017ed41e604aa020ca58f6b3830, type: 3}
+  - {fileID: 4346345133279296566, guid: bd8f87e0828943d4db221a64dbaf1046, type: 3}
 --- !u!1 &4679587635219362526
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,8 +335,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u53EF\u4EA4\u6362\u5361\u724C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3fe2a498c90bfc14e8d4af378adb615c, type: 2}
-  m_sharedMaterial: {fileID: 4957693234018110974, guid: 3fe2a498c90bfc14e8d4af378adb615c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

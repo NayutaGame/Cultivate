@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class BarterItemView : SimpleView
 {
-    public StandardSkillView PlayerSkillView;
-    public StandardSkillView SkillView;
+    public SimpleView PlayerSkillView;
+    public SimpleView SkillView;
     public Button ExchangeButton;
 
     // TODO: use Neuron
