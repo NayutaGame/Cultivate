@@ -27,6 +27,193 @@ public class RunEnvironment : Addressable, RunEventListener
 
     #region Procedures
 
+    public void StartRunProcedure(RunDetails d)
+    {
+        // init map
+        {
+            // init entity pool
+            Map.EntityPool = new();
+            Map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
+            Map.EntityPool.Shuffle();
+            
+            // init adventure pool
+            Map.AdventurePool = new();
+            Map.AdventurePool.Populate(Encyclopedia.NodeCategory.Traversal.FilterObj(e => e.WithInPool && e is AdventureNodeEntry));
+            Map.AdventurePool.Shuffle();
+            
+            // init skill pool
+            4.Do(i => SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
+            
+            // init drawers
+            Map.DrawDescriptors = new DrawDescriptor[][]
+            {
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Boss),
+                    new(DrawDescriptor.NodeType.Ascension),
+                },
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Shop),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Boss),
+                    new(DrawDescriptor.NodeType.Ascension),
+                },
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Shop),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Boss),
+                    new(DrawDescriptor.NodeType.Ascension),
+                },
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Shop),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Boss),
+                    new(DrawDescriptor.NodeType.Ascension),
+                },
+                new DrawDescriptor[] {
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Adventure),
+                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Rest),
+                    new(DrawDescriptor.NodeType.Shop),
+                    new(DrawDescriptor.NodeType.Boss),
+                },
+            };
+        }
+
+        {
+            // init level and step
+            SetLevelProcedure(0);
+        }
+
+        {
+            // init player start condition
+            SetDGold(50);
+            ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
+        }
+        
+        _eventDict.SendEvent(RunEventDict.START_RUN, d);
+    }
+
+    private void SetLevelProcedure(int toLevel)
+        => SetLevelProcedure(new SetLevelDetails(Map.Level, toLevel));
+    private void SetLevelProcedure(SetLevelDetails d)
+    {
+        _eventDict.SendEvent(RunEventDict.WIL_SET_LEVEL, d);
+        if (d.Cancel)
+            return;
+
+        Map.Level = d.ToLevel;
+        Map.DrawStepItems();
+        
+        ResetStepProcedure();
+        
+        _home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.ToLevel]);
+        _home.SetJingJie(d.ToLevel);
+        AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToLevel));
+
+        _eventDict.SendEvent(RunEventDict.DID_SET_LEVEL, d);
+    }
+
+    private void ResetStepProcedure()
+    {
+        Map.Step = 0;
+        Map.CurrStepItem.ToChoose();
+        Map.Choosing = true;
+    }
+
+    private void NextStepProcedure()
+    {
+        Map.Step++;
+        Map.CurrStepItem.ToChoose();
+        Map.Choosing = true;
+    }
+
+    public PanelDescriptor MakeChoiceProcedure(RunNode runNode)
+    {
+        Map.Choice = runNode.Position.y;
+        Map.CurrStepItem.MakeChoice(Map.Choice);
+        Map.CreateEntry();
+        Map.Choosing = false;
+        return Map.CurrNode.CurrentPanel;
+    }
+
+    public PanelDescriptor ReceiveSignalProcedure(Signal signal)
+    {
+        PanelDescriptor panelDescriptor = Map.CurrNode.CurrentPanel.ReceiveSignal(signal);
+        if (panelDescriptor != null)
+        {
+            Map.CurrNode.ChangePanel(panelDescriptor);
+        }
+        else
+        {
+            TryFinishStep();
+        }
+
+        bool commit = TryCommit();
+        if (!commit)
+            return panelDescriptor;
+
+        panelDescriptor = GetActivePanel();
+        Map.CurrNode.ChangePanel(panelDescriptor);
+        return panelDescriptor;
+    }
+
+    private void TryFinishStep()
+    {
+        if (Map.Choosing)
+            return;
+
+        Map.CurrNode.Finish();
+
+        bool isLastStep = Map.IsLastStep();
+        if (!isLastStep)
+        {
+            NextStepProcedure();
+            return;
+        }
+
+        bool isLastLevel = Map.IsLastLevel();
+        if (!isLastLevel)
+        {
+            SetLevelProcedure(Map.Level + 1);
+            return;
+        }
+
+        CommitRun();
+    }
+    
+    private void CommitRun() { }
+
     public void Combat()
     {
         StageEnvironment.Combat(StageConfig.ForCombat(_home, _away, _config));
@@ -51,27 +238,6 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         _home.FormationProcedure();
         _away.FormationProcedure();
-    }
-
-    public void StartRunProcedure(RunDetails d)
-    {
-        _eventDict.SendEvent(RunEventDict.START_RUN, d);
-    }
-
-    public void SetJingJieProcedure(JingJie jingJie)
-        => SetJingJieProcedure(new SetJingJieDetails(jingJie));
-    private void SetJingJieProcedure(SetJingJieDetails d)
-    {
-        _eventDict.SendEvent(RunEventDict.WILL_SET_JINGJIE, d);
-        if (d.Cancel)
-            return;
-
-        Map.SetLevel(d.JingJie);
-        _home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.JingJie]);
-        _home.SetJingJie(d.JingJie);
-        AudioManager.Play(Encyclopedia.AudioFromJingJie(d.JingJie));
-
-        _eventDict.SendEvent(RunEventDict.DID_SET_JINGJIE, d);
     }
 
     public void SetDMingYuanProcedure(int value)
@@ -501,7 +667,7 @@ public class RunEnvironment : Addressable, RunEventListener
     public PanelDescriptor GetActivePanel()
         => _runResultPanelDescriptor ?? Map.CurrNode?.CurrentPanel;
 
-    public bool TryCommit()
+    private bool TryCommit()
     {
         if (Result.State == RunResult.RunResultState.Unfinished)
             return false;

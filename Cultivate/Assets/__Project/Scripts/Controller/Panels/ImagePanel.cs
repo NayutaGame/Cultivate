@@ -26,7 +26,7 @@ public class ImagePanel : Panel
 
     private void ClickedSignal()
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new ClickedSignal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickedSignal());
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
 }

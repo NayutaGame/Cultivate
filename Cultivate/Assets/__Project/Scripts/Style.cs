@@ -18,14 +18,14 @@ public static class Style
         return $"<style=\"{style}\">{s}</style>";
     }
 
-    public static string ApplyCond(this string s, CastResult castResult) =>
-        s.ApplyStyle(castResult, "cond");
+    public static string ApplyCond(this string s, CastResult castResult)
+        => s.ApplyStyle(castResult, "cond");
 
-    public static string ApplyOdd(this string s, CastResult castResult) =>
-        s.ApplyStyle(castResult, "odd");
+    public static string ApplyOdd(this string s, CastResult castResult)
+        => s.ApplyStyle(castResult, "odd");
 
-    public static string ApplyEven(this string s, CastResult castResult) =>
-        s.ApplyStyle(castResult, "even");
+    public static string ApplyEven(this string s, CastResult castResult)
+        => s.ApplyStyle(castResult, "even");
 
     public static CastResult New() => new();
 

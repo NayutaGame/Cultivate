@@ -12,7 +12,7 @@ public class BattleRunNode : RunNode
     public bool IsBoss => _isBoss;
     private List<Reward> _rewards;
 
-    public BattleRunNode(int level, int step, int choice, RunEntity entity) : base(level, step, choice, "战斗")
+    public BattleRunNode(RunEntity entity) : base("战斗")
     {
         _entity = entity;
         _isBoss = entity.IsBoss();
@@ -44,10 +44,8 @@ public class BattleRunNode : RunNode
         _rewards.Do(reward => reward.Claim());
     }
 
-    public int Ladder()
+    public int LadderFromLevelAndStep(int level, int step)
     {
-        int level = GetLevel();
-        int step = GetStep();
         return level * 3 + (4 <= step && step <= 6 ? 1 : 0) + (step >= 8 ? 2 : 0);
     }
 
@@ -56,8 +54,8 @@ public class BattleRunNode : RunNode
         5, 11, 31, 11, 21, 61, 15, 31, 91, 21, 41, 121, 25, 51, 151,
     };
 
-    public int BaseXiuWeiReward()
+    public int BaseXiuWeiRewardFromLevelAndStep(int level, int step)
     {
-        return XiuWeiRewardTable[Ladder()];
+        return XiuWeiRewardTable[LadderFromLevelAndStep(level, step)];
     }
 }

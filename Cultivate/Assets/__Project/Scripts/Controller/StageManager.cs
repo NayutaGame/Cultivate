@@ -45,7 +45,7 @@ public class StageManager : Singleton<StageManager>, Addressable
 
     public async Task Enter()
     {
-        _task = _environment.Execute();
+        _task = _environment.CoreProcedure();
         await _task;
         AppManager.Pop();
     }
@@ -60,7 +60,7 @@ public class StageManager : Singleton<StageManager>, Addressable
         Signal signal = new BattleResultSignal(_environment.Result.HomeVictory
             ? BattleResultSignal.BattleResultState.Win
             : BattleResultSignal.BattleResultState.Lose);
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(signal);
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(signal);
         await CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
         _environment.WriteResult();
     }

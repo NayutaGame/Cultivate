@@ -35,7 +35,7 @@ public class DrawDescriptor
     private void SetStepItemFromPriority(Map map, StepItem stepItem, int level, int step)
     {
         stepItem._nodes.Clear();
-        stepItem._nodes.Add(new RunNode(level, step, 0, _priority));
+        stepItem._nodes.Add(new RunNode(_priority));
     }
 
     private void SetStepItemFromPool(Map map, StepItem stepItem, int level, int step)
@@ -45,23 +45,21 @@ public class DrawDescriptor
         switch (_nodeType)
         {
             case NodeType.Rest:
-                stepItem._nodes.Add(new RunNode(level, step, 0, "休息"));
+                stepItem._nodes.Add(new RunNode("休息"));
                 break;
             case NodeType.Shop:
-                stepItem._nodes.Add(new RunNode(level, step, 0, "商店"));
+                stepItem._nodes.Add(new RunNode("商店"));
                 break;
             case NodeType.Adventure:
-                map.AdventurePool.TryPopItem(out NodeEntry entry, pred: e => e.CanCreate(map, step));
-                stepItem._nodes.Add(new RunNode(level, step, 0, entry));
-                break;
             case NodeType.Ascension:
+                map.AdventurePool.TryPopItem(out NodeEntry entry, pred: e => e.CanCreate(map, step));
+                stepItem._nodes.Add(new RunNode(entry));
                 break;
             case NodeType.Battle:
+            case NodeType.Boss:
                 DrawEntityDetails d = new DrawEntityDetails(level, step);
                 map.EntityPool.TryDrawEntity(out RunEntity entity, d);
-                stepItem._nodes.Add(new BattleRunNode(level, step, 0, entity));
-                break;
-            case NodeType.Boss:
+                stepItem._nodes.Add(new BattleRunNode(entity));
                 break;
         }
     }

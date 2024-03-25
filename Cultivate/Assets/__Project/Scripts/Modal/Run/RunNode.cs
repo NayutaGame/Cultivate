@@ -9,13 +9,6 @@ public class RunNode
     protected SpriteEntry _spriteEntry;
     public Sprite Sprite => _spriteEntry.Sprite;
 
-    private int _level;
-    public int GetLevel() => _level;
-    private int _step;
-    public int GetStep() => _step;
-    private int _choice;
-    public int GetChoice() => _choice;
-
     public Vector2Int Position { get; private set; }
     public JingJie JingJie { get; private set; }
 
@@ -25,7 +18,7 @@ public class RunNode
 
     public virtual string GetTitle() => _entry.GetTitle();
 
-    public RunNode(int level, int step, int choice, NodeEntry entry)
+    public RunNode(NodeEntry entry)
     {
         if (entry is RewardNodeEntry r)
         {
@@ -35,10 +28,6 @@ public class RunNode
         {
             _spriteEntry = "奇遇";
         }
-
-        _level = level;
-        _step = step;
-        _choice = choice;
         
         _entry = entry;
         _state = RunNodeState.Future;
@@ -60,5 +49,11 @@ public class RunNode
         CurrentPanel?.Exit();
         CurrentPanel = panel;
         CurrentPanel?.Enter();
+    }
+
+    public void Finish()
+    {
+        ChangePanel(null);
+        SetState(RunNodeState.Passed);
     }
 }

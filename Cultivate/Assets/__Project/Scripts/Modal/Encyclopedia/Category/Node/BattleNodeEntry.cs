@@ -8,7 +8,7 @@ public class BattleNodeEntry : NodeEntry
         {
             BattleRunNode battleRunNode = runNode as BattleRunNode;
 
-            int xiuWeiValue = Mathf.RoundToInt(battleRunNode.BaseXiuWeiReward() * RandomManager.Range(0.9f, 1.1f));
+            int xiuWeiValue = Mathf.RoundToInt(battleRunNode.BaseXiuWeiRewardFromLevelAndStep(map.Level, map.Step) * RandomManager.Range(0.9f, 1.1f));
 
             BattlePanelDescriptor A = new(battleRunNode.Entity);
             battleRunNode.AddReward(new ResourceReward(gold: xiuWeiValue));

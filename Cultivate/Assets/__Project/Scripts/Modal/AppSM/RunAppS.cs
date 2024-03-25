@@ -21,7 +21,7 @@ public class RunAppS : AppS
         {
             RunNode runNode = nodes[0];
 
-            PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.SelectedNode(runNode);
+            PanelDescriptor panelDescriptor = RunManager.Instance.Environment.MakeChoiceProcedure(runNode);
             CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
         }
         else

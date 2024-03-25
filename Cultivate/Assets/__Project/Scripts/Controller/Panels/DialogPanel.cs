@@ -39,7 +39,7 @@ public class DialogPanel : Panel
 
         for (int i = 0; i < Buttons.Length; i++)
         {
-            bool active = i < d.GetOptionsCount() && !RunManager.Instance.Environment.Map.Selecting;
+            bool active = i < d.GetOptionsCount() && !RunManager.Instance.Environment.Map.Choosing;
             Buttons[i].gameObject.SetActive(active);
             if(!active)
                 continue;
@@ -51,7 +51,7 @@ public class DialogPanel : Panel
 
     private void SelectedOption(int i)
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new SelectedOptionSignal(i));
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedOptionSignal(i));
         if (RunManager.Instance.Environment == null)
             return;
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);

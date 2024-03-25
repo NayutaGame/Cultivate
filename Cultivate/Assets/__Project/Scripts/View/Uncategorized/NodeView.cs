@@ -54,10 +54,10 @@ public class NodeView : SimpleView
     private bool TryClickNode()
     {
         RunNode runNode = Get<RunNode>();
-        if (runNode.GetState() != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Environment.Map.Selecting)
+        if (runNode.GetState() != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Environment.Map.Choosing)
             return false;
 
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.SelectedNode(runNode);
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.MakeChoiceProcedure(runNode);
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
         return true;
     }

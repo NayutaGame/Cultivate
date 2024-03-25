@@ -27,6 +27,48 @@ public class StageEnvironment : Addressable, StageEventListener
     //     await _eventDict.SendEvent(StageEventDict.DID_SIMPLE, d);
     // }
 
+    public async Task CoreProcedure()
+    {
+        StageEventDescriptor writeManaShortage = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_SHORTAGE, 0, WriteShortage);
+        StageEventDescriptor writeArmorShortage = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ARMOR_SHORTAGE, 0, WriteShortage);
+        StageEventDescriptor writeManaCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_COST, 0, WriteCost);
+        StageEventDescriptor writeChannelCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_CHANNEL_COST, 0, WriteCost);
+        StageEventDescriptor writeHealthCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_HEALTH_COST, 0, WriteCost);
+        StageEventDescriptor writeArmorCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ARMOR_COST, 0, WriteCost);
+
+        ClearResults();
+
+        Register();
+
+        await MingYuanPenaltyProcedure();
+        await FormationProcedure();
+        await StartStageProcedure();
+
+        _eventDict.Register(this, writeManaShortage);
+        _eventDict.Register(this, writeArmorShortage);
+        _eventDict.Register(this, writeManaCost);
+        _eventDict.Register(this, writeChannelCost);
+        _eventDict.Register(this, writeHealthCost);
+        _eventDict.Register(this, writeArmorCost);
+
+        await BodyProcedure();
+
+        _eventDict.Unregister(this, writeManaShortage);
+        _eventDict.Unregister(this, writeArmorShortage);
+        _eventDict.Unregister(this, writeManaCost);
+        _eventDict.Unregister(this, writeChannelCost);
+        _eventDict.Unregister(this, writeHealthCost);
+        _eventDict.Unregister(this, writeArmorCost);
+
+        await EndStageProcedure();
+
+        Unregister();
+
+        _result.HomeLeftHp = _entities[0].Hp;
+        _result.AwayLeftHp = _entities[1].Hp;
+        _result.TryAppend(_result.HomeVictory ? $"主场胜利\n" : $"主场失败\n");
+    }
+
     public async Task FormationProcedure(StageEntity owner, RunFormation formation, bool recursive = true)
         => await FormationProcedure(new FormationDetails(owner, formation, recursive));
     public async Task FormationProcedure(FormationDetails d)
@@ -488,8 +530,8 @@ public class StageEnvironment : Addressable, StageEventListener
 
     public static StageResult CalcSimulateResult(StageConfig config)
     {
-        StageEnvironment env = new(config);
-        env.Execute().GetAwaiter().GetResult();
+        StageEnvironment env = FromConfig(config);
+        env.CoreProcedure().GetAwaiter().GetResult();
         if (env._result.WriteResult)
             env.WriteResult();
         return env._result;
@@ -543,49 +585,7 @@ public class StageEnvironment : Addressable, StageEventListener
         d.State = state;
     }
 
-    public async Task Execute()
-    {
-        StageEventDescriptor writeManaShortage = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_SHORTAGE, 0, WriteShortage);
-        StageEventDescriptor writeArmorShortage = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ARMOR_SHORTAGE, 0, WriteShortage);
-        StageEventDescriptor writeManaCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_MANA_COST, 0, WriteCost);
-        StageEventDescriptor writeChannelCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_CHANNEL_COST, 0, WriteCost);
-        StageEventDescriptor writeHealthCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_HEALTH_COST, 0, WriteCost);
-        StageEventDescriptor writeArmorCost = new StageEventDescriptor(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ARMOR_COST, 0, WriteCost);
-
-        ClearResults();
-
-        Register();
-
-        await MingYuanPenaltyProcedure();
-        await FormationProcedure();
-        await StartStageProcedure();
-
-        _eventDict.Register(this, writeManaShortage);
-        _eventDict.Register(this, writeArmorShortage);
-        _eventDict.Register(this, writeManaCost);
-        _eventDict.Register(this, writeChannelCost);
-        _eventDict.Register(this, writeHealthCost);
-        _eventDict.Register(this, writeArmorCost);
-
-        await BodyProcedure();
-
-        _eventDict.Unregister(this, writeManaShortage);
-        _eventDict.Unregister(this, writeArmorShortage);
-        _eventDict.Unregister(this, writeManaCost);
-        _eventDict.Unregister(this, writeChannelCost);
-        _eventDict.Unregister(this, writeHealthCost);
-        _eventDict.Unregister(this, writeArmorCost);
-
-        await EndStageProcedure();
-
-        Unregister();
-
-        _result.HomeLeftHp = _entities[0].Hp;
-        _result.AwayLeftHp = _entities[1].Hp;
-        _result.TryAppend(_result.HomeVictory ? $"主场胜利\n" : $"主场失败\n");
-    }
-
-    public void Register()
+    private void Register()
     {
         if (_config.RunConfig == null)
             return;
@@ -606,7 +606,7 @@ public class StageEnvironment : Addressable, StageEventListener
             .Do(e => _eventDict.Register(this, e));
     }
 
-    public void Unregister()
+    private void Unregister()
     {
         if (_config.RunConfig == null)
             return;

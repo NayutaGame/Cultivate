@@ -67,7 +67,7 @@ public class ShopPanel : Panel
 
     private void Exit()
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.ReceiveSignal(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new Signal());
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
 
