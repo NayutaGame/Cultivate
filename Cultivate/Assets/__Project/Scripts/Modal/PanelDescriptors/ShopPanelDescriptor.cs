@@ -23,7 +23,11 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         _commodities = new CommodityListModel();
 
-        bool success = RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: _jingJie, count: 6, consume: false);
+        bool success = RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
+            jingJie: _jingJie,
+            count: 6,
+            consume: false);
+        
         if (success)
         {
             foreach (RunSkill skill in skills)

@@ -33,4 +33,7 @@ public class StepItem : Addressable
         for (int i = 0; i < _nodes.Count(); i++)
             _nodes[i].SetState(RunNode.RunNodeState.ToChoose);
     }
+
+    public int IndexOf(RunNode runNode)
+        => _nodes.IndexOf(runNode);
 }

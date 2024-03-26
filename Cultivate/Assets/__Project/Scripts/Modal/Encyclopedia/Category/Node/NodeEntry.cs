@@ -11,20 +11,20 @@ public abstract class NodeEntry : Entry
     private bool _withInPool;
     public bool WithInPool => _withInPool;
 
-    private Func<Map, int, bool> _canCreate;
-    private Action<Map, RunNode> _create;
+    private Func<Map, int, int, bool> _canCreate;
+    private Action<Map, RunNode, int, int> _create;
 
-    public NodeEntry(string id, string description, bool withInPool, Action<Map, RunNode> create, Func<Map, int, bool> canCreate = null)
+    public NodeEntry(string id, string description, bool withInPool, Action<Map, RunNode, int, int> create, Func<Map, int, int, bool> canCreate = null)
         : base(id)
     {
         _description = description;
         _withInPool = withInPool;
         _create = create;
-        _canCreate = canCreate ?? ((map, x) => true);
+        _canCreate = canCreate ?? ((map, level, step) => true);
     }
 
-    public bool CanCreate(Map map, int x) => _canCreate(map, x);
-    public void Create(Map map, RunNode runNode) => _create(map, runNode);
+    public bool CanCreate(Map map, int level, int step) => _canCreate(map, level, step);
+    public void Create(Map map, RunNode runNode, int level, int step) => _create(map, runNode, level, step);
 
     public static implicit operator NodeEntry(string id) => Encyclopedia.NodeCategory[id];
 }

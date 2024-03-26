@@ -52,7 +52,7 @@ public class DrawDescriptor
                 break;
             case NodeType.Adventure:
             case NodeType.Ascension:
-                map.AdventurePool.TryPopItem(out NodeEntry entry, pred: e => e.CanCreate(map, step));
+                map.AdventurePool.TryPopItem(out NodeEntry entry, pred: e => e.CanCreate(map, level, step));
                 stepItem._nodes.Add(new RunNode(entry));
                 break;
             case NodeType.Battle:

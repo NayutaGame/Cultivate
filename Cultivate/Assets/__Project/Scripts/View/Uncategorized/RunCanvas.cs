@@ -56,6 +56,8 @@ public class RunCanvas : MonoBehaviour
         if (panelDescriptor == null)
         {
             await RunPanelCollection.SetPanel(panel: null);
+            MapPanel.Configure();
+            MapPanel.Refresh();
             await MapPanel.SetShowing(true);
         }
         else

@@ -160,7 +160,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public PanelDescriptor MakeChoiceProcedure(RunNode runNode)
     {
-        Map.Choice = runNode.Position.y;
+        Map.Choice = Map.CurrStepItem.IndexOf(runNode);
         Map.CurrStepItem.MakeChoice(Map.Choice);
         Map.CreateEntry();
         Map.Choosing = false;

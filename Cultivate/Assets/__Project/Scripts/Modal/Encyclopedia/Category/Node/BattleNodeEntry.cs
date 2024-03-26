@@ -4,7 +4,7 @@ using UnityEngine;
 public class BattleNodeEntry : NodeEntry
 {
     public BattleNodeEntry(string id, string description) : base(id, description, withInPool: true,
-        create: (map, runNode) =>
+        create: (map, runNode, level, step) =>
         {
             BattleRunNode battleRunNode = runNode as BattleRunNode;
 
@@ -32,7 +32,7 @@ public class BattleNodeEntry : NodeEntry
                     return C;
                 });
             }
-            else if (battleRunNode.JingJie != JingJie.HuaShen)
+            else if (level != JingJie.HuaShen)
             {
                 A.SetWin(() =>
                 {

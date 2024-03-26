@@ -46,7 +46,7 @@ public class Map : Addressable
     }
 
     public void CreateEntry()
-        => CurrNode.Entry.Create(this, CurrNode);
+        => CurrNode.Entry.Create(this, CurrNode, Level, Step);
 
     public void DrawStepItems()
     {

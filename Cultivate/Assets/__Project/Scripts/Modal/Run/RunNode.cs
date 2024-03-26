@@ -9,9 +9,6 @@ public class RunNode
     protected SpriteEntry _spriteEntry;
     public Sprite Sprite => _spriteEntry.Sprite;
 
-    public Vector2Int Position { get; private set; }
-    public JingJie JingJie { get; private set; }
-
     private RunNodeState _state;
     public RunNodeState GetState() => _state;
     public void SetState(RunNodeState state) => _state = state;
