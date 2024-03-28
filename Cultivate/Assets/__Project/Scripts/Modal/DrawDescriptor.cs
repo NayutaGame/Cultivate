@@ -7,7 +7,8 @@ public class DrawDescriptor
         Shop,
         Adventure,
         Ascension,
-        Battle,
+        Normal,
+        Elite,
         Boss,
     }
 
@@ -55,12 +56,36 @@ public class DrawDescriptor
                 map.AdventurePool.TryPopItem(out NodeEntry entry, pred: e => e.CanCreate(map, level, step));
                 stepItem._nodes.Add(new RunNode(entry));
                 break;
-            case NodeType.Battle:
+            case NodeType.Normal:
+                DrawNormal(map, stepItem, level);
+                break;
+            case NodeType.Elite:
+                DrawElite(map, stepItem, level);
+                break;
             case NodeType.Boss:
-                DrawEntityDetails d = new DrawEntityDetails(level, step);
-                map.EntityPool.TryDrawEntity(out RunEntity entity, d);
-                stepItem._nodes.Add(new BattleRunNode(entity));
+                DrawBoss(map, stepItem, level);
                 break;
         }
+    }
+
+    private void DrawNormal(Map map, StepItem stepItem, int level)
+    {
+        DrawEntityDetails d = new DrawEntityDetails(level, allowNormal: true);
+        map.EntityPool.TryDrawEntity(out RunEntity entity, d);
+        stepItem._nodes.Add(new BattleRunNode(entity));
+    }
+
+    private void DrawElite(Map map, StepItem stepItem, int level)
+    {
+        DrawEntityDetails d = new DrawEntityDetails(level, allowElite: true);
+        map.EntityPool.TryDrawEntity(out RunEntity entity, d);
+        stepItem._nodes.Add(new BattleRunNode(entity));
+    }
+
+    private void DrawBoss(Map map, StepItem stepItem, int level)
+    {
+        DrawEntityDetails d = new DrawEntityDetails(level, allowBoss: true);
+        map.EntityPool.TryDrawEntity(out RunEntity entity, d);
+        stepItem._nodes.Add(new BattleRunNode(entity));
     }
 }

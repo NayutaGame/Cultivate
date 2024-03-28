@@ -2,6 +2,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [SelectionBase]
@@ -9,7 +10,7 @@ public class SkillView : SimpleView
 {
     [SerializeField] private Image CardImage;
     // [SerializeField] private GameObject ManaCostView;
-    [SerializeField] private TMP_Text ManaCostText;
+    [SerializeField] private TMP_Text CostText;
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private Image JingJieImage;
@@ -56,16 +57,27 @@ public class SkillView : SimpleView
 
     protected virtual void SetCostDescription(CostDescription costDescription)
     {
-        int manaCost = costDescription.ByType(CostDescription.CostType.Mana);
-        if (manaCost == 0)
+        int value = costDescription.Value;
+        if (value == 0)
         {
-            ManaCostText.text = "";
-            // ManaCostView.SetActive(false);
+            CostText.text = "";
+            return;
         }
-        else
+
+        switch (costDescription.Type)
         {
-            ManaCostText.text = manaCost.ToString();
-            // ManaCostView.SetActive(true);
+            case CostDescription.CostType.Mana:
+                CostText.text = $"{value}灵";
+                break;
+            case CostDescription.CostType.Health:
+                CostText.text = $"{value}血";
+                break;
+            case CostDescription.CostType.Channel:
+                CostText.text = $"{value}时";
+                break;
+            case CostDescription.CostType.Armor:
+                CostText.text = $"{value}甲";
+                break;
         }
         
         Color color = CanvasManager.Instance.ManaCostColors[0];
@@ -85,7 +97,7 @@ public class SkillView : SimpleView
                 break;
         }
     
-        ManaCostText.color = color;
+        CostText.color = color;
     }
 
     protected virtual void SetName(string name)

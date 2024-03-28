@@ -1849,12 +1849,13 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.ErDong,
+                cost:                       CostResult.HealthFromDj(dj => 8 - 2 * dj),
+                costDescription:            CostDescription.HealthFromDj(dj => 8 - 2 * dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    ($"消耗{8 - dj}生命\n") + (j <= JingJie.ZhuJi ? "二动" : "三动"),
+                    j <= JingJie.ZhuJi ? "二动" : "三动",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.LoseHealthProcedure(8 - skill.Dj);
                     bool cond = skill.GetJingJie() <= JingJie.ZhuJi;
                     caster.SetActionPoint(cond ? 2 : 3);
                     return null;

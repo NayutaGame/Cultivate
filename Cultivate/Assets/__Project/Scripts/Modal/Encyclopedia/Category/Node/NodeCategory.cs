@@ -15,16 +15,12 @@ public class NodeCategory : Category<NodeEntry>
             new RewardNodeEntry("休息", "休息", "人参果", withInPool: true,
                 create: (map, runNode, level, step) =>
                 {
-                    DialogPanelDescriptor A = new DialogPanelDescriptor("回复了2点命元")
+                    DialogPanelDescriptor A = new("前方有人参果树和菩提树，选择一条路", "人参果树", "菩提树");
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("吃了一个人参果，回复了2点命元")
                         .SetReward(Reward.FromMingYuan(2));
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("提升境界", "提升境界", "修炼", withInPool: true,
-                create: (map, runNode, level, step) =>
-                {
-                    CardPickerPanelDescriptor A = new("可以将一张低于化神境界的牌提升到主角的下一境界，请选择想要提升的牌", new Range(0, 2));
-                    A.SetSelect(iRunSkillList =>
+                    
+                    CardPickerPanelDescriptor C = new("在菩提树下做了一段时间，对境界有了新的见解，请选择一张卡牌提升", new Range(0, 2));
+                    C.SetSelect(iRunSkillList =>
                     {
                         foreach (var iRunSkill in iRunSkillList)
                         {
@@ -50,22 +46,40 @@ public class NodeCategory : Category<NodeEntry>
 
                         return null;
                     });
+                    
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    
                     runNode.ChangePanel(A);
                 }),
 
             new RewardNodeEntry("商店", "商店", "商店", withInPool: true,
                 create: (map, runNode, level, step) =>
                 {
-                    ShopPanelDescriptor A = new(level);
+                    DialogPanelDescriptor A = new("前方有商店和温泉，选择一条路", "商店", "温泉");
+                    
+                    ShopPanelDescriptor B = new(level);
+                    int health = (level + 1) * 3;
+                    DialogPanelDescriptor C = new DialogPanelDescriptor($"泡了温泉之后感到了心情畅快，获得了{health}点生命上限")
+                        .SetReward(Reward.FromHealth(health));
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    
+                    runNode.ChangePanel(A);
+                }),
+
+            new RewardNodeEntry("提升境界", "提升境界", "修炼", withInPool: true,
+                create: (map, runNode, level, step) =>
+                {
+                    DialogPanelDescriptor A = new("无效事件", "确定");
                     runNode.ChangePanel(A);
                 }),
 
             new RewardNodeEntry("加生命上限", "加生命上限", "温泉", withInPool: true,
                 create: (map, runNode, level, step) =>
                 {
-                    int health = (level + 1) * 3;
-                    DialogPanelDescriptor A = new DialogPanelDescriptor($"找到了一个人参果，吃了之后获得了{health}点生命上限")
-                        .SetReward(Reward.FromHealth(health));
+                    DialogPanelDescriptor A = new("无效事件", "确定");
                     runNode.ChangePanel(A);
                 }),
 
@@ -142,7 +156,7 @@ public class NodeCategory : Category<NodeEntry>
                     int trial = 0;
                     int rage = RandomManager.Range(0, 7);
 
-                    DialogPanelDescriptor A = new("一位老者做在石头上向周围人传教，虚己以游世，其孰能害之。说的是，只要你不把别人当个人，别人就不会引起你生气。你突然想逗他一下。", "朝他作鬼脸", "戳他一下");
+                    DialogPanelDescriptor A = new("一位老者做在石头上向周围人传教，虚己以游世，其孰能害之。说的是，只要你不把别人当个人，别人就不会引起你生气。你突然想逗他一下。", "朝他作鬼脸", "狠狠戳他一下");
 
                     DialogPanelDescriptor B1 = new("他看起来有点生气了。", "朝他作鬼脸", "狠狠戳他一下");
                     DialogPanelDescriptor B2 = new("他看起来非常生气了。", "朝他作鬼脸", "狠狠戳他一下");

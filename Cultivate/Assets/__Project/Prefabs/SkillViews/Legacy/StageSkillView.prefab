@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 766675380565232060}
   - component: {fileID: 4233928103622675143}
   m_Layer: 0
-  m_Name: ManacostText
+  m_Name: CostText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,7 +264,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -119.8, y: 232.5}
-  m_SizeDelta: {x: 50.7128, y: 50}
+  m_SizeDelta: {x: 80, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &766675380565232060
 CanvasRenderer:
@@ -1421,9 +1421,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d2af8476e12024c8ac31ec2fb4339a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RectTransform: {fileID: 8152188524626589071}
+  InteractBehaviour: {fileID: 0}
   CardImage: {fileID: 2651018990593199089}
-  ManaCostText: {fileID: 4233928103622675143}
+  CostText: {fileID: 4233928103622675143}
   NameText: {fileID: 1672581877321144749}
   DescriptionText: {fileID: 1039006708424304421}
   JingJieImage: {fileID: 1700294466287975886}
@@ -1442,8 +1442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85bd09a15bef8db498b38f51d28403f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddressBehaviour: {fileID: 4340962464578969089}
-  PivotBehaviour: {fileID: 0}
 --- !u!1 &8133398099548211338
 GameObject:
   m_ObjectHideFlags: 0

@@ -154,8 +154,8 @@ public class StageEntity : Addressable, StageEventListener
 
     private void WriteResultToSlot(SkillSlot slot, CostResult costResult, CastResult castResult)
     {
-        slot.CostResult = costResult;
-        slot.CastResult = castResult;
+        slot.CostResult ??= costResult;
+        slot.CastResult ??= castResult;
     }
 
     public MingYuan MingYuan;

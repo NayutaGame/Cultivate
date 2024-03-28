@@ -49,60 +49,60 @@ public class RunEnvironment : Addressable, RunEventListener
             {
                 new DrawDescriptor[] {
                     new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Normal),
                     new(DrawDescriptor.NodeType.Adventure),
                     new(DrawDescriptor.NodeType.Rest),
                     new(DrawDescriptor.NodeType.Boss),
                     new(DrawDescriptor.NodeType.Ascension),
                 },
                 new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Normal),
                     new(DrawDescriptor.NodeType.Adventure),
                     new(DrawDescriptor.NodeType.Shop),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Elite),
                     new(DrawDescriptor.NodeType.Adventure),
                     new(DrawDescriptor.NodeType.Rest),
                     new(DrawDescriptor.NodeType.Boss),
                     new(DrawDescriptor.NodeType.Ascension),
                 },
                 new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Normal),
                     new(DrawDescriptor.NodeType.Adventure),
                     new(DrawDescriptor.NodeType.Shop),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Normal),
                     new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Elite),
                     new(DrawDescriptor.NodeType.Adventure),
                     new(DrawDescriptor.NodeType.Rest),
                     new(DrawDescriptor.NodeType.Boss),
                     new(DrawDescriptor.NodeType.Ascension),
                 },
                 new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Normal),
                     new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Normal),
                     new(DrawDescriptor.NodeType.Adventure),
                     new(DrawDescriptor.NodeType.Shop),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Elite),
                     new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Elite),
                     new(DrawDescriptor.NodeType.Adventure),
                     new(DrawDescriptor.NodeType.Rest),
                     new(DrawDescriptor.NodeType.Boss),
                     new(DrawDescriptor.NodeType.Ascension),
                 },
                 new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Normal),
                     new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Normal),
                     new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Normal),
                     new(DrawDescriptor.NodeType.Rest),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Elite),
                     new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Elite),
                     new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Battle),
+                    new(DrawDescriptor.NodeType.Elite),
                     new(DrawDescriptor.NodeType.Rest),
                     new(DrawDescriptor.NodeType.Shop),
                     new(DrawDescriptor.NodeType.Boss),
@@ -113,12 +113,14 @@ public class RunEnvironment : Addressable, RunEventListener
         {
             // init level and step
             SetLevelProcedure(0);
+            // SetLevelProcedure(4);
         }
 
         {
             // init player start condition
             SetDGold(50);
             ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
+            // ForceDrawSkills(jingJie: JingJie.HuaShen, count: 20);
         }
         
         _eventDict.SendEvent(RunEventDict.START_RUN, d);
@@ -415,7 +417,7 @@ public class RunEnvironment : Addressable, RunEventListener
         // Congruent
         if (lEntry == rEntry && lJingJie == rJingJie && lJingJie < rEntry.HighestJingJie)
         {
-            rhs.JingJie = (rJingJie + 2).ClampUpper(rEntry.HighestJingJie);
+            rhs.JingJie = (rJingJie + 1).ClampUpper(rEntry.HighestJingJie);
             Hand.Remove(lhs);
             Hand.SetModified(rhs);
             EnvironmentChanged();

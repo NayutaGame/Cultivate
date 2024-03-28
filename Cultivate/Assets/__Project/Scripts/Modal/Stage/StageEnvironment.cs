@@ -629,11 +629,7 @@ public class StageEnvironment : Addressable, StageEventListener
 
     private void ClearResults()
     {
-        _entities.Do(stageEntity =>
-        {
-            RunEntity e = stageEntity.RunEntity;
-            e.TraversalCurrentSlots().Do(s => s.ClearResults());
-        });
+        _entities.Do(stageEntity => stageEntity.RunEntity.TraversalCurrentSlots().Do(s => s.ClearResults()));
     }
 
     private async Task MingYuanPenaltyProcedure()
