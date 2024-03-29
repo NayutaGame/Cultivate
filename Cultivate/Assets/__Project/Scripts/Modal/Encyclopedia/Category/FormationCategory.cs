@@ -20,8 +20,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 Formation f = (Formation)listener;
                                 GainFormationDetails d = (GainFormationDetails)stageEventDetails;
 
-                                await f.Owner.CastProcedureNoTween(f.Owner._skills[0]);
-                                await f.Owner.CastProcedureNoTween(f.Owner._skills[1]);
+                                // await f.Owner.CastProcedureNoTween(f.Owner._skills[0]);
+                                // await f.Owner.CastProcedureNoTween(f.Owner._skills[1]);
                             }),
                         }),
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "战斗开始时，使用第一位的卡", trivia: null, requirement: 9,
@@ -32,7 +32,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 Formation f = (Formation)listener;
                                 GainFormationDetails d = (GainFormationDetails)stageEventDetails;
 
-                                await f.Owner.CastProcedureNoTween(f.Owner._skills[0]);
+                                // await f.Owner.CastProcedureNoTween(f.Owner._skills[0]);
                             }),
                         }),
                 }),
@@ -273,10 +273,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                             {
                                 Formation f = (Formation)listener;
                                 ExhaustDetails d = (ExhaustDetails)stageEventDetails;
-                                if (f.Owner != d.Owner.Opponent())
-                                    return;
-                                await f.Owner.CastProcedure(d.Skill);
-                                await f.Owner.CastProcedure(d.Skill);
+                                // if (f.Owner != d.Owner.Opponent())
+                                //     return;
+                                // await f.Owner.CastProcedure(d.Skill);
+                                // await f.Owner.CastProcedure(d.Skill);
                             }),
                         }),
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "对方使用消耗牌后，自己也使用1次", trivia: null, requirement: 10,
@@ -286,9 +286,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                             {
                                 Formation f = (Formation)listener;
                                 ExhaustDetails d = (ExhaustDetails)stageEventDetails;
-                                if (f.Owner != d.Owner.Opponent())
-                                    return;
-                                await f.Owner.CastProcedure(d.Skill);
+                                // if (f.Owner != d.Owner.Opponent())
+                                //     return;
+                                // await f.Owner.CastProcedure(d.Skill);
                             }),
                         }),
                 }),
@@ -306,15 +306,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner) return;
 
                                 await f.Owner.GainArmorProcedure(30);
+                                await f.Owner.GainBuffProcedure("柔韧", 3);
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                TurnDetails d = (TurnDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-
-                                await d.Owner.GainArmorProcedure(3);
-                            }),
+                            // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                            // {
+                            //     Formation f = (Formation)listener;
+                            //     TurnDetails d = (TurnDetails)stageEventDetails;
+                            //     if (f.Owner != d.Owner) return;
+                            //
+                            //     await d.Owner.GainArmorProcedure(3);
+                            // }),
                         }),
                     new FormationEntry(JingJie.YuanYing, rewardDescription: "战斗开始护甲+20，每回合护甲+2", trivia: null, requirement: 7,
                         eventDescriptors: new StageEventDescriptor[]
@@ -326,15 +327,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner) return;
 
                                 await f.Owner.GainArmorProcedure(20);
+                                await f.Owner.GainBuffProcedure("柔韧", 2);
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                TurnDetails d = (TurnDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-
-                                await d.Owner.GainArmorProcedure(2);
-                            }),
+                            // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                            // {
+                            //     Formation f = (Formation)listener;
+                            //     TurnDetails d = (TurnDetails)stageEventDetails;
+                            //     if (f.Owner != d.Owner) return;
+                            //
+                            //     await d.Owner.GainArmorProcedure(2);
+                            // }),
                         }),
                     new FormationEntry(JingJie.JinDan, rewardDescription: "战斗开始护甲+10，每回合护甲+1", trivia: null, requirement: 5,
                         eventDescriptors: new StageEventDescriptor[]
@@ -346,15 +348,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner) return;
 
                                 await f.Owner.GainArmorProcedure(10);
+                                await f.Owner.GainBuffProcedure("柔韧", 1);
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                TurnDetails d = (TurnDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-
-                                await d.Owner.GainArmorProcedure(1);
-                            }),
+                            // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                            // {
+                            //     Formation f = (Formation)listener;
+                            //     TurnDetails d = (TurnDetails)stageEventDetails;
+                            //     if (f.Owner != d.Owner) return;
+                            //
+                            //     await d.Owner.GainArmorProcedure(1);
+                            // }),
                         }),
                 }),
 

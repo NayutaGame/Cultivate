@@ -11,7 +11,7 @@ public class StageEntity : Addressable, StageEventListener
     public async Task TurnProcedure()
     {
         TurnDetails d = new TurnDetails(this);
-        SetActionPoint(1);
+        ResetActionPoint();
 
         await _env.EventDict.SendEvent(StageEventDict.WIL_TURN, d);
         if (!d.Cancel)
@@ -196,6 +196,7 @@ public class StageEntity : Addressable, StageEventListener
     private int _actionPoint;
     public int GetActionPoint() => _actionPoint;
     public void SetActionPoint(int value) => _actionPoint = Mathf.Max(_actionPoint, value);
+    public void ResetActionPoint() => _actionPoint = 1;
     private CostResult _costResult;
 
     public bool Forward
