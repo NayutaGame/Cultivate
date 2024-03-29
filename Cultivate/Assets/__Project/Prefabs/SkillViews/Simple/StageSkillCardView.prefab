@@ -31,7 +31,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8719519142000790637}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -182,12 +182,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8719519142000790637}
-  m_RootOrder: 14
+  m_Father: {fileID: 2070921011582141122}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 117.5, y: -209}
+  m_AnchoredPosition: {x: -2.5, y: 1.9999847}
   m_SizeDelta: {x: 21, y: 36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2621277733067175920
@@ -405,7 +405,6 @@ RectTransform:
   - {fileID: 2973206060290975048}
   - {fileID: 5076375893488391390}
   - {fileID: 2070921011582141122}
-  - {fileID: 3507177269028008878}
   - {fileID: 5772621669398836393}
   - {fileID: 7616834666148277505}
   m_Father: {fileID: 8152188524626589071}
@@ -447,7 +446,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8719519142000790637}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1247,13 +1246,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3507177269028008878}
   m_Father: {fileID: 8719519142000790637}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 120, y: -211}
+  m_AnchoredPosition: {x: -115, y: -15}
   m_SizeDelta: {x: 56, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &613329144083529653
@@ -1382,7 +1382,7 @@ GameObject:
   - component: {fileID: 4340962464578969089}
   - component: {fileID: 5519611095636434936}
   m_Layer: 5
-  m_Name: StageSkillView
+  m_Name: StageSkillCardView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1428,7 +1428,6 @@ MonoBehaviour:
   DescriptionText: {fileID: 1039006708424304421}
   JingJieImage: {fileID: 1700294466287975886}
   WuXingImage: {fileID: 7570655152909774514}
-  SelectionImage: {fileID: 1627075881020627272}
   CounterImage: {fileID: 868353637407979949}
 --- !u!114 &5519611095636434936
 MonoBehaviour:

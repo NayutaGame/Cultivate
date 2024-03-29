@@ -2247,11 +2247,11 @@ MonoBehaviour:
   - {fileID: -6467990521619751650, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
   - {fileID: -3778030376816645689, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
   WuXingSprites:
-  - {fileID: -4548067746001157791, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
-  - {fileID: 6163321780636621055, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
-  - {fileID: 9220989243412999050, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
-  - {fileID: 7104117434126203542, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
-  - {fileID: 5509380603298283351, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
+  - {fileID: 8292447929574576883, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
+  - {fileID: 8149245822705470765, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
+  - {fileID: -2194607438364983757, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
+  - {fileID: -3136879333733846665, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
+  - {fileID: -1297964740939190250, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
   TechColorGreen: {r: 0.62352943, g: 0.81960785, b: 0.6392157, a: 1}
   TechColorYellow: {r: 0.77254903, g: 0.78431374, b: 0.5647059, a: 1}
   TechColorRed: {r: 0.9137255, g: 0.6745098, b: 0.6745098, a: 1}

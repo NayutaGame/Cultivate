@@ -104,7 +104,7 @@ ScriptedImporter:
       y: 4
       width: 21
       height: 36
-    spriteID: 20602bb3ada76f647acdb68e45f90137
+    spriteID: 3548fdb33dbec04409ff4684ccae81f4
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -126,7 +126,7 @@ ScriptedImporter:
       y: 48
       width: 21
       height: 36
-    spriteID: 730beb9f9cc41e043ae0ebb9bc7d6883
+    spriteID: e55e8662e4ef8894f8ced524c3375e7c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -148,7 +148,7 @@ ScriptedImporter:
       y: 4
       width: 21
       height: 36
-    spriteID: bbb1828d97018a0498a23cbf17129eaa
+    spriteID: d6e6d44edf9e2b44ba09f886d36a3338
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -170,7 +170,7 @@ ScriptedImporter:
       y: 48
       width: 21
       height: 36
-    spriteID: 040bc424487a74247b1968d02b0345d4
+    spriteID: 3a11bed198353874283f6ac413070c09
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -192,7 +192,7 @@ ScriptedImporter:
       y: 4
       width: 21
       height: 36
-    spriteID: 49e1c19de9a02984bb728c6e58d66c4c
+    spriteID: d4b2ec335f35ed246b9b25ab67c7478f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -264,7 +264,7 @@ ScriptedImporter:
   mosaicLayers: 1
   characterMode: 1
   documentPivot: {x: 0, y: 0}
-  documentAlignment: 0
+  documentAlignment: 7
   importHiddenLayers: 0
   layerMappingOption: 2
   generatePhysicsShape: 0
@@ -281,7 +281,7 @@ ScriptedImporter:
     spriteName: Jin
     isGroup: 0
     parentIndex: -1
-    spriteID: 20602bb3ada76f647acdb68e45f90137
+    spriteID: 3548fdb33dbec04409ff4684ccae81f4
     layerID: 7
     mosaicPosition: {x: 4, y: 4}
     flatten: 0
@@ -291,7 +291,7 @@ ScriptedImporter:
     spriteName: Shui
     isGroup: 0
     parentIndex: -1
-    spriteID: 730beb9f9cc41e043ae0ebb9bc7d6883
+    spriteID: e55e8662e4ef8894f8ced524c3375e7c
     layerID: 6
     mosaicPosition: {x: 4, y: 48}
     flatten: 0
@@ -301,7 +301,7 @@ ScriptedImporter:
     spriteName: Mu
     isGroup: 0
     parentIndex: -1
-    spriteID: bbb1828d97018a0498a23cbf17129eaa
+    spriteID: d6e6d44edf9e2b44ba09f886d36a3338
     layerID: 5
     mosaicPosition: {x: 33, y: 4}
     flatten: 0
@@ -311,7 +311,7 @@ ScriptedImporter:
     spriteName: Huo
     isGroup: 0
     parentIndex: -1
-    spriteID: 040bc424487a74247b1968d02b0345d4
+    spriteID: 3a11bed198353874283f6ac413070c09
     layerID: 4
     mosaicPosition: {x: 33, y: 48}
     flatten: 0
@@ -321,7 +321,7 @@ ScriptedImporter:
     spriteName: Tu
     isGroup: 0
     parentIndex: -1
-    spriteID: 49e1c19de9a02984bb728c6e58d66c4c
+    spriteID: d4b2ec335f35ed246b9b25ab67c7478f
     layerID: 3
     mosaicPosition: {x: 62, y: 4}
     flatten: 0
