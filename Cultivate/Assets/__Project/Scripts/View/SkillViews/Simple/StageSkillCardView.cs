@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StageSkillView : SkillCardView
+public class StageSkillCardView : SkillCardView
 {
     [SerializeField] private Image CounterImage;
 

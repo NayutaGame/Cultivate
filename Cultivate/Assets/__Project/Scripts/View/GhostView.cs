@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class GhostView : MonoBehaviour
 {
-    private SimpleView SimpleView;
+    public SimpleView SimpleView;
 
     public void Awake()
     {

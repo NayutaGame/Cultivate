@@ -331,17 +331,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3809487136158471207}
     m_Modifications:
-    - target: {fileID: 555352908982639037, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1267362520892108290, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
       propertyPath: m_Name
       value: SlotCardView
-      objectReference: {fileID: 0}
-    - target: {fileID: 2983413788044782210, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8838977114607417665, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
       propertyPath: m_Pivot.x

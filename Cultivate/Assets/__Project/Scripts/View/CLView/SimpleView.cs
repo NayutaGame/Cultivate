@@ -34,15 +34,15 @@ public class SimpleView : CLView
     }
 
     private Address _address;
-    public Address GetAddress() => _address;
-    public T Get<T>() => _address.Get<T>();
+    public override Address GetAddress() => _address;
+    public override T Get<T>() => _address.Get<T>();
 
-    public virtual void SetAddress(Address address)
+    public override void SetAddress(Address address)
     {
         _address = address;
     }
 
-    public virtual void Refresh()
+    public override void Refresh()
     {
     }
 }
