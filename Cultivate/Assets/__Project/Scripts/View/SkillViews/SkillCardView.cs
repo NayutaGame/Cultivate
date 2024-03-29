@@ -1,13 +1,12 @@
 
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+[SelectionBase]
 public class SkillCardView : SimpleView
 {
     [SerializeField] private Image CardImage;
-    // [SerializeField] private GameObject ManaCostView;
     [SerializeField] private TMP_Text CostText;
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;

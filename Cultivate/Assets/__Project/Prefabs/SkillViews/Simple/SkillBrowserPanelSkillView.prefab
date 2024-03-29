@@ -1100,9 +1100,9 @@ GameObject:
   - component: {fileID: 8152188524626589071}
   - component: {fileID: 7969793575853840762}
   - component: {fileID: 4970350602697973923}
-  - component: {fileID: 3128451973406274909}
-  - component: {fileID: 7121671440949042087}
   - component: {fileID: 5972091649225076753}
+  - component: {fileID: 7121671440949042087}
+  - component: {fileID: 3128451973406274909}
   m_Layer: 5
   m_Name: SkillBrowserPanelSkillView
   m_TagString: Untagged
@@ -1174,6 +1174,30 @@ MonoBehaviour:
   DescriptionText: {fileID: 7570460864629865518}
   JingJieImage: {fileID: 8141467840311633605}
   WuXingImage: {fileID: 1041663930126595513}
+--- !u!114 &5972091649225076753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7121671440949042087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3128451973406274909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1187,30 +1211,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnnotationAddress: Canvas.SkillAnnotation
---- !u!114 &7121671440949042087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5972091649225076753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8421774287140611973
 GameObject:
   m_ObjectHideFlags: 0
