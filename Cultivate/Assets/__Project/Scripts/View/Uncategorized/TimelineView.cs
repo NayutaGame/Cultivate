@@ -1,15 +1,8 @@
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class TimelineView : MonoBehaviour
 {
@@ -45,14 +38,14 @@ public class TimelineView : MonoBehaviour
         ClearViews();
         _views = new List<StageSkillView>();
         foreach (var v in _views)
-            ConfigureNeuron(v.GetComponent<StageSkillInteractBehaviour>());
+            ConfigureNeuron(v.GetComponent<InteractBehaviour>());
 
         TotalCount = HomeSlots.Length;
         FutureCount = HomeSlots.Length - (IndexOfCurr + 1);
         PastCount = IndexOfCurr;
     }
 
-    private void ConfigureNeuron(StageSkillInteractBehaviour stageSkillIb)
+    private void ConfigureNeuron(InteractBehaviour stageSkillIb)
     {
         stageSkillIb.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter, StageManager.Instance.Pause);
         stageSkillIb.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit, StageManager.Instance.Resume);
@@ -74,7 +67,7 @@ public class TimelineView : MonoBehaviour
             v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
             v.SetAddress(new Address($"Stage.Timeline.Notes#{note.TemporalIndex}"));
-            ConfigureNeuron(v.GetComponent<StageSkillInteractBehaviour>());
+            ConfigureNeuron(v.GetComponent<InteractBehaviour>());
             v.Refresh();
         }
     }
@@ -147,7 +140,7 @@ public class TimelineView : MonoBehaviour
         v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
         v.SetAddress(new Address($"Stage.Timeline.Notes#{toCreate.TemporalIndex}"));
-        ConfigureNeuron(v.GetComponent<StageSkillInteractBehaviour>());
+        ConfigureNeuron(v.GetComponent<InteractBehaviour>());
         v.Refresh();
     }
 }

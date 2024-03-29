@@ -222,10 +222,9 @@ GameObject:
   - component: {fileID: 529978078669234200}
   - component: {fileID: 4886093480126312862}
   - component: {fileID: 6422294263586690588}
-  - component: {fileID: -7385623940235665073}
+  - component: {fileID: 1748293682396016953}
   - component: {fileID: 2535427580906110730}
   - component: {fileID: 3465345529074681399}
-  - component: {fileID: 3915304661074235521}
   m_Layer: 5
   m_Name: EntityBarView
   m_TagString: Untagged
@@ -281,10 +280,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f2d254ef8932b4d95b7d67f1aa75ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 3915304661074235521}
+  InteractBehaviour: {fileID: 1748293682396016953}
   NameText: {fileID: 328300260318751242}
   JingJieText: {fileID: 330612139291796175}
---- !u!114 &-7385623940235665073
+--- !u!114 &1748293682396016953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -293,7 +292,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2108923873393925487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ace2c3d8448cd41abe17e3d040b932, type: 3}
+  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2535427580906110730
@@ -321,18 +320,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionImage: {fileID: 2574591580943650469}
---- !u!114 &3915304661074235521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108923873393925487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2554135421041422778
 GameObject:
   m_ObjectHideFlags: 0

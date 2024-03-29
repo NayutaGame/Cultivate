@@ -1380,7 +1380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8152188524626589071}
   - component: {fileID: 4340962464578969089}
-  - component: {fileID: 8106355281593677907}
+  - component: {fileID: 5519611095636434936}
   m_Layer: 5
   m_Name: StageSkillView
   m_TagString: Untagged
@@ -1430,7 +1430,7 @@ MonoBehaviour:
   WuXingImage: {fileID: 7570655152909774514}
   SelectionImage: {fileID: 1627075881020627272}
   CounterImage: {fileID: 868353637407979949}
---- !u!114 &8106355281593677907
+--- !u!114 &5519611095636434936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1439,7 +1439,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8085986264311966347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85bd09a15bef8db498b38f51d28403f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8133398099548211338
