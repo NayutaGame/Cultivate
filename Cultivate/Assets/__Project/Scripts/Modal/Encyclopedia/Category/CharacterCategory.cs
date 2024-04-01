@@ -23,18 +23,18 @@ public class CharacterCategory : Category<CharacterEntry>
                         env.SetMaxMingYuanProcedure(12);
                         env.SetDMingYuanProcedure(2);
                     }),
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_SET_LEVEL, 0, (listener, eventDetails) =>
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
-                        SetLevelDetails d = (SetLevelDetails)eventDetails;
+                        SetJingJieDetails d = (SetJingJieDetails)eventDetails;
 
-                        if (d.ToLevel == JingJie.JinDan)
+                        if (d.ToJingJie == JingJie.JinDan)
                         {
                             env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.LianQi));
                             return;
                         }
 
-                        if (d.ToLevel == JingJie.HuaShen)
+                        if (d.ToJingJie == JingJie.HuaShen)
                         {
                             env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.ZhuJi));
                             return;

@@ -106,7 +106,7 @@ public class NodeCategory : Category<NodeEntry>
                         if (signal is SelectedOptionSignal selectedOptionSignal)
                         {
                             int index = selectedOptionSignal.Selected;
-                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Environment.Map.Level).Claim();
+                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Environment.Map.JingJie).Claim();
                         }
                         return null;
                     };
@@ -127,24 +127,6 @@ public class NodeCategory : Category<NodeEntry>
                 create: (map, runNode, level, step) =>
                 {
                     BarterPanelDescriptor A = new();
-                    runNode.ChangePanel(A);
-                }),
-
-            new RewardNodeEntry("算卦", "算卦", "算卦", withInPool: true,
-                canCreate: (map, level, step) => map.HasAdventureAfterwards(step),
-                create: (map, runNode, level, step) =>
-                {
-                    DialogPanelDescriptor A = new($"占卜到前方的冒险事件是\n{RunManager.Instance.Environment.Map.NextAdventure().GetName()}",
-                        "换一个",
-                        "保持现状");
-
-                    A[0].SetSelect(
-                        option =>
-                        {
-                            RunManager.Instance.Environment.Map.RedrawNextAdventure();
-                            return null;
-                        });
-
                     runNode.ChangePanel(A);
                 }),
 

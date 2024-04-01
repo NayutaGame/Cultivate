@@ -22,24 +22,24 @@ public class DrawDescriptor
         _priority = priority;
     }
 
-    public void Draw(Map map, StepItem stepItem, int level, int step)
+    public void Draw(Map map, StepItem stepItem, JingJie jingJie, int step)
     {
         if (_priority != null)
         {
-            SetStepItemFromPriority(map, stepItem, level, step);
+            SetStepItemFromPriority(map, stepItem, jingJie, step);
             return;
         }
 
-        SetStepItemFromPool(map, stepItem, level, step);
+        SetStepItemFromPool(map, stepItem, jingJie, step);
     }
 
-    private void SetStepItemFromPriority(Map map, StepItem stepItem, int level, int step)
+    private void SetStepItemFromPriority(Map map, StepItem stepItem, JingJie jingJie, int step)
     {
         stepItem._nodes.Clear();
         stepItem._nodes.Add(new RunNode(_priority));
     }
 
-    private void SetStepItemFromPool(Map map, StepItem stepItem, int level, int step)
+    private void SetStepItemFromPool(Map map, StepItem stepItem, JingJie jingJie, int step)
     {
         stepItem._nodes.Clear();
 
@@ -53,38 +53,38 @@ public class DrawDescriptor
                 break;
             case NodeType.Adventure:
             case NodeType.Ascension:
-                map.AdventurePool.TryPopItem(out NodeEntry entry, pred: e => e.CanCreate(map, level, step));
+                map.AdventurePool.TryPopItem(out NodeEntry entry, pred: e => e.CanCreate(map, jingJie, step));
                 stepItem._nodes.Add(new RunNode(entry));
                 break;
             case NodeType.Normal:
-                DrawNormal(map, stepItem, level);
+                DrawNormal(map, stepItem, jingJie);
                 break;
             case NodeType.Elite:
-                DrawElite(map, stepItem, level);
+                DrawElite(map, stepItem, jingJie);
                 break;
             case NodeType.Boss:
-                DrawBoss(map, stepItem, level);
+                DrawBoss(map, stepItem, jingJie);
                 break;
         }
     }
 
-    private void DrawNormal(Map map, StepItem stepItem, int level)
+    private void DrawNormal(Map map, StepItem stepItem, JingJie jingJie)
     {
-        DrawEntityDetails d = new DrawEntityDetails(level, allowNormal: true);
+        DrawEntityDetails d = new DrawEntityDetails(jingJie, allowNormal: true);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
         stepItem._nodes.Add(new BattleRunNode(entity));
     }
 
-    private void DrawElite(Map map, StepItem stepItem, int level)
+    private void DrawElite(Map map, StepItem stepItem, JingJie jingJie)
     {
-        DrawEntityDetails d = new DrawEntityDetails(level, allowElite: true);
+        DrawEntityDetails d = new DrawEntityDetails(jingJie, allowElite: true);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
         stepItem._nodes.Add(new BattleRunNode(entity));
     }
 
-    private void DrawBoss(Map map, StepItem stepItem, int level)
+    private void DrawBoss(Map map, StepItem stepItem, JingJie jingJie)
     {
-        DrawEntityDetails d = new DrawEntityDetails(level, allowBoss: true);
+        DrawEntityDetails d = new DrawEntityDetails(jingJie, allowBoss: true);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
         stepItem._nodes.Add(new BattleRunNode(entity));
     }

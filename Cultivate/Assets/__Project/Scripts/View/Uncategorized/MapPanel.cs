@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MapPanel : Panel
 {
-    [SerializeField] private ListView StepItemListView;
+    [SerializeField] private ListView NodeListView;
     [SerializeField] private CanvasGroup CanvasGroup;
 
     private Address _address;
@@ -35,13 +35,13 @@ public class MapPanel : Panel
         base.Configure();
         _address = new Address("Run.Environment.Map");
 
-        StepItemListView.SetAddress(_address.Append(".StepItems"));
+        NodeListView.SetAddress(_address.Append(".StepItem.Nodes"));
     }
 
     public override void Refresh()
     {
         base.Refresh();
-        StepItemListView.Refresh();
+        NodeListView.Refresh();
     }
 
     private void PlaySFX()

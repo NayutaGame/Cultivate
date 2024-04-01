@@ -13,7 +13,9 @@ public class RunNode
     public RunNodeState GetState() => _state;
     public void SetState(RunNodeState state) => _state = state;
 
-    public virtual string GetTitle() => _entry.GetTitle();
+    public virtual Sprite GetSprite() => _entry.GetSprite();
+    public virtual string GetName() => _entry.GetName();
+    public virtual string GetDescription() => _entry.GetDescription();
 
     public RunNode(NodeEntry entry)
     {

@@ -45,75 +45,68 @@ public class RunEnvironment : Addressable, RunEventListener
             4.Do(i => SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
             
             // init drawers
-            Map.DrawDescriptors = new DrawDescriptor[][]
+            Map.DrawDescriptors = new DrawDescriptor[]
             {
-                new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Normal),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Rest),
-                    new(DrawDescriptor.NodeType.Boss),
-                    new(DrawDescriptor.NodeType.Ascension),
-                },
-                new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Normal),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Shop),
-                    new(DrawDescriptor.NodeType.Elite),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Rest),
-                    new(DrawDescriptor.NodeType.Boss),
-                    new(DrawDescriptor.NodeType.Ascension),
-                },
-                new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Normal),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Shop),
-                    new(DrawDescriptor.NodeType.Normal),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Elite),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Rest),
-                    new(DrawDescriptor.NodeType.Boss),
-                    new(DrawDescriptor.NodeType.Ascension),
-                },
-                new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Normal),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Normal),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Shop),
-                    new(DrawDescriptor.NodeType.Elite),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Elite),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Rest),
-                    new(DrawDescriptor.NodeType.Boss),
-                    new(DrawDescriptor.NodeType.Ascension),
-                },
-                new DrawDescriptor[] {
-                    new(DrawDescriptor.NodeType.Normal),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Normal),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Normal),
-                    new(DrawDescriptor.NodeType.Rest),
-                    new(DrawDescriptor.NodeType.Elite),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Elite),
-                    new(DrawDescriptor.NodeType.Adventure),
-                    new(DrawDescriptor.NodeType.Elite),
-                    new(DrawDescriptor.NodeType.Rest),
-                    new(DrawDescriptor.NodeType.Shop),
-                    new(DrawDescriptor.NodeType.Boss),
-                },
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Rest),
+                new(DrawDescriptor.NodeType.Boss),
+                new(DrawDescriptor.NodeType.Ascension),
+                
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Shop),
+                new(DrawDescriptor.NodeType.Elite),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Rest),
+                new(DrawDescriptor.NodeType.Boss),
+                new(DrawDescriptor.NodeType.Ascension),
+                
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Shop),
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Elite),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Rest),
+                new(DrawDescriptor.NodeType.Boss),
+                new(DrawDescriptor.NodeType.Ascension),
+                
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Shop),
+                new(DrawDescriptor.NodeType.Elite),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Elite),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Rest),
+                new(DrawDescriptor.NodeType.Boss),
+                new(DrawDescriptor.NodeType.Ascension),
+                
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Rest),
+                new(DrawDescriptor.NodeType.Elite),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Elite),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Elite),
+                new(DrawDescriptor.NodeType.Rest),
+                new(DrawDescriptor.NodeType.Shop),
+                new(DrawDescriptor.NodeType.Boss),
             };
         }
 
         {
-            // init level and step
-            SetLevelProcedure(0);
-            // SetLevelProcedure(4);
+            SetJingJieProcedure(JingJie.LianQi);
+            SetStepProcedure(0);
         }
 
         {
@@ -126,39 +119,35 @@ public class RunEnvironment : Addressable, RunEventListener
         _eventDict.SendEvent(RunEventDict.START_RUN, d);
     }
 
-    private void SetLevelProcedure(int toLevel)
-        => SetLevelProcedure(new SetLevelDetails(Map.Level, toLevel));
-    private void SetLevelProcedure(SetLevelDetails d)
+    private void SetJingJieProcedure(JingJie toJingJie)
+        => SetJingJieProcedure(new SetJingJieDetails(Map.JingJie, toJingJie));
+    private void SetJingJieProcedure(SetJingJieDetails d)
     {
-        _eventDict.SendEvent(RunEventDict.WIL_SET_LEVEL, d);
+        _eventDict.SendEvent(RunEventDict.WIL_SET_JINGJIE, d);
         if (d.Cancel)
             return;
 
-        Map.Level = d.ToLevel;
-        Map.DrawStepItems();
+        Map.SetJingJie(d.ToJingJie);
         
-        ResetStepProcedure();
+        // move to ascension
+        _home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.ToJingJie]);
         
-        _home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.ToLevel]);
-        _home.SetJingJie(d.ToLevel);
-        AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToLevel));
+        _home.SetJingJie(d.ToJingJie);
+        AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToJingJie));
 
-        _eventDict.SendEvent(RunEventDict.DID_SET_LEVEL, d);
+        _eventDict.SendEvent(RunEventDict.DID_SET_JINGJIE, d);
     }
 
-    private void ResetStepProcedure()
+    private void SetStepProcedure(int step)
     {
-        Map.Step = 0;
+        Map.Step = step;
+        Map.DrawNode();
         Map.CurrStepItem.ToChoose();
         Map.Choosing = true;
     }
 
     private void NextStepProcedure()
-    {
-        Map.Step++;
-        Map.CurrStepItem.ToChoose();
-        Map.Choosing = true;
-    }
+        => SetStepProcedure(Map.Step + 1);
 
     public PanelDescriptor MakeChoiceProcedure(RunNode runNode)
     {
@@ -201,13 +190,6 @@ public class RunEnvironment : Addressable, RunEventListener
         if (!isLastStep)
         {
             NextStepProcedure();
-            return;
-        }
-
-        bool isLastLevel = Map.IsLastLevel();
-        if (!isLastLevel)
-        {
-            SetLevelProcedure(Map.Level + 1);
             return;
         }
 

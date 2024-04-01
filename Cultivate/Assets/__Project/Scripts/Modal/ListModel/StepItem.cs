@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class StepItem : Addressable
 {
-    public static readonly int Capacity = 3;
-
     private int _index;
     public NodeListModel _nodes;
     private bool _isChoosing;

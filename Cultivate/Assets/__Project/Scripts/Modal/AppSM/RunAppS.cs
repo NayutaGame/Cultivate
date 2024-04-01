@@ -14,9 +14,9 @@ public class RunAppS : AppS
         CanvasManager.Instance.RunCanvas.TopBar.Refresh();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
 
-        Address address = new Address("Run.Environment.Map.StepItems");
-        StepItemListModel stepItems = address.Get<StepItemListModel>();
-        NodeListModel nodes = stepItems[0]._nodes;
+        Address address = new Address("Run.Environment.Map.StepItem");
+        StepItem stepItem = address.Get<StepItem>();
+        NodeListModel nodes = stepItem._nodes;
         if (nodes.Count() == 1)
         {
             RunNode runNode = nodes[0];
