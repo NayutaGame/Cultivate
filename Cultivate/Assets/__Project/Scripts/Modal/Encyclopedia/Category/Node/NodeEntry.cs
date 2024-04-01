@@ -4,6 +4,18 @@ using UnityEngine;
 
 public abstract class NodeEntry : Entry
 {
+    // public enum NodeType
+    // {
+    //     Rest,
+    //     Adventure,
+    //     Encounter,
+    //     Ascension,
+    //     Success,
+    //     Normal,
+    //     Elite,
+    //     Boss,
+    // }
+    
     public virtual string GetName() => GetId();
 
     public Sprite GetSprite() => Encyclopedia.SpriteCategory["信风"].Sprite;

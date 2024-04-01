@@ -27,7 +27,7 @@ public class LegacyNodeView : SimpleView
         if (NameText != null)
             NameText.text = runNode.GetName() + runNode.GetState().ToString();
 
-        _breathingButton.SetSprite(runNode.Sprite);
+        _breathingButton.SetSprite(runNode.GetSprite());
 
         switch (runNode.GetState())
         {

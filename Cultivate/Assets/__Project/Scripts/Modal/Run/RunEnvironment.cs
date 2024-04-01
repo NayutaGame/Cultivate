@@ -56,7 +56,7 @@ public class RunEnvironment : Addressable, RunEventListener
                 
                 new(DrawDescriptor.NodeType.Normal),
                 new(DrawDescriptor.NodeType.Adventure),
-                new(DrawDescriptor.NodeType.Shop),
+                new(DrawDescriptor.NodeType.Rest),
                 new(DrawDescriptor.NodeType.Elite),
                 new(DrawDescriptor.NodeType.Adventure),
                 new(DrawDescriptor.NodeType.Rest),
@@ -65,21 +65,8 @@ public class RunEnvironment : Addressable, RunEventListener
                 
                 new(DrawDescriptor.NodeType.Normal),
                 new(DrawDescriptor.NodeType.Adventure),
-                new(DrawDescriptor.NodeType.Shop),
-                new(DrawDescriptor.NodeType.Normal),
-                new(DrawDescriptor.NodeType.Adventure),
-                new(DrawDescriptor.NodeType.Elite),
-                new(DrawDescriptor.NodeType.Adventure),
                 new(DrawDescriptor.NodeType.Rest),
-                new(DrawDescriptor.NodeType.Boss),
-                new(DrawDescriptor.NodeType.Ascension),
-                
                 new(DrawDescriptor.NodeType.Normal),
-                new(DrawDescriptor.NodeType.Adventure),
-                new(DrawDescriptor.NodeType.Normal),
-                new(DrawDescriptor.NodeType.Adventure),
-                new(DrawDescriptor.NodeType.Shop),
-                new(DrawDescriptor.NodeType.Elite),
                 new(DrawDescriptor.NodeType.Adventure),
                 new(DrawDescriptor.NodeType.Elite),
                 new(DrawDescriptor.NodeType.Adventure),
@@ -91,6 +78,19 @@ public class RunEnvironment : Addressable, RunEventListener
                 new(DrawDescriptor.NodeType.Adventure),
                 new(DrawDescriptor.NodeType.Normal),
                 new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Rest),
+                new(DrawDescriptor.NodeType.Elite),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Elite),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Rest),
+                new(DrawDescriptor.NodeType.Boss),
+                new(DrawDescriptor.NodeType.Ascension),
+                
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
+                new(DrawDescriptor.NodeType.Normal),
+                new(DrawDescriptor.NodeType.Adventure),
                 new(DrawDescriptor.NodeType.Normal),
                 new(DrawDescriptor.NodeType.Rest),
                 new(DrawDescriptor.NodeType.Elite),
@@ -99,8 +99,8 @@ public class RunEnvironment : Addressable, RunEventListener
                 new(DrawDescriptor.NodeType.Adventure),
                 new(DrawDescriptor.NodeType.Elite),
                 new(DrawDescriptor.NodeType.Rest),
-                new(DrawDescriptor.NodeType.Shop),
                 new(DrawDescriptor.NodeType.Boss),
+                new(DrawDescriptor.NodeType.Success),
             };
         }
 
@@ -119,7 +119,9 @@ public class RunEnvironment : Addressable, RunEventListener
         _eventDict.SendEvent(RunEventDict.START_RUN, d);
     }
 
-    private void SetJingJieProcedure(JingJie toJingJie)
+    public void NextJingJieProcedure()
+        => SetJingJieProcedure(Map.JingJie + 1);
+    public void SetJingJieProcedure(JingJie toJingJie)
         => SetJingJieProcedure(new SetJingJieDetails(Map.JingJie, toJingJie));
     private void SetJingJieProcedure(SetJingJieDetails d)
     {

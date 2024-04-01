@@ -6,9 +6,6 @@ public class RunNode
     protected NodeEntry _entry;
     public NodeEntry Entry => _entry;
 
-    protected SpriteEntry _spriteEntry;
-    public Sprite Sprite => _spriteEntry.Sprite;
-
     private RunNodeState _state;
     public RunNodeState GetState() => _state;
     public void SetState(RunNodeState state) => _state = state;
@@ -19,15 +16,6 @@ public class RunNode
 
     public RunNode(NodeEntry entry)
     {
-        if (entry is RewardNodeEntry r)
-        {
-            _spriteEntry = r.SpriteEntry;
-        }
-        else if (entry is AdventureNodeEntry)
-        {
-            _spriteEntry = "奇遇";
-        }
-        
         _entry = entry;
         _state = RunNodeState.Future;
     }

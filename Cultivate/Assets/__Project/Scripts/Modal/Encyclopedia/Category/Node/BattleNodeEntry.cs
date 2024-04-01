@@ -4,11 +4,11 @@ using UnityEngine;
 public class BattleNodeEntry : NodeEntry
 {
     public BattleNodeEntry(string id, string description) : base(id, description, withInPool: true,
-        create: (map, runNode, level, step) =>
+        create: (map, runNode, jingJie, step) =>
         {
             BattleRunNode battleRunNode = runNode as BattleRunNode;
 
-            int xiuWeiValue = Mathf.RoundToInt(battleRunNode.BaseXiuWeiRewardFromLevelAndStep(map.JingJie, map.Step) * RandomManager.Range(0.9f, 1.1f));
+            int xiuWeiValue = Mathf.RoundToInt(battleRunNode.BaseGoldReward() * RandomManager.Range(0.9f, 1.1f));
 
             BattlePanelDescriptor A = new(battleRunNode.Entity);
             battleRunNode.AddReward(new ResourceReward(gold: xiuWeiValue));
@@ -32,7 +32,7 @@ public class BattleNodeEntry : NodeEntry
                     return C;
                 });
             }
-            else if (level != JingJie.HuaShen)
+            else if (jingJie != JingJie.HuaShen)
             {
                 A.SetWin(() =>
                 {

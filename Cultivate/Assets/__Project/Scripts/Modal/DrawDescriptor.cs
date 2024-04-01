@@ -4,9 +4,10 @@ public class DrawDescriptor
     public enum NodeType
     {
         Rest,
-        Shop,
         Adventure,
+        Encounter,
         Ascension,
+        Success,
         Normal,
         Elite,
         Boss,
@@ -47,14 +48,18 @@ public class DrawDescriptor
         {
             case NodeType.Rest:
                 stepItem._nodes.Add(new RunNode("休息"));
-                break;
-            case NodeType.Shop:
                 stepItem._nodes.Add(new RunNode("商店"));
                 break;
             case NodeType.Adventure:
-            case NodeType.Ascension:
+            case NodeType.Encounter:
                 map.AdventurePool.TryPopItem(out NodeEntry entry, pred: e => e.CanCreate(map, jingJie, step));
                 stepItem._nodes.Add(new RunNode(entry));
+                break;
+            case NodeType.Ascension:
+                stepItem._nodes.Add(new RunNode(Encyclopedia.NodeCategory["突破境界"]));
+                break;
+            case NodeType.Success:
+                stepItem._nodes.Add(new RunNode(Encyclopedia.NodeCategory["胜利"]));
                 break;
             case NodeType.Normal:
                 DrawNormal(map, stepItem, jingJie);

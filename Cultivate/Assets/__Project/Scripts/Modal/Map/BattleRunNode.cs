@@ -17,8 +17,6 @@ public class BattleRunNode : RunNode
         _entity = entity;
         _isBoss = entity.IsBoss();
         _rewards = new();
-
-        _spriteEntry = _isBoss ? "Boss" : "战斗";
     }
 
     public override string GetName()
@@ -46,17 +44,26 @@ public class BattleRunNode : RunNode
 
     public int LadderFromLevelAndStep(JingJie jingJie, int step)
     {
-        // need fix
-        return jingJie * 3 + (4 <= step && step <= 6 ? 1 : 0) + (step >= 8 ? 2 : 0);
+        return jingJie * 3 + step;
     }
 
-    private int[] XiuWeiRewardTable = new int[]
+    private int[] GoldRewardTable = new int[]
     {
-        5, 11, 31, 11, 21, 61, 15, 31, 91, 21, 41, 121, 25, 51, 151,
+        5, 11, 31,
+        11, 21, 61,
+        15, 31, 91,
+        21, 41, 121,
+        25, 51, 151,
     };
 
-    public int BaseXiuWeiRewardFromLevelAndStep(JingJie jingJie, int step)
+    public int BaseGoldReward()
     {
-        return XiuWeiRewardTable[LadderFromLevelAndStep(jingJie, step)];
+        JingJie jingJie = _entity.GetJingJie();
+        int step = 0;
+        if (_entity.IsBoss())
+            step = 2;
+        else if (_entity.IsElite())
+            step = 1;
+        return GoldRewardTable[LadderFromLevelAndStep(jingJie, step)];
     }
 }
