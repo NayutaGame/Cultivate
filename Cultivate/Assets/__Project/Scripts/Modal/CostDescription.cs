@@ -45,11 +45,6 @@ public struct CostDescription
             costResult?.ToCostDescription() ??
             new CostDescription(CostType.Armor, CostResult.CostState.Normal, djFunc(dj));
 
-    public static Func<JingJie, int, CostResult, CostDescription> ArmorFromJiaShi(Func<bool, int> jiaShi)
-        => (j, dj, costResult) =>
-            costResult?.ToCostDescription() ??
-            new CostDescription(CostType.Armor, CostResult.CostState.Normal, jiaShi(false));
-
     public static Func<JingJie, int, CostResult, CostDescription> ChannelFromValue(int value)
         => (j, dj, costResult) =>
             costResult?.ToCostDescription() ??
@@ -59,11 +54,6 @@ public struct CostDescription
         => (j, dj, costResult) =>
             costResult?.ToCostDescription() ??
             new CostDescription(CostType.Channel, CostResult.CostState.Normal, djFunc(dj));
-
-    public static Func<JingJie, int, CostResult, CostDescription> ChannelFromJiaShi(Func<bool, int> jiaShi)
-        => (j, dj, costResult) =>
-            costResult?.ToCostDescription() ??
-            new CostDescription(CostType.Channel, CostResult.CostState.Normal, jiaShi(false));
 
     public static Func<JingJie, int, CostResult, CostDescription> HealthFromValue(int value)
         => (j, dj, costResult) =>
@@ -75,11 +65,6 @@ public struct CostDescription
             costResult?.ToCostDescription() ??
             new CostDescription(CostType.Health, CostResult.CostState.Normal, djFunc(dj));
 
-    public static Func<JingJie, int, CostResult, CostDescription> HealthFromJiaShi(Func<bool, int> jiaShi)
-        => (j, dj, costResult) =>
-            costResult?.ToCostDescription() ??
-            new CostDescription(CostType.Health, CostResult.CostState.Normal, jiaShi(false));
-
     public static Func<JingJie, int, CostResult, CostDescription> ManaFromValue(int value)
         => (j, dj, costResult) =>
             costResult?.ToCostDescription() ??
@@ -89,9 +74,4 @@ public struct CostDescription
         => (j, dj, costResult) =>
             costResult?.ToCostDescription() ??
             new CostDescription(CostType.Mana, CostResult.CostState.Normal, djFunc(dj));
-
-    public static Func<JingJie, int, CostResult, CostDescription> ManaFromJiaShi(Func<bool, int> jiaShi)
-        => (j, dj, costResult) =>
-            costResult?.ToCostDescription() ??
-            new CostDescription(CostType.Mana, CostResult.CostState.Normal, jiaShi(false));
 }

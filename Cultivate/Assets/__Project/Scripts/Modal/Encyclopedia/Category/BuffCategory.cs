@@ -526,7 +526,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("一切皆苦", "每回合：灵气+[层数]", BuffStackRule.Add, true, false,
+            new("抱朴", "每回合：灵气+[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
@@ -595,7 +595,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("玄武吐息法", "治疗可以穿上限", BuffStackRule.One, true, false,
+            new("吐纳", "治疗可以穿上限", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_HEAL, 0, async (listener, stageEventDetails) =>
@@ -749,16 +749,17 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)listener;
                         StartStepDetails d = (StartStepDetails)stageEventDetails;
 
-                        // if (b.Owner != d.Owner) return;
-                        // if (d.Skill.GetSkillType().Contains(SkillType.Attack))
-                        //     return;
-                        //
-                        // await d.Skill.ExhaustProcedure();
-                        // bool noBuff = b.Owner.GetStackOfBuff("免费") == 0;
-                        // if (noBuff)
-                        //     await b.Owner.GainBuffProcedure("免费");
-                        //
-                        // await b.SetDStack(-1);
+                        if (b.Owner != d.Owner) return;
+                        StageSkill skill = d.Owner._skills[d.P];
+                        if (skill.GetSkillType().Contains(SkillType.Attack))
+                            return;
+                        
+                        await skill.ExhaustProcedure();
+                        bool noBuff = b.Owner.GetStackOfBuff("免费") == 0;
+                        if (noBuff)
+                            await b.Owner.GainBuffProcedure("免费");
+                        
+                        await b.SetDStack(-1);
                     }),
                 }),
 

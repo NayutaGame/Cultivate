@@ -1,6 +1,7 @@
 
 using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public abstract class CostResult : EventDetails
 {
@@ -23,7 +24,7 @@ public abstract class CostResult : EventDetails
 
     protected CostResult(int value)
     {
-        Value = value;
+        Value = Mathf.Max(0, value);
     }
 
     public virtual async Task WillCostEvent()
@@ -46,9 +47,11 @@ public abstract class CostResult : EventDetails
 
     public static async Task<CostResult> FromEnvironment(StageEnvironment env, StageEntity entity, StageSkill skill, bool recursive = true)
         => await skill.Entry.Cost(env, entity, skill, recursive);
+    
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> Empty
         => async (env, entity, skill, recursive) => new EmptyCostResult();
+    
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> ArmorFromValue(int value)
         => async (env, entity, skill, recursive) => new ArmorCostResult(value);
@@ -57,11 +60,11 @@ public abstract class CostResult : EventDetails
         => async (env, entity, skill, recursive) => new ArmorCostResult(dj(skill.Dj));
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> ArmorFromJiaShi(Func<bool, int> jiaShi)
-        => async (env, entity, skill, recursive) =>
-        {
-            bool j = await entity.ToggleJiaShiProcedure();
-            return new ArmorCostResult(jiaShi(j));
-        };
+        => async (env, entity, skill, recursive) => new ArmorCostResult(jiaShi(await entity.ToggleJiaShiProcedure()));
+    
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> ArmorFromCastedCount(Func<int, int> cc)
+        => async (env, entity, skill, recursive) => new ArmorCostResult(cc(skill.StageCastedCount));
+    
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> ChannelFromValue(int value)
         => async (env, entity, skill, recursive) => new ChannelCostResult(value);
@@ -70,11 +73,11 @@ public abstract class CostResult : EventDetails
         => async (env, entity, skill, recursive) => new ChannelCostResult(dj(skill.Dj));
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> ChannelFromJiaShi(Func<bool, int> jiaShi)
-        => async (env, entity, skill, recursive) =>
-        {
-            bool j = await entity.ToggleJiaShiProcedure();
-            return new ChannelCostResult(jiaShi(j));
-        };
+        => async (env, entity, skill, recursive) => new ChannelCostResult(jiaShi(await entity.ToggleJiaShiProcedure()));
+    
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> ChannelFromCastedCount(Func<int, int> cc)
+        => async (env, entity, skill, recursive) => new ChannelCostResult(cc(skill.StageCastedCount));
+    
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> HealthFromValue(int value)
         => async (env, entity, skill, recursive) => new HealthCostResult(value);
@@ -83,11 +86,11 @@ public abstract class CostResult : EventDetails
         => async (env, entity, skill, recursive) => new HealthCostResult(dj(skill.Dj));
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> HealthFromJiaShi(Func<bool, int> jiaShi)
-        => async (env, entity, skill, recursive) =>
-        {
-            bool j = await entity.ToggleJiaShiProcedure();
-            return new HealthCostResult(jiaShi(j));
-        };
+        => async (env, entity, skill, recursive) => new HealthCostResult(jiaShi(await entity.ToggleJiaShiProcedure()));
+    
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> HealthFromCastedCount(Func<int, int> cc)
+        => async (env, entity, skill, recursive) => new HealthCostResult(cc(skill.StageCastedCount));
+    
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> ManaFromValue(int value)
         => async (env, entity, skill, recursive) => new ManaCostResult(value);
@@ -96,9 +99,8 @@ public abstract class CostResult : EventDetails
         => async (env, entity, skill, recursive) => new ManaCostResult(dj(skill.Dj));
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> ManaFromJiaShi(Func<bool, int> jiaShi)
-        => async (env, entity, skill, recursive) =>
-        {
-            bool j = await entity.ToggleJiaShiProcedure();
-            return new ManaCostResult(jiaShi(j));
-        };
+        => async (env, entity, skill, recursive) => new ManaCostResult(jiaShi(await entity.ToggleJiaShiProcedure()));
+    
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> ManaFromCastedCount(Func<int, int> cc)
+        => async (env, entity, skill, recursive) => new ManaCostResult(cc(skill.StageCastedCount));
 }

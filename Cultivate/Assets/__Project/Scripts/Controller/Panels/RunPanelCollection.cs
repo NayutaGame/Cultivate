@@ -22,8 +22,8 @@ public class RunPanelCollection : MonoBehaviour
 
     public bool CurrentIsDescriptor(PanelDescriptor d)
     {
-        if (d == null && _currentPanel == null)
-            return true;
+        // if (d == null && _currentPanel == null)
+        //     return true;
 
         if (d != null && _panelDict[d.GetType()] == _currentPanel)
             return true;

@@ -22,7 +22,7 @@ public class Map : Addressable
     
     public int Choice;
     public RunNode CurrNode
-        => _stepItem._nodes[Choice];
+        => Choosing ? null : _stepItem._nodes[Choice];
     
     public DrawDescriptor[] DrawDescriptors;
     public EntityPool EntityPool;

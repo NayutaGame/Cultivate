@@ -155,8 +155,8 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         Map.Choice = Map.CurrStepItem.IndexOf(runNode);
         Map.CurrStepItem.MakeChoice(Map.Choice);
-        Map.CreateEntry();
         Map.Choosing = false;
+        Map.CreateEntry();
         return Map.CurrNode.CurrentPanel;
     }
 
