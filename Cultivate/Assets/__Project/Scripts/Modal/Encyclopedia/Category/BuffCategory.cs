@@ -34,6 +34,23 @@ public class BuffCategory : Category<BuffEntry>
             new("浮空艇",     "回合被跳过时：生命及上线无法下降",              BuffStackRule.Add, true, false),
             new("架势",     "消耗架势激活效果，没有架势时获得架势",              BuffStackRule.One, true, false),
             
+            new(id:                         "跳走步",
+                description:                "跳过走步阶段",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                false,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        StartStepDetails d = (StartStepDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+                        d.Cancel = true;
+                        await b.SetDStack(-1);
+                    }),
+                }),
+            
             new(id:                         "滞气",
                 description:                "每回合：失去[层数]灵气，层数-1",
                 buffStackRule:              BuffStackRule.Add,

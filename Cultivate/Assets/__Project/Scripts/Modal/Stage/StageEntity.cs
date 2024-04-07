@@ -122,7 +122,10 @@ public class StageEntity : Addressable, StageEventListener
 
     private async Task StepProcedure()
     {
-        await _env.EventDict.SendEvent(StageEventDict.WIL_STEP, new StartStepDetails(this, _p));
+        var startD = new StartStepDetails(this, _p);
+        await _env.EventDict.SendEvent(StageEventDict.WIL_STEP, startD);
+        if (startD.Cancel)
+            return;
 
         int dir = Forward ? 1 : -1;
         for (int i = 0; i < _skills.Length; i++)
