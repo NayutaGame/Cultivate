@@ -77,10 +77,10 @@ public class EntityEditorEntityView : SimpleView
         if (FieldView != null)
         {
             FieldView.SetAddress(GetAddress().Append(".Slots"));
-            FieldView.PointerEnterNeuron.Join(PointerEnterSlotNeuron);
-            FieldView.PointerExitNeuron.Join(PointerExitSlotNeuron);
-            FieldView.PointerMoveNeuron.Join(PointerMoveSlotNeuron);
-            FieldView.BeginDragNeuron.Join(BeginDragSlotNeuron);
+            FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
+            FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
+            FieldView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
+                CanvasManager.Instance.FormationAnnotation.PointerExit);
             FieldView.RightClickNeuron.Join(RightClickSlotNeuron);
             FieldView.DropNeuron.Join(DropSlotNeuron);
         }
@@ -205,9 +205,6 @@ public class EntityEditorEntityView : SimpleView
         Refresh();
     }
 
-    public Neuron<InteractBehaviour, PointerEventData> PointerEnterSlotNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerExitSlotNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerMoveSlotNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> BeginDragSlotNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> RightClickSlotNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropSlotNeuron = new();

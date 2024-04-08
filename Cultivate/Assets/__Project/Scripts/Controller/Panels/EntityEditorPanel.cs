@@ -35,44 +35,24 @@ public class EntityEditorPanel : Panel
         EntityBrowser.RightClickNeuron.Join(DeselectEntity);
 
         SkillBrowser.SetAddress(new Address("SkillInventory"));
-        SkillBrowser.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter);
-        SkillBrowser.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-        SkillBrowser.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
         SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
             CanvasManager.Instance.FormationAnnotation.PointerExit);
-
-        AwayEntityView.SetAddress(null);
-        AwayEntityView.PointerExitSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-        AwayEntityView.PointerMoveSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
-        AwayEntityView.BeginDragSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-            CanvasManager.Instance.FormationAnnotation.PointerExit);
-
-        AwayEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
-        AwayEntityView.PointerEnterFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerEnter);
-        AwayEntityView.PointerExitFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerExit);
-        AwayEntityView.PointerMoveFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerMove);
-
-        HomeEntityView.SetAddress(new Address("Editor.Home"));
-        HomeEntityView.PointerExitSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-        HomeEntityView.PointerMoveSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
-        HomeEntityView.BeginDragSlotNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-            CanvasManager.Instance.FormationAnnotation.PointerExit);
-
-        HomeEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
-        HomeEntityView.PointerEnterFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerEnter);
-        HomeEntityView.PointerExitFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerExit);
-        HomeEntityView.PointerMoveFormationNeuron.Join(CanvasManager.Instance.FormationAnnotation.PointerMove);
-
-        AwayEntityView.DropSlotNeuron.Join(Equip, Swap);
-
-        HomeEntityView.DropSlotNeuron.Join(Equip, Swap);
-
         SkillBrowser.DropNeuron.Join(Unequip);
 
+        AwayEntityView.SetAddress(null);
+        AwayEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
+        AwayEntityView.DropSlotNeuron.Join(Equip, Swap);
+
+        HomeEntityView.SetAddress(new Address("Editor.Home"));
+        HomeEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
+        HomeEntityView.DropSlotNeuron.Join(Equip, Swap);
+        
         CopyToTopButton.onClick.RemoveAllListeners();
         CopyToTopButton.onClick.AddListener(CopyToTop);
+        
         SwapTopAndBottomButton.onClick.RemoveAllListeners();
         SwapTopAndBottomButton.onClick.AddListener(SwapTopAndBottom);
+        
         CopyToBottomButton.onClick.RemoveAllListeners();
         CopyToBottomButton.onClick.AddListener(CopyToBottom);
 
