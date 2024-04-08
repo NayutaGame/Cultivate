@@ -1,9 +1,12 @@
 
+using UnityEngine;
+
 public class ExtraBehaviourAnnotation : ExtraBehaviour
 {
     public string AnnotationAddress;
     private AnnotationView Annotation;
     public AnnotationView GetAnnotationView() => Annotation;
+    public RectTransform HoverTransform;
 
     public override void Init(CLView clView)
     {

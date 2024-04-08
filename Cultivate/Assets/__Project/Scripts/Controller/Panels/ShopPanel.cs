@@ -26,19 +26,13 @@ public class ShopPanel : Panel
     }
 
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
-    {
-        // Hover Animation
-        CanvasManager.Instance.SkillAnnotation.PointerEnter(ib.GetSimpleView().GetAddress().Append(".Skill"), d);
-    }
+        => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
     private void PointerExit(InteractBehaviour ib, PointerEventData d)
-    {
-        // Unhover Animation
-        CanvasManager.Instance.SkillAnnotation.PointerExit(ib.GetSimpleView().GetAddress().Append(".Skill"), d);
-    }
+        => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
     private void PointerMove(InteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerMove(ib.GetSimpleView().GetAddress().Append(".Skill"), d);
+        => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
     public override void Refresh()
     {
