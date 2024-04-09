@@ -18,7 +18,7 @@ public abstract class NodeEntry : Entry
     
     public virtual string GetName() => GetId();
 
-    public Sprite GetSprite() => Encyclopedia.SpriteCategory["信风"].Sprite;
+    public Sprite GetSprite() => Encyclopedia.SpriteCategory["摇曳"].Sprite;
     
     private string _description;
     public string GetDescription() => _description;

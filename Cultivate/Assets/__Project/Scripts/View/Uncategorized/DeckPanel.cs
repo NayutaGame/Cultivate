@@ -51,6 +51,7 @@ public class DeckPanel : Panel
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        HandView.RightClickNeuron.Join(IncreaseShowingJingJie);
         HandView.DropNeuron.Join(TryMerge, TryUnequip);
         HandView.GetComponent<PropagateDrop>()._onDrop = TryUnequip;
 
@@ -100,6 +101,15 @@ public class DeckPanel : Panel
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
+
+    private void IncreaseShowingJingJie(InteractBehaviour ib, PointerEventData eventData)
+    {
+        // SkillSlot slot = ib.GetSimpleView().Get<SkillSlot>();
+        // slot.TryIncreaseJingJie();
+        // ib.GetSimpleView().Refresh();
+        // RefreshOperationBoard();
+        // CanvasManager.Instance.SkillAnnotation.Refresh();
+    }
 
     private void TryMerge(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
