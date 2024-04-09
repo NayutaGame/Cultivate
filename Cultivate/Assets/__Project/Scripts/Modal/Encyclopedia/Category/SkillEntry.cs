@@ -79,7 +79,7 @@ public class SkillEntry : Entry, IAnnotation
         => _annotationArray.HighlightFromDescription(description);
     public string GetHighlight()
         => GetHighlight(GetDescription());
-    public string GetHighlight(JingJie jingJie, CostResult costResult, CastResult castResult)
+    public string GetHighlight(JingJie jingJie, CostResult costResult = null, CastResult castResult = null)
         => GetHighlight(GetDescription(jingJie, costResult, castResult));
     
     public string GetExplanation()
@@ -92,7 +92,7 @@ public class SkillEntry : Entry, IAnnotation
     public bool WithinPool => _withinPool;
 
     private SpriteEntry _spriteEntry;
-    public Sprite Sprite => _spriteEntry?.Sprite;
+    public Sprite Sprite => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory["Default"].Sprite;
 
     public SkillEntry(string id,
         string name,

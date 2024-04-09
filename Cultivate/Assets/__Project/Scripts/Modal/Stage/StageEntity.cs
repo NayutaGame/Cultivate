@@ -78,7 +78,7 @@ public class StageEntity : Addressable, StageEventListener
         
         // will cast report
         await _env.TryPlayTween(new ShiftTweenDescriptor());
-        _env.Result.TryAppend($"{GetName()}使用了{skill.GetName()}");
+        _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}");
         
         
         CastResult castResult = await skill.Entry.Cast(_env, this, skill, recursive);
@@ -103,7 +103,7 @@ public class StageEntity : Addressable, StageEventListener
 
         
         // will cast report
-        _env.Result.TryAppend($"{GetName()}使用了{skill.GetName()}");
+        _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}");
 
         
         CastResult castResult = await skill.Entry.Cast(_env, this, skill, recursive);

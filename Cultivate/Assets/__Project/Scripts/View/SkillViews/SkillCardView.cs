@@ -15,20 +15,23 @@ public class SkillCardView : SimpleView
     [SerializeField] private Image JingJieImage;
     [SerializeField] private Image WuXingImage;
 
-    public override void SetAddress(Address address)
-    {
-        base.SetAddress(address);
-        ISkillModel skill = Get<ISkillModel>();
-        _showingJingJie = skill.GetJingJie();
-    }
-
     public override void Refresh()
     {
         base.Refresh();
 
         ISkillModel skill = Get<ISkillModel>();
+        SetShowingJingJie(skill.GetJingJie());
+    }
 
-        SetCardImage(skill.GetSprite());
+    public JingJie GetShowingJingJie()
+        => _showingJingJie;
+
+    public void SetShowingJingJie(JingJie jingJie)
+    {
+        _showingJingJie = jingJie;
+
+        ISkillModel skill = Get<ISkillModel>();
+        SetSprite(skill.GetSprite());
         SetCostDescription(skill.GetCostDescription(_showingJingJie));
         SetName(skill.GetName());
         SetDescription(skill.GetHighlight(_showingJingJie));
@@ -37,9 +40,9 @@ public class SkillCardView : SimpleView
         SetWuXingSprite(skill.GetWuXingSprite());
     }
 
-    protected virtual void SetCardImage(Sprite sprite)
+    protected virtual void SetSprite(Sprite sprite)
     {
-        CardImage.sprite = sprite != null ? sprite : Encyclopedia.SpriteCategory["Default"].Sprite;
+        CardImage.sprite = sprite;
     }
 
     protected virtual void SetCostDescription(CostDescription costDescription)

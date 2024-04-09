@@ -112,7 +112,7 @@ public class MechComposite : EmulatedSkill
     public string GetHighlight(JingJie showingJingJie)
         => GetJingJie() == showingJingJie
             ? GetEntry().GetHighlight(showingJingJie, _skillSlot?.CostResult, _skillSlot?.CastResult)
-            : GetEntry().GetHighlight(showingJingJie, null, null);
+            : GetEntry().GetHighlight(showingJingJie);
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)
         => GetEntry().GetJingJieSprite(showingJingJie);

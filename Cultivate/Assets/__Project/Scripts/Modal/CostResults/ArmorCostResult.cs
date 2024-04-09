@@ -25,7 +25,7 @@ public class ArmorCostResult : CostResult
         int total = Value + 2 * shortage;
         await Entity.LoseArmorProcedure(total);
         
-        Env.Result.TryAppend($"{Entity.GetName()}消耗了{Value}护甲，不足的部分变成了三倍的减甲，以使用{Skill.GetName()}\n");
+        Env.Result.TryAppend($"{Entity.GetName()}消耗了{Value}护甲，不足的部分变成了三倍的减甲，以使用{Skill.Entry.GetName()}\n");
         await Env.LoseHealthProcedure(Entity, Value);
     }
 

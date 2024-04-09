@@ -33,22 +33,22 @@ public class StageNote : ISkillModel
     public int GetMaxCounter() => _maxCounter;
 
     public Sprite GetSprite()
-        => Skill.GetSprite();
+        => Skill.Entry.Sprite;
 
     public Sprite GetWuXingSprite()
         => Skill.Entry.GetWuXingSprite();
 
     public string GetName()
-        => Skill.GetName();
+        => Skill.Entry.GetName();
 
     public SkillTypeComposite GetSkillTypeComposite()
-        => Skill.GetSkillTypeCollection();
+        => Skill.Entry.SkillTypeComposite;
 
     public string GetExplanation()
-        => Skill.GetExplanation();
+        => Skill.Entry.GetExplanation();
 
     public string GetTrivia()
-        => Skill.GetTrivia();
+        => Skill.Entry.GetTrivia();
 
     public JingJie GetJingJie()
         => Skill.GetJingJie();
@@ -61,7 +61,7 @@ public class StageNote : ISkillModel
     public string GetHighlight(JingJie showingJingJie)
         => GetJingJie() == showingJingJie
             ? Skill.Entry.GetHighlight(showingJingJie, CostResult, CastResult)
-            : Skill.Entry.GetHighlight(showingJingJie, null, null);
+            : Skill.Entry.GetHighlight(showingJingJie);
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)
         => Skill.Entry.GetJingJieSprite(showingJingJie);

@@ -28,7 +28,7 @@ public class ChannelCostResult : CostResult
         {
             await Env.TryPlayTween(new ShiftTweenDescriptor());
             Env.Result.TryAppendChannelNote(Entity.Index, Skill, _counter, Value);
-            Env.Result.TryAppend($"{Entity.GetName()}吟唱了{Skill.GetName()} 进度: {_counter}//{Value}\n");
+            Env.Result.TryAppend($"{Entity.GetName()}吟唱了{Skill.Entry.GetName()} 进度: {_counter}//{Value}\n");
             _counter -= 1;
         }
         

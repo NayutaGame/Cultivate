@@ -27,34 +27,12 @@ public class StageSkill
     public async Task ExhaustProcedure()
         => await _owner.Env.ExhaustProcedure(_owner, this);
 
-    public SkillTypeComposite GetSkillTypeCollection()
-        => _entry.SkillTypeComposite;
-
-    public string GetName()
-        => _entry.GetName();
-
-    public string GetHighlight(CostResult costResult, CastResult castResult)
-        => _entry.GetHighlight(GetJingJie(), costResult, castResult);
-
-    public string GetExplanation()
-        => _entry.GetExplanation();
-
-    public CostDescription GetCostDescription(CostResult costResult)
-        => _entry.GetCostDescription(GetJingJie(), costResult);
-
-    public string GetTrivia()
-        => _entry.GetTrivia();
-
-    public Sprite GetSprite()
-        => _entry.Sprite;
-
     public int RunCastedCount { get; private set; }
     public int RunEquippedTimes { get; private set; }
     public int StageCastedCount { get; private set; }
 
     private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
-    public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
 
     public async Task TryUpgradeJingJie()
     {

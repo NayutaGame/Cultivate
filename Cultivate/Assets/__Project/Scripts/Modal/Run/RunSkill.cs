@@ -100,7 +100,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
     public string GetHighlight(JingJie showingJingJie)
         => _jingJie == showingJingJie
             ? GetEntry().GetHighlight(showingJingJie, _skillSlot?.CostResult, _skillSlot?.CastResult)
-            : GetEntry().GetHighlight(showingJingJie, null, null);
+            : GetEntry().GetHighlight(showingJingJie);
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)
         => _entry.GetJingJieSprite(showingJingJie);

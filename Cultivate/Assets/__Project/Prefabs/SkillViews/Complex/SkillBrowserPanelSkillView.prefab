@@ -176,6 +176,7 @@ GameObject:
   - component: {fileID: 6477401717688121754}
   - component: {fileID: 7121671440949042087}
   - component: {fileID: 3128451973406274909}
+  - component: {fileID: 5673872078303924384}
   m_Layer: 5
   m_Name: SkillBrowserPanelSkillView
   m_TagString: Untagged
@@ -244,6 +245,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnnotationAddress: Canvas.SkillAnnotation
+  HoverTransform: {fileID: 0}
+--- !u!114 &5673872078303924384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4810d2aed8e55f42a1979a36d2afe81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skillView: {fileID: 4904414317402127026}
 --- !u!1 &8694669702383511229
 GameObject:
   m_ObjectHideFlags: 0
