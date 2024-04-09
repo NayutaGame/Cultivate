@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 public class ChannelCostResult : CostResult
 {
-    public int Counter;
+    private int _counter;
     
     public ChannelCostResult(int value) : base(value)
     {
@@ -15,21 +15,21 @@ public class ChannelCostResult : CostResult
     public override async Task WillCostEvent()
     {
         await Env.EventDict.SendEvent(StageEventDict.WIL_CHANNEL_COST, this);
-        Counter = Value;
+        _counter = Value;
     }
     
     public override async Task ApplyCost()
     {
-        ChannelDetails d = new ChannelDetails(Entity, Skill, Counter, Value);
+        ChannelDetails d = new ChannelDetails(Entity, Skill, _counter, Value);
         await Env.EventDict.SendEvent(StageEventDict.WIL_CHANNEL, d);
 
-        Blocking = !IsFinished;
+        Blocking = _counter > 0;
         if (Blocking)
         {
             await Env.TryPlayTween(new ShiftTweenDescriptor());
-            Env.Result.TryAppendChannelNote(Entity.Index, Skill, Counter, Value);
-            IncrementProgress();
-            Env.Result.TryAppend($"{Entity.GetName()}吟唱了{Skill.GetName()} 进度: {Counter}//{Value}\n");
+            Env.Result.TryAppendChannelNote(Entity.Index, Skill, _counter, Value);
+            Env.Result.TryAppend($"{Entity.GetName()}吟唱了{Skill.GetName()} 进度: {_counter}//{Value}\n");
+            _counter -= 1;
         }
         
         await Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, d);
@@ -39,11 +39,4 @@ public class ChannelCostResult : CostResult
     {
         await Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL_COST, this);
     }
-
-    private void IncrementProgress()
-    {
-        Counter -= 1;
-    }
-
-    public bool IsFinished => Counter <= 0;
 }
