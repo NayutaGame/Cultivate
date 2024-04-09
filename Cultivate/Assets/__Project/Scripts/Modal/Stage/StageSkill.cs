@@ -48,9 +48,6 @@ public class StageSkill
     public Sprite GetSprite()
         => _entry.Sprite;
 
-    public Sprite GetCardFace()
-        => _entry.CardFace;
-
     public int RunCastedCount { get; private set; }
     public int RunEquippedTimes { get; private set; }
     public int StageCastedCount { get; private set; }

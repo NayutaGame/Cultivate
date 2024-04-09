@@ -6,12 +6,21 @@ using UnityEngine.UI;
 [SelectionBase]
 public class SkillCardView : SimpleView
 {
+    private JingJie _showingJingJie;
+    
     [SerializeField] private Image CardImage;
     [SerializeField] private TMP_Text CostText;
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private Image JingJieImage;
     [SerializeField] private Image WuXingImage;
+
+    public override void SetAddress(Address address)
+    {
+        base.SetAddress(address);
+        ISkillModel skill = Get<ISkillModel>();
+        _showingJingJie = skill.GetJingJie();
+    }
 
     public override void Refresh()
     {
@@ -20,11 +29,11 @@ public class SkillCardView : SimpleView
         ISkillModel skill = Get<ISkillModel>();
 
         SetCardImage(skill.GetSprite());
-        SetCostDescription(skill.GetCostDescription());
+        SetCostDescription(skill.GetCostDescription(_showingJingJie));
         SetName(skill.GetName());
-        SetDescription(skill.GetHighlight());
+        SetDescription(skill.GetHighlight(_showingJingJie));
         SetSkillTypeComposite(skill.GetSkillTypeComposite());
-        SetJingJieSprite(skill.GetJingJieSprite());
+        SetJingJieSprite(skill.GetJingJieSprite(_showingJingJie));
         SetWuXingSprite(skill.GetWuXingSprite());
     }
 

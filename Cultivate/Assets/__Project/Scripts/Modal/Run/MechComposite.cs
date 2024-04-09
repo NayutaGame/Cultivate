@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CLLibrary;
 using UnityEngine;
 
@@ -76,20 +75,25 @@ public class MechComposite : EmulatedSkill
     public SkillEntry GetEntry()
         => _composeDict[_mechTypes.Map(t => t?._hash ?? 0).Sum()];
 
-    public JingJie GetJingJie()
-        => GetEntry().LowestJingJie;
+    public int GetRunUsedTimes() => 0;
+    public void SetRunUsedTimes(int value) { }
+    public int GetRunEquippedTimes() => 0;
+    public void SetRunEquippedTimes(int value) { }
+
+    public int GetCurrCounter() => 0;
+    public int GetMaxCounter() => 0;
 
     public Sprite GetSprite()
         => GetEntry().Sprite;
 
-    public CostDescription GetCostDescription()
-        => GetEntry().GetCostDescription(GetJingJie(), _skillSlot?.CostResult);
+    public Sprite GetWuXingSprite()
+        => GetEntry().GetWuXingSprite();
 
     public string GetName()
         => GetEntry().GetName();
 
-    public string GetHighlight()
-        => GetEntry().GetHighlight(GetJingJie(), _skillSlot?.CostResult, _skillSlot?.CastResult);
+    public SkillTypeComposite GetSkillTypeComposite()
+        => GetEntry().SkillTypeComposite;
 
     public string GetExplanation()
         => GetEntry().GetExplanation();
@@ -97,29 +101,25 @@ public class MechComposite : EmulatedSkill
     public string GetTrivia()
         => GetEntry().GetTrivia();
 
-    public SkillTypeComposite GetSkillTypeComposite()
-        => GetEntry().SkillTypeComposite;
+    public JingJie GetJingJie()
+        => GetEntry().LowestJingJie;
+
+    public CostDescription GetCostDescription(JingJie showingJingJie)
+        => GetJingJie() == showingJingJie
+            ? GetEntry().GetCostDescription(showingJingJie, _skillSlot?.CostResult)
+            : GetEntry().GetCostDescription(showingJingJie);
+
+    public string GetHighlight(JingJie showingJingJie)
+        => GetJingJie() == showingJingJie
+            ? GetEntry().GetHighlight(showingJingJie, _skillSlot?.CostResult, _skillSlot?.CastResult)
+            : GetEntry().GetHighlight(showingJingJie, null, null);
+
+    public Sprite GetJingJieSprite(JingJie showingJingJie)
+        => GetEntry().GetJingJieSprite(showingJingJie);
+
+    public JingJie NextJingJie(JingJie showingJingJie)
+        => GetEntry().NextJingJie(showingJingJie);
 
     public Color GetColor()
-        => CanvasManager.Instance.JingJieColors[GetJingJie()];
-
-    public Sprite GetCardFace()
-        => GetEntry().CardFace;
-
-    public Sprite GetJingJieSprite()
-        => CanvasManager.Instance.JingJieSprites[GetJingJie()];
-
-    public Sprite GetWuXingSprite()
-        => CanvasManager.Instance.GetWuXingSprite(GetEntry().WuXing);
-
-    public string GetDescription()
-        => GetEntry().GetDescription(GetJingJie(), _skillSlot?.CostResult, _skillSlot?.CastResult);
-
-    public int GetCurrCounter() => 0;
-    public int GetMaxCounter() => 0;
-
-    public int GetRunUsedTimes() => 0;
-    public void SetRunUsedTimes(int value) { }
-    public int GetRunEquippedTimes() => 0;
-    public void SetRunEquippedTimes(int value) { }
+        => GetEntry().GetColor(GetJingJie());
 }

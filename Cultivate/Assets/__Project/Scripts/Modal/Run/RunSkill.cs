@@ -44,45 +44,6 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         _runEquippedTimes = prototype._runEquippedTimes;
     }
 
-    public Sprite GetSprite()
-        => _entry.Sprite;
-
-    public SkillTypeComposite GetSkillTypeComposite()
-        => _entry.SkillTypeComposite;
-
-    public JingJie GetJingJie()
-        => JingJie;
-
-    public Color GetColor()
-        => CanvasManager.Instance.JingJieColors[GetJingJie()];
-
-    public Sprite GetCardFace()
-        => _entry.CardFace;
-
-    public Sprite GetJingJieSprite()
-        => CanvasManager.Instance.JingJieSprites[GetJingJie()];
-
-    public Sprite GetWuXingSprite()
-        => CanvasManager.Instance.GetWuXingSprite(_entry.WuXing);
-
-    public CostDescription GetCostDescription()
-        => _entry.GetCostDescription(JingJie, _skillSlot?.CostResult);
-
-    public string GetName()
-        => _entry.GetName();
-
-    public string GetDescription()
-        => _entry.GetDescription(JingJie, _skillSlot?.CostResult, _skillSlot?.CastResult);
-
-    public string GetHighlight()
-        => _entry.GetHighlight(JingJie, _skillSlot?.CostResult, _skillSlot?.CastResult);
-
-    public string GetExplanation()
-        => _entry.GetExplanation();
-
-    public string GetTrivia()
-        => _entry.GetTrivia();
-
     public RunSkill Clone()
         => new(this);
 
@@ -109,4 +70,44 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
 
     public int GetCurrCounter() => 0;
     public int GetMaxCounter() => 0;
+
+    public Sprite GetSprite()
+        => _entry.Sprite;
+
+    public Sprite GetWuXingSprite()
+        => _entry.GetWuXingSprite();
+
+    public string GetName()
+        => _entry.GetName();
+
+    public SkillTypeComposite GetSkillTypeComposite()
+        => _entry.SkillTypeComposite;
+
+    public string GetExplanation()
+        => _entry.GetExplanation();
+
+    public string GetTrivia()
+        => _entry.GetTrivia();
+
+    public JingJie GetJingJie()
+        => _jingJie;
+
+    public CostDescription GetCostDescription(JingJie showingJingJie)
+        => _jingJie == showingJingJie
+            ? GetEntry().GetCostDescription(showingJingJie, _skillSlot?.CostResult)
+            : GetEntry().GetCostDescription(showingJingJie);
+
+    public string GetHighlight(JingJie showingJingJie)
+        => _jingJie == showingJingJie
+            ? GetEntry().GetHighlight(showingJingJie, _skillSlot?.CostResult, _skillSlot?.CastResult)
+            : GetEntry().GetHighlight(showingJingJie, null, null);
+
+    public Sprite GetJingJieSprite(JingJie showingJingJie)
+        => _entry.GetJingJieSprite(showingJingJie);
+
+    public JingJie NextJingJie(JingJie showingJingJie)
+        => _entry.NextJingJie(showingJingJie);
+
+    public Color GetColor()
+        => _entry.GetColor(GetJingJie());
 }

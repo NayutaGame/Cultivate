@@ -13,12 +13,30 @@ public class SkillEntry : Entry, IAnnotation
     // wuXing
     private WuXing? _wuXing;
     public WuXing? WuXing => _wuXing;
+
+    public Sprite GetWuXingSprite()
+        => CanvasManager.Instance.GetWuXingSprite(WuXing);
     
     // jingJieRange
     private CLLibrary.Range _jingJieRange;
     public bool JingJieContains(JingJie jingJie) => _jingJieRange.Contains(jingJie);
     public JingJie LowestJingJie => _jingJieRange.Start;
     public JingJie HighestJingJie => _jingJieRange.End - 1;
+    
+    public Sprite GetJingJieSprite(JingJie jingJie)
+        => CanvasManager.Instance.JingJieSprites[jingJie];
+    
+    public Color GetColor(JingJie jingJie)
+        => CanvasManager.Instance.JingJieColors[jingJie];
+
+    public JingJie NextJingJie(JingJie jingJie)
+    {
+        int next = jingJie + 1;
+        if (JingJieContains(next))
+            return next;
+
+        return LowestJingJie;
+    }
 
     // skillTypeComposite
     private SkillTypeComposite _skillTypeComposite;
@@ -75,19 +93,6 @@ public class SkillEntry : Entry, IAnnotation
 
     private SpriteEntry _spriteEntry;
     public Sprite Sprite => _spriteEntry?.Sprite;
-
-    private Sprite _cardFace;
-    public Sprite CardFace
-    {
-        get
-        {
-            if (_cardFace != null)
-                return _cardFace;
-
-            _cardFace = _wuXing.HasValue ? CanvasManager.Instance.CardFaces[_wuXing.Value] : null;
-            return _cardFace;
-        }
-    }
 
     public SkillEntry(string id,
         string name,

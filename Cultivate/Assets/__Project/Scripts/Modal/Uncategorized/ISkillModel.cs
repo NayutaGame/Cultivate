@@ -6,14 +6,17 @@ public interface ISkillModel
     int GetCurrCounter();
     int GetMaxCounter();
     Sprite GetSprite();
-    CostDescription GetCostDescription();
+    Sprite GetWuXingSprite();
     string GetName();
-    string GetHighlight();
+    SkillTypeComposite GetSkillTypeComposite();
     string GetExplanation();
     string GetTrivia();
-    SkillTypeComposite GetSkillTypeComposite();
+    
+    JingJie GetJingJie();
+    CostDescription GetCostDescription(JingJie showingJingJie);
+    string GetHighlight(JingJie showingJingJie);
+    Sprite GetJingJieSprite(JingJie showingJingJie);
+    JingJie NextJingJie(JingJie showingJingJie);
+    
     Color GetColor();
-    Sprite GetCardFace();
-    Sprite GetJingJieSprite();
-    Sprite GetWuXingSprite();
 }

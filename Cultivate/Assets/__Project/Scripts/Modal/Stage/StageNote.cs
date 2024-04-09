@@ -22,18 +22,27 @@ public class StageNote : ISkillModel
 
     public bool IsHome
         => EntityIndex == 0;
+    
+    
+    
+
+    private int _currCounter;
+    public int GetCurrCounter() => _currCounter;
+
+    private int _maxCounter;
+    public int GetMaxCounter() => _maxCounter;
 
     public Sprite GetSprite()
         => Skill.GetSprite();
 
-    public CostDescription GetCostDescription()
-        => Skill.GetCostDescription(CostResult);
+    public Sprite GetWuXingSprite()
+        => Skill.Entry.GetWuXingSprite();
 
     public string GetName()
         => Skill.GetName();
 
-    public string GetHighlight()
-        => Skill.GetHighlight(CostResult, CastResult);
+    public SkillTypeComposite GetSkillTypeComposite()
+        => Skill.GetSkillTypeCollection();
 
     public string GetExplanation()
         => Skill.GetExplanation();
@@ -41,24 +50,25 @@ public class StageNote : ISkillModel
     public string GetTrivia()
         => Skill.GetTrivia();
 
-    public SkillTypeComposite GetSkillTypeComposite()
-        => Skill.GetSkillTypeCollection();
+    public JingJie GetJingJie()
+        => Skill.GetJingJie();
+
+    public CostDescription GetCostDescription(JingJie showingJingJie)
+        => GetJingJie() == showingJingJie
+            ? Skill.Entry.GetCostDescription(showingJingJie, CostResult)
+            : Skill.Entry.GetCostDescription(showingJingJie);
+
+    public string GetHighlight(JingJie showingJingJie)
+        => GetJingJie() == showingJingJie
+            ? Skill.Entry.GetHighlight(showingJingJie, CostResult, CastResult)
+            : Skill.Entry.GetHighlight(showingJingJie, null, null);
+
+    public Sprite GetJingJieSprite(JingJie showingJingJie)
+        => Skill.Entry.GetJingJieSprite(showingJingJie);
+
+    public JingJie NextJingJie(JingJie showingJingJie)
+        => Skill.Entry.NextJingJie(showingJingJie);
 
     public Color GetColor()
-        => CanvasManager.Instance.JingJieColors[Skill.GetJingJie()];
-
-    public Sprite GetCardFace()
-        => Skill.GetCardFace();
-
-    public Sprite GetJingJieSprite()
-        => CanvasManager.Instance.JingJieSprites[Skill.GetJingJie()];
-
-    public Sprite GetWuXingSprite()
-        => CanvasManager.Instance.GetWuXingSprite(Skill.Entry.WuXing);
-
-    private int _currCounter;
-    public int GetCurrCounter() => _currCounter;
-
-    private int _maxCounter;
-    public int GetMaxCounter() => _maxCounter;
+        => Skill.Entry.GetColor(GetJingJie());
 }

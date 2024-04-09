@@ -43,8 +43,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         return WuXingSprites[wuXing.Value._index];
     }
 
-    public Sprite[] CardFaces;
-
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public override void DidAwake()

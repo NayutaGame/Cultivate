@@ -5,7 +5,6 @@ public interface EmulatedSkill : ISkillModel
     void SetSkillSlot(SkillSlot value);
 
     SkillEntry GetEntry();
-    JingJie GetJingJie();
 
     int GetRunUsedTimes();
     void SetRunUsedTimes(int value);
