@@ -20,21 +20,19 @@ public class ChannelCostResult : CostResult
     
     public override async Task ApplyCost()
     {
-        IncrementProgress();
         ChannelDetails d = new ChannelDetails(Entity, Skill, Counter, Value);
         await Env.EventDict.SendEvent(StageEventDict.WIL_CHANNEL, d);
-        
-        if (!IsFinished)
+
+        Blocking = !IsFinished;
+        if (Blocking)
         {
             await Env.TryPlayTween(new ShiftTweenDescriptor());
             Env.Result.TryAppendChannelNote(Entity.Index, Skill, Counter, Value);
+            IncrementProgress();
+            Env.Result.TryAppend($"{Entity.GetName()}吟唱了{Skill.GetName()} 进度: {Counter}//{Value}\n");
         }
         
-        Env.Result.TryAppend($"{Entity.GetName()}吟唱了{Skill.GetName()} 进度: {Counter}//{Value}\n");
-            
         await Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, d);
-
-        Blocking = !IsFinished;
     }
 
     public override async Task DidCostEvent()
