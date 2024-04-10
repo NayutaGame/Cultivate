@@ -126,7 +126,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("盛开", "Images/Cards/盛开"),
             new("破军", "Images/Cards/破军"),
             new("秋水", "Images/Cards/秋水"),
-            new("突刺", "Images/Cards/突刺"),
+            new("小松", "Images/Cards/突刺"),
             new("灵动", "Images/Cards/灵动"),
             new("聚气术", "Images/Cards/聚气术"),
             new("聚火", "Images/Cards/聚火"),

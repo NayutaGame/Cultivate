@@ -47,7 +47,7 @@ public class RunEnvironment : Addressable, RunEventListener
             // init drawers
             Map.DrawDescriptors = new DrawDescriptor[]
             {
-                new(DrawDescriptor.NodeType.Adventure, "天机阁"),
+                new(DrawDescriptor.NodeType.Adventure),
                 new(DrawDescriptor.NodeType.Normal),
                 new(DrawDescriptor.NodeType.Adventure),
                 new(DrawDescriptor.NodeType.Rest),

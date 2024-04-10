@@ -601,15 +601,17 @@ public class SkillCategory : Category<SkillEntry>
                 }),
             
             new(id:                         "0301",
-                name:                       "突刺",
+                name:                       "小松",
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{6 + 2 * dj}攻 穿透\n" +
-                    (j >= JingJie.JinDan ? $"消耗1{"格挡".ApplyStyle(castResult, "0")}/{"力量".ApplyStyle(castResult, "1")}：多6攻" : ""),
+                    $"{6 + 2 * dj}攻 穿透" +
+                    (j >= JingJie.JinDan
+                        ? $"\n消耗1{"格挡".ApplyStyle(castResult, "0")}/{"力量".ApplyStyle(castResult, "1")}：多6攻"
+                        : ""),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     if (skill.GetJingJie() >= JingJie.JinDan)
