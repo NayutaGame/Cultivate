@@ -20,7 +20,7 @@ public class SkillPool : Pool<SkillEntry>
         JingJie jingJie = d._jingJie ?? JingJie.LianQi;
         jingJie = Mathf.Clamp(jingJie, item.LowestJingJie, item.HighestJingJie);
 
-        skill = RunSkill.From(item, jingJie);
+        skill = RunSkill.FromEntry(item, jingJie);
         return true;
     }
 
@@ -52,7 +52,7 @@ public class SkillPool : Pool<SkillEntry>
             JingJie jingJie = d._jingJie ?? JingJie.LianQi;
             jingJie = Mathf.Clamp(jingJie, item.LowestJingJie, item.HighestJingJie);
 
-            skills.Add(RunSkill.From(item, jingJie));
+            skills.Add(RunSkill.FromEntry(item, jingJie));
         }
 
         if (!d._consume)

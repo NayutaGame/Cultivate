@@ -610,7 +610,7 @@ public class RunEnvironment : Addressable, RunEventListener
     }
 
     public void ForceAddSkill(AddSkillDetails d)
-        => ForceAddSkill(RunSkill.From(d._entry, d._jingJie));
+        => ForceAddSkill(RunSkill.FromEntry(d._entry, d._jingJie));
 
     public void ForceAddSkill(RunSkill skill)
         => Hand.Add(skill);
