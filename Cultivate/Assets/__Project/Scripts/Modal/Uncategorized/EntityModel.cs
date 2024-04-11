@@ -15,12 +15,6 @@ public interface EntityModel
 
     int GetFinalHealth();
 
-    bool IsNormal();
-    void SetNormal(bool value);
-
-    bool IsElite();
-    void SetElite(bool value);
-
-    bool IsBoss();
-    void SetBoss(bool value);
+    int GetLadder();
+    void SetLadder(int ladder);
 }

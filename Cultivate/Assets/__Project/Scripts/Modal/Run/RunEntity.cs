@@ -29,17 +29,13 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
     #region Only For Editable
 
+    [SerializeField] private int _ladder;
+    public int GetLadder() => _ladder;
+    public void SetLadder(int value) => _ladder = value;
+
     [SerializeField] private bool _isNormal;
-    public bool IsNormal() => _isNormal;
-    public void SetNormal(bool value) => _isNormal = value;
-
     [SerializeField] private bool _isElite;
-    public bool IsElite() => _isElite;
-    public void SetElite(bool value) => _isElite = value;
-
     [SerializeField] private bool _isBoss;
-    public bool IsBoss() => _isBoss;
-    public void SetBoss(bool value) => _isBoss = value;
 
     #endregion
 
@@ -48,7 +44,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     public void SetJingJie(JingJie jingJie)
     {
         _jingJie = jingJie;
-        SetSlotCountFromJingJie(_jingJie);
+        // SetSlotCountFromJingJie(_jingJie);
     }
 
     [SerializeField] private int _slotCount;
@@ -66,6 +62,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         
         EnvironmentChanged();
     }
+    
     public void SetSlotCountFromJingJie(JingJie jingJie)
     {
         SetSlotCount(RunManager.SlotCountFromJingJie[jingJie]);
@@ -208,6 +205,8 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
                 slot.Skill = template._slots[i].Skill;
                 _slots.Add(slot);
             }
+            
+            SetSlotCount(template._slotCount);
         }
         else
         {
@@ -222,6 +221,8 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
                 SkillSlot slot = new SkillSlot(i);
                 _slots.Add(slot);
             }
+            
+            SetSlotCountFromJingJie(_jingJie);
         }
 
         _filteredSlots = new FilteredListModel<SkillSlot>(_slots, skillSlot => skillSlot.State != SkillSlot.SkillSlotState.Locked);
@@ -230,8 +231,6 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         _showingFormations = new(_formations, f =>
             f.GetMin() <= f.GetProgress());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
-        
-        SetSlotCountFromJingJie(_jingJie);
     }
 
     public void OnBeforeSerialize() { }

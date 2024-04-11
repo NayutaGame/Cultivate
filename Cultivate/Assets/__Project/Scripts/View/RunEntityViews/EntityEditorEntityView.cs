@@ -9,12 +9,14 @@ public class EntityEditorEntityView : SimpleView
 {
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
+    
     public Slider SlotCountSlider;
     public TMP_Text SlotCountText;
+    
     public TMP_InputField HealthInputField;
-    public Toggle NormalToggle;
-    public Toggle EliteToggle;
-    public Toggle BossToggle;
+
+    public Slider LadderSlider;
+    public TMP_Text LadderText;
 
     public ListView FieldView;
     public ListView FormationListView;
@@ -27,9 +29,7 @@ public class EntityEditorEntityView : SimpleView
         JingJieDropdown.onValueChanged.RemoveAllListeners();
         SlotCountSlider.onValueChanged.RemoveAllListeners();
         HealthInputField.onValueChanged.RemoveAllListeners();
-        NormalToggle.onValueChanged.RemoveAllListeners();
-        EliteToggle.onValueChanged.RemoveAllListeners();
-        BossToggle.onValueChanged.RemoveAllListeners();
+        LadderSlider.onValueChanged.RemoveAllListeners();
 
         bool addressIsNull = address == null;
 
@@ -37,9 +37,7 @@ public class EntityEditorEntityView : SimpleView
         JingJieDropdown.gameObject.SetActive(!addressIsNull);
         SlotCountSlider.gameObject.SetActive(!addressIsNull);
         HealthInputField.gameObject.SetActive(!addressIsNull);
-        NormalToggle.gameObject.SetActive(!addressIsNull);
-        EliteToggle.gameObject.SetActive(!addressIsNull);
-        BossToggle.gameObject.SetActive(!addressIsNull);
+        LadderSlider.gameObject.SetActive(!addressIsNull);
         FieldView.gameObject.SetActive(!addressIsNull);
         FormationListView.gameObject.SetActive(!addressIsNull);
 
@@ -61,18 +59,13 @@ public class EntityEditorEntityView : SimpleView
         }
 
         if (SlotCountSlider != null)
-        {
             SlotCountSlider.onValueChanged.AddListener(SlotCountChanged);
-        }
 
         if (HealthInputField != null)
-        {
             HealthInputField.onValueChanged.AddListener(HealthChanged);
-        }
 
-        NormalToggle.onValueChanged.AddListener(NormalToggled);
-        EliteToggle.onValueChanged.AddListener(EliteToggled);
-        BossToggle.onValueChanged.AddListener(BossToggled);
+        if (LadderSlider != null)
+            LadderSlider.onValueChanged.AddListener(LadderChanged);
 
         if (FieldView != null)
         {
@@ -117,19 +110,10 @@ public class EntityEditorEntityView : SimpleView
         HealthInputField.SetTextWithoutNotify(health.ToString());
     }
 
-    private void SetNormal(bool value)
+    private void SetLadder(int value)
     {
-        NormalToggle.SetIsOnWithoutNotify(value);
-    }
-
-    private void SetElite(bool value)
-    {
-        EliteToggle.SetIsOnWithoutNotify(value);
-    }
-
-    private void SetBoss(bool value)
-    {
-        BossToggle.SetIsOnWithoutNotify(value);
+        LadderSlider.SetValueWithoutNotify(value);
+        LadderText.text = value.ToString();
     }
 
     #endregion
@@ -146,9 +130,7 @@ public class EntityEditorEntityView : SimpleView
         SetJingJie(entity.GetJingJie());
         SetSlotCount(entity.GetSlotCount());
         SetHealth(entity.GetBaseHealth());
-        SetNormal(entity.IsNormal());
-        SetElite(entity.IsElite());
-        SetBoss(entity.IsBoss());
+        SetLadder(entity.GetLadder());
         FieldView.Refresh();
         FormationListView.Refresh();
     }
@@ -184,24 +166,10 @@ public class EntityEditorEntityView : SimpleView
         Refresh();
     }
 
-    private void NormalToggled(bool value)
+    private void LadderChanged(float value)
     {
         EntityModel entity = Get<EntityModel>();
-        entity.SetNormal(value);
-        Refresh();
-    }
-
-    private void EliteToggled(bool value)
-    {
-        EntityModel entity = Get<EntityModel>();
-        entity.SetElite(value);
-        Refresh();
-    }
-
-    private void BossToggled(bool value)
-    {
-        EntityModel entity = Get<EntityModel>();
-        entity.SetBoss(value);
+        entity.SetLadder((int)value);
         Refresh();
     }
 

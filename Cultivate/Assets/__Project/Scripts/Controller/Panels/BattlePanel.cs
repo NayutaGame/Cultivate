@@ -124,15 +124,22 @@ public class BattlePanel : Panel
 
     private void PlayBattleBGM()
     {
+        Debug.Log("Play Battle BGM");
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-        if (d.GetEnemy().IsBoss())
-        {
-            AudioManager.Play("BGMBoss");
-        }
-        else if (d.GetEnemy().IsElite())
-        {
-            AudioManager.Play(RandomManager.value < 0.5f ? "BGMElite1" : "BGMElite2");
-        }
+
+        int index = RandomManager.Range(0, 3);
+
+        string bgm = new string[] { "BGMBoss", "BGMElite1", "BGMElite2" }[index];
+        AudioManager.Play(bgm);
+
+        // if (d.GetEnemy().IsBoss())
+        // {
+        //     AudioManager.Play("BGMBoss");
+        // }
+        // else if (d.GetEnemy().IsElite())
+        // {
+        //     AudioManager.Play(RandomManager.value < 0.5f ? "BGMElite1" : "BGMElite2");
+        // }
     }
 
     private void PlayJingJieBGM()

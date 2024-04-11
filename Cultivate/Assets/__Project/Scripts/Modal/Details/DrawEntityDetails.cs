@@ -1,25 +1,15 @@
 
 public class DrawEntityDetails
 {
-    public JingJie JingJie;
-    public bool AllowNormal;
-    public bool AllowElite;
-    public bool AllowBoss;
+    private int Ladder;
 
-    public DrawEntityDetails(JingJie jingJie, bool allowNormal = false, bool allowElite = false, bool allowBoss = false)
+    public DrawEntityDetails(int ladder)
     {
-        JingJie = jingJie;
-        AllowNormal = allowNormal;
-        AllowElite = allowElite;
-        AllowBoss = allowBoss;
+        Ladder = ladder;
     }
 
     public bool CanDraw(RunEntity entity)
     {
-        bool jingJieIsMatch = entity.GetJingJie() == JingJie;
-        bool powerIsMatch = (entity.IsNormal() && AllowNormal)
-                            || (entity.IsElite() && AllowElite)
-                            || (entity.IsBoss() && AllowBoss);
-        return jingJieIsMatch && powerIsMatch;
+        return Ladder == entity.GetLadder();
     }
 }

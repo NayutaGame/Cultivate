@@ -8,14 +8,11 @@ public class BattleRunNode : RunNode
 {
     private RunEntity _entity;
     public RunEntity Entity => _entity;
-    private bool _isBoss;
-    public bool IsBoss => _isBoss;
     private List<Reward> _rewards;
 
     public BattleRunNode(RunEntity entity) : base("战斗")
     {
         _entity = entity;
-        _isBoss = entity.IsBoss();
         _rewards = new();
     }
 
@@ -40,30 +37,5 @@ public class BattleRunNode : RunNode
     public void ClaimRewards()
     {
         _rewards.Do(reward => reward.Claim());
-    }
-
-    public int LadderFromLevelAndStep(JingJie jingJie, int step)
-    {
-        return jingJie * 3 + step;
-    }
-
-    private int[] GoldRewardTable = new int[]
-    {
-        5, 11, 31,
-        11, 21, 61,
-        15, 31, 91,
-        21, 41, 121,
-        25, 51, 151,
-    };
-
-    public int BaseGoldReward()
-    {
-        JingJie jingJie = _entity.GetJingJie();
-        int step = 0;
-        if (_entity.IsBoss())
-            step = 2;
-        else if (_entity.IsElite())
-            step = 1;
-        return GoldRewardTable[LadderFromLevelAndStep(jingJie, step)];
     }
 }

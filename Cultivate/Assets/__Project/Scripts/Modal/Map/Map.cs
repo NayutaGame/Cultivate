@@ -18,16 +18,20 @@ public class Map : Addressable
     
     public int Step;
     public bool IsLastStep()
-        => Step >= DrawDescriptors.Length - 1;
+        => Step >= StepDescriptors.Length - 1;
     
     public int Choice;
     public RunNode CurrNode
         => Choosing ? null : _stepItem._nodes[Choice];
     
-    public DrawDescriptor[] DrawDescriptors;
+    public StepDescriptor[] StepDescriptors;
+    public StepDescriptor CurrStepDescriptor => StepDescriptors[Step];
+    
     public EntityPool EntityPool;
     public Pool<NodeEntry> AdventurePool;
     public bool Choosing;
+
+    public int Ladder;
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -39,11 +43,12 @@ public class Map : Addressable
         };
 
         _stepItem = new();
+        Ladder = 0;
     }
 
     public void DrawNode()
-        => DrawDescriptors[Step].Draw(this, _stepItem, JingJie, Step);
+        => CurrStepDescriptor.Draw(this);
 
     public void CreateEntry()
-        => CurrNode.Entry.Create(this, CurrNode, JingJie, Step);
+        => CurrNode.Entry.Create(this);
 }
