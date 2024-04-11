@@ -26,8 +26,8 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             if (iRunSkill is RunSkill skill)
                             {
-                                // if (skill.JingJie <= runNode.JingJie && skill.JingJie != JingJie.HuaShen)
-                                if (skill.JingJie != JingJie.HuaShen)
+                                if (skill.JingJie <= jingJie && skill.JingJie != JingJie.HuaShen)
+                                // if (skill.JingJie != JingJie.HuaShen)
                                 {
                                     skill.TryIncreaseJingJie();
                                     CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
@@ -35,8 +35,8 @@ public class NodeCategory : Category<NodeEntry>
                             }
                             else if (iRunSkill is SkillSlot slot)
                             {
-                                // if (slot.Skill.GetJingJie() <= runNode.JingJie && slot.Skill.GetJingJie() != JingJie.HuaShen)
-                                if (slot.Skill.GetJingJie() != JingJie.HuaShen)
+                                if (slot.Skill.GetJingJie() <= jingJie && slot.Skill.GetJingJie() != JingJie.HuaShen)
+                                // if (slot.Skill.GetJingJie() != JingJie.HuaShen)
                                 {
                                     slot.TryIncreaseJingJie();
                                     CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();

@@ -405,7 +405,7 @@ public class FormationCategory : Category<FormationGroupEntry>
             new("万剑归宗阵", order: 0, conditionDescription: "连续攻击牌越多越好", progressEvaluator: (e, d) => d.HighestConsecutiveAttackCount + d.Proficiency,
                 formationEntries: new[]
                 {
-                    new FormationEntry(JingJie.HuaShen, rewardDescription: "战斗开始时，力量+3", trivia: null, requirement: 7,
+                    new FormationEntry(JingJie.HuaShen, rewardDescription: "战斗开始时，力量+3", trivia: null, requirement: 8,
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -417,7 +417,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("力量", 3);
                             }),
                         }),
-                    new FormationEntry(JingJie.YuanYing, rewardDescription: "战斗开始时，力量+2", trivia: null, requirement: 6,
+                    new FormationEntry(JingJie.YuanYing, rewardDescription: "战斗开始时，力量+2", trivia: null, requirement: 7,
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -429,7 +429,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("力量", 2);
                             }),
                         }),
-                    new FormationEntry(JingJie.JinDan, rewardDescription: "战斗开始时，力量+1", trivia: null, requirement: 5,
+                    new FormationEntry(JingJie.JinDan, rewardDescription: "战斗开始时，力量+1", trivia: null, requirement: 6,
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
