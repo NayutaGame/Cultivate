@@ -89,6 +89,7 @@ public class DeckPanel : Panel
     private void Sync()
     {
         HandView.Sync();
+        FieldView.Sync();
         FormationListView.Sync();
     }
 

@@ -6,6 +6,8 @@ public class BattleStepDescriptor : StepDescriptor
     public int _slotCountAfter;
     public int _baseGoldReward;
     public bool _isBoss;
+
+    public bool ShouldUpdateSlotCount => _slotCountBefore != _slotCountAfter;
     
     private static readonly int[] GoldRewardTable = new int[]
     {

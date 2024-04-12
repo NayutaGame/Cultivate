@@ -28,11 +28,15 @@ public class NodeCategory : Category<NodeEntry>
                     DiscoverSkillPanelDescriptor C = new("惜败");
                     DialogPanelDescriptor D = new($"按Esc退出游戏，游戏结束，感谢游玩");
 
+                    bool shouldUpdateSlotCount = stepDescriptor.ShouldUpdateSlotCount;
+
                     if (!stepDescriptor._isBoss)
                     {
                         A.SetWin(() =>
                         {
                             B.SetDetailedText($"胜利！\n获得了{xiuWeiValue}的修为\n请选择一张卡作为奖励");
+                            if (shouldUpdateSlotCount)
+                                RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
                             return B;
                         });
 
@@ -40,6 +44,8 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
                             C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{xiuWeiValue}修为\n请选择一张卡作为奖励");
+                            if (shouldUpdateSlotCount)
+                                RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
                             return C;
                         });
                     }
@@ -49,12 +55,16 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(3);
                             B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{xiuWeiValue}的修为\n请选择一张卡作为奖励");
+                            if (shouldUpdateSlotCount)
+                                RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
                             return B;
                         });
 
                         A.SetLose(() =>
                         {
                             C.SetDetailedText($"你没能击败对手，幸好跨越境界抵消了你的命元伤害。\n获得了{xiuWeiValue}修为\n请选择一张卡作为奖励");
+                            if (shouldUpdateSlotCount)
+                                RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
                             return C;
                         });
                     }

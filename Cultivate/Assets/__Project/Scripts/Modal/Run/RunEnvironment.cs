@@ -107,6 +107,7 @@ public class RunEnvironment : Addressable, RunEventListener
         {
             SetJingJieProcedure(JingJie.LianQi);
             SetStepProcedure(0);
+            _home.SetSlotCount(3);
         }
 
         {
