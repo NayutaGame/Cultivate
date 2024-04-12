@@ -225,12 +225,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             SetSlotCountFromJingJie(_jingJie);
         }
 
-        _filteredSlots = new FilteredListModel<SkillSlot>(_slots, skillSlot => skillSlot.State != SkillSlot.SkillSlotState.Locked);
-
-        _formations = new();
-        _showingFormations = new(_formations, f =>
-            f.GetMin() <= f.GetProgress());
-        _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
+        Init();
     }
 
     public void OnBeforeSerialize() { }
@@ -245,15 +240,20 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         };
         
         _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.EntityCategory[_entry.GetName()];
+        
+        SetSlotCount(_slotCount);
 
+        Init();
+    }
+
+    private void Init()
+    {
         _filteredSlots = new FilteredListModel<SkillSlot>(_slots, skillSlot => skillSlot.State != SkillSlot.SkillSlotState.Locked);
 
         _formations = new();
         _showingFormations = new(_formations, f =>
-            f.GetMin() <= f.GetProgress());
+            f.GetMin() <= f.GetProgress() && _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
-        
-        SetSlotCount(_slotCount);
     }
 
     public SkillSlot FindSlotWithSkillEntry(SkillEntry entry)

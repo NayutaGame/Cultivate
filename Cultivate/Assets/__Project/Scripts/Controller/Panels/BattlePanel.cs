@@ -112,34 +112,23 @@ public class BattlePanel : Panel
     {
         return DOTween.Sequence()
             .AppendCallback(PlayBattleBGM)
-            .Append(base.ShowAnimation());
+            .Append(EnemyView.ShowAnimation())
+            .Join(base.ShowAnimation());
     }
 
     public override Tween HideAnimation()
     {
         return DOTween.Sequence()
             .AppendCallback(PlayJingJieBGM)
-            .Append(base.HideAnimation());
+            .Append(EnemyView.HideAnimation())
+            .Join(base.HideAnimation());
     }
 
     private void PlayBattleBGM()
     {
-        Debug.Log("Play Battle BGM");
-        BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-
         int index = RandomManager.Range(0, 3);
-
         string bgm = new string[] { "BGMBoss", "BGMElite1", "BGMElite2" }[index];
         AudioManager.Play(bgm);
-
-        // if (d.GetEnemy().IsBoss())
-        // {
-        //     AudioManager.Play("BGMBoss");
-        // }
-        // else if (d.GetEnemy().IsElite())
-        // {
-        //     AudioManager.Play(RandomManager.value < 0.5f ? "BGMElite1" : "BGMElite2");
-        // }
     }
 
     private void PlayJingJieBGM()

@@ -47,7 +47,8 @@ public class RunEnvironment : Addressable, RunEventListener
             // init drawers
             Map.StepDescriptors = new StepDescriptor[]
             {
-                new AdventureStepDescriptor(),
+                // new AdventureStepDescriptor(),
+                new DirectStepDescriptor("初入蓬莱"),
                 new BattleStepDescriptor(0, 3, 4),
                 new AdventureStepDescriptor(),
                 new RestStepDescriptor(),
@@ -113,7 +114,7 @@ public class RunEnvironment : Addressable, RunEventListener
         {
             // init player start condition
             SetDGold(50);
-            ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
+            // ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
             // ForceDrawSkills(jingJie: JingJie.HuaShen, count: 20);
         }
         
