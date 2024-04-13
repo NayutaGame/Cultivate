@@ -739,10 +739,12 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"消耗所有灵气，每{6 - dj}，力量+1\n" +
-                    $"木流转",
+                    $"力量+1" +
+                    $"\n消耗所有灵气，每{6 - dj}，力量+1" +
+                    $"\n木流转",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
+                    await caster.GainBuffProcedure("力量");
                     await caster.TransferProcedure(6 - skill.Dj, "灵气", 1, "力量", true);
                     await caster.CycleProcedure(WuXing.Mu);
                     return null;
@@ -951,15 +953,16 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"灼烧+{1 + dj}\n" +
-                    $"每5灼烧：净化1\n" +
-                    $"火流转",
+                    $"灼烧+{1 + dj}" +
+                    $"\n每5灼烧：净化1" +
+                    (j >= JingJie.JinDan ? $"\n火流转" : ""),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.GainBuffProcedure("灼烧", 1 + skill.Dj);
                     int dispel = caster.GetStackOfBuff("灼烧") / 5;
                     await caster.DispelProcedure(dispel);
-                    await caster.CycleProcedure(WuXing.Huo);
+                    if (skill.GetJingJie() >= JingJie.JinDan)
+                        await caster.CycleProcedure(WuXing.Huo);
                     return null;
                 }),
 
@@ -996,8 +999,8 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieRange:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"护甲+{8 + 2 * dj}\n" +
-                    $"使用3次时：消耗",
+                    $"护甲+{8 + 2 * dj}" +
+                    $"\n使用3次时：消耗",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.GainArmorProcedure(8 + 2 * skill.Dj);
@@ -1032,7 +1035,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"10攻" +
-                    $"若消耗过牌：二动".ApplyCond(castResult),
+                    $"\n若消耗过牌：二动".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(10, wuXing: skill.Entry.WuXing);
@@ -1328,7 +1331,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0515",
                 name:                       "龙象",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieRange:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ChannelFromJiaShi(jiaShi => jiaShi ? 0 : 2),
                 costDescription:            CostDescription.ChannelFromValue(2),
