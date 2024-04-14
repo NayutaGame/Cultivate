@@ -16,12 +16,8 @@ public class MenuAppS : AppS
             CanvasManager.Instance.AppCanvas.SettingsPanel.ShowExitButtons();
         }
 
-        CanvasManager.Instance.AppCanvas.SettingsPanel.SetHideState();
+        CanvasManager.Instance.AppCanvas.SettingsPanel.SetShowingNoTween(false);
         await CanvasManager.Instance.AppCanvas.SettingsPanel.SetShowing(true);
-
-        // Tween handle = CanvasManager.Instance.CurtainHide().SetAutoKill();
-        // handle.Restart();
-        // await handle.AsyncWaitForCompletion();
     }
 
     public override async Task<Result> Exit(NavigateDetails d)
@@ -29,10 +25,6 @@ public class MenuAppS : AppS
         await base.Exit(d);
 
         await CanvasManager.Instance.AppCanvas.SettingsPanel.SetShowing(false);
-
-        // Tween handle = CanvasManager.Instance.CurtainShow().SetAutoKill();
-        // handle.Restart();
-        // await handle.AsyncWaitForCompletion();
         return new();
     }
 }

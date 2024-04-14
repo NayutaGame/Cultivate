@@ -16,7 +16,6 @@ public class MapPanel : Panel
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(Refresh)
             .AppendCallback(PlaySFX)
-            .Append(CanvasManager.Instance.Curtain.HideAnimation())
             .Append(RectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CanvasGroup.DOFade(1f, 0.15f));
     }
@@ -34,7 +33,6 @@ public class MapPanel : Panel
     {
         base.Configure();
         _address = new Address("Run.Environment.Map");
-
         NodeListView.SetAddress(_address.Append(".StepItem.Nodes"));
     }
 

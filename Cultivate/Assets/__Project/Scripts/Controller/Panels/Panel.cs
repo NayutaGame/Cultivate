@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-public abstract class Panel : MonoBehaviour, IShowable
+public abstract class Panel : MonoBehaviour
 {
     [NonSerialized] public RectTransform RectTransform;
 
@@ -14,8 +14,6 @@ public abstract class Panel : MonoBehaviour, IShowable
     }
 
     public virtual void Refresh() { }
-
-    #region IShowable
 
     private bool _showing;
     public virtual bool IsShowing() => _showing;
@@ -31,11 +29,20 @@ public abstract class Panel : MonoBehaviour, IShowable
     public async Task ToggleShowing()
         => await SetShowing(!IsShowing());
 
+    public void SetShowingNoTween(bool showing)
+    {
+        _showing = showing;
+        Tween t = _showing ? ShowAnimation() : HideAnimation();
+        t.SetAutoKill();
+        // t.Restart();
+        t.Complete();
+    }
+
     private async Task PlayTween(bool isAwait, Tween tween)
     {
         _handle?.Kill();
         _handle = tween;
-        // _showHandle.timeScale = _speed;
+        // _handle.timeScale = _speed;
         _handle.SetAutoKill().Restart();
         if (isAwait)
             await _handle.AsyncWaitForCompletion();
@@ -44,24 +51,8 @@ public abstract class Panel : MonoBehaviour, IShowable
     private Tween _handle;
 
     public virtual Tween ShowAnimation()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(() => gameObject.SetActive(true));
-    }
+        => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(true));
 
     public virtual Tween HideAnimation()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(() => gameObject.SetActive(false));
-    }
-
-    public void SetHideState()
-    {
-        _showing = false;
-        Tween t = HideAnimation().SetAutoKill();
-        t.Restart();
-        t.Complete();
-    }
-
-    #endregion
+        => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(false));
 }
