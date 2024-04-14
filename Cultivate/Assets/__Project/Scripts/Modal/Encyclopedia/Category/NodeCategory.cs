@@ -99,7 +99,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     D._receiveSignal = signal => D;
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("休息", "休息", withInPool: false,
@@ -139,8 +139,8 @@ public class NodeCategory : Category<NodeEntry>
                     
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
-                    
-                    map.CurrNode.ChangePanel(A);
+
+                    map.CurrNode.Panel = A;
                 }),
 
             new("商店", "商店", withInPool: false,
@@ -156,7 +156,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
                     
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("悟道", "悟道", withInPool: false,
@@ -187,7 +187,7 @@ public class NodeCategory : Category<NodeEntry>
                         return null;
                     };
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("获得金钱", "获得金钱", withInPool: false,
@@ -196,15 +196,43 @@ public class NodeCategory : Category<NodeEntry>
                     int gold = Mathf.RoundToInt((map.JingJie + 1) * 21 * RandomManager.Range(0.8f, 1.2f));
                     DialogPanelDescriptor A = new DialogPanelDescriptor($"获得了{gold}金钱")
                         .SetReward(Reward.FromGold(gold));
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("以物易物", "以物易物", withInPool: false,
                 create: map =>
                 {
                     BarterPanelDescriptor A = new();
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
+
+            // new("初入蓬莱", "初入蓬莱", withInPool: false,
+            //     create: map =>
+            //     {
+            //         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+            //         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
+            //         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
+            //
+            //         BattlePanelDescriptor ZhiRuBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("置入教学怪物")));
+            //
+            //         ZhiRuBattle.SetWin(() =>
+            //         {
+            //             // Create Guide Descriptor
+            //             return null;
+            //         });
+            //         ZhiRuBattle.SetLose(() =>
+            //         {
+            //             RunManager.Instance.Environment.Hand.Clear();
+            //             RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
+            //
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
+            //             return ZhiRuBattle;
+            //         });
+            //         
+            //         map.CurrNode.Panel = ZhiRuBattle;
+            //     }),
 
             new("初入蓬莱", "初入蓬莱", withInPool: false,
                 create: map =>
@@ -212,51 +240,51 @@ public class NodeCategory : Category<NodeEntry>
                     RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
                     RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
                     RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
-
+            
                     ImagePanelDescriptor ManHua1 = new("漫画1");
                     ImagePanelDescriptor ManHua2 = new("漫画2");
                     ImagePanelDescriptor ManHua3 = new("漫画3");
                     ImagePanelDescriptor ManHua4 = new("漫画4");
-
+            
                     ImagePanelDescriptor ZhiRuJiaoXue1 = new("置入教学1");
                     ImagePanelDescriptor ZhiRuJiaoXue2 = new("置入教学2");
                     ImagePanelDescriptor ZhiRuJiaoXue3 = new("置入教学3");
                     ImagePanelDescriptor ZhiRuJiaoXue4 = new("置入教学4");
                     ImagePanelDescriptor ZhiRuJiaoXue5 = new("置入教学5");
-
+            
                     BattlePanelDescriptor ZhiRuBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("置入教学怪物")));
-
+            
                     ImagePanelDescriptor ZhanDouJiaoXue1 = new("战斗教学1");
                     ImagePanelDescriptor ZhanDouJiaoXue2 = new("战斗教学2");
                     ImagePanelDescriptor ZhanDouJiaoXue3 = new("战斗教学3");
-
+            
                     ImagePanelDescriptor LingQiJiaoXue1 = new("灵气教学1");
                     ImagePanelDescriptor LingQiJiaoXue2 = new("灵气教学2");
                     ImagePanelDescriptor LingQiJiaoXue3 = new("灵气教学3");
                     ImagePanelDescriptor LingQiJiaoXue4 = new("灵气教学4");
-
+            
                     BattlePanelDescriptor LingQiBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("灵气教学怪物")));
-
+            
                     ImagePanelDescriptor HeChengJiaoXue1 = new("合成教学1");
                     ImagePanelDescriptor HeChengJiaoXue2 = new("合成教学2");
                     ImagePanelDescriptor HeChengJiaoXue3 = new("合成教学3");
                     ImagePanelDescriptor HeChengJiaoXue4 = new("合成教学4");
                     ImagePanelDescriptor HeChengJiaoXue5 = new("合成教学5");
-
+            
                     BattlePanelDescriptor HeChengBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("合成教学怪物")));
-
+            
                     ImagePanelDescriptor ZhanBaiJiaoXue1 = new("战败教学1");
                     ImagePanelDescriptor ZhanBaiJiaoXue2 = new("战败教学2");
                     ImagePanelDescriptor ZhanBaiJiaoXue3 = new("战败教学3");
-
+            
                     BattlePanelDescriptor LoseBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("战败教学怪物")));
-
+            
                     ImagePanelDescriptor MingYuanJiaoXue1 = new("命元教学1");
                     ImagePanelDescriptor MingYuanJiaoXue2 = new("命元教学2");
                     ImagePanelDescriptor MingYuanJiaoXue3 = new("命元教学3");
-
+            
                     ImagePanelDescriptor ManHua5 = new("漫画5");
-
+            
                     ManHua1.Next = ManHua2;
                     ManHua2.Next = ManHua3;
                     ManHua3.Next = ManHua4;
@@ -266,7 +294,7 @@ public class NodeCategory : Category<NodeEntry>
                     ZhiRuJiaoXue3.Next = ZhiRuJiaoXue4;
                     ZhiRuJiaoXue4.Next = ZhiRuJiaoXue5;
                     ZhiRuJiaoXue5.Next = ZhiRuBattle;
-
+            
                     ZhiRuBattle.SetWin(() =>
                     {
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
@@ -276,13 +304,13 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         RunManager.Instance.Environment.Hand.Clear();
                         RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
-
+            
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
                         return ZhiRuJiaoXue1;
                     });
-
+            
                     ZhanDouJiaoXue1.Next = ZhanDouJiaoXue2;
                     ZhanDouJiaoXue2.Next = ZhanDouJiaoXue3;
                     ZhanDouJiaoXue3.Next = LingQiJiaoXue1;
@@ -290,7 +318,7 @@ public class NodeCategory : Category<NodeEntry>
                     LingQiJiaoXue2.Next = LingQiJiaoXue3;
                     LingQiJiaoXue3.Next = LingQiJiaoXue4;
                     LingQiJiaoXue4.Next = LingQiBattle;
-
+            
                     LingQiBattle.SetWin(() =>
                     {
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
@@ -300,14 +328,14 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         RunManager.Instance.Environment.Hand.Clear();
                         RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
-
+            
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
                         return LingQiJiaoXue1;
                     });
-
+            
                     HeChengJiaoXue1.Next = HeChengJiaoXue2;
                     HeChengJiaoXue2.Next = HeChengJiaoXue3;
                     HeChengJiaoXue3.Next = HeChengJiaoXue4;
@@ -322,7 +350,7 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         RunManager.Instance.Environment.Hand.Clear();
                         RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
-
+            
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
@@ -330,7 +358,7 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
                         return HeChengJiaoXue1;
                     });
-
+            
                     ZhanBaiJiaoXue1.Next = ZhanBaiJiaoXue2;
                     ZhanBaiJiaoXue2.Next = ZhanBaiJiaoXue3;
                     ZhanBaiJiaoXue3.Next = LoseBattle;
@@ -346,7 +374,7 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.Environment.ForceDrawSkill(jingJie: JingJie.LianQi);
                         return MingYuanJiaoXue1;
                     });
-
+            
                     MingYuanJiaoXue1.Next = MingYuanJiaoXue2;
                     MingYuanJiaoXue2.Next = MingYuanJiaoXue3;
                     MingYuanJiaoXue3._receiveSignal = signal =>
@@ -356,11 +384,10 @@ public class NodeCategory : Category<NodeEntry>
                             RunManager.Instance.Environment.SetDMingYuanProcedure(2);
                             return ManHua5;
                         }
-
+            
                         return null;
                     };
-
-                    map.CurrNode.ChangePanel(ManHua1);
+                    map.CurrNode.Panel = ManHua1;
                 }),
 
             new("同境界合成教学", "同境界合成教学", withInPool: false,
@@ -371,7 +398,7 @@ public class NodeCategory : Category<NodeEntry>
                     ImagePanelDescriptor C = new("同境界合成教学3");
                     A.Next = B;
                     B.Next = C;
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("愿望单", "愿望单", withInPool: false,
@@ -397,7 +424,7 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.ReturnToTitle();
                         return null;
                     });
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("快速结算", "快速结算", withInPool: false,
@@ -419,7 +446,7 @@ public class NodeCategory : Category<NodeEntry>
                         return null;
                     });
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
             
             new("胜利", "胜利", withInPool: false,
@@ -434,7 +461,7 @@ public class NodeCategory : Category<NodeEntry>
                         return null;
                     });
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
             
             new("突破境界", "突破境界", withInPool: false,
@@ -449,7 +476,7 @@ public class NodeCategory : Category<NodeEntry>
                         return null;
                     });
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             #endregion
@@ -511,7 +538,7 @@ public class NodeCategory : Category<NodeEntry>
                     B2[0].SetSelect(SelectA);
                     B2[1].SetSelect(SelectB);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("赤壁赋", "赤壁赋", withInPool: true,
@@ -536,7 +563,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("论无穷", "论无穷", withInPool: true,
@@ -567,7 +594,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("人间世", "人间世", withInPool: true,
@@ -604,7 +631,7 @@ public class NodeCategory : Category<NodeEntry>
                     D2[1].SetSelect(option => F);
 
                     bool isCatch = RandomManager.value < 0.5;
-                    map.CurrNode.ChangePanel(isCatch ? A : D);
+                    map.CurrNode.Panel = isCatch ? A : D;
                 }),
 
             new("神灯精灵", "神灯精灵", withInPool: true,
@@ -634,7 +661,7 @@ public class NodeCategory : Category<NodeEntry>
                     E.SetWin(() => EWin);
                     E.SetLose(() => ELose);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("分子打印机", "分子打印机", withInPool: true,
@@ -686,7 +713,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("神农氏", "神农氏", withInPool: true,
@@ -721,7 +748,7 @@ public class NodeCategory : Category<NodeEntry>
                     D[1].SetSelect(option => F);
                     F[0].SetSelect(option => G);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("天津四", "天津四", withInPool: true,
@@ -744,7 +771,7 @@ public class NodeCategory : Category<NodeEntry>
                     B[0].SetSelect(option => B1);
                     C[0].SetSelect(option => C1);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("后羿", "后羿", withInPool: true,
@@ -768,7 +795,7 @@ public class NodeCategory : Category<NodeEntry>
                     B[0].SetSelect(option => B1);
                     C[0].SetSelect(option => C1);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("天界树", "天界树", withInPool: true,
@@ -819,7 +846,7 @@ public class NodeCategory : Category<NodeEntry>
                         return C;
                     });
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("鬼兵", "鬼兵", withInPool: true,
@@ -872,7 +899,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     E.SetReward(new AddMechReward(new AddMechDetails(count: 2)));
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("琴仙", "琴仙", withInPool: true,
@@ -894,7 +921,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("连抽五张", "连抽五张", withInPool: true,
@@ -913,7 +940,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetCost(new CostDetails(health: 30))
                         .SetSelect(option => C);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("天机阁", "天机阁", withInPool: true,
@@ -934,7 +961,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     A[0].SetSelect(option => B);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("酿造仙岛玉液酒", "酿造仙岛玉液酒", withInPool: true,
@@ -1009,7 +1036,7 @@ public class NodeCategory : Category<NodeEntry>
                         return EndingTable[key];
                     });
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("解梦师", "解梦师", withInPool: true,
@@ -1101,7 +1128,7 @@ public class NodeCategory : Category<NodeEntry>
                         return D;
                     });
 
-                    map.CurrNode.ChangePanel(A0);
+                    map.CurrNode.Panel = A0;
                 }),
 
             new("夏虫语冰", "夏虫语冰", withInPool: true,
@@ -1123,7 +1150,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("照相机", "照相机", withInPool: true,
@@ -1151,7 +1178,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("丢尺子", "丢尺子", withInPool: true,
@@ -1187,7 +1214,7 @@ public class NodeCategory : Category<NodeEntry>
                     B[1].SetSelect(option => E);
                     C[1].SetSelect(option => E);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("曹操三笑", "曹操三笑", withInPool: true,
@@ -1215,7 +1242,7 @@ public class NodeCategory : Category<NodeEntry>
                     B1.SetWin(() => B1win);
                     B1.SetLose(() => B1lose);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
 
             new("仙人下棋", "仙人下棋", withInPool: true,
@@ -1292,7 +1319,7 @@ public class NodeCategory : Category<NodeEntry>
                     CWin[0].SetSelect(option => CWin2);
                     CLose[0].SetSelect(option => CLose2);
 
-                    map.CurrNode.ChangePanel(A);
+                    map.CurrNode.Panel = A;
                 }),
             
             #endregion

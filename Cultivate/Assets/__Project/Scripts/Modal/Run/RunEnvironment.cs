@@ -29,7 +29,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void StartRunProcedure(RunDetails d)
     {
-        bool firstTime = false;
+        bool firstTime = true;
         
         // init map
         {
@@ -161,15 +161,15 @@ public class RunEnvironment : Addressable, RunEventListener
         Map.CurrStepItem.MakeChoice(Map.Choice);
         Map.Choosing = false;
         Map.CreateEntry();
-        return Map.CurrNode.CurrentPanel;
+        return Map.CurrNode.Panel;
     }
 
     public PanelDescriptor ReceiveSignalProcedure(Signal signal)
     {
-        PanelDescriptor panelDescriptor = Map.CurrNode.CurrentPanel.ReceiveSignal(signal);
+        PanelDescriptor panelDescriptor = Map.CurrNode.Panel.ReceiveSignal(signal);
         if (panelDescriptor != null)
         {
-            Map.CurrNode.ChangePanel(panelDescriptor);
+            Map.CurrNode.Panel = panelDescriptor;
         }
         else
         {
@@ -181,7 +181,7 @@ public class RunEnvironment : Addressable, RunEventListener
             return panelDescriptor;
 
         panelDescriptor = GetActivePanel();
-        Map.CurrNode.ChangePanel(panelDescriptor);
+        Map.CurrNode.Panel = panelDescriptor;
         return panelDescriptor;
     }
 
@@ -655,7 +655,7 @@ public class RunEnvironment : Addressable, RunEventListener
     }
 
     public PanelDescriptor GetActivePanel()
-        => _runResultPanelDescriptor ?? Map.CurrNode?.CurrentPanel;
+        => _runResultPanelDescriptor ?? Map.CurrNode?.Panel;
 
     private bool TryCommit()
     {

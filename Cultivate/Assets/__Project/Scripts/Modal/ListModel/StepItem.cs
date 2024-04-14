@@ -23,13 +23,13 @@ public class StepItem : Addressable
     public void MakeChoice(int choice)
     {
         for (int i = 0; i < _nodes.Count(); i++)
-            _nodes[i].SetState(i == choice ? RunNode.RunNodeState.Current : RunNode.RunNodeState.Missed);
+            _nodes[i].State = i == choice ? RunNode.RunNodeState.Current : RunNode.RunNodeState.Missed;
     }
 
     public void ToChoose()
     {
         for (int i = 0; i < _nodes.Count(); i++)
-            _nodes[i].SetState(RunNode.RunNodeState.ToChoose);
+            _nodes[i].State = RunNode.RunNodeState.ToChoose;
     }
 
     public int IndexOf(RunNode runNode)

@@ -3,12 +3,36 @@ using UnityEngine;
 
 public class RunNode
 {
+    public enum RunNodeState
+    {
+        Untouched,
+        Missed,
+        Passed,
+        Current,
+        ToChoose,
+    }
+    
     protected NodeEntry _entry;
     public NodeEntry Entry => _entry;
 
     private RunNodeState _state;
-    public RunNodeState GetState() => _state;
-    public void SetState(RunNodeState state) => _state = state;
+    public RunNodeState State
+    {
+        get => _state;
+        set => _state = value;
+    }
+
+    private PanelDescriptor _panel;
+    public PanelDescriptor Panel
+    {
+        get => _panel;
+        set
+        {
+            _panel?.Exit();
+            _panel = value;
+            _panel?.Enter();
+        }
+    }
 
     public virtual Sprite GetSprite() => _entry.GetSprite();
     public virtual string GetName() => _entry.GetName();
@@ -17,30 +41,12 @@ public class RunNode
     public RunNode(NodeEntry entry)
     {
         _entry = entry;
-        _state = RunNodeState.Future;
-    }
-
-    public enum RunNodeState
-    {
-        Missed,
-        Passed,
-        Current,
-        ToChoose,
-        Future,
-    }
-
-    public PanelDescriptor CurrentPanel { get; private set; }
-
-    public void ChangePanel(PanelDescriptor panel)
-    {
-        CurrentPanel?.Exit();
-        CurrentPanel = panel;
-        CurrentPanel?.Enter();
+        _state = RunNodeState.Untouched;
     }
 
     public void Finish()
     {
-        ChangePanel(null);
-        SetState(RunNodeState.Passed);
+        Panel = null;
+        State = RunNodeState.Passed;
     }
 }

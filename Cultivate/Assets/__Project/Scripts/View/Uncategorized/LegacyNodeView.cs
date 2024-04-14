@@ -25,11 +25,11 @@ public class LegacyNodeView : SimpleView
             return;
 
         if (NameText != null)
-            NameText.text = runNode.GetName() + runNode.GetState().ToString();
+            NameText.text = runNode.GetName() + runNode.State.ToString();
 
         _breathingButton.SetSprite(runNode.GetSprite());
 
-        switch (runNode.GetState())
+        switch (runNode.State)
         {
             case RunNode.RunNodeState.Missed:
             case RunNode.RunNodeState.Passed:
@@ -37,12 +37,12 @@ public class LegacyNodeView : SimpleView
                 _breathingButton.SetColor(Color.black);
                 break;
             case RunNode.RunNodeState.ToChoose:
-            case RunNode.RunNodeState.Future:
+            case RunNode.RunNodeState.Untouched:
                 _breathingButton.SetColor(Color.white);
                 break;
         }
 
-        _breathingButton.SetBreathing(runNode.GetState() == RunNode.RunNodeState.ToChoose);
+        _breathingButton.SetBreathing(runNode.State == RunNode.RunNodeState.ToChoose);
     }
 
     private void OnPointerClick(PointerEventData eventData)
@@ -54,7 +54,7 @@ public class LegacyNodeView : SimpleView
     private bool TryClickNode()
     {
         RunNode runNode = Get<RunNode>();
-        if (runNode.GetState() != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Environment.Map.Choosing)
+        if (runNode.State != RunNode.RunNodeState.ToChoose || !RunManager.Instance.Environment.Map.Choosing)
             return false;
 
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.MakeChoiceProcedure(runNode);
