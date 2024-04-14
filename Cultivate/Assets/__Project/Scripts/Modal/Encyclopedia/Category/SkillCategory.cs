@@ -398,7 +398,6 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "不动明王诀",
                 wuXing:                     WuXing.Shui,
                 jingJieRange:               JingJie.ZhuJi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"治疗20" +
                     $"\n遭受5缠绕",

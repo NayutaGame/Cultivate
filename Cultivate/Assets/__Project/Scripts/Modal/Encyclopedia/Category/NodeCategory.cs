@@ -437,7 +437,7 @@ public class NodeCategory : Category<NodeEntry>
                     map.CurrNode.ChangePanel(A);
                 }),
             
-            new("突破境界", "突破境界", withInPool: true,
+            new("突破境界", "突破境界", withInPool: false,
                 create: map =>
                 {
                     DialogPanelDescriptor A = new("你感到很久以来的瓶颈将被突破",
@@ -539,7 +539,7 @@ public class NodeCategory : Category<NodeEntry>
                     map.CurrNode.ChangePanel(A);
                 }),
 
-            new("论无穷", "论无穷", withInPool: false,
+            new("论无穷", "论无穷", withInPool: true,
                 create: map =>
                 {
                     DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +
@@ -551,16 +551,16 @@ public class NodeCategory : Category<NodeEntry>
                         "用第三个想法");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("你痛快写了800字，时间没过5分钟，已经写完了。" +
-                                                  "\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。")
+                                                  "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张二动牌", pred: e => e.SkillTypeComposite.Contains(SkillType.ErDong), jingJie: map.JingJie));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
-                                                                        "\n\n考试结束时，你已经把所有能写字的地方都写满了话。" +
-                                                  "\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。")
+                                                                        "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
+                                                  "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张消耗牌", pred: e => e.SkillTypeComposite.Contains(SkillType.XiaoHao), jingJie: map.JingJie));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                                                         "从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                                                         "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
-                                                  "\n\n交卷之后，一名考官对你的文章很有兴趣，给你留下了一些东西。")
+                                                  "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张自指牌", pred: e => e.SkillTypeComposite.Contains(SkillType.ZiZhi), jingJie: map.JingJie));
 
                     A[0].SetSelect(option => B);
