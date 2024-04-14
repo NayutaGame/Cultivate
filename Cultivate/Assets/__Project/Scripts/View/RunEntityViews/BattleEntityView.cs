@@ -12,6 +12,7 @@ public class BattleEntityView : SimpleView
     [SerializeField] public RectTransform _fieldTransform;
     [SerializeField] private RectTransform FieldShowPivot;
     [SerializeField] private RectTransform FieldHidePivot;
+    [SerializeField] private CanvasGroup FieldCanvasGroup;
 
     public override void SetAddress(Address address)
     {
@@ -34,10 +35,11 @@ public class BattleEntityView : SimpleView
     }
 
     public Tween ShowAnimation()
-        => DOTween.Sequence()
+        => DOTween.Sequence().AppendInterval(0.3f)
             .Append(_fieldTransform.DOAnchorPos(FieldShowPivot.anchoredPosition, 0.15f)
-                .From(FieldHidePivot.anchoredPosition).SetDelay(0.6f).SetEase(Ease.OutQuad)
-            );
+                .From(FieldHidePivot.anchoredPosition).SetEase(Ease.OutQuad))
+            .Join(FieldCanvasGroup.DOFade(1, 0.15f)
+                .From(0).SetEase(Ease.OutQuad));
 
     public Tween HideAnimation()
         => DOTween.Sequence();

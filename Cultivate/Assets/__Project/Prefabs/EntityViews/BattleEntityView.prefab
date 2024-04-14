@@ -61,6 +61,7 @@ MonoBehaviour:
   _fieldTransform: {fileID: 1995470215956724045}
   FieldShowPivot: {fileID: 550823809109430922}
   FieldHidePivot: {fileID: 5813788573486066571}
+  FieldCanvasGroup: {fileID: 4778192934694495620}
 --- !u!1 &3500039801636955077
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,7 +881,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6047412492275909920, guid: 130616300a3db65489b22752e3147f0d, type: 3}
   m_PrefabInstance: {fileID: 6804764464802512937}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2549644176595121549}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5832fb2677c78a4ab8c274dc09490d6, type: 3}
@@ -891,6 +892,23 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5034519349020965220, guid: 130616300a3db65489b22752e3147f0d, type: 3}
   m_PrefabInstance: {fileID: 6804764464802512937}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2549644176595121549 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9010936378688091556, guid: 130616300a3db65489b22752e3147f0d, type: 3}
+  m_PrefabInstance: {fileID: 6804764464802512937}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &4778192934694495620
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549644176595121549}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &6842989767799736017
 PrefabInstance:
   m_ObjectHideFlags: 0
