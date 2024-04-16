@@ -42,7 +42,7 @@ public class BattleStepDescriptor : StepDescriptor
 
         map.Ladder = _ladder;
         
-        DrawEntityDetails d = new DrawEntityDetails(_ladder);
+        EntityDescriptor d = new EntityDescriptor(_ladder);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
         map.CurrStepItem._nodes.Add(new BattleRunNode(entity));
     }

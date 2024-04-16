@@ -33,7 +33,7 @@ public class StageNote : ISkillModel
     public int GetMaxCounter() => _maxCounter;
 
     public Sprite GetSprite()
-        => Skill.Entry.Sprite;
+        => Skill.Entry.GetSprite();
 
     public Sprite GetWuXingSprite()
         => Skill.Entry.GetWuXingSprite();
@@ -42,7 +42,7 @@ public class StageNote : ISkillModel
         => Skill.Entry.GetName();
 
     public SkillTypeComposite GetSkillTypeComposite()
-        => Skill.Entry.SkillTypeComposite;
+        => Skill.Entry.GetSkillTypeComposite();
 
     public string GetExplanation()
         => Skill.Entry.GetExplanation();

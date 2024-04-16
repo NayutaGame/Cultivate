@@ -283,7 +283,7 @@ public class RunEnvironment : Addressable, RunEventListener
     private RunEntity _away; public RunEntity Away => _away;
     public Map Map { get; private set; }
     public TechInventory TechInventory { get; private set; }
-    public SkillPool SkillPool;
+    public Pool<SkillEntry> SkillPool;
     public SkillInventory Hand { get; private set; }
     public MechBag MechBag { get; private set; }
     public float Gold { get; private set; }

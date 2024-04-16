@@ -4,45 +4,23 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 [Serializable]
-public class SkillEntry : Entry, IAnnotation
+public class SkillEntry : Entry, IAnnotation, ISkillModel
 {
-    // name
     private string _name;
-    public string GetName() => _name;
     
-    // wuXing
     private WuXing? _wuXing;
     public WuXing? WuXing => _wuXing;
-
-    public Sprite GetWuXingSprite()
-        => CanvasManager.Instance.GetWuXingSprite(WuXing);
     
-    // jingJieRange
     private CLLibrary.Range _jingJieRange;
     public bool JingJieContains(JingJie jingJie) => _jingJieRange.Contains(jingJie);
     public JingJie LowestJingJie => _jingJieRange.Start;
     public JingJie HighestJingJie => _jingJieRange.End - 1;
     
-    public Sprite GetJingJieSprite(JingJie jingJie)
-        => CanvasManager.Instance.JingJieSprites[jingJie];
-    
     public Color GetColor(JingJie jingJie)
         => CanvasManager.Instance.JingJieColors[jingJie];
 
-    public JingJie NextJingJie(JingJie jingJie)
-    {
-        int next = jingJie + 1;
-        if (JingJieContains(next))
-            return next;
-
-        return LowestJingJie;
-    }
-
-    // skillTypeComposite
     private SkillTypeComposite _skillTypeComposite;
-    public SkillTypeComposite SkillTypeComposite => _skillTypeComposite;
 
-    // cost
     private Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> _cost;
     public async Task<CostResult> Cost(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
     {
@@ -53,20 +31,16 @@ public class SkillEntry : Entry, IAnnotation
         return result;
     }
     
-    // costDescription
     private Func<JingJie, int, CostResult, CostDescription> _costDescription;
-    public CostDescription GetCostDescription() => GetCostDescription(LowestJingJie);
-    public CostDescription GetCostDescription(JingJie j, CostResult costResult = null)
-        => _costDescription(j, j - LowestJingJie, costResult);
+    public CostDescription GetCostDescription(JingJie showingJingJie, CostResult costResult)
+        => _costDescription(showingJingJie, showingJingJie - LowestJingJie, costResult);
     
-    // cast
     private Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CastResult>> _cast;
     public async Task<CastResult> Cast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
         => await _cast(env, caster, skill, recursive);
     private async Task<CastResult> DefaultCast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
         => new();
 
-    // castDescription
     private Func<JingJie, int, CostResult, CastResult, string> _castDescription;
     public string GetDescription(JingJie j, CostResult costResult = null, CastResult castResult = null)
         => _castDescription(j, j - LowestJingJie, costResult, castResult);
@@ -79,20 +53,15 @@ public class SkillEntry : Entry, IAnnotation
         => _annotationArray.HighlightFromDescription(description);
     public string GetHighlight()
         => GetHighlight(GetDescription());
-    public string GetHighlight(JingJie jingJie, CostResult costResult = null, CastResult castResult = null)
+    public string GetHighlight(JingJie jingJie, CostResult costResult, CastResult castResult)
         => GetHighlight(GetDescription(jingJie, costResult, castResult));
     
-    public string GetExplanation()
-        => _annotationArray.GetExplanation();
-    
     private string _trivia;
-    public string GetTrivia() => _trivia;
 
     private bool _withinPool;
     public bool WithinPool => _withinPool;
 
     private SpriteEntry _spriteEntry;
-    public Sprite Sprite => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory["Default"].Sprite;
 
     public SkillEntry(string id,
         string name,
@@ -126,4 +95,28 @@ public class SkillEntry : Entry, IAnnotation
     }
 
     public static implicit operator SkillEntry(string id) => Encyclopedia.SkillCategory[id];
+
+    public int GetCurrCounter() => 0;
+    public int GetMaxCounter() => 0;
+    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory["Default"].Sprite;
+    public Sprite GetWuXingSprite() => CanvasManager.Instance.GetWuXingSprite(WuXing);
+    public string GetName() => _name;
+    public SkillTypeComposite GetSkillTypeComposite() => _skillTypeComposite;
+    public string GetExplanation() => _annotationArray.GetExplanation();
+    public string GetTrivia() => _trivia;
+
+    public JingJie GetJingJie() => LowestJingJie;
+    public CostDescription GetCostDescription(JingJie showingJingJie) => GetCostDescription(showingJingJie, null);
+    public string GetHighlight(JingJie showingJingJie) => GetHighlight(showingJingJie, null, null);
+    public Sprite GetJingJieSprite(JingJie showingJingJie) => CanvasManager.Instance.JingJieSprites[showingJingJie];
+    public JingJie NextJingJie(JingJie showingJingJie)
+    {
+        int next = showingJingJie + 1;
+        if (JingJieContains(next))
+            return next;
+
+        return LowestJingJie;
+    }
+
+    public Color GetColor() => GetColor(LowestJingJie);
 }

@@ -14,7 +14,7 @@ public class MapPanel : Panel
     {
         return DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
-            .AppendCallback(Refresh)
+            .AppendCallback(NodeListView.Sync)
             .AppendCallback(PlaySFX)
             .Append(RectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CanvasGroup.DOFade(1f, 0.15f));

@@ -18,10 +18,10 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         return this;
     }
 
-    public DrawSkillDetails _drawSkillDetails;
+    public SkillDescriptor _skillDescriptor;
 
     public CardPickerPanelDescriptor(string detailedText = null, Range range = null, Func<List<object>, PanelDescriptor> select = null,
-        DrawSkillDetails drawSkillDetails = null)
+        SkillDescriptor skillDescriptor = null)
     {
         _accessors = new()
         {
@@ -31,12 +31,12 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         _detailedText = detailedText ?? "请选择卡";
         _range = range ?? new Range(1);
         _select = select;
-        _drawSkillDetails = drawSkillDetails;
+        _skillDescriptor = skillDescriptor;
     }
 
     public bool CanSelect(EmulatedSkill skill)
     {
-        if (_drawSkillDetails != null && !_drawSkillDetails.CanDraw(skill.GetEntry()))
+        if (_skillDescriptor != null && _skillDescriptor.Pred(skill.GetEntry()))
             return false;
         return skill is RunSkill;
     }

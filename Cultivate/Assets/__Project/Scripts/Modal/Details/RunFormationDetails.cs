@@ -45,13 +45,13 @@ public class RunFormationDetails : EventDetails
             if (wuXing != null)
                 WuXingCounts[wuXing.Value]++;
 
-            if (entry.SkillTypeComposite.Contains(SkillType.ErDong))
+            if (entry.GetSkillTypeComposite().Contains(SkillType.ErDong))
                 SwiftCount++;
 
-            if (entry.SkillTypeComposite.Contains(SkillType.XiaoHao))
+            if (entry.GetSkillTypeComposite().Contains(SkillType.XiaoHao))
                 ExhaustedCount++;
 
-            if (entry.SkillTypeComposite.Contains(SkillType.Attack))
+            if (entry.GetSkillTypeComposite().Contains(SkillType.Attack))
             {
                 consecutiveAttackCount++;
                 HighestConsecutiveAttackCount = Mathf.Max(HighestConsecutiveAttackCount, consecutiveAttackCount);

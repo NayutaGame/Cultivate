@@ -84,7 +84,7 @@ public class MechComposite : EmulatedSkill
     public int GetMaxCounter() => 0;
 
     public Sprite GetSprite()
-        => GetEntry().Sprite;
+        => GetEntry().GetSprite();
 
     public Sprite GetWuXingSprite()
         => GetEntry().GetWuXingSprite();
@@ -93,7 +93,7 @@ public class MechComposite : EmulatedSkill
         => GetEntry().GetName();
 
     public SkillTypeComposite GetSkillTypeComposite()
-        => GetEntry().SkillTypeComposite;
+        => GetEntry().GetSkillTypeComposite();
 
     public string GetExplanation()
         => GetEntry().GetExplanation();
@@ -102,7 +102,7 @@ public class MechComposite : EmulatedSkill
         => GetEntry().GetTrivia();
 
     public JingJie GetJingJie()
-        => GetEntry().LowestJingJie;
+        => GetEntry().GetJingJie();
 
     public CostDescription GetCostDescription(JingJie showingJingJie)
         => GetJingJie() == showingJingJie

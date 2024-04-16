@@ -1,9 +1,9 @@
 
-public class DrawEntityDetails
+public class EntityDescriptor
 {
     private int Ladder;
 
-    public DrawEntityDetails(int ladder)
+    public EntityDescriptor(int ladder)
     {
         Ladder = ladder;
     }

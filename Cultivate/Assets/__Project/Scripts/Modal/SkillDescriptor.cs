@@ -1,7 +1,8 @@
 
 using System;
+using UnityEngine;
 
-public class SkillDescriptor
+public class SkillDescriptor : ISkillModel
 {
     private Predicate<SkillEntry> _pred;
     
@@ -58,7 +59,7 @@ public class SkillDescriptor
         if (_jingJie != null && !skillEntry.JingJieContains(_jingJie.Value))
             return false;
 
-        if (_skillTypeComposite != null && !skillEntry.SkillTypeComposite.Contains(_skillTypeComposite))
+        if (_skillTypeComposite != null && !skillEntry.GetSkillTypeComposite().Contains(_skillTypeComposite))
             return false;
 
         return true;
@@ -66,4 +67,47 @@ public class SkillDescriptor
     
     public static implicit operator SkillDescriptor(string id) => FromEntry(id);
     public static implicit operator SkillDescriptor(SkillEntry skillEntry) => FromEntry(skillEntry);
+
+
+
+
+
+    public int GetCurrCounter() => 0;
+    public int GetMaxCounter() => 0;
+
+    public Sprite GetSprite()
+        => _entry?.GetSprite();
+
+    public Sprite GetWuXingSprite()
+        => _entry?.GetWuXingSprite();
+
+    public string GetName()
+        => _entry?.GetName();
+
+    public SkillTypeComposite GetSkillTypeComposite()
+        => _entry?.GetSkillTypeComposite();
+
+    public string GetExplanation()
+        => _entry?.GetExplanation();
+
+    public string GetTrivia()
+        => _entry?.GetTrivia();
+
+    public JingJie GetJingJie()
+        => _jingJie ?? global::JingJie.LianQi;
+
+    public CostDescription GetCostDescription(JingJie showingJingJie)
+        => _entry?.GetCostDescription(showingJingJie) ?? new CostDescription();
+
+    public string GetHighlight(JingJie showingJingJie)
+        => _entry?.GetHighlight(showingJingJie);
+
+    public Sprite GetJingJieSprite(JingJie showingJingJie)
+        => _entry?.GetJingJieSprite(showingJingJie);
+
+    public JingJie NextJingJie(JingJie showingJingJie)
+        => _entry?.NextJingJie(showingJingJie) ?? global::JingJie.LianQi;
+
+    public Color GetColor()
+        => _entry?.GetColor() ?? Color.white;
 }

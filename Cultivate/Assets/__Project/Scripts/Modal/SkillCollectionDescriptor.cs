@@ -45,7 +45,7 @@ public class SkillCollectionDescriptor
         if (_jingJie != null && !skillEntry.JingJieContains(_jingJie.Value))
             return false;
 
-        if (_skillTypeComposite != null && !skillEntry.SkillTypeComposite.Contains(_skillTypeComposite))
+        if (_skillTypeComposite != null && !skillEntry.GetSkillTypeComposite().Contains(_skillTypeComposite))
             return false;
 
         return true;

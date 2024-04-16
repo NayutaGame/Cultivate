@@ -652,7 +652,7 @@ public class NodeCategory : Category<NodeEntry>
                         .SetReward(Reward.FromGold(100));
                     DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
 
-                    map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(map.Ladder));
+                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(map.Ladder));
                     BattlePanelDescriptor E = new(template);
                     DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
                         .SetReward(new ResourceReward(gold: 100, health: 10));
@@ -1236,7 +1236,7 @@ public class NodeCategory : Category<NodeEntry>
                         "和山贼战斗");
                     DialogPanelDescriptor C = new("他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n金+50");
 
-                    map.EntityPool.TryDrawEntity(out RunEntity template, new DrawEntityDetails(map.Ladder));
+                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(map.Ladder));
                     BattlePanelDescriptor B1 = new(template);
                     DialogPanelDescriptor B1win = new DialogPanelDescriptor("你打过了山贼，商人对你十分感激。\n\n金+100")
                         .SetReward(Reward.FromGold(100));
@@ -1258,8 +1258,8 @@ public class NodeCategory : Category<NodeEntry>
                         "尝试观看两人对弈（需要一张二动牌）",
                         "请教两人路怎么走（需要一张治疗牌）");
 
-                    CardPickerPanelDescriptor B = new CardPickerPanelDescriptor("请提交一张二动牌", new Range(0, 2), drawSkillDetails: new DrawSkillDetails(pred: s => s.SkillTypeComposite.Contains(SkillType.ErDong)));
-                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor("请提交一张治疗牌", new Range(0, 2), drawSkillDetails: new DrawSkillDetails(pred: s => s.SkillTypeComposite.Contains(SkillType.ZhiLiao)));
+                    CardPickerPanelDescriptor B = new CardPickerPanelDescriptor("请提交一张二动牌", new Range(0, 2), skillDescriptor: new(skillTypeComposite: SkillType.ErDong));
+                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor("请提交一张治疗牌", new Range(0, 2), skillDescriptor: new(skillTypeComposite: SkillType.ZhiLiao));
 
                     DialogPanelDescriptor BWin = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
                     DialogPanelDescriptor BWin2 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");

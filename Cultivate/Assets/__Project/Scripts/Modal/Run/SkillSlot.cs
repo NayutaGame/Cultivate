@@ -104,7 +104,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     {
         if (Skill == null)
             return false;
-        bool sunHao = Skill.GetEntry().SkillTypeComposite.Contains(SkillType.SunHao);
+        bool sunHao = Skill.GetEntry().GetSkillTypeComposite().Contains(SkillType.SunHao);
         if (!sunHao)
             return false;
 

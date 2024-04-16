@@ -72,7 +72,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
     public int GetMaxCounter() => 0;
 
     public Sprite GetSprite()
-        => _entry.Sprite;
+        => _entry.GetSprite();
 
     public Sprite GetWuXingSprite()
         => _entry.GetWuXingSprite();
@@ -81,7 +81,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         => _entry.GetName();
 
     public SkillTypeComposite GetSkillTypeComposite()
-        => _entry.SkillTypeComposite;
+        => _entry.GetSkillTypeComposite();
 
     public string GetExplanation()
         => _entry.GetExplanation();

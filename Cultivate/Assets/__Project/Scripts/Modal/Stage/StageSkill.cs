@@ -77,7 +77,7 @@ public class StageSkill
     }
 
     public SkillTypeComposite GetSkillType()
-        => _entry.SkillTypeComposite;
+        => _entry.GetSkillTypeComposite();
 
     public void IncreaseCastedCount()
     {
