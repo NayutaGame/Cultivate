@@ -21,7 +21,8 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         _accessors = new()
         {
-            { "Enemy", GetEnemy },
+            { "Guide",                    GetGuideDescriptor },
+            { "Enemy",                    GetEnemy },
         };
         _template = template;
     }

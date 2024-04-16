@@ -255,9 +255,4 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             f.GetMin() <= f.GetProgress() && _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
         _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
     }
-
-    public SkillSlot FindSlotWithSkillEntry(SkillEntry entry)
-    {
-        return TraversalCurrentSlots().FirstObj(slot => slot.Skill?.GetEntry() == entry);
-    }
 }

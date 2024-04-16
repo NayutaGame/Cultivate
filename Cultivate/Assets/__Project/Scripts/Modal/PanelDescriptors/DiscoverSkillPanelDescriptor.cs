@@ -14,28 +14,29 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     public string GetDetailedText() => _detailedText;
     public void SetDetailedText(string value) => _detailedText = value;
 
-    private ListModel<RunSkill> _skills;
+    private ListModel<SkillDescriptor> _skills;
+    public ListModel<SkillDescriptor> GetSkills() => _skills;
     public int GetSkillCount() => _skills.Count();
-    public RunSkill GetSkill(int i) => _skills[i];
-    public int GetIndexOfSkill(RunSkill skill) => _skills.IndexOf(skill);
+    public SkillDescriptor GetSkill(int i) => _skills[i];
+    public int GetIndexOfSkill(SkillDescriptor skill) => _skills.IndexOf(skill);
 
-    private Predicate<SkillEntry> _pred;
-    private WuXing? _wuXing;
-    private JingJie? _jingJie;
+    private SkillCollectionDescriptor _descriptor;
+    private JingJie _preferredJingJie;
 
-    public DiscoverSkillPanelDescriptor(string titleText = null, string detailedText = null, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
+    public DiscoverSkillPanelDescriptor(string titleText = null, string detailedText = null)
     {
         _accessors = new()
         {
-            { "Skills",                () => _skills },
+            { "Guide",                    GetGuideDescriptor },
+            { "Skills",                   GetSkills },
         };
 
         _titleText = titleText ?? "";
         _detailedText = detailedText ?? "请选择一张卡作为奖励";
 
-        _pred = pred;
-        _wuXing = wuXing;
-        _jingJie = jingJie ?? RunManager.Instance.Environment.Map.JingJie;
+        _descriptor = new(jingJie: RunManager.Instance.Environment.Map.JingJie, count: 3);
+        _preferredJingJie = RunManager.Instance.Environment.Map.JingJie;
+        
         _skills = new();
     }
 
@@ -43,7 +44,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     {
         base.DefaultEnter();
 
-        DiscoverSkillDetails d = new DiscoverSkillDetails(_pred, _wuXing, _jingJie, 3);
+        DiscoverSkillDetails d = new DiscoverSkillDetails(_descriptor, _preferredJingJie);
         RunManager.Instance.Environment.DiscoverSkillProcedure(d);
 
         _skills.Clear();
@@ -54,7 +55,8 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     {
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
-            RunManager.Instance.Environment.Hand.Add(_skills[selectedOptionSignal.Selected]);
+            SkillDescriptor skill = _skills[selectedOptionSignal.Selected];
+            RunManager.Instance.Environment.AddSkillProcedure(skill.Entry, skill.JingJie);
             // TODO: Discover Animation
             return null;
         }

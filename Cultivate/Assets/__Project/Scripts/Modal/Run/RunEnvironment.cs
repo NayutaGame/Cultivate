@@ -15,13 +15,13 @@ public class RunEnvironment : Addressable, RunEventListener
 
     #region Memory
 
-    private Dictionary<string, object> Memory;
+    private Dictionary<string, object> _memory;
 
     public void SetVariable<T>(string key, T value)
-        => Memory[key] = value;
+        => _memory[key] = value;
 
     public T GetVariable<T>(string key)
-        => (T)Memory[key];
+        => (T)_memory[key];
 
     #endregion
 
@@ -44,7 +44,7 @@ public class RunEnvironment : Addressable, RunEventListener
             Map.AdventurePool.Shuffle();
             
             // init skill pool
-            4.Do(i => SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
+            4.Do(_ => SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
             
             // init drawers
             Map.StepDescriptors = new StepDescriptor[]
@@ -116,8 +116,8 @@ public class RunEnvironment : Addressable, RunEventListener
             // init player start condition
             SetDGold(50);
             if (!firstTime)
-                ForceDrawSkills(jingJie: JingJie.LianQi, count: 5);
-            // ForceDrawSkills(jingJie: JingJie.HuaShen, count: 20);
+                DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
+            // DrawSkillsProcedure(new(jingJie: JingJie.HuaShen, count: 20));
         }
         
         _eventDict.SendEvent(RunEventDict.START_RUN, d);
@@ -270,20 +270,20 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         _eventDict.SendEvent(RunEventDict.WILL_DISCOVER_SKILL, d);
 
-        SkillPool.TryDrawSkills(out List<RunSkill> skills, pred: d.Pred, wuXing: d.WuXing, jingJie: d.JingJie , count: d.Count);
-        d.Skills.AddRange(skills);
+        List<SkillEntry> entries = DrawSkills(d.Descriptor);
+        d.Skills.AddRange(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
 
         _eventDict.SendEvent(RunEventDict.DID_DISCOVER_SKILL, d);
     }
 
     #endregion
 
-    public RunConfig _config;
+    private RunConfig _config;
     private RunEntity _home; public RunEntity Home => _home;
     private RunEntity _away; public RunEntity Away => _away;
     public Map Map { get; private set; }
     public TechInventory TechInventory { get; private set; }
-    public SkillPool SkillPool { get; private set; }
+    public SkillPool SkillPool;
     public SkillInventory Hand { get; private set; }
     public MechBag MechBag { get; private set; }
     public float Gold { get; private set; }
@@ -312,7 +312,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         _config = config;
 
-        Memory = new();
+        _memory = new();
 
         SetHome(RunEntity.Default());
         SetAway(null);
@@ -399,6 +399,8 @@ public class RunEnvironment : Addressable, RunEventListener
         WuXing? lWuXing = lEntry.WuXing;
         WuXing? rWuXing = rEntry.WuXing;
 
+        DeckIndex rhsDeckIndex = new DeckIndex(false, Hand.IndexOf(rhs));
+
         if (rJingJie > _home.GetJingJie() || lJingJie > _home.GetJingJie())
             return false;
         
@@ -427,40 +429,41 @@ public class RunEnvironment : Addressable, RunEventListener
         {
             return false;
         }
-        
+
         // Same WuXing
         if (lWuXing == rWuXing && lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
         {
-            SkillPool.TryDrawSkill(out RunSkill newSkill,
-                pred: skillEntry => skillEntry != lEntry && skillEntry != rEntry,
-                wuXing: rWuXing,
-                jingJie: (rJingJie + 1).ClampUpper(rEntry.HighestJingJie));
+            DrawSkillProcedure(new(
+                    pred: skillEntry => skillEntry != lEntry && skillEntry != rEntry,
+                    wuXing: rWuXing,
+                    jingJie: rJingJie + 1),
+                preferredDeckIndex: rhsDeckIndex);
             Hand.Remove(lhs);
-            Hand.Replace(rhs, newSkill);
             EnvironmentChanged();
             return true;
         }
-        
+
         // XiangSheng WuXing
         if (WuXing.XiangSheng(lWuXing, rWuXing) && lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
         {
-            SkillPool.TryDrawSkill(out RunSkill newSkill,
-                wuXing: WuXing.XiangShengNext(lWuXing, rWuXing).Value,
-                jingJie: (rJingJie + 1).ClampUpper(rEntry.HighestJingJie));
+            DrawSkillProcedure(new(
+                    wuXing: WuXing.XiangShengNext(lWuXing, rWuXing).Value,
+                    jingJie: rJingJie + 1),
+                preferredDeckIndex: rhsDeckIndex);
             Hand.Remove(lhs);
-            Hand.Replace(rhs, newSkill);
             EnvironmentChanged();
             return true;
         }
-        
+
         // Same JingJie
         if (lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
         {
-            SkillPool.TryDrawSkill(out RunSkill newSkill,
-                pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing && skillEntry.WuXing != rWuXing,
-                jingJie: (rJingJie + 1).ClampUpper(rEntry.HighestJingJie));
+            DrawSkillProcedure(new(
+                    pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
+                                        skillEntry.WuXing != rWuXing,
+                    jingJie: rJingJie + 1),
+                preferredDeckIndex: rhsDeckIndex);
             Hand.Remove(lhs);
-            Hand.Replace(rhs, newSkill);
             EnvironmentChanged();
             return true;
         }
@@ -481,7 +484,7 @@ public class RunEnvironment : Addressable, RunEventListener
             Hand.Remove(toEquip);
             foreach(MechType m in mechComposite.MechTypes)
                 MechBag.AddMech(m);
-        };
+        }
 
         slot.Skill = toEquip;
         return true;
@@ -582,43 +585,6 @@ public class RunEnvironment : Addressable, RunEventListener
         ResourceChanged();
     }
 
-    public void ForceDrawSkills(Predicate<SkillEntry> pred = null, WuXing? wuXing = null,
-        JingJie? jingJie = null, int count = 1, bool distinct = true, bool consume = true)
-        => ForceDrawSkills(new DrawSkillsDetails(pred, wuXing, jingJie, count, distinct, consume));
-
-    public void ForceDrawSkills(DrawSkillsDetails d)
-    {
-        bool success = SkillPool.TryDrawSkills(out List<RunSkill> skills, d);
-        if (!success)
-            throw new Exception();
-
-        ForceAddSkills(skills);
-    }
-
-    public void ForceDrawSkill(Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null)
-        => ForceDrawSkill(new DrawSkillDetails(pred, wuXing, jingJie));
-
-    public void ForceDrawSkill(DrawSkillDetails d)
-    {
-        bool success = SkillPool.TryDrawSkill(out RunSkill skill, d);
-        if (!success)
-            throw new Exception();
-
-        ForceAddSkill(skill);
-    }
-
-    public void ForceAddSkills(List<RunSkill> skills)
-    {
-        foreach(RunSkill skill in skills)
-            ForceAddSkill(skill);
-    }
-
-    public void ForceAddSkill(AddSkillDetails d)
-        => ForceAddSkill(RunSkill.FromEntry(d._entry, d._jingJie));
-
-    public void ForceAddSkill(RunSkill skill)
-        => Hand.Add(skill);
-
     public void ForceAddMech([CanBeNull] MechType mechType = null, int count = 1)
         => ForceAddMech(new(mechType, count));
     public void ForceAddMech(AddMechDetails d)
@@ -666,8 +632,101 @@ public class RunEnvironment : Addressable, RunEventListener
         return true;
     }
 
-    public RunSkill FindSkillInHandWithEntry(SkillEntry entry)
+    #region Skill
+
+    public EmulatedSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
     {
-        return Hand.Traversal().FirstObj(s => s.GetEntry() == entry);
+        if (deckIndex.InField)
+            return Home.GetSlot(deckIndex.Index).Skill;
+        else
+            return Hand[deckIndex.Index];
     }
+    public DeckIndex? FindDeckIndex(SkillDescriptor d)
+    {
+        int? idx = Home.TraversalCurrentSlots().FirstIdx(slot => slot.Skill != null && d.Pred(slot.Skill.GetEntry()));
+        if (idx != null)
+            return new DeckIndex(true, idx.Value);
+        
+        idx = Hand.Traversal().Map(runSkill => runSkill.GetEntry()).FirstIdx(d.Pred);
+        if (idx != null)
+            return new DeckIndex(false, idx.Value);
+
+        return null;
+    }
+    public IEnumerable<DeckIndex> TraversalDeckIndices()
+    {
+        foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
+            yield return new DeckIndex(true, slot.GetIndex());
+        for(int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
+            yield return new DeckIndex(false, i);
+    }
+
+    public List<SkillEntry> DrawSkills(SkillCollectionDescriptor d)
+    {
+        List<SkillEntry> toRet = new();
+        
+        SkillPool.Shuffle();
+        for (int i = 0; i < d.Count; i++)
+        {
+            SkillPool.TryPopItem(out SkillEntry item, s =>
+            {
+                if (!d.Pred(s))
+                    return false;
+
+                if (d.Distinct && toRet.Contains(s))
+                    return false;
+
+                return true;
+            });
+
+            item ??= Encyclopedia.SkillCategory[0];
+            toRet.Add(item);
+        }
+
+        if (!d.Consume)
+            SkillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory[0]));
+
+        return toRet;
+    }
+    public SkillEntry DrawSkill(SkillDescriptor descriptor)
+    {
+        SkillPool.Shuffle();
+        SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Pred);
+        skillEntry ??= Encyclopedia.SkillCategory[0];
+        return skillEntry;
+    }
+    private RunSkill AnimateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
+    {
+        JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
+        return RunSkill.FromEntryJingJie(skillEntry, jingJie);
+    }
+    private void AddSkill(RunSkill skill, DeckIndex? preferredDeckIndex = null)
+    {
+        if (!preferredDeckIndex.HasValue)
+        {
+            Hand.Add(skill);
+            return;
+        }
+
+        DeckIndex deckIndex = preferredDeckIndex.Value;
+        if (deckIndex.InField)
+            Home.GetSlot(deckIndex.Index).Skill = skill;
+        else
+            Hand.Replace(deckIndex.Index, skill);
+    }
+
+    public void DrawSkillsProcedure(SkillCollectionDescriptor descriptor)
+    {
+        List<SkillEntry> entries = DrawSkills(descriptor);
+        entries.Do(e => AddSkill(AnimateSkill(e, descriptor.JingJie)));
+    }
+
+    public void DrawSkillProcedure(SkillDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+        => AddSkill(AnimateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
+
+    public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null,
+        DeckIndex? preferredDeckIndex = null)
+        => AddSkill(AnimateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
+
+    #endregion
 }

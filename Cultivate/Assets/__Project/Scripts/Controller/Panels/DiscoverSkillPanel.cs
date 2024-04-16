@@ -51,7 +51,7 @@ public class DiscoverSkillPanel : Panel
     {
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
-        RunSkill skill = ib.GetSimpleView().Get<RunSkill>();
+        SkillDescriptor skill = ib.GetSimpleView().Get<SkillDescriptor>();
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
         CanvasManager.Instance.SkillAnnotation.PointerExit(ib, eventData);

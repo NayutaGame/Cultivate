@@ -99,7 +99,7 @@ public class ConsolePanel : Panel
 
     private void DrawSkill()
     {
-        RunManager.Instance.Environment.ForceDrawSkill(jingJie: RunManager.Instance.Environment.Map.JingJie);
+        RunManager.Instance.Environment.DrawSkillProcedure(SkillDescriptor.FromJingJie(RunManager.Instance.Environment.Map.JingJie));
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 

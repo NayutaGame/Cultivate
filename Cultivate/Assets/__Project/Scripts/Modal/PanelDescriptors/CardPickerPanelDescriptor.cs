@@ -18,12 +18,16 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         return this;
     }
 
-
     public DrawSkillDetails _drawSkillDetails;
 
     public CardPickerPanelDescriptor(string detailedText = null, Range range = null, Func<List<object>, PanelDescriptor> select = null,
         DrawSkillDetails drawSkillDetails = null)
     {
+        _accessors = new()
+        {
+            { "Guide",                    GetGuideDescriptor },
+        };
+        
         _detailedText = detailedText ?? "请选择卡";
         _range = range ?? new Range(1);
         _select = select;

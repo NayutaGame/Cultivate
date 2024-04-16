@@ -15,8 +15,8 @@ public class BarterItemView : SimpleView
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        PlayerSkillView.SetAddress(GetAddress().Append(".PlayerSkill"));
-        SkillView.SetAddress(GetAddress().Append(".Skill"));
+        PlayerSkillView.SetAddress(GetAddress().Append(".FromSkill"));
+        SkillView.SetAddress(GetAddress().Append(".ToSkill"));
 
         ExchangeButton.onClick.RemoveAllListeners();
         ExchangeButton.onClick.AddListener(Exchange);

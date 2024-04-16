@@ -7,13 +7,16 @@ public class ShopPanelDescriptor : PanelDescriptor
     private static readonly int[] PriceTable = new int[] { 39, 59, 99, 149, 249 };
     private JingJie _jingJie;
     private CommodityListModel _commodities;
+    public CommodityListModel GetCommodities() => _commodities;
 
     public ShopPanelDescriptor(JingJie jingJie)
     {
         _accessors = new()
         {
-            { "Commodities",                () => _commodities },
+            { "Guide",                    GetGuideDescriptor },
+            { "Commodities",              GetCommodities },
         };
+        
         _jingJie = jingJie;
     }
 
@@ -23,19 +26,16 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         _commodities = new CommodityListModel();
 
-        bool success = RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
+        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
             jingJie: _jingJie,
             count: 6,
-            consume: false);
+            consume: false));
         
-        if (success)
+        foreach (SkillEntry e in entries)
         {
-            foreach (RunSkill skill in skills)
-            {
-                int price = Mathf.RoundToInt(PriceTable[_jingJie] * RandomManager.Range(0.8f, 1.2f));
-                float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-                _commodities.Add(new Commodity(skill, price, discount));
-            }
+            int price = Mathf.RoundToInt(PriceTable[_jingJie] * RandomManager.Range(0.8f, 1.2f));
+            float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
+            _commodities.Add(new Commodity(SkillDescriptor.FromEntryJingJie(e, _jingJie), price, discount));
         }
     }
 
@@ -49,8 +49,8 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         RunManager.Instance.Environment.SetDGold(-commodity.FinalPrice);
         _commodities.Remove(commodity);
-
-        RunManager.Instance.Environment.Hand.Add(commodity.Skill);
+        
+        RunManager.Instance.Environment.AddSkillProcedure(commodity.Skill.Entry, commodity.Skill.JingJie);
 
         return true;
     }

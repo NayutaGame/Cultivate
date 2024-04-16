@@ -9,6 +9,11 @@ public class ImagePanelDescriptor : PanelDescriptor
 
     public ImagePanelDescriptor(string spriteName)
     {
+        _accessors = new()
+        {
+            { "Guide",                    GetGuideDescriptor },
+        };
+
         _spriteEntry = spriteName;
     }
 

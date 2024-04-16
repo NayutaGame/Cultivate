@@ -25,6 +25,9 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [Header("Curtain")]
     public Curtain Curtain;
 
+    [Header("Guide")]
+    public GuideView GuideView;
+
     public Color[] JingJieColors;
     public Sprite[] JingJieSprites;
     [SerializeField] private Sprite[] WuXingSprites;
@@ -65,5 +68,12 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         SkillGhost.Awake();
         SlotGhost.Awake();
         MechGhost.Awake();
+        
+        GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
+    }
+
+    public void RefreshGuide()
+    {
+        GuideView.Refresh();
     }
 }

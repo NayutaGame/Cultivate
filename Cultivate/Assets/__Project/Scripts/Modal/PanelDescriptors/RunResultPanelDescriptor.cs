@@ -5,6 +5,11 @@ public class RunResultPanelDescriptor : PanelDescriptor
 
     public RunResultPanelDescriptor(RunResult runResult)
     {
+        _accessors = new()
+        {
+            { "Guide",                    GetGuideDescriptor },
+        };
+
         RunResult = runResult;
     }
 

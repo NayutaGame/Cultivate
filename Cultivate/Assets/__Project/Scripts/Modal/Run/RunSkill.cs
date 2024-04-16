@@ -27,7 +27,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
     public int GetRunEquippedTimes() => _runEquippedTimes;
     public void SetRunEquippedTimes(int value) => _runEquippedTimes = value;
 
-    public static RunSkill FromEntry(SkillEntry entry, JingJie jingJie)
+    public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
         => new(entry, jingJie);
 
     private RunSkill(SkillEntry entry, JingJie jingJie)

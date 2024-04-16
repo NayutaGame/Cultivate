@@ -1,25 +1,17 @@
 
-using System;
-
 public class DrawSkillReward : Reward
 {
     private string _description;
-    public Predicate<SkillEntry> _pred;
-    private WuXing? _wuXing;
-    private JingJie? _jingJie;
-    public int _count;
+    private SkillCollectionDescriptor _descriptor;
 
-    public DrawSkillReward(string description, Predicate<SkillEntry> pred = null, WuXing? wuXing = null, JingJie? jingJie = null, int count = 1)
+    public DrawSkillReward(string description, SkillCollectionDescriptor descriptor)
     {
         _description = description;
-        _pred = pred;
-        _wuXing = wuXing;
-        _jingJie = jingJie;
-        _count = count;
+        _descriptor = descriptor;
     }
 
     public override void Claim()
-        => RunManager.Instance.Environment.ForceDrawSkills(_pred, _wuXing, _jingJie, _count);
+        => RunManager.Instance.Environment.DrawSkillsProcedure(_descriptor);
 
     public override string GetDescription() => _description;
 }

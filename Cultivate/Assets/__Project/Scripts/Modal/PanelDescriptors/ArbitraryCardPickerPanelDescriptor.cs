@@ -8,38 +8,40 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
     private string _detailedText;
     public string GetDetailedText() => _detailedText;
 
-    private SkillInventory _inventory;
+    private ListModel<SkillDescriptor> _inventory;
+    public ListModel<SkillDescriptor> GetInventory() => _inventory;
 
     private Range _range;
     public Range Range => _range;
 
-    private Func<List<RunSkill>, PanelDescriptor> _select;
-    public ArbitraryCardPickerPanelDescriptor SetSelect(Func<List<RunSkill>, PanelDescriptor> select)
+    private Func<List<SkillDescriptor>, PanelDescriptor> _select;
+    public ArbitraryCardPickerPanelDescriptor SetSelect(Func<List<SkillDescriptor>, PanelDescriptor> select)
     {
         _select = select;
         return this;
     }
 
-    public ArbitraryCardPickerPanelDescriptor(string detailedText = null, Range range = null, Func<List<RunSkill>, PanelDescriptor> select = null)
+    public ArbitraryCardPickerPanelDescriptor(string detailedText = null, Range range = null, Func<List<SkillDescriptor>, PanelDescriptor> select = null)
     {
         _accessors = new()
         {
-            { "Inventory",                () => _inventory },
+            { "Guide",                    GetGuideDescriptor },
+            { "Inventory",                GetInventory },
         };
         _detailedText = detailedText ?? "请选择卡";
-        _inventory = new SkillInventory();
+        _inventory = new ListModel<SkillDescriptor>();
         _range = range ?? new Range(1);
         _select = select;
     }
 
-    public bool CanSelect(RunSkill skill)
+    public bool CanSelect(SkillDescriptor skill)
     {
         return true;
     }
 
-    public void AddSkills(List<RunSkill> skills)
+    public void AddSkills(List<SkillDescriptor> skills)
     {
-        foreach(RunSkill skill in skills)
+        foreach(SkillDescriptor skill in skills)
             _inventory.Add(skill);
     }
 

@@ -1,17 +1,18 @@
 
-using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
 public class BarterPanelDescriptor : PanelDescriptor
 {
     private BarterInventory _inventory;
+    public BarterInventory GetInventory() => _inventory;
 
     public BarterPanelDescriptor()
     {
         _accessors = new()
         {
-            { "Inventory",                () => _inventory },
+            { "Guide",                    GetGuideDescriptor },
+            { "Inventory",                GetInventory },
         };
     }
 
@@ -19,36 +20,36 @@ public class BarterPanelDescriptor : PanelDescriptor
     {
         base.DefaultEnter();
 
-        _inventory = new();
-
-        Pool<RunSkill> pool = new Pool<RunSkill>();
-        pool.Populate(RunManager.Instance.Environment.Home.TraversalCurrentSlots()
-            .FilterObj(s => s.Skill != null && s.Skill is RunSkill).Map(s => s.Skill as RunSkill));
-        pool.Populate(RunManager.Instance.Environment.Hand.Traversal());
+        Pool<SkillDescriptor> pool = new Pool<SkillDescriptor>();
+        pool.Populate(RunManager.Instance.Environment.TraversalDeckIndices()
+            .Map(deckIndex => RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex) as RunSkill)
+            .FilterObj(skill => skill != null)
+            .Map(SkillDescriptor.FromRunSkill));
         pool.Shuffle();
 
         int count = Mathf.Min(pool.Count(), 6);
 
-        RunSkill[] playerSkills = new RunSkill[count];
-        for (int i = 0; i < playerSkills.Length; i++)
-        {
-            pool.TryPopItem(out playerSkills[i]);
-        }
+        SkillDescriptor[] fromSkills = new SkillDescriptor[count];
+        for (int i = 0; i < fromSkills.Length; i++)
+            pool.TryPopItem(out fromSkills[i]);
 
-        RunSkill[] skills = new RunSkill[count];
-        for (int i = 0; i < skills.Length; i++)
+        SkillDescriptor[] toSkills = new SkillDescriptor[count];
+        for (int i = 0; i < toSkills.Length; i++)
         {
-            RunSkill thisSkill = playerSkills[i];
-            RunManager.Instance.Environment.SkillPool.TryDrawSkill(out skills[i],
-                pred: skillEntry => !skills.FilterObj(s => s != null).Map(s => s.GetEntry()).Contains(skillEntry) && skillEntry != thisSkill.GetEntry(), jingJie: playerSkills[i].JingJie);
+            SkillDescriptor descriptor = SkillDescriptor.FromPredJingJie(
+                skillEntry =>
+                {
+                    foreach(var s in fromSkills)
+                        if (skillEntry == s.Entry)
+                            return false;
+                    return true;
+                }, fromSkills[i].JingJie);
+            toSkills[i] = SkillDescriptor.FromEntry(RunManager.Instance.Environment.DrawSkill(descriptor)); // distinct, non consume
         }
-
-        for (int i = 0; i < playerSkills.Length; i++)
-        {
-            _inventory.Add(new BarterItem(playerSkills[i], skills[i]));
-        }
-
-        RunManager.Instance.Environment.SkillPool.Populate(_inventory.Traversal().Map(b => b.Skill.GetEntry()));
+        
+        _inventory = new();
+        for (int i = 0; i < fromSkills.Length; i++)
+            _inventory.Add(new BarterItem(fromSkills[i], toSkills[i]));
     }
 
     public bool Exchange(BarterItem barterItem)
@@ -56,25 +57,12 @@ public class BarterPanelDescriptor : PanelDescriptor
         if (!_inventory.Contains(barterItem))
             return false;
 
-        SkillSlot slotWithSkill = RunManager.Instance.Environment.Home.FindSlotWithSkillEntry(barterItem.PlayerSkill.GetEntry());
-        RunSkill skillInHand = RunManager.Instance.Environment.FindSkillInHandWithEntry(barterItem.PlayerSkill.GetEntry());
-        bool inSlot = slotWithSkill != null;
-        bool inSkillInventory = skillInHand != null;
-
-        if (!inSlot && !inSkillInventory)
+        DeckIndex? optionalDeckIndex = RunManager.Instance.Environment.FindDeckIndex(barterItem.FromSkill);
+        if (!optionalDeckIndex.HasValue)
             return false;
 
-        if (inSlot)
-        {
-            slotWithSkill.Skill = null;
-        }
-        else
-        {
-            RunManager.Instance.Environment.Hand.Remove(barterItem.PlayerSkill);
-        }
-
-        RunManager.Instance.Environment.Hand.Add(barterItem.Skill);
-
+        DeckIndex deckIndex = optionalDeckIndex.Value;
+        RunManager.Instance.Environment.AddSkillProcedure(barterItem.ToSkill.Entry, barterItem.ToSkill.JingJie, deckIndex);
         _inventory.Remove(barterItem);
         return true;
     }

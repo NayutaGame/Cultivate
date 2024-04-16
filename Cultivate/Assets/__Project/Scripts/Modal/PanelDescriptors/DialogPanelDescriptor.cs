@@ -20,6 +20,11 @@ public class DialogPanelDescriptor : PanelDescriptor
 
     public DialogPanelDescriptor(string detailedText, params DialogOption[] options)
     {
+        _accessors = new()
+        {
+            { "Guide",                    GetGuideDescriptor },
+        };
+
         _detailedText = detailedText;
         _options = options.Length > 0 ? options : new DialogOption[] { "确认" };
     }

@@ -309,4 +309,14 @@ public class DeckPanel : Panel
             .Join(_handTransform.DOAnchorPos(HandHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
             .Join(_formationListTransform.DOAnchorPos(FormationListHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
             .Join(_mechListTransform.DOAnchorPos(MechListHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
+
+    public RectTransform Find(Address address)
+    {
+        ItemBehaviour itemBehaviour =
+            HandView.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address)) ??
+            FieldView.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address));
+        if (itemBehaviour == null)
+            return null;
+        return itemBehaviour.GetDisplayTransform();
+    }
 }

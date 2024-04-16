@@ -4,34 +4,29 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BarterItem : Addressable
 {
-    public RunSkill PlayerSkill;
-    public RunSkill Skill;
+    public SkillDescriptor FromSkill;
+    public SkillDescriptor ToSkill;
 
     private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s)
-        => _accessors[s]();
-
-    public BarterItem(RunSkill playerSkill, RunSkill skill)
+    public object Get(string s) => _accessors[s]();
+    public BarterItem(SkillDescriptor fromSkill, SkillDescriptor toSkill)
     {
         _accessors = new()
         {
-            { "PlayerSkill",         () => PlayerSkill },
-            { "Skill",               () => Skill },
+            { "FromSkill",         () => FromSkill },
+            { "ToSkill",               () => ToSkill },
         };
-        PlayerSkill = playerSkill;
-        Skill = skill;
+        FromSkill = fromSkill;
+        ToSkill = toSkill;
     }
 
     public bool Affordable()
     {
-        SkillSlot slotWithSkill = RunManager.Instance.Environment.Home.FindSlotWithSkillEntry(PlayerSkill.GetEntry());
-        RunSkill skillInHand = RunManager.Instance.Environment.FindSkillInHandWithEntry(PlayerSkill.GetEntry());
-        bool inSlot = slotWithSkill != null;
-        bool inSkillInventory = skillInHand != null;
-
-        return inSlot || inSkillInventory;
+        DeckIndex? deckIndex = RunManager.Instance.Environment.FindDeckIndex(FromSkill);
+        return deckIndex != null;
     }
 }

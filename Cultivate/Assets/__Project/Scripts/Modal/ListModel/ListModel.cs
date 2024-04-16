@@ -119,10 +119,11 @@ public class ListModel<T> : IListModel
     public bool Swap(T from, T to) => Swap(_list.IndexOf(from), _list.IndexOf(to));
 
     public void Replace(T from, T to)
+        => Replace(_list.IndexOf(from), to);
+    public void Replace(int from, T to)
     {
-        int index = _list.IndexOf(from);
-        _list[index] = to;
-        SetModified(index);
+        _list[from] = to;
+        SetModified(from);
     }
 
     public int IndexOf(T item)

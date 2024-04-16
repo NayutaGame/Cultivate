@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -182,7 +183,8 @@ public class NodeCategory : Category<NodeEntry>
                         if (signal is SelectedOptionSignal selectedOptionSignal)
                         {
                             int index = selectedOptionSignal.Selected;
-                            new DrawSkillReward("获得一张随机牌", wuXing: options[index], jingJie: RunManager.Instance.Environment.Map.JingJie).Claim();
+                            RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: options[index],
+                                jingJie: RunManager.Instance.Environment.Map.JingJie));
                         }
                         return null;
                     };
@@ -206,6 +208,36 @@ public class NodeCategory : Category<NodeEntry>
                     map.CurrNode.Panel = A;
                 }),
 
+            new("初入蓬莱", "初入蓬莱", withInPool: false,
+                create: map =>
+                {
+                    RunManager.Instance.Environment.AddSkillProcedure("0200");
+                    RunManager.Instance.Environment.AddSkillProcedure("0501");
+                    RunManager.Instance.Environment.AddSkillProcedure("0500");
+            
+                    BattlePanelDescriptor ZhiRuBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("置入教学怪物")));
+            
+                    ZhiRuBattle.SetWin(() =>
+                    {
+                        SkillDescriptor from = SkillDescriptor.FromEntry("0200");
+                        DeckIndex to = new DeckIndex(true, 0); 
+                        ZhiRuBattle.SetGuideDescriptor(new DragSkillToSlotGuideDescriptor(from, to));
+                        return null;
+                    });
+                    ZhiRuBattle.SetLose(() =>
+                    {
+                        RunManager.Instance.Environment.Hand.Clear();
+                        RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
+            
+                        RunManager.Instance.Environment.AddSkillProcedure("0200");
+                        RunManager.Instance.Environment.AddSkillProcedure("0501");
+                        RunManager.Instance.Environment.AddSkillProcedure("0500");
+                        return ZhiRuBattle;
+                    });
+                    
+                    map.CurrNode.Panel = ZhiRuBattle;
+                }),
+
             // new("初入蓬莱", "初入蓬莱", withInPool: false,
             //     create: map =>
             //     {
@@ -213,12 +245,64 @@ public class NodeCategory : Category<NodeEntry>
             //         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
             //         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
             //
+            //         ImagePanelDescriptor ManHua1 = new("漫画1");
+            //         ImagePanelDescriptor ManHua2 = new("漫画2");
+            //         ImagePanelDescriptor ManHua3 = new("漫画3");
+            //         ImagePanelDescriptor ManHua4 = new("漫画4");
+            //
+            //         ImagePanelDescriptor ZhiRuJiaoXue1 = new("置入教学1");
+            //         ImagePanelDescriptor ZhiRuJiaoXue2 = new("置入教学2");
+            //         ImagePanelDescriptor ZhiRuJiaoXue3 = new("置入教学3");
+            //         ImagePanelDescriptor ZhiRuJiaoXue4 = new("置入教学4");
+            //         ImagePanelDescriptor ZhiRuJiaoXue5 = new("置入教学5");
+            //
             //         BattlePanelDescriptor ZhiRuBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("置入教学怪物")));
+            //
+            //         ImagePanelDescriptor ZhanDouJiaoXue1 = new("战斗教学1");
+            //         ImagePanelDescriptor ZhanDouJiaoXue2 = new("战斗教学2");
+            //         ImagePanelDescriptor ZhanDouJiaoXue3 = new("战斗教学3");
+            //
+            //         ImagePanelDescriptor LingQiJiaoXue1 = new("灵气教学1");
+            //         ImagePanelDescriptor LingQiJiaoXue2 = new("灵气教学2");
+            //         ImagePanelDescriptor LingQiJiaoXue3 = new("灵气教学3");
+            //         ImagePanelDescriptor LingQiJiaoXue4 = new("灵气教学4");
+            //
+            //         BattlePanelDescriptor LingQiBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("灵气教学怪物")));
+            //
+            //         ImagePanelDescriptor HeChengJiaoXue1 = new("合成教学1");
+            //         ImagePanelDescriptor HeChengJiaoXue2 = new("合成教学2");
+            //         ImagePanelDescriptor HeChengJiaoXue3 = new("合成教学3");
+            //         ImagePanelDescriptor HeChengJiaoXue4 = new("合成教学4");
+            //         ImagePanelDescriptor HeChengJiaoXue5 = new("合成教学5");
+            //
+            //         BattlePanelDescriptor HeChengBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("合成教学怪物")));
+            //
+            //         ImagePanelDescriptor ZhanBaiJiaoXue1 = new("战败教学1");
+            //         ImagePanelDescriptor ZhanBaiJiaoXue2 = new("战败教学2");
+            //         ImagePanelDescriptor ZhanBaiJiaoXue3 = new("战败教学3");
+            //
+            //         BattlePanelDescriptor LoseBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("战败教学怪物")));
+            //
+            //         ImagePanelDescriptor MingYuanJiaoXue1 = new("命元教学1");
+            //         ImagePanelDescriptor MingYuanJiaoXue2 = new("命元教学2");
+            //         ImagePanelDescriptor MingYuanJiaoXue3 = new("命元教学3");
+            //
+            //         ImagePanelDescriptor ManHua5 = new("漫画5");
+            //
+            //         ManHua1.Next = ManHua2;
+            //         ManHua2.Next = ManHua3;
+            //         ManHua3.Next = ManHua4;
+            //         ManHua4.Next = ZhiRuJiaoXue1;
+            //         ZhiRuJiaoXue1.Next = ZhiRuJiaoXue2;
+            //         ZhiRuJiaoXue2.Next = ZhiRuJiaoXue3;
+            //         ZhiRuJiaoXue3.Next = ZhiRuJiaoXue4;
+            //         ZhiRuJiaoXue4.Next = ZhiRuJiaoXue5;
+            //         ZhiRuJiaoXue5.Next = ZhiRuBattle;
             //
             //         ZhiRuBattle.SetWin(() =>
             //         {
-            //             // Create Guide Descriptor
-            //             return null;
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
+            //             return ZhanDouJiaoXue1;
             //         });
             //         ZhiRuBattle.SetLose(() =>
             //         {
@@ -228,167 +312,87 @@ public class NodeCategory : Category<NodeEntry>
             //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
             //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
             //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
-            //             return ZhiRuBattle;
+            //             return ZhiRuJiaoXue1;
             //         });
-            //         
-            //         map.CurrNode.Panel = ZhiRuBattle;
+            //
+            //         ZhanDouJiaoXue1.Next = ZhanDouJiaoXue2;
+            //         ZhanDouJiaoXue2.Next = ZhanDouJiaoXue3;
+            //         ZhanDouJiaoXue3.Next = LingQiJiaoXue1;
+            //         LingQiJiaoXue1.Next = LingQiJiaoXue2;
+            //         LingQiJiaoXue2.Next = LingQiJiaoXue3;
+            //         LingQiJiaoXue3.Next = LingQiJiaoXue4;
+            //         LingQiJiaoXue4.Next = LingQiBattle;
+            //
+            //         LingQiBattle.SetWin(() =>
+            //         {
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+            //             return HeChengJiaoXue1;
+            //         });
+            //         LingQiBattle.SetLose(() =>
+            //         {
+            //             RunManager.Instance.Environment.Hand.Clear();
+            //             RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
+            //
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
+            //             return LingQiJiaoXue1;
+            //         });
+            //
+            //         HeChengJiaoXue1.Next = HeChengJiaoXue2;
+            //         HeChengJiaoXue2.Next = HeChengJiaoXue3;
+            //         HeChengJiaoXue3.Next = HeChengJiaoXue4;
+            //         HeChengJiaoXue4.Next = HeChengJiaoXue5;
+            //         HeChengJiaoXue5.Next = HeChengBattle;
+            //         HeChengBattle.SetWin(() =>
+            //         {
+            //             RunManager.Instance.Environment.ForceDrawSkill(jingJie: JingJie.LianQi);
+            //             return ZhanBaiJiaoXue1;
+            //         });
+            //         HeChengBattle.SetLose(() =>
+            //         {
+            //             RunManager.Instance.Environment.Hand.Clear();
+            //             RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
+            //
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
+            //             RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
+            //             return HeChengJiaoXue1;
+            //         });
+            //
+            //         ZhanBaiJiaoXue1.Next = ZhanBaiJiaoXue2;
+            //         ZhanBaiJiaoXue2.Next = ZhanBaiJiaoXue3;
+            //         ZhanBaiJiaoXue3.Next = LoseBattle;
+            //         LoseBattle.SetWin(() =>
+            //         {
+            //             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
+            //             RunManager.Instance.Environment.ForceDrawSkill(jingJie: JingJie.LianQi);
+            //             return MingYuanJiaoXue1;
+            //         });
+            //         LoseBattle.SetLose(() =>
+            //         {
+            //             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
+            //             RunManager.Instance.Environment.ForceDrawSkill(jingJie: JingJie.LianQi);
+            //             return MingYuanJiaoXue1;
+            //         });
+            //
+            //         MingYuanJiaoXue1.Next = MingYuanJiaoXue2;
+            //         MingYuanJiaoXue2.Next = MingYuanJiaoXue3;
+            //         MingYuanJiaoXue3._receiveSignal = signal =>
+            //         {
+            //             if (signal is ClickedSignal clickedSignal)
+            //             {
+            //                 RunManager.Instance.Environment.SetDMingYuanProcedure(2);
+            //                 return ManHua5;
+            //             }
+            //
+            //             return null;
+            //         };
+            //         map.CurrNode.Panel = ManHua1;
             //     }),
-
-            new("初入蓬莱", "初入蓬莱", withInPool: false,
-                create: map =>
-                {
-                    RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
-                    RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
-                    RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
-            
-                    ImagePanelDescriptor ManHua1 = new("漫画1");
-                    ImagePanelDescriptor ManHua2 = new("漫画2");
-                    ImagePanelDescriptor ManHua3 = new("漫画3");
-                    ImagePanelDescriptor ManHua4 = new("漫画4");
-            
-                    ImagePanelDescriptor ZhiRuJiaoXue1 = new("置入教学1");
-                    ImagePanelDescriptor ZhiRuJiaoXue2 = new("置入教学2");
-                    ImagePanelDescriptor ZhiRuJiaoXue3 = new("置入教学3");
-                    ImagePanelDescriptor ZhiRuJiaoXue4 = new("置入教学4");
-                    ImagePanelDescriptor ZhiRuJiaoXue5 = new("置入教学5");
-            
-                    BattlePanelDescriptor ZhiRuBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("置入教学怪物")));
-            
-                    ImagePanelDescriptor ZhanDouJiaoXue1 = new("战斗教学1");
-                    ImagePanelDescriptor ZhanDouJiaoXue2 = new("战斗教学2");
-                    ImagePanelDescriptor ZhanDouJiaoXue3 = new("战斗教学3");
-            
-                    ImagePanelDescriptor LingQiJiaoXue1 = new("灵气教学1");
-                    ImagePanelDescriptor LingQiJiaoXue2 = new("灵气教学2");
-                    ImagePanelDescriptor LingQiJiaoXue3 = new("灵气教学3");
-                    ImagePanelDescriptor LingQiJiaoXue4 = new("灵气教学4");
-            
-                    BattlePanelDescriptor LingQiBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("灵气教学怪物")));
-            
-                    ImagePanelDescriptor HeChengJiaoXue1 = new("合成教学1");
-                    ImagePanelDescriptor HeChengJiaoXue2 = new("合成教学2");
-                    ImagePanelDescriptor HeChengJiaoXue3 = new("合成教学3");
-                    ImagePanelDescriptor HeChengJiaoXue4 = new("合成教学4");
-                    ImagePanelDescriptor HeChengJiaoXue5 = new("合成教学5");
-            
-                    BattlePanelDescriptor HeChengBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("合成教学怪物")));
-            
-                    ImagePanelDescriptor ZhanBaiJiaoXue1 = new("战败教学1");
-                    ImagePanelDescriptor ZhanBaiJiaoXue2 = new("战败教学2");
-                    ImagePanelDescriptor ZhanBaiJiaoXue3 = new("战败教学3");
-            
-                    BattlePanelDescriptor LoseBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("战败教学怪物")));
-            
-                    ImagePanelDescriptor MingYuanJiaoXue1 = new("命元教学1");
-                    ImagePanelDescriptor MingYuanJiaoXue2 = new("命元教学2");
-                    ImagePanelDescriptor MingYuanJiaoXue3 = new("命元教学3");
-            
-                    ImagePanelDescriptor ManHua5 = new("漫画5");
-            
-                    ManHua1.Next = ManHua2;
-                    ManHua2.Next = ManHua3;
-                    ManHua3.Next = ManHua4;
-                    ManHua4.Next = ZhiRuJiaoXue1;
-                    ZhiRuJiaoXue1.Next = ZhiRuJiaoXue2;
-                    ZhiRuJiaoXue2.Next = ZhiRuJiaoXue3;
-                    ZhiRuJiaoXue3.Next = ZhiRuJiaoXue4;
-                    ZhiRuJiaoXue4.Next = ZhiRuJiaoXue5;
-                    ZhiRuJiaoXue5.Next = ZhiRuBattle;
-            
-                    ZhiRuBattle.SetWin(() =>
-                    {
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
-                        return ZhanDouJiaoXue1;
-                    });
-                    ZhiRuBattle.SetLose(() =>
-                    {
-                        RunManager.Instance.Environment.Hand.Clear();
-                        RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
-            
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
-                        return ZhiRuJiaoXue1;
-                    });
-            
-                    ZhanDouJiaoXue1.Next = ZhanDouJiaoXue2;
-                    ZhanDouJiaoXue2.Next = ZhanDouJiaoXue3;
-                    ZhanDouJiaoXue3.Next = LingQiJiaoXue1;
-                    LingQiJiaoXue1.Next = LingQiJiaoXue2;
-                    LingQiJiaoXue2.Next = LingQiJiaoXue3;
-                    LingQiJiaoXue3.Next = LingQiJiaoXue4;
-                    LingQiJiaoXue4.Next = LingQiBattle;
-            
-                    LingQiBattle.SetWin(() =>
-                    {
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
-                        return HeChengJiaoXue1;
-                    });
-                    LingQiBattle.SetLose(() =>
-                    {
-                        RunManager.Instance.Environment.Hand.Clear();
-                        RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
-            
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
-                        return LingQiJiaoXue1;
-                    });
-            
-                    HeChengJiaoXue1.Next = HeChengJiaoXue2;
-                    HeChengJiaoXue2.Next = HeChengJiaoXue3;
-                    HeChengJiaoXue3.Next = HeChengJiaoXue4;
-                    HeChengJiaoXue4.Next = HeChengJiaoXue5;
-                    HeChengJiaoXue5.Next = HeChengBattle;
-                    HeChengBattle.SetWin(() =>
-                    {
-                        RunManager.Instance.Environment.ForceDrawSkill(jingJie: JingJie.LianQi);
-                        return ZhanBaiJiaoXue1;
-                    });
-                    HeChengBattle.SetLose(() =>
-                    {
-                        RunManager.Instance.Environment.Hand.Clear();
-                        RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
-            
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
-                        RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0203", JingJie.LianQi));
-                        return HeChengJiaoXue1;
-                    });
-            
-                    ZhanBaiJiaoXue1.Next = ZhanBaiJiaoXue2;
-                    ZhanBaiJiaoXue2.Next = ZhanBaiJiaoXue3;
-                    ZhanBaiJiaoXue3.Next = LoseBattle;
-                    LoseBattle.SetWin(() =>
-                    {
-                        RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
-                        RunManager.Instance.Environment.ForceDrawSkill(jingJie: JingJie.LianQi);
-                        return MingYuanJiaoXue1;
-                    });
-                    LoseBattle.SetLose(() =>
-                    {
-                        RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
-                        RunManager.Instance.Environment.ForceDrawSkill(jingJie: JingJie.LianQi);
-                        return MingYuanJiaoXue1;
-                    });
-            
-                    MingYuanJiaoXue1.Next = MingYuanJiaoXue2;
-                    MingYuanJiaoXue2.Next = MingYuanJiaoXue3;
-                    MingYuanJiaoXue3._receiveSignal = signal =>
-                    {
-                        if (signal is ClickedSignal clickedSignal)
-                        {
-                            RunManager.Instance.Environment.SetDMingYuanProcedure(2);
-                            return ManHua5;
-                        }
-            
-                        return null;
-                    };
-                    map.CurrNode.Panel = ManHua1;
-                }),
 
             new("同境界合成教学", "同境界合成教学", withInPool: false,
                 create: map =>
@@ -579,16 +583,16 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("你痛快写了800字，时间没过5分钟，已经写完了。" +
                                                   "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张二动牌", pred: e => e.SkillTypeComposite.Contains(SkillType.ErDong), jingJie: map.JingJie));
+                        .SetReward(new DrawSkillReward("得到一张二动牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.ErDong)));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
                                                                         "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
                                                   "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张消耗牌", pred: e => e.SkillTypeComposite.Contains(SkillType.XiaoHao), jingJie: map.JingJie));
+                        .SetReward(new DrawSkillReward("得到一张消耗牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.XiaoHao)));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                                                         "从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                                                         "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
                                                   "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张自指牌", pred: e => e.SkillTypeComposite.Contains(SkillType.ZiZhi), jingJie: map.JingJie));
+                        .SetReward(new DrawSkillReward("得到一张自指牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.ZiZhi)));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -807,41 +811,28 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("久闻天界树，3000年才能开花结果，醒来之后，身上所有伤都不见了。\n\n命元+2")
                         .SetReward(Reward.FromMingYuan(2));
-                    DialogPanelDescriptor C = new("你看到了，冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，出现了火，最终归于尘土。感悟了五行相生，所有五行牌都被相生的元素替换了");
+                    DialogPanelDescriptor C = new("你看到了，金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。感悟了五行相生，所有五行牌都被相生的元素替换了");
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option =>
                     {
-                        foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
+                        RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
                         {
-                            if (slot.Skill == null)
-                                continue;
-                            WuXing? oldWuXing = slot.Skill.GetEntry().WuXing;
-                            JingJie oldJingJie = slot.Skill.GetJingJie();
+                            RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex) as RunSkill;
+                            if (skill == null)
+                                return;
 
-                            if (!oldWuXing.HasValue)
-                                continue;
+                            SkillEntry entry = skill.GetEntry();
+                            if (!entry.WuXing.HasValue)
+                                return;
 
-                            JingJie newJingJie = RandomManager.Range(oldJingJie, map.JingJie + 1);
-
-                            RunManager.Instance.Environment.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
-                            slot.Skill = newSkill;
-                        }
-
-                        for(int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
-                        {
-                            RunSkill oldSkill = RunManager.Instance.Environment.Hand[i];
-                            WuXing? oldWuXing = oldSkill.GetEntry().WuXing;
-                            JingJie oldJingJie = oldSkill.JingJie;
-
-                            if (!oldWuXing.HasValue)
-                                continue;
-
-                            JingJie newJingJie = RandomManager.Range(oldJingJie, map.JingJie + 1);
-
-                            RunManager.Instance.Environment.SkillPool.TryDrawSkill(out RunSkill newSkill, wuXing: oldWuXing.Value.Next, jingJie: newJingJie);
-                            RunManager.Instance.Environment.Hand.Replace(oldSkill, newSkill);
-                        }
+                            WuXing wuXing = entry.WuXing.Value.Next;
+                            JingJie jingJie = RandomManager.Range(skill.GetJingJie(), map.JingJie + 1);
+                            
+                            RunManager.Instance.Environment.DrawSkillProcedure(
+                                SkillDescriptor.FromWuXingJingJie(wuXing, jingJie),
+                                deckIndex);
+                        });
 
                         return C;
                     });
@@ -915,7 +906,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor C = new DialogPanelDescriptor("那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《枯木》")
                         .SetReward(new AddSkillReward("0607", map.JingJie));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("之前赶路省下的时间，正好可以用于修炼。\n\n获得一个技能")
-                        .SetReward(new DrawSkillReward("获得一个技能", jingJie: map.JingJie));
+                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -932,9 +923,9 @@ public class NodeCategory : Category<NodeEntry>
                         "大力出奇迹（消耗30生命上限）");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获。\n\n得到一张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能", jingJie: map.JingJie));
+                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("随着喷出一大口鲜血，你回过神来，原来自己还活着，感谢大道没把自己留在那边。\n\n得到五张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能", jingJie: map.JingJie, count: 5));
+                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie, count: 5)));
 
                     A[0].SetSelect(option => B);
                     A[1].SetCost(new CostDetails(health: 30))
@@ -950,12 +941,12 @@ public class NodeCategory : Category<NodeEntry>
                     ArbitraryCardPickerPanelDescriptor B = new("请从10张牌中选1张获取");
                     DialogPanelDescriptor C = new("刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
 
-                    RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills, jingJie: map.JingJie, count: 10, consume: false);
-                    B.AddSkills(skills);
-
+                    List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(jingJie: map.JingJie, count: 10, consume: false));
+                    B.AddSkills(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                     B.SetSelect(toAdd =>
                     {
-                        RunManager.Instance.Environment.ForceAddSkills(toAdd);
+                        foreach(var item in toAdd)
+                            RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie);
                         return C;
                     });
 
@@ -1100,31 +1091,46 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         Range manaCost = 0;
 
-                        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
-                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)), wuXing: wuXing, jingJie: map.JingJie, count: 3, distinct: true, consume: false);
-                        C.AddSkills(skills);
+                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
+                            wuXing: wuXing,
+                            jingJie: map.JingJie,
+                            count: 3,
+                            distinct: true,
+                            consume: false));
+                        C.AddSkills(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                         return C;
                     });
                     B[1].SetSelect(option =>
                     {
                         Range manaCost = new Range(1, 10);
 
-                        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
-                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)), wuXing: wuXing, jingJie: map.JingJie, count: 3, distinct: true, consume: false);
-                        C.AddSkills(skills);
+                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
+                            wuXing: wuXing,
+                            jingJie: map.JingJie,
+                            count: 3,
+                            distinct: true,
+                            consume: false));
+                        C.AddSkills(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                         return C;
                     });
                     B[2].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SkillPool.TryDrawSkills(out List<RunSkill> skills,
-                            pred: e => e.SkillTypeComposite.Contains(SkillType.LingQi), wuXing: wuXing, jingJie: map.JingJie, count: 3, distinct: true, consume: false);
-                        C.AddSkills(skills);
+                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                            wuXing: wuXing,
+                            jingJie: map.JingJie,
+                            skillTypeComposite: SkillType.LingQi,
+                            count: 3,
+                            distinct: true,
+                            consume: false));
+                        C.AddSkills(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                         return C;
                     });
 
                     C.SetSelect(skills =>
                     {
-                        RunManager.Instance.Environment.ForceAddSkills(skills);
+                        skills.Do(descriptor => RunManager.Instance.Environment.AddSkillProcedure(descriptor.Entry, descriptor.JingJie));
                         return D;
                     });
 
