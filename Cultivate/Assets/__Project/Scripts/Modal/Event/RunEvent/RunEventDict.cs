@@ -5,7 +5,7 @@ public class RunEventDict : Dictionary<int, RunEventElementList>
 {
     public static readonly int START_RUN             = 100;
     public static readonly int END_RUN               = 101;
-    public static readonly int WIL_SET_JINGJIE      = 102;
+    public static readonly int WIL_SET_JINGJIE       = 102;
     public static readonly int DID_SET_JINGJIE       = 103;
     public static readonly int WILL_SET_D_MINGYUAN   = 104;
     public static readonly int DID_SET_D_MINGYUAN    = 105;

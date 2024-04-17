@@ -1,5 +1,4 @@
 
-using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -8,7 +7,6 @@ public class GuideView : MonoBehaviour
     private Address _address;
     public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
-    
     public void SetAddress(Address address)
     {
         _address = address;
@@ -16,7 +14,7 @@ public class GuideView : MonoBehaviour
 
     [SerializeField] private RectTransform _cursor;
 
-    private Tweener _handle;
+    private Tween _handle;
     
     public void Refresh()
     {
@@ -26,7 +24,7 @@ public class GuideView : MonoBehaviour
         gameObject.SetActive(showing);
         if (!showing)
         {
-            _handle.Kill();
+            _handle?.Kill();
             return;
         }
 
@@ -37,20 +35,22 @@ public class GuideView : MonoBehaviour
 
             if (start.Equals(end) || end == null)
                 return;
-        
-            RectTransform startView = CanvasManager.Instance.RunCanvas.DeckPanel.Find(start);
-            RectTransform endView = CanvasManager.Instance.RunCanvas.DeckPanel.Find(end);
             
-            _handle.Kill();
-        
-            _handle = _cursor.DOAnchorPos(endView.anchoredPosition, 0.5f)
-                .From(startView.anchoredPosition)
+            _handle?.Kill();
+            GuideAnimation anim = new GuideAnimation(_cursor,
+                CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
+                CanvasManager.Instance.RunCanvas.DeckPanel.Find(end));
+            _handle = DOTween.Sequence()
+                .AppendInterval(0.2f)
+                .Append(anim.GetHandle())
+                .AppendInterval(0.2f)
                 .SetLoops(-1, loopType: LoopType.Restart)
-                .SetEase(Ease.InOutQuad).SetAutoKill();
-            
+                .SetAutoKill();
             _handle.Restart();
         }
-        
-        _handle.Kill();
+        else
+        {
+            _handle?.Kill();
+        }
     }
 }

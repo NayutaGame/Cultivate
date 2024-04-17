@@ -216,12 +216,13 @@ public class NodeCategory : Category<NodeEntry>
                     RunManager.Instance.Environment.AddSkillProcedure("0500");
             
                     BattlePanelDescriptor ZhiRuBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("置入教学怪物")));
+                    
+                    SkillDescriptor from = SkillDescriptor.FromEntry("0200");
+                    DeckIndex to = new DeckIndex(true, 0); 
+                    ZhiRuBattle.SetGuideDescriptor(new DragSkillToSlotGuideDescriptor(from, to));
             
                     ZhiRuBattle.SetWin(() =>
                     {
-                        SkillDescriptor from = SkillDescriptor.FromEntry("0200");
-                        DeckIndex to = new DeckIndex(true, 0); 
-                        ZhiRuBattle.SetGuideDescriptor(new DragSkillToSlotGuideDescriptor(from, to));
                         return null;
                     });
                     ZhiRuBattle.SetLose(() =>

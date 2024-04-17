@@ -80,7 +80,7 @@ public class Address : IEquatable<Address>
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(_values, other._values);
+        return Equals(_rawString, other._rawString);
     }
 
     public override bool Equals(object obj)

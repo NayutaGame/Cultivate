@@ -64,6 +64,8 @@ public class BattlePanel : Panel
             AwayHealth.alpha = 1f;
             SetVictory(false);
         }
+        
+        CanvasManager.Instance.RefreshGuide();
     }
 
     private void Combat(PointerEventData eventData)
