@@ -10,6 +10,8 @@ public class SkillCategory : Category<SkillEntry>
     {
         AddRange(new List<SkillEntry>()
         {
+            #region 特殊牌
+            
             new(id:                         "0000",
                 name:                       "不存在的技能",
                 wuXing:                     null,
@@ -30,6 +32,23 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.GainBuffProcedure("灵气");
                     return null;
                 }),
+            
+            new(id:                         "0002",
+                name:                       "冲撞",
+                wuXing:                     null,
+                jingJieRange:               JingJie.LianQiOnly,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"6攻" ,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(6);
+                    return null;
+                }),
+
+            #endregion
+
+            #region 标准牌
 
             new(id:                         "0100",
                 name:                       "摇曳",
@@ -2284,6 +2303,8 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.GainArmorProcedure(2 * stack);
                     return null;
                 }),
+
+            #endregion
 
             #region 事件牌
 

@@ -16,6 +16,8 @@ public class DeckPanel : Panel
     public ListView FormationListView;
     public ListView MechListView;
 
+    [SerializeField] public RectTransform DropRectTransform;
+
     [SerializeField] public RectTransform _sortButtonTransform;
     [SerializeField] public RectTransform _fieldTransform;
     [SerializeField] public RectTransform _handTransform;
@@ -113,6 +115,7 @@ public class DeckPanel : Panel
         if (!success)
             return;
 
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
         ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
         ghost.FromDrop();
         
@@ -134,7 +137,9 @@ public class DeckPanel : Panel
         bool success = env.TryEquipSkill(toEquip, slot);
         if (!success)
             return;
-
+        
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
+        
         {
             // Equip Skill Animation
             ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
@@ -160,6 +165,8 @@ public class DeckPanel : Panel
         bool success = env.TryEquipMech(toEquip, slot);
         if (!success)
             return;
+        
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
 
         // Equip Mech Animation
         AudioManager.Play("CardPlacement");
@@ -182,6 +189,8 @@ public class DeckPanel : Panel
         UnequipResult result = env.TryUnequip(slot, null);
         if (!result.Success)
             return;
+        
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
 
         if (result.IsRunSkill)
         {
@@ -216,6 +225,8 @@ public class DeckPanel : Panel
         bool success = env.TrySwap(fromSlot, toSlot);
         if (!success)
             return;
+        
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
 
         {
             // Swap Animation

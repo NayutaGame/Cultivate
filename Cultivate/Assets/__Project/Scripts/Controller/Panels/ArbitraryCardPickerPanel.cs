@@ -68,8 +68,7 @@ public class ArbitraryCardPickerPanel : Panel
         }
         else
         {
-            int space = d.Range.End - 1 - _selections.Count;
-            if (space <= 0)
+            if (!d.HasSpace(_selections.Count))
                 return false;
 
             SkillDescriptor skill = v.Get<SkillDescriptor>();
@@ -91,7 +90,7 @@ public class ArbitraryCardPickerPanel : Panel
     private void ConfirmSelections()
     {
         List<SkillDescriptor> mapped = _selections.Map(v => v.Get<SkillDescriptor>()).ToList();
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedSkillsSignal(mapped));
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new ConfirmSkillsSignal(mapped));
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
 }

@@ -110,4 +110,7 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
 
     public Color GetColor()
         => _entry.GetColor(GetJingJie());
+
+    public override string ToString()
+        => $"[{GetJingJie()}]{GetEntry().GetName()}";
 }

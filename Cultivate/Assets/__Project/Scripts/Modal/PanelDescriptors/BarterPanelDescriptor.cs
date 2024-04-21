@@ -56,16 +56,23 @@ public class BarterPanelDescriptor : PanelDescriptor
     {
         if (!_inventory.Contains(barterItem))
             return false;
-
-        DeckIndex? optionalDeckIndex = RunManager.Instance.Environment.FindDeckIndex(barterItem.FromSkill);
-        if (!optionalDeckIndex.HasValue)
+        
+        bool success = RunManager.Instance.Environment.FindDeckIndex(out DeckIndex deckIndex, barterItem.FromSkill);
+        if (!success)
             return false;
-
-        DeckIndex deckIndex = optionalDeckIndex.Value;
+        
         RunManager.Instance.Environment.AddSkillProcedure(barterItem.ToSkill.Entry, barterItem.ToSkill.JingJie, deckIndex);
         _inventory.Remove(barterItem);
         return true;
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal) => null;
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    {
+        if (signal is ExitShopSignal)
+        {
+            return null;
+        }
+
+        return this;
+    }
 }

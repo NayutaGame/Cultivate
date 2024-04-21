@@ -33,7 +33,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     if (!stepDescriptor._isBoss)
                     {
-                        A.SetWin(() =>
+                        A.SetWinOperation(() =>
                         {
                             B.SetDetailedText($"胜利！\n获得了{xiuWeiValue}的修为\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
@@ -41,7 +41,7 @@ public class NodeCategory : Category<NodeEntry>
                             return B;
                         });
 
-                        A.SetLose(() =>
+                        A.SetLoseOperation(() =>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
                             C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{xiuWeiValue}修为\n请选择一张卡作为奖励");
@@ -52,7 +52,7 @@ public class NodeCategory : Category<NodeEntry>
                     }
                     else if (map.JingJie != JingJie.HuaShen)
                     {
-                        A.SetWin(() =>
+                        A.SetWinOperation(() =>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(3);
                             B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{xiuWeiValue}的修为\n请选择一张卡作为奖励");
@@ -61,7 +61,7 @@ public class NodeCategory : Category<NodeEntry>
                             return B;
                         });
 
-                        A.SetLose(() =>
+                        A.SetLoseOperation(() =>
                         {
                             C.SetDetailedText($"你没能击败对手，幸好跨越境界抵消了你的命元伤害。\n获得了{xiuWeiValue}修为\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
@@ -71,13 +71,13 @@ public class NodeCategory : Category<NodeEntry>
                     }
                     else
                     {
-                        A.SetWin(() =>
+                        A.SetWinOperation(() =>
                         {
                             D.SetDetailedText($"你击败了强大的对手，取得了最终的胜利！（按Esc退出游戏，游戏结束，感谢游玩）");
                             return D;
                         });
 
-                        A.SetLose(() =>
+                        A.SetLoseOperation(() =>
                         {
                             D.SetDetailedText($"你没能击败对手，受到了致死的命元伤害。（按Esc退出游戏，游戏结束，感谢游玩）");
                             return D;
@@ -111,7 +111,7 @@ public class NodeCategory : Category<NodeEntry>
                         .SetReward(Reward.FromMingYuan(2));
                     
                     CardPickerPanelDescriptor C = new("在菩提树下做了一段时间，对境界有了新的见解，请选择一张卡牌提升", new Range(0, 2));
-                    C.SetSelect(iRunSkillList =>
+                    C.SetConfirmOperation(iRunSkillList =>
                     {
                         foreach (var iRunSkill in iRunSkillList)
                         {
@@ -211,32 +211,116 @@ public class NodeCategory : Category<NodeEntry>
             new("初入蓬莱", "初入蓬莱", withInPool: false,
                 create: map =>
                 {
-                    RunManager.Instance.Environment.AddSkillProcedure("0200");
-                    RunManager.Instance.Environment.AddSkillProcedure("0501");
-                    RunManager.Instance.Environment.AddSkillProcedure("0500");
+                    ImagePanelDescriptor ManHua1 = new("漫画1");
+                    ImagePanelDescriptor ManHua2 = new("漫画2");
+                    ImagePanelDescriptor ManHua3 = new("漫画3");
+                    ImagePanelDescriptor ManHua4 = new("漫画4");
             
                     BattlePanelDescriptor ZhiRuBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("置入教学怪物")));
+                    BattlePanelDescriptor LingQiBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("灵气教学怪物")));
+                    BattlePanelDescriptor ZhanBaiBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("战败教学怪物")));
+                    DialogPanelDescriptor ZhanBaiDialog = new("这个怪物吓到了你，心满意足的离开了，把命元还给了你。", "前进");
+                    BattlePanelDescriptor HeChengBattle = new(RunEntity.FromTemplate(EditorManager.FindEntity("合成教学怪物")));
+
+                    ImagePanelDescriptor ManHua5 = new("漫画5");
                     
-                    SkillDescriptor from = SkillDescriptor.FromEntry("0200");
-                    DeckIndex to = new DeckIndex(true, 0); 
-                    ZhiRuBattle.SetGuideDescriptor(new DragSkillToSlotGuideDescriptor(from, to));
-            
-                    ZhiRuBattle.SetWin(() =>
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    RunManager.Instance.Environment.AddSkillProcedure("0200");
+                    
+                    ManHua1.Next = ManHua2;
+                    ManHua2.Next = ManHua3;
+                    ManHua3.Next = ManHua4;
+                    ManHua4.Next = ZhiRuBattle;
+                    
+                    ZhiRuBattle.SetGuideDescriptors(new Guide[]
                     {
-                        return null;
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillDescriptor.FromEntry("0200"), new DeckIndex(true, 0)),
+                        new ClickGuide("主角可以知道战斗的模拟结果\n" +
+                                       "左边是自己最终血量\n" +
+                                       "右边是敌方最终血量\n" +
+                                       "当左边大于右边的时候主角将会胜利\n" +
+                                       "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
                     });
-                    ZhiRuBattle.SetLose(() =>
+                    ZhiRuBattle.SetWinOperation(() =>
                     {
-                        RunManager.Instance.Environment.Hand.Clear();
-                        RunManager.Instance.Environment.Home.TraversalCurrentSlots().Do(s => s.Skill = null);
-            
-                        RunManager.Instance.Environment.AddSkillProcedure("0200");
-                        RunManager.Instance.Environment.AddSkillProcedure("0501");
+                        RunManager.Instance.Environment.Home.SetSlotCount(2);
+                        RunManager.Instance.Environment.AddSkillProcedure("0205");
                         RunManager.Instance.Environment.AddSkillProcedure("0500");
-                        return ZhiRuBattle;
+                        return LingQiBattle;
+                    });
+                    ZhiRuBattle.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        RunManager.Instance.Environment.AddSkillProcedure("0200");
+                        return ZhiRuBattle; // Go Back
                     });
                     
-                    map.CurrNode.Panel = ZhiRuBattle;
+                    LingQiBattle.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将落石置入",
+                            SkillDescriptor.FromEntry("0500"), new DeckIndex(true, 1)),
+                        new EquipGuide("使用落石需要灵气\n现在缺少灵气，所以变成了红色字标\n战斗过程中，缺少灵气时，角色会消耗一回合来补充灵气",
+                            SkillDescriptor.FromEntry("0205"), new DeckIndex(true, 0)),
+                    });
+                    LingQiBattle.SetWinOperation(() =>
+                    {
+                        RunManager.Instance.Environment.Home.SetSlotCount(3);
+                        return ZhanBaiBattle;
+                    });
+                    LingQiBattle.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        RunManager.Instance.Environment.AddSkillProcedure("0200", preferredDeckIndex: new DeckIndex(true, 0));
+                        RunManager.Instance.Environment.AddSkillProcedure("0205");
+                        RunManager.Instance.Environment.AddSkillProcedure("0500");
+                        return LingQiBattle; // Go Back
+                    });
+                    
+                    ZhanBaiBattle.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("遇到了非常强大的怪物时也不用慌张，尝试将卡牌置入",
+                            SkillDescriptor.FromEntry("0200"), new DeckIndex(true, 2)),
+                        new ClickGuide("旅途并不总是一帆风顺的\n也会存在无论如何都胜利不了的时候\n请出招吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    ZhanBaiBattle.SetWinOperation(() => ZhanBaiDialog);
+                    ZhanBaiBattle.SetLoseOperation(() => ZhanBaiDialog);
+
+                    ZhanBaiDialog[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.AddSkillProcedure("0200");
+                        return HeChengBattle;
+                    });
+                    
+                    HeChengBattle.SetGuideDescriptors(new Guide[]
+                    {
+                        new UnequipGuide("两张同名卡，都在手牌区时，可以通过拖拽合成。\n将恋花取下",
+                            SkillDescriptor.FromEntry("0200")),
+                        new MergeGuide("将一张恋花推拽到另一张恋花上",
+                            SkillDescriptor.FromEntry("0200"), SkillDescriptor.FromEntry("0200")),
+                        new EquipGuide("将合成好的恋花推拽至战斗区",
+                            SkillDescriptor.FromEntry("0200"), new DeckIndex(true, 2)),
+                    });
+                    HeChengBattle.SetWinOperation(() =>
+                    {
+                        return ManHua5;
+                    });
+                    HeChengBattle.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        RunManager.Instance.Environment.AddSkillProcedure("0205", preferredDeckIndex: new DeckIndex(true, 0));
+                        RunManager.Instance.Environment.AddSkillProcedure("0500", preferredDeckIndex: new DeckIndex(true, 1));
+                        RunManager.Instance.Environment.AddSkillProcedure("0200", preferredDeckIndex: new DeckIndex(true, 2));
+                        RunManager.Instance.Environment.AddSkillProcedure("0200");
+                        return HeChengBattle; // Go Back
+                    });
+
+                    ManHua5.Next = null;
+                    
+                    map.CurrNode.Panel = ManHua1;
                 }),
 
             // new("初入蓬莱", "初入蓬莱", withInPool: false,
@@ -245,11 +329,6 @@ public class NodeCategory : Category<NodeEntry>
             //         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0200", JingJie.LianQi));
             //         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0501", JingJie.LianQi));
             //         RunManager.Instance.Environment.ForceAddSkill(new AddSkillDetails("0500", JingJie.LianQi));
-            //
-            //         ImagePanelDescriptor ManHua1 = new("漫画1");
-            //         ImagePanelDescriptor ManHua2 = new("漫画2");
-            //         ImagePanelDescriptor ManHua3 = new("漫画3");
-            //         ImagePanelDescriptor ManHua4 = new("漫画4");
             //
             //         ImagePanelDescriptor ZhiRuJiaoXue1 = new("置入教学1");
             //         ImagePanelDescriptor ZhiRuJiaoXue2 = new("置入教学2");
@@ -287,8 +366,6 @@ public class NodeCategory : Category<NodeEntry>
             //         ImagePanelDescriptor MingYuanJiaoXue1 = new("命元教学1");
             //         ImagePanelDescriptor MingYuanJiaoXue2 = new("命元教学2");
             //         ImagePanelDescriptor MingYuanJiaoXue3 = new("命元教学3");
-            //
-            //         ImagePanelDescriptor ManHua5 = new("漫画5");
             //
             //         ManHua1.Next = ManHua2;
             //         ManHua2.Next = ManHua3;
@@ -663,8 +740,8 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
                     D[0].SetSelect(option => E);
-                    E.SetWin(() => EWin);
-                    E.SetLose(() => ELose);
+                    E.SetWinOperation(() => EWin);
+                    E.SetLoseOperation(() => ELose);
 
                     map.CurrNode.Panel = A;
                 }),
@@ -680,7 +757,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor C = new("来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
                     DialogPanelDescriptor D = new("劈里啪啦一阵响声过后，正在你担心自己的卡牌会受到什么非人的折磨的时候。机器的运转声停止了。打开后，你发现两个插槽里面的卡变成同一张了。\n\n得到两张牌");
 
-                    B.SetSelect(iRunSkillList =>
+                    B.SetConfirmOperation(iRunSkillList =>
                     {
                         int count = iRunSkillList.Count;
                         if (count == 0 || count == 1)
@@ -861,7 +938,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor E = new("那人已经离开。留下了这个机关在这里，你非常好奇，想必是哪位墨苑大家留下来的手笔。留在这里也是可惜，你取出了其中有用的机关带走了。\n\n得到两个机关");
 
                     A[0].SetSelect(option => BPick);
-                    BPick.SetSelect(iRunSkillList =>
+                    BPick.SetConfirmOperation(iRunSkillList =>
                     {
                         if (iRunSkillList.Count == 0)
                             return A;
@@ -943,14 +1020,13 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor C = new("刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
 
                     List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(jingJie: map.JingJie, count: 10, consume: false));
-                    B.AddSkills(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
-                    B.SetSelect(toAdd =>
+                    B.PopulateInventory(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                    B.SetConfirmOperation(skills =>
                     {
-                        foreach(var item in toAdd)
-                            RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie);
+                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
                         return C;
                     });
-
+                    
                     A[0].SetSelect(option => B);
 
                     map.CurrNode.Panel = A;
@@ -1099,7 +1175,7 @@ public class NodeCategory : Category<NodeEntry>
                             count: 3,
                             distinct: true,
                             consume: false));
-                        C.AddSkills(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        C.PopulateInventory(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                         return C;
                     });
                     B[1].SetSelect(option =>
@@ -1113,7 +1189,7 @@ public class NodeCategory : Category<NodeEntry>
                             count: 3,
                             distinct: true,
                             consume: false));
-                        C.AddSkills(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        C.PopulateInventory(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                         return C;
                     });
                     B[2].SetSelect(option =>
@@ -1125,13 +1201,13 @@ public class NodeCategory : Category<NodeEntry>
                             count: 3,
                             distinct: true,
                             consume: false));
-                        C.AddSkills(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        C.PopulateInventory(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                         return C;
                     });
 
-                    C.SetSelect(skills =>
+                    C.SetConfirmOperation(skills =>
                     {
-                        skills.Do(descriptor => RunManager.Instance.Environment.AddSkillProcedure(descriptor.Entry, descriptor.JingJie));
+                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
                         return D;
                     });
 
@@ -1246,8 +1322,8 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
                     B[0].SetSelect(option => B1);
-                    B1.SetWin(() => B1win);
-                    B1.SetLose(() => B1lose);
+                    B1.SetWinOperation(() => B1win);
+                    B1.SetLoseOperation(() => B1lose);
 
                     map.CurrNode.Panel = A;
                 }),
@@ -1281,7 +1357,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    B.SetSelect(iRunSkillList =>
+                    B.SetConfirmOperation(iRunSkillList =>
                     {
                         if (iRunSkillList.Count == 0)
                             return BLose;
@@ -1301,7 +1377,7 @@ public class NodeCategory : Category<NodeEntry>
                         return BWin;
                     });
 
-                    C.SetSelect(iRunSkillList =>
+                    C.SetConfirmOperation(iRunSkillList =>
                     {
                         if (iRunSkillList.Count == 0)
                             return CLose;

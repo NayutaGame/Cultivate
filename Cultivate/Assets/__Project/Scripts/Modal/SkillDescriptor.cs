@@ -45,7 +45,7 @@ public class SkillDescriptor : ISkillModel
     public static SkillDescriptor FromWuXingJingJie(WuXing wuXing, JingJie jingJie)
         => new(wuXing: wuXing, jingJie: jingJie);
     
-    public bool Pred(SkillEntry skillEntry)
+    public bool Contains(SkillEntry skillEntry)
     {
         if (_entry != null && skillEntry != _entry)
             return false;
@@ -63,6 +63,14 @@ public class SkillDescriptor : ISkillModel
             return false;
 
         return true;
+    }
+    
+    public bool Contains(SkillDescriptor descriptor)
+    {
+        if (_entry != null && _entry != descriptor._entry)
+            return false;
+
+        return descriptor.Contains(_entry);
     }
     
     public static implicit operator SkillDescriptor(string id) => FromEntry(id);

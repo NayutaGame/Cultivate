@@ -29,19 +29,6 @@ public class DiscoverSkillPanel : Panel
 
         TitleText.text = d.GetTitleText();
         DetailedText.text = d.GetDetailedText();
-
-        // bool active = i < d.GetSkillCount() && !RunManager.Instance.Environment.Map.Selecting;
-        //
-        // for (int i = 0; i < SkillViews.Length; i++)
-        // {
-        //     bool active = i < d.GetSkillCount() && !RunManager.Instance.Environment.Map.Selecting;
-        //     SkillViews[i].gameObject.SetActive(active);
-        //     if(!active)
-        //         continue;
-        //
-        //     SkillViews[i].SetAddress(_address.Append($".Skills#{i}"));
-        //     SkillViews[i].Refresh();
-        // }
     }
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
@@ -53,6 +40,7 @@ public class DiscoverSkillPanel : Panel
 
         SkillDescriptor skill = ib.GetSimpleView().Get<SkillDescriptor>();
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
+        // TODO: Discover Animation
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
         CanvasManager.Instance.SkillAnnotation.PointerExit(ib, eventData);
     }

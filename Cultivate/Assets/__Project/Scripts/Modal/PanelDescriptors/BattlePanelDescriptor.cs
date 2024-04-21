@@ -28,28 +28,22 @@ public class BattlePanelDescriptor : PanelDescriptor
     }
 
     public override void DefaultEnter()
-    {
-        base.DefaultEnter();
-        SetEnemy(RunEntity.FromTemplate(_template));
-    }
+        => SetEnemy(RunEntity.FromTemplate(_template));
 
     public override void DefaultExit()
-    {
-        base.DefaultExit();
-        SetEnemy(null);
-    }
+        => SetEnemy(null);
 
-    private Func<PanelDescriptor> _win;
-    public BattlePanelDescriptor SetWin(Func<PanelDescriptor> win)
+    private Func<PanelDescriptor> _winOperation;
+    public BattlePanelDescriptor SetWinOperation(Func<PanelDescriptor> win)
     {
-        _win = win;
+        _winOperation = win;
         return this;
     }
 
-    private Func<PanelDescriptor> _lose;
-    public BattlePanelDescriptor SetLose(Func<PanelDescriptor> lose)
+    private Func<PanelDescriptor> _loseOperation;
+    public BattlePanelDescriptor SetLoseOperation(Func<PanelDescriptor> lose)
     {
-        _lose = lose;
+        _loseOperation = lose;
         return this;
     }
 
@@ -57,7 +51,7 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         if (signal is BattleResultSignal battleResultSignal)
         {
-            return (battleResultSignal.State == BattleResultSignal.BattleResultState.Win ? _win : _lose).Invoke();
+            return (battleResultSignal.State == BattleResultSignal.BattleResultState.Win ? _winOperation : _loseOperation).Invoke();
         }
 
         return this;

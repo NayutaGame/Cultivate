@@ -69,8 +69,8 @@ public class RunAppS : AppS
         if (d.FromState is MenuAppS)
             return;
 
-        CanvasManager.Instance.RunCanvas.Refresh();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
+        CanvasManager.Instance.RunCanvas.Refresh();
         await CanvasManager.Instance.Curtain.PlayHideAnimation();
     }
 }

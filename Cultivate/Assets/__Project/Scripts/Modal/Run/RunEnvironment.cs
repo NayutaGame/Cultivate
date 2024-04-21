@@ -1,18 +1,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using JetBrains.Annotations;
 using UnityEngine;
 
 public class RunEnvironment : Addressable, RunEventListener
 {
-    public event Action EnvironmentChangedEvent;
-    public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
-
-    public event Action ResourceChangedEvent;
-    public void ResourceChanged() => ResourceChangedEvent?.Invoke();
-
     #region Memory
 
     private Dictionary<string, object> _memory;
@@ -24,6 +19,21 @@ public class RunEnvironment : Addressable, RunEventListener
         => (T)_memory[key];
 
     #endregion
+    
+    public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
+    public event Action EnvironmentChangedEvent;
+    public void EnvironmentUpdateProcedure()
+    {
+        EnvironmentUpdateDetails d = new();
+        _eventDict.SendEvent(RunEventDict.WIL_UPDATE, d);
+
+        SimulateProcedure();
+
+        _eventDict.SendEvent(RunEventDict.DID_UPDATE, d);
+    }
+
+    public void ResourceChanged() => ResourceChangedEvent?.Invoke();
+    public event Action ResourceChangedEvent;
 
     #region Procedures
 
@@ -166,6 +176,14 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public PanelDescriptor ReceiveSignalProcedure(Signal signal)
     {
+        Guide guide = Map.CurrNode.Panel.GetGuideDescriptor();
+        if (guide != null)
+        {
+            bool blocksSignal = guide.ReceiveSignal(Map.CurrNode.Panel, signal);
+            if (blocksSignal)
+                return Map.CurrNode.Panel;
+        }
+        
         PanelDescriptor panelDescriptor = Map.CurrNode.Panel.ReceiveSignal(signal);
         if (panelDescriptor != null)
         {
@@ -327,7 +345,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         Result = new RunResult();
 
-        EnvironmentChangedEvent += SimulateProcedure;
+        EnvironmentChangedEvent += EnvironmentUpdateProcedure;
     }
 
     public MingYuan GetMingYuan()
@@ -633,6 +651,16 @@ public class RunEnvironment : Addressable, RunEventListener
     }
 
     #region Skill
+    
+    public IEnumerable<DeckIndex> TraversalDeckIndices(bool excludingField = false, bool excludingHand = false)
+    {
+        if (!excludingField)
+            foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
+                yield return new DeckIndex(true, slot.GetIndex());
+        if (!excludingHand)
+            for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
+                yield return new DeckIndex(false, i);
+    }
 
     public EmulatedSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
     {
@@ -641,24 +669,33 @@ public class RunEnvironment : Addressable, RunEventListener
         else
             return Hand[deckIndex.Index];
     }
-    public DeckIndex? FindDeckIndex(SkillDescriptor d)
-    {
-        int? idx = Home.TraversalCurrentSlots().FirstIdx(slot => slot.Skill != null && d.Pred(slot.Skill.GetEntry()));
-        if (idx != null)
-            return new DeckIndex(true, idx.Value);
-        
-        idx = Hand.Traversal().Map(runSkill => runSkill.GetEntry()).FirstIdx(d.Pred);
-        if (idx != null)
-            return new DeckIndex(false, idx.Value);
 
-        return null;
-    }
-    public IEnumerable<DeckIndex> TraversalDeckIndices()
+    public bool FindDeckIndex(out DeckIndex result, SkillDescriptor d,
+        bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
     {
-        foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
-            yield return new DeckIndex(true, slot.GetIndex());
-        for(int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
-            yield return new DeckIndex(false, i);
+        omit ??= Array.Empty<DeckIndex>();
+        
+        result = default;
+        
+        foreach (DeckIndex deckIndex in TraversalDeckIndices(excludingField, excludingHand))
+        {
+            if (omit.Contains(deckIndex))
+                continue;
+            EmulatedSkill skill = GetSkillAtDeckIndex(deckIndex);
+            if (skill != null && d.Contains(skill.GetEntry()))
+            {
+                result = deckIndex;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void ClearDeck()
+    {
+        Hand.Clear();
+        Home.TraversalCurrentSlots().Do(s => s.Skill = null);
     }
 
     public List<SkillEntry> DrawSkills(SkillCollectionDescriptor d)
@@ -691,7 +728,7 @@ public class RunEnvironment : Addressable, RunEventListener
     public SkillEntry DrawSkill(SkillDescriptor descriptor)
     {
         SkillPool.Shuffle();
-        SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Pred);
+        SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
         skillEntry ??= Encyclopedia.SkillCategory[0];
         return skillEntry;
     }

@@ -11,16 +11,17 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     private Range _range;
     public Range Range => _range;
 
-    private Func<List<object>, PanelDescriptor> _select;
-    public CardPickerPanelDescriptor SetSelect(Func<List<object>, PanelDescriptor> select)
+    private Func<List<object>, PanelDescriptor> _confirmOperation;
+    public CardPickerPanelDescriptor SetConfirmOperation(Func<List<object>, PanelDescriptor> select)
     {
-        _select = select;
+        _confirmOperation = select;
         return this;
     }
 
     public SkillDescriptor _skillDescriptor;
 
-    public CardPickerPanelDescriptor(string detailedText = null, Range range = null, Func<List<object>, PanelDescriptor> select = null,
+    public CardPickerPanelDescriptor(string detailedText = null, Range range = null,
+        Func<List<object>, PanelDescriptor> confirmOperation = null,
         SkillDescriptor skillDescriptor = null)
     {
         _accessors = new()
@@ -30,27 +31,23 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         
         _detailedText = detailedText ?? "请选择卡";
         _range = range ?? new Range(1);
-        _select = select;
+        _confirmOperation = confirmOperation;
         _skillDescriptor = skillDescriptor;
     }
 
     public bool CanSelect(EmulatedSkill skill)
-    {
-        if (_skillDescriptor != null && _skillDescriptor.Pred(skill.GetEntry()))
-            return false;
-        return skill is RunSkill;
-    }
+        => _skillDescriptor?.Contains(skill.GetEntry()) ?? skill is RunSkill;
 
     public bool CanSelect(SkillSlot slot)
         => slot.Skill != null && CanSelect(slot.Skill);
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {
-        if (signal is SelectedIRunSkillsSignal selectedIRunSkillsSignal && _select != null)
+        if (signal is ConfirmDeckSignal confirmDeckSignal && _confirmOperation != null)
         {
-            return _select(selectedIRunSkillsSignal.Selected);
+            return _confirmOperation(confirmDeckSignal.Selected);
         }
 
-        return null;
+        return this;
     }
 }

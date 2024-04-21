@@ -46,7 +46,7 @@ public class BarterPanel : Panel
 
     private void Exit()
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new Signal());
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new ExitShopSignal());
         CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
     }
 

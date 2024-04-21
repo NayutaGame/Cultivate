@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using CLLibrary;
-using UnityEngine;
 
 public class DiscoverSkillPanelDescriptor : PanelDescriptor
 {
@@ -42,8 +37,6 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public override void DefaultEnter()
     {
-        base.DefaultEnter();
-
         DiscoverSkillDetails d = new DiscoverSkillDetails(_descriptor, _preferredJingJie);
         RunManager.Instance.Environment.DiscoverSkillProcedure(d);
 
@@ -57,7 +50,6 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         {
             SkillDescriptor skill = _skills[selectedOptionSignal.Selected];
             RunManager.Instance.Environment.AddSkillProcedure(skill.Entry, skill.JingJie);
-            // TODO: Discover Animation
             return null;
         }
 

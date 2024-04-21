@@ -55,5 +55,13 @@ public class ShopPanelDescriptor : PanelDescriptor
         return true;
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal) => null;
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    {
+        if (signal is ExitShopSignal)
+        {
+            return null;
+        }
+
+        return this;
+    }
 }
