@@ -28,10 +28,16 @@ public class BattlePanelDescriptor : PanelDescriptor
     }
 
     public override void DefaultEnter()
-        => SetEnemy(RunEntity.FromTemplate(_template));
+    {
+        base.DefaultEnter();
+        SetEnemy(RunEntity.FromTemplate(_template));
+    }
 
     public override void DefaultExit()
-        => SetEnemy(null);
+    {
+        base.DefaultExit();
+        SetEnemy(null);
+    }
 
     private Func<PanelDescriptor> _winOperation;
     public BattlePanelDescriptor SetWinOperation(Func<PanelDescriptor> win)

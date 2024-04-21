@@ -1,8 +1,6 @@
 
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using TMPro.EditorUtilities;
 
 public abstract class PanelDescriptor : Addressable
 {
@@ -27,8 +25,11 @@ public abstract class PanelDescriptor : Addressable
     public void SetGuideDescriptors(Guide[] guideDescriptors)
     {
         _guideDescriptors = guideDescriptors;
-        _index = 0;
+        ResetGuideIndex();
     }
+
+    public void ResetGuideIndex()
+        => _index = 0;
 
     public void MoveNextGuideDescriptor()
         => _index++;

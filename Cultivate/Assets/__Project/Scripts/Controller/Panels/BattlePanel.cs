@@ -70,7 +70,7 @@ public class BattlePanel : Panel
 
     private void Combat(PointerEventData eventData)
     {
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickGuideSignal());
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickBattleSignal());
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat();
         CanvasManager.Instance.RunCanvas.Refresh();

@@ -47,9 +47,8 @@ public class GuideView : MonoBehaviour
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(end));
             _handle = DOTween.Sequence()
-                .AppendInterval(0.2f)
                 .Append(anim.GetHandle())
-                .AppendInterval(0.2f)
+                .AppendInterval(0.4f)
                 .SetLoops(-1, loopType: LoopType.Restart);
             _handle.SetAutoKill().Restart();
         }
@@ -69,9 +68,8 @@ public class GuideView : MonoBehaviour
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
                 CanvasManager.Instance.RunCanvas.DeckPanel.DropRectTransform);
             _handle = DOTween.Sequence()
-                .AppendInterval(0.2f)
                 .Append(anim.GetHandle())
-                .AppendInterval(0.2f)
+                .AppendInterval(0.4f)
                 .SetLoops(-1, loopType: LoopType.Restart);
             _handle.SetAutoKill().Restart();
         }
@@ -92,16 +90,15 @@ public class GuideView : MonoBehaviour
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(end));
             _handle = DOTween.Sequence()
-                .AppendInterval(0.2f)
                 .Append(anim.GetHandle())
-                .AppendInterval(0.2f)
+                .AppendInterval(0.4f)
                 .SetLoops(-1, loopType: LoopType.Restart);
             _handle.SetAutoKill().Restart();
         }
-        else if (guide is ClickGuide clickGuide)
+        else if (guide is ClickBattleGuide clickBattleGuide)
         {
-            _comment.text = clickGuide.GetComment();
-            Vector2? position = clickGuide.GetPosition();
+            _comment.text = clickBattleGuide.GetComment();
+            Vector2? position = clickBattleGuide.GetPosition();
             if (position.HasValue)
             {
                 _cursor.position = position.Value;
@@ -115,11 +112,10 @@ public class GuideView : MonoBehaviour
             
             _handle?.Kill();
             _handle = DOTween.Sequence()
-                .AppendInterval(0.3f)
                 .Append(_cursor.DOScale(0.8f, 0.1f).SetEase(Ease.InQuad))
                 .Append(_cursor.DOScale(1.5f, 0.1f).SetEase(Ease.Linear))
                 .Append(_cursor.DOScale(1f, 0.2f).SetEase(Ease.OutQuad))
-                .AppendInterval(0.3f)
+                .AppendInterval(0.6f)
                 .SetLoops(-1, loopType: LoopType.Restart);
             _handle.SetAutoKill().Restart();
         }

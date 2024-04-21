@@ -33,9 +33,7 @@ public abstract class Panel : MonoBehaviour
     {
         _showing = showing;
         Tween t = _showing ? ShowAnimation() : HideAnimation();
-        t.SetAutoKill();
-        // t.Restart();
-        t.Complete();
+        t.SetAutoKill().Complete();
     }
 
     private async Task PlayTween(bool isAwait, Tween tween)

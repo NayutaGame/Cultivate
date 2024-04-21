@@ -279,8 +279,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3730836485673369251}
-  - component: {fileID: 211676871213138042}
-  - component: {fileID: 887358121484773844}
+  - component: {fileID: 4162078557098956384}
+  - component: {fileID: 4626522958406216293}
+  - component: {fileID: 1128675602949936068}
+  - component: {fileID: -8987019744644550879}
+  - component: {fileID: 7191967471023871962}
   m_Layer: 0
   m_Name: StageFormationIconView
   m_TagString: Untagged
@@ -313,7 +316,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 72, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &211676871213138042
+--- !u!114 &4162078557098956384
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -322,12 +325,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 6193414529329671437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0ed7b9e37e16d84285676ca3cb62596, type: 3}
+  m_Script: {fileID: 11500000, guid: 86bb457b31aeda14f888785120077706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractBehaviour: {fileID: 4626522958406216293}
   NameText: {fileID: 2294650745521803019}
-  CountText: {fileID: 7889368887179445966}
---- !u!114 &887358121484773844
+--- !u!114 &4626522958406216293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193414529329671437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1128675602949936068
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -337,6 +352,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8987019744644550879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193414529329671437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnnotationAddress: Canvas.FormationAnnotation
+  HoverTransform: {fileID: 0}
+--- !u!114 &7191967471023871962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193414529329671437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e56bc29f3d98bf4081752f48f1cfa66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6399636207394809419
