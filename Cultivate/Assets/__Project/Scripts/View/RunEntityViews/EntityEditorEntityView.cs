@@ -18,6 +18,8 @@ public class EntityEditorEntityView : SimpleView
     public Slider LadderSlider;
     public TMP_Text LadderText;
 
+    public Toggle InPoolToggle;
+
     public ListView FieldView;
     public ListView FormationListView;
 
@@ -30,6 +32,7 @@ public class EntityEditorEntityView : SimpleView
         SlotCountSlider.onValueChanged.RemoveAllListeners();
         HealthInputField.onValueChanged.RemoveAllListeners();
         LadderSlider.onValueChanged.RemoveAllListeners();
+        InPoolToggle.onValueChanged.RemoveAllListeners();
 
         bool addressIsNull = address == null;
 
@@ -38,6 +41,7 @@ public class EntityEditorEntityView : SimpleView
         SlotCountSlider.gameObject.SetActive(!addressIsNull);
         HealthInputField.gameObject.SetActive(!addressIsNull);
         LadderSlider.gameObject.SetActive(!addressIsNull);
+        InPoolToggle.gameObject.SetActive(!addressIsNull);
         FieldView.gameObject.SetActive(!addressIsNull);
         FormationListView.gameObject.SetActive(!addressIsNull);
 
@@ -66,6 +70,9 @@ public class EntityEditorEntityView : SimpleView
 
         if (LadderSlider != null)
             LadderSlider.onValueChanged.AddListener(LadderChanged);
+        
+        if (InPoolToggle != null)
+            InPoolToggle.onValueChanged.AddListener(InPoolChanged);
 
         if (FieldView != null)
         {
@@ -116,6 +123,11 @@ public class EntityEditorEntityView : SimpleView
         LadderText.text = value.ToString();
     }
 
+    private void SetInPool(bool inPool)
+    {
+        InPoolToggle.SetIsOnWithoutNotify(inPool);
+    }
+
     #endregion
 
     public override void Refresh()
@@ -131,6 +143,7 @@ public class EntityEditorEntityView : SimpleView
         SetSlotCount(entity.GetSlotCount());
         SetHealth(entity.GetBaseHealth());
         SetLadder(entity.GetLadder());
+        SetInPool(entity.IsInPool());
         FieldView.Refresh();
         FormationListView.Refresh();
     }
@@ -170,6 +183,13 @@ public class EntityEditorEntityView : SimpleView
     {
         EntityModel entity = Get<EntityModel>();
         entity.SetLadder((int)value);
+        Refresh();
+    }
+
+    private void InPoolChanged(bool value)
+    {
+        EntityModel entity = Get<EntityModel>();
+        entity.SetInPool(value);
         Refresh();
     }
 

@@ -45,7 +45,7 @@ public class RunEnvironment : Addressable, RunEventListener
         {
             // init entity pool
             Map.EntityPool = new();
-            Map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal());
+            Map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal().FilterObj(e => e.IsInPool()));
             Map.EntityPool.Shuffle();
             
             // init adventure pool

@@ -33,6 +33,11 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     public int GetLadder() => _ladder;
     public void SetLadder(int value) => _ladder = value;
 
+    [SerializeField] [OptionalField(VersionAdded = 3)] private bool _inPool;
+    public bool IsInPool() => _inPool;
+    public void SetInPool(bool value) => _inPool = value;
+
+    // obsolete
     [SerializeField] private bool _isNormal;
     [SerializeField] private bool _isElite;
     [SerializeField] private bool _isBoss;

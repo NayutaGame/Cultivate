@@ -17,4 +17,7 @@ public interface EntityModel
 
     int GetLadder();
     void SetLadder(int ladder);
+
+    bool IsInPool();
+    void SetInPool(bool inPool);
 }
