@@ -11,7 +11,7 @@ public class BattlePanel : Panel
     [SerializeField] private TMP_Text HomeHealth;
     [SerializeField] private TMP_Text AwayHealth;
     [SerializeField] private BreathingButton CombatButton;
-    [SerializeField] private RectTransform CombatButtonTransform;
+    [SerializeField] public RectTransform CombatButtonTransform;
 
     [SerializeField] private Image VictoryStamp;
     [SerializeField] private Transform VictoryStampTranform;

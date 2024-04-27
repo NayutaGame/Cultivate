@@ -39,7 +39,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void StartRunProcedure(RunDetails d)
     {
-        bool firstTime = true;
+        bool firstTime = false;
         
         // init map
         {
@@ -480,6 +480,19 @@ public class RunEnvironment : Addressable, RunEventListener
                     pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
                                         skillEntry.WuXing != rWuXing,
                     jingJie: rJingJie + 1),
+                preferredDeckIndex: rhsDeckIndex);
+            Hand.Remove(lhs);
+            EnvironmentChanged();
+            return true;
+        }
+        
+        // HuaShen Reroll
+        if (lJingJie == rJingJie)
+        {
+            DrawSkillProcedure(new(
+                    pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
+                                        skillEntry.WuXing != rWuXing,
+                    jingJie: rJingJie),
                 preferredDeckIndex: rhsDeckIndex);
             Hand.Remove(lhs);
             EnvironmentChanged();

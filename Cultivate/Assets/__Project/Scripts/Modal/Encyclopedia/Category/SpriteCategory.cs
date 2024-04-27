@@ -40,6 +40,7 @@ public class SpriteCategory : Category<SpriteEntry>
             // 卡牌
             new("Default", "Images/SkillIllustrates/Default"),
             new("聚气术", "Images/Cards/聚气术"),
+            new("冲撞", "Images/Cards/冲撞"),
             
             new("摇曳", "Images/Cards/摇曳"),
             new("金刃", "Images/Cards/金刃"),
@@ -130,7 +131,6 @@ public class SpriteCategory : Category<SpriteEntry>
             new("秋水", "Images/Cards/秋水"),
             new("灵动", "Images/Cards/灵动"),
             new("观棋烂柯", "Images/Cards/观棋烂柯"),
-            new("身骑白马", "Images/Cards/身骑白马"),
             new("盘旋", "Images/Cards/盘旋"),
         });
     }

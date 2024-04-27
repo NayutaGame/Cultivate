@@ -29,8 +29,11 @@ public class RunFormationDetails : EventDetails
 
         WuXingCounts = new int[WuXing.Length];
         SwiftCount = 0;
+        NonSwiftCount = 0;
         ExhaustedCount = 0;
+        NonExhaustedCount = 0;
         AttackCount = 0;
+        NonAttackCount = 0;
         TotalCostCount = 0;
         HighestConsecutiveAttackCount = 0;
 
@@ -41,15 +44,25 @@ public class RunFormationDetails : EventDetails
             SkillEntry entry = slot.PlacedSkill.Entry;
             JingJie jingJie = slot.PlacedSkill.JingJie;
 
+            if (slot.Skill?.GetEntry() == null)
+            {
+                consecutiveAttackCount = 0;
+                continue;
+            }
+
             WuXing? wuXing = entry.WuXing;
             if (wuXing != null)
                 WuXingCounts[wuXing.Value]++;
 
             if (entry.GetSkillTypeComposite().Contains(SkillType.ErDong))
                 SwiftCount++;
+            else
+                NonSwiftCount++;
 
             if (entry.GetSkillTypeComposite().Contains(SkillType.XiaoHao))
                 ExhaustedCount++;
+            else
+                NonExhaustedCount++;
 
             if (entry.GetSkillTypeComposite().Contains(SkillType.Attack))
             {
@@ -60,6 +73,7 @@ public class RunFormationDetails : EventDetails
             }
             else
             {
+                NonAttackCount++;
                 consecutiveAttackCount = 0;
             }
 
@@ -68,10 +82,6 @@ public class RunFormationDetails : EventDetails
 
         WuXingOrder = new List<WuXing>(WuXing.Traversal);
         WuXingOrder.Sort((lhs, rhs) => WuXingCounts[rhs] - WuXingCounts[lhs]);
-
-        NonSwiftCount = entity.GetSlotCount() - SwiftCount;
-        NonExhaustedCount = entity.GetSlotCount() - ExhaustedCount;
-        NonAttackCount = entity.GetSlotCount() - AttackCount;
 
         Proficiency = 0;
     }

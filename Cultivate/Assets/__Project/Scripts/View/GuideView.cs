@@ -98,17 +98,20 @@ public class GuideView : MonoBehaviour
         else if (guide is ClickBattleGuide clickBattleGuide)
         {
             _comment.text = clickBattleGuide.GetComment();
-            Vector2? position = clickBattleGuide.GetPosition();
-            if (position.HasValue)
-            {
-                _cursor.position = position.Value;
-            }
-            else
-            {
-                RectTransform rt = _comment.GetComponent<RectTransform>();
-                Rect rect = rt.rect;
-                _cursor.position = rt.position + new Vector3(rect.xMax, rect.yMin);
-            }
+            
+            // Vector2? position = clickBattleGuide.GetPosition();
+            // if (position.HasValue)
+            // {
+            //     _cursor.position = position.Value;
+            // }
+            // else
+            // {
+            //     RectTransform rt = _comment.GetComponent<RectTransform>();
+            //     Rect rect = rt.rect;
+            //     _cursor.position = rt.position + new Vector3(rect.xMax, rect.yMin);
+            // }
+
+            _cursor.position = CanvasManager.Instance.RunCanvas.RunPanelCollection.BattlePanel.CombatButtonTransform.position;
             
             _handle?.Kill();
             _handle = DOTween.Sequence()

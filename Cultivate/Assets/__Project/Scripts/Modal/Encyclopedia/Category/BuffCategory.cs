@@ -117,23 +117,6 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(id:                         "内伤",
-                description:                "每回合：失去[层数]生命，层数-1",
-                buffStackRule:              BuffStackRule.Add,
-                friendly:                   false,
-                dispellable:                true,
-                eventDescriptors:           new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        TurnDetails d = (TurnDetails)stageEventDetails;
-                        if (b.Owner != d.Owner) return;
-                        await d.Owner.DamageSelfProcedure(b.Stack);
-                        await b.SetDStack(-1);
-                    }),
-                }),
-            
             new(id:                         "腐朽",
                 description:                "每回合：失去[层数]护甲，层数-1",
                 buffStackRule:              BuffStackRule.Add,
@@ -147,6 +130,23 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)stageEventDetails;
                         if (b.Owner != d.Owner) return;
                         await b.Owner.LoseArmorProcedure(b.Stack);
+                        await b.SetDStack(-1);
+                    }),
+                }),
+            
+            new(id:                         "内伤",
+                description:                "每回合：失去[层数]生命，层数-1",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                true,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+                        await d.Owner.DamageSelfProcedure(b.Stack);
                         await b.SetDStack(-1);
                     }),
                 }),
@@ -287,6 +287,20 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Tgt) return;
                         if (b.Owner.Hp > 0)
                             await b.Owner.LoseHealthProcedure(b.Owner.Hp);
+                    }),
+                }),
+            
+            new("暴击", "下一次攻击具有暴击", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+
+                        if (b.Owner != d.Src || b.Owner == d.Tgt || d.Crit) return;
+                        d.Crit = true;
+                        await b.SetDStack(-1);
                     }),
                 }),
             
@@ -496,7 +510,21 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("延迟护甲", "下回合护甲+[层数]", BuffStackRule.Add, true, false,
+            new("延迟攻", "下回合，[层数]攻", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        TurnDetails d = (TurnDetails)stageEventDetails;
+
+                        if (b.Owner != d.Owner) return;
+                        await b.Owner.AttackProcedure(b.Stack);
+                        await b.Owner.RemoveBuff(b);
+                    }),
+                }),
+
+            new("延迟护甲", "下回合，护甲+[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
@@ -722,7 +750,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,
+            new("天衣无缝", "每回合：[层数]攻，无法使用其他方式攻击", BuffStackRule.Max, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
@@ -730,7 +758,15 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
                         if (b.Owner != d.Owner) return;
-                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo);
+                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo, fromSeamless: true);
+                    }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner != d.Src) return;
+                        if (!d.FromSeamless)
+                            d.Cancel = true;
                     }),
                 }),
             
@@ -817,7 +853,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("柔韧", "对方回合开始时：护甲+[层数]", BuffStackRule.Add, true, false,
+            new("柔韧", "对方回合开始时：护甲+[层数]，己方回合开始时：层数-1", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
@@ -825,16 +861,15 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
 
-                        if (b.Owner == d.Owner) return;
-                        await b.Owner.GainArmorProcedure(b.Stack);
+                        if (b.Owner == d.Owner)
+                        {
+                            await b.SetDStack(-1);
+                        }
+                        else
+                        {
+                            await b.Owner.GainArmorProcedure(b.Stack);
+                        }
                     }),
-                    // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
-                    // {
-                    //     Buff b = (Buff)listener;
-                    //     DamageDetails d = (DamageDetails)stageEventDetails;
-                    //     if (b.Owner == d.Tgt)
-                    //         await b.SetDStack(-1);
-                    // }),
                 }),
             
             new("两仪", "获得护甲时/施加减甲时：额外+[层数]", BuffStackRule.Add, true, false,

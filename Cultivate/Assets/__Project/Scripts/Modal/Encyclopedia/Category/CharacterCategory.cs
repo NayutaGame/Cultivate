@@ -15,38 +15,38 @@ public class CharacterCategory : Category<CharacterEntry>
                                           "金丹之后移除所有练气牌；化神后，所有筑基牌",
                 runEventDescriptors: new RunEventDescriptor[]
                 {
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, 0, (listener, eventDetails) =>
-                    {
-                        RunEnvironment env = (RunEnvironment)listener;
-                        RunDetails d = (RunDetails)eventDetails;
-
-                        env.SetMaxMingYuanProcedure(12);
-                        env.SetDMingYuanProcedure(2);
-                    }),
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
-                    {
-                        RunEnvironment env = (RunEnvironment)listener;
-                        SetJingJieDetails d = (SetJingJieDetails)eventDetails;
-
-                        if (d.ToJingJie == JingJie.JinDan)
-                        {
-                            env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.LianQi));
-                            return;
-                        }
-
-                        if (d.ToJingJie == JingJie.HuaShen)
-                        {
-                            env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.ZhuJi));
-                            return;
-                        }
-                    }),
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -2, (listener, eventDetails) =>
-                    {
-                        RunEnvironment env = (RunEnvironment)listener;
-                        RunDetails d = (RunDetails)eventDetails;
-
-                        // env.Map._r.Generator.Add("以物易物");
-                    }),
+                    // new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, 0, (listener, eventDetails) =>
+                    // {
+                    //     RunEnvironment env = (RunEnvironment)listener;
+                    //     RunDetails d = (RunDetails)eventDetails;
+                    //
+                    //     env.SetMaxMingYuanProcedure(12);
+                    //     env.SetDMingYuanProcedure(2);
+                    // }),
+                    // new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
+                    // {
+                    //     RunEnvironment env = (RunEnvironment)listener;
+                    //     SetJingJieDetails d = (SetJingJieDetails)eventDetails;
+                    //
+                    //     if (d.ToJingJie == JingJie.JinDan)
+                    //     {
+                    //         env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.LianQi));
+                    //         return;
+                    //     }
+                    //
+                    //     if (d.ToJingJie == JingJie.HuaShen)
+                    //     {
+                    //         env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.ZhuJi));
+                    //         return;
+                    //     }
+                    // }),
+                    // new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -2, (listener, eventDetails) =>
+                    // {
+                    //     RunEnvironment env = (RunEnvironment)listener;
+                    //     RunDetails d = (RunDetails)eventDetails;
+                    //
+                    //     // env.Map._r.Generator.Add("以物易物");
+                    // }),
                 }),
             new("浮千舟", abilityDescription: "战斗开始时，获得1/2/3/4/5灵气\n" +
                                            "空白，卡费行为变成回2/2/3/3/4灵气"),

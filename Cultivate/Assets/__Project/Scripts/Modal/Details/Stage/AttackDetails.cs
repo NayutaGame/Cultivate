@@ -25,6 +25,8 @@ public class AttackDetails : EventDetails
     public Func<DamageDetails, Task> Damaged;
     public Func<DamageDetails, Task> Undamaged;
 
+    public bool FromSeamless;
+
     public AttackDetails(StageEntity src, StageEntity tgt, int value,
         WuXing? wuxing,
         bool lifeSteal = false,
@@ -33,7 +35,8 @@ public class AttackDetails : EventDetails
         bool evade = false,
         bool recursive = true,
         Func<DamageDetails, Task> damaged = null,
-        Func<DamageDetails, Task> undamaged = null)
+        Func<DamageDetails, Task> undamaged = null,
+        bool fromSeamless = false)
     {
         Src = src;
         Tgt = tgt;
@@ -46,7 +49,8 @@ public class AttackDetails : EventDetails
         Recursive = recursive;
         Damaged = damaged;
         Undamaged = undamaged;
+        FromSeamless = fromSeamless;
     }
 
-    public AttackDetails Clone() => new(Src, Tgt, _value, WuXing, LifeSteal, Pierce, Crit, Evade, Recursive, Damaged, Undamaged);
+    public AttackDetails Clone() => new(Src, Tgt, _value, WuXing, LifeSteal, Pierce, Crit, Evade, Recursive, Damaged, Undamaged, FromSeamless);
 }
