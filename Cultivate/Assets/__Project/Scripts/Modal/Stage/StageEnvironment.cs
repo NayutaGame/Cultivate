@@ -108,7 +108,7 @@ public class StageEnvironment : Addressable, StageEventListener
         if (await attackDetails.Src.TryConsumeProcedure("追击")) // 结算连击/追击
             times += 1;
 
-        await TryPlayTween(new PreAttackTweenDescriptor(true, attackDetails.Src));
+        await Play(new PreAttackAnimation(true, attackDetails.Src));
 
         for (int i = 0; i < times; i++)
         {
@@ -127,11 +127,11 @@ public class StageEnvironment : Addressable, StageEventListener
                 continue;
             }
 
-            await TryPlayTween(new AttackTweenDescriptor(true, d));
+            await Play(new AttackAnimation(true, d));
 
             if (!d.Pierce && d.Evade)
             {
-                await TryPlayTween(new EvadeTweenDescriptor(false, d.Tgt));
+                await Play(new EvadeAnimation(false, d.Tgt));
                 _result.TryAppend($"    攻击被闪避");
                 await _eventDict.SendEvent(StageEventDict.DID_EVADE, d);
 
@@ -164,7 +164,7 @@ public class StageEnvironment : Addressable, StageEventListener
                 continue;
             }
 
-            await TryPlayTween(new AttackedTweenDescriptor(false, d));
+            await Play(new AttackedAnimation(false, d));
 
             if (d.Crit)
                 d.Value *= 2;
@@ -183,7 +183,7 @@ public class StageEnvironment : Addressable, StageEventListener
             await _eventDict.SendEvent(StageEventDict.DID_ATTACK, d);
         }
 
-        await TryPlayTween(new PostAttackTweenDescriptor(true, attackDetails.Src));
+        await Play(new PostAttackAnimation(true, attackDetails.Src));
     }
 
     /// <summary>
@@ -255,13 +255,13 @@ public class StageEnvironment : Addressable, StageEventListener
 
         if (d.Cancel || d.Value == 0)
         {
-            await TryPlayTween(new UndamagedTweenDescriptor(false, d));
+            await Play(new UndamagedAnimation(false, d));
             if (d.Undamaged != null)
                 await d.Undamaged(d);
             return;
         }
 
-        await TryPlayTween(new DamagedTweenDescriptor(false, d));
+        await Play(new DamagedAnimation(false, d));
         await LoseHealthProcedure(d.Tgt, d.Value);
         if (d.Damaged != null)
             await d.Damaged(d);
@@ -308,7 +308,7 @@ public class StageEnvironment : Addressable, StageEventListener
         tgt.Hp += actualHealed;
         tgt.HealedRecord += actualHealed;
 
-        await TryPlayTween(new HealTweenDescriptor(true, d));
+        await Play(new HealAnimation(true, d));
         _result.TryAppend($"    生命变成了${tgt.Hp}");
 
         await _eventDict.SendEvent(StageEventDict.DID_HEAL, d);
@@ -347,14 +347,14 @@ public class StageEnvironment : Addressable, StageEventListener
                     break;
             }
 
-            await TryPlayTween(new BuffTweenDescriptor(true, d));
+            await Play(new BuffAnimation(true, d));
             _result.TryAppend($"    {d._buffEntry.GetName()}: {oldStack} -> {same.Stack}");
         }
         else
         {
             await d.Tgt.AddBuff(new BuffAppearDetails(d.Tgt, d._buffEntry, d._stack));
 
-            await TryPlayTween(new BuffTweenDescriptor(true, d));
+            await Play(new BuffAnimation(true, d));
             _result.TryAppend($"    {d._buffEntry.GetName()}: 0 -> {d._stack}");
         }
 
@@ -542,18 +542,11 @@ public class StageEnvironment : Addressable, StageEventListener
         AppManager.Push(new StageAppS(config));
     }
 
-    public async Task TryPlayTween(StageTweenDescriptor descriptor)
+    public async Task Play(Animation animation)
     {
         if (!_config.Animated)
             return;
-        await StageManager.Instance.Anim.PlayTween(descriptor);
-    }
-
-    public async Task TryPlayTween(Tween tween)
-    {
-        if (!_config.Animated)
-            return;
-        await StageManager.Instance.Anim.PlayTween(true, tween);
+        await StageManager.Instance.StageAnimationController.Play(animation);
     }
 
     public void WriteResult()

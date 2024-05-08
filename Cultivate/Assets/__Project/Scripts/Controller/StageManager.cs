@@ -17,7 +17,7 @@ public class StageManager : Singleton<StageManager>, Addressable
     public GameObject HealVFXPrefab;
     public EntitySlot[] _slots;
 
-    public StageAnimationDelegate Anim;
+    public StageAnimationController StageAnimationController;
     private StageEnvironment _environment;
     public StageTimeline Timeline;
     private Task _task;
@@ -34,7 +34,7 @@ public class StageManager : Singleton<StageManager>, Addressable
             { "Timeline",    () => Timeline },
         };
 
-        Anim = new();
+        StageAnimationController = new();
     }
 
     public void SetEnvironmentFromConfig(StageConfig config)
@@ -66,22 +66,22 @@ public class StageManager : Singleton<StageManager>, Addressable
     }
 
     public void Pause()
-        => Anim.PauseTween();
+        => StageAnimationController.Pause();
 
     public void Pause(InteractBehaviour ib, PointerEventData eventData)
         => Pause();
 
     public void Resume()
-        => Anim.ResumeTween();
+        => StageAnimationController.Resume();
 
     public void Resume(InteractBehaviour ib, PointerEventData eventData)
         => Resume();
 
     public void SetSpeed(float speed)
-        => Anim.SetSpeed(speed);
+        => StageAnimationController.SetSpeed(speed);
 
     public void Skip()
-        => Anim.Skip();
+        => StageAnimationController.Skip();
 
     public void DisableVFX()
     {

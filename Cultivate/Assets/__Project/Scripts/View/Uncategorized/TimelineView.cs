@@ -1,10 +1,11 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 
-public class TimelineView : MonoBehaviour
+public class TimelineView : Singleton<TimelineView>
 {
     public int IndexOfCurr;
     public RectTransform[] AwaySlots;
@@ -21,17 +22,6 @@ public class TimelineView : MonoBehaviour
     public List<StageSkillCardView> Views => _views;
 
     private int _time;
-
-    private void OnEnable()
-    {
-        StageManager.Instance.Anim.TimelineView = this;
-    }
-
-    private void OnDisable()
-    {
-        if (StageManager.Instance != null)
-            StageManager.Instance.Anim.TimelineView = null;
-    }
 
     public void Configure()
     {

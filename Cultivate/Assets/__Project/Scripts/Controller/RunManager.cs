@@ -9,7 +9,7 @@ public class RunManager : Singleton<RunManager>, Addressable
     public static readonly int[] SlotCountFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
     public static readonly float EUREKA_DISCOUNT_RATE = 0.5f;
 
-    public RunAnimationDelegate Anim;
+    // public RunAnimationController AnimationController;
     public RunEnvironment Environment;
     public Arena Arena;
 

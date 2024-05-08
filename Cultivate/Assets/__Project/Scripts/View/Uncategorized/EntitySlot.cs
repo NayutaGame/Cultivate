@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+
+using Spine.Unity;
 using UnityEngine;
 
 public class EntitySlot : MonoBehaviour
 {
     public Transform EntityTransform;
+    public SkeletonAnimation Skeleton;
 }

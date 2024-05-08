@@ -77,7 +77,7 @@ public class StageEntity : Addressable, StageEventListener
         
         
         // will cast report
-        await _env.TryPlayTween(new ShiftTweenDescriptor());
+        await _env.Play(new ShiftAnimation());
         _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}");
         
         
