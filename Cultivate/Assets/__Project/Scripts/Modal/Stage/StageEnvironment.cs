@@ -40,6 +40,8 @@ public class StageEnvironment : Addressable, StageEventListener
         ClearResults();
 
         Register();
+        
+        Opening();
 
         await MingYuanPenaltyProcedure();
         await FormationProcedure();
@@ -106,6 +108,12 @@ public class StageEnvironment : Addressable, StageEventListener
         => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
     public async Task AttackProcedure(AttackDetails attackDetails, int times)
     {
+        /*
+         * Buff引起的
+         * primary 延迟攻，天衣无缝
+         * derived 回马枪
+         * dont care 看破
+         */
         if (await attackDetails.Src.TryConsumeProcedure("追击"))
             times += 1;
 
@@ -114,15 +122,12 @@ public class StageEnvironment : Addressable, StageEventListener
         
         for (int i = 0; i < times; i++)
         {
-            // key is fire
             AttackDetails d = attackDetails.Clone();
             await _eventDict.SendEvent(StageEventDict.WIL_ATTACK, d);
             await SingleAttackProcedure(d);
             await _eventDict.SendEvent(StageEventDict.DID_ATTACK, d);
             await NextKey();
         }
-        
-        // await attack animation to be finished
     }
 
     private async Task SingleAttackProcedure(AttackDetails d)
@@ -253,8 +258,6 @@ public class StageEnvironment : Addressable, StageEventListener
             d.Value *= 2;
         
         await _eventDict.SendEvent(StageEventDict.WIL_DAMAGE, d);
-        
-        // damage text
 
         if (d.Cancel || d.Value == 0)
         {
@@ -265,6 +268,7 @@ public class StageEnvironment : Addressable, StageEventListener
         }
 
         await Play(new DamagedAnimation(false, d));
+        await Play(new DamagedTextAnimation(false, d));
         await LoseHealthProcedure(d.Tgt, d.Value);
         if (d.Damaged != null)
             await d.Damaged(d);
@@ -547,6 +551,13 @@ public class StageEnvironment : Addressable, StageEventListener
     public static void Combat(StageConfig config)
     {
         AppManager.Push(new StageAppS(config));
+    }
+
+    public void Opening()
+    {
+        if (!_config.Animated)
+            return;
+        StageManager.Instance.StageAnimationController.Opening();
     }
 
     public async Task Play(Animation animation)

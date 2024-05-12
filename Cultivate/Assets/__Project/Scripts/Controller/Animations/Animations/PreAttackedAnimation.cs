@@ -1,5 +1,6 @@
 
-using DG.Tweening;
+using System;
+using Spine.Unity;
 
 public class PreAttackedAnimation : Animation
 {
@@ -12,25 +13,34 @@ public class PreAttackedAnimation : Animation
 
     public override AnimationHandle GetHandle()
     {
-        return new TweenHandle(this, GetAnimation());
+        StageEntity src = _attackDetails.Src;
+        EntitySlot slot = src.Slot();
+        SkeletonAnimation skeletonAnimation = slot.Skeleton;
+        
+        return new SpineHandle(this, Array.Empty<float>(), skeletonAnimation, PlayAnimation);
     }
 
-    private Tween GetAnimation()
+    private void PlayAnimation()
     {
         StageEntity tgt = _attackDetails.Tgt;
         EntitySlot slot = tgt.Slot();
+
+        string animationName;
+        
         if (tgt.Armor > 0)
         {
-            slot.Skeleton.AnimationState.SetAnimation(0, "guard", false);
+            animationName = "guard";
         }
         else if (tgt.Armor == 0)
         {
-            slot.Skeleton.AnimationState.SetAnimation(0, "still", false);
+            animationName = "still";
         }
         else
         {
-            slot.Skeleton.AnimationState.SetAnimation(0, "unguard", false);
+            animationName = "unguard";
         }
-        return DOTween.Sequence();
+        
+        slot.Skeleton.AnimationState.SetAnimation(0, animationName, false);
+        slot.Skeleton.AnimationState.AddAnimation(0, "idle", true, 0);
     }
 }

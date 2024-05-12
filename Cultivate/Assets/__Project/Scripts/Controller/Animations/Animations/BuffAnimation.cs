@@ -25,7 +25,7 @@ public class BuffAnimation : Animation
         GameObject prefab = d._buffEntry.Friendly
             ? StageManager.Instance.BuffVFXPrefab
             : StageManager.Instance.DebuffVFXPrefab;
-        GameObject gao = GameObject.Instantiate(prefab, d.Tgt.Slot().transform.position,
+        GameObject gao = GameObject.Instantiate(prefab, d.Tgt.Slot().VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.Play();

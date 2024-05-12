@@ -1,7 +1,6 @@
 
-using DG.Tweening;
-using TMPro;
-using UnityEngine;
+using System;
+using Spine.Unity;
 
 public class DamagedAnimation : Animation
 {
@@ -14,25 +13,18 @@ public class DamagedAnimation : Animation
 
     public override AnimationHandle GetHandle()
     {
-        return new TweenHandle(this, DOTween.Sequence()
-            .AppendCallback(SpawnDamagedText));
+        StageEntity tgt = _damageDetails.Tgt;
+        EntitySlot slot = tgt.Slot();
+        SkeletonAnimation skeletonAnimation = slot.Skeleton;
+        
+        return new SpineHandle(this, Array.Empty<float>(), skeletonAnimation, PlayAnimation);
     }
 
-    private void SpawnDamagedText()
+    private void PlayAnimation()
     {
         StageEntity tgt = _damageDetails.Tgt;
-        int value = _damageDetails.Value;
-
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, tgt.Slot().transform.position,
-            Quaternion.identity, StageManager.Instance.VFXPool);
-
-        TMP_Text text = gao.GetComponent<FlowTextVFX>().Text;
-        text.text = value.ToString();
-        text.color = Color.red;
-        gao.transform.localScale = Vector3.zero;
-        DOTween.Sequence()
-            .Append(gao.transform.DOScale(3, 0.3f).SetEase(Ease.OutCubic))
-            .Append(gao.transform.DOScale(1, 0.7f).SetEase(Ease.InCubic))
-            .SetAutoKill().Restart();
+        EntitySlot slot = tgt.Slot();
+        slot.Skeleton.AnimationState.SetAnimation(0, "hit", false);
+        slot.Skeleton.AnimationState.AddAnimation(0, "idle", true, 0);
     }
 }
