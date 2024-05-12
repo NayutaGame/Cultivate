@@ -47,9 +47,9 @@ public class StageEventDict : Dictionary<int, StageEventElementList>
     public static readonly int BUFF_APPEAR              = 39;
     public static readonly int BUFF_DISAPPEAR           = 40;
     public static readonly int WIL_CHANGE_STACK         = 41;
-    public static readonly int DID_CHANGE_STACK         = 43;
-    public static readonly int GAIN_FORMATION           = 44;
-    public static readonly int LOSE_FORMATION           = 42;
+    public static readonly int DID_CHANGE_STACK         = 42;
+    public static readonly int GAIN_FORMATION           = 43;
+    public static readonly int LOSE_FORMATION           = 44;
     public static readonly int WIL_CHANNEL              = 45;
     public static readonly int DID_CHANNEL              = 46;
     public static readonly int WIL_CHANNEL_COST         = 47;

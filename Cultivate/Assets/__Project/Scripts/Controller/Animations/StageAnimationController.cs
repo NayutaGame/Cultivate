@@ -4,38 +4,53 @@ using System.Threading.Tasks;
 
 public class StageAnimationController
 {
-    private AnimationHandle _handle;
+    private AnimationHandle _mainTrack;
+    private List<AnimationHandle> _sideTracks;
     
-    private AnimationHandle _shift;
-    private AnimationHandle _home;
-    private AnimationHandle _away;
+    // shift
+    // home
+    // away
     // health bar
     // buff icon
-    private List<AnimationHandle> _vfxList;
+    // vfxs
+    // floating texts
+    
+    // opening
+    // bullet time at killing moment
+    // camera shake when attack with large value
     
     private float _speed = 1;
 
     public async Task Play(Animation animation)
     {
-        _handle = animation.GetHandle();
-        _handle.SetSpeed(_speed);
-        await _handle.Play();
+        AnimationHandle track = animation.GetHandle();
+        track.SetSpeed(_speed);
+        await track.Play();
+        
+        if (animation.IsAwait())
+        {
+            _mainTrack = track;
+        }
+        else
+        {
+            // _sideTracks.Add(track);
+        }
 
         CanvasManager.Instance.StageCanvas.Refresh();
-
-        // opening
-        // bullet time at killing moment
-        // speed control and skip
-        // camera shake when attack with large value
     }
 
-    public void Pause() => _handle.Pause();
-    public void Resume() => _handle.Resume();
+    public async Task NextKey()
+    {
+        await Task.Delay(1000);
+    }
+
+    public void Pause() => _mainTrack?.Pause();
+    public void Resume() => _mainTrack?.Resume();
     public void SetSpeed(float speed)
     {
         _speed = speed;
-        _handle.SetSpeed(_speed);
+        _mainTrack?.SetSpeed(_speed);
     }
 
-    public void Skip() => _handle.Skip();
+    public void Skip() => _mainTrack?.Skip();
 }

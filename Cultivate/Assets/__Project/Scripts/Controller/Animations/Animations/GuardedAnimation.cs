@@ -1,12 +1,11 @@
-
 using DG.Tweening;
 using UnityEngine;
 
-public class EvadeAnimation : Animation
+public class GuardedAnimation : Animation
 {
     private StageEntity _tgt;
 
-    public EvadeAnimation(bool isAwait, StageEntity tgt) : base(isAwait)
+    public GuardedAnimation(bool isAwait, StageEntity tgt) : base(isAwait)
     {
         _tgt = tgt;
     }

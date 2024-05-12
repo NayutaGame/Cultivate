@@ -491,7 +491,7 @@ public class BuffCategory : Category<BuffEntry>
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_EVADE, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
-                        EvadeDetails d = (EvadeDetails)eventDetails;
+                        EvadedDetails d = (EvadedDetails)eventDetails;
                         if (b.Owner != d.Tgt) return;
                         if (b.Owner.GetStackOfBuff("跳回合") == 0)
                             await b.Owner.GainBuffProcedure("跳回合");

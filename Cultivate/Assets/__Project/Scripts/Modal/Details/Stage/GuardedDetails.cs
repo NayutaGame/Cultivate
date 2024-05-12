@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EvadeDetails : EventDetails
+public class GuardedDetails : EventDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
@@ -13,12 +11,12 @@ public class EvadeDetails : EventDetails
         set => _value = Mathf.Max(0, value);
     }
 
-    public EvadeDetails(StageEntity src, StageEntity tgt, int value)
+    public GuardedDetails(StageEntity src, StageEntity tgt, int value)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
     }
 
-    public EvadeDetails Clone() => new(Src, Tgt, _value);
+    public GuardedDetails Clone() => new(Src, Tgt, _value);
 }

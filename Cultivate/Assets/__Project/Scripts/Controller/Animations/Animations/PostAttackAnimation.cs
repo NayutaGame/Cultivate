@@ -6,9 +6,9 @@ public class PostAttackAnimation : Animation
 {
     private StageEntity _src;
 
-    public PostAttackAnimation(bool isAwait, StageEntity src) : base(isAwait)
+    public PostAttackAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait)
     {
-        _src = src;
+        _src = attackDetails.Src;
     }
 
     public override AnimationHandle GetHandle()

@@ -1,6 +1,7 @@
 
 using DG.Tweening;
-using UnityEngine;
+using Spine;
+using Spine.Unity;
 
 public class AttackAnimation : Animation
 {
@@ -13,48 +14,32 @@ public class AttackAnimation : Animation
 
     public override AnimationHandle GetHandle()
     {
-        return new TweenHandle(this, DOTween.Sequence()
-            .Append(GetAttackTween())
-            .AppendCallback(SpawnPiercingVFX)
-            .AppendInterval(0.15f));
+        // Spine handle
+        return new TweenHandle(this, GetAnimation()); 
     }
 
-    private Tween GetAttackTween()
+    private Tween GetAnimation()
     {
         StageEntity src = _attackDetails.Src;
-
         EntitySlot slot = src.Slot();
+        slot.Skeleton.AnimationState.SetAnimation(0, "attack1", false);
         
-        float duration = slot.Skeleton.Skeleton.Data.FindAnimation("atk1").Duration;
+        // float duration = slot.Skeleton.Skeleton.Data.FindAnimation("attack1").Duration;
         // slot.Skeleton.Skeleton.SetToSetupPose();
-        slot.Skeleton.AnimationState.SetAnimation(0, "atk1", false);
 
-        return DOTween.Sequence().AppendInterval(duration);
-        
-        //     
-        // Transform slotTransform = src.Slot().transform;
-        // Transform entityTransform = src.Slot().EntityTransform;
-        // int orient = -(src.Index * 2 - 1);
-        //
-        // return entityTransform.DOMove(slotTransform.position + Vector3.right * orient * 1.2f, 0.15f).SetEase(Ease.InQuad);
+        return DOTween.Sequence().AppendInterval(GetTimeToFire());
     }
-
-    private void SpawnPiercingVFX()
+    
+    private float GetTimeToFire()
     {
         StageEntity src = _attackDetails.Src;
-        WuXing wuXing = _attackDetails.WuXing ?? WuXing.Jin;
-        int value = _attackDetails.Value;
+        EntitySlot slot = src.Slot();
+        SkeletonAnimation skeletonAnimation = slot.Skeleton;
+        Spine.Skeleton skeleton = skeletonAnimation.Skeleton;
+        Spine.Animation animation = skeleton.Data.FindAnimation("attack1");
+        EventTimeline eventTimeline = animation.Timelines.Find(t => t is EventTimeline) as EventTimeline;
 
-        int orient = -(src.Index * 2 - 1);
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.PiercingVFXFromWuXing[wuXing], src.Slot().transform.position + 2 * orient * Vector3.right,
-            Quaternion.Euler(0, src.Index * 180, 0), StageManager.Instance.VFXPool);
-        VFX vfx = gao.GetComponent<VFX>();
-        vfx.SetIntensity(IntensityFromValue(value));
-        vfx.Play();
-    }
-
-    private float IntensityFromValue(int value)
-    {
-        return Mathf.InverseLerp(0, 100, value);
+        // List<Spine.Event> events = eventTimeline.Events.ToList();
+        return eventTimeline.Events[0].Time;
     }
 }

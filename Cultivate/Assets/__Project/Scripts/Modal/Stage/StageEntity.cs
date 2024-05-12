@@ -444,11 +444,11 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task DamageSelfProcedure(int value, bool recursive = true,
         Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
-        => await _env.DamageProcedure(new DamageDetails(this, this, value, recursive, damaged, undamaged));
+        => await _env.DamageProcedure(new DamageDetails(this, this, value, crit: false, lifeSteal: false, recursive, damaged, undamaged));
 
     public async Task DamageOppoProcedure(int value, bool recursive = true,
         Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
-        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, recursive, damaged, undamaged));
+        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, crit: false, lifeSteal: false, recursive, damaged, undamaged));
 
     public async Task LoseHealthProcedure(int value)
         => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value));
