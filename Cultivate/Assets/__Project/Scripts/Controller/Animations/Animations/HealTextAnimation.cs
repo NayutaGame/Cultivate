@@ -3,31 +3,34 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class UndamagedAnimation : Animation
+public class HealTextAnimation : Animation
 {
-    private DamageDetails _damageDetails;
+    private HealDetails _healDetails;
 
-    public UndamagedAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait)
+    public HealTextAnimation(bool isAwait, HealDetails healDetails) : base(isAwait)
     {
-        _damageDetails = damageDetails.Clone();
+        _healDetails = healDetails.Clone();
     }
 
     public override AnimationHandle GetHandle()
     {
         return new TweenHandle(this, DOTween.Sequence()
-            .AppendCallback(SpawnUndamagedText));
+            .AppendCallback(SpawnText));
     }
+    
+    public override bool InvolvesCharacterAnimation() => false;
 
-    private void SpawnUndamagedText()
+    private void SpawnText()
     {
-        StageEntity tgt = _damageDetails.Tgt;
-
+        StageEntity tgt = _healDetails.Tgt;
+        int value = _healDetails.Value;
+    
         GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
-
+    
         TMP_Text text = gao.GetComponent<FlowTextVFX>().Text;
-        text.text = "无伤害";
-        text.color = Color.red;
+        text.text = value.ToString();
+        text.color = Color.green;
         gao.transform.localScale = Vector3.zero;
         DOTween.Sequence()
             .Append(gao.transform.DOScale(3, 0.3f).SetEase(Ease.OutCubic))

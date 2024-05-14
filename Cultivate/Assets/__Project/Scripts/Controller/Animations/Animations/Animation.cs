@@ -10,4 +10,5 @@ public abstract class Animation
     }
 
     public abstract AnimationHandle GetHandle();
+    public abstract bool InvolvesCharacterAnimation();
 }

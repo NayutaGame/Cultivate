@@ -77,7 +77,7 @@ public class StageEntity : Addressable, StageEventListener
         
         
         // will cast report
-        await _env.Play(new ShiftAnimation());
+        await _env.Play(new ShiftAnimation(), false);
         _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}");
         
         
@@ -436,34 +436,34 @@ public class StageEntity : Addressable, StageEventListener
     #region Procedure
 
     public async Task AttackProcedure(int value, WuXing? wuXing = null, int times = 1, bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
-        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null, bool fromSeamless = false)
-        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged, fromSeamless), times);
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null, bool fromSeamless = false, bool induced = false)
+        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged, fromSeamless), times, induced);
 
-    public async Task IndirectProcedure(int value, WuXing? wuXing = null, bool recursive = true)
-        => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, wuXing, recursive));
+    public async Task IndirectProcedure(int value, WuXing? wuXing = null, bool recursive = true, bool induced = false)
+        => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, wuXing, recursive), induced);
 
     public async Task DamageSelfProcedure(int value, bool recursive = true,
-        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
-        => await _env.DamageProcedure(new DamageDetails(this, this, value, crit: false, lifeSteal: false, recursive, damaged, undamaged));
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null, bool induced = false)
+        => await _env.DamageProcedure(new DamageDetails(this, this, value, crit: false, lifeSteal: false, recursive, damaged, undamaged), induced);
 
     public async Task DamageOppoProcedure(int value, bool recursive = true,
-        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
-        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, crit: false, lifeSteal: false, recursive, damaged, undamaged));
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null, bool induced = false)
+        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, crit: false, lifeSteal: false, recursive, damaged, undamaged), induced);
 
     public async Task LoseHealthProcedure(int value)
         => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value));
 
-    public async Task HealProcedure(int value)
-        => await _env.HealProcedure(new HealDetails(this, this, value));
+    public async Task HealProcedure(int value, bool induced)
+        => await _env.HealProcedure(new HealDetails(this, this, value), induced);
 
-    public async Task HealOppoProcedure(int value)
-        => await _env.HealProcedure(new HealDetails(this, Opponent(), value));
+    public async Task HealOppoProcedure(int value, bool induced)
+        => await _env.HealProcedure(new HealDetails(this, Opponent(), value), induced);
 
-    public async Task GainArmorProcedure(int value)
-        => await _env.GainArmorProcedure(new GainArmorDetails(this, this, value));
+    public async Task GainArmorProcedure(int value, bool induced)
+        => await _env.GainArmorProcedure(new GainArmorDetails(this, this, value), induced);
 
-    public async Task GiveArmorProcedure(int value)
-        => await _env.GainArmorProcedure(new GainArmorDetails(this, Opponent(), value));
+    public async Task GiveArmorProcedure(int value, bool induced)
+        => await _env.GainArmorProcedure(new GainArmorDetails(this, Opponent(), value), induced);
 
     public async Task LoseArmorProcedure(int value)
         => await _env.LoseArmorProcedure(new LoseArmorDetails(this, this, value));
@@ -471,11 +471,11 @@ public class StageEntity : Addressable, StageEventListener
     public async Task RemoveArmorProcedure(int value)
         => await _env.LoseArmorProcedure(new LoseArmorDetails(this, Opponent(), value));
 
-    public async Task GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => await _env.GainBuffProcedure(new GainBuffDetails(this, this, buffEntry, stack, recursive));
+    public async Task GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
+        => await _env.GainBuffProcedure(new GainBuffDetails(this, this, buffEntry, stack, recursive), induced);
 
-    public async Task GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => await _env.GainBuffProcedure(new GainBuffDetails(this, Opponent(), buffEntry, stack, recursive));
+    public async Task GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
+        => await _env.GainBuffProcedure(new GainBuffDetails(this, Opponent(), buffEntry, stack, recursive), induced);
 
     public async Task LoseBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
         => await _env.LoseBuffProcedure(new LoseBuffDetails(this, this, buffEntry, stack, recursive));

@@ -11,7 +11,7 @@ public class SettingsSlider : SimpleView
 
     private SliderModel _model;
 
-    private void Awake()
+    public override void Awake()
     {
         if (_model == null)
             SetAddress(null);

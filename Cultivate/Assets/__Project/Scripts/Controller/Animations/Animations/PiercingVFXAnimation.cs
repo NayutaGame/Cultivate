@@ -16,6 +16,8 @@ public class PiercingVFXAnimation : Animation
         return new TweenHandle(this, DOTween.Sequence()
             .AppendCallback(SpawnPiercingVFX));
     }
+    
+    public override bool InvolvesCharacterAnimation() => false;
 
     private void SpawnPiercingVFX()
     {

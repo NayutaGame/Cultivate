@@ -2,11 +2,11 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class BuffAnimation : Animation
+public class BuffVFXAnimation : Animation
 {
     public GainBuffDetails GainBuffDetails;
 
-    public BuffAnimation(bool isAwait, GainBuffDetails gainBuffDetails) : base(isAwait)
+    public BuffVFXAnimation(bool isAwait, GainBuffDetails gainBuffDetails) : base(isAwait)
     {
         GainBuffDetails = gainBuffDetails.Clone();
     }
@@ -14,9 +14,10 @@ public class BuffAnimation : Animation
     public override AnimationHandle GetHandle()
     {
         return new TweenHandle(this, DOTween.Sequence()
-            .AppendCallback(SpawnBuffVFX)
-            .AppendCallback(SpawnBuffedText));
+            .AppendCallback(SpawnBuffVFX));
     }
+    
+    public override bool InvolvesCharacterAnimation() => false;
 
     private void SpawnBuffVFX()
     {
@@ -29,14 +30,5 @@ public class BuffAnimation : Animation
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.Play();
-    }
-
-    private void SpawnBuffedText()
-    {
-        GainBuffDetails d = GainBuffDetails;
-
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, d.Tgt.Slot().transform.position,
-            Quaternion.identity, StageManager.Instance.VFXPool);
-        gao.GetComponent<FlowTextVFX>().Text.text = $"{d._buffEntry.GetName()} +{d._stack}";
     }
 }

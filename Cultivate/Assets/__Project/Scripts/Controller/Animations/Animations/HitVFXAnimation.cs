@@ -14,10 +14,12 @@ public class HitVFXAnimation : Animation
     public override AnimationHandle GetHandle()
     {
         return new TweenHandle(this, DOTween.Sequence()
-            .AppendCallback(SpawnHitVFX));
+            .AppendCallback(SpawnVFX));
     }
+    
+    public override bool InvolvesCharacterAnimation() => false;
 
-    private void SpawnHitVFX()
+    private void SpawnVFX()
     {
         StageEntity src = _attackDetails.Src;
         StageEntity tgt = _attackDetails.Tgt;

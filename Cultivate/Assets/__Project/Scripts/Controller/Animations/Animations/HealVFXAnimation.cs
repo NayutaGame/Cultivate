@@ -2,11 +2,11 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class HealAnimation : Animation
+public class HealVFXAnimation : Animation
 {
     private HealDetails _healDetails;
 
-    public HealAnimation(bool isAwait, HealDetails healDetails) : base(isAwait)
+    public HealVFXAnimation(bool isAwait, HealDetails healDetails) : base(isAwait)
     {
         _healDetails = healDetails.Clone();
     }
@@ -14,10 +14,12 @@ public class HealAnimation : Animation
     public override AnimationHandle GetHandle()
     {
         return new TweenHandle(this, DOTween.Sequence()
-            .AppendCallback(SpawnHealVFX));
+            .AppendCallback(SpawnVFX));
     }
+    
+    public override bool InvolvesCharacterAnimation() => false;
 
-    private void SpawnHealVFX()
+    private void SpawnVFX()
     {
         StageEntity tgt = _healDetails.Tgt;
         int value = _healDetails.Value;

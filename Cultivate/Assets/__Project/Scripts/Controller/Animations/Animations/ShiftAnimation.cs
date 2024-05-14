@@ -9,4 +9,6 @@ public class ShiftAnimation : Animation
     {
         return new TweenHandle(this, TimelineView.Instance.ShiftAnimation());
     }
+    
+    public override bool InvolvesCharacterAnimation() => false;
 }

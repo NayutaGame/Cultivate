@@ -1,12 +1,11 @@
-
 using DG.Tweening;
 using UnityEngine;
 
-public class EvadedAnimation : Animation
+public class GuardedCharacterAnimation : Animation
 {
     private StageEntity _tgt;
 
-    public EvadedAnimation(bool isAwait, StageEntity tgt) : base(isAwait)
+    public GuardedCharacterAnimation(bool isAwait, StageEntity tgt) : base(isAwait)
     {
         _tgt = tgt;
     }
@@ -14,10 +13,14 @@ public class EvadedAnimation : Animation
     public override AnimationHandle GetHandle()
     {
         return new TweenHandle(this, DOTween.Sequence().SetAutoKill()
+            // .AppendCallback(SpawnHitVFX)
+            // .AppendCallback(SpawnAttackedText)
             .Append(GetDodgeTween())
             .AppendInterval(0.2f)
             .Append(GetBackTween()));
     }
+    
+    public override bool InvolvesCharacterAnimation() => true;
 
     private Tween GetDodgeTween()
     {

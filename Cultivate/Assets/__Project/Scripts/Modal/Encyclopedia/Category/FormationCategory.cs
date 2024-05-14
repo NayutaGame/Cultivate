@@ -305,7 +305,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainArmorProcedure(30);
+                                await f.Owner.GainArmorProcedure(30, induced: false);
                                 await f.Owner.GainBuffProcedure("柔韧", 3);
                             }),
                             // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
@@ -326,7 +326,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainArmorProcedure(20);
+                                await f.Owner.GainArmorProcedure(20, induced: false);
                                 await f.Owner.GainBuffProcedure("柔韧", 2);
                             }),
                             // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
@@ -347,7 +347,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainArmorProcedure(10);
+                                await f.Owner.GainArmorProcedure(10, induced: false);
                                 await f.Owner.GainBuffProcedure("柔韧", 1);
                             }),
                             // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>

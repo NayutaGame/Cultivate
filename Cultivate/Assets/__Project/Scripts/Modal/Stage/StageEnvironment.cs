@@ -102,42 +102,37 @@ public class StageEnvironment : Addressable, StageEventListener
     /// <param name="recursive">是否会递归</param>
     /// <param name="damaged">如果造成伤害时候的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
+    /// <param name="induced">该行为是间接行为，不会引起额外的角色动画</param>
     public async Task AttackProcedure(StageEntity src, StageEntity tgt, int value, WuXing? wuXing = null, int times = 1,
         bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
-        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
-        => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times);
-    public async Task AttackProcedure(AttackDetails attackDetails, int times)
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null, bool induced = false)
+        => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times, induced);
+    public async Task AttackProcedure(AttackDetails attackDetails, int times, bool induced)
     {
-        /*
-         * Buff引起的
-         * primary 延迟攻，天衣无缝
-         * derived 回马枪
-         * dont care 看破
-         */
         if (await attackDetails.Src.TryConsumeProcedure("追击"))
             times += 1;
 
-        await Play(new PreAttackedAnimation(false, attackDetails));
-        await Play(new AttackAnimation(true, attackDetails));
+        await Play(new PreAttackedCharacterAnimation(false, attackDetails), induced);
+        await Play(new AttackCharacterAnimation(true, attackDetails), induced);
         
         for (int i = 0; i < times; i++)
         {
             AttackDetails d = attackDetails.Clone();
             await _eventDict.SendEvent(StageEventDict.WIL_ATTACK, d);
-            await SingleAttackProcedure(d);
+            await SingleAttackProcedure(d, induced);
             await _eventDict.SendEvent(StageEventDict.DID_ATTACK, d);
-            await NextKey();
+            await NextKey(induced);
         }
     }
 
-    private async Task SingleAttackProcedure(AttackDetails d)
+    private async Task SingleAttackProcedure(AttackDetails d, bool induced)
     {
-        await Play(new PiercingVFXAnimation(false, d));
+        await Play(new PiercingVFXAnimation(false, d), induced);
 
         bool isEvaded = !d.Pierce && d.Evade;
         if (isEvaded)
         {
-            await EvadedProcedure(new EvadedDetails(d.Src, d.Tgt, d.Value));
+            await EvadedProcedure(new EvadedDetails(d.Src, d.Tgt, d.Value), induced);
 
             if (d.Undamaged != null)
                 await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0, crit: d.Crit, lifeSteal: d.LifeSteal));
@@ -157,34 +152,34 @@ public class StageEnvironment : Addressable, StageEventListener
             d.Tgt.Armor = 0;
         }
         
-        await Play(new HitVFXAnimation(false, d));
+        await Play(new HitVFXAnimation(false, d), induced);
 
         bool isGuarded = d.Value == 0;
         if (isGuarded)
         {
-            await GuardedProcedure(new GuardedDetails(d.Src, d.Tgt, d.Value));
+            await GuardedProcedure(new GuardedDetails(d.Src, d.Tgt, d.Value), induced);
 
             if (d.Undamaged != null)
                 await d.Undamaged(new DamageDetails(d.Src, d.Tgt, 0, crit: d.Crit, lifeSteal: d.LifeSteal));
             return;
         }
 
-        await DamageProcedure(new DamageDetails(d.Src, d.Tgt, d.Value, crit: d.Crit, lifeSteal: d.LifeSteal, damaged: d.Damaged, undamaged: d.Undamaged));
+        await DamageProcedure(new DamageDetails(d.Src, d.Tgt, d.Value, crit: d.Crit, lifeSteal: d.LifeSteal, damaged: d.Damaged, undamaged: d.Undamaged), induced);
         
         _result.TryAppend($"    敌方生命[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
     }
 
-    private async Task EvadedProcedure(EvadedDetails d)
+    private async Task EvadedProcedure(EvadedDetails d, bool induced)
     {
-        await Play(new EvadedAnimation(false, d.Tgt));
+        await Play(new EvadedCharacterAnimation(false, d.Tgt), induced);
         _result.TryAppend($"    攻击被闪避");
         
         await _eventDict.SendEvent(StageEventDict.DID_EVADE, d);
     }
 
-    private async Task GuardedProcedure(GuardedDetails d)
+    private async Task GuardedProcedure(GuardedDetails d, bool induced)
     {
-        await Play(new GuardedAnimation(false, d.Tgt));
+        await Play(new GuardedCharacterAnimation(false, d.Tgt), induced);
         _result.TryAppend($"    攻击被格挡");
     }
 
@@ -196,9 +191,9 @@ public class StageEnvironment : Addressable, StageEventListener
     /// <param name="value">攻击数值</param>
     /// <param name="wuXing">攻击特效的五行</param>
     /// <param name="recursive">是否会递归</param>
-    public async Task IndirectProcedure(StageEntity src, StageEntity tgt, int value, WuXing? wuXing = null, bool recursive = true)
-        => await IndirectProcedure(new IndirectDetails(src, tgt, value, wuXing, recursive));
-    public async Task IndirectProcedure(IndirectDetails indirectDetails)
+    public async Task IndirectProcedure(StageEntity src, StageEntity tgt, int value, WuXing? wuXing = null, bool recursive = true, bool induced = false)
+        => await IndirectProcedure(new IndirectDetails(src, tgt, value, wuXing, recursive), induced);
+    public async Task IndirectProcedure(IndirectDetails indirectDetails, bool induced)
     {
         IndirectDetails d = indirectDetails.Clone();
 
@@ -231,7 +226,7 @@ public class StageEnvironment : Addressable, StageEventListener
         }
 
         DamageDetails damageDetails = new DamageDetails(d.Src, d.Tgt, d.Value);
-        await DamageProcedure(damageDetails);
+        await DamageProcedure(damageDetails, induced);
 
         // await TryPlayTween(new AttackTweenDescriptor(d));
         _result.TryAppend($"    敌方生命[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
@@ -250,9 +245,9 @@ public class StageEnvironment : Addressable, StageEventListener
     /// <param name="damaged">如果造成伤害时候的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
     public async Task DamageProcedure(StageEntity src, StageEntity tgt, int value, bool crit = false, bool lifeSteal = false, bool recursive = true,
-        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null)
-        => await DamageProcedure(new DamageDetails(src, tgt, value, crit, lifeSteal, recursive, damaged, undamaged));
-    public async Task DamageProcedure(DamageDetails d)
+        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null, bool induced = false)
+        => await DamageProcedure(new DamageDetails(src, tgt, value, crit, lifeSteal, recursive, damaged, undamaged), induced);
+    public async Task DamageProcedure(DamageDetails d, bool induced)
     {
         if (d.Crit)
             d.Value *= 2;
@@ -261,14 +256,14 @@ public class StageEnvironment : Addressable, StageEventListener
 
         if (d.Cancel || d.Value == 0)
         {
-            await Play(new UndamagedAnimation(false, d));
+            await Play(new UndamagedTextAnimation(false, d), induced);
             if (d.Undamaged != null)
                 await d.Undamaged(d);
             return;
         }
 
-        await Play(new DamagedAnimation(false, d));
-        await Play(new DamagedTextAnimation(false, d));
+        await Play(new DamagedCharacterAnimation(false, d), induced);
+        await Play(new DamagedTextAnimation(false, d), induced);
         await LoseHealthProcedure(d.Tgt, d.Value);
         if (d.Damaged != null)
             await d.Damaged(d);
@@ -276,7 +271,7 @@ public class StageEnvironment : Addressable, StageEventListener
         await _eventDict.SendEvent(StageEventDict.DID_DAMAGE, d);
 
         if (!d.Cancel && d.LifeSteal)
-            await HealProcedure(d.Src, d.Src, d.Value);
+            await HealProcedure(d.Src, d.Src, d.Value, true);
     }
 
     public async Task LoseHealthProcedure(StageEntity owner, int value)
@@ -293,9 +288,9 @@ public class StageEnvironment : Addressable, StageEventListener
         await _eventDict.SendEvent(StageEventDict.DID_LOSE_HEALTH, d);
     }
 
-    public async Task HealProcedure(StageEntity src, StageEntity tgt, int value)
-        => await HealProcedure(new HealDetails(src, tgt, value));
-    public async Task HealProcedure(HealDetails d)
+    public async Task HealProcedure(StageEntity src, StageEntity tgt, int value, bool induced)
+        => await HealProcedure(new HealDetails(src, tgt, value), induced);
+    public async Task HealProcedure(HealDetails d, bool induced)
     {
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
@@ -319,15 +314,17 @@ public class StageEnvironment : Addressable, StageEventListener
         tgt.Hp += actualHealed;
         tgt.HealedRecord += actualHealed;
 
-        await Play(new HealAnimation(true, d));
+        await Play(new HealCharacterAnimation(true, d), induced);
+        await Play(new HealVFXAnimation(false, d), induced);
+        await Play(new HealTextAnimation(false, d), induced);
         _result.TryAppend($"    生命变成了${tgt.Hp}");
 
         await _eventDict.SendEvent(StageEventDict.DID_HEAL, d);
     }
 
-    public async Task GainBuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)
-        => await GainBuffProcedure(new GainBuffDetails(src, tgt, buffEntry, stack, recursive));
-    public async Task GainBuffProcedure(GainBuffDetails d)
+    public async Task GainBuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
+        => await GainBuffProcedure(new GainBuffDetails(src, tgt, buffEntry, stack, recursive), induced);
+    public async Task GainBuffProcedure(GainBuffDetails d, bool induced)
     {
         await _eventDict.SendEvent(StageEventDict.WIL_GAIN_BUFF, d);
 
@@ -335,10 +332,12 @@ public class StageEnvironment : Addressable, StageEventListener
         if (d.Cancel) return;
 
         Buff same = d.Tgt.FindBuff(d._buffEntry);
+        int oldStack;
+        int newStack;
 
         if (same != null && d._buffEntry.BuffStackRule != BuffStackRule.Individual)
         {
-            int oldStack = same.Stack;
+            oldStack = same.Stack;
 
             switch (d._buffEntry.BuffStackRule)
             {
@@ -357,17 +356,21 @@ public class StageEnvironment : Addressable, StageEventListener
                     await same.SetStack(d._stack);
                     break;
             }
-
-            await Play(new BuffAnimation(true, d));
-            _result.TryAppend($"    {d._buffEntry.GetName()}: {oldStack} -> {same.Stack}");
+            
+            newStack = same.Stack;
         }
         else
         {
+            oldStack = 0;
+            newStack = d._stack;
+            
             await d.Tgt.AddBuff(new BuffAppearDetails(d.Tgt, d._buffEntry, d._stack));
-
-            await Play(new BuffAnimation(true, d));
-            _result.TryAppend($"    {d._buffEntry.GetName()}: 0 -> {d._stack}");
         }
+        
+        await Play(new BuffCharacterAnimation(true, d), induced);
+        await Play(new BuffVFXAnimation(false, d), induced);
+        await Play(new BuffTextAnimation(false, d), induced);
+        _result.TryAppend($"    {d._buffEntry.GetName()}: {oldStack} -> {newStack}");
 
         await _eventDict.SendEvent(StageEventDict.DID_GAIN_BUFF, d);
     }
@@ -388,9 +391,9 @@ public class StageEnvironment : Addressable, StageEventListener
         await _eventDict.SendEvent(StageEventDict.DID_LOSE_BUFF, d);
     }
 
-    public async Task GainArmorProcedure(StageEntity src, StageEntity tgt, int value)
-        => await GainArmorProcedure(new GainArmorDetails(src, tgt, value));
-    public async Task GainArmorProcedure(GainArmorDetails d)
+    public async Task GainArmorProcedure(StageEntity src, StageEntity tgt, int value, bool induced)
+        => await GainArmorProcedure(new GainArmorDetails(src, tgt, value), induced);
+    public async Task GainArmorProcedure(GainArmorDetails d, bool induced)
     {
         await _eventDict.SendEvent(StageEventDict.WIL_GAIN_ARMOR, d);
 
@@ -398,6 +401,10 @@ public class StageEnvironment : Addressable, StageEventListener
             return;
 
         d.Tgt.Armor += d.Value;
+
+        await Play(new GainArmorCharacterAnimation(true, d), induced);
+        await Play(new GainArmorTextAnimation(false, d), induced);
+        // await Play(new GainArmorVFXAnimation(false, d), induced);
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
         await _eventDict.SendEvent(StageEventDict.DID_GAIN_ARMOR, d);
@@ -560,17 +567,25 @@ public class StageEnvironment : Addressable, StageEventListener
         StageManager.Instance.StageAnimationController.Opening();
     }
 
-    public async Task Play(Animation animation)
+    public async Task Play(Animation animation, bool induced)
     {
         if (!_config.Animated)
             return;
+
+        if (induced && animation.InvolvesCharacterAnimation())
+            return;
+        
         await StageManager.Instance.StageAnimationController.Play(animation);
     }
 
-    public async Task NextKey()
+    public async Task NextKey(bool induced)
     {
         if (!_config.Animated)
             return;
+
+        if (induced)
+            return;
+        
         await StageManager.Instance.StageAnimationController.NextKey();
     }
 

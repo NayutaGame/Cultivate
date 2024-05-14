@@ -2,11 +2,11 @@
 using System;
 using Spine.Unity;
 
-public class PreAttackedAnimation : Animation
+public class PreAttackedCharacterAnimation : Animation
 {
     private AttackDetails _attackDetails;
 
-    public PreAttackedAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait)
+    public PreAttackedCharacterAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait)
     {
         _attackDetails = attackDetails.Clone();
     }
@@ -19,6 +19,8 @@ public class PreAttackedAnimation : Animation
         
         return new SpineHandle(this, Array.Empty<float>(), skeletonAnimation, PlayAnimation);
     }
+    
+    public override bool InvolvesCharacterAnimation() => true;
 
     private void PlayAnimation()
     {

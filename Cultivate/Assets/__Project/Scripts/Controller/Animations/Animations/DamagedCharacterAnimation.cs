@@ -2,11 +2,11 @@
 using System;
 using Spine.Unity;
 
-public class DamagedAnimation : Animation
+public class DamagedCharacterAnimation : Animation
 {
     private DamageDetails _damageDetails;
 
-    public DamagedAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait)
+    public DamagedCharacterAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait)
     {
         _damageDetails = damageDetails.Clone();
     }
@@ -19,6 +19,8 @@ public class DamagedAnimation : Animation
         
         return new SpineHandle(this, Array.Empty<float>(), skeletonAnimation, PlayAnimation);
     }
+    
+    public override bool InvolvesCharacterAnimation() => true;
 
     private void PlayAnimation()
     {

@@ -339,8 +339,8 @@ public class BuffCategory : Category<BuffEntry>
                         int selfHpGap = self.MaxHp - (int)((float)selfMaxHp * b.Stack / 100);
                         int oppoHpGap = oppo.MaxHp - (int)((float)oppoMaxHp * b.Stack / 100);
 
-                        await self.HealProcedure(selfHpGap);
-                        await oppo.HealProcedure(oppoHpGap);
+                        await self.HealProcedure(selfHpGap, induced: true);
+                        await oppo.HealProcedure(oppoHpGap, induced: true);
 
                         await self.RemoveBuff(b);
                     }),
@@ -370,7 +370,7 @@ public class BuffCategory : Category<BuffEntry>
                         LoseArmorDetails d = (LoseArmorDetails)eventDetails;
                         if (b.Owner == d.Tgt)
                         {
-                            await b.Owner.GainArmorProcedure(d.Value);
+                            await b.Owner.GainArmorProcedure(d.Value, induced: true);
                             await b.SetDStack(-1);
                         }
                     }),
@@ -385,7 +385,7 @@ public class BuffCategory : Category<BuffEntry>
                         GainBuffDetails d = (GainBuffDetails)eventDetails;
                         if (b.Owner != d.Tgt) return;
                         if (d._buffEntry.GetName() != "灵气") return;
-                        await b.Owner.HealProcedure(d._stack * 3);
+                        await b.Owner.HealProcedure(d._stack * 3, induced: true);
                     }),
                 }),
 
@@ -440,7 +440,7 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)eventDetails;
                         if (b.Owner != d.Src) return;
-                        await b.Owner.GainArmorProcedure(3 * b.Stack);
+                        await b.Owner.GainArmorProcedure(3 * b.Stack, induced: true);
                     }),
                 }),
 
@@ -533,7 +533,7 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)stageEventDetails;
 
                         if (b.Owner != d.Owner) return;
-                        await b.Owner.GainArmorProcedure(b.Stack);
+                        await b.Owner.GainArmorProcedure(b.Stack, induced: false);
                         await b.Owner.RemoveBuff(b);
                     }),
                 }),
@@ -744,7 +744,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (!d.Recursive) return;
                         if (b.Owner == d.Tgt && d.Src != d.Tgt)
                         {
-                            await b.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Mu, recursive: false);
+                            await b.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Mu, recursive: false, induced: true);
                             await b.Owner.RemoveBuff(b);
                         }
                     }),
@@ -867,7 +867,7 @@ public class BuffCategory : Category<BuffEntry>
                         }
                         else
                         {
-                            await b.Owner.GainArmorProcedure(b.Stack);
+                            await b.Owner.GainArmorProcedure(b.Stack, induced: true);
                         }
                     }),
                 }),
@@ -1029,7 +1029,7 @@ public class BuffCategory : Category<BuffEntry>
                         StageDetails d = (StageDetails)stageEventDetails;
 
                         if (b.Owner != d.Owner) return;
-                        await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
+                        await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp, induced: false);
                     }),
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
                     {
@@ -1037,7 +1037,7 @@ public class BuffCategory : Category<BuffEntry>
                         RoundDetails d = (RoundDetails)stageEventDetails;
 
                         if (b.Owner == d.Owner)
-                            await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
+                            await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp, induced: false);
                     }),
                 }),
 

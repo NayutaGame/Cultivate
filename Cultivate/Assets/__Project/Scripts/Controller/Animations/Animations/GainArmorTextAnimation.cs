@@ -3,34 +3,34 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class DamagedTextAnimation : Animation
+public class GainArmorTextAnimation : Animation
 {
-    private DamageDetails _damageDetails;
+    public GainArmorDetails _gainArmorDetails;
 
-    public DamagedTextAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait)
+    public GainArmorTextAnimation(bool isAwait, GainArmorDetails gainArmorDetails) : base(isAwait)
     {
-        _damageDetails = damageDetails.Clone();
+        _gainArmorDetails = gainArmorDetails.Clone();
     }
 
     public override AnimationHandle GetHandle()
     {
         return new TweenHandle(this, DOTween.Sequence()
-            .AppendCallback(SpawnDamagedText));
+            .AppendCallback(SpawnText));
     }
     
     public override bool InvolvesCharacterAnimation() => false;
 
-    private void SpawnDamagedText()
+    private void SpawnText()
     {
-        StageEntity tgt = _damageDetails.Tgt;
-        int value = _damageDetails.Value;
+        StageEntity tgt = _gainArmorDetails.Tgt;
+        int value = _gainArmorDetails.Value;
     
         GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
     
         TMP_Text text = gao.GetComponent<FlowTextVFX>().Text;
-        text.text = value.ToString();
-        text.color = Color.red;
+        text.text = $"护甲+{value}";
+        text.color = Color.yellow;
         gao.transform.localScale = Vector3.zero;
         DOTween.Sequence()
             .Append(gao.transform.DOScale(3, 0.3f).SetEase(Ease.OutCubic))

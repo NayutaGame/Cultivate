@@ -3,11 +3,11 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class DamagedTextAnimation : Animation
+public class UndamagedTextAnimation : Animation
 {
     private DamageDetails _damageDetails;
 
-    public DamagedTextAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait)
+    public UndamagedTextAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait)
     {
         _damageDetails = damageDetails.Clone();
     }
@@ -15,21 +15,20 @@ public class DamagedTextAnimation : Animation
     public override AnimationHandle GetHandle()
     {
         return new TweenHandle(this, DOTween.Sequence()
-            .AppendCallback(SpawnDamagedText));
+            .AppendCallback(SpawnUndamagedText));
     }
     
     public override bool InvolvesCharacterAnimation() => false;
 
-    private void SpawnDamagedText()
+    private void SpawnUndamagedText()
     {
         StageEntity tgt = _damageDetails.Tgt;
-        int value = _damageDetails.Value;
-    
+
         GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
-    
+
         TMP_Text text = gao.GetComponent<FlowTextVFX>().Text;
-        text.text = value.ToString();
+        text.text = "无伤害";
         text.color = Color.red;
         gao.transform.localScale = Vector3.zero;
         DOTween.Sequence()

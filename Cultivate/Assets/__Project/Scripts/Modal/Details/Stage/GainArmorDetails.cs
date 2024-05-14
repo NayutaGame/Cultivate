@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
 
 public class GainArmorDetails : EventDetails
 {
@@ -15,4 +11,6 @@ public class GainArmorDetails : EventDetails
         Tgt = tgt;
         Value = value;
     }
+    
+    public GainArmorDetails Clone() => new(Src, Tgt, Value);
 }
