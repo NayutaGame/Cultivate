@@ -64,6 +64,10 @@ MonoBehaviour:
   BuffVFXPrefab: {fileID: 1619087188936424171, guid: ade439789994bc643bdc25c7580d5175, type: 3}
   DebuffVFXPrefab: {fileID: 8812512794605157154, guid: 8cd0bd045b8ebdd4cac4c0095446c379, type: 3}
   HealVFXPrefab: {fileID: 5642120515064658082, guid: fdad782e8205a4346acc26314f6c0044, type: 3}
+  LingQiVFXPrefab: {fileID: 1958459914561981371, guid: c79a8e701876f404ab21aa971abb2fca, type: 3}
+  GainArmorVFXPrefab: {fileID: 4231482995727018640, guid: 53b62e12af3e4d64cb7b959a1129acfe, type: 3}
+  GuardedVFXPrefab: {fileID: 3882701174276009160, guid: 34b46e873fc434b4cbfa2eb26f351b1f, type: 3}
+  FragileVFXPrefab: {fileID: 1333619476989984813, guid: 21cc4438f0ed66944b9c3d935273690e, type: 3}
   _slots:
   - {fileID: 427517689024503909}
   - {fileID: 427517689852698380}

@@ -150,6 +150,8 @@ public class StageEnvironment : Addressable, StageEventListener
         {
             d.Value += -d.Tgt.Armor;
             d.Tgt.Armor = 0;
+
+            await Play(new FragileVFXAnimation(false, d), induced);
         }
         
         await Play(new HitVFXAnimation(false, d), induced);
@@ -179,7 +181,8 @@ public class StageEnvironment : Addressable, StageEventListener
 
     private async Task GuardedProcedure(GuardedDetails d, bool induced)
     {
-        await Play(new GuardedCharacterAnimation(false, d.Tgt), induced);
+        await Play(new GuardedVFXAnimation(false, d), induced);
+        await Play(new GuardedTextAnimation(false, d), induced);
         _result.TryAppend($"    攻击被格挡");
     }
 
@@ -404,7 +407,7 @@ public class StageEnvironment : Addressable, StageEventListener
 
         await Play(new GainArmorCharacterAnimation(true, d), induced);
         await Play(new GainArmorTextAnimation(false, d), induced);
-        // await Play(new GainArmorVFXAnimation(false, d), induced);
+        await Play(new GainArmorVFXAnimation(false, d), induced);
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
         await _eventDict.SendEvent(StageEventDict.DID_GAIN_ARMOR, d);

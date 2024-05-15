@@ -34,19 +34,6 @@ public class HitVFXAnimation : Animation
         vfx.Play();
     }
 
-    // private Tween GetAttackedTween()
-    // {
-    //     StageEntity src = _attackDetails.Src;
-    //     StageEntity tgt = _attackDetails.Tgt;
-    //
-    //     Transform entityTransform = tgt.Slot().EntityTransform;
-    //     int orient = -(src.Index * 2 - 1);
-    //
-    //     return entityTransform
-    //         .DOShakeRotation(0.6f, 10 * orient * Vector3.back, 10, 90, true, ShakeRandomnessMode.Harmonic)
-    //         .SetEase(Ease.InQuad);
-    // }
-
     private float IntensityFromValue(int value)
     {
         return Mathf.InverseLerp(0, 100, value);

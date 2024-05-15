@@ -20,14 +20,14 @@ public class GainArmorVFXAnimation : Animation
 
     private void SpawnVFX()
     {
-        // StageEntity tgt = _gainArmorDetails.Tgt;
-        // int value = _gainArmorDetails.Value;
-        //
-        // GameObject gao = GameObject.Instantiate(StageManager.Instance.HealVFXPrefab, tgt.Slot().VFXTransform.position,
-        //     Quaternion.identity, StageManager.Instance.VFXPool);
-        // VFX vfx = gao.GetComponent<VFX>();
-        // vfx.SetIntensity(IntensityFromValue(value));
-        // vfx.Play();
+        StageEntity tgt = _gainArmorDetails.Tgt;
+        int value = _gainArmorDetails.Value;
+        
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.GainArmorVFXPrefab, tgt.Slot().VFXTransform.position,
+            Quaternion.identity, StageManager.Instance.VFXPool);
+        VFX vfx = gao.GetComponent<VFX>();
+        vfx.SetIntensity(IntensityFromValue(value));
+        vfx.Play();
     }
 
     private float IntensityFromValue(int value)
