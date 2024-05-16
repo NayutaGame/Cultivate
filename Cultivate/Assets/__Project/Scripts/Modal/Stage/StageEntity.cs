@@ -385,13 +385,14 @@ public class StageEntity : Addressable, StageEventListener
     private ListModel<Buff> _buffs;
     public IEnumerable<Buff> Buffs => _buffs.Traversal();
 
-    public async Task AddBuff(BuffAppearDetails d)
+    public async Task<Buff> AddBuff(BuffAppearDetails d)
     {
         Buff buff = new Buff(this, d.Entry);
         buff.Register();
         await buff._eventDict.SendEvent(StageEventDict.BUFF_APPEAR, d);
         await buff.SetStack(d.InitialStack);
         _buffs.Add(buff);
+        return buff;
     }
 
     public async Task RemoveBuff(Buff b)

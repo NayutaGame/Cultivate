@@ -44,7 +44,7 @@ public class StageAnimationController
         
         await track.NextKey(_speed);
 
-        CanvasManager.Instance.StageCanvas.Refresh();
+        // CanvasManager.Instance.StageCanvas.Refresh();
     }
 
     public async Task NextKey()

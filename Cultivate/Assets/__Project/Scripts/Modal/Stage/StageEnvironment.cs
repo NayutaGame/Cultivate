@@ -333,49 +333,40 @@ public class StageEnvironment : Addressable, StageEventListener
 
         d.Cancel |= d._stack <= 0;
         if (d.Cancel) return;
+        
+        await Play(new BuffCharacterAnimation(true, d), induced);
+        await Play(new BuffVFXAnimation(false, d), induced);
+        await Play(new BuffTextAnimation(false, d), induced);
+        _result.TryAppend($"    {d._buffEntry.GetName()} + {d._stack}");
 
-        Buff same = d.Tgt.FindBuff(d._buffEntry);
-        int oldStack;
-        int newStack;
-
-        if (same != null && d._buffEntry.BuffStackRule != BuffStackRule.Individual)
+        Buff buff = d.Tgt.FindBuff(d._buffEntry);
+        if (buff != null && d._buffEntry.BuffStackRule != BuffStackRule.Individual)
         {
-            oldStack = same.Stack;
-
             switch (d._buffEntry.BuffStackRule)
             {
                 case BuffStackRule.One:
                     break;
                 case BuffStackRule.Add:
-                    await same.SetStack(same.Stack + d._stack);
+                    await buff.SetStack(buff.Stack + d._stack);
                     break;
                 case BuffStackRule.Min:
-                    await same.SetStack(Mathf.Min(same.Stack, d._stack));
+                    await buff.SetStack(Mathf.Min(buff.Stack, d._stack));
                     break;
                 case BuffStackRule.Max:
-                    await same.SetStack(Mathf.Max(same.Stack, d._stack));
+                    await buff.SetStack(Mathf.Max(buff.Stack, d._stack));
                     break;
                 case BuffStackRule.Overwrite:
-                    await same.SetStack(d._stack);
+                    await buff.SetStack(d._stack);
                     break;
             }
-            
-            newStack = same.Stack;
         }
         else
         {
-            oldStack = 0;
-            newStack = d._stack;
-            
-            await d.Tgt.AddBuff(new BuffAppearDetails(d.Tgt, d._buffEntry, d._stack));
+            buff = await d.Tgt.AddBuff(new BuffAppearDetails(d.Tgt, d._buffEntry, d._stack));
         }
-        
-        await Play(new BuffCharacterAnimation(true, d), induced);
-        await Play(new BuffVFXAnimation(false, d), induced);
-        await Play(new BuffTextAnimation(false, d), induced);
-        _result.TryAppend($"    {d._buffEntry.GetName()}: {oldStack} -> {newStack}");
 
         await _eventDict.SendEvent(StageEventDict.DID_GAIN_BUFF, d);
+        buff.PlayPingAnimation();
     }
 
     public async Task LoseBuffProcedure(StageEntity src, StageEntity tgt, BuffEntry buffEntry, int stack = 1, bool recursive = true)

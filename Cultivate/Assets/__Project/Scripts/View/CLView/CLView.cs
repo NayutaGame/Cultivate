@@ -75,7 +75,7 @@ public abstract class CLView : MonoBehaviour
         => SetVisible(false);
     
     public abstract Address GetAddress();
-    public abstract T Get<T>();
+    public abstract T Get<T>() where T : class;
     public abstract void SetAddress(Address address);
     public abstract void Refresh();
 }

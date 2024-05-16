@@ -1,5 +1,6 @@
 
 using System.Threading.Tasks;
+using CLLibrary;
 
 /// <summary>
 /// Buff
@@ -11,6 +12,9 @@ public class Buff : StageEventListener
 
     private BuffEntry _entry;
     public BuffEntry GetEntry() => _entry;
+
+    public Neuron StackChangedNeuron;
+    public Neuron PingNeuron;
 
     public string GetName() => _entry.GetName();
     public string GetExplanation() => _entry.GetExplanation();
@@ -26,6 +30,9 @@ public class Buff : StageEventListener
 
         if(_stack <= 0)
             await _owner.RemoveBuff(this);
+        else
+            StackChangedNeuron.Invoke();
+            
     }
 
     public async Task SetDStack(int dStack)
@@ -50,6 +57,13 @@ public class Buff : StageEventListener
         _stack = 0;
 
         _eventDict = new();
+        PingNeuron = new();
+        StackChangedNeuron = new();
+    }
+
+    public async void PlayPingAnimation()
+    {
+        PingNeuron.Invoke();
     }
 
     public void Register()

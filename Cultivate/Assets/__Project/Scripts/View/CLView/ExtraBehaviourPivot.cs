@@ -23,6 +23,11 @@ public class ExtraBehaviourPivot : ExtraBehaviour
         ib.PointerExitNeuron.Join(PointerExit);
     }
 
+    private void OnDisable()
+    {
+        _handle?.Kill();
+    }
+
     public RectTransform GetDisplayTransform()
         => CLView.GetDisplayTransform();
 
@@ -52,6 +57,18 @@ public class ExtraBehaviourPivot : ExtraBehaviour
         _handle?.Kill();
         FollowAnimation f = new FollowAnimation(GetDisplayTransform(), end);
         _handle = f.GetHandle();
+        _handle.SetAutoKill().Restart();
+    }
+
+    public void PlayPingAnimation()
+    {
+        _handle?.Kill();
+
+        _handle = GetDisplayTransform()
+            .DOScale(1.5f, 0.075f)
+            .SetEase(Ease.OutQuad)
+            .SetLoops(2, loopType: LoopType.Yoyo);
+        
         _handle.SetAutoKill().Restart();
     }
 

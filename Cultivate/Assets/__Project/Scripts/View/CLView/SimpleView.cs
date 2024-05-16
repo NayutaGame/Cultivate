@@ -35,8 +35,7 @@ public class SimpleView : CLView
 
     private Address _address;
     public override Address GetAddress() => _address;
-    public override T Get<T>() => _address.Get<T>();
-
+    public override T Get<T>() => _address?.Get<T>();
     public override void SetAddress(Address address)
     {
         _address = address;
