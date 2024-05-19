@@ -18,9 +18,9 @@ public class StageAppS : AppS
         StageManager.Instance.SetEnvironmentFromConfig(_config);
         CanvasManager.Instance.StageCanvas.Configure();
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(true);
-        CanvasManager.Instance.StageCanvas.InitialSetup();
         StageManager.Instance.Enter();
         await CanvasManager.Instance.Curtain.PlayHideAnimation();
+        CanvasManager.Instance.StageCanvas.InitialSetup();
     }
 
     public override async Task<Result> Exit(NavigateDetails d)

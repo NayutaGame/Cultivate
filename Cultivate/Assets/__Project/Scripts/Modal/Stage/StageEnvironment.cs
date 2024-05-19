@@ -285,7 +285,6 @@ public class StageEnvironment : Addressable, StageEventListener
         if (d.Cancel)
             return;
 
-        // hpBar change
         d.Owner.Hp -= d.Value;
 
         await _eventDict.SendEvent(StageEventDict.DID_LOSE_HEALTH, d);

@@ -163,11 +163,18 @@ public class StageEntity : Addressable, StageEventListener
 
     public MingYuan MingYuan;
 
+    public Neuron<int, int> HpChangedNeuron;
+    public Neuron<int> ArmorChangedNeuron;
+
     private int _hp;
     public int Hp
     {
         get => _hp;
-        set => _hp = Mathf.Min(value, MaxHp);
+        set
+        {
+            _hp = Mathf.Min(value, MaxHp);
+            HpChangedNeuron.Invoke(_hp, _maxHp);
+        }
     }
 
     private int _maxHp;
@@ -185,7 +192,11 @@ public class StageEntity : Addressable, StageEventListener
     public int Armor
     {
         get => _armor;
-        set => _armor = value;
+        set
+        {
+            _armor = value;
+            ArmorChangedNeuron.Invoke(_armor);
+        }
     }
 
     public StageSkill[] _skills;
@@ -250,6 +261,9 @@ public class StageEntity : Addressable, StageEventListener
             { "Formations", () => _formations },
             { "Buffs", () => _buffs },
         };
+
+        HpChangedNeuron = new();
+        ArmorChangedNeuron = new();
 
         _env = env;
         _runEntity = runEntity;

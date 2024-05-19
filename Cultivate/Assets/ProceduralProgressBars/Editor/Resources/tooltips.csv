@@ -1,0 +1,231 @@
+﻿Name;English Name;German Name;French Name;Chinese Name;English;German;French;Chinese
+pbValue;Value;Wert;Valeur;值;Set the value of the progress bar. This is based on how many segments you have, If you have one segment the range is 0 to 1. 2 segments is 0 to 2 etc.;Setze den Wert des Fortschrittsbalkens. Dieser ist auf den bestehenden Segmenten basiert. Wenn ein Fortschrittsbalken nur ein Segment hat, ist der Wertebereich 0 bis 1. Bei zwei Segmenten ist der Bereich 0 bis 2, etc.;Définissez la valeur de la barre de progression. Cela est basé sur le nombre de segments que vous avez. Si vous avez un segment, la plage va de 0 à 1. Deux segments vont de 0 à 2, et ainsi de suite.;设置进度条的值。这是基于您拥有的分段数量的，如果您有一个分段，范围是从0到1。2个分段为0到2，依此类推。
+pbValue_script;;;;;"<pb>.Value = 0.1f; //set the value directly 
+<pb>.SetPercent(1.0f); //set the fill percentage in the range of 0 to 1";"<pb>.Value = 0.1f; //setze den Wert direkt
+<pb>.SetPercent(1.0f); //setze den Prozentwert im Bereich 0 bis 1.";"<pb>.Value = 0.1f; // définir la valeur directement 
+<pb>.SetPercent(1.0f); // définir le pourcentage de remplissage dans la plage de 0 à 1";"<pb>.Value = 0.1f; // 直接设置值 
+<pb>.SetPercent(1.0f); // 在0到1的范围内设置填充百分比"
+segmentCount;Segment Count;Segmentanzahl;Nombre de segments;分段数量;Change how many segments your progress bar has. This also affects the value. See the value tooltip for more information.;Verändere die Anzahl der Segmente deiner Fortschrittsanzeige. Dies beeinflusst auch den Wert. Siehe den Wert-Tooltip für weitere Informationen.;Modifiez le nombre de segments de votre barre de progression. Cela affecte également la valeur. Consultez l'info-bulle de la valeur pour plus d'informations.;更改进度条的分段数。这也会影响数值。有关更多信息，请参阅数值工具提示。
+segmentCount_script;;;;;"<pb>.SegmentCount = 5.5f; // floating point segment counts are also valid
+<pb>.Value = 5.5f; // this is the new max value";"<pb>.SegmentCount = 5.5f; // float Zahlen sind auch erlaubt
+<pb>.Value = 5.5f; // dies ist der neue Höchstwert";"<pb>.SegmentCount = 5,5f; // les valeurs à virgule flottante pour les segments sont également valides
+<pb>.Value = 5,5f; // c'est la nouvelle valeur maximale";"<pb>.SegmentCount = 5.5f; // 浮点数分段计数也是有效的
+<pb>.Value = 5.5f; // 这是新的最大值"
+innerColor;Inner Color;Innere Farbe;Couleur intérieure;内部颜色;Change the color of the progress bar's value portion.;Ändere die Farbe des Wert-Bereichs der Fortschrittsanzeige.;Changez la couleur de la partie valeur de la barre de progression.;更改进度条值部分的颜色。
+innerColor_script;;;;;"<pb>.InnerColor = Color.white; // sets the color to white";<pb>.InnerColor = Color.white // setzt die Farbe auf Weiß;<pb>.InnerColor = Color.white // définit la couleur comme blanche;<pb>.InnerColor = Color.white // 将颜色设置为白色
+shape;Shape;Form;Forme;形状;Change the shape of the progress bar. Different shapes reveal different settings.;Ändere die Form der Fortschrittsanzeige. Unterschiedliche Formen enthüllen unterschiedliche Einstellungen.;Changez la forme de la barre de progression. Différentes formes révèlent différents réglages.;更改进度条的形状。不同的形状揭示不同的设置。
+shape_script;;;;;"<pb>.Shape = PBShape.Linear; // Select a shape from the enum";"<pb>.Shape = PBShape.Linear; // wähle eine Form aus der enum aus";"<pb>.Shape = PBShape.Linear; // Sélectionnez une forme dans l'énumération";"<pb>.Shape = PBShape.Linear; // 从枚举中选择一个形状"
+sides;Sides;Seiten;Côtés;边数;How many sides should the circle have? 3 is triangular, 4 is square, 5 is a pentagon, >50 is a smooth circle;Wie viele Seiten soll der Kreis haben? 3 ist ein Dreieck, 4 ist ein Quadrat, 5 ist ein Fünfeck, >50 ist ein glatter Kreis.;Combien de côtés devrait avoir le cercle ? 3 c'est un triangle, 4 c'est un carré, 5 c'est un pentagone, >50 c'est un cercle lisse.;圆应该有多少条边？3 是三角形，4 是正方形，5 是五边形，>50 是一个平滑的圆形。
+sides_script;;;;;"<pb>.Sides = 3; // this is the minimum number of sides a circle can have";<pb>.Sides = 3 // dies ist die minimale Anzahl von Seiten, die ein Kreis haben kann;<pb>.Sides = 3 // c'est le nombre minimum de côtés qu'un cercle peut avoir;<pb>.Sides = 3 // 这是一个圆可以拥有的最少边数
+radius;Radius;Radius;Rayon;半径;The radius of the circle.;;;
+radius_script;;;;;"<pb>.Radius = 0.5f;";;;
+width;Width;Breite;Largeur;宽度;The line width of the circle.;;;
+width_script;;;;;"<pb>.Width = 0.3f;";;;
+arc;Arc;Bogen;Arc;弧度;The arc of the circle. 0 = Full circle, .5 = Half circle, 1 = Nothing. Using values like 0.95 with a large radius can give you a more linear progress bar that still has some rounding to it. You'll also want to see the Auto Arc Offset property below.;;;
+arc_script;;;;;"<pb>.Arc = 0.95f; // Make the progress bar nearly linear
+<pb>.Radius = 3; // Adjust the radius too to make sure the progress bar isn't too small";;;
+autoArcOffset;Auto Arc Offset;Automatischer Bogenversatz;Décalage d'arc automatique;自动弧偏移;When this is enabled, the progress bar's offset is adjusted automatically to center itself when the arc exceeds the value in 'Auto Arc Offset Threshold' below.;;;
+autoArcOffset_script;;;;;"<pb>.AutoArcOffset = true; // enable centering when the arc value gets too high";;;
+autoArcOffsetThreshold;Arc Offset Threshold;Bogenversatzschwelle;Seuil de décalage d'arc;弧度偏移阈值;When the arc value exceeds this threshold, the progress bar is automatically centered. Only if the Auto Arc Offset property is checked.;;;
+autoArcOffsetThreshold_script;;;;;"<pb>.AutoArcOffset = true; // enable centering when the arc value gets too high
+<pb>.AutoArcOffsetThreshold = 0.8f; // set the arc threshold to kick in once the arc value exceeds 0.8";;;
+circleLength;Circle Length;Kreisumfang;Longueur du cercle;圆周长;"The length of the circle. 1 is Minimum, 100 is Maximum. Keep in mind, when the circle is extended new geometry is created, so if the circle gets too long you might end up with a very high-poly progress bar.
+This value works nicely in conjunction with the CorkScrew property.";;;
+circleLength_script;;;;;"<pb>.CircleLength = 1.0f;";;;
+edgeLoops;Edge Loops;Kanten-Schleifen;Boucles de bord;边界循环;"Edge loops are groups of vertices following the length of the progress bar. 2 is the minimum value, making up one edge loop on the inside and one on the outside of the progress bar. The maximum value is 100 to ensure the vertex count doesn't get too crazy. If you don't understand what this does, enable the wireframe mode in the scene and play around with this value.
+If you are dealing with a very high vertex count, consider reducing this value.";;;
+edgeLoops_script;;;;;"<pb>.EdgeLoops = 5; // 5 is the recommended value for this property";;;
+subdivisionDetail;Subdivision Detail;Unterteilungsdetail;Détail de subdivision;细分细节;This property is only relevant when dealing with a low number of sides (less than 50). The subdivision detail ensures the progress bar quality remains consistent even when the relative resolution is quite low. You may wish to sacrifice quality if it isn't that important in which case you can set this value to 0. In most cases it should remain at 1.;;;
+subdivisionDetail_script;;;;;"<pb>.SubdivisionDetail = 1.0f; // Full quality compensation enabled for progress bars with fewer than 50 sides
+<pb>.Sides = 10; // A low side count";;;
+corkScrew;Cork Screw;Korkenzieher;Tire-bouchon;螺旋线程;The progress bar takes the shape of a corkscrew. This value can be both positive and negative. Increase the circle length above to extend this effect.;;;
+corkScrew_script;;;;;"<pb>.CorkScrew = 0.1f;
+<pb>.CircleLength = 10; // extend the circle to make it loop around 10 times";;;
+clockwiseFill;Clockwise Fill;Uhrzeigersinn-Füllung;Remplissage dans le sens des aiguilles d'une montre;顺时针填充;Change the fill direction of this progress bar.;;;
+clockwiseFill_script;;;;;"<pb>.ClockwiseFill = false;";;;
+segmentSpacing;Segment Spacing;Segmentabstand;Espacement des segments;分段间距;The spacing between each segment;;;
+segmentSpacing_script;;;;;"<pb>.SegmentSpacing = 0.1f;";;;
+borderWidth;Border Width;Rahmenbreite;Largeur de la bordure;边框宽度;The size of the border.;;;
+borderWidth_script;;;;;"<pb>.BorderWidth = 0.1f;";;;
+borderRadius;Border Radius;Rahmenradius;Rayon de la bordure;边框半径;The rounding of the progress bar.;;;
+borderRadius_script;;;;;"<pb>.BorderRadius = 0.1f;";;;
+borderRadiusOffset;Border Radius Offset;Rahmenradius-Versatz;Décalage du rayon de la bordure;边框半径偏移;Control the rounding of each corner individually. (tr, tl, bl, br);;;
+borderRadiusOffset_script;;;;;"<pb>.BorderRadiusOffset = new Vector4(0,0,0,0.1f);";;;
+innerRoundingPercent;Inner Rounding Percent;Innerer Rundungsprozentsatz;Pourcentage de l'arrondi intérieur;内部圆角百分比;The rounding of the inner progress bar. Lets you control if the value portion is as rounded as the entire progress bar.;;;
+innerRoundingPercent_script;;;;;"<pb>.InnerRoundingPercent = 1.0f; // normal rounding";;;
+variableWidthCurve;Variable Width Curve;Variable Breitenkurve;Courbe de largeur variable;可变宽度曲线;The curve representing the width at any given point along the progress bar. 1 is full width, 0 is invisible. If your progress bar ever becomes invisible and you don't know why, this might be the cause.;;;
+variableWidthCurve_script;;;;;"<pb>.VariableWidthCurve = new AnimationCurve(new Keyframe(0, 1), new Keyframe(1, 1)); // this is the default width curve with a constant width of 1";;;
+slant;Slant;Neigung;Inclinaison;倾斜度;This gives the progress bar a slanted appearance. Can have positive and negative values.;;;
+slant_script;;;;;"<pb>.Slant = 1.0f;";;;
+innerTextureEnabled;Inner Texture Enabled;Innere Textur aktiviert;Texture intérieure activée;启用内部纹理;Enable texturing of the value portion. This flag reveals more settings below when enabled.;;;
+innerTextureEnabled_script;;;;;"<pb>.InnerTextureEnabled = true;";;;
+innerTexture;Inner Texture;Innere Textur;Texture intérieure;内部纹理;The texture to use for the inner progress bar;;;
+innerTexture_script;;;;;"<pb>.InnerTexture = new Texture2D(10, 10); // or any other texture asset you'd like to use";;;
+innerTextureTiling;Inner Texture Tiling;Innere Textur-Kachelung;Tuile de texture intérieure;内部纹理平铺;The tiling of the inner texture;;;
+innerTextureTiling_script;;;;;"<pb>.InnerTextureTiling = new Vector2(1.0f, 1.0f);";;;
+innerTextureOffset;Inner Texture Offset;Innerer Texturversatz;Décalage de la texture intérieure;内部纹理偏移;The offset of the inner texture;;;
+innerTextureOffset_script;;;;;"<pb>.InnerTextureOffset = new Vector2(0.0f, 0.0f);";;;
+innerTextureOpacity;Inner Texture Opacity;Innere Texturdeckkraft;Opacité de la texture intérieure;内部纹理不透明度;The opacity of the inner texture;;;
+innerTextureOpacity_script;;;;;"<pb>.InnerTextureOpacity = 1.0f;";;;
+innerTextureRotation;Inner Texture Rotation;Innere Texturrotation;Rotation de la texture intérieure;内部纹理旋转;The rotation of the inner texture in degrees.;;;
+innerTextureRotation_script;;;;;"<pb>.InnerTextureRotation = 90.0f; // angle is in degrees";;;
+offsetTextureWithValue;Offset Texture With Value;Texturversatz mit Wert;Décalage de texture avec la valeur;根据数值偏移纹理;This offsets the texture to move along with the current value of the progress bar.;;;
+offsetTextureWithValue_script;;;;;"<pb>.OffsetTextureWithValue = true;";;;
+innerFlipbookDim;Inner Flipbook Dim;Innere Flipbook-Dämpfung;Diminution du flipbook intérieur;内部翻书动画暗度;When using an animated texture, input the columns and rows of the animation;;;
+innerFlipbookDim_script;;;;;"<pb>.InnerFlipbookDim = new Vector2(10, 10); // using a 10 by 10 spritemap";;;
+innerGradientEnabled;Inner Gradient Enabled;Innere Farbverlauf aktiviert;Dégradé intérieur activé;启用内部渐变;Enable/Disable the gradient for the inner texture.;;;
+innerGradientEnabled_script;;;;;"<pb>.InnerGradientEnabled = true;";;;
+innerGradient;Inner Gradient;Innerer Farbverlauf;Dégradé intérieur;内部渐变;The gradient to use.;;;
+innerGradient_script;;;;;"<pb>.InnerGradient = new Gradient();";;;
+innerGradientRotation;Inner Gradient Rotation;Innere Farbverlaufrotation;Rotation du dégradé intérieur;内部渐变旋转;Rotation of the gradient in degrees.;;;
+innerGradientRotation_script;;;;;"<pb>.InnerGradientRotation = 90.0f; // in degrees";;;
+valueAsGradientTimeInner;Value As Gradient Time Inner;Wert als Farbverlaufszeit innen;Valeur en tant que temps de dégradé intérieur;将值作为内部渐变时间;Sample the gradient with the value as percent. E.g. Value = 0.5, Gradient is sampled at 0.5 for the whole progress bar. This can be used to change the color of the progress bar according to how filled it is. E.g. Red for low and green for high.;;;
+valueAsGradientTimeInner_script;;;;;"<pb>.ValueAsGradientTimeInner = true;";;;
+valueMaskOffset;Value Mask Offset;Wert Maskenversatz;;;Offset the mask used to display the value in the x and y direction;;;
+valueMaskOffset_script;;;;;"<pb>.ValueMaskOffset = new Vector2(0.0f, 0.0f);";;;
+innerBorderWidth;Inner Border Width;Innere Rahmenbreite;Largeur de la bordure intérieure;内部边框宽度;Similar to the outer border, the inner border appears on the value portion;;;
+innerBorderWidth_script;;;;;"<pb>.InnerBorderWidth = 0.2f; ";;;
+innerBorderColor;Inner Border Color;Innere Rahmenfarbe;Couleur de la bordure intérieure;内部边框颜色;The color of the inner border.;;;
+innerBorderColor_script;;;;;"<pb>.InnerBorderColor = Color.red;";;;
+pulsateWhenLow;Pulsate When Low;Pulsieren bei Niedrig;Pulsation en cas de faible niveau;低电量时脉动;Pulsate the value of the progress bar once it dips below a certain point.;;;
+pulsateWhenLow_script;;;;;"<pb>.PulsateWhenLow = true;";;;
+pulseActivationThreshold;Pulse Activation Threshold;;;;Threshold in percent when pulsation should trigger.;;;
+pulseActivationThreshold_script;;;;;"<pb>.PulseActivationThreshold = 0.5f;";;;
+pulseSpeed;Pulse Speed;;;;The speed of pulsating.;;;
+pulseSpeed_script;;;;;"<pb>.PulseSpeed = 10.0f;";;;
+pulseRamp;Pulse Ramp;;;;Value difference between barely pulsating and maximum. pulsating.;;;
+pulseRamp_script;;;;;"<pb>.PulseRamp = 0.1f;";;;
+pulseColor;Pulse Color;;;;The color the progress bar should pulse with.;;;
+pulseColor_script;;;;;"<pb>.PulseColor = Color.red;";;;
+backgroundColor;Background Color;Hintergrundfarbe;Couleur de l'arrière-plan;背景颜色;The color behind the value.;;;
+backgroundColor_script;;;;;"<pb>.BackgroundColor = Color.white;";;;
+backgroundTextureEnabled;Background Texture Enabled;Hintergrundtextur aktiviert;Texture d'arrière-plan activée;启用背景纹理;Enable texturing of the background. This flag reveals more settings below when enabled.;;;
+backgroundTextureEnabled_script;;;;;"<pb>.BackgroundTextureEnabled = true;";;;
+backgroundTexture;Background Texture;Hintergrundtextur;Texture d'arrière-plan;背景纹理;The texture to use for the background;;;
+backgroundTexture_script;;;;;"<pb>.BackgroundTexture = new Texture2D(10, 10); // or any other texture asset you'd like to use";;;
+backgroundTextureTiling;Background Texture Tiling;Hintergrundtextur-Kachelung;Tuile de texture d'arrière-plan;背景纹理平铺;The tiling of the background texture;;;
+backgroundTextureTiling_script;;;;;"<pb>.BackgroundTextureTiling = new Vector2(1.0f, 1.0f);";;;
+backgroundTextureOffset;Background Texture Offset;Hintergrundtexturversatz;Décalage de texture d'arrière-plan;背景纹理偏移;The offset of the background texture;;;
+backgroundTextureOffset_script;;;;;"<pb>.BackgroundTextureOffset = new Vector2(0.0f, 0.0f);";;;
+backgroundTextureOpacity;Background Texture Opacity;Hintergrundtexturdeckkraft;Opacité de la texture d'arrière-plan;背景纹理不透明度;The opacity of the background texture;;;
+backgroundTextureOpacity_script;;;;;"<pb>.BackgroundTextureOpacity = 1.0f;";;;
+backgroundFlipbookDim;Background Flipbook Dim;Hintergrund-Flipbook-Dämpfung;Diminution du flipbook d'arrière-plan;背景翻书动画暗度;When using an animated texture, input the columns and rows of the animation;;;
+backgroundFlipbookDim_script;;;;;"<pb>.BackgroundFlipbookDim = new Vector2(10, 10); // using a 10 by 10 spritemap";;;
+backgroundGradientEnabled;Background Gradient Enabled;Hintergrundfarbverlauf aktiviert;Dégradé d'arrière-plan activé;背景渐变启用;Enable/Disable the gradient for the background texture.;;;
+backgroundGradientEnabled_script;;;;;"<pb>.BackgroundGradientEnabled = true;";;;
+backgroundGradient;Background Gradient;Hintergrundfarbverlauf;Dégradé d'arrière-plan;背景渐变;The gradient to use.;;;
+backgroundGradient_script;;;;;"<pb>.BackgroundGradient = new Gradient();";;;
+backgroundGradientRotation;Background Gradient Rotation;Hintergrundfarbverlaufrotation;Rotation du dégradé d'arrière-plan;背景渐变旋转;Rotation of the gradient.;;;
+backgroundGradientRotation_script;;;;;"<pb>.BackgroundGradientRotation = 90.0f; // in degrees";;;
+valueAsGradientTimeBackground;Value As Gradient Time Background;Wert als Farbverlaufszeit Hintergrund;Temps de dégradé en tant que valeur de l'arrière-plan;值作为背景的渐变时间;Sample the gradient with the value as percent. E.g. Value = 0.5, Gradient is sampled at 0.5 for the whole progress bar.;;;
+valueAsGradientTimeBackground_script;;;;;"<pb>.ValueAsGradientTimeBackground = true;";;;
+borderColor;Border Color;Rahmenfarbe;Couleur de la bordure;边框颜色;Color of the border.;;;
+borderColor_script;;;;;"<pb>.BorderColor = Color.black;";;;
+borderTextureEnabled;Border Texture Enabled;Rahmentextur aktiviert;Texture de la bordure activée;启用边框纹理;Add a texture to the border of the progress bar;;;
+borderTextureEnabled_script;;;;;"<pb>.BorderTextureEnabled = true;";;;
+borderTexture;Border Texture;Rahmentextur;Texture de la bordure;边框纹理;The texture to use for the border;;;
+borderTexture_script;;;;;"<pb>.BorderTexture = new Texture2D(10, 10); // or any other texture asset you'd like to use";;;
+borderTextureTiling;Border Texture Tiling;Rahmentextur-Kachelung;Tuile de texture de la bordure;边框纹理平铺;How many times the texture repeats;;;
+borderTextureTiling_script;;;;;"<pb>.BorderTextureTiling = new Vector2(1.0f, 1.0f);";;;
+borderTextureOffset;Border Texture Offset;Rahmentexturversatz;Décalage de texture de la bordure;边框纹理偏移;The texture offset;;;
+borderTextureOffset_script;;;;;"<pb>.BorderTextureOffset = new Vector2(0.0f, 0.0f);";;;
+borderTextureOpacity;Border Texture Opacity;Rahmentexturdeckkraft;Opacité de la texture de la bordure;边框纹理不透明度;The opacity of the texture. Should the base color be more visible, or the texture?;;;
+borderTextureOpacity_script;;;;;"<pb>.BorderTextureOpacity = 1.0f;";;;
+borderFlipbookDim;Border Flipbook Dim;Rahmen-Flipbook-Dämpfung;Diminution du flipbook de la bordure;边框翻书动画暗度;When using an animated texture, input the columns and rows of the animation;;;
+borderFlipbookDim_script;;;;;"<pb>.BorderFlipbookDim = new Vector2(10, 10); // using a 10 by 10 spritemap";;;
+overlayColor;Overlay Color;Überlagerungsfarbe;Couleur de superposition;覆盖颜色;This color affects the entire progress bar;;;
+overlayColor_script;;;;;"<pb>.OverlayColor = Color.transparent;";;;
+overlayTextureEnabled;Overlay Texture Enabled;Überlagerungstextur aktiviert;Texture de superposition activée;启用覆盖纹理;Enable texturing of the overlay. This flag reveals more settings below when enabled.;;;
+overlayTextureEnabled_script;;;;;"<pb>.OverlayTextureEnabled = true;";;;
+overlayTexture;Overlay Texture;Überlagerungstextur;Texture de superposition;覆盖纹理;The texture to use for the overlay;;;
+overlayTexture_script;;;;;"<pb>.OverlayTexture = new Texture2D(10, 10); // or any other texture asset you'd like to use";;;
+overlayTextureTiling;Overlay Texture Tiling;Überlagerungstextur-Kachelung;Tuile de texture de superposition;覆盖纹理平铺;The tiling of the overlay texture;;;
+overlayTextureTiling_script;;;;;"<pb>.OverlayTextureTiling = new Vector2(1.0f, 1.0f);";;;
+overlayTextureOffset;Overlay Texture Offset;Überlagerungstexturversatz;Décalage de texture de superposition;覆盖纹理偏移;The offset of the overlay texture;;;
+overlayTextureOffset_script;;;;;"<pb>.OverlayTextureOffset = new Vector2(0.0f, 0.0f);";;;
+overlayTextureOpacity;Overlay Texture Opacity;Überlagerungstexturdeckkraft;Opacité de la texture de superposition;覆盖纹理不透明度;The opacity of the overlay texture;;;
+overlayTextureOpacity_script;;;;;"<pb>.OverlayTextureOpacity = 1.0f;";;;
+overlayFlipbookDim;Overlay Flipbook Dim;Überlagerungs-Flipbook-Dämpfung;Diminution du flipbook de superposition;覆盖翻书动画暗度;When using an animated texture, input the columns and rows of the animation;;;
+overlayFlipbookDim_script;;;;;"<pb>.OverlayFlipbookDim = new Vector2(10, 10); // using a 10 by 10 spritemap";;;
+valueShadowSize;Value Shadow Size;Wert-Schattengröße;Taille de l'ombre de la valeur;值阴影大小;The size of the drop shadow caused by the inner progress bar;;;
+valueShadowSize_script;;;;;"<pb>.ValueShadowSize = 0.1f;";;;
+valueShadowColor;Value Shadow Color;Wert-Schattenfarbe;Couleur de l'ombre de la valeur;值阴影颜色;The color of the value shadow;;;
+valueShadowColor_script;;;;;"<pb>.ValueShadowColor = Color.black; // Change to a different color to give the effect of glowing";;;
+valueShadowFalloff;Value Shadow Falloff;Wert-Schattenabfall;Atténuation de l'ombre de la valeur;值阴影衰减;The falloff of the value shadow. Higher values lead to smooth transitions. A value of >0.95 is recommended for a very smooth and subtle shadow.;;;
+valueShadowFalloff_script;;;;;"<pb>.ValueShadowFalloff = 0.99f;";;;
+valueInsetShadowSize;Value Inset Shadow Size;Eingelassene Schattengröße des Werts;Taille de l'ombre encastrée de la valeur;值镶嵌阴影大小;The size of the inset shadow of the inner progress bar;;;
+valueInsetShadowSize_script;;;;;"<pb>.ValueInsetShadowSize = 0.1f;";;;
+valueInsetShadowColor;Value Inset Shadow Color;Eingelassene Schattenfarbe des Werts;Couleur de l'ombre encastrée de la valeur;值镶嵌阴影颜色;The color of the value inset shadow;;;
+valueInsetShadowColor_script;;;;;"<pb>.ValueInsetShadowColor = Color.black; // Change to a different color to give the effect of glowing";;;
+valueInsetShadowFalloff;Value Inset Shadow Falloff;Eingelassener Schattenabfall des Werts;Atténuation de l'ombre encastrée de la valeur;值镶嵌阴影衰减;The falloff of the value inset shadow. Higher values lead to smooth transitions. A value of >0.95 is recommended for a very smooth and subtle shadow.;;;
+valueInsetShadowFalloff_script;;;;;"<pb>.ValueInsetShadowFalloff = 0.99f;";;;
+borderShadowSize;Border Shadow Size;Schattenbreite der Rahmen;Taille de l'ombre de la bordure;边框阴影大小;The size of the shadow from the border going into the progress bar;;;
+borderShadowSize_script;;;;;"<pb>.BorderShadowSize = 0.1f;";;;
+borderShadowColor;Border Shadow Color;Rahmen-Schattenfarbe;Couleur de l'ombre de la bordure;边框阴影颜色;The color of the border shadow;;;
+borderShadowColor_script;;;;;"<pb>.BorderShadowColor = Color.black; // Change to a different color to give the effect of glowing";;;
+borderShadowFalloff;Border Shadow Falloff;Rahmen-Schattenabfall;Atténuation de l'ombre de la bordure;边框阴影衰减;The falloff of the border shadow. Higher values lead to smooth transitions. A Value of >0.95 is recommended for a very smooth and subtle shadow;;;
+borderShadowFalloff_script;;;;;"<pb>.BorderShadowFalloff = 0.99f;";;;
+borderInsetShadowSize;Border Inset Shadow Size;Eingelassene Schattengröße des Rahmens;Taille de l'ombre encastrée de la bordure;边框镶嵌阴影大小;The size of the border inset shadow;;;
+borderInsetShadowSize_script;;;;;"<pb>.BorderInsetShadowSize = 0.1f;";;;
+borderInsetShadowColor;Border Inset Shadow Color;Eingelassene Schattenfarbe des Rahmens;Couleur de l'ombre encastrée de la bordure;边框镶嵌阴影颜色;The color of the border inset shadow;;;
+borderInsetShadowColor_script;;;;;"<pb>.BorderInsetShadowColor = Color.black; // Change to a different color to give the effect of glowing";;;
+borderInsetShadowFalloff;Border Inset Shadow Falloff;Eingelassener Schattenabfall des Rahmens;Atténuation de l'ombre encastrée de la bordure;边框镶嵌阴影衰减;The falloff of the border inset shadow. Higher values lead to smooth transitions. A Value of >0.95 is recommended for a very smooth and subtle shadow;;;
+borderInsetShadowFalloff_script;;;;;"<pb>.BorderInsetShadowFalloff = 0.99f;";;;
+flipbookFPS;Flipbook FPS;Flipbook-Bilder pro Sekunde;Images par seconde du flipbook;翻书动画帧率;Frames per second of animated textures, if they are being used.;;;
+flipbookFPS_script;;;;;"<pb>.FlipbookFPS = 24;";;;
+onValueChanged;On Value Changed;Bei Wertänderung;Lorsque la valeur change;值变更时;;;;
+onValueChanged_script;;;;;;;;
+onFilled;On Filled;Bei Füllung;Lorsque rempli;填充时;;;;
+onFilled_script;;;;;;;;
+onEmpty;On Empty;Bei Leere;Lorsque vide;清空时;;;;
+onEmpty_script;;;;;;;;
+onSegmentFilled;On SegmentFilled;Bei Segmentfüllung;Lorsque segment rempli;分段填充时;;;;
+onSegmentFilled_script;;;;;;;;
+onSegmentEmpty;On Segment Empty;Bei segmentweiser Leere;Lorsque segment vide;分段清空时;;;;
+onSegmentEmpty_script;;;;;;;;
+antiAlias;Anti Alias;;;;Toggle built-in anti-aliasing for smooth edges;;;
+antiAlias_script;;;;;"<pb>.AntiAlias = true;";;;
+centerFill;Center Fill;;;;Fill the progress bar from the middle out. This feature only works when using whole numbers as segment count.;;;
+centerFill_script;;;;;"<pb>.CenterFill = true;
+<pb>.SegmentCount = 3 // this needs to be a whole number";;;
+backgroundTextureRotation;Background Texture Rotation;;;;The rotation of the background texture in degrees;;;
+backgroundTextureRotation_script;;;;;"<pb>.BackgroundTextureRotation = 180f; //rotation in degrees";;;
+borderTextureRotation;Border Texture Rotation;;;;The rotation of the border texture in degrees;;;
+borderTextureRotation_script;;;;;"<pb>.BorderTextureRotation = 180f; //rotation in degrees";;;
+ratioScaling;Ratio Scaling;;;;When enabled, this ensures that one side of the progress bar is always internally one unit long, making it easier to scale the progress bar to any size;;;
+ratioScaling_script;;;;;"<pb>.RatioScaling = true;";;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+scriptReference;Scripting Reference;Skriptreferenz;Référence de script;脚本参考;Scripting Reference;Skriptreferenz;Référence de script;脚本参考
+basicSettings;Basic;;;;Basic;;;
+shapeSection;Shape Customization;;;;Shape Customization;;;
+materialSection;Material Customization;;;;Material Customization;;;
+generalSettings;General;;;;General;;;
+valueSettings;Value;;;;Value;;;
+backgroundSettings;Background;;;;Background;;;
+borderSettings;Border;;;;Border;;;
+overlaySettings;Overlay;;;;Overlay;;;
+shadowSettings;Shadow;;;;Shadow;;;
+otherSettings;Other;;;;Other;;;
+eventSettings;Events;;;;Events;;;
+vertexCount;Vertex Count;;;;Vertex Count;;;
+quickHelpTitle;Quick Help;;;;Quick Help;;;
+quickHelp01;"Change progress bar features via script. <progress bar>.Value = 0.1f; etc.";;;;"Change progress bar features via script. <progress bar>.Value = 0.1f; etc.";;;
+quickHelp02;Get the Component with GetComponent<ProceduralProgressBar>;;;;Get the Component with GetComponent<ProceduralProgressBar>;;;
+quickHelp03;Don't forget to use the namespace Renge.PPB when scripting;;;;Don't forget to use the namespace Renge.PPB when scripting;;;
