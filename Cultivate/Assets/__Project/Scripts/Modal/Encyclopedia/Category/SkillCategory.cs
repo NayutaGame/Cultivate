@@ -551,7 +551,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ChannelFromDj(dj => 5 - 2 * dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - 2 * dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"消耗 永久吸血\n" +
+                    $"消耗 所有攻击具有吸血\n" +
                     $"回合内未攻击：遭受1跳回合",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -605,7 +605,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.XiaoHao | SkillType.ErDong,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗\n" +
-                    $"20格挡觉醒：八动，回合结束死亡",
+                    $"20格挡觉醒：连续行动八次，回合结束死亡",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await skill.ExhaustProcedure();
