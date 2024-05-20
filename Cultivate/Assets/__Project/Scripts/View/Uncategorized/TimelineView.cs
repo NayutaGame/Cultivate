@@ -112,7 +112,7 @@ public class TimelineView : Singleton<TimelineView>
 
         // creation
         seq.AppendCallback(TryCreate);
-        seq.AppendInterval(0.2f);
+        seq.AppendInterval(0.3f);
 
         _time += 1;
 

@@ -11,7 +11,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     public event Action EnvironmentChangedEvent;
     public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
 
-    public static readonly int[] BaseHealthFromJingJie = new int[] { 60, 140, 240, 360, 500, 500 };
+    public static readonly int[] BaseHealthFromJingJie = new int[] { 40, 100, 180, 280, 400, 400 };
 
     [SerializeField] private MingYuan _mingYuan;
     public MingYuan MingYuan => _mingYuan;

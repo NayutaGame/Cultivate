@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class StageAnimationController
 {
@@ -41,7 +42,7 @@ public class StageAnimationController
         {
             // _sideTracks.Add(track);
         }
-        
+
         await track.NextKey(_speed);
 
         // CanvasManager.Instance.StageCanvas.Refresh();

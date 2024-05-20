@@ -208,6 +208,11 @@ namespace Renge.PPB
             cr.SetMesh(mesh);
         }
 
+        public void PublicValidate()
+        {
+            Validate();
+        }
+
         ValidationResult Validate()
         {
             //#if UNITY_EDITOR

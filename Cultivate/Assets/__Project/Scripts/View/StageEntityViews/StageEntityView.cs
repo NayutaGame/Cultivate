@@ -1,5 +1,4 @@
 
-using DG.DemiLib;
 using Renge.PPB;
 using TMPro;
 using UnityEngine;
@@ -37,6 +36,8 @@ public class StageEntityView : SimpleView
         Buffs.SetAddress(GetAddress().Append(".Buffs"));
         Buffs.PointerEnterNeuron.Join(StageManager.Instance.Pause);
         Buffs.PointerExitNeuron.Join(StageManager.Instance.Resume);
+
+        HealthBar.PublicValidate();
     }
 
     private void OnEnable()
