@@ -33,6 +33,7 @@ public class BuffCategory : Category<BuffEntry>
             new("永久集中",    "所有牌，条件算作激活",                    BuffStackRule.One, true, false),
             new("浮空艇",     "回合被跳过时：生命及上线无法下降",              BuffStackRule.Add, true, false),
             new("架势",     "消耗架势激活效果，没有架势时获得架势",              BuffStackRule.One, true, false),
+            new("一梦如是已触发",     "一梦如是已触发",              BuffStackRule.One, true, false),
             
             new(id:                         "跳走步",
                 description:                "跳过走步阶段",
@@ -227,6 +228,23 @@ public class BuffCategory : Category<BuffEntry>
                         d.Cancel = true;
                         b.PlayPingAnimation();
                         await b.SetDStack(-1);
+                    }),
+                }),
+            
+            new(id:                         "禁止治疗",
+                description:                "无法受到治疗",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   false,
+                dispellable:                false,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_HEAL, -3, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        HealDetails d = (HealDetails)stageEventDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        d.Cancel = true;
                     }),
                 }),
             
@@ -647,6 +665,22 @@ public class BuffCategory : Category<BuffEntry>
                             b.PlayPingAnimation();
                             await b.Owner.RemoveArmorProcedure(d.Value);
                             await b.SetDStack(-1);
+                        }
+                    }),
+                }),
+            
+            new("凝水", "击伤时：灵气+[层数]", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        DamageDetails d = (DamageDetails)stageEventDetails;
+
+                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                        {
+                            b.PlayPingAnimation();
+                            await b.Owner.GainBuffProcedure("灵气", b.Stack);
                         }
                     }),
                 }),

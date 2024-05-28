@@ -27,6 +27,7 @@ public class Encyclopedia : Addressable
             { "SkillCategory", () => SkillCategory },
         };
 
+        Fib.Init();
         SkillType.Init();
         MechType.Init();
 
