@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
+using Demo_Project;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -118,18 +119,16 @@ public class NodeCategory : Category<NodeEntry>
                             if (iRunSkill is RunSkill skill)
                             {
                                 if (skill.JingJie <= map.JingJie && skill.JingJie != JingJie.HuaShen)
-                                // if (skill.JingJie != JingJie.HuaShen)
                                 {
-                                    skill.TryIncreaseJingJie();
+                                    skill.TryIncreaseJingJie(loop: false);
                                     CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
                                 }
                             }
                             else if (iRunSkill is SkillSlot slot)
                             {
                                 if (slot.Skill.GetJingJie() <= map.JingJie && slot.Skill.GetJingJie() != JingJie.HuaShen)
-                                // if (slot.Skill.GetJingJie() != JingJie.HuaShen)
                                 {
-                                    slot.TryIncreaseJingJie();
+                                    slot.TryIncreaseJingJie(loop: false);
                                     CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
                                 }
                             }

@@ -83,7 +83,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         _state = SkillSlotState.Locked;
     }
 
-    public bool TryIncreaseJingJie()
+    public bool TryIncreaseJingJie(bool loop = true)
     {
         if (_skill == null)
             return false;
@@ -92,7 +92,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         if (runSkill == null)
             return false;
 
-        bool success = runSkill.TryIncreaseJingJie();
+        bool success = runSkill.TryIncreaseJingJie(loop);
         if (!success)
             return false;
 

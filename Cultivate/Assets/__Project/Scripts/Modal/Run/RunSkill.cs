@@ -59,13 +59,16 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
         if (GetEntry().JingJieContains(JingJie + 1))
         {
             JingJie += 1;
+            return true;
         }
-        else if (loop)
+        
+        if (loop)
         {
             JingJie = GetEntry().LowestJingJie;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public int GetCurrCounter() => 0;

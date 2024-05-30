@@ -556,19 +556,6 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("时光机", "使用一张牌前：升级", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CAST, 0, async (listener, eventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        CastDetails d = (CastDetails)eventDetails;
-                        if (b.Owner != d.Caster || d.Caster != d.Skill.Owner) return;
-                        await d.Skill.TryUpgradeJingJie();
-                        b.PlayPingAnimation();
-                    }),
-                }),
-
             new("延迟攻", "下回合，[层数]攻", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
@@ -799,26 +786,11 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                        if (b.Owner == d.Src && d.Src != d.Tgt && !d.Pierce)
                         {
                             d.Pierce = true;
                             b.PlayPingAnimation();
                             await b.SetDStack(-1);
-                        }
-                    }),
-                }),
-            
-            new("永久穿透", "所有牌攻击时，忽略对方护甲/闪避/格挡", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (b.Owner == d.Src && d.Src != d.Tgt)
-                        {
-                            b.PlayPingAnimation();
-                            d.Pierce = true;
                         }
                     }),
                 }),
@@ -909,7 +881,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("净天地", "使用非攻击卡不消耗灵气，使用之后消耗", BuffStackRule.Add, true, false,
+            new("观众生", "使用非攻击卡不消耗灵气，使用之后消耗", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
@@ -1235,6 +1207,23 @@ public class BuffCategory : Category<BuffEntry>
 
                         b.PlayPingAnimation();
                         d.Cancel = false;
+                    }),
+                }),
+
+            new("钟声", "使用一张牌前：升级", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CAST, 0, async (listener, eventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        CastDetails d = (CastDetails)eventDetails;
+                        if (b.Owner != d.Caster || d.Caster != d.Skill.Owner) return;
+
+                        if (await d.Skill.TryUpgradeJingJie())
+                        {
+                            b.PlayPingAnimation();
+                            await b.SetDStack(-1);
+                        }
                     }),
                 }),
         });

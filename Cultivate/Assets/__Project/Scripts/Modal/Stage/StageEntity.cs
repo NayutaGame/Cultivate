@@ -213,6 +213,8 @@ public class StageEntity : Addressable, StageEventListener
     public void ResetActionPoint() => _actionPoint = 1;
     private CostResult _costResult;
 
+    public bool IsLowHp
+        => (float)Hp / MaxHp <= 0.5f;
     public bool Forward
         => GetStackOfBuff("鹤回翔") == 0;
     public int ExhaustedCount
