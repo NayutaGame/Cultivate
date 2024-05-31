@@ -1,12 +1,9 @@
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CLLibrary;
-using DG.Tweening;
-using FMOD;
 using UnityEngine;
 
 public class StageEnvironment : Addressable, StageEventListener
@@ -495,6 +492,65 @@ public class StageEnvironment : Addressable, StageEventListener
         await _eventDict.SendEvent(StageEventDict.DID_DISPEL, d);
     }
 
+    private async Task MingYuanPenaltyProcedure()
+    {
+        await _entities[0].MingYuan.MingYuanPenaltyProcedure(_entities[0]);
+        await _entities[1].MingYuan.MingYuanPenaltyProcedure(_entities[1]);
+    }
+
+    private async Task FormationProcedure()
+    {
+        List<FormationDetails> details = new List<FormationDetails>();
+
+        foreach (var entity in _entities)
+        foreach (var runFormation in entity.RunFormations())
+            if(runFormation.IsActivated())
+                details.Add(new FormationDetails(entity, runFormation));
+
+        details.Sort((lhs, rhs) => lhs._formation.GetEntry().GetOrder() - rhs._formation.GetEntry().GetOrder());
+
+        foreach (var d in details)
+            await FormationProcedure(d);
+    }
+
+    private async Task StartStageProcedure()
+    {
+        foreach (var e in _entities)
+            await _eventDict.SendEvent(StageEventDict.WIL_STAGE, new StageDetails(e));
+    }
+
+    private async Task BodyProcedure()
+    {
+        int whosTurn = 0;
+        for (int i = 0; i < MAX_ACTION_COUNT; i++)
+        {
+            StageEntity actor = _entities[whosTurn];
+
+            _result.TryAppend($"--------第{i}回合, {actor.GetName()}行动--------\n");
+            await actor.TurnProcedure();
+
+            _entities.Do(e =>
+            {
+                _result.TryAppend($"{e.GetName()} {e.Hp}[{e.Armor}] Buff:");
+                foreach (Buff b in e.Buffs)
+                    _result.TryAppend($"  {b.GetName()}*{b.Stack}");
+                _result.TryAppend("\n");
+            });
+
+            if (await TryCommit(whosTurn))
+                return;
+
+            whosTurn = 1 - whosTurn;
+        }
+    }
+
+    private async Task EndStageProcedure()
+    {
+        await _eventDict.SendEvent(StageEventDict.DID_STAGE, new StageDetails(_entities[1]));
+        await _eventDict.SendEvent(StageEventDict.DID_STAGE, new StageDetails(_entities[0]));
+        ForceCommit();
+    }
+
     #endregion
 
     private StageConfig _config;
@@ -656,65 +712,6 @@ public class StageEnvironment : Addressable, StageEventListener
     private void ClearResults()
     {
         _entities.Do(stageEntity => stageEntity.RunEntity.TraversalCurrentSlots().Do(s => s.ClearResults()));
-    }
-
-    private async Task MingYuanPenaltyProcedure()
-    {
-        await _entities[0].MingYuan.MingYuanPenaltyProcedure(_entities[0]);
-        await _entities[1].MingYuan.MingYuanPenaltyProcedure(_entities[1]);
-    }
-
-    private async Task FormationProcedure()
-    {
-        List<FormationDetails> details = new List<FormationDetails>();
-
-        foreach (var entity in _entities)
-        foreach (var runFormation in entity.RunFormations())
-            if(runFormation.IsActivated())
-                details.Add(new FormationDetails(entity, runFormation));
-
-        details.Sort((lhs, rhs) => lhs._formation.GetEntry().GetOrder() - rhs._formation.GetEntry().GetOrder());
-
-        foreach (var d in details)
-            await FormationProcedure(d);
-    }
-
-    private async Task StartStageProcedure()
-    {
-        foreach (var e in _entities)
-            await _eventDict.SendEvent(StageEventDict.WIL_STAGE, new StageDetails(e));
-    }
-
-    private async Task BodyProcedure()
-    {
-        int whosTurn = 0;
-        for (int i = 0; i < MAX_ACTION_COUNT; i++)
-        {
-            StageEntity actor = _entities[whosTurn];
-
-            _result.TryAppend($"--------第{i}回合, {actor.GetName()}行动--------\n");
-            await actor.TurnProcedure();
-
-            _entities.Do(e =>
-            {
-                _result.TryAppend($"{e.GetName()} {e.Hp}[{e.Armor}] Buff:");
-                foreach (Buff b in e.Buffs)
-                    _result.TryAppend($"  {b.GetName()}*{b.Stack}");
-                _result.TryAppend("\n");
-            });
-
-            if (await TryCommit(whosTurn))
-                return;
-
-            whosTurn = 1 - whosTurn;
-        }
-    }
-
-    private async Task EndStageProcedure()
-    {
-        await _eventDict.SendEvent(StageEventDict.DID_STAGE, new StageDetails(_entities[1]));
-        await _eventDict.SendEvent(StageEventDict.DID_STAGE, new StageDetails(_entities[0]));
-        ForceCommit();
     }
 
     private async Task<bool> TryCommit(int whosTurn)

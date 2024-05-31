@@ -8,8 +8,7 @@ using UnityEngine;
 [Serializable]
 public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceiver
 {
-    public event Action EnvironmentChangedEvent;
-    public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
+    public Neuron EnvironmentChangedNeuron;
 
     public static readonly int[] BaseHealthFromJingJie = new int[] { 40, 100, 180, 280, 400, 400 };
 
@@ -60,7 +59,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
         _filteredSlots?.Refresh();
         
-        EnvironmentChanged();
+        EnvironmentChangedNeuron.Invoke();
     }
     
     public void SetSlotCountFromJingJie(JingJie jingJie)
@@ -172,9 +171,9 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     public static RunEntity FromTemplate(RunEntity template)
         => new(entry: template._entry, mingYuan: template._mingYuan, jingJie: template._jingJie,
             baseHealth: template._baseHealth, slotCount: template._slotCount, slots: template._slots);
-    public static RunEntity FromConstructor(EntityEntry entry = null, MingYuan mingYuan = null, JingJie? jingJie = null,
-        int? baseHealth = null, int? slotCount = null, SlotListModel slots = null)
-        => new(entry, mingYuan, jingJie, baseHealth, slotCount, slots);
+    public static RunEntity FromHardCoded(JingJie? jingJie = null,
+        int? baseHealth = null, int? slotCount = null, RunSkill[] skills = null)
+        => new(jingJie: jingJie, baseHealth: baseHealth, slotCount: slotCount, slots: SlotListModel.FromSkills(skills));
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -187,6 +186,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             { "RunFormations", () => _formations },
             { "ShowingFormations", () => _showingFormations },
         };
+        EnvironmentChangedNeuron = new();
         
         _entry = entry ?? Encyclopedia.EntityCategory.DefaultEntry();
         _mingYuan = mingYuan ?? MingYuan.Default;
@@ -217,6 +217,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             { "RunFormations", () => _formations },
             { "ShowingFormations", () => _showingFormations },
         };
+        EnvironmentChangedNeuron = new();
         
         _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.EntityCategory[_entry.GetName()];
         
@@ -232,6 +233,6 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         _formations = new();
         _showingFormations = new(_formations, f =>
             f.GetMin() <= f.GetProgress() && _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
-        _slots.Traversal().Do(slot => slot.EnvironmentChangedEvent += EnvironmentChanged);
+        _slots.Traversal().Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
     }
 }

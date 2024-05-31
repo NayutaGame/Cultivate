@@ -12,7 +12,7 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         _enemy = enemy;
         RunManager.Instance.Environment.SetAway(_enemy);
-        RunManager.Instance.Environment.EnvironmentChanged();
+        RunManager.Instance.Environment.BattleChangedNeuron.Invoke();
     }
 
     public StageResult GetResult() => RunManager.Instance.Environment.SimulateResult;

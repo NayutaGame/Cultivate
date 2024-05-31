@@ -8,7 +8,7 @@ public class RunAppS : AppS
         await base.Enter(d, config);
 
         RunConfig runConfig = config as RunConfig;
-        RunManager.Instance.SetEnvironment(runConfig);
+        RunManager.Instance.SetEnvironmentFromConfig(runConfig);
 
         CanvasManager.Instance.RunCanvas.Configure();
         CanvasManager.Instance.RunCanvas.TopBar.Refresh();

@@ -1,26 +1,40 @@
 
 public class PuzzlePanelDescriptor : PanelDescriptor
 {
-    // private RunEntity _template;
-    //
-    // private RunEntity _enemy;
-    // public RunEntity GetEnemy() => _enemy;
+    private RunEntity _home;
+    public RunEntity Home
+    {
+        get => _home;
+        set
+        {
+            _home = value;
+            //     RunManager.Instance.Environment.SetAway(_enemy);
+            //     RunManager.Instance.Environment.EnvironmentChanged();
+        }
+    }
+    
+    private RunEntity _away;
+    public RunEntity Away
+    {
+        get => _away;
+        set
+        {
 
-    // public void SetEnemy(RunEntity enemy)
-    // {
-    //     _enemy = enemy;
-    //     RunManager.Instance.Environment.SetAway(_enemy);
-    //     RunManager.Instance.Environment.EnvironmentChanged();
-    // }
-    //
+            _away = value;
+            //     RunManager.Instance.Environment.SetAway(_enemy);
+            //     RunManager.Instance.Environment.EnvironmentChanged();
+        }
+    }
+    
     // public StageResult GetResult() => RunManager.Instance.Environment.SimulateResult;
 
     public PuzzlePanelDescriptor()
     {
         _accessors = new()
         {
-            // { "Guide",                    GetGuideDescriptor },
-            // { "Enemy",                    GetEnemy },
+            { "Guide",                    GetGuideDescriptor },
+            { "Home",                     () => Home },
+            { "Away",                     () => Away },
         };
     }
 

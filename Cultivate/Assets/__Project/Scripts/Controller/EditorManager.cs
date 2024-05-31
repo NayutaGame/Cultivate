@@ -5,8 +5,7 @@ using CLLibrary;
 
 public class EditorManager : Singleton<EditorManager>, Addressable
 {
-    public event Action EnvironmentChangedEvent;
-    public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
+    public Neuron EnvironmentChangedNeuron;
 
     [NonSerialized] public EntityEditableList EntityEditableList;
     
@@ -16,13 +15,9 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         get => _home;
         set
         {
-            if (_home != null)
-                _home.EnvironmentChangedEvent -= EnvironmentChanged;
-        
+            _home?.EnvironmentChangedNeuron.Remove(EnvironmentChangedNeuron);
             _home = value;
-        
-            if (_home != null)
-                _home.EnvironmentChangedEvent += EnvironmentChanged;
+            _home?.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron);
         }
     }
 
@@ -32,13 +27,9 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         get => _away;
         set
         {
-            if (_away != null)
-                _away.EnvironmentChangedEvent -= EnvironmentChanged;
-        
+            _away?.EnvironmentChangedNeuron.Remove(EnvironmentChangedNeuron);
             _away = value;
-        
-            if (_away != null)
-                _away.EnvironmentChangedEvent += EnvironmentChanged;
+            _away?.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron);
         }
     }
     
@@ -48,7 +39,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     {
         _selectionIndex = value;
         SetAwayFromSelectionIndex(value);
-        EnvironmentChanged();
+        EnvironmentChangedNeuron.Invoke();
     }
     private void SetAwayFromSelectionIndex(int? selectionIndex)
     {
@@ -75,8 +66,9 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         
         Home = RunEntity.Default();
         Away = RunEntity.Trainer();
-        
-        EnvironmentChangedEvent += SimulateProcedure;
+
+        EnvironmentChangedNeuron = new();
+        EnvironmentChangedNeuron.Add(SimulateProcedure);
     }
 
     public void Combat()

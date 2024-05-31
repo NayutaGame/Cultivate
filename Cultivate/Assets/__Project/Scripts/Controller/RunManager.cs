@@ -28,12 +28,11 @@ public class RunManager : Singleton<RunManager>, Addressable
         Arena = new();
     }
 
-    public void SetEnvironment(RunConfig config)
+    public void SetEnvironmentFromConfig(RunConfig config)
     {
         Environment?.Unregister();
         Environment = RunEnvironment.FromConfig(config);
         Environment.Register();
-
         Environment.StartRunProcedure(new RunDetails());
     }
 

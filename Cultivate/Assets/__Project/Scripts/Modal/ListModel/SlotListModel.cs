@@ -14,6 +14,20 @@ public class SlotListModel : ListModel<SkillSlot>
         return ret;
     }
 
+    public static SlotListModel FromSkills(RunSkill[] skills)
+    {
+        SlotListModel ret = new();
+
+        for (int i = 0; i < skills.Length; i++)
+        {
+            SkillSlot slot = new SkillSlot(i);
+            slot.Skill = skills[i];
+            ret.Add(slot);
+        }
+
+        return ret;
+    }
+
     public SlotListModel Clone()
     {
         SlotListModel ret = new();
@@ -21,7 +35,6 @@ public class SlotListModel : ListModel<SkillSlot>
         for (int i = 0; i < RunManager.MaxSlotCount; i++)
         {
             SkillSlot slot = new SkillSlot(i);
-            // slot.Skill = this[i].Skill.Clone();
             slot.Skill = this[i].Skill;
             ret.Add(slot);
         }

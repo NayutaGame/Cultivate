@@ -19,16 +19,13 @@ public class RunEnvironment : Addressable, RunEventListener
         => (T)_memory[key];
 
     #endregion
-    
-    public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
-    public event Action EnvironmentChangedEvent;
+
+    public Neuron BattleChangedNeuron;
     public void EnvironmentUpdateProcedure()
     {
         EnvironmentUpdateDetails d = new();
         _eventDict.SendEvent(RunEventDict.WIL_UPDATE, d);
-
         SimulateProcedure();
-
         _eventDict.SendEvent(RunEventDict.DID_UPDATE, d);
     }
 
@@ -245,7 +242,7 @@ public class RunEnvironment : Addressable, RunEventListener
     private void PlacementProcedure()
     {
         _home.PlacementProcedure();
-        _away.PlacementProcedure();
+        _away.PlacementProcedure(); // mark: away is null
     }
 
     private void FormationProcedure()
@@ -348,7 +345,8 @@ public class RunEnvironment : Addressable, RunEventListener
 
         Result = new RunResult();
 
-        EnvironmentChangedEvent += EnvironmentUpdateProcedure;
+        BattleChangedNeuron = new();
+        BattleChangedNeuron.Add(EnvironmentUpdateProcedure);
     }
 
     public MingYuan GetMingYuan()
@@ -356,19 +354,19 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void SetHome(RunEntity home)
     {
-        if (_home != null) _home.EnvironmentChangedEvent -= EnvironmentChanged;
+        _home?.EnvironmentChangedNeuron.Remove(BattleChangedNeuron);
         _home = home;
-        if (_home != null) _home.EnvironmentChangedEvent += EnvironmentChanged;
+        _home?.EnvironmentChangedNeuron.Add(BattleChangedNeuron);
     }
 
     public void SetAway(RunEntity away)
     {
         _awayIsDummy = away == null;
         away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
-
-        if (_away != null) _away.EnvironmentChangedEvent -= EnvironmentChanged;
-        _away = away;
-        if (_away != null) _away.EnvironmentChangedEvent += EnvironmentChanged;
+        
+        _away?.EnvironmentChangedNeuron.Remove(BattleChangedNeuron);
+        _home = away;
+        _away?.EnvironmentChangedNeuron.Add(BattleChangedNeuron);
     }
 
     [NonSerialized] private bool _awayIsDummy;
@@ -431,7 +429,7 @@ public class RunEnvironment : Addressable, RunEventListener
             rhs.JingJie = (rJingJie + 1).ClampUpper(rEntry.HighestJingJie);
             Hand.Remove(lhs);
             Hand.SetModified(rhs);
-            EnvironmentChanged();
+            BattleChangedNeuron.Invoke();
             return true;
         }
         
@@ -441,7 +439,7 @@ public class RunEnvironment : Addressable, RunEventListener
             rhs.JingJie = (Mathf.Max(lJingJie, rJingJie) + 1).ClampUpper(rEntry.HighestJingJie);
             Hand.Remove(lhs);
             Hand.SetModified(rhs);
-            EnvironmentChanged();
+            BattleChangedNeuron.Invoke();
             return true;
         }
         
@@ -460,7 +458,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     jingJie: rJingJie + 1),
                 preferredDeckIndex: rhsDeckIndex);
             Hand.Remove(lhs);
-            EnvironmentChanged();
+            BattleChangedNeuron.Invoke();
             return true;
         }
 
@@ -472,7 +470,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     jingJie: rJingJie + 1),
                 preferredDeckIndex: rhsDeckIndex);
             Hand.Remove(lhs);
-            EnvironmentChanged();
+            BattleChangedNeuron.Invoke();
             return true;
         }
 
@@ -485,7 +483,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     jingJie: rJingJie + 1),
                 preferredDeckIndex: rhsDeckIndex);
             Hand.Remove(lhs);
-            EnvironmentChanged();
+            BattleChangedNeuron.Invoke();
             return true;
         }
         
@@ -498,7 +496,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     jingJie: rJingJie),
                 preferredDeckIndex: rhsDeckIndex);
             Hand.Remove(lhs);
-            EnvironmentChanged();
+            BattleChangedNeuron.Invoke();
             return true;
         }
         
@@ -546,7 +544,7 @@ public class RunEnvironment : Addressable, RunEventListener
         RunSkill temp = fromSlot.Skill;
         fromSlot.SetSkillWithoutInvokeChange(toSlot.Skill);
         toSlot.SetSkillWithoutInvokeChange(temp);
-        EnvironmentChanged();
+        BattleChangedNeuron.Invoke();
         return true;
     }
 

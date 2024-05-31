@@ -656,6 +656,58 @@ public class NodeCategory : Category<NodeEntry>
                     map.CurrNode.Panel = A;
                 }),
 
+            new("物质还原仪", "物质还原仪", withInPool: true,
+                create: map =>
+                {
+                    DialogPanelDescriptor A = new("你发现了一个机器，有一个插槽。旁边有一个大锤子的按钮。",
+                        "试试这个机器可以做什么",
+                        "离开");
+
+                    // CardPickerPanelDescriptor B = new("请选择1张牌", range: new Range(0, 3));
+                    // DialogPanelDescriptor C = new("来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
+                    // DialogPanelDescriptor D = new("劈里啪啦一阵响声过后，正在你担心自己的卡牌会受到什么非人的折磨的时候。机器的运转声停止了。打开后，你发现原先的卡牌变成了两张较低境界的卡牌了。\n\n得到两张牌");
+                    //
+                    // B.SetConfirmOperation(iRunSkillList =>
+                    // {
+                    //     int count = iRunSkillList.Count;
+                    //     if (count == 0 || count == 1)
+                    //         return C;
+                    //
+                    //     RunSkill copyingSkill = null;
+                    //     object copying = iRunSkillList[RandomManager.Range(0, count)];
+                    //     if (copying is RunSkill runSkill)
+                    //     {
+                    //         copyingSkill = runSkill;
+                    //     }
+                    //     else if (copying is SkillSlot slot)
+                    //     {
+                    //         RunSkill rSkill = slot.Skill as RunSkill;
+                    //         Assert.IsTrue(rSkill != null);
+                    //         copyingSkill = rSkill;
+                    //     }
+                    //
+                    //     foreach (object iSkill in iRunSkillList)
+                    //     {
+                    //         if (iSkill is RunSkill skill)
+                    //         {
+                    //             RunManager.Instance.Environment.Hand.Remove(skill);
+                    //         }
+                    //         else if (iSkill is SkillSlot slot)
+                    //         {
+                    //             slot.Skill = null;
+                    //         }
+                    //     }
+                    //
+                    //     count.Do(i => RunManager.Instance.Environment.Hand.Add(copyingSkill));
+                    //     return D;
+                    // });
+                    //
+                    // A[0].SetSelect(option => B);
+                    // A[1].SetSelect(option => C);
+
+                    map.CurrNode.Panel = A;
+                }),
+
             new("神农氏", "神农氏", withInPool: true,
                 create: map =>
                 {
@@ -1275,17 +1327,13 @@ public class NodeCategory : Category<NodeEntry>
             //         
             //         string description = "只要用法术治疗自己，就可以抵抗毒素产生的内伤";
             //
-            //         RunEntity home = RunEntity.Default();
-            //         home.SetSlotCount(3);
-            //         
-            //         // RunEntity away = RunEntity.FromConstructor(JingJie.LianQi, 1000000, new RunSkill[]
-            //         // {
-            //         //     RunSkill.FromEntry("毒性"),
-            //         //     RunSkill.FromEntry("毒性"),
-            //         //     RunSkill.FromEntry("毒性"),
-            //         // });
-            //         // away.SetSlotCount(3);
-            //         // away.GetSlot()
+            //         RunEntity home = RunEntity.FromHardCoded(JingJie.LianQi, 60, 3);
+            //         RunEntity away = RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
+            //         {
+            //             RunSkill.FromEntry("毒性"),
+            //             RunSkill.FromEntry("毒性"),
+            //             RunSkill.FromEntry("毒性"),
+            //         });
             //         
             //         // playground
             //         // kernel

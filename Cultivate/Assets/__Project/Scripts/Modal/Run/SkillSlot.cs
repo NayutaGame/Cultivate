@@ -1,13 +1,13 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
 [Serializable]
 public class SkillSlot : Addressable, ISerializationCallbackReceiver
 {
-    public event Action EnvironmentChangedEvent;
-    public void EnvironmentChanged() => EnvironmentChangedEvent?.Invoke();
+    public Neuron EnvironmentChangedNeuron;
 
     [SerializeField] private int _index;
     public int GetIndex() => _index;
@@ -44,7 +44,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         set
         {
             SetSkillWithoutInvokeChange(value);
-            EnvironmentChanged();
+            EnvironmentChangedNeuron.Invoke();
         }
     }
 
@@ -73,6 +73,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         {
             { "Skill",         () => _skill },
         };
+        EnvironmentChangedNeuron = new();
 
         _index = index;
         _state = SkillSlotState.Locked;
@@ -91,7 +92,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         if (!success)
             return false;
 
-        EnvironmentChanged();
+        EnvironmentChangedNeuron.Invoke();
         return true;
     }
 
@@ -125,5 +126,6 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         {
             { "Skill",         () => _skill },
         };
+        EnvironmentChangedNeuron = new();
     }
 }
