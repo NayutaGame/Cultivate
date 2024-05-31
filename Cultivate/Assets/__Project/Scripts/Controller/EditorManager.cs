@@ -61,13 +61,12 @@ public class EditorManager : Singleton<EditorManager>, Addressable
             { "EntityEditableList", () => EntityEditableList },
             { "Home", () => Home }
         };
+        EnvironmentChangedNeuron = new();
 
         Load();
         
         Home = RunEntity.Default();
         Away = RunEntity.Trainer();
-
-        EnvironmentChangedNeuron = new();
         EnvironmentChangedNeuron.Add(SimulateProcedure);
     }
 

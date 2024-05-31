@@ -328,6 +328,7 @@ public class RunEnvironment : Addressable, RunEventListener
             { "Hand",                  () => Hand },
             { "ActivePanel",           GetActivePanel },
         };
+        BattleChangedNeuron = new();
 
         _config = config;
 
@@ -345,7 +346,6 @@ public class RunEnvironment : Addressable, RunEventListener
 
         Result = new RunResult();
 
-        BattleChangedNeuron = new();
         BattleChangedNeuron.Add(EnvironmentUpdateProcedure);
     }
 
@@ -365,7 +365,7 @@ public class RunEnvironment : Addressable, RunEventListener
         away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
         
         _away?.EnvironmentChangedNeuron.Remove(BattleChangedNeuron);
-        _home = away;
+        _away = away;
         _away?.EnvironmentChangedNeuron.Add(BattleChangedNeuron);
     }
 
