@@ -45,11 +45,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
     [SerializeField] private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
-    public void SetJingJie(JingJie jingJie)
-    {
-        _jingJie = jingJie;
-        // SetSlotCountFromJingJie(_jingJie);
-    }
+    public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
 
     [SerializeField] private int _slotCount;
     public int GetSlotCount() => _slotCount;
@@ -169,24 +165,21 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
     public static RunEntity Default()
         => new();
-
     public static RunEntity Trainer()
-        => FromJingJieHealth(JingJie.LianQi, 1000000);
-
+        => new(jingJie: JingJie.LianQi, baseHealth: 1000000);
     public static RunEntity FromJingJieHealth(JingJie jingJie, int health)
-    {
-        RunEntity e = new();
-        e.SetJingJie(jingJie);
-        e.SetBaseHealth(health);
-        return e;
-    }
-
+        => new(jingJie: jingJie, baseHealth: health);
     public static RunEntity FromTemplate(RunEntity template)
-        => new(template);
+        => new(entry: template._entry, mingYuan: template._mingYuan, jingJie: template._jingJie,
+            baseHealth: template._baseHealth, slotCount: template._slotCount, slots: template._slots);
+    public static RunEntity FromConstructor(EntityEntry entry = null, MingYuan mingYuan = null, JingJie? jingJie = null,
+        int? baseHealth = null, int? slotCount = null, SlotListModel slots = null)
+        => new(entry, mingYuan, jingJie, baseHealth, slotCount, slots);
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    private RunEntity(RunEntity template = null)
+    private RunEntity(EntityEntry entry = null, MingYuan mingYuan = null, JingJie? jingJie = null,
+        int? baseHealth = null, int? slotCount = null, SlotListModel slots = null)
     {
         _accessors = new()
         {
@@ -194,39 +187,21 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             { "RunFormations", () => _formations },
             { "ShowingFormations", () => _showingFormations },
         };
+        
+        _entry = entry ?? Encyclopedia.EntityCategory.DefaultEntry();
+        _mingYuan = mingYuan ?? MingYuan.Default;
+        _jingJie = jingJie ?? JingJie.LianQi;
+        _baseHealth = baseHealth ?? BaseHealthFromJingJie[_jingJie];
 
-        if (template != null)
+        _slots = slots == null ? SlotListModel.Default() : slots.Clone();
+
+        if (slotCount == null)
         {
-            _entry = template._entry;
-            _mingYuan = template._mingYuan;
-            _jingJie = template._jingJie;
-            _baseHealth = template._baseHealth;
-            _slots = new SlotListModel();
-
-            for (int i = 0; i < RunManager.MaxSlotCount; i++)
-            {
-                SkillSlot slot = new SkillSlot(i);
-                slot.Skill = template._slots[i].Skill;
-                _slots.Add(slot);
-            }
-            
-            SetSlotCount(template._slotCount);
+            SetSlotCountFromJingJie(_jingJie);
         }
         else
         {
-            _entry = Encyclopedia.EntityCategory.DefaultEntry();
-            _mingYuan = MingYuan.Default;
-            _jingJie = JingJie.LianQi;
-            _baseHealth = BaseHealthFromJingJie[JingJie.LianQi];
-            _slots = new SlotListModel();
-
-            for (int i = 0; i < RunManager.MaxSlotCount; i++)
-            {
-                SkillSlot slot = new SkillSlot(i);
-                _slots.Add(slot);
-            }
-            
-            SetSlotCountFromJingJie(_jingJie);
+            SetSlotCount(slotCount.Value);
         }
 
         Init();

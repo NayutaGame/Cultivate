@@ -7,6 +7,7 @@ using UnityEngine;
 public class RunPanelCollection : MonoBehaviour
 {
     public BattlePanel BattlePanel;
+    public PuzzlePanel PuzzlePanel;
     public DialogPanel DialogPanel;
     public DiscoverSkillPanel DiscoverSkillPanel;
     public CardPickerPanel CardPickerPanel;
@@ -67,6 +68,7 @@ public class RunPanelCollection : MonoBehaviour
         _panelDict = new()
         {
             { typeof(BattlePanelDescriptor), BattlePanel },
+            { typeof(PuzzlePanelDescriptor), PuzzlePanel },
             { typeof(DialogPanelDescriptor), DialogPanel },
             { typeof(DiscoverSkillPanelDescriptor), DiscoverSkillPanel },
             { typeof(CardPickerPanelDescriptor), CardPickerPanel },

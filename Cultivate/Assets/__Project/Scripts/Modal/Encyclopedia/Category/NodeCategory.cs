@@ -499,8 +499,7 @@ public class NodeCategory : Category<NodeEntry>
                                                   "\n\n得到《无量劫》")
                         .SetReward(new AddSkillReward("0601", jingJie: map.JingJie));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。" +
-                                                  "\n\n得到随机零件")
-                        .SetReward(new AddMechReward());
+                                                  "\n\n得到随机零件");
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -550,8 +549,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor B1 = new("感谢你这么夸我，但是现在我也没有钱给你。", "时间一下过了60年");
                     DialogPanelDescriptor C1 = new("先生谬论不可再提，你看那胡人会因为我们不锻造兵器，充实军备而不来侵略我们么？", "时间一下过了60年");
 
-                    DialogPanelDescriptor B2 = new DialogPanelDescriptor("当年的少年已经成为了宰相。见到了你，发现你的容貌60年没有发生变化，察觉你是仙人，于是说道，感谢仙人提拔。叫人给了你收藏的宝物。\n\n得到1机关牌")
-                        .SetReward(new AddMechReward());
+                    DialogPanelDescriptor B2 = new DialogPanelDescriptor("当年的少年已经成为了宰相。见到了你，发现你的容貌60年没有发生变化，察觉你是仙人，于是说道，感谢仙人提拔。叫人给了你收藏的宝物。\n\n得到1机关牌");
                     DialogPanelDescriptor C2 = new DialogPanelDescriptor("当年的少年已经成为了宰相。见到了你，完全没有印象，只道是某个江湖中人来攀亲道故，于是叫下人给了你点盘缠打发了。\n\n得到50金")
                         .SetReward(Reward.FromGold(50));
 
@@ -562,8 +560,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor E = new DialogPanelDescriptor("只见你话还没说完，宰相就摆手示意你离开。叫下人给了你点盘缠将你打发了。\n\n得到50金")
                         .SetReward(Reward.FromGold(50));
-                    DialogPanelDescriptor F = new DialogPanelDescriptor("宰相回复到，先生说的属实，若是我早点知道了这些道理，也不至于一生过的如此跌宕起伏。叫人给了你收藏的宝物。\n\n得到1机关牌")
-                        .SetReward(new AddMechReward());
+                    DialogPanelDescriptor F = new DialogPanelDescriptor("宰相回复到，先生说的属实，若是我早点知道了这些道理，也不至于一生过的如此跌宕起伏。叫人给了你收藏的宝物。\n\n得到1机关牌");
 
                     A[0].SetSelect(option => B1);
                     A[1].SetSelect(option => C1);
@@ -826,8 +823,6 @@ public class NodeCategory : Category<NodeEntry>
                     B[0].SetSelect(option => E);
                     C[0].SetSelect(option => E);
                     D[0].SetSelect(option => E);
-
-                    E.SetReward(new AddMechReward(new AddMechDetails(count: 2)));
 
                     map.CurrNode.Panel = A;
                 }),
@@ -1115,8 +1110,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor D = new DialogPanelDescriptor("你对那人说：”相必先生也知道，美好的时光总是短暂的。这个机关，可以将美好的时光记录下来，之后就可以看着照片反复回忆。" +
                                                   "但真的如此做的话，处于桃林中的我们也会因为知道相片可以反复回忆，反倒不去珍惜此时此刻的美景了。这难道不是本末倒置了么？“" +
                                                   "\n\n那人稍微惊讶于你的说法。然后感叹道：“先生教训的在理。不应以人生长而感到美好，也不应以短而感到苦恼。这个机关已经于我无用，这便赠与先生吧。”" +
-                                                  "你收下了这个机关，但是并不会维护。与其看着它坏掉，不如将其中有用的零件取出。\n\n得到1机关")
-                        .SetReward(new AddMechReward());
+                                                  "你收下了这个机关，但是并不会维护。与其看着它坏掉，不如将其中有用的零件取出。\n\n得到1机关");
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -1265,6 +1259,99 @@ public class NodeCategory : Category<NodeEntry>
 
                     map.CurrNode.Panel = A;
                 }),
+            
+            #endregion
+
+            #region Puzzle
+
+            // new("Puzzle神农氏1", "Puzzle神农氏1", withInPool: true,
+            //     create: map =>
+            //     {
+            //         DialogPanelDescriptor A = new("你看见一个人向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
+            //             "给他展示运气抵御毒素的法门",
+            //             "一口抢过来蘑菇",
+            //             "选择仙草");
+            //         A[1].SetCost(new CostDetails(mingYuan: 1));
+            //         
+            //         string description = "只要用法术治疗自己，就可以抵抗毒素产生的内伤";
+            //
+            //         RunEntity home = RunEntity.Default();
+            //         home.SetSlotCount(3);
+            //         
+            //         // RunEntity away = RunEntity.FromConstructor(JingJie.LianQi, 1000000, new RunSkill[]
+            //         // {
+            //         //     RunSkill.FromEntry("毒性"),
+            //         //     RunSkill.FromEntry("毒性"),
+            //         //     RunSkill.FromEntry("毒性"),
+            //         // });
+            //         // away.SetSlotCount(3);
+            //         // away.GetSlot()
+            //         
+            //         // playground
+            //         // kernel
+            //         // pass operation
+            //         PuzzlePanelDescriptor B = new();
+            //
+            //         DialogPanelDescriptor C = new("你吃了可疑的蘑菇，感觉头痛欲裂\n\n命元-1");
+            //
+            //         DialogPanelDescriptor D = new DialogPanelDescriptor("你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
+            //             .SetReward(Reward.FromMingYuan(1));
+            //         
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         A[2].SetSelect(option => D);
+            //         map.CurrNode.Panel = A;
+            //     }),
+            
+            // new("Puzzle神农氏2", "Puzzle神农氏2", withInPool: true,
+            //     create: map =>
+            //     {
+            //         DialogPanelDescriptor A = new("你又见到了那个少年，他又笑嘻嘻的向你走来，又是一手拿着一个福光满面的仙草，另一手拿着一个可疑的蘑菇，向你说道，这次你想吃哪个？",
+            //             "你个外行，学别人采什么药，离这个蘑菇远一点",
+            //             "这次我就选择仙草吧");
+            //         
+            //         DialogPanelDescriptor B = new("你又一次吃下了可疑的蘑菇，感觉五脏俱焚\n\n命元-2", "又过了三十年");
+            //
+            //         DialogPanelDescriptor C = new DialogPanelDescriptor("你吃了仙草感觉治愈了你多年的旧伤，继续上路了。\n\n命元+2")
+            //             .SetReward(Reward.FromMingYuan(2));
+            //
+            //         DialogPanelDescriptor D = new DialogPanelDescriptor("你又故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
+            //             .SetReward(new AddSkillReward("0602", JingJie.YuanYing));
+            //
+            //         D[1].SetCost(new CostDetails(mingYuan: 2));
+            //
+            //         C[0].SetSelect(option => D);
+            //         D[0].SetSelect(option => E);
+            //         D[1].SetSelect(option => F);
+            //         F[0].SetSelect(option => G);
+            //
+            //         map.CurrNode.Panel = A;
+            //     }),
+            
+            // new("Puzzle神农氏3", "Puzzle神农氏3", withInPool: true,
+            //     create: map =>
+            //     {
+            //         DialogPanelDescriptor A = new("你又见到了那个少年，他又笑嘻嘻的向你走来，又是一手拿着一个福光满面的仙草，另一手拿着一个可疑的蘑菇，向你说道，这次你想吃哪个？",
+            //             "你个外行，学别人采什么药，离这个蘑菇远一点",
+            //             "这次我就选择仙草吧");
+            //         
+            //         DialogPanelDescriptor B = new("你又一次吃下了可疑的蘑菇，感觉五脏俱焚\n\n命元-2", "又过了三十年");
+            //
+            //         DialogPanelDescriptor C = new DialogPanelDescriptor("你吃了仙草感觉治愈了你多年的旧伤，继续上路了。\n\n命元+2")
+            //             .SetReward(Reward.FromMingYuan(2));
+            //
+            //         DialogPanelDescriptor D = new DialogPanelDescriptor("你又故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
+            //             .SetReward(new AddSkillReward("0602", JingJie.YuanYing));
+            //
+            //         D[1].SetCost(new CostDetails(mingYuan: 2));
+            //
+            //         C[0].SetSelect(option => D);
+            //         D[0].SetSelect(option => E);
+            //         D[1].SetSelect(option => F);
+            //         F[0].SetSelect(option => G);
+            //
+            //         map.CurrNode.Panel = A;
+            //     }),
             
             #endregion
         });

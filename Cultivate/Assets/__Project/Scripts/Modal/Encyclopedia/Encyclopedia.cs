@@ -29,7 +29,6 @@ public class Encyclopedia : Addressable
 
         Fib.Init();
         SkillType.Init();
-        MechType.Init();
 
         SpriteCategory = new();
         AudioCategory = new();

@@ -37,8 +37,8 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         _state = SkillSlotState.Locked;
     }
 
-    [SerializeReference] private EmulatedSkill _skill;
-    public EmulatedSkill Skill
+    [SerializeReference] private RunSkill _skill;
+    public RunSkill Skill
     {
         get => _skill;
         set
@@ -48,15 +48,10 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         }
     }
 
-    public void SetSkillWithoutInvokeChange(EmulatedSkill skill)
+    public void SetSkillWithoutInvokeChange(RunSkill skill)
     {
         if (_skill != null) _skill.SetSkillSlot(null);
-
-        if (skill is RunSkill runSkill)
-            _skill = runSkill.Clone();
-        else
-            _skill = skill;
-
+        _skill = skill?.Clone();
         if (_skill != null) _skill.SetSkillSlot(this);
 
         _state = _skill == null ? SkillSlotState.Empty : SkillSlotState.Occupied;

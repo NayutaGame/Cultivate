@@ -35,7 +35,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         _skillDescriptor = skillDescriptor;
     }
 
-    public bool CanSelect(EmulatedSkill skill)
+    public bool CanSelect(RunSkill skill)
         => _skillDescriptor?.Contains(skill.GetEntry()) ?? skill is RunSkill;
 
     public bool CanSelect(SkillSlot slot)

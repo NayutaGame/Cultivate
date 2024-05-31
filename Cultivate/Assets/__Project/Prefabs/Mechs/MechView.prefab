@@ -432,7 +432,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2734635719551763227}
   - component: {fileID: 1255448390463693838}
-  - component: {fileID: 4122201372033822306}
   m_Layer: 0
   m_Name: MechView
   m_TagString: Untagged
@@ -476,18 +475,3 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &4122201372033822306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7193032900202738161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ba95828adc050b40b5f763141518b19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 0}
-  NameText: {fileID: 1798051381755965334}
-  CountText: {fileID: 2231452494983012487}

@@ -14,13 +14,11 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public AnnotationView SkillAnnotation;
     public AnnotationView BuffAnnotation;
     public AnnotationView FormationAnnotation;
-    // public AnnotationView MechAnnotation;
     public TextHint TextHint;
 
     [Header("Ghosts")]
     public GhostView SkillGhost;
     public GhostView SlotGhost;
-    public GhostView MechGhost;
 
     [Header("Curtain")]
     public Curtain Curtain;
@@ -59,7 +57,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "FormationAnnotation", () => FormationAnnotation },
             { "SkillGhost", () => SkillGhost },
             { "SlotGhost", () => SlotGhost },
-            { "MechGhost", () => MechGhost },
         };
 
         SkillAnnotation.Awake();
@@ -67,7 +64,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         FormationAnnotation.Awake();
         SkillGhost.Awake();
         SlotGhost.Awake();
-        MechGhost.Awake();
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
     }

@@ -14,7 +14,6 @@ public class DeckPanel : Panel
     public AnimatedListView FieldView;
     public AnimatedListView HandView;
     public ListView FormationListView;
-    public ListView MechListView;
 
     [SerializeField] public RectTransform DropRectTransform;
 
@@ -22,19 +21,16 @@ public class DeckPanel : Panel
     [SerializeField] public RectTransform _fieldTransform;
     [SerializeField] public RectTransform _handTransform;
     [SerializeField] public RectTransform _formationListTransform;
-    [SerializeField] public RectTransform _mechListTransform;
 
     [SerializeField] private RectTransform SortButtonShowPivot;
     [SerializeField] private RectTransform FieldShowPivot;
     [SerializeField] private RectTransform HandShowPivot;
     [SerializeField] private RectTransform FormationListShowPivot;
-    [SerializeField] private RectTransform MechListShowPivot;
 
     [SerializeField] private RectTransform SortButtonHidePivot;
     [SerializeField] private RectTransform FieldHidePivot;
     [SerializeField] private RectTransform HandHidePivot;
     [SerializeField] private RectTransform FormationListHidePivot;
-    [SerializeField] private RectTransform MechListHidePivot;
 
     [SerializeField] private RectTransform HandViewPivotTransform;
     [SerializeField] private HorizontalLayoutGroup HandViewLayout;
@@ -49,7 +45,7 @@ public class DeckPanel : Panel
     
         FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
         FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        FieldView.DropNeuron.Join(TryEquipSkill, TrySwap, TryEquipMech);
+        FieldView.DropNeuron.Join(TryEquipSkill, TrySwap);
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
@@ -57,9 +53,6 @@ public class DeckPanel : Panel
         HandView.GetComponent<PropagateDrop>()._onDrop = TryUnequip;
 
         FormationListView.SetAddress(new Address("Run.Environment.Hero.ShowingFormations"));
-
-        MechListView.SetAddress(new Address("Run.Environment.MechBag"));
-        MechListView.DropNeuron.Join(TryUnequip);
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
@@ -71,7 +64,6 @@ public class DeckPanel : Panel
         FieldView.Refresh();
         HandView.Refresh();
         FormationListView.Refresh();
-        MechListView.Refresh();
     }
 
     private void OnEnable()
@@ -155,28 +147,6 @@ public class DeckPanel : Panel
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
-    private void TryEquipMech(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
-    {
-        if (!(from is MechInteractBehaviour))
-            return;
-        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
-        Mech toEquip = from.GetSimpleView().Get<Mech>();
-        SkillSlot slot = to.GetSimpleView().Get<SkillSlot>();
-        bool success = env.TryEquipMech(toEquip, slot);
-        if (!success)
-            return;
-        
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
-
-        // Equip Mech Animation
-        AudioManager.Play("CardPlacement");
-
-        from.GetSimpleView().Refresh();
-        FieldView.Refresh();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
-    }
-
     private void TryUnequip(InteractBehaviour from, MonoBehaviour to, PointerEventData eventData)
         => TryUnequip(from, null, eventData);
 
@@ -192,26 +162,18 @@ public class DeckPanel : Panel
         
         RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
 
-        if (result.IsRunSkill)
-        {
-            // Unequip Skill Animation
-            InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
-            ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-            ExtraBehaviourPivot pivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            ghost.FromDrop();
-            pivot.AnimateState(ghost.GetDisplayTransform(), pivot.IdleTransform);
+        // Unequip Skill Animation
+        InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
+        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        ExtraBehaviourPivot pivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        ghost.FromDrop();
+        pivot.AnimateState(ghost.GetDisplayTransform(), pivot.IdleTransform);
 
-            AudioManager.Play("CardPlacement");
-        }
-        else
-        {
-            // Unequip Mech Animation
-        }
+        AudioManager.Play("CardPlacement");
 
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
-        MechListView.Refresh();
     }
 
     private void TrySwap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
@@ -298,8 +260,7 @@ public class DeckPanel : Panel
             .Join(_sortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
             .Join(_fieldTransform.DOAnchorPos(FieldShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
             .Join(_handTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
-            .Join(_formationListTransform.DOAnchorPos(FormationListShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
-            .Join(_mechListTransform.DOAnchorPos(MechListShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
+            .Join(_formationListTransform.DOAnchorPos(FormationListShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
 
     public override Tween HideAnimation()
         => DOTween.Sequence()
@@ -308,8 +269,7 @@ public class DeckPanel : Panel
             .Join(_sortButtonTransform.DOAnchorPos(SortButtonHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
             .Join(_fieldTransform.DOAnchorPos(FieldHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
             .Join(_handTransform.DOAnchorPos(HandHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
-            .Join(_formationListTransform.DOAnchorPos(FormationListHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
-            .Join(_mechListTransform.DOAnchorPos(MechListHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
+            .Join(_formationListTransform.DOAnchorPos(FormationListHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
 
     public RectTransform Find(Address address)
     {

@@ -14,7 +14,6 @@ public class ConsolePanel : Panel
     public TMP_InputField HealthInputField;
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
-    public Button AddMechButton;
 
     public Button ToggleButton;
 
@@ -47,9 +46,6 @@ public class ConsolePanel : Panel
 
         DrawSkillButton.onClick.RemoveAllListeners();
         DrawSkillButton.onClick.AddListener(DrawSkill);
-
-        AddMechButton.onClick.RemoveAllListeners();
-        AddMechButton.onClick.AddListener(AddMech);
 
         ToggleButton.onClick.RemoveAllListeners();
         ToggleButton.onClick.AddListener(() => ToggleShowing());
@@ -100,13 +96,6 @@ public class ConsolePanel : Panel
     private void DrawSkill()
     {
         RunManager.Instance.Environment.DrawSkillProcedure(SkillDescriptor.FromJingJie(RunManager.Instance.Environment.Map.JingJie));
-        CanvasManager.Instance.RunCanvas.Refresh();
-    }
-
-    private void AddMech()
-    {
-        foreach(MechType m in MechType.Traversal)
-            RunManager.Instance.Environment.ForceAddMech(new(m));
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

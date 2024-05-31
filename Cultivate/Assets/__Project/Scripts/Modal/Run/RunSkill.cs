@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
+public class RunSkill : ISkillModel, ISerializationCallbackReceiver
 {
     [SerializeField] private SkillSlot _skillSlot;
     public SkillSlot GetSkillSlot() => _skillSlot;
@@ -29,6 +29,9 @@ public class RunSkill : EmulatedSkill, ISerializationCallbackReceiver
 
     public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
         => new(entry, jingJie);
+
+    public static RunSkill FromEntry(SkillEntry entry)
+        => new(entry, entry.LowestJingJie);
 
     private RunSkill(SkillEntry entry, JingJie jingJie)
     {

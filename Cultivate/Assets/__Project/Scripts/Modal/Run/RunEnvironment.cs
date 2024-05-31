@@ -309,7 +309,6 @@ public class RunEnvironment : Addressable, RunEventListener
     public TechInventory TechInventory { get; private set; }
     public Pool<SkillEntry> SkillPool;
     public SkillInventory Hand { get; private set; }
-    public MechBag MechBag { get; private set; }
     public float Gold { get; private set; }
     private RunEventDict _eventDict; public RunEventDict EventDict => _eventDict;
 
@@ -330,7 +329,6 @@ public class RunEnvironment : Addressable, RunEventListener
             { "Map",                   () => Map },
             { "TechInventory",         () => TechInventory },
             { "Hand",                  () => Hand },
-            { "MechBag",               () => MechBag },
             { "ActivePanel",           GetActivePanel },
         };
 
@@ -345,7 +343,6 @@ public class RunEnvironment : Addressable, RunEventListener
         TechInventory = new();
         SkillPool = new();
         Hand = new();
-        MechBag = new();
         Gold = 0;
         _eventDict = new();
 
@@ -510,61 +507,20 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public bool TryEquipSkill(RunSkill toEquip, SkillSlot slot)
     {
-        EmulatedSkill toUnequip = slot.Skill;
+        RunSkill toUnequip = slot.Skill;
 
         if (toUnequip == null)
             Hand.Remove(toEquip);
         else if (toUnequip is RunSkill runSkill)
             Hand.Replace(toEquip, runSkill);
-        else if (toUnequip is MechComposite mechComposite)
-        {
-            Hand.Remove(toEquip);
-            foreach(MechType m in mechComposite.MechTypes)
-                MechBag.AddMech(m);
-        }
 
         slot.Skill = toEquip;
         return true;
     }
 
-    public bool TryEquipMech(Mech toEquip, SkillSlot slot)
-    {
-        EmulatedSkill currentSkill = slot.Skill;
-
-        if (currentSkill == null)
-        {
-            bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
-            if (!success)
-                return false;
-            slot.Skill = new MechComposite(toEquip.GetMechType());
-        }
-        else if (currentSkill is RunSkill runSkill)
-        {
-            bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
-            if (!success)
-                return false;
-            Hand.Add(runSkill);
-            slot.Skill = new MechComposite(toEquip.GetMechType());
-        }
-        else if (currentSkill is MechComposite mechComposite)
-        {
-            if (mechComposite.MechTypes.Count >= MechComposite.MAX_CHAIN)
-                return false;
-
-            bool success = MechBag.TryConsumeMech(toEquip.GetMechType());
-            if (!success)
-                return false;
-
-            mechComposite.MechTypes.Add(toEquip.GetMechType());
-        }
-
-        EnvironmentChanged();
-        return true;
-    }
-
     public UnequipResult TryUnequip(SkillSlot slot, object _)
     {
-        EmulatedSkill toUnequip = slot.Skill;
+        RunSkill toUnequip = slot.Skill;
         if (toUnequip == null)
             return new(false);
 
@@ -576,23 +532,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
             UnequipResult result = new(true)
             {
-                IsRunSkill = true,
                 RunSkill = runSkill.Clone()
-            };
-
-            return result;
-        }
-        else if (toUnequip is MechComposite mechComposite)
-        {
-            foreach (MechType m in mechComposite.MechTypes)
-                MechBag.AddMech(m);
-
-            slot.Skill = null;
-
-            UnequipResult result = new(true)
-            {
-                IsRunSkill = false,
-                MechTypes = mechComposite.MechTypes
             };
 
             return result;
@@ -603,7 +543,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
     {
-        EmulatedSkill temp = fromSlot.Skill;
+        RunSkill temp = fromSlot.Skill;
         fromSlot.SetSkillWithoutInvokeChange(toSlot.Skill);
         toSlot.SetSkillWithoutInvokeChange(temp);
         EnvironmentChanged();
@@ -620,24 +560,6 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         _home.SetDHealth(_home.GetDHealth() + dHealth);
         ResourceChanged();
-    }
-
-    public void ForceAddMech([CanBeNull] MechType mechType = null, int count = 1)
-        => ForceAddMech(new(mechType, count));
-    public void ForceAddMech(AddMechDetails d)
-    {
-        if (d._mechType == null)
-        {
-            for (int i = 0; i < d._count; i++)
-            {
-                MechType mechType = MechType.FromIndex(RandomManager.Range(0, MechType.Length));
-                MechBag.AddMech(mechType);
-            }
-        }
-        else
-        {
-            MechBag.AddMech(d._mechType, d._count);
-        }
     }
 
     public bool CanAffordTech(Address address)
@@ -681,7 +603,7 @@ public class RunEnvironment : Addressable, RunEventListener
                 yield return new DeckIndex(false, i);
     }
 
-    public EmulatedSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
+    public RunSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
     {
         if (deckIndex.InField)
             return Home.GetSlot(deckIndex.Index).Skill;
@@ -700,7 +622,7 @@ public class RunEnvironment : Addressable, RunEventListener
         {
             if (omit.Contains(deckIndex))
                 continue;
-            EmulatedSkill skill = GetSkillAtDeckIndex(deckIndex);
+            RunSkill skill = GetSkillAtDeckIndex(deckIndex);
             if (skill != null && d.Contains(skill.GetEntry()))
             {
                 result = deckIndex;
