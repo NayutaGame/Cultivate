@@ -61,7 +61,7 @@ public class StageManager : Singleton<StageManager>, Addressable
         if (!_environment.Result.WriteResult)
             return;
 
-        Signal signal = new BattleResultSignal(_environment.Result.HomeVictory
+        Signal signal = new BattleResultSignal(_environment.Result.Flag == 1
             ? BattleResultSignal.BattleResultState.Win
             : BattleResultSignal.BattleResultState.Lose);
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(signal);

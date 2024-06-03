@@ -50,9 +50,9 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
 
     public void SetSkillWithoutInvokeChange(RunSkill skill)
     {
-        if (_skill != null) _skill.SetSkillSlot(null);
+        _skill?.SetSkillSlot(null);
         _skill = skill?.Clone();
-        if (_skill != null) _skill.SetSkillSlot(this);
+        _skill?.SetSkillSlot(this);
 
         _state = _skill == null ? SkillSlotState.Empty : SkillSlotState.Occupied;
     }

@@ -1,18 +1,17 @@
 
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PuzzlePanel : Panel
 {
-    // home entity view
-    // away entity view
-    
-    // description text
-    // indicator text
-    
-    // solve button
-    // giveUp button
+    [SerializeField] private TMP_Text Description;
+    [SerializeField] private TMP_Text Indicator;
+    // [SerializeField] private Button PassButton;
+    // [SerializeField] private Button GiveUpButton;
+    [SerializeField] private PuzzleEntityView Home;
+    [SerializeField] private PuzzleEntityView Away;
 
     private Address _address;
 

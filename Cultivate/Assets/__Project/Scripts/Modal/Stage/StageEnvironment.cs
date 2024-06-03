@@ -61,12 +61,10 @@ public class StageEnvironment : Addressable, StageEventListener
         _eventDict.Unregister(this, writeArmorCost);
 
         await EndStageProcedure();
+        
+        await _kernel.CommitProcedure(this, MAX_ACTION_COUNT, 0, true);
 
         Unregister();
-
-        _result.HomeLeftHp = _entities[0].Hp;
-        _result.AwayLeftHp = _entities[1].Hp;
-        _result.TryAppend(_result.HomeVictory ? $"主场胜利\n" : $"主场失败\n");
     }
 
     public async Task FormationProcedure(StageEntity owner, RunFormation formation, bool recursive = true)
@@ -537,7 +535,7 @@ public class StageEnvironment : Addressable, StageEventListener
                 _result.TryAppend("\n");
             });
 
-            if (await TryCommit(whosTurn))
+            if (await _kernel.CommitProcedure(this, i, whosTurn, false) != 0)
                 return;
 
             whosTurn = 1 - whosTurn;
@@ -548,7 +546,6 @@ public class StageEnvironment : Addressable, StageEventListener
     {
         await _eventDict.SendEvent(StageEventDict.DID_STAGE, new StageDetails(_entities[1]));
         await _eventDict.SendEvent(StageEventDict.DID_STAGE, new StageDetails(_entities[0]));
-        ForceCommit();
     }
 
     #endregion
@@ -561,6 +558,8 @@ public class StageEnvironment : Addressable, StageEventListener
 
     private StageEntity[] _entities;
     public StageEntity[] Entities => _entities;
+
+    private StageKernel _kernel;
 
     private StageResult _result;
     public StageResult Result => _result;
@@ -585,6 +584,8 @@ public class StageEnvironment : Addressable, StageEventListener
             new(this, _config.Home, 0),
             new(this, _config.Away, 1),
         };
+
+        _kernel = config.Kernel;
 
         _result = new(_config);
     }
@@ -712,53 +713,5 @@ public class StageEnvironment : Addressable, StageEventListener
     private void ClearResults()
     {
         _entities.Do(stageEntity => stageEntity.RunEntity.TraversalCurrentSlots().Do(s => s.ClearResults()));
-    }
-
-    private async Task<bool> TryCommit(int whosTurn)
-    {
-        TryCommitDetails d = new TryCommitDetails(_entities[whosTurn]);
-        
-        await _eventDict.SendEvent(StageEventDict.WIL_TRY_COMMIT, d);
-
-        if (d.Cancel)
-            return false;
-        
-        if (whosTurn == 0)
-        {
-            if (_entities[whosTurn].Hp <= 0)
-            {
-                d.State = TryCommitDetails.StageState.HomeFailure;
-            }
-
-            if (_entities[1 - whosTurn].Hp <= 0)
-            {
-                d.State = TryCommitDetails.StageState.HomeVictory;
-            }
-        }
-        else
-        {
-            if (_entities[whosTurn].Hp <= 0)
-            {
-                d.State = TryCommitDetails.StageState.HomeVictory;
-            }
-            if (_entities[1 - whosTurn].Hp <= 0)
-            {
-                d.State = TryCommitDetails.StageState.HomeFailure;
-            }
-        }
-
-        if (d.State == TryCommitDetails.StageState.HomeVictory)
-            _result.SetHomeVictory(true);
-        else if (d.State == TryCommitDetails.StageState.HomeFailure)
-            _result.SetHomeVictory(false);
-        
-        await _eventDict.SendEvent(StageEventDict.DID_TRY_COMMIT, d);
-        
-        return d.State != TryCommitDetails.StageState.OnGoing;
-    }
-
-    private void ForceCommit()
-    {
-        _result.SetHomeVictory(_entities[0].Hp >= _entities[1].Hp);
     }
 }

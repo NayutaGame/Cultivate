@@ -173,7 +173,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             baseHealth: template._baseHealth, slotCount: template._slotCount, slots: template._slots);
     public static RunEntity FromHardCoded(JingJie? jingJie = null,
         int? baseHealth = null, int? slotCount = null, RunSkill[] skills = null)
-        => new(jingJie: jingJie, baseHealth: baseHealth, slotCount: slotCount, slots: SlotListModel.FromSkills(skills));
+        => new(jingJie: jingJie, baseHealth: baseHealth, slotCount: slotCount, slots: skills != null ? SlotListModel.FromSkills(skills) : null);
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();

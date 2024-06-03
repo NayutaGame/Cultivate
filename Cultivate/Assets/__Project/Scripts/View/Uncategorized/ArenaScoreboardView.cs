@@ -53,7 +53,12 @@ public class ArenaScoreboardView : MonoBehaviour
             StageResult result = arena.Results[i];
             if (result != null)
             {
-                GridLayoutImages[i].color = result.HomeVictory ? Color.green : Color.red;
+                if (result.Flag == 1)
+                    GridLayoutImages[i].color = Color.green;
+                else if (result.Flag == 2)
+                    GridLayoutImages[i].color = Color.red;
+                else
+                    GridLayoutImages[i].color = Color.black;
                 GridLayoutTexts[i].text = $"{result.HomeLeftHp} : {result.AwayLeftHp}";
             }
         }

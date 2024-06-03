@@ -44,8 +44,10 @@ public class BattlePanel : Panel
         {
             HomeHealth.text = result.HomeLeftHp.ToString();
             AwayHealth.text = result.AwayLeftHp.ToString();
-            SetVictory(result.HomeVictory);
-            if (result.HomeVictory)
+
+            bool homeVictory = result.Flag == 1;
+            SetVictory(homeVictory);
+            if (homeVictory)
             {
                 HomeHealth.alpha = 1f;
                 AwayHealth.alpha = 0.6f;

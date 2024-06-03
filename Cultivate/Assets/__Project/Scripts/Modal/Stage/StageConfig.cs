@@ -8,8 +8,9 @@ public class StageConfig
     public RunEntity Home;
     public RunEntity Away;
     public RunConfig RunConfig;
+    public StageKernel Kernel;
 
-    private StageConfig(bool animated, bool writeResult, bool generateReport, bool generateTimeline, RunEntity home, RunEntity away, RunConfig runConfig)
+    private StageConfig(bool animated, bool writeResult, bool generateReport, bool generateTimeline, RunEntity home, RunEntity away, RunConfig runConfig, StageKernel kernel = null)
     {
         Animated = animated;
         WriteResult = writeResult;
@@ -18,6 +19,7 @@ public class StageConfig
         Home = home;
         Away = away;
         RunConfig = runConfig;
+        Kernel = kernel ?? StageKernel.Default();
     }
 
     public static StageConfig ForCombat(RunEntity home, RunEntity away, RunConfig runConfig)
@@ -31,4 +33,7 @@ public class StageConfig
 
     public static StageConfig ForTimeline(RunEntity home, RunEntity away, RunConfig runConfig)
         => new(false, false, false, true, home, away, runConfig);
+
+    public static StageConfig ForPuzzle(RunEntity home, RunEntity away, StageKernel kernel)
+        => new(false, false, false, false, home, away, null, kernel);
 }

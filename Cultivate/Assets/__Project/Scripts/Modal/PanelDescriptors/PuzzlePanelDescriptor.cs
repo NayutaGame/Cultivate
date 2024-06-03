@@ -1,41 +1,25 @@
 
+using System;
+
 public class PuzzlePanelDescriptor : PanelDescriptor
 {
-    private RunEntity _home;
-    public RunEntity Home
-    {
-        get => _home;
-        set
-        {
-            _home = value;
-            //     RunManager.Instance.Environment.SetAway(_enemy);
-            //     RunManager.Instance.Environment.EnvironmentChanged();
-        }
-    }
-    
-    private RunEntity _away;
-    public RunEntity Away
-    {
-        get => _away;
-        set
-        {
-
-            _away = value;
-            //     RunManager.Instance.Environment.SetAway(_enemy);
-            //     RunManager.Instance.Environment.EnvironmentChanged();
-        }
-    }
+    private string _description;
+    private Puzzle _puzzle;
     
     // public StageResult GetResult() => RunManager.Instance.Environment.SimulateResult;
 
-    public PuzzlePanelDescriptor()
+    public PuzzlePanelDescriptor(Puzzle puzzle, string description)
     {
         _accessors = new()
         {
             { "Guide",                    GetGuideDescriptor },
-            { "Home",                     () => Home },
-            { "Away",                     () => Away },
+            { "Home",                     () => _puzzle.Home },
+            { "Away",                     () => _puzzle.Away },
+            { "Result",                   () => _puzzle.GetResult() },
         };
+
+        _puzzle = puzzle;
+        _description = description;
     }
 
     // public override void DefaultEnter()
@@ -47,33 +31,26 @@ public class PuzzlePanelDescriptor : PanelDescriptor
     // public override void DefaultExit()
     // {
     //     base.DefaultExit();
-    //     SetEnemy(null);
+    //     // make sure puzzle is disposed
     // }
-
-    // private Func<PanelDescriptor> _winOperation;
-    // public BattlePanelDescriptor SetWinOperation(Func<PanelDescriptor> win)
-    // {
-    //     _winOperation = win;
-    //     return this;
-    // }
-    //
-    // private Func<PanelDescriptor> _loseOperation;
-    // public BattlePanelDescriptor SetLoseOperation(Func<PanelDescriptor> lose)
-    // {
-    //     _loseOperation = lose;
-    //     return this;
-    // }
-    //
-    // public override PanelDescriptor DefaultReceiveSignal(Signal signal)
-    // {
-    //     if (signal is BattleResultSignal battleResultSignal)
-    //     {
-    //         return (battleResultSignal.State == BattleResultSignal.BattleResultState.Win ? _winOperation : _loseOperation).Invoke();
-    //     }
-    //
-    //     return this;
-    // }
-    //
+    
+    private Func<PuzzleResultSignal, PanelDescriptor> _operation;
+    public PuzzlePanelDescriptor SetOperation(Func<PuzzleResultSignal, PanelDescriptor> operation)
+    {
+        _operation = operation;
+        return this;
+    }
+    
+    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    {
+        if (signal is PuzzleResultSignal puzzleResultSignal)
+        {
+            return _operation(puzzleResultSignal);
+        }
+    
+        return this;
+    }
+    
     // public void Combat()
     // {
     //     RunManager.Instance.Environment.Combat();

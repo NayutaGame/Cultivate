@@ -1029,10 +1029,10 @@ public class BuffCategory : Category<BuffEntry>
             new("人间无戈", "死亡不会导致战斗结算", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TRY_COMMIT, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_COMMIT, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
-                        TryCommitDetails d = (TryCommitDetails)stageEventDetails;
+                        CommitDetails d = (CommitDetails)stageEventDetails;
 
                         d.Cancel = true;
                     }),

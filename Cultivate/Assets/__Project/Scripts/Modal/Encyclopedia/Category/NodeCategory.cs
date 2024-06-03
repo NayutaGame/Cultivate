@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using Demo_Project;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Rendering.Universal.Internal;
 
 public class NodeCategory : Category<NodeEntry>
 {
@@ -1316,40 +1318,75 @@ public class NodeCategory : Category<NodeEntry>
 
             #region Puzzle
 
-            // new("Puzzle神农氏1", "Puzzle神农氏1", withInPool: true,
-            //     create: map =>
-            //     {
-            //         DialogPanelDescriptor A = new("你看见一个人向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
-            //             "给他展示运气抵御毒素的法门",
-            //             "一口抢过来蘑菇",
-            //             "选择仙草");
-            //         A[1].SetCost(new CostDetails(mingYuan: 1));
-            //         
-            //         string description = "只要用法术治疗自己，就可以抵抗毒素产生的内伤";
-            //
-            //         RunEntity home = RunEntity.FromHardCoded(JingJie.LianQi, 60, 3);
-            //         RunEntity away = RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
-            //         {
-            //             RunSkill.FromEntry("毒性"),
-            //             RunSkill.FromEntry("毒性"),
-            //             RunSkill.FromEntry("毒性"),
-            //         });
-            //         
-            //         // playground
-            //         // kernel
-            //         // pass operation
-            //         PuzzlePanelDescriptor B = new();
-            //
-            //         DialogPanelDescriptor C = new("你吃了可疑的蘑菇，感觉头痛欲裂\n\n命元-1");
-            //
-            //         DialogPanelDescriptor D = new DialogPanelDescriptor("你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
-            //             .SetReward(Reward.FromMingYuan(1));
-            //         
-            //         A[0].SetSelect(option => B);
-            //         A[1].SetSelect(option => C);
-            //         A[2].SetSelect(option => D);
-            //         map.CurrNode.Panel = A;
-            //     }),
+            new("Puzzle神农氏1", "Puzzle神农氏1", withInPool: true,
+                create: map =>
+                {
+                    DialogPanelDescriptor A = new("你看见一个人向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
+                        "给他展示运气抵御毒素的法门",
+                        "一口抢过来蘑菇",
+                        "选择仙草");
+                    A[1].SetCost(new CostDetails(mingYuan: 1));
+
+                    Puzzle puzzle = new(
+                        home: RunEntity.FromHardCoded(JingJie.LianQi, 60, 3),
+                        away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
+                        {
+                            RunSkill.FromEntry("毒性"),
+                            RunSkill.FromEntry("毒性"),
+                            RunSkill.FromEntry("毒性"),
+                        }),
+                        kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+                        {
+                            CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+
+                            await env.EventDict.SendEvent(StageEventDict.WIL_COMMIT, d);
+
+                            if (forced)
+                            {
+                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                            }
+                            else
+                            {
+                                if (d.Cancel)
+                                    return 0;
+
+                                if (turn < 6)
+                                    return 0;
+
+                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                            }
+
+                            await env.EventDict.SendEvent(StageEventDict.DID_COMMIT, d);
+
+                            if (d.Flag == 0)
+                                return d.Flag;
+        
+                            env.Result.Flag = d.Flag;
+                            env.Result.HomeLeftHp = env.Entities[0].Hp;
+                            env.Result.AwayLeftHp = env.Entities[1].Hp;
+                            env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+                            return d.Flag;
+                        })
+                    );
+                    
+                    PuzzlePanelDescriptor B = new(puzzle, "只要用法术治疗自己，就可以抵抗毒素产生的内伤，尝试撑过6回合");
+                    DialogPanelDescriptor BPass = new("你吃了可疑的蘑菇，幸好可以依靠自己所学的功法抵挡毒性。");
+                    DialogPanelDescriptor C = new("你吃了可疑的蘑菇，感觉头痛欲裂\n\n命元-1");
+                    DialogPanelDescriptor D = new DialogPanelDescriptor("你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
+                        .SetReward(Reward.FromMingYuan(1));
+                    
+                    B.SetOperation(s =>
+                    {
+                        if (s.Flag == 1)
+                            return BPass;
+                        return A;
+                    });
+                    
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    A[2].SetSelect(option => D);
+                    map.CurrNode.Panel = A;
+                }),
             
             // new("Puzzle神农氏2", "Puzzle神农氏2", withInPool: true,
             //     create: map =>

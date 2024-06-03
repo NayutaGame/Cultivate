@@ -180,7 +180,7 @@ public class EntityEditorPanel : Panel
         if (EditorManager.Instance.SimulateResult is { } result)
         {
             Result.text = $"玩家 : 怪物\n{result.HomeLeftHp} : {result.AwayLeftHp}";
-            Result.color = result.HomeVictory ? Color.green : Color.red;
+            Result.color = result.Flag == 1 ? Color.green : Color.red;
         }
         else
         {

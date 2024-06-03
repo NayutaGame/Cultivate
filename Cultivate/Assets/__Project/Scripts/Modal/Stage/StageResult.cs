@@ -14,9 +14,7 @@ public class StageResult : Addressable
     public int HomeLeftHp;
     public int AwayLeftHp;
 
-    private bool _homeVictory;
-    public bool HomeVictory => _homeVictory;
-    public void SetHomeVictory(bool value) => _homeVictory = value;
+    public int Flag;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();

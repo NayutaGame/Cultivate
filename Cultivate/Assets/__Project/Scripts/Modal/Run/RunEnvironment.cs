@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class RunEnvironment : Addressable, RunEventListener
@@ -19,9 +18,9 @@ public class RunEnvironment : Addressable, RunEventListener
         => (T)_memory[key];
 
     #endregion
-
+    
     public Neuron BattleChangedNeuron;
-    public void EnvironmentUpdateProcedure()
+    private void BattleEnvironmentUpdateProcedure()
     {
         EnvironmentUpdateDetails d = new();
         _eventDict.SendEvent(RunEventDict.WIL_UPDATE, d);
@@ -56,7 +55,7 @@ public class RunEnvironment : Addressable, RunEventListener
             // init drawers
             Map.StepDescriptors = new StepDescriptor[]
             {
-                new BattleStepDescriptor(0, 3, 3),
+                new DirectStepDescriptor("Puzzle神农氏1"),
                 new BattleStepDescriptor(0, 3, 4),
                 new AdventureStepDescriptor(),
                 new RestStepDescriptor(),
@@ -242,7 +241,7 @@ public class RunEnvironment : Addressable, RunEventListener
     private void PlacementProcedure()
     {
         _home.PlacementProcedure();
-        _away.PlacementProcedure(); // mark: away is null
+        _away.PlacementProcedure();
     }
 
     private void FormationProcedure()
@@ -346,7 +345,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         Result = new RunResult();
 
-        BattleChangedNeuron.Add(EnvironmentUpdateProcedure);
+        BattleChangedNeuron.Add(BattleEnvironmentUpdateProcedure);
     }
 
     public MingYuan GetMingYuan()
