@@ -4,9 +4,10 @@ using System;
 public class PuzzlePanelDescriptor : PanelDescriptor
 {
     private string _description;
+    public string GetDescription() => _description;
     private Puzzle _puzzle;
-    
-    // public StageResult GetResult() => RunManager.Instance.Environment.SimulateResult;
+
+    public StageResult GetResult() => _puzzle?.GetResult();
 
     public PuzzlePanelDescriptor(Puzzle puzzle, string description)
     {
@@ -15,7 +16,6 @@ public class PuzzlePanelDescriptor : PanelDescriptor
             { "Guide",                    GetGuideDescriptor },
             { "Home",                     () => _puzzle.Home },
             { "Away",                     () => _puzzle.Away },
-            { "Result",                   () => _puzzle.GetResult() },
         };
 
         _puzzle = puzzle;

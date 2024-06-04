@@ -54,7 +54,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
         _slots.Count().Do(i =>
         {
-            _slots[i].SetLocked(i >= _slotCount);
+            _slots[i].Hidden = i >= _slotCount;
         });
 
         _filteredSlots?.Refresh();
@@ -228,7 +228,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
     private void Init()
     {
-        _filteredSlots = new FilteredListModel<SkillSlot>(_slots, skillSlot => skillSlot.State != SkillSlot.SkillSlotState.Locked);
+        _filteredSlots = new FilteredListModel<SkillSlot>(_slots, skillSlot => !skillSlot.Hidden);
 
         _formations = new();
         _showingFormations = new(_formations, f =>

@@ -26,6 +26,8 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
     [SerializeField] protected int _runEquippedTimes;
     public int GetRunEquippedTimes() => _runEquippedTimes;
     public void SetRunEquippedTimes(int value) => _runEquippedTimes = value;
+    
+    // borrowed
 
     public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
         => new(entry, jingJie);

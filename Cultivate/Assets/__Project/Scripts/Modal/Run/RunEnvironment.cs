@@ -541,9 +541,8 @@ public class RunEnvironment : Addressable, RunEventListener
     public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
     {
         RunSkill temp = fromSlot.Skill;
-        fromSlot.SetSkillWithoutInvokeChange(toSlot.Skill);
-        toSlot.SetSkillWithoutInvokeChange(temp);
-        BattleChangedNeuron.Invoke();
+        fromSlot.Skill = toSlot.Skill;
+        toSlot.Skill = temp;
         return true;
     }
 
@@ -594,7 +593,7 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         if (!excludingField)
             foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
-                yield return new DeckIndex(true, slot.GetIndex());
+                yield return new DeckIndex(true, slot.Index);
         if (!excludingHand)
             for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
                 yield return new DeckIndex(false, i);

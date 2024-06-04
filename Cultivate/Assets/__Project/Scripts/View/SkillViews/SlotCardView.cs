@@ -22,7 +22,7 @@ public class SlotCardView : SimpleView
 
         SkillSlot slot = Get<SkillSlot>();
 
-        bool occupied = slot.State == SkillSlot.SkillSlotState.Occupied;
+        bool occupied = slot.IsOccupied;
         SkillCardView.gameObject.SetActive(occupied);
         if (!occupied)
             return;

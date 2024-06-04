@@ -1,8 +1,6 @@
 
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PuzzlePanel : Panel
 {
@@ -20,9 +18,10 @@ public class PuzzlePanel : Panel
         base.Configure();
 
         _address = new Address("Run.Environment.ActivePanel");
-
-        // EnemyView.SetAddress(_address.Append(".Enemy"));
-        //
+        
+        Home.SetAddress(_address.Append(".Home"));
+        Away.SetAddress(_address.Append(".Away"));
+        
         // CombatButton.RemoveAllListeners();
         // CombatButton.AddListener(Combat);
         //
@@ -31,72 +30,74 @@ public class PuzzlePanel : Panel
 
     public override void Refresh()
     {
-        // EnemyView.Refresh();
-        //
-        // BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-        // if (d.GetResult() is { } result)
-        // {
-        //     HomeHealth.text = result.HomeLeftHp.ToString();
-        //     AwayHealth.text = result.AwayLeftHp.ToString();
-        //     SetVictory(result.HomeVictory);
-        //     if (result.HomeVictory)
-        //     {
-        //         HomeHealth.alpha = 1f;
-        //         AwayHealth.alpha = 0.6f;
-        //     }
-        //     else
-        //     {
-        //         HomeHealth.alpha = 0.6f;
-        //         AwayHealth.alpha = 1f;
-        //     }
-        // }
-        // else
-        // {
-        //     HomeHealth.text = "玩家";
-        //     AwayHealth.text = "怪物";
-        //     HomeHealth.alpha = 1f;
-        //     AwayHealth.alpha = 1f;
-        //     SetVictory(false);
-        // }
-        //
-        // CanvasManager.Instance.RefreshGuide();
+        Home.Refresh();
+        Away.Refresh();
+
+        PuzzlePanelDescriptor d = _address.Get<PuzzlePanelDescriptor>();
+        if (d.GetResult() is { } result)
+        {
+            Description.text = d.GetDescription();
+            Indicator.text = result.HomeLeftHp.ToString();
+            
+            // SetVictory(result.HomeVictory);
+            // if (result.HomeVictory)
+            // {
+            //     HomeHealth.alpha = 1f;
+            //     AwayHealth.alpha = 0.6f;
+            // }
+            // else
+            // {
+            //     HomeHealth.alpha = 0.6f;
+            //     AwayHealth.alpha = 1f;
+            // }
+        }
+        else
+        {
+            // HomeHealth.text = "玩家";
+            // AwayHealth.text = "怪物";
+            // HomeHealth.alpha = 1f;
+            // AwayHealth.alpha = 1f;
+            // SetVictory(false);
+        }
+        
+        CanvasManager.Instance.RefreshGuide();
     }
 
-    private void Combat(PointerEventData eventData)
-    {
-        // RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickBattleSignal());
-        // BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-        // d.Combat();
-        // CanvasManager.Instance.RunCanvas.Refresh();
-    }
-
-    private bool _homeVictory;
-    private Tween _handle;
-
-    private void SetVictory(bool victory)
-    {
-        // SetButtonScale(victory ? WinBaseScale : LoseBaseScale);
-        //
-        // if (_homeVictory == victory)
-        //     return;
-        //
-        // _homeVictory = victory;
-        //
-        // VictoryStamp.color = new Color(1, 1, 1, 0);
-        // VictoryStampTranform.localScale = Vector3.one * 1.5f;
-        // _handle?.Kill();
-        //
-        // if (_homeVictory)
-        // {
-        //     // AudioManager.Play("Stamp");
-        //
-        //     _handle = DOTween.Sequence().SetAutoKill()
-        //         .Append(VictoryStamp.DOFade(1, 0.15f).SetEase(Ease.InQuad))
-        //         .Append(VictoryStampTranform.DOScale(1, 0.15f).SetEase(Ease.InQuad));
-        //     _handle.Restart();
-        // }
-    }
-
+    // private void Combat(PointerEventData eventData)
+    // {
+    //     RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickBattleSignal());
+    //     BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
+    //     d.Combat();
+    //     CanvasManager.Instance.RunCanvas.Refresh();
+    // }
+    //
+    // private bool _homeVictory;
+    // private Tween _handle;
+    //
+    // private void SetVictory(bool victory)
+    // {
+    //     SetButtonScale(victory ? WinBaseScale : LoseBaseScale);
+    //     
+    //     if (_homeVictory == victory)
+    //         return;
+    //     
+    //     _homeVictory = victory;
+    //     
+    //     VictoryStamp.color = new Color(1, 1, 1, 0);
+    //     VictoryStampTranform.localScale = Vector3.one * 1.5f;
+    //     _handle?.Kill();
+    //     
+    //     if (_homeVictory)
+    //     {
+    //         // AudioManager.Play("Stamp");
+    //     
+    //         _handle = DOTween.Sequence().SetAutoKill()
+    //             .Append(VictoryStamp.DOFade(1, 0.15f).SetEase(Ease.InQuad))
+    //             .Append(VictoryStampTranform.DOScale(1, 0.15f).SetEase(Ease.InQuad));
+    //         _handle.Restart();
+    //     }
+    // }
+    //
     // private Tween _buttonScaleHandle;
     // private void SetButtonScale(float scale)
     // {
