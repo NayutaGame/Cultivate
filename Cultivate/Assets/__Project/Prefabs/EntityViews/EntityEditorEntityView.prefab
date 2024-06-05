@@ -86,7 +86,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4642213131826415913}
   m_Layer: 5
-  m_Name: "\u9635\u6CD5"
+  m_Name: FormationList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,19 +99,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 99790906149889022}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 291938847471333852}
   - {fileID: 7751352406465485235}
-  m_Father: {fileID: 543296394430956358}
-  m_RootOrder: 6
+  m_Father: {fileID: 7778355132643012418}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1136.3734, y: -40}
   m_SizeDelta: {x: 518.2504, y: 49.993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &216573431577456791
@@ -1473,7 +1473,7 @@ GameObject:
   - component: {fileID: 2797796711988945527}
   - component: {fileID: 7588568743444983968}
   m_Layer: 0
-  m_Name: FieldView
+  m_Name: SkillList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2788,7 +2788,6 @@ RectTransform:
   - {fileID: 6932626518694132477}
   - {fileID: 6339225176077858644}
   - {fileID: 4747941373416971012}
-  - {fileID: 4642213131826415913}
   m_Father: {fileID: 7778355132643012418}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3310,6 +3309,7 @@ RectTransform:
   m_Children:
   - {fileID: 543296394430956358}
   - {fileID: 2797796711988945526}
+  - {fileID: 4642213131826415913}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

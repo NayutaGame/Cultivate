@@ -43,16 +43,16 @@ public class DeckPanel : Panel
         DeckCloseZone._onPointerEnter = TryHide;
         SetLocked(false);
     
-        FieldView.SetAddress(new Address("Run.Environment.Hero.Slots"));
+        FieldView.SetAddress(new Address("Run.Environment.Home.Slots"));
         FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        FieldView.DropNeuron.Join(TryEquipSkill, TrySwap);
+        FieldView.DropNeuron.Join(Equip, Swap);
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        HandView.DropNeuron.Join(TryMerge, TryUnequip);
-        HandView.GetComponent<PropagateDrop>()._onDrop = TryUnequip;
+        HandView.DropNeuron.Join(Merge, Unequip);
+        HandView.GetComponent<PropagateDrop>()._onDrop = Unequip;
 
-        FormationListView.SetAddress(new Address("Run.Environment.Hero.ShowingFormations"));
+        FormationListView.SetAddress(new Address("Run.Environment.Home.ShowingFormations"));
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
@@ -96,44 +96,47 @@ public class DeckPanel : Panel
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
 
-    private void TryMerge(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    private void Merge(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         if (!(from is HandSkillInteractBehaviour))
             return;
-        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
+        RunEnvironment env = RunManager.Instance.Environment;
         RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
         RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
         bool success = env.MergeProcedure(lhs, rhs);
         if (!success)
             return;
 
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
-        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-        ghost.FromDrop();
-        
-        // Merge Animation
-        to.OnEndDrag(eventData);
-        AudioManager.Play("CardUpgrade");
+        env.ReceiveSignalProcedure(new FieldChangedSignal());
+
+        {
+            // Merge Animation
+            ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+            ghost.FromDrop();
+            to.OnEndDrag(eventData);
+            
+            AudioManager.Play("CardUpgrade");
+        }
 
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
-    private void TryEquipSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
         if (!(from is HandSkillInteractBehaviour))
             return;
-        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
+        RunEnvironment env = RunManager.Instance.Environment;
         RunSkill toEquip = from.GetSimpleView().Get<RunSkill>();
         SkillSlot slot = to.GetSimpleView().Get<SkillSlot>();
-        bool success = env.TryEquipSkill(toEquip, slot);
+        bool success = env.EquipProcedure(toEquip, slot);
         if (!success)
             return;
         
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
+        env.ReceiveSignalProcedure(new FieldChangedSignal());
         
         {
-            // Equip Skill Animation
+            // Equip Animation
             ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
             ExtraBehaviourPivot pivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
             ghost.FromDrop();
@@ -147,48 +150,50 @@ public class DeckPanel : Panel
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
-    private void TryUnequip(InteractBehaviour from, MonoBehaviour to, PointerEventData eventData)
-        => TryUnequip(from, null, eventData);
+    private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData eventData)
+        => Unequip(from, null, eventData);
 
-    private void TryUnequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         if (!(from is FieldSlotInteractBehaviour))
             return;
-        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
+        RunEnvironment env = RunManager.Instance.Environment;
         SkillSlot slot = from.GetSimpleView().Get<SkillSlot>();
-        UnequipResult result = env.TryUnequip(slot, null);
+        UnequipResult result = env.UnequipProcedure(slot, null);
         if (!result.Success)
             return;
         
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
+        env.ReceiveSignalProcedure(new FieldChangedSignal());
+        
+        {
+            // Unequip Animation
+            InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
+            ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+            ExtraBehaviourPivot pivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            ghost.FromDrop();
+            pivot.AnimateState(ghost.GetDisplayTransform(), pivot.IdleTransform);
 
-        // Unequip Skill Animation
-        InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
-        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-        ExtraBehaviourPivot pivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        ghost.FromDrop();
-        pivot.AnimateState(ghost.GetDisplayTransform(), pivot.IdleTransform);
-
-        AudioManager.Play("CardPlacement");
+            AudioManager.Play("CardPlacement");
+        }
 
         FieldView.Refresh();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
-    private void TrySwap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         if (!(from is FieldSlotInteractBehaviour))
             return;
 
-        RunEnvironment env = new Address("Run.Environment").Get<RunEnvironment>();
+        RunEnvironment env = RunManager.Instance.Environment;
         SkillSlot fromSlot = from.GetSimpleView().Get<SkillSlot>();
         SkillSlot toSlot = to.GetSimpleView().Get<SkillSlot>();
-        bool success = env.TrySwap(fromSlot, toSlot);
+        bool success = env.SwapProcedure(fromSlot, toSlot);
         if (!success)
             return;
         
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal());
+        env.ReceiveSignalProcedure(new FieldChangedSignal());
 
         {
             // Swap Animation

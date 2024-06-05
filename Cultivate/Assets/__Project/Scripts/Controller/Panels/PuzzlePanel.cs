@@ -22,6 +22,10 @@ public class PuzzlePanel : Panel
         Home.SetAddress(_address.Append(".Home"));
         Away.SetAddress(_address.Append(".Away"));
         
+        // FieldView.SetAddress(new Address("Run.Environment.Home.Slots"));
+        // FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        // FieldView.DropNeuron.Join(Equip, Swap);
+        
         // CombatButton.RemoveAllListeners();
         // CombatButton.AddListener(Combat);
         //

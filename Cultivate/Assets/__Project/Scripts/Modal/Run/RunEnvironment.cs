@@ -321,7 +321,7 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         _accessors = new()
         {
-            { "Hero",                  () => _home },
+            { "Home",                  () => _home },
             { "Map",                   () => Map },
             { "TechInventory",         () => TechInventory },
             { "Hand",                  () => Hand },
@@ -502,7 +502,7 @@ public class RunEnvironment : Addressable, RunEventListener
         return false;
     }
 
-    public bool TryEquipSkill(RunSkill toEquip, SkillSlot slot)
+    public bool EquipProcedure(RunSkill toEquip, SkillSlot slot)
     {
         RunSkill toUnequip = slot.Skill;
 
@@ -515,7 +515,7 @@ public class RunEnvironment : Addressable, RunEventListener
         return true;
     }
 
-    public UnequipResult TryUnequip(SkillSlot slot, object _)
+    public UnequipResult UnequipProcedure(SkillSlot slot, object _)
     {
         RunSkill toUnequip = slot.Skill;
         if (toUnequip == null)
@@ -538,7 +538,7 @@ public class RunEnvironment : Addressable, RunEventListener
         return new(false);
     }
 
-    public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
+    public bool SwapProcedure(SkillSlot fromSlot, SkillSlot toSlot)
     {
         RunSkill temp = fromSlot.Skill;
         fromSlot.Skill = toSlot.Skill;

@@ -2340,7 +2340,7 @@ GameObject:
   - component: {fileID: 1912249710443386929}
   - component: {fileID: 2727677855102342692}
   m_Layer: 5
-  m_Name: FormationListView
+  m_Name: FormationList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -17,7 +17,7 @@ public struct DeckIndex : IEquatable<DeckIndex>
     public Address ToAddress()
     {
         if (_inField)
-            return new Address($"Run.Environment.Hero.Slots#{_index}");
+            return new Address($"Run.Environment.Home.Slots#{_index}");
         else
             return new Address($"Run.Environment.Hand#{_index}");
     }

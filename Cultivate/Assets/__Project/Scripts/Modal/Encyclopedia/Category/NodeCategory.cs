@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
-using Demo_Project;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Rendering.Universal.Internal;
 
 public class NodeCategory : Category<NodeEntry>
 {

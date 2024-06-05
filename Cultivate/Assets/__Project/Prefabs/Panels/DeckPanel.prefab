@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 635782147038492598}
   m_Layer: 0
-  m_Name: FormationListViewShowPivot
+  m_Name: FormationListShowPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8871326557372446773}
-  m_RootOrder: 8
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -65,7 +65,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8871326557372446773}
-  m_RootOrder: 6
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -305,7 +305,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6051457652559215458}
   m_Layer: 0
-  m_Name: FormationListViewHidePivot
+  m_Name: FormationListHidePivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -324,7 +324,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8871326557372446773}
-  m_RootOrder: 9
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -341,7 +341,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4510643234305674615}
   m_Layer: 0
-  m_Name: FieldViewHidePivot
+  m_Name: SkillListHidePivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -377,7 +377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8520216035793713196}
   m_Layer: 0
-  m_Name: FieldViewShowPivot
+  m_Name: SkillListShowPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -468,7 +468,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8871326557372446773}
-  m_RootOrder: 4
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -510,7 +510,7 @@ RectTransform:
   - {fileID: 1037360933362778946}
   - {fileID: 6501694106712474511}
   m_Father: {fileID: 8871326557372446773}
-  m_RootOrder: 3
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -649,7 +649,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8871326557372446773}
-  m_RootOrder: 5
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -843,7 +843,7 @@ GameObject:
   - component: {fileID: 4772582155448831310}
   - component: {fileID: 540454619137409914}
   m_Layer: 5
-  m_Name: FormationListView
+  m_Name: FormationList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -868,7 +868,7 @@ RectTransform:
   - {fileID: 592424708277930855}
   - {fileID: 5349269514598267634}
   m_Father: {fileID: 8871326557372446773}
-  m_RootOrder: 7
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1052,13 +1052,13 @@ RectTransform:
   - {fileID: 2380121729450447718}
   - {fileID: 8520216035793713196}
   - {fileID: 4510643234305674615}
+  - {fileID: 7208699117368570340}
+  - {fileID: 635782147038492598}
+  - {fileID: 6051457652559215458}
   - {fileID: 3623534058688685044}
   - {fileID: 7605038482541835204}
   - {fileID: 5569372839858942889}
   - {fileID: 8860361189759415353}
-  - {fileID: 7208699117368570340}
-  - {fileID: 635782147038492598}
-  - {fileID: 6051457652559215458}
   - {fileID: 1087900410405349162}
   - {fileID: 3663543768088822588}
   - {fileID: 3289044528288313401}
@@ -1090,23 +1090,19 @@ MonoBehaviour:
   FieldView: {fileID: 3978201473878142754}
   HandView: {fileID: 8247168710749353328}
   FormationListView: {fileID: 540454619137409914}
-  MechListView: {fileID: 0}
   DropRectTransform: {fileID: 8860361189759415353}
   _sortButtonTransform: {fileID: 1087900410405349162}
   _fieldTransform: {fileID: 2380121729450447718}
   _handTransform: {fileID: 3623534058688685044}
   _formationListTransform: {fileID: 7208699117368570340}
-  _mechListTransform: {fileID: 0}
   SortButtonShowPivot: {fileID: 3663543768088822588}
   FieldShowPivot: {fileID: 8520216035793713196}
   HandShowPivot: {fileID: 7605038482541835204}
   FormationListShowPivot: {fileID: 635782147038492598}
-  MechListShowPivot: {fileID: 0}
   SortButtonHidePivot: {fileID: 3289044528288313401}
   FieldHidePivot: {fileID: 4510643234305674615}
   HandHidePivot: {fileID: 5569372839858942889}
   FormationListHidePivot: {fileID: 6051457652559215458}
-  MechListHidePivot: {fileID: 0}
   HandViewPivotTransform: {fileID: 1037360933362778946}
   HandViewLayout: {fileID: 7528905261680082668}
 --- !u!1001 &1756231232017564372
@@ -1610,7 +1606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9010936378688091556, guid: 130616300a3db65489b22752e3147f0d, type: 3}
       propertyPath: m_Name
-      value: FieldView
+      value: SkillList
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 130616300a3db65489b22752e3147f0d, type: 3}
