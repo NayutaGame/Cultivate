@@ -7,31 +7,25 @@ using UnityEngine.UI;
 
 public class DeckPanel : Panel
 {
+    public PlayerEntityView PlayerEntity;
+    [SerializeField] private RectTransform PlayerEntityTransform;
+    [SerializeField] private RectTransform PlayerEntityShowPivot;
+    [SerializeField] private RectTransform PlayerEntityHidePivot;
+
+    public AnimatedListView HandView;
+    [SerializeField] private RectTransform HandTransform;
+    [SerializeField] private RectTransform HandShowPivot;
+    [SerializeField] private RectTransform HandHidePivot;
+    
+    public Button SortButton;
+    [SerializeField] private RectTransform SortButtonTransform;
+    [SerializeField] private RectTransform SortButtonShowPivot;
+    [SerializeField] private RectTransform SortButtonHidePivot;
+    
     public PropagatePointerEnter DeckOpenZone;
     public PropagatePointerEnter DeckCloseZone;
 
-    public Button SortButton;
-    public AnimatedListView FieldView;
-    public AnimatedListView HandView;
-    public ListView FormationListView;
-
     [SerializeField] public RectTransform DropRectTransform;
-
-    [SerializeField] public RectTransform _sortButtonTransform;
-    [SerializeField] public RectTransform _fieldTransform;
-    [SerializeField] public RectTransform _handTransform;
-    [SerializeField] public RectTransform _formationListTransform;
-
-    [SerializeField] private RectTransform SortButtonShowPivot;
-    [SerializeField] private RectTransform FieldShowPivot;
-    [SerializeField] private RectTransform HandShowPivot;
-    [SerializeField] private RectTransform FormationListShowPivot;
-
-    [SerializeField] private RectTransform SortButtonHidePivot;
-    [SerializeField] private RectTransform FieldHidePivot;
-    [SerializeField] private RectTransform HandHidePivot;
-    [SerializeField] private RectTransform FormationListHidePivot;
-
     [SerializeField] private RectTransform HandViewPivotTransform;
     [SerializeField] private HorizontalLayoutGroup HandViewLayout;
 
@@ -42,17 +36,13 @@ public class DeckPanel : Panel
         DeckOpenZone._onPointerEnter = TryShow;
         DeckCloseZone._onPointerEnter = TryHide;
         SetLocked(false);
-    
-        FieldView.SetAddress(new Address("Run.Environment.Home.Slots"));
-        FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        FieldView.DropNeuron.Join(Equip, Swap);
+        
+        PlayerEntity.SetAddress(new Address("Run.Environment.Home"));
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
         HandView.DropNeuron.Join(Merge, Unequip);
         HandView.GetComponent<PropagateDrop>()._onDrop = Unequip;
-
-        FormationListView.SetAddress(new Address("Run.Environment.Home.ShowingFormations"));
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
@@ -61,9 +51,8 @@ public class DeckPanel : Panel
     public override void Refresh()
     {
         base.Refresh();
-        FieldView.Refresh();
+        PlayerEntity.Refresh();
         HandView.Refresh();
-        FormationListView.Refresh();
     }
 
     private void OnEnable()
@@ -82,13 +71,7 @@ public class DeckPanel : Panel
     private void Sync()
     {
         HandView.Sync();
-        FieldView.Sync();
-        FormationListView.Sync();
-    }
-
-    private void SyncSlot(JingJie jingJie)
-    {
-        FieldView.Sync();
+        PlayerEntity.Sync();
     }
 
     #region IInteractable
@@ -122,34 +105,6 @@ public class DeckPanel : Panel
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
-    private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
-    {
-        if (!(from is HandSkillInteractBehaviour))
-            return;
-        RunEnvironment env = RunManager.Instance.Environment;
-        RunSkill toEquip = from.GetSimpleView().Get<RunSkill>();
-        SkillSlot slot = to.GetSimpleView().Get<SkillSlot>();
-        bool success = env.EquipProcedure(toEquip, slot);
-        if (!success)
-            return;
-        
-        env.ReceiveSignalProcedure(new FieldChangedSignal());
-        
-        {
-            // Equip Animation
-            ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-            ExtraBehaviourPivot pivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            ghost.FromDrop();
-            pivot.AnimateState(ghost.GetDisplayTransform(), pivot.IdleTransform);
-
-            AudioManager.Play("CardPlacement");
-        }
-
-        FieldView.Refresh();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
-    }
-
     private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData eventData)
         => Unequip(from, null, eventData);
 
@@ -176,36 +131,7 @@ public class DeckPanel : Panel
             AudioManager.Play("CardPlacement");
         }
 
-        FieldView.Refresh();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
-    }
-
-    private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
-    {
-        if (!(from is FieldSlotInteractBehaviour))
-            return;
-
-        RunEnvironment env = RunManager.Instance.Environment;
-        SkillSlot fromSlot = from.GetSimpleView().Get<SkillSlot>();
-        SkillSlot toSlot = to.GetSimpleView().Get<SkillSlot>();
-        bool success = env.SwapProcedure(fromSlot, toSlot);
-        if (!success)
-            return;
-        
-        env.ReceiveSignalProcedure(new FieldChangedSignal());
-
-        {
-            // Swap Animation
-            eventData.pointerDrag = null;
-            to.OnEndDrag(eventData);
-            from.OnEndDrag(eventData);
-            // from.ComplexView.AnimateBehaviour.SetStartAndPivot(to.ComplexView.PivotBehaviour.IdlePivot, from.ComplexView.PivotBehaviour.IdlePivot);
-
-            AudioManager.Play("CardPlacement");
-        }
-
-        FieldView.Refresh();
+        PlayerEntity.Refresh();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
@@ -262,25 +188,23 @@ public class DeckPanel : Panel
             .AppendCallback(Sync)
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(!_locked))
-            .Join(_sortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
-            .Join(_fieldTransform.DOAnchorPos(FieldShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
-            .Join(_handTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
-            .Join(_formationListTransform.DOAnchorPos(FormationListShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
+            .Join(SortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(PlayerEntityTransform.DOAnchorPos(PlayerEntityShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(HandTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
 
     public override Tween HideAnimation()
         => DOTween.Sequence()
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(true))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(false))
-            .Join(_sortButtonTransform.DOAnchorPos(SortButtonHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
-            .Join(_fieldTransform.DOAnchorPos(FieldHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
-            .Join(_handTransform.DOAnchorPos(HandHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
-            .Join(_formationListTransform.DOAnchorPos(FormationListHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
+            .Join(SortButtonTransform.DOAnchorPos(SortButtonHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
+            .Join(PlayerEntityTransform.DOAnchorPos(PlayerEntityHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
+            .Join(HandTransform.DOAnchorPos(HandHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
 
     public RectTransform Find(Address address)
     {
         ItemBehaviour itemBehaviour =
             HandView.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address)) ??
-            FieldView.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address));
+            PlayerEntity.SkillList.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address));
         if (itemBehaviour == null)
             return null;
         return itemBehaviour.GetDisplayTransform();

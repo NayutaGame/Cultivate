@@ -2,24 +2,25 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BattleEntityView : SimpleView
 {
     public TMP_Text NameText;
-    public ListView FieldView;
-    public ListView FormationListView;
+    public ListView SkillList;
+    public ListView FormationList;
     
-    [SerializeField] public RectTransform _fieldTransform;
-    [SerializeField] private RectTransform FieldShowPivot;
-    [SerializeField] private RectTransform FieldHidePivot;
-    [SerializeField] private CanvasGroup FieldCanvasGroup;
+    [SerializeField] public RectTransform SkillListTransform;
+    [SerializeField] private RectTransform SkillListShowPivot;
+    [SerializeField] private RectTransform SkillListHidePivot;
+    [SerializeField] private CanvasGroup SkillListCanvasGroup;
 
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
         
-        FieldView.SetAddress(GetAddress().Append(".Slots"));
-        FormationListView.SetAddress(GetAddress().Append(".ShowingFormations"));
+        SkillList.SetAddress(GetAddress().Append(".Slots"));
+        FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
     }
 
     public override void Refresh()
@@ -30,15 +31,15 @@ public class BattleEntityView : SimpleView
 
         NameText.text = $"{entity.GetJingJie()} {entity.GetEntry().GetName()}";
 
-        FieldView.Refresh();
-        FormationListView.Refresh();
+        SkillList.Refresh();
+        FormationList.Refresh();
     }
 
     public Tween ShowAnimation()
         => DOTween.Sequence().AppendInterval(0.3f)
-            .Append(_fieldTransform.DOAnchorPos(FieldShowPivot.anchoredPosition, 0.15f)
-                .From(FieldHidePivot.anchoredPosition).SetEase(Ease.OutQuad))
-            .Join(FieldCanvasGroup.DOFade(1, 0.15f)
+            .Append(SkillListTransform.DOAnchorPos(SkillListShowPivot.anchoredPosition, 0.15f)
+                .From(SkillListHidePivot.anchoredPosition).SetEase(Ease.OutQuad))
+            .Join(SkillListCanvasGroup.DOFade(1, 0.15f)
                 .From(0).SetEase(Ease.OutQuad));
 
     public Tween HideAnimation()

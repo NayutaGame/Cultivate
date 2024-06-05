@@ -32,7 +32,7 @@ public class CardPickerPanel : Panel
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
         SkillListView = CanvasManager.Instance.RunCanvas.DeckPanel.HandView;
-        SlotListView = CanvasManager.Instance.RunCanvas.DeckPanel.FieldView;
+        SlotListView = CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList;
         _skillSelections ??= new List<int>();
         _slotSelections ??= new List<int>();
     }
@@ -40,13 +40,13 @@ public class CardPickerPanel : Panel
     private void OnEnable()
     {
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.LeftClickNeuron.Add(ToggleSkill);
-        CanvasManager.Instance.RunCanvas.DeckPanel.FieldView.LeftClickNeuron.Add(ToggleSkillSlot);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.LeftClickNeuron.Add(ToggleSkillSlot);
     }
 
     public void OnDisable()
     {
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.LeftClickNeuron.Remove(ToggleSkill);
-        CanvasManager.Instance.RunCanvas.DeckPanel.FieldView.LeftClickNeuron.Remove(ToggleSkillSlot);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.LeftClickNeuron.Remove(ToggleSkillSlot);
         
         ClearAllSelections();
     }
