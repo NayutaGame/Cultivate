@@ -502,14 +502,19 @@ public class RunEnvironment : Addressable, RunEventListener
         return false;
     }
 
-    public bool EquipProcedure(RunSkill toEquip, SkillSlot slot)
+    public bool EquipProcedure(out bool isReplace, RunSkill toEquip, SkillSlot slot)
     {
         RunSkill toUnequip = slot.Skill;
+
+        isReplace = false;
 
         if (toUnequip == null)
             Hand.Remove(toEquip);
         else if (toUnequip is RunSkill runSkill)
+        {
+            isReplace = true;
             Hand.Replace(toEquip, runSkill);
+        }
 
         slot.Skill = toEquip;
         return true;
@@ -538,8 +543,9 @@ public class RunEnvironment : Addressable, RunEventListener
         return new(false);
     }
 
-    public bool SwapProcedure(SkillSlot fromSlot, SkillSlot toSlot)
+    public bool SwapProcedure(out bool isReplace, SkillSlot fromSlot, SkillSlot toSlot)
     {
+        isReplace = toSlot.Skill != null;
         RunSkill temp = fromSlot.Skill;
         fromSlot.Skill = toSlot.Skill;
         toSlot.Skill = temp;

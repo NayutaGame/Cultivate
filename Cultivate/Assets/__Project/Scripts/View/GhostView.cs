@@ -1,4 +1,5 @@
 
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,6 +12,11 @@ public class GhostView : MonoBehaviour
     {
         SimpleView ??= GetComponent<SimpleView>();
         SimpleView.Awake();
+    }
+
+    private void OnDisable()
+    {
+        _animationHandle?.Kill();
     }
 
     private Tween _animationHandle;
@@ -28,12 +34,16 @@ public class GhostView : MonoBehaviour
             AnimateDisplay(extraBehaviourPivot.GetDisplayTransform(), extraBehaviourPivot.FollowTransform);
     }
 
-    public void EndDrag(InteractBehaviour ib, PointerEventData eventData)
+    public void EndDrag(InteractBehaviour ib, PointerEventData d)
     {
-        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
-            extraBehaviourPivot.AnimateState(SimpleView.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
-
+        bool dropOnNothing = !CanvasManager.Instance.RayCastIsHit(d);
+        if (dropOnNothing)
+        {
+            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+                extraBehaviourPivot.AnimateState(SimpleView.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
+        }
+        
         gameObject.SetActive(false);
     }
 
@@ -50,12 +60,6 @@ public class GhostView : MonoBehaviour
         if (IsAnimating)
             return;
         SimpleView.SetDisplayTransform(pivot);
-    }
-
-    public void FromDrop()
-    {
-        _animationHandle?.Kill();
-        gameObject.SetActive(false);
     }
 
     public RectTransform GetDisplayTransform()

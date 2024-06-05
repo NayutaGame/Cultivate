@@ -3,12 +3,16 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CanvasManager : Singleton<CanvasManager>, Addressable
 {
     public AppCanvas AppCanvas;
     public RunCanvas RunCanvas;
     public StageCanvas StageCanvas;
+
+    public GraphicRaycaster Raycaster;
 
     [Header("Annotations")]
     public AnnotationView SkillAnnotation;
@@ -59,6 +63,8 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "SlotGhost", () => SlotGhost },
         };
 
+        _results = new();
+
         SkillAnnotation.Awake();
         BuffAnnotation.Awake();
         FormationAnnotation.Awake();
@@ -71,5 +77,14 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public void RefreshGuide()
     {
         GuideView.Refresh();
+    }
+
+    private List<RaycastResult> _results;
+
+    public bool RayCastIsHit(PointerEventData d)
+    {
+        _results.Clear();
+        Raycaster.Raycast(d, _results);
+        return _results[0].gameObject.GetComponent<InteractBehaviour>() != null;
     }
 }

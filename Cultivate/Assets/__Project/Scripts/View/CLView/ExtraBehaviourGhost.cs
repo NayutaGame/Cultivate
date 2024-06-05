@@ -22,20 +22,21 @@ public class ExtraBehaviourGhost : ExtraBehaviour
             return;
 
         ib.BeginDragNeuron.Join(Ghost.BeginDrag);
-        ib.EndDragNeuron.Join(Ghost.EndDrag);
-        ib.DragNeuron.Join(Ghost.Drag);
-
         ib.BeginDragNeuron.Join(CLView.SetInteractableToFalse);
         ib.BeginDragNeuron.Join(CLView.SetVisibleToFalse);
+        
+        ib.EndDragNeuron.Join(Ghost.EndDrag);
         ib.EndDragNeuron.Join(CLView.SetInteractableToTrue);
         ib.EndDragNeuron.Join(CLView.SetVisibleToTrue);
+        
+        ib.DragNeuron.Join(Ghost.Drag);
     }
 
-    public void FromDrop()
+    public void Hide()
     {
         CLView.SetInteractableToTrue();
         CLView.SetVisibleToTrue();
-        Ghost.FromDrop();
+        Ghost.gameObject.SetActive(false);
     }
 
     public RectTransform GetDisplayTransform()

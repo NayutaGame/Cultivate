@@ -76,10 +76,10 @@ public class DeckPanel : Panel
 
     #region IInteractable
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 
-    private void Merge(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    private void Merge(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
         if (!(from is HandSkillInteractBehaviour))
             return;
@@ -91,24 +91,33 @@ public class DeckPanel : Panel
             return;
 
         env.ReceiveSignalProcedure(new FieldChangedSignal());
-
-        {
-            // Merge Animation
-            ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-            ghost.FromDrop();
-            to.OnEndDrag(eventData);
-            
-            AudioManager.Play("CardUpgrade");
-        }
+        
+        MergeAnimation(from, to, d);
 
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
     }
 
-    private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData eventData)
-        => Unequip(from, null, eventData);
+    private void MergeAnimation(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        // From: 本体被移除
+        
+        // Ghost
+        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        ghost.Hide();
+        
+        // To: Ghost Display -> ToIdle + Ping Animation
+        ExtraBehaviourPivot extraBehaviourPivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+            extraBehaviourPivot.AnimateState(ghost.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
 
-    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+        AudioManager.Play("CardUpgrade");
+    }
+
+    private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData d)
+        => Unequip(from, null, d);
+
+    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
         if (!(from is FieldSlotInteractBehaviour))
             return;
@@ -119,21 +128,29 @@ public class DeckPanel : Panel
             return;
         
         env.ReceiveSignalProcedure(new FieldChangedSignal());
-        
-        {
-            // Unequip Animation
-            InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
-            ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-            ExtraBehaviourPivot pivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            ghost.FromDrop();
-            pivot.AnimateState(ghost.GetDisplayTransform(), pivot.IdleTransform);
 
-            AudioManager.Play("CardPlacement");
-        }
+        UnequipAnimation(from);
 
         PlayerEntity.Refresh();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
+    }
+
+    private void UnequipAnimation(InteractBehaviour from)
+    {
+        // From: No Animation
+        
+        // Ghost
+        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        ghost.Hide();
+        
+        // New IB: Ghost Display -> To Idle
+        InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
+        ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+            extraBehaviourPivot.AnimateState(ghost.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
+
+        AudioManager.Play("CardPlacement");
     }
 
     #endregion

@@ -63,7 +63,7 @@ public class RunCanvas : MonoBehaviour
             await RunPanelCollection.SetPanel(d);
         }
 
-        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor)
+        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
         {
             DeckPanel.SetLocked(true);
             await DeckPanel.SetShowing(true);
