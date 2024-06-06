@@ -3,6 +3,11 @@ using CLLibrary;
 
 public class Puzzle
 {
+    private string _description;
+    public string Description => _description;
+    private string _condition;
+    public string Condition => _condition;
+    
     private RunEntity _home;
     public RunEntity Home => _home;
     private RunEntity _away;
@@ -26,9 +31,13 @@ public class Puzzle
         return StageEnvironment.CalcSimulateResult(StageConfig.ForPuzzle(_home, _away, _kernel));
     }
 
-    public Puzzle(RunEntity home, RunEntity away, StageKernel kernel)
+    public Puzzle(string description, string condition,
+        RunEntity home, RunEntity away, StageKernel kernel)
     {
         ChangedNeuron = new();
+
+        _description = description;
+        _condition = condition;
         
         _home = home;
         _home.EnvironmentChangedNeuron.Add(ChangedNeuron);

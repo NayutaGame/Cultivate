@@ -1318,19 +1318,21 @@ public class NodeCategory : Category<NodeEntry>
             new("Puzzle神农氏1", "Puzzle神农氏1", withInPool: true,
                 create: map =>
                 {
-                    DialogPanelDescriptor A = new("你看见一个人向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
+                    DialogPanelDescriptor A = new("你看见一个少年向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
                         "给他展示运气抵御毒素的法门",
                         "一口抢过来蘑菇",
                         "选择仙草");
                     A[1].SetCost(new CostDetails(mingYuan: 1));
 
                     Puzzle puzzle = new(
-                        home: RunEntity.FromHardCoded(JingJie.LianQi, 60, 3),
+                        description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
+                        condition: "剩余血量 大于 0",
+                        home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
                         away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
                         {
-                            RunSkill.FromEntry("毒性"),
-                            RunSkill.FromEntry("毒性"),
-                            RunSkill.FromEntry("毒性"),
+                            RunSkill.FromEntry("0609"),
+                            RunSkill.FromEntry("0609"),
+                            RunSkill.FromEntry("0609"),
                         }),
                         kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
                         {
@@ -1366,8 +1368,9 @@ public class NodeCategory : Category<NodeEntry>
                         })
                     );
                     
-                    PuzzlePanelDescriptor B = new(puzzle, "只要用法术治疗自己，就可以抵抗毒素产生的内伤，尝试撑过6回合");
-                    DialogPanelDescriptor BPass = new("你吃了可疑的蘑菇，幸好可以依靠自己所学的功法抵挡毒性。");
+                    PuzzlePanelDescriptor B = new(puzzle);
+                    DialogPanelDescriptor BPass = new DialogPanelDescriptor("少年吃了可疑的蘑菇，幸好可以依靠你的功法抵挡毒性。\n\n于是你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
+                        .SetReward(Reward.FromMingYuan(1));
                     DialogPanelDescriptor C = new("你吃了可疑的蘑菇，感觉头痛欲裂\n\n命元-1");
                     DialogPanelDescriptor D = new DialogPanelDescriptor("你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
                         .SetReward(Reward.FromMingYuan(1));

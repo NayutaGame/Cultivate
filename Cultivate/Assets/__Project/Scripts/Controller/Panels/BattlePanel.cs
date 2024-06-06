@@ -10,11 +10,9 @@ public class BattlePanel : Panel
     [SerializeField] private BattleEntityView EnemyView;
     [SerializeField] private TMP_Text HomeHealth;
     [SerializeField] private TMP_Text AwayHealth;
-    [SerializeField] private BreathingButton CombatButton;
-    [SerializeField] public RectTransform CombatButtonTransform;
 
-    [SerializeField] private Image VictoryStamp;
-    [SerializeField] private Transform VictoryStampTranform;
+    [SerializeField] public CombatButton CombatButton;
+    [SerializeField] private GameObject VictoryStamp;
 
     private static readonly float WinBaseScale = 1f;
     private static readonly float LoseBaseScale = 0.6f;
@@ -29,10 +27,7 @@ public class BattlePanel : Panel
 
         EnemyView.SetAddress(_address.Append(".Enemy"));
 
-        CombatButton.RemoveAllListeners();
-        CombatButton.AddListener(Combat);
-
-        CombatButton.SetBreathing(true);
+        CombatButton.ClickNeuron.Join(Combat);
     }
 
     public override void Refresh()
@@ -44,27 +39,16 @@ public class BattlePanel : Panel
         {
             HomeHealth.text = result.HomeLeftHp.ToString();
             AwayHealth.text = result.AwayLeftHp.ToString();
-
-            bool homeVictory = result.Flag == 1;
-            SetVictory(homeVictory);
-            if (homeVictory)
-            {
-                HomeHealth.alpha = 1f;
-                AwayHealth.alpha = 0.6f;
-            }
-            else
-            {
-                HomeHealth.alpha = 0.6f;
-                AwayHealth.alpha = 1f;
-            }
+            SetVictory(result.Flag == 1);
         }
         else
         {
             HomeHealth.text = "玩家";
             AwayHealth.text = "怪物";
+            SetVictory(false);
+            
             HomeHealth.alpha = 1f;
             AwayHealth.alpha = 1f;
-            SetVictory(false);
         }
         
         CanvasManager.Instance.RefreshGuide();
@@ -78,39 +62,12 @@ public class BattlePanel : Panel
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private bool _homeVictory;
-    private Tween _handle;
-
     private void SetVictory(bool victory)
     {
-        SetButtonScale(victory ? WinBaseScale : LoseBaseScale);
-
-        if (_homeVictory == victory)
-            return;
-
-        _homeVictory = victory;
-
-        VictoryStamp.color = new Color(1, 1, 1, 0);
-        VictoryStampTranform.localScale = Vector3.one * 1.5f;
-        _handle?.Kill();
-
-        if (_homeVictory)
-        {
-            // AudioManager.Play("Stamp");
-
-            _handle = DOTween.Sequence().SetAutoKill()
-                .Append(VictoryStamp.DOFade(1, 0.15f).SetEase(Ease.InQuad))
-                .Append(VictoryStampTranform.DOScale(1, 0.15f).SetEase(Ease.InQuad));
-            _handle.Restart();
-        }
-    }
-
-    private Tween _buttonScaleHandle;
-    private void SetButtonScale(float scale)
-    {
-        _buttonScaleHandle?.Kill();
-        _buttonScaleHandle = CombatButtonTransform.DOScale(scale, 0.2f).SetAutoKill();
-        _buttonScaleHandle.Restart();
+        CombatButton.SetBaseScale(victory ? WinBaseScale : LoseBaseScale);
+        VictoryStamp.SetActive(victory);
+        HomeHealth.alpha = victory ? 1f : 0.6f;
+        AwayHealth.alpha = victory ? 0.6f : 1f;
     }
 
     public override Tween ShowAnimation()

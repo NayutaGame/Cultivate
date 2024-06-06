@@ -1,5 +1,5 @@
 
-using System;
+using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,19 +13,10 @@ public class BreathingButton : MonoBehaviour,
     [SerializeField] private Image HoverImage;
 
     private bool _breathing;
-    private event Action<PointerEventData> _onPointerClick;
 
-    private Tween _scaleHandle;
+    public Neuron<PointerEventData> ClickNeuron = new();
 
-    public void AddListener(Action<PointerEventData> listener)
-    {
-        _onPointerClick += listener;
-    }
-
-    public void RemoveAllListeners()
-    {
-        _onPointerClick = null;
-    }
+    private Tween _handle;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -34,9 +25,9 @@ public class BreathingButton : MonoBehaviour,
 
         HoverImage.DOFade(1f, 0.1f).SetEase(Ease.OutQuad).SetAutoKill().Restart();
 
-        _scaleHandle?.Kill();
-        _scaleHandle = _rectTransform.DOScale(1.2f * Vector3.one, 0.2f).SetEase(Ease.OutQuad).SetAutoKill();
-        _scaleHandle.Restart();
+        _handle?.Kill();
+        _handle = _rectTransform.DOScale(1.2f * Vector3.one, 0.2f).SetEase(Ease.OutQuad).SetAutoKill();
+        _handle.Restart();
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -46,13 +37,13 @@ public class BreathingButton : MonoBehaviour,
 
         HoverImage.DOFade(0f, 0.1f).SetEase(Ease.InQuad).SetAutoKill().Restart();
 
-        _scaleHandle?.Kill();
-        _scaleHandle = _rectTransform.DOScale(Vector3.one, 0.7f).From(1.2f)
+        _handle?.Kill();
+        _handle = _rectTransform.DOScale(Vector3.one, 0.7f).From(1.2f)
             .SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InQuad).SetAutoKill();
-        _scaleHandle.Restart();
+        _handle.Restart();
     }
 
-    public void OnPointerClick(PointerEventData eventData) => _onPointerClick?.Invoke(eventData);
+    public void OnPointerClick(PointerEventData eventData) => ClickNeuron.Invoke(eventData);
 
     public void SetBreathing(bool breathing)
     {
@@ -63,22 +54,22 @@ public class BreathingButton : MonoBehaviour,
         Refresh();
     }
 
-    public void Refresh()
+    private void Refresh()
     {
-        _scaleHandle?.Kill();
+        _handle?.Kill();
 
         if (_breathing)
         {
-            _scaleHandle = _rectTransform.DOScale(Vector3.one, 0.7f).From(1.2f)
+            _handle = _rectTransform.DOScale(Vector3.one, 0.7f).From(1.2f)
                 .SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InQuad).SetAutoKill();
         }
         else
         {
-            _scaleHandle = _rectTransform.DOScale(Vector3.one, 0.7f)
+            _handle = _rectTransform.DOScale(Vector3.one, 0.7f)
                 .SetEase(Ease.InQuad).SetAutoKill();
         }
 
-        _scaleHandle.Restart();
+        _handle.Restart();
     }
 
     public void SetSprite(Sprite sprite)

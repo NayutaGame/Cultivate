@@ -11,8 +11,7 @@ public class LegacyNodeView : SimpleView
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        _breathingButton.RemoveAllListeners();
-        _breathingButton.AddListener(OnPointerClick);
+        _breathingButton.ClickNeuron.Join(OnPointerClick);
     }
 
     public override void Refresh()

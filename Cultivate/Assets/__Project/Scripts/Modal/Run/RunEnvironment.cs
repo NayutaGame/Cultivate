@@ -410,6 +410,9 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public bool MergeProcedure(RunSkill lhs, RunSkill rhs)
     {
+        if (lhs.Borrowed || rhs.Borrowed)
+            return false;
+        
         SkillEntry lEntry = lhs.GetEntry();
         SkillEntry rEntry = rhs.GetEntry();
         JingJie lJingJie = lhs.GetJingJie();

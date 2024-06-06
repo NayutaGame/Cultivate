@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9176695831387659955}
+  - component: {fileID: 2504445931872569106}
   m_Layer: 0
   m_Name: CombatButton
   m_TagString: Untagged
@@ -37,6 +38,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 194, y: 183}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2504445931872569106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176695831387659956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52dfea8ac7620043bc657d1d59b8b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 9176695831387659955}
+  _breathingButton: {fileID: 1990309165664455146}
 --- !u!1001 &258287240172635564
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -158,6 +173,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cbb2a3b61519e54789d34635a74824c, type: 3}
+--- !u!114 &1990309165664455146 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1732585428422478918, guid: 7cbb2a3b61519e54789d34635a74824c, type: 3}
+  m_PrefabInstance: {fileID: 258287240172635564}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411536c0a3aaf694eb40d3d0dff62ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1990309165664455149 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1732585428422478913, guid: 7cbb2a3b61519e54789d34635a74824c, type: 3}

@@ -2472,6 +2472,19 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
+            new(id:                         "0609",
+                name:                       "毒性",
+                wuXing:                     WuXing.Shui,
+                jingJieRange:               JingJie.JinDan2HuaShen,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"施加3内伤",
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.GiveBuffProcedure("内伤", 3);
+                    return null;
+                }),
+
             #endregion
 
             #region 机关牌

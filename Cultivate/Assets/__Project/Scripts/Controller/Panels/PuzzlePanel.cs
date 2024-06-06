@@ -1,15 +1,21 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PuzzlePanel : Panel
 {
     [SerializeField] private TMP_Text Description;
+    [SerializeField] private TMP_Text Condition;
     [SerializeField] private TMP_Text Indicator;
-    // [SerializeField] private Button PassButton;
-    // [SerializeField] private Button GiveUpButton;
+    [SerializeField] private GameObject PassStamp;
+    [SerializeField] private Button Button;
+    [SerializeField] private TMP_Text ButtonText;
     [SerializeField] private PuzzleEntityView Home;
     [SerializeField] private PuzzleEntityView Away;
+
+    private static readonly float WinBaseScale = 1f;
+    private static readonly float LoseBaseScale = 0.6f;
 
     private Address _address;
 
@@ -22,10 +28,8 @@ public class PuzzlePanel : Panel
         Home.SetAddress(_address.Append(".Home"));
         Away.SetAddress(_address.Append(".Away"));
         
-        // CombatButton.RemoveAllListeners();
-        // CombatButton.AddListener(Combat);
-        //
-        // CombatButton.SetBreathing(true);
+        Button.onClick.RemoveAllListeners();
+        Button.onClick.AddListener(Callback);
     }
 
     public override void Refresh()
@@ -37,19 +41,9 @@ public class PuzzlePanel : Panel
         if (d.GetResult() is { } result)
         {
             Description.text = d.GetDescription();
+            Condition.text = d.GetCondition();
             Indicator.text = result.HomeLeftHp.ToString();
-            
-            // SetVictory(result.HomeVictory);
-            // if (result.HomeVictory)
-            // {
-            //     HomeHealth.alpha = 1f;
-            //     AwayHealth.alpha = 0.6f;
-            // }
-            // else
-            // {
-            //     HomeHealth.alpha = 0.6f;
-            //     AwayHealth.alpha = 1f;
-            // }
+            SetVictory(result.Flag == 1);
         }
         else
         {
@@ -63,49 +57,20 @@ public class PuzzlePanel : Panel
         CanvasManager.Instance.RefreshGuide();
     }
 
-    // private void Combat(PointerEventData eventData)
-    // {
-    //     RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickBattleSignal());
-    //     BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-    //     d.Combat();
-    //     CanvasManager.Instance.RunCanvas.Refresh();
-    // }
-    //
-    // private bool _homeVictory;
-    // private Tween _handle;
-    //
-    // private void SetVictory(bool victory)
-    // {
-    //     SetButtonScale(victory ? WinBaseScale : LoseBaseScale);
-    //     
-    //     if (_homeVictory == victory)
-    //         return;
-    //     
-    //     _homeVictory = victory;
-    //     
-    //     VictoryStamp.color = new Color(1, 1, 1, 0);
-    //     VictoryStampTranform.localScale = Vector3.one * 1.5f;
-    //     _handle?.Kill();
-    //     
-    //     if (_homeVictory)
-    //     {
-    //         // AudioManager.Play("Stamp");
-    //     
-    //         _handle = DOTween.Sequence().SetAutoKill()
-    //             .Append(VictoryStamp.DOFade(1, 0.15f).SetEase(Ease.InQuad))
-    //             .Append(VictoryStampTranform.DOScale(1, 0.15f).SetEase(Ease.InQuad));
-    //         _handle.Restart();
-    //     }
-    // }
-    //
-    // private Tween _buttonScaleHandle;
-    // private void SetButtonScale(float scale)
-    // {
-    //     _buttonScaleHandle?.Kill();
-    //     _buttonScaleHandle = CombatButtonTransform.DOScale(scale, 0.2f).SetAutoKill();
-    //     _buttonScaleHandle.Restart();
-    // }
-    //
+    private void SetVictory(bool victory)
+    {
+        PassStamp.SetActive(victory);
+        Indicator.alpha = victory ? 1f : 0.6f;
+        ButtonText.text = victory ? "通过" : "尝试其他方法";
+    }
+
+    private void Callback()
+    {
+        PuzzlePanelDescriptor d = _address.Get<PuzzlePanelDescriptor>();
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new PuzzleResultSignal(d.GetResult().Flag));
+        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
+    }
+    
     // public override Tween ShowAnimation()
     // {
     //     return DOTween.Sequence()
@@ -120,21 +85,5 @@ public class PuzzlePanel : Panel
     //         .AppendCallback(PlayJingJieBGM)
     //         .Append(EnemyView.HideAnimation())
     //         .Join(base.HideAnimation());
-    // }
-    //
-    // private void PlayBattleBGM()
-    // {
-    //     int index = RandomManager.Range(0, 3);
-    //     string bgm = new string[] { "BGMBoss", "BGMElite1", "BGMElite2" }[index];
-    //     AudioManager.Play(bgm);
-    // }
-    //
-    // private void PlayJingJieBGM()
-    // {
-    //     if (RunManager.Instance == null || RunManager.Instance.Environment == null)
-    //         return;
-    //     JingJie jingJie = RunManager.Instance.Environment.Map.JingJie;
-    //     AudioEntry audio = Encyclopedia.AudioFromJingJie(jingJie);
-    //     AudioManager.Play(audio);
     // }
 }

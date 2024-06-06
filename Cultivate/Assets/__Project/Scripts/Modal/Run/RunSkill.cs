@@ -1,5 +1,6 @@
 
 using System;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 [Serializable]
@@ -27,7 +28,8 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
     public int GetRunEquippedTimes() => _runEquippedTimes;
     public void SetRunEquippedTimes(int value) => _runEquippedTimes = value;
     
-    // borrowed
+    [SerializeField] [OptionalField(VersionAdded = 4)] private bool _borrowed;
+    public bool Borrowed { get => _borrowed; set => _borrowed = value; }
 
     public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
         => new(entry, jingJie);
