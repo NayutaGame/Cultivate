@@ -10,7 +10,7 @@ public class BattleRunNode : RunNode
     public RunEntity Entity => _entity;
     private List<Reward> _rewards;
 
-    public BattleRunNode(RunEntity entity) : base("战斗")
+    public BattleRunNode(RunEntity entity, int ladder) : base("战斗", ladder)
     {
         _entity = entity;
         _rewards = new();

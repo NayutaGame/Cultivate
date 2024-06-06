@@ -15,6 +15,9 @@ public class RunNode
     protected NodeEntry _entry;
     public NodeEntry Entry => _entry;
 
+    private int _ladder;
+    public int Ladder => _ladder;
+
     private RunNodeState _state;
     public RunNodeState State
     {
@@ -38,9 +41,10 @@ public class RunNode
     public virtual string GetName() => _entry.GetName();
     public virtual string GetDescription() => _entry.GetDescription();
 
-    public RunNode(NodeEntry entry)
+    public RunNode(NodeEntry entry, int ladder)
     {
         _entry = entry;
+        _ladder = ladder;
         _state = RunNodeState.Untouched;
     }
 

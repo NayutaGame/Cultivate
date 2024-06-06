@@ -1,7 +1,6 @@
 
 public class BattleStepDescriptor : StepDescriptor
 {
-    public int _ladder;
     public int _slotCountBefore;
     public int _slotCountAfter;
     public int _baseGoldReward;
@@ -27,23 +26,20 @@ public class BattleStepDescriptor : StepDescriptor
         false, false, true,
     };
 
-    public BattleStepDescriptor(int ladder, int slotCountBefore, int slotCountAfter)
+    public BattleStepDescriptor(int ladder, int slotCountBefore, int slotCountAfter) : base(ladder)
     {
-        _ladder = ladder;
         _slotCountBefore = slotCountBefore;
         _slotCountAfter = slotCountAfter;
-        _baseGoldReward = GoldRewardTable[_ladder];
-        _isBoss = IsBossTable[_ladder];
+        _baseGoldReward = GoldRewardTable[ladder];
+        _isBoss = IsBossTable[ladder];
     }
     
     public override void Draw(Map map)
     {
         map.CurrStepItem._nodes.Clear();
-
-        map.Ladder = _ladder;
         
-        EntityDescriptor d = new EntityDescriptor(_ladder);
+        EntityDescriptor d = new EntityDescriptor(Ladder);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
-        map.CurrStepItem._nodes.Add(new BattleRunNode(entity));
+        map.CurrStepItem._nodes.Add(new BattleRunNode(entity, Ladder));
     }
 }

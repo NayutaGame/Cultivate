@@ -1,10 +1,32 @@
 
+using System;
+
 public class AdventureStepDescriptor : StepDescriptor
 {
     public override void Draw(Map map)
     {
         map.CurrStepItem._nodes.Clear();
-        map.AdventurePool.TryPopItem(out NodeEntry entry, pred: e => e.CanCreate(map));
-        map.CurrStepItem._nodes.Add(new RunNode(entry));
+
+        Predicate<NodeEntry> pred = e => e.CanCreate(map, Ladder);
+        NodeEntry entry;
+        
+        if (map.InsertedAdventurePool.TryPopItem(out entry, pred: pred))
+        {
+            
+        }
+        else if (map.AdventurePool.TryPopItem(out entry, pred: pred))
+        {
+            
+        }
+        else
+        {
+            entry = "不存在的事件";
+        }
+        
+        map.CurrStepItem._nodes.Add(new RunNode(entry, Ladder));
+    }
+
+    public AdventureStepDescriptor(int ladder) : base(ladder)
+    {
     }
 }

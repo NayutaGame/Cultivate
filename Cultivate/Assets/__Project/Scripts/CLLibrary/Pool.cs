@@ -15,6 +15,11 @@ namespace CLLibrary
             _list = new List<T>();
         }
 
+        public void Populate(T item)
+        {
+            _list.Add(item);
+        }
+
         public void Populate(IEnumerable<T> list)
         {
             _list.AddRange(list);

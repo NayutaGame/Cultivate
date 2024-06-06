@@ -7,6 +7,8 @@ using UnityEngine.Serialization;
 
 public class Map : Addressable
 {
+    // Map ->> Step ->> Node ->> Panel
+    
     private JingJie _jingJie;
     public JingJie JingJie => _jingJie;
     public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
@@ -29,9 +31,8 @@ public class Map : Addressable
     
     public EntityPool EntityPool;
     public Pool<NodeEntry> AdventurePool;
+    public Pool<NodeEntry> InsertedAdventurePool;
     public bool Choosing;
-
-    public int Ladder;
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -43,12 +44,17 @@ public class Map : Addressable
         };
 
         _stepItem = new();
-        Ladder = 0;
     }
 
     public void DrawNode()
         => CurrStepDescriptor.Draw(this);
 
     public void CreateEntry()
-        => CurrNode.Entry.Create(this);
+        => CurrNode.Entry.Create(this, CurrNode.Ladder);
+
+    public void InsertAdventure(NodeEntry nodeEntry)
+    {
+        InsertedAdventurePool.Populate(nodeEntry);
+        InsertedAdventurePool.Shuffle();
+    }
 }
