@@ -12,7 +12,9 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
     private int _order;
     public int Order => _order;
 
-    private string _conditionDescription;
+    private Predicate<RunSkill> _contributorPred;
+
+    private string _progressDescription;
 
     private Func<RunEntity, RunFormationDetails, int> _progressEvaluator;
     public int GetProgress(RunEntity e, RunFormationDetails d) => _progressEvaluator(e, d);
@@ -28,7 +30,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public FormationGroupEntry(string id, int order, string conditionDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(id)
+    public FormationGroupEntry(string id, int order, Predicate<RunSkill> contributorPred, string progressDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(id)
     {
         _accessors = new Dictionary<string, Func<object>>()
         {
@@ -37,7 +39,8 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
         };
 
         _order = order;
-        _conditionDescription = conditionDescription;
+        _contributorPred = contributorPred;
+        _progressDescription = progressDescription;
         _progressEvaluator = progressEvaluator;
 
         _subFormationEntries = new ListModel<FormationEntry>();
@@ -71,7 +74,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
     public JingJie GetLowestJingJie() => FormationWithLowestJingJie().GetJingJie();
     public JingJie? GetActivatedJingJie() => null;
-    public string GetConditionDescription() => _conditionDescription;
+    public string GetConditionDescription() => _progressDescription;
     public string GetRewardDescriptionFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetRewardDescription();
     public string GetTriviaFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetTrivia();
     public JingJie GetIncrementedJingJie(JingJie jingJie)

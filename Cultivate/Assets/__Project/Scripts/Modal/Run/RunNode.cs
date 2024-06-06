@@ -43,7 +43,7 @@ public class RunNode
 
     public RunNode(NodeEntry entry, int ladder)
     {
-        _entry = entry;
+        _entry = entry ?? Encyclopedia.NodeCategory.DefaultEntry();
         _ladder = ladder;
         _state = RunNodeState.Untouched;
     }

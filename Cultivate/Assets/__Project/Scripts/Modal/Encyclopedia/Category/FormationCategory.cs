@@ -1,8 +1,6 @@
 
 using System.Collections.Generic;
-using System.Linq;
 using CLLibrary;
-using FMOD;
 
 public class FormationCategory : Category<FormationGroupEntry>
 {
@@ -10,7 +8,10 @@ public class FormationCategory : Category<FormationGroupEntry>
     {
         AddRange(new List<FormationGroupEntry>()
         {
-            new("金灵阵", order: 1, conditionDescription: "携带越多金牌越强大",
+            new(id: "金灵阵",
+                order: 0,
+                contributorPred: s => s.GetEntry().WuXing == WuXing.Jin,
+                progressDescription: "携带越多金牌越强大",
                 progressEvaluator: (e, d) => d.WuXingCounts[WuXing.Jin] + d.Proficiency,
                 formationEntries: new[]
                 {
@@ -69,7 +70,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("水灵阵", order: 0, conditionDescription: "携带越多水牌越强大",
+            new(id: "水灵阵",
+                order: 0,
+                contributorPred: s => s.GetEntry().WuXing == WuXing.Shui,
+                progressDescription: "携带越多水牌越强大",
                 progressEvaluator: (e, d) => d.WuXingCounts[WuXing.Shui] + d.Proficiency,
                 formationEntries: new[]
                 {
@@ -123,7 +127,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("木灵阵", order: 0, conditionDescription: "携带越多木牌越强大",
+            new(id: "木灵阵",
+                order: 0,
+                contributorPred: s => s.GetEntry().WuXing == WuXing.Mu,
+                progressDescription: "携带越多木牌越强大",
                 progressEvaluator: (e, d) => d.WuXingCounts[WuXing.Mu] + d.Proficiency,
                 formationEntries: new[]
                 {
@@ -177,7 +184,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("火灵阵", order: 0, conditionDescription: "携带越多火牌越强大",
+            new(id: "火灵阵",
+                order: 0,
+                contributorPred: s => s.GetEntry().WuXing == WuXing.Huo,
+                progressDescription: "携带越多火牌越强大",
                 progressEvaluator: (e, d) => d.WuXingCounts[WuXing.Huo] + d.Proficiency,
                 formationEntries: new[]
                 {
@@ -231,7 +241,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("土灵阵", order: 0, conditionDescription: "携带越多土牌越强大",
+            new(id: "土灵阵",
+                order: 0,
+                contributorPred: s => s.GetEntry().WuXing == WuXing.Tu,
+                progressDescription: "携带越多土牌越强大",
                 progressEvaluator: (e, d) => d.WuXingCounts[WuXing.Tu] + d.Proficiency,
                 formationEntries: new[]
                 {
@@ -285,7 +298,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("混元阵", order: 0, conditionDescription: "有五种五行，每种携带两张以激活",
+            new(id: "混元阵",
+                order: 0,
+                contributorPred: s => s.GetEntry().WuXing != null,
+                progressDescription: "有五种五行，每种携带两张以激活",
                 progressEvaluator: (e, d) =>
                 {
                     int score = 0;
@@ -311,7 +327,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
 
-            new("攻击阵", order: 0, conditionDescription: "携带越多攻击牌越强大",
+            new(id: "攻击阵",
+                order: 0,
+                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack),
+                progressDescription: "携带越多攻击牌越强大",
                 progressEvaluator: (e, d) => d.AttackCount + d.Proficiency,
                 formationEntries: new[]
                 {
