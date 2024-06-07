@@ -20,14 +20,13 @@ public class AppManager : Singleton<AppManager>, Addressable
 
     private Encyclopedia Encyclopedia;
     public EditorManager EditorManager;
+    public ProfileManager ProfileManager;
+    public RunManager RunManager;
+    public StageManager StageManager;
 
     public FormationInventory FormationInventory;
     public SkillInventory SkillInventory;
     [NonSerialized] public ListModel<RunSkill> SkillShowcaseInventory;
-
-    public ProfileManager ProfileManager;
-    public RunManager RunManager;
-    public StageManager StageManager;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -82,6 +81,10 @@ public class AppManager : Singleton<AppManager>, Addressable
         StageManager.gameObject.SetActive(false);
 
         _sm = new AppSM();
+    }
+
+    private void Start()
+    {
         Push(new TitleAppS());
     }
 

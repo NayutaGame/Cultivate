@@ -14,7 +14,7 @@ public struct FollowAnimation : IAnimation
     private RectTransform Follow;
 
     private Vector2 StartPosition;
-    private Vector2 StartScale;
+    private Vector3 StartScale;
 
     public FollowAnimation(RectTransform subject, RectTransform follow)
     {
@@ -33,7 +33,7 @@ public struct FollowAnimation : IAnimation
     public void SetProgress(float t)
     {
         Subject.position = Vector2.Lerp(StartPosition, Follow.position, t);
-        Subject.localScale = Vector2.Lerp(StartScale, Follow.localScale, t);
+        Subject.localScale = Vector3.Lerp(StartScale, Follow.localScale, t);
     }
 }
 

@@ -85,6 +85,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     {
         _results.Clear();
         Raycaster.Raycast(d, _results);
-        return _results[0].gameObject.GetComponent<InteractBehaviour>() != null;
+        return _results.Count >= 1 && _results[0].gameObject.GetComponent<InteractBehaviour>() != null;
     }
 }

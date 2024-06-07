@@ -31,8 +31,13 @@ public class GhostView : MonoBehaviour
 
         ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
+        {
+            _mouseOffset = eventData.position;
             AnimateDisplay(extraBehaviourPivot.GetDisplayTransform(), extraBehaviourPivot.FollowTransform);
+        }
     }
+
+    private Vector2 _mouseOffset;
 
     public void EndDrag(InteractBehaviour ib, PointerEventData d)
     {
@@ -51,12 +56,14 @@ public class GhostView : MonoBehaviour
     {
         ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
+        {
             Drag(extraBehaviourPivot.FollowTransform, eventData.position);
+        }
     }
 
     private void Drag(RectTransform pivot, Vector2 mouse)
     {
-        pivot.position = mouse;
+        pivot.anchoredPosition = mouse - _mouseOffset;
         if (IsAnimating)
             return;
         SimpleView.SetDisplayTransform(pivot);
