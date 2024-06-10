@@ -43,13 +43,13 @@ public class RunPanelCollection : MonoBehaviour
         }
 
         if (_currentPanel != null)
-            await _currentPanel.SetShowing(false);
+            await _currentPanel.AsyncSetState(0);
         _currentPanel = panel;
         if (_currentPanel != null)
         {
             _currentPanel.Configure();
             _currentPanel.Refresh();
-            await _currentPanel.SetShowing(true);
+            await _currentPanel.AsyncSetState(1);
         }
     }
 
@@ -59,7 +59,7 @@ public class RunPanelCollection : MonoBehaviour
             return;
 
         _currentPanel.gameObject.SetActive(false);
-        _currentPanel.SetShowing(false);
+        _currentPanel.SetState(0);
         _currentPanel = null;
     }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CLLibrary
 {
@@ -32,6 +33,39 @@ namespace CLLibrary
         }
 
         public Neuron()
+        {
+            _neurons = new();
+        }
+    }
+    
+    public class AsyncNeuron
+    {
+        private Func<Task> Action;
+
+        public void ClearAction() => Action = null;
+
+        public void Add(Func<Task> action) => Action += action;
+        public void Remove(Func<Task> action) => Action -= action;
+        public void Join(params Func<Task>[] actions)
+            => actions.FilterObj(action => Action == null || !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
+
+        private List<AsyncNeuron> _neurons;
+
+        public void Clear() => _neurons.Clear();
+
+        public void Add(AsyncNeuron neuron) => _neurons.Add(neuron);
+        public void Remove(AsyncNeuron neuron) => _neurons.Remove(neuron);
+        public void Join(params AsyncNeuron[] neurons)
+            => neurons.FilterObj(n => !_neurons.Contains(n)).Do(_neurons.Add);
+
+        public async Task Invoke()
+        {
+            if (Action != null)
+                await Action.Invoke();
+            await _neurons.Do(async neuron => await neuron.Invoke());
+        }
+
+        public AsyncNeuron()
         {
             _neurons = new();
         }

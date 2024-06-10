@@ -183,12 +183,12 @@ public class DeckPanel : Panel
 
     private void TryShow(PointerEventData eventData)
     {
-        SetShowing(true);
+        SetState(1);
     }
 
     private void TryHide(PointerEventData eventData)
     {
-        SetShowing(false);
+        SetState(0);
     }
 
     private bool _locked;

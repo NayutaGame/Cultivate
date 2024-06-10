@@ -16,13 +16,13 @@ public class AppCanvas : MonoBehaviour
 
     public async void OpenRunConfigPanel()
     {
-        await TitlePanel.SetShowing(false);
-        await RunConfigPanel.SetShowing(true);
+        await TitlePanel.AsyncSetState(0);
+        await RunConfigPanel.AsyncSetState(1);
     }
 
     public async void CloseRunConfigPanel()
     {
-        await RunConfigPanel.SetShowing(false);
-        await TitlePanel.SetShowing(true);
+        await RunConfigPanel.AsyncSetState(0);
+        await TitlePanel.AsyncSetState(1);
     }
 }

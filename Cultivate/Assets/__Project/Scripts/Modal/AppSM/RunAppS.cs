@@ -14,7 +14,7 @@ public class RunAppS : AppS
         CanvasManager.Instance.RunCanvas.TopBar.Refresh();
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         
-        CanvasManager.Instance.RunCanvas.MapPanel.SetShowingNoTween(false);
+        CanvasManager.Instance.RunCanvas.MapPanel.SetState(0);
 
         Address address = new Address("Run.Environment.Map.StepItem");
         StepItem stepItem = address.Get<StepItem>();
@@ -31,7 +31,7 @@ public class RunAppS : AppS
             CanvasManager.Instance.RunCanvas.SetNodeState(null);
         }
         
-        CanvasManager.Instance.RunCanvas.DeckPanel.SetShowingNoTween(false);
+        CanvasManager.Instance.RunCanvas.DeckPanel.SetState(0);
         CanvasManager.Instance.RunCanvas.DeckPanel.DeckOpenZone.gameObject.SetActive(true);
         CanvasManager.Instance.RunCanvas.DeckPanel.DeckCloseZone.gameObject.SetActive(false);
 

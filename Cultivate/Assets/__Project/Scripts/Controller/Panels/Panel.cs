@@ -1,6 +1,7 @@
 
 using System;
 using System.Threading.Tasks;
+using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 
@@ -11,42 +12,33 @@ public abstract class Panel : MonoBehaviour
     public virtual void Configure()
     {
         RectTransform ??= GetComponent<RectTransform>();
+
+        _sm = new(2);
+        // 0 for hide, 1 for show
+        _sm.SetElement(0, 1, new CommandFromTween(GetHandle, SetHandle, ShowAnimation().SetAutoKill()));
+        _sm.SetElement(1, 0, new CommandFromTween(GetHandle, SetHandle, HideAnimation().SetAutoKill()));
+        
     }
 
     public virtual void Refresh() { }
 
-    private bool _showing;
-    public virtual bool IsShowing() => _showing;
-    public virtual async Task SetShowing(bool showing)
-    {
-        if (_showing == showing)
-            return;
+    private CommandStateMachine _sm;
+    private Tween _handle;
+    private Tween GetHandle() => _handle;
+    private void SetHandle(Tween value) => _handle = value;
 
-        _showing = showing;
-        await PlayTween(true, _showing ? ShowAnimation() : HideAnimation());
+    public void SetState(int state)
+    {
+        _sm.SetState(state);
+    }
+
+    public async Task AsyncSetState(int state)
+    {
+        await _sm.AsyncSetState(state);
     }
 
     public async Task ToggleShowing()
-        => await SetShowing(!IsShowing());
-
-    public void SetShowingNoTween(bool showing)
-    {
-        _showing = showing;
-        Tween t = _showing ? ShowAnimation() : HideAnimation();
-        t.SetAutoKill().Complete();
-    }
-
-    private async Task PlayTween(bool isAwait, Tween tween)
-    {
-        _handle?.Kill();
-        _handle = tween;
-        // _handle.timeScale = _speed;
-        _handle.SetAutoKill().Restart();
-        if (isAwait)
-            await _handle.AsyncWaitForCompletion();
-    }
-
-    private Tween _handle;
+        => await AsyncSetState(_sm.GetState() != 0 ? 0 : 1);
 
     public virtual Tween ShowAnimation()
         => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(true));

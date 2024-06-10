@@ -55,23 +55,23 @@ public class RunCanvas : MonoBehaviour
         if (panelDescriptor == null)
         {
             await RunPanelCollection.SetPanel(panel: null);
-            await MapPanel.SetShowing(true);
+            await MapPanel.AsyncSetState(1);
         }
         else
         {
-            await MapPanel.SetShowing(false);
+            await MapPanel.AsyncSetState(0);
             await RunPanelCollection.SetPanel(d);
         }
 
         if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
         {
             DeckPanel.SetLocked(true);
-            await DeckPanel.SetShowing(true);
+            await DeckPanel.AsyncSetState(1);
         }
         else
         {
             DeckPanel.SetLocked(false);
-            await DeckPanel.SetShowing(false);
+            await DeckPanel.AsyncSetState(0);
         }
     }
 }
