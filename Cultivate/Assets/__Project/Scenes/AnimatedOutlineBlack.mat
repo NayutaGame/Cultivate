@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat
+  m_Name: AnimatedOutlineBlack
   m_Shader: {fileID: 4800000, guid: bb134d7d4389e3a45a6c49e898a344a4, type: 3}
   m_ValidKeywords:
   - _ENABLEOUTEROUTLINE_ON
@@ -598,7 +598,7 @@ Material:
     - _MetalNoiseDistortionSpeed: {r: -0.05, g: -0.05, b: 0, a: 0}
     - _MetalNoiseScale: {r: 0.25, g: 0.25, b: 0, a: 0}
     - _MetalNoiseSpeed: {r: 0.05, g: 0.05, b: 0, a: 0}
-    - _OuterOutlineColor: {r: 1.5131091, g: 5.8980374, b: 1.0807922, a: 1}
+    - _OuterOutlineColor: {r: 0.40784314, g: 2.9490197, b: 2.447059, a: 1}
     - _OuterOutlineDistortionIntensity: {r: 0.01, g: 0.01, b: 0, a: 0}
     - _OuterOutlineNoiseScale: {r: 1, g: 1, b: 0, a: 0}
     - _OuterOutlineNoiseSpeed: {r: 0.04, g: 0.04, b: 0, a: 0}
