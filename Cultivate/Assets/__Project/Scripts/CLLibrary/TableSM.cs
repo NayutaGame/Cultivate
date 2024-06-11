@@ -26,26 +26,10 @@ namespace CLLibrary
 
             seq.AppendCallback(() => base.SetState(value));
 
-            if (_table[-1, State] is { } third)
+            if (_table[-1, value] is { } third)
                 seq.Append(third());
 
             return seq;
-        }
-
-        public void SetState(int value, Action<Func<Tween>> activator)
-        {
-            activator(_table[State, -1]);
-            activator(_table[State, value]);
-            base.SetState(value);
-            activator(_table[-1, State]);
-        }
-
-        public async Task SetStateAsync(int value, Func<Func<Tween>, Task> activator)
-        {
-            await activator(_table[State, -1]);
-            await activator(_table[State, value]);
-            base.SetState(value);
-            await activator(_table[-1, State]);
         }
 
         public TableSM(int size)

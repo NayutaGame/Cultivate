@@ -11,8 +11,9 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public AppCanvas AppCanvas;
     public RunCanvas RunCanvas;
     public StageCanvas StageCanvas;
-
-    public GraphicRaycaster Raycaster;
+    
+    [SerializeField] private Camera Camera;
+    [SerializeField] private GraphicRaycaster Raycaster;
 
     [Header("Annotations")]
     public AnnotationView SkillAnnotation;
@@ -73,6 +74,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
         
+        AppCanvas.Configure();
         Curtain.Configure();
     }
 
@@ -88,5 +90,10 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         _results.Clear();
         Raycaster.Raycast(d, _results);
         return _results.Count >= 1 && _results[0].gameObject.GetComponent<InteractBehaviour>() != null;
+    }
+
+    public Vector3 UI2World(Vector2 mousePosition)
+    {
+        return Camera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10));
     }
 }

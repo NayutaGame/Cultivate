@@ -9,6 +9,8 @@ public class TitlePanel : Panel
     public Button SettingsButton;
     public Button ExitButton;
 
+    [SerializeField] private RunConfigPanel RunConfigPanel;
+
     [SerializeField] private RectTransform _layer1RT;
     [SerializeField] private CanvasGroup _layer1CanvasGroup;
     [SerializeField] private RectTransform _layer2RT;
@@ -22,6 +24,8 @@ public class TitlePanel : Panel
         // 0 for hide, 1 for title, 2 for run config
         SM[0, 1] = ShowTween;
         SM[1, 2] = TitleToRunConfigTween;
+        SM[2, 1] = RunConfigToTitleTween;
+        SM[-1, 0] = HideTween;
     }
 
     public override void Configure()
@@ -35,6 +39,8 @@ public class TitlePanel : Panel
         StartRunButton.onClick.AddListener(StartRun);
         SettingsButton.onClick.AddListener(OpenMenu);
         ExitButton.onClick.AddListener(ExitGame);
+        
+        RunConfigPanel.Configure();
     }
 
     private void StartRun()
@@ -46,19 +52,33 @@ public class TitlePanel : Panel
     private Tween TitleToRunConfigTween()
     {
         return DOTween.Sequence()
-            .Join(_layer1RT.DOScale(2, 0.3f).From(1))
-            .Join(_layer1CanvasGroup.DOFade(0, 0.3f).From(1))
-            .Join(_layer2RT.DOScale(1, 0.3f).From(0.8f))
-            .Join(_layer2CanvasGroup.DOFade(1, 0.3f).From(0))
-            .Join(_layer3RT.DOScale(1.2f, 0.3f).From(1))
-            .Join(_layer3curtain.DOFade(0.5f, 0.3f).From(1));
+            .AppendCallback(() => _layer1CanvasGroup.interactable = false)
+            .AppendCallback(() => _layer2CanvasGroup.gameObject.SetActive(true))
+            .Join(_layer1RT.DOScale(2, 0.3f))
+            .Join(_layer1CanvasGroup.DOFade(0, 0.3f))
+            .Join(_layer2RT.DOScale(1, 0.3f))
+            .Join(_layer2CanvasGroup.DOFade(1, 0.3f))
+            .Join(_layer3RT.DOScale(1.2f, 0.3f))
+            .Join(_layer3curtain.DOFade(0.5f, 0.3f))
+            .AppendCallback(() => _layer1CanvasGroup.gameObject.SetActive(false))
+            .AppendCallback(() => _layer2CanvasGroup.interactable = true)
+            ;
     }
 
-    private void RunConfigToTitle()
+    private Tween RunConfigToTitleTween()
     {
-        /*
-         * 
-         */
+        return DOTween.Sequence()
+            .AppendCallback(() => _layer2CanvasGroup.interactable = false)
+            .AppendCallback(() => _layer1CanvasGroup.gameObject.SetActive(true))
+            .Join(_layer1RT.DOScale(1, 0.3f))
+            .Join(_layer1CanvasGroup.DOFade(1, 0.3f))
+            .Join(_layer2RT.DOScale(0.8f, 0.3f))
+            .Join(_layer2CanvasGroup.DOFade(0, 0.3f))
+            .Join(_layer3RT.DOScale(1, 0.3f))
+            .Join(_layer3curtain.DOFade(0, 0.3f))
+            .AppendCallback(() => _layer2CanvasGroup.gameObject.SetActive(false))
+            .AppendCallback(() => _layer1CanvasGroup.interactable = true)
+            ;
     }
 
     private void OpenMenu()

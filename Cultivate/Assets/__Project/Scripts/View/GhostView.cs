@@ -1,5 +1,4 @@
 
-using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -63,7 +62,7 @@ public class GhostView : MonoBehaviour
 
     private void Drag(RectTransform pivot, Vector2 mouse)
     {
-        pivot.anchoredPosition = mouse - _mouseOffset;
+        pivot.position = CanvasManager.Instance.UI2World(mouse);
         if (IsAnimating)
             return;
         SimpleView.SetDisplayTransform(pivot);

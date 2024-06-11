@@ -2126,6 +2126,7 @@ MonoBehaviour:
   AppCanvas: {fileID: 1627659553}
   RunCanvas: {fileID: 334944962}
   StageCanvas: {fileID: 1904362866}
+  Camera: {fileID: 900511290}
   Raycaster: {fileID: 1125990555}
   SkillAnnotation: {fileID: 581571932}
   BuffAnnotation: {fileID: 401522441}

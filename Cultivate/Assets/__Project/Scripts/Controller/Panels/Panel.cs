@@ -20,7 +20,7 @@ public abstract class Panel : MonoBehaviour
         SM = new(2);
         // 0 for hide, 1 for show
         SM[0, 1] = ShowTween;
-        SM[1, 0] = HideTween;
+        SM[-1, 0] = HideTween;
     }
 
     public virtual void Refresh() { }

@@ -1,16 +1,14 @@
 
 using System;
 using System.Threading.Tasks;
-using UnityEngine;
 
 public class TitleAppS : AppS
 {
     public override async Task Enter(NavigateDetails d, Config config)
     {
         await base.Enter(d, config);
-        CanvasManager.Instance.AppCanvas.Configure();
-        AudioManager.Play("BGMTitle");
         
+        AudioManager.Play("BGMTitle");
         CanvasManager.Instance.Curtain.SetState(1);
         await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(1);
     }
@@ -26,7 +24,6 @@ public class TitleAppS : AppS
         {
             RunConfigForm form = AppManager.Instance.ProfileManager.RunConfigForm;
             await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(0);
-            await CanvasManager.Instance.AppCanvas.RunConfigPanel.SetStateAsync(0);
             return new RunConfig(form, DesignerEnvironment.GetDesignerConfig());
         }
 

@@ -426,6 +426,7 @@ MonoBehaviour:
   StartRunButton: {fileID: 7529184374484087819}
   SettingsButton: {fileID: 1036097751898722877}
   ExitButton: {fileID: 5901331366630995034}
+  RunConfigPanel: {fileID: 3489219083752758135}
   _layer1RT: {fileID: 8356754593861984146}
   _layer1CanvasGroup: {fileID: 5332904918578069961}
   _layer2RT: {fileID: 1532772874092369443}
@@ -944,8 +945,8 @@ CanvasGroup:
   m_GameObject: {fileID: 4236437243403425555}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &4524704845113286802
 GameObject:
@@ -1199,7 +1200,7 @@ CanvasGroup:
   m_GameObject: {fileID: 8210938833611001631}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 1
+  m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &9206966861895694268
@@ -1652,6 +1653,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54484bb9a29fab2499e2bea0ceeb39af, type: 3}
+--- !u!114 &3489219083752758135 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1839756245606034466, guid: 54484bb9a29fab2499e2bea0ceeb39af, type: 3}
+  m_PrefabInstance: {fileID: 3018558316725909333}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e57263009a98f49a7d9b104bd54dba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7921509649426431490 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4902952995124906327, guid: 54484bb9a29fab2499e2bea0ceeb39af, type: 3}
