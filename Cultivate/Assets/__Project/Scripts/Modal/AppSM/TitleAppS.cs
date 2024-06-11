@@ -10,7 +10,9 @@ public class TitleAppS : AppS
         await base.Enter(d, config);
         CanvasManager.Instance.AppCanvas.Configure();
         AudioManager.Play("BGMTitle");
-        await CanvasManager.Instance.AppCanvas.TitlePanel.AsyncSetState(1);
+        
+        CanvasManager.Instance.Curtain.SetState(1);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(1);
     }
 
     public override async Task<Config> CEnter(NavigateDetails d)
@@ -23,8 +25,8 @@ public class TitleAppS : AppS
         if (d.ToState is RunAppS)
         {
             RunConfigForm form = AppManager.Instance.ProfileManager.RunConfigForm;
-            await CanvasManager.Instance.AppCanvas.TitlePanel.AsyncSetState(0);
-            await CanvasManager.Instance.AppCanvas.RunConfigPanel.AsyncSetState(0);
+            await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(0);
+            await CanvasManager.Instance.AppCanvas.RunConfigPanel.SetStateAsync(0);
             return new RunConfig(form, DesignerEnvironment.GetDesignerConfig());
         }
 
@@ -39,13 +41,13 @@ public class TitleAppS : AppS
             return;
 
         AudioManager.Play("BGMTitle");
-        await CanvasManager.Instance.AppCanvas.TitlePanel.AsyncSetState(1);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(1);
     }
 
     public override async Task<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
-        await CanvasManager.Instance.AppCanvas.TitlePanel.AsyncSetState(0);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(0);
         return new();
     }
 }

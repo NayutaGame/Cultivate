@@ -200,7 +200,7 @@ public class DeckPanel : Panel
         DeckCloseZone.gameObject.SetActive(!_locked);
     }
 
-    public override Tween ShowAnimation()
+    public override Tween ShowTween()
         => DOTween.Sequence()
             .AppendCallback(Sync)
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
@@ -209,7 +209,7 @@ public class DeckPanel : Panel
             .Join(PlayerEntityTransform.DOAnchorPos(PlayerEntityShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
             .Join(HandTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
 
-    public override Tween HideAnimation()
+    public override Tween HideTween()
         => DOTween.Sequence()
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(true))
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(false))

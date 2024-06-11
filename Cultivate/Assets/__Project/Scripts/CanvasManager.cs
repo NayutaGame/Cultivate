@@ -72,6 +72,8 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         SlotGhost.Awake();
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
+        
+        Curtain.Configure();
     }
 
     public void RefreshGuide()

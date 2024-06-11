@@ -9,7 +9,7 @@ public class MapPanel : Panel
 
     private Address _address;
 
-    public override Tween ShowAnimation()
+    public override Tween ShowTween()
     {
         return DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
@@ -19,7 +19,7 @@ public class MapPanel : Panel
             .Join(CanvasGroup.DOFade(1f, 0.15f));
     }
 
-    public override Tween HideAnimation()
+    public override Tween HideTween()
     {
         return DOTween.Sequence()
             .AppendCallback(PlaySFX)

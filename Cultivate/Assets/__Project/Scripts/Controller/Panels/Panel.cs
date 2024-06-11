@@ -12,37 +12,44 @@ public abstract class Panel : MonoBehaviour
     public virtual void Configure()
     {
         RectTransform ??= GetComponent<RectTransform>();
+        InitStateMachine();
+    }
 
-        _sm = new(2);
+    protected virtual void InitStateMachine()
+    {
+        SM = new(2);
         // 0 for hide, 1 for show
-        _sm.SetElement(0, 1, new CommandFromTween(GetHandle, SetHandle, ShowAnimation().SetAutoKill()));
-        _sm.SetElement(1, 0, new CommandFromTween(GetHandle, SetHandle, HideAnimation().SetAutoKill()));
-        
+        SM[0, 1] = ShowTween;
+        SM[1, 0] = HideTween;
     }
 
     public virtual void Refresh() { }
 
-    private CommandStateMachine _sm;
+    public TableSM SM;
     private Tween _handle;
-    private Tween GetHandle() => _handle;
-    private void SetHandle(Tween value) => _handle = value;
+
+    public Tween SetStateTween(int state)
+        => SM.SetStateTween(state);
 
     public void SetState(int state)
     {
-        _sm.SetState(state);
+        SetStateTween(state).SetAutoKill().Complete(true);
     }
 
-    public async Task AsyncSetState(int state)
+    public async Task SetStateAsync(int state)
     {
-        await _sm.AsyncSetState(state);
+        _handle?.Kill();
+        _handle = SetStateTween(state);
+        _handle.SetAutoKill().Restart();
+        await _handle.AsyncWaitForCompletion();
     }
 
     public async Task ToggleShowing()
-        => await AsyncSetState(_sm.GetState() != 0 ? 0 : 1);
+        => await SetStateAsync(SM.State != 0 ? 0 : 1);
 
-    public virtual Tween ShowAnimation()
+    public virtual Tween ShowTween()
         => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(true));
 
-    public virtual Tween HideAnimation()
+    public virtual Tween HideTween()
         => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(false));
 }

@@ -43,13 +43,13 @@ public class RunPanelCollection : MonoBehaviour
         }
 
         if (_currentPanel != null)
-            await _currentPanel.AsyncSetState(0);
+            await _currentPanel.SetStateAsync(0);
         _currentPanel = panel;
         if (_currentPanel != null)
         {
             _currentPanel.Configure();
             _currentPanel.Refresh();
-            await _currentPanel.AsyncSetState(1);
+            await _currentPanel.SetStateAsync(1);
         }
     }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RunConfigPanel : CurtainPanel
+public class RunConfigPanel : Panel
 {
     [Header("Character Picker")]
     [SerializeField] private ListView CharacterListView;

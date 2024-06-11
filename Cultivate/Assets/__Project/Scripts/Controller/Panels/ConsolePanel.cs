@@ -4,6 +4,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Tween = DG.Tweening.Tween;
 
 public class ConsolePanel : Panel
 {
@@ -17,11 +18,11 @@ public class ConsolePanel : Panel
 
     public Button ToggleButton;
 
-    public override Tween ShowAnimation()
+    public override Tween ShowTween()
         => DOTween.Sequence().SetAutoKill()
             .Append(RectTransform.DOAnchorPosY(243f, 0.3f).SetEase(Ease.OutQuad));
 
-    public override Tween HideAnimation()
+    public override Tween HideTween()
         => DOTween.Sequence().SetAutoKill()
             .Append(RectTransform.DOAnchorPosY(771f, 0.3f).SetEase(Ease.InQuad));
 

@@ -134,7 +134,7 @@ public class SettingsPanel : Panel
                 .Join(WidgetsCanvasGroup.DOFade(1, 0.075f)).SetEase(Ease.InQuad));
     }
 
-    public override Tween ShowAnimation()
+    public override Tween ShowTween()
     {
         return DOTween.Sequence().SetAutoKill()
             .AppendCallback(() => gameObject.SetActive(true))
@@ -143,7 +143,7 @@ public class SettingsPanel : Panel
             .Join(DarkCurtainImage.DOFade(0.2f, 0.15f));
     }
 
-    public override Tween HideAnimation()
+    public override Tween HideTween()
     {
         return DOTween.Sequence().SetAutoKill()
             .Append(RectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad))

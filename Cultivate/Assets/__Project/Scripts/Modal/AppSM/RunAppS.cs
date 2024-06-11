@@ -35,13 +35,13 @@ public class RunAppS : AppS
         CanvasManager.Instance.RunCanvas.DeckPanel.DeckOpenZone.gameObject.SetActive(true);
         CanvasManager.Instance.RunCanvas.DeckPanel.DeckCloseZone.gameObject.SetActive(false);
 
-        await CanvasManager.Instance.Curtain.PlayHideAnimation();
+        await CanvasManager.Instance.Curtain.SetStateAsync(0);
     }
 
     public override async Task<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
-        await CanvasManager.Instance.Curtain.PlayShowAnimation();
+        await CanvasManager.Instance.Curtain.SetStateAsync(1);
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
         CanvasManager.Instance.RunCanvas.RunPanelCollection.DisableCurrentPanel();
         RunResult result = RunManager.Instance.Environment.Result;
@@ -57,7 +57,7 @@ public class RunAppS : AppS
         if (d.ToState is MenuAppS)
             return new();
 
-        await CanvasManager.Instance.Curtain.PlayShowAnimation();
+        await CanvasManager.Instance.Curtain.SetStateAsync(1);
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
         return new();
     }
@@ -71,6 +71,6 @@ public class RunAppS : AppS
 
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         CanvasManager.Instance.RunCanvas.Refresh();
-        await CanvasManager.Instance.Curtain.PlayHideAnimation();
+        await CanvasManager.Instance.Curtain.SetStateAsync(0);
     }
 }

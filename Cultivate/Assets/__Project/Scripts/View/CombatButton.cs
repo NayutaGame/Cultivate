@@ -3,6 +3,7 @@ using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Tween = DG.Tweening.Tween;
 
 public class CombatButton : MonoBehaviour
 {

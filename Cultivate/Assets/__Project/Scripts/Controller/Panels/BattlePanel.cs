@@ -70,20 +70,20 @@ public class BattlePanel : Panel
         AwayHealth.alpha = victory ? 0.6f : 1f;
     }
 
-    public override Tween ShowAnimation()
+    public override Tween ShowTween()
     {
         return DOTween.Sequence()
             .AppendCallback(PlayBattleBGM)
             .Append(EnemyView.ShowAnimation())
-            .Join(base.ShowAnimation());
+            .Join(base.ShowTween());
     }
 
-    public override Tween HideAnimation()
+    public override Tween HideTween()
     {
         return DOTween.Sequence()
             .AppendCallback(PlayJingJieBGM)
             .Append(EnemyView.HideAnimation())
-            .Join(base.HideAnimation());
+            .Join(base.HideTween());
     }
 
     private void PlayBattleBGM()

@@ -20,13 +20,13 @@ public class StageAppS : AppS
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(true);
         CanvasManager.Instance.StageCanvas.InitialSetup();
         StageManager.Instance.Enter();
-        await CanvasManager.Instance.Curtain.PlayHideAnimation();
+        await CanvasManager.Instance.Curtain.SetStateAsync(0);
     }
 
     public override async Task<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
-        await CanvasManager.Instance.Curtain.PlayShowAnimation();
+        await CanvasManager.Instance.Curtain.SetStateAsync(1);
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(false);
         AppManager.Instance.StageManager.gameObject.SetActive(false);
         await StageManager.Instance.Exit();

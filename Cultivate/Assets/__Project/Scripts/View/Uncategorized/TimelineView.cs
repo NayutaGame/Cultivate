@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
+using Tween = DG.Tweening.Tween;
 
 public class TimelineView : Singleton<TimelineView>
 {
