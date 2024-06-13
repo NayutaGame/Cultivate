@@ -1,14 +1,13 @@
 
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MapPanel : Panel
 {
     [SerializeField] private ListView NodeListView;
     [SerializeField] private RectTransform NodeListTransform;
-    [SerializeField] private RectTransform NodeList1Pivot;
-    [SerializeField] private RectTransform NodeList2Pivot;
-    [SerializeField] private RectTransform NodeList3Pivot;
+    [SerializeField] private RectTransform NodeListIdlePivot;
     [SerializeField] private CanvasGroup CanvasGroup;
 
     private Address _address;
@@ -19,7 +18,7 @@ public class MapPanel : Panel
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(NodeListView.Sync)
             .AppendCallback(PlaySFX)
-            .Append(NodeListTransform.DOAnchorPos(NodeList2Pivot.anchoredPosition, 0.15f).From(NodeList1Pivot.anchoredPosition)).SetEase(Ease.OutQuad)
+            .Append(TweenAnimation.Show(NodeListTransform, NodeListIdlePivot.anchoredPosition))
             .Join(CanvasGroup.DOFade(1f, 0.15f));
     }
 
@@ -27,7 +26,7 @@ public class MapPanel : Panel
     {
         return DOTween.Sequence()
             .AppendCallback(PlaySFX)
-            .Append(NodeListTransform.DOAnchorPos(NodeList3Pivot.anchoredPosition, 0.15f).From(NodeList2Pivot.anchoredPosition)).SetEase(Ease.InQuad)
+            .Append(TweenAnimation.Hide(NodeListTransform, NodeListIdlePivot.anchoredPosition))
             .Join(CanvasGroup.DOFade(0f, 0.15f))
             .AppendCallback(() => gameObject.SetActive(false));
     }

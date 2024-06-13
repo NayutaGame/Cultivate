@@ -32,6 +32,11 @@ public class RunPanelCollection : MonoBehaviour
         return false;
     }
 
+    public async Task SelfTransition()
+    {
+        await _currentPanel.SetStateAsync(1);
+    }
+
     public async Task SetPanel(PanelDescriptor panelDescriptor)
         => await SetPanel(_panelDict[panelDescriptor.GetType()]);
 

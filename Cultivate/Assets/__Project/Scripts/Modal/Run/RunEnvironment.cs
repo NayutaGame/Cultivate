@@ -57,7 +57,7 @@ public class RunEnvironment : Addressable, RunEventListener
             // init drawers
             Map.StepDescriptors = new StepDescriptor[]
             {
-                firstTime ? new DirectStepDescriptor(0, "初入蓬莱") : new AdventureStepDescriptor(0),
+                new DirectStepDescriptor(0, "循环"),
                 new BattleStepDescriptor(0, 3, 4),
                 new AdventureStepDescriptor(0),
                 new RestStepDescriptor(0),

@@ -46,7 +46,7 @@ public class RunCanvas : MonoBehaviour
     {
         if (RunPanelCollection.CurrentIsDescriptor(panelDescriptor))
         {
-            RunPanelCollection.Refresh();
+            await RunPanelCollection.SelfTransition();
             return;
         }
 

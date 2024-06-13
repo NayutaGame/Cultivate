@@ -1389,6 +1389,21 @@ public class NodeCategory : Category<NodeEntry>
 
             #region Puzzle
 
+            new(id:                                 "循环",
+                description:                        "循环",
+                ladderRange:                        new Range(0, 5),
+                withInPool:                         false,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("循环测试",
+                        "继续循环",
+                        "退出循环");
+
+                    A[0].SetSelect(option => A);
+                    A[1].SetSelect(option => null);
+                    map.CurrNode.Panel = A;
+                }),
+
             // new(id:                                 "神农氏1",
             //     description:                        "神农氏1",
             //     ladderRange:                        new Range(0, 5),

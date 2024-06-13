@@ -16,6 +16,11 @@ public class ConsolePanel : Panel
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
 
+    public Button Button10;
+    public Button Button25;
+    public Button Button50;
+    public Button Button100;
+
     public Button ToggleButton;
 
     public override Tween ShowTween()
@@ -50,6 +55,15 @@ public class ConsolePanel : Panel
 
         ToggleButton.onClick.RemoveAllListeners();
         ToggleButton.onClick.AddListener(() => ToggleShowing());
+        
+        Button10.onClick.RemoveAllListeners();
+        Button10.onClick.AddListener(() => Time.timeScale = 0.1f);
+        Button25.onClick.RemoveAllListeners();
+        Button25.onClick.AddListener(() => Time.timeScale = 0.25f);
+        Button50.onClick.RemoveAllListeners();
+        Button50.onClick.AddListener(() => Time.timeScale = 0.5f);
+        Button100.onClick.RemoveAllListeners();
+        Button100.onClick.AddListener(() => Time.timeScale = 1);
     }
 
     public override void Refresh()
