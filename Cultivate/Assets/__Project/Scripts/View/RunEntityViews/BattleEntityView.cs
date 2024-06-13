@@ -35,13 +35,13 @@ public class BattleEntityView : SimpleView
         FormationList.Refresh();
     }
 
-    public Tween ShowAnimation()
+    public Tween ShowTween()
         => DOTween.Sequence().AppendInterval(0.3f)
             .Append(SkillListTransform.DOAnchorPos(SkillListShowPivot.anchoredPosition, 0.15f)
                 .From(SkillListHidePivot.anchoredPosition).SetEase(Ease.OutQuad))
             .Join(SkillListCanvasGroup.DOFade(1, 0.15f)
                 .From(0).SetEase(Ease.OutQuad));
 
-    public Tween HideAnimation()
+    public Tween HideTween()
         => DOTween.Sequence();
 }

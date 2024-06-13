@@ -78,7 +78,7 @@ public class RunPanelCollection : MonoBehaviour
             { typeof(ImagePanelDescriptor), ImagePanel },
             { typeof(RunResultPanelDescriptor), RunResultPanel },
         };
-
+        
         // _panelDict.Do(kvp => kvp.Value.Configure());
     }
 

@@ -5,6 +5,10 @@ using UnityEngine;
 public class MapPanel : Panel
 {
     [SerializeField] private ListView NodeListView;
+    [SerializeField] private RectTransform NodeListTransform;
+    [SerializeField] private RectTransform NodeList1Pivot;
+    [SerializeField] private RectTransform NodeList2Pivot;
+    [SerializeField] private RectTransform NodeList3Pivot;
     [SerializeField] private CanvasGroup CanvasGroup;
 
     private Address _address;
@@ -15,7 +19,7 @@ public class MapPanel : Panel
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(NodeListView.Sync)
             .AppendCallback(PlaySFX)
-            .Append(RectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
+            .Append(NodeListTransform.DOAnchorPos(NodeList2Pivot.anchoredPosition, 0.15f).From(NodeList1Pivot.anchoredPosition)).SetEase(Ease.OutQuad)
             .Join(CanvasGroup.DOFade(1f, 0.15f));
     }
 
@@ -23,7 +27,7 @@ public class MapPanel : Panel
     {
         return DOTween.Sequence()
             .AppendCallback(PlaySFX)
-            .Append(RectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad))
+            .Append(NodeListTransform.DOAnchorPos(NodeList3Pivot.anchoredPosition, 0.15f).From(NodeList2Pivot.anchoredPosition)).SetEase(Ease.InQuad)
             .Join(CanvasGroup.DOFade(0f, 0.15f))
             .AppendCallback(() => gameObject.SetActive(false));
     }

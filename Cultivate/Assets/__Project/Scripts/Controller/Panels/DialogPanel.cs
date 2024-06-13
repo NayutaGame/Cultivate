@@ -1,13 +1,17 @@
 
+using DG.Tweening;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogPanel : Panel
 {
-    public TMP_Text TitleText;
-    public TMP_Text DetailedText;
-    public Button[] Buttons;
-    public TMP_Text[] Texts;
+    [SerializeField] private CanvasGroup CanvasGroup;
+    
+    [SerializeField] private TMP_Text TitleText;
+    [SerializeField] private TMP_Text DetailedText;
+    [SerializeField] private Button[] Buttons;
+    [SerializeField] private TMP_Text[] Texts;
 
     private Address _address;
 
@@ -60,4 +64,20 @@ public class DialogPanel : Panel
     private void SelectOption1() => SelectedOption(1);
     private void SelectOption2() => SelectedOption(2);
     private void SelectOption3() => SelectedOption(3);
+    
+    public override Tween ShowTween()
+    {
+        return DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(RectTransform.DOScale(1, 0.15f).From(1.4f)).SetEase(Ease.OutQuad)
+            .Join(CanvasGroup.DOFade(1, 0.15f).From(0)).SetEase(Ease.OutQuad);
+    }
+    
+    public override Tween HideTween()
+    {
+        return DOTween.Sequence()
+            .Append(RectTransform.DOScale(1.4f, 0.15f)).SetEase(Ease.InQuad)
+            .Join(CanvasGroup.DOFade(0f, 0.15f)).SetEase(Ease.InQuad)
+            .AppendCallback(() => gameObject.SetActive(false));
+    }
 }

@@ -3,7 +3,6 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class BattlePanel : Panel
 {
@@ -70,22 +69,6 @@ public class BattlePanel : Panel
         AwayHealth.alpha = victory ? 0.6f : 1f;
     }
 
-    public override Tween ShowTween()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(PlayBattleBGM)
-            .Append(EnemyView.ShowAnimation())
-            .Join(base.ShowTween());
-    }
-
-    public override Tween HideTween()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(PlayJingJieBGM)
-            .Append(EnemyView.HideAnimation())
-            .Join(base.HideTween());
-    }
-
     private void PlayBattleBGM()
     {
         int index = RandomManager.Range(0, 3);
@@ -100,5 +83,21 @@ public class BattlePanel : Panel
         JingJie jingJie = RunManager.Instance.Environment.Map.JingJie;
         AudioEntry audio = Encyclopedia.AudioFromJingJie(jingJie);
         AudioManager.Play(audio);
+    }
+
+    public override Tween ShowTween()
+    {
+        return DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .AppendCallback(PlayBattleBGM)
+            .Append(EnemyView.ShowTween());
+    }
+
+    public override Tween HideTween()
+    {
+        return DOTween.Sequence()
+            .AppendCallback(PlayJingJieBGM)
+            .Append(EnemyView.HideTween())
+            .AppendCallback(() => gameObject.SetActive(false));
     }
 }

@@ -1389,183 +1389,183 @@ public class NodeCategory : Category<NodeEntry>
 
             #region Puzzle
 
-            new(id:                                 "神农氏1",
-                description:                        "神农氏1",
-                ladderRange:                        new Range(0, 5),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你看见一个少年向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
-                        "给他展示运气抵御毒素的法门",
-                        "一口抢过来蘑菇",
-                        "选择仙草");
-                    A[1].SetCost(new CostDetails(mingYuan: 1));
-
-                    Puzzle puzzle = new(
-                        description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
-                        condition: "剩余血量 大于 0",
-                        home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
-                        away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
-                        {
-                            RunSkill.FromEntry("0609"),
-                            RunSkill.FromEntry("0609"),
-                            RunSkill.FromEntry("0609"),
-                        }),
-                        kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
-                        {
-                            CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
-
-                            await env.EventDict.SendEvent(StageEventDict.WIL_COMMIT, d);
-
-                            if (forced)
-                            {
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
-                            }
-                            else
-                            {
-                                if (d.Cancel)
-                                    return 0;
-
-                                if (turn < 6)
-                                    return 0;
-
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
-                            }
-
-                            await env.EventDict.SendEvent(StageEventDict.DID_COMMIT, d);
-
-                            if (d.Flag == 0)
-                                return d.Flag;
-        
-                            env.Result.Flag = d.Flag;
-                            env.Result.HomeLeftHp = env.Entities[0].Hp;
-                            env.Result.AwayLeftHp = env.Entities[1].Hp;
-                            env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
-                            return d.Flag;
-                        })
-                    );
-                    
-                    PuzzlePanelDescriptor B = new(puzzle);
-                    DialogPanelDescriptor BPass = new DialogPanelDescriptor("少年吃了可疑的蘑菇，幸好可以依靠你的功法抵挡毒性。\n\n于是你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
-                        .SetReward(Reward.FromMingYuan(1));
-                    DialogPanelDescriptor C = new("你吃了可疑的蘑菇，感觉头痛欲裂\n\n命元-1");
-                    DialogPanelDescriptor D = new DialogPanelDescriptor("你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
-                        .SetReward(Reward.FromMingYuan(1));
-                    
-                    B.SetOperation(s =>
-                    {
-                        if (s.Flag == 1)
-                        {
-                            RunManager.Instance.Environment.Map.InsertAdventure("神农氏2");
-                            return BPass;
-                        }
-                        return A;
-                    });
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.Map.InsertAdventure("神农氏2");
-                        return C;
-                    });
-                    A[2].SetSelect(option => D);
-                    map.CurrNode.Panel = A;
-                }),
-            
-            new(id:                                 "神农氏2",
-                description:                        "神农氏2",
-                ladderRange:                        new Range(5, 11),
-                withInPool:                         false,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你又见到了那个少年，他又笑嘻嘻的向你走来，又是一手拿着一个容光满面的仙草，另一手拿着一个可疑的蘑菇，向你说道，这次你想吃哪个？",
-                        "给他展示运气抵御毒素的法门",
-                        "你个外行，学别人采什么药，离这个蘑菇远一点",
-                        "这次我就选择仙草吧");
-                    A[1].SetCost(new CostDetails(mingYuan: 1));
-
-                    Puzzle puzzle = new(
-                        description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
-                        condition: "剩余血量 大于 0",
-                        home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
-                        away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
-                        {
-                            RunSkill.FromEntry("0609"),
-                            RunSkill.FromEntry("0609"),
-                            RunSkill.FromEntry("0609"),
-                        }),
-                        kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
-                        {
-                            CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
-
-                            await env.EventDict.SendEvent(StageEventDict.WIL_COMMIT, d);
-
-                            if (forced)
-                            {
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
-                            }
-                            else
-                            {
-                                if (d.Cancel)
-                                    return 0;
-
-                                if (turn < 6)
-                                    return 0;
-
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
-                            }
-
-                            await env.EventDict.SendEvent(StageEventDict.DID_COMMIT, d);
-
-                            if (d.Flag == 0)
-                                return d.Flag;
-        
-                            env.Result.Flag = d.Flag;
-                            env.Result.HomeLeftHp = env.Entities[0].Hp;
-                            env.Result.AwayLeftHp = env.Entities[1].Hp;
-                            env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
-                            return d.Flag;
-                        })
-                    );
-                    
-                    PuzzlePanelDescriptor B = new(puzzle);
-                    DialogPanelDescriptor BPass = new DialogPanelDescriptor("少年吃了可疑的蘑菇，幸好可以依靠你的功法抵挡毒性。\n\n于是你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
-                        .SetReward(Reward.FromMingYuan(1));
-                    DialogPanelDescriptor C = new("你又一次吃下了可疑的蘑菇，感觉五脏俱焚\n\n命元-1");
-                    DialogPanelDescriptor D = new DialogPanelDescriptor("你吃了仙草感觉治愈了你多年的旧伤，继续上路了。\n\n命元+1")
-                        .SetReward(Reward.FromMingYuan(1));
-                    
-                    B.SetOperation(s =>
-                    {
-                        if (s.Flag == 1)
-                        {
-                            RunManager.Instance.Environment.Map.InsertAdventure("神农氏3");
-                            return BPass;
-                        }
-                        return A;
-                    });
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.Map.InsertAdventure("神农氏3");
-                        return C;
-                    });
-                    A[2].SetSelect(option => D);
-                    map.CurrNode.Panel = A;
-                }),
-            
-            new(id:                                 "神农氏3",
-                description:                        "神农氏3",
-                ladderRange:                        new Range(11, 14),
-                withInPool:                         false,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new DialogPanelDescriptor("故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
-                        .SetReward(new AddSkillReward("0602", JingJie.YuanYing));
-            
-                    map.CurrNode.Panel = A;
-                }),
+            // new(id:                                 "神农氏1",
+            //     description:                        "神农氏1",
+            //     ladderRange:                        new Range(0, 5),
+            //     withInPool:                         true,
+            //     create:                             (map, ladder) =>
+            //     {
+            //         DialogPanelDescriptor A = new("你看见一个少年向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
+            //             "给他展示运气抵御毒素的法门",
+            //             "一口抢过来蘑菇",
+            //             "选择仙草");
+            //         A[1].SetCost(new CostDetails(mingYuan: 1));
+            //
+            //         Puzzle puzzle = new(
+            //             description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
+            //             condition: "剩余血量 大于 0",
+            //             home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
+            //             away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
+            //             {
+            //                 RunSkill.FromEntry("0609"),
+            //                 RunSkill.FromEntry("0609"),
+            //                 RunSkill.FromEntry("0609"),
+            //             }),
+            //             kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+            //             {
+            //                 CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+            //
+            //                 await env.EventDict.SendEvent(StageEventDict.WIL_COMMIT, d);
+            //
+            //                 if (forced)
+            //                 {
+            //                     d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+            //                 }
+            //                 else
+            //                 {
+            //                     if (d.Cancel)
+            //                         return 0;
+            //
+            //                     if (turn < 6)
+            //                         return 0;
+            //
+            //                     d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+            //                 }
+            //
+            //                 await env.EventDict.SendEvent(StageEventDict.DID_COMMIT, d);
+            //
+            //                 if (d.Flag == 0)
+            //                     return d.Flag;
+            //
+            //                 env.Result.Flag = d.Flag;
+            //                 env.Result.HomeLeftHp = env.Entities[0].Hp;
+            //                 env.Result.AwayLeftHp = env.Entities[1].Hp;
+            //                 env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+            //                 return d.Flag;
+            //             })
+            //         );
+            //         
+            //         PuzzlePanelDescriptor B = new(puzzle);
+            //         DialogPanelDescriptor BPass = new DialogPanelDescriptor("少年吃了可疑的蘑菇，幸好可以依靠你的功法抵挡毒性。\n\n于是你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
+            //             .SetReward(Reward.FromMingYuan(1));
+            //         DialogPanelDescriptor C = new("你吃了可疑的蘑菇，感觉头痛欲裂\n\n命元-1");
+            //         DialogPanelDescriptor D = new DialogPanelDescriptor("你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
+            //             .SetReward(Reward.FromMingYuan(1));
+            //         
+            //         B.SetOperation(s =>
+            //         {
+            //             if (s.Flag == 1)
+            //             {
+            //                 RunManager.Instance.Environment.Map.InsertAdventure("神农氏2");
+            //                 return BPass;
+            //             }
+            //             return A;
+            //         });
+            //         
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.Map.InsertAdventure("神农氏2");
+            //             return C;
+            //         });
+            //         A[2].SetSelect(option => D);
+            //         map.CurrNode.Panel = A;
+            //     }),
+            //
+            // new(id:                                 "神农氏2",
+            //     description:                        "神农氏2",
+            //     ladderRange:                        new Range(5, 11),
+            //     withInPool:                         false,
+            //     create:                             (map, ladder) =>
+            //     {
+            //         DialogPanelDescriptor A = new("你又见到了那个少年，他又笑嘻嘻的向你走来，又是一手拿着一个容光满面的仙草，另一手拿着一个可疑的蘑菇，向你说道，这次你想吃哪个？",
+            //             "给他展示运气抵御毒素的法门",
+            //             "你个外行，学别人采什么药，离这个蘑菇远一点",
+            //             "这次我就选择仙草吧");
+            //         A[1].SetCost(new CostDetails(mingYuan: 1));
+            //
+            //         Puzzle puzzle = new(
+            //             description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
+            //             condition: "剩余血量 大于 0",
+            //             home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
+            //             away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
+            //             {
+            //                 RunSkill.FromEntry("0609"),
+            //                 RunSkill.FromEntry("0609"),
+            //                 RunSkill.FromEntry("0609"),
+            //             }),
+            //             kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+            //             {
+            //                 CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+            //
+            //                 await env.EventDict.SendEvent(StageEventDict.WIL_COMMIT, d);
+            //
+            //                 if (forced)
+            //                 {
+            //                     d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+            //                 }
+            //                 else
+            //                 {
+            //                     if (d.Cancel)
+            //                         return 0;
+            //
+            //                     if (turn < 6)
+            //                         return 0;
+            //
+            //                     d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+            //                 }
+            //
+            //                 await env.EventDict.SendEvent(StageEventDict.DID_COMMIT, d);
+            //
+            //                 if (d.Flag == 0)
+            //                     return d.Flag;
+            //
+            //                 env.Result.Flag = d.Flag;
+            //                 env.Result.HomeLeftHp = env.Entities[0].Hp;
+            //                 env.Result.AwayLeftHp = env.Entities[1].Hp;
+            //                 env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+            //                 return d.Flag;
+            //             })
+            //         );
+            //         
+            //         PuzzlePanelDescriptor B = new(puzzle);
+            //         DialogPanelDescriptor BPass = new DialogPanelDescriptor("少年吃了可疑的蘑菇，幸好可以依靠你的功法抵挡毒性。\n\n于是你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
+            //             .SetReward(Reward.FromMingYuan(1));
+            //         DialogPanelDescriptor C = new("你又一次吃下了可疑的蘑菇，感觉五脏俱焚\n\n命元-1");
+            //         DialogPanelDescriptor D = new DialogPanelDescriptor("你吃了仙草感觉治愈了你多年的旧伤，继续上路了。\n\n命元+1")
+            //             .SetReward(Reward.FromMingYuan(1));
+            //         
+            //         B.SetOperation(s =>
+            //         {
+            //             if (s.Flag == 1)
+            //             {
+            //                 RunManager.Instance.Environment.Map.InsertAdventure("神农氏3");
+            //                 return BPass;
+            //             }
+            //             return A;
+            //         });
+            //         
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.Map.InsertAdventure("神农氏3");
+            //             return C;
+            //         });
+            //         A[2].SetSelect(option => D);
+            //         map.CurrNode.Panel = A;
+            //     }),
+            //
+            // new(id:                                 "神农氏3",
+            //     description:                        "神农氏3",
+            //     ladderRange:                        new Range(11, 14),
+            //     withInPool:                         false,
+            //     create:                             (map, ladder) =>
+            //     {
+            //         DialogPanelDescriptor A = new DialogPanelDescriptor("故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
+            //             .SetReward(new AddSkillReward("0602", JingJie.YuanYing));
+            //
+            //         map.CurrNode.Panel = A;
+            //     }),
             
             #endregion
         });
