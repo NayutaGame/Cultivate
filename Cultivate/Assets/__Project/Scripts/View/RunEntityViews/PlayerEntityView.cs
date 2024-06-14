@@ -1,4 +1,5 @@
 
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerEntityView : SimpleView
@@ -15,6 +16,8 @@ public class PlayerEntityView : SimpleView
         SkillList.DropNeuron.Join(Equip, Swap);
         
         FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
+        FormationList.PointerEnterNeuron.Join(HighlightContributors);
+        FormationList.PointerExitNeuron.Join(UnhighlightContributors);
     }
 
     public override void Refresh()
@@ -32,6 +35,16 @@ public class PlayerEntityView : SimpleView
     }
 
     #region IInteractable
+
+    private void HighlightContributors(InteractBehaviour ib, PointerEventData d)
+    {
+        Debug.Log("highlight contributors");
+    }
+
+    private void UnhighlightContributors(InteractBehaviour ib, PointerEventData d)
+    {
+        Debug.Log("unhighlight contributors");
+    }
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");

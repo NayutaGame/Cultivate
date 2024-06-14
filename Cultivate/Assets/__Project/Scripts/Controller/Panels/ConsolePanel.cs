@@ -1,4 +1,5 @@
 
+using System;
 using CLLibrary;
 using DG.Tweening;
 using TMPro;
@@ -21,7 +22,14 @@ public class ConsolePanel : Panel
     public Button Button50;
     public Button Button100;
 
+    public Button ButtonShowGRResult;
+    public Button ButtonDoNotShow;
+
+    public TMP_Text GRResultText;
+
     public Button ToggleButton;
+
+    private void Update() => _update?.Invoke();
 
     public override Tween ShowTween()
         => DOTween.Sequence().SetAutoKill()
@@ -64,6 +72,30 @@ public class ConsolePanel : Panel
         Button50.onClick.AddListener(() => Time.timeScale = 0.5f);
         Button100.onClick.RemoveAllListeners();
         Button100.onClick.AddListener(() => Time.timeScale = 1);
+        
+        ButtonShowGRResult.onClick.RemoveAllListeners();
+        ButtonShowGRResult.onClick.AddListener(TurnOnShowGRResult);
+        ButtonDoNotShow.onClick.RemoveAllListeners();
+        ButtonDoNotShow.onClick.AddListener(TurnOffShow);
+    }
+
+    private Action _update;
+
+    private void TurnOnShowGRResult()
+    {
+        GRResultText.gameObject.SetActive(true);
+        _update += ShowGRResult;
+    }
+
+    private void TurnOffShow()
+    {
+        GRResultText.gameObject.SetActive(false);
+        _update = null;
+    }
+
+    private void ShowGRResult()
+    {
+        GRResultText.text = CanvasManager.Instance.GetGraphicRaycastResult();
     }
 
     public override void Refresh()

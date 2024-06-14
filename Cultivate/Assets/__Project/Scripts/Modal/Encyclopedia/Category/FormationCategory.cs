@@ -52,9 +52,25 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("诸行无常", n);
                             }),
                         }),
+                    // new FormationEntry(
+                    //     jingJie:                                                    JingJie.JinDan,
+                    //     requirement:                                                5,
+                    //     trivia:                                                     null,
+                    //     rewardDescription:                                          "击伤时：施加减甲，每携带1金，层数+1",
+                    //     eventDescriptors: new StageEventDescriptor[]
+                    //     {
+                    //         new(StageEventDict.STAGE_FORMATION, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                    //         {
+                    //             Formation f = (Formation)listener;
+                    //             StageDetails d = (StageDetails)stageEventDetails;
+                    //             
+                    //             int n = f.Owner.CountSuch(stageSkill => stageSkill.Entry.WuXing == WuXing.Jin);
+                    //             await f.Owner.GainBuffProcedure("诸行无常", n);
+                    //         }),
+                    //     }),
                     new FormationEntry(
-                        jingJie:                                                    JingJie.JinDan,
-                        requirement:                                                5,
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                1,
                         trivia:                                                     null,
                         rewardDescription:                                          "击伤时：施加减甲，每携带1金，层数+1",
                         eventDescriptors: new StageEventDescriptor[]

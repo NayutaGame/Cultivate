@@ -96,4 +96,16 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     {
         return Camera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10));
     }
+
+    public string GetGraphicRaycastResult()
+    {
+        var d = new PointerEventData(null);
+        d.position = Input.mousePosition;
+        
+        _results.Clear();
+        Raycaster.Raycast(d, _results);
+        if (_results.Count == 0)
+            return "no result";
+        return _results[0].gameObject.name;
+    }
 }

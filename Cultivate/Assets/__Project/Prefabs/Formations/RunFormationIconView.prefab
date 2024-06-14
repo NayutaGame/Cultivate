@@ -367,6 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnnotationAddress: Canvas.FormationAnnotation
+  HoverTransform: {fileID: 0}
 --- !u!114 &2550361188410106314
 MonoBehaviour:
   m_ObjectHideFlags: 0
