@@ -3,20 +3,50 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RunCanvas : MonoBehaviour
+public class RunCanvas : Panel
 {
-    public RunPanelCollection RunPanelCollection;
-
     public DeckPanel DeckPanel;
     public MapPanel MapPanel;
     public Button MapButton;
     public ReservedLayer ReservedLayer;
     public TopBar TopBar;
     public ConsolePanel ConsolePanel;
+    
+    private PanelSM PanelSM;
+    
+    public BattlePanel BattlePanel;
+    public PuzzlePanel PuzzlePanel;
+    public DialogPanel DialogPanel;
+    public DiscoverSkillPanel DiscoverSkillPanel;
+    public CardPickerPanel CardPickerPanel;
+    public ShopPanel ShopPanel;
+    public BarterPanel BarterPanel;
+    public ArbitraryCardPickerPanel ArbitraryCardPickerPanel;
+    public ImagePanel ImagePanel;
+    public RunResultPanel RunResultPanel;
 
-    public void Configure()
+    public override void Configure()
     {
-        RunPanelCollection.Configure();
+        base.Configure();
+        
+        PanelSM = new(new Panel[]
+        {
+            null,
+            MapPanel,
+            BattlePanel,
+            PuzzlePanel,
+            DialogPanel,
+            DiscoverSkillPanel,
+            CardPickerPanel,
+            ShopPanel,
+            BarterPanel,
+            ArbitraryCardPickerPanel,
+            ImagePanel,
+            RunResultPanel,
+        });
+        
+        // _panelDict.Do(kvp => kvp.Value.Configure());
+        
         DeckPanel.Configure();
         MapPanel.Configure();
 
@@ -32,37 +62,53 @@ public class RunCanvas : MonoBehaviour
             ConsolePanel.gameObject.SetActive(false);
     }
 
-    public void Refresh()
+    public override void Refresh()
     {
-        RunPanelCollection.Refresh();
+        base.Refresh();
+        
+        Panel currentPanel = PanelSM.GetCurrPanel();
+        if (currentPanel != null)
+        {
+            currentPanel.Configure();
+            currentPanel.Refresh();
+        }
+        
         DeckPanel.Refresh();
-        MapPanel.Refresh();
+        // MapPanel.Refresh();
         ReservedLayer.Refresh();
         TopBar.Refresh();
         ConsolePanel.Refresh();
     }
 
-    public async Task SetNodeState(PanelDescriptor panelDescriptor)
+    public async Task SetPanelSAsync(PanelS panelS)
     {
-        if (RunPanelCollection.CurrentIsDescriptor(panelDescriptor))
+        PanelS oldState = PanelSM.State;
+        PanelS newState = panelS;
+
+        if (oldState.Equals(newState))
         {
-            await RunPanelCollection.SelfTransition();
+            if (PanelSM.GetCurrPanel() != null)
+                await PanelSM.GetCurrPanel().SetStateAsync(1);
             return;
         }
 
-        PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
+        if (PanelSM[oldState] != null)
+            await PanelSM[oldState].SetStateAsync(0);
+        else
+            await SetStateAsync(1);
 
-        if (panelDescriptor == null)
+        PanelSM.SetState(newState);
+
+        if (PanelSM[newState] != null)
         {
-            await RunPanelCollection.SetPanel(panel: null);
-            await MapPanel.SetStateAsync(1);
+            PanelSM[newState].Configure();
+            PanelSM[newState].Refresh();
+            await PanelSM[newState].SetStateAsync(1);
         }
         else
-        {
-            await MapPanel.SetStateAsync(0);
-            await RunPanelCollection.SetPanel(d);
-        }
-
+            await SetStateAsync(0);
+        
+        PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
         if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
         {
             DeckPanel.SetLocked(true);
@@ -72,6 +118,47 @@ public class RunCanvas : MonoBehaviour
         {
             DeckPanel.SetLocked(false);
             await DeckPanel.SetStateAsync(0);
+        }
+    }
+
+    public void SetPanelS(PanelS panelS)
+    {
+        PanelS oldState = PanelSM.State;
+        PanelS newState = panelS;
+
+        if (oldState.Equals(newState))
+        {
+            if (PanelSM.GetCurrPanel() != null)
+                PanelSM.GetCurrPanel().SetState(1);
+            return;
+        }
+
+        if (PanelSM[oldState] != null)
+            PanelSM[oldState].SetState(0);
+        else
+            SetState(1);
+
+        PanelSM.SetState(newState);
+
+        if (PanelSM[newState] != null)
+        {
+            PanelSM[newState].Configure();
+            PanelSM[newState].Refresh();
+            PanelSM[newState].SetState(1);
+        }
+        else
+            SetState(0);
+        
+        PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
+        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
+        {
+            DeckPanel.SetLocked(true);
+            DeckPanel.SetState(1);
+        }
+        else
+        {
+            DeckPanel.SetLocked(false);
+            DeckPanel.SetState(0);
         }
     }
 }

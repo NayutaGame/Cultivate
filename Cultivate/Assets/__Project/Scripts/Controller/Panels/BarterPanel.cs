@@ -47,7 +47,8 @@ public class BarterPanel : Panel
     private void Exit()
     {
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new ExitShopSignal());
-        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
+        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
     }
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)

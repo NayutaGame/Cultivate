@@ -12,28 +12,28 @@ public class RunAppS : AppS
 
         CanvasManager.Instance.RunCanvas.Configure();
         CanvasManager.Instance.RunCanvas.TopBar.Refresh();
-        CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         
-        CanvasManager.Instance.RunCanvas.MapPanel.SetState(0);
+        CanvasManager.Instance.RunCanvas.DeckPanel.SetState(0);
+        CanvasManager.Instance.RunCanvas.DeckPanel.DeckOpenZone.gameObject.SetActive(true);
+        CanvasManager.Instance.RunCanvas.DeckPanel.DeckCloseZone.gameObject.SetActive(false);
 
-        Address address = new Address("Run.Environment.Map.StepItem");
-        StepItem stepItem = address.Get<StepItem>();
+        PanelS panelS;
+        
+        StepItem stepItem = RunManager.Instance.Environment.Map.CurrStepItem;
         NodeListModel nodes = stepItem._nodes;
         if (nodes.Count() == 1)
         {
             RunNode runNode = nodes[0];
 
             PanelDescriptor panelDescriptor = RunManager.Instance.Environment.MakeChoiceProcedure(runNode);
-            CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
+            panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
         }
         else
         {
-            CanvasManager.Instance.RunCanvas.SetNodeState(null);
+            panelS = PanelS.FromMap();
         }
         
-        CanvasManager.Instance.RunCanvas.DeckPanel.SetState(0);
-        CanvasManager.Instance.RunCanvas.DeckPanel.DeckOpenZone.gameObject.SetActive(true);
-        CanvasManager.Instance.RunCanvas.DeckPanel.DeckCloseZone.gameObject.SetActive(false);
+        CanvasManager.Instance.RunCanvas.SetPanelS(panelS);
 
         await CanvasManager.Instance.Curtain.SetStateAsync(0);
     }
@@ -42,8 +42,9 @@ public class RunAppS : AppS
     {
         await base.Exit(d);
         await CanvasManager.Instance.Curtain.SetStateAsync(1);
-        CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.DisableCurrentPanel();
+        
+        CanvasManager.Instance.RunCanvas.SetPanelS(PanelS.FromHide());
+        
         RunResult result = RunManager.Instance.Environment.Result;
         RunManager.Instance.SetEnvironmentToNull();
 

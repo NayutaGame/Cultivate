@@ -111,7 +111,7 @@ public class GuideView : MonoBehaviour
             //     _cursor.position = rt.position + new Vector3(rect.xMax, rect.yMin);
             // }
 
-            _cursor.position = CanvasManager.Instance.RunCanvas.RunPanelCollection.BattlePanel.CombatButton._rectTransform.position;
+            _cursor.position = CanvasManager.Instance.RunCanvas.BattlePanel.CombatButton._rectTransform.position;
             
             _handle?.Kill();
             _handle = DOTween.Sequence()

@@ -53,7 +53,8 @@ public class NodeView : SimpleView
             return false;
 
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.MakeChoiceProcedure(runNode);
-        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
+        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
         return true;
     }
 }

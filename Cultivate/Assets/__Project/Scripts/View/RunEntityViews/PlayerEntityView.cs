@@ -52,8 +52,8 @@ public class PlayerEntityView : SimpleView
         EquipAnimation(from, to, isReplace);
         
         Refresh();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
+        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private static void EquipAnimation(InteractBehaviour from, InteractBehaviour to, bool isReplace)
@@ -95,8 +95,8 @@ public class PlayerEntityView : SimpleView
         SwapAnimation(from, to, isReplace);
 
         Refresh();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
+        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private static void SwapAnimation(InteractBehaviour from, InteractBehaviour to, bool isReplace)

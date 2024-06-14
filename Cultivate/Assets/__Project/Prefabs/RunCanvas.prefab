@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3963974507228856161}
   m_Layer: 5
-  m_Name: ExtraRunPanels
+  m_Name: Panels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,9 +46,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5716525121622533319}
-  - component: {fileID: 3833359034282269437}
   m_Layer: 5
-  m_Name: RunPanelCollection
+  m_Name: Panels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,28 +82,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3833359034282269437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5716525121622533312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7985db21371c4c34187c3e443e0534f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BattlePanel: {fileID: 3954536317943448747}
-  PuzzlePanel: {fileID: 6074897266670453705}
-  DialogPanel: {fileID: 1383903272617823393}
-  DiscoverSkillPanel: {fileID: 8574471234247833331}
-  CardPickerPanel: {fileID: 7392246459771090901}
-  ShopPanel: {fileID: 6550784274984055667}
-  BarterPanel: {fileID: 5037944397048730839}
-  ArbitraryCardPickerPanel: {fileID: 8007929248342873170}
-  ImagePanel: {fileID: 8944306026166633940}
-  RunResultPanel: {fileID: 8331898855866589907}
 --- !u!1 &6570500142996436561
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,13 +139,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72e94281ebc0afa4dbc1eadafb274d7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunPanelCollection: {fileID: 3833359034282269437}
   DeckPanel: {fileID: 251215213978163673}
   MapPanel: {fileID: 8297288508630953793}
   MapButton: {fileID: 8904701696613196117}
   ReservedLayer: {fileID: 716594900314097153}
   TopBar: {fileID: 2446552740629397335}
   ConsolePanel: {fileID: 9082888802706407865}
+  BattlePanel: {fileID: 3954536317943448747}
+  PuzzlePanel: {fileID: 6074897266670453705}
+  DialogPanel: {fileID: 1383903272617823393}
+  DiscoverSkillPanel: {fileID: 8574471234247833331}
+  CardPickerPanel: {fileID: 7392246459771090901}
+  ShopPanel: {fileID: 6550784274984055667}
+  BarterPanel: {fileID: 5037944397048730839}
+  ArbitraryCardPickerPanel: {fileID: 8007929248342873170}
+  ImagePanel: {fileID: 8944306026166633940}
+  RunResultPanel: {fileID: 8331898855866589907}
 --- !u!1 &6570500143329246657
 GameObject:
   m_ObjectHideFlags: 0
@@ -3755,6 +3741,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2539564797544782365, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2539564797544782365, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2539564797544782365, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2539564797544782365, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906043934864695418, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906043934864695418, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906043934864695418, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906043934864695418, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3211687710783735313, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3803,6 +3821,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6066433318250615272, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066433318250615272, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066433318250615272, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066433318250615272, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6557180965297859466, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3848,6 +3882,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7022029287745137251, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7232137673509522197, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7232137673509522197, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7232137673509522197, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7232137673509522197, guid: 899baf16849a6e64d80b3447ccd3e023, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}

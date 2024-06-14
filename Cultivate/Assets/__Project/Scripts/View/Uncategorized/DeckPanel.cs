@@ -94,8 +94,8 @@ public class DeckPanel : Panel
         
         MergeAnimation(from, to, d);
 
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
+        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void MergeAnimation(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
@@ -132,8 +132,8 @@ public class DeckPanel : Panel
         UnequipAnimation(from);
 
         PlayerEntity.Refresh();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.Refresh();
+        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void UnequipAnimation(InteractBehaviour from)
@@ -159,7 +159,7 @@ public class DeckPanel : Panel
 
     private void Sort()
     {
-        CanvasManager.Instance.RunCanvas.RunPanelCollection.CardPickerPanel.ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
 
         _animationHandle?.Kill();
 

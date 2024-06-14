@@ -91,6 +91,7 @@ public class ArbitraryCardPickerPanel : Panel
     {
         List<SkillDescriptor> mapped = _selections.Map(v => v.Get<SkillDescriptor>()).ToList();
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new ConfirmSkillsSignal(mapped));
-        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
+        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
     }
 }

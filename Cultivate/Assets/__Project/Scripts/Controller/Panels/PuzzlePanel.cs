@@ -68,7 +68,8 @@ public class PuzzlePanel : Panel
     {
         PuzzlePanelDescriptor d = _address.Get<PuzzlePanelDescriptor>();
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new PuzzleResultSignal(d.GetResult().Flag));
-        CanvasManager.Instance.RunCanvas.SetNodeState(panelDescriptor);
+        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
     }
     
     // public override Tween ShowAnimation()

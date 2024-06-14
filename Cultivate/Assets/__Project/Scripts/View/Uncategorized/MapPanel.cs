@@ -12,25 +12,6 @@ public class MapPanel : Panel
 
     private Address _address;
 
-    public override Tween ShowTween()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(() => gameObject.SetActive(true))
-            .AppendCallback(NodeListView.Sync)
-            .AppendCallback(PlaySFX)
-            .Append(TweenAnimation.Show(NodeListTransform, NodeListIdlePivot.anchoredPosition))
-            .Join(CanvasGroup.DOFade(1f, 0.15f));
-    }
-
-    public override Tween HideTween()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(PlaySFX)
-            .Append(TweenAnimation.Hide(NodeListTransform, NodeListIdlePivot.anchoredPosition))
-            .Join(CanvasGroup.DOFade(0f, 0.15f))
-            .AppendCallback(() => gameObject.SetActive(false));
-    }
-
     public override void Configure()
     {
         base.Configure();
@@ -46,5 +27,24 @@ public class MapPanel : Panel
 
     private void PlaySFX()
     {
+    }
+
+    public override Tween ShowTween()
+    {
+        return DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .AppendCallback(NodeListView.Sync)
+            .AppendCallback(PlaySFX)
+            .Append(TweenAnimation.Show(NodeListTransform, NodeListIdlePivot.anchoredPosition, CanvasGroup))
+            ;
+        
+    }
+
+    public override Tween HideTween()
+    {
+        return DOTween.Sequence()
+            .AppendCallback(PlaySFX)
+            .Append(TweenAnimation.Hide(NodeListTransform, NodeListIdlePivot.anchoredPosition, CanvasGroup))
+            .AppendCallback(() => gameObject.SetActive(false));
     }
 }
