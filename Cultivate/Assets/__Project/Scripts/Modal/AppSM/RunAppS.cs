@@ -9,13 +9,9 @@ public class RunAppS : AppS
 
         RunConfig runConfig = config as RunConfig;
         RunManager.Instance.SetEnvironmentFromConfig(runConfig);
-
+        
         CanvasManager.Instance.RunCanvas.Configure();
         CanvasManager.Instance.RunCanvas.TopBar.Refresh();
-        
-        CanvasManager.Instance.RunCanvas.DeckPanel.SetState(0);
-        CanvasManager.Instance.RunCanvas.DeckPanel.DeckOpenZone.gameObject.SetActive(true);
-        CanvasManager.Instance.RunCanvas.DeckPanel.DeckCloseZone.gameObject.SetActive(false);
 
         PanelS panelS;
         
@@ -24,7 +20,6 @@ public class RunAppS : AppS
         if (nodes.Count() == 1)
         {
             RunNode runNode = nodes[0];
-
             PanelDescriptor panelDescriptor = RunManager.Instance.Environment.MakeChoiceProcedure(runNode);
             panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
         }

@@ -79,7 +79,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         RunManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);
-
+        
         _sm = new AppSM();
     }
 

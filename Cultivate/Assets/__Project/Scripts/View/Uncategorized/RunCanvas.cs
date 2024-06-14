@@ -111,12 +111,10 @@ public class RunCanvas : Panel
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
         if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
         {
-            DeckPanel.SetLocked(true);
-            await DeckPanel.SetStateAsync(1);
+            await DeckPanel.SetStateAsync(2);
         }
         else
         {
-            DeckPanel.SetLocked(false);
             await DeckPanel.SetStateAsync(0);
         }
     }
@@ -152,12 +150,10 @@ public class RunCanvas : Panel
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
         if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
         {
-            DeckPanel.SetLocked(true);
-            DeckPanel.SetState(1);
+            DeckPanel.SetState(2);
         }
         else
         {
-            DeckPanel.SetLocked(false);
             DeckPanel.SetState(0);
         }
     }

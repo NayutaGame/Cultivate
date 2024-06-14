@@ -22,8 +22,8 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform SortButtonShowPivot;
     [SerializeField] private RectTransform SortButtonHidePivot;
     
-    public PropagatePointerEnter DeckOpenZone;
-    public PropagatePointerEnter DeckCloseZone;
+    [SerializeField] private PropagatePointerEnter DeckOpenZone;
+    [SerializeField] private PropagatePointerEnter DeckCloseZone;
 
     [SerializeField] public RectTransform DropRectTransform;
     [SerializeField] private RectTransform HandViewPivotTransform;
@@ -35,7 +35,6 @@ public class DeckPanel : Panel
 
         DeckOpenZone._onPointerEnter = TryShow;
         DeckCloseZone._onPointerEnter = TryHide;
-        SetLocked(false);
         
         PlayerEntity.SetAddress(new Address("Run.Environment.Home"));
 
@@ -46,6 +45,15 @@ public class DeckPanel : Panel
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
+    }
+
+    protected override void InitStateMachine()
+    {
+        SM = new(3);
+        // 0 for hide, 1 for show, 2 for locked
+        SM[-1, 2] = LockTween;
+        SM[-1, 1] = ShowTween;
+        SM[-1, 0] = HideTween;
     }
 
     public override void Refresh()
@@ -155,6 +163,16 @@ public class DeckPanel : Panel
 
     #endregion
 
+    public RectTransform Find(Address address)
+    {
+        ItemBehaviour itemBehaviour =
+            HandView.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address)) ??
+            PlayerEntity.SkillList.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address));
+        if (itemBehaviour == null)
+            return null;
+        return itemBehaviour.GetDisplayTransform();
+    }
+
     private Tween _animationHandle;
 
     private void Sort()
@@ -181,30 +199,23 @@ public class DeckPanel : Panel
         _animationHandle.SetAutoKill().Restart();
     }
 
-    private void TryShow(PointerEventData eventData)
-    {
-        SetStateAsync(1);
-    }
-
-    private void TryHide(PointerEventData eventData)
-    {
-        SetStateAsync(0);
-    }
-
-    private bool _locked;
-    public void SetLocked(bool locked)
-    {
-        if (_locked == locked)
-            return;
-        _locked = locked;
-        DeckCloseZone.gameObject.SetActive(!_locked);
-    }
+    private void TryShow(PointerEventData eventData) => SetStateAsync(1);
+    private void TryHide(PointerEventData eventData) => SetStateAsync(0);
 
     public override Tween ShowTween()
         => DOTween.Sequence()
             .AppendCallback(Sync)
             .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
-            .AppendCallback(() => DeckCloseZone.gameObject.SetActive(!_locked))
+            .AppendCallback(() => DeckCloseZone.gameObject.SetActive(true))
+            .Join(SortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(PlayerEntityTransform.DOAnchorPos(PlayerEntityShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(HandTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
+
+    private Tween LockTween()
+        => DOTween.Sequence()
+            .AppendCallback(Sync)
+            .AppendCallback(() => DeckOpenZone.gameObject.SetActive(false))
+            .AppendCallback(() => DeckCloseZone.gameObject.SetActive(false))
             .Join(SortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
             .Join(PlayerEntityTransform.DOAnchorPos(PlayerEntityShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
             .Join(HandTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
@@ -216,14 +227,4 @@ public class DeckPanel : Panel
             .Join(SortButtonTransform.DOAnchorPos(SortButtonHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
             .Join(PlayerEntityTransform.DOAnchorPos(PlayerEntityHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
             .Join(HandTransform.DOAnchorPos(HandHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
-
-    public RectTransform Find(Address address)
-    {
-        ItemBehaviour itemBehaviour =
-            HandView.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address)) ??
-            PlayerEntity.SkillList.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address));
-        if (itemBehaviour == null)
-            return null;
-        return itemBehaviour.GetDisplayTransform();
-    }
 }
