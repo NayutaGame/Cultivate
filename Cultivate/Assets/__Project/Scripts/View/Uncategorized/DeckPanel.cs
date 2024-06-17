@@ -16,6 +16,10 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform HandTransform;
     [SerializeField] private RectTransform HandShowPivot;
     [SerializeField] private RectTransform HandHidePivot;
+
+    [SerializeField] private RectTransform PlayerEntityOtherHalfTransform;
+    [SerializeField] private RectTransform PlayerEntityOtherHalfShowPivot;
+    [SerializeField] private RectTransform PlayerEntityOtherHalfHidePivot;
     
     public Button SortButton;
     [SerializeField] private RectTransform SortButtonTransform;
@@ -209,7 +213,8 @@ public class DeckPanel : Panel
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(true))
             .Join(SortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
             .Join(PlayerEntityTransform.DOAnchorPos(PlayerEntityShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
-            .Join(HandTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
+            .Join(HandTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(PlayerEntityOtherHalfTransform.DOAnchorPos(PlayerEntityOtherHalfShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
 
     private Tween LockTween()
         => DOTween.Sequence()
@@ -218,7 +223,8 @@ public class DeckPanel : Panel
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(false))
             .Join(SortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
             .Join(PlayerEntityTransform.DOAnchorPos(PlayerEntityShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
-            .Join(HandTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
+            .Join(HandTransform.DOAnchorPos(HandShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
+            .Join(PlayerEntityOtherHalfTransform.DOAnchorPos(PlayerEntityOtherHalfShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
 
     public override Tween HideTween()
         => DOTween.Sequence()
@@ -226,5 +232,6 @@ public class DeckPanel : Panel
             .AppendCallback(() => DeckCloseZone.gameObject.SetActive(false))
             .Join(SortButtonTransform.DOAnchorPos(SortButtonHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
             .Join(PlayerEntityTransform.DOAnchorPos(PlayerEntityHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
-            .Join(HandTransform.DOAnchorPos(HandHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
+            .Join(HandTransform.DOAnchorPos(HandHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad))
+            .Join(PlayerEntityOtherHalfTransform.DOAnchorPos(PlayerEntityOtherHalfHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
 }
