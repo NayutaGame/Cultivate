@@ -25,6 +25,11 @@ public abstract class CLView : MonoBehaviour
 
     public virtual void Awake()
     {
+        AwakeFunction();
+    }
+
+    public virtual void AwakeFunction()
+    {
         InteractBehaviour ??= GetComponent<InteractBehaviour>();
         if (InteractBehaviour != null)
             InteractBehaviour.Init(this);

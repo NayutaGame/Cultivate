@@ -6,6 +6,7 @@ public interface ISkillModel
     int GetCurrCounter();
     int GetMaxCounter();
     Sprite GetSprite();
+    WuXing? GetWuXing();
     Sprite GetWuXingSprite();
     string GetName();
     SkillTypeComposite GetSkillTypeComposite();

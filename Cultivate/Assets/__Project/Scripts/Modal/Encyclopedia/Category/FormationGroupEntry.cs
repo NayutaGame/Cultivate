@@ -12,7 +12,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
     private int _order;
     public int Order => _order;
 
-    private Predicate<RunSkill> _contributorPred;
+    private Predicate<ISkillModel> _contributorPred;
 
     private string _progressDescription;
 
@@ -30,7 +30,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public FormationGroupEntry(string id, int order, Predicate<RunSkill> contributorPred, string progressDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(id)
+    public FormationGroupEntry(string id, int order, Predicate<ISkillModel> contributorPred, string progressDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(id)
     {
         _accessors = new Dictionary<string, Func<object>>()
         {
@@ -86,6 +86,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
         return _subFormationEntries[index].GetJingJie();
     }
     public int GetRequirementFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetRequirement();
+    public Predicate<ISkillModel> GetContributorPred() => _contributorPred;
 
     #endregion
 

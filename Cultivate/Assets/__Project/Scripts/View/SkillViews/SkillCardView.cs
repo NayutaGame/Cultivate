@@ -1,4 +1,5 @@
 
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 public class SkillCardView : SimpleView
 {
     private JingJie _showingJingJie;
+    private bool _highlight;
     
     [SerializeField] private Image CardImage;
     [SerializeField] private TMP_Text CostText;
@@ -14,6 +16,20 @@ public class SkillCardView : SimpleView
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private Image JingJieImage;
     [SerializeField] private Image WuXingImage;
+    [SerializeField] private Image EffectImage;
+
+    private Material _material;
+
+    public override void AwakeFunction()
+    {
+        base.AwakeFunction();
+
+        if (EffectImage != null)
+        {
+            EffectImage.material = Instantiate(EffectImage.material);
+            _material = EffectImage.materialForRendering;
+        }
+    }
 
     public override void Refresh()
     {
@@ -39,6 +55,21 @@ public class SkillCardView : SimpleView
         SetJingJieSprite(skill.GetJingJieSprite(_showingJingJie));
         SetWuXingSprite(skill.GetWuXingSprite());
     }
+
+    private Tween _highlightHandle;
+    private static readonly int OuterOutlineFade = Shader.PropertyToID("_OuterOutlineFade");
+
+    public void SetHighlight(bool highlight)
+    {
+        _highlight = highlight;
+        
+        _highlightHandle?.Kill();
+        _highlightHandle = DOTween.To(GetOutlineFade, SetOutlineFade, _highlight ? 1 : 0, 0.3f).SetEase(Ease.InOutQuad);
+        _highlightHandle.SetAutoKill().Restart();
+    }
+
+    private float GetOutlineFade() => _material.GetFloat(OuterOutlineFade);
+    private void SetOutlineFade(float value) => _material.SetFloat(OuterOutlineFade, value);
 
     protected virtual void SetSprite(Sprite sprite)
     {

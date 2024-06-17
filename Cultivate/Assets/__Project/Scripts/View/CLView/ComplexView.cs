@@ -14,10 +14,10 @@ public class ComplexView : CLView
     public override void SetAddress(Address address) => SimpleView.SetAddress(address);
     public override void Refresh() => SimpleView.Refresh();
 
-    public override void Awake()
+    public override void AwakeFunction()
     {
-        SimpleView.Awake();
+        SimpleView.AwakeFunction();
 
-        base.Awake();
+        base.AwakeFunction();
     }
 }

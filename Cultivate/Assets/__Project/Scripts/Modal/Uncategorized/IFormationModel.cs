@@ -1,4 +1,6 @@
 
+using System;
+
 public interface IFormationModel : IMarkedSliderModel
 {
     string GetName();
@@ -9,4 +11,5 @@ public interface IFormationModel : IMarkedSliderModel
     string GetTriviaFromJingJie(JingJie jingJie);
     JingJie GetIncrementedJingJie(JingJie jingJie);
     int GetRequirementFromJingJie(JingJie jingJie);
+    Predicate<ISkillModel> GetContributorPred();
 }

@@ -1,5 +1,7 @@
 
+using System;
 using System.Linq;
+using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -41,6 +43,8 @@ public class DeckPanel : Panel
         DeckCloseZone._onPointerEnter = TryHide;
         
         PlayerEntity.SetAddress(new Address("Run.Environment.Home"));
+        PlayerEntity.FormationList.PointerEnterNeuron.Join(HighlightContributors);
+        PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
@@ -87,6 +91,59 @@ public class DeckPanel : Panel
     }
 
     #region IInteractable
+
+    private void HighlightContributors(InteractBehaviour ib, PointerEventData d)
+    {
+        Predicate<ISkillModel> pred = ib.GetCLView().Get<IFormationModel>().GetContributorPred();
+        PlayerEntity.SkillList.TraversalActive().Do(HighlightSlot);
+        HandView.TraversalActive().Do(HighlightSkill);
+
+        // extra views
+        // { typeof(BattlePanelDescriptor), 2 },
+        // { typeof(PuzzlePanelDescriptor), 3 },
+        // { typeof(DialogPanelDescriptor), 4 },
+        // { typeof(DiscoverSkillPanelDescriptor), 5 },
+        // { typeof(CardPickerPanelDescriptor), 6 },
+        // { typeof(ShopPanelDescriptor), 7 },
+        // { typeof(BarterPanelDescriptor), 8 },
+        // { typeof(ArbitraryCardPickerPanelDescriptor), 9 },
+        // { typeof(ImagePanelDescriptor), 10 },
+        // { typeof(RunResultPanelDescriptor), 11 },
+        
+        void HighlightSkill(ItemBehaviour itemBehaviour)
+        {
+            ISkillModel runSkill = itemBehaviour.GetSimpleView().Get<ISkillModel>();
+            if (runSkill != null && pred(runSkill))
+                itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(true);
+        }
+        
+        void HighlightSlot(ItemBehaviour itemBehaviour)
+        {
+            SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
+            if (skillSlot != null && skillSlot.Skill != null && pred(skillSlot.Skill))
+                itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(true);
+        }
+    }
+
+    private void UnhighlightContributors(InteractBehaviour ib, PointerEventData d)
+    {
+        PlayerEntity.SkillList.TraversalActive().Do(UnhighlightSlot);
+        HandView.TraversalActive().Do(UnhighlightSkill);
+        
+        void UnhighlightSkill(ItemBehaviour itemBehaviour)
+        {
+            ISkillModel runSkill = itemBehaviour.GetSimpleView().Get<ISkillModel>();
+            if (runSkill != null)
+                itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(false);
+        }
+        
+        void UnhighlightSlot(ItemBehaviour itemBehaviour)
+        {
+            SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
+            if (skillSlot != null)
+                itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(false);
+        }
+    }
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");

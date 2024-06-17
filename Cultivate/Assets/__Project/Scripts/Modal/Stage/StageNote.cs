@@ -35,6 +35,9 @@ public class StageNote : ISkillModel
     public Sprite GetSprite()
         => Skill.Entry.GetSprite();
 
+    public WuXing? GetWuXing()
+        => Skill.Entry.GetWuXing();
+
     public Sprite GetWuXingSprite()
         => Skill.Entry.GetWuXingSprite();
 

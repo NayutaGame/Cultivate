@@ -86,6 +86,9 @@ public class SkillDescriptor : ISkillModel
     public Sprite GetSprite()
         => _entry?.GetSprite();
 
+    public WuXing? GetWuXing()
+        => _entry?.WuXing;
+
     public Sprite GetWuXingSprite()
         => _entry?.GetWuXingSprite();
 

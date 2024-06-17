@@ -10,7 +10,7 @@ public class AnnotationView : MonoBehaviour
     public void Awake()
     {
         SimpleView ??= GetComponent<SimpleView>();
-        SimpleView.Awake();
+        SimpleView.AwakeFunction();
     }
 
     public void PointerEnter(InteractBehaviour ib, PointerEventData d) => PointerEnter(ib, d, ib.GetSimpleView().GetAddress());

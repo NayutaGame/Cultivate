@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class SlotCardView : SimpleView
 {
-    [SerializeField] protected SkillCardView SkillCardView;
+    [SerializeField] public SkillCardView SkillCardView;
 
-    public override void Awake()
+    public override void AwakeFunction()
     {
-        SkillCardView.Awake();
-        base.Awake();
+        SkillCardView.AwakeFunction();
+        base.AwakeFunction();
     }
 
     public override void SetAddress(Address address)

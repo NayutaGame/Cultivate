@@ -77,6 +77,7 @@ public class Formation : StageEventListener, IFormationModel, Addressable
     public string GetTriviaFromJingJie(JingJie jingJie) => _runFormation.GetTriviaFromJingJie(jingJie);
     public JingJie GetIncrementedJingJie(JingJie jingJie) => _runFormation.GetIncrementedJingJie(jingJie);
     public int GetRequirementFromJingJie(JingJie jingJie) => _runFormation.GetRequirementFromJingJie(jingJie);
+    public Predicate<ISkillModel> GetContributorPred() => _runFormation.GetContributorPred();
 
     #endregion
 

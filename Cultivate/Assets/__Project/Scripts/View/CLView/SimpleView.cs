@@ -25,12 +25,12 @@ public class SimpleView : CLView
             CanvasGroup.alpha = value ? 1 : 0;
     }
 
-    public override void Awake()
+    public override void AwakeFunction()
     {
         RectTransform ??= GetComponent<RectTransform>();
         CanvasGroup ??= GetComponent<CanvasGroup>();
 
-        base.Awake();
+        base.AwakeFunction();
     }
 
     private Address _address;

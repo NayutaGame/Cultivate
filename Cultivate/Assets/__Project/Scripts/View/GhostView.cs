@@ -10,7 +10,7 @@ public class GhostView : MonoBehaviour
     public void Awake()
     {
         SimpleView ??= GetComponent<SimpleView>();
-        SimpleView.Awake();
+        SimpleView.AwakeFunction();
     }
 
     private void OnDisable()

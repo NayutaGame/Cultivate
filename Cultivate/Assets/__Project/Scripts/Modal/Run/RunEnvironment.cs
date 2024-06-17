@@ -181,6 +181,9 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public PanelDescriptor ReceiveSignalProcedure(Signal signal)
     {
+        if (Map.CurrNode == null)
+            return null;
+        
         Guide guide = Map.CurrNode.Panel.GetGuideDescriptor();
         if (guide != null)
         {

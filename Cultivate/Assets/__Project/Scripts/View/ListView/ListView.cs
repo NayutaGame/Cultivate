@@ -95,7 +95,7 @@ public class ListView : SimpleView
 
     protected virtual void InitItemBehaviour(ItemBehaviour itemBehaviour, int prefabIndex)
     {
-        itemBehaviour.GetComponent<CLView>().Awake();
+        itemBehaviour.GetComponent<CLView>().AwakeFunction();
         itemBehaviour.gameObject.SetActive(false);
 
         itemBehaviour.PrefabIndex = prefabIndex;
