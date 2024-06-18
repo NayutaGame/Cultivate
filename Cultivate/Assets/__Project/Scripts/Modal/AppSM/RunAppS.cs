@@ -10,9 +10,6 @@ public class RunAppS : AppS
         RunConfig runConfig = config as RunConfig;
         RunManager.Instance.SetEnvironmentFromConfig(runConfig);
         
-        CanvasManager.Instance.RunCanvas.Configure();
-        CanvasManager.Instance.RunCanvas.TopBar.Refresh();
-
         PanelS panelS;
         
         StepItem stepItem = RunManager.Instance.Environment.Map.CurrStepItem;
@@ -28,8 +25,9 @@ public class RunAppS : AppS
             panelS = PanelS.FromMap();
         }
         
+        CanvasManager.Instance.RunCanvas.Configure();
         CanvasManager.Instance.RunCanvas.SetPanelS(panelS);
-
+        CanvasManager.Instance.RunCanvas.TopBar.Refresh();
         await CanvasManager.Instance.Curtain.SetStateAsync(0);
     }
 

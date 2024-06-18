@@ -4,13 +4,15 @@ using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Tween = DG.Tweening.Tween;
 
 public class ConsolePanel : Panel
 {
     public TMP_Text MingYuanText;
-    public Button MingYuanButton;
+    [SerializeField] private Button AddMingYuanButton;
+    [SerializeField] private Button ReduceMingYuanButton;
     public TMP_Text GoldText;
     public Button GoldButton;
     public TMP_InputField HealthInputField;
@@ -43,8 +45,10 @@ public class ConsolePanel : Panel
     {
         base.Configure();
 
-        MingYuanButton.onClick.RemoveAllListeners();
-        MingYuanButton.onClick.AddListener(AddMingYuan);
+        AddMingYuanButton.onClick.RemoveAllListeners();
+        AddMingYuanButton.onClick.AddListener(AddMingYuan);
+        ReduceMingYuanButton.onClick.RemoveAllListeners();
+        ReduceMingYuanButton.onClick.AddListener(ReduceMingYuan);
 
         GoldButton.onClick.RemoveAllListeners();
         GoldButton.onClick.AddListener(AddXiuWei);
@@ -114,6 +118,12 @@ public class ConsolePanel : Panel
     public void AddMingYuan()
     {
         RunManager.Instance.Environment.GetMingYuan().SetDiff(1);
+        Refresh();
+    }
+
+    public void ReduceMingYuan()
+    {
+        RunManager.Instance.Environment.GetMingYuan().SetDiff(-1);
         Refresh();
     }
 
