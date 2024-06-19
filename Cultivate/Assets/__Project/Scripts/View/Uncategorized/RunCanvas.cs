@@ -186,6 +186,7 @@ public class RunCanvas : Panel
         if (d.Value >= 0) return;
         
         CanvasManager.Instance.RedFlashAnimation();
+        CanvasManager.Instance.CanvasShakeAnimation();
         // canvas shake
         // vfx text
         // TopBar Refresh

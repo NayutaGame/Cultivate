@@ -116,8 +116,9 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     [SerializeField] private Volume _volume;
 
+    #region RedFlash
+    
     private Vignette _vignette;
-
     private Tween _redFlashHandle;
 
     public void RedFlashAnimation()
@@ -136,4 +137,22 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     private void SetIntensity(float value)
         => _vignette.intensity.value = value;
+
+    #endregion
+
+    #region CanvasShake
+
+    [SerializeField] private RectTransform _shakeTransform;
+    private Tween _shakeHandle;
+
+    public void CanvasShakeAnimation()
+    {
+        _shakeHandle?.Kill();
+        _shakeHandle = DOTween.Sequence()
+            .Append(_shakeTransform.DOShakePosition(0.1f, 5f, 100, 90, randomnessMode: ShakeRandomnessMode.Full))
+            .Append(_shakeTransform.DOMove(Vector3.zero, 0.05f));
+        _shakeHandle.SetAutoKill().Restart();
+    }
+
+    #endregion
 }
