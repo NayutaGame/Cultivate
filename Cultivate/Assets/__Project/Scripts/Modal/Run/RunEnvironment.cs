@@ -18,8 +18,10 @@ public class RunEnvironment : Addressable, RunEventListener
         => (T)_memory[key];
 
     #endregion
-    
-    public Neuron BattleChangedNeuron;
+
+    #region Neurons
+
+    public Neuron BattleChangedNeuron = new();
     private void BattleEnvironmentUpdateProcedure()
     {
         EnvironmentUpdateDetails d = new();
@@ -28,8 +30,11 @@ public class RunEnvironment : Addressable, RunEventListener
         _eventDict.SendEvent(RunEventDict.DID_UPDATE, d);
     }
 
-    public void ResourceChanged() => ResourceChangedEvent?.Invoke();
-    public event Action ResourceChangedEvent;
+    public Neuron<SetDMingYuanDetails> MingYuanChangedNeuron = new();
+    public Neuron<SetDGoldDetails> GoldChangedNeuron = new();
+    public Neuron<SetDDHealthDetails> DHealthChangedNeuron = new();
+
+    #endregion
 
     #region Procedures
 
@@ -129,7 +134,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         {
             // init player start condition
-            SetDGold(50);
+            SetDGoldProcedure(50);
             if (!firstTime)
                 DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
             // DrawSkillsProcedure(new(jingJie: JingJie.HuaShen, count: 20));
@@ -150,7 +155,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         Map.SetJingJie(d.ToJingJie);
         
-        // move to ascension
+        // move to ascension procedure
         _home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.ToJingJie]);
         
         _home.SetJingJie(d.ToJingJie);
@@ -266,12 +271,43 @@ public class RunEnvironment : Addressable, RunEventListener
             return;
 
         _home.MingYuan.SetDiff(d.Value);
-        ResourceChanged();
-
         _eventDict.SendEvent(RunEventDict.DID_SET_D_MINGYUAN, d);
 
+        MingYuanChangedNeuron.Invoke(d);
+
+        // register this as a defeat check
         if (GetMingYuan().GetCurr() <= 0)
-            Result.State = RunResult.RunResultState.Defeat;
+            Result.State = RunResult.RunResultState.Defeat; // DefeatProcedure
+    }
+
+    public void SetDGoldProcedure(int value)
+        => SetDGoldProcedure(new SetDGoldDetails(value));
+    private void SetDGoldProcedure(SetDGoldDetails d)
+    {
+        _eventDict.SendEvent(RunEventDict.WILL_SET_D_GOLD, d);
+
+        if (d.Cancel)
+            return;
+
+        Gold += d.Value;
+        _eventDict.SendEvent(RunEventDict.DID_SET_D_GOLD, d);
+
+        GoldChangedNeuron.Invoke(d);
+    }
+
+    public void SetDDHealthProcedure(int value)
+        => SetDDHealthProcedure(new SetDDHealthDetails(value));
+    private void SetDDHealthProcedure(SetDDHealthDetails d)
+    {
+        _eventDict.SendEvent(RunEventDict.WILL_SET_DDHEALTH, d);
+
+        if (d.Cancel)
+            return;
+
+        _home.SetDHealth(_home.GetDHealth() + d.Value);
+        _eventDict.SendEvent(RunEventDict.DID_SET_DDHEALTH, d);
+
+        DHealthChangedNeuron.Invoke(d);
     }
 
     public void SetMaxMingYuanProcedure(int value)
@@ -333,7 +369,6 @@ public class RunEnvironment : Addressable, RunEventListener
             { "Hand",                  () => Hand },
             { "ActivePanel",           GetActivePanel },
         };
-        BattleChangedNeuron = new();
 
         _config = config;
 
@@ -561,18 +596,6 @@ public class RunEnvironment : Addressable, RunEventListener
         return true;
     }
 
-    public void SetDGold(int gold = 10)
-    {
-        Gold += gold;
-        ResourceChanged();
-    }
-
-    public void SetDDHealth(int dHealth)
-    {
-        _home.SetDHealth(_home.GetDHealth() + dHealth);
-        ResourceChanged();
-    }
-
     public bool CanAffordTech(Address address)
     {
         RunTech runTech = address.Get<RunTech>();
@@ -593,6 +616,7 @@ public class RunEnvironment : Addressable, RunEventListener
     public PanelDescriptor GetActivePanel()
         => _runResultPanelDescriptor ?? Map.CurrNode?.Panel;
 
+    // VictoryProcedure and DefeatProcedure
     private bool TryCommit()
     {
         if (Result.State == RunResult.RunResultState.Unfinished)

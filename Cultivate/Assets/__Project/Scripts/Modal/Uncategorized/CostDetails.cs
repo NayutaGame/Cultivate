@@ -23,9 +23,9 @@ public class CostDetails
 
     public void Cost()
     {
-        RunManager.Instance.Environment.SetDGold(-Gold);
+        RunManager.Instance.Environment.SetDGoldProcedure(-Gold);
         RunManager.Instance.Environment.SetDMingYuanProcedure(-MingYuan);
-        RunManager.Instance.Environment.SetDDHealth(-Health);
+        RunManager.Instance.Environment.SetDDHealthProcedure(-Health);
     }
 
     public string GetDescription()

@@ -1,5 +1,6 @@
 
 using System.Threading.Tasks;
+using CLLibrary;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -157,4 +158,25 @@ public class RunCanvas : Panel
             DeckPanel.SetState(0);
         }
     }
+
+    public void RegisterEnvironment(RunEnvironment env)
+    {
+        env.MingYuanChangedNeuron.Add(MingYuanChangedStagingNeuron);
+        env.GoldChangedNeuron.Add(GoldChangedStagingNeuron);
+        env.DHealthChangedNeuron.Add(DHealthChangedStagingNeuron);
+    }
+
+    public void UnregisterEnvironment(RunEnvironment env)
+    {
+        env.MingYuanChangedNeuron.Remove(MingYuanChangedStagingNeuron);
+        env.GoldChangedNeuron.Remove(GoldChangedStagingNeuron);
+        env.DHealthChangedNeuron.Remove(DHealthChangedStagingNeuron);
+    }
+
+    public Neuron<SetDMingYuanDetails> MingYuanChangedStagingNeuron = new();
+    public Neuron<SetDGoldDetails> GoldChangedStagingNeuron = new();
+    public Neuron<SetDDHealthDetails> DHealthChangedStagingNeuron = new();
+    // Emitter to TopBar
+    // Audio
+    // CameraShake
 }

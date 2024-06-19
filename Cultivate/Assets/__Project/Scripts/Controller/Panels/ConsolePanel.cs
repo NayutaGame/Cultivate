@@ -51,7 +51,7 @@ public class ConsolePanel : Panel
         ReduceMingYuanButton.onClick.AddListener(ReduceMingYuan);
 
         GoldButton.onClick.RemoveAllListeners();
-        GoldButton.onClick.AddListener(AddXiuWei);
+        GoldButton.onClick.AddListener(AddGold);
 
         HealthInputField.onValueChanged.RemoveAllListeners();
         HealthInputField.onValueChanged.AddListener(HealthChanged);
@@ -117,19 +117,19 @@ public class ConsolePanel : Panel
 
     public void AddMingYuan()
     {
-        RunManager.Instance.Environment.GetMingYuan().SetDiff(1);
+        RunManager.Instance.Environment.SetDMingYuanProcedure(1);
         Refresh();
     }
 
     public void ReduceMingYuan()
     {
-        RunManager.Instance.Environment.GetMingYuan().SetDiff(-1);
+        RunManager.Instance.Environment.SetDMingYuanProcedure(-1);
         Refresh();
     }
 
-    private void AddXiuWei()
+    private void AddGold()
     {
-        RunManager.Instance.Environment.SetDGold();
+        RunManager.Instance.Environment.SetDGoldProcedure(10);
         Refresh();
     }
 

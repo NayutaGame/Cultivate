@@ -47,7 +47,7 @@ public class ShopPanelDescriptor : PanelDescriptor
         if (RunManager.Instance.Environment.Gold < commodity.FinalPrice)
             return false;
 
-        RunManager.Instance.Environment.SetDGold(-commodity.FinalPrice);
+        RunManager.Instance.Environment.SetDGoldProcedure(-commodity.FinalPrice);
         _commodities.Remove(commodity);
         
         RunManager.Instance.Environment.AddSkillProcedure(commodity.Skill.Entry, commodity.Skill.JingJie);

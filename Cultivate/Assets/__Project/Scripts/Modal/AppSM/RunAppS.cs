@@ -9,15 +9,18 @@ public class RunAppS : AppS
 
         RunConfig runConfig = config as RunConfig;
         RunManager.Instance.SetEnvironmentFromConfig(runConfig);
+
+        RunEnvironment runEnv = RunManager.Instance.Environment;
+        RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
         
         PanelS panelS;
         
-        StepItem stepItem = RunManager.Instance.Environment.Map.CurrStepItem;
+        StepItem stepItem = runEnv.Map.CurrStepItem;
         NodeListModel nodes = stepItem._nodes;
         if (nodes.Count() == 1)
         {
             RunNode runNode = nodes[0];
-            PanelDescriptor panelDescriptor = RunManager.Instance.Environment.MakeChoiceProcedure(runNode);
+            PanelDescriptor panelDescriptor = runEnv.MakeChoiceProcedure(runNode);
             panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
         }
         else
@@ -25,9 +28,10 @@ public class RunAppS : AppS
             panelS = PanelS.FromMap();
         }
         
-        CanvasManager.Instance.RunCanvas.Configure();
-        CanvasManager.Instance.RunCanvas.SetPanelS(panelS);
-        CanvasManager.Instance.RunCanvas.TopBar.Refresh();
+        runCanvas.Configure();
+        runCanvas.RegisterEnvironment(runEnv);
+        runCanvas.SetPanelS(panelS);
+        runCanvas.TopBar.Refresh();
         await CanvasManager.Instance.Curtain.SetStateAsync(0);
     }
 
@@ -36,9 +40,13 @@ public class RunAppS : AppS
         await base.Exit(d);
         await CanvasManager.Instance.Curtain.SetStateAsync(1);
         
-        CanvasManager.Instance.RunCanvas.SetPanelS(PanelS.FromHide());
+        RunEnvironment runEnv = RunManager.Instance.Environment;
+        RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
         
-        RunResult result = RunManager.Instance.Environment.Result;
+        runCanvas.UnregisterEnvironment(runEnv);
+        runCanvas.SetPanelS(PanelS.FromHide());
+        
+        RunResult result = runEnv.Result;
         RunManager.Instance.SetEnvironmentToNull();
 
         return result;

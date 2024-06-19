@@ -5793,7 +5793,7 @@ GameObject:
   - component: {fileID: 352003616307235737}
   - component: {fileID: 230154359229241835}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: TimeScaleButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6789,7 +6789,7 @@ GameObject:
   - component: {fileID: 5686810378476534285}
   - component: {fileID: 5587198372236673196}
   m_Layer: 5
-  m_Name: GameObject (1)
+  m_Name: GRResultButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

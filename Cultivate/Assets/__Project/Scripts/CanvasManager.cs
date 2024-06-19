@@ -92,9 +92,9 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         return _results.Count >= 1 && _results[0].gameObject.GetComponent<InteractBehaviour>() != null;
     }
 
-    public Vector3 UI2World(Vector2 mousePosition)
+    public Vector3 UI2World(Vector2 screenPosition)
     {
-        return Camera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10));
+        return Camera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, 10));
     }
 
     public string GetGraphicRaycastResult()
