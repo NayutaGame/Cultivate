@@ -270,13 +270,13 @@ public class RunEnvironment : Addressable, RunEventListener
         if (d.Cancel)
             return;
 
-        _home.MingYuan.SetDiff(d.Value);
+        _home.MingYuan.Curr += d.Value;
         _eventDict.SendEvent(RunEventDict.DID_SET_D_MINGYUAN, d);
 
         MingYuanChangedNeuron.Invoke(d);
 
         // register this as a defeat check
-        if (GetMingYuan().GetCurr() <= 0)
+        if (GetMingYuan().Curr <= 0)
             Result.State = RunResult.RunResultState.Defeat; // DefeatProcedure
     }
 
@@ -319,11 +319,11 @@ public class RunEnvironment : Addressable, RunEventListener
         if (d.Cancel)
             return;
 
-        int diff = _home.MingYuan.GetCurr() - d.Value;
+        int diff = _home.MingYuan.Curr - d.Value;
         if (diff > 0)
             SetDMingYuanProcedure(diff);
 
-        _home.MingYuan.SetMax(d.Value);
+        _home.MingYuan.UpperBound = d.Value;
 
         _eventDict.SendEvent(RunEventDict.DID_SET_MAX_MINGYUAN, d);
     }

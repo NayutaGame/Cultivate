@@ -11,10 +11,10 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
     private WuXing? _wuXing;
     public WuXing? WuXing => _wuXing;
     
-    private CLLibrary.Range _jingJieRange;
-    public bool JingJieContains(JingJie jingJie) => _jingJieRange.Contains(jingJie);
-    public JingJie LowestJingJie => _jingJieRange.Start;
-    public JingJie HighestJingJie => _jingJieRange.End - 1;
+    private CLLibrary.Bound _jingJieBound;
+    public bool JingJieContains(JingJie jingJie) => _jingJieBound.Contains(jingJie);
+    public JingJie LowestJingJie => _jingJieBound.Start;
+    public JingJie HighestJingJie => _jingJieBound.End - 1;
     
     public Color GetColor(JingJie jingJie)
         => CanvasManager.Instance.JingJieColors[jingJie];
@@ -66,7 +66,7 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
     public SkillEntry(string id,
         string name,
         WuXing? wuXing,
-        CLLibrary.Range jingJieRange,
+        CLLibrary.Bound jingJieBound,
         SkillTypeComposite skillTypeComposite = null,
         
         Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> cost = null,
@@ -80,7 +80,7 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
     {
         _name = name;
         _wuXing = wuXing;
-        _jingJieRange = jingJieRange;
+        _jingJieBound = jingJieBound;
         _skillTypeComposite = skillTypeComposite ?? 0;
         
         _cost = cost ?? CostResult.Empty;

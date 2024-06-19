@@ -17,7 +17,7 @@ public class CostDetails
     public bool CanCost()
     {
         return Gold <= RunManager.Instance.Environment.Gold &&
-               MingYuan < RunManager.Instance.Environment.GetMingYuan().GetCurr() &&
+               MingYuan < RunManager.Instance.Environment.GetMingYuan().Curr &&
                Health < RunManager.Instance.Environment.Home.GetFinalHealth();
     }
 

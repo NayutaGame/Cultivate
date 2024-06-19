@@ -1,15 +1,15 @@
 
 using System;
 using System.Collections.Generic;
-using Range = CLLibrary.Range;
+using CLLibrary;
 
 public class CardPickerPanelDescriptor : PanelDescriptor
 {
     private string _detailedText;
     public string GetDetailedText() => _detailedText;
 
-    private Range _range;
-    public Range Range => _range;
+    private Bound _bound;
+    public Bound Bound => _bound;
 
     private Func<List<object>, PanelDescriptor> _confirmOperation;
     public CardPickerPanelDescriptor SetConfirmOperation(Func<List<object>, PanelDescriptor> select)
@@ -20,7 +20,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
 
     public SkillDescriptor _skillDescriptor;
 
-    public CardPickerPanelDescriptor(string detailedText = null, Range range = null,
+    public CardPickerPanelDescriptor(string detailedText = null, Bound bound = null,
         Func<List<object>, PanelDescriptor> confirmOperation = null,
         SkillDescriptor skillDescriptor = null)
     {
@@ -30,7 +30,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         };
         
         _detailedText = detailedText ?? "请选择卡";
-        _range = range ?? new Range(1);
+        _bound = bound ?? new Bound(1);
         _confirmOperation = confirmOperation;
         _skillDescriptor = skillDescriptor;
     }

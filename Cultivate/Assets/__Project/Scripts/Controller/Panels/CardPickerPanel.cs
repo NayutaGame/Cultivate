@@ -69,8 +69,8 @@ public class CardPickerPanel : Panel
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
         InfoText.text = d.GetDetailedText();
-        StatusText.text = $"可以选择 {d.Range.Start} ~ {d.Range.End - 1} 张卡\n已选   {SelectionCount}   张";
-        ConfirmButton.interactable = d.Range.Contains(SelectionCount);
+        StatusText.text = $"可以选择 {d.Bound.Start} ~ {d.Bound.End - 1} 张卡\n已选   {SelectionCount}   张";
+        ConfirmButton.interactable = d.Bound.Contains(SelectionCount);
     }
 
     private int SelectionCount => _skillSelections.Count + _slotSelections.Count;
@@ -94,7 +94,7 @@ public class CardPickerPanel : Panel
         }
         else
         {
-            int space = d.Range.End - 1 - SelectionCount;
+            int space = d.Bound.End - 1 - SelectionCount;
             if (space <= 0)
                 return;
                 // return false;
@@ -130,7 +130,7 @@ public class CardPickerPanel : Panel
         }
         else
         {
-            int space = d.Range.End - 1 - SelectionCount;
+            int space = d.Bound.End - 1 - SelectionCount;
             if (space <= 0)
                 return;
                 // return false;

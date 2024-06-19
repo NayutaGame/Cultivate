@@ -14,7 +14,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0000",
                 name:                       "不存在的技能",
                 wuXing:                     null,
-                jingJieRange:               JingJie.LianQiOnly,
+                jingJieBound:               JingJie.LianQiOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     "不存在的技能，出现则代表卡池已空",
                 withinPool:                 false),
@@ -22,7 +22,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0001",
                 name:                       "聚气术",
                 wuXing:                     null,
-                jingJieRange:               JingJie.LianQiOnly,
+                jingJieBound:               JingJie.LianQiOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     "灵气+1",
                 withinPool:                 false,
@@ -35,7 +35,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0002",
                 name:                       "冲撞",
                 wuXing:                     null,
-                jingJieRange:               JingJie.LianQiOnly,
+                jingJieBound:               JingJie.LianQiOnly,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"10攻" ,
@@ -53,7 +53,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0102",
                 name:                       "金刃",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(4 + dj)}攻" +
@@ -68,7 +68,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0103",
                 name:                       "寻猎",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"2攻" +
@@ -89,7 +89,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0516",
                 name:                       "金鳞",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromDj(dj => 2 - ((dj + 1) / 2)),
                 costDescription:            CostDescription.ManaFromDj(dj => 2 - ((dj + 1) / 2)),
@@ -106,7 +106,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0115",
                 name:                       "流云",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromDj(dj => 2 - ((dj + 1) / 2)),
                 costDescription:            CostDescription.ManaFromDj(dj => 2 - ((dj + 1) / 2)),
@@ -130,7 +130,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0117",
                 name:                       "天地同寿",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 cost:                       CostResult.ArmorFromDj(dj => 10 + 10 * dj),
                 costDescription:            CostDescription.ArmorFromDj(dj => 10 + 10 * dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -147,7 +147,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0109",
                 name:                       "凛冽",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(3),
                 costDescription:            CostDescription.ManaFromValue(3),
@@ -164,7 +164,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0110",
                 name:                       "刺穴",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{2 + dj}" +
@@ -180,7 +180,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0114",
                 name:                       "袖里乾坤",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ManaFromDj(dj => dj + 1),
                 costDescription:            CostDescription.ManaFromDj(dj => dj + 1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -196,7 +196,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0116",
                 name:                       "无妄",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{3 + 3 * dj}攻x2\n" +
@@ -213,7 +213,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0112",
                 name:                       "敛息",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -236,7 +236,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0123",
                 name:                       "暴雨梨花针",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
@@ -262,7 +262,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0100",
                 name:                       "山风",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"护甲+15" +
                     $"\n每15护甲，锋锐+1 金流转",
@@ -278,7 +278,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0200",
                 name:                       "恋花",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -294,7 +294,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0201",
                 name:                       "流霰",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
@@ -330,7 +330,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0205",
                 name:                       "吐纳",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{2 + (dj / 2)}" +
@@ -349,7 +349,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0310",
                 name:                       "止水",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -374,7 +374,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0219",
                 name:                       "一闪",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.ErDong,
                 cost:                       CostResult.ManaFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 2 - dj),
@@ -391,7 +391,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0311",
                 name:                       "瑞雪",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 cost:                       CostResult.ManaFromValue(3),
                 costDescription:            CostDescription.ManaFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -410,7 +410,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0210",
                 name:                       "腾浪",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.ErDong,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -431,7 +431,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0213",
                 name:                       "气吞山河",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"将灵气补至本局最大值+{1 + dj}",
@@ -445,7 +445,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0218",
                 name:                       "不动明王诀",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -461,7 +461,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0216",
                 name:                       "奔腾",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.ErDong,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -476,7 +476,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0215",
                 name:                       "一梦如是",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻" +
@@ -496,7 +496,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0301",
                 name:                       "小松",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -513,7 +513,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0306",
                 name:                       "潜龙在渊",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -532,7 +532,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0325",
                 name:                       "水滴石穿",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -560,7 +560,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0323",
                 name:                       "回春",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -579,7 +579,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0324",
                 name:                       "断筋",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"10攻" +
@@ -594,7 +594,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0300",
                 name:                       "若竹",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{1 + dj}" +
@@ -609,7 +609,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0313",
                 name:                       "落英",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"力量+{1 + dj} 木流转" +
                     $"\n消耗所有灵气，每{5 - dj}，力量+1",
@@ -624,7 +624,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0309",
                 name:                       "见龙在田",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(3 - skill.Dj - skill.StageCastedCount),
                 costDescription:            CostDescription.ChannelFromDj(dj => 3 - dj),
@@ -641,7 +641,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0302",
                 name:                       "缭乱",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"力量+{dj}" +
                     $"\n成长:多1",
@@ -654,7 +654,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0326",
                 name:                       "谈笑风生",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 cost:                       CostResult.ManaFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 2 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -677,7 +677,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0319",
                 name:                       "鹤回翔",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ChannelFromDj(dj => 1 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 1 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -699,7 +699,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0322",
                 name:                       "飞龙在天",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ChannelFromDj(dj => dj - 1),
                 costDescription:            CostDescription.ChannelFromDj(dj => dj - 1),
@@ -725,7 +725,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0327",
                 name:                       "入木三分",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -745,7 +745,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0328",
                 name:                       "钟声",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"升级下{2 + dj}张使用的牌",
                 withinPool:                 false,
@@ -758,7 +758,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0321",
                 name:                       "刷新",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗所有灵气，每6，多重+1",
                 cast:                       async (env, caster, skill, recursive) =>
@@ -770,7 +770,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0317",
                 name:                       "亢龙有悔",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"无法受到治疗" +
@@ -787,7 +787,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0411",
                 name:                       "轰天",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.HealthFromDj(dj => Fib.ToValue(4 + dj)),
                 costDescription:            CostDescription.HealthFromDj(dj => Fib.ToValue(4 + dj)),
@@ -802,7 +802,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0420",
                 name:                       "三味",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"施加{3 + dj}内伤",
                 cast:                       async (env, caster, skill, recursive) =>
@@ -814,7 +814,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0400",
                 name:                       "云袖",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{2 + 2 * dj}攻x2\n" +
@@ -830,7 +830,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0417",
                 name:                       "正念",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 4 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 4 - dj),
@@ -849,7 +849,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0419",
                 name:                       "舍生",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 cost:                       async (env, entity, skill, recursive) =>
                     new HealthCostResult(entity.IsLowHp ? 0 : 5),
@@ -866,7 +866,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0404",
                 name:                       "九射",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -881,7 +881,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0407",
                 name:                       "常夏",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     (j < JingJie.HuaShen ? $"{3 + 2 * dj}攻" : $"11攻") +
@@ -899,7 +899,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0413",
                 name:                       "登宝塔",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 2 - dj),
@@ -916,7 +916,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0421",
                 name:                       "剑王行",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"10攻" +
@@ -933,7 +933,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0422",
                 name:                       "坐忘",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.LingQi | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 3 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 3 - dj),
@@ -950,7 +950,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0418",
                 name:                       "观众生",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi | SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"下{1 + dj}张非攻击卡具有免费和消耗",
@@ -963,7 +963,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0409",
                 name:                       "化劲",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.HealthFromValue(5),
                 costDescription:            CostDescription.HealthFromValue(5),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -980,7 +980,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0416",
                 name:                       "净天地",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗" +
@@ -1003,7 +1003,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0414",
                 name:                       "天女散花",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻 每获得过1闪避，多攻击1次",
@@ -1016,7 +1016,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0510",
                 name:                       "马步",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 cost:                       CostResult.ChannelFromJiaShi(jiaShi => jiaShi ? 0 : 1),
                 costDescription:            CostDescription.ChannelFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1031,7 +1031,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0523",
                 name:                       "寸劲",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(5 + dj) * 2 - 2}攻" +
@@ -1046,7 +1046,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0500",
                 name:                       "落石",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
@@ -1070,7 +1070,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0501",
                 name:                       "流沙",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{3 + 2 * dj}攻\n" +
@@ -1085,7 +1085,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0511",
                 name:                       "鹤翼",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 cost:                       async (env, entity, skill, recursive) =>
                     new ChannelCostResult((skill.GetJingJie() >= JingJie.YuanYing && entity.GetStackOfBuff("灵气") == 0) ? 0 : 1),
@@ -1105,7 +1105,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0507",
                 name:                       "巩固",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{1 + dj}\n" +
@@ -1120,7 +1120,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0509",
                 name:                       "一力降十会",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{(5 * dj * dj + 35 * dj + 50) / 2}攻" +
@@ -1140,7 +1140,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0525",
                 name:                       "逆脉",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"护甲+{15 + 10 * dj}" +
                     $"\n非残血：翻倍" +
@@ -1163,7 +1163,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0526",
                 name:                       "点穴",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"10攻" +
@@ -1178,7 +1178,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0513",
                 name:                       "玉骨",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1197,7 +1197,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0524",
                 name:                       "龟息",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"柔韧+{3 + dj} 土流转" +
                     $"\n遭受{4 + dj}内伤",
@@ -1212,7 +1212,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0515",
                 name:                       "龙象",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ChannelFromJiaShi(jiaShi => jiaShi ? 0 : 1),
                 costDescription:            CostDescription.ChannelFromValue(1),
@@ -1235,7 +1235,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0522",
                 name:                       "迦楼罗",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻 " +
@@ -1302,7 +1302,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0108",
                 name:                       "诸行无常",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 4 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 4 - dj),
@@ -1321,7 +1321,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0121",
                 name:                       "齐物论",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 5 - 2 * dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - 2 * dj),
@@ -1339,7 +1339,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0122",
                 name:                       "人间无戈",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗\n" +
@@ -1355,7 +1355,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0406",
                 name:                       "抱朴",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao | SkillType.LingQi,
                 cost:                       CostResult.ChannelFromDj(dj => 5 - 2 * dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - 2 * dj),
@@ -1375,7 +1375,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0214",
                 name:                       "幻月狂乱",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 5 - 2 * dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - 2 * dj),
@@ -1393,7 +1393,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0217",
                 name:                       "摩诃钵特摩",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao | SkillType.ErDong,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗\n" +
@@ -1409,7 +1409,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0312",
                 name:                       "盛开",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 5 - 2 * dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - 2 * dj),
@@ -1427,7 +1427,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0316",
                 name:                       "心斋",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 5 - 2 * dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - 2 * dj),
@@ -1445,7 +1445,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0320",
                 name:                       "通透世界",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗\n" +
@@ -1461,7 +1461,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0408",
                 name:                       "天衣无缝",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao | SkillType.Attack,
                 cost:                       CostResult.ChannelFromValue(5),
                 costDescription:            CostDescription.ChannelFromValue(5),
@@ -1485,7 +1485,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0410",
                 name:                       "淬体",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 5 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - dj),
@@ -1503,7 +1503,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0415",
                 name:                       "凤凰涅槃",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗" +
@@ -1519,7 +1519,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0111",
                 name:                       "两仪",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗" +
@@ -1537,7 +1537,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0519",
                 name:                       "天人合一",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ManaFromDj(dj => 5 - 2 * dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 5 - 2 * dj),
@@ -1555,7 +1555,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0521",
                 name:                       "那由他",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"20柔韧觉醒：没有耗蓝阶段，Step阶段无法受影响，所有Buff层数不会再变化",
@@ -1574,7 +1574,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0101",
                 name:                       "乘风",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{5 + dj}攻\n" +
@@ -1592,7 +1592,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0104",
                 name:                       "掠影",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"奇偶：" +
@@ -1615,7 +1615,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0105",
                 name:                       "盘旋",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         null,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"护甲+{4 + 2 * dj}\n施加{4 + 2 * dj}减甲",
@@ -1630,7 +1630,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0106",
                 name:                       "灵动",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -1649,7 +1649,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0107",
                 name:                       "飞絮",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         null,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -1673,7 +1673,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0113",
                 name:                       "凝水",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.LingQi | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 2 - dj),
@@ -1691,7 +1691,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0119",
                 name:                       "追命",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"每1柔韧，施加2减甲",
                 withinPool:                 false,
@@ -1704,7 +1704,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0120",
                 name:                       "千里神行符",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.XiaoHao | SkillType.ErDong,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"奇偶：" +
@@ -1729,7 +1729,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0118",
                 name:                       "旧山风",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗所有护甲，每{6 - dj}，锋锐+1\n" +
                     $"金流转",
@@ -1747,7 +1747,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0202",
                 name:                       "满招损",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{5 + dj}攻\n" +
@@ -1764,7 +1764,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0203",
                 name:                       "清泉",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{2 + dj}",
@@ -1778,7 +1778,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0204",
                 name:                       "归意",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -1797,7 +1797,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0206",
                 name:                       "冰雨",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{10 + 2 * dj}攻\n" +
@@ -1818,7 +1818,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0207",
                 name:                       "勤能补拙",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"护甲+{10 + 4 * dj}\n" +
                     $"初次：遭受1跳回合".ApplyCond(castResult),
@@ -1835,7 +1835,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0208",
                 name:                       "秋水",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -1858,7 +1858,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0209",
                 name:                       "玄冰刺",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(4),
                 costDescription:            CostDescription.ManaFromValue(4),
@@ -1878,7 +1878,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0211",
                 name:                       "观棋烂柯",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ManaFromDj(dj => 1 - dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 1 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1893,7 +1893,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0212",
                 name:                       "激流",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ManaFromDj(dj => 1 - dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 1 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1910,7 +1910,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0314",
                 name:                       "旧飞龙在天",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 2 - dj),
@@ -1928,7 +1928,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0304",
                 name:                       "旧潜龙在渊",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"生命+{6 + 4 * dj}\n" +
                     $"初次：闪避+1".ApplyCond(castResult),
@@ -1945,7 +1945,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0303",
                 name:                       "初桃",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{1 + dj}\n" +
@@ -1961,7 +1961,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0305",
                 name:                       "早春",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1981,7 +1981,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0307",
                 name:                       "回马枪",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"下次受攻击时：{12 + 4 * dj}攻",
                 withinPool:                 false,
@@ -1994,7 +1994,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0308",
                 name:                       "千年笋",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -2013,7 +2013,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0315",
                 name:                       "二重",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ChannelFromDj(dj => 1 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 1 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -2028,7 +2028,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0318",
                 name:                       "回响",
                 wuXing:                     WuXing.Mu,
-                jingJieRange:               JingJie.HuaShenOnly,
+                jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"使用第一张牌",
                 withinPool:                 false,
@@ -2043,7 +2043,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0402",
                 name:                       "吐焰",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.HealthFromDj(dj => 2 + dj),
                 costDescription:            CostDescription.HealthFromDj(dj => 2 + dj),
@@ -2059,7 +2059,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0401",
                 name:                       "化焰",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -2077,7 +2077,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0403",
                 name:                       "燃命",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.LingQi,
                 cost:                       CostResult.HealthFromDj(dj => 3 + dj),
                 costDescription:            CostDescription.HealthFromDj(dj => 3 + dj),
@@ -2095,7 +2095,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0405",
                 name:                       "聚火",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -2113,7 +2113,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0412",
                 name:                       "燃灯留烬",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -2129,7 +2129,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0502",
                 name:                       "土墙",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.LianQi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{1 + dj}\n" +
@@ -2145,7 +2145,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0503",
                 name:                       "地龙",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -2169,7 +2169,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0504",
                 name:                       "铁骨",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"消耗\n" +
@@ -2185,7 +2185,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0505",
                 name:                       "点星",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{8 + 2 * dj}攻\n" +
@@ -2207,7 +2207,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0506",
                 name:                       "一莲托生",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 cost:                       CostResult.ChannelFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 2 - dj),
@@ -2229,7 +2229,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0508",
                 name:                       "软剑",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
@@ -2252,7 +2252,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0512",
                 name:                       "收刀",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"下回合护甲+{8 + 4 * dj}\n" +
@@ -2269,7 +2269,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0514",
                 name:                       "抱元守一",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"柔韧+{3 + dj}\n" +
                     $"遭受{4 + dj}内伤",
@@ -2284,7 +2284,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0517",
                 name:                       "铁布衫",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1次，受伤时：护甲+[受伤值]，" +
@@ -2301,7 +2301,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0518",
                 name:                       "拔刀",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{10 + 5 * dj}攻\n" +
@@ -2318,7 +2318,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0520",
                 name:                       "窑土",
                 wuXing:                     WuXing.Tu,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"每1灼烧，护甲+2",
                 withinPool:                 false,
@@ -2336,7 +2336,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0600",
                 name:                       "一念",
                 wuXing:                     null,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.ErDong,
                 cost:                       CostResult.HealthFromDj(dj => 8 - 2 * dj),
                 costDescription:            CostDescription.HealthFromDj(dj => 8 - 2 * dj),
@@ -2353,7 +2353,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0601",
                 name:                       "无量劫",
                 wuXing:                     null,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 cost:                       CostResult.ChannelFromValue(3),
                 costDescription:            CostDescription.ChannelFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -2368,7 +2368,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0602",
                 name:                       "百草集",
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ChannelFromValue(3),
                 costDescription:            CostDescription.ChannelFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -2391,7 +2391,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0603",
                 name:                       "遗憾",
                 wuXing:                     null,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"对手失去{3 + dj}灵气",
                 withinPool:                 false,
@@ -2404,7 +2404,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0604",
                 name:                       "爱恋",
                 wuXing:                     null,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"获得{2 + dj}集中",
                 withinPool:                 false,
@@ -2417,7 +2417,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0605",
                 name:                       "射金乌",
                 wuXing:                     WuXing.Huo,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ChannelFromValue(3),
                 costDescription:            CostDescription.ChannelFromValue(3),
@@ -2433,7 +2433,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0606",
                 name:                       "春雨",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -2449,7 +2449,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0607",
                 name:                       "枯木",
                 wuXing:                     WuXing.Jin,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"双方遭受{5 + dj}腐朽",
                 withinPool:                 false,
@@ -2463,7 +2463,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0608",
                 name:                       "玄武吐息法",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"玄武吐息法",
                 withinPool:                 false,
@@ -2475,7 +2475,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0609",
                 name:                       "毒性",
                 wuXing:                     WuXing.Shui,
-                jingJieRange:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"施加3内伤",
                 withinPool:                 false,
@@ -2494,7 +2494,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0700", // 香
                 name:                       "醒神香", // 香
                 wuXing:                     null,
-                jingJieRange:               JingJie.ZhuJiOnly,
+                jingJieBound:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) => "灵气+4",
                 withinPool:                 false,
@@ -2507,7 +2507,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0701", // 刃
                 name:                       "飞镖", // 刃
                 wuXing:                     null,
-                jingJieRange:               JingJie.ZhuJiOnly,
+                jingJieBound:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) => "12攻",
                 withinPool:                 false,
@@ -2520,7 +2520,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0702", // 匣
                 name:                       "铁匣", // 匣
                 wuXing:                     null,
-                jingJieRange:               JingJie.ZhuJiOnly,
+                jingJieBound:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.SunHao,
                 castDescription:            (j, dj, costResult, castResult) => "护甲+12",
                 withinPool:                 false,
@@ -2533,7 +2533,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0703", // 轮
                 name:                       "滑索", // 轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.ZhuJiOnly,
+                jingJieBound:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.ErDong | SkillType.XiaoHao,
                 castDescription:            (j, dj, costResult, castResult) => "三动 消耗",
                 withinPool:                 false,
@@ -2549,7 +2549,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0704", // 香香
                 name:                       "还魂香", // 香香
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) => "灵气+8",
                 withinPool:                 false,
@@ -2562,7 +2562,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0705", // 香刃
                 name:                       "净魂刀", // 香刃
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi | SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) => "10攻\n击伤：灵气+1，对手灵气-1",
                 withinPool:                 false,
@@ -2580,7 +2580,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0706", // 香匣
                 name:                       "防护罩", // 香匣
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao,
                 castDescription:            (j, dj, costResult, castResult) => "护甲+8\n每有1灵气，护甲+4",
                 withinPool:                 false,
@@ -2594,7 +2594,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0707", // 香轮
                 name:                       "能量饮料", // 香轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi,
                 castDescription:            (j, dj, costResult, castResult) => "下1次灵气减少时，加回",
                 withinPool:                 false,
@@ -2607,7 +2607,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0708", // 刃刃
                 name:                       "炎铳", // 刃刃
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) => "25攻",
                 withinPool:                 false,
@@ -2620,7 +2620,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0709", // 刃匣
                 name:                       "机关人偶", // 刃匣
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) => "护甲+12\n10攻",
                 withinPool:                 false,
@@ -2634,7 +2634,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0710", // 刃轮
                 name:                       "铁陀螺", // 刃轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) => "2攻x6",
                 withinPool:                 false,
@@ -2647,7 +2647,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0711", // 匣匣
                 name:                       "防壁", // 匣匣
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao,
                 castDescription:            (j, dj, costResult, castResult) => "护甲+20\n柔韧+2",
                 withinPool:                 false,
@@ -2661,7 +2661,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0712", // 匣轮
                 name:                       "不倒翁", // 匣轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao,
                 castDescription:            (j, dj, costResult, castResult) => "下2次护甲减少时，加回",
                 withinPool:                 false,
@@ -2674,7 +2674,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0713", // 轮轮
                 name:                       "助推器", // 轮轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.YuanYingOnly,
+                jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.ErDong,
                 castDescription:            (j, dj, costResult, castResult) => "二动 二重",
                 withinPool:                 false,
@@ -2690,7 +2690,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0714", // 香香香
                 name:                       "反应堆", // 香香香
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2706,7 +2706,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0715", // 香香刃
                 name:                       "烟花", // 香香刃
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2723,7 +2723,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0716", // 香香匣
                 name:                       "长明灯", // 香香匣
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2739,7 +2739,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0717", // 香香轮
                 name:                       "大往生香", // 香香轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao | SkillType.LingQi,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2755,7 +2755,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0718", // 缺少匣
                 name:                       "地府通讯器", // 缺少匣
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.LingQi,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2772,7 +2772,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0719", // 刃刃刃
                 name:                       "无人机阵列", // 刃刃刃
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2786,7 +2786,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0720", // 刃刃香
                 name:                       "弩炮", // 刃刃香
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2801,7 +2801,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0721", // 刃刃匣
                 name:                       "尖刺陷阱", // 刃刃匣
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2816,7 +2816,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0722", // 刃刃轮
                 name:                       "暴雨梨花针", // 刃刃轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.Attack,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2831,7 +2831,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0723", // 缺少轮
                 name:                       "炼丹炉", // 缺少轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2847,7 +2847,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0724", // 匣匣匣
                 name:                       "浮空艇", // 匣匣匣
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2864,7 +2864,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0725", // 匣匣香
                 name:                       "动量中和器", // 匣匣香
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2879,7 +2879,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0726", // 匣匣刃
                 name:                       "机关伞", // 匣匣刃
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2894,7 +2894,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0727", // 匣匣轮
                 name:                       "一轮马", // 匣匣轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2909,7 +2909,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0728", // 缺少香
                 name:                       "外骨骼", // 缺少香
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2925,7 +2925,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0729", // 轮轮轮
                 name:                       "永动机", // 轮轮轮
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao | SkillType.LingQi,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2943,7 +2943,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0730", // 轮轮香
                 name:                       "火箭靴", // 轮轮香
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2959,7 +2959,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0731", // 轮轮刃
                 name:                       "定龙桩", // 轮轮刃
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
@@ -2975,7 +2975,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0732", // 轮轮匣
                 name:                       "飞行器", // 轮轮匣
                 wuXing:                     null,
-                jingJieRange:               JingJie.FanXuOnly,
+                jingJieBound:               JingJie.FanXuOnly,
                 skillTypeComposite:         SkillType.SunHao | SkillType.XiaoHao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),

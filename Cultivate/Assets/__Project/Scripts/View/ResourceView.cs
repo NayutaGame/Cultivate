@@ -15,8 +15,11 @@ public class ResourceView : MonoBehaviour
     [SerializeField] private ParticleSystem _emitter;
     [SerializeField] private UIParticleAttractor _attractor;
 
-    private Func<string> _textDelegate;
-    private Func<string> _textHintDelegate;
+    private BoundedInt _content;
+
+    private Func<BoundedInt> _refreshDelegate;
+    private Action<BoundedInt> _attractDelegate;
+    private Func<string> _hintDelegate;
 
     private void OnEnable()
     {
@@ -34,21 +37,23 @@ public class ResourceView : MonoBehaviour
         _attractor.onAttracted.RemoveListener(OnAttracted);
     }
 
-    public void Configure(Func<string> textDelegate, Func<string> textHintDelegate)
+    public void Configure(Func<BoundedInt> refreshDelegate, Action<BoundedInt> attractDelegate, Func<string> hintDelegate)
     {
-        _textDelegate = textDelegate;
-        _textHintDelegate = textHintDelegate;
+        _refreshDelegate = refreshDelegate;
+        _attractDelegate = attractDelegate;
+        _hintDelegate = hintDelegate;
     }
 
     public void Refresh()
     {
-        _text.text = _textDelegate?.Invoke();
+        _content = _refreshDelegate?.Invoke().Clone();
+        _text.text = _content?.ToString();
     }
 
     private void PointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging) return;
-        CanvasManager.Instance.TextHint.SetText(_textHintDelegate?.Invoke());
+        CanvasManager.Instance.TextHint.SetText(_hintDelegate?.Invoke());
     }
 
     private void PointerExit(PointerEventData eventData)
@@ -66,7 +71,7 @@ public class ResourceView : MonoBehaviour
     public void Emit(Vector2 position, int value)
     {
         _emitterTransform.position = CanvasManager.Instance.UI2World(new Vector2(Screen.width / 2, Screen.height / 2));
-        _emitter.Emit(new ParticleSystem.EmitParams(), value * 20);
+        _emitter.Emit(new ParticleSystem.EmitParams(), value);
     }
 
     private Tween _handle;
@@ -74,6 +79,9 @@ public class ResourceView : MonoBehaviour
     private void OnAttracted()
     {
         _handle?.Kill();
+
+        _attractDelegate?.Invoke(_content);
+        _text.text = _content?.ToString();
 
         if (_textTransform.localScale.x >= 1.5f)
             _textTransform.localScale = Vector3.one * 1.5f;

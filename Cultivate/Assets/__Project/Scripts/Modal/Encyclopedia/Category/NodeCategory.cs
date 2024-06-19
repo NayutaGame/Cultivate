@@ -15,7 +15,7 @@ public class NodeCategory : Category<NodeEntry>
             
             new(id:                                 "不存在的事件",
                 description:                        "不存在的事件",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -25,7 +25,7 @@ public class NodeCategory : Category<NodeEntry>
             
             new(id:                                 "战斗",
                 description:                        "战斗",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -118,7 +118,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "休息",
                 description:                        "休息",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -126,7 +126,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor B = new DialogPanelDescriptor("吃了一个人参果，回复了2点命元")
                         .SetReward(Reward.FromMingYuan(2));
                     
-                    CardPickerPanelDescriptor C = new("在菩提树下做了一段时间，对境界有了新的见解，请选择一张卡牌提升", new Range(0, 2));
+                    CardPickerPanelDescriptor C = new("在菩提树下做了一段时间，对境界有了新的见解，请选择一张卡牌提升", new Bound(0, 2));
                     C.SetConfirmOperation(iRunSkillList =>
                     {
                         foreach (var iRunSkill in iRunSkillList)
@@ -160,7 +160,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "商店",
                 description:                        "商店",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -179,7 +179,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "悟道",
                 description:                        "悟道",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -214,7 +214,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "获得金钱",
                 description:                        "获得金钱",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -226,7 +226,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "以物易物",
                 description:                        "以物易物",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -236,7 +236,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "初入蓬莱",
                 description:                        "初入蓬莱",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -365,7 +365,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "同境界合成教学",
                 description:                        "同境界合成教学",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -379,7 +379,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "愿望单",
                 description:                        "愿望单",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -408,7 +408,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "快速结算",
                 description:                        "快速结算",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -433,7 +433,7 @@ public class NodeCategory : Category<NodeEntry>
             
             new(id:                                 "胜利",
                 description:                        "胜利",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -451,7 +451,7 @@ public class NodeCategory : Category<NodeEntry>
             
             new(id:                                 "突破境界",
                 description:                        "突破境界",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
@@ -473,7 +473,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "山木",
                 description:                        "山木",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -534,7 +534,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "赤壁赋",
                 description:                        "赤壁赋",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -561,7 +561,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "论无穷",
                 description:                        "论无穷",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -595,7 +595,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "人间世",
                 description:                        "人间世",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -633,7 +633,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "神灯精灵",
                 description:                        "神灯精灵",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -666,7 +666,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "分子打印机",
                 description:                        "分子打印机",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -674,7 +674,7 @@ public class NodeCategory : Category<NodeEntry>
                         "试试这个机器可以做什么",
                         "离开");
 
-                    CardPickerPanelDescriptor B = new("请选择2张牌", range: new Range(0, 3));
+                    CardPickerPanelDescriptor B = new("请选择2张牌", bound: new Bound(0, 3));
                     DialogPanelDescriptor C = new("来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
                     DialogPanelDescriptor D = new("劈里啪啦一阵响声过后，正在你担心自己的卡牌会受到什么非人的折磨的时候。机器的运转声停止了。打开后，你发现两个插槽里面的卡变成同一张了。\n\n得到两张牌");
 
@@ -721,7 +721,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "物质还原仪",
                 description:                        "物质还原仪",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -776,7 +776,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "天津四",
                 description:                        "天津四",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -802,7 +802,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "后羿",
                 description:                        "后羿",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -829,7 +829,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "天界树",
                 description:                        "天界树",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -870,7 +870,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "鬼兵",
                 description:                        "鬼兵",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -924,7 +924,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "琴仙",
                 description:                        "琴仙",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -949,7 +949,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "连抽五张",
                 description:                        "连抽五张",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -971,7 +971,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "天机阁",
                 description:                        "天机阁",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -994,7 +994,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "酿造仙岛玉液酒",
                 description:                        "酿造仙岛玉液酒",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -1072,7 +1072,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "解梦师",
                 description:                        "解梦师",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -1132,7 +1132,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     B[0].SetSelect(option =>
                     {
-                        Range manaCost = 0;
+                        Bound manaCost = 0;
 
                         List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
                             pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
@@ -1146,7 +1146,7 @@ public class NodeCategory : Category<NodeEntry>
                     });
                     B[1].SetSelect(option =>
                     {
-                        Range manaCost = new Range(1, 10);
+                        Bound manaCost = new Bound(1, 10);
 
                         List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
                             pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
@@ -1182,7 +1182,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "夏虫语冰",
                 description:                        "夏虫语冰",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -1207,7 +1207,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "照相机",
                 description:                        "照相机",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -1237,7 +1237,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "丢尺子",
                 description:                        "丢尺子",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -1276,7 +1276,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "曹操三笑",
                 description:                        "曹操三笑",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -1307,7 +1307,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "仙人下棋",
                 description:                        "仙人下棋",
-                ladderRange:                        new Range(0, 15),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
@@ -1315,8 +1315,8 @@ public class NodeCategory : Category<NodeEntry>
                         "尝试观看两人对弈（需要一张二动牌）",
                         "请教两人路怎么走（需要一张治疗牌）");
 
-                    CardPickerPanelDescriptor B = new CardPickerPanelDescriptor("请提交一张二动牌", new Range(0, 2), skillDescriptor: new(skillTypeComposite: SkillType.ErDong));
-                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor("请提交一张治疗牌", new Range(0, 2), skillDescriptor: new(skillTypeComposite: SkillType.ZhiLiao));
+                    CardPickerPanelDescriptor B = new CardPickerPanelDescriptor("请提交一张二动牌", new Bound(0, 2), skillDescriptor: new(skillTypeComposite: SkillType.ErDong));
+                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor("请提交一张治疗牌", new Bound(0, 2), skillDescriptor: new(skillTypeComposite: SkillType.ZhiLiao));
 
                     DialogPanelDescriptor BWin = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
                     DialogPanelDescriptor BWin2 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
@@ -1391,7 +1391,7 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "循环",
                 description:                        "循环",
-                ladderRange:                        new Range(0, 5),
+                ladderBound:                        new Bound(0, 5),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {

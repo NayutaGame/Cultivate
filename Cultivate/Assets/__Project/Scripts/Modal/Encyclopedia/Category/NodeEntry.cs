@@ -11,8 +11,8 @@ public class NodeEntry : Entry
     private string _description;
     public string GetDescription() => _description;
 
-    private CLLibrary.Range _ladderRange;
-    public CLLibrary.Range LadderRange => _ladderRange;
+    private CLLibrary.Bound _ladderBound;
+    public CLLibrary.Bound LadderBound => _ladderBound;
     
     private bool _withInPool;
     public bool WithInPool => _withInPool;
@@ -20,14 +20,14 @@ public class NodeEntry : Entry
     private Func<Map, int, bool> _canCreate;
     private Action<Map, int> _create;
 
-    public NodeEntry(string id, string description, CLLibrary.Range ladderRange, bool withInPool, Action<Map, int> create, Func<Map, int, bool> canCreate = null)
+    public NodeEntry(string id, string description, CLLibrary.Bound ladderBound, bool withInPool, Action<Map, int> create, Func<Map, int, bool> canCreate = null)
         : base(id)
     {
         _description = description;
-        _ladderRange = ladderRange;
+        _ladderBound = ladderBound;
         _withInPool = withInPool;
         _create = create;
-        _canCreate = canCreate ?? ((map, ladder) => _ladderRange.Contains(ladder));
+        _canCreate = canCreate ?? ((map, ladder) => _ladderBound.Contains(ladder));
     }
 
     public bool CanCreate(Map map, int ladder) => _canCreate(map, ladder);

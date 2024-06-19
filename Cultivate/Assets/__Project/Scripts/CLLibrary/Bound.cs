@@ -1,14 +1,14 @@
 
 namespace CLLibrary
 {
-    public class Range
+    public class Bound
     {
         public int Start;
         public int End;
 
-        public Range(int value) : this(value, value + 1) { }
+        public Bound(int value) : this(value, value + 1) { }
 
-        public Range(int start, int end)
+        public Bound(int start, int end)
         {
             Start = start;
             End = end;
@@ -17,6 +17,6 @@ namespace CLLibrary
         public bool Contains(int value)
             => Start <= value && value < End;
 
-        public static implicit operator Range(int i) => new(i);
+        public static implicit operator Bound(int i) => new(i);
     }
 }

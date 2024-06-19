@@ -46,7 +46,7 @@ public class MingYuan : BoundedInt
 
         sb.Append("命元\n归零游戏失败\n");
         
-        int count = GetCurr();
+        int count = Curr;
         if (count >= MINGYUAN_PENALTY_TABLE.Length)
             return "健康";
         else
@@ -64,10 +64,10 @@ public class MingYuan : BoundedInt
 
     public async Task MingYuanPenaltyProcedure(StageEntity entity)
     {
-        if (GetCurr() >= 10)
+        if (Curr >= 10)
             return;
 
-        Tuple<int, int, int, int> penalty = MINGYUAN_PENALTY_TABLE[GetCurr()];
+        Tuple<int, int, int, int> penalty = MINGYUAN_PENALTY_TABLE[Curr];
 
         if (penalty.Item1 != 0)
             entity.MaxHp = (int)((float)entity.MaxHp * (100 - penalty.Item1) / 100);
@@ -79,8 +79,8 @@ public class MingYuan : BoundedInt
             await entity.GainBuffProcedure("跳回合", penalty.Item4);
     }
 
-    public MingYuan Clone()
-        => new(GetCurr(), GetMax());
+    public MingYuan CloneMingYuan()
+        => new(Curr, UpperBound);
 
     /*
      * 	            胜利命元	        胜利文本	                    失败命元            	        失败文本

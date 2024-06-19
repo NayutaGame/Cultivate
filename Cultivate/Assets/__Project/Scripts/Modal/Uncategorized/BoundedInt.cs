@@ -1,26 +1,38 @@
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
+// TODO, to struct, problem, MingYuan inherits, struct cannot have inheritance
 [Serializable]
 public class BoundedInt
 {
     [SerializeField] private int _curr;
     [SerializeField] private int _max;
 
-    public int GetCurr() => _curr;
-    public void SetCurr(int value) => _curr = Mathf.Min(_max, value);
-    public void SetDiff(int value) => SetCurr(_curr + value);
+    public int Curr
+    {
+        get => _curr;
+        set => _curr = value.ClampUpper(_max);
+    }
 
-    public int GetMax() => _max;
-    public void SetMax(int value) => _max = value;
-    public void SetDMax(int value) => SetMax(_max + value);
+    public int UpperBound
+    {
+        get => _max;
+        set
+        {
+            _max = value;
+            Curr = _curr;
+        }
+    }
 
     public override string ToString()
-        => $"{_curr}/{_max}";
+        => _max == int.MaxValue ? $"{_curr}" : $"{_curr}/{_max}";
 
-    public BoundedInt(int curr, int max)
+    public BoundedInt Clone()
+        => new(_curr, _max);
+
+    public BoundedInt(int curr, int max = int.MaxValue)
     {
         _curr = curr;
         _max = max;

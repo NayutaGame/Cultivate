@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class CanvasManager : Singleton<CanvasManager>, Addressable
@@ -64,6 +67,8 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "SlotGhost", () => SlotGhost },
         };
 
+        _volume.profile.TryGet(out _vignette);
+        
         _results = new();
 
         SkillAnnotation.Awake();
@@ -108,4 +113,27 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             return "no result";
         return _results[0].gameObject.name;
     }
+
+    [SerializeField] private Volume _volume;
+
+    private Vignette _vignette;
+
+    private Tween _redFlashHandle;
+
+    public void RedFlashAnimation()
+    {
+        _redFlashHandle?.Kill();
+        _redFlashHandle = DOTween.Sequence()
+            .AppendCallback(() => _vignette.active = true)
+            .Append(DOTween.To(GetIntensity, SetIntensity, 0.2f, 0.1f).SetEase(Ease.OutQuad))
+            .Append(DOTween.To(GetIntensity, SetIntensity, 0, 0.1f).SetEase(Ease.InQuad))
+            .AppendCallback(() => _vignette.active = false);
+        _redFlashHandle.SetAutoKill().Restart();
+    }
+
+    private float GetIntensity()
+        => _vignette.intensity.value;
+
+    private void SetIntensity(float value)
+        => _vignette.intensity.value = value;
 }

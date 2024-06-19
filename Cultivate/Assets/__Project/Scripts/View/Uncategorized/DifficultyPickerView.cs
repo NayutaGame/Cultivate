@@ -55,13 +55,13 @@ public class DifficultyPickerView : MonoBehaviour
         DifficultyDescriptionText.text = curr.GetEntry().Description;
 
         int prevIndex = _selectionIndex - 1;
-        bool hasPrev = new Range(0, profiles.Count()).Contains(prevIndex);
+        bool hasPrev = new Bound(0, profiles.Count()).Contains(prevIndex);
         PrevDifficultyButton.gameObject.SetActive(hasPrev);
         if (hasPrev)
             PrevDifficultyButton.interactable = profiles[prevIndex].IsUnlocked();
 
         int nextIndex = _selectionIndex + 1;
-        bool hasNext = new Range(0, profiles.Count()).Contains(nextIndex);
+        bool hasNext = new Bound(0, profiles.Count()).Contains(nextIndex);
         NextDifficultyButton.gameObject.SetActive(hasNext);
         if (hasNext)
             NextDifficultyButton.interactable = profiles[nextIndex].IsUnlocked();

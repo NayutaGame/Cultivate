@@ -2164,6 +2164,7 @@ MonoBehaviour:
   - {r: 0.23529412, g: 0.23529412, b: 0.23529412, a: 1}
   - {r: 0, g: 0.5019608, b: 0, a: 1}
   - {r: 0.8, g: 0, b: 0, a: 1}
+  _volume: {fileID: 1778296600}
 --- !u!114 &1125990555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2888,7 +2889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 05cc42d539bc0e2499581c65b289a3fd, type: 2}
+  sharedProfile: {fileID: 11400000, guid: eb75763351f48f445a13c13676692213, type: 2}
   isGlobal: 1
   blendDistance: 0
   weight: 1
@@ -2909,7 +2910,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 269aa60888627b2488f07f56e03ee4a7, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 47984ca64843a914886659b0eab0d1a0, type: 2}
 --- !u!1001 &1795900224
 PrefabInstance:
   m_ObjectHideFlags: 0

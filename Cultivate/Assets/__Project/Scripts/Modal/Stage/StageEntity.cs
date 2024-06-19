@@ -291,7 +291,7 @@ public class StageEntity : Addressable, StageEventListener
         foreach (var eventDescriptor in _eventDescriptors)
             _env.EventDict.Register(this, eventDescriptor);
 
-        MingYuan = _runEntity.MingYuan.Clone();
+        MingYuan = _runEntity.MingYuan.CloneMingYuan();
         MaxHp = _runEntity.GetFinalHealth();
         Hp = _runEntity.GetFinalHealth();
         Armor = 0;

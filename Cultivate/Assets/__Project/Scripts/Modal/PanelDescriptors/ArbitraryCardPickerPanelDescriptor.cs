@@ -1,7 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using Range = CLLibrary.Range;
+using CLLibrary;
 
 public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
 {
@@ -13,10 +13,10 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
 
     private SkillDescriptor _descriptor;
 
-    private Range _range;
-    public Range Range => _range;
+    private Bound _bound;
+    public Bound Bound => _bound;
     public bool HasSpace(int occupied)
-        => _range.End - 1 > occupied;
+        => _bound.End - 1 > occupied;
 
     private Func<List<SkillDescriptor>, PanelDescriptor> _confirmOperation;
     public ArbitraryCardPickerPanelDescriptor SetConfirmOperation(Func<List<SkillDescriptor>, PanelDescriptor> confirmOperation)
@@ -27,7 +27,7 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
 
     public ArbitraryCardPickerPanelDescriptor(
         string detailedText = null,
-        Range range = null,
+        Bound bound = null,
         SkillDescriptor descriptor = null,
         Func<List<SkillDescriptor>, PanelDescriptor> confirmOperation = null)
     {
@@ -38,7 +38,7 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
         };
         
         _detailedText = detailedText ?? "请选择卡";
-        _range = range ?? new Range(1);
+        _bound = bound ?? new Bound(1);
         _confirmOperation = confirmOperation;
         _descriptor = descriptor;
         

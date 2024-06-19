@@ -164,6 +164,8 @@ public class RunCanvas : Panel
         env.MingYuanChangedNeuron.Add(MingYuanChangedStagingNeuron);
         env.GoldChangedNeuron.Add(GoldChangedStagingNeuron);
         env.DHealthChangedNeuron.Add(DHealthChangedStagingNeuron);
+        
+        env.MingYuanChangedNeuron.Add(DamageMingYuan);
     }
 
     public void UnregisterEnvironment(RunEnvironment env)
@@ -171,11 +173,24 @@ public class RunCanvas : Panel
         env.MingYuanChangedNeuron.Remove(MingYuanChangedStagingNeuron);
         env.GoldChangedNeuron.Remove(GoldChangedStagingNeuron);
         env.DHealthChangedNeuron.Remove(DHealthChangedStagingNeuron);
+        
+        env.MingYuanChangedNeuron.Remove(DamageMingYuan);
     }
 
     public Neuron<SetDMingYuanDetails> MingYuanChangedStagingNeuron = new();
     public Neuron<SetDGoldDetails> GoldChangedStagingNeuron = new();
     public Neuron<SetDDHealthDetails> DHealthChangedStagingNeuron = new();
+
+    private void DamageMingYuan(SetDMingYuanDetails d)
+    {
+        if (d.Value >= 0) return;
+        
+        CanvasManager.Instance.RedFlashAnimation();
+        // canvas shake
+        // vfx text
+        // TopBar Refresh
+        // audio
+    }
     // Emitter to TopBar
     // Audio
     // CameraShake

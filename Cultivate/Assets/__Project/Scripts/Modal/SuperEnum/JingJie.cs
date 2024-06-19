@@ -59,17 +59,17 @@ public struct JingJie : IEquatable<JingJie>
 
     public static implicit operator int(JingJie jingJie) => jingJie._index;
     public static implicit operator JingJie(int index) => _list[index];
-    public static implicit operator CLLibrary.Range(JingJie jingJie) => new(jingJie._index);
+    public static implicit operator CLLibrary.Bound(JingJie jingJie) => new(jingJie._index);
 
     public override string ToString() => _name;
 
-    public static CLLibrary.Range LianQi2HuaShen => new(0, 5);
-    public static CLLibrary.Range LianQiOnly => new(0, 1);
-    public static CLLibrary.Range ZhuJi2HuaShen => new(1, 5);
-    public static CLLibrary.Range ZhuJiOnly => new(1, 2);
-    public static CLLibrary.Range JinDan2HuaShen => new(2, 5);
-    public static CLLibrary.Range YuanYing2HuaShen => new(3, 5);
-    public static CLLibrary.Range YuanYingOnly => new(3, 4);
-    public static CLLibrary.Range HuaShenOnly => new(4, 5);
-    public static CLLibrary.Range FanXuOnly => new(5, 6);
+    public static CLLibrary.Bound LianQi2HuaShen => new(0, 5);
+    public static CLLibrary.Bound LianQiOnly => new(0, 1);
+    public static CLLibrary.Bound ZhuJi2HuaShen => new(1, 5);
+    public static CLLibrary.Bound ZhuJiOnly => new(1, 2);
+    public static CLLibrary.Bound JinDan2HuaShen => new(2, 5);
+    public static CLLibrary.Bound YuanYing2HuaShen => new(3, 5);
+    public static CLLibrary.Bound YuanYingOnly => new(3, 4);
+    public static CLLibrary.Bound HuaShenOnly => new(4, 5);
+    public static CLLibrary.Bound FanXuOnly => new(5, 6);
 }
