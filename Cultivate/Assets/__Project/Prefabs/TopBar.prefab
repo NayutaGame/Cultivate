@@ -2571,6 +2571,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4764906271622144058}
     m_Modifications:
+    - target: {fileID: 4143773158143428075, guid: a5d2ef2ee47a3854199d5cc0a352e623, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: -1680995573, guid: a376e45cf9975744a88bf559e56db31f, type: 3}
     - target: {fileID: 4541045308763435211, guid: a5d2ef2ee47a3854199d5cc0a352e623, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2712,6 +2716,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -7.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4143773158143428075, guid: a5d2ef2ee47a3854199d5cc0a352e623, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: -1470814187, guid: a376e45cf9975744a88bf559e56db31f, type: 3}
     - target: {fileID: 4439095202621607486, guid: a5d2ef2ee47a3854199d5cc0a352e623, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2853,6 +2861,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -8.7
       objectReference: {fileID: 0}
+    - target: {fileID: 4143773158143428075, guid: a5d2ef2ee47a3854199d5cc0a352e623, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: -1787687248, guid: a376e45cf9975744a88bf559e56db31f, type: 3}
     - target: {fileID: 4439095202621607486, guid: a5d2ef2ee47a3854199d5cc0a352e623, type: 3}
       propertyPath: m_Sprite
       value: 
