@@ -161,13 +161,13 @@ public class DeckPanel : Panel
 
         env.ReceiveSignalProcedure(new FieldChangedSignal());
         
-        MergeAnimation(from, to, d);
+        MergeStaging(from, to, d);
 
         CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private void MergeAnimation(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void MergeStaging(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
         // From: 本体被移除
         
@@ -198,14 +198,14 @@ public class DeckPanel : Panel
         
         env.ReceiveSignalProcedure(new FieldChangedSignal());
 
-        UnequipAnimation(from);
+        UnequipStaging(from);
 
         PlayerEntity.Refresh();
         CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private void UnequipAnimation(InteractBehaviour from)
+    private void UnequipStaging(InteractBehaviour from)
     {
         // From: No Animation
         

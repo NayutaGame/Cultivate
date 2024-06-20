@@ -711,7 +711,7 @@ public class RunEnvironment : Addressable, RunEventListener
         skillEntry ??= Encyclopedia.SkillCategory[0];
         return skillEntry;
     }
-    private RunSkill AnimateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
+    private RunSkill CreateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
     {
         JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
         return RunSkill.FromEntryJingJie(skillEntry, jingJie);
@@ -734,15 +734,15 @@ public class RunEnvironment : Addressable, RunEventListener
     public void DrawSkillsProcedure(SkillCollectionDescriptor descriptor)
     {
         List<SkillEntry> entries = DrawSkills(descriptor);
-        entries.Do(e => AddSkill(AnimateSkill(e, descriptor.JingJie)));
+        entries.Do(e => AddSkill(CreateSkill(e, descriptor.JingJie)));
     }
 
     public void DrawSkillProcedure(SkillDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
-        => AddSkill(AnimateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
+        => AddSkill(CreateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
 
     public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null,
         DeckIndex? preferredDeckIndex = null)
-        => AddSkill(AnimateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
+        => AddSkill(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
 
     #endregion
 }

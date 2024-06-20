@@ -56,14 +56,14 @@ public class PuzzleEntityView : SimpleView
         
         env.ReceiveSignalProcedure(new FieldChangedSignal());
 
-        EquipAnimation(from, to, isReplace);
+        EquipStaging(from, to, isReplace);
         
         CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
         CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private static void EquipAnimation(InteractBehaviour from, InteractBehaviour to, bool isReplace)
+    private static void EquipStaging(InteractBehaviour from, InteractBehaviour to, bool isReplace)
     {
         ExtraBehaviourPivot fromPivot = from.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         ExtraBehaviourPivot toPivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
@@ -99,14 +99,14 @@ public class PuzzleEntityView : SimpleView
         
         env.ReceiveSignalProcedure(new FieldChangedSignal());
 
-        SwapAnimation(from, to, isReplace);
+        SwapStaging(from, to, isReplace);
 
         CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
         CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private static void SwapAnimation(InteractBehaviour from, InteractBehaviour to, bool isReplace)
+    private static void SwapStaging(InteractBehaviour from, InteractBehaviour to, bool isReplace)
     {
         ExtraBehaviourPivot fromPivot = from.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         ExtraBehaviourPivot toPivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
