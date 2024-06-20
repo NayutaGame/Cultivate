@@ -15,7 +15,10 @@ public class ConsolePanel : Panel
     public TMP_Text GoldText;
     [SerializeField] private Button AddGoldButton;
     [SerializeField] private Button ReduceGoldButton;
-    public TMP_InputField HealthInputField;
+    public TMP_Text HealthText;
+    [SerializeField] private Button AddHealthButton;
+    [SerializeField] private Button ReduceHealthButton;
+    
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
 
@@ -54,9 +57,11 @@ public class ConsolePanel : Panel
         AddGoldButton.onClick.AddListener(AddGold);
         ReduceGoldButton.onClick.RemoveAllListeners();
         ReduceGoldButton.onClick.AddListener(ReduceGold);
-
-        HealthInputField.onValueChanged.RemoveAllListeners();
-        HealthInputField.onValueChanged.AddListener(HealthChanged);
+        
+        AddHealthButton.onClick.RemoveAllListeners();
+        AddHealthButton.onClick.AddListener(AddHealth);
+        ReduceHealthButton.onClick.RemoveAllListeners();
+        ReduceHealthButton.onClick.AddListener(ReduceHealth);
 
         JingJieDropdown.options = new();
         JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.ToString())));
@@ -112,9 +117,7 @@ public class ConsolePanel : Panel
         MingYuanText.text = env.GetMingYuan().ToString();
         GoldText.text = env.GetGold().Curr.ToString();
 
-        EntityModel entity = RunManager.Instance.Environment.Home;
-        HealthInputField.SetTextWithoutNotify(entity.GetBaseHealth().ToString());
-        JingJieDropdown.SetValueWithoutNotify(entity.GetJingJie());
+        HealthText.text = env.Home.GetFinalHealth().ToString();
     }
 
     private void AddMingYuan()
@@ -141,14 +144,16 @@ public class ConsolePanel : Panel
         Refresh();
     }
 
-    private void HealthChanged(string value)
+    private void AddHealth()
     {
-        int.TryParse(value, out int health);
-        health = Mathf.Clamp(health, 1, 9999);
+        RunManager.Instance.Environment.SetDDHealthProcedure(10);
+        Refresh();
+    }
 
-        EntityModel entity = RunManager.Instance.Environment.Home;
-        entity.SetBaseHealth(health);
-        CanvasManager.Instance.RunCanvas.Refresh();
+    private void ReduceHealth()
+    {
+        RunManager.Instance.Environment.SetDDHealthProcedure(-10);
+        Refresh();
     }
 
     private void JingJieChanged(int jingJie)

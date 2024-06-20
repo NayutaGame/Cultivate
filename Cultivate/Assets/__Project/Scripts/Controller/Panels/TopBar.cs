@@ -22,7 +22,8 @@ public class TopBar : MonoBehaviour
             RunManager.Instance.Environment.Home.MingYuan.GetMingYuanPenaltyText);
         Gold.Configure(1, RunManager.Instance.Environment.GetGold,
             () => "金钱");
-        // Health.Configure(RunManager.Instance.Environment.Home.GetFinalHealth().ToString, () => "生命值上限");
+        Health.Configure(1, RunManager.Instance.Environment.Home.GetFinalHealthBounded,
+            () => "生命值上限");
     }
 
     private void OnEnable()
@@ -32,6 +33,9 @@ public class TopBar : MonoBehaviour
         
         CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Add(GainGold);
         CanvasManager.Instance.RunCanvas.ConsumeGoldStagingNeuron.Add(ConsumeGold);
+        
+        CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Add(GainDHealth);
+        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Add(LoseDHealth);
     }
 
     private void OnDisable()
@@ -41,6 +45,9 @@ public class TopBar : MonoBehaviour
         
         CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Remove(GainGold);
         CanvasManager.Instance.RunCanvas.ConsumeGoldStagingNeuron.Remove(ConsumeGold);
+        
+        CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Remove(GainDHealth);
+        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Remove(LoseDHealth);
     }
 
     private void GainMingYuan(SetDMingYuanDetails d)
@@ -63,11 +70,21 @@ public class TopBar : MonoBehaviour
         Gold.NumberChange(d.Value);
     }
 
+    private void GainDHealth(SetDDHealthDetails d)
+    {
+        Health.Gain(new Vector2(Screen.width / 2, Screen.height / 2), d.Value);
+    }
+
+    private void LoseDHealth(SetDDHealthDetails d)
+    {
+        Health.NumberChange(d.Value);
+    }
+
     public void Refresh()
     {
         MingYuan.Refresh();
         Gold.Refresh();
-        // Health.Refresh();
+        Health.Refresh();
         
         JingJieText.text = $"{RunManager.Instance.Environment.Home.GetJingJie().ToString()}期";
     }

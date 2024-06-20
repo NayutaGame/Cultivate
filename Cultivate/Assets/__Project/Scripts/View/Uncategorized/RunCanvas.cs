@@ -166,7 +166,7 @@ public class RunCanvas : Panel
         
         env.GoldChangedNeuron.Add(GoldChanged);
         
-        env.DHealthChangedNeuron.Add(DHealthChangedStagingNeuron);
+        env.DHealthChangedNeuron.Add(DHealthChanged);
     }
 
     public void UnregisterEnvironment(RunEnvironment env)
@@ -174,9 +174,9 @@ public class RunCanvas : Panel
         env.MingYuanChangedNeuron.Remove(MingYuanChanged);
         LoseMingYuanStagingNeuron.Remove(MingYuanLose);
         
-        env.GoldChangedNeuron.Add(GoldChanged);
+        env.GoldChangedNeuron.Remove(GoldChanged);
         
-        env.DHealthChangedNeuron.Remove(DHealthChangedStagingNeuron);
+        env.DHealthChangedNeuron.Remove(DHealthChanged);
     }
 
     private void MingYuanChanged(SetDMingYuanDetails d)
@@ -186,6 +186,20 @@ public class RunCanvas : Panel
         else if (d.Value < 0)
             LoseMingYuanStagingNeuron.Invoke(d);
     }
+
+    public Neuron<SetDMingYuanDetails> GainMingYuanStagingNeuron = new(); // TODO: Audio
+    public Neuron<SetDMingYuanDetails> LoseMingYuanStagingNeuron = new(); // TODO: Audio
+
+    private void MingYuanLose(SetDMingYuanDetails d)
+    {
+        CanvasManager.Instance.RedFlashAnimation();
+        CanvasManager.Instance.CanvasShakeAnimation();
+        CanvasManager.Instance.UIFloatTextVFX(d.Value.ToString(), Color.red);
+    }
+
+    public Neuron<SetDGoldDetails> GainGoldStagingNeuron = new();
+    public Neuron<SetDGoldDetails> LoseGoldStagingNeuron = new();
+    public Neuron<SetDGoldDetails> ConsumeGoldStagingNeuron = new();
 
     private void GoldChanged(SetDGoldDetails d)
     {
@@ -199,20 +213,15 @@ public class RunCanvas : Panel
                 LoseGoldStagingNeuron.Invoke(d);
         }
     }
+    
+    public Neuron<SetDDHealthDetails> GainDHealthStagingNeuron = new();
+    public Neuron<SetDDHealthDetails> LoseDHealthStagingNeuron = new();
 
-    public Neuron<SetDMingYuanDetails> GainMingYuanStagingNeuron = new(); // TODO: Audio
-    public Neuron<SetDMingYuanDetails> LoseMingYuanStagingNeuron = new(); // TODO: Audio
-
-    public Neuron<SetDGoldDetails> GainGoldStagingNeuron = new();
-    public Neuron<SetDGoldDetails> LoseGoldStagingNeuron = new();
-    public Neuron<SetDGoldDetails> ConsumeGoldStagingNeuron = new();
-
-    public Neuron<SetDDHealthDetails> DHealthChangedStagingNeuron = new();
-
-    private void MingYuanLose(SetDMingYuanDetails d)
+    private void DHealthChanged(SetDDHealthDetails d)
     {
-        CanvasManager.Instance.RedFlashAnimation();
-        CanvasManager.Instance.CanvasShakeAnimation();
-        CanvasManager.Instance.UIFloatTextVFX(d.Value.ToString(), Color.red);
+        if (d.Value > 0)
+            GainDHealthStagingNeuron.Invoke(d);
+        else if (d.Value < 0)
+            LoseDHealthStagingNeuron.Invoke(d);
     }
 }

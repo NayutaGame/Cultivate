@@ -24,6 +24,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     public void SetDHealth(int dHealth) => _dHealth = dHealth;
 
     public int GetFinalHealth() => _baseHealth + _dHealth;
+    public BoundedInt GetFinalHealthBounded() => new(GetFinalHealth());
 
     #region Only For Editable
 
