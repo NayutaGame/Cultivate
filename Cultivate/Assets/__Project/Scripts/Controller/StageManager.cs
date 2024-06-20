@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class StageManager : Singleton<StageManager>, Addressable
 {
     public Transform VFXPool;
-    public GameObject FlowTextVFXPrefab;
+    public GameObject FloatTextVFXPrefab;
     public GameObject[] PiercingVFXFromWuXing;
     public GameObject[] HitVFXFromWuXing;
     public GameObject BuffVFXPrefab;

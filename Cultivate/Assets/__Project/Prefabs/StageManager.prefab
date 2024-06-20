@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VFXPool: {fileID: 427517689962010136}
-  FlowTextVFXPrefab: {fileID: 7866473307321664959, guid: 58c3f5dc9fe79084fa90a4d7954a53f5, type: 3}
+  FloatTextVFXPrefab: {fileID: 7866473307321664959, guid: 58c3f5dc9fe79084fa90a4d7954a53f5, type: 3}
   PiercingVFXFromWuXing:
   - {fileID: 8367835152781022940, guid: d141decd91a58304caaf74b5aa78a176, type: 3}
   - {fileID: 4617423118041907090, guid: d06e0ce9bcfc5364a971a1297dca0a04, type: 3}

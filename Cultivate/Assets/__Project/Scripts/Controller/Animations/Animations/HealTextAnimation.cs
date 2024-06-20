@@ -25,10 +25,10 @@ public class HealTextAnimation : Animation
         StageEntity tgt = _healDetails.Tgt;
         int value = _healDetails.Value;
     
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, tgt.Slot().transform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
     
-        TMP_Text text = gao.GetComponent<FlowTextVFX>().Text;
+        TMP_Text text = gao.GetComponent<FloatTextVFX>().Text;
         text.text = value.ToString();
         text.color = Color.green;
         gao.transform.localScale = Vector3.zero;

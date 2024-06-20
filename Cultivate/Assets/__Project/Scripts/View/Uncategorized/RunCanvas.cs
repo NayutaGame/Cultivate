@@ -12,9 +12,9 @@ public class RunCanvas : Panel
     public ReservedLayer ReservedLayer;
     public TopBar TopBar;
     public ConsolePanel ConsolePanel;
-    
+
     private PanelSM PanelSM;
-    
+
     public BattlePanel BattlePanel;
     public PuzzlePanel PuzzlePanel;
     public DialogPanel DialogPanel;
@@ -29,7 +29,7 @@ public class RunCanvas : Panel
     public override void Configure()
     {
         base.Configure();
-        
+
         PanelSM = new(new Panel[]
         {
             null,
@@ -45,9 +45,9 @@ public class RunCanvas : Panel
             ImagePanel,
             RunResultPanel,
         });
-        
+
         // _panelDict.Do(kvp => kvp.Value.Configure());
-        
+
         DeckPanel.Configure();
         MapPanel.Configure();
 
@@ -66,14 +66,14 @@ public class RunCanvas : Panel
     public override void Refresh()
     {
         base.Refresh();
-        
+
         Panel currentPanel = PanelSM.GetCurrPanel();
         if (currentPanel != null)
         {
             currentPanel.Configure();
             currentPanel.Refresh();
         }
-        
+
         DeckPanel.Refresh();
         // MapPanel.Refresh();
         ReservedLayer.Refresh();
@@ -108,7 +108,7 @@ public class RunCanvas : Panel
         }
         else
             await SetStateAsync(0);
-        
+
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
         if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
         {
@@ -147,7 +147,7 @@ public class RunCanvas : Panel
         }
         else
             SetState(0);
-        
+
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
         if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
         {
@@ -161,38 +161,41 @@ public class RunCanvas : Panel
 
     public void RegisterEnvironment(RunEnvironment env)
     {
-        env.MingYuanChangedNeuron.Add(MingYuanChangedStagingNeuron);
+        env.MingYuanChangedNeuron.Add(MingYuanChanged);
+        MingYuanLoseStagingNeuron.Add(MingYuanLose);
+        
         env.GoldChangedNeuron.Add(GoldChangedStagingNeuron);
         env.DHealthChangedNeuron.Add(DHealthChangedStagingNeuron);
-        
-        env.MingYuanChangedNeuron.Add(DamageMingYuan);
     }
 
     public void UnregisterEnvironment(RunEnvironment env)
     {
-        env.MingYuanChangedNeuron.Remove(MingYuanChangedStagingNeuron);
+        env.MingYuanChangedNeuron.Remove(MingYuanChanged);
+        MingYuanLoseStagingNeuron.Remove(MingYuanLose);
+        
         env.GoldChangedNeuron.Remove(GoldChangedStagingNeuron);
         env.DHealthChangedNeuron.Remove(DHealthChangedStagingNeuron);
-        
-        env.MingYuanChangedNeuron.Remove(DamageMingYuan);
     }
 
-    public Neuron<SetDMingYuanDetails> MingYuanChangedStagingNeuron = new();
+    private void MingYuanChanged(SetDMingYuanDetails d)
+    {
+        if (d.Value > 0)
+            MingYuanGainStagingNeuron.Invoke(d);
+        else if (d.Value < 0)
+            MingYuanLoseStagingNeuron.Invoke(d);
+    }
+
+    public Neuron<SetDMingYuanDetails> MingYuanGainStagingNeuron = new(); // TODO: Audio
+    public Neuron<SetDMingYuanDetails> MingYuanLoseStagingNeuron = new(); // TODO: Audio
+
     public Neuron<SetDGoldDetails> GoldChangedStagingNeuron = new();
     public Neuron<SetDDHealthDetails> DHealthChangedStagingNeuron = new();
 
-    private void DamageMingYuan(SetDMingYuanDetails d)
+    private void MingYuanLose(SetDMingYuanDetails d)
     {
-        if (d.Value >= 0) return;
-        
         CanvasManager.Instance.RedFlashAnimation();
         CanvasManager.Instance.CanvasShakeAnimation();
-        // canvas shake
-        // vfx text
-        // TopBar Refresh
-        // audio
+        CanvasManager.Instance.UIFloatTextVFX(d.Value.ToString(), Color.red);
+        TopBar.MingYuan.Refresh();
     }
-    // Emitter to TopBar
-    // Audio
-    // CameraShake
 }

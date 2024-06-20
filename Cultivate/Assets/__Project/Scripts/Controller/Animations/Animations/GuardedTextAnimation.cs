@@ -24,10 +24,10 @@ public class GuardedTextAnimation : Animation
     {
         StageEntity tgt = _guardedDetails.Tgt;
     
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, tgt.Slot().transform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
     
-        TMP_Text text = gao.GetComponent<FlowTextVFX>().Text;
+        TMP_Text text = gao.GetComponent<FloatTextVFX>().Text;
         text.text = "完全防御";
         text.color = Color.yellow;
         gao.transform.localScale = Vector3.zero;

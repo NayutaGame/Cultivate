@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -154,5 +155,22 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         _shakeHandle.SetAutoKill().Restart();
     }
 
+    #endregion
+    
+    #region FloatText
+
+    [SerializeField] private Transform VFXPoolTransform;
+    [SerializeField] private GameObject FloatTextVFXPrefab;
+
+    public void UIFloatTextVFX(string context, Color color)
+    {
+        GameObject gao = Instantiate(FloatTextVFXPrefab, UI2World(new Vector2(Screen.width / 2, Screen.height / 2)),
+            Quaternion.identity, VFXPoolTransform);
+    
+        TMP_Text text = gao.GetComponent<UIFloatTextVFX>().Text;
+        text.text = context;
+        text.color = color;
+    }
+    
     #endregion
 }

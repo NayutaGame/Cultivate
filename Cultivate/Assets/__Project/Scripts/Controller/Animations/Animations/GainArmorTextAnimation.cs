@@ -25,10 +25,10 @@ public class GainArmorTextAnimation : Animation
         StageEntity tgt = _gainArmorDetails.Tgt;
         int value = _gainArmorDetails.Value;
     
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, tgt.Slot().transform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
     
-        TMP_Text text = gao.GetComponent<FlowTextVFX>().Text;
+        TMP_Text text = gao.GetComponent<FloatTextVFX>().Text;
         text.text = $"护甲+{value}";
         text.color = Color.yellow;
         gao.transform.localScale = Vector3.zero;

@@ -30,17 +30,16 @@ public class TopBar : MonoBehaviour
 
     private void OnEnable()
     {
-        CanvasManager.Instance.RunCanvas.MingYuanChangedStagingNeuron.Add(EmitMingYuan);
+        CanvasManager.Instance.RunCanvas.MingYuanGainStagingNeuron.Add(EmitMingYuan);
     }
 
     private void OnDisable()
     {
-        CanvasManager.Instance.RunCanvas.MingYuanChangedStagingNeuron.Remove(EmitMingYuan);
+        CanvasManager.Instance.RunCanvas.MingYuanGainStagingNeuron.Remove(EmitMingYuan);
     }
 
     private void EmitMingYuan(SetDMingYuanDetails d)
     {
-        if (d.Value <= 0) return;
         MingYuan.Emit(Vector2.zero, d.Value);
     }
 

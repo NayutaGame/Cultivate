@@ -13,17 +13,17 @@ public class BuffTextAnimation : Animation
     public override AnimationHandle GetHandle()
     {
         return new TweenHandle(this, DOTween.Sequence()
-            .AppendCallback(SpawnBuffedText));
+            .AppendCallback(SpawnText));
     }
     
     public override bool InvolvesCharacterAnimation() => false;
 
-    private void SpawnBuffedText()
+    private void SpawnText()
     {
         GainBuffDetails d = GainBuffDetails;
 
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.FlowTextVFXPrefab, d.Tgt.Slot().transform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, d.Tgt.Slot().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
-        gao.GetComponent<FlowTextVFX>().Text.text = $"{d._buffEntry.GetName()} +{d._stack}";
+        gao.GetComponent<FloatTextVFX>().Text.text = $"{d._buffEntry.GetName()} +{d._stack}";
     }
 }

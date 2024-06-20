@@ -3,7 +3,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class FlowTextVFX : MonoBehaviour
+public class FloatTextVFX : MonoBehaviour
 {
     public TMP_Text Text;
 
