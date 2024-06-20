@@ -16,14 +16,14 @@ public class CostDetails
 
     public bool CanCost()
     {
-        return Gold <= RunManager.Instance.Environment.Gold &&
+        return Gold <= RunManager.Instance.Environment.GetGold().Curr &&
                MingYuan < RunManager.Instance.Environment.GetMingYuan().Curr &&
                Health < RunManager.Instance.Environment.Home.GetFinalHealth();
     }
 
     public void Cost()
     {
-        RunManager.Instance.Environment.SetDGoldProcedure(-Gold);
+        RunManager.Instance.Environment.SetDGoldProcedure(-Gold, true);
         RunManager.Instance.Environment.SetDMingYuanProcedure(-MingYuan);
         RunManager.Instance.Environment.SetDDHealthProcedure(-Health);
     }

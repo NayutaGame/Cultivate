@@ -4,7 +4,6 @@ using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Tween = DG.Tweening.Tween;
 
@@ -108,7 +107,7 @@ public class ConsolePanel : Panel
 
         RunEnvironment env = RunManager.Instance.Environment;
         MingYuanText.text = env.GetMingYuan().ToString();
-        GoldText.text = env.Gold.ToString();
+        GoldText.text = env.GetGold().Curr.ToString();
 
         EntityModel entity = RunManager.Instance.Environment.Home;
         HealthInputField.SetTextWithoutNotify(entity.GetBaseHealth().ToString());
@@ -129,7 +128,7 @@ public class ConsolePanel : Panel
 
     private void AddGold()
     {
-        RunManager.Instance.Environment.SetDGoldProcedure(10);
+        RunManager.Instance.Environment.SetDGoldProcedure(10, true);
         Refresh();
     }
 

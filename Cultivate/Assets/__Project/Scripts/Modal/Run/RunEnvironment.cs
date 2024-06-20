@@ -134,7 +134,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         {
             // init player start condition
-            SetDGoldProcedure(50);
+            SetDGoldProcedure(50, true);
             if (!firstTime)
                 DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
             // DrawSkillsProcedure(new(jingJie: JingJie.HuaShen, count: 20));
@@ -280,8 +280,8 @@ public class RunEnvironment : Addressable, RunEventListener
             Result.State = RunResult.RunResultState.Defeat; // DefeatProcedure
     }
 
-    public void SetDGoldProcedure(int value)
-        => SetDGoldProcedure(new SetDGoldDetails(value));
+    public void SetDGoldProcedure(int value, bool consume)
+        => SetDGoldProcedure(new SetDGoldDetails(value, consume));
     private void SetDGoldProcedure(SetDGoldDetails d)
     {
         _eventDict.SendEvent(RunEventDict.WILL_SET_D_GOLD, d);
@@ -289,7 +289,7 @@ public class RunEnvironment : Addressable, RunEventListener
         if (d.Cancel)
             return;
 
-        Gold += d.Value;
+        _gold.Curr += d.Value;
         _eventDict.SendEvent(RunEventDict.DID_SET_D_GOLD, d);
 
         GoldChangedNeuron.Invoke(d);
@@ -347,7 +347,7 @@ public class RunEnvironment : Addressable, RunEventListener
     public TechInventory TechInventory { get; private set; }
     public Pool<SkillEntry> SkillPool;
     public SkillInventory Hand { get; private set; }
-    public float Gold { get; private set; }
+    private BoundedInt _gold;
     private RunEventDict _eventDict; public RunEventDict EventDict => _eventDict;
 
     public StageResult SimulateResult;
@@ -370,6 +370,7 @@ public class RunEnvironment : Addressable, RunEventListener
             { "ActivePanel",           GetActivePanel },
         };
 
+        _gold = new(0);
         _config = config;
 
         _memory = new();
@@ -381,13 +382,15 @@ public class RunEnvironment : Addressable, RunEventListener
         TechInventory = new();
         SkillPool = new();
         Hand = new();
-        Gold = 0;
         _eventDict = new();
 
         Result = new RunResult();
 
         BattleChangedNeuron.Add(BattleEnvironmentUpdateProcedure);
     }
+
+    public BoundedInt GetGold()
+        => _gold;
 
     public MingYuan GetMingYuan()
         => _home.MingYuan;
@@ -599,7 +602,7 @@ public class RunEnvironment : Addressable, RunEventListener
     public bool CanAffordTech(Address address)
     {
         RunTech runTech = address.Get<RunTech>();
-        return runTech.GetCost() <= Gold;
+        return runTech.GetCost() <= GetGold().Curr;
     }
 
     public bool TrySetDoneTech(Address address)
@@ -608,7 +611,7 @@ public class RunEnvironment : Addressable, RunEventListener
             return false;
 
         RunTech runTech = address.Get<RunTech>();
-        Gold -= runTech.GetCost();
+        GetGold().Curr -= runTech.GetCost();
         TechInventory.SetDone(runTech);
         return true;
     }

@@ -162,33 +162,51 @@ public class RunCanvas : Panel
     public void RegisterEnvironment(RunEnvironment env)
     {
         env.MingYuanChangedNeuron.Add(MingYuanChanged);
-        MingYuanLoseStagingNeuron.Add(MingYuanLose);
+        LoseMingYuanStagingNeuron.Add(MingYuanLose);
         
-        env.GoldChangedNeuron.Add(GoldChangedStagingNeuron);
+        env.GoldChangedNeuron.Add(GoldChanged);
+        
         env.DHealthChangedNeuron.Add(DHealthChangedStagingNeuron);
     }
 
     public void UnregisterEnvironment(RunEnvironment env)
     {
         env.MingYuanChangedNeuron.Remove(MingYuanChanged);
-        MingYuanLoseStagingNeuron.Remove(MingYuanLose);
+        LoseMingYuanStagingNeuron.Remove(MingYuanLose);
         
-        env.GoldChangedNeuron.Remove(GoldChangedStagingNeuron);
+        env.GoldChangedNeuron.Add(GoldChanged);
+        
         env.DHealthChangedNeuron.Remove(DHealthChangedStagingNeuron);
     }
 
     private void MingYuanChanged(SetDMingYuanDetails d)
     {
         if (d.Value > 0)
-            MingYuanGainStagingNeuron.Invoke(d);
+            GainMingYuanStagingNeuron.Invoke(d);
         else if (d.Value < 0)
-            MingYuanLoseStagingNeuron.Invoke(d);
+            LoseMingYuanStagingNeuron.Invoke(d);
     }
 
-    public Neuron<SetDMingYuanDetails> MingYuanGainStagingNeuron = new(); // TODO: Audio
-    public Neuron<SetDMingYuanDetails> MingYuanLoseStagingNeuron = new(); // TODO: Audio
+    private void GoldChanged(SetDGoldDetails d)
+    {
+        if (d.Value > 0)
+            GainGoldStagingNeuron.Invoke(d);
+        else if (d.Value < 0)
+        {
+            if (d.Consume)
+                LoseGoldStagingNeuron.Invoke(d);
+            else
+                ConsumeGoldStagingNeuron.Invoke(d);
+        }
+    }
 
-    public Neuron<SetDGoldDetails> GoldChangedStagingNeuron = new();
+    public Neuron<SetDMingYuanDetails> GainMingYuanStagingNeuron = new(); // TODO: Audio
+    public Neuron<SetDMingYuanDetails> LoseMingYuanStagingNeuron = new(); // TODO: Audio
+
+    public Neuron<SetDGoldDetails> GainGoldStagingNeuron = new();
+    public Neuron<SetDGoldDetails> LoseGoldStagingNeuron = new();
+    public Neuron<SetDGoldDetails> ConsumeGoldStagingNeuron = new();
+
     public Neuron<SetDDHealthDetails> DHealthChangedStagingNeuron = new();
 
     private void MingYuanLose(SetDMingYuanDetails d)

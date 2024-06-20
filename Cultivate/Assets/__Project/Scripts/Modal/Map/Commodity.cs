@@ -27,6 +27,6 @@ public class Commodity : Addressable
 
     public bool Affordable()
     {
-        return RunManager.Instance.Environment.Gold >= FinalPrice;
+        return RunManager.Instance.Environment.GetGold().Curr >= FinalPrice;
     }
 }
