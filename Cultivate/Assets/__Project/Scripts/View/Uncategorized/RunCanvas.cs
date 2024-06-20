@@ -194,9 +194,9 @@ public class RunCanvas : Panel
         else if (d.Value < 0)
         {
             if (d.Consume)
-                LoseGoldStagingNeuron.Invoke(d);
-            else
                 ConsumeGoldStagingNeuron.Invoke(d);
+            else
+                LoseGoldStagingNeuron.Invoke(d);
         }
     }
 
@@ -214,6 +214,5 @@ public class RunCanvas : Panel
         CanvasManager.Instance.RedFlashAnimation();
         CanvasManager.Instance.CanvasShakeAnimation();
         CanvasManager.Instance.UIFloatTextVFX(d.Value.ToString(), Color.red);
-        TopBar.MingYuan.Refresh();
     }
 }

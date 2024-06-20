@@ -13,7 +13,8 @@ public class ConsolePanel : Panel
     [SerializeField] private Button AddMingYuanButton;
     [SerializeField] private Button ReduceMingYuanButton;
     public TMP_Text GoldText;
-    public Button GoldButton;
+    [SerializeField] private Button AddGoldButton;
+    [SerializeField] private Button ReduceGoldButton;
     public TMP_InputField HealthInputField;
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
@@ -48,9 +49,11 @@ public class ConsolePanel : Panel
         AddMingYuanButton.onClick.AddListener(AddMingYuan);
         ReduceMingYuanButton.onClick.RemoveAllListeners();
         ReduceMingYuanButton.onClick.AddListener(ReduceMingYuan);
-
-        GoldButton.onClick.RemoveAllListeners();
-        GoldButton.onClick.AddListener(AddGold);
+        
+        AddGoldButton.onClick.RemoveAllListeners();
+        AddGoldButton.onClick.AddListener(AddGold);
+        ReduceGoldButton.onClick.RemoveAllListeners();
+        ReduceGoldButton.onClick.AddListener(ReduceGold);
 
         HealthInputField.onValueChanged.RemoveAllListeners();
         HealthInputField.onValueChanged.AddListener(HealthChanged);
@@ -114,13 +117,13 @@ public class ConsolePanel : Panel
         JingJieDropdown.SetValueWithoutNotify(entity.GetJingJie());
     }
 
-    public void AddMingYuan()
+    private void AddMingYuan()
     {
         RunManager.Instance.Environment.SetDMingYuanProcedure(1);
         Refresh();
     }
 
-    public void ReduceMingYuan()
+    private void ReduceMingYuan()
     {
         RunManager.Instance.Environment.SetDMingYuanProcedure(-1);
         Refresh();
@@ -129,6 +132,12 @@ public class ConsolePanel : Panel
     private void AddGold()
     {
         RunManager.Instance.Environment.SetDGoldProcedure(10, true);
+        Refresh();
+    }
+
+    private void ReduceGold()
+    {
+        RunManager.Instance.Environment.SetDGoldProcedure(-10, true);
         Refresh();
     }
 
