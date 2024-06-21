@@ -65,7 +65,7 @@ public class PlayerEntityView : SimpleView
         if (isReplace)
         {
             if (fromPivot != null)
-                fromPivot.AnimateState(toPivot.GetDisplayTransform(), fromPivot.IdleTransform);
+                fromPivot.SetPathAnimated(toPivot.GetDisplayTransform(), fromPivot.IdleTransform);
         }
         
         // Ghost
@@ -73,7 +73,7 @@ public class PlayerEntityView : SimpleView
         ghost.Hide();
         
         // To: Ghost Display -> To Idle
-        toPivot.AnimateState(ghost.GetDisplayTransform(), toPivot.IdleTransform);
+        toPivot.SetPathAnimated(ghost.GetDisplayTransform(), toPivot.IdleTransform);
 
         AudioManager.Play("CardPlacement");
     }
@@ -108,7 +108,7 @@ public class PlayerEntityView : SimpleView
         if (isReplace)
         {
             if (fromPivot != null)
-                fromPivot.AnimateState(toPivot.GetDisplayTransform(), fromPivot.IdleTransform);
+                fromPivot.SetPathAnimated(toPivot.GetDisplayTransform(), fromPivot.IdleTransform);
         }
         
         // Ghost
@@ -116,7 +116,7 @@ public class PlayerEntityView : SimpleView
         ghost.Hide();
         
         // To: Ghost Display -> To Idle
-        toPivot.AnimateState(ghost.GetDisplayTransform(), toPivot.IdleTransform);
+        toPivot.SetPathAnimated(ghost.GetDisplayTransform(), toPivot.IdleTransform);
 
         AudioManager.Play("CardPlacement");
     }

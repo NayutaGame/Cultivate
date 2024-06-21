@@ -694,6 +694,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         return toRet;
     }
+    
     public SkillEntry DrawSkill(SkillDescriptor descriptor)
     {
         SkillPool.Shuffle();
@@ -701,11 +702,13 @@ public class RunEnvironment : Addressable, RunEventListener
         skillEntry ??= Encyclopedia.SkillCategory[0];
         return skillEntry;
     }
+    
     private RunSkill CreateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
     {
         JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
         return RunSkill.FromEntryJingJie(skillEntry, jingJie);
     }
+    
     private void AddSkill(RunSkill skill, DeckIndex? preferredDeckIndex = null)
     {
         if (!preferredDeckIndex.HasValue)

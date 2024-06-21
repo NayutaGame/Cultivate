@@ -178,7 +178,7 @@ public class DeckPanel : Panel
         // To: Ghost Display -> ToIdle + Ping Animation
         ExtraBehaviourPivot extraBehaviourPivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
-            extraBehaviourPivot.AnimateState(ghost.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
+            extraBehaviourPivot.SetPathAnimated(ghost.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
 
         AudioManager.Play("CardUpgrade");
     }
@@ -217,7 +217,7 @@ public class DeckPanel : Panel
         InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
         ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
-            extraBehaviourPivot.AnimateState(ghost.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
+            extraBehaviourPivot.SetPathAnimated(ghost.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
 
         AudioManager.Play("CardPlacement");
     }

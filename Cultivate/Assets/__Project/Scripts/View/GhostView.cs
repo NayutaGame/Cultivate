@@ -45,7 +45,7 @@ public class GhostView : MonoBehaviour
         {
             ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
             if (extraBehaviourPivot != null)
-                extraBehaviourPivot.AnimateState(SimpleView.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
+                extraBehaviourPivot.SetPathAnimated(SimpleView.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
         }
         
         gameObject.SetActive(false);

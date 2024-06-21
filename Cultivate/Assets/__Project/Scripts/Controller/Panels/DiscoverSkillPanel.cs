@@ -18,7 +18,7 @@ public class DiscoverSkillPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         SkillViews.SetAddress(_address.Append(".Skills"));
         SkillViews.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        SkillViews.LeftClickNeuron.Join(TrySelectOption);
+        SkillViews.LeftClickNeuron.Join(PickSkill);
     }
 
     public override void Refresh()
@@ -34,8 +34,11 @@ public class DiscoverSkillPanel : Panel
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
 
-    private void TrySelectOption(InteractBehaviour ib, PointerEventData eventData)
+    private void PickSkill(InteractBehaviour ib, PointerEventData eventData)
     {
+        // talks to model
+        // staging
+        
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
         SkillDescriptor skill = ib.GetSimpleView().Get<SkillDescriptor>();

@@ -1,4 +1,5 @@
 
+using System.Linq;
 using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
@@ -159,8 +160,31 @@ public class RunCanvas : Panel
         }
     }
 
-    public Neuron<int> GainMingYuanStagingNeuron = new(); // TODO: Audio
-    public Neuron<int> LoseMingYuanStagingNeuron = new(); // TODO: Audio
+    #region Staging
+
+    public void GainSkillProcedure(Vector3 position, SkillDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+    {
+        RunManager.Instance.Environment.DrawSkillProcedure(descriptor, preferredDeckIndex);
+        Refresh();
+        
+        InteractBehaviour newIB = DeckPanel.HandView.ActivePool.Last().GetInteractBehaviour();
+        ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+        {
+            extraBehaviourPivot.FollowTransform.position = position;
+            extraBehaviourPivot.SetPathAnimated(extraBehaviourPivot.FollowTransform, extraBehaviourPivot.IdleTransform);
+        }
+
+        // AudioManager.Play("CardPlacement");
+    }
+    
+    // TODO: Audio
+    public Neuron<int> GainMingYuanStagingNeuron = new();
+    public Neuron<int> LoseMingYuanStagingNeuron = new();
+    public Neuron<int> GainGoldStagingNeuron = new();
+    public Neuron<int> LoseGoldStagingNeuron = new();
+    public Neuron<int> GainDHealthStagingNeuron = new();
+    public Neuron<int> LoseDHealthStagingNeuron = new();
 
     public void GainMingYuanProcedure(int value)
     {
@@ -177,9 +201,6 @@ public class RunCanvas : Panel
         LoseMingYuanStagingNeuron.Invoke(value);
     }
 
-    public Neuron<int> GainGoldStagingNeuron = new();
-    public Neuron<int> LoseGoldStagingNeuron = new();
-
     public void GainGoldProcedure(int value)
     {
         RunManager.Instance.Environment.SetDGoldProcedure(value);
@@ -191,9 +212,6 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.SetDGoldProcedure(value);
         LoseGoldStagingNeuron.Invoke(value);
     }
-
-    public Neuron<int> GainDHealthStagingNeuron = new();
-    public Neuron<int> LoseDHealthStagingNeuron = new();
     
     public void GainDHealthProcedure(int value)
     {
@@ -206,4 +224,6 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.SetDDHealthProcedure(value);
         LoseDHealthStagingNeuron.Invoke(value);
     }
+
+    #endregion
 }

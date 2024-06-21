@@ -35,29 +35,29 @@ public class ExtraBehaviourPivot : ExtraBehaviour
         => CLView.SetDisplayTransform(pivot);
 
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
-        => AnimateState(HoverTransform);
+        => SetTargetAnimated(HoverTransform);
 
     private void PointerExit(InteractBehaviour ib, PointerEventData d)
-        => AnimateState(IdleTransform);
+        => SetTargetAnimated(IdleTransform);
 
-    private void SetState(RectTransform end)
+    private void SetTarget(RectTransform end)
     {
         _handle?.Kill();
         SetDisplayTransform(end);
     }
 
-    public void AnimateState(RectTransform start, RectTransform end)
-    {
-        SetState(start);
-        AnimateState(end);
-    }
-
-    private void AnimateState(RectTransform end)
+    private void SetTargetAnimated(RectTransform end)
     {
         _handle?.Kill();
         FollowAnimation f = new FollowAnimation(GetDisplayTransform(), end);
         _handle = f.GetHandle();
         _handle.SetAutoKill().Restart();
+    }
+
+    public void SetPathAnimated(RectTransform start, RectTransform end)
+    {
+        SetTarget(start);
+        SetTargetAnimated(end);
     }
 
     public void PlayPingAnimation()
@@ -73,5 +73,5 @@ public class ExtraBehaviourPivot : ExtraBehaviour
     }
 
     public void RefreshPivots()
-        => AnimateState(IdleTransform);
+        => SetTargetAnimated(IdleTransform);
 }

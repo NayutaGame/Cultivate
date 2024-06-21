@@ -53,10 +53,14 @@ public class ShopPanel : Panel
         if (!success)
             return false;
 
-        // AudioManager.Instance.Play("钱币");
-        // Buy Animation
+        BuyStaging();
         CanvasManager.Instance.RunCanvas.Refresh();
         return true;
+    }
+
+    private void BuyStaging()
+    {
+        // AudioManager.Instance.Play("钱币");
     }
 
     private void Exit()
