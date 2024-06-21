@@ -116,44 +116,75 @@ public class ConsolePanel : Panel
         RunEnvironment env = RunManager.Instance.Environment;
         MingYuanText.text = env.GetMingYuan().ToString();
         GoldText.text = env.GetGold().Curr.ToString();
+        HealthText.text = env.Home.GetFinalHealth().ToString();
+    }
 
+    private void OnEnable()
+    {
+        CanvasManager.Instance.RunCanvas.GainMingYuanStagingNeuron.Add(RefreshMingYuan);
+        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Add(RefreshMingYuan);
+        CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Add(RefreshGold);
+        CanvasManager.Instance.RunCanvas.LoseGoldStagingNeuron.Add(RefreshGold);
+        CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Add(RefreshDHealth);
+        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Add(RefreshDHealth);
+    }
+
+    private void OnDisable()
+    {
+        CanvasManager.Instance.RunCanvas.GainMingYuanStagingNeuron.Remove(RefreshMingYuan);
+        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Remove(RefreshMingYuan);
+        CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Remove(RefreshGold);
+        CanvasManager.Instance.RunCanvas.LoseGoldStagingNeuron.Remove(RefreshGold);
+        CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Remove(RefreshDHealth);
+        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Remove(RefreshDHealth);
+    }
+
+    private void RefreshMingYuan(int value)
+    {
+        RunEnvironment env = RunManager.Instance.Environment;
+        MingYuanText.text = env.GetMingYuan().ToString();
+    }
+
+    private void RefreshGold(int value)
+    {
+        RunEnvironment env = RunManager.Instance.Environment;
+        GoldText.text = env.GetGold().Curr.ToString();
+    }
+
+    private void RefreshDHealth(int value)
+    {
+        RunEnvironment env = RunManager.Instance.Environment;
         HealthText.text = env.Home.GetFinalHealth().ToString();
     }
 
     private void AddMingYuan()
     {
-        RunManager.Instance.Environment.SetDMingYuanProcedure(1);
-        Refresh();
+        CanvasManager.Instance.RunCanvas.GainMingYuanProcedure(1);
     }
 
     private void ReduceMingYuan()
     {
-        RunManager.Instance.Environment.SetDMingYuanProcedure(-1);
-        Refresh();
+        CanvasManager.Instance.RunCanvas.LoseMingYuanProcedure(-1);
     }
 
     private void AddGold()
     {
-        RunManager.Instance.Environment.SetDGoldProcedure(10, true);
-        Refresh();
+        CanvasManager.Instance.RunCanvas.GainGoldProcedure(10);
     }
 
     private void ReduceGold()
     {
-        RunManager.Instance.Environment.SetDGoldProcedure(-10, true);
-        Refresh();
+        CanvasManager.Instance.RunCanvas.LoseGoldProcedure(-10);
     }
 
     private void AddHealth()
     {
-        RunManager.Instance.Environment.SetDDHealthProcedure(10);
-        Refresh();
+        CanvasManager.Instance.RunCanvas.GainDHealthProcedure(10);
     }
 
     private void ReduceHealth()
     {
-        RunManager.Instance.Environment.SetDDHealthProcedure(-10);
-        Refresh();
+        CanvasManager.Instance.RunCanvas.LoseDHealthProcedure(-10);
     }
 
     private void JingJieChanged(int jingJie)

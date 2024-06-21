@@ -29,11 +29,7 @@ public class RunEnvironment : Addressable, RunEventListener
         SimulateProcedure();
         _eventDict.SendEvent(RunEventDict.DID_UPDATE, d);
     }
-
-    public Neuron<SetDMingYuanDetails> MingYuanChangedNeuron = new();
-    public Neuron<SetDGoldDetails> GoldChangedNeuron = new();
-    public Neuron<SetDDHealthDetails> DHealthChangedNeuron = new();
-
+    
     #endregion
 
     #region Procedures
@@ -134,7 +130,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         {
             // init player start condition
-            SetDGoldProcedure(50, true);
+            SetDGoldProcedure(50);
             if (!firstTime)
                 DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
             // DrawSkillsProcedure(new(jingJie: JingJie.HuaShen, count: 20));
@@ -273,15 +269,13 @@ public class RunEnvironment : Addressable, RunEventListener
         _home.MingYuan.Curr += d.Value;
         _eventDict.SendEvent(RunEventDict.DID_SET_D_MINGYUAN, d);
 
-        MingYuanChangedNeuron.Invoke(d);
-
         // register this as a defeat check
         if (GetMingYuan().Curr <= 0)
             Result.State = RunResult.RunResultState.Defeat; // DefeatProcedure
     }
 
-    public void SetDGoldProcedure(int value, bool consume)
-        => SetDGoldProcedure(new SetDGoldDetails(value, consume));
+    public void SetDGoldProcedure(int value)
+        => SetDGoldProcedure(new SetDGoldDetails(value));
     private void SetDGoldProcedure(SetDGoldDetails d)
     {
         _eventDict.SendEvent(RunEventDict.WILL_SET_D_GOLD, d);
@@ -291,8 +285,6 @@ public class RunEnvironment : Addressable, RunEventListener
 
         _gold.Curr += d.Value;
         _eventDict.SendEvent(RunEventDict.DID_SET_D_GOLD, d);
-
-        GoldChangedNeuron.Invoke(d);
     }
 
     public void SetDDHealthProcedure(int value)
@@ -306,8 +298,6 @@ public class RunEnvironment : Addressable, RunEventListener
 
         _home.SetDHealth(_home.GetDHealth() + d.Value);
         _eventDict.SendEvent(RunEventDict.DID_SET_DDHEALTH, d);
-
-        DHealthChangedNeuron.Invoke(d);
     }
 
     public void SetMaxMingYuanProcedure(int value)

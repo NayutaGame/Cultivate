@@ -29,55 +29,40 @@ public class TopBar : MonoBehaviour
     private void OnEnable()
     {
         CanvasManager.Instance.RunCanvas.GainMingYuanStagingNeuron.Add(GainMingYuan);
-        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Add(LoseMingYuan);
+        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Add(MingYuan.NumberChangeNoAnimation);
         
         CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Add(GainGold);
-        CanvasManager.Instance.RunCanvas.ConsumeGoldStagingNeuron.Add(ConsumeGold);
+        CanvasManager.Instance.RunCanvas.LoseGoldStagingNeuron.Add(Gold.NumberChange);
         
         CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Add(GainDHealth);
-        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Add(LoseDHealth);
+        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Add(Health.NumberChange);
     }
 
     private void OnDisable()
     {
         CanvasManager.Instance.RunCanvas.GainMingYuanStagingNeuron.Remove(GainMingYuan);
-        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Remove(LoseMingYuan);
+        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Remove(MingYuan.NumberChangeNoAnimation);
         
         CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Remove(GainGold);
-        CanvasManager.Instance.RunCanvas.ConsumeGoldStagingNeuron.Remove(ConsumeGold);
+        CanvasManager.Instance.RunCanvas.LoseGoldStagingNeuron.Remove(Gold.NumberChange);
         
         CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Remove(GainDHealth);
-        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Remove(LoseDHealth);
+        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Remove(Health.NumberChange);
     }
 
-    private void GainMingYuan(SetDMingYuanDetails d)
+    private void GainMingYuan(int value)
     {
-        MingYuan.Gain(new Vector2(Screen.width / 2, Screen.height / 2), d.Value);
+        MingYuan.Gain(new Vector2(Screen.width / 2, Screen.height / 2), value);
     }
 
-    private void LoseMingYuan(SetDMingYuanDetails d)
+    private void GainGold(int value)
     {
-        MingYuan.NumberChangeNoAnimation(d.Value);
+        Gold.Gain(new Vector2(Screen.width / 2, Screen.height / 2), value);
     }
 
-    private void GainGold(SetDGoldDetails d)
+    private void GainDHealth(int value)
     {
-        Gold.Gain(new Vector2(Screen.width / 2, Screen.height / 2), d.Value);
-    }
-
-    private void ConsumeGold(SetDGoldDetails d)
-    {
-        Gold.NumberChange(d.Value);
-    }
-
-    private void GainDHealth(SetDDHealthDetails d)
-    {
-        Health.Gain(new Vector2(Screen.width / 2, Screen.height / 2), d.Value);
-    }
-
-    private void LoseDHealth(SetDDHealthDetails d)
-    {
-        Health.NumberChange(d.Value);
+        Health.Gain(new Vector2(Screen.width / 2, Screen.height / 2), value);
     }
 
     public void Refresh()

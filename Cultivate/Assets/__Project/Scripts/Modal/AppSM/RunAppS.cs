@@ -29,7 +29,6 @@ public class RunAppS : AppS
         }
         
         runCanvas.Configure();
-        runCanvas.RegisterEnvironment(runEnv);
         runCanvas.SetPanelS(panelS);
         runCanvas.TopBar.Refresh();
         await CanvasManager.Instance.Curtain.SetStateAsync(0);
@@ -43,7 +42,6 @@ public class RunAppS : AppS
         RunEnvironment runEnv = RunManager.Instance.Environment;
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
         
-        runCanvas.UnregisterEnvironment(runEnv);
         runCanvas.SetPanelS(PanelS.FromHide());
         
         RunResult result = runEnv.Result;
