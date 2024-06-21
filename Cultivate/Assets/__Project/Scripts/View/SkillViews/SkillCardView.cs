@@ -18,7 +18,8 @@ public class SkillCardView : SimpleView
     [SerializeField] private Image WuXingImage;
     [SerializeField] private Image EffectImage;
 
-    private Material _material;
+    private Material _outlineMaterial;
+    // private Material _dissolveMaterial;
 
     public override void AwakeFunction()
     {
@@ -27,7 +28,7 @@ public class SkillCardView : SimpleView
         if (EffectImage != null)
         {
             EffectImage.material = Instantiate(EffectImage.material);
-            _material = EffectImage.materialForRendering;
+            _outlineMaterial = EffectImage.materialForRendering;
         }
     }
 
@@ -68,8 +69,8 @@ public class SkillCardView : SimpleView
         _highlightHandle.SetAutoKill().Restart();
     }
 
-    private float GetOutlineFade() => _material.GetFloat(OuterOutlineFade);
-    private void SetOutlineFade(float value) => _material.SetFloat(OuterOutlineFade, value);
+    private float GetOutlineFade() => _outlineMaterial.GetFloat(OuterOutlineFade);
+    private void SetOutlineFade(float value) => _outlineMaterial.SetFloat(OuterOutlineFade, value);
 
     protected virtual void SetSprite(Sprite sprite)
     {

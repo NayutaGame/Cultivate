@@ -59,7 +59,8 @@ public class RunEnvironment : Addressable, RunEventListener
             Map.StepDescriptors = new StepDescriptor[]
             {
                 new DirectStepDescriptor(0, "循环"),
-                new BattleStepDescriptor(0, 3, 4),
+                new DirectStepDescriptor(0, "发现一张牌"),
+                // new BattleStepDescriptor(0, 3, 4),
                 new AdventureStepDescriptor(0),
                 new RestStepDescriptor(0),
                 new BattleStepDescriptor(1, 4, 5),

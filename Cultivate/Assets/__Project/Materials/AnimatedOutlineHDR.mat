@@ -25,6 +25,7 @@ Material:
   m_ValidKeywords:
   - _ENABLEOUTEROUTLINE_ON
   - _OUTEROUTLINEDISTORTIONTOGGLE_ON
+  - _OUTEROUTLINEOUTLINEONLYTOGGLE_ON
   - _SHADERFADING_NONE
   - _SHADERSPACE_UV
   m_InvalidKeywords: []
@@ -314,11 +315,11 @@ Material:
     - _FrozenHighlightDensity: 1
     - _FrozenSnowContrast: 1
     - _FrozenSnowDensity: 0.25
-    - _FullAlphaDissolveFade: 0.5
+    - _FullAlphaDissolveFade: 1
     - _FullAlphaDissolveWidth: 0.5
     - _FullDistortionFade: 1
-    - _FullGlowDissolveFade: 0.5
-    - _FullGlowDissolveWidth: 0.5
+    - _FullGlowDissolveFade: 0
+    - _FullGlowDissolveWidth: 0.2
     - _GaussianBlurFade: 1
     - _GaussianBlurOffset: 0.5
     - _GlitchBrightness: 4
@@ -365,7 +366,7 @@ Material:
     - _OcclusionStrength: 1
     - _OuterOutlineDistortionToggle: 1
     - _OuterOutlineFade: 0
-    - _OuterOutlineOutlineOnlyToggle: 0
+    - _OuterOutlineOutlineOnlyToggle: 1
     - _OuterOutlineTextureToggle: 0
     - _OuterOutlineWidth: 0.02
     - _Parallax: 0.005
@@ -573,7 +574,7 @@ Material:
     - _FullDistortionDistortion: {r: 0.2, g: 0.2, b: 0, a: 0}
     - _FullDistortionNoiseScale: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _FullGlowDissolveEdgeColor: {r: 11.98431, g: 0.627451, b: 0.627451, a: 0}
-    - _FullGlowDissolveNoiseScale: {r: 0.1, g: 0.1, b: 0, a: 0}
+    - _FullGlowDissolveNoiseScale: {r: 0.05, g: 0.05, b: 0, a: 0}
     - _GlitchDistortion: {r: 0.1, g: 0, b: 0, a: 0}
     - _GlitchDistortionScale: {r: 0, g: 3, b: 0, a: 0}
     - _GlitchDistortionSpeed: {r: 0, g: 1, b: 0, a: 0}

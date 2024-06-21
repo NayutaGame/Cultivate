@@ -1,5 +1,6 @@
 
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class TweenAnimation
@@ -15,6 +16,13 @@ public class TweenAnimation
             .Append(target.DOAnchorPos(idlePosition, 0.15f).From(idlePosition + Vector2.right * 100).SetEase(Ease.OutQuad))
             .Join(canvasGroup.DOFade(1, 0.15f).From(0).SetEase(Ease.OutQuad));
     }
+    
+    public static Tween Show(RectTransform target, Vector2 idlePosition, TMP_Text text)
+    {
+        return DOTween.Sequence()
+            .Append(target.DOAnchorPos(idlePosition, 0.15f).From(idlePosition + Vector2.right * 100).SetEase(Ease.OutQuad))
+            .Join(text.DOFade(1, 0.15f).From(0).SetEase(Ease.OutQuad));
+    }
 
     public static Tween Hide(RectTransform target, Vector2 idlePosition)
     {
@@ -26,5 +34,12 @@ public class TweenAnimation
         return DOTween.Sequence()
             .Append(target.DOAnchorPos(idlePosition + Vector2.left * 100, 0.15f).From(idlePosition).SetEase(Ease.InQuad))
             .Join(canvasGroup.DOFade(0, 0.15f).From(1).SetEase(Ease.InQuad));
+    }
+
+    public static Tween Hide(RectTransform target, Vector2 idlePosition, TMP_Text text)
+    {
+        return DOTween.Sequence()
+            .Append(target.DOAnchorPos(idlePosition + Vector2.left * 100, 0.15f).From(idlePosition).SetEase(Ease.InQuad))
+            .Join(text.DOFade(0, 0.15f).From(1).SetEase(Ease.InQuad));
     }
 }

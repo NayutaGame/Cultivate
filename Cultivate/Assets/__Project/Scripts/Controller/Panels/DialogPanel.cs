@@ -50,6 +50,8 @@ public class DialogPanel : Panel
         SM[0, 1] = ShowTween;
         SM[1, 1] = SelfTransitionTween;
         SM[-1, 0] = HideTween;
+        
+        SetState(0);
     }
 
     public override void Refresh()
