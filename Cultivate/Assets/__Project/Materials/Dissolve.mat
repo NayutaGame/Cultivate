@@ -23,9 +23,8 @@ Material:
   m_Name: Dissolve
   m_Shader: {fileID: 4800000, guid: bb134d7d4389e3a45a6c49e898a344a4, type: 3}
   m_ValidKeywords:
-  - _ENABLEOUTEROUTLINE_ON
+  - _ENABLEFULLGLOWDISSOLVE_ON
   - _OUTEROUTLINEDISTORTIONTOGGLE_ON
-  - _OUTEROUTLINEOUTLINEONLYTOGGLE_ON
   - _SHADERFADING_NONE
   - _SHADERSPACE_UV
   m_InvalidKeywords: []
@@ -246,7 +245,7 @@ Material:
     - _EnableFrozen: 0
     - _EnableFullAlphaDissolve: 0
     - _EnableFullDistortion: 0
-    - _EnableFullGlowDissolve: 0
+    - _EnableFullGlowDissolve: 1
     - _EnableGaussianBlur: 0
     - _EnableGlitch: 0
     - _EnableHalftone: 0
@@ -256,7 +255,7 @@ Material:
     - _EnableInnerOutline: 0
     - _EnableMetal: 0
     - _EnableNegative: 0
-    - _EnableOuterOutline: 1
+    - _EnableOuterOutline: 0
     - _EnablePingPongGlow: 0
     - _EnablePixelOutline: 0
     - _EnablePixelate: 0
@@ -318,8 +317,8 @@ Material:
     - _FullAlphaDissolveFade: 1
     - _FullAlphaDissolveWidth: 0.5
     - _FullDistortionFade: 1
-    - _FullGlowDissolveFade: 0
-    - _FullGlowDissolveWidth: 0.2
+    - _FullGlowDissolveFade: 0.46
+    - _FullGlowDissolveWidth: 0.1
     - _GaussianBlurFade: 1
     - _GaussianBlurOffset: 0.5
     - _GlitchBrightness: 4
@@ -365,8 +364,8 @@ Material:
     - _NegativeFade: 1
     - _OcclusionStrength: 1
     - _OuterOutlineDistortionToggle: 1
-    - _OuterOutlineFade: 0
-    - _OuterOutlineOutlineOnlyToggle: 1
+    - _OuterOutlineFade: 0.43
+    - _OuterOutlineOutlineOnlyToggle: 0
     - _OuterOutlineTextureToggle: 0
     - _OuterOutlineWidth: 0.02
     - _Parallax: 0.005
@@ -573,7 +572,7 @@ Material:
     - _FullAlphaDissolveNoiseScale: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _FullDistortionDistortion: {r: 0.2, g: 0.2, b: 0, a: 0}
     - _FullDistortionNoiseScale: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _FullGlowDissolveEdgeColor: {r: 11.98431, g: 0.627451, b: 0.627451, a: 0}
+    - _FullGlowDissolveEdgeColor: {r: 47.937256, g: 2.7607844, b: 2.7607844, a: 0}
     - _FullGlowDissolveNoiseScale: {r: 0.05, g: 0.05, b: 0, a: 0}
     - _GlitchDistortion: {r: 0.1, g: 0, b: 0, a: 0}
     - _GlitchDistortionScale: {r: 0, g: 3, b: 0, a: 0}
