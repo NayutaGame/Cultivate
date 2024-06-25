@@ -18,7 +18,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         return this;
     }
 
-    public SkillDescriptor _skillDescriptor;
+    private SkillDescriptor _skillDescriptor;
 
     public CardPickerPanelDescriptor(string detailedText = null, Bound bound = null,
         Func<List<object>, PanelDescriptor> confirmOperation = null,
@@ -36,7 +36,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     }
 
     public bool CanSelect(RunSkill skill)
-        => _skillDescriptor?.Contains(skill.GetEntry()) ?? skill is RunSkill;
+        => _skillDescriptor?.Contains(skill.GetEntry()) ?? skill != null;
 
     public bool CanSelect(SkillSlot slot)
         => slot.Skill != null && CanSelect(slot.Skill);
@@ -49,5 +49,38 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         }
 
         return this;
+    }
+
+    public static CardPickerPanelDescriptor GetTemplate()
+    {
+        CardPickerPanelDescriptor template = new CardPickerPanelDescriptor(
+            detailedText:       "请提交一张二动牌",
+            bound:              new Bound(0, 2),
+            skillDescriptor:    new(skillTypeComposite: SkillType.ErDong));
+        
+        DialogPanelDescriptor win = new("成功对话。");
+        DialogPanelDescriptor lose = new("失败对话。");
+
+        template.SetConfirmOperation(iRunSkillList =>
+        {
+            if (iRunSkillList.Count == 0)
+                return lose;
+
+            foreach (object iSkill in iRunSkillList)
+            {
+                if (iSkill is RunSkill skill)
+                {
+                    RunManager.Instance.Environment.Hand.Remove(skill);
+                }
+                else if (iSkill is SkillSlot slot)
+                {
+                    slot.Skill = null;
+                }
+            }
+
+            return win;
+        });
+        
+        return template;
     }
 }

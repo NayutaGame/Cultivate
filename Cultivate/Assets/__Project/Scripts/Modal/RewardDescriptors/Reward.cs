@@ -4,9 +4,9 @@ public abstract class Reward
     public abstract void Claim();
     public abstract string GetDescription();
 
-    public static Reward FromGold(int xiuWei)
+    public static Reward FromGold(int gold)
     {
-        return new ResourceReward(gold: xiuWei);
+        return new ResourceReward(gold: gold);
     }
 
     public static Reward FromHealth(int health)

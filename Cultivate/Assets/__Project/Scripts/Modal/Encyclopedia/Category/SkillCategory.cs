@@ -2415,18 +2415,16 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "0605",
-                name:                       "射金乌",
+                name:                       "射落金乌",
                 wuXing:                     WuXing.Huo,
-                jingJieBound:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
-                cost:                       CostResult.ChannelFromValue(3),
-                costDescription:            CostDescription.ChannelFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"5攻x{4 + 2 * dj}",
+                    $"5攻x4",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.AttackProcedure(5, times: 4 + 2 * skill.Dj, wuXing: skill.Entry.WuXing);
+                    await caster.AttackProcedure(5, times: 4, wuXing: skill.Entry.WuXing);
                     return null;
                 }),
 

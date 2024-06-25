@@ -7,15 +7,6 @@ public class BattleStepDescriptor : StepDescriptor
     public bool _isBoss;
 
     public bool ShouldUpdateSlotCount => _slotCountBefore != _slotCountAfter;
-    
-    private static readonly int[] GoldRewardTable = new int[]
-    {
-        5, /*11,*/ 31,
-        11, 21, 61,
-        15, 31, 91,
-        21, 41, 121,
-        25, 51, 151,
-    };
 
     private static readonly bool[] IsBossTable = new bool[]
     {

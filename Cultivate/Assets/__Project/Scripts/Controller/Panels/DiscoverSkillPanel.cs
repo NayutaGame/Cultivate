@@ -28,6 +28,8 @@ public class DiscoverSkillPanel : Panel
 
     protected override void InitStateMachine()
     {
+        if (SM != null)
+            return;
         SM = new(2);
         // 0 for hide, 1 for show
         SM[0, 1] = ShowTween;

@@ -90,4 +90,66 @@ public class PuzzlePanelDescriptor : PanelDescriptor
     
         return this;
     }
+
+    public static PuzzlePanelDescriptor GetTemplate()
+    {
+        Puzzle puzzle = new(
+            description: "尝试帮助少年击中目标",
+            condition: "目标受到伤害",
+            home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
+            away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
+            {
+                RunSkill.FromEntry("0609"),
+                RunSkill.FromEntry("0609"),
+                RunSkill.FromEntry("0609"),
+            }),
+            kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+            {
+                CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+
+                await env.EventDict.SendEvent(StageEventDict.WIL_COMMIT, d);
+
+                if (forced)
+                {
+                    d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                }
+                else
+                {
+                    if (d.Cancel)
+                        return 0;
+
+                    if (turn < 6)
+                        return 0;
+
+                    d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                }
+
+                await env.EventDict.SendEvent(StageEventDict.DID_COMMIT, d);
+
+                if (d.Flag == 0)
+                    return d.Flag;
+
+                env.Result.Flag = d.Flag;
+                env.Result.HomeLeftHp = env.Entities[0].Hp;
+                env.Result.AwayLeftHp = env.Entities[1].Hp;
+                env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+                return d.Flag;
+            })
+        );
+        
+        PuzzlePanelDescriptor template = new(puzzle);
+        DialogPanelDescriptor pass = new DialogPanelDescriptor("通过对话。");
+        DialogPanelDescriptor noPass = new DialogPanelDescriptor("未通过对话");
+        template.SetOperation(s =>
+        {
+            if (s.Flag == 1)
+            {
+                return pass;
+            }
+
+            return noPass;
+        });
+        
+        return template;
+    }
 }
