@@ -9,13 +9,13 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     public string GetDetailedText() => _detailedText;
     public void SetDetailedText(string value) => _detailedText = value;
 
-    private ListModel<SkillDescriptor> _skills;
-    public ListModel<SkillDescriptor> GetSkills() => _skills;
+    private ListModel<SkillEntryDescriptor> _skills;
+    public ListModel<SkillEntryDescriptor> GetSkills() => _skills;
     public int GetSkillCount() => _skills.Count();
-    public SkillDescriptor GetSkill(int i) => _skills[i];
-    public int GetIndexOfSkill(SkillDescriptor skill) => _skills.IndexOf(skill);
+    public SkillEntryDescriptor GetSkill(int i) => _skills[i];
+    public int GetIndexOfSkill(SkillEntryDescriptor skill) => _skills.IndexOf(skill);
 
-    private SkillCollectionDescriptor _descriptor;
+    private SkillEntryCollectionDescriptor _descriptor;
     private JingJie _preferredJingJie;
 
     public DiscoverSkillPanelDescriptor(string titleText = null, string detailedText = null)
@@ -49,7 +49,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     {
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
-            SkillDescriptor skill = _skills[selectedOptionSignal.Selected];
+            SkillEntryDescriptor skill = _skills[selectedOptionSignal.Selected];
             RunManager.Instance.Environment.AddSkillProcedure(skill.Entry, skill.JingJie);
             return null;
         }

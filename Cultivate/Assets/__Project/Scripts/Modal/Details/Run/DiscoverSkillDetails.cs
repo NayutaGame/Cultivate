@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 public class DiscoverSkillDetails : EventDetails
 {
-    public List<SkillDescriptor> Skills;
-    public SkillCollectionDescriptor Descriptor;
+    public List<SkillEntryDescriptor> Skills;
+    public SkillEntryCollectionDescriptor Descriptor;
     public JingJie PreferredJingJie;
 
-    public DiscoverSkillDetails(SkillCollectionDescriptor descriptor, JingJie preferredJingJie)
+    public DiscoverSkillDetails(SkillEntryCollectionDescriptor descriptor, JingJie preferredJingJie)
     {
         Skills = new();
         Descriptor = descriptor;

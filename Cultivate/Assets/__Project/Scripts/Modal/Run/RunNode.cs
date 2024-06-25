@@ -31,6 +31,8 @@ public class RunNode
         get => _panel;
         set
         {
+            if (_panel == value)
+                return;
             _panel?.Exit();
             _panel = value;
             _panel?.Enter();

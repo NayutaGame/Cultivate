@@ -11,7 +11,8 @@ public abstract class Panel : MonoBehaviour
     public virtual void Configure()
     {
         RectTransform ??= GetComponent<RectTransform>();
-        InitStateMachine();
+        if (SM == null)
+            InitStateMachine();
     }
 
     protected virtual void InitStateMachine()

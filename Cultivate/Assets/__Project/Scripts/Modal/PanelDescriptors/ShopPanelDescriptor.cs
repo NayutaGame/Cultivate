@@ -35,7 +35,7 @@ public class ShopPanelDescriptor : PanelDescriptor
         {
             int price = Mathf.RoundToInt(PriceTable[_jingJie] * RandomManager.Range(0.8f, 1.2f));
             float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-            _commodities.Add(new Commodity(SkillDescriptor.FromEntryJingJie(e, _jingJie), price, discount));
+            _commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, _jingJie), price, discount));
         }
     }
 

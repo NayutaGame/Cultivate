@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class Commodity : Addressable
 {
-    public SkillDescriptor Skill;
+    public SkillEntryDescriptor Skill;
     public int Price;
     public float Discount;
     public int FinalPrice;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public Commodity(SkillDescriptor skill, int price, float discount = 1f)
+    public Commodity(SkillEntryDescriptor skill, int price, float discount = 1f)
     {
         _accessors = new()
         {

@@ -3,9 +3,9 @@ public class UnequipGuide : Guide
 {
     private string _comment;
     public string GetComment() => _comment;
-    private SkillDescriptor _from;
+    private SkillEntryDescriptor _from;
 
-    public UnequipGuide(string comment, SkillDescriptor from)
+    public UnequipGuide(string comment, SkillEntryDescriptor from)
     {
         _comment = comment;
         _from = from;

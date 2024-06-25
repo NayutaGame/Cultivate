@@ -162,7 +162,7 @@ public class RunCanvas : Panel
 
     #region Staging
 
-    public void GainSkillProcedure(Vector3 position, SkillDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+    public void GainSkillProcedure(Vector3 position, SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
     {
         RunManager.Instance.Environment.DrawSkillProcedure(descriptor, preferredDeckIndex);
         Refresh();

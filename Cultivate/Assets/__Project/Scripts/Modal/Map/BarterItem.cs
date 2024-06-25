@@ -8,12 +8,12 @@ using UnityEngine.Serialization;
 
 public class BarterItem : Addressable
 {
-    public SkillDescriptor FromSkill;
-    public SkillDescriptor ToSkill;
+    public SkillEntryDescriptor FromSkill;
+    public SkillEntryDescriptor ToSkill;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public BarterItem(SkillDescriptor fromSkill, SkillDescriptor toSkill)
+    public BarterItem(SkillEntryDescriptor fromSkill, SkillEntryDescriptor toSkill)
     {
         _accessors = new()
         {

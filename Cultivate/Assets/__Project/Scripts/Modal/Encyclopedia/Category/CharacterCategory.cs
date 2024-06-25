@@ -133,19 +133,19 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         RunSkill copiedSkill = slotToCopy.Skill as RunSkill;
 
-                        env.SetVariable("CopiedSkill", copiedSkill != null ? SkillDescriptor.FromRunSkill(copiedSkill) : null);
+                        env.SetVariable("CopiedSkill", copiedSkill != null ? SkillEntryDescriptor.FromRunSkill(copiedSkill) : null);
                     }),
                     new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WILL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
 
-                        SkillDescriptor copiedSkill = env.GetVariable<SkillDescriptor>("CopiedSkill");
-                        if (copiedSkill == null)
+                        SkillEntryDescriptor copiedSkillEntry = env.GetVariable<SkillEntryDescriptor>("CopiedSkill");
+                        if (copiedSkillEntry == null)
                             return;
 
-                        d.Skills.Add(copiedSkill);
-                        env.SetVariable<SkillDescriptor>("CopiedSkill", null);
+                        d.Skills.Add(copiedSkillEntry);
+                        env.SetVariable<SkillEntryDescriptor>("CopiedSkill", null);
                     }),
                 }),
         });

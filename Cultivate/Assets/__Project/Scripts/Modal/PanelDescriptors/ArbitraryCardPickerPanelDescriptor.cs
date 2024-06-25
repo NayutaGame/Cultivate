@@ -8,18 +8,18 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
     private string _detailedText;
     public string GetDetailedText() => _detailedText;
 
-    private ListModel<SkillDescriptor> _inventory;
-    public ListModel<SkillDescriptor> GetInventory() => _inventory;
+    private ListModel<SkillEntryDescriptor> _inventory;
+    public ListModel<SkillEntryDescriptor> GetInventory() => _inventory;
 
-    private SkillDescriptor _descriptor;
+    private SkillEntryDescriptor _descriptor;
 
     private Bound _bound;
     public Bound Bound => _bound;
     public bool HasSpace(int occupied)
         => _bound.End - 1 > occupied;
 
-    private Func<List<SkillDescriptor>, PanelDescriptor> _confirmOperation;
-    public ArbitraryCardPickerPanelDescriptor SetConfirmOperation(Func<List<SkillDescriptor>, PanelDescriptor> confirmOperation)
+    private Func<List<SkillEntryDescriptor>, PanelDescriptor> _confirmOperation;
+    public ArbitraryCardPickerPanelDescriptor SetConfirmOperation(Func<List<SkillEntryDescriptor>, PanelDescriptor> confirmOperation)
     {
         _confirmOperation = confirmOperation;
         return this;
@@ -28,8 +28,8 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
     public ArbitraryCardPickerPanelDescriptor(
         string detailedText = null,
         Bound bound = null,
-        SkillDescriptor descriptor = null,
-        Func<List<SkillDescriptor>, PanelDescriptor> confirmOperation = null)
+        SkillEntryDescriptor descriptor = null,
+        Func<List<SkillEntryDescriptor>, PanelDescriptor> confirmOperation = null)
     {
         _accessors = new()
         {
@@ -42,15 +42,15 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
         _confirmOperation = confirmOperation;
         _descriptor = descriptor;
         
-        _inventory = new ListModel<SkillDescriptor>();
+        _inventory = new ListModel<SkillEntryDescriptor>();
     }
 
-    public bool CanSelect(SkillDescriptor skill)
+    public bool CanSelect(SkillEntryDescriptor skill)
         => _descriptor?.Contains(skill) ?? true;
 
-    public void PopulateInventory(List<SkillDescriptor> skills)
+    public void PopulateInventory(List<SkillEntryDescriptor> skills)
     {
-        foreach(SkillDescriptor skill in skills)
+        foreach(SkillEntryDescriptor skill in skills)
             _inventory.Add(skill);
     }
 

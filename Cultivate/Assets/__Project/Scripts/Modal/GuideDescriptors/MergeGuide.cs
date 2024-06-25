@@ -3,10 +3,10 @@ public class MergeGuide : Guide
 {
     private string _comment;
     public string GetComment() => _comment;
-    private SkillDescriptor _from;
-    private SkillDescriptor _to;
+    private SkillEntryDescriptor _from;
+    private SkillEntryDescriptor _to;
 
-    public MergeGuide(string comment, SkillDescriptor from, SkillDescriptor to)
+    public MergeGuide(string comment, SkillEntryDescriptor from, SkillEntryDescriptor to)
     {
         _comment = comment;
         _from = from;

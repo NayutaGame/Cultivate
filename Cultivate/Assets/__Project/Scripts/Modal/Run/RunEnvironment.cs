@@ -323,7 +323,7 @@ public class RunEnvironment : Addressable, RunEventListener
         _eventDict.SendEvent(RunEventDict.WILL_DISCOVER_SKILL, d);
 
         List<SkillEntry> entries = DrawSkills(d.Descriptor);
-        d.Skills.AddRange(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
+        d.Skills.AddRange(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
 
         _eventDict.SendEvent(RunEventDict.DID_DISCOVER_SKILL, d);
     }
@@ -639,7 +639,7 @@ public class RunEnvironment : Addressable, RunEventListener
             return Hand[deckIndex.Index];
     }
 
-    public bool FindDeckIndex(out DeckIndex result, SkillDescriptor d,
+    public bool FindDeckIndex(out DeckIndex result, SkillEntryDescriptor d,
         bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
     {
         omit ??= Array.Empty<DeckIndex>();
@@ -667,7 +667,7 @@ public class RunEnvironment : Addressable, RunEventListener
         Home.TraversalCurrentSlots().Do(s => s.Skill = null);
     }
 
-    public List<SkillEntry> DrawSkills(SkillCollectionDescriptor d)
+    public List<SkillEntry> DrawSkills(SkillEntryCollectionDescriptor d)
     {
         List<SkillEntry> toRet = new();
         
@@ -695,7 +695,7 @@ public class RunEnvironment : Addressable, RunEventListener
         return toRet;
     }
     
-    public SkillEntry DrawSkill(SkillDescriptor descriptor)
+    public SkillEntry DrawSkill(SkillEntryDescriptor descriptor)
     {
         SkillPool.Shuffle();
         SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
@@ -724,13 +724,13 @@ public class RunEnvironment : Addressable, RunEventListener
             Hand.Replace(deckIndex.Index, skill);
     }
 
-    public void DrawSkillsProcedure(SkillCollectionDescriptor descriptor)
+    public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
     {
         List<SkillEntry> entries = DrawSkills(descriptor);
         entries.Do(e => AddSkill(CreateSkill(e, descriptor.JingJie)));
     }
 
-    public void DrawSkillProcedure(SkillDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+    public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
         => AddSkill(CreateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
 
     public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null,

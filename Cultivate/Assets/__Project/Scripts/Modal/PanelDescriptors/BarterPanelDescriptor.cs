@@ -20,23 +20,23 @@ public class BarterPanelDescriptor : PanelDescriptor
     {
         base.DefaultEnter();
 
-        Pool<SkillDescriptor> pool = new Pool<SkillDescriptor>();
+        Pool<SkillEntryDescriptor> pool = new Pool<SkillEntryDescriptor>();
         pool.Populate(RunManager.Instance.Environment.TraversalDeckIndices()
             .Map(deckIndex => RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex) as RunSkill)
             .FilterObj(skill => skill != null)
-            .Map(SkillDescriptor.FromRunSkill));
+            .Map(SkillEntryDescriptor.FromRunSkill));
         pool.Shuffle();
 
         int count = Mathf.Min(pool.Count(), 6);
 
-        SkillDescriptor[] fromSkills = new SkillDescriptor[count];
+        SkillEntryDescriptor[] fromSkills = new SkillEntryDescriptor[count];
         for (int i = 0; i < fromSkills.Length; i++)
             pool.TryPopItem(out fromSkills[i]);
 
-        SkillDescriptor[] toSkills = new SkillDescriptor[count];
+        SkillEntryDescriptor[] toSkills = new SkillEntryDescriptor[count];
         for (int i = 0; i < toSkills.Length; i++)
         {
-            SkillDescriptor descriptor = SkillDescriptor.FromPredJingJie(
+            SkillEntryDescriptor descriptor = SkillEntryDescriptor.FromPredJingJie(
                 skillEntry =>
                 {
                     foreach(var s in fromSkills)
@@ -44,7 +44,7 @@ public class BarterPanelDescriptor : PanelDescriptor
                             return false;
                     return true;
                 }, fromSkills[i].JingJie);
-            toSkills[i] = SkillDescriptor.FromEntry(RunManager.Instance.Environment.DrawSkill(descriptor)); // distinct, non consume
+            toSkills[i] = SkillEntryDescriptor.FromEntry(RunManager.Instance.Environment.DrawSkill(descriptor)); // distinct, non consume
         }
         
         _inventory = new();

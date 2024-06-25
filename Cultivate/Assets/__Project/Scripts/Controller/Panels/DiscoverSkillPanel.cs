@@ -28,8 +28,6 @@ public class DiscoverSkillPanel : Panel
 
     protected override void InitStateMachine()
     {
-        if (SM != null)
-            return;
         SM = new(2);
         // 0 for hide, 1 for show
         SM[0, 1] = ShowTween;
@@ -58,7 +56,7 @@ public class DiscoverSkillPanel : Panel
         
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
-        SkillDescriptor skill = ib.GetSimpleView().Get<SkillDescriptor>();
+        SkillEntryDescriptor skill = ib.GetSimpleView().Get<SkillEntryDescriptor>();
         // TODO: Discover Animation
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
         PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);

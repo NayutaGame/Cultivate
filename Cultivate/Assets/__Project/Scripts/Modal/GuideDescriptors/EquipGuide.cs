@@ -3,10 +3,10 @@ public class EquipGuide : Guide
 {
     private string _comment;
     public string GetComment() => _comment;
-    private SkillDescriptor _from;
+    private SkillEntryDescriptor _from;
     private DeckIndex _to;
 
-    public EquipGuide(string comment, SkillDescriptor from, DeckIndex to)
+    public EquipGuide(string comment, SkillEntryDescriptor from, DeckIndex to)
     {
         _comment = comment;
         _from = from;

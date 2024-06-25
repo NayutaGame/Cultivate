@@ -100,15 +100,13 @@ public class NodeCategory : Category<NodeEntry>
                     B._receiveSignal = signal =>
                     {
                         battleRunNode.ClaimRewards();
-                        B.DefaultReceiveSignal(signal);
-                        return null;
+                        return B.DefaultReceiveSignal(signal);
                     };
 
                     C._receiveSignal = signal =>
                     {
                         battleRunNode.ClaimRewards();
-                        C.DefaultReceiveSignal(signal);
-                        return null;
+                        return C.DefaultReceiveSignal(signal);
                     };
 
                     D._receiveSignal = signal => D;
@@ -125,27 +123,28 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor A = new("前方有人参果树和菩提树，选择一条路", "人参果树", "菩提树");
                     DialogPanelDescriptor B = new DialogPanelDescriptor("吃了一个人参果，回复了2点命元")
                         .SetReward(Reward.FromMingYuan(2));
+
+                    JingJie targetJingJie = Mathf.Min(map.JingJie + 1, JingJie.HuaShen);
                     
-                    CardPickerPanelDescriptor C = new("在菩提树下做了一段时间，对境界有了新的见解，请选择一张卡牌提升", new Bound(0, 2));
+                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
+                        detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。\n请选择至多一张低于{targetJingJie}的卡牌提升至{targetJingJie}",
+                        bound:              new Bound(0, 2),
+                        descriptor:         RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, targetJingJie));
                     C.SetConfirmOperation(iRunSkillList =>
                     {
                         foreach (var iRunSkill in iRunSkillList)
                         {
                             if (iRunSkill is RunSkill skill)
                             {
-                                if (skill.JingJie <= map.JingJie && skill.JingJie != JingJie.HuaShen)
-                                {
-                                    skill.TryIncreaseJingJie(loop: false);
-                                    CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
-                                }
+                                skill.JingJie = targetJingJie;
+                                // staging
+                                CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
                             }
                             else if (iRunSkill is SkillSlot slot)
                             {
-                                if (slot.Skill.GetJingJie() <= map.JingJie && slot.Skill.GetJingJie() != JingJie.HuaShen)
-                                {
-                                    slot.TryIncreaseJingJie(loop: false);
-                                    CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
-                                }
+                                slot.Skill.JingJie = targetJingJie;
+                                // staging
+                                CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
                             }
                         }
 
@@ -273,7 +272,7 @@ public class NodeCategory : Category<NodeEntry>
                     ZhiRuBattle.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillDescriptor.FromEntry("0200"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromEntry("0200"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                        "左边是自己最终血量\n" +
                                        "右边是敌方最终血量\n" +
@@ -299,9 +298,9 @@ public class NodeCategory : Category<NodeEntry>
                     LingQiBattle.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将落石置入",
-                            SkillDescriptor.FromEntry("0500"), new DeckIndex(true, 1)),
+                            SkillEntryDescriptor.FromEntry("0500"), new DeckIndex(true, 1)),
                         new EquipGuide("使用落石需要灵气\n现在缺少灵气，所以变成了红色字标\n战斗过程中，缺少灵气时，角色会消耗一回合来补充灵气",
-                            SkillDescriptor.FromEntry("0205"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromEntry("0205"), new DeckIndex(true, 0)),
                     });
                     LingQiBattle.SetWinOperation(() =>
                     {
@@ -321,7 +320,7 @@ public class NodeCategory : Category<NodeEntry>
                     ZhanBaiBattle.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("遇到了非常强大的怪物时也不用慌张，尝试将卡牌置入",
-                            SkillDescriptor.FromEntry("0200"), new DeckIndex(true, 2)),
+                            SkillEntryDescriptor.FromEntry("0200"), new DeckIndex(true, 2)),
                         new ClickBattleGuide("旅途并不总是一帆风顺的\n也会存在无论如何都胜利不了的时候\n请出招吧",
                             new Vector2(965f, 913.5f)),
                     });
@@ -337,11 +336,11 @@ public class NodeCategory : Category<NodeEntry>
                     HeChengBattle.SetGuideDescriptors(new Guide[]
                     {
                         new UnequipGuide("两张同名卡，都在手牌区时，可以通过拖拽合成。\n将恋花取下",
-                            SkillDescriptor.FromEntry("0200")),
+                            SkillEntryDescriptor.FromEntry("0200")),
                         new MergeGuide("将一张恋花推拽到另一张恋花上",
-                            SkillDescriptor.FromEntry("0200"), SkillDescriptor.FromEntry("0200")),
+                            SkillEntryDescriptor.FromEntry("0200"), SkillEntryDescriptor.FromEntry("0200")),
                         new EquipGuide("将合成好的恋花推拽至战斗区",
-                            SkillDescriptor.FromEntry("0200"), new DeckIndex(true, 2)),
+                            SkillEntryDescriptor.FromEntry("0200"), new DeckIndex(true, 2)),
                     });
                     HeChengBattle.SetWinOperation(() =>
                     {
@@ -559,7 +558,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor C = new("刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
 
                     List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(jingJie: map.JingJie, count: 10, consume: false));
-                    B.PopulateInventory(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                    B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                     B.SetConfirmOperation(skills =>
                     {
                         skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
@@ -720,7 +719,7 @@ public class NodeCategory : Category<NodeEntry>
                             count: 3,
                             distinct: true,
                             consume: false));
-                        C.PopulateInventory(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        C.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                         return C;
                     });
                     B[1].SetSelect(option =>
@@ -734,7 +733,7 @@ public class NodeCategory : Category<NodeEntry>
                             count: 3,
                             distinct: true,
                             consume: false));
-                        C.PopulateInventory(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        C.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                         return C;
                     });
                     B[2].SetSelect(option =>
@@ -746,7 +745,7 @@ public class NodeCategory : Category<NodeEntry>
                             count: 3,
                             distinct: true,
                             consume: false));
-                        C.PopulateInventory(entries.Map(e => SkillDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        C.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
                         return C;
                     });
 
@@ -1520,7 +1519,7 @@ public class NodeCategory : Category<NodeEntry>
                             JingJie jingJie = RandomManager.Range(skill.GetJingJie(), map.JingJie + 1);
                             
                             RunManager.Instance.Environment.DrawSkillProcedure(
-                                SkillDescriptor.FromWuXingJingJie(wuXing, jingJie),
+                                SkillEntryDescriptor.FromWuXingJingJie(wuXing, jingJie),
                                 deckIndex);
                         });
 
@@ -1540,8 +1539,14 @@ public class NodeCategory : Category<NodeEntry>
                         "尝试观看两人对弈（需要一张二动牌）",
                         "请教两人路怎么走（需要一张治疗牌）");
 
-                    CardPickerPanelDescriptor B = new CardPickerPanelDescriptor("请提交一张二动牌", new Bound(0, 2), skillDescriptor: new(skillTypeComposite: SkillType.ErDong));
-                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor("请提交一张治疗牌", new Bound(0, 2), skillDescriptor: new(skillTypeComposite: SkillType.ZhiLiao));
+                    CardPickerPanelDescriptor B = new CardPickerPanelDescriptor(
+                        detailedText:       "请提交一张二动牌",
+                        bound:              new Bound(0, 2),
+                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.ErDong));
+                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
+                        detailedText:       "请提交一张治疗牌",
+                        bound:              new Bound(0, 2),
+                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.ZhiLiao));
 
                     DialogPanelDescriptor BWin = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
                     DialogPanelDescriptor BWin2 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
@@ -1673,8 +1678,7 @@ public class NodeCategory : Category<NodeEntry>
                     
                     CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
                         detailedText:       "请提交一张牌",
-                        bound:              new Bound(0, 2),
-                        skillDescriptor:    new(skillTypeComposite: SkillType.ErDong));
+                        bound:              new Bound(0, 2));
         
                     DialogPanelDescriptor CWin = new("少年感谢你赠与的秘籍，已经准备好开始练习了。", "继续上路");
 
@@ -2051,12 +2055,6 @@ public class NodeCategory : Category<NodeEntry>
                 {
                     DiscoverSkillPanelDescriptor A = new("灵感");
                     A.SetDetailedText($"请选择一张卡作为奖励");
-
-                    A._receiveSignal = signal =>
-                    {
-                        A.DefaultReceiveSignal(signal);
-                        return null;
-                    };
 
                     map.CurrNode.Panel = A;
                 }),

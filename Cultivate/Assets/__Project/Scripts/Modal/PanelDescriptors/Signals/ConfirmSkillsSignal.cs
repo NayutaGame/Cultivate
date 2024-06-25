@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class ConfirmSkillsSignal : Signal
 {
-    public List<SkillDescriptor> Selected;
+    public List<SkillEntryDescriptor> Selected;
 
-    public ConfirmSkillsSignal(List<SkillDescriptor> selected)
+    public ConfirmSkillsSignal(List<SkillEntryDescriptor> selected)
     {
         Selected = selected;
     }

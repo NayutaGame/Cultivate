@@ -17,7 +17,7 @@ public class RunSkill : ISkillModel, ISerializationCallbackReceiver
     public JingJie JingJie
     {
         get => _jingJie;
-        set => _jingJie = value;
+        set => _jingJie = Mathf.Clamp(value, GetEntry().LowestJingJie, GetEntry().HighestJingJie);
     }
 
     [SerializeField] protected int _runUsedTimes;
