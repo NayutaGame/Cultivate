@@ -763,7 +763,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("飞龙在天", "每轮：闪避补至[层数]", BuffStackRule.Add, true, false,
+            new("轮闪避", "每轮：闪避补至[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
@@ -866,18 +866,21 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("淬体", "受伤时：灼烧+[层数]", BuffStackRule.Add, true, false,
+            new("淬体", "燃命时：灼烧+[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;
-                        if (b.Owner == d.Tgt)
-                        {
-                            b.PlayPingAnimation();
-                            await b.Owner.GainBuffProcedure("灼烧", b.Stack);
-                        }
+                        if (b.Owner != d.Tgt)
+                            return;
+
+                        if (d.Src != d.Tgt)
+                            return;
+                        
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("灼烧", b.Stack);
                     }),
                 }),
             
@@ -1002,7 +1005,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (d.Src != b.Owner && d.Tgt == b.Owner)
                         {
                             b.PlayPingAnimation();
-                            await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Pierce, d.Crit, false, d.Damaged);
+                            await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Pierce, d.Crit, false, d.DidDamage);
                             d.Cancel = true;
                         }
                     }),
@@ -1210,7 +1213,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("钟声", "使用一张牌前：升级", BuffStackRule.One, true, false,
+            new("钟声", "使用一张牌前：升级", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CAST, 0, async (listener, eventDetails) =>
@@ -1224,6 +1227,80 @@ public class BuffCategory : Category<BuffEntry>
                             b.PlayPingAnimation();
                             await b.SetDStack(-1);
                         }
+                    }),
+                }),
+
+            new("轮生命上限", "每轮：生命上限+[层数]", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)eventDetails;
+                        if (b.Owner != d.Owner) return;
+
+                        b.PlayPingAnimation();
+                        b.Owner.MaxHp += b.Stack;
+                    }),
+                }),
+
+            new("轮暴击", "每轮：获得[层数]暴击", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)eventDetails;
+                        if (b.Owner != d.Owner) return;
+
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("暴击", b.Stack);
+                    }),
+                }),
+
+            new("轮吸血", "每轮：获得[层数]吸血", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)eventDetails;
+                        if (b.Owner != d.Owner) return;
+
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("吸血", b.Stack);
+                    }),
+                }),
+
+            new("轮穿透", "每轮：获得[层数]穿透", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)eventDetails;
+                        if (b.Owner != d.Owner) return;
+
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("穿透", b.Stack);
+                    }),
+                }),
+            
+            new("消耗", "使用下一张牌后消耗", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        StartStepDetails d = (StartStepDetails)stageEventDetails;
+
+                        if (b.Owner != d.Owner) return;
+                        StageSkill skill = d.Owner._skills[d.P];
+                        
+                        b.PlayPingAnimation();
+                        await skill.ExhaustProcedure();
+                        
+                        await b.SetDStack(-1);
                     }),
                 }),
         });

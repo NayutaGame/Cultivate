@@ -38,105 +38,350 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         bool firstTime = false;
         
-        // init map
-        {
-            // init entity pool
-            Map.EntityPool = new();
-            Map.EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal().FilterObj(e => e.IsInPool()));
-            Map.EntityPool.Shuffle();
-            
-            // init adventure pool
-            Map.AdventurePool = new();
-            Map.AdventurePool.Populate(Encyclopedia.NodeCategory.Traversal.FilterObj(e => e.WithInPool));
-            Map.AdventurePool.Shuffle();
+        Map.InitEntityPool();
+        Map.InitAdventurePool();
+        Map.InsertedAdventurePool = new();
+        
+        InitSkillPool();
 
-            Map.InsertedAdventurePool = new();
-            
-            // init skill pool
-            4.Do(_ => SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
-            
-            // init drawers
-            Map.StepDescriptors = new StepDescriptor[]
-            {
-                new RestStepDescriptor(0),
-                firstTime ? new DirectStepDescriptor(0, "初入蓬莱") : new AdventureStepDescriptor(0),
-                new BattleStepDescriptor(0, 3, 4),
-                new AdventureStepDescriptor(0),
-                new BattleStepDescriptor(1, 4, 5),
-                new AscensionStepDescriptor(0),
-                
-                // firstTime ? new DirectStepDescriptor(0, "初入蓬莱") : new AdventureStepDescriptor(0),
-                // new BattleStepDescriptor(0, 3, 4),
-                // new AdventureStepDescriptor(0),
-                // new RestStepDescriptor(0),
-                // new BattleStepDescriptor(1, 4, 5),
-                // new AscensionStepDescriptor(0),
-                
-                new BattleStepDescriptor(2, 5, 6),
-                new AdventureStepDescriptor(2),
-                new RestStepDescriptor(2),
-                new BattleStepDescriptor(3, 6, 7),
-                new AdventureStepDescriptor(3),
-                new RestStepDescriptor(3),
-                new BattleStepDescriptor(4, 7, 8),
-                new AscensionStepDescriptor(4),
-                
-                new BattleStepDescriptor(5, 8, 8),
-                new AdventureStepDescriptor(5),
-                new RestStepDescriptor(5),
-                new BattleStepDescriptor(5, 8, 9),
-                new AdventureStepDescriptor(5),
-                new BattleStepDescriptor(6, 9, 9),
-                new AdventureStepDescriptor(6),
-                new RestStepDescriptor(6),
-                new BattleStepDescriptor(7, 9, 10),
-                new AscensionStepDescriptor(7),
-                
-                new BattleStepDescriptor(8, 10, 10),
-                new AdventureStepDescriptor(8),
-                new BattleStepDescriptor(8, 10, 11),
-                new AdventureStepDescriptor(8),
-                new RestStepDescriptor(8),
-                new BattleStepDescriptor(9, 11, 11),
-                new AdventureStepDescriptor(9),
-                new BattleStepDescriptor(9, 11, 12),
-                new AdventureStepDescriptor(9),
-                new RestStepDescriptor(9),
-                new BattleStepDescriptor(10, 12, 12),
-                new AscensionStepDescriptor(10),
-                
-                new BattleStepDescriptor(11, 12, 12),
-                new AdventureStepDescriptor(11),
-                new BattleStepDescriptor(11, 12, 12),
-                new AdventureStepDescriptor(11),
-                new BattleStepDescriptor(11, 12, 12),
-                new RestStepDescriptor(11),
-                new BattleStepDescriptor(12, 12, 12),
-                new AdventureStepDescriptor(12),
-                new BattleStepDescriptor(12, 12, 12),
-                new AdventureStepDescriptor(12),
-                new BattleStepDescriptor(12, 12, 12),
-                new RestStepDescriptor(12),
-                new BattleStepDescriptor(13, 12, 12),
-                new SuccessStepDescriptor(13),
-            };
-        }
-
-        {
-            SetJingJieProcedure(JingJie.LianQi);
-            SetStepProcedure(0);
-            _home.SetSlotCount(3);
-        }
-
-        {
-            // init player start condition
-            SetDGoldProcedure(50);
-            if (!firstTime)
-                DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
-            // DrawSkillsProcedure(new(jingJie: JingJie.HuaShen, count: 20));
-        }
+        InitMapFromJingJie(firstTime, AppManager.Instance.SimulatingJingJie);
         
         _eventDict.SendEvent(RunEventDict.START_RUN, d);
+    }
+
+    private void InitSkillPool()
+    {
+        4.Do(_ => SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
+    }
+
+    private void InitMap(bool firstTime)
+    {
+        Map.StepDescriptors = new StepDescriptor[]
+        {
+            firstTime ? new DirectStepDescriptor(0, "初入蓬莱") : new AdventureStepDescriptor(0),
+            new BattleStepDescriptor(0, 3, 4),
+            new AdventureStepDescriptor(0),
+            new RestStepDescriptor(0),
+            new BattleStepDescriptor(1, 4, 5),
+            new AscensionStepDescriptor(0),
+            
+            new BattleStepDescriptor(2, 5, 6),
+            new AdventureStepDescriptor(2),
+            new RestStepDescriptor(2),
+            new BattleStepDescriptor(3, 6, 7),
+            new AdventureStepDescriptor(3),
+            new RestStepDescriptor(3),
+            new BattleStepDescriptor(4, 7, 8),
+            new AscensionStepDescriptor(4),
+            
+            new BattleStepDescriptor(5, 8, 8),
+            new AdventureStepDescriptor(5),
+            new RestStepDescriptor(5),
+            new BattleStepDescriptor(5, 8, 9),
+            new AdventureStepDescriptor(5),
+            new BattleStepDescriptor(6, 9, 9),
+            new AdventureStepDescriptor(6),
+            new RestStepDescriptor(6),
+            new BattleStepDescriptor(7, 9, 10),
+            new AscensionStepDescriptor(7),
+            
+            new BattleStepDescriptor(8, 10, 10),
+            new AdventureStepDescriptor(8),
+            new BattleStepDescriptor(8, 10, 11),
+            new AdventureStepDescriptor(8),
+            new RestStepDescriptor(8),
+            new BattleStepDescriptor(9, 11, 11),
+            new AdventureStepDescriptor(9),
+            new BattleStepDescriptor(9, 11, 12),
+            new AdventureStepDescriptor(9),
+            new RestStepDescriptor(9),
+            new BattleStepDescriptor(10, 12, 12),
+            new AscensionStepDescriptor(10),
+            
+            new BattleStepDescriptor(11, 12, 12),
+            new AdventureStepDescriptor(11),
+            new BattleStepDescriptor(11, 12, 12),
+            new AdventureStepDescriptor(11),
+            new BattleStepDescriptor(11, 12, 12),
+            new RestStepDescriptor(11),
+            new BattleStepDescriptor(12, 12, 12),
+            new AdventureStepDescriptor(12),
+            new BattleStepDescriptor(12, 12, 12),
+            new AdventureStepDescriptor(12),
+            new BattleStepDescriptor(12, 12, 12),
+            new RestStepDescriptor(12),
+            new BattleStepDescriptor(13, 12, 12),
+            new SuccessStepDescriptor(13),
+        };
+        
+        SetJingJieProcedure(JingJie.LianQi);
+        SetStepProcedure(0);
+        _home.SetSlotCount(3);
+        
+        SetDGoldProcedure(50);
+        if (!firstTime)
+            DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
+    }
+
+    private void InitMapFromJingJie(bool firstTime, JingJie jingJie)
+    {
+        switch (jingJie)
+        {
+            case 0:
+                Map.StepDescriptors = new StepDescriptor[]
+                {
+                    firstTime ? new DirectStepDescriptor(0, "初入蓬莱") : new AdventureStepDescriptor(0),
+                    new BattleStepDescriptor(0, 3, 4),
+                    new AdventureStepDescriptor(0),
+                    new RestStepDescriptor(0),
+                    new BattleStepDescriptor(1, 4, 5),
+                    new AscensionStepDescriptor(0),
+                    
+                    new BattleStepDescriptor(2, 5, 6),
+                    new AdventureStepDescriptor(2),
+                    new RestStepDescriptor(2),
+                    new BattleStepDescriptor(3, 6, 7),
+                    new AdventureStepDescriptor(3),
+                    new RestStepDescriptor(3),
+                    new BattleStepDescriptor(4, 7, 8),
+                    new AscensionStepDescriptor(4),
+                    
+                    new BattleStepDescriptor(5, 8, 8),
+                    new AdventureStepDescriptor(5),
+                    new RestStepDescriptor(5),
+                    new BattleStepDescriptor(5, 8, 9),
+                    new AdventureStepDescriptor(5),
+                    new BattleStepDescriptor(6, 9, 9),
+                    new AdventureStepDescriptor(6),
+                    new RestStepDescriptor(6),
+                    new BattleStepDescriptor(7, 9, 10),
+                    new AscensionStepDescriptor(7),
+                    
+                    new BattleStepDescriptor(8, 10, 10),
+                    new AdventureStepDescriptor(8),
+                    new BattleStepDescriptor(8, 10, 11),
+                    new AdventureStepDescriptor(8),
+                    new RestStepDescriptor(8),
+                    new BattleStepDescriptor(9, 11, 11),
+                    new AdventureStepDescriptor(9),
+                    new BattleStepDescriptor(9, 11, 12),
+                    new AdventureStepDescriptor(9),
+                    new RestStepDescriptor(9),
+                    new BattleStepDescriptor(10, 12, 12),
+                    new AscensionStepDescriptor(10),
+                    
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new RestStepDescriptor(11),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new RestStepDescriptor(12),
+                    new BattleStepDescriptor(13, 12, 12),
+                    new SuccessStepDescriptor(13),
+                };
+        
+                SetJingJieProcedure(JingJie.LianQi);
+                SetStepProcedure(0);
+                _home.SetSlotCount(3);
+        
+                SetDGoldProcedure(0);
+                DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
+                break;
+            case 1:
+                Map.StepDescriptors = new StepDescriptor[]
+                {
+                    new BattleStepDescriptor(2, 5, 6),
+                    new AdventureStepDescriptor(2),
+                    new RestStepDescriptor(2),
+                    new BattleStepDescriptor(3, 6, 7),
+                    new AdventureStepDescriptor(3),
+                    new RestStepDescriptor(3),
+                    new BattleStepDescriptor(4, 7, 8),
+                    new AscensionStepDescriptor(4),
+                    
+                    new BattleStepDescriptor(5, 8, 8),
+                    new AdventureStepDescriptor(5),
+                    new RestStepDescriptor(5),
+                    new BattleStepDescriptor(5, 8, 9),
+                    new AdventureStepDescriptor(5),
+                    new BattleStepDescriptor(6, 9, 9),
+                    new AdventureStepDescriptor(6),
+                    new RestStepDescriptor(6),
+                    new BattleStepDescriptor(7, 9, 10),
+                    new AscensionStepDescriptor(7),
+                    
+                    new BattleStepDescriptor(8, 10, 10),
+                    new AdventureStepDescriptor(8),
+                    new BattleStepDescriptor(8, 10, 11),
+                    new AdventureStepDescriptor(8),
+                    new RestStepDescriptor(8),
+                    new BattleStepDescriptor(9, 11, 11),
+                    new AdventureStepDescriptor(9),
+                    new BattleStepDescriptor(9, 11, 12),
+                    new AdventureStepDescriptor(9),
+                    new RestStepDescriptor(9),
+                    new BattleStepDescriptor(10, 12, 12),
+                    new AscensionStepDescriptor(10),
+                    
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new RestStepDescriptor(11),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new RestStepDescriptor(12),
+                    new BattleStepDescriptor(13, 12, 12),
+                    new SuccessStepDescriptor(13),
+                };
+        
+                SetJingJieProcedure(JingJie.ZhuJi);
+                SetStepProcedure(0);
+                _home.SetSlotCount(5);
+        
+                SetDGoldProcedure(5);
+                DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 7));
+                break;
+            case 2:
+                Map.StepDescriptors = new StepDescriptor[]
+                {
+                    new BattleStepDescriptor(5, 8, 8),
+                    new AdventureStepDescriptor(5),
+                    new RestStepDescriptor(5),
+                    new BattleStepDescriptor(5, 8, 9),
+                    new AdventureStepDescriptor(5),
+                    new BattleStepDescriptor(6, 9, 9),
+                    new AdventureStepDescriptor(6),
+                    new RestStepDescriptor(6),
+                    new BattleStepDescriptor(7, 9, 10),
+                    new AscensionStepDescriptor(7),
+                    
+                    new BattleStepDescriptor(8, 10, 10),
+                    new AdventureStepDescriptor(8),
+                    new BattleStepDescriptor(8, 10, 11),
+                    new AdventureStepDescriptor(8),
+                    new RestStepDescriptor(8),
+                    new BattleStepDescriptor(9, 11, 11),
+                    new AdventureStepDescriptor(9),
+                    new BattleStepDescriptor(9, 11, 12),
+                    new AdventureStepDescriptor(9),
+                    new RestStepDescriptor(9),
+                    new BattleStepDescriptor(10, 12, 12),
+                    new AscensionStepDescriptor(10),
+                    
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new RestStepDescriptor(11),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new RestStepDescriptor(12),
+                    new BattleStepDescriptor(13, 12, 12),
+                    new SuccessStepDescriptor(13),
+                };
+        
+                SetJingJieProcedure(JingJie.JinDan);
+                SetStepProcedure(0);
+                _home.SetSlotCount(8);
+        
+                SetDGoldProcedure(17);
+                DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 13));
+                break;
+            case 3:
+                Map.StepDescriptors = new StepDescriptor[]
+                {
+                    new BattleStepDescriptor(8, 10, 10),
+                    new AdventureStepDescriptor(8),
+                    new BattleStepDescriptor(8, 10, 11),
+                    new AdventureStepDescriptor(8),
+                    new RestStepDescriptor(8),
+                    new BattleStepDescriptor(9, 11, 11),
+                    new AdventureStepDescriptor(9),
+                    new BattleStepDescriptor(9, 11, 12),
+                    new AdventureStepDescriptor(9),
+                    new RestStepDescriptor(9),
+                    new BattleStepDescriptor(10, 12, 12),
+                    new AscensionStepDescriptor(10),
+                    
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new RestStepDescriptor(11),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new RestStepDescriptor(12),
+                    new BattleStepDescriptor(13, 12, 12),
+                    new SuccessStepDescriptor(13),
+                };
+        
+                SetJingJieProcedure(JingJie.YuanYing);
+                SetStepProcedure(0);
+                _home.SetSlotCount(10);
+        
+                SetDGoldProcedure(49);
+                DrawSkillsProcedure(new(jingJie: JingJie.ZhuJi, count: 15));
+                break;
+            case 4:
+                Map.StepDescriptors = new StepDescriptor[]
+                {
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new AdventureStepDescriptor(11),
+                    new BattleStepDescriptor(11, 12, 12),
+                    new RestStepDescriptor(11),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new AdventureStepDescriptor(12),
+                    new BattleStepDescriptor(12, 12, 12),
+                    new RestStepDescriptor(12),
+                    new BattleStepDescriptor(13, 12, 12),
+                    new SuccessStepDescriptor(13),
+                };
+        
+                SetJingJieProcedure(JingJie.HuaShen);
+                SetStepProcedure(0);
+                _home.SetSlotCount(12);
+        
+                SetDGoldProcedure(129);
+                DrawSkillsProcedure(new(jingJie: JingJie.JinDan, count: 17));
+                break;
+            case 5:
+                Map.StepDescriptors = new StepDescriptor[]
+                {
+                    new BattleStepDescriptor(13, 12, 12),
+                    new SuccessStepDescriptor(13),
+                };
+        
+                SetJingJieProcedure(JingJie.HuaShen);
+                SetStepProcedure(0);
+                _home.SetSlotCount(12);
+        
+                SetDGoldProcedure(289);
+                DrawSkillsProcedure(new(jingJie: JingJie.JinDan, count: 41));
+                break;
+        }
     }
 
     public void NextJingJieProcedure()
@@ -498,7 +743,7 @@ public class RunEnvironment : Addressable, RunEventListener
             return true;
         }
 
-        // XiangSheng WuXing
+        // // XiangSheng WuXing
         if (WuXing.XiangSheng(lWuXing, rWuXing) && lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
         {
             DrawSkillProcedure(new(

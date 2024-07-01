@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -27,6 +28,8 @@ public class AppManager : Singleton<AppManager>, Addressable
     public FormationInventory FormationInventory;
     public SkillInventory SkillInventory;
     [NonSerialized] public ListModel<RunSkill> SkillShowcaseInventory;
+
+    [SerializeField][Range(0, 5)] public int SimulatingJingJie;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();

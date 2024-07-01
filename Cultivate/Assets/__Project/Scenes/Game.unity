@@ -1055,6 +1055,7 @@ MonoBehaviour:
   EditorManager: {fileID: 1604468907}
   RunManager: {fileID: 1977029710}
   StageManager: {fileID: 402125080}
+  SimulatingJingJie: 4
 --- !u!4 &387419141
 Transform:
   m_ObjectHideFlags: 0

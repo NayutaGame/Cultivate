@@ -11,15 +11,17 @@ public class DamageDetails : EventDetails
     public bool LifeSteal;
     public bool Recursive;
 
-    public Func<DamageDetails, Task> Damaged;
+    public Func<DamageDetails, Task> WillDamage;
     public Func<DamageDetails, Task> Undamaged;
+    public Func<DamageDetails, Task> DidDamage;
 
     public DamageDetails(StageEntity src, StageEntity tgt, int value,
         bool crit = false,
         bool lifeSteal = false,
         bool recursive = true,
-        Func<DamageDetails, Task> damaged = null,
-        Func<DamageDetails, Task> undamaged = null)
+        Func<DamageDetails, Task> willDamage = null,
+        Func<DamageDetails, Task> undamaged = null,
+        Func<DamageDetails, Task> didDamage = null)
     {
         Src = src;
         Tgt = tgt;
@@ -28,9 +30,10 @@ public class DamageDetails : EventDetails
         LifeSteal = lifeSteal;
         Recursive = recursive;
 
-        Damaged = damaged;
+        WillDamage = willDamage;
         Undamaged = undamaged;
+        DidDamage = didDamage;
     }
 
-    public DamageDetails Clone() => new(Src, Tgt, Value, Crit, LifeSteal, Recursive, Damaged, Undamaged);
+    public DamageDetails Clone() => new(Src, Tgt, Value, Crit, LifeSteal, Recursive, WillDamage, Undamaged, DidDamage);
 }

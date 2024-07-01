@@ -57,4 +57,18 @@ public class Map : Addressable
         InsertedAdventurePool.Populate(nodeEntry);
         InsertedAdventurePool.Shuffle();
     }
+
+    public void InitEntityPool()
+    {
+        EntityPool = new();
+        EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal().FilterObj(e => e.IsInPool()));
+        EntityPool.Shuffle();
+    }
+
+    public void InitAdventurePool()
+    {
+        AdventurePool = new();
+        AdventurePool.Populate(Encyclopedia.NodeCategory.Traversal.FilterObj(e => e.WithInPool));
+        AdventurePool.Shuffle();
+    }
 }

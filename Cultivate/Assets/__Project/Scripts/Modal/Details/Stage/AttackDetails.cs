@@ -22,8 +22,10 @@ public class AttackDetails : EventDetails
     public bool Evade;
 
     public bool Recursive;
-    public Func<DamageDetails, Task> Damaged;
+    
+    public Func<DamageDetails, Task> WillDamage;
     public Func<DamageDetails, Task> Undamaged;
+    public Func<DamageDetails, Task> DidDamage;
 
     public bool FromSeamless;
 
@@ -34,8 +36,9 @@ public class AttackDetails : EventDetails
         bool crit = false,
         bool evade = false,
         bool recursive = true,
-        Func<DamageDetails, Task> damaged = null,
+        Func<DamageDetails, Task> willDamage = null,
         Func<DamageDetails, Task> undamaged = null,
+        Func<DamageDetails, Task> didDamage = null,
         bool fromSeamless = false)
     {
         Src = src;
@@ -47,10 +50,11 @@ public class AttackDetails : EventDetails
         Crit = crit;
         Evade = evade;
         Recursive = recursive;
-        Damaged = damaged;
+        WillDamage = willDamage;
         Undamaged = undamaged;
+        DidDamage = didDamage;
         FromSeamless = fromSeamless;
     }
 
-    public AttackDetails Clone() => new(Src, Tgt, _value, WuXing, LifeSteal, Pierce, Crit, Evade, Recursive, Damaged, Undamaged, FromSeamless);
+    public AttackDetails Clone() => new(Src, Tgt, _value, WuXing, LifeSteal, Pierce, Crit, Evade, Recursive, WillDamage, Undamaged, DidDamage, FromSeamless);
 }

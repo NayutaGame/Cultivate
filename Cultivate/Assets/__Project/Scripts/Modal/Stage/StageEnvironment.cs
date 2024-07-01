@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class StageEnvironment : Addressable, StageEventListener
 {
-    private static readonly int MAX_ACTION_COUNT = 120;
+    private static readonly int MAX_TURN_COUNT = 120;
 
     #region Procedures
 
@@ -62,7 +62,7 @@ public class StageEnvironment : Addressable, StageEventListener
 
         await EndStageProcedure();
         
-        await _kernel.CommitProcedure(this, MAX_ACTION_COUNT, 0, true);
+        await _kernel.CommitProcedure(this, MAX_TURN_COUNT, 0, true);
 
         Unregister();
     }
@@ -95,13 +95,14 @@ public class StageEnvironment : Addressable, StageEventListener
     /// <param name="lifeSteal">是否吸血</param>
     /// <param name="pierce">是否穿透</param>
     /// <param name="recursive">是否会递归</param>
-    /// <param name="damaged">如果造成伤害时候的额外行为</param>
+    /// <param name="willDamage">造成伤害前的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
+    /// <param name="didDamage">如果造成伤害时候的额外行为</param>
     /// <param name="induced">该行为是间接行为，不会引起额外的角色动画</param>
     public async Task AttackProcedure(StageEntity src, StageEntity tgt, int value, WuXing? wuXing = null, int times = 1,
         bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
-        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null, bool induced = false)
-        => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, lifeSteal, pierce, crit, false, recursive, damaged, undamaged), times, induced);
+        Func<DamageDetails, Task> willDamage = null, Func<DamageDetails, Task> undamaged = null, Func<DamageDetails, Task> didDamage = null, bool induced = false)
+        => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, lifeSteal, pierce, crit, false, recursive, willDamage, undamaged, didDamage), times, induced);
     public async Task AttackProcedure(AttackDetails attackDetails, int times, bool induced)
     {
         if (await attackDetails.Src.TryConsumeProcedure("追击"))
@@ -161,7 +162,7 @@ public class StageEnvironment : Addressable, StageEventListener
             return;
         }
 
-        await DamageProcedure(new DamageDetails(d.Src, d.Tgt, d.Value, crit: d.Crit, lifeSteal: d.LifeSteal, damaged: d.Damaged, undamaged: d.Undamaged), induced);
+        await DamageProcedure(new DamageDetails(d.Src, d.Tgt, d.Value, crit: d.Crit, lifeSteal: d.LifeSteal, willDamage: d.WillDamage, undamaged: d.Undamaged, didDamage: d.DidDamage), induced);
         
         _result.TryAppend($"    敌方生命[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
     }
@@ -240,16 +241,19 @@ public class StageEnvironment : Addressable, StageEventListener
     /// <param name="value">伤害数值</param>
     /// <param name="crit">是否暴击</param>
     /// <param name="recursive">是否会递归</param>
-    /// <param name="damaged">如果造成伤害时候的额外行为</param>
-    /// <param name="undamaged">如果未造成伤害的额外行为</param>
+    /// <param name="willDamage">如果造成伤害时候的额外行为</param>
+    /// <param name="undamaged">造成伤害前的额外行为</param>
+    /// <param name="didDamage">如果造成伤害时候的额外行为</param>
     public async Task DamageProcedure(StageEntity src, StageEntity tgt, int value, bool crit = false, bool lifeSteal = false, bool recursive = true,
-        Func<DamageDetails, Task> damaged = null, Func<DamageDetails, Task> undamaged = null, bool induced = false)
-        => await DamageProcedure(new DamageDetails(src, tgt, value, crit, lifeSteal, recursive, damaged, undamaged), induced);
+        Func<DamageDetails, Task> willDamage = null, Func<DamageDetails, Task> undamaged = null, Func<DamageDetails, Task> didDamage = null, bool induced = false)
+        => await DamageProcedure(new DamageDetails(src, tgt, value, crit, lifeSteal, recursive, willDamage, undamaged, didDamage), induced);
     public async Task DamageProcedure(DamageDetails d, bool induced)
     {
         if (d.Crit)
             d.Value *= 2;
         
+        if (d.WillDamage != null)
+            await d.WillDamage(d);
         await _eventDict.SendEvent(StageEventDict.WIL_DAMAGE, d);
 
         if (d.Cancel || d.Value == 0)
@@ -263,9 +267,9 @@ public class StageEnvironment : Addressable, StageEventListener
         await Play(new DamagedCharacterAnimation(false, d), induced);
         await Play(new DamagedTextAnimation(false, d), induced);
         await LoseHealthProcedure(d.Tgt, d.Value);
-        if (d.Damaged != null)
-            await d.Damaged(d);
-
+        
+        if (d.DidDamage != null)
+            await d.DidDamage(d);
         await _eventDict.SendEvent(StageEventDict.DID_DAMAGE, d);
 
         if (!d.Cancel && d.LifeSteal)
@@ -520,12 +524,12 @@ public class StageEnvironment : Addressable, StageEventListener
     private async Task BodyProcedure()
     {
         int whosTurn = 0;
-        for (int i = 0; i < MAX_ACTION_COUNT; i++)
+        for (int turnCount = 0; turnCount < MAX_TURN_COUNT; turnCount++)
         {
             StageEntity actor = _entities[whosTurn];
 
-            _result.TryAppend($"--------第{i}回合, {actor.GetName()}行动--------\n");
-            await actor.TurnProcedure();
+            _result.TryAppend($"--------第{turnCount}回合, {actor.GetName()}行动--------\n");
+            await actor.TurnProcedure(turnCount);
 
             _entities.Do(e =>
             {
@@ -535,7 +539,7 @@ public class StageEnvironment : Addressable, StageEventListener
                 _result.TryAppend("\n");
             });
 
-            if (await _kernel.CommitProcedure(this, i, whosTurn, false) != 0)
+            if (await _kernel.CommitProcedure(this, turnCount, whosTurn, false) != 0)
                 return;
 
             whosTurn = 1 - whosTurn;
