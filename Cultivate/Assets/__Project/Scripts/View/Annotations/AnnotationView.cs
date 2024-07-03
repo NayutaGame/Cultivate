@@ -46,12 +46,13 @@ public class AnnotationView : MonoBehaviour
 
     private void UpdateCornerPos(RectTransform rt, RectTransform hoverRT)
     {
-        Vector2 pivot = new Vector2(Mathf.RoundToInt(rt.position.x / Screen.width),
-            Mathf.RoundToInt(rt.position.y / Screen.height));
-        SimpleView.GetDisplayTransform().pivot = pivot;
-
+        Vector2 uiPosition = CanvasManager.Instance.World2UI(rt.position);
+        Vector2 quadrant = new Vector2(Mathf.RoundToInt(uiPosition.x / Screen.width),
+            Mathf.RoundToInt(uiPosition.y / Screen.height));
+        
+        SimpleView.GetDisplayTransform().pivot = quadrant;
         SimpleView.GetDisplayTransform().position = hoverRT.TransformPoint(
-            (pivot.x < 0.5f ? hoverRT.sizeDelta.x / 2 : -hoverRT.sizeDelta.x / 2),
-            hoverRT.sizeDelta.y / 2, 0);
+            (quadrant.x < 0.5f ? hoverRT.sizeDelta.x / 2 : -hoverRT.sizeDelta.x / 2),
+            (quadrant.y > 0.5f ? hoverRT.sizeDelta.y / 2 : -hoverRT.sizeDelta.y / 2), 0);
     }
 }

@@ -103,6 +103,11 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         return Camera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, 10));
     }
 
+    public Vector3 World2UI(Vector3 worldPosition)
+    {
+        return Camera.WorldToScreenPoint(worldPosition);
+    }
+
     public Vector3 ScreenCenterInWorld()
     {
         return Camera.ScreenToWorldPoint(new Vector2(Screen.width / 2, Screen.height / 2));

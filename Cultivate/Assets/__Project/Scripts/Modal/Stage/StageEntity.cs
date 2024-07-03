@@ -122,7 +122,7 @@ public class StageEntity : Addressable, StageEventListener
 
     private async Task StepProcedure()
     {
-        var startD = new StartStepDetails(this, _p);
+        StartStepDetails startD = new StartStepDetails(this, _p);
         await _env.EventDict.SendEvent(StageEventDict.WIL_STEP, startD);
         if (startD.Cancel)
             return;
@@ -130,9 +130,6 @@ public class StageEntity : Addressable, StageEventListener
         int dir = Forward ? 1 : -1;
         for (int i = 0; i < _skills.Length; i++)
         {
-            // START_ROUND logic should be here
-            // int prevP = _p - dir;
-
             _p += dir;
 
             bool within = 0 <= _p && _p < _skills.Length;

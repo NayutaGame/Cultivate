@@ -33,7 +33,7 @@ public class SkillTypeComposite
 
     public static implicit operator int(SkillTypeComposite skillTypeComposite) => skillTypeComposite._value;
     public static implicit operator SkillTypeComposite(int value) => new(value);
-    public static implicit operator SkillTypeComposite(SkillType skillType) => skillType._index;
+    public static implicit operator SkillTypeComposite(SkillType skillType) => skillType._value;
 
     public override string ToString()
     {

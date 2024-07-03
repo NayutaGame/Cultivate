@@ -9,11 +9,13 @@ public class SuperEnum<T> : IEquatable<SuperEnum<T>>
 {
     protected static T[] _list;
     [SerializeField] public readonly int _index;
+    [SerializeField] public readonly int _value;
     [SerializeField] public readonly string _name;
 
-    protected SuperEnum(int index, string name)
+    protected SuperEnum(int index, int value, string name)
     {
         _index = index;
+        _value = value;
         _name = name;
     }
 
@@ -30,7 +32,7 @@ public class SuperEnum<T> : IEquatable<SuperEnum<T>>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_index, _name);
+        return HashCode.Combine(_index, _value, _name);
     }
 
     public override string ToString() => _name;

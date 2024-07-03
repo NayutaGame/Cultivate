@@ -1303,6 +1303,39 @@ public class BuffCategory : Category<BuffEntry>
                         await b.SetDStack(-1);
                     }),
                 }),
+            
+            new("清心", "获得灵气时：每1，回复[层数]生命", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        if (d._buffEntry.GetName() != "灵气") return;
+                        
+                        b.PlayPingAnimation();
+                        await b.Owner.HealProcedure(d._stack * b.Stack, induced: true);
+                    }),
+                }),
+            
+            new("太虚", "第二轮：生命回满", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        RoundDetails d = (RoundDetails)stageEventDetails;
+
+                        if (b.Owner != d.Owner) return;
+                        
+                        b.PlayPingAnimation();
+                        int gap = b.Owner.MaxHp - b.Owner.Hp;
+                        await b.Owner.HealProcedure(gap, induced: false);
+                        await b.SetDStack(-1);
+                    }),
+                }),
         });
     }
 

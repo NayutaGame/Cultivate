@@ -1,13 +1,10 @@
 
 public class Fib : SuperEnum<Fib>
 {
-    private readonly int _value;
-
-    private Fib(int index, int value, string name) : base(index, name)
+    private Fib(int index, int value, string name) : base(index, value, name)
     {
-        _value = value;
     }
-
+    
     public static void Init()
     {
         _list = new Fib[]
