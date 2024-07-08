@@ -41,4 +41,6 @@ public class SkillTypeComposite
         SkillTypes.Do(skillType => sb.Append($"{skillType._name} "));
         return sb.ToString();
     }
+
+    public SkillTypeComposite Clone() => _value;
 }

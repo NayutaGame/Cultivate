@@ -80,7 +80,7 @@ public class CharacterCategory : Category<CharacterEntry>
                                            "金丹后，组成阵法时，需求-1；化神，变成-2",
                 runEventDescriptors: new RunEventDescriptor[]
                 {
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WILL_FORMATION, 0, (listener, eventDetails) =>
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WIL_FORMATION, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         RunFormationDetails d = (RunFormationDetails)eventDetails;

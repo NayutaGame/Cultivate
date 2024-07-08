@@ -19,7 +19,7 @@ public class RunEventDict : Dictionary<int, RunEventElementList>
     public static readonly int DID_SET_MAX_MINGYUAN  = 113;
     public static readonly int WILL_PLACEMENT        = 114;
     public static readonly int DID_PLACEMENT         = 115;
-    public static readonly int WILL_FORMATION        = 116;
+    public static readonly int WIL_FORMATION        = 116;
     public static readonly int DID_FORMATION         = 117;
     public static readonly int WILL_DISCOVER_SKILL   = 118;
     public static readonly int DID_DISCOVER_SKILL    = 119;

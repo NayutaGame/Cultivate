@@ -397,7 +397,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "止水",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
+                skillTypeComposite:         SkillType.Attack | SkillType.ZhiLiao,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -469,6 +469,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "瑞雪",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.JinDan2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
                 cost:                       CostResult.ManaFromValue(3),
                 costDescription:            CostDescription.ManaFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -523,6 +524,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "不动明王诀",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -568,7 +570,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "一梦如是",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.HuaShenOnly,
-                skillTypeComposite:         SkillType.Attack,
+                skillTypeComposite:         SkillType.Attack | SkillType.ZhiLiao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻" +
                     $"\n首次击伤：生命+[累计治疗]".ApplyCond(castResult),
@@ -667,6 +669,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "回春",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -776,6 +779,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "谈笑风生",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
                 cost:                       CostResult.ManaFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 2 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -2089,6 +2093,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "激流",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
                 cost:                       CostResult.ManaFromDj(dj => 1 - dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 1 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -2124,6 +2129,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "旧潜龙在渊",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"生命+{6 + 4 * dj}\n" +
                     $"初次：闪避+1".ApplyCond(castResult),
@@ -2141,7 +2147,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "初桃",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.LingQi,
+                skillTypeComposite:         SkillType.LingQi | SkillType.ZhiLiao,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{1 + dj}\n" +
                     $"生命+{3 + dj}",
@@ -2549,6 +2555,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "无量劫",
                 wuXing:                     null,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
                 cost:                       CostResult.ChannelFromValue(3),
                 costDescription:            CostDescription.ChannelFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -2627,6 +2634,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "春雨",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
                 castDescription:            (j, dj, costResult, castResult) =>

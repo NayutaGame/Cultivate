@@ -147,7 +147,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
         _formations.Clear();
 
-        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WILL_FORMATION, d);
+        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WIL_FORMATION, d);
 
         _formations.AddRange(Encyclopedia.FormationCategory.Traversal
             .Map(e => RunFormation.From(e, e.GetProgress(this, d))));

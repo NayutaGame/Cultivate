@@ -179,12 +179,22 @@ public class EntityEditorPanel : Panel
     {
         if (EditorManager.Instance.SimulateResult is { } result)
         {
-            Result.text = $"玩家 : 怪物\n{result.HomeLeftHp} : {result.AwayLeftHp}";
+            Result.text =
+                $@"
+客场    {result.AwayLeftHp}
+——————
+主场    {result.HomeLeftHp}"
+                ;
             Result.color = result.Flag == 1 ? Color.green : Color.red;
         }
         else
         {
-            Result.text = $"玩家 : 怪物\n无结果";
+            Result.text =
+            $@"
+客场    无结果
+——————
+主场    无结果"
+                ;
             Result.color = Color.gray;
         }
     }

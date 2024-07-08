@@ -23,13 +23,14 @@ public class RunFormationDetails : EventDetails
             WuXing? wuXing = entry.WuXing;
             if (wuXing != null)
                 WuXingCounts[wuXing.Value]++;
-
-            SkillTypeComposite skillTypeComposite = entry.GetSkillTypeComposite();
-
+            
+            int skillTypeComposite = entry.GetSkillTypeComposite().Value;
             for (int i = 0; i < SkillType.Length; i++)
             {
-                if (skillTypeComposite.Contains(i))
+                if ((skillTypeComposite & 0b1) == 1)
                     TypeCounts[i]++;
+
+                skillTypeComposite = skillTypeComposite >> 1;
             }
         }
 
