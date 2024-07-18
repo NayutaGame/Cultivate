@@ -44,14 +44,33 @@ public class StageSkill
 
     public int Dj
         => GetJingJie() - _entry.LowestJingJie;
-    public bool IsFirstTime
-        => StageCastedCount == 0;
     public bool IsOdd
         => SlotIndex % 2 == 0 || _owner.GetStackOfBuff("森罗万象") > 0;
     public bool IsEven
         => SlotIndex % 2 == 1 || _owner.GetStackOfBuff("森罗万象") > 0;
-    public bool IsEnd
-        => SlotIndex == _owner._skills.Length - 1;
+
+    public async Task<bool> IsFirstTime(bool useFocus = false)
+    {
+        bool isFirstTime = StageCastedCount == 0;
+        if (!isFirstTime)
+            isFirstTime = useFocus && await _owner.IsFocused();
+
+        if (isFirstTime)
+            _owner.TriggeredFirstTimeRecord = true;
+        return isFirstTime;
+    }
+
+    public async Task<bool> IsEnd(bool useFocus = false)
+    {
+        bool isEnd = SlotIndex == _owner._skills.Length - 1;
+        if (!isEnd)
+            isEnd = useFocus && await _owner.IsFocused();
+
+        if (isEnd)
+            _owner.TriggeredEndRecord = true;
+        return isEnd;
+    }
+    
     public bool NoOtherAttack
         => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Attack));
     public bool NoOtherLingQi
@@ -60,22 +79,28 @@ public class StageSkill
         => !Prev(false).GetSkillType().Contains(SkillType.Attack) && !Next(false).GetSkillType().Contains(SkillType.Attack);
 
     public static StageSkill FromPlacedSkill(StageEntity owner, PlacedSkill placedSkill, int slotIndex)
-        => new(owner, placedSkill, placedSkill.Entry, placedSkill.JingJie, slotIndex);
+        => new(owner, placedSkill.Entry, placedSkill.JingJie, slotIndex);
 
     public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie? jingJie = null, int slotIndex = 0)
-        => new(owner, null, skillEntry, jingJie ?? skillEntry.LowestJingJie, slotIndex);
+        => new(owner, skillEntry, jingJie ?? skillEntry.LowestJingJie, slotIndex);
 
-    private StageSkill(StageEntity owner, PlacedSkill placedSkill, SkillEntry skillEntry, JingJie jingJie, int slotIndex)
+    public StageSkill Clone()
+        => new(_owner, _entry, _jingJie, _slotIndex, _exhausted, StageCastedCount);
+
+    private StageSkill(
+        StageEntity owner,
+        SkillEntry skillEntry,
+        JingJie jingJie,
+        int slotIndex,
+        bool exhausted = false,
+        int stageCastedCount = 0)
     {
         _owner = owner;
         _entry = skillEntry;
         _jingJie = jingJie;
         _slotIndex = slotIndex;
-
-        _exhausted = false;
-        RunCastedCount = placedSkill?.RunSkill?.GetRunUsedTimes() ?? 0;
-        RunEquippedTimes = placedSkill?.RunSkill?.GetRunEquippedTimes() + 1 ?? 0;
-        StageCastedCount = 0;
+        _exhausted = exhausted;
+        StageCastedCount = stageCastedCount;
     }
 
     public SkillTypeComposite GetSkillType()
@@ -83,7 +108,6 @@ public class StageSkill
 
     public void IncreaseCastedCount()
     {
-        RunCastedCount += 1;
         StageCastedCount += 1;
     }
 

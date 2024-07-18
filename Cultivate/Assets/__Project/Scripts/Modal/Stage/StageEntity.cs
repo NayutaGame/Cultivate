@@ -221,6 +221,15 @@ public class StageEntity : Addressable, StageEventListener
     public int CountSuch(Func<StageSkill, bool> pred)
         => _skills.Count(pred);
 
+    public async Task<bool> OppoHasFragile(bool useFocus = false)
+    {
+        bool oppoHasFragile = Opponent().Armor < 0;
+        if (!oppoHasFragile)
+            oppoHasFragile = useFocus && await IsFocused();
+
+        return oppoHasFragile;
+    }
+
     public int LostArmorRecord;
     public int GeneratedManaRecord;
     public int HighestManaRecord;
@@ -233,6 +242,18 @@ public class StageEntity : Addressable, StageEventListener
     public int GainedLiLiangRecord;
     public int GainedZhuoShaoRecord;
     public int GainedRouRenRecord;
+
+    public bool HasChannelRecord;
+    
+    public bool HasZhiQiRecord;
+    public bool HasChanRaoRecord;
+    public bool HasRuanRuoRecord;
+    public bool HasNeiShangRecord;
+    public bool HasFuXiuRecord;
+
+    public bool TriggeredJiaShiRecord;
+    public bool TriggeredEndRecord;
+    public bool TriggeredFirstTimeRecord;
 
     private int _index;
     public int Index => _index;
@@ -264,18 +285,37 @@ public class StageEntity : Addressable, StageEventListener
         HpChangedNeuron = new();
         ArmorChangedNeuron = new();
 
+        LostArmorRecord = 0;
+        GeneratedManaRecord = 0;
+        HighestManaRecord = 0;
+        SelfDamageRecord = 0;
+        HealedRecord = 0;
+        GainedEvadeRecord = 0;
+
+        GainedFengRuiRecord = 0;
+        GainedGeDangRecord = 0;
+        GainedLiLiangRecord = 0;
+        GainedZhuoShaoRecord = 0;
+        GainedRouRenRecord = 0;
+
+        HasChannelRecord = false;
+        
+        HasZhiQiRecord = false;
+        HasChanRaoRecord = false;
+        HasRuanRuoRecord = false;
+        HasNeiShangRecord = false;
+        HasFuXiuRecord = false;
+        
+        TriggeredJiaShiRecord = false;
+        TriggeredEndRecord = false;
+        TriggeredFirstTimeRecord = false;
+
         _env = env;
         _runEntity = runEntity;
         _index = index;
 
         _formations = new();
         _buffs = new();
-
-        LostArmorRecord = 0;
-        GeneratedManaRecord = 0;
-        HighestManaRecord = 0;
-        SelfDamageRecord = 0;
-        HealedRecord = 0;
 
         _eventDescriptors = new StageEventDescriptor[]
         {
@@ -355,7 +395,26 @@ public class StageEntity : Addressable, StageEventListener
             GainedZhuoShaoRecord += d._stack;
         else if (d._buffEntry.GetName() == "柔韧")
             GainedRouRenRecord += d._stack;
+        else if (d._buffEntry.GetName() == "滞气")
+            HasZhiQiRecord = true;
+        else if (d._buffEntry.GetName() == "缠绕")
+            HasChanRaoRecord = true;
+        else if (d._buffEntry.GetName() == "软弱")
+            HasRuanRuoRecord = true;
+        else if (d._buffEntry.GetName() == "内伤")
+            HasNeiShangRecord = true;
+        else if (d._buffEntry.GetName() == "腐朽")
+            HasFuXiuRecord = true;
 
+        return d;
+    }
+
+    public async Task<ChannelDetails> ChannelRecorder(StageEventListener listener, EventDetails eventDetails)
+    {
+        ChannelDetails d = (ChannelDetails)eventDetails;
+
+        HasChannelRecord = true;
+        
         return d;
     }
 
@@ -533,16 +592,23 @@ public class StageEntity : Addressable, StageEventListener
     public async Task<bool> ToggleJiaShiProcedure()
     {
         if (GetStackOfBuff("天人合一") > 0)
+        {
+            TriggeredJiaShiRecord = true;
             return true;
+        }
 
         if (GetStackOfBuff("架势") > 0)
         {
             await LoseBuffProcedure("架势");
+            TriggeredJiaShiRecord = true;
             return true;
         }
 
         if (await IsFocused())
+        {
+            TriggeredJiaShiRecord = true;
             return true;
+        }
 
         await GainBuffProcedure("架势");
         return false;

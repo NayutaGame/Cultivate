@@ -160,6 +160,24 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
+            new(id:                         "无法攻击",
+                description:                "无法攻击",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                false,
+                eventDescriptors:           new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner != d.Src) return;
+                        b.PlayPingAnimation();
+                        d.Cancel = true;
+                        await b.SetDStack(d.Value);
+                    }),
+                }),
+            
             new(id:                         "永久二重",
                 description:                "所有牌使用两次",
                 buffStackRule:              BuffStackRule.One,
@@ -655,22 +673,6 @@ public class BuffCategory : Category<BuffEntry>
                         }
                     }),
                 }),
-            
-            new("凝水", "击伤时：灵气+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        DamageDetails d = (DamageDetails)stageEventDetails;
-
-                        if (b.Owner == d.Src && d.Src != d.Tgt)
-                        {
-                            b.PlayPingAnimation();
-                            await b.Owner.GainBuffProcedure("灵气", b.Stack);
-                        }
-                    }),
-                }),
 
             new("吸血", "下一次攻击造成伤害时，回复生命", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
@@ -884,7 +886,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("观众生", "使用非攻击卡不消耗灵气，使用之后消耗", BuffStackRule.Add, true, false,
+            new("观众生", "使用非攻击卡时，消耗", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
@@ -899,10 +901,6 @@ public class BuffCategory : Category<BuffEntry>
                         
                         b.PlayPingAnimation();
                         await skill.ExhaustProcedure();
-                        bool noBuff = b.Owner.GetStackOfBuff("免费") == 0;
-                        if (noBuff)
-                            await b.Owner.GainBuffProcedure("免费");
-                        
                         await b.SetDStack(-1);
                     }),
                 }),

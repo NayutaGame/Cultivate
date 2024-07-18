@@ -14,7 +14,7 @@ public class StageNote : ISkillModel
     {
         EntityIndex = entityIndex;
         TemporalIndex = temporalIndex;
-        Skill = skill;
+        Skill = skill.Clone();
 
         _currCounter = currCounter;
         _maxCounter = maxCounter;
