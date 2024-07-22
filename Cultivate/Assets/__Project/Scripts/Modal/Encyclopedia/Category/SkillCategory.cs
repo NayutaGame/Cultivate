@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using CLLibrary;
 
@@ -864,15 +865,16 @@ public class SkillCategory : Category<SkillEntry>
                         $"\n二动"),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    int prevIndex = skill.Prev(true).SlotIndex;
-                    int nextIndex = skill.Next(true).SlotIndex;
+                    int leftIndex = skill.Prev(true).SlotIndex;
+                    int rightIndex = skill.Next(true).SlotIndex;
                     
-                    var temp = caster._skills[prevIndex];
-                    caster._skills[prevIndex] = caster._skills[nextIndex];
-                    caster._skills[nextIndex] = temp;
+                    var tempStageSkill = caster._skills[leftIndex];
+                    caster._skills[leftIndex] = caster._skills[rightIndex];
+                    caster._skills[rightIndex] = tempStageSkill;
 
-                    caster._skills[prevIndex].RunSlotIndex = nextIndex;
-                    caster._skills[nextIndex].RunSlotIndex = prevIndex;
+                    var tempIndex = caster._skills[leftIndex].SlotIndex;
+                    caster._skills[leftIndex].SlotIndex = caster._skills[rightIndex].SlotIndex;
+                    caster._skills[rightIndex].SlotIndex = tempIndex;
                     
                     if (skill.GetJingJie() > JingJie.YuanYing)
                         caster.SetActionPoint(2);

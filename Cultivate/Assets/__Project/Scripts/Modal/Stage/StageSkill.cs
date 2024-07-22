@@ -9,8 +9,12 @@ public class StageSkill
     private readonly StageEntity _owner;
     public StageEntity Owner => _owner;
 
-    private readonly int _slotIndex;
-    public int SlotIndex => _slotIndex;
+    private int _slotIndex;
+    public int SlotIndex
+    {
+        get => _slotIndex;
+        set => _slotIndex = value;
+    }
 
     private int _runSlotIndex;
     public int RunSlotIndex
