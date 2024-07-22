@@ -6,34 +6,26 @@ using UnityEngine;
 
 public class StageSkill
 {
-    private StageEntity _owner;
+    private readonly StageEntity _owner;
     public StageEntity Owner => _owner;
-    private SkillEntry _entry;
-    public SkillEntry Entry => _entry;
 
-    private int _slotIndex;
+    private readonly int _slotIndex;
     public int SlotIndex => _slotIndex;
 
-    public SkillSlot GetSlot()
-        => _owner.RunEntity.GetSlot(_owner._p + 0);
-
-    private bool _exhausted;
-    public bool Exhausted
+    private int _runSlotIndex;
+    public int RunSlotIndex
     {
-        get => _exhausted;
-        set => _exhausted = value;
+        get => _runSlotIndex;
+        set => _runSlotIndex = value;
     }
-
-    public async Task ExhaustProcedure()
-        => await _owner.Env.ExhaustProcedure(_owner, this);
-
-    public int RunCastedCount { get; private set; }
-    public int RunEquippedTimes { get; private set; }
-    public int StageCastedCount { get; private set; }
+    public SkillSlot GetSlot()
+        => _owner.RunEntity.GetSlot(_runSlotIndex + 0);
+    
+    private readonly SkillEntry _entry;
+    public SkillEntry Entry => _entry;
 
     private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
-
     public async Task<bool> TryUpgradeJingJie()
     {
         if (_jingJie == _entry.HighestJingJie)
@@ -42,6 +34,47 @@ public class StageSkill
         return true;
     }
 
+    private bool _exhausted;
+    public bool Exhausted
+    {
+        get => _exhausted;
+        set => _exhausted = value;
+    }
+    public async Task ExhaustProcedure()
+        => await _owner.Env.ExhaustProcedure(_owner, this);
+
+    public int StageCastedCount { get; private set; }
+    public void IncreaseCastedCount() => StageCastedCount += 1;
+
+    public static StageSkill FromPlacedSkill(StageEntity owner, int slotIndex, PlacedSkill placedSkill)
+        => new(owner, slotIndex, slotIndex, placedSkill.Entry, placedSkill.JingJie);
+
+    public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie? jingJie = null, int slotIndex = 0)
+        => new(owner, slotIndex, slotIndex, skillEntry, jingJie ?? skillEntry.LowestJingJie);
+
+    public StageSkill Clone()
+        => new(_owner, _slotIndex, _runSlotIndex, _entry, _jingJie, _exhausted, StageCastedCount);
+
+    private StageSkill(
+        StageEntity owner,
+        int slotIndex,
+        int runSlotIndex,
+        SkillEntry skillEntry,
+        JingJie jingJie,
+        bool exhausted = false,
+        int stageCastedCount = 0)
+    {
+        _owner = owner;
+        _slotIndex = slotIndex;
+        _runSlotIndex = runSlotIndex;
+        _entry = skillEntry;
+        _jingJie = jingJie;
+        _exhausted = exhausted;
+        StageCastedCount = stageCastedCount;
+    }
+
+    public SkillTypeComposite GetSkillType()
+        => _entry.GetSkillTypeComposite();
     public int Dj
         => GetJingJie() - _entry.LowestJingJie;
     public bool IsOdd
@@ -77,39 +110,6 @@ public class StageSkill
         => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.LingQi));
     public bool NoAttackAdjacents
         => !Prev(false).GetSkillType().Contains(SkillType.Attack) && !Next(false).GetSkillType().Contains(SkillType.Attack);
-
-    public static StageSkill FromPlacedSkill(StageEntity owner, PlacedSkill placedSkill, int slotIndex)
-        => new(owner, placedSkill.Entry, placedSkill.JingJie, slotIndex);
-
-    public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie? jingJie = null, int slotIndex = 0)
-        => new(owner, skillEntry, jingJie ?? skillEntry.LowestJingJie, slotIndex);
-
-    public StageSkill Clone()
-        => new(_owner, _entry, _jingJie, _slotIndex, _exhausted, StageCastedCount);
-
-    private StageSkill(
-        StageEntity owner,
-        SkillEntry skillEntry,
-        JingJie jingJie,
-        int slotIndex,
-        bool exhausted = false,
-        int stageCastedCount = 0)
-    {
-        _owner = owner;
-        _entry = skillEntry;
-        _jingJie = jingJie;
-        _slotIndex = slotIndex;
-        _exhausted = exhausted;
-        StageCastedCount = stageCastedCount;
-    }
-
-    public SkillTypeComposite GetSkillType()
-        => _entry.GetSkillTypeComposite();
-
-    public void IncreaseCastedCount()
-    {
-        StageCastedCount += 1;
-    }
 
     public IEnumerable<StageSkill> Nexts(bool loop = false)
     {

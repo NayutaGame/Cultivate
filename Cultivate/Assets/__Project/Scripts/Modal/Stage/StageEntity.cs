@@ -206,6 +206,7 @@ public class StageEntity : Addressable, StageEventListener
     public int _p;
     private int _actionPoint;
     public int GetActionPoint() => _actionPoint;
+    // TODO proceduralize
     public void SetActionPoint(int value) => _actionPoint = Mathf.Max(_actionPoint, value);
     public void ResetActionPoint() => _actionPoint = 1;
     private CostResult _costResult;
@@ -337,7 +338,7 @@ public class StageEntity : Addressable, StageEventListener
         for (int i = 0; i < _skills.Length; i++)
         {
             SkillSlot slot = _runEntity.GetSlot(i + 0);
-            _skills[i] = StageSkill.FromPlacedSkill(this, slot.PlacedSkill, i);
+            _skills[i] = StageSkill.FromPlacedSkill(this, i, slot.PlacedSkill);
         }
 
         _manaShortageAction = StageSkill.FromSkillEntry(this, "0001");

@@ -854,25 +854,28 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
     
-            new(id:                         "0319",
+            new(id:                         "0334",
                 name:                       "鹤回翔",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
-                cost:                       CostResult.ChannelFromDj(dj => 1 - dj),
-                costDescription:            CostDescription.ChannelFromDj(dj => 1 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"反转出牌顺序" +
+                    $"交换左右牌" +
                     (j <= JingJie.YuanYing ? $"" :
-                        $"\n二重+1"),
+                        $"\n二动"),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    if (caster.Forward)
-                        await caster.GainBuffProcedure("鹤回翔");
-                    else
-                        await caster.TryRemoveBuff("鹤回翔");
+                    int prevIndex = skill.Prev(true).SlotIndex;
+                    int nextIndex = skill.Next(true).SlotIndex;
+                    
+                    var temp = caster._skills[prevIndex];
+                    caster._skills[prevIndex] = caster._skills[nextIndex];
+                    caster._skills[nextIndex] = temp;
 
+                    caster._skills[prevIndex].RunSlotIndex = nextIndex;
+                    caster._skills[nextIndex].RunSlotIndex = prevIndex;
+                    
                     if (skill.GetJingJie() > JingJie.YuanYing)
-                        await caster.GainBuffProcedure("二重");
+                        caster.SetActionPoint(2);
                     return null;
                 }),
 
@@ -1784,6 +1787,29 @@ public class SkillCategory : Category<SkillEntry>
             #endregion
             
             #region 待选池子
+    
+            new(id:                         "0319",
+                name:                       "旧鹤回翔",
+                wuXing:                     WuXing.Mu,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
+                cost:                       CostResult.ChannelFromDj(dj => 1 - dj),
+                costDescription:            CostDescription.ChannelFromDj(dj => 1 - dj),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"反转出牌顺序" +
+                    (j <= JingJie.YuanYing ? $"" :
+                        $"\n二重+1"),
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    if (caster.Forward)
+                        await caster.GainBuffProcedure("鹤回翔");
+                    else
+                        await caster.TryRemoveBuff("鹤回翔");
+
+                    if (skill.GetJingJie() > JingJie.YuanYing)
+                        await caster.GainBuffProcedure("二重");
+                    return null;
+                }),
 
             new(id:                         "0526",
                 name:                       "点穴",
