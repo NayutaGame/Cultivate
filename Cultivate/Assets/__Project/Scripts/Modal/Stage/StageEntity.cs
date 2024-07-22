@@ -580,9 +580,12 @@ public class StageEntity : Addressable, StageEventListener
         return false;
     }
 
-    public async Task TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming)
+    public async Task TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming, int? upperBound = null)
     {
         int flow = GetStackOfBuff(fromBuff) / fromStack;
+        if (upperBound.HasValue)
+            flow.ClampUpper(upperBound.Value);
+        
         if (consuming)
             await LoseBuffProcedure(fromBuff, flow * fromStack);
 

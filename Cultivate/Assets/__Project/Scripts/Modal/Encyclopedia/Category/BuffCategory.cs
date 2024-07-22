@@ -105,7 +105,7 @@ public class BuffCategory : Category<BuffEntry>
                 dispellable:                true,
                 eventDescriptors:           new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -167,7 +167,7 @@ public class BuffCategory : Category<BuffEntry>
                 dispellable:                false,
                 eventDescriptors:           new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -3, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -706,7 +706,7 @@ public class BuffCategory : Category<BuffEntry>
                             }
                         }
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -736,7 +736,7 @@ public class BuffCategory : Category<BuffEntry>
             new("格挡", "受到攻击：攻击力-[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -829,7 +829,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("天衣无缝", "每回合：[层数]攻，无法使用其他方式攻击", BuffStackRule.Max, true, false,
+            new("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
@@ -839,17 +839,6 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
                         await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo, fromSeamless: true);
-                    }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (b.Owner != d.Src) return;
-                        if (!d.FromSeamless)
-                        {
-                            b.PlayPingAnimation();
-                            d.Cancel = true;
-                        }
                     }),
                 }),
             
@@ -995,7 +984,7 @@ public class BuffCategory : Category<BuffEntry>
             new("看破", "无效化敌人下一次攻击，并且反击", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -2, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -1101,7 +1090,7 @@ public class BuffCategory : Category<BuffEntry>
             new("通透世界", "攻击具有穿透", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
