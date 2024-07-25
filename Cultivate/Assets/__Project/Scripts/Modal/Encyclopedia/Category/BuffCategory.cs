@@ -740,7 +740,7 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (d.Pierce) return;
+                        if (d.Penetrate) return;
                         if (b.Owner == d.Tgt && d.Src != d.Tgt)
                         {
                             b.PlayPingAnimation();
@@ -788,9 +788,9 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (b.Owner == d.Src && d.Src != d.Tgt && !d.Pierce)
+                        if (b.Owner == d.Src && d.Src != d.Tgt && !d.Penetrate)
                         {
-                            d.Pierce = true;
+                            d.Penetrate = true;
                             b.PlayPingAnimation();
                             await b.SetDStack(-1);
                         }
@@ -992,7 +992,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (d.Src != b.Owner && d.Tgt == b.Owner)
                         {
                             b.PlayPingAnimation();
-                            await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Pierce, d.Crit, false, d.DidDamage);
+                            await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Penetrate, d.Crit, false, d.DidDamage);
                             d.Cancel = true;
                         }
                     }),
@@ -1097,7 +1097,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner == d.Src && d.Src != d.Tgt)
                         {
                             b.PlayPingAnimation();
-                            d.Pierce = true;
+                            d.Penetrate = true;
                         }
                     }),
                 }),

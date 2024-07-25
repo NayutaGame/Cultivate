@@ -36,7 +36,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void StartRunProcedure(RunDetails d)
     {
-        bool firstTime = false;
+        bool firstTime = true;
         
         Map.InitEntityPool();
         Map.InitAdventurePool();
@@ -138,7 +138,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AscensionStepDescriptor(0),
                     
                     new BattleStepDescriptor(2, 5, 6),
-                    new AdventureStepDescriptor(2),
+                    firstTime ? new DirectStepDescriptor(2, "同境界合成教学") : new AdventureStepDescriptor(2),
                     new RestStepDescriptor(2),
                     new BattleStepDescriptor(3, 6, 7),
                     new AdventureStepDescriptor(3),

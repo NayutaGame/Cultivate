@@ -100,9 +100,9 @@ public class StageEnvironment : Addressable, StageEventListener
     /// <param name="didDamage">如果造成伤害时候的额外行为</param>
     /// <param name="induced">该行为是间接行为，不会引起额外的角色动画</param>
     public async Task AttackProcedure(StageEntity src, StageEntity tgt, int value, WuXing? wuXing = null, int times = 1,
-        bool lifeSteal = false, bool pierce = false, bool crit = false, bool recursive = true,
+        bool crit = false, bool lifeSteal = false, bool penetrate = false, bool recursive = true,
         Func<DamageDetails, Task> willDamage = null, Func<DamageDetails, Task> undamaged = null, Func<DamageDetails, Task> didDamage = null, bool induced = false)
-        => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, lifeSteal, pierce, crit, false, recursive, willDamage, undamaged, didDamage), times, induced);
+        => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, crit, lifeSteal, penetrate, false, recursive, willDamage, undamaged, didDamage), times, induced);
     public async Task AttackProcedure(AttackDetails attackDetails, int times, bool induced)
     {
         if (await attackDetails.Src.TryConsumeProcedure("追击"))
@@ -125,7 +125,7 @@ public class StageEnvironment : Addressable, StageEventListener
     {
         await Play(new PiercingVFXAnimation(false, d), induced);
 
-        bool isEvaded = !d.Pierce && d.Evade;
+        bool isEvaded = !d.Penetrate && d.Evade;
         if (isEvaded)
         {
             await EvadedProcedure(new EvadedDetails(d.Src, d.Tgt, d.Value), induced);
@@ -135,7 +135,7 @@ public class StageEnvironment : Addressable, StageEventListener
             return;
         }
 
-        if (!d.Pierce && d.Tgt.Armor >= 0)
+        if (!d.Penetrate && d.Tgt.Armor >= 0)
         {
             int negate = Mathf.Min(d.Value, d.Tgt.Armor);
             d.Value -= negate;
@@ -489,7 +489,7 @@ public class StageEnvironment : Addressable, StageEventListener
         List<Buff> buffs = d.Owner.Buffs.FilterObj(b => !b.Friendly && b.Dispellable).ToList();
 
         foreach (Buff b in buffs)
-            await d.Owner.RemoveBuffProcedure(b.GetEntry(), d.Stack);
+            await d.Owner.LoseBuffProcedure(b.GetEntry(), d.Stack);
 
         await _eventDict.SendEvent(StageEventDict.DID_DISPEL, d);
     }

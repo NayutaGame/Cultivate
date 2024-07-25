@@ -39,11 +39,26 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQiOnly,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"10攻" ,
+                    $"4攻" ,
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.AttackProcedure(10);
+                    await caster.AttackProcedure(4);
+                    return null;
+                }),
+            
+            new(id:                         "0003",
+                name:                       "点水",
+                wuXing:                     WuXing.Shui,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{Fib.ToValue(3 + dj) * 2}攻 吸血",
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    int value = Fib.ToValue(3 + skill.Dj) * 2;
+                    await caster.AttackProcedure(value, lifeSteal: true, wuXing: skill.Entry.WuXing);
                     return null;
                 }),
 
@@ -102,6 +117,27 @@ public class SkillCategory : Category<SkillEntry>
                         didDamage: async d =>
                         {
                             await caster.GainBuffProcedure("灵气", 1 + skill.Dj, induced: true);
+                            cond = true;
+                        },
+                        wuXing: skill.Entry.WuXing);
+                    return cond.ToCastResult();
+                }),
+
+            new(id:                         "0127",
+                name:                       "杀意",
+                wuXing:                     WuXing.Jin,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{6 + 3 * dj}攻" +
+                    $"\n击伤：暴击+1".ApplyCond(castResult),
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    bool cond = false;
+                    await caster.AttackProcedure(6 + 3 * skill.Dj,
+                        didDamage: async d =>
+                        {
+                            await caster.GainBuffProcedure("暴击", 1, induced: true);
                             cond = true;
                         },
                         wuXing: skill.Entry.WuXing);
@@ -472,7 +508,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0220",
                 name:                       "踏浪",
                 wuXing:                     WuXing.Shui,
-                jingJieBound:               JingJie.JinDan2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.LingQi,
                 cost:                       CostResult.ManaFromDj(dj => 3 + dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 3 + dj),
@@ -482,6 +518,42 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     await caster.GainBuffProcedure("灵气", 7 + 2 * skill.Dj);
                     return null;
+                }),
+            
+            new(id:                         "0222",
+                name:                       "空相",
+                wuXing:                     WuXing.Shui,
+                jingJieBound:               JingJie.JinDan2HuaShen,
+                skillTypeComposite:         SkillType.Attack | SkillType.ErDong,
+                cost:                       CostResult.ManaFromDj(dj => 2 - dj),
+                costDescription:            CostDescription.ManaFromDj(dj => 2 - dj),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{10 + 4 * dj}攻" +
+                    $"\n返还" +
+                    $"暴击".ApplyStyle(castResult, "0") +
+                    $"/" +
+                    $"吸血".ApplyStyle(castResult, "1") +
+                    $"/" +
+                    $"穿透".ApplyStyle(castResult, "2"),
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    bool consumeCrit = await caster.TryConsumeProcedure("暴击");
+                    bool consumeLifesteal = await caster.TryConsumeProcedure("吸血");
+                    bool consumePenetrate = await caster.TryConsumeProcedure("穿透");
+                    await caster.AttackProcedure(10 + 4 * skill.Dj,
+                        crit: consumeCrit,
+                        lifeSteal: consumeLifesteal,
+                        penetrate: consumePenetrate,
+                        wuXing: skill.Entry.WuXing);
+
+                    if (consumeCrit)
+                        await caster.GainBuffProcedure("暴击", induced: true);
+                    if (consumeLifesteal)
+                        await caster.GainBuffProcedure("吸血", induced: true);
+                    if (consumePenetrate)
+                        await caster.GainBuffProcedure("穿透", induced: true);
+                    
+                    return Style.CastResultFromBools(consumeCrit, consumeLifesteal, consumePenetrate);
                 }),
             
             new(id:                         "0219",
@@ -653,7 +725,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     int value = Fib.ToValue(4 + skill.Dj) + (Fib.ToValue(3 + skill.Dj)) * skill.StageCastedCount;
-                    await caster.AttackProcedure(value, pierce: true, wuXing: skill.Entry.WuXing);
+                    await caster.AttackProcedure(value, penetrate: true, wuXing: skill.Entry.WuXing);
                     return null;
                 }),
 
@@ -721,7 +793,7 @@ public class SkillCategory : Category<SkillEntry>
                     bool isEnd = await skill.IsEnd(useFocus: true);
                     bool damaged = false;
                     
-                    await caster.AttackProcedure(7 + 3 * skill.Dj, pierce: isEnd, wuXing: skill.Entry.WuXing,
+                    await caster.AttackProcedure(7 + 3 * skill.Dj, penetrate: isEnd, wuXing: skill.Entry.WuXing,
                         didDamage: async d =>
                         {
                             damaged = true;
@@ -848,9 +920,9 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     int value = 1 + caster.Opponent().Armor / 2;
-                    bool pierce = skill.GetJingJie() >= JingJie.HuaShen;
+                    bool penetrate = skill.GetJingJie() >= JingJie.HuaShen;
 
-                    await caster.AttackProcedure(value, pierce: pierce, wuXing: skill.Entry.WuXing);
+                    await caster.AttackProcedure(value, penetrate: penetrate, wuXing: skill.Entry.WuXing);
                     
                     return null;
                 }),
@@ -2291,7 +2363,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     bool cond = await caster.TryConsumeProcedure("格挡") || await caster.IsFocused();
                     await caster.AttackProcedure(15 + 3 * skill.Dj, wuXing: skill.Entry.WuXing,
-                        pierce: cond);
+                        penetrate: cond);
                     return cond.ToCastResult();
                 }),
 

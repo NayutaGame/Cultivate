@@ -16,9 +16,9 @@ public class AttackDetails : EventDetails
 
     public WuXing? WuXing;
 
-    public bool LifeSteal;
-    public bool Pierce;
     public bool Crit;
+    public bool LifeSteal;
+    public bool Penetrate;
     public bool Evade;
 
     public bool Recursive;
@@ -31,9 +31,9 @@ public class AttackDetails : EventDetails
 
     public AttackDetails(StageEntity src, StageEntity tgt, int value,
         WuXing? wuxing,
-        bool lifeSteal = false,
-        bool pierce = false,
         bool crit = false,
+        bool lifeSteal = false,
+        bool penetrate = false,
         bool evade = false,
         bool recursive = true,
         Func<DamageDetails, Task> willDamage = null,
@@ -45,9 +45,9 @@ public class AttackDetails : EventDetails
         Tgt = tgt;
         Value = value;
         WuXing = wuxing;
-        LifeSteal = lifeSteal;
-        Pierce = pierce;
         Crit = crit;
+        LifeSteal = lifeSteal;
+        Penetrate = penetrate;
         Evade = evade;
         Recursive = recursive;
         WillDamage = willDamage;
@@ -56,5 +56,5 @@ public class AttackDetails : EventDetails
         FromSeamless = fromSeamless;
     }
 
-    public AttackDetails Clone() => new(Src, Tgt, _value, WuXing, LifeSteal, Pierce, Crit, Evade, Recursive, WillDamage, Undamaged, DidDamage, FromSeamless);
+    public AttackDetails Clone() => new(Src, Tgt, _value, WuXing, Crit, LifeSteal, Penetrate, Evade, Recursive, WillDamage, Undamaged, DidDamage, FromSeamless);
 }

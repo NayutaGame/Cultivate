@@ -262,7 +262,7 @@ public class NodeCategory : Category<NodeEntry>
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(1);
                     RunManager.Instance.Environment.ClearDeck();
-                    RunManager.Instance.Environment.AddSkillProcedure("0200");
+                    RunManager.Instance.Environment.AddSkillProcedure("0003");
                     
                     ManHua1.Next = ManHua2;
                     ManHua2.Next = ManHua3;
@@ -272,7 +272,7 @@ public class NodeCategory : Category<NodeEntry>
                     ZhiRuBattle.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0200"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                        "左边是自己最终血量\n" +
                                        "右边是敌方最终血量\n" +
@@ -290,7 +290,7 @@ public class NodeCategory : Category<NodeEntry>
                     ZhiRuBattle.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        RunManager.Instance.Environment.AddSkillProcedure("0200");
+                        RunManager.Instance.Environment.AddSkillProcedure("0003");
                         ZhiRuBattle.ResetGuideIndex();
                         return ZhiRuRe;
                     });
@@ -310,7 +310,7 @@ public class NodeCategory : Category<NodeEntry>
                     LingQiBattle.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        RunManager.Instance.Environment.AddSkillProcedure("0200", preferredDeckIndex: new DeckIndex(true, 0));
+                        RunManager.Instance.Environment.AddSkillProcedure("0003", preferredDeckIndex: new DeckIndex(true, 0));
                         RunManager.Instance.Environment.AddSkillProcedure("0205");
                         RunManager.Instance.Environment.AddSkillProcedure("0500");
                         LingQiBattle.ResetGuideIndex();
@@ -320,7 +320,7 @@ public class NodeCategory : Category<NodeEntry>
                     ZhanBaiBattle.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("遇到了非常强大的怪物时也不用慌张，尝试将卡牌置入",
-                            SkillEntryDescriptor.FromEntry("0200"), new DeckIndex(true, 2)),
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 2)),
                         new ClickBattleGuide("旅途并不总是一帆风顺的\n也会存在无论如何都胜利不了的时候\n请出招吧",
                             new Vector2(965f, 913.5f)),
                     });
@@ -329,21 +329,22 @@ public class NodeCategory : Category<NodeEntry>
 
                     ZhanBaiDialog[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.AddSkillProcedure("0200");
+                        RunManager.Instance.Environment.AddSkillProcedure("0003");
                         return HeChengBattle;
                     });
                     
                     HeChengBattle.SetGuideDescriptors(new Guide[]
                     {
-                        new UnequipGuide("两张同名卡，都在手牌区时，可以通过拖拽合成。\n将恋花取下",
-                            SkillEntryDescriptor.FromEntry("0200")),
-                        new MergeGuide("将一张恋花推拽到另一张恋花上",
-                            SkillEntryDescriptor.FromEntry("0200"), SkillEntryDescriptor.FromEntry("0200")),
-                        new EquipGuide("将合成好的恋花推拽至战斗区",
-                            SkillEntryDescriptor.FromEntry("0200"), new DeckIndex(true, 2)),
+                        new UnequipGuide("两张同名卡，都在手牌区时，可以通过拖拽合成。\n将点水取下",
+                            SkillEntryDescriptor.FromEntry("0003")),
+                        new MergeGuide("将一张点水推拽到另一张点水上",
+                            SkillEntryDescriptor.FromEntry("0003"), SkillEntryDescriptor.FromEntry("0003")),
+                        new EquipGuide("将合成好的点水推拽至战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 2)),
                     });
                     HeChengBattle.SetWinOperation(() =>
                     {
+                        RunManager.Instance.Environment.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 3));
                         return ManHua5;
                     });
                     HeChengBattle.SetLoseOperation(() =>
@@ -351,8 +352,8 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.Environment.ClearDeck();
                         RunManager.Instance.Environment.AddSkillProcedure("0205", preferredDeckIndex: new DeckIndex(true, 0));
                         RunManager.Instance.Environment.AddSkillProcedure("0500", preferredDeckIndex: new DeckIndex(true, 1));
-                        RunManager.Instance.Environment.AddSkillProcedure("0200", preferredDeckIndex: new DeckIndex(true, 2));
-                        RunManager.Instance.Environment.AddSkillProcedure("0200");
+                        RunManager.Instance.Environment.AddSkillProcedure("0003", preferredDeckIndex: new DeckIndex(true, 2));
+                        RunManager.Instance.Environment.AddSkillProcedure("0003");
                         HeChengBattle.ResetGuideIndex();
                         return HeChengRe;
                     });
