@@ -1,8 +1,7 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class TechCategory : Category<TechEntry>
 {

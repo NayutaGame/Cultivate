@@ -1016,7 +1016,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("人间无戈", "死亡不会导致战斗结算", BuffStackRule.One, true, false,
+            new("人间无戈", "死亡不会停止战斗", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_COMMIT, 0, async (listener, stageEventDetails) =>
@@ -1028,7 +1028,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("待激活的摩诃钵特摩", "20格挡觉醒：八动，之后死亡", BuffStackRule.One, true, false,
+            new("待激活的摩诃钵特摩", "20格挡觉醒：八动，如果受伤则死亡", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
@@ -1046,7 +1046,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("摩诃钵特摩", "八动，之后死亡", BuffStackRule.One, true, false,
+            new("摩诃钵特摩", "八动，如果受伤则死亡", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_APPEAR, 0, async (listener, stageEventDetails) =>
@@ -1067,9 +1067,20 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         await b.Owner.LoseHealthProcedure(b.Owner.Hp);
                     }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        DamageDetails d = (DamageDetails)stageEventDetails;
+                        if (b.Owner != d.Tgt) return;
+                        if (b.Owner.Hp > 0)
+                        {
+                            b.PlayPingAnimation();
+                            await b.Owner.LoseHealthProcedure(b.Owner.Hp);
+                        }
+                    }),
                 }),
 
-            new("待激活的通透世界", "20力量觉醒：攻击具有穿透", BuffStackRule.One, true, false,
+            new("待激活的通透世界", "20力量觉醒：永久穿透和集中", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
@@ -1087,7 +1098,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("通透世界", "攻击具有穿透", BuffStackRule.One, true, false,
+            new("通透世界", "永久穿透和集中", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>

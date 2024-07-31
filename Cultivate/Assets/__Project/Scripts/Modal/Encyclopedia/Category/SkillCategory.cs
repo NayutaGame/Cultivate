@@ -666,6 +666,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack | SkillType.ZhiLiao,
+                withinPool:                 false,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻" +
                     $"\n首次击伤：生命+[累计治疗]".ApplyCond(castResult),
@@ -1554,6 +1555,7 @@ public class SkillCategory : Category<SkillEntry>
                     $"|" +
                     $"初次".ApplyStyle(castResult, "11") +
                     $"：翻倍",
+                withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     bool cond0 = caster.IsLowHp || await caster.IsFocused();

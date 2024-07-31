@@ -303,20 +303,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 8152188524626589071}
     m_Modifications:
     - target: {fileID: 7570460864629865518, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
-      propertyPath: m_fontSize
-      value: 18.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 7570460864629865518, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
       propertyPath: m_fontSizeMax
       value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 7570460864629865518, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
-      propertyPath: m_enableAutoSizing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7570460864629865518, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
-      propertyPath: m_enableWordWrapping
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8085986264311966347, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
       propertyPath: m_Name

@@ -36,7 +36,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void StartRunProcedure(RunDetails d)
     {
-        bool firstTime = true;
+        bool firstTime = false;
         
         Map.InitEntityPool();
         Map.InitAdventurePool();

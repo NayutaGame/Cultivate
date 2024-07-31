@@ -27,7 +27,6 @@ public class AppManager : Singleton<AppManager>, Addressable
 
     public FormationInventory FormationInventory;
     public SkillInventory SkillInventory;
-    [NonSerialized] public ListModel<RunSkill> SkillShowcaseInventory;
 
     [SerializeField][Range(0, 5)] public int SimulatingJingJie;
 
@@ -50,7 +49,6 @@ public class AppManager : Singleton<AppManager>, Addressable
 
             { "FormationInventory", () => FormationInventory },
             { "SkillInventory", () => SkillInventory },
-            { "SkillShowcaseInventory", () => SkillShowcaseInventory },
 
             { "Profile", () => ProfileManager },
             { "Run", () => RunManager.Instance },
@@ -69,11 +67,6 @@ public class AppManager : Singleton<AppManager>, Addressable
 
         SkillInventory = new();
         Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.FromEntryJingJie(e, e.LowestJingJie)).Do(s => SkillInventory.Add(s));
-
-        SkillShowcaseInventory = new();
-        Encyclopedia.SkillCategory.Traversal
-            .FilterObj(e => e.WithinPool)
-            .Map(e => RunSkill.FromEntryJingJie(e, e.LowestJingJie)).Do(s => SkillShowcaseInventory.Add(s));
 
         AppCanvas.gameObject.SetActive(true);
         EditorManager.gameObject.SetActive(true);

@@ -8,6 +8,11 @@ public class KeywordCategory : Category<KeywordEntry>
     {
         AddRange(new List<KeywordEntry>()
         {
+            new("金流转", "将所有柔韧转化成锋锐"),
+            new("水流转", "将所有锋锐转化成格挡"),
+            new("木流转", "将所有格挡转化成力量"),
+            new("火流转", "将所有力量转化成灼烧"),
+            new("土流转", "将所有灼烧转化成柔韧"),
             new("减甲", "下次受攻击时，额外受到伤害"),
             new("奇偶", "此牌位置是奇数时触发前一个效果，是偶数时触发后一个效果"),
             new("架势", "消耗架势激活效果，没有架势时获得架势"),
