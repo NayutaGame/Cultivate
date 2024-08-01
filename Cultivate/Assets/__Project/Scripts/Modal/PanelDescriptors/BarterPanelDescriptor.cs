@@ -1,6 +1,7 @@
 
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class BarterPanelDescriptor : PanelDescriptor
 {
@@ -44,7 +45,8 @@ public class BarterPanelDescriptor : PanelDescriptor
                             return false;
                     return true;
                 }, fromSkills[i].JingJie);
-            toSkills[i] = SkillEntryDescriptor.FromEntry(RunManager.Instance.Environment.DrawSkill(descriptor)); // distinct, non consume
+            Assert.IsTrue(fromSkills[i].JingJie.HasValue);
+            toSkills[i] = SkillEntryDescriptor.FromEntryJingJie(RunManager.Instance.Environment.DrawSkill(descriptor), fromSkills[i].JingJie.Value); // distinct, non consume
         }
         
         _inventory = new();

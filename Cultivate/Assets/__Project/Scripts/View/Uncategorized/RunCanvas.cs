@@ -23,6 +23,7 @@ public class RunCanvas : Panel
     public CardPickerPanel CardPickerPanel;
     public ShopPanel ShopPanel;
     public BarterPanel BarterPanel;
+    public GachaPanel GachaPanel;
     public ArbitraryCardPickerPanel ArbitraryCardPickerPanel;
     public ImagePanel ImagePanel;
     public RunResultPanel RunResultPanel;
@@ -42,6 +43,7 @@ public class RunCanvas : Panel
             CardPickerPanel,
             ShopPanel,
             BarterPanel,
+            GachaPanel,
             ArbitraryCardPickerPanel,
             ImagePanel,
             RunResultPanel,

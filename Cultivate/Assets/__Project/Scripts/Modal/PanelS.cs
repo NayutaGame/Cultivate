@@ -43,9 +43,10 @@ public struct PanelS : IEquatable<PanelS>
         { typeof(CardPickerPanelDescriptor), 6 },
         { typeof(ShopPanelDescriptor), 7 },
         { typeof(BarterPanelDescriptor), 8 },
-        { typeof(ArbitraryCardPickerPanelDescriptor), 9 },
-        { typeof(ImagePanelDescriptor), 10 },
-        { typeof(RunResultPanelDescriptor), 11 },
+        { typeof(GachaPanelDescriptor), 9 },
+        { typeof(ArbitraryCardPickerPanelDescriptor), 10 },
+        { typeof(ImagePanelDescriptor), 11 },
+        { typeof(RunResultPanelDescriptor), 12 },
     };
 
     public bool Equals(PanelS other)

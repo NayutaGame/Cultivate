@@ -468,10 +468,9 @@ public class NodeCategory : Category<NodeEntry>
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
-                    DialogPanelDescriptor A = new("前方有商店和温泉，选择一条路", "商店", "温泉");
+                    DialogPanelDescriptor A = new("前面有一个盲盒商店，你想去看看这期会出什么");
                     
-                    // Gacha
-                    ShopPanelDescriptor B = new(map.JingJie);
+                    GachaPanelDescriptor B = new();
 
                     A[0].SetSelect(option => B);
                     

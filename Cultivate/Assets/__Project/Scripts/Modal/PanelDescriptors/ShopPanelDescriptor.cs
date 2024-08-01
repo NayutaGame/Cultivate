@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShopPanelDescriptor : PanelDescriptor
 {
-    private static readonly int[] PriceTable = new int[] { 39, 59, 99, 149, 249 };
+    private static readonly int[] PriceTable = new int[] { 1, 2, 4, 8, 16 };
     private JingJie _jingJie;
     private CommodityListModel _commodities;
     public CommodityListModel GetCommodities() => _commodities;
