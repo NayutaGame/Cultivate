@@ -11,7 +11,7 @@ public class NodeCategory : Category<NodeEntry>
     {
         AddRange(new List<NodeEntry>()
         {
-            #region Special
+            #region Core
             
             new(id:                                 "不存在的事件",
                 description:                        "不存在的事件",
@@ -48,7 +48,7 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         A.SetWinOperation(() =>
                         {
-                            B.SetDetailedText($"胜利！\n获得了{goldValue}的修为\n请选择一张卡作为奖励");
+                            B.SetDetailedText($"胜利！\n获得了{goldValue}金\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
                             return B;
@@ -57,7 +57,7 @@ public class NodeCategory : Category<NodeEntry>
                         A.SetLoseOperation(() =>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
-                            C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{goldValue}修为\n请选择一张卡作为奖励");
+                            C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{goldValue}金\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
                             return C;
@@ -68,7 +68,7 @@ public class NodeCategory : Category<NodeEntry>
                         A.SetWinOperation(() =>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(3);
-                            B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{goldValue}的修为\n请选择一张卡作为奖励");
+                            B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{goldValue}金\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
                             return B;
@@ -76,7 +76,7 @@ public class NodeCategory : Category<NodeEntry>
 
                         A.SetLoseOperation(() =>
                         {
-                            C.SetDetailedText($"你没能击败对手，幸好跨越境界抵消了你的命元伤害。\n获得了{goldValue}修为\n请选择一张卡作为奖励");
+                            C.SetDetailedText($"你没能击败对手，幸好跨越境界抵消了你的命元伤害。\n获得了{goldValue}金\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
                             return C;
@@ -120,17 +120,14 @@ public class NodeCategory : Category<NodeEntry>
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
-                    DialogPanelDescriptor A = new("前方有人参果树和菩提树，选择一条路", "人参果树", "菩提树");
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("吃了一个人参果，回复了2点命元")
-                        .SetReward(Reward.FromMingYuan(2));
+                    DialogPanelDescriptor A = new("最近有些空闲的时间，你决定要", "加紧修炼", "去温泉", "喝点人参茶");
 
                     JingJie targetJingJie = Mathf.Min(map.JingJie + 1, JingJie.HuaShen);
-                    
-                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
+                    CardPickerPanelDescriptor B = new CardPickerPanelDescriptor(
                         detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。\n请选择至多一张低于{targetJingJie}的卡牌提升至{targetJingJie}",
                         bound:              new Bound(0, 2),
                         descriptor:         RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, targetJingJie));
-                    C.SetConfirmOperation(iRunSkillList =>
+                    B.SetConfirmOperation(iRunSkillList =>
                     {
                         foreach (var iRunSkill in iRunSkillList)
                         {
@@ -150,89 +147,61 @@ public class NodeCategory : Category<NodeEntry>
 
                         return null;
                     });
+
+                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    DialogPanelDescriptor C = new DialogPanelDescriptor($"泡了温泉之后感到了心情畅快，获得了{baseGoldReward}点生命上限")
+                        .SetReward(Reward.FromHealth(baseGoldReward));
+                    
+                    DialogPanelDescriptor D = new DialogPanelDescriptor("喝了几口人参茶，回复了2点命元")
+                        .SetReward(Reward.FromMingYuan(2));
                     
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
+                    A[2].SetSelect(option => D);
 
                     map.CurrNode.Panel = A;
                 }),
-
-            new(id:                                 "商店",
-                description:                        "商店",
+            
+            new(id:                                 "胜利",
+                description:                        "胜利",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
-                    DialogPanelDescriptor A = new("前方有商店和温泉，选择一条路", "商店", "温泉");
-                    
-                    ShopPanelDescriptor B = new(map.JingJie);
-                    int health = (map.JingJie + 1) * 3;
-                    DialogPanelDescriptor C = new DialogPanelDescriptor($"泡了温泉之后感到了心情畅快，获得了{health}点生命上限")
-                        .SetReward(Reward.FromHealth(health));
+                    DialogPanelDescriptor A = new("恭喜获得游戏胜利",
+                    "前往结算");
 
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    
-                    map.CurrNode.Panel = A;
-                }),
-
-            new(id:                                 "悟道",
-                description:                        "悟道",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, ladder) =>
-                {
-                    Pool<WuXing> pool = new Pool<WuXing>();
-                    pool.Populate(WuXing.Traversal);
-                    pool.Shuffle();
-
-                    WuXing[] options = new WuXing[3];
-                    for (int i = 0; i < options.Length; i++)
+                    A[0].SetSelect(option =>
                     {
-                        pool.TryPopItem(out options[i]);
-                    }
-
-                    DialogPanelDescriptor A = new("选择一种五行，获得一张随机牌",
-                        options[0]._name,
-                        options[1]._name,
-                        options[2]._name);
-
-                    A._receiveSignal = signal =>
-                    {
-                        if (signal is SelectedOptionSignal selectedOptionSignal)
-                        {
-                            int index = selectedOptionSignal.Selected;
-                            RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: options[index],
-                                jingJie: RunManager.Instance.Environment.Map.JingJie));
-                        }
+                        RunManager.Instance.Environment.Result.State = RunResult.RunResultState.Victory;
                         return null;
-                    };
+                    });
 
                     map.CurrNode.Panel = A;
                 }),
-
-            new(id:                                 "获得金钱",
-                description:                        "获得金钱",
+            
+            new(id:                                 "突破境界",
+                description:                        "突破境界",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
-                    int gold = Mathf.RoundToInt((map.JingJie + 1) * 21 * RandomManager.Range(0.8f, 1.2f));
-                    DialogPanelDescriptor A = new DialogPanelDescriptor($"获得了{gold}金钱")
-                        .SetReward(Reward.FromGold(gold));
+                    DialogPanelDescriptor A = new("你感到很久以来的瓶颈将被突破",
+                        "突破");
+
+                    A[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.NextJingJieProcedure();
+                        return null;
+                    });
+
                     map.CurrNode.Panel = A;
                 }),
 
-            new(id:                                 "以物易物",
-                description:                        "以物易物",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, ladder) =>
-                {
-                    BarterPanelDescriptor A = new();
-                    map.CurrNode.Panel = A;
-                }),
+            #endregion
 
+            #region Tutorial
+            
             new(id:                                 "初入蓬莱",
                 description:                        "初入蓬莱",
                 ladderBound:                        new Bound(0, 15),
@@ -377,74 +346,777 @@ public class NodeCategory : Category<NodeEntry>
                     map.CurrNode.Panel = A;
                 }),
 
-            new(id:                                 "愿望单",
-                description:                        "愿望单",
+            #endregion
+
+            #region Shop
+            
+            new(id:                                 "存钱",
+                description:                        "存钱",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
-                    DialogPanelDescriptor A = new("游戏仍在制作中，请加入愿望单，以关注后续进展，感谢游玩！",
-                        "Q群：216060477",
-                        "游戏名：蓬莱之旅",
-                        "返回标题");
-
-                    A[0].SetSelect(option =>
-                    {
-                        return A;
-                    });
-
-                    A[1].SetSelect(option =>
-                    {
-                        return A;
-                    });
-
-                    A[2].SetSelect(option =>
-                    {
-                        RunManager.Instance.ReturnToTitle();
-                        return null;
-                    });
+                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    DialogPanelDescriptor A = new DialogPanelDescriptor($"获得了{baseGoldReward}金钱")
+                        .SetReward(Reward.FromGold(baseGoldReward));
                     map.CurrNode.Panel = A;
                 }),
             
-            new(id:                                 "胜利",
-                description:                        "胜利",
-                ladderBound:                        new Bound(0, 15),
+            new(id:                                 "黑市",
+                description:                        "黑市",
+                ladderBound:                        new Bound(0, 8),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
-                    DialogPanelDescriptor A = new("恭喜获得游戏胜利",
-                    "前往结算");
-
-                    A[0].SetSelect(option =>
+                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    
+                    DialogPanelDescriptor A = new("你发现了一个黑市，这里有少量高境界卡牌。", "进去看一看");
+                    
+                    ShopPanelDescriptor B = new(map.JingJie);
+                    B._enter = () =>
                     {
-                        RunManager.Instance.Environment.Result.State = RunResult.RunResultState.Victory;
-                        return null;
-                    });
+                        CommodityListModel commodities = new CommodityListModel();
 
+                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                            pred: e => e.LowestJingJie - map.JingJie >= 2,
+                            count: 2,
+                            consume: false));
+
+                        foreach (SkillEntry e in entries)
+                        {
+                            int price = Mathf.RoundToInt((baseGoldReward << (e.LowestJingJie - map.JingJie)) * RandomManager.Range(0.8f, 1.2f));
+                            float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
+                            commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie), price,
+                                discount));
+                        }
+
+                        B.SetCommodities(commodities);
+                    };
+
+                    A[0].SetSelect(option => B);
+                    
                     map.CurrNode.Panel = A;
                 }),
             
-            new(id:                                 "突破境界",
-                description:                        "突破境界",
-                ladderBound:                        new Bound(0, 15),
+            new(id:                                 "收藏家",
+                description:                        "收藏家",
+                ladderBound:                        new Bound(2, 15),
                 withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
-                    DialogPanelDescriptor A = new("你感到很久以来的瓶颈将被突破",
-                        "突破");
+                    DialogPanelDescriptor A = new("你遇到了一位收藏家，他邀请你去看看他的藏品");
+                    
+                    ShopPanelDescriptor B = new(map.JingJie);
 
-                    A[0].SetSelect(option =>
+                    A[0].SetSelect(option => B);
+                    
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "以物易物",
+                description:                        "以物易物",
+                ladderBound:                        new Bound(2, 15),
+                withInPool:                         false,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你收到了神秘集会的入场券，大家在集会上交换技能。");
+                    
+                    BarterPanelDescriptor B = new();
+
+                    A[0].SetSelect(option => B);
+                    
+                    map.CurrNode.Panel = A;
+                }),
+            
+            new(id:                                 "毕业季",
+                description:                        "毕业季",
+                ladderBound:                        new Bound(5, 15),
+                withInPool:                         false,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("一阵噪音惊扰了你的休息，原来是灵韵宗的毕业季到了，学子们完成了学业后，纷纷将不要的技能打折卖出。");
+                    
+                    ShopPanelDescriptor B = new(map.JingJie);
+                    B._enter = () =>
                     {
-                        RunManager.Instance.Environment.NextJingJieProcedure();
-                        return null;
-                    });
+                        CommodityListModel commodities = new CommodityListModel();
 
+                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                            pred: e => e.LowestJingJie <= JingJie.ZhuJi,
+                            count: 4,
+                            consume: false));
+
+                        foreach (SkillEntry e in entries)
+                        {
+                            int price = Mathf.RoundToInt((1 << e.LowestJingJie));
+                            float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
+                            commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie), price,
+                                discount));
+                        }
+
+                        B.SetCommodities(commodities);
+                    };
+                    
+                    A[0].SetSelect(option => B);
+                    
+                    map.CurrNode.Panel = A;
+                }),
+            
+            new(id:                                 "盲盒",
+                description:                        "盲盒",
+                ladderBound:                        new Bound(8, 15),
+                withInPool:                         false,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("前方有商店和温泉，选择一条路", "商店", "温泉");
+                    
+                    // Gacha
+                    ShopPanelDescriptor B = new(map.JingJie);
+
+                    A[0].SetSelect(option => B);
+                    
                     map.CurrNode.Panel = A;
                 }),
 
             #endregion
 
             #region Adventure
+            
+            new(id:                                 "天津四",
+                description:                        "天津四",
+                ladderBound:                        new Bound(0, 2),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你看见一个书生，悄悄看着一个织布的少女，应该是对她有意思。他看你道士打扮，于是问道：“先生可否帮我算一卦，算姻缘。”",
+                        "祝福他的缘分",
+                        "和他说不是每一段相思都能够有结果的");
+
+                    DialogPanelDescriptor B = new("书生表情平静，实际上满心欢喜，说：“我去尝试追求她看看。”", "过了三十年");
+                    DialogPanelDescriptor B1 = new DialogPanelDescriptor("你又见到了当初的书生，他说没有在当年找到合适的姻缘。他给你留下了一些东西。\n\n得到《遗憾》天津四 著")
+                        .SetReward(new AddSkillReward("0603", JingJie.JinDan));
+
+                    DialogPanelDescriptor C = new("书生表情平静，实际上内心忧愁，然后默默离开了", "过了三十年");
+                    DialogPanelDescriptor C1 = new DialogPanelDescriptor("你又见到了当初的书生，他虽然当时放弃了，但是后来和其他人结成了姻缘。他给你留下了一些东西。\n\n得到《爱恋》天津四 著")
+                        .SetReward(new AddSkillReward("0604", JingJie.JinDan));
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    B[0].SetSelect(option => B1);
+                    C[0].SetSelect(option => C1);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "琴仙",
+                description:                        "琴仙",
+                ladderBound:                        new Bound(2, 5),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你遇到了一个弹琴的人，他双目失明，衣衫褴褛，举手投足之间却让人感到大方得体，应该是一名隐士。正好前一首曲毕。向你的方向看了过来，好像知道你来了。",
+                        "来一首欢快的曲子吧",
+                        "来一首悲伤的曲子吧",
+                        "赶路着急，没时间留下来听曲子了");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("那人哈哈大笑，然后弹了一首欢快的曲子。你回想起这一生，第一次这么有满足感，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《春雨》")
+                        .SetReward(new AddSkillReward("0606", map.JingJie));
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《枯木》")
+                        .SetReward(new AddSkillReward("0607", map.JingJie));
+                    DialogPanelDescriptor D = new DialogPanelDescriptor("之前赶路省下的时间，正好可以用于修炼。\n\n获得一个技能")
+                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    A[2].SetSelect(option => D);
+
+                    map.CurrNode.Panel = A;
+                }),
+            
+            new(id:                                 "赤壁赋",
+                description:                        "赤壁赋",
+                ladderBound:                        new Bound(5, 8),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
+                        "赞同月亮是变化的",
+                        "赞同月亮是不变的",
+                        "变得不是月亮，而是人");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。" +
+                                                                        "\n\n得到《须臾》")
+                        .SetReward(new AddSkillReward("0600", jingJie: map.JingJie));
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。" +
+                                                                        "\n\n得到《永远》")
+                        .SetReward(new AddSkillReward("0601", jingJie: map.JingJie));
+                    DialogPanelDescriptor D = new DialogPanelDescriptor("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。" +
+                                                                        "\n\n得到4金");
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    A[2].SetSelect(option => D);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "二子学弈",
+                description:                        "二子学弈",
+                ladderBound:                        new Bound(8, 11),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你看到一个老者在教两个学童下棋，两个学童在对弈，一名学童注视棋盘，另一名学童四处张望。",
+                        "注视棋盘的学童能赢",
+                        "四处张望的学童能赢");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("你走近了，准备称赞注视棋盘的学童，顺着他的目光看向棋盘。" +
+                                                                        "\n\n你们在对弈啊，你开口道。注视棋盘的学童说，说对弈太抬举我了，我和爷爷是在请教老师。" +
+                                                                        "\n\n原来四处张望的学童竟然是老师，老者却是学子。" +
+                                                                        "\n\n四处张望的学童转过身来对你说，以身入局才能看到事物真正的流向，孺子可教也。给你留了点东西。\n\n得到《一心》")
+                        .SetReward(new AddSkillReward("0610", jingJie: map.JingJie));
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("你虽然相隔甚远，看不见棋盘，但是四处张望的学童神态自若，充满自信，你上去夸他。" +
+                                                                        "\n\n他说到：你虽然眼神不在棋盘中，却也从场外信息判断出了我能赢，孺子可教也。给你留了点东西。\n\n得到《童趣》")
+                        .SetReward(new AddSkillReward("0611", jingJie: map.JingJie));
+                    
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "仙人下棋",
+                description:                        "仙人下棋",
+                ladderBound:                        new Bound(11, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你在竹林里迷路了，走了一阵遇到两个人在下棋，其中一个人发现了你，然后继续看棋盘去了。",
+                        "尝试观看两人对弈（需要一张二动牌）",
+                        "请教两人路怎么走（需要一张治疗牌）");
+
+                    CardPickerPanelDescriptor B = new CardPickerPanelDescriptor(
+                        detailedText:       "请提交一张二动牌",
+                        bound:              new Bound(0, 2),
+                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.ErDong));
+                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
+                        detailedText:       "请提交一张治疗牌",
+                        bound:              new Bound(0, 2),
+                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.ZhiLiao));
+
+                    DialogPanelDescriptor BWin = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
+                    DialogPanelDescriptor BWin2 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
+                    BWin2.SetReward(new AddSkillReward("0211", map.JingJie));
+
+                    DialogPanelDescriptor BLose = new("虽然你沉下心来想要理解棋盘中发生了什么事，只见两人下棋越来越快，一息之间，那二人已下出千百步，你想说些什么，但是身体却来不及动。", "不知过了多久");
+                    DialogPanelDescriptor BLose2 = new("你醒来时，那两人已经不在了。但是莫要紧，美美睡上一觉比什么都重要。命元+2。");
+                    BLose2.SetReward(Reward.FromMingYuan(2));
+
+                    DialogPanelDescriptor CWin = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，你回想起了一段关于呼吸的功法，开始强迫自己吐纳，努力在这种环境下获取一些空气。", "不知过了多久");
+                    DialogPanelDescriptor CWin2 = new("即使空气非常粘稠，你也可以呼吸自如。慢慢回到了正常的感觉，你悟出了一个关于吐纳的功法。");
+                    CWin2.SetReward(new AddSkillReward("0608", map.JingJie));
+
+                    DialogPanelDescriptor CLose = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，肺部在不断哀嚎。", "不知过了多久");
+                    DialogPanelDescriptor CLose2 = new("空气中的粘稠感终于消失。你赶紧大口吸气呼气，第一次感到空气是这么美好。生命值上限+10。");
+                    CLose2.SetReward(Reward.FromHealth(16));
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+
+                    B.SetConfirmOperation(iRunSkillList =>
+                    {
+                        if (iRunSkillList.Count == 0)
+                            return BLose;
+
+                        foreach (object iSkill in iRunSkillList)
+                        {
+                            if (iSkill is RunSkill skill)
+                            {
+                                RunManager.Instance.Environment.Hand.Remove(skill);
+                            }
+                            else if (iSkill is SkillSlot slot)
+                            {
+                                slot.Skill = null;
+                            }
+                        }
+
+                        return BWin;
+                    });
+
+                    C.SetConfirmOperation(iRunSkillList =>
+                    {
+                        if (iRunSkillList.Count == 0)
+                            return CLose;
+
+                        foreach (object iSkill in iRunSkillList)
+                        {
+                            if (iSkill is RunSkill skill)
+                            {
+                                RunManager.Instance.Environment.Hand.Remove(skill);
+                            }
+                            else if (iSkill is SkillSlot slot)
+                            {
+                                slot.Skill = null;
+                            }
+                        }
+
+                        return CWin;
+                    });
+
+                    BWin[0].SetSelect(option => BWin2);
+                    BLose[0].SetSelect(option => BLose2);
+                    CWin[0].SetSelect(option => CWin2);
+                    CLose[0].SetSelect(option => CLose2);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "检测仪",
+                description:                        "检测仪",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A0 = new("你捡到了一个不曾见过的仪器，上面有5个按钮。你决定按下其中一个试试。",
+                        "金",
+                        "水",
+                        "木",
+                        "下一页");
+
+                    DialogPanelDescriptor A1 = new("你捡到了一个不曾见过的仪器，上面有5个按钮。你决定按下其中一个试试。",
+                        "火",
+                        "土",
+                        "上一页");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("仪表盘上出现了一个箭头，你顺着箭头望去，发现一本秘籍，随后仪器没电了。\n\n得到一张牌");
+                    
+                    A0[3].SetSelect(option => A1);
+                    A1[2].SetSelect(option => A0);
+
+                    A0[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Jin,
+                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                        return B;
+                    });
+
+                    A0[1].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Shui,
+                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                        return B;
+                    });
+
+                    A0[2].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Mu,
+                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                        return B;
+                    });
+
+                    A1[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Huo,
+                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                        return B;
+                    });
+
+                    A1[1].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Tu,
+                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                        return B;
+                    });
+
+                    map.CurrNode.Panel = A0;
+                }),
+
+            new(id:                                 "解梦师",
+                description:                        "解梦师",
+                ladderBound:                        new Bound(5, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你来到一个镇上，见到了当地有名的解梦师。你请他解梦，你梦中出现了什么？",
+                        "没有灵气的贫民",
+                        "一些灵气的贵族",
+                        "灵气充沛的灵泉");
+
+                    ArbitraryCardPickerPanelDescriptor B = new("原来如此，你最近是否常常想着");
+                    DialogPanelDescriptor C = new("这正是我现在需要的，先生真乃神医也。\n\n得到一张牌");
+
+                    A[0].SetSelect(option =>
+                    {
+                        Bound manaCost = 0;
+
+                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
+                            jingJie: map.JingJie,
+                            count: 3,
+                            distinct: true,
+                            consume: false));
+                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        return B;
+                    });
+                    A[1].SetSelect(option =>
+                    {
+                        Bound manaCost = new Bound(1, 10);
+
+                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
+                            jingJie: map.JingJie,
+                            count: 3,
+                            distinct: true,
+                            consume: false));
+                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        return B;
+                    });
+                    A[2].SetSelect(option =>
+                    {
+                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                            jingJie: map.JingJie,
+                            skillTypeComposite: SkillType.LingQi,
+                            count: 3,
+                            distinct: true,
+                            consume: false));
+                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        return B;
+                    });
+
+                    B.SetConfirmOperation(skills =>
+                    {
+                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
+                        return C;
+                    });
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "天机阁",
+                description:                        "天机阁",
+                ladderBound:                        new Bound(2, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你在沙漠中行走，突然眼前出来了一栋华丽的建筑，上面写着天机阁。你走入其中，前面有个牌子，请选择一张。你正在想是选择什么时，发现有十张卡牌浮在空中。");
+                    ArbitraryCardPickerPanelDescriptor B = new("请从10张牌中选1张获取");
+                    DialogPanelDescriptor C = new("刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
+
+                    List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(jingJie: map.JingJie, count: 10, consume: false));
+                    B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                    B.SetConfirmOperation(skills =>
+                    {
+                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
+                        return C;
+                    });
+                    
+                    A[0].SetSelect(option => B);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "论无穷",
+                description:                        "论无穷",
+                ladderBound:                        new Bound(11, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？",
+                        "我每天跑步，只要一只能跑下去，跑的路程就是无穷的",
+                        "有一种蛇，每天吃自己的尾巴，又长出来新的蛇身，永远吃不完，此谓无穷。",
+                        "有个木桩，每天砍一半，过一万年也砍不完，这个叫做无穷。");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("你痛快写了800字，时间没过5分钟，已经写完了。" +
+                                                  "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
+                        .SetReward(new DrawSkillReward("得到一张二动牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.ErDong)));
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
+                                                                        "从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
+                                                                        "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
+                                                                        "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
+                        .SetReward(new DrawSkillReward("得到一张自指牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.ZiZhi)));
+                    DialogPanelDescriptor D = new DialogPanelDescriptor("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
+                                                                        "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
+                                                  "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
+                        .SetReward(new DrawSkillReward("得到一张消耗牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.XiaoHao)));
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    A[2].SetSelect(option => D);
+
+                    map.CurrNode.Panel = A;
+                }),
+            
+            new(id:                                 "分子打印机",
+                description:                        "分子打印机",
+                ladderBound:                        new Bound(5, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你发现了一个机器，有两个插槽。中间写着一行说明，一边放原料，一边放卡牌。",
+                        "试试这个机器可以做什么",
+                        "离开");
+
+                    CardPickerPanelDescriptor B = new("请选择2张牌", bound: new Bound(0, 3));
+                    DialogPanelDescriptor C = new("来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
+                    DialogPanelDescriptor D = new("劈里啪啦一阵响声过后，正在你担心自己的卡牌会受到什么非人的折磨的时候。机器的运转声停止了。打开后，你发现两个插槽里面的卡变成同一张了。\n\n得到两张牌");
+
+                    B.SetConfirmOperation(iRunSkillList =>
+                    {
+                        int count = iRunSkillList.Count;
+                        if (count == 0 || count == 1)
+                            return C;
+
+                        RunSkill copyingSkill = null;
+                        object copying = iRunSkillList[RandomManager.Range(0, count)];
+                        if (copying is RunSkill runSkill)
+                        {
+                            copyingSkill = runSkill;
+                        }
+                        else if (copying is SkillSlot slot)
+                        {
+                            RunSkill rSkill = slot.Skill as RunSkill;
+                            Assert.IsTrue(rSkill != null);
+                            copyingSkill = rSkill;
+                        }
+
+                        foreach (object iSkill in iRunSkillList)
+                        {
+                            if (iSkill is RunSkill skill)
+                            {
+                                RunManager.Instance.Environment.Hand.Remove(skill);
+                            }
+                            else if (iSkill is SkillSlot slot)
+                            {
+                                slot.Skill = null;
+                            }
+                        }
+
+                        count.Do(i => RunManager.Instance.Environment.Hand.Add(copyingSkill));
+                        return D;
+                    });
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "天界树",
+                description:                        "天界树",
+                ladderBound:                        new Bound(11, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
+                        "吃树上的果子",
+                        "尝试感悟五行相生的规律");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("久闻天界树，3000年才能开花结果，醒来之后，身上所有伤都不见了。\n\n命元+2")
+                        .SetReward(Reward.FromMingYuan(2));
+                    DialogPanelDescriptor C = new("你感受到了天界树的记忆。活，死，活，活，死，死，活，活，死死死死死死死。。。。。。活？" +
+                                                  "所有的生命都逐渐凋零，所有的死者彷佛又有了生命。你感觉如果继续感悟下去，现在手中所有的卡牌都即将不属于自己，要继续感悟么？",
+                        "停止感悟，吃树上的果子",
+                        "继续感悟");
+                    DialogPanelDescriptor D = new("金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。" +
+                                                  "到最后，你已经不知道你是树，还是树是你了。" +
+                                                  "感悟了五行相生，所有五行牌都被相生的元素替换了。");
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    C[0].SetSelect(option => B);
+                    C[1].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
+                        {
+                            RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex);
+                            if (skill == null)
+                                return;
+
+                            SkillEntry entry = skill.GetEntry();
+                            if (!entry.WuXing.HasValue)
+                                return;
+
+                            WuXing wuXing = entry.WuXing.Value.Next;
+                            JingJie jingJie = RandomManager.Range(skill.GetJingJie(), map.JingJie + 1);
+                            
+                            RunManager.Instance.Environment.DrawSkillProcedure(
+                                SkillEntryDescriptor.FromWuXingJingJie(wuXing, jingJie),
+                                deckIndex);
+                        });
+
+                        return D;
+                    });
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "连抽五张",
+                description:                        "连抽五张",
+                ladderBound:                        new Bound(5, 8),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你近日练功，隐约感到一个瓶颈，心里略有不快。想着，如果全力一博，说不定就多一分机会窥见大道的真貌。",
+                        "欲速则不达",
+                        "大力出奇迹（消耗30生命上限）");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获。\n\n得到一张牌")
+                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("随着喷出一大口鲜血，你回过神来，原来自己还活着，感谢大道没把自己留在那边。\n\n得到五张牌")
+                        .SetReward(new DrawSkillReward("获得五个技能", new(jingJie: map.JingJie, count: 5)));
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetCost(new CostDetails(health: 30))
+                        .SetSelect(option => C);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "我已膨胀",
+                description:                        "我已膨胀",
+                ladderBound:                        new Bound(11, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你打坐着，元神又来到了名为太虚的空间，传说达到了这个境界就会遭到天道的追杀，引来雷劫。",
+                        "我已膨胀",
+                        "浅尝则止");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("你在太虚之中呆了良久，感受到了天道已经在注视自己的，然后大喊了一声，你过来啊。" +
+                                                                        "轰！！你觉得自己元神归窍的速度已经很快了，不知怎么的，肉体还是受到了极大损伤。生命上限变为100。" +
+                                                                        "万幸，太虚境中确实对修炼的提升很大。所有牌境界提升至最高。");
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("在太虚的边缘进行修炼确实大有好处，你感觉自己的体魄变得更加坚韧了")
+                        .SetReward(Reward.FromHealth(16));
+
+                    A[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetDDHealthProcedure(-RunManager.Instance.Environment.Home.GetFinalHealth() + 100);
+                        
+                        RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
+                        {
+                            RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex);
+                            if (skill == null)
+                                return;
+
+                            skill.JingJie = skill.GetEntry().HighestJingJie;
+                        });
+
+                        return B;
+                    });
+                    A[1].SetSelect(option => C);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "曹操三笑",
+                description:                        "曹操三笑",
+                ladderBound:                        new Bound(2, 5),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("有个商人要去其他国家，听闻中间有一个险道，常常有山贼出没，托你保护他和一些货物的安全。一路上没有什么障碍，赶了几天的路之后，终于快要到目的地了。" +
+                                                  "面前是一处山谷。这时候，他突然大笑起来：“哈哈哈哈哈哈哈哈。。。”",
+                        "询问他何故突然大笑？",
+                        "赶紧捂住他的嘴。");
+
+                    DialogPanelDescriptor B = new("于是他解释道：”我看此等山贼都是少智无谋之辈，如果在此伏击我等，定然能让我们元气大伤。哈哈哈哈哈哈哈哈。。。“" +
+                                                  "\n只见他正在笑着，然后一伙山贼就出现了。",
+                        "和山贼战斗");
+                    DialogPanelDescriptor C = new("他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n金+2");
+
+                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(ladder + 3));
+                    BattlePanelDescriptor B1 = new(template);
+                    DialogPanelDescriptor B1win = new DialogPanelDescriptor("你打过了山贼，商人对你十分感激。\n\n金+6")
+                        .SetReward(Reward.FromGold(6));
+                    DialogPanelDescriptor B1lose = new("你没打过山贼，货物被抢走了。索性没有人受伤。");
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    B[0].SetSelect(option => B1);
+                    B1.SetWinOperation(() => B1win);
+                    B1.SetLoseOperation(() => B1lose);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "神灯精灵",
+                description:                        "神灯精灵",
+                ladderBound:                        new Bound(8, 11),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
+                        "健康的体魄",
+                        "钱币的富裕",
+                        "这个愿望不被实现");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n生命上限+10")
+                        .SetReward(Reward.FromHealth(8));
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+100")
+                        .SetReward(Reward.FromGold(8));
+                    DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
+
+                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(ladder + 3));
+                    BattlePanelDescriptor E = new(template);
+                    DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
+                        .SetReward(new ResourceReward(gold: 8, health: 8));
+                    DialogPanelDescriptor ELose = new("哼，现在神灯精灵不好做了，就是因为经常碰见你这种人。下次别再让我遇见了。");
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+                    A[2].SetSelect(option => D);
+                    D[0].SetSelect(option => E);
+                    E.SetWinOperation(() => EWin);
+                    E.SetLoseOperation(() => ELose);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "忘忧堂",
+                description:                        "忘忧堂",
+                ladderBound:                        new Bound(5, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你来到了忘忧堂，听说这里的服务是将不想再见到的卡牌交给他们。忘忧堂会为您斩断与此牌的因果。",
+                        "走进去看一看",
+                        "离开");
+
+                    CardPickerPanelDescriptor B = new("请选择0到5张牌", bound: new Bound(0, 5));
+                    DialogPanelDescriptor C = new("果然还是难以割舍心爱的卡牌。");
+                    DialogPanelDescriptor D = new("你感到身上轻了一些。");
+
+                    B.SetConfirmOperation(iRunSkillList =>
+                    {
+                        int count = iRunSkillList.Count;
+                        if (count == 0)
+                            return C;
+
+                        foreach (object iSkill in iRunSkillList)
+                        {
+                            if (iSkill is RunSkill skill)
+                            {
+                                RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skill.GetEntry());
+                                RunManager.Instance.Environment.Hand.Remove(skill);
+                            }
+                            else if (iSkill is SkillSlot slot)
+                            {
+                                if (slot.Skill != null)
+                                {
+                                    RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == slot.Skill.GetEntry());
+                                    slot.Skill = null;
+                                }
+                            }
+                        }
+                        
+                        return D;
+                    });
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+
+                    map.CurrNode.Panel = A;
+                }),
 
             new(id:                                 "山木",
                 description:                        "山木",
@@ -511,10 +1183,12 @@ public class NodeCategory : Category<NodeEntry>
 
             new(id:                                 "丢尺子",
                 description:                        "丢尺子",
-                ladderBound:                        new Bound(0, 2),
+                ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
+                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    
                     DialogPanelDescriptor A = new("嘀嘀嘀。灵信响了，你看了一下。是之前委托你布阵的人发的消息。" +
                                                   "\n管家：大人，之前你帮我家设置的阵法，有一笔的长度不对。会不会引起问题？" +
                                                   "\n我：哪一笔，长度怎么不对了？" +
@@ -532,11 +1206,11 @@ public class NodeCategory : Category<NodeEntry>
                         "没问题，我今天就赶过去。",
                         "可以把你的尺子丢了么？");
 
-                    DialogPanelDescriptor D = new DialogPanelDescriptor("你问了管家情况，发现都是些鸡毛蒜皮的小事。并不需要什么维护，就收了车马费。\n\n金+50。")
-                        .SetReward(Reward.FromGold(50));
+                    DialogPanelDescriptor D = new DialogPanelDescriptor($"你问了管家情况，发现都是些鸡毛蒜皮的小事。并不需要什么维护，就收了车马费。\n\n金+{baseGoldReward}")
+                        .SetReward(Reward.FromGold(baseGoldReward));
 
-                    DialogPanelDescriptor E = new DialogPanelDescriptor("这阵子，管家没有再来打扰你了，应该是去打扰别人了。心情变好了一点。\n\n生命上限+5")
-                        .SetReward(Reward.FromHealth(5));
+                    DialogPanelDescriptor E = new DialogPanelDescriptor($"这阵子，管家没有再来打扰你了，应该是去打扰别人了。心情变好了一点。\n\n生命上限+{baseGoldReward}")
+                        .SetReward(Reward.FromHealth(baseGoldReward));
 
                     A[0].SetSelect(option => B);
                     B[0].SetSelect(option => C);
@@ -544,29 +1218,6 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => E);
                     B[1].SetSelect(option => E);
                     C[1].SetSelect(option => E);
-
-                    map.CurrNode.Panel = A;
-                }),
-
-            new(id:                                 "天机阁",
-                description:                        "天机阁",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你在沙漠中行走，突然眼前出来了一栋华丽的建筑，上面写着天机阁。你走入其中，前面有个牌子，请选择一张。你正在想是选择什么时，发现有十张卡牌浮在空中。");
-                    ArbitraryCardPickerPanelDescriptor B = new("请从10张牌中选1张获取");
-                    DialogPanelDescriptor C = new("刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
-
-                    List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(jingJie: map.JingJie, count: 10, consume: false));
-                    B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
-                    B.SetConfirmOperation(skills =>
-                    {
-                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
-                        return C;
-                    });
-                    
-                    A[0].SetSelect(option => B);
 
                     map.CurrNode.Panel = A;
                 }),
@@ -580,6 +1231,8 @@ public class NodeCategory : Category<NodeEntry>
                     bool mixWater = false;
                     bool yellNoLie = false;
                     bool expert = RandomManager.value < 0.5f;
+                    
+                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
 
                     DialogPanelDescriptor A = new("你来到了一个市集，突发奇想想试试之前好不容易得到的酿酒秘方，说不定可以换些盘缠。到市集转了一圈，你发现需要的原材料价值不菲。" +
                                                   "\n这里人人都喜欢酒，其中有些人可以鉴赏出酒的品质也说不定。\n\n你决定：",
@@ -597,19 +1250,19 @@ public class NodeCategory : Category<NodeEntry>
                         "蓬莱人不骗蓬莱人",
                         "顾左右而言其他");
 
-                    DialogPanelDescriptor D = new("那人将钱交予你，把酒拿走了。劳动真光荣。", "获得50金");
+                    DialogPanelDescriptor D = new("那人将钱交予你，把酒拿走了。劳动真光荣。", $"获得{baseGoldReward}金");
 
                     DialogPanelDescriptor[] EndingTable = new DialogPanelDescriptor[]
                     {
                         // mixWater, yellNoLie, expert
                         /* 0b000 */ new("算了，我还是不买了。\n\n眼看市集就快结束了，你只好平价将酒出手了。\n\n不赚不赔"),
-                        /* 0b001 */ new DialogPanelDescriptor("你今天不卖给我，我就不走了。那人出高价来买你的酒，你含泪把钱收下了。\n\n获得150金").SetReward(Reward.FromGold(150)),
-                        /* ob010 */ new DialogPanelDescriptor("那人将钱交予你，把酒拿走了。劳动真光荣。\n\n获得50金").SetReward(Reward.FromGold(50)),
-                        /* ob011 */ new DialogPanelDescriptor("那人将钱交予你，把酒拿走了。劳动真光荣。\n\n获得50金").SetReward(Reward.FromGold(50)),
+                        /* 0b001 */ new DialogPanelDescriptor($"你今天不卖给我，我就不走了。那人出高价来买你的酒，你含泪把钱收下了。\n\n获得{2 * baseGoldReward}金").SetReward(Reward.FromGold(2 * baseGoldReward)),
+                        /* ob010 */ new DialogPanelDescriptor($"那人将钱交予你，把酒拿走了。劳动真光荣。\n\n获得{baseGoldReward}金").SetReward(Reward.FromGold(baseGoldReward)),
+                        /* ob011 */ new DialogPanelDescriptor($"那人将钱交予你，把酒拿走了。劳动真光荣。\n\n获得{baseGoldReward}金").SetReward(Reward.FromGold(baseGoldReward)),
                         /* 0b100 */ new("算了，我还是不买了。\n\n眼看市集就快结束了，你只好平价将酒出手了。\n\n不赚不赔"),
-                        /* 0b101 */ new DialogPanelDescriptor("哎，看你也不容易。那人虽然看出了你的酒兑了水，但还是有些良心，于是以正常价格买走了酒。\n\n获得50金").SetReward(Reward.FromGold(50)),
-                        /* 0b110 */ new DialogPanelDescriptor("那人将钱交予你，把酒拿走了。哇，小赚了一笔。\n\n获得150金。").SetReward(Reward.FromGold(150)),
-                        /* 0b111 */ new DialogPanelDescriptor("你个奸商。那人抓住你，说要去官府。你只好摊也不顾了，赶紧溜了。\n\n失去50金").SetReward(Reward.FromGold(-50)),
+                        /* 0b101 */ new DialogPanelDescriptor($"哎，看你也不容易。那人虽然看出了你的酒兑了水，但还是有些良心，于是以正常价格买走了酒。\n\n获得{baseGoldReward}金").SetReward(Reward.FromGold(baseGoldReward)),
+                        /* 0b110 */ new DialogPanelDescriptor($"那人将钱交予你，把酒拿走了。哇，小赚了一笔。\n\n获得{2 * baseGoldReward}金").SetReward(Reward.FromGold(2 * baseGoldReward)),
+                        /* 0b111 */ new DialogPanelDescriptor($"你个奸商。那人抓住你，说要去官府。你只好摊也不顾了，赶紧溜了。\n\n失去{baseGoldReward}金").SetReward(Reward.FromGold(-baseGoldReward)),
                     };
 
                     A[0].SetSelect(option =>
@@ -648,116 +1301,6 @@ public class NodeCategory : Category<NodeEntry>
 
                     map.CurrNode.Panel = A;
                 }),
-
-            new(id:                                 "解梦师",
-                description:                        "解梦师",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    WuXing? wuXing = null;
-
-                    DialogPanelDescriptor A0 = new("你来到一个镇上，见到了当地有名的解梦师。你请他解梦，你梦中出现了",
-                        "金",
-                        "水",
-                        "木",
-                        "下一页");
-
-                    DialogPanelDescriptor A1 = new("你来到一个镇上，见到了当地有名的解梦师。你请他解梦，你梦中出现了",
-                        "火",
-                        "土",
-                        "上一页");
-
-                    DialogPanelDescriptor B = new("解梦师又问你，在你梦中，你是谁？",
-                        "没有灵气的贫民",
-                        "一些灵气的贵族",
-                        "拥有庞大灵气的方士");
-
-                    ArbitraryCardPickerPanelDescriptor C = new("原来如此，你最近是否常常想着");
-                    DialogPanelDescriptor D = new("这正是我现在需要的，先生真乃神医也。\n\n得到一张牌");
-
-                    A0[3].SetSelect(option => A1);
-                    A1[2].SetSelect(option => A0);
-
-                    A0[0].SetSelect(option =>
-                    {
-                        wuXing = WuXing.Jin;
-                        return B;
-                    });
-
-                    A0[1].SetSelect(option =>
-                    {
-                        wuXing = WuXing.Shui;
-                        return B;
-                    });
-
-                    A0[2].SetSelect(option =>
-                    {
-                        wuXing = WuXing.Mu;
-                        return B;
-                    });
-
-                    A1[0].SetSelect(option =>
-                    {
-                        wuXing = WuXing.Huo;
-                        return B;
-                    });
-
-                    A1[1].SetSelect(option =>
-                    {
-                        wuXing = WuXing.Tu;
-                        return B;
-                    });
-
-                    B[0].SetSelect(option =>
-                    {
-                        Bound manaCost = 0;
-
-                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
-                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
-                            wuXing: wuXing,
-                            jingJie: map.JingJie,
-                            count: 3,
-                            distinct: true,
-                            consume: false));
-                        C.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
-                        return C;
-                    });
-                    B[1].SetSelect(option =>
-                    {
-                        Bound manaCost = new Bound(1, 10);
-
-                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
-                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
-                            wuXing: wuXing,
-                            jingJie: map.JingJie,
-                            count: 3,
-                            distinct: true,
-                            consume: false));
-                        C.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
-                        return C;
-                    });
-                    B[2].SetSelect(option =>
-                    {
-                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
-                            wuXing: wuXing,
-                            jingJie: map.JingJie,
-                            skillTypeComposite: SkillType.LingQi,
-                            count: 3,
-                            distinct: true,
-                            consume: false));
-                        C.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
-                        return C;
-                    });
-
-                    C.SetConfirmOperation(skills =>
-                    {
-                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
-                        return D;
-                    });
-
-                    map.CurrNode.Panel = A0;
-                }),
             
             new(id:                                 "夏虫语冰",
                 description:                        "夏虫语冰",
@@ -765,29 +1308,81 @@ public class NodeCategory : Category<NodeEntry>
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
+                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
                     DialogPanelDescriptor A = new("你要过一个桥，桥上站了一人，问你，什么时候河会变得可以行走。你说在冬季的时候。他说你是胡说八道：“一年只有三个季节，春夏秋，哪里来的冬季？”",
                         "赞同他，说一年只有三个季节",
                         "向他解释，说一年有四个季节");
 
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("那人让你过去了，你感觉自己避免了一件麻烦事，心情大为畅快。\n\n生命上限+10")
-                        .SetReward(Reward.FromHealth(10));
-                    DialogPanelDescriptor C = new DialogPanelDescriptor("一个月过去了，想过桥的人看到你们俩堵在桥中间，劝也劝不动，都想其他法子过桥了。那人的面容有所变化，但是嘴还是硬的。" +
+                    DialogPanelDescriptor B = new DialogPanelDescriptor($"那人让你过去了，你感觉自己避免了一件麻烦事，心情大为畅快。\n\n生命上限+{baseGoldReward}")
+                        .SetReward(Reward.FromHealth(baseGoldReward));
+                    DialogPanelDescriptor C = new DialogPanelDescriptor($"一个月过去了，想过桥的人看到你们俩堵在桥中间，劝也劝不动，都想其他法子过桥了。那人的面容有所变化，但是嘴还是硬的。" +
                                                                         "\n两个月时间逐渐过去，周围的人已经不来这个桥了。那人竟然以肉眼可见的速度，每天变老，但是还是一口咬定冬季不存在。" +
                                                                         "\n到了第三个月，你们旁边已经修好了一个新的桥，从新桥上过去的人都已异样的眼光看着你们。那人已经连站立都感到困难了。" +
-                                                                        "\n就快要到冬天了，到时候就能证明冬季了。你又一次像那人看去。那人已经老的站立都困难了。你终于发现那人是夏虫所化。一生始于春而终于秋。你刚想松口。那人先于你出口说，你赢了，你可以过桥了，然后坐在一颗树下，永远的合上了眼。" +
-                                                                        "\n你在此地过了三个月，虽然修为上没有太大的精进，但是休息了这么长时间，所有伤势都已消失不见。\n\n命元+1")
-                        .SetReward(Reward.FromMingYuan(1));
+                                                                        "\n就快要到冬天了，到时候就能证明冬季了。你又一次像那人看去。那人已经老的站立都困难了。你终于发现那人是夏虫所化。一生始于春而终于秋。" +
+                                                                        "你刚想松口。那人先于你出口说，你赢了，你可以过桥了，然后坐在一颗树下，永远的合上了眼。" +
+                                                                        "\n你在此地过了三个月，虽然修为上没有太大的精进，但是休息了这么长时间，所有伤势都已消失不见。\n\n命元+2")
+                        .SetReward(Reward.FromMingYuan(2));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
                     map.CurrNode.Panel = A;
                 }),
+
+            new(id:                                 "守株待兔",
+                description:                        "守株待兔",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    DialogPanelDescriptor A = new("你见到一个人坐在树桩旁，问他在干什么，他说有兔子会撞上这个树桩，自己在等兔子撞死。",
+                        "和他一起等待兔子",
+                        "买一只兔子放在树桩前，然后告诉他兔子来了");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor($"你睡了过去，醒来时，那人说真的来了只兔子，要和你一起享用。休息好吃好后，你感觉自己状态变好了。气血+{baseGoldReward}")
+                        .SetReward(Reward.FromHealth(baseGoldReward));
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("你叫醒了那人，那人惊叹道：原来算命的说的是真的！你解释到是你们的运气好。" +
+                                                                        "\n\n他激动地说道，之前有一个算命的人和他说，这里从来没有兔子也等不来兔子，但会有贵人经过，贵人会安排好兔子后，假装兔子是撞死的。" +
+                                                                        "\n\n他当时还不信，原来真的可以等来兔子，哦不，贵人。" +
+                                                                        $"\n\n然后邀请你到府上做客，向你问了一些问题。还赠送了你一些钱。金+{baseGoldReward}")
+                        .SetReward(Reward.FromGold(baseGoldReward));
+                    
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+
+                    map.CurrNode.Panel = A;
+                }),
+
+            new(id:                                 "鸡肉面",
+                description:                        "鸡肉面",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         true,
+                create:                             (map, ladder) =>
+                {
+                    DialogPanelDescriptor A = new("你到了餐馆，叫了碗面。只见厨师拿了一副鸡的画卷，剪开下了锅。你正疑惑他在干什么的时候，他从锅里盛出了一碗鸡肉面给你。",
+                        "认为这是真的鸡肉面，吃下去",
+                        "拆穿他，说这碗面不过是幻术");
+
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("一开始还有些怀疑，然后发现就是真的面。于是美美的吃了一顿。命元+2")
+                        .SetReward(Reward.FromMingYuan(2));
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("一阵烟雾过后。你面前掉落了一幅画，上面赫然画着刚才的餐馆。你对之前的招式又有了新的感悟。获得一张牌")
+                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
+                    
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+
+                    map.CurrNode.Panel = A;
+                }),
+            
+            #endregion
+
+            #region Reserved
             
             new(id:                                 "人间世",
                 description:                        "人间世",
                 ladderBound:                        new Bound(0, 15),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你追上了他，看出他事业心很重，于是对他说：" +
@@ -829,7 +1424,7 @@ public class NodeCategory : Category<NodeEntry>
             new(id:                                 "照相机",
                 description:                        "照相机",
                 ladderBound:                        new Bound(0, 15),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("到了桃花盛开的季节，你也来欣赏桃花。见到一名机关师，向人们介绍自己最近的新发明。按一下按钮，这个机关就可以将眼前美景永远记录下来。" +
@@ -855,112 +1450,11 @@ public class NodeCategory : Category<NodeEntry>
 
                     map.CurrNode.Panel = A;
                 }),
-
-            new(id:                                 "守株待兔",
-                description:                        "守株待兔",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你见到一个人坐在树桩旁，问他在干什么，他说有兔子会撞上这个树桩，自己在等兔子撞死。",
-                        "和他一起等待兔子",
-                        "买一只兔子放在树桩前，然后告诉他兔子来了");
-
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("你睡了过去，醒来时，那人说真的来了只兔子，要和你一起享用。休息好吃好后，你感觉自己状态变好了。气血+10")
-                        .SetReward(Reward.FromHealth(10));
-                    DialogPanelDescriptor C = new DialogPanelDescriptor("你叫醒了那人，那人惊叹道：原来算命的说的是真的！你解释到是你们的运气好。" +
-                                                                        "\n\n他激动地说道，之前有一个算命的人和他说，这里从来没有兔子也等不来兔子，但会有贵人经过，贵人会安排好兔子后，假装兔子是撞死的。" +
-                                                                        "\n\n他当时还不信，原来真的可以等来兔子，哦不，贵人。" +
-                                                                        "\n\n然后邀请你到府上做客，向你问了一些问题。还赠送了你一些钱。金+10")
-                        .SetReward(Reward.FromGold(10));
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-
-                    map.CurrNode.Panel = A;
-                }),
-
-            new(id:                                 "鸡肉面",
-                description:                        "鸡肉面",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你到了餐馆，叫了碗面。只见厨师拿了一副鸡的画卷，剪开下了锅。你正疑惑他在干什么的时候，他从锅里盛出了一碗鸡肉面给你。",
-                        "认为这是真的鸡肉面，吃下去",
-                        "拆穿他，说这碗面不过是幻术");
-
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("一开始还有些怀疑，然后发现就是真的面。于是美美的吃了一顿。命元+2")
-                        .SetReward(Reward.FromMingYuan(2));
-                    DialogPanelDescriptor C = new DialogPanelDescriptor("一阵烟雾过后。你面前掉落了一幅画，上面赫然画着刚才的餐馆。你对之前的招式又有了新的感悟。获得1技能"); // TODO
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-
-                    map.CurrNode.Panel = A;
-                }),
-            
-            new(id:                                 "天津四",
-                description:                        "天津四",
-                ladderBound:                        new Bound(0, 2),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你看见一个书生，悄悄看着一个织布的少女，应该是对她有意思。他看你道士打扮，于是问道：“先生可否帮我算一卦，算姻缘。”",
-                        "祝福他的缘分",
-                        "和他说不是每一段相思都能够有结果的");
-
-                    DialogPanelDescriptor B = new("书生表情平静，实际上满心欢喜，说：“我去尝试追求她看看。”", "过了三十年");
-                    DialogPanelDescriptor B1 = new DialogPanelDescriptor("你又见到了当初的书生，他说没有在当年找到合适的姻缘。他给你留下了一些东西。\n\n得到《遗憾》天津四 著")
-                        .SetReward(new AddSkillReward("0603", JingJie.JinDan));
-
-                    DialogPanelDescriptor C = new("书生表情平静，实际上内心忧愁，然后默默离开了", "过了三十年");
-                    DialogPanelDescriptor C1 = new DialogPanelDescriptor("你又见到了当初的书生，他虽然当时放弃了，但是后来和其他人结成了姻缘。他给你留下了一些东西。\n\n得到《爱恋》天津四 著")
-                        .SetReward(new AddSkillReward("0604", JingJie.JinDan));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    B[0].SetSelect(option => B1);
-                    C[0].SetSelect(option => C1);
-
-                    map.CurrNode.Panel = A;
-                }),
-
-            new(id:                                 "曹操三笑",
-                description:                        "曹操三笑",
-                ladderBound:                        new Bound(0, 2),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("有个商人要去其他国家，听闻中间有一个险道，常常有山贼出没，托你保护他和一些货物的安全。一路上没有什么障碍，赶了几天的路之后，终于快要到目的地了。" +
-                                                  "面前是一处山谷。这时候，他突然大笑起来：“哈哈哈哈哈哈哈哈。。。”",
-                        "询问他何故突然大笑？",
-                        "赶紧捂住他的嘴。");
-
-                    DialogPanelDescriptor B = new("于是他解释道：”我看此等山贼都是少智无谋之辈，如果在此伏击我等，定然能让我们元气大伤。哈哈哈哈哈哈哈哈。。。“" +
-                                                  "\n只见他正在笑着，然后一伙山贼就出现了。",
-                        "和山贼战斗");
-                    DialogPanelDescriptor C = new("他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n金+50");
-
-                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(ladder));
-                    BattlePanelDescriptor B1 = new(template);
-                    DialogPanelDescriptor B1win = new DialogPanelDescriptor("你打过了山贼，商人对你十分感激。\n\n金+100")
-                        .SetReward(Reward.FromGold(100));
-                    DialogPanelDescriptor B1lose = new("你没打过山贼，货物被抢走了。索性没有人受伤。");
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    B[0].SetSelect(option => B1);
-                    B1.SetWinOperation(() => B1win);
-                    B1.SetLoseOperation(() => B1lose);
-
-                    map.CurrNode.Panel = A;
-                }),
             
             new(id:                                 "矛与盾",
                 description:                        "矛与盾",
                 ladderBound:                        new Bound(0, 2),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("你看见一个人在推销他的矛和盾，说是这矛可以打碎所有的盾，这盾可以抵挡住所有的矛。周围人起哄说要他拿他的矛戳他的盾。",
@@ -1086,58 +1580,10 @@ public class NodeCategory : Category<NodeEntry>
                     map.CurrNode.Panel = A;
                 }),
 
-            new(id:                                 "琴仙",
-                description:                        "琴仙",
-                ladderBound:                        new Bound(2, 5),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你遇到了一个弹琴的人，他双目失明，衣衫褴褛，举手投足之间却让人感到大方得体，应该是一名隐士。正好前一首曲毕。向你的方向看了过来，好像知道你来了。",
-                        "来一首欢快的曲子吧",
-                        "来一首悲伤的曲子吧",
-                        "赶路着急，没时间留下来听曲子了");
-
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("那人哈哈大笑，然后弹了一首欢快的曲子。你回想起这一生，第一次这么有满足感，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《春雨》")
-                        .SetReward(new AddSkillReward("0606", map.JingJie));
-                    DialogPanelDescriptor C = new DialogPanelDescriptor("那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《枯木》")
-                        .SetReward(new AddSkillReward("0607", map.JingJie));
-                    DialogPanelDescriptor D = new DialogPanelDescriptor("之前赶路省下的时间，正好可以用于修炼。\n\n获得一个技能")
-                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[2].SetSelect(option => D);
-
-                    map.CurrNode.Panel = A;
-                }),
-
-            new(id:                                 "二子学弈",
-                description:                        "二子学弈",
-                ladderBound:                        new Bound(2, 5),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你看到一个老者在教两个学童下棋，两个学童在对弈，一名学童注视棋盘，另一名学童四处张望。",
-                        "注视棋盘的学童能赢",
-                        "四处张望的学童能赢");
-
-                    DialogPanelDescriptor B = new("你走近了，准备称赞注视棋盘的学童，顺着他的目光看向棋盘。" +
-                                                  "\n\n你们在对弈啊，你开口道。注视棋盘的学童说，说对弈太抬举我了，我和爷爷是在请教老师。" +
-                                                  "\n\n原来四处张望的学童竟然是老师，老者却是学子。" +
-                                                  "\n\n四处张望的学童转过身来对你说，以身入局才能看到事物真正的流向，孺子可教也。给你留了点东西。\n\n得到《一心》"); // TODO
-                    DialogPanelDescriptor C = new("你虽然相隔甚远，看不见棋盘，但是四处张望的学童神态自若，充满自信，你上去夸他。" +
-                                                  "\n\n他说到：你虽然眼神不在棋盘中，却也从场外信息判断出了我能赢，孺子可教也。给你留了点东西。\n\n得到《童趣》"); // TODO
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    
-                    map.CurrNode.Panel = A;
-                }),
-
             new(id:                                 "郑人买履",
                 description:                        "郑人买履",
                 ladderBound:                        new Bound(2, 5),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("你打算买双鞋子。来到集市，看到一名男子也打算买鞋子，但是忘了带量好的尺码了，商家说现在量一下他的脚不就有尺码了么。你发现你也忘带尺码了。",
@@ -1159,7 +1605,7 @@ public class NodeCategory : Category<NodeEntry>
             new(id:                                 "鬼兵",
                 description:                        "鬼兵",
                 ladderBound:                        new Bound(2, 5),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("你看到鬼兵打算带走一个将死之人，但是那人请求鬼兵在给自己一点时间。鬼兵说那人的命元已尽，不该继续留在阳间",
@@ -1209,115 +1655,11 @@ public class NodeCategory : Category<NodeEntry>
 
                     map.CurrNode.Panel = A;
                 }),
-            
-            new(id:                                 "赤壁赋",
-                description:                        "赤壁赋",
-                ladderBound:                        new Bound(5, 8),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
-                        "赞同月亮是变化的",
-                        "赞同月亮是不变的",
-                        "变得不是月亮，而是人");
-
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。" +
-                                                                        "\n\n得到《一念》")
-                        .SetReward(new AddSkillReward("0600", jingJie: map.JingJie));
-                    DialogPanelDescriptor C = new DialogPanelDescriptor("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。" +
-                                                                        "\n\n得到《无量劫》")
-                        .SetReward(new AddSkillReward("0601", jingJie: map.JingJie));
-                    DialogPanelDescriptor D = new DialogPanelDescriptor("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。" +
-                                                                        "\n\n得到随机零件");
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[2].SetSelect(option => D);
-
-                    map.CurrNode.Panel = A;
-                }),
-
-            new(id:                                 "分子打印机",
-                description:                        "分子打印机",
-                ladderBound:                        new Bound(5, 8),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你发现了一个机器，有两个插槽。中间写着一行说明，一边放原料，一边放卡牌。",
-                        "试试这个机器可以做什么",
-                        "离开");
-
-                    CardPickerPanelDescriptor B = new("请选择2张牌", bound: new Bound(0, 3));
-                    DialogPanelDescriptor C = new("来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
-                    DialogPanelDescriptor D = new("劈里啪啦一阵响声过后，正在你担心自己的卡牌会受到什么非人的折磨的时候。机器的运转声停止了。打开后，你发现两个插槽里面的卡变成同一张了。\n\n得到两张牌");
-
-                    B.SetConfirmOperation(iRunSkillList =>
-                    {
-                        int count = iRunSkillList.Count;
-                        if (count == 0 || count == 1)
-                            return C;
-
-                        RunSkill copyingSkill = null;
-                        object copying = iRunSkillList[RandomManager.Range(0, count)];
-                        if (copying is RunSkill runSkill)
-                        {
-                            copyingSkill = runSkill;
-                        }
-                        else if (copying is SkillSlot slot)
-                        {
-                            RunSkill rSkill = slot.Skill as RunSkill;
-                            Assert.IsTrue(rSkill != null);
-                            copyingSkill = rSkill;
-                        }
-
-                        foreach (object iSkill in iRunSkillList)
-                        {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                slot.Skill = null;
-                            }
-                        }
-
-                        count.Do(i => RunManager.Instance.Environment.Hand.Add(copyingSkill));
-                        return D;
-                    });
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-
-                    map.CurrNode.Panel = A;
-                }),
-
-            new(id:                                 "连抽五张",
-                description:                        "连抽五张",
-                ladderBound:                        new Bound(5, 8),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你近日练功，隐约感到一个瓶颈，心里略有不快。想着，如果全力一博，说不定就多一分机会窥见大道的真貌。",
-                        "欲速则不达",
-                        "大力出奇迹（消耗30生命上限）");
-
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获。\n\n得到一张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
-                    DialogPanelDescriptor C = new DialogPanelDescriptor("随着喷出一大口鲜血，你回过神来，原来自己还活着，感谢大道没把自己留在那边。\n\n得到五张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie, count: 5)));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetCost(new CostDetails(health: 30))
-                        .SetSelect(option => C);
-
-                    map.CurrNode.Panel = A;
-                }),
 
             new(id:                                 "刻舟求剑",
                 description:                        "刻舟求剑",
                 ladderBound:                        new Bound(5, 8),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("坐船渡江途中，有个人不小心，随身携带的剑匣掉到江里了。然后马上打开随身的备忘录写了点东西。",
@@ -1337,7 +1679,7 @@ public class NodeCategory : Category<NodeEntry>
             new(id:                                 "物质还原仪",
                 description:                        "物质还原仪",
                 ladderBound:                        new Bound(8, 11),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("你发现了一个机器，有一个插槽。旁边有一个剪刀的按钮。",
@@ -1388,234 +1730,71 @@ public class NodeCategory : Category<NodeEntry>
 
                     map.CurrNode.Panel = A;
                 }),
-
-            new(id:                                 "神灯精灵",
-                description:                        "神灯精灵",
-                ladderBound:                        new Bound(8, 11),
-                withInPool:                         true,
+            
+            new(id:                                 "悟道",
+                description:                        "悟道",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
-                    DialogPanelDescriptor A = new("你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
-                        "健康的体魄",
-                        "钱币的富裕",
-                        "这个愿望不被实现");
+                    Pool<WuXing> pool = new Pool<WuXing>();
+                    pool.Populate(WuXing.Traversal);
+                    pool.Shuffle();
 
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n生命上限+10")
-                        .SetReward(Reward.FromHealth(10));
-                    DialogPanelDescriptor C = new DialogPanelDescriptor("实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+100")
-                        .SetReward(Reward.FromGold(100));
-                    DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
+                    WuXing[] options = new WuXing[3];
+                    for (int i = 0; i < options.Length; i++)
+                    {
+                        pool.TryPopItem(out options[i]);
+                    }
 
-                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(ladder));
-                    BattlePanelDescriptor E = new(template);
-                    DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
-                        .SetReward(new ResourceReward(gold: 100, health: 10));
-                    DialogPanelDescriptor ELose = new("哼，现在神灯精灵不好做了，就是因为经常碰见你这种人。下次别再让我遇见了。");
+                    DialogPanelDescriptor A = new("选择一种五行，获得一张随机牌",
+                        options[0]._name,
+                        options[1]._name,
+                        options[2]._name);
 
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[2].SetSelect(option => D);
-                    D[0].SetSelect(option => E);
-                    E.SetWinOperation(() => EWin);
-                    E.SetLoseOperation(() => ELose);
+                    A._receiveSignal = signal =>
+                    {
+                        if (signal is SelectedOptionSignal selectedOptionSignal)
+                        {
+                            int index = selectedOptionSignal.Selected;
+                            RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: options[index],
+                                jingJie: RunManager.Instance.Environment.Map.JingJie));
+                        }
+                        return null;
+                    };
 
                     map.CurrNode.Panel = A;
                 }),
 
-            // new(id:                                 "运斤成风",
-            //     description:                        "运斤成风",
-            //     ladderBound:                        new Bound(8, 11),
-            //     withInPool:                         true,
-            //     create:                             (map, ladder) =>
-            //     {
-            //         DialogPanelDescriptor A = new("你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
-            //             "健康的体魄",
-            //             "钱币的富裕",
-            //             "这个愿望不被实现");
-            //
-            //         DialogPanelDescriptor B = new DialogPanelDescriptor("实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n生命上限+10")
-            //             .SetReward(Reward.FromHealth(10));
-            //         DialogPanelDescriptor C = new DialogPanelDescriptor("实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+100")
-            //             .SetReward(Reward.FromGold(100));
-            //         DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
-            //
-            //         map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(ladder));
-            //         BattlePanelDescriptor E = new(template);
-            //         DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
-            //             .SetReward(new ResourceReward(gold: 100, health: 10));
-            //         DialogPanelDescriptor ELose = new("哼，现在神灯精灵不好做了，就是因为经常碰见你这种人。下次别再让我遇见了。");
-            //
-            //         A[0].SetSelect(option => B);
-            //         A[1].SetSelect(option => C);
-            //         A[2].SetSelect(option => D);
-            //         D[0].SetSelect(option => E);
-            //         E.SetWinOperation(() => EWin);
-            //         E.SetLoseOperation(() => ELose);
-            //
-            //         map.CurrNode.Panel = A;
-            //     }),
-
-            new(id:                                 "论无穷",
-                description:                        "论无穷",
-                ladderBound:                        new Bound(11, 15),
-                withInPool:                         true,
+            new(id:                                 "愿望单",
+                description:                        "愿望单",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
-                    DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +
-                                                  "\n\n我跑步很快，如果有人跑步比我还快的话，只要他推着载我的车，我在车里跑，速度就比他还快，只要一直有人速度比我快，我的速度就是无穷的。" +
-                                                  "\n\n我有一个木桩，我每天砍一半，过一万年也砍不完，这个叫做无穷。" +
-                                                  "\n\n我养了一条蛇，他每天吃自己的尾巴，然后又能长出来新的蛇身，永远吃不完，这个叫做无穷。",
-                        "用第一个想法",
-                        "用第二个想法",
-                        "用第三个想法");
+                    DialogPanelDescriptor A = new("游戏仍在制作中，请加入愿望单，以关注后续进展，感谢游玩！",
+                        "Q群：216060477",
+                        "游戏名：蓬莱之旅",
+                        "返回标题");
 
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("你痛快写了800字，时间没过5分钟，已经写完了。" +
-                                                  "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张二动牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.ErDong)));
-                    DialogPanelDescriptor C = new DialogPanelDescriptor("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
-                                                                        "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
-                                                  "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张消耗牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.XiaoHao)));
-                    DialogPanelDescriptor D = new DialogPanelDescriptor("你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
-                                                                        "从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
-                                                                        "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
-                                                  "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张自指牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.ZiZhi)));
+                    A[0].SetSelect(option =>
+                    {
+                        return A;
+                    });
 
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[2].SetSelect(option => D);
-
-                    map.CurrNode.Panel = A;
-                }),
-
-            new(id:                                 "天界树",
-                description:                        "天界树",
-                ladderBound:                        new Bound(11, 15),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
-                        "吃树上的果子",
-                        "尝试感悟五行相生的规律");
-
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("久闻天界树，3000年才能开花结果，醒来之后，身上所有伤都不见了。\n\n命元+2")
-                        .SetReward(Reward.FromMingYuan(2));
-                    DialogPanelDescriptor C = new("你看到了，金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。感悟了五行相生，所有五行牌都被相生的元素替换了");
-
-                    A[0].SetSelect(option => B);
                     A[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
-                        {
-                            RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex);
-                            if (skill == null)
-                                return;
-
-                            SkillEntry entry = skill.GetEntry();
-                            if (!entry.WuXing.HasValue)
-                                return;
-
-                            WuXing wuXing = entry.WuXing.Value.Next;
-                            JingJie jingJie = RandomManager.Range(skill.GetJingJie(), map.JingJie + 1);
-                            
-                            RunManager.Instance.Environment.DrawSkillProcedure(
-                                SkillEntryDescriptor.FromWuXingJingJie(wuXing, jingJie),
-                                deckIndex);
-                        });
-
-                        return C;
+                        return A;
                     });
 
+                    A[2].SetSelect(option =>
+                    {
+                        RunManager.Instance.ReturnToTitle();
+                        return null;
+                    });
                     map.CurrNode.Panel = A;
                 }),
 
-            new(id:                                 "仙人下棋",
-                description:                        "仙人下棋",
-                ladderBound:                        new Bound(11, 15),
-                withInPool:                         true,
-                create:                             (map, ladder) =>
-                {
-                    DialogPanelDescriptor A = new("你在竹林里迷路了，走了一阵遇到两个人在下棋，其中一个人发现了你，然后继续看棋盘去了。",
-                        "尝试观看两人对弈（需要一张二动牌）",
-                        "请教两人路怎么走（需要一张治疗牌）");
-
-                    CardPickerPanelDescriptor B = new CardPickerPanelDescriptor(
-                        detailedText:       "请提交一张二动牌",
-                        bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.ErDong));
-                    CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
-                        detailedText:       "请提交一张治疗牌",
-                        bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.ZhiLiao));
-
-                    DialogPanelDescriptor BWin = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
-                    DialogPanelDescriptor BWin2 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
-                    BWin2.SetReward(new AddSkillReward("0211", map.JingJie));
-
-                    DialogPanelDescriptor BLose = new("虽然你沉下心来想要理解棋盘中发生了什么事，只见两人下棋越来越快，一息之间，那二人已下出千百步，你想说些什么，但是身体却来不及动。", "不知过了多久");
-                    DialogPanelDescriptor BLose2 = new("你醒来时，那两人已经不在了。但是莫要紧，美美睡上一觉比什么都重要。命元+2。");
-                    BLose2.SetReward(Reward.FromMingYuan(2));
-
-                    DialogPanelDescriptor CWin = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，你回想起了一段关于呼吸的功法，开始强迫自己吐纳，努力在这种环境下获取一些空气。", "不知过了多久");
-                    DialogPanelDescriptor CWin2 = new("即使空气非常粘稠，你也可以呼吸自如。慢慢回到了正常的感觉，你悟出了一个关于吐纳的功法。");
-                    CWin2.SetReward(new AddSkillReward("0608", map.JingJie));
-
-                    DialogPanelDescriptor CLose = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，肺部在不断哀嚎。", "不知过了多久");
-                    DialogPanelDescriptor CLose2 = new("空气中的粘稠感终于消失。你赶紧大口吸气呼气，第一次感到空气是这么美好。生命值上限+10。");
-                    CLose2.SetReward(Reward.FromHealth(10));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-
-                    B.SetConfirmOperation(iRunSkillList =>
-                    {
-                        if (iRunSkillList.Count == 0)
-                            return BLose;
-
-                        foreach (object iSkill in iRunSkillList)
-                        {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                slot.Skill = null;
-                            }
-                        }
-
-                        return BWin;
-                    });
-
-                    C.SetConfirmOperation(iRunSkillList =>
-                    {
-                        if (iRunSkillList.Count == 0)
-                            return CLose;
-
-                        foreach (object iSkill in iRunSkillList)
-                        {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                slot.Skill = null;
-                            }
-                        }
-
-                        return CWin;
-                    });
-
-                    BWin[0].SetSelect(option => BWin2);
-                    BLose[0].SetSelect(option => BLose2);
-                    CWin[0].SetSelect(option => CWin2);
-                    CLose[0].SetSelect(option => CLose2);
-
-                    map.CurrNode.Panel = A;
-                }),
-            
             #endregion
 
             #region Series
@@ -1623,7 +1802,7 @@ public class NodeCategory : Category<NodeEntry>
             new(id:                                 "后羿1",
                 description:                        "后羿1",
                 ladderBound:                        new Bound(0, 5),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("你看到了一个少年在幸苦的练习射箭，但是进度缓慢。你发现是因为少年天生视力不好。",
@@ -1829,7 +2008,7 @@ public class NodeCategory : Category<NodeEntry>
             new(id:                                 "神农氏1",
                 description:                        "神农氏1",
                 ladderBound:                        new Bound(0, 5),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("你看见一个少年向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",

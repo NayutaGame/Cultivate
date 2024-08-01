@@ -121,11 +121,23 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                await f.Owner.GainBuffProcedure("摩诃钵特摩");
                                 await f.Owner.GainBuffProcedure("吸血");
                                 await f.Owner.GainBuffProcedure("轮吸血");
                                 await f.Owner.GainBuffProcedure("二动");
                                 await f.Owner.GainBuffProcedure("心斋");
+                            }),
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                TurnDetails d = (TurnDetails)stageEventDetails;
+
+                                if (f.Owner != d.Owner) return;
+                                if (f.Owner.GetStackOfBuff("摩诃钵特摩") > 0)
+                                    return;
+                                
+                                // b.PlayPingAnimation();
+                                await f.Owner.GainBuffProcedure("摩诃钵特摩");
+                                d.Owner.SetActionPoint(d.Owner.GetActionPoint() + 8);
                             }),
                         }),
                     new FormationEntry(

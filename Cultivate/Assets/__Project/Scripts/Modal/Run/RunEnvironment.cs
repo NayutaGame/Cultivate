@@ -67,7 +67,7 @@ public class RunEnvironment : Addressable, RunEventListener
             
             new BattleStepDescriptor(2, 5, 6),
             new AdventureStepDescriptor(2),
-            new RestStepDescriptor(2),
+            new ShopStepDescriptor(2),
             new BattleStepDescriptor(3, 6, 7),
             new AdventureStepDescriptor(3),
             new RestStepDescriptor(3),
@@ -76,7 +76,7 @@ public class RunEnvironment : Addressable, RunEventListener
             
             new BattleStepDescriptor(5, 8, 8),
             new AdventureStepDescriptor(5),
-            new RestStepDescriptor(5),
+            new ShopStepDescriptor(5),
             new BattleStepDescriptor(5, 8, 9),
             new AdventureStepDescriptor(5),
             new BattleStepDescriptor(6, 9, 9),
@@ -89,7 +89,7 @@ public class RunEnvironment : Addressable, RunEventListener
             new AdventureStepDescriptor(8),
             new BattleStepDescriptor(8, 10, 11),
             new AdventureStepDescriptor(8),
-            new RestStepDescriptor(8),
+            new ShopStepDescriptor(8),
             new BattleStepDescriptor(9, 11, 11),
             new AdventureStepDescriptor(9),
             new BattleStepDescriptor(9, 11, 12),
@@ -110,6 +110,7 @@ public class RunEnvironment : Addressable, RunEventListener
             new AdventureStepDescriptor(12),
             new BattleStepDescriptor(12, 12, 12),
             new RestStepDescriptor(12),
+            new ShopStepDescriptor(12),
             new BattleStepDescriptor(13, 12, 12),
             new SuccessStepDescriptor(13),
         };
@@ -139,7 +140,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     
                     new BattleStepDescriptor(2, 5, 6),
                     firstTime ? new DirectStepDescriptor(2, "同境界合成教学") : new AdventureStepDescriptor(2),
-                    new RestStepDescriptor(2),
+                    new ShopStepDescriptor(2),
                     new BattleStepDescriptor(3, 6, 7),
                     new AdventureStepDescriptor(3),
                     new RestStepDescriptor(3),
@@ -148,7 +149,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     
                     new BattleStepDescriptor(5, 8, 8),
                     new AdventureStepDescriptor(5),
-                    new RestStepDescriptor(5),
+                    new ShopStepDescriptor(5),
                     new BattleStepDescriptor(5, 8, 9),
                     new AdventureStepDescriptor(5),
                     new BattleStepDescriptor(6, 9, 9),
@@ -161,7 +162,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AdventureStepDescriptor(8),
                     new BattleStepDescriptor(8, 10, 11),
                     new AdventureStepDescriptor(8),
-                    new RestStepDescriptor(8),
+                    new ShopStepDescriptor(8),
                     new BattleStepDescriptor(9, 11, 11),
                     new AdventureStepDescriptor(9),
                     new BattleStepDescriptor(9, 11, 12),
@@ -182,6 +183,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AdventureStepDescriptor(12),
                     new BattleStepDescriptor(12, 12, 12),
                     new RestStepDescriptor(12),
+                    new ShopStepDescriptor(12),
                     new BattleStepDescriptor(13, 12, 12),
                     new SuccessStepDescriptor(13),
                 };
@@ -198,7 +200,7 @@ public class RunEnvironment : Addressable, RunEventListener
                 {
                     new BattleStepDescriptor(2, 5, 6),
                     new AdventureStepDescriptor(2),
-                    new RestStepDescriptor(2),
+                    new ShopStepDescriptor(2),
                     new BattleStepDescriptor(3, 6, 7),
                     new AdventureStepDescriptor(3),
                     new RestStepDescriptor(3),
@@ -207,7 +209,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     
                     new BattleStepDescriptor(5, 8, 8),
                     new AdventureStepDescriptor(5),
-                    new RestStepDescriptor(5),
+                    new ShopStepDescriptor(5),
                     new BattleStepDescriptor(5, 8, 9),
                     new AdventureStepDescriptor(5),
                     new BattleStepDescriptor(6, 9, 9),
@@ -220,7 +222,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AdventureStepDescriptor(8),
                     new BattleStepDescriptor(8, 10, 11),
                     new AdventureStepDescriptor(8),
-                    new RestStepDescriptor(8),
+                    new ShopStepDescriptor(8),
                     new BattleStepDescriptor(9, 11, 11),
                     new AdventureStepDescriptor(9),
                     new BattleStepDescriptor(9, 11, 12),
@@ -241,6 +243,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AdventureStepDescriptor(12),
                     new BattleStepDescriptor(12, 12, 12),
                     new RestStepDescriptor(12),
+                    new ShopStepDescriptor(12),
                     new BattleStepDescriptor(13, 12, 12),
                     new SuccessStepDescriptor(13),
                 };
@@ -257,7 +260,7 @@ public class RunEnvironment : Addressable, RunEventListener
                 {
                     new BattleStepDescriptor(5, 8, 8),
                     new AdventureStepDescriptor(5),
-                    new RestStepDescriptor(5),
+                    new ShopStepDescriptor(5),
                     new BattleStepDescriptor(5, 8, 9),
                     new AdventureStepDescriptor(5),
                     new BattleStepDescriptor(6, 9, 9),
@@ -270,7 +273,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AdventureStepDescriptor(8),
                     new BattleStepDescriptor(8, 10, 11),
                     new AdventureStepDescriptor(8),
-                    new RestStepDescriptor(8),
+                    new ShopStepDescriptor(8),
                     new BattleStepDescriptor(9, 11, 11),
                     new AdventureStepDescriptor(9),
                     new BattleStepDescriptor(9, 11, 12),
@@ -291,6 +294,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AdventureStepDescriptor(12),
                     new BattleStepDescriptor(12, 12, 12),
                     new RestStepDescriptor(12),
+                    new ShopStepDescriptor(12),
                     new BattleStepDescriptor(13, 12, 12),
                     new SuccessStepDescriptor(13),
                 };
@@ -309,7 +313,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AdventureStepDescriptor(8),
                     new BattleStepDescriptor(8, 10, 11),
                     new AdventureStepDescriptor(8),
-                    new RestStepDescriptor(8),
+                    new ShopStepDescriptor(8),
                     new BattleStepDescriptor(9, 11, 11),
                     new AdventureStepDescriptor(9),
                     new BattleStepDescriptor(9, 11, 12),
@@ -330,6 +334,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AdventureStepDescriptor(12),
                     new BattleStepDescriptor(12, 12, 12),
                     new RestStepDescriptor(12),
+                    new ShopStepDescriptor(12),
                     new BattleStepDescriptor(13, 12, 12),
                     new SuccessStepDescriptor(13),
                 };
@@ -356,6 +361,7 @@ public class RunEnvironment : Addressable, RunEventListener
                     new AdventureStepDescriptor(12),
                     new BattleStepDescriptor(12, 12, 12),
                     new RestStepDescriptor(12),
+                    new ShopStepDescriptor(12),
                     new BattleStepDescriptor(13, 12, 12),
                     new SuccessStepDescriptor(13),
                 };

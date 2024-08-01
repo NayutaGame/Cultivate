@@ -27,7 +27,7 @@ public class BarterPanelDescriptor : PanelDescriptor
             .Map(SkillEntryDescriptor.FromRunSkill));
         pool.Shuffle();
 
-        int count = Mathf.Min(pool.Count(), 6);
+        int count = Mathf.Min(pool.Count(), 2);
 
         SkillEntryDescriptor[] fromSkills = new SkillEntryDescriptor[count];
         for (int i = 0; i < fromSkills.Length; i++)

@@ -2677,10 +2677,67 @@ public class SkillCategory : Category<SkillEntry>
 
             #region 事件牌
 
-            new(id:                         "0600",
-                name:                       "一念",
+            new(id:                         "0603",
+                name:                       "遗憾",
                 wuXing:                     null,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"对手失去{3 + dj}灵气",
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.RemoveBuffProcedure("灵气", 3 + skill.Dj, false);
+                    return null;
+                }),
+
+            new(id:                         "0604",
+                name:                       "爱恋",
+                wuXing:                     null,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"获得{2 + dj}集中",
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.GainBuffProcedure("集中", 2 + skill.Dj, false);
+                    return null;
+                }),
+
+            new(id:                         "0606",
+                name:                       "春雨",
+                wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
+                cost:                       CostResult.ChannelFromValue(2),
+                costDescription:            CostDescription.ChannelFromValue(2),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"双方生命+{20 + 5 * dj}",
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.HealProcedure(20 + 5 * skill.Dj, induced: false);
+                    await caster.HealOppoProcedure(20 + 5 * skill.Dj, induced: false);
+                    return null;
+                }),
+
+            new(id:                         "0607",
+                name:                       "枯木",
+                wuXing:                     WuXing.Jin,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"双方遭受{5 + dj}腐朽",
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.GainBuffProcedure("腐朽", 5 + skill.Dj);
+                    await caster.GiveBuffProcedure("腐朽", 5 + skill.Dj);
+                    return null;
+                }),
+
+            new(id:                         "0600",
+                name:                       "须臾",
+                wuXing:                     null,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.ErDong,
                 cost:                       CostResult.HealthFromDj(dj => 8 - 2 * dj),
                 costDescription:            CostDescription.HealthFromDj(dj => 8 - 2 * dj),
@@ -2695,9 +2752,42 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "0601",
-                name:                       "无量劫",
+                name:                       "永远",
                 wuXing:                     null,
-                jingJieBound:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.JinDan2HuaShen,
+                skillTypeComposite:         SkillType.ZhiLiao,
+                cost:                       CostResult.ChannelFromValue(3),
+                costDescription:            CostDescription.ChannelFromValue(3),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"治疗{18 + dj * 6}",
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.HealProcedure(18 + skill.Dj * 6, induced: false);
+                    return null;
+                }),
+
+            new(id:                         "0610",
+                name:                       "童趣",
+                wuXing:                     null,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
+                skillTypeComposite:         SkillType.ErDong,
+                cost:                       CostResult.HealthFromDj(dj => 8 - 2 * dj),
+                costDescription:            CostDescription.HealthFromDj(dj => 8 - 2 * dj),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    j <= JingJie.ZhuJi ? "二动" : "三动",
+                withinPool:                 false,
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    bool cond = skill.GetJingJie() <= JingJie.ZhuJi;
+                    caster.SetActionPoint(cond ? 2 : 3);
+                    return null;
+                }),
+
+            new(id:                         "0611",
+                name:                       "一心",
+                wuXing:                     null,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.ZhiLiao,
                 cost:                       CostResult.ChannelFromValue(3),
                 costDescription:            CostDescription.ChannelFromValue(3),
@@ -2733,32 +2823,6 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
-            new(id:                         "0603",
-                name:                       "遗憾",
-                wuXing:                     null,
-                jingJieBound:               JingJie.JinDan2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"对手失去{3 + dj}灵气",
-                withinPool:                 false,
-                cast:                       async (env, caster, skill, recursive) =>
-                {
-                    await caster.RemoveBuffProcedure("灵气", 3 + skill.Dj, false);
-                    return null;
-                }),
-
-            new(id:                         "0604",
-                name:                       "爱恋",
-                wuXing:                     null,
-                jingJieBound:               JingJie.ZhuJi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"获得{2 + dj}集中",
-                withinPool:                 false,
-                cast:                       async (env, caster, skill, recursive) =>
-                {
-                    await caster.GainBuffProcedure("集中", 2 + skill.Dj, false);
-                    return null;
-                }),
-
             new(id:                         "0605",
                 name:                       "射落金乌",
                 wuXing:                     WuXing.Huo,
@@ -2770,37 +2834,6 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(5, times: 4, wuXing: skill.Entry.WuXing);
-                    return null;
-                }),
-
-            new(id:                         "0606",
-                name:                       "春雨",
-                wuXing:                     WuXing.Shui,
-                jingJieBound:               JingJie.ZhuJi2HuaShen,
-                skillTypeComposite:         SkillType.ZhiLiao,
-                cost:                       CostResult.ChannelFromValue(2),
-                costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"双方生命+{20 + 5 * dj}",
-                withinPool:                 false,
-                cast:                       async (env, caster, skill, recursive) =>
-                {
-                    await caster.HealProcedure(20 + 5 * skill.Dj, induced: false);
-                    await caster.HealOppoProcedure(20 + 5 * skill.Dj, induced: false);
-                    return null;
-                }),
-
-            new(id:                         "0607",
-                name:                       "枯木",
-                wuXing:                     WuXing.Jin,
-                jingJieBound:               JingJie.JinDan2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"双方遭受{5 + dj}腐朽",
-                withinPool:                 false,
-                cast:                       async (env, caster, skill, recursive) =>
-                {
-                    await caster.GainBuffProcedure("腐朽", 5 + skill.Dj);
-                    await caster.GiveBuffProcedure("腐朽", 5 + skill.Dj);
                     return null;
                 }),
 

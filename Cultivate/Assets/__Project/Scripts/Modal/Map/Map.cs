@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
-using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Map : Addressable
 {

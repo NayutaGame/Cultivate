@@ -8,6 +8,7 @@ public class ShopPanelDescriptor : PanelDescriptor
     private JingJie _jingJie;
     private CommodityListModel _commodities;
     public CommodityListModel GetCommodities() => _commodities;
+    public void SetCommodities(CommodityListModel commodities) => _commodities = commodities;
 
     public ShopPanelDescriptor(JingJie jingJie)
     {
@@ -28,7 +29,7 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
             jingJie: _jingJie,
-            count: 6,
+            count: 8,
             consume: false));
         
         foreach (SkillEntry e in entries)

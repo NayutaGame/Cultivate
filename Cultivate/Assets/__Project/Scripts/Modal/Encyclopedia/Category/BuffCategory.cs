@@ -1049,29 +1049,30 @@ public class BuffCategory : Category<BuffEntry>
             new("摩诃钵特摩", "八动，如果受伤则死亡", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_APPEAR, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        BuffAppearDetails d = (BuffAppearDetails)stageEventDetails;
-
-                        if (b.Owner != d.Owner) return;
-                        b.PlayPingAnimation();
-                        d.Owner.SetActionPoint(d.Owner.GetActionPoint() + 8);
-                    }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        TurnDetails d = (TurnDetails)stageEventDetails;
-
-                        if (b.Owner != d.Owner) return;
-                        b.PlayPingAnimation();
-                        await b.Owner.LoseHealthProcedure(b.Owner.Hp);
-                    }),
+                    // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_APPEAR, 0, async (listener, stageEventDetails) =>
+                    // {
+                    //     Buff b = (Buff)listener;
+                    //     BuffAppearDetails d = (BuffAppearDetails)stageEventDetails;
+                    //
+                    //     if (b.Owner != d.Owner) return;
+                    //     b.PlayPingAnimation();
+                    //     d.Owner.SetActionPoint(d.Owner.GetActionPoint() + 8);
+                    // }),
+                    // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
+                    // {
+                    //     Buff b = (Buff)listener;
+                    //     TurnDetails d = (TurnDetails)stageEventDetails;
+                    //
+                    //     if (b.Owner != d.Owner) return;
+                    //     b.PlayPingAnimation();
+                    //     await b.Owner.LoseHealthProcedure(b.Owner.Hp);
+                    // }),
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;
                         if (b.Owner != d.Tgt) return;
+                        if (d.Value == 0) return;
                         if (b.Owner.Hp > 0)
                         {
                             b.PlayPingAnimation();
