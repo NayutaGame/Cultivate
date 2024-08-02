@@ -573,10 +573,10 @@ public class NodeCategory : Category<NodeEntry>
                                                                         "\n\n你们在对弈啊，你开口道。注视棋盘的学童说，说对弈太抬举我了，我和爷爷是在请教老师。" +
                                                                         "\n\n原来四处张望的学童竟然是老师，老者却是学子。" +
                                                                         "\n\n四处张望的学童转过身来对你说，以身入局才能看到事物真正的流向，孺子可教也。给你留了点东西。\n\n得到《一心》")
-                        .SetReward(new AddSkillReward("0610", jingJie: map.JingJie));
+                        .SetReward(new AddSkillReward("0611", jingJie: map.JingJie));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("你虽然相隔甚远，看不见棋盘，但是四处张望的学童神态自若，充满自信，你上去夸他。" +
                                                                         "\n\n他说到：你虽然眼神不在棋盘中，却也从场外信息判断出了我能赢，孺子可教也。给你留了点东西。\n\n得到《童趣》")
-                        .SetReward(new AddSkillReward("0611", jingJie: map.JingJie));
+                        .SetReward(new AddSkillReward("0610", jingJie: map.JingJie));
                     
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);

@@ -1335,6 +1335,69 @@ public class BuffCategory : Category<BuffEntry>
                         await b.SetDStack(-1);
                     }),
                 }),
+            
+            new("灵气返还", "失去灵气时：返还[层数]点", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_LOSE_BUFF, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        LoseBuffDetails d = (LoseBuffDetails)stageEventDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        if (d._buffEntry.GetName() != "灵气") return;
+                        
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("灵气", b.Stack);
+                    }),
+                }),
+            
+            new("灵敏", "使用二动牌时，获得[层数]闪避", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ACTION, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        ActionDetails d = (ActionDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+                        if (!d.IsSwift) return;
+                        
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("闪避", b.Stack);
+                    }),
+                }),
+            
+            new("五行亲和", "使用五行卡牌后，发生对应的流转", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_EXECUTE, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        ExecuteDetails d = (ExecuteDetails)stageEventDetails;
+                        if (b.Owner != d.Caster) return;
+
+                        if (!d.Skill.Entry.WuXing.HasValue) return;
+
+                        WuXing wuXing = d.Skill.Entry.WuXing.Value;
+
+                        b.PlayPingAnimation();
+                        await b.Owner.CycleProcedure(wuXing);
+                    }),
+                }),
+            
+            new("相克流转", "流转步数为2", BuffStackRule.One, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CYCLE, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        CycleDetails d = (CycleDetails)stageEventDetails;
+                        if (b.Owner != d.Owner) return;
+
+                        d.Step = 2;
+                        b.PlayPingAnimation();
+                    }),
+                }),
         });
     }
 

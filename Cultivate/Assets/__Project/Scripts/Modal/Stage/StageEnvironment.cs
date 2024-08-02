@@ -467,7 +467,10 @@ public class StageEnvironment : Addressable, StageEventListener
         if (d.Cancel)
             return;
 
-        WuXing fromWuXing = d.WuXing.Prev;
+        WuXing fromWuXing = d.WuXing;
+        for (int i = 0; i < d.Step; i++)
+            fromWuXing = fromWuXing.Prev;
+        
         int flow = d.Owner.GetStackOfBuff(fromWuXing._elementaryBuff);
         await d.Owner.TryConsumeProcedure(fromWuXing._elementaryBuff, flow);
 

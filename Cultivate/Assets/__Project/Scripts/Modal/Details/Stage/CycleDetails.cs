@@ -3,6 +3,7 @@ public class CycleDetails : EventDetails
 {
     public StageEntity Owner;
     public WuXing WuXing;
+    public int Step;
     public int Gain;
     public int Recover;
 
@@ -10,6 +11,7 @@ public class CycleDetails : EventDetails
     {
         Owner = owner;
         WuXing = wuXing;
+        Step = 1;
         Gain = gain;
         Recover = recover;
     }

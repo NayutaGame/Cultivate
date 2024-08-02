@@ -10,74 +10,80 @@ public class CharacterCategory : Category<CharacterEntry>
     {
         AddRange(new List<CharacterEntry>()
         {
-            new("徐福", abilityDescription: "命元上限+2\n" +
-                                          "增加以物易物节点\n" +
-                                          "金丹之后移除所有练气牌；化神后，所有筑基牌",
+            new("徐福", abilityDescription: "命元上限+2",
                 runEventDescriptors: new RunEventDescriptor[]
                 {
-                    // new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, 0, (listener, eventDetails) =>
-                    // {
-                    //     RunEnvironment env = (RunEnvironment)listener;
-                    //     RunDetails d = (RunDetails)eventDetails;
-                    //
-                    //     env.SetMaxMingYuanProcedure(12);
-                    //     env.SetDMingYuanProcedure(2);
-                    // }),
-                    // new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
-                    // {
-                    //     RunEnvironment env = (RunEnvironment)listener;
-                    //     SetJingJieDetails d = (SetJingJieDetails)eventDetails;
-                    //
-                    //     if (d.ToJingJie == JingJie.JinDan)
-                    //     {
-                    //         env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.LianQi));
-                    //         return;
-                    //     }
-                    //
-                    //     if (d.ToJingJie == JingJie.HuaShen)
-                    //     {
-                    //         env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.ZhuJi));
-                    //         return;
-                    //     }
-                    // }),
-                    // new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, -2, (listener, eventDetails) =>
-                    // {
-                    //     RunEnvironment env = (RunEnvironment)listener;
-                    //     RunDetails d = (RunDetails)eventDetails;
-                    //
-                    //     // env.Map._r.Generator.Add("以物易物");
-                    // }),
-                }),
-            new("浮千舟", abilityDescription: "战斗开始时，获得1/2/3/4/5灵气\n" +
-                                           "空白，卡费行为变成回2/2/3/3/4灵气"),
-            new("语真幻", abilityDescription: "使用二动牌时，疲劳。使用疲劳牌时，二动。\n" +
-                                           "第一次使用吟唱牌时，免除吟唱"),
-            new("心斩心鬼", abilityDescription: "剑类卡牌获得集中\n" +
-                                            "卡池中塞入剑阵系类套牌：素弦，苦寒，弱昙，狂焰，孤山，周天，图南，尘缘，泪颜"),
-            new("子非鱼", abilityDescription: "获得2暴击"),
-            new("子非燕", abilityDescription: "战斗中，第三轮开始时，获得通透世界"),
-            new("墨虚雪", abilityDescription: "游戏开始时以及境界提升时，获得一张机关牌\n" +
-                                           "战斗后，可返还至多一张被使用的机关牌",
-                runEventDescriptors: new RunEventDescriptor[]
-                {
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_DEPLETE, 0, (listener, eventDetails) =>
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
-                        DepleteDetails d = (DepleteDetails)eventDetails;
+                        RunDetails d = (RunDetails)eventDetails;
+                    
+                        env.SetMaxMingYuanProcedure(12);
+                        env.SetDMingYuanProcedure(2);
+                    }),
+                }),
+            new("浮千舟", abilityDescription: "失去灵气时获得1点",
+                stageEventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    {
+                        StageEnvironment env = (StageEnvironment)listener;
+                        StageDetails d = (StageDetails)eventDetails;
 
-                        bool ownerIsHome = env.Home == d.Owner;
+                        bool ownerIsHome = env.Entities[0] == d.Owner;
                         if (!ownerIsHome)
                             return;
 
-                        foreach (var item in d.DepletedSkills)
-                        {
-                            Debug.Log(item.GetName());
-                        }
+                        await d.Owner.GainBuffProcedure("灵气返还");
+                    }),
+                }),
+            new("语真幻", abilityDescription: "使用二动牌时，获得1闪避",
+                stageEventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    {
+                        StageEnvironment env = (StageEnvironment)listener;
+                        StageDetails d = (StageDetails)eventDetails;
+
+                        bool ownerIsHome = env.Entities[0] == d.Owner;
+                        if (!ownerIsHome)
+                            return;
+
+                        await d.Owner.GainBuffProcedure("灵敏");
+                    }),
+                }),
+            new("子非鱼", abilityDescription: "使用五行卡牌后，发生对应的流转",
+                stageEventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    {
+                        StageEnvironment env = (StageEnvironment)listener;
+                        StageDetails d = (StageDetails)eventDetails;
+
+                        bool ownerIsHome = env.Entities[0] == d.Owner;
+                        if (!ownerIsHome)
+                            return;
+
+                        await d.Owner.GainBuffProcedure("五行亲和");
+                    }),
+                }),
+            new("子非燕", abilityDescription: "流转步数为2",
+                stageEventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    {
+                        StageEnvironment env = (StageEnvironment)listener;
+                        StageDetails d = (StageDetails)eventDetails;
+
+                        bool ownerIsHome = env.Entities[0] == d.Owner;
+                        if (!ownerIsHome)
+                            return;
+
+                        await d.Owner.GainBuffProcedure("相克流转");
                     }),
                 }),
             new("念无劫", abilityDescription: "生命上限增加，战斗开始时，力量-1/2/3/4/5"),
-            new("风雨晴", abilityDescription: "游戏开始时以及境界提升时，抽一张牌\n" +
-                                           "金丹后，组成阵法时，需求-1；化神，变成-2",
+            new("风雨晴", abilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
                 runEventDescriptors: new RunEventDescriptor[]
                 {
                     new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WIL_FORMATION, 0, (listener, eventDetails) =>
@@ -102,7 +108,7 @@ public class CharacterCategory : Category<CharacterEntry>
                     }),
                 }),
             new("彼此卿", abilityDescription: "卡组中第一张空位将模仿对方对位的牌\n" +
-                                           "如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿对方的卡",
+                                           "如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿的卡",
                 runEventDescriptors: new RunEventDescriptor[]
                 {
                     new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WILL_PLACEMENT, 0, (listener, eventDetails) =>
@@ -148,6 +154,48 @@ public class CharacterCategory : Category<CharacterEntry>
                         env.SetVariable<SkillEntryDescriptor>("CopiedSkill", null);
                     }),
                 }),
+            new("花辞树", abilityDescription: "金丹之后移除所有练气牌；化神后移除所有筑基牌",
+                runEventDescriptors: new RunEventDescriptor[]
+                {
+                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        SetJingJieDetails d = (SetJingJieDetails)eventDetails;
+                    
+                        if (d.ToJingJie == JingJie.JinDan)
+                        {
+                            env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.LianQi));
+                            return;
+                        }
+                    
+                        if (d.ToJingJie == JingJie.HuaShen)
+                        {
+                            env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.ZhuJi));
+                            return;
+                        }
+                    }),
+                }),
+            // new("心斩心鬼", abilityDescription: "剑类卡牌获得集中\n" +
+            //                                 "卡池中塞入剑阵系类套牌：素弦，苦寒，弱昙，狂焰，孤山，周天，图南，尘缘，泪颜"),
+            // new("墨虚雪", abilityDescription: "游戏开始时以及境界提升时，获得一张机关牌\n" +
+            //                                "战斗后，可返还至多一张被使用的机关牌",
+            //     runEventDescriptors: new RunEventDescriptor[]
+            //     {
+            //         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_DEPLETE, 0, (listener, eventDetails) =>
+            //         {
+            //             RunEnvironment env = (RunEnvironment)listener;
+            //             DepleteDetails d = (DepleteDetails)eventDetails;
+            //
+            //             bool ownerIsHome = env.Home == d.Owner;
+            //             if (!ownerIsHome)
+            //                 return;
+            //
+            //             foreach (var item in d.DepletedSkills)
+            //             {
+            //                 Debug.Log(item.GetName());
+            //             }
+            //         }),
+            //     }),
         });
     }
 }
