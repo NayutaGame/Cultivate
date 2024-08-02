@@ -82,8 +82,8 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     {
         if (Skill == null)
             return false;
-        bool sunHao = Skill.GetEntry().GetSkillTypeComposite().Contains(SkillType.SunHao);
-        if (!sunHao)
+        bool depleted = Skill.GetEntry().GetSkillTypeComposite().Contains(SkillType.Deplete);
+        if (!depleted)
             return false;
 
         d.DepletedSkills.Add(Skill);

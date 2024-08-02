@@ -50,7 +50,7 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
             new("浮千舟", abilityDescription: "战斗开始时，获得1/2/3/4/5灵气\n" +
                                            "空白，卡费行为变成回2/2/3/3/4灵气"),
-            new("语真幻", abilityDescription: "使用二动牌时，消耗。使用消耗牌时，二动。\n" +
+            new("语真幻", abilityDescription: "使用二动牌时，疲劳。使用疲劳牌时，二动。\n" +
                                            "第一次使用吟唱牌时，免除吟唱"),
             new("心斩心鬼", abilityDescription: "剑类卡牌获得集中\n" +
                                             "卡池中塞入剑阵系类套牌：素弦，苦寒，弱昙，狂焰，孤山，周天，图南，尘缘，泪颜"),

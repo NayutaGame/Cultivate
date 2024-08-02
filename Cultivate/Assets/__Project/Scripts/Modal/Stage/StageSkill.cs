@@ -111,7 +111,7 @@ public class StageSkill
     public bool NoOtherAttack
         => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Attack));
     public bool NoOtherLingQi
-        => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.LingQi));
+        => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Mana));
     public bool NoAttackAdjacents
         => !Prev(false).GetSkillType().Contains(SkillType.Attack) && !Next(false).GetSkillType().Contains(SkillType.Attack);
 

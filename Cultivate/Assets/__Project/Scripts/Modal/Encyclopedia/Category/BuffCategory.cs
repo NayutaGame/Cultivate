@@ -533,7 +533,7 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)listener;
                         EndStepDetails d = (EndStepDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
-                        if (d.Skill != null && d.Skill.GetSkillType().Contains(SkillType.LingQi))
+                        if (d.Skill != null && d.Skill.GetSkillType().Contains(SkillType.Mana))
                         {
                             b.PlayPingAnimation();
                             b.Owner.SetActionPoint(2);
@@ -842,7 +842,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("业火", "消耗牌时：使用2次", BuffStackRule.One, true, false,
+            new("业火", "卡牌变成疲劳时：使用2次", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_EXHAUST, 0, async (listener, stageEventDetails) =>
@@ -875,7 +875,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("观众生", "使用非攻击卡时，消耗", BuffStackRule.Add, true, false,
+            new("观众生", "使用非攻击卡时，变得疲劳", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
@@ -1285,7 +1285,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("消耗", "使用下一张牌后消耗", BuffStackRule.Add, true, false,
+            new("疲劳", "使用下一张牌后变成疲劳", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STEP, 0, async (listener, stageEventDetails) =>

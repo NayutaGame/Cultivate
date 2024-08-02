@@ -597,11 +597,11 @@ public class NodeCategory : Category<NodeEntry>
                     CardPickerPanelDescriptor B = new CardPickerPanelDescriptor(
                         detailedText:       "请提交一张二动牌",
                         bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.ErDong));
+                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.Swift));
                     CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
                         detailedText:       "请提交一张治疗牌",
                         bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.ZhiLiao));
+                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.Heal));
 
                     DialogPanelDescriptor BWin = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
                     DialogPanelDescriptor BWin2 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
@@ -774,7 +774,7 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
                             jingJie: map.JingJie,
-                            skillTypeComposite: SkillType.LingQi,
+                            skillTypeComposite: SkillType.Mana,
                             count: 3,
                             distinct: true,
                             consume: false));
@@ -830,7 +830,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("你痛快写了800字，时间没过5分钟，已经写完了。" +
                                                   "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张二动牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.ErDong)));
+                        .SetReward(new DrawSkillReward("得到一张二动牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.Swift)));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                                                         "从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                                                         "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
@@ -839,7 +839,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor D = new DialogPanelDescriptor("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
                                                                         "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
                                                   "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张消耗牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.XiaoHao)));
+                        .SetReward(new DrawSkillReward("得到一张疲劳牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.Exhaust)));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);

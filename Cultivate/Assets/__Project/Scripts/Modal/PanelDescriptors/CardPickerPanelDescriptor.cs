@@ -56,7 +56,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         CardPickerPanelDescriptor template = new CardPickerPanelDescriptor(
             detailedText:       "请提交一张二动牌",
             bound:              new Bound(0, 2),
-            descriptor:         new RunSkillDescriptor(skillTypeComposite: SkillType.ErDong));
+            descriptor:         new RunSkillDescriptor(skillTypeComposite: SkillType.Swift));
         
         DialogPanelDescriptor win = new("成功对话。");
         DialogPanelDescriptor lose = new("失败对话。");

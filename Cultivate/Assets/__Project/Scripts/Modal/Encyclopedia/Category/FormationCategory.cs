@@ -304,7 +304,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                11,
                         trivia:                                                     null,
-                        rewardDescription:                                          "每轮生命恢复至上限\n使用第一张牌消耗\n燃命时：获得1灼烧\n每回合：6攻",
+                        rewardDescription:                                          "每轮生命恢复至上限\n使用第一张牌后，变成疲劳\n燃命时：获得1灼烧\n每回合：6攻",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -316,7 +316,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                     return;
 
                                 await f.Owner.GainBuffProcedure("凤凰涅槃");
-                                await f.Owner.GainBuffProcedure("消耗");
+                                await f.Owner.GainBuffProcedure("疲劳");
                                 await f.Owner.GainBuffProcedure("淬体");
                                 await f.Owner.GainBuffProcedure("天衣无缝", 6);
                             }),
@@ -325,7 +325,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "使用第一张牌消耗\n燃命时：获得1灼烧\n每回合：6攻",
+                        rewardDescription:                                          "使用第一张牌后，变成疲劳\n燃命时：获得1灼烧\n每回合：6攻",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -336,7 +336,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                await f.Owner.GainBuffProcedure("消耗");
+                                await f.Owner.GainBuffProcedure("疲劳");
                                 await f.Owner.GainBuffProcedure("淬体");
                                 await f.Owner.GainBuffProcedure("天衣无缝", 6);
                             }),
@@ -345,7 +345,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "使用第一张牌消耗\n燃命时：获得1灼烧",
+                        rewardDescription:                                          "使用第一张牌后，变成疲劳\n燃命时：获得1灼烧",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -356,7 +356,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                await f.Owner.GainBuffProcedure("消耗");
+                                await f.Owner.GainBuffProcedure("疲劳");
                                 await f.Owner.GainBuffProcedure("淬体");
                             }),
                         }),
@@ -364,7 +364,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                5,
                         trivia:                                                     null,
-                        rewardDescription:                                          "使用第一张牌消耗",
+                        rewardDescription:                                          "使用第一张牌后，变成疲劳",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -375,7 +375,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                await f.Owner.GainBuffProcedure("消耗");
+                                await f.Owner.GainBuffProcedure("疲劳");
                             }),
                         }),
                 }),
@@ -580,9 +580,9 @@ public class FormationCategory : Category<FormationGroupEntry>
             //
             new(id: "灵气阵",
                 order: 0,
-                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.LingQi),
+                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Mana),
                 progressDescription: "携带越多灵气牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.LingQi._index] + d.Proficiency,
+                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Mana._index] + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(
@@ -646,9 +646,9 @@ public class FormationCategory : Category<FormationGroupEntry>
             
             new(id: "治疗阵",
                 order: 0,
-                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.ZhiLiao),
+                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Heal),
                 progressDescription: "携带越多治疗牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.ZhiLiao._index] + d.Proficiency,
+                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Heal._index] + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(
@@ -822,12 +822,12 @@ public class FormationCategory : Category<FormationGroupEntry>
             //             }),
             //     }),
             //
-            // new("八卦奇门阵", order: -1, conditionDescription: "非消耗牌的数量越多越好",
+            // new("八卦奇门阵", order: -1, conditionDescription: "非疲劳牌的数量越多越好",
             //     progressEvaluator: (e, d)
             //         => d.NonExhaustedCount + d.Proficiency,
             //     formationEntries: new[]
             //     {
-            //         new FormationEntry(JingJie.HuaShen, rewardDescription: "对方使用消耗牌后，自己也使用2次", trivia: null, requirement: 12,
+            //         new FormationEntry(JingJie.HuaShen, rewardDescription: "对方卡牌变成疲劳后，自己也使用2次", trivia: null, requirement: 12,
             //             eventDescriptors: new StageEventDescriptor[]
             //             {
             //                 new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_EXHAUST, -1, async (listener, stageEventDetails) =>
@@ -840,7 +840,7 @@ public class FormationCategory : Category<FormationGroupEntry>
             //                     // await f.Owner.CastProcedure(d.Skill);
             //                 }),
             //             }),
-            //         new FormationEntry(JingJie.YuanYing, rewardDescription: "对方使用消耗牌后，自己也使用1次", trivia: null, requirement: 10,
+            //         new FormationEntry(JingJie.YuanYing, rewardDescription: "对方卡牌变成疲劳后，自己也使用1次", trivia: null, requirement: 10,
             //             eventDescriptors: new StageEventDescriptor[]
             //             {
             //                 new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_EXHAUST, -1, async (listener, stageEventDetails) =>
