@@ -820,10 +820,13 @@ public class NodeCategory : Category<NodeEntry>
                 withInPool:                         true,
                 create:                             (map, ladder) =>
                 {
-                    DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？",
-                        "我每天跑步，只要一只能跑下去，跑的路程就是无穷的",
-                        "有一种蛇，每天吃自己的尾巴，又长出来新的蛇身，永远吃不完，此谓无穷。",
-                        "有个木桩，每天砍一半，过一万年也砍不完，这个叫做无穷。");
+                    DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +
+                                                  "我每天跑步，只要一只能跑下去，跑的路程就是无穷的" +
+                                                  "有一种蛇，每天吃自己的尾巴，又长出来新的蛇身，永远吃不完，此谓无穷。" +
+                                                  "有个木桩，每天砍一半，过一万年也砍不完，这个叫做无穷。",
+                        "用第一种",
+                        "用第二种",
+                        "用第三种");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("你痛快写了800字，时间没过5分钟，已经写完了。" +
                                                   "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
@@ -1081,7 +1084,7 @@ public class NodeCategory : Category<NodeEntry>
                         "走进去看一看",
                         "离开");
 
-                    CardPickerPanelDescriptor B = new("请选择0到5张牌", bound: new Bound(0, 5));
+                    CardPickerPanelDescriptor B = new("请选择0到5张牌", bound: new Bound(0, 6));
                     DialogPanelDescriptor C = new("果然还是难以割舍心爱的卡牌。");
                     DialogPanelDescriptor D = new("你感到身上轻了一些。");
 
