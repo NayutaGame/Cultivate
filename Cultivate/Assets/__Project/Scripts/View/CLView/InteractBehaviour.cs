@@ -44,22 +44,62 @@ public class InteractBehaviour : MonoBehaviour,
     public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
 
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingExitNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingMoveNeuron = new();
+
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (!eventData.dragging)
+        {
             PointerEnterNeuron.Invoke(this, eventData);
+            return;
+        }
+        
+        if (eventData.pointerDrag == gameObject)
+            return;
+
+        InteractBehaviour dragging = eventData.pointerDrag.GetComponent<InteractBehaviour>();
+        if (dragging == null)
+            return;
+
+        DraggingEnterNeuron.Invoke(dragging, this, eventData);
     }
 
     public virtual void OnPointerExit (PointerEventData eventData)
     {
         if (!eventData.dragging)
+        {
             PointerExitNeuron.Invoke(this, eventData);
+            return;
+        }
+        
+        if (eventData.pointerDrag == gameObject)
+            return;
+
+        InteractBehaviour dragging = eventData.pointerDrag.GetComponent<InteractBehaviour>();
+        if (dragging == null)
+            return;
+
+        DraggingExitNeuron.Invoke(dragging, this, eventData);
     }
 
     public virtual void OnPointerMove (PointerEventData eventData)
     {
         if (!eventData.dragging)
+        {
             PointerMoveNeuron.Invoke(this, eventData);
+            return;
+        }
+        
+        if (eventData.pointerDrag == gameObject)
+            return;
+
+        InteractBehaviour dragging = eventData.pointerDrag.GetComponent<InteractBehaviour>();
+        if (dragging == null)
+            return;
+
+        DraggingMoveNeuron.Invoke(dragging, this, eventData);
     }
 
     public virtual void OnBeginDrag   (PointerEventData eventData) => BeginDragNeuron   .Invoke(this, eventData);
@@ -70,11 +110,11 @@ public class InteractBehaviour : MonoBehaviour,
         if (eventData.pointerDrag == gameObject)
             return;
 
-        InteractBehaviour dragged = eventData.pointerDrag.GetComponent<InteractBehaviour>();
-        if (dragged == null)
+        InteractBehaviour dragging = eventData.pointerDrag.GetComponent<InteractBehaviour>();
+        if (dragging == null)
             return;
 
-        DropNeuron.Invoke(dragged, this, eventData);
+        DropNeuron.Invoke(dragging, this, eventData);
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)

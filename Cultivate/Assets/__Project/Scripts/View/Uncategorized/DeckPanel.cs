@@ -49,10 +49,36 @@ public class DeckPanel : Panel
         HandView.SetAddress(new Address("Run.Environment.Hand"));
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
         HandView.DropNeuron.Join(Merge, Unequip);
+        
+        HandView.DraggingEnterNeuron.Join(DraggingEnter);
+        HandView.DraggingExitNeuron.Join(DraggingExit);
+        
         HandView.GetComponent<PropagateDrop>()._onDrop = Unequip;
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
+    }
+
+    private void DraggingEnter(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        if (!(from is HandSkillInteractBehaviour))
+            return;
+        RunEnvironment env = RunManager.Instance.Environment;
+        RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
+        RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
+        
+        MergePreresult result = env.GetMergePreresult(lhs, rhs);
+    }
+
+    private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        if (!(from is HandSkillInteractBehaviour))
+            return;
+        RunEnvironment env = RunManager.Instance.Environment;
+        RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
+        RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
+        
+        // reset result to null
     }
 
     protected override void InitStateMachine()
