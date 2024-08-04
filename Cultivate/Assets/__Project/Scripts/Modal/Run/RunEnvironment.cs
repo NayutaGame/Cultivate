@@ -512,7 +512,7 @@ public class RunEnvironment : Addressable, RunEventListener
         => SetDMingYuanProcedure(new SetDMingYuanDetails(value));
     private void SetDMingYuanProcedure(SetDMingYuanDetails d)
     {
-        _eventDict.SendEvent(RunEventDict.WILL_SET_D_MINGYUAN, d);
+        _eventDict.SendEvent(RunEventDict.WIL_SET_D_MINGYUAN, d);
 
         if (d.Cancel)
             return;
@@ -693,8 +693,39 @@ public class RunEnvironment : Addressable, RunEventListener
             .Do(e => _eventDict.Unregister(this, e));
     }
 
+    public MergePreresult GetMergePreresult(RunSkill lhs, RunSkill rhs)
+    {
+        JingJie playerJingJie = _home.GetJingJie();
+        
+        var tuple = MergePreresult.MergeRules.FirstObj(tuple => tuple.Item1(lhs, rhs, playerJingJie));
+        if (tuple != null)
+            return tuple.Item2(lhs, rhs, playerJingJie);
+
+        return MergePreresult.FromDefault(lhs, rhs, playerJingJie);
+    }
+
     public bool MergeProcedure(RunSkill lhs, RunSkill rhs)
     {
+        MergeDetails d = new MergeDetails(lhs, rhs);
+        
+        _eventDict.SendEvent(RunEventDict.WIL_MERGE, d);
+
+        if (d.Cancel)
+            return false;
+
+        bool success = InterMergeProcedure(d);
+        if (!success)
+            return false;
+        
+        _eventDict.SendEvent(RunEventDict.DID_MERGE, d);
+        return true;
+    }
+
+    private bool InterMergeProcedure(MergeDetails d)
+    {
+        RunSkill lhs = d.Lhs;
+        RunSkill rhs = d.Rhs;
+        
         if (lhs.Borrowed || rhs.Borrowed)
             return false;
         
@@ -704,24 +735,19 @@ public class RunEnvironment : Addressable, RunEventListener
         JingJie rJingJie = rhs.GetJingJie();
         WuXing? lWuXing = lEntry.WuXing;
         WuXing? rWuXing = rEntry.WuXing;
-
+        JingJie playerJingJie = _home.GetJingJie();
         DeckIndex rhsDeckIndex = new DeckIndex(false, Hand.IndexOf(rhs));
-
-        if (rJingJie > _home.GetJingJie() || lJingJie > _home.GetJingJie())
-            return false;
         
-        // Congruent
-        if (lEntry == rEntry && lJingJie == rJingJie && lJingJie < rEntry.HighestJingJie)
+        if (MergePreresult.IsCongruent(lhs, rhs, playerJingJie))
         {
-            rhs.JingJie = (rJingJie + 1).ClampUpper(rEntry.HighestJingJie);
+            rhs.JingJie = (rJingJie + 2).ClampUpper(rEntry.HighestJingJie);
             Hand.Remove(lhs);
             Hand.SetModified(rhs);
             BattleChangedNeuron.Invoke();
             return true;
         }
         
-        // Same Name
-        if (lEntry == rEntry && Mathf.Max(lJingJie, rJingJie) < rEntry.HighestJingJie)
+        if (MergePreresult.IsSameName(lhs, rhs, playerJingJie))
         {
             rhs.JingJie = (Mathf.Max(lJingJie, rJingJie) + 1).ClampUpper(rEntry.HighestJingJie);
             Hand.Remove(lhs);
@@ -729,15 +755,12 @@ public class RunEnvironment : Addressable, RunEventListener
             BattleChangedNeuron.Invoke();
             return true;
         }
-        
-        // Formula
-        if (false && lJingJie == rJingJie)
-        {
-            return false;
-        }
 
-        // Same WuXing
-        if (lWuXing == rWuXing && lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
+        bool valid = rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie;
+        if (!valid)
+            return false;
+        
+        if (MergePreresult.IsSameWuXing(lhs, rhs, playerJingJie))
         {
             DrawSkillProcedure(new(
                     pred: skillEntry => skillEntry != lEntry && skillEntry != rEntry,
@@ -748,9 +771,8 @@ public class RunEnvironment : Addressable, RunEventListener
             BattleChangedNeuron.Invoke();
             return true;
         }
-
-        // // XiangSheng WuXing
-        if (WuXing.XiangSheng(lWuXing, rWuXing) && lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
+        
+        if (MergePreresult.IsXiangShengWuXing(lhs, rhs, playerJingJie))
         {
             DrawSkillProcedure(new(
                     wuXing: WuXing.XiangShengNext(lWuXing, rWuXing).Value,
@@ -760,9 +782,8 @@ public class RunEnvironment : Addressable, RunEventListener
             BattleChangedNeuron.Invoke();
             return true;
         }
-
-        // Same JingJie
-        if (lJingJie == rJingJie && rJingJie < rEntry.HighestJingJie)
+        
+        if (MergePreresult.IsSameJingJie(lhs, rhs, playerJingJie))
         {
             DrawSkillProcedure(new(
                     pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
@@ -774,8 +795,7 @@ public class RunEnvironment : Addressable, RunEventListener
             return true;
         }
         
-        // HuaShen Reroll
-        if (lJingJie == rJingJie)
+        if (MergePreresult.IsHuaShenReroll(lhs, rhs, playerJingJie))
         {
             DrawSkillProcedure(new(
                     pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
