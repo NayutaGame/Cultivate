@@ -66,19 +66,13 @@ public class DeckPanel : Panel
         RunEnvironment env = RunManager.Instance.Environment;
         RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
         RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
-        
-        MergePreresult result = env.GetMergePreresult(lhs, rhs);
+
+        CanvasManager.Instance.MergePreresultView.SetMergePreresult(env.GetMergePreresult(lhs, rhs));
     }
 
     private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        if (!(from is HandSkillInteractBehaviour))
-            return;
-        RunEnvironment env = RunManager.Instance.Environment;
-        RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
-        RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
-        
-        // reset result to null
+        CanvasManager.Instance.MergePreresultView.SetMergePreresult(null);
     }
 
     protected override void InitStateMachine()
@@ -132,9 +126,10 @@ public class DeckPanel : Panel
         // { typeof(CardPickerPanelDescriptor), 6 },
         // { typeof(ShopPanelDescriptor), 7 },
         // { typeof(BarterPanelDescriptor), 8 },
-        // { typeof(ArbitraryCardPickerPanelDescriptor), 9 },
-        // { typeof(ImagePanelDescriptor), 10 },
-        // { typeof(RunResultPanelDescriptor), 11 },
+        // { typeof(GachaPanelDescriptor), 9 },
+        // { typeof(ArbitraryCardPickerPanelDescriptor), 10 },
+        // { typeof(ImagePanelDescriptor), 11 },
+        // { typeof(RunResultPanelDescriptor), 12 },
         
         void HighlightSkill(ItemBehaviour itemBehaviour)
         {
@@ -183,8 +178,12 @@ public class DeckPanel : Panel
         RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
         bool success = env.MergeProcedure(lhs, rhs);
         if (!success)
+        {
+            // merge fail staging
             return;
-
+        }
+        
+        CanvasManager.Instance.MergePreresultView.SetMergePreresult(null);
         env.ReceiveSignalProcedure(new FieldChangedSignal());
         
         MergeStaging(from, to, d);

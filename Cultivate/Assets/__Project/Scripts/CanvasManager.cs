@@ -29,11 +29,14 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public GhostView SkillGhost;
     public GhostView SlotGhost;
 
-    [Header("Curtain")]
-    public Curtain Curtain;
+    [Header("MergePreresultView")]
+    public MergePreresultView MergePreresultView;
 
     [Header("Guide")]
     public GuideView GuideView;
+
+    [Header("Curtain")]
+    public Curtain Curtain;
 
     public Color[] JingJieColors;
     public Sprite[] JingJieSprites;
@@ -44,6 +47,9 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public Color TechColorRed;
 
     public Color[] ManaCostColors;
+
+    public Sprite MergePreresultValidSprite;
+    public Sprite MergePreresultInvalidSprite;
 
     public Sprite GetWuXingSprite(WuXing? wuXing)
     {
