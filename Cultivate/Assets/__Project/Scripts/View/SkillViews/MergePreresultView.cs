@@ -25,6 +25,9 @@ public class MergePreresultView : SimpleView
     [SerializeField] private Image JingJieImage;
     [SerializeField] private Image WuXingImage;
     [SerializeField] private Image EffectImage;
+
+    [SerializeField] private TMP_Text MergeTypeText;
+    [SerializeField] private TMP_Text ErrorMessage;
     
     private Material _outlineMaterial;
     // private Material _dissolveMaterial;
@@ -59,6 +62,8 @@ public class MergePreresultView : SimpleView
         SetSkillTypeCompositeFromMergePreresult();
         SetJingJieSpriteFromMergePreresult();
         SetWuXingSpriteFromMergePreresult();
+        SetMergeTypeTextFromMergePreresult();
+        SetErrorMessageFromMergePreresult();
     }
     
     private Tween _highlightHandle;
@@ -156,7 +161,7 @@ public class MergePreresultView : SimpleView
     {
         if (_mergePreresult.ResultEntry == null)
         {
-            NameText.text = "";
+            DescriptionText.text = "";
             return;
         }
         
@@ -207,5 +212,15 @@ public class MergePreresultView : SimpleView
         {
             WuXingImage.enabled = false;
         }
+    }
+
+    protected virtual void SetMergeTypeTextFromMergePreresult()
+    {
+        MergeTypeText.text = _mergePreresult.MergeType;
+    }
+
+    protected virtual void SetErrorMessageFromMergePreresult()
+    {
+        ErrorMessage.text = _mergePreresult.Valid ? "" : _mergePreresult.ErrorMessage;
     }
 }

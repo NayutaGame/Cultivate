@@ -180,6 +180,7 @@ public class DeckPanel : Panel
         if (!success)
         {
             // merge fail staging
+            CanvasManager.Instance.MergePreresultView.SetMergePreresult(null);
             return;
         }
         

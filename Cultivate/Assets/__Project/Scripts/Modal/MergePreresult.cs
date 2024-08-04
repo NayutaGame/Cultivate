@@ -73,7 +73,7 @@ public class MergePreresult
         => new(
             mergeType:              "同五行合成",
             valid:                  rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie,
-            errorMessage:           "玩家境界需要不低于卡牌境界",
+            errorMessage:           "无法合成原因\n玩家境界需要不低于卡牌境界",
             resultJingJie:          rhs.GetJingJie() + 1,
             resultWuXing:           rhs.GetWuXing(),
             resultEntry:            null,
@@ -87,7 +87,7 @@ public class MergePreresult
         => new(
             mergeType:              "相生五行合成",
             valid:                  rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie,
-            errorMessage:           "玩家境界需要不低于卡牌境界",
+            errorMessage:           "无法合成原因\n玩家境界需要不低于卡牌境界",
             resultJingJie:          rhs.GetJingJie() + 1,
             resultWuXing:           WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()).Value,
             resultEntry:            null,
@@ -100,7 +100,7 @@ public class MergePreresult
         => new(
             mergeType:              "同境界合成",
             valid:                  rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie,
-            errorMessage:           "玩家境界需要不低于卡牌境界",
+            errorMessage:           "无法合成原因\n玩家境界需要不低于卡牌境界",
             resultJingJie:          rhs.GetJingJie() + 1,
             resultWuXing:           null,
             resultEntry:            null,
@@ -114,7 +114,7 @@ public class MergePreresult
         => new(
             mergeType:              "化神置换",
             valid:                  rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie,
-            errorMessage:           "玩家境界需要不低于卡牌境界",
+            errorMessage:           "无法合成原因\n玩家境界需要不低于卡牌境界",
             resultJingJie:          rhs.GetJingJie(),
             resultWuXing:           null,
             resultEntry:            null,
@@ -124,7 +124,7 @@ public class MergePreresult
         => new(
             mergeType:              "无法合成",
             valid:                  false,
-            errorMessage:           "非同名卡合成时需要相同境界",
+            errorMessage:           "无法合成原因\n非同名卡合成时需要相同境界",
             resultJingJie:          null,
             resultWuXing:           null,
             resultEntry:            null,
