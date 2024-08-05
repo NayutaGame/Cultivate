@@ -13,6 +13,8 @@ public class SettingsSlider : SimpleView
 
     public override void AwakeFunction()
     {
+        base.AwakeFunction();
+        
         if (_model == null)
             SetAddress(null);
     }

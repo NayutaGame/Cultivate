@@ -14,8 +14,10 @@ public class SettingsToggle : SimpleView
 
     private ToggleModel _model;
 
-    private void Awake()
+    public override void AwakeFunction()
     {
+        base.AwakeFunction();
+        
         if (_model == null)
             SetAddress(null);
     }
