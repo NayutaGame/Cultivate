@@ -875,21 +875,20 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("观众生", "使用非攻击卡时，变得疲劳", BuffStackRule.Add, true, false,
+            new("观众生", "使用牌前，如果是非攻击牌，变得疲劳", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_EXECUTE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
-                        StartStepDetails d = (StartStepDetails)stageEventDetails;
+                        ExecuteDetails d = (ExecuteDetails)stageEventDetails;
 
-                        if (b.Owner != d.Owner) return;
-                        StageSkill skill = d.Owner._skills[d.P];
-                        if (skill.GetSkillType().Contains(SkillType.Attack))
-                            return;
+                        if (b.Owner != d.Caster) return;
+                        if (d.Skill.Exhausted) return;
+                        if (d.Skill.GetSkillType().Contains(SkillType.Attack)) return;
                         
                         b.PlayPingAnimation();
-                        await skill.ExhaustProcedure();
+                        await d.Skill.ExhaustProcedure();
                         await b.SetDStack(-1);
                     }),
                 }),
