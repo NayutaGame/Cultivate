@@ -2,6 +2,7 @@
 using System;
 using CLLibrary;
 using DG.Tweening;
+using UnityEngine;
 
 public class TableSM : StateMachine<int>
 {
@@ -15,7 +16,6 @@ public class TableSM : StateMachine<int>
     public Tween SetStateTween(int value)
     {
         Sequence seq = DOTween.Sequence();
-        
         if (_table[State, -1] is { } first)
             seq.Append(first());
 

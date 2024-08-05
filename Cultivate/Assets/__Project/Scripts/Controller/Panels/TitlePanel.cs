@@ -102,6 +102,7 @@ public class TitlePanel : Panel
     {
         return DOTween.Sequence().SetAutoKill()
             .Append(CanvasManager.Instance.Curtain.SetStateTween(1))
+            .Append(RunConfigToTitleTween())
             .AppendCallback(() => gameObject.SetActive(false));
     }
 }
