@@ -131,7 +131,8 @@ public class RunEnvironment : Addressable, RunEventListener
             case 0:
                 Map.StepDescriptors = new StepDescriptor[]
                 {
-                    firstTime ? new DirectStepDescriptor(0, "初入蓬莱") : new AdventureStepDescriptor(0),
+                    new DirectStepDescriptor(0, "快速结算"),
+                    // firstTime ? new DirectStepDescriptor(0, "初入蓬莱") : new AdventureStepDescriptor(0),
                     new BattleStepDescriptor(0, 3, 4),
                     new AdventureStepDescriptor(0),
                     new RestStepDescriptor(0),
@@ -445,22 +446,24 @@ public class RunEnvironment : Addressable, RunEventListener
         }
         
         PanelDescriptor panelDescriptor = Map.CurrNode.Panel.ReceiveSignal(signal);
-        if (panelDescriptor != null)
+        bool runIsUnfinished = Result.State == RunResult.RunResultState.Unfinished;
+        if (runIsUnfinished)
         {
-            Map.CurrNode.Panel = panelDescriptor;
-        }
-        else
-        {
-            TryFinishStep();
-        }
-
-        bool commit = TryCommit();
-        if (!commit)
+            if (panelDescriptor != null) // descriptor of panel descriptor
+            {
+                Map.CurrNode.Panel = panelDescriptor;
+            }
+            else
+            {
+                TryFinishStep();
+            }
+            
             return panelDescriptor;
+        }
 
-        panelDescriptor = GetActivePanel();
-        Map.CurrNode.Panel = panelDescriptor;
-        return panelDescriptor;
+        _runResultPanelDescriptor = new RunResultPanelDescriptor(Result);
+        Map.CurrNode.Panel = _runResultPanelDescriptor;
+        return _runResultPanelDescriptor;
     }
 
     private void TryFinishStep()
@@ -476,11 +479,14 @@ public class RunEnvironment : Addressable, RunEventListener
             NextStepProcedure();
             return;
         }
-
-        CommitRun();
+        
+        CommitRunProcedure(RunResult.RunResultState.Victory);
     }
-    
-    private void CommitRun() { }
+
+    public void CommitRunProcedure(RunResult.RunResultState state)
+    {
+        Result.State = state;
+    }
 
     public void Combat()
     {
@@ -522,7 +528,7 @@ public class RunEnvironment : Addressable, RunEventListener
 
         // register this as a defeat check
         if (GetMingYuan().Curr <= 0)
-            Result.State = RunResult.RunResultState.Defeat; // DefeatProcedure
+            CommitRunProcedure(RunResult.RunResultState.Defeat);
     }
 
     public void SetDGoldProcedure(int value)
@@ -879,16 +885,6 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public PanelDescriptor GetActivePanel()
         => _runResultPanelDescriptor ?? Map.CurrNode?.Panel;
-
-    // VictoryProcedure and DefeatProcedure
-    private bool TryCommit()
-    {
-        if (Result.State == RunResult.RunResultState.Unfinished)
-            return false;
-
-        _runResultPanelDescriptor = new RunResultPanelDescriptor(Result);
-        return true;
-    }
 
     #region Skill
     

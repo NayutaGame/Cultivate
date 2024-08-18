@@ -173,7 +173,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     A[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.Result.State = RunResult.RunResultState.Victory;
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Victory);
                         return null;
                     });
 
@@ -2201,13 +2201,13 @@ public class NodeCategory : Category<NodeEntry>
 
                     A[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.Result.State = RunResult.RunResultState.Victory;
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Victory);
                         return null;
                     });
 
                     A[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.Result.State = RunResult.RunResultState.Defeat;
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Defeat);
                         return null;
                     });
 
