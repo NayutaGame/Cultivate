@@ -1,11 +1,12 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RunResultPanel : Panel
 {
-    [SerializeField] private TMP_Text ResultText;
+    [SerializeField] private TMP_Text TitleText;
     [SerializeField] private Button ReturnButton;
 
     public override void Configure()
@@ -23,11 +24,11 @@ public class RunResultPanel : Panel
         RunResultPanelDescriptor panelDescriptor = RunManager.Instance.Environment.GetActivePanel() as RunResultPanelDescriptor;
         if (panelDescriptor.RunResult.State == RunResult.RunResultState.Victory)
         {
-            ResultText.text = "胜利";
+            TitleText.text = "胜利";
         }
         else
         {
-            ResultText.text = "失败";
+            TitleText.text = "失败";
         }
     }
 
