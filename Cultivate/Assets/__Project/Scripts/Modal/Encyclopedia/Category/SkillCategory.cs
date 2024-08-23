@@ -2874,7 +2874,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) => "灵气+4",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n灵气+4",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -2887,7 +2887,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) => "12攻",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n12攻",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -2900,7 +2900,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) => "护甲+12",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n护甲+12",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -2913,7 +2913,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.ZhuJiOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Swift | SkillType.Exhaust,
-                castDescription:            (j, dj, costResult, castResult) => "三动 疲劳",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n三动 疲劳",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -2929,7 +2929,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) => "灵气+8",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n灵气+8",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -2942,7 +2942,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Mana | SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) => "10攻\n击伤：灵气+1，对手灵气-1",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n10攻\n击伤：灵气+1，对手灵气-1",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -2960,7 +2960,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) => "护甲+8\n每有1灵气，护甲+4",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n护甲+8\n每有1灵气，护甲+4",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -2974,7 +2974,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) => "下1次灵气减少时，加回",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n下1次灵气减少时，加回",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -2987,7 +2987,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) => "25攻",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n25攻",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3000,7 +3000,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) => "护甲+12\n10攻",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n护甲+12\n10攻",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3014,7 +3014,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) => "2攻x6",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n2攻x6",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3027,7 +3027,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) => "护甲+20\n柔韧+2",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n护甲+20\n柔韧+2",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3041,7 +3041,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) => "下2次护甲减少时，加回",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n下2次护甲减少时，加回",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3054,7 +3054,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYingOnly,
                 skillTypeComposite:         SkillType.Deplete | SkillType.Swift,
-                castDescription:            (j, dj, costResult, castResult) => "二动 二重",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n二动 二重",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3072,7 +3072,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "疲劳\n遭受1不堪一击，永久二重+1",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n遭受1不堪一击，永久二重+1",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3088,7 +3088,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "消耗所有灵气，每1，力量+1",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n消耗所有灵气，每1，力量+1",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3105,7 +3105,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "疲劳\n获得灵气时：每1，生命+3",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n获得灵气时：每1，生命+3",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3121,7 +3121,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust | SkillType.Mana,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "疲劳\n永久免费+1",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n永久免费+1",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3137,7 +3137,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Mana,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "失去一半生命，每8，灵气+1",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n失去一半生命，每8，灵气+1",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3154,7 +3154,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "没有效果",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n没有效果",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3168,7 +3168,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Attack,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "50攻 吸血",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n50攻 吸血",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3183,7 +3183,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "下次受到攻击时，对对方施加等量减甲",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n下次受到攻击时，对对方施加等量减甲",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3198,7 +3198,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Attack,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "1攻x10",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n1攻x10",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3213,7 +3213,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "1攻x10",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n每回合力量+1",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3229,7 +3229,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "疲劳\n回合被跳过时，该回合无法受到伤害\n遭受12跳回合",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n回合被跳过时，该回合无法受到伤害\n遭受12跳回合",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3246,7 +3246,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "格挡+10",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n格挡+10",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3261,7 +3261,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "灼烧+8",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n灼烧+8",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3276,7 +3276,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "闪避+6",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n闪避+6",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3291,7 +3291,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "疲劳\n攻击时，护甲+3",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n攻击时，护甲+3",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3307,7 +3307,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust | SkillType.Mana,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "疲劳\n力量+8 灵气+8\n8回合后死亡",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n力量+8 灵气+8\n8回合后死亡",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3325,7 +3325,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "疲劳\n使用灵气牌时，获得二动",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n使用灵气牌时，获得二动",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3341,7 +3341,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "疲劳\n对方二动时，如果没有暴击，获得1",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n对方二动时，如果没有暴击，获得1",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -3357,7 +3357,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) => "疲劳\n成功闪避时，如果对方没有跳回合，施加1",
+                castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n成功闪避时，如果对方没有跳回合，施加1",
                 withinPool:                 false,
                 cast:                       async (env, caster, skill, recursive) =>
                 {
