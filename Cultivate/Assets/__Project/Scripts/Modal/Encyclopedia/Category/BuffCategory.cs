@@ -618,7 +618,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("锋锐", "回合结束时：[层数]间接攻击\n受到伤害后层数-1", BuffStackRule.Add, true, false,
+            new("锋锐", "回合结束时：[层数]间接攻击", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
@@ -629,16 +629,6 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
                         await b.Owner.IndirectProcedure(b.Stack, wuXing: WuXing.Jin);
-                    }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        DamageDetails d = (DamageDetails)stageEventDetails;
-                        if (b.Owner == d.Tgt)
-                        {
-                            b.PlayPingAnimation();
-                            await b.SetDStack(-1);
-                        }
                     }),
                 }),
 
@@ -935,7 +925,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("柔韧", "对方回合开始时：护甲+[层数]，己方回合开始时：层数-1", BuffStackRule.Add, true, false,
+            new("柔韧", "对方回合开始时：护甲+[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
@@ -943,15 +933,10 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
 
+                        if (b.Owner == d.Owner) return;
+                        
                         b.PlayPingAnimation();
-                        if (b.Owner == d.Owner)
-                        {
-                            await b.SetDStack(-1);
-                        }
-                        else
-                        {
-                            await b.Owner.GainArmorProcedure(b.Stack, induced: true);
-                        }
+                        await b.Owner.GainArmorProcedure(b.Stack, induced: true);
                     }),
                 }),
             
@@ -1140,6 +1125,13 @@ public class BuffCategory : Category<BuffEntry>
                         StageDetails d = (StageDetails)stageEventDetails;
 
                         if (b.Owner != d.Owner) return;
+
+                        bool allowBelow0 = b.Owner.GetStackOfBuff("人间无戈") == 0 &&
+                                           b.Owner.Opponent().GetStackOfBuff("人间无戈") == 0;
+                        bool isBelow0 = b.Owner.Hp <= 0;
+
+                        if (isBelow0 && !allowBelow0) return;
+                        
                         b.PlayPingAnimation();
                         await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp, induced: false);
                     }),
@@ -1148,11 +1140,10 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)listener;
                         RoundDetails d = (RoundDetails)stageEventDetails;
 
-                        if (b.Owner == d.Owner)
-                        {
-                            b.PlayPingAnimation();
-                            await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp, induced: false);
-                        }
+                        if (b.Owner != d.Owner) return;
+                        
+                        b.PlayPingAnimation();
+                        await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp, induced: false);
                     }),
                 }),
 

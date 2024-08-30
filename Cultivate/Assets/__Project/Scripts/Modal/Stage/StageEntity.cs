@@ -54,6 +54,26 @@ public class StageEntity : Addressable, StageEventListener
         return true;
     }
 
+    public async Task StartStageExecuteProcedure()
+    {
+        // for (int i = 0; i < _skills.Length; i++)
+        // {
+        //     StageSkill skill = _skills[_p];
+        //     // ExecuteDetails d = new ExecuteDetails(this, skill);
+        //     // await _env.EventDict.SendEvent(StageEventDict.WIL_EXECUTE, d);
+        //
+        //     CastResult firstCastResult = null;
+        //
+        //     // for (int i = 0; i < d.CastTimes; i++)
+        //     // firstCastResult ??= await CastProcedure(skill);
+        //     await StartStageCastProcedure();
+        //
+        //     WriteResultToSlot(skill.GetSlot(), _costResult, null);
+        //
+        //     // await _env.EventDict.SendEvent(StageEventDict.DID_EXECUTE, d);
+        // }
+    }
+
     private async Task ExecuteProcedure()
     {
         StageSkill skill = _skills[_p];
@@ -595,24 +615,24 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task<bool> ToggleJiaShiProcedure()
     {
-        if (GetStackOfBuff("天人合一") > 0)
+        // if (GetStackOfBuff("天人合一") > 0)
+        // {
+        //     TriggeredJiaShiRecord = true;
+        //     return true;
+        // }
+
+        if (GetStackOfBuff("架势") >= 3)
         {
+            await LoseBuffProcedure("架势", 3);
             TriggeredJiaShiRecord = true;
             return true;
         }
 
-        if (GetStackOfBuff("架势") > 0)
-        {
-            await LoseBuffProcedure("架势");
-            TriggeredJiaShiRecord = true;
-            return true;
-        }
-
-        if (await IsFocused())
-        {
-            TriggeredJiaShiRecord = true;
-            return true;
-        }
+        // if (await IsFocused())
+        // {
+        //     TriggeredJiaShiRecord = true;
+        //     return true;
+        // }
 
         await GainBuffProcedure("架势");
         return false;

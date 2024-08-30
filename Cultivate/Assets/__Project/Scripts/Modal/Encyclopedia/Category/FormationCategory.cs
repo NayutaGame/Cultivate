@@ -19,7 +19,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                11,
                         trivia:                                                     null,
-                        rewardDescription:                                          "死亡不会停止战斗\n开局及每轮：获得1暴击\n击伤时：施加6减甲\n开局：施加25减甲",
+                        rewardDescription:                                          "\n开局及每轮：获得1暴击" +
+                                                                                    "\n击伤时：施加6减甲" +
+                                                                                    "\n开局：施加25减甲" +
+                                                                                    "死亡不会停止战斗",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -29,19 +32,21 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 if (f.Owner != d.Owner)
                                     return;
-
-                                await f.Owner.GainBuffProcedure("人间无戈");
+                                
                                 await f.Owner.GainBuffProcedure("暴击");
                                 await f.Owner.GainBuffProcedure("轮暴击");
                                 await f.Owner.GainBuffProcedure("诸行无常", 6);
                                 await f.Owner.RemoveArmorProcedure(25);
+                                await f.Owner.GainBuffProcedure("人间无戈");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1暴击\n击伤时：施加6减甲\n开局：施加25减甲",
+                        rewardDescription:                                          "开局及每轮：获得1暴击" +
+                                                                                    "\n击伤时：施加6减甲" +
+                                                                                    "\n开局：施加25减甲",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -62,7 +67,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1暴击\n击伤时：施加6减甲",
+                        rewardDescription:                                          "开局及每轮：获得1暴击" +
+                                                                                    "\n击伤时：施加6减甲",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -110,7 +116,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                11,
                         trivia:                                                     null,
-                        rewardDescription:                                          "八动，如果受伤则死亡\n开局及每轮：获得1吸血\n开局：获得1二动\n所有耗蓝-1",
+                        rewardDescription:                                          "开局及每轮：获得1吸血" +
+                                                                                    "\n开局：获得1二动" +
+                                                                                    "\n所有耗蓝-1" +
+                                                                                    "\n八动，如果受伤则死亡",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -144,7 +153,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1吸血\n开局：获得1二动\n所有耗蓝-1",
+                        rewardDescription:                                          "开局及每轮：获得1吸血" +
+                                                                                    "\n开局：获得1二动" +
+                                                                                    "\n所有耗蓝-1",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -165,7 +176,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1吸血\n开局：获得1二动",
+                        rewardDescription:                                          "开局及每轮：获得1吸血" +
+                                                                                    "\n开局：获得1二动",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -213,7 +225,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                11,
                         trivia:                                                     null,
-                        rewardDescription:                                          "永久穿透和集中\n开局及每轮：获得1穿透\n受到治疗时：获得1力量\n开局：获得3闪避",
+                        rewardDescription:                                          "开局及每轮：获得1穿透" +
+                                                                                    "\n暂缺" +
+                                                                                    "\n开局：获得3闪避" +
+                                                                                    "\n永久穿透和集中",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -224,18 +239,19 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                await f.Owner.GainBuffProcedure("通透世界");
                                 await f.Owner.GainBuffProcedure("穿透");
                                 await f.Owner.GainBuffProcedure("轮穿透");
-                                await f.Owner.GainBuffProcedure("盛开");
                                 await f.Owner.GainBuffProcedure("闪避", 3);
+                                await f.Owner.GainBuffProcedure("通透世界");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1穿透\n受到治疗时：获得1力量\n开局：获得3闪避",
+                        rewardDescription:                                          "开局及每轮：获得1穿透" +
+                                                                                    "\n暂缺" +
+                                                                                    "\n开局：获得3闪避",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -248,7 +264,6 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("穿透");
                                 await f.Owner.GainBuffProcedure("轮穿透");
-                                await f.Owner.GainBuffProcedure("盛开");
                                 await f.Owner.GainBuffProcedure("闪避", 3);
                             }),
                         }),
@@ -256,7 +271,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1穿透\n受到治疗时：获得1力量",
+                        rewardDescription:                                          "开局及每轮：获得1穿透" +
+                                                                                    "\n暂缺",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -269,7 +285,6 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 
                                 await f.Owner.GainBuffProcedure("穿透");
                                 await f.Owner.GainBuffProcedure("轮穿透");
-                                await f.Owner.GainBuffProcedure("盛开");
                             }),
                         }),
                     new FormationEntry(
@@ -304,7 +319,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                11,
                         trivia:                                                     null,
-                        rewardDescription:                                          "每轮生命恢复至上限\n使用第一张牌后，变成疲劳\n燃命时：获得1灼烧\n每回合：6攻",
+                        rewardDescription:                                          "使用第一张牌后，变成疲劳" +
+                                                                                    "\n燃命时：获得1灼烧" +
+                                                                                    "\n暂缺" +
+                                                                                    "\n每轮生命恢复至上限",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -315,17 +333,18 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                await f.Owner.GainBuffProcedure("凤凰涅槃");
                                 await f.Owner.GainBuffProcedure("疲劳");
                                 await f.Owner.GainBuffProcedure("淬体");
-                                await f.Owner.GainBuffProcedure("天衣无缝", 6);
+                                await f.Owner.GainBuffProcedure("凤凰涅槃");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "使用第一张牌后，变成疲劳\n燃命时：获得1灼烧\n每回合：6攻",
+                        rewardDescription:                                          "使用第一张牌后，变成疲劳" +
+                                                                                    "\n燃命时：获得1灼烧" +
+                                                                                    "\n暂缺",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -338,14 +357,14 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("疲劳");
                                 await f.Owner.GainBuffProcedure("淬体");
-                                await f.Owner.GainBuffProcedure("天衣无缝", 6);
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "使用第一张牌后，变成疲劳\n燃命时：获得1灼烧",
+                        rewardDescription:                                          "使用第一张牌后，变成疲劳" +
+                                                                                    "\n燃命时：获得1灼烧",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -410,7 +429,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：获得25护甲\n激活所有架势",
+                        rewardDescription:                                          "开局：获得1架势" +
+                                                                                    "\n开局：获得25护甲" +
+                                                                                    "\n开局：额外获得2架势",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -421,15 +442,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
                                 
+                                await f.Owner.GainBuffProcedure("架势", 3);
                                 await f.Owner.GainArmorProcedure(25, induced: false);
-                                await f.Owner.GainBuffProcedure("天人合一");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：获得1架势\n开局：获得25护甲",
+                        rewardDescription:                                          "开局：获得1架势" +
+                                                                                    "\n开局：获得25护甲",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -521,63 +543,68 @@ public class FormationCategory : Category<FormationGroupEntry>
             //             }),
             //     }),
             //
-            // new(id: "防御阵",
-            //     order: 0,
-            //     contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend),
-            //     progressDescription: "携带越多防御牌越强大",
-            //     progressEvaluator: (e, d) => d.DefendCount + d.Proficiency,
-            //     formationEntries: new[]
-            //     {
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.HuaShen,
-            //             requirement:                                                9,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "化神攻击阵效果\n元婴攻击阵效果\n金丹攻击阵效果",
-            //             eventDescriptors: new StageEventDescriptor[]
-            //             {
-            //                 new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //
-            //                     if (f.Owner != d.Owner)
-            //                         return;
-            //                 }),
-            //             }),
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.YuanYing,
-            //             requirement:                                                7,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "元婴攻击阵效果\n金丹攻击阵效果",
-            //             eventDescriptors: new StageEventDescriptor[]
-            //             {
-            //                 new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //
-            //                     if (f.Owner != d.Owner)
-            //                         return;
-            //                 }),
-            //             }),
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.JinDan,
-            //             requirement:                                                5,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "金丹攻击阵效果",
-            //             eventDescriptors: new StageEventDescriptor[]
-            //             {
-            //                 new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //
-            //                     if (f.Owner != d.Owner)
-            //                         return;
-            //                 }),
-            //             }),
-            //     }),
-            //
+            new(id: "防御阵",
+                order: 0,
+                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend),
+                progressDescription: "携带越多防御牌越强大",
+                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Defend._index] + d.Proficiency,
+                formationEntries: new[]
+                {
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.HuaShen,
+                        requirement:                                                9,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "金丹防御阵效果" +
+                                                                                    "\n元婴防御阵效果" +
+                                                                                    "\n每回合：6攻",
+                        eventDescriptors: new StageEventDescriptor[]
+                        {
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+            
+                                if (f.Owner != d.Owner)
+                                    return;
+                                
+                                await f.Owner.GainBuffProcedure("天衣无缝", 6);
+                            }),
+                        }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.YuanYing,
+                        requirement:                                                7,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "金丹防御阵效果" +
+                                                                                    "\n元婴防御阵效果",
+                        eventDescriptors: new StageEventDescriptor[]
+                        {
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+            
+                                if (f.Owner != d.Owner)
+                                    return;
+                            }),
+                        }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.JinDan,
+                        requirement:                                                5,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "金丹防御阵效果",
+                        eventDescriptors: new StageEventDescriptor[]
+                        {
+                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+            
+                                if (f.Owner != d.Owner)
+                                    return;
+                            }),
+                        }),
+                }),
+            
             new(id: "灵气阵",
                 order: 0,
                 contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Mana),
@@ -589,7 +616,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "第1次灵气消耗免费\n开局：获得4灵气\n每回合：获得1灵气",
+                        rewardDescription:                                          "开局：获得4灵气" +
+                                                                                    "\n获得灵气时：每1，回复2生命" +
+                                                                                    "\n每回合：获得1灵气",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -600,8 +629,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                await f.Owner.GainBuffProcedure("免费");
                                 await f.Owner.GainBuffProcedure("灵气", 4);
+                                await f.Owner.GainBuffProcedure("清心", 2);
                                 await f.Owner.GainBuffProcedure("抱朴");
                             }),
                         }),
@@ -609,7 +638,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "第1次灵气消耗免费\n开局：获得4灵气",
+                        rewardDescription:                                          "开局：获得4灵气" +
+                                                                                    "\n获得灵气时：每1，回复2生命",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -620,15 +650,15 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                await f.Owner.GainBuffProcedure("免费");
                                 await f.Owner.GainBuffProcedure("灵气", 4);
+                                await f.Owner.GainBuffProcedure("清心", 2);
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                5,
                         trivia:                                                     null,
-                        rewardDescription:                                          "第1次灵气消耗免费",
+                        rewardDescription:                                          "开局：获得4灵气",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -639,7 +669,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                await f.Owner.GainBuffProcedure("免费");
+                                await f.Owner.GainBuffProcedure("灵气", 4);
                             }),
                         }),
                 }),
@@ -655,7 +685,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：生命上限+50\n获得灵气时：每1，回复2生命\n第二轮：生命回复到上限",
+                        rewardDescription:                                          "开局：生命上限+50" +
+                                                                                    "\n受到治疗时：力量+1" +
+                                                                                    "\n第二轮：生命回复到上限",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -667,7 +699,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                     return;
 
                                 f.Owner.MaxHp += 50;
-                                await f.Owner.GainBuffProcedure("清心", 2);
+                                await f.Owner.GainBuffProcedure("盛开");
                                 await f.Owner.GainBuffProcedure("太虚");
                             }),
                         }),
@@ -675,7 +707,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：生命上限+50\n获得灵气时：每1，回复2生命",
+                        rewardDescription:                                          "开局：生命上限+50" +
+                                                                                    "\n受到治疗时：力量+1",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -687,7 +720,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                     return;
 
                                 f.Owner.MaxHp += 50;
-                                await f.Owner.GainBuffProcedure("清心", 2);
+                                await f.Owner.GainBuffProcedure("盛开");
                             }),
                         }),
                     new FormationEntry(
