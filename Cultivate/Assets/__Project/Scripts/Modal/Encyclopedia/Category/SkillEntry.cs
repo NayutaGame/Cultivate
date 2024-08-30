@@ -40,6 +40,14 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
         => await _cast(env, caster, skill, recursive);
     private async Task<CastResult> DefaultCast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
         => new();
+    
+    private Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CastResult>> _startStageCast;
+    public async Task<CastResult> StartStageCast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
+        => await _startStageCast(env, caster, skill, recursive);
+    private async Task<CastResult> DefaultStartStageCast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
+        => new();
+
+    public bool HasStartStageCast() => _startStageCast != DefaultStartStageCast;
 
     private Func<JingJie, int, CostResult, CastResult, string> _castDescription;
     public string GetDescription(JingJie j, CostResult costResult = null, CastResult castResult = null)
@@ -74,6 +82,8 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
         Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CastResult>> cast = null,
         Func<JingJie, int, CostResult, CastResult, string> castDescription = null,
         
+        Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CastResult>> startStageCast = null,
+        
         string trivia = null,
         bool withinPool = true
         ) : base(id)
@@ -87,6 +97,8 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
         _costDescription = costDescription ?? CostDescription.Empty;
         _cast = cast ?? DefaultCast;
         _castDescription = castDescription;
+
+        _startStageCast = startStageCast ?? DefaultStartStageCast;
         
         _trivia = trivia;
         _withinPool = withinPool;

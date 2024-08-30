@@ -522,6 +522,9 @@ public class StageEnvironment : Addressable, StageEventListener
     {
         foreach (var e in _entities)
             await _eventDict.SendEvent(StageEventDict.WIL_STAGE, new StageDetails(e));
+
+        foreach (var e in _entities)
+            await e.StartStageExecuteProcedure();
     }
 
     private async Task BodyProcedure()

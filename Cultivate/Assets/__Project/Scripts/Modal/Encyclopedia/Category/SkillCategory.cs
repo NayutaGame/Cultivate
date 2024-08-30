@@ -122,6 +122,11 @@ public class SkillCategory : Category<SkillEntry>
                         },
                         wuXing: skill.Entry.WuXing);
                     return cond.ToCastResult();
+                },
+                startStageCast:             async (env, caster, skill, recursive) =>
+                {
+                    await caster.GainBuffProcedure("灵气", 1 + skill.Dj, induced: false);
+                    return null;
                 }),
 
             new(id:                         "0105",

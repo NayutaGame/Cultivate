@@ -30,6 +30,7 @@ public class KeywordCategory : Category<KeywordEntry>
             new("吟唱", "需要准备x回合才可以使用"),
             new("燃命", "受到来源自身的伤害时触发效果"),
             new("残血", "生命不到上限的一半"),
+            new("开局", "在开始之前触发"),
         });
     }
 

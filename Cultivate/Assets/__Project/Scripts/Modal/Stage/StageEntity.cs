@@ -56,22 +56,11 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task StartStageExecuteProcedure()
     {
-        // for (int i = 0; i < _skills.Length; i++)
-        // {
-        //     StageSkill skill = _skills[_p];
-        //     // ExecuteDetails d = new ExecuteDetails(this, skill);
-        //     // await _env.EventDict.SendEvent(StageEventDict.WIL_EXECUTE, d);
-        //
-        //     CastResult firstCastResult = null;
-        //
-        //     // for (int i = 0; i < d.CastTimes; i++)
-        //     // firstCastResult ??= await CastProcedure(skill);
-        //     await StartStageCastProcedure();
-        //
-        //     WriteResultToSlot(skill.GetSlot(), _costResult, null);
-        //
-        //     // await _env.EventDict.SendEvent(StageEventDict.DID_EXECUTE, d);
-        // }
+        foreach (var skill in _skills)
+        {
+            if (!skill.Entry.HasStartStageCast()) continue;
+            await StartStageCastProcedure(skill);
+        }
     }
 
     private async Task ExecuteProcedure()
@@ -88,6 +77,16 @@ public class StageEntity : Addressable, StageEventListener
         WriteResultToSlot(skill.GetSlot(), _costResult, firstCastResult);
 
         await _env.EventDict.SendEvent(StageEventDict.DID_EXECUTE, d);
+    }
+
+    private async Task StartStageCastProcedure(StageSkill skill, bool recursive = true)
+    {
+        await _env.Play(new ShiftAnimation(), false);
+        _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}的开局效果");
+        
+        await skill.Entry.StartStageCast(_env, this, skill, recursive);
+        _env.Result.TryAppendNote(Index, skill, _costResult, null);
+        _env.Result.TryAppend($"\n");
     }
 
     public async Task<CastResult> CastProcedure(StageSkill skill, bool recursive = true)
