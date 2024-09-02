@@ -830,6 +830,18 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo, fromSeamless: true);
                     }),
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CAST, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        CastDetails d = (CastDetails)stageEventDetails;
+
+                        if (d.Caster != b.Owner) return;
+                        if (d.Skill.GetSkillType().Contains(SkillType.Attack))
+                        {
+                            b.PlayPingAnimation();
+                            await b.Owner.RemoveBuff(b);
+                        }
+                    }),
                 }),
             
             new("业火", "卡牌变成疲劳时：使用2次", BuffStackRule.One, true, false,
@@ -1386,6 +1398,95 @@ public class BuffCategory : Category<BuffEntry>
 
                         d.Step = 2;
                         b.PlayPingAnimation();
+                    }),
+                }),
+            
+            new("素弦", "下[层数]次，攻击时，灵气+2", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner != d.Src) return;
+                        if (!d.Recursive) return;
+                        b.PlayPingAnimation();
+                        await b.SetDStack(-1);
+                        await d.Src.GainBuffProcedure("灵气", 2, induced: true);
+                    }),
+                }),
+            
+            new("苦寒", "下[层数]次，攻击时，二动+1", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner != d.Src) return;
+                        if (!d.Recursive) return;
+                        b.PlayPingAnimation();
+                        await b.SetDStack(-1);
+                        await d.Src.GainBuffProcedure("二动", induced: true);
+                    }),
+                }),
+            
+            new("弱昙", "下[层数]次，攻击时，力量+1", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner != d.Src) return;
+                        if (!d.Recursive) return;
+                        b.PlayPingAnimation();
+                        await b.SetDStack(-1);
+                        await d.Src.GainBuffProcedure("力量", induced: true);
+                    }),
+                }),
+            
+            new("狂焰", "下[层数]次，攻击时，追加12攻", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner != d.Src) return;
+                        if (!d.Recursive) return;
+                        b.PlayPingAnimation();
+                        await b.SetDStack(-1);
+                        await d.Src.AttackProcedure(12, wuXing: WuXing.Huo, induced: true, recursive: false);
+                    }),
+                }),
+            
+            new("龙象", "下[层数]次，攻击时，护甲+击伤值", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ATTACK, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        AttackDetails d = (AttackDetails)stageEventDetails;
+                        if (b.Owner != d.Src) return;
+                        if (!d.Recursive) return;
+                        b.PlayPingAnimation();
+                        await b.SetDStack(-1);
+                        await d.Src.GainArmorProcedure(d.Value, induced: true);
+                    }),
+                }),
+            
+            new("逆脉", "下[层数]次，失去护甲时，返还", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_LOSE_ARMOR, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        LoseArmorDetails d = (LoseArmorDetails)stageEventDetails;
+                        if (b.Owner != d.Tgt) return;
+                        b.PlayPingAnimation();
+                        await b.SetDStack(-1);
+                        await b.Owner.GainArmorProcedure(d.Value, induced: true);
                     }),
                 }),
         });
