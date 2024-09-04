@@ -65,6 +65,30 @@ public class SkillCategory : Category<SkillEntry>
             #endregion
 
             #region 标准牌
+            
+            // new(id:                         "0215",
+            //     name:                       "腾浪",
+            //     wuXing:                     WuXing.Shui,
+            //     jingJieBound:               JingJie.YuanYing2HuaShen,
+            //     skillTypeComposite:         SkillType.Attack | SkillType.Swift,
+            //     cost:                       CostResult.ManaFromValue(1),
+            //     costDescription:            CostDescription.ManaFromValue(1),
+            //     castDescription:            (j, dj, costResult, castResult) =>
+            //         $"6攻" +
+            //         $"\n初次：遭受6跳卡牌".ApplyCond(castResult) +
+            //         (j < JingJie.HuaShen ? "" : "\n二动"),
+            //     cast:                       async (env, caster, skill, recursive) =>
+            //     {
+            //         await caster.AttackProcedure(6, wuXing: skill.Entry.WuXing);
+            //
+            //         bool cond = await skill.IsFirstTime();
+            //         if (cond)
+            //             await caster.GainBuffProcedure("跳卡牌", 6);
+            //         
+            //         if (skill.GetJingJie() >= JingJie.HuaShen)
+            //             caster.SetActionPoint(2);
+            //         return cond.ToCastResult();
+            //     }),
 
             new(id:                         "0101",
                 name:                       "金刃",
@@ -535,7 +559,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
             
             new(id:                         "0209",
-                name:                       "空相",
+                name:                       "写意",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Swift,
@@ -645,30 +669,6 @@ public class SkillCategory : Category<SkillEntry>
                     await caster.GainBuffProcedure("苦寒", 1 + skill.Dj);
                     return null;
                 }),
-            
-            new(id:                         "0215",
-                name:                       "腾浪",
-                wuXing:                     WuXing.Shui,
-                jingJieBound:               JingJie.YuanYing2HuaShen,
-                skillTypeComposite:         SkillType.Attack | SkillType.Swift,
-                cost:                       CostResult.ManaFromValue(1),
-                costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"6攻" +
-                    $"\n初次：遭受6跳卡牌".ApplyCond(castResult) +
-                    (j < JingJie.HuaShen ? "" : "\n二动"),
-                cast:                       async (env, caster, skill, recursive) =>
-                {
-                    await caster.AttackProcedure(6, wuXing: skill.Entry.WuXing);
-
-                    bool cond = await skill.IsFirstTime();
-                    if (cond)
-                        await caster.GainBuffProcedure("跳卡牌", 6);
-                    
-                    if (skill.GetJingJie() >= JingJie.HuaShen)
-                        caster.SetActionPoint(2);
-                    return cond.ToCastResult();
-                }),
 
             new(id:                         "0216",
                 name:                       "气吞山河",
@@ -708,7 +708,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0218",
                 name:                       "吞天",
                 wuXing:                     WuXing.Shui,
-                jingJieBound:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.HuaShenOnly,
                 cost:                       CostResult.ManaFromValue(3),
                 costDescription:            CostDescription.ManaFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -826,6 +826,23 @@ public class SkillCategory : Category<SkillEntry>
                     return Style.CastResultFromBools(isEnd, damaged);
                 }),
 
+            new(id:                         "0306",
+                name:                       "见龙在田",
+                wuXing:                     WuXing.Mu,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(4 - skill.Dj - skill.StageCastedCount),
+                costDescription:            CostDescription.ChannelFromDj(dj => 4 - dj),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"10攻 闪避+2" +
+                    $"\n成长：吟唱-1",
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(10, wuXing: skill.Entry.WuXing);
+                    await caster.GainBuffProcedure("闪避", 2);
+                    return null;
+                }),
+
             new(id:                         "0307",
                 name:                       "回春",
                 wuXing:                     WuXing.Mu,
@@ -861,20 +878,33 @@ public class SkillCategory : Category<SkillEntry>
                     return null;
                 }),
 
+            new(id:                         "0309",
+                name:                       "入木三分",
+                wuXing:                     WuXing.Mu,
+                jingJieBound:               JingJie.JinDan2HuaShen,
+                cost:                       CostResult.ManaFromValue(1),
+                costDescription:            CostDescription.ManaFromValue(1),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"1攻" +
+                    $"\n对方每有{4 - dj}护甲，多1",
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    int value = 1 + caster.Opponent().Armor / (4 - skill.Dj);
+                    await caster.AttackProcedure(value, wuXing: skill.Entry.WuXing);
+                    return null;
+                }),
+
             new(id:                         "0310",
-                name:                       "见龙在田",
+                name:                       "飞龙在天",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(3 - skill.Dj - skill.StageCastedCount),
-                costDescription:            CostDescription.ChannelFromDj(dj => 3 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"10攻 闪避+2" +
-                    $"\n成长：吟唱-1",
+                    $"10攻" +
+                    $"\n初次：跳过下{2 + 2 * dj}张牌，激活其中的开局效果（未实现）",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.AttackProcedure(10, wuXing: WuXing.Mu);
-                    await caster.GainBuffProcedure("闪避", 2);
+                    await caster.AttackProcedure(10, wuXing: skill.Entry.WuXing);
                     return null;
                 }),
 
@@ -908,7 +938,7 @@ public class SkillCategory : Category<SkillEntry>
             
             new(id:                         "0313",
                 name:                       "弱昙",
-                wuXing:                     WuXing.Shui,
+                wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -983,18 +1013,31 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "0317",
-                name:                       "入木三分",
+                name:                       "一叶知秋",
                 wuXing:                     WuXing.Mu,
-                jingJieBound:               JingJie.YuanYing2HuaShen,
-                cost:                       CostResult.ManaFromValue(1),
-                costDescription:            CostDescription.ManaFromValue(1),
+                jingJieBound:               JingJie.HuaShenOnly,
+                skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"1攻 穿透" +
-                    $"\n对方每有2护甲，多1",
+                    $"1攻 具有所有已触发的攻击描述（未实现）",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    int value = 1 + caster.Opponent().Armor / 2;
-                    await caster.AttackProcedure(value, penetrate: true, wuXing: skill.Entry.WuXing);
+                    await caster.AttackProcedure(1, wuXing: skill.Entry.WuXing);
+                    return null;
+                }),
+
+            new(id:                         "0318",
+                name:                       "亢龙有悔",
+                wuXing:                     WuXing.Mu,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"遭受不堪一击" +
+                    $"\n穿透/力量/闪避+3",
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.GainBuffProcedure("不堪一击", induced: false);
+                    await caster.GainBuffProcedure("穿透", stack: 3, induced: true);
+                    await caster.GainBuffProcedure("力量", stack: 3, induced: true);
+                    await caster.GainBuffProcedure("闪避", stack: 3, induced: true);
                     return null;
                 }),
 
@@ -1092,7 +1135,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0406",
                 name:                       "彻悟",
                 wuXing:                     WuXing.Huo,
-                jingJieBound:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(2 + dj) * 10}攻 成为残血",
@@ -1215,7 +1258,7 @@ public class SkillCategory : Category<SkillEntry>
             
             new(id:                         "0414",
                 name:                       "狂焰",
-                wuXing:                     WuXing.Shui,
+                wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
