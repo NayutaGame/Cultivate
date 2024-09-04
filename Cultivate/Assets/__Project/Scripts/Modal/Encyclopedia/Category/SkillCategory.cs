@@ -692,15 +692,15 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻" +
-                    $"\n首次击伤：生命+[累计治疗]".ApplyCond(castResult),
+                    $"\n击伤：下1次受伤时，变为治疗".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    bool cond = caster.GetStackOfBuff("一梦如是已触发") > 1;
+                    bool cond = false;
                     await caster.AttackProcedure(1, skill.Entry.WuXing, didDamage:
                         async d =>
                         {
-                            await caster.GainBuffProcedure("一梦如是已触发");
-                            await caster.HealProcedure(caster.HealedRecord, induced: true);
+                            cond = true;
+                            await caster.GainBuffProcedure("一梦如是", induced: true);
                         });
                     return cond.ToCastResult();
                 }),
@@ -1028,7 +1028,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0318",
                 name:                       "亢龙有悔",
                 wuXing:                     WuXing.Mu,
-                jingJieBound:               JingJie.YuanYing2HuaShen,
+                jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"遭受不堪一击" +
                     $"\n穿透/力量/闪避+3",
@@ -1249,10 +1249,10 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"1攻x{1 + dj}",
+                    $"1攻x{4 + 2 * dj}",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.AttackProcedure(1, wuXing: skill.Entry.WuXing, times: 3 + skill.Dj);
+                    await caster.AttackProcedure(1, wuXing: skill.Entry.WuXing, times: 4 + 2 * skill.Dj);
                     return null;
                 }),
             

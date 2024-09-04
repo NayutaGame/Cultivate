@@ -1489,6 +1489,21 @@ public class BuffCategory : Category<BuffEntry>
                         await b.Owner.GainArmorProcedure(d.Value, induced: true);
                     }),
                 }),
+            
+            new("一梦如是", "下[层数]次，受伤害时，变为治疗", BuffStackRule.Add, true, false,
+                eventDescriptors: new StageEventDescriptor[]
+                {
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    {
+                        Buff b = (Buff)listener;
+                        DamageDetails d = (DamageDetails)stageEventDetails;
+                        if (b.Owner != d.Tgt) return;
+                        b.PlayPingAnimation();
+                        await b.SetDStack(-1);
+                        d.Cancel = true;
+                        await b.Owner.HealProcedure(d.Value, induced: true);
+                    }),
+                }),
         });
     }
 
