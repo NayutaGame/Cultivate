@@ -44,7 +44,8 @@ public class RunEnvironment : Addressable, RunEventListener
         
         InitSkillPool();
 
-        InitMapFromJingJie(firstTime, AppManager.Instance.SimulatingJingJie);
+        // InitMapFromJingJie(firstTime, AppManager.Instance.SimulatingJingJie);
+        InitMapDiscoverOnly();
         
         _eventDict.SendEvent(RunEventDict.START_RUN, d);
     }
@@ -122,6 +123,61 @@ public class RunEnvironment : Addressable, RunEventListener
         SetDGoldProcedure(50);
         if (!firstTime)
             DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
+    }
+
+    private void InitMapDiscoverOnly()
+    {
+        Map.StepDescriptors = new StepDescriptor[]
+        {
+            new DirectStepDescriptor(0, "发现一张牌"),
+            new DirectStepDescriptor(0, "发现一张牌"),
+            new DirectStepDescriptor(0, "发现一张牌"),
+            new DirectStepDescriptor(0, "发现一张牌"),
+            new DirectStepDescriptor(0, "发现一张牌"),
+            new DirectStepDescriptor(0, "发现一张牌"),
+            new DirectStepDescriptor(0, "发现一张牌"),
+            new AscensionStepDescriptor(0),
+            
+            new DirectStepDescriptor(4, "发现一张牌"),
+            new DirectStepDescriptor(4, "发现一张牌"),
+            new DirectStepDescriptor(4, "发现一张牌"),
+            new DirectStepDescriptor(4, "发现一张牌"),
+            new DirectStepDescriptor(4, "发现一张牌"),
+            new DirectStepDescriptor(4, "发现一张牌"),
+            new DirectStepDescriptor(4, "发现一张牌"),
+            new AscensionStepDescriptor(4),
+            
+            new DirectStepDescriptor(7, "发现一张牌"),
+            new DirectStepDescriptor(7, "发现一张牌"),
+            new DirectStepDescriptor(7, "发现一张牌"),
+            new DirectStepDescriptor(7, "发现一张牌"),
+            new DirectStepDescriptor(7, "发现一张牌"),
+            new DirectStepDescriptor(7, "发现一张牌"),
+            new DirectStepDescriptor(7, "发现一张牌"),
+            new AscensionStepDescriptor(7),
+            
+            new DirectStepDescriptor(10, "发现一张牌"),
+            new DirectStepDescriptor(10, "发现一张牌"),
+            new DirectStepDescriptor(10, "发现一张牌"),
+            new DirectStepDescriptor(10, "发现一张牌"),
+            new DirectStepDescriptor(10, "发现一张牌"),
+            new DirectStepDescriptor(10, "发现一张牌"),
+            new DirectStepDescriptor(10, "发现一张牌"),
+            new AscensionStepDescriptor(10),
+            
+            new DirectStepDescriptor(13, "发现一张牌"),
+            new DirectStepDescriptor(13, "发现一张牌"),
+            new DirectStepDescriptor(13, "发现一张牌"),
+            new DirectStepDescriptor(13, "发现一张牌"),
+            new DirectStepDescriptor(13, "发现一张牌"),
+            new DirectStepDescriptor(13, "发现一张牌"),
+            new DirectStepDescriptor(13, "发现一张牌"),
+            new SuccessStepDescriptor(13),
+        };
+        
+        SetJingJieProcedure(JingJie.LianQi);
+        SetStepProcedure(0);
+        _home.SetSlotCount(12);
     }
 
     private void InitMapFromJingJie(bool firstTime, JingJie jingJie)
