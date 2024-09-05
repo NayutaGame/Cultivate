@@ -32,7 +32,7 @@ public class BuffCategory : Category<BuffEntry>
             new("集中",      "下一次使用牌时，条件算作激活",                BuffStackRule.Add, true, false),
             new("永久集中",    "所有牌，条件算作激活",                    BuffStackRule.One, true, false),
             new("浮空艇",     "回合被跳过时：生命及上线无法下降",              BuffStackRule.Add, true, false),
-            new("架势",     "消耗架势激活效果，没有架势时获得架势",              BuffStackRule.One, true, false),
+            new("架势",     "消耗架势激活效果，没有架势时获得架势",              BuffStackRule.Add, true, false),
             new("一梦如是已触发",     "一梦如是已触发",              BuffStackRule.One, true, false),
             
             new(id:                         "跳走步",
@@ -742,7 +742,7 @@ public class BuffCategory : Category<BuffEntry>
             new("闪避", "受到攻击时，减少1层，忽略此次攻击", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
