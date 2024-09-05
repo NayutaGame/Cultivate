@@ -7,6 +7,21 @@ public class SpriteCategory : Category<SpriteEntry>
     {
         AddRange(new List<SpriteEntry>()
         {
+            // BuffIcons
+            new("不存在的状态", "Images/BuffIcons/不存在"),
+            new("缺失状态插画", "Images/BuffIcons/无图标"),
+            new("二动", "Images/BuffIcons/二动"),
+            new("力量", "Images/BuffIcons/力量"),
+            new("吸血", "Images/BuffIcons/吸血"),
+            new("暴击", "Images/BuffIcons/暴击"),
+            new("格挡", "Images/BuffIcons/格挡"),
+            new("永久暴击", "Images/BuffIcons/永久暴击"),
+            new("灼烧", "Images/BuffIcons/灼烧"),
+            new("穿透", "Images/BuffIcons/穿透"),
+            new("锋锐", "Images/BuffIcons/锋锐"),
+            new("闪避", "Images/BuffIcons/闪避"),
+            
+            // NodeIcons
             new("奇遇", "Images/NodeIcons/Adventure"),
             new("战斗", "Images/NodeIcons/Battle"),
             new("Boss", "Images/NodeIcons/Boss"),
@@ -38,7 +53,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("漫画5", "Images/Cutscenes/漫画5"),
 
             // 卡牌
-            new("Default", "Images/SkillIllustrates/Default"),
+            new("缺失卡面插画", "Images/SkillIllustrates/Default"),
             new("聚气术", "Images/Cards/聚气术"),
             new("冲撞", "Images/Cards/冲撞"),
             
@@ -135,5 +150,7 @@ public class SpriteCategory : Category<SpriteEntry>
         });
     }
 
-    public SpriteEntry DefaultSkillIllustrate() => this["Default"];
+    public SpriteEntry MissingSkillIllustration() => this["缺失卡面插画"];
+    public SpriteEntry ErrorBuffIcon() => this["不存在的状态"];
+    public SpriteEntry MissingBuffIcon() => this["缺失状态插画"];
 }

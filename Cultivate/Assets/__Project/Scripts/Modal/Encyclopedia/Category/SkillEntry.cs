@@ -110,7 +110,8 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
 
     public int GetCurrCounter() => 0;
     public int GetMaxCounter() => 0;
-    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory["Default"].Sprite;
+
+    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
     public WuXing? GetWuXing() => WuXing;
     public Sprite GetWuXingSprite() => CanvasManager.Instance.GetWuXingSprite(WuXing);
     public string GetName() => _name;

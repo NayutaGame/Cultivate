@@ -2288,12 +2288,12 @@ MonoBehaviour:
   - {r: 0.8753333, g: 0.884, b: 0.50699997, a: 1}
   - {r: 0.864, g: 0.48470402, b: 0.48470402, a: 1}
   JingJieSprites:
-  - {fileID: 1971498770212997692, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
-  - {fileID: -8001116738573253117, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
-  - {fileID: -6091242117326592402, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
-  - {fileID: -6391036625748612317, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
-  - {fileID: -6467990521619751650, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
-  - {fileID: -3778030376816645689, guid: 534a01420b0b15b4ea374045c721e44a, type: 3}
+  - {fileID: 1110474836342454005, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
+  - {fileID: -1703603175200668573, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
+  - {fileID: -8954378217320409427, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
+  - {fileID: 3532994645941433911, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
+  - {fileID: 6369833468083131578, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
+  - {fileID: 2296744690853185702, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
   WuXingSprites:
   - {fileID: 8292447929574576883, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
   - {fileID: 8149245822705470765, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
@@ -2303,11 +2303,22 @@ MonoBehaviour:
   TechColorGreen: {r: 0.62352943, g: 0.81960785, b: 0.6392157, a: 1}
   TechColorYellow: {r: 0.77254903, g: 0.78431374, b: 0.5647059, a: 1}
   TechColorRed: {r: 0.9137255, g: 0.6745098, b: 0.6745098, a: 1}
-  ManaCostColors:
-  - {r: 0.23529412, g: 0.23529412, b: 0.23529412, a: 1}
-  - {r: 0.23529412, g: 0.23529412, b: 0.23529412, a: 1}
-  - {r: 0, g: 0.5019608, b: 0, a: 1}
-  - {r: 0.8, g: 0, b: 0, a: 1}
+  CostColors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.4627451, g: 0.9490196, b: 0.56078434, a: 1}
+  - {r: 0.78431374, g: 0.11372549, b: 0.11372549, a: 1}
+  CostFontAsset:
+  - {fileID: 11400000, guid: 0f48709fc886e8649b83cb99b6d16033, type: 2}
+  - {fileID: 11400000, guid: 0f48709fc886e8649b83cb99b6d16033, type: 2}
+  - {fileID: 11400000, guid: 6e3527ae66a1b944893fbe3ea0f3cb03, type: 2}
+  - {fileID: 11400000, guid: dcf4cb1a6ad97d14289e3644c9840e99, type: 2}
+  CostIconSprites:
+  - {fileID: 21300000, guid: 47a12da50c1348e45ad08cbf25c2b420, type: 3}
+  - {fileID: 2063998883961556741, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
+  - {fileID: 6054793087220200548, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
+  - {fileID: 8819295655754421081, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
+  - {fileID: 706331043141627348, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
   MergePreresultValidSprite: {fileID: 21300000, guid: 151d00fee3568654eae0eba34146e91d, type: 3}
   MergePreresultInvalidSprite: {fileID: 21300000, guid: 1d7d91165b2c6eb4c94e0db7e5aa597c, type: 3}
   _volume: {fileID: 1778296600}

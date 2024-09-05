@@ -66,7 +66,7 @@ public class ExtraBehaviourPivot : ExtraBehaviour
 
         _handle = GetDisplayTransform()
             .DOScale(1.5f, 0.075f)
-            .SetEase(Ease.OutQuint)
+            .SetEase(Ease.OutQuad)
             .SetLoops(2, loopType: LoopType.Yoyo);
         
         _handle.SetAutoKill().Restart();

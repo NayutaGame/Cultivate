@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BuffEntry : Entry, IAnnotation
 {
@@ -11,8 +12,8 @@ public class BuffEntry : Entry, IAnnotation
     private string _trivia;
     public string GetTrivia() => _trivia;
 
-    // private Sprite _sprite;
-    // public Sprite Sprite => _sprite;
+    private SpriteEntry _spriteEntry;
+    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingBuffIcon().Sprite;
 
     private BuffStackRule _buffStackRule;
     public BuffStackRule BuffStackRule => _buffStackRule;
@@ -49,6 +50,8 @@ public class BuffEntry : Entry, IAnnotation
         if (eventDescriptors != null)
             foreach (var eventDescriptor in eventDescriptors)
                 _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
+
+        _spriteEntry = GetName();
     }
     
     private AnnotationArray _annotationArray;

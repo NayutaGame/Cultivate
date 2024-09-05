@@ -2,6 +2,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [SelectionBase]
@@ -10,8 +11,9 @@ public class SkillCardView : SimpleView
     private JingJie _showingJingJie;
     private bool _highlight;
     
-    [SerializeField] private Image CardImage;
+    [SerializeField] private Image Illustration;
     [SerializeField] private TMP_Text CostText;
+    [SerializeField] private Image CostIcon;
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private Image JingJieImage;
@@ -54,7 +56,7 @@ public class SkillCardView : SimpleView
         SetDescription(skill.GetHighlight(_showingJingJie));
         SetSkillTypeComposite(skill.GetSkillTypeComposite());
         SetJingJieSprite(skill.GetJingJieSprite(_showingJingJie));
-        SetWuXingSprite(skill.GetWuXingSprite());
+        // SetWuXingSprite(skill.GetWuXingSprite());
     }
 
     private Tween _highlightHandle;
@@ -74,52 +76,57 @@ public class SkillCardView : SimpleView
 
     protected virtual void SetSprite(Sprite sprite)
     {
-        CardImage.sprite = sprite;
+        Illustration.sprite = sprite;
     }
 
     protected virtual void SetCostDescription(CostDescription costDescription)
     {
-        int value = costDescription.Value;
-        if (value == 0)
-        {
-            CostText.text = "";
-            return;
-        }
-
         switch (costDescription.Type)
         {
+            case CostDescription.CostType.Empty:
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[0];
+                CostText.text = "";
+                break;
             case CostDescription.CostType.Mana:
-                CostText.text = $"{value}灵";
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[1];
+                CostText.text = costDescription.Value.ToString();
                 break;
             case CostDescription.CostType.Health:
-                CostText.text = $"{value}血";
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[2];
+                CostText.text = costDescription.Value.ToString();
                 break;
             case CostDescription.CostType.Channel:
-                CostText.text = $"{value}时";
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[3];
+                CostText.text = costDescription.Value.ToString();
                 break;
             case CostDescription.CostType.Armor:
-                CostText.text = $"{value}甲";
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[4];
+                CostText.text = costDescription.Value.ToString();
                 break;
         }
-        
-        Color color = CanvasManager.Instance.ManaCostColors[0];
+
+        int? i = null;
         switch (costDescription.State)
         {
             case CostResult.CostState.Unwritten:
-                color = CanvasManager.Instance.ManaCostColors[0];
+                i = 0;
                 break;
             case CostResult.CostState.Normal:
-                color = CanvasManager.Instance.ManaCostColors[1];
+                i = 1;
                 break;
             case CostResult.CostState.Reduced:
-                color = CanvasManager.Instance.ManaCostColors[2];
+                i = 2;
                 break;
             case CostResult.CostState.Shortage:
-                color = CanvasManager.Instance.ManaCostColors[3];
+                i = 3;
                 break;
         }
-    
-        CostText.color = color;
+
+        if (i.HasValue)
+        {
+            CostText.color = CanvasManager.Instance.CostColors[i.Value];
+            CostText.font = CanvasManager.Instance.CostFontAsset[i.Value];
+        }
     }
 
     protected virtual void SetName(string name)

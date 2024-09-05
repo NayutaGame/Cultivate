@@ -126,20 +126,20 @@ public class MergePreresultView : SimpleView
                 break;
         }
         
-        Color color = CanvasManager.Instance.ManaCostColors[0];
+        Color color = CanvasManager.Instance.CostColors[0];
         switch (costDescription.State)
         {
             case CostResult.CostState.Unwritten:
-                color = CanvasManager.Instance.ManaCostColors[0];
+                color = CanvasManager.Instance.CostColors[0];
                 break;
             case CostResult.CostState.Normal:
-                color = CanvasManager.Instance.ManaCostColors[1];
+                color = CanvasManager.Instance.CostColors[1];
                 break;
             case CostResult.CostState.Reduced:
-                color = CanvasManager.Instance.ManaCostColors[2];
+                color = CanvasManager.Instance.CostColors[2];
                 break;
             case CostResult.CostState.Shortage:
-                color = CanvasManager.Instance.ManaCostColors[3];
+                color = CanvasManager.Instance.CostColors[3];
                 break;
         }
     

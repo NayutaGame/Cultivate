@@ -1,11 +1,13 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuffView : SimpleView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text StackText;
+    [SerializeField] private Image IconImage;
 
     public override void SetAddress(Address address)
     {
@@ -40,8 +42,10 @@ public class BuffView : SimpleView
         base.Refresh();
 
         Buff b = Get<Buff>();
-        NameText.text = $"{b.GetName()}";
-        StackText.text = $"{b.Stack}";
+        StackText.text = b.Stack.ToString();
+        IconImage.sprite = b.GetEntry().GetSprite();
+
+        NameText.text = IconImage.sprite == Encyclopedia.SpriteCategory.MissingBuffIcon().Sprite ? b.GetName() : "";
     }
 
     private void PingAnimation()
