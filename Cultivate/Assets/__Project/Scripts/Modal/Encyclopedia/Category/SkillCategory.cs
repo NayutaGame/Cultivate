@@ -1,6 +1,5 @@
 
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using CLLibrary;
 
@@ -252,7 +251,8 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.ManaFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"锋锐+{1 + dj} 金流转" +
-                    $"\n[锋锐]攻 吸血",
+                    $"\n每1锋锐，多1攻" +
+                    $"\n吸血",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.GainBuffProcedure("锋锐", 1 + skill.Dj);
@@ -320,7 +320,8 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.ChannelFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"护甲+{15 + 5 * dj}" +
-                    $"\n每{15 - 5 * dj}护甲，锋锐+1 金流转",
+                    $"\n每{15 - 5 * dj}护甲，锋锐+1" +
+                    $"\n金流转",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.GainArmorProcedure(15 + 5 * skill.Dj, induced: false);
@@ -337,13 +338,13 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ManaFromDj(dj => dj + 1),
                 costDescription:            CostDescription.ManaFromDj(dj => dj + 1),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"暴击+{1 + dj}" +
-                    $"\n护甲+12" +
+                    $"护甲+12" +
+                    $"\n暴击+{1 + dj}" +
                     $"\n开局：暴击+{1 + dj}",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.GainBuffProcedure("暴击", 1 + skill.Dj);
                     await caster.GainArmorProcedure(12, induced: false);
+                    await caster.GainBuffProcedure("暴击", 1 + skill.Dj);
                     return null;
                 },
                 startStageCast:             async (env, caster, skill, recursive) =>
@@ -360,7 +361,8 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"暴击+2 施加10减甲" +
+                    $"暴击+2" +
+                    $"\n施加10减甲" +
                     $"\n终结：1攻 暴击释放".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
@@ -387,7 +389,7 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"30攻" +
-                    $"\n击伤：取消伤害，施加减甲".ApplyCond(castResult),
+                    $"\n击伤：伤害转为减甲".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     bool cond = false;
@@ -512,7 +514,7 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
                     (j < JingJie.HuaShen ? $"{8 + 4 * dj}攻" : $"28攻") +
-                    $"\n未击伤：治疗等量数值".ApplyCond(castResult),
+                    $"\n未击伤：受到治疗".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     bool cond = false;
@@ -692,7 +694,7 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻" +
-                    $"\n击伤：下1次受伤时，变为治疗".ApplyCond(castResult),
+                    $"\n击伤：下1次受伤转为治疗".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     bool cond = false;
@@ -929,7 +931,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"升级下{1 + dj}张使用的牌",
+                    $"使下{1 + dj}张牌升级",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.GainBuffProcedure("钟声", 1 + skill.Dj);
@@ -998,7 +1000,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    (j < JingJie.HuaShen ? $"使用第一张牌\n已经疲劳的牌无效" : $"使用前两张牌\n已经疲劳的牌无效"),
+                    (j < JingJie.HuaShen ? $"使用第一张牌\n已疲劳牌无效" : $"使用前两张牌\n已疲劳牌无效"),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     if (!recursive)
@@ -1018,7 +1020,8 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"1攻 具有所有已触发的攻击描述（未实现）",
+                    $"1攻" +
+                    $"\n具有所有已触发的攻击描述（未实现）",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(1, wuXing: skill.Entry.WuXing);
@@ -1174,7 +1177,7 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.HealthFromValue(10),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{4 + dj}" +
-                    $"\n残血时：无需消耗生命",
+                    $"\n残血：免除消耗",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.GainBuffProcedure("灵气", 4 + skill.Dj);
@@ -1188,7 +1191,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Defend,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"护甲+2" +
-                    $"\n持续：直到使用攻击牌，每回合{3 + 2 * dj}",
+                    $"\n直到使用攻击牌：每回合{3 + 2 * dj}攻",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.GainArmorProcedure(2, false);
@@ -1205,7 +1208,8 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.ChannelFromDj(dj => 2 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"疲劳" +
-                    $"\n护甲+6 每1张已经疲劳的牌，多6",
+                    $"\n护甲+6" +
+                    $"\n每1张已疲劳牌，多6",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await skill.ExhaustProcedure();
@@ -1235,7 +1239,8 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.ChannelFromDj(dj => 3 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"疲劳" +
-                    $"\n免费+1 每1张已经疲劳的牌，多1",
+                    $"\n免费+1" +
+                    $"\n每1张已疲劳牌，多1",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await skill.ExhaustProcedure();
@@ -1278,7 +1283,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Mana | SkillType.Exhaust,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"下{1 + dj}次，使用非攻击卡后，会变得疲劳",
+                    $"使下{1 + dj}张非攻击卡疲劳",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.GainBuffProcedure("观众生", 1 + skill.Dj);
@@ -1308,7 +1313,8 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"1攻 每获得过1闪避，多攻击1次",
+                    $"1攻" +
+                    $"\n每获得过1闪避，多1次",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(1, times: caster.GainedEvadeRecord + 1, wuXing: skill.Entry.WuXing);
@@ -1322,7 +1328,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Exhaust,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"疲劳" +
-                    $"\n使用一次所有已经疲劳的牌",
+                    $"\n使用所有已疲劳牌",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     if (!recursive)
