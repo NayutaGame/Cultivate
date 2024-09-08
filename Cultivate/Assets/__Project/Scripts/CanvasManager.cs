@@ -47,7 +47,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public Color TechColorRed;
 
     public Color[] CostColors;
-    public TMP_FontAsset[] CostFontAsset;
 
     public Sprite[] CostIconSprites;
 

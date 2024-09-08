@@ -125,7 +125,6 @@ public class SkillCardView : SimpleView
         if (i.HasValue)
         {
             CostText.color = CanvasManager.Instance.CostColors[i.Value];
-            CostText.font = CanvasManager.Instance.CostFontAsset[i.Value];
         }
     }
 
