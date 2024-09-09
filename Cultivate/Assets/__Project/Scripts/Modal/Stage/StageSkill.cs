@@ -32,7 +32,7 @@ public class StageSkill
     public JingJie GetJingJie() => _jingJie;
     public async Task<bool> TryUpgradeJingJie()
     {
-        if (_jingJie == _entry.HighestJingJie)
+        if (_jingJie >= _entry.HighestJingJie)
             return false;
         _jingJie += 1;
         return true;
