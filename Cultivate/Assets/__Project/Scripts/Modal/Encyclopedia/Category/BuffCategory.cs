@@ -604,7 +604,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("诸行无常", "造成伤害：施加[伤害值，最多Stack]减甲", BuffStackRule.Add, true, false,
+            new("诸行无常", "击伤时：施加[层数]减甲", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
@@ -614,7 +614,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (!(b.Owner == d.Src && d.Src != d.Tgt))
                             return;
                         b.PlayPingAnimation();
-                        await b.Owner.RemoveArmorProcedure(Mathf.Min(d.Value, b.Stack));
+                        await b.Owner.RemoveArmorProcedure(b.Stack);
                     }),
                 }),
 
@@ -664,7 +664,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("吸血", "下一次攻击造成伤害时，回复生命", BuffStackRule.Add, true, false,
+            new("吸血", "下[层数]次攻击时，根据造成伤害值，回复生命", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
@@ -723,7 +723,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("格挡", "受到攻击：攻击力-[层数]", BuffStackRule.Add, true, false,
+            new("格挡", "受攻击时：攻击力-[层数]", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 1, async (listener, stageEventDetails) =>
@@ -739,7 +739,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("闪避", "受到攻击时，减少1层，忽略此次攻击", BuffStackRule.Add, true, false,
+            new("闪避", "下[层数]次受攻击时：忽略攻击", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
@@ -771,7 +771,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("穿透", "下一次攻击时，忽略对方护甲/闪避/格挡", BuffStackRule.Add, true, false,
+            new("穿透", "下[层数]次攻击时，忽略对方护甲/闪避/格挡", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
@@ -787,7 +787,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("力量", "攻击时，多[层数]攻", BuffStackRule.Add, true, false,
+            new("力量", "攻击时：多[层数]攻", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
