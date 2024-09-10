@@ -597,7 +597,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
             
             new(id:                         "0210",
-                name:                       "不动明王诀",
+                name:                       "不动明王咒",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Heal,

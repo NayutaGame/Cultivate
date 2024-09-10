@@ -44,8 +44,8 @@ public class RunEnvironment : Addressable, RunEventListener
         
         InitSkillPool();
 
-        // InitMapFromJingJie(firstTime, AppManager.Instance.SimulatingJingJie);
-        InitMapDiscoverOnly();
+        InitMapFromJingJie(firstTime, AppManager.Instance.SimulatingJingJie);
+        // InitMapDiscoverOnly();
         
         _eventDict.SendEvent(RunEventDict.START_RUN, d);
     }

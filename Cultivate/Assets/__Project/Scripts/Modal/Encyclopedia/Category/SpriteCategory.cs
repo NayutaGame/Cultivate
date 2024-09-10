@@ -75,7 +75,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("吐纳", "Images/Cards/吐纳"),
             new("恋花", "Images/Cards/恋花"),
             new("冰肌", "Images/Cards/冰弹"),
-            new("不动明王诀", "Images/Cards/不动明王咒"),
+            new("不动明王咒", "Images/Cards/不动明王咒"),
             new("止水", "Images/Cards/一虚一实"),
             new("一闪", "Images/Cards/腾跃"),
             new("瑞雪", "Images/Cards/冰雨"),
