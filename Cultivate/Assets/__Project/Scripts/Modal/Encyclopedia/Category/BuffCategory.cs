@@ -1504,6 +1504,9 @@ public class BuffCategory : Category<BuffEntry>
                         await b.Owner.HealProcedure(d.Value, induced: true);
                     }),
                 }),
+            
+            new("飞龙在天", $"跳过下[层数]张牌，跳过时成长计数+1", BuffStackRule.Add, true, false),
+            new("架势消耗减少", $"架势消耗减少1层", BuffStackRule.One, true, false),
         });
     }
 

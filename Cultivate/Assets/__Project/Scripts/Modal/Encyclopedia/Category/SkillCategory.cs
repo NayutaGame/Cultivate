@@ -226,19 +226,20 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "天地同寿",
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                cost:                       CostResult.ArmorFromDj(dj => 10 + 10 * dj),
-                costDescription:            CostDescription.ArmorFromDj(dj => 10 + 10 * dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"施加{10 + 10 * dj}破甲" +
-                    $"\n开局：施加{10 + 10 * dj}破甲",
+                    $"施加{10 + 5 * dj}破甲" +
+                    $"\n自身每1破甲，多1" +
+                    $"\n开局：施加{10 + 5 * dj}破甲",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.RemoveArmorProcedure(10 + 10 * skill.Dj);
+                    int fragile = caster.Armor.ClampUpper(0);
+                    int value = 10 + 5 * skill.Dj - fragile;
+                    await caster.RemoveArmorProcedure(value);
                     return null;
                 },
                 startStageCast:             async (env, caster, skill, recursive) =>
                 {
-                    await caster.RemoveArmorProcedure(10 + 10 * skill.Dj);
+                    await caster.RemoveArmorProcedure(10 + 5 * skill.Dj);
                     return null;
                 }),
 
@@ -902,12 +903,15 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"10攻" +
-                    $"\n初次：跳过下{2 + 2 * dj}张牌，激活其中的开局效果（未实现）",
+                    $"闪避+1" +
+                    $"\n初次：跳过下{2 + 2 * dj}张牌，跳过时成长计数+1".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.AttackProcedure(10, wuXing: skill.Entry.WuXing);
-                    return null;
+                    await caster.GainBuffProcedure("闪避");
+                    bool cond = await skill.IsFirstTime();
+                    if (cond)
+                        await caster.GainBuffProcedure("飞龙在天", 2 + 2 * skill.Dj, induced: true);
+                    return cond.ToCastResult();
                 }),
 
             new(id:                         "0311",
@@ -1447,6 +1451,36 @@ public class SkillCategory : Category<SkillEntry>
                     
                     await caster.AttackProcedure(8 + 3 * skill.Dj + mana * (1 + skill.Dj), wuXing: skill.Entry.WuXing);
                     return cond.ToCastResult();
+                }),
+            
+            new(id:                         "0507",
+                name:                       "罗刹",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{20 + 20 * dj}攻" +
+                    $"\n遭受{3 + 2 * dj}腐朽",
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(20 + 20 * skill.Dj, wuXing: skill.Entry.WuXing);
+                    await caster.GainBuffProcedure("腐朽", stack: 3 + 2 * skill.Dj, induced: true);
+                    return null;
+                }),
+            
+            new(id:                         "0509",
+                name:                       "正域彼四方",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.JinDan2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                cost:                       CostResult.ManaFromValue(8),
+                costDescription:            CostDescription.ManaFromValue(8),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{40 + 20 * dj}攻",
+                cast:                       async (env, caster, skill, recursive) =>
+                {
+                    await caster.AttackProcedure(40 + 20 * skill.Dj, wuXing: skill.Entry.WuXing);
+                    return null;
                 }),
 
             new(id:                         "0510",

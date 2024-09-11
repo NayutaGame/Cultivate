@@ -81,12 +81,20 @@ public class StageEntity : Addressable, StageEventListener
 
     private async Task StartStageCastProcedure(StageSkill skill, bool recursive = true)
     {
-        await _env.Play(new ShiftAnimation(), false);
-        _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}的开局效果");
+        StartStageCastDetails d = new StartStageCastDetails(this, skill);
+        await _env.EventDict.SendEvent(StageEventDict.WIL_START_STAGE_CAST, d);
+
+        for (int i = 0; i < d.Times; i++)
+        {
+            await _env.Play(new ShiftAnimation(), false);
+            _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}的开局效果");
         
-        await skill.Entry.StartStageCast(_env, this, skill, recursive);
-        _env.Result.TryAppendNote(Index, skill, _costResult, null);
-        _env.Result.TryAppend($"\n");
+            await skill.Entry.StartStageCast(_env, this, skill, recursive);
+            _env.Result.TryAppendNote(Index, skill, _costResult, null);
+            _env.Result.TryAppend($"\n");
+        }
+        
+        await _env.EventDict.SendEvent(StageEventDict.DID_START_STAGE_CAST, d);
     }
 
     public async Task<CastResult> CastProcedure(StageSkill skill, bool recursive = true)
@@ -161,6 +169,12 @@ public class StageEntity : Addressable, StageEventListener
 
             if (_skills[_p].Exhausted)
                 continue;
+
+            if (await TryConsumeProcedure("飞龙在天"))
+            {
+                _skills[_p].IncreaseCastedCount();
+                continue;
+            }
 
             if (await TryConsumeProcedure("跳卡牌"))
                 continue;
@@ -620,9 +634,11 @@ public class StageEntity : Addressable, StageEventListener
         //     return true;
         // }
 
-        if (GetStackOfBuff("架势") >= 3)
+        int reducedCost = GetStackOfBuff("架势消耗减少");
+
+        if (GetStackOfBuff("架势") >= 3 - reducedCost)
         {
-            await LoseBuffProcedure("架势", 3);
+            await LoseBuffProcedure("架势", 3 - reducedCost);
             TriggeredJiaShiRecord = true;
             return true;
         }
