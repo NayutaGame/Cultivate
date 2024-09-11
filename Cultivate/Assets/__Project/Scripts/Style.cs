@@ -17,7 +17,22 @@ public static class Style
         
         return $"<style=\"{style}\">{s}</style>";
     }
-
+    
+    public static string ApplyAttack(this string s)
+        => $"<style=\"Attack\">{s}</style>";
+    
+    public static string ApplyDefend(this string s)
+        => $"<style=\"Defend\">{s}</style>";
+    
+    public static string ApplyMana(this string s)
+        => $"<style=\"Mana\">{s}</style>";
+    
+    public static string ApplyHeal(this string s)
+        => $"<style=\"Heal\">{s}</style>";
+    
+    public static string ApplyDebuff(this string s)
+        => $"<style=\"Debuff\">{s}</style>";
+    
     public static string ApplyCond(this string s, CastResult castResult)
         => s.ApplyStyle(castResult, "cond");
 
@@ -32,7 +47,7 @@ public static class Style
     public static CastResult Append(this CastResult castResult, string key, bool cond)
     {
         if (!cond)
-            castResult[key] = "Grey";
+            castResult[key] = "Inactive";
         return castResult;
     }
 
