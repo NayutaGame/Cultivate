@@ -80,7 +80,7 @@ public class BattlePanel : Panel
     {
         if (RunManager.Instance == null || RunManager.Instance.Environment == null)
             return;
-        JingJie jingJie = RunManager.Instance.Environment.Map.JingJie;
+        JingJie jingJie = RunManager.Instance.Environment.JingJie;
         AudioEntry audio = Encyclopedia.AudioFromJingJie(jingJie);
         AudioManager.Play(audio);
     }

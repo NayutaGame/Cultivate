@@ -3,10 +3,8 @@ using System;
 
 public class AdventureStepDescriptor : StepDescriptor
 {
-    public override void Draw(Map map)
+    public override RunNode Draw(Map map)
     {
-        map.CurrStepItem._nodes.Clear();
-
         Predicate<NodeEntry> pred = e => e.CanCreate(map, Ladder);
         NodeEntry entry;
         
@@ -23,7 +21,7 @@ public class AdventureStepDescriptor : StepDescriptor
             entry = "不存在的事件";
         }
         
-        map.CurrStepItem._nodes.Add(new RunNode(entry, Ladder));
+        return new RunNode(entry, Ladder);
     }
 
     public AdventureStepDescriptor(int ladder) : base(ladder)

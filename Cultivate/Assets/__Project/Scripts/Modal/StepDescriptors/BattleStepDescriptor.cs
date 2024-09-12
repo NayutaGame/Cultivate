@@ -25,12 +25,10 @@ public class BattleStepDescriptor : StepDescriptor
         _isBoss = IsBossTable[ladder];
     }
     
-    public override void Draw(Map map)
+    public override RunNode Draw(Map map)
     {
-        map.CurrStepItem._nodes.Clear();
-        
         EntityDescriptor d = new EntityDescriptor(Ladder);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
-        map.CurrStepItem._nodes.Add(new BattleRunNode(entity, Ladder));
+        return new BattleRunNode(entity, Ladder);
     }
 }

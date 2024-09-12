@@ -29,8 +29,8 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         _titleText = titleText ?? "";
         _detailedText = detailedText ?? "请选择一张卡作为奖励";
 
-        _descriptor = new(jingJie: RunManager.Instance.Environment.Map.JingJie, count: 3);
-        _preferredJingJie = RunManager.Instance.Environment.Map.JingJie;
+        _descriptor = new(jingJie: RunManager.Instance.Environment.JingJie, count: 3);
+        _preferredJingJie = RunManager.Instance.Environment.JingJie;
         
         _skills = new();
     }

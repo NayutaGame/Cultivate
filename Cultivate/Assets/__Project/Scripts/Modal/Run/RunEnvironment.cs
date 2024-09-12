@@ -448,16 +448,16 @@ public class RunEnvironment : Addressable, RunEventListener
     }
 
     public void NextJingJieProcedure()
-        => SetJingJieProcedure(Map.JingJie + 1);
+        => SetJingJieProcedure(JingJie + 1);
     public void SetJingJieProcedure(JingJie toJingJie)
-        => SetJingJieProcedure(new SetJingJieDetails(Map.JingJie, toJingJie));
+        => SetJingJieProcedure(new SetJingJieDetails(JingJie, toJingJie));
     private void SetJingJieProcedure(SetJingJieDetails d)
     {
         _eventDict.SendEvent(RunEventDict.WIL_SET_JINGJIE, d);
         if (d.Cancel)
             return;
 
-        Map.SetJingJie(d.ToJingJie);
+        _jingJie = d.ToJingJie;
         
         // move to ascension procedure
         _home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.ToJingJie]);
@@ -651,6 +651,8 @@ public class RunEnvironment : Addressable, RunEventListener
     public Pool<SkillEntry> SkillPool;
     public SkillInventory Hand { get; private set; }
     private BoundedInt _gold;
+    private JingJie _jingJie;
+    public JingJie JingJie => _jingJie;
     private RunEventDict _eventDict; public RunEventDict EventDict => _eventDict;
 
     public StageResult SimulateResult;

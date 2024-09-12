@@ -10,7 +10,7 @@ public abstract class StepDescriptor
         16, 16, 16,
     };
     
-    public abstract void Draw(Map map);
+    public abstract RunNode Draw(Map map);
 
     public int Ladder;
     public StepDescriptor(int ladder)

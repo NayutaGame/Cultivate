@@ -1,17 +1,15 @@
 
 public class DirectStepDescriptor : StepDescriptor
 {
-    private NodeEntry[] _nodes;
+    private NodeEntry _nodeEntry;
 
-    public DirectStepDescriptor(int ladder, params NodeEntry[] nodes) : base(ladder)
+    public DirectStepDescriptor(int ladder, NodeEntry nodeEntry) : base(ladder)
     {
-        _nodes = nodes;
+        _nodeEntry = nodeEntry;
     }
     
-    public override void Draw(Map map)
+    public override RunNode Draw(Map map)
     {
-        map.CurrStepItem._nodes.Clear();
-        foreach (var node in _nodes)
-            map.CurrStepItem._nodes.Add(new RunNode(node, Ladder));
+        return new RunNode(_nodeEntry, Ladder);
     }
 }

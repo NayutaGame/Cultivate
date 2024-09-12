@@ -63,7 +63,7 @@ public class NodeCategory : Category<NodeEntry>
                             return C;
                         });
                     }
-                    else if (map.JingJie != JingJie.HuaShen)
+                    else if (RunManager.Instance.Environment.JingJie != JingJie.HuaShen)
                     {
                         A.SetWinOperation(() =>
                         {
@@ -122,7 +122,7 @@ public class NodeCategory : Category<NodeEntry>
                 {
                     DialogPanelDescriptor A = new("最近有些空闲的时间，你决定要", "加紧修炼", "去温泉", "喝点人参茶");
 
-                    JingJie targetJingJie = Mathf.Min(map.JingJie + 1, JingJie.HuaShen);
+                    JingJie targetJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, JingJie.HuaShen);
                     CardPickerPanelDescriptor B = new CardPickerPanelDescriptor(
                         detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。\n请选择至多一张低于{targetJingJie}的卡牌提升至{targetJingJie}",
                         bound:              new Bound(0, 2),
@@ -372,19 +372,19 @@ public class NodeCategory : Category<NodeEntry>
                     
                     DialogPanelDescriptor A = new("你发现了一个黑市，这里有少量高境界卡牌。", "进去看一看");
                     
-                    ShopPanelDescriptor B = new(map.JingJie);
+                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie);
                     B._enter = () =>
                     {
                         CommodityListModel commodities = new CommodityListModel();
 
                         List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
-                            pred: e => e.LowestJingJie - map.JingJie >= 2,
+                            pred: e => e.LowestJingJie - RunManager.Instance.Environment.JingJie >= 2,
                             count: 2,
                             consume: false));
 
                         foreach (SkillEntry e in entries)
                         {
-                            int price = Mathf.RoundToInt((baseGoldReward << (e.LowestJingJie - map.JingJie)) * RandomManager.Range(0.8f, 1.2f));
+                            int price = Mathf.RoundToInt((baseGoldReward << (e.LowestJingJie - RunManager.Instance.Environment.JingJie)) * RandomManager.Range(0.8f, 1.2f));
                             float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
                             commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie), price,
                                 discount));
@@ -406,7 +406,7 @@ public class NodeCategory : Category<NodeEntry>
                 {
                     DialogPanelDescriptor A = new("你遇到了一位收藏家，他邀请你去看看他的藏品");
                     
-                    ShopPanelDescriptor B = new(map.JingJie);
+                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie);
 
                     A[0].SetSelect(option => B);
                     
@@ -436,7 +436,7 @@ public class NodeCategory : Category<NodeEntry>
                 {
                     DialogPanelDescriptor A = new("一阵噪音惊扰了你的休息，原来是灵韵宗的毕业季到了，学子们完成了学业后，纷纷将不要的技能打折卖出。");
                     
-                    ShopPanelDescriptor B = new(map.JingJie);
+                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie);
                     B._enter = () =>
                     {
                         CommodityListModel commodities = new CommodityListModel();
@@ -519,11 +519,11 @@ public class NodeCategory : Category<NodeEntry>
                         "赶路着急，没时间留下来听曲子了");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("那人哈哈大笑，然后弹了一首欢快的曲子。你回想起这一生，第一次这么有满足感，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《春雨》")
-                        .SetReward(new AddSkillReward("0606", map.JingJie));
+                        .SetReward(new AddSkillReward("0606", RunManager.Instance.Environment.JingJie));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《枯木》")
-                        .SetReward(new AddSkillReward("0607", map.JingJie));
+                        .SetReward(new AddSkillReward("0607", RunManager.Instance.Environment.JingJie));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("之前赶路省下的时间，正好可以用于修炼。\n\n获得一个技能")
-                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
+                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: RunManager.Instance.Environment.JingJie)));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -545,10 +545,10 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。" +
                                                                         "\n\n得到《须臾》")
-                        .SetReward(new AddSkillReward("0600", jingJie: map.JingJie));
+                        .SetReward(new AddSkillReward("0600", jingJie: RunManager.Instance.Environment.JingJie));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。" +
                                                                         "\n\n得到《永远》")
-                        .SetReward(new AddSkillReward("0601", jingJie: map.JingJie));
+                        .SetReward(new AddSkillReward("0601", jingJie: RunManager.Instance.Environment.JingJie));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。" +
                                                                         "\n\n得到4金");
 
@@ -573,10 +573,10 @@ public class NodeCategory : Category<NodeEntry>
                                                                         "\n\n你们在对弈啊，你开口道。注视棋盘的学童说，说对弈太抬举我了，我和爷爷是在请教老师。" +
                                                                         "\n\n原来四处张望的学童竟然是老师，老者却是学子。" +
                                                                         "\n\n四处张望的学童转过身来对你说，以身入局才能看到事物真正的流向，孺子可教也。给你留了点东西。\n\n得到《一心》")
-                        .SetReward(new AddSkillReward("0611", jingJie: map.JingJie));
+                        .SetReward(new AddSkillReward("0611", jingJie: RunManager.Instance.Environment.JingJie));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("你虽然相隔甚远，看不见棋盘，但是四处张望的学童神态自若，充满自信，你上去夸他。" +
                                                                         "\n\n他说到：你虽然眼神不在棋盘中，却也从场外信息判断出了我能赢，孺子可教也。给你留了点东西。\n\n得到《童趣》")
-                        .SetReward(new AddSkillReward("0610", jingJie: map.JingJie));
+                        .SetReward(new AddSkillReward("0610", jingJie: RunManager.Instance.Environment.JingJie));
                     
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -605,7 +605,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor BWin = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
                     DialogPanelDescriptor BWin2 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
-                    BWin2.SetReward(new AddSkillReward("0211", map.JingJie));
+                    BWin2.SetReward(new AddSkillReward("0211", RunManager.Instance.Environment.JingJie));
 
                     DialogPanelDescriptor BLose = new("虽然你沉下心来想要理解棋盘中发生了什么事，只见两人下棋越来越快，一息之间，那二人已下出千百步，你想说些什么，但是身体却来不及动。", "不知过了多久");
                     DialogPanelDescriptor BLose2 = new("你醒来时，那两人已经不在了。但是莫要紧，美美睡上一觉比什么都重要。命元+2。");
@@ -613,7 +613,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor CWin = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，你回想起了一段关于呼吸的功法，开始强迫自己吐纳，努力在这种环境下获取一些空气。", "不知过了多久");
                     DialogPanelDescriptor CWin2 = new("即使空气非常粘稠，你也可以呼吸自如。慢慢回到了正常的感觉，你悟出了一个关于吐纳的功法。");
-                    CWin2.SetReward(new AddSkillReward("0608", map.JingJie));
+                    CWin2.SetReward(new AddSkillReward("0608", RunManager.Instance.Environment.JingJie));
 
                     DialogPanelDescriptor CLose = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，肺部在不断哀嚎。", "不知过了多久");
                     DialogPanelDescriptor CLose2 = new("空气中的粘稠感终于消失。你赶紧大口吸气呼气，第一次感到空气是这么美好。生命值上限+10。");
@@ -695,35 +695,35 @@ public class NodeCategory : Category<NodeEntry>
                     A0[0].SetSelect(option =>
                     {
                         RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Jin,
-                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                            jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
 
                     A0[1].SetSelect(option =>
                     {
                         RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Shui,
-                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                            jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
 
                     A0[2].SetSelect(option =>
                     {
                         RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Mu,
-                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                            jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
 
                     A1[0].SetSelect(option =>
                     {
                         RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Huo,
-                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                            jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
 
                     A1[1].SetSelect(option =>
                     {
                         RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Tu,
-                            jingJie: RunManager.Instance.Environment.Map.JingJie));
+                            jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
 
@@ -749,12 +749,12 @@ public class NodeCategory : Category<NodeEntry>
                         Bound manaCost = 0;
 
                         List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
-                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
-                            jingJie: map.JingJie,
+                            pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie).ByType(CostDescription.CostType.Mana)),
+                            jingJie: RunManager.Instance.Environment.JingJie,
                             count: 3,
                             distinct: true,
                             consume: false));
-                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
                         return B;
                     });
                     A[1].SetSelect(option =>
@@ -762,23 +762,23 @@ public class NodeCategory : Category<NodeEntry>
                         Bound manaCost = new Bound(1, 10);
 
                         List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
-                            pred: e => manaCost.Contains(e.GetCostDescription(map.JingJie).ByType(CostDescription.CostType.Mana)),
-                            jingJie: map.JingJie,
+                            pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie).ByType(CostDescription.CostType.Mana)),
+                            jingJie: RunManager.Instance.Environment.JingJie,
                             count: 3,
                             distinct: true,
                             consume: false));
-                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
                         return B;
                     });
                     A[2].SetSelect(option =>
                     {
                         List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
-                            jingJie: map.JingJie,
+                            jingJie: RunManager.Instance.Environment.JingJie,
                             skillTypeComposite: SkillType.Mana,
                             count: 3,
                             distinct: true,
                             consume: false));
-                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
                         return B;
                     });
 
@@ -801,8 +801,8 @@ public class NodeCategory : Category<NodeEntry>
                     ArbitraryCardPickerPanelDescriptor B = new("请从10张牌中选1张获取");
                     DialogPanelDescriptor C = new("刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
 
-                    List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(jingJie: map.JingJie, count: 10, consume: false));
-                    B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, map.JingJie)).ToList());
+                    List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(jingJie: RunManager.Instance.Environment.JingJie, count: 10, consume: false));
+                    B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
                     B.SetConfirmOperation(skills =>
                     {
                         skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
@@ -830,16 +830,16 @@ public class NodeCategory : Category<NodeEntry>
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("你痛快写了800字，时间没过5分钟，已经写完了。" +
                                                   "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张二动牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.Swift)));
+                        .SetReward(new DrawSkillReward("得到一张二动牌", new(jingJie: RunManager.Instance.Environment.JingJie, skillTypeComposite: SkillType.Swift)));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                                                         "从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                                                         "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
                                                                         "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张自指牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.ZiZhi)));
+                        .SetReward(new DrawSkillReward("得到一张自指牌", new(jingJie: RunManager.Instance.Environment.JingJie, skillTypeComposite: SkillType.ZiZhi)));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
                                                                         "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
                                                   "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张疲劳牌", new(jingJie: map.JingJie, skillTypeComposite: SkillType.Exhaust)));
+                        .SetReward(new DrawSkillReward("得到一张疲劳牌", new(jingJie: RunManager.Instance.Environment.JingJie, skillTypeComposite: SkillType.Exhaust)));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -939,7 +939,7 @@ public class NodeCategory : Category<NodeEntry>
                                 return;
 
                             WuXing wuXing = entry.WuXing.Value.Next;
-                            JingJie jingJie = RandomManager.Range(skill.GetJingJie(), map.JingJie + 1);
+                            JingJie jingJie = RandomManager.Range(skill.GetJingJie(), RunManager.Instance.Environment.JingJie + 1);
                             
                             RunManager.Instance.Environment.DrawSkillProcedure(
                                 SkillEntryDescriptor.FromWuXingJingJie(wuXing, jingJie),
@@ -963,9 +963,9 @@ public class NodeCategory : Category<NodeEntry>
                         "大力出奇迹（消耗30生命上限）");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获。\n\n得到一张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
+                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: RunManager.Instance.Environment.JingJie)));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("随着喷出一大口鲜血，你回过神来，原来自己还活着，感谢大道没把自己留在那边。\n\n得到五张牌")
-                        .SetReward(new DrawSkillReward("获得五个技能", new(jingJie: map.JingJie, count: 5)));
+                        .SetReward(new DrawSkillReward("获得五个技能", new(jingJie: RunManager.Instance.Environment.JingJie, count: 5)));
 
                     A[0].SetSelect(option => B);
                     A[1].SetCost(new CostDetails(health: 30))
@@ -1369,7 +1369,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor B = new DialogPanelDescriptor("一开始还有些怀疑，然后发现就是真的面。于是美美的吃了一顿。命元+2")
                         .SetReward(Reward.FromMingYuan(2));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("一阵烟雾过后。你面前掉落了一幅画，上面赫然画着刚才的餐馆。你对之前的招式又有了新的感悟。获得一张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: map.JingJie)));
+                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: RunManager.Instance.Environment.JingJie)));
                     
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -1760,7 +1760,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             int index = selectedOptionSignal.Selected;
                             RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: options[index],
-                                jingJie: RunManager.Instance.Environment.Map.JingJie));
+                                jingJie: RunManager.Instance.Environment.JingJie));
                         }
                         return null;
                     };

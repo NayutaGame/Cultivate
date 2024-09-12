@@ -5,11 +5,13 @@ using CLLibrary;
 
 public class Map : Addressable
 {
-    // Map ->> Step ->> Node ->> Panel
+    // private StepDescriptor[] _descriptors;
+    // private NodeListModel _nodes;
+    // private int _step;
     
-    private JingJie _jingJie;
-    public JingJie JingJie => _jingJie;
-    public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
+    
+    
+    
     
     private StepItem _stepItem;
     public StepItem CurrStepItem
@@ -44,7 +46,11 @@ public class Map : Addressable
     }
 
     public void DrawNode()
-        => CurrStepDescriptor.Draw(this);
+    {
+        CurrStepItem._nodes.Clear();
+        RunNode node = CurrStepDescriptor.Draw(this);
+        CurrStepItem._nodes.Add(node);
+    }
 
     public void CreateEntry()
         => CurrNode.Entry.Create(this, CurrNode.Ladder);

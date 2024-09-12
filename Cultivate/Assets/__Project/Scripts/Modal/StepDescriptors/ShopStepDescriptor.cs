@@ -3,10 +3,8 @@ using CLLibrary;
 
 public class ShopStepDescriptor : StepDescriptor
 {
-    public override void Draw(Map map)
+    public override RunNode Draw(Map map)
     {
-        map.CurrStepItem._nodes.Clear();
-
         Pool<NodeEntry> shopPool = new();
         
         shopPool.Populate("黑市");
@@ -19,10 +17,8 @@ public class ShopStepDescriptor : StepDescriptor
         
         shopPool.Shuffle();
 
-        NodeEntry entry;
-        shopPool.TryPopItem(out entry);
-        map.CurrStepItem._nodes.Add(new RunNode(entry, Ladder));
-        map.CurrStepItem._nodes.Add(new RunNode("存钱", Ladder));
+        shopPool.TryPopItem(out var entry);
+        return new RunNode(entry, Ladder);
     }
 
     public ShopStepDescriptor(int ladder) : base(ladder)
