@@ -12,7 +12,6 @@ public class Map : Addressable
     public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
     
     private StepItem _stepItem;
-    
     public StepItem CurrStepItem
         => _stepItem;
     

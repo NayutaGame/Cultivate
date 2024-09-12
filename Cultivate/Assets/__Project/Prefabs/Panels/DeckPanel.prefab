@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 2264719730802787801}
   - component: {fileID: 187422870731231416}
   m_Layer: 0
-  m_Name: DeckOpenZone
+  m_Name: OpenZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -931,7 +931,7 @@ GameObject:
   - component: {fileID: 5805556710873256855}
   - component: {fileID: 1065443087898430054}
   m_Layer: 0
-  m_Name: DeckCloseZone
+  m_Name: CloseZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1086,8 +1086,8 @@ MonoBehaviour:
   SortButtonTransform: {fileID: 1087900410405349162}
   SortButtonShowPivot: {fileID: 3663543768088822588}
   SortButtonHidePivot: {fileID: 3289044528288313401}
-  DeckOpenZone: {fileID: 1641012160371756218}
-  DeckCloseZone: {fileID: 4488542891316776652}
+  OpenZone: {fileID: 1641012160371756218}
+  CloseZone: {fileID: 4488542891316776652}
   DropRectTransform: {fileID: 8860361189759415353}
   HandViewPivotTransform: {fileID: 1037360933362778946}
   HandViewLayout: {fileID: 7528905261680082668}

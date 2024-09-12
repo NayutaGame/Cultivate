@@ -3,12 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RunCanvas : Panel
 {
     public DeckPanel DeckPanel;
     public MapPanel MapPanel;
+    public LegacyMapPanel LegacyMapPanel;
     public Button MapButton;
     public ReservedLayer ReservedLayer;
     public TopBar TopBar;
@@ -35,7 +37,7 @@ public class RunCanvas : Panel
         PanelSM = new(new Panel[]
         {
             null,
-            MapPanel,
+            LegacyMapPanel,
             BattlePanel,
             PuzzlePanel,
             DialogPanel,
@@ -53,9 +55,10 @@ public class RunCanvas : Panel
 
         DeckPanel.Configure();
         MapPanel.Configure();
+        LegacyMapPanel.Configure();
 
         MapButton.onClick.RemoveAllListeners();
-        MapButton.onClick.AddListener(() => MapPanel.ToggleShowing());
+        MapButton.onClick.AddListener(() => LegacyMapPanel.ToggleShowing());
 
         ReservedLayer.Configure();
         TopBar.Configure();
@@ -78,7 +81,7 @@ public class RunCanvas : Panel
         }
 
         DeckPanel.Refresh();
-        // MapPanel.Refresh();
+        MapPanel.Refresh();
         ReservedLayer.Refresh();
         TopBar.Refresh();
         ConsolePanel.Refresh();
