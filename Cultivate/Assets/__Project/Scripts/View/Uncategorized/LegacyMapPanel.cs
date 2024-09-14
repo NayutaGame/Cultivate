@@ -28,22 +28,20 @@ public class LegacyMapPanel : Panel
     {
     }
 
-    public override Tween ShowTween()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(() => gameObject.SetActive(true))
-            .AppendCallback(NodeListView.Sync)
-            .AppendCallback(PlaySFX)
-            .Append(TweenAnimation.Show(NodeListTransform, NodeListIdlePivot.anchoredPosition, CanvasGroup))
-            ;
-        
-    }
-
-    public override Tween HideTween()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(PlaySFX)
-            .Append(TweenAnimation.Hide(NodeListTransform, NodeListIdlePivot.anchoredPosition, CanvasGroup))
-            .AppendCallback(() => gameObject.SetActive(false));
-    }
+    // public override Tween ShowTween()
+    // {
+    //     return DOTween.Sequence()
+    //         .AppendCallback(() => gameObject.SetActive(true))
+    //         .AppendCallback(NodeListView.Sync)
+    //         .AppendCallback(PlaySFX)
+    //         .Append(TweenAnimation.Show(NodeListTransform, NodeListIdlePivot.anchoredPosition, CanvasGroup));
+    // }
+    //
+    // public override Tween HideTween()
+    // {
+    //     return DOTween.Sequence()
+    //         .AppendCallback(PlaySFX)
+    //         .Append(TweenAnimation.Hide(NodeListTransform, NodeListIdlePivot.anchoredPosition, CanvasGroup))
+    //         .AppendCallback(() => gameObject.SetActive(false));
+    // }
 }

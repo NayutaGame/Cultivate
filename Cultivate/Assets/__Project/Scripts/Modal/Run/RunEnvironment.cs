@@ -74,12 +74,6 @@ public class RunEnvironment : Addressable, RunEventListener
         _eventDict.SendEvent(RunEventDict.DID_SET_JINGJIE, d);
     }
 
-    public PanelDescriptor MakeChoiceProcedure()
-    {
-        Map.CreatePanel();
-        return Map.Panel;
-    }
-
     public PanelDescriptor ReceiveSignalProcedure(Signal signal)
     {
         if (Map.CurrNode == null)
@@ -108,21 +102,21 @@ public class RunEnvironment : Addressable, RunEventListener
             Map.Panel = panelDescriptor;
             return panelDescriptor;
         }
-            
+        
         if (Map.IsLastLevelAndLastStep())
         {
             CommitRunProcedure(RunResult.RunResultState.Victory);
-            return null;
+            return Map.Panel;
         }
-            
+        
         if (Map.IsLastStep())
         {
             Map.NextLevel();
-            return null;
+            return Map.Panel;
         }
-            
+        
         Map.NextStep();
-        return null;
+        return Map.Panel;
     }
 
     public void CommitRunProcedure(RunResult.RunResultState state)

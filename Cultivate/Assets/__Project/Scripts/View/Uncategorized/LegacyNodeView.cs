@@ -45,7 +45,8 @@ public class LegacyNodeView : SimpleView
 
     private bool TryClickNode()
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.MakeChoiceProcedure();
+        RunManager.Instance.Environment.Map.NextStep();
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.Map.Panel;
         PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
         CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
         return true;

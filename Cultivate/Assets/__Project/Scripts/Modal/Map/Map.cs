@@ -56,19 +56,26 @@ public class Map : Addressable
         _levels = new Level[_entry.Levels.Length];
         for (int i = 0; i < _entry.Levels.Length; i++)
             _levels[i] = new Level(_entry.Levels[i]);
+
+        _stepIndex = 0;
+        _levelIndex = 0;
+        
+        CreatePanel();
     }
 
     public void NextLevel()
     {
         _levelIndex++;
         _stepIndex = 0;
+        
+        CreatePanel();
     }
 
     public void NextStep()
     {
         _stepIndex++;
-        if (!CurrStepItem.HasNode())
-            CurrStepItem.DrawNode(this);
+        
+        CreatePanel();
     }
 
     public bool IsLastLevelAndLastStep()
@@ -78,7 +85,11 @@ public class Map : Addressable
         => CurrLevel.GetStepCount() - 1 == _stepIndex;
 
     public void CreatePanel()
-        => CurrStepItem.CreatePanel(this);
+    {
+        if (!CurrStepItem.HasNode())
+            CurrStepItem.DrawNode(this);
+        CurrStepItem.CreatePanel(this);
+    }
 
     public void InsertAdventure(NodeEntry nodeEntry)
     {
