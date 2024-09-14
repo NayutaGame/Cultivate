@@ -3,7 +3,7 @@ using System;
 
 public class AdventureRoomDescriptor : RoomDescriptor
 {
-    public override void Draw(Map map, Room room)
+    public override RoomEntry Draw(Map map, Room room)
     {
         Predicate<RoomEntry> pred = e => e.CanCreate(map, room);
         RoomEntry entry;
@@ -21,7 +21,7 @@ public class AdventureRoomDescriptor : RoomDescriptor
             entry = "不存在的事件";
         }
 
-        room.Entry = entry;
+        return entry;
     }
 
     public AdventureRoomDescriptor(int ladder) : base(ladder)

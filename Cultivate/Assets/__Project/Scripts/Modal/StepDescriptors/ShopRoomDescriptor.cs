@@ -3,7 +3,7 @@ using CLLibrary;
 
 public class ShopRoomDescriptor : RoomDescriptor
 {
-    public override void Draw(Map map, Room room)
+    public override RoomEntry Draw(Map map, Room room)
     {
         Pool<RoomEntry> shopPool = new();
         
@@ -17,8 +17,8 @@ public class ShopRoomDescriptor : RoomDescriptor
         
         shopPool.Shuffle();
 
-        shopPool.TryPopItem(out var entry);
-        room.Entry = entry;
+        shopPool.TryPopItem(out RoomEntry entry);
+        return entry;
     }
 
     public ShopRoomDescriptor(int ladder) : base(ladder)

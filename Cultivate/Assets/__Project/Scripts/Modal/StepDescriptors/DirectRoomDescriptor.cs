@@ -8,8 +8,8 @@ public class DirectRoomDescriptor : RoomDescriptor
         _roomEntry = roomEntry;
     }
     
-    public override void Draw(Map map, Room room)
+    public override RoomEntry Draw(Map map, Room room)
     {
-        room.Entry = _roomEntry;
+        return _roomEntry;
     }
 }

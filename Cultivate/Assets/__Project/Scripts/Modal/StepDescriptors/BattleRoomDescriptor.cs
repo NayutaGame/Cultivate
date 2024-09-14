@@ -25,11 +25,11 @@ public class BattleRoomDescriptor : RoomDescriptor
         _isBoss = IsBossTable[ladder];
     }
     
-    public override void Draw(Map map, Room room)
+    public override RoomEntry Draw(Map map, Room room)
     {
         EntityDescriptor d = new EntityDescriptor(Ladder);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
         room.Details["Entity"] = entity;
-        room.Entry = "战斗";
+        return "战斗";
     }
 }

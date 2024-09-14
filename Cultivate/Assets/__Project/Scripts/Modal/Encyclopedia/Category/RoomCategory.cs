@@ -20,7 +20,7 @@ public class RoomCategory : Category<RoomEntry>
                 create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("不存在的事件");
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "战斗",
@@ -108,7 +108,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     D._receiveSignal = signal => D;
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "休息",
@@ -156,7 +156,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "胜利",
@@ -174,7 +174,7 @@ public class RoomCategory : Category<RoomEntry>
                         return null;
                     });
 
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "突破境界",
@@ -192,7 +192,7 @@ public class RoomCategory : Category<RoomEntry>
                         return null;
                     });
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             #endregion
@@ -326,7 +326,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     ManHua5.Next = null;
                     
-                    map.Panel = ManHua1;
+                    return ManHua1;
                 }),
 
             new(id:                                 "同境界合成教学",
@@ -340,7 +340,7 @@ public class RoomCategory : Category<RoomEntry>
                     ImagePanelDescriptor C = new("同境界合成教学3");
                     A.Next = B;
                     B.Next = C;
-                    map.Panel = A;
+                    return A;
                 }),
 
             #endregion
@@ -356,7 +356,7 @@ public class RoomCategory : Category<RoomEntry>
                     int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
                     DialogPanelDescriptor A = new DialogPanelDescriptor($"获得了{baseGoldReward}金钱")
                         .SetReward(Reward.FromGold(baseGoldReward));
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "黑市",
@@ -392,7 +392,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option => B);
                     
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "收藏家",
@@ -407,7 +407,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option => B);
                     
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "以物易物",
@@ -422,7 +422,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option => B);
                     
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "毕业季",
@@ -456,7 +456,7 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A[0].SetSelect(option => B);
                     
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "盲盒",
@@ -471,7 +471,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option => B);
                     
-                    map.Panel = A;
+                    return A;
                 }),
 
             #endregion
@@ -501,7 +501,7 @@ public class RoomCategory : Category<RoomEntry>
                     B[0].SetSelect(option => B1);
                     C[0].SetSelect(option => C1);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "琴仙",
@@ -526,7 +526,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "赤壁赋",
@@ -553,7 +553,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "二子学弈",
@@ -578,7 +578,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
                     
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "仙人下棋",
@@ -664,7 +664,7 @@ public class RoomCategory : Category<RoomEntry>
                     CWin[0].SetSelect(option => CWin2);
                     CLose[0].SetSelect(option => CLose2);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "检测仪",
@@ -724,7 +724,7 @@ public class RoomCategory : Category<RoomEntry>
                         return B;
                     });
 
-                    map.Panel = A0;
+                    return A0;
                 }),
 
             new(id:                                 "解梦师",
@@ -785,7 +785,7 @@ public class RoomCategory : Category<RoomEntry>
                         return C;
                     });
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "天机阁",
@@ -808,7 +808,7 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A[0].SetSelect(option => B);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "论无穷",
@@ -842,7 +842,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "分子打印机",
@@ -897,7 +897,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "天界树",
@@ -946,7 +946,7 @@ public class RoomCategory : Category<RoomEntry>
                         return D;
                     });
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "连抽五张",
@@ -968,7 +968,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[1].SetCost(new CostDetails(health: 30))
                         .SetSelect(option => C);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "我已膨胀",
@@ -1004,7 +1004,7 @@ public class RoomCategory : Category<RoomEntry>
                     });
                     A[1].SetSelect(option => C);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "曹操三笑",
@@ -1035,7 +1035,7 @@ public class RoomCategory : Category<RoomEntry>
                     B1.SetWinOperation(() => B1win);
                     B1.SetLoseOperation(() => B1lose);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "神灯精灵",
@@ -1068,7 +1068,7 @@ public class RoomCategory : Category<RoomEntry>
                     E.SetWinOperation(() => EWin);
                     E.SetLoseOperation(() => ELose);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "忘忧堂",
@@ -1114,7 +1114,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "山木",
@@ -1177,7 +1177,7 @@ public class RoomCategory : Category<RoomEntry>
                     B2[0].SetSelect(SelectA);
                     B2[1].SetSelect(SelectB);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "丢尺子",
@@ -1218,7 +1218,7 @@ public class RoomCategory : Category<RoomEntry>
                     B[1].SetSelect(option => E);
                     C[1].SetSelect(option => E);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "酿造仙岛玉液酒",
@@ -1298,7 +1298,7 @@ public class RoomCategory : Category<RoomEntry>
                         return EndingTable[key];
                     });
 
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "夏虫语冰",
@@ -1325,7 +1325,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "守株待兔",
@@ -1350,7 +1350,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "鸡肉面",
@@ -1371,7 +1371,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.Panel = A;
+                    return A;
                 }),
             
             #endregion
@@ -1417,7 +1417,7 @@ public class RoomCategory : Category<RoomEntry>
                     D2[1].SetSelect(option => F);
 
                     bool isCatch = RandomManager.value < 0.5;
-                    map.Panel = isCatch ? A : D;
+                    return isCatch ? A : D;
                 }),
 
             new(id:                                 "照相机",
@@ -1447,7 +1447,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "矛与盾",
@@ -1576,7 +1576,7 @@ public class RoomCategory : Category<RoomEntry>
                         return A;
                     });
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "郑人买履",
@@ -1598,7 +1598,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
                     
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "鬼兵",
@@ -1652,7 +1652,7 @@ public class RoomCategory : Category<RoomEntry>
                     C[0].SetSelect(option => E);
                     D[0].SetSelect(option => E);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "刻舟求剑",
@@ -1672,7 +1672,7 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "物质还原仪",
@@ -1727,7 +1727,7 @@ public class RoomCategory : Category<RoomEntry>
                     // A[0].SetSelect(option => B);
                     // A[1].SetSelect(option => C);
 
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "悟道",
@@ -1762,7 +1762,7 @@ public class RoomCategory : Category<RoomEntry>
                         return null;
                     };
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "愿望单",
@@ -1791,7 +1791,7 @@ public class RoomCategory : Category<RoomEntry>
                         RunManager.Instance.ReturnToTitle();
                         return null;
                     });
-                    map.Panel = A;
+                    return A;
                 }),
 
             #endregion
@@ -1901,7 +1901,7 @@ public class RoomCategory : Category<RoomEntry>
                         return CWin;
                     });
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "后羿2",
@@ -1989,7 +1989,7 @@ public class RoomCategory : Category<RoomEntry>
                         return C2;
                     });
 
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "后羿3",
@@ -2001,7 +2001,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor A = new DialogPanelDescriptor("你来到了很久之前来过的竹林，当时的练箭少年已经不在，你发现了他留给你的一本秘籍。\n\n得到《射落金乌》。")
                         .SetReward(new AddSkillReward("0605", JingJie.YuanYing));
             
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "神农氏1",
@@ -2084,7 +2084,7 @@ public class RoomCategory : Category<RoomEntry>
                         return C;
                     });
                     A[2].SetSelect(option => D);
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "神农氏2",
@@ -2167,7 +2167,7 @@ public class RoomCategory : Category<RoomEntry>
                         return C;
                     });
                     A[2].SetSelect(option => D);
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "神农氏3",
@@ -2179,7 +2179,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor A = new DialogPanelDescriptor("故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
                         .SetReward(new AddSkillReward("0602", JingJie.YuanYing));
             
-                    map.Panel = A;
+                    return A;
                 }),
             
             #endregion
@@ -2208,7 +2208,7 @@ public class RoomCategory : Category<RoomEntry>
                         return null;
                     });
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             new(id:                                 "循环",
@@ -2223,7 +2223,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option => A);
                     A[1].SetSelect(option => null);
-                    map.Panel = A;
+                    return A;
                 }),
             
             new(id:                                 "发现一张牌",
@@ -2235,7 +2235,7 @@ public class RoomCategory : Category<RoomEntry>
                     DiscoverSkillPanelDescriptor A = new("灵感");
                     A.SetDetailedText($"请选择一张卡作为奖励");
 
-                    map.Panel = A;
+                    return A;
                 }),
 
             #endregion

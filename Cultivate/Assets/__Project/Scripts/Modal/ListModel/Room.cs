@@ -34,11 +34,11 @@ public class Room
 
     public void DrawEntry(Map map)
     {
-        _descriptor.Draw(map, this);
+        Entry = _descriptor.Draw(map, this);
     }
 
     public void CreatePanel(Map map)
     {
-        Entry.Create(map, this);
+        map.Panel = Entry.Create(map, this);
     }
 }

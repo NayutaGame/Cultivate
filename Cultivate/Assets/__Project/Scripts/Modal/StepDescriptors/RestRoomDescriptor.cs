@@ -1,9 +1,9 @@
 
 public class RestRoomDescriptor : RoomDescriptor
 {
-    public override void Draw(Map map, Room room)
+    public override RoomEntry Draw(Map map, Room room)
     {
-        room.Entry = "休息";
+        return "休息";
     }
 
     public RestRoomDescriptor(int ladder) : base(ladder)

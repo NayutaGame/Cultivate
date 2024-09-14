@@ -18,14 +18,14 @@ public class RoomEntry : Entry
     public bool WithInPool => _withInPool;
 
     private Func<Map, Room, bool> _canCreate;
-    private Action<Map, Room> _create;
+    private Func<Map, Room, PanelDescriptor> _create;
 
     public RoomEntry(
         string id,
         string description,
         CLLibrary.Bound ladderBound,
         bool withInPool,
-        Action<Map, Room> create,
+        Func<Map, Room, PanelDescriptor> create,
         Func<Map, Room, bool> canCreate = null
         ) : base(id)
     {
@@ -37,7 +37,7 @@ public class RoomEntry : Entry
     }
 
     public bool CanCreate(Map map, Room room) => _canCreate(map, room);
-    public void Create(Map map, Room room) => _create(map, room);
+    public PanelDescriptor Create(Map map, Room room) => _create(map, room);
 
     public static implicit operator RoomEntry(string id) => Encyclopedia.RoomCategory[id];
 }

@@ -10,7 +10,7 @@ public abstract class RoomDescriptor
         16, 16, 16,
     };
     
-    public abstract void Draw(Map map, Room room);
+    public abstract RoomEntry Draw(Map map, Room room);
 
     public int Ladder;
     public RoomDescriptor(int ladder)
