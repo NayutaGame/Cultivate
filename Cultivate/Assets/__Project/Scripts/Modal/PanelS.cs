@@ -17,36 +17,25 @@ public struct PanelS : IEquatable<PanelS>
         return new(0);
     }
 
-    public static PanelS FromMap()
-    {
-        return new(1);
-    }
-
     public static PanelS FromPanelDescriptor(PanelDescriptor panelDescriptor)
     {
         return new(Dict[panelDescriptor.GetType()]);
     }
 
-    public static PanelS FromPanelDescriptorNullMeansMap(PanelDescriptor panelDescriptor)
-    {
-        return new(panelDescriptor != null ? Dict[panelDescriptor.GetType()] : 1);
-    }
-
     public static Dictionary<Type, int> Dict = new()
     {
         // 0 for hide
-        // 1 for map
-        { typeof(BattlePanelDescriptor), 2 },
-        { typeof(PuzzlePanelDescriptor), 3 },
-        { typeof(DialogPanelDescriptor), 4 },
-        { typeof(DiscoverSkillPanelDescriptor), 5 },
-        { typeof(CardPickerPanelDescriptor), 6 },
-        { typeof(ShopPanelDescriptor), 7 },
-        { typeof(BarterPanelDescriptor), 8 },
-        { typeof(GachaPanelDescriptor), 9 },
-        { typeof(ArbitraryCardPickerPanelDescriptor), 10 },
-        { typeof(ImagePanelDescriptor), 11 },
-        { typeof(RunResultPanelDescriptor), 12 },
+        { typeof(BattlePanelDescriptor),                1 },
+        { typeof(PuzzlePanelDescriptor),                2 },
+        { typeof(DialogPanelDescriptor),                3 },
+        { typeof(DiscoverSkillPanelDescriptor),         4 },
+        { typeof(CardPickerPanelDescriptor),            5 },
+        { typeof(ShopPanelDescriptor),                  6 },
+        { typeof(BarterPanelDescriptor),                7 },
+        { typeof(GachaPanelDescriptor),                 8 },
+        { typeof(ArbitraryCardPickerPanelDescriptor),   9 },
+        { typeof(ImagePanelDescriptor),                10 },
+        { typeof(RunResultPanelDescriptor),            11 },
     };
 
     public bool Equals(PanelS other)

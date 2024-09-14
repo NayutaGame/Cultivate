@@ -100,7 +100,7 @@ public class RunEnvironment : Addressable, RunEventListener
         if (panelDescriptor != null) // descriptor of panel descriptor
         {
             Map.Panel = panelDescriptor;
-            return panelDescriptor;
+            return Map.Panel;
         }
         
         if (Map.IsLastLevelAndLastStep())

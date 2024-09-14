@@ -68,7 +68,7 @@ public class PuzzlePanel : Panel
     {
         PuzzlePanelDescriptor d = _address.Get<PuzzlePanelDescriptor>();
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new PuzzleResultSignal(d.GetResult().Flag));
-        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
+        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
         CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
     }
     

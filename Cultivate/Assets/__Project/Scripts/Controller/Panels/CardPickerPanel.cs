@@ -155,7 +155,7 @@ public class CardPickerPanel : Panel
         iRunSkillList.AddRange(_skillSelections.Map(i => SkillListView.ActivePool[i].GetSimpleView().Get<object>()));
         iRunSkillList.AddRange(_slotSelections.Map(i => SlotListView.ActivePool[i].GetSimpleView().Get<object>()));
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new ConfirmDeckSignal(iRunSkillList));
-        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
+        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
         CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
     }
 }

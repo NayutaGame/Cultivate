@@ -14,7 +14,7 @@ public class RunAppS : AppS
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
         
         PanelDescriptor panelDescriptor = runEnv.Map.Panel;
-        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
+        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
         
         runCanvas.Configure();
         runCanvas.SetPanelS(panelS);

@@ -81,7 +81,7 @@ public class DialogPanel : Panel
         if (RunManager.Instance.Environment == null)
             return;
         
-        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
+        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
         CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
     }
 

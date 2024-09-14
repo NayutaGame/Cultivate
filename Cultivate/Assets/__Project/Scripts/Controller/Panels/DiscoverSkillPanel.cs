@@ -59,7 +59,7 @@ public class DiscoverSkillPanel : Panel
         SkillEntryDescriptor skill = ib.GetSimpleView().Get<SkillEntryDescriptor>();
         // TODO: Discover Animation
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
-        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
+        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
         CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
         
         CanvasManager.Instance.SkillAnnotation.PointerExit(ib, eventData);

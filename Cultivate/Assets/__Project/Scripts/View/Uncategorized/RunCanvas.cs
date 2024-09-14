@@ -10,7 +10,6 @@ public class RunCanvas : Panel
 {
     public DeckPanel DeckPanel;
     public MapPanel MapPanel;
-    public LegacyMapPanel LegacyMapPanel;
     public Button MapButton;
     public ReservedLayer ReservedLayer;
     public TopBar TopBar;
@@ -37,7 +36,6 @@ public class RunCanvas : Panel
         PanelSM = new(new Panel[]
         {
             null,
-            LegacyMapPanel,
             BattlePanel,
             PuzzlePanel,
             DialogPanel,
@@ -55,10 +53,9 @@ public class RunCanvas : Panel
 
         DeckPanel.Configure();
         MapPanel.Configure();
-        LegacyMapPanel.Configure();
 
-        MapButton.onClick.RemoveAllListeners();
-        MapButton.onClick.AddListener(() => LegacyMapPanel.ToggleShowing());
+        // MapButton.onClick.RemoveAllListeners();
+        // MapButton.onClick.AddListener(() => LegacyMapPanel.ToggleShowing());
 
         ReservedLayer.Configure();
         TopBar.Configure();
