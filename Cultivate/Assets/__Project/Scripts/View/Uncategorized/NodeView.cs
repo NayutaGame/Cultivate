@@ -11,11 +11,11 @@ public class NodeView : SimpleView
     public override void Refresh()
     {
         base.Refresh();
-        RunNode runNode = Get<RunNode>();
-
-        Image.sprite = runNode.GetSprite();
-        NameText.text = runNode.GetName();
-        Description.text = runNode.GetDescription();
+        // RunNode runNode = Get<RunNode>();
+        //
+        // Image.sprite = runNode.GetSprite();
+        // NameText.text = runNode.GetName();
+        // Description.text = runNode.GetDescription();
 
         // switch (runNode.State)
         // {

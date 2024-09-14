@@ -27,8 +27,8 @@ public class Map : Addressable
     }
     
     public EntityPool EntityPool;
-    public Pool<NodeEntry> AdventurePool;
-    public Pool<NodeEntry> InsertedAdventurePool;
+    public Pool<RoomEntry> RoomPool;
+    public Pool<RoomEntry> InsertedRoomPool;
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -43,15 +43,13 @@ public class Map : Addressable
     }
 
     public Level CurrLevel => _levels[_levelIndex];
-    public StepItem CurrStepItem => CurrLevel.GetStepItem(_stepIndex);
-    public RunNode CurrNode => CurrStepItem.Node;
-    public StepDescriptor CurrStepDescriptor => _entry.GetStepDescriptorFromLevelAndStep(_levelIndex, _stepIndex);
+    public Room CurrRoom => CurrLevel.GetRoom(_stepIndex);
 
     public void Init()
     {
         InitEntityPool();
         InitAdventurePool();
-        InsertedAdventurePool = new();
+        InsertedRoomPool = new();
 
         _levels = new Level[_entry.Levels.Length];
         for (int i = 0; i < _entry.Levels.Length; i++)
@@ -82,19 +80,19 @@ public class Map : Addressable
         => _levels.Length - 1 == _levelIndex && IsLastStep();
 
     public bool IsLastStep()
-        => CurrLevel.GetStepCount() - 1 == _stepIndex;
+        => CurrLevel.GetRoomCount() - 1 == _stepIndex;
 
     public void CreatePanel()
     {
-        if (!CurrStepItem.HasNode())
-            CurrStepItem.DrawNode(this);
-        CurrStepItem.CreatePanel(this);
+        if (!CurrRoom.HasEntry())
+            CurrRoom.DrawEntry(this);
+        CurrRoom.CreatePanel(this);
     }
 
-    public void InsertAdventure(NodeEntry nodeEntry)
+    public void InsertRoom(RoomEntry roomEntry)
     {
-        InsertedAdventurePool.Populate(nodeEntry);
-        InsertedAdventurePool.Shuffle();
+        InsertedRoomPool.Populate(roomEntry);
+        InsertedRoomPool.Shuffle();
     }
 
     private void InitEntityPool()
@@ -106,8 +104,8 @@ public class Map : Addressable
 
     private void InitAdventurePool()
     {
-        AdventurePool = new();
-        AdventurePool.Populate(Encyclopedia.NodeCategory.Traversal.FilterObj(e => e.WithInPool));
-        AdventurePool.Shuffle();
+        RoomPool = new();
+        RoomPool.Populate(Encyclopedia.RoomCategory.Traversal.FilterObj(e => e.WithInPool));
+        RoomPool.Shuffle();
     }
 }

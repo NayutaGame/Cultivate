@@ -4,26 +4,26 @@ using System.Collections.Generic;
 
 public class Level : Addressable
 {
-    private StepItemListModel _stepItems;
+    private RoomListModel _rooms;
 
-    public StepItem GetStepItem(int stepIndex)
-        => _stepItems[stepIndex];
-    public int GetStepCount()
-        => _stepItems.Count();
+    public Room GetRoom(int stepIndex)
+        => _rooms[stepIndex];
+    public int GetRoomCount()
+        => _rooms.Count();
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public Level(StepDescriptor[] stepDescriptors)
+    public Level(RoomDescriptor[] stepDescriptors)
     {
         _accessors = new()
         {
-            { "StepItems", () => _stepItems },
+            { "Rooms", () => _rooms },
         };
         
-        _stepItems = new();
+        _rooms = new();
         for (int i = 0; i < stepDescriptors.Length; i++)
         {
-            _stepItems.Add(new StepItem(stepDescriptors[i]));
+            _rooms.Add(new Room(stepDescriptors[i]));
         }
     }
 }

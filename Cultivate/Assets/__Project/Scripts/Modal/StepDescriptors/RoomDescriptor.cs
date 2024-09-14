@@ -1,5 +1,5 @@
 
-public abstract class StepDescriptor
+public abstract class RoomDescriptor
 {
     public static readonly int[] GoldRewardTable = new int[]
     {
@@ -10,10 +10,10 @@ public abstract class StepDescriptor
         16, 16, 16,
     };
     
-    public abstract RunNode Draw(Map map);
+    public abstract void Draw(Map map, Room room);
 
     public int Ladder;
-    public StepDescriptor(int ladder)
+    public RoomDescriptor(int ladder)
     {
         Ladder = ladder;
     }

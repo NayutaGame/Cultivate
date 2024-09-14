@@ -12,7 +12,7 @@ public class Encyclopedia : Addressable
     public static SkillCategory SkillCategory;
     public static EntityCategory EntityCategory;
     public static TechCategory TechCategory;
-    public static NodeCategory NodeCategory;
+    public static RoomCategory RoomCategory;
     public static FormationCategory FormationCategory;
     public static CharacterCategory CharacterCategory;
     public static DifficultyCategory DifficultyCategory;
@@ -39,7 +39,7 @@ public class Encyclopedia : Addressable
         SkillCategory = new();
         EntityCategory = new();
         TechCategory = new();
-        NodeCategory = new();
+        RoomCategory = new();
         FormationCategory = new();
         CharacterCategory = new();
         DifficultyCategory = new();

@@ -16,11 +16,11 @@ public class LegacyNodeView : SimpleView
     public override void Refresh()
     {
         base.Refresh();
-        RunNode runNode = Get<RunNode>();
-
-        gameObject.SetActive(runNode != null);
-        if (runNode == null)
-            return;
+        // RunNode runNode = Get<RunNode>();
+        //
+        // gameObject.SetActive(runNode != null);
+        // if (runNode == null)
+        //     return;
 
         // if (NameText != null)
         //     NameText.text = runNode.GetName() + runNode.State.ToString();

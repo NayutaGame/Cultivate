@@ -10,8 +10,8 @@ public class MapEntry : Entry
     public int _gold;
     public JingJie _skillJingJie;
     public int _skillCount;
-    private StepDescriptor[][] _levels;
-    public StepDescriptor[][] Levels => _levels;
+    private RoomDescriptor[][] _levels;
+    public RoomDescriptor[][] Levels => _levels;
 
     public MapEntry(
         string id,
@@ -20,7 +20,7 @@ public class MapEntry : Entry
         int gold,
         JingJie skillJingJie,
         int skillCount,
-        StepDescriptor[][] levels) : base(id)
+        RoomDescriptor[][] levels) : base(id)
     {
         _envJingJie = envJingJie;
         _slotCount = slotCount;
@@ -32,6 +32,6 @@ public class MapEntry : Entry
 
     public static implicit operator MapEntry(string id) => Encyclopedia.MapCategory[id];
 
-    public StepDescriptor GetStepDescriptorFromLevelAndStep(int levelIndex, int stepIndex)
+    public RoomDescriptor GetStepDescriptorFromLevelAndStep(int levelIndex, int stepIndex)
         => _levels[levelIndex][stepIndex];
 }

@@ -5,11 +5,11 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class NodeCategory : Category<NodeEntry>
+public class RoomCategory : Category<RoomEntry>
 {
-    public NodeCategory()
+    public RoomCategory()
     {
-        AddRange(new List<NodeEntry>()
+        AddRange(new List<RoomEntry>()
         {
             #region Core
             
@@ -17,7 +17,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "不存在的事件",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("不存在的事件");
                     map.Panel = A;
@@ -27,29 +27,27 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "战斗",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
-                    BattleRunNode battleRunNode = map.CurrNode as BattleRunNode;
-                    BattleStepDescriptor stepDescriptor = map.CurrStepDescriptor as BattleStepDescriptor;
-
-                    int baseGoldReward = stepDescriptor._baseGoldReward;
+                    BattleRoomDescriptor roomDescriptor = room.Descriptor as BattleRoomDescriptor;
+                    int baseGoldReward = roomDescriptor._baseGoldReward;
                     int goldValue = Mathf.RoundToInt(baseGoldReward * RandomManager.Range(0.9f, 1.1f));
 
-                    BattlePanelDescriptor A = new(battleRunNode.Entity);
+                    BattlePanelDescriptor A = new(room.Details["Entity"] as RunEntity);
 
                     DiscoverSkillPanelDescriptor B = new("胜利");
                     DiscoverSkillPanelDescriptor C = new("惜败");
                     DialogPanelDescriptor D = new($"按Esc退出游戏，游戏结束，感谢游玩");
 
-                    bool shouldUpdateSlotCount = stepDescriptor.ShouldUpdateSlotCount;
+                    bool shouldUpdateSlotCount = roomDescriptor.ShouldUpdateSlotCount;
 
-                    if (!stepDescriptor._isBoss)
+                    if (!roomDescriptor._isBoss)
                     {
                         A.SetWinOperation(() =>
                         {
                             B.SetDetailedText($"胜利！\n获得了{goldValue}金\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
-                                RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
+                                RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return B;
                         });
 
@@ -58,7 +56,7 @@ public class NodeCategory : Category<NodeEntry>
                             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
                             C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{goldValue}金\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
-                                RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
+                                RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return C;
                         });
                     }
@@ -69,7 +67,7 @@ public class NodeCategory : Category<NodeEntry>
                             RunManager.Instance.Environment.SetDMingYuanProcedure(3);
                             B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{goldValue}金\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
-                                RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
+                                RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return B;
                         });
 
@@ -77,7 +75,7 @@ public class NodeCategory : Category<NodeEntry>
                         {
                             C.SetDetailedText($"你没能击败对手，幸好跨越境界抵消了你的命元伤害。\n获得了{goldValue}金\n请选择一张卡作为奖励");
                             if (shouldUpdateSlotCount)
-                                RunManager.Instance.Environment.Home.SetSlotCount(stepDescriptor._slotCountAfter);
+                                RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return C;
                         });
                     }
@@ -117,7 +115,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "休息",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("最近有些空闲的时间，你决定要", "加紧修炼", "去温泉", "喝点人参茶");
 
@@ -147,7 +145,7 @@ public class NodeCategory : Category<NodeEntry>
                         return null;
                     });
 
-                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
                     DialogPanelDescriptor C = new DialogPanelDescriptor($"泡了温泉之后感到了心情畅快，获得了{baseGoldReward}点生命上限")
                         .SetReward(Reward.FromHealth(baseGoldReward));
                     
@@ -165,7 +163,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "胜利",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("恭喜获得游戏胜利",
                     "前往结算");
@@ -183,7 +181,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "突破境界",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你感到很久以来的瓶颈将被突破",
                         "突破");
@@ -205,7 +203,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "初入蓬莱",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     ImagePanelDescriptor ManHua1 = new("漫画1");
                     ImagePanelDescriptor ManHua2 = new("漫画2");
@@ -335,7 +333,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "同境界合成教学",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     ImagePanelDescriptor A = new("同境界合成教学1");
                     ImagePanelDescriptor B = new("同境界合成教学2");
@@ -353,9 +351,9 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "存钱",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
-                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
                     DialogPanelDescriptor A = new DialogPanelDescriptor($"获得了{baseGoldReward}金钱")
                         .SetReward(Reward.FromGold(baseGoldReward));
                     map.Panel = A;
@@ -365,9 +363,9 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "黑市",
                 ladderBound:                        new Bound(0, 8),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
-                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
                     
                     DialogPanelDescriptor A = new("你发现了一个黑市，这里有少量高境界卡牌。", "进去看一看");
                     
@@ -401,7 +399,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "收藏家",
                 ladderBound:                        new Bound(2, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你遇到了一位收藏家，他邀请你去看看他的藏品");
                     
@@ -416,7 +414,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "以物易物",
                 ladderBound:                        new Bound(2, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你收到了神秘集会的入场券，大家在集会上交换技能。");
                     
@@ -431,7 +429,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "毕业季",
                 ladderBound:                        new Bound(5, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("一阵噪音惊扰了你的休息，原来是灵韵宗的毕业季到了，学子们完成了学业后，纷纷将不要的技能打折卖出。");
                     
@@ -465,7 +463,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "盲盒",
                 ladderBound:                        new Bound(8, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("前面有一个盲盒商店，你想去看看这期会出什么");
                     
@@ -484,7 +482,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "天津四",
                 ladderBound:                        new Bound(0, 2),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你看见一个书生，悄悄看着一个织布的少女，应该是对她有意思。他看你道士打扮，于是问道：“先生可否帮我算一卦，算姻缘。”",
                         "祝福他的缘分",
@@ -510,7 +508,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "琴仙",
                 ladderBound:                        new Bound(2, 5),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你遇到了一个弹琴的人，他双目失明，衣衫褴褛，举手投足之间却让人感到大方得体，应该是一名隐士。正好前一首曲毕。向你的方向看了过来，好像知道你来了。",
                         "来一首欢快的曲子吧",
@@ -535,7 +533,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "赤壁赋",
                 ladderBound:                        new Bound(5, 8),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
                         "赞同月亮是变化的",
@@ -562,7 +560,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "二子学弈",
                 ladderBound:                        new Bound(8, 11),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你看到一个老者在教两个学童下棋，两个学童在对弈，一名学童注视棋盘，另一名学童四处张望。",
                         "注视棋盘的学童能赢",
@@ -587,7 +585,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "仙人下棋",
                 ladderBound:                        new Bound(11, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你在竹林里迷路了，走了一阵遇到两个人在下棋，其中一个人发现了你，然后继续看棋盘去了。",
                         "尝试观看两人对弈（需要一张二动牌）",
@@ -673,7 +671,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "检测仪",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A0 = new("你捡到了一个不曾见过的仪器，上面有5个按钮。你决定按下其中一个试试。",
                         "金",
@@ -733,7 +731,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "解梦师",
                 ladderBound:                        new Bound(5, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你来到一个镇上，见到了当地有名的解梦师。你请他解梦，你梦中出现了什么？",
                         "没有灵气的贫民",
@@ -794,7 +792,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "天机阁",
                 ladderBound:                        new Bound(2, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你在沙漠中行走，突然眼前出来了一栋华丽的建筑，上面写着天机阁。你走入其中，前面有个牌子，请选择一张。你正在想是选择什么时，发现有十张卡牌浮在空中。");
                     ArbitraryCardPickerPanelDescriptor B = new("请从10张牌中选1张获取");
@@ -817,7 +815,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "论无穷",
                 ladderBound:                        new Bound(11, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +
                                                   "\n我每天跑步，只要一只能跑下去，跑的路程就是无穷的" +
@@ -851,7 +849,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "分子打印机",
                 ladderBound:                        new Bound(5, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你发现了一个机器，有两个插槽。中间写着一行说明，一边放原料，一边放卡牌。",
                         "试试这个机器可以做什么",
@@ -906,7 +904,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "天界树",
                 ladderBound:                        new Bound(11, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
                         "吃树上的果子",
@@ -955,7 +953,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "连抽五张",
                 ladderBound:                        new Bound(5, 8),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你近日练功，隐约感到一个瓶颈，心里略有不快。想着，如果全力一博，说不定就多一分机会窥见大道的真貌。",
                         "欲速则不达",
@@ -977,7 +975,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "我已膨胀",
                 ladderBound:                        new Bound(11, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你打坐着，元神又来到了名为太虚的空间，传说达到了这个境界就会遭到天道的追杀，引来雷劫。",
                         "我已膨胀",
@@ -1013,7 +1011,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "曹操三笑",
                 ladderBound:                        new Bound(2, 5),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("有个商人要去其他国家，听闻中间有一个险道，常常有山贼出没，托你保护他和一些货物的安全。一路上没有什么障碍，赶了几天的路之后，终于快要到目的地了。" +
                                                   "面前是一处山谷。这时候，他突然大笑起来：“哈哈哈哈哈哈哈哈。。。”",
@@ -1025,7 +1023,7 @@ public class NodeCategory : Category<NodeEntry>
                         "和山贼战斗");
                     DialogPanelDescriptor C = new("他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n金+2");
 
-                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(ladder + 3));
+                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(room.Ladder + 3));
                     BattlePanelDescriptor B1 = new(template);
                     DialogPanelDescriptor B1win = new DialogPanelDescriptor("你打过了山贼，商人对你十分感激。\n\n金+6")
                         .SetReward(Reward.FromGold(6));
@@ -1044,7 +1042,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "神灯精灵",
                 ladderBound:                        new Bound(8, 11),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
                         "健康的体魄",
@@ -1057,7 +1055,7 @@ public class NodeCategory : Category<NodeEntry>
                         .SetReward(Reward.FromGold(8));
                     DialogPanelDescriptor D = new("实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
 
-                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(ladder + 3));
+                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(room.Ladder + 3));
                     BattlePanelDescriptor E = new(template);
                     DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
                         .SetReward(new ResourceReward(gold: 8, health: 8));
@@ -1077,7 +1075,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "忘忧堂",
                 ladderBound:                        new Bound(5, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你来到了忘忧堂，听说这里的服务是将不想再见到的卡牌交给他们。忘忧堂会为您斩断与此牌的因果。",
                         "走进去看一看",
@@ -1123,12 +1121,12 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "山木",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     int trial = 0;
                     int rage = RandomManager.Range(0, 7);
 
-                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
                     
                     DialogPanelDescriptor A = new("一位老者做在石头上向周围人传教，虚己以游世，其孰能害之。说的是，只要你不把别人当个人，别人就不会引起你生气。你突然想逗他一下。", "朝他作鬼脸", "狠狠戳他一下");
 
@@ -1186,9 +1184,9 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "丢尺子",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
-                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
                     
                     DialogPanelDescriptor A = new("嘀嘀嘀。灵信响了，你看了一下。是之前委托你布阵的人发的消息。" +
                                                   "\n管家：大人，之前你帮我家设置的阵法，有一笔的长度不对。会不会引起问题？" +
@@ -1227,13 +1225,13 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "酿造仙岛玉液酒",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     bool mixWater = false;
                     bool yellNoLie = false;
                     bool expert = RandomManager.value < 0.5f;
                     
-                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
 
                     DialogPanelDescriptor A = new("你来到了一个市集，突发奇想想试试之前好不容易得到的酿酒秘方，说不定可以换些盘缠。到市集转了一圈，你发现需要的原材料价值不菲。" +
                                                   "\n这里人人都喜欢酒，其中有些人可以鉴赏出酒的品质也说不定。\n\n你决定：",
@@ -1307,9 +1305,9 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "夏虫语冰",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
-                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
                     DialogPanelDescriptor A = new("你要过一个桥，桥上站了一人，问你，什么时候河会变得可以行走。你说在冬季的时候。他说你是胡说八道：“一年只有三个季节，春夏秋，哪里来的冬季？”",
                         "赞同他，说一年只有三个季节",
                         "向他解释，说一年有四个季节");
@@ -1334,9 +1332,9 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "守株待兔",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
-                    int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
+                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
                     DialogPanelDescriptor A = new("你见到一个人坐在树桩旁，问他在干什么，他说有兔子会撞上这个树桩，自己在等兔子撞死。",
                         "和他一起等待兔子",
                         "买一只兔子放在树桩前，然后告诉他兔子来了");
@@ -1359,7 +1357,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "鸡肉面",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你到了餐馆，叫了碗面。只见厨师拿了一副鸡的画卷，剪开下了锅。你正疑惑他在干什么的时候，他从锅里盛出了一碗鸡肉面给你。",
                         "认为这是真的鸡肉面，吃下去",
@@ -1384,7 +1382,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "人间世",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你看到一个少年盯着功名榜。少顷，嘴角露出一抹微笑，然后转身离开。你追上了他，看出他事业心很重，于是对他说：" +
                                                   "\n\n成名要趁早，我看你将来肯定是做宰相的料。" +
@@ -1426,7 +1424,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "照相机",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("到了桃花盛开的季节，你也来欣赏桃花。见到一名机关师，向人们介绍自己最近的新发明。按一下按钮，这个机关就可以将眼前美景永远记录下来。" +
                                                   "\n周围人看了那个机关，觉得画过于真实，害怕这个机关能够摄人心魄。都纷纷不敢上前。" +
@@ -1456,7 +1454,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "矛与盾",
                 ladderBound:                        new Bound(0, 2),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你看见一个人在推销他的矛和盾，说是这矛可以打碎所有的盾，这盾可以抵挡住所有的矛。周围人起哄说要他拿他的矛戳他的盾。",
                         "你感觉矛厉害",
@@ -1585,7 +1583,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "郑人买履",
                 ladderBound:                        new Bound(2, 5),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你打算买双鞋子。来到集市，看到一名男子也打算买鞋子，但是忘了带量好的尺码了，商家说现在量一下他的脚不就有尺码了么。你发现你也忘带尺码了。",
                         "回家去取尺码",
@@ -1607,7 +1605,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "鬼兵",
                 ladderBound:                        new Bound(2, 5),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你看到鬼兵打算带走一个将死之人，但是那人请求鬼兵在给自己一点时间。鬼兵说那人的命元已尽，不该继续留在阳间",
                         "助他炼丹（需要一张牌）",
@@ -1661,7 +1659,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "刻舟求剑",
                 ladderBound:                        new Bound(5, 8),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("坐船渡江途中，有个人不小心，随身携带的剑匣掉到江里了。然后马上打开随身的备忘录写了点东西。",
                         "和他说，快下去捞啊",
@@ -1681,7 +1679,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "物质还原仪",
                 ladderBound:                        new Bound(8, 11),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你发现了一个机器，有一个插槽。旁边有一个剪刀的按钮。",
                         "试试这个机器可以做什么",
@@ -1736,7 +1734,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "悟道",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     Pool<WuXing> pool = new Pool<WuXing>();
                     pool.Populate(WuXing.Traversal);
@@ -1771,7 +1769,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "愿望单",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("游戏仍在制作中，请加入愿望单，以关注后续进展，感谢游玩！",
                         "Q群：216060477",
@@ -1804,7 +1802,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "后羿1",
                 ladderBound:                        new Bound(0, 5),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你看到了一个少年在幸苦的练习射箭，但是进度缓慢。你发现是因为少年天生视力不好。",
                         "给少年展示技术",
@@ -1876,7 +1874,7 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         if (s.Flag == 1)
                         {
-                            RunManager.Instance.Environment.Map.InsertAdventure("后羿2");
+                            RunManager.Instance.Environment.Map.InsertRoom("后羿2");
                             return BPass;
                         }
 
@@ -1899,7 +1897,7 @@ public class NodeCategory : Category<NodeEntry>
                             }
                         }
 
-                        RunManager.Instance.Environment.Map.InsertAdventure("后羿2");
+                        RunManager.Instance.Environment.Map.InsertRoom("后羿2");
                         return CWin;
                     });
 
@@ -1910,7 +1908,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "后羿2",
                 ladderBound:                        new Bound(5, 11),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你之前见过的视力不好的少年，现在视力越来越弱了。甚至没能发现你的到来。",
                         "给少年展示更厉害的技术",
@@ -1979,7 +1977,7 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         if (s.Flag == 1)
                         {
-                            RunManager.Instance.Environment.Map.InsertAdventure("后羿3");
+                            RunManager.Instance.Environment.Map.InsertRoom("后羿3");
                             return BPass;
                         }
 
@@ -1987,7 +1985,7 @@ public class NodeCategory : Category<NodeEntry>
                     });
                     C[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.Map.InsertAdventure("后羿3");
+                        RunManager.Instance.Environment.Map.InsertRoom("后羿3");
                         return C2;
                     });
 
@@ -1998,7 +1996,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "后羿3",
                 ladderBound:                        new Bound(11, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new DialogPanelDescriptor("你来到了很久之前来过的竹林，当时的练箭少年已经不在，你发现了他留给你的一本秘籍。\n\n得到《射落金乌》。")
                         .SetReward(new AddSkillReward("0605", JingJie.YuanYing));
@@ -2010,7 +2008,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "神农氏1",
                 ladderBound:                        new Bound(0, 5),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你看见一个少年向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
                         "给他展示运气抵御毒素的法门",
@@ -2073,7 +2071,7 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         if (s.Flag == 1)
                         {
-                            RunManager.Instance.Environment.Map.InsertAdventure("神农氏2");
+                            RunManager.Instance.Environment.Map.InsertRoom("神农氏2");
                             return BPass;
                         }
                         return A;
@@ -2082,7 +2080,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.Map.InsertAdventure("神农氏2");
+                        RunManager.Instance.Environment.Map.InsertRoom("神农氏2");
                         return C;
                     });
                     A[2].SetSelect(option => D);
@@ -2093,7 +2091,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "神农氏2",
                 ladderBound:                        new Bound(5, 11),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("你又见到了那个少年，他又笑嘻嘻的向你走来，又是一手拿着一个容光满面的仙草，另一手拿着一个可疑的蘑菇，向你说道，这次你想吃哪个？",
                         "给他展示运气抵御毒素的法门",
@@ -2156,7 +2154,7 @@ public class NodeCategory : Category<NodeEntry>
                     {
                         if (s.Flag == 1)
                         {
-                            RunManager.Instance.Environment.Map.InsertAdventure("神农氏3");
+                            RunManager.Instance.Environment.Map.InsertRoom("神农氏3");
                             return BPass;
                         }
                         return A;
@@ -2165,7 +2163,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.Map.InsertAdventure("神农氏3");
+                        RunManager.Instance.Environment.Map.InsertRoom("神农氏3");
                         return C;
                     });
                     A[2].SetSelect(option => D);
@@ -2176,7 +2174,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "神农氏3",
                 ladderBound:                        new Bound(11, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new DialogPanelDescriptor("故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
                         .SetReward(new AddSkillReward("0602", JingJie.YuanYing));
@@ -2192,7 +2190,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "快速结算",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("用于测试Run结算",
                         "胜利结算",
@@ -2217,7 +2215,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "循环",
                 ladderBound:                        new Bound(0, 5),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new("循环测试",
                         "继续循环",
@@ -2232,7 +2230,7 @@ public class NodeCategory : Category<NodeEntry>
                 description:                        "发现一张牌",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
-                create:                             (map, ladder) =>
+                create:                             (map, room) =>
                 {
                     DiscoverSkillPanelDescriptor A = new("灵感");
                     A.SetDetailedText($"请选择一张卡作为奖励");
@@ -2244,5 +2242,5 @@ public class NodeCategory : Category<NodeEntry>
         });
     }
 
-    public virtual NodeEntry DefaultEntry() => this["不存在的事件"];
+    public virtual RoomEntry DefaultEntry() => this["不存在的事件"];
 }

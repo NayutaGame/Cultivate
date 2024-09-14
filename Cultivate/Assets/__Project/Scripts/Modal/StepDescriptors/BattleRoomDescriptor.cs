@@ -1,5 +1,5 @@
 
-public class BattleStepDescriptor : StepDescriptor
+public class BattleRoomDescriptor : RoomDescriptor
 {
     public int _slotCountBefore;
     public int _slotCountAfter;
@@ -17,7 +17,7 @@ public class BattleStepDescriptor : StepDescriptor
         false, false, true,
     };
 
-    public BattleStepDescriptor(int ladder, int slotCountBefore, int slotCountAfter) : base(ladder)
+    public BattleRoomDescriptor(int ladder, int slotCountBefore, int slotCountAfter) : base(ladder)
     {
         _slotCountBefore = slotCountBefore;
         _slotCountAfter = slotCountAfter;
@@ -25,10 +25,11 @@ public class BattleStepDescriptor : StepDescriptor
         _isBoss = IsBossTable[ladder];
     }
     
-    public override RunNode Draw(Map map)
+    public override void Draw(Map map, Room room)
     {
         EntityDescriptor d = new EntityDescriptor(Ladder);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
-        return new BattleRunNode(entity);
+        room.Details["Entity"] = entity;
+        room.Entry = "战斗";
     }
 }

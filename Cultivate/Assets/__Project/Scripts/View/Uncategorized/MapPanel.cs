@@ -18,7 +18,7 @@ public class MapPanel : Panel
     {
         base.Configure();
         
-        StepItemListView.SetAddress(new Address("Run.Environment.Map.CurrLevel.StepItems"));
+        StepItemListView.SetAddress(new Address("Run.Environment.Map.CurrLevel.Rooms"));
 
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;

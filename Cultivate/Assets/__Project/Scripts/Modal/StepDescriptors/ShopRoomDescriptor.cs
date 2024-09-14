@@ -1,11 +1,11 @@
 
 using CLLibrary;
 
-public class ShopStepDescriptor : StepDescriptor
+public class ShopRoomDescriptor : RoomDescriptor
 {
-    public override RunNode Draw(Map map)
+    public override void Draw(Map map, Room room)
     {
-        Pool<NodeEntry> shopPool = new();
+        Pool<RoomEntry> shopPool = new();
         
         shopPool.Populate("黑市");
         shopPool.Populate("收藏家");
@@ -18,10 +18,10 @@ public class ShopStepDescriptor : StepDescriptor
         shopPool.Shuffle();
 
         shopPool.TryPopItem(out var entry);
-        return new RunNode(entry);
+        room.Entry = entry;
     }
 
-    public ShopStepDescriptor(int ladder) : base(ladder)
+    public ShopRoomDescriptor(int ladder) : base(ladder)
     {
     }
 }
