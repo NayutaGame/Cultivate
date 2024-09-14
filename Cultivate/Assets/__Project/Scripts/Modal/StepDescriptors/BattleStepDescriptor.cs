@@ -29,6 +29,6 @@ public class BattleStepDescriptor : StepDescriptor
     {
         EntityDescriptor d = new EntityDescriptor(Ladder);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
-        return new BattleRunNode(entity, Ladder);
+        return new BattleRunNode(entity);
     }
 }

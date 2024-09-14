@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 
 public class MapPanel : Panel
 {
-    // public PlayerEntityView PlayerEntity;
+    [SerializeField] private ListView StepItemListView;
+    
     [SerializeField] private RectTransform BodyTransform;
     [SerializeField] private RectTransform BodyShowPivot;
     [SerializeField] private RectTransform BodyHidePivot;
@@ -16,6 +17,8 @@ public class MapPanel : Panel
     public override void Configure()
     {
         base.Configure();
+        
+        StepItemListView.SetAddress(new Address("Run.Environment.Map.CurrLevel.StepItems"));
 
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;
@@ -33,12 +36,11 @@ public class MapPanel : Panel
     public override void Refresh()
     {
         base.Refresh();
+        StepItemListView.Refresh();
     }
 
     private void OnEnable()
     {
-        // if (RunManager.Instance != null && RunManager.Instance.Environment != null)
-        //     RunManager.Instance.Environment.MapJingJieChangedEvent += SyncSlot;
         Sync();
     }
 
@@ -50,6 +52,7 @@ public class MapPanel : Panel
 
     private void Sync()
     {
+        StepItemListView.Refresh();
     }
 
     // private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)

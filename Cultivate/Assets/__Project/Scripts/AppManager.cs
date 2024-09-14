@@ -28,9 +28,6 @@ public class AppManager : Singleton<AppManager>, Addressable
     public FormationInventory FormationInventory;
     public SkillInventory SkillInventory;
 
-    [SerializeField][Range(0, 5)] public int SimulatingJingJie;
-    [SerializeField] public bool ShowTutorial;
-
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public override void DidAwake()

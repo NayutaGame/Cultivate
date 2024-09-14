@@ -14,14 +14,14 @@ public class LegacyMapPanel : Panel
     public override void Configure()
     {
         base.Configure();
-        _address = new Address("Run.Environment.Map");
-        NodeListView.SetAddress(_address.Append(".StepItem.Nodes"));
+        // _address = new Address("Run.Environment.Map");
+        // NodeListView.SetAddress(_address.Append(".StepItem.Nodes"));
     }
 
     public override void Refresh()
     {
         base.Refresh();
-        NodeListView.Refresh();
+        // NodeListView.Refresh();
     }
 
     private void PlaySFX()

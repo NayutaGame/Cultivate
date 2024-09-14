@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 3659971992153592764}
   - component: {fileID: 1486316813597088080}
   m_Layer: 5
-  m_Name: MapPanel
+  m_Name: LegacyMapPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

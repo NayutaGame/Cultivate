@@ -18,7 +18,7 @@ public class ShopStepDescriptor : StepDescriptor
         shopPool.Shuffle();
 
         shopPool.TryPopItem(out var entry);
-        return new RunNode(entry, Ladder);
+        return new RunNode(entry);
     }
 
     public ShopStepDescriptor(int ladder) : base(ladder)

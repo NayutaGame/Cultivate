@@ -20,7 +20,7 @@ public class NodeCategory : Category<NodeEntry>
                 create:                             (map, ladder) =>
                 {
                     DialogPanelDescriptor A = new("不存在的事件");
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "战斗",
@@ -36,7 +36,6 @@ public class NodeCategory : Category<NodeEntry>
                     int goldValue = Mathf.RoundToInt(baseGoldReward * RandomManager.Range(0.9f, 1.1f));
 
                     BattlePanelDescriptor A = new(battleRunNode.Entity);
-                    battleRunNode.AddReward(new ResourceReward(gold: goldValue));
 
                     DiscoverSkillPanelDescriptor B = new("胜利");
                     DiscoverSkillPanelDescriptor C = new("惜败");
@@ -99,19 +98,19 @@ public class NodeCategory : Category<NodeEntry>
 
                     B._receiveSignal = signal =>
                     {
-                        battleRunNode.ClaimRewards();
+                        RunManager.Instance.Environment.SetDGoldProcedure(goldValue);
                         return B.DefaultReceiveSignal(signal);
                     };
 
                     C._receiveSignal = signal =>
                     {
-                        battleRunNode.ClaimRewards();
+                        RunManager.Instance.Environment.SetDGoldProcedure(goldValue);
                         return C.DefaultReceiveSignal(signal);
                     };
 
                     D._receiveSignal = signal => D;
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "休息",
@@ -159,7 +158,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "胜利",
@@ -177,7 +176,7 @@ public class NodeCategory : Category<NodeEntry>
                         return null;
                     });
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "突破境界",
@@ -195,7 +194,7 @@ public class NodeCategory : Category<NodeEntry>
                         return null;
                     });
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             #endregion
@@ -329,7 +328,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     ManHua5.Next = null;
                     
-                    map.CurrNode.Panel = ManHua1;
+                    map.Panel = ManHua1;
                 }),
 
             new(id:                                 "同境界合成教学",
@@ -343,7 +342,7 @@ public class NodeCategory : Category<NodeEntry>
                     ImagePanelDescriptor C = new("同境界合成教学3");
                     A.Next = B;
                     B.Next = C;
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             #endregion
@@ -359,7 +358,7 @@ public class NodeCategory : Category<NodeEntry>
                     int baseGoldReward = StepDescriptor.GoldRewardTable[ladder];
                     DialogPanelDescriptor A = new DialogPanelDescriptor($"获得了{baseGoldReward}金钱")
                         .SetReward(Reward.FromGold(baseGoldReward));
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "黑市",
@@ -395,7 +394,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     A[0].SetSelect(option => B);
                     
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "收藏家",
@@ -410,7 +409,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     A[0].SetSelect(option => B);
                     
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "以物易物",
@@ -425,7 +424,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     A[0].SetSelect(option => B);
                     
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "毕业季",
@@ -459,7 +458,7 @@ public class NodeCategory : Category<NodeEntry>
                     
                     A[0].SetSelect(option => B);
                     
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "盲盒",
@@ -474,7 +473,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     A[0].SetSelect(option => B);
                     
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             #endregion
@@ -504,7 +503,7 @@ public class NodeCategory : Category<NodeEntry>
                     B[0].SetSelect(option => B1);
                     C[0].SetSelect(option => C1);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "琴仙",
@@ -529,7 +528,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "赤壁赋",
@@ -556,7 +555,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "二子学弈",
@@ -581,7 +580,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
                     
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "仙人下棋",
@@ -667,7 +666,7 @@ public class NodeCategory : Category<NodeEntry>
                     CWin[0].SetSelect(option => CWin2);
                     CLose[0].SetSelect(option => CLose2);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "检测仪",
@@ -727,7 +726,7 @@ public class NodeCategory : Category<NodeEntry>
                         return B;
                     });
 
-                    map.CurrNode.Panel = A0;
+                    map.Panel = A0;
                 }),
 
             new(id:                                 "解梦师",
@@ -788,7 +787,7 @@ public class NodeCategory : Category<NodeEntry>
                         return C;
                     });
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "天机阁",
@@ -811,7 +810,7 @@ public class NodeCategory : Category<NodeEntry>
                     
                     A[0].SetSelect(option => B);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "论无穷",
@@ -845,7 +844,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "分子打印机",
@@ -900,7 +899,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "天界树",
@@ -949,7 +948,7 @@ public class NodeCategory : Category<NodeEntry>
                         return D;
                     });
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "连抽五张",
@@ -971,7 +970,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetCost(new CostDetails(health: 30))
                         .SetSelect(option => C);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "我已膨胀",
@@ -1007,7 +1006,7 @@ public class NodeCategory : Category<NodeEntry>
                     });
                     A[1].SetSelect(option => C);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "曹操三笑",
@@ -1038,7 +1037,7 @@ public class NodeCategory : Category<NodeEntry>
                     B1.SetWinOperation(() => B1win);
                     B1.SetLoseOperation(() => B1lose);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "神灯精灵",
@@ -1071,7 +1070,7 @@ public class NodeCategory : Category<NodeEntry>
                     E.SetWinOperation(() => EWin);
                     E.SetLoseOperation(() => ELose);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "忘忧堂",
@@ -1117,7 +1116,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "山木",
@@ -1180,7 +1179,7 @@ public class NodeCategory : Category<NodeEntry>
                     B2[0].SetSelect(SelectA);
                     B2[1].SetSelect(SelectB);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "丢尺子",
@@ -1221,7 +1220,7 @@ public class NodeCategory : Category<NodeEntry>
                     B[1].SetSelect(option => E);
                     C[1].SetSelect(option => E);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "酿造仙岛玉液酒",
@@ -1301,7 +1300,7 @@ public class NodeCategory : Category<NodeEntry>
                         return EndingTable[key];
                     });
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "夏虫语冰",
@@ -1328,7 +1327,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "守株待兔",
@@ -1353,7 +1352,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "鸡肉面",
@@ -1374,7 +1373,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             #endregion
@@ -1420,7 +1419,7 @@ public class NodeCategory : Category<NodeEntry>
                     D2[1].SetSelect(option => F);
 
                     bool isCatch = RandomManager.value < 0.5;
-                    map.CurrNode.Panel = isCatch ? A : D;
+                    map.Panel = isCatch ? A : D;
                 }),
 
             new(id:                                 "照相机",
@@ -1450,7 +1449,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[1].SetSelect(option => C);
                     A[2].SetSelect(option => D);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "矛与盾",
@@ -1579,7 +1578,7 @@ public class NodeCategory : Category<NodeEntry>
                         return A;
                     });
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "郑人买履",
@@ -1601,7 +1600,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
                     
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "鬼兵",
@@ -1655,7 +1654,7 @@ public class NodeCategory : Category<NodeEntry>
                     C[0].SetSelect(option => E);
                     D[0].SetSelect(option => E);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "刻舟求剑",
@@ -1675,7 +1674,7 @@ public class NodeCategory : Category<NodeEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "物质还原仪",
@@ -1730,7 +1729,7 @@ public class NodeCategory : Category<NodeEntry>
                     // A[0].SetSelect(option => B);
                     // A[1].SetSelect(option => C);
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "悟道",
@@ -1765,7 +1764,7 @@ public class NodeCategory : Category<NodeEntry>
                         return null;
                     };
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "愿望单",
@@ -1794,7 +1793,7 @@ public class NodeCategory : Category<NodeEntry>
                         RunManager.Instance.ReturnToTitle();
                         return null;
                     });
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             #endregion
@@ -1904,7 +1903,7 @@ public class NodeCategory : Category<NodeEntry>
                         return CWin;
                     });
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "后羿2",
@@ -1992,7 +1991,7 @@ public class NodeCategory : Category<NodeEntry>
                         return C2;
                     });
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "后羿3",
@@ -2004,7 +2003,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor A = new DialogPanelDescriptor("你来到了很久之前来过的竹林，当时的练箭少年已经不在，你发现了他留给你的一本秘籍。\n\n得到《射落金乌》。")
                         .SetReward(new AddSkillReward("0605", JingJie.YuanYing));
             
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "神农氏1",
@@ -2087,7 +2086,7 @@ public class NodeCategory : Category<NodeEntry>
                         return C;
                     });
                     A[2].SetSelect(option => D);
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "神农氏2",
@@ -2170,7 +2169,7 @@ public class NodeCategory : Category<NodeEntry>
                         return C;
                     });
                     A[2].SetSelect(option => D);
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "神农氏3",
@@ -2182,7 +2181,7 @@ public class NodeCategory : Category<NodeEntry>
                     DialogPanelDescriptor A = new DialogPanelDescriptor("故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
                         .SetReward(new AddSkillReward("0602", JingJie.YuanYing));
             
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             #endregion
@@ -2211,7 +2210,7 @@ public class NodeCategory : Category<NodeEntry>
                         return null;
                     });
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             new(id:                                 "循环",
@@ -2226,7 +2225,7 @@ public class NodeCategory : Category<NodeEntry>
 
                     A[0].SetSelect(option => A);
                     A[1].SetSelect(option => null);
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
             
             new(id:                                 "发现一张牌",
@@ -2238,7 +2237,7 @@ public class NodeCategory : Category<NodeEntry>
                     DiscoverSkillPanelDescriptor A = new("灵感");
                     A.SetDetailedText($"请选择一张卡作为奖励");
 
-                    map.CurrNode.Panel = A;
+                    map.Panel = A;
                 }),
 
             #endregion

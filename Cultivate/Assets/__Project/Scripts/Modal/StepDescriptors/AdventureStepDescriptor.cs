@@ -21,7 +21,7 @@ public class AdventureStepDescriptor : StepDescriptor
             entry = "不存在的事件";
         }
         
-        return new RunNode(entry, Ladder);
+        return new RunNode(entry);
     }
 
     public AdventureStepDescriptor(int ladder) : base(ladder)

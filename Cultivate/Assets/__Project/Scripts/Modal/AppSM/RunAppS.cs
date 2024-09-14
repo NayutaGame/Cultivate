@@ -13,20 +13,8 @@ public class RunAppS : AppS
         RunEnvironment runEnv = RunManager.Instance.Environment;
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
         
-        PanelS panelS;
-        
-        StepItem stepItem = runEnv.Map.CurrStepItem;
-        NodeListModel nodes = stepItem._nodes;
-        if (nodes.Count() == 1)
-        {
-            RunNode runNode = nodes[0];
-            PanelDescriptor panelDescriptor = runEnv.MakeChoiceProcedure(runNode);
-            panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
-        }
-        else
-        {
-            panelS = PanelS.FromMap();
-        }
+        PanelDescriptor panelDescriptor = runEnv.MakeChoiceProcedure();
+        PanelS panelS = PanelS.FromPanelDescriptorNullMeansMap(panelDescriptor);
         
         runCanvas.Configure();
         runCanvas.SetPanelS(panelS);

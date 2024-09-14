@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 2734635719551763227}
   - component: {fileID: 1255448390463693838}
   m_Layer: 0
-  m_Name: MechView
+  m_Name: LegacyMechView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

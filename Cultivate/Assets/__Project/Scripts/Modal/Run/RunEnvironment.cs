@@ -36,16 +36,14 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void StartRunProcedure(RunDetails d)
     {
-        bool firstTime = AppManager.Instance.ShowTutorial;
-        
-        Map.InitEntityPool();
-        Map.InitAdventurePool();
-        Map.InsertedAdventurePool = new();
-        
         InitSkillPool();
 
-        InitMapFromJingJie(firstTime, AppManager.Instance.SimulatingJingJie);
-        // InitMapDiscoverOnly();
+        Map.Init();
+        
+        SetJingJieProcedure(Map.Entry._envJingJie);
+        _home.SetSlotCount(Map.Entry._slotCount);
+        SetDGoldProcedure(Map.Entry._gold);
+        DrawSkillsProcedure(new(jingJie: Map.Entry._skillJingJie, count: Map.Entry._skillCount));
         
         _eventDict.SendEvent(RunEventDict.START_RUN, d);
     }
@@ -53,398 +51,6 @@ public class RunEnvironment : Addressable, RunEventListener
     private void InitSkillPool()
     {
         4.Do(_ => SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
-    }
-
-    private void InitMap(bool firstTime)
-    {
-        Map.StepDescriptors = new StepDescriptor[]
-        {
-            firstTime ? new DirectStepDescriptor(0, "初入蓬莱") : new AdventureStepDescriptor(0),
-            new BattleStepDescriptor(0, 3, 4),
-            new AdventureStepDescriptor(0),
-            new RestStepDescriptor(0),
-            new BattleStepDescriptor(1, 4, 5),
-            new AscensionStepDescriptor(0),
-            
-            new BattleStepDescriptor(2, 5, 6),
-            new AdventureStepDescriptor(2),
-            new ShopStepDescriptor(2),
-            new BattleStepDescriptor(3, 6, 7),
-            new AdventureStepDescriptor(3),
-            new RestStepDescriptor(3),
-            new BattleStepDescriptor(4, 7, 8),
-            new AscensionStepDescriptor(4),
-            
-            new BattleStepDescriptor(5, 8, 8),
-            new AdventureStepDescriptor(5),
-            new ShopStepDescriptor(5),
-            new BattleStepDescriptor(5, 8, 9),
-            new AdventureStepDescriptor(5),
-            new BattleStepDescriptor(6, 9, 9),
-            new AdventureStepDescriptor(6),
-            new RestStepDescriptor(6),
-            new BattleStepDescriptor(7, 9, 10),
-            new AscensionStepDescriptor(7),
-            
-            new BattleStepDescriptor(8, 10, 10),
-            new AdventureStepDescriptor(8),
-            new BattleStepDescriptor(8, 10, 11),
-            new AdventureStepDescriptor(8),
-            new ShopStepDescriptor(8),
-            new BattleStepDescriptor(9, 11, 11),
-            new AdventureStepDescriptor(9),
-            new BattleStepDescriptor(9, 11, 12),
-            new AdventureStepDescriptor(9),
-            new RestStepDescriptor(9),
-            new BattleStepDescriptor(10, 12, 12),
-            new AscensionStepDescriptor(10),
-            
-            new BattleStepDescriptor(11, 12, 12),
-            new AdventureStepDescriptor(11),
-            new BattleStepDescriptor(11, 12, 12),
-            new AdventureStepDescriptor(11),
-            new BattleStepDescriptor(11, 12, 12),
-            new RestStepDescriptor(11),
-            new BattleStepDescriptor(12, 12, 12),
-            new AdventureStepDescriptor(12),
-            new BattleStepDescriptor(12, 12, 12),
-            new AdventureStepDescriptor(12),
-            new BattleStepDescriptor(12, 12, 12),
-            new RestStepDescriptor(12),
-            new ShopStepDescriptor(12),
-            new BattleStepDescriptor(13, 12, 12),
-            new SuccessStepDescriptor(13),
-        };
-        
-        SetJingJieProcedure(JingJie.LianQi);
-        SetStepProcedure(0);
-        _home.SetSlotCount(3);
-        
-        SetDGoldProcedure(50);
-        if (!firstTime)
-            DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
-    }
-
-    private void InitMapDiscoverOnly()
-    {
-        Map.StepDescriptors = new StepDescriptor[]
-        {
-            new DirectStepDescriptor(0, "发现一张牌"),
-            new DirectStepDescriptor(0, "发现一张牌"),
-            new DirectStepDescriptor(0, "发现一张牌"),
-            new DirectStepDescriptor(0, "发现一张牌"),
-            new DirectStepDescriptor(0, "发现一张牌"),
-            new DirectStepDescriptor(0, "发现一张牌"),
-            new DirectStepDescriptor(0, "发现一张牌"),
-            new AscensionStepDescriptor(0),
-            
-            new DirectStepDescriptor(4, "发现一张牌"),
-            new DirectStepDescriptor(4, "发现一张牌"),
-            new DirectStepDescriptor(4, "发现一张牌"),
-            new DirectStepDescriptor(4, "发现一张牌"),
-            new DirectStepDescriptor(4, "发现一张牌"),
-            new DirectStepDescriptor(4, "发现一张牌"),
-            new DirectStepDescriptor(4, "发现一张牌"),
-            new AscensionStepDescriptor(4),
-            
-            new DirectStepDescriptor(7, "发现一张牌"),
-            new DirectStepDescriptor(7, "发现一张牌"),
-            new DirectStepDescriptor(7, "发现一张牌"),
-            new DirectStepDescriptor(7, "发现一张牌"),
-            new DirectStepDescriptor(7, "发现一张牌"),
-            new DirectStepDescriptor(7, "发现一张牌"),
-            new DirectStepDescriptor(7, "发现一张牌"),
-            new AscensionStepDescriptor(7),
-            
-            new DirectStepDescriptor(10, "发现一张牌"),
-            new DirectStepDescriptor(10, "发现一张牌"),
-            new DirectStepDescriptor(10, "发现一张牌"),
-            new DirectStepDescriptor(10, "发现一张牌"),
-            new DirectStepDescriptor(10, "发现一张牌"),
-            new DirectStepDescriptor(10, "发现一张牌"),
-            new DirectStepDescriptor(10, "发现一张牌"),
-            new AscensionStepDescriptor(10),
-            
-            new DirectStepDescriptor(13, "发现一张牌"),
-            new DirectStepDescriptor(13, "发现一张牌"),
-            new DirectStepDescriptor(13, "发现一张牌"),
-            new DirectStepDescriptor(13, "发现一张牌"),
-            new DirectStepDescriptor(13, "发现一张牌"),
-            new DirectStepDescriptor(13, "发现一张牌"),
-            new DirectStepDescriptor(13, "发现一张牌"),
-            new SuccessStepDescriptor(13),
-        };
-        
-        SetJingJieProcedure(JingJie.LianQi);
-        SetStepProcedure(0);
-        _home.SetSlotCount(12);
-    }
-
-    private void InitMapFromJingJie(bool firstTime, JingJie jingJie)
-    {
-        switch (jingJie)
-        {
-            case 0:
-                Map.StepDescriptors = new StepDescriptor[]
-                {
-                    // new DirectStepDescriptor(0, "快速结算"),
-                    firstTime ? new DirectStepDescriptor(0, "初入蓬莱") : new AdventureStepDescriptor(0),
-                    new BattleStepDescriptor(0, 3, 4),
-                    new AdventureStepDescriptor(0),
-                    new RestStepDescriptor(0),
-                    new BattleStepDescriptor(1, 4, 5),
-                    new AscensionStepDescriptor(0),
-                    
-                    new BattleStepDescriptor(2, 5, 6),
-                    firstTime ? new DirectStepDescriptor(2, "同境界合成教学") : new AdventureStepDescriptor(2),
-                    new ShopStepDescriptor(2),
-                    new BattleStepDescriptor(3, 6, 7),
-                    new AdventureStepDescriptor(3),
-                    new RestStepDescriptor(3),
-                    new BattleStepDescriptor(4, 7, 8),
-                    new AscensionStepDescriptor(4),
-                    
-                    new BattleStepDescriptor(5, 8, 8),
-                    new AdventureStepDescriptor(5),
-                    new ShopStepDescriptor(5),
-                    new BattleStepDescriptor(5, 8, 9),
-                    new AdventureStepDescriptor(5),
-                    new BattleStepDescriptor(6, 9, 9),
-                    new AdventureStepDescriptor(6),
-                    new RestStepDescriptor(6),
-                    new BattleStepDescriptor(7, 9, 10),
-                    new AscensionStepDescriptor(7),
-                    
-                    new BattleStepDescriptor(8, 10, 10),
-                    new AdventureStepDescriptor(8),
-                    new BattleStepDescriptor(8, 10, 11),
-                    new AdventureStepDescriptor(8),
-                    new ShopStepDescriptor(8),
-                    new BattleStepDescriptor(9, 11, 11),
-                    new AdventureStepDescriptor(9),
-                    new BattleStepDescriptor(9, 11, 12),
-                    new AdventureStepDescriptor(9),
-                    new RestStepDescriptor(9),
-                    new BattleStepDescriptor(10, 12, 12),
-                    new AscensionStepDescriptor(10),
-                    
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new RestStepDescriptor(11),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new RestStepDescriptor(12),
-                    new ShopStepDescriptor(12),
-                    new BattleStepDescriptor(13, 12, 12),
-                    new SuccessStepDescriptor(13),
-                };
-        
-                SetJingJieProcedure(JingJie.LianQi);
-                SetStepProcedure(0);
-                _home.SetSlotCount(3);
-        
-                SetDGoldProcedure(0);
-                DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 5));
-                break;
-            case 1:
-                Map.StepDescriptors = new StepDescriptor[]
-                {
-                    new BattleStepDescriptor(2, 5, 6),
-                    new AdventureStepDescriptor(2),
-                    new ShopStepDescriptor(2),
-                    new BattleStepDescriptor(3, 6, 7),
-                    new AdventureStepDescriptor(3),
-                    new RestStepDescriptor(3),
-                    new BattleStepDescriptor(4, 7, 8),
-                    new AscensionStepDescriptor(4),
-                    
-                    new BattleStepDescriptor(5, 8, 8),
-                    new AdventureStepDescriptor(5),
-                    new ShopStepDescriptor(5),
-                    new BattleStepDescriptor(5, 8, 9),
-                    new AdventureStepDescriptor(5),
-                    new BattleStepDescriptor(6, 9, 9),
-                    new AdventureStepDescriptor(6),
-                    new RestStepDescriptor(6),
-                    new BattleStepDescriptor(7, 9, 10),
-                    new AscensionStepDescriptor(7),
-                    
-                    new BattleStepDescriptor(8, 10, 10),
-                    new AdventureStepDescriptor(8),
-                    new BattleStepDescriptor(8, 10, 11),
-                    new AdventureStepDescriptor(8),
-                    new ShopStepDescriptor(8),
-                    new BattleStepDescriptor(9, 11, 11),
-                    new AdventureStepDescriptor(9),
-                    new BattleStepDescriptor(9, 11, 12),
-                    new AdventureStepDescriptor(9),
-                    new RestStepDescriptor(9),
-                    new BattleStepDescriptor(10, 12, 12),
-                    new AscensionStepDescriptor(10),
-                    
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new RestStepDescriptor(11),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new RestStepDescriptor(12),
-                    new ShopStepDescriptor(12),
-                    new BattleStepDescriptor(13, 12, 12),
-                    new SuccessStepDescriptor(13),
-                };
-        
-                SetJingJieProcedure(JingJie.ZhuJi);
-                SetStepProcedure(0);
-                _home.SetSlotCount(5);
-        
-                SetDGoldProcedure(5);
-                DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 7));
-                break;
-            case 2:
-                Map.StepDescriptors = new StepDescriptor[]
-                {
-                    new BattleStepDescriptor(5, 8, 8),
-                    new AdventureStepDescriptor(5),
-                    new ShopStepDescriptor(5),
-                    new BattleStepDescriptor(5, 8, 9),
-                    new AdventureStepDescriptor(5),
-                    new BattleStepDescriptor(6, 9, 9),
-                    new AdventureStepDescriptor(6),
-                    new RestStepDescriptor(6),
-                    new BattleStepDescriptor(7, 9, 10),
-                    new AscensionStepDescriptor(7),
-                    
-                    new BattleStepDescriptor(8, 10, 10),
-                    new AdventureStepDescriptor(8),
-                    new BattleStepDescriptor(8, 10, 11),
-                    new AdventureStepDescriptor(8),
-                    new ShopStepDescriptor(8),
-                    new BattleStepDescriptor(9, 11, 11),
-                    new AdventureStepDescriptor(9),
-                    new BattleStepDescriptor(9, 11, 12),
-                    new AdventureStepDescriptor(9),
-                    new RestStepDescriptor(9),
-                    new BattleStepDescriptor(10, 12, 12),
-                    new AscensionStepDescriptor(10),
-                    
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new RestStepDescriptor(11),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new RestStepDescriptor(12),
-                    new ShopStepDescriptor(12),
-                    new BattleStepDescriptor(13, 12, 12),
-                    new SuccessStepDescriptor(13),
-                };
-        
-                SetJingJieProcedure(JingJie.JinDan);
-                SetStepProcedure(0);
-                _home.SetSlotCount(8);
-        
-                SetDGoldProcedure(17);
-                DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 13));
-                break;
-            case 3:
-                Map.StepDescriptors = new StepDescriptor[]
-                {
-                    new BattleStepDescriptor(8, 10, 10),
-                    new AdventureStepDescriptor(8),
-                    new BattleStepDescriptor(8, 10, 11),
-                    new AdventureStepDescriptor(8),
-                    new ShopStepDescriptor(8),
-                    new BattleStepDescriptor(9, 11, 11),
-                    new AdventureStepDescriptor(9),
-                    new BattleStepDescriptor(9, 11, 12),
-                    new AdventureStepDescriptor(9),
-                    new RestStepDescriptor(9),
-                    new BattleStepDescriptor(10, 12, 12),
-                    new AscensionStepDescriptor(10),
-                    
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new RestStepDescriptor(11),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new RestStepDescriptor(12),
-                    new ShopStepDescriptor(12),
-                    new BattleStepDescriptor(13, 12, 12),
-                    new SuccessStepDescriptor(13),
-                };
-        
-                SetJingJieProcedure(JingJie.YuanYing);
-                SetStepProcedure(0);
-                _home.SetSlotCount(10);
-        
-                SetDGoldProcedure(49);
-                DrawSkillsProcedure(new(jingJie: JingJie.ZhuJi, count: 15));
-                break;
-            case 4:
-                Map.StepDescriptors = new StepDescriptor[]
-                {
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new AdventureStepDescriptor(11),
-                    new BattleStepDescriptor(11, 12, 12),
-                    new RestStepDescriptor(11),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new AdventureStepDescriptor(12),
-                    new BattleStepDescriptor(12, 12, 12),
-                    new RestStepDescriptor(12),
-                    new ShopStepDescriptor(12),
-                    new BattleStepDescriptor(13, 12, 12),
-                    new SuccessStepDescriptor(13),
-                };
-        
-                SetJingJieProcedure(JingJie.HuaShen);
-                SetStepProcedure(0);
-                _home.SetSlotCount(12);
-        
-                SetDGoldProcedure(129);
-                DrawSkillsProcedure(new(jingJie: JingJie.JinDan, count: 17));
-                break;
-            case 5:
-                Map.StepDescriptors = new StepDescriptor[]
-                {
-                    new BattleStepDescriptor(13, 12, 12),
-                    new SuccessStepDescriptor(13),
-                };
-        
-                SetJingJieProcedure(JingJie.HuaShen);
-                SetStepProcedure(0);
-                _home.SetSlotCount(12);
-        
-                SetDGoldProcedure(289);
-                DrawSkillsProcedure(new(jingJie: JingJie.JinDan, count: 41));
-                break;
-        }
     }
 
     public void NextJingJieProcedure()
@@ -468,24 +74,10 @@ public class RunEnvironment : Addressable, RunEventListener
         _eventDict.SendEvent(RunEventDict.DID_SET_JINGJIE, d);
     }
 
-    private void SetStepProcedure(int step)
+    public PanelDescriptor MakeChoiceProcedure()
     {
-        Map.Step = step;
-        Map.DrawNode();
-        Map.CurrStepItem.ToChoose();
-        Map.Choosing = true;
-    }
-
-    private void NextStepProcedure()
-        => SetStepProcedure(Map.Step + 1);
-
-    public PanelDescriptor MakeChoiceProcedure(RunNode runNode)
-    {
-        Map.Choice = Map.CurrStepItem.IndexOf(runNode);
-        Map.CurrStepItem.MakeChoice(Map.Choice);
-        Map.Choosing = false;
-        Map.CreateEntry();
-        return Map.CurrNode.Panel;
+        Map.CreatePanel();
+        return Map.Panel;
     }
 
     public PanelDescriptor ReceiveSignalProcedure(Signal signal)
@@ -493,50 +85,44 @@ public class RunEnvironment : Addressable, RunEventListener
         if (Map.CurrNode == null)
             return null;
         
-        Guide guide = Map.CurrNode.Panel.GetGuideDescriptor();
+        Guide guide = Map.Panel.GetGuideDescriptor();
         if (guide != null)
         {
-            bool blocksSignal = guide.ReceiveSignal(Map.CurrNode.Panel, signal);
+            bool blocksSignal = guide.ReceiveSignal(Map.Panel, signal);
             if (blocksSignal)
-                return Map.CurrNode.Panel;
+                return Map.Panel;
         }
         
-        PanelDescriptor panelDescriptor = Map.CurrNode.Panel.ReceiveSignal(signal);
+        PanelDescriptor panelDescriptor = Map.Panel.ReceiveSignal(signal);
         bool runIsUnfinished = Result.State == RunResult.RunResultState.Unfinished;
-        if (runIsUnfinished)
+
+        if (!runIsUnfinished)
         {
-            if (panelDescriptor != null) // descriptor of panel descriptor
-            {
-                Map.CurrNode.Panel = panelDescriptor;
-            }
-            else
-            {
-                TryFinishStep();
-            }
-            
+            _runResultPanelDescriptor = new RunResultPanelDescriptor(Result);
+            Map.Panel = _runResultPanelDescriptor;
+            return _runResultPanelDescriptor;
+        }
+        
+        if (panelDescriptor != null) // descriptor of panel descriptor
+        {
+            Map.Panel = panelDescriptor;
             return panelDescriptor;
         }
-
-        _runResultPanelDescriptor = new RunResultPanelDescriptor(Result);
-        Map.CurrNode.Panel = _runResultPanelDescriptor;
-        return _runResultPanelDescriptor;
-    }
-
-    private void TryFinishStep()
-    {
-        if (Map.Choosing)
-            return;
-
-        Map.CurrNode.Finish();
-
-        bool isLastStep = Map.IsLastStep();
-        if (!isLastStep)
+            
+        if (Map.IsLastLevelAndLastStep())
         {
-            NextStepProcedure();
-            return;
+            CommitRunProcedure(RunResult.RunResultState.Victory);
+            return null;
         }
-        
-        CommitRunProcedure(RunResult.RunResultState.Victory);
+            
+        if (Map.IsLastStep())
+        {
+            Map.NextLevel();
+            return null;
+        }
+            
+        Map.NextStep();
+        return null;
     }
 
     public void CommitRunProcedure(RunResult.RunResultState state)
@@ -683,7 +269,7 @@ public class RunEnvironment : Addressable, RunEventListener
         SetHome(RunEntity.Default());
         SetAway(null);
 
-        Map = new();
+        Map = new(_config.MapEntry);
         TechInventory = new();
         SkillPool = new();
         Hand = new();
@@ -942,7 +528,7 @@ public class RunEnvironment : Addressable, RunEventListener
     }
 
     public PanelDescriptor GetActivePanel()
-        => _runResultPanelDescriptor ?? Map.CurrNode?.Panel;
+        => _runResultPanelDescriptor ?? Map.Panel;
 
     #region Skill
     

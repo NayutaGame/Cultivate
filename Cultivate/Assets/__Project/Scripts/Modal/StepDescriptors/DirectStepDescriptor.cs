@@ -10,6 +10,6 @@ public class DirectStepDescriptor : StepDescriptor
     
     public override RunNode Draw(Map map)
     {
-        return new RunNode(_nodeEntry, Ladder);
+        return new RunNode(_nodeEntry);
     }
 }

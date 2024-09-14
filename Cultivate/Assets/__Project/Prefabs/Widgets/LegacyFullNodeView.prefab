@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9116163443947985794}
   - component: {fileID: 1211907215018860093}
   m_Layer: 5
-  m_Name: NodeView
+  m_Name: LegacyFullNodeView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -64,7 +64,8 @@ public class DialogPanel : Panel
 
         for (int i = 0; i < Buttons.Length; i++)
         {
-            bool active = i < d.GetOptionsCount() && !RunManager.Instance.Environment.Map.Choosing;
+            // bool active = i < d.GetOptionsCount() && !RunManager.Instance.Environment.Map.Choosing;
+            bool active = i < d.GetOptionsCount();
             Buttons[i].gameObject.SetActive(active);
             if(!active)
                 continue;

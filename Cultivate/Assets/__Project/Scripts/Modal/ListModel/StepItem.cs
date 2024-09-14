@@ -1,37 +1,38 @@
 
-using System;
-using System.Collections.Generic;
-
-public class StepItem : Addressable
+public class StepItem
 {
-    private int _index;
-    public NodeListModel _nodes;
-    private bool _isChoosing;
-
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
-    public StepItem()
+    public enum StepState
     {
-        _accessors = new()
-        {
-            { "Nodes",         () => _nodes },
-        };
-
-        _nodes = new NodeListModel();
+        Past,
+        Curr,
+        Future,
     }
 
-    public void MakeChoice(int choice)
+    private StepState _state;
+    public StepState State => _state;
+
+    private StepDescriptor _stepDescriptor;
+    public StepDescriptor StepDescriptor => _stepDescriptor;
+    
+    private RunNode _node;
+    public RunNode Node => _node;
+
+    public bool HasNode()
+        => _node != null;
+
+    public StepItem(StepDescriptor stepDescriptor)
     {
-        for (int i = 0; i < _nodes.Count(); i++)
-            _nodes[i].State = i == choice ? RunNode.RunNodeState.Current : RunNode.RunNodeState.Missed;
+        _stepDescriptor = stepDescriptor;
+        _state = StepState.Future;
     }
 
-    public void ToChoose()
+    public void DrawNode(Map map)
     {
-        for (int i = 0; i < _nodes.Count(); i++)
-            _nodes[i].State = RunNode.RunNodeState.ToChoose;
+        _node = _stepDescriptor.Draw(map);
     }
 
-    public int IndexOf(RunNode runNode)
-        => _nodes.IndexOf(runNode);
+    public void CreatePanel(Map map)
+    {
+        _node.Entry.Create(map, _stepDescriptor.Ladder);
+    }
 }

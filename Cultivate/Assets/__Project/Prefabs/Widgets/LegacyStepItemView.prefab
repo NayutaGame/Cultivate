@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 3605860052852787669}
   - component: {fileID: 3043975568981535315}
   m_Layer: 5
-  m_Name: StepItemView
+  m_Name: LegacyStepItemView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
