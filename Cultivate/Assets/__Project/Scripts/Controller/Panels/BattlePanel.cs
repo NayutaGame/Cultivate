@@ -3,18 +3,27 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class BattlePanel : Panel
 {
     [SerializeField] private BattleEntityView EnemyView;
+
+    [SerializeField] private Image ReactionImage;
+    
     [SerializeField] private TMP_Text HomeHealth;
     [SerializeField] private TMP_Text AwayHealth;
-
     [SerializeField] public CombatButton CombatButton;
     [SerializeField] private GameObject VictoryStamp;
 
     private static readonly float WinBaseScale = 1f;
     private static readonly float LoseBaseScale = 0.6f;
+
+    [SerializeField] public Color WinColor;
+    [SerializeField] public Color LoseColor;
+
+    [SerializeField] public Sprite HappySprite;
+    [SerializeField] public Sprite AfraidSprite;
 
     private Address _address;
 
@@ -65,8 +74,7 @@ public class BattlePanel : Panel
     {
         CombatButton.SetBaseScale(victory ? WinBaseScale : LoseBaseScale);
         VictoryStamp.SetActive(victory);
-        HomeHealth.alpha = victory ? 1f : 0.6f;
-        AwayHealth.alpha = victory ? 0.6f : 1f;
+        HomeHealth.color = victory ? WinColor : LoseColor;
     }
 
     private void PlayBattleBGM()
