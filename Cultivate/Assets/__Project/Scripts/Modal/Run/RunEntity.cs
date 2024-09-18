@@ -11,6 +11,10 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     public Neuron EnvironmentChangedNeuron;
 
     public static readonly int[] BaseHealthFromJingJie = new int[] { 40, 100, 180, 280, 400, 400 };
+    
+    public static readonly string NORMAL_KEY = "Normal";
+    public static readonly string SMIRK_KEY = "Smirk";
+    public static readonly string AFRAID_KEY = "Afraid";
 
     [SerializeField] private MingYuan _mingYuan;
     public MingYuan MingYuan => _mingYuan;
@@ -73,7 +77,15 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     
     public string GetReactionKeyFromSkill(RunSkill skill)
     {
-        return "normal";
+        int? smirkIdx = _smirkAgainstSlots.Traversal().FirstIdx(s => s.Skill?.GetEntry() == skill.GetEntry());
+        if (smirkIdx.HasValue)
+            return SMIRK_KEY;
+        
+        int? afraidIdx = _afraidAgainstSlots.Traversal().FirstIdx(s => s.Skill?.GetEntry() == skill.GetEntry());
+        if (afraidIdx.HasValue)
+            return AFRAID_KEY;
+        
+        return NORMAL_KEY;
     }
 
     [SerializeReference] private SlotListModel _slots;
@@ -179,7 +191,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         => new(jingJie: jingJie, baseHealth: health);
     public static RunEntity FromTemplate(RunEntity template)
         => new(entry: template._entry, mingYuan: template._mingYuan, jingJie: template._jingJie,
-            baseHealth: template._baseHealth, slotCount: template._slotCount, slots: template._slots);
+            baseHealth: template._baseHealth, slotCount: template._slotCount, slots: template._slots, template._smirkAgainstSlots, template._afraidAgainstSlots);
     public static RunEntity FromHardCoded(JingJie? jingJie = null,
         int? baseHealth = null, int? slotCount = null, RunSkill[] skills = null)
         => new(jingJie: jingJie, baseHealth: baseHealth, slotCount: slotCount, slots: skills != null ? SlotListModel.FromSkills(skills) : null);
@@ -187,7 +199,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     private RunEntity(EntityEntry entry = null, MingYuan mingYuan = null, JingJie? jingJie = null,
-        int? baseHealth = null, int? slotCount = null, SlotListModel slots = null)
+        int? baseHealth = null, int? slotCount = null, SlotListModel slots = null, SlotListModel smirkAgainstSlots = null, SlotListModel afraidAgainstSlots = null)
     {
         _accessors = new()
         {
@@ -206,8 +218,10 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
         _slots = slots == null ? SlotListModel.Default() : slots.Clone();
         
-        // _smirkAgainstSlots = SlotListModel.DefaultWithSize(3);
-        // _afraidAgainstSlots = SlotListModel.DefaultWithSize(3);
+        _smirkAgainstSlots = smirkAgainstSlots ?? SlotListModel.DefaultWithSize(3);
+        _smirkAgainstSlots.Traversal().Do(s => s.Hidden = false);
+        _afraidAgainstSlots = afraidAgainstSlots ?? SlotListModel.DefaultWithSize(3);
+        _afraidAgainstSlots.Traversal().Do(s => s.Hidden = false);
 
         if (slotCount == null)
         {
@@ -238,6 +252,11 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.EntityCategory[_entry.GetName()];
         
         SetSlotCount(_slotCount);
+        
+        _smirkAgainstSlots ??= SlotListModel.DefaultWithSize(3);
+        _smirkAgainstSlots.Traversal().Do(s => s.Hidden = false);
+        _afraidAgainstSlots ??= SlotListModel.DefaultWithSize(3);
+        _afraidAgainstSlots.Traversal().Do(s => s.Hidden = false);
 
         Init();
     }

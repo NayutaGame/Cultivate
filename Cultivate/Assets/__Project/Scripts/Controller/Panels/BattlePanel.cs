@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -66,7 +67,7 @@ public class BattlePanel : Panel
     private void OnEnable()
     {
         ReactionDict ??= new Dictionary<string, Sprite>()
-            { { "Normal", null }, { "Smirk", SmirkSprite }, { "Afraid", AfraidSprite }, };
+            { { RunEntity.NORMAL_KEY, null }, { RunEntity.SMIRK_KEY, SmirkSprite }, { RunEntity.AFRAID_KEY, AfraidSprite }, };
         CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.BeginDragNeuron.Join(ReactionFromBeginDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.EndDragNeuron.Join(ReactionFromEndDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.DragNeuron.Join(ReactionFromDrag);
@@ -99,7 +100,7 @@ public class BattlePanel : Panel
             EntityModel entity = EnemyView.Get<EntityModel>();
             string reactionKey = entity.GetReactionKeyFromSkill(skill);
             Sprite reactionSprite = ReactionDict[reactionKey];
-            ReactionView.SetSprite(reactionSprite);
+            ReactionView.BeginDrag(reactionSprite, IntensityFromMousePosition(d.position));
             return;
         }
 
@@ -110,7 +111,7 @@ public class BattlePanel : Panel
             EntityModel entity = EnemyView.Get<EntityModel>();
             string reactionKey = entity.GetReactionKeyFromSkill(skill);
             Sprite reactionSprite = ReactionDict[reactionKey];
-            ReactionView.SetSprite(reactionSprite);
+            ReactionView.BeginDrag(reactionSprite, IntensityFromMousePosition(d.position));
             return;
         }
         
@@ -119,21 +120,25 @@ public class BattlePanel : Panel
 
     private void ReactionFromEndDrag(InteractBehaviour ib, PointerEventData d)
     {
-        object obj = ib.GetSimpleView().Get<object>();
-
-        // int intensity = GetIntensityAccordingToDistance();
-        // reactionView.SetIntensity(intensity);
-    }
-
-    private void ReactionFromDrag(InteractBehaviour ib, PointerEventData d)
-    {
-        // reactionView.ResetState();
+        ReactionView.EndDrag();
     }
 
     private void ReactionFromDrop(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        object toObj = to.GetSimpleView().Get<object>();
-        // reactionView.ResetState();
+        ReactionView.EndDrag();
+    }
+
+    private void ReactionFromDrag(InteractBehaviour ib, PointerEventData d)
+    {
+        float intensity = IntensityFromMousePosition(d.position);
+        ReactionView.Drag(intensity);
+    }
+
+    private float IntensityFromMousePosition(Vector2 mouseUIPosition)
+    {
+        Vector3 reactionPosition = ReactionView.transform.position;
+        Vector3 mouseWorldPosition = CanvasManager.Instance.UI2World(mouseUIPosition);
+        return Vector3.Distance(reactionPosition, mouseWorldPosition).Remap(2, 10, 1, 0.1f);
     }
 
     private void Combat(PointerEventData eventData)

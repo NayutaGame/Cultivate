@@ -3792,6 +3792,8 @@ MonoBehaviour:
   InPoolToggle: {fileID: 548441263553810591}
   FieldView: {fileID: 7588568743444983968}
   FormationListView: {fileID: 3497237185409118463}
+  SmirkAgainstListView: {fileID: 923172344043477811}
+  AfraidAgainstListView: {fileID: 6322417922319147097}
 --- !u!1 &5900262046347886694
 GameObject:
   m_ObjectHideFlags: 0

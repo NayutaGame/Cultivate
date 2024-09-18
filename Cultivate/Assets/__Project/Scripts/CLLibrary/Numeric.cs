@@ -21,5 +21,10 @@ namespace CLLibrary
 
         public static int ClampLower(this int value, int bound)
             => Mathf.Max(value, bound);
+
+        public static float Remap(this float value, float a0, float a1, float b0, float b1)
+        {
+            return Mathf.Lerp(b0, b1, Mathf.InverseLerp(a0, a1, value));
+        }
     }
 }

@@ -42,10 +42,14 @@ public class EntityEditorPanel : Panel
         AwayEntityView.SetAddress(null);
         AwayEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
         AwayEntityView.DropSlotNeuron.Join(Equip, Swap);
+        AwayEntityView.DropSmirkAgainstSlotNeuron.Join(Equip, Swap);
+        AwayEntityView.DropAfraidAgainstSlotNeuron.Join(Equip, Swap);
 
         HomeEntityView.SetAddress(new Address("Editor.Home"));
         HomeEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
         HomeEntityView.DropSlotNeuron.Join(Equip, Swap);
+        HomeEntityView.DropSmirkAgainstSlotNeuron.Join(Equip, Swap);
+        HomeEntityView.DropAfraidAgainstSlotNeuron.Join(Equip, Swap);
         
         CopyToTopButton.onClick.RemoveAllListeners();
         CopyToTopButton.onClick.AddListener(CopyToTop);
