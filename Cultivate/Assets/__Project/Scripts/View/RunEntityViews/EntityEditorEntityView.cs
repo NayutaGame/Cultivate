@@ -23,6 +23,9 @@ public class EntityEditorEntityView : SimpleView
     public ListView FieldView;
     public ListView FormationListView;
 
+    public ListView SmirkAgainstListView;
+    public ListView AfraidAgainstListView;
+
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
@@ -91,6 +94,16 @@ public class EntityEditorEntityView : SimpleView
             FormationListView.PointerEnterNeuron.Join(PointerEnterFormationNeuron);
             FormationListView.PointerExitNeuron.Join(PointerExitFormationNeuron);
             FormationListView.PointerMoveNeuron.Join(PointerMoveFormationNeuron);
+        }
+
+        if (SmirkAgainstListView != null)
+        {
+            
+        }
+
+        if (AfraidAgainstListView != null)
+        {
+            
         }
     }
 

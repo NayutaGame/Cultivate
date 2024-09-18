@@ -2,10 +2,13 @@
 public class SlotListModel : ListModel<SkillSlot>
 {
     public static SlotListModel Default()
+        => DefaultWithSize(RunManager.MaxSlotCount);
+
+    public static SlotListModel DefaultWithSize(int size)
     {
         SlotListModel ret = new();
         
-        for (int i = 0; i < RunManager.MaxSlotCount; i++)
+        for (int i = 0; i < size; i++)
         {
             SkillSlot slot = new SkillSlot(i);
             ret.Add(slot);

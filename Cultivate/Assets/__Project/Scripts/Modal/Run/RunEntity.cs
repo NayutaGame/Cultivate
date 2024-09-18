@@ -68,6 +68,14 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         SetSlotCount(RunManager.SlotCountFromJingJie[jingJie]);
     }
 
+    [SerializeReference] private SlotListModel _smirkAgainstSlots;
+    [SerializeReference] private SlotListModel _afraidAgainstSlots;
+    
+    public string GetReactionKeyFromSkill(RunSkill skill)
+    {
+        return "normal";
+    }
+
     [SerializeReference] private SlotListModel _slots;
     [NonSerialized] private FilteredListModel<SkillSlot> _filteredSlots;
 
@@ -186,6 +194,8 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             { "Slots", () => _filteredSlots },
             { "RunFormations", () => _formations },
             { "ShowingFormations", () => _showingFormations },
+            { "SmirkAgainstSlots", () => _smirkAgainstSlots },
+            { "AfraidAgainstSlots", () => _afraidAgainstSlots },
         };
         EnvironmentChangedNeuron = new();
         
@@ -195,6 +205,9 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
         _baseHealth = baseHealth ?? BaseHealthFromJingJie[_jingJie];
 
         _slots = slots == null ? SlotListModel.Default() : slots.Clone();
+        
+        // _smirkAgainstSlots = SlotListModel.DefaultWithSize(3);
+        // _afraidAgainstSlots = SlotListModel.DefaultWithSize(3);
 
         if (slotCount == null)
         {
@@ -217,6 +230,8 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             { "Slots", () => _filteredSlots },
             { "RunFormations", () => _formations },
             { "ShowingFormations", () => _showingFormations },
+            { "SmirkAgainstSlots", () => _smirkAgainstSlots },
+            { "AfraidAgainstSlots", () => _afraidAgainstSlots },
         };
         EnvironmentChangedNeuron = new();
         

@@ -20,4 +20,6 @@ public interface EntityModel
 
     bool IsInPool();
     void SetInPool(bool inPool);
+
+    string GetReactionKeyFromSkill(RunSkill skill);
 }

@@ -1,15 +1,14 @@
 
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class BattlePanel : Panel
 {
     [SerializeField] private BattleEntityView EnemyView;
-
-    [SerializeField] private Image ReactionImage;
+    [SerializeField] private ReactionView ReactionView;
     
     [SerializeField] private TMP_Text HomeHealth;
     [SerializeField] private TMP_Text AwayHealth;
@@ -22,7 +21,7 @@ public class BattlePanel : Panel
     [SerializeField] public Color WinColor;
     [SerializeField] public Color LoseColor;
 
-    [SerializeField] public Sprite HappySprite;
+    [SerializeField] public Sprite SmirkSprite;
     [SerializeField] public Sprite AfraidSprite;
 
     private Address _address;
@@ -60,6 +59,81 @@ public class BattlePanel : Panel
         }
         
         CanvasManager.Instance.RefreshGuide();
+    }
+
+    private Dictionary<string, Sprite> ReactionDict;
+
+    private void OnEnable()
+    {
+        ReactionDict ??= new Dictionary<string, Sprite>()
+            { { "Normal", null }, { "Smirk", SmirkSprite }, { "Afraid", AfraidSprite }, };
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.BeginDragNeuron.Join(ReactionFromBeginDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.EndDragNeuron.Join(ReactionFromEndDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.DragNeuron.Join(ReactionFromDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.DropNeuron.Join(ReactionFromDrop);
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.BeginDragNeuron.Join(ReactionFromBeginDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.EndDragNeuron.Join(ReactionFromEndDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.DragNeuron.Join(ReactionFromDrag);
+    }
+
+    private void OnDisable()
+    {
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.BeginDragNeuron.Remove(ReactionFromBeginDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.EndDragNeuron.Remove(ReactionFromEndDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.DragNeuron.Remove(ReactionFromDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.DropNeuron.Remove(ReactionFromDrop);
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.BeginDragNeuron.Remove(ReactionFromBeginDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.EndDragNeuron.Remove(ReactionFromEndDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.DragNeuron.Remove(ReactionFromDrag);
+    }
+
+    private void ReactionFromBeginDrag(InteractBehaviour ib, PointerEventData d)
+    {
+        object obj = ib.GetSimpleView().Get<object>();
+        RunSkill skill;
+
+        if (obj is SkillSlot slot)
+        {
+            skill = slot.Skill;
+            
+            EntityModel entity = EnemyView.Get<EntityModel>();
+            string reactionKey = entity.GetReactionKeyFromSkill(skill);
+            Sprite reactionSprite = ReactionDict[reactionKey];
+            ReactionView.SetSprite(reactionSprite);
+            return;
+        }
+
+        if (obj is RunSkill runSkill)
+        {
+            skill = runSkill;
+            
+            EntityModel entity = EnemyView.Get<EntityModel>();
+            string reactionKey = entity.GetReactionKeyFromSkill(skill);
+            Sprite reactionSprite = ReactionDict[reactionKey];
+            ReactionView.SetSprite(reactionSprite);
+            return;
+        }
+        
+        Debug.Log($"BeginDrag, {obj}");
+    }
+
+    private void ReactionFromEndDrag(InteractBehaviour ib, PointerEventData d)
+    {
+        object obj = ib.GetSimpleView().Get<object>();
+
+        // int intensity = GetIntensityAccordingToDistance();
+        // reactionView.SetIntensity(intensity);
+    }
+
+    private void ReactionFromDrag(InteractBehaviour ib, PointerEventData d)
+    {
+        // reactionView.ResetState();
+    }
+
+    private void ReactionFromDrop(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        object toObj = to.GetSimpleView().Get<object>();
+        // reactionView.ResetState();
     }
 
     private void Combat(PointerEventData eventData)

@@ -1173,7 +1173,7 @@ RectTransform:
   m_Children:
   - {fileID: 3621518877245489695}
   - {fileID: 401633483397264683}
-  - {fileID: 3353176867832871237}
+  - {fileID: 9046272080204602763}
   - {fileID: 6048932769161969677}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1196,14 +1196,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyView: {fileID: 4253511819125662354}
-  ReactionImage: {fileID: 0}
+  ReactionView: {fileID: 4481673939816518499}
   HomeHealth: {fileID: 824685915812255268}
   AwayHealth: {fileID: 5383006118710765990}
   CombatButton: {fileID: 6440139639276801742}
   VictoryStamp: {fileID: 1985658454072767149}
   WinColor: {r: 0.21176471, g: 0.85490197, b: 0.48235294, a: 1}
   LoseColor: {r: 0.73333335, g: 0.105882354, b: 0.105882354, a: 1}
-  HappySprite: {fileID: 21300000, guid: 4937c6b06d9a0254b8473d143d66de8a, type: 3}
+  SmirkSprite: {fileID: 21300000, guid: 4937c6b06d9a0254b8473d143d66de8a, type: 3}
   AfraidSprite: {fileID: 21300000, guid: 05acf59528a3d1d43a2c511c8a6c01d2, type: 3}
 --- !u!1 &6663902462726236621
 GameObject:
@@ -1630,12 +1630,12 @@ RectTransform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1825232190025974500}
-  m_RootOrder: 2
+  m_Father: {fileID: 9046272080204602763}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 483, y: 304}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 372, y: 351}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5471211550798677896
@@ -1818,6 +1818,57 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &9113516776899668609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9046272080204602763}
+  - component: {fileID: 4481673939816518499}
+  m_Layer: 5
+  m_Name: ReactionView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9046272080204602763
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9113516776899668609}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3353176867832871237}
+  m_Father: {fileID: 1825232190025974500}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 483, y: 304}
+  m_SizeDelta: {x: 186, y: 175.5}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4481673939816518499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9113516776899668609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25c5e5f3532da6240b0e9361ac338beb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ReactionImage: {fileID: 1818105404580745544}
 --- !u!1001 &1832051897953313162
 PrefabInstance:
   m_ObjectHideFlags: 0
