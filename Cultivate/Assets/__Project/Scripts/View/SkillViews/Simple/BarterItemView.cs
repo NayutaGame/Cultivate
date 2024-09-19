@@ -6,7 +6,7 @@ public class BarterItemView : SimpleView
 {
     public SimpleView PlayerSkillView;
     public SimpleView SkillView;
-    public Button ExchangeButton;
+    public GlowingButton ExchangeButton;
 
     // TODO: use Neuron
     public event Action<BarterItem> ExchangeEvent;
@@ -18,8 +18,7 @@ public class BarterItemView : SimpleView
         PlayerSkillView.SetAddress(GetAddress().Append(".FromSkill"));
         SkillView.SetAddress(GetAddress().Append(".ToSkill"));
 
-        ExchangeButton.onClick.RemoveAllListeners();
-        ExchangeButton.onClick.AddListener(Exchange);
+        ExchangeButton.OnClickNeuron.Join(Exchange);
     }
 
     public override void Refresh()
@@ -34,7 +33,7 @@ public class BarterItemView : SimpleView
 
         PlayerSkillView.Refresh();
         SkillView.Refresh();
-        ExchangeButton.interactable = barterItem.Affordable();
+        ExchangeButton.SetInteractable(barterItem.Affordable());
     }
 
     private void Exchange()
