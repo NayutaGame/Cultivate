@@ -17,7 +17,8 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
-                        new AdventureRoomDescriptor(0),
+                        new DirectRoomDescriptor(0, "毕业季"),
+                        // new AdventureRoomDescriptor(0),
                         new BattleRoomDescriptor(0, 3, 4),
                         new AdventureRoomDescriptor(0),
                         new RestRoomDescriptor(0),

@@ -45,7 +45,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         A.SetWinOperation(() =>
                         {
-                            B.SetDetailedText($"胜利！\n获得了{goldValue}金\n请选择一张卡作为奖励");
+                            B.SetDetailedText($"获得了<style=\"Gold\">{goldValue}金钱</style>\n请选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return B;
@@ -54,7 +54,8 @@ public class RoomCategory : Category<RoomEntry>
                         A.SetLoseOperation(() =>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
-                            C.SetDetailedText($"你没能击败对手，损失了2命元。\n获得了{goldValue}金\n请选择一张卡作为奖励");
+                            C.SetDetailedText($"<style=\"Gray\">你没能击败对手，损失了一些命元</style>" +
+                                       $"\n但获得了<style=\"Gold\">{goldValue}金钱</style>，以及选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return C;
@@ -65,7 +66,8 @@ public class RoomCategory : Category<RoomEntry>
                         A.SetWinOperation(() =>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(3);
-                            B.SetDetailedText($"胜利！\n跨越境界使得你的命元恢复了3\n获得了{goldValue}金\n请选择一张卡作为奖励");
+                            B.SetDetailedText($"跨越境界使得你的命元恢复了3" +
+                                              $"\n获得了{goldValue}金，请选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return B;
@@ -73,7 +75,8 @@ public class RoomCategory : Category<RoomEntry>
 
                         A.SetLoseOperation(() =>
                         {
-                            C.SetDetailedText($"你没能击败对手，幸好跨越境界抵消了你的命元伤害。\n获得了{goldValue}金\n请选择一张卡作为奖励");
+                            C.SetDetailedText($"<style=\"Gray\">你没能击败对手，幸好跨越境界抵消了你的命元伤害。</style>" +
+                                              $"\n获得了<style=\"Gold\">{goldValue}金钱</style>，请选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return C;

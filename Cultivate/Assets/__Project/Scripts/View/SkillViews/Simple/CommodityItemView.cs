@@ -8,10 +8,8 @@ public class CommodityItemView : SimpleView
 {
     public SimpleView SkillView;
     public TMP_Text PriceText;
-    public Image Icon;
+    public GameObject DiscountSign;
     public TMP_Text DiscountText;
-
-    public Color NormalDiscountColor;
 
     public override void SetAddress(Address address)
     {
@@ -35,24 +33,20 @@ public class CommodityItemView : SimpleView
         float discount = 1 - commodity.Discount;
         if (discount == 0)
         {
-            DiscountText.gameObject.SetActive(false);
+            DiscountSign.SetActive(false);
         }
         else
         {
-            DiscountText.text = $"{discount * 100}%OFF";
-            DiscountText.gameObject.SetActive(true);
+            DiscountText.text = $"{discount * 10}折";
+            DiscountSign.SetActive(true);
         }
 
         if (commodity.Affordable())
         {
-            DiscountText.color = NormalDiscountColor;
-            Icon.color = Color.white;
             PriceText.color = Color.white;
         }
         else
         {
-            DiscountText.color = Color.red;
-            Icon.color = Color.red;
             PriceText.color = Color.red;
         }
     }

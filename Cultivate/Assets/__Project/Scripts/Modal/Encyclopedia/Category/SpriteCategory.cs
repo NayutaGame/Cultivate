@@ -53,7 +53,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("漫画5", "Images/Cutscenes/漫画5"),
 
             // 卡牌
-            new("缺失卡面插画", "Images/SkillIllustrates/Default"),
+            new("缺失卡面插画", "Images/CardIllustrations/Default"),
             new("聚气术", "Images/Cards/聚气术"),
             new("冲撞", "Images/Cards/冲撞"),
             
