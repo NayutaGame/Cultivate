@@ -279,8 +279,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\n\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\n\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 182c3c14dc02d8047ab2544167300652, type: 2}
-  m_sharedMaterial: {fileID: -3614779549884566837, guid: 182c3c14dc02d8047ab2544167300652, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
