@@ -8,9 +8,7 @@ using UnityEngine.UI;
 
 public class ArbitraryCardPickerPanel : Panel
 {
-    public TMP_Text Text1;
-    public TMP_Text Text2;
-    public TMP_Text Text3;
+    public TMP_Text DetailedText;
     public Button ConfirmButton;
     public ListView SkillListView;
 
@@ -44,9 +42,9 @@ public class ArbitraryCardPickerPanel : Panel
 
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
-        Text1.text = d.GetDetailedText();
-        Text2.text = $"可选择{d.Bound.Start}~{d.Bound.End - 1}张";
-        Text3.text = $"已选择 {_selections.Count} 张";
+        DetailedText.text = d.GetDetailedText() +
+                            $"可选择{d.Bound.Start}~{d.Bound.End - 1}张" +
+                            $"已选择 {_selections.Count} 张";
         ConfirmButton.interactable = d.Bound.Contains(_selections.Count);
 
         SkillListView.Refresh();
