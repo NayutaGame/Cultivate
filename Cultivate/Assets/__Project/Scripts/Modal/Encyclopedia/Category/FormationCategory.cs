@@ -345,7 +345,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rewardDescription:                                          "使用第一张牌后，变成疲劳" +
                                                                                     "\n燃命时：获得1灼烧" +
                                                                                     "\n暂缺" +
-                                                                                    "\n每轮生命恢复至上限",
+                                                                                    "\n每轮气血恢复至上限",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -646,7 +646,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                5,
                         trivia:                                                     null,
                         rewardDescription:                                          "开局：获得4灵气" +
-                                                                                    "\n获得灵气时：每1，回复2生命" +
+                                                                                    "\n获得灵气时：每1，回复2气血" +
                                                                                     "\n每回合：获得1灵气",
                         eventDescriptors: new StageEventDescriptor[]
                         {
@@ -668,7 +668,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                4,
                         trivia:                                                     null,
                         rewardDescription:                                          "开局：获得4灵气" +
-                                                                                    "\n获得灵气时：每1，回复2生命",
+                                                                                    "\n获得灵气时：每1，回复2气血",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -703,20 +703,20 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                 }),
             
-            new(id: "治疗阵",
+            new(id: "气血阵",
                 order: 0,
-                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Heal),
-                progressDescription: "携带越多治疗牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Heal._index] + d.Proficiency,
+                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Health),
+                progressDescription: "携带越多气血牌越强大",
+                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Health._index] + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                5,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：生命上限+50" +
+                        rewardDescription:                                          "开局：气血及上限变为1.2倍" +
                                                                                     "\n受到治疗时：力量+1" +
-                                                                                    "\n第二轮：生命回复到上限",
+                                                                                    "\n第二轮：气血回复到上限",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -727,7 +727,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                f.Owner.MaxHp += 50;
+                                int value = (int)(f.Owner.MaxHp * 0.2f);
+                                f.Owner.MaxHp += value;
+                                await f.Owner.HealProcedure(value, induced: false);
                                 await f.Owner.GainBuffProcedure("盛开");
                                 await f.Owner.GainBuffProcedure("太虚");
                             }),
@@ -736,7 +738,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：生命上限+50" +
+                        rewardDescription:                                          "开局：气血及上限变为1.2倍" +
                                                                                     "\n受到治疗时：力量+1",
                         eventDescriptors: new StageEventDescriptor[]
                         {
@@ -747,8 +749,10 @@ public class FormationCategory : Category<FormationGroupEntry>
             
                                 if (f.Owner != d.Owner)
                                     return;
-
-                                f.Owner.MaxHp += 50;
+                                
+                                int value = (int)(f.Owner.MaxHp * 0.2f);
+                                f.Owner.MaxHp += value;
+                                await f.Owner.HealProcedure(value, induced: false);
                                 await f.Owner.GainBuffProcedure("盛开");
                             }),
                         }),
@@ -756,7 +760,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                3,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：生命上限+50",
+                        rewardDescription:                                          "开局：气血及上限变为1.2倍",
                         eventDescriptors: new StageEventDescriptor[]
                         {
                             new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -767,7 +771,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner)
                                     return;
 
-                                f.Owner.MaxHp += 50;
+                                int value = (int)(f.Owner.MaxHp * 0.2f);
+                                f.Owner.MaxHp += value;
+                                await f.Owner.HealProcedure(value, induced: false);
                             }),
                         }),
                 }),
@@ -809,7 +815,7 @@ public class FormationCategory : Category<FormationGroupEntry>
             //         => d.NonSwiftCount + d.Proficiency,
             //     formationEntries: new[]
             //     {
-            //         new FormationEntry(JingJie.HuaShen, rewardDescription: "第二轮开始时，双方重置生命上限，回100%血", trivia: null, requirement: 12,
+            //         new FormationEntry(JingJie.HuaShen, rewardDescription: "第二轮开始时，双方重置气血上限，回100%血", trivia: null, requirement: 12,
             //             eventDescriptors: new StageEventDescriptor[]
             //             {
             //                 new(StageEventDict.STAGE_FORMATION, StageEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>
@@ -820,7 +826,7 @@ public class FormationCategory : Category<FormationGroupEntry>
             //                     await f.Owner.GainBuffProcedure("六爻化劫", 100);
             //                 }),
             //             }),
-            //         new FormationEntry(JingJie.YuanYing, rewardDescription: "第二轮开始时，双方重置生命上限，回30%血", trivia: null, requirement: 10,
+            //         new FormationEntry(JingJie.YuanYing, rewardDescription: "第二轮开始时，双方重置气血上限，回30%血", trivia: null, requirement: 10,
             //             eventDescriptors: new StageEventDescriptor[]
             //             {
             //                 new(StageEventDict.STAGE_FORMATION, StageEventDict.GAIN_FORMATION, 0, async (listener, stageEventDetails) =>

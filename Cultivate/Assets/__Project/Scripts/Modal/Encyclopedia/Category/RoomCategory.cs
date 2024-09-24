@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
@@ -113,6 +114,131 @@ public class RoomCategory : Category<RoomEntry>
 
                     return A;
                 }),
+            
+            new(id:                                 "出门",
+                description:                        "出门",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    // 0 -> 凌云峰，5张金牌
+                    // 1 -> 逍遥海，5张水牌
+                    // 2 -> 桃花宫，5张木牌
+                    // 3 -> 长明殿，5张火牌
+                    // 4 -> 环岳岭，5张土牌
+                    // 5 -> 易宝斋，6张随机牌，5金钱
+                    // 6 -> 风雨楼，6张攻击牌
+                    // 7 -> 云隐镖局，6张防御牌
+                    // 8 -> 百草堂，6张随机牌，5气血上限
+                    // 9 -> 星宫，3张灵气牌，2张随机牌
+                    // 10 -> 天机阁，2张筑基牌，3张随机牌
+                    // 11 -> 散修，8张随机牌
+                    string[] titles = new string[12]
+                    {
+                        "凌云峰，5张金牌",
+                        "逍遥海，5张水牌",
+                        "桃花宫，5张木牌",
+                        "长明殿，5张火牌",
+                        "环岳岭，5张土牌",
+                        "易宝斋，6张随机牌，5金钱",
+                        "风雨楼，6张攻击牌",
+                        "云隐镖局，6张防御牌",
+                        "百草堂，6张随机牌，5气血上限",
+                        "星宫，3张灵气牌，2张随机牌",
+                        "天机阁，2张筑基牌，3张随机牌",
+                        "散修，8张随机牌",
+                    };
+                    
+                    RunEnvironment env = RunManager.Instance.Environment;
+
+                    Func<DialogOption, PanelDescriptor>[] selects = new Func<DialogOption, PanelDescriptor>[12]
+                    {
+                        option =>
+                        { // 0 -> 凌云峰，5张金牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Jin, count: 5));
+                            return null;
+                        },
+                        option =>
+                        { // 1 -> 逍遥海，5张水牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Shui, count: 5));
+                            return null;
+                        },
+                        option =>
+                        { // 2 -> 桃花宫，5张木牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Mu, count: 5));
+                            return null;
+                        },
+                        option =>
+                        { // 3 -> 长明殿，5张火牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Huo, count: 5));
+                            return null;
+                        },
+                        option =>
+                        { // 4 -> 环岳岭，5张土牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Tu, count: 5));
+                            return null;
+                        },
+                        option =>
+                        { // 5 -> 易宝斋，6张随机牌，5金钱
+                            env.SetDGoldProcedure(5);
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 6));
+                            return null;
+                        },
+                        option =>
+                        { // 6 -> 风雨楼，6张攻击牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack), count: 6));
+                            return null;
+                        },
+                        option =>
+                        { // 7 -> 云隐镖局，6张防御牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend), count: 6));
+                            return null;
+                        },
+                        option =>
+                        { // 8 -> 百草堂，6张随机牌，5气血上限
+                            env.SetDDHealthProcedure(5);
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 6));
+                            return null;
+                        },
+                        option =>
+                        { // 9 -> 星宫，3张灵气牌，2张随机牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Mana), count: 3));
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 2));
+                            return null;
+                        },
+                        option =>
+                        { // 10 -> 天机阁，2张筑基牌，3张随机牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.ZhuJi, count: 2));
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 3));
+                            return null;
+                        },
+                        option =>
+                        { // 11 -> 散修，8张随机牌
+                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 8));
+                            return null;
+                        },
+                    };
+                    
+                    Pool<int> pool = new Pool<int>();
+                    12.Do(i => pool.Populate(i));
+                    
+                    pool.Shuffle();
+
+                    int[] popped = new int[3];
+                    popped.Length.Do(i => pool.TryPopItem(out popped[i]));
+
+                    DialogOption[] dialogOptions = new DialogOption[3];
+                    dialogOptions.Length.Do(i =>
+                    {
+                        int index = popped[i];
+                        dialogOptions[i] = new DialogOption(titles[index]);
+                        dialogOptions[i].SetSelect(selects[index]);
+                    });
+                    
+                    DialogPanelDescriptor A = new($"请问想以哪一个门派出发？", dialogOptions);
+
+                    return A;
+                }),
 
             new(id:                                 "休息",
                 description:                        "休息",
@@ -149,7 +275,7 @@ public class RoomCategory : Category<RoomEntry>
                     });
 
                     int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
-                    DialogPanelDescriptor C = new DialogPanelDescriptor($"泡了温泉之后感到了心情畅快，获得了{baseGoldReward}点生命上限")
+                    DialogPanelDescriptor C = new DialogPanelDescriptor($"泡了温泉之后感到了心情畅快，获得了{baseGoldReward}点气血上限")
                         .SetReward(Reward.FromHealth(baseGoldReward));
                     
                     DialogPanelDescriptor D = new DialogPanelDescriptor("喝了几口人参茶，回复了2点命元")
@@ -601,7 +727,7 @@ public class RoomCategory : Category<RoomEntry>
                     CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
                         detailedText:       "请提交一张治疗牌",
                         bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.Heal));
+                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.Health));
 
                     DialogPanelDescriptor BWin = new("你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。", "不知过了多久");
                     DialogPanelDescriptor BWin2 = new("你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
@@ -616,7 +742,7 @@ public class RoomCategory : Category<RoomEntry>
                     CWin2.SetReward(new AddSkillReward("0608", RunManager.Instance.Environment.JingJie));
 
                     DialogPanelDescriptor CLose = new("你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，肺部在不断哀嚎。", "不知过了多久");
-                    DialogPanelDescriptor CLose2 = new("空气中的粘稠感终于消失。你赶紧大口吸气呼气，第一次感到空气是这么美好。生命值上限+10。");
+                    DialogPanelDescriptor CLose2 = new("空气中的粘稠感终于消失。你赶紧大口吸气呼气，第一次感到空气是这么美好。气血上限+10。");
                     CLose2.SetReward(Reward.FromHealth(16));
 
                     A[0].SetSelect(option => B);
@@ -960,7 +1086,7 @@ public class RoomCategory : Category<RoomEntry>
                 {
                     DialogPanelDescriptor A = new("你近日练功，隐约感到一个瓶颈，心里略有不快。想着，如果全力一博，说不定就多一分机会窥见大道的真貌。",
                         "欲速则不达",
-                        "大力出奇迹（消耗30生命上限）");
+                        "大力出奇迹（消耗30气血上限）");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获。\n\n得到一张牌")
                         .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: RunManager.Instance.Environment.JingJie)));
@@ -985,7 +1111,7 @@ public class RoomCategory : Category<RoomEntry>
                         "浅尝则止");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("你在太虚之中呆了良久，感受到了天道已经在注视自己的，然后大喊了一声，你过来啊。" +
-                                                                        "轰！！你觉得自己元神归窍的速度已经很快了，不知怎么的，肉体还是受到了极大损伤。生命上限变为100。" +
+                                                                        "轰！！你觉得自己元神归窍的速度已经很快了，不知怎么的，肉体还是受到了极大损伤。气血上限变为100。" +
                                                                         "万幸，太虚境中确实对修炼的提升很大。所有牌境界提升至最高。");
                     DialogPanelDescriptor C = new DialogPanelDescriptor("在太虚的边缘进行修炼确实大有好处，你感觉自己的体魄变得更加坚韧了")
                         .SetReward(Reward.FromHealth(16));
@@ -1052,7 +1178,7 @@ public class RoomCategory : Category<RoomEntry>
                         "钱币的富裕",
                         "这个愿望不被实现");
 
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n生命上限+10")
+                    DialogPanelDescriptor B = new DialogPanelDescriptor("实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n气血上限+10")
                         .SetReward(Reward.FromHealth(8));
                     DialogPanelDescriptor C = new DialogPanelDescriptor("实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+100")
                         .SetReward(Reward.FromGold(8));
@@ -1060,7 +1186,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(room.Ladder + 3));
                     BattlePanelDescriptor E = new(template);
-                    DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n生命上限+10，金+100")
+                    DialogPanelDescriptor EWin = new DialogPanelDescriptor("哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n气血上限+10，金+100")
                         .SetReward(new ResourceReward(gold: 8, health: 8));
                     DialogPanelDescriptor ELose = new("哼，现在神灯精灵不好做了，就是因为经常碰见你这种人。下次别再让我遇见了。");
 
@@ -1211,7 +1337,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor D = new DialogPanelDescriptor($"你问了管家情况，发现都是些鸡毛蒜皮的小事。并不需要什么维护，就收了车马费。\n\n金+{baseGoldReward}")
                         .SetReward(Reward.FromGold(baseGoldReward));
 
-                    DialogPanelDescriptor E = new DialogPanelDescriptor($"这阵子，管家没有再来打扰你了，应该是去打扰别人了。心情变好了一点。\n\n生命上限+{baseGoldReward}")
+                    DialogPanelDescriptor E = new DialogPanelDescriptor($"这阵子，管家没有再来打扰你了，应该是去打扰别人了。心情变好了一点。\n\n气血上限+{baseGoldReward}")
                         .SetReward(Reward.FromHealth(baseGoldReward));
 
                     A[0].SetSelect(option => B);
@@ -1315,7 +1441,7 @@ public class RoomCategory : Category<RoomEntry>
                         "赞同他，说一年只有三个季节",
                         "向他解释，说一年有四个季节");
 
-                    DialogPanelDescriptor B = new DialogPanelDescriptor($"那人让你过去了，你感觉自己避免了一件麻烦事，心情大为畅快。\n\n生命上限+{baseGoldReward}")
+                    DialogPanelDescriptor B = new DialogPanelDescriptor($"那人让你过去了，你感觉自己避免了一件麻烦事，心情大为畅快。\n\n气血上限+{baseGoldReward}")
                         .SetReward(Reward.FromHealth(baseGoldReward));
                     DialogPanelDescriptor C = new DialogPanelDescriptor($"一个月过去了，想过桥的人看到你们俩堵在桥中间，劝也劝不动，都想其他法子过桥了。那人的面容有所变化，但是嘴还是硬的。" +
                                                                         "\n两个月时间逐渐过去，周围的人已经不来这个桥了。那人竟然以肉眼可见的速度，每天变老，但是还是一口咬定冬季不存在。" +
@@ -1439,7 +1565,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor("你把这张相片放在了挂在了你的大堂里，寻求你帮助的人看到你俊美的相貌，愿意以更高价钱请你出力。金+100。")
                         .SetReward(Reward.FromGold(100));
-                    DialogPanelDescriptor C = new DialogPanelDescriptor("你把好的相片留给了机关师，这样他日后看到相片的时候，就会感到这段回忆多一分美好。这样想到，你的心情变好了。生命上限+10")
+                    DialogPanelDescriptor C = new DialogPanelDescriptor("你把好的相片留给了机关师，这样他日后看到相片的时候，就会感到这段回忆多一分美好。这样想到，你的心情变好了。气血上限+10")
                         .SetReward(Reward.FromHealth(10));
                     DialogPanelDescriptor D = new DialogPanelDescriptor("你对那人说：”相必先生也知道，美好的时光总是短暂的。这个机关，可以将美好的时光记录下来，之后就可以看着照片反复回忆。" +
                                                                         "但真的如此做的话，处于桃林中的我们也会因为知道相片可以反复回忆，反倒不去珍惜此时此刻的美景了。这难道不是本末倒置了么？“" +

@@ -53,7 +53,7 @@ public class MingYuan : BoundedInt
         {
             Tuple<int, int, int, int> penalty = MINGYUAN_PENALTY_TABLE[count];
 
-            if (penalty.Item1 != 0) sb.Append($"损失{penalty.Item1}%生命上限\n");
+            if (penalty.Item1 != 0) sb.Append($"损失{penalty.Item1}%气血上限\n");
             if (penalty.Item2 != 0) sb.Append($"遭受{penalty.Item2}腐朽\n");
             if (penalty.Item3 != 0) sb.Append($"遭受{penalty.Item3}软弱\n");
             if (penalty.Item4 != 0) sb.Append($"遭受{penalty.Item4}跳回合\n");

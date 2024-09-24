@@ -12,12 +12,12 @@ public class MapCategory : Category<MapEntry>
                 slotCount: 3,
                 gold: 3,
                 skillJingJie: JingJie.LianQi,
-                skillCount: 5,
+                skillCount: 0,
                 levels: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
-                        new AdventureRoomDescriptor(0),
+                        new DirectRoomDescriptor(0, "出门"),
                         new BattleRoomDescriptor(0, 3, 4),
                         new AdventureRoomDescriptor(0),
                         new RestRoomDescriptor(0),

@@ -31,9 +31,10 @@ public class BuffCategory : Category<BuffEntry>
             new("跳卡牌",     "行动时跳过下张卡牌",                     BuffStackRule.Add, false, false),
             new("集中",      "下一次使用牌时，条件算作激活",                BuffStackRule.Add, true, false),
             new("永久集中",    "所有牌，条件算作激活",                    BuffStackRule.One, true, false),
-            new("浮空艇",     "回合被跳过时：生命及上线无法下降",              BuffStackRule.Add, true, false),
+            new("浮空艇",     "回合被跳过时：气血及上线无法下降",              BuffStackRule.Add, true, false),
             new("架势",     "消耗架势激活效果，没有架势时获得架势",              BuffStackRule.Add, true, false),
             new("一梦如是已触发",     "一梦如是已触发",              BuffStackRule.One, true, false),
+            new("锻体",     "残血所需的阈值提升",              BuffStackRule.Add, true, false),
             
             new(id:                         "跳走步",
                 description:                "跳过走步阶段",
@@ -143,7 +144,7 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new(id:                         "内伤",
-                description:                "每回合：失去[层数]生命，层数-1",
+                description:                "每回合：失去[层数]气血，层数-1",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
@@ -324,7 +325,7 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new(id:                         "不堪一击",
-                description:                "受击伤：生命降至0",
+                description:                "受击伤：气血降至0",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
@@ -373,7 +374,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("六爻化劫", "第二轮开始时，双方重置生命上限，回[层数]%血", BuffStackRule.Max, true, false,
+            new("六爻化劫", "第二轮开始时，双方重置气血上限，回[层数]%血", BuffStackRule.Max, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
@@ -434,7 +435,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("长明灯", "获得灵气时：每1，生命+3", BuffStackRule.Add, true, false,
+            new("长明灯", "获得灵气时：每1，气血+3", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, eventDetails) =>
@@ -664,7 +665,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("吸血", "下[层数]次攻击时，根据造成伤害值，回复生命", BuffStackRule.Add, true, false,
+            new("吸血", "下[层数]次攻击时，根据造成伤害值，回复气血", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
@@ -1110,7 +1111,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("待激活的凤凰涅槃", "20灼烧觉醒：每轮生命恢复至上限", BuffStackRule.One, true, false,
+            new("待激活的凤凰涅槃", "20灼烧觉醒：每轮气血恢复至上限", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
@@ -1128,7 +1129,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("凤凰涅槃", "每轮以及强制结算前：生命恢复至上限", BuffStackRule.One, true, false,
+            new("凤凰涅槃", "每轮以及强制结算前：气血恢复至上限", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_STAGE, 0, async (listener, stageEventDetails) =>
@@ -1231,19 +1232,19 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("轮生命上限", "每轮：生命上限+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        RoundDetails d = (RoundDetails)eventDetails;
-                        if (b.Owner != d.Owner) return;
-
-                        b.PlayPingAnimation();
-                        b.Owner.MaxHp += b.Stack;
-                    }),
-                }),
+            // new("轮气血上限", "每轮：气血上限+[层数]", BuffStackRule.Add, true, false,
+            //     eventDescriptors: new StageEventDescriptor[]
+            //     {
+            //         new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+            //         {
+            //             Buff b = (Buff)listener;
+            //             RoundDetails d = (RoundDetails)eventDetails;
+            //             if (b.Owner != d.Owner) return;
+            //
+            //             b.PlayPingAnimation();
+            //             b.Owner.MaxHp += b.Stack;
+            //         }),
+            //     }),
 
             new("轮暴击", "每轮：获得[层数]暴击", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
@@ -1305,7 +1306,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("清心", "获得灵气时：每1，回复[层数]生命", BuffStackRule.Add, true, false,
+            new("清心", "获得灵气时：每1，回复[层数]气血", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
@@ -1321,7 +1322,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("太虚", "第二轮：生命回满", BuffStackRule.One, true, false,
+            new("太虚", "第二轮：气血回满", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>

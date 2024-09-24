@@ -164,7 +164,7 @@ public class StageEnvironment : Addressable, StageEventListener
 
         await DamageProcedure(new DamageDetails(d.Src, d.Tgt, d.Value, crit: d.Crit, lifeSteal: d.LifeSteal, willDamage: d.WillDamage, undamaged: d.Undamaged, didDamage: d.DidDamage), induced);
         
-        _result.TryAppend($"    敌方生命[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
+        _result.TryAppend($"    敌方气血[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
     }
 
     private async Task EvadedProcedure(EvadedDetails d, bool induced)
@@ -228,7 +228,7 @@ public class StageEnvironment : Addressable, StageEventListener
         await DamageProcedure(damageDetails, induced);
 
         // await TryPlayTween(new AttackTweenDescriptor(d));
-        _result.TryAppend($"    敌方生命[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
+        _result.TryAppend($"    敌方气血[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
 
         await _eventDict.SendEvent(StageEventDict.DID_INDIRECT, d);
     }
@@ -318,7 +318,7 @@ public class StageEnvironment : Addressable, StageEventListener
         await Play(new HealCharacterAnimation(true, d), induced);
         await Play(new HealVFXAnimation(false, d), induced);
         await Play(new HealTextAnimation(false, d), induced);
-        _result.TryAppend($"    生命变成了${tgt.Hp}");
+        _result.TryAppend($"    气血变成了${tgt.Hp}");
 
         await _eventDict.SendEvent(StageEventDict.DID_HEAL, d);
     }

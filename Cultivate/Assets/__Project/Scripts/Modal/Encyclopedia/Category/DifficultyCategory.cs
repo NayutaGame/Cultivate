@@ -9,7 +9,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
     {
         AddRange(new List<DifficultyEntry>()
         {
-            new("-1", description: "敌人生命上限减少30%，不会受到命元惩罚",
+            new("-1", description: "敌人气血上限减少30%，不会受到命元惩罚",
                 stageEventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -19,7 +19,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                     }),
                 }),
             new("0", description: "没有变化"),
-            new("1", description: "敌人生命上限增加10%",
+            new("1", description: "敌人气血上限增加10%",
                 stageEventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -82,7 +82,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("8", description: "主角生命上限-10%",  _additionalDifficultyNames: new string[] { "7", "6", "5", "4", "3", "2", "1" },
+            new("8", description: "主角气血上限-10%",  _additionalDifficultyNames: new string[] { "7", "6", "5", "4", "3", "2", "1" },
                 stageEventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>

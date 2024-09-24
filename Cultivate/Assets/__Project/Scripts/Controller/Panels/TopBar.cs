@@ -23,7 +23,7 @@ public class TopBar : MonoBehaviour
         Gold.Configure(1, RunManager.Instance.Environment.GetGold,
             () => "金钱");
         Health.Configure(1, RunManager.Instance.Environment.Home.GetFinalHealthBounded,
-            () => "生命值上限");
+            () => "气血上限");
     }
 
     private void OnEnable()

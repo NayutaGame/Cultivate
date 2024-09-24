@@ -36,7 +36,7 @@ public class ResourceReward : Reward
 
         if (_health != 0)
         {
-            sb.Append($"{_health}生命上限");
+            sb.Append($"{_health}气血上限");
         }
 
         return sb.ToString();

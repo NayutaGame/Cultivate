@@ -82,7 +82,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         await d.Owner.GainBuffProcedure("相克流转");
                     }),
                 }),
-            new("念无劫", abilityDescription: "生命上限增加，战斗开始时，力量-1/2/3/4/5"),
+            new("念无劫", abilityDescription: "气血上限增加，战斗开始时，力量-1/2/3/4/5"),
             new("风雨晴", abilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
                 runEventDescriptors: new RunEventDescriptor[]
                 {

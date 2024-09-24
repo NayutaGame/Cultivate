@@ -43,7 +43,7 @@ public class CostDetails
 
         if (Health != 0)
         {
-            sb.Append($"{Health}生命上限");
+            sb.Append($"{Health}气血上限");
         }
 
         return sb.ToString();

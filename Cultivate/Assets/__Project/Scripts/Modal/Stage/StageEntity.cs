@@ -244,8 +244,11 @@ public class StageEntity : Addressable, StageEventListener
     public void ResetActionPoint() => _actionPoint = 1;
     private CostResult _costResult;
 
-    public bool IsLowHp
-        => (float)Hp / MaxHp <= 0.5f;
+    public int GetLowHealthThreshold()
+        => Mathf.RoundToInt((25 + GetStackOfBuff("锻体")) * 0.01f * MaxHp).Clamp(0, MaxHp);
+
+    public bool IsLowHealth
+        => Hp <= GetLowHealthThreshold();
     public bool Forward
         => GetStackOfBuff("鹤回翔") == 0;
     public int ExhaustedCount
@@ -655,7 +658,7 @@ public class StageEntity : Addressable, StageEventListener
 
     public async Task BecomeLowHealth()
     {
-        int gap = Hp - MaxHp / 2;
+        int gap = Hp - GetLowHealthThreshold();
         if (gap > 0)
             await LoseHealthProcedure(gap);
     }
