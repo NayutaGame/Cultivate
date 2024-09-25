@@ -1,16 +1,10 @@
 
 public class BattleResultSignal : Signal
 {
-    public BattleResultState State;
+    public bool Win;
 
-    public BattleResultSignal(BattleResultState state)
+    public BattleResultSignal(bool win)
     {
-        State = state;
-    }
-
-    public enum BattleResultState
-    {
-        Win,
-        Lose,
+        Win = win;
     }
 }

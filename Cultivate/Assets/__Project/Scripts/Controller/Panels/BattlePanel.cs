@@ -5,6 +5,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class BattlePanel : Panel
 {
@@ -14,6 +15,7 @@ public class BattlePanel : Panel
     [SerializeField] private TMP_Text HomeHealth;
     [SerializeField] private TMP_Text AwayHealth;
     [SerializeField] public CombatButton CombatButton;
+    [SerializeField] private Button SkipButton;
     [SerializeField] private GameObject VictoryStamp;
 
     private static readonly float WinBaseScale = 1f;
@@ -36,6 +38,8 @@ public class BattlePanel : Panel
         EnemyView.SetAddress(_address.Append(".Enemy"));
 
         CombatButton.ClickNeuron.Join(Combat);
+        SkipButton.onClick.RemoveAllListeners();
+        SkipButton.onClick.AddListener(Skip);
     }
 
     public override void Refresh()
@@ -143,10 +147,18 @@ public class BattlePanel : Panel
 
     private void Combat(PointerEventData eventData)
     {
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickBattleSignal());
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickCombatSignal());
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat();
         CanvasManager.Instance.RunCanvas.Refresh();
+    }
+
+    private void Skip()
+    {
+        RunEnvironment env = RunManager.Instance.Environment;
+        PanelDescriptor panelDescriptor = env.ReceiveSignalProcedure(new SkipCombatSignal(env.SimulateResult.Flag == 1));
+        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
+        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
     }
 
     private void SetVictory(bool victory)

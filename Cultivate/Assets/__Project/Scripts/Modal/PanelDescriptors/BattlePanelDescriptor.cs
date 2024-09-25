@@ -57,7 +57,12 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         if (signal is BattleResultSignal battleResultSignal)
         {
-            return (battleResultSignal.State == BattleResultSignal.BattleResultState.Win ? _winOperation : _loseOperation).Invoke();
+            return (battleResultSignal.Win ? _winOperation : _loseOperation).Invoke();
+        }
+
+        if (signal is SkipCombatSignal skipCombatSignal)
+        {
+            return (skipCombatSignal.Win ? _winOperation : _loseOperation).Invoke();
         }
 
         return this;

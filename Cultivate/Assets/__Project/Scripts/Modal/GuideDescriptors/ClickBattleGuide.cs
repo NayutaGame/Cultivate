@@ -16,7 +16,7 @@ public class ClickBattleGuide : Guide
 
     public override bool ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
     {
-        if (signal is ClickBattleSignal)
+        if (signal is ClickCombatSignal)
         {
             SetComplete(panelDescriptor);
             return true;

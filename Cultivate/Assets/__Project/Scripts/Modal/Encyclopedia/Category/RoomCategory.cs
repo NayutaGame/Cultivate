@@ -297,8 +297,7 @@ public class RoomCategory : Category<RoomEntry>
                             descriptor: new(wuXing: WuXing.Tu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
                         // 易宝斋，得到2/4/8/16金钱，访问一次商店
-                        new ShopPanelDescriptor(nextJingJie)
-                            .SetEnter(() =>
+                        new ShopPanelDescriptor(nextJingJie).SetEnter(() =>
                             {
                                 env.SetDGoldProcedure(2 * RoomDescriptor.GoldRewardTable[room.Ladder]);
                             }),
