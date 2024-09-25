@@ -297,8 +297,9 @@ public class RoomCategory : Category<RoomEntry>
                             descriptor: new(wuXing: WuXing.Tu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
                         // 易宝斋，得到2/4/8/16金钱，访问一次商店
-                        new ShopPanelDescriptor(nextJingJie).SetEnter(() =>
+                        new ShopPanelDescriptor(nextJingJie).SetEnter(panelDescriptor =>
                             {
+                                panelDescriptor.DefaultEnter(panelDescriptor);
                                 env.SetDGoldProcedure(2 * RoomDescriptor.GoldRewardTable[room.Ladder]);
                             }),
                         new DialogPanelDescriptor("剑池，获得2张当前境界的攻击牌")
@@ -310,8 +311,10 @@ public class RoomCategory : Category<RoomEntry>
                         new DialogPanelDescriptor("星宫，获得2张当前境界的灵气牌")
                             .SetReward(new DrawSkillReward("2张当前境界的灵气牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Mana, count: 2))),
                         new DialogPanelDescriptor("天机阁，卡池中，当前及以下境界的牌，被移除一半")
-                            .SetEnter(() =>
+                            .SetEnter(panelDescriptor =>
                             {
+                                panelDescriptor.DefaultEnter(panelDescriptor);
+                                
                                 List<SkillEntry> lowList = new();
                                 while (env.SkillPool.TryPopItem(out SkillEntry skillEntry, pred: s => s.LowestJingJie <= currJingJie))
                                     lowList.Add(skillEntry);
@@ -607,7 +610,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor A = new("你发现了一个黑市，这里有少量高境界卡牌。", "进去看一看");
                     
                     ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie);
-                    B._enter = () =>
+                    B.SetEnter(panelDescriptor =>
                     {
                         CommodityListModel commodities = new CommodityListModel();
 
@@ -625,7 +628,7 @@ public class RoomCategory : Category<RoomEntry>
                         }
 
                         B.SetCommodities(commodities);
-                    };
+                    });
 
                     A[0].SetSelect(option => B);
                     
@@ -671,7 +674,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor A = new("一阵噪音惊扰了你的休息，原来是灵韵宗的毕业季到了，学子们完成了学业后，纷纷将不要的技能打折卖出。");
                     
                     ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie);
-                    B._enter = () =>
+                    B.SetEnter(panelDescriptor =>
                     {
                         CommodityListModel commodities = new CommodityListModel();
 
@@ -689,7 +692,7 @@ public class RoomCategory : Category<RoomEntry>
                         }
 
                         B.SetCommodities(commodities);
-                    };
+                    });
                     
                     A[0].SetSelect(option => B);
                     

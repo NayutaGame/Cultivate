@@ -17,9 +17,9 @@ public class BarterPanelDescriptor : PanelDescriptor
         };
     }
 
-    public override void DefaultEnter()
+    public override void DefaultEnter(PanelDescriptor panelDescriptor)
     {
-        base.DefaultEnter();
+        base.DefaultEnter(panelDescriptor);
 
         RunEnvironment env = RunManager.Instance.Environment;
 

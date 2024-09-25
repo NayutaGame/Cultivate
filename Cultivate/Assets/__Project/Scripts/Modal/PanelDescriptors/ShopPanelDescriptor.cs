@@ -21,9 +21,9 @@ public class ShopPanelDescriptor : PanelDescriptor
         _jingJie = jingJie;
     }
 
-    public override void DefaultEnter()
+    public override void DefaultEnter(PanelDescriptor panelDescriptor)
     {
-        base.DefaultEnter();
+        base.DefaultEnter(panelDescriptor);
 
         _commodities = new CommodityListModel();
 

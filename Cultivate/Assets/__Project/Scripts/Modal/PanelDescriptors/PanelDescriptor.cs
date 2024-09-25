@@ -8,19 +8,19 @@ public abstract class PanelDescriptor : Addressable
     public PanelDescriptor ReceiveSignal(Signal signal) => _receiveSignal.Invoke(signal);
     public virtual PanelDescriptor DefaultReceiveSignal(Signal signal) => this;
 
-    public Action _enter;
-    public void Enter() => _enter.Invoke();
-    public virtual void DefaultEnter() { }
-    public PanelDescriptor SetEnter(Action enter)
+    public Action<PanelDescriptor> _enter;
+    public void Enter() => _enter.Invoke(this);
+    public virtual void DefaultEnter(PanelDescriptor panelDescriptor) { }
+    public PanelDescriptor SetEnter(Action<PanelDescriptor> enter)
     {
         _enter = enter;
         return this;
     }
 
-    public Action _exit;
-    public void Exit() => _exit.Invoke();
-    public virtual void DefaultExit() { }
-    public PanelDescriptor SetExit(Action exit)
+    public Action<PanelDescriptor> _exit;
+    public void Exit() => _exit.Invoke(this);
+    public virtual void DefaultExit(PanelDescriptor panelDescriptor) { }
+    public PanelDescriptor SetExit(Action<PanelDescriptor> exit)
     {
         _exit = exit;
         return this;

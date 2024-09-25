@@ -22,9 +22,9 @@ public class GachaPanelDescriptor : PanelDescriptor
     public bool ItemsIsEmpty
         => _items.Count() <= 0;
 
-    public override void DefaultEnter()
+    public override void DefaultEnter(PanelDescriptor panelDescriptor)
     {
-        base.DefaultEnter();
+        base.DefaultEnter(panelDescriptor);
 
         _items = new();
         

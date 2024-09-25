@@ -27,15 +27,15 @@ public class BattlePanelDescriptor : PanelDescriptor
         _template = template;
     }
 
-    public override void DefaultEnter()
+    public override void DefaultEnter(PanelDescriptor panelDescriptor)
     {
-        base.DefaultEnter();
+        base.DefaultEnter(panelDescriptor);
         SetEnemy(RunEntity.FromTemplate(_template));
     }
 
-    public override void DefaultExit()
+    public override void DefaultExit(PanelDescriptor panelDescriptor)
     {
-        base.DefaultExit();
+        base.DefaultExit(panelDescriptor);
         SetEnemy(null);
     }
 

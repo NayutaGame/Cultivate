@@ -13,9 +13,9 @@ public class RunResultPanelDescriptor : PanelDescriptor
         RunResult = runResult;
     }
 
-    public override void DefaultEnter()
+    public override void DefaultEnter(PanelDescriptor panelDescriptor)
     {
-        base.DefaultEnter();
+        base.DefaultEnter(panelDescriptor);
 
         ProfileManager.WriteRunResultToCurrent(RunResult);
     }

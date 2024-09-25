@@ -29,9 +29,9 @@ public class DialogPanelDescriptor : PanelDescriptor
         _options = options.Length > 0 ? options : new DialogOption[] { "确认" };
     }
 
-    public override void DefaultEnter()
+    public override void DefaultEnter(PanelDescriptor panelDescriptor)
     {
-        base.DefaultEnter();
+        base.DefaultEnter(panelDescriptor);
         _reward?.Claim();
     }
 

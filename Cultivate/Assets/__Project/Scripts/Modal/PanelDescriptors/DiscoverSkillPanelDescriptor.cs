@@ -35,9 +35,9 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         _skills = new();
     }
 
-    public override void DefaultEnter()
+    public override void DefaultEnter(PanelDescriptor panelDescriptor)
     {
-        base.DefaultEnter();
+        base.DefaultEnter(panelDescriptor);
         DiscoverSkillDetails d = new DiscoverSkillDetails(_descriptor, _preferredJingJie);
         RunManager.Instance.Environment.DiscoverSkillProcedure(d);
 
