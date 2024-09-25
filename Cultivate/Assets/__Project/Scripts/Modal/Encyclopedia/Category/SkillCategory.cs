@@ -511,14 +511,14 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
-                cost:                       async (env, entity, skill, recursive) => new ManaCostResult(4 - skill.Dj - entity.CountSuch(s => s.Entry.WuXing == WuXing.Shui)),
-                costDescription:            CostDescription.ManaFromDj(dj => 4 - dj),
+                cost:                       async (env, entity, skill, recursive) => new ManaCostResult(4 + skill.Dj - entity.CountSuch(s => s.Entry.WuXing == WuXing.Shui)),
+                costDescription:            CostDescription.ManaFromDj(dj => 4 + dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{10 + 4 * dj}攻".ApplyAttack() + " 吸血".ApplyHeal() +
+                    $"{12 + 6 * dj}攻".ApplyAttack() + " 吸血".ApplyHeal() +
                     $"\n每携带1水：消耗-1",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.AttackProcedure(10 + 4 * skill.Dj, lifeSteal: true, wuXing: skill.Entry.WuXing);
+                    await caster.AttackProcedure(12 + 6 * skill.Dj, lifeSteal: true, wuXing: skill.Entry.WuXing);
                     return null;
                 }),
             
@@ -554,23 +554,16 @@ public class SkillCategory : Category<SkillEntry>
                     $"穿透".ApplyStyle(castResult, "2"),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    bool consumeCrit = await caster.TryConsumeProcedure("暴击");
-                    bool consumeLifesteal = await caster.TryConsumeProcedure("吸血");
-                    bool consumePenetrate = await caster.TryConsumeProcedure("穿透");
-                    await caster.AttackProcedure(10 + 4 * skill.Dj,
-                        crit: consumeCrit,
-                        lifeSteal: consumeLifesteal,
-                        penetrate: consumePenetrate,
-                        wuXing: skill.Entry.WuXing);
-
-                    if (consumeCrit)
+                    await caster.AttackProcedure(10 + 4 * skill.Dj, wuXing: skill.Entry.WuXing);
+                    
+                    if (caster.TriggeredCrit)
                         await caster.GainBuffProcedure("暴击", induced: true);
-                    if (consumeLifesteal)
+                    if (caster.TriggeredLifesteal)
                         await caster.GainBuffProcedure("吸血", induced: true);
-                    if (consumePenetrate)
+                    if (caster.TriggeredPenetrate)
                         await caster.GainBuffProcedure("穿透", induced: true);
                     
-                    return Style.CastResultFromBools(consumeCrit, consumeLifesteal, consumePenetrate);
+                    return Style.CastResultFromBools(caster.TriggeredCrit, caster.TriggeredLifesteal, caster.TriggeredPenetrate);
                 }),
             
             new(id:                         "0210",
@@ -1052,9 +1045,10 @@ public class SkillCategory : Category<SkillEntry>
                     $"消耗每6灵气，多重+1",
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    await caster.TransferProcedure(6, "灵气", 1, "多重", true, upperBound: 10);
+                    await caster.TransferProcedure(6, "灵气", 1, "多重", true, upperBound: 20);
                     return null;
-                }),
+                },
+                trivia:"在个人量子超算还没普及的时代，凡人只能体验个二十劫意思意思"),
             
             new(id:                         "0401",
                 name:                       "云袖",
@@ -1350,12 +1344,15 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(5 + dj) * 2 - 2}攻".ApplyAttack() +
-                    $"\n遭受{3 + 2 * dj}软弱".ApplyDebuff(),
+                    $"\n遭受{3 + 2 * dj}软弱".ApplyDebuff() +
+                    $"\n压制：免除".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     await caster.AttackProcedure(Fib.ToValue(5 + skill.Dj) * 2 - 2, wuXing: WuXing.Tu);
-                    await caster.GainBuffProcedure("软弱", 3 + 2 * skill.Dj);
-                    return null;
+                    bool cond = caster.IsOverpower;
+                    if (!cond)
+                        await caster.GainBuffProcedure("软弱", 3 + 2 * skill.Dj);
+                    return cond.ToCastResult();
                 }),
 
             new(id:                         "0502",

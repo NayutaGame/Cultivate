@@ -125,6 +125,8 @@ public class StageEnvironment : Addressable, StageEventListener
     {
         await Play(new PiercingVFXAnimation(false, d), induced);
 
+        d.Src.TriggeredPenetrate |= d.Penetrate;
+
         bool isEvaded = !d.Penetrate && d.Evade;
         if (isEvaded)
         {
@@ -255,6 +257,9 @@ public class StageEnvironment : Addressable, StageEventListener
         if (d.WillDamage != null)
             await d.WillDamage(d);
         await _eventDict.SendEvent(StageEventDict.WIL_DAMAGE, d);
+
+        d.Src.TriggeredCrit |= d.Crit;
+        d.Src.TriggeredLifesteal |= d.LifeSteal;
 
         if (d.Cancel || d.Value == 0)
         {

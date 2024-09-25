@@ -127,8 +127,8 @@ public class RoomCategory : Category<RoomEntry>
                     // 3 -> 长明殿，5张火牌
                     // 4 -> 环岳岭，5张土牌
                     // 5 -> 易宝斋，6张随机牌，5金钱
-                    // 6 -> 风雨楼，6张攻击牌
-                    // 7 -> 云隐镖局，6张防御牌
+                    // 6 -> 剑池，6张攻击牌
+                    // 7 -> 风雨楼，6张防御牌
                     // 8 -> 百草堂，6张随机牌，5气血上限
                     // 9 -> 星宫，3张灵气牌，2张随机牌
                     // 10 -> 天机阁，2张筑基牌，3张随机牌
@@ -141,8 +141,8 @@ public class RoomCategory : Category<RoomEntry>
                         "长明殿，5张火牌",
                         "环岳岭，5张土牌",
                         "易宝斋，6张随机牌，5金钱",
-                        "风雨楼，6张攻击牌",
-                        "云隐镖局，6张防御牌",
+                        "剑池，6张攻击牌",
+                        "风雨楼，6张防御牌",
                         "百草堂，6张随机牌，5气血上限",
                         "星宫，3张灵气牌，2张随机牌",
                         "天机阁，2张筑基牌，3张随机牌",
@@ -185,12 +185,12 @@ public class RoomCategory : Category<RoomEntry>
                             return null;
                         },
                         option =>
-                        { // 6 -> 风雨楼，6张攻击牌
+                        { // 6 -> 剑池，6张攻击牌
                             env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack), count: 6));
                             return null;
                         },
                         option =>
-                        { // 7 -> 云隐镖局，6张防御牌
+                        { // 7 -> 风雨楼，6张防御牌
                             env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend), count: 6));
                             return null;
                         },
@@ -221,13 +221,11 @@ public class RoomCategory : Category<RoomEntry>
                     
                     Pool<int> pool = new Pool<int>();
                     12.Do(i => pool.Populate(i));
-                    
                     pool.Shuffle();
-
                     int[] popped = new int[3];
                     popped.Length.Do(i => pool.TryPopItem(out popped[i]));
 
-                    DialogOption[] dialogOptions = new DialogOption[3];
+                    DialogOption[] dialogOptions = new DialogOption[popped.Length];
                     dialogOptions.Length.Do(i =>
                     {
                         int index = popped[i];
@@ -236,6 +234,135 @@ public class RoomCategory : Category<RoomEntry>
                     });
                     
                     DialogPanelDescriptor A = new($"请问想以哪一个门派出发？", dialogOptions);
+
+                    return A;
+                }),
+            
+            new(id:                                 "突破境界",
+                description:                        "突破境界",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    // 突破时奖励，将一张卡升级到下一境界
+                    // 发现一张下一境界卡牌，带描述
+                    
+                    // 0 -> 凌云峰，选择1张下一境界的金牌
+                    // 1 -> 逍遥海，选择1张下一境界的水牌
+                    // 2 -> 桃花宫，选择1张下一境界的木牌
+                    // 3 -> 长明殿，选择1张下一境界的火牌
+                    // 4 -> 环岳岭，选择1张下一境界的土牌
+                    // 5 -> 易宝斋，得到2/4/8/16金钱，访问一次商店
+                    // 6 -> 剑池，选择2张当前境界的攻击牌
+                    // 7 -> 风雨楼，选择2张当前境界的防御牌
+                    // 8 -> 百草堂，得到4/8/16/32气血上限
+                    // 9 -> 星宫，选择2张当前境界的灵气牌
+                    // 10 -> 天机阁，卡池中，当前及以下境界的牌，被移除一半
+                    // 11 -> 散修，选择一张牌提升至下一境界
+                    string[] titles = new string[12]
+                    {
+                        "凌云峰，选择1张下一境界的金牌",
+                        "逍遥海，选择1张下一境界的水牌",
+                        "桃花宫，选择1张下一境界的木牌",
+                        "长明殿，选择1张下一境界的火牌",
+                        "环岳岭，选择1张下一境界的土牌",
+                        "易宝斋，得到2/4/8/16金钱，访问一次商店",
+                        "剑池，选择2张当前境界的攻击牌",
+                        "风雨楼，选择2张当前境界的防御牌",
+                        "百草堂，得到4/8/16/32气血上限",
+                        "星宫，选择2张当前境界的灵气牌",
+                        "天机阁，卡池中，当前及以下境界的牌，被移除一半",
+                        "散修，选择一张牌提升至下一境界",
+                    };
+                    
+                    RunEnvironment env = RunManager.Instance.Environment;
+                    JingJie currJingJie = env.JingJie;
+                    JingJie nextJingJie = (env.JingJie + 1).ClampUpper(JingJie.HuaShen);
+
+                    PanelDescriptor[] panels = new PanelDescriptor[12]
+                    {
+                        new DiscoverSkillPanelDescriptor("凌云峰，选择1张下一境界的金牌",
+                            descriptor: new(wuXing: WuXing.Jin, pred: e => e.LowestJingJie == nextJingJie, count: 3),
+                            preferredJingJie: nextJingJie),
+                        new DiscoverSkillPanelDescriptor("逍遥海，选择1张下一境界的水牌",
+                            descriptor: new(wuXing: WuXing.Shui, pred: e => e.LowestJingJie == nextJingJie, count: 3),
+                            preferredJingJie: nextJingJie),
+                        new DiscoverSkillPanelDescriptor("桃花宫，选择1张下一境界的木牌",
+                            descriptor: new(wuXing: WuXing.Mu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
+                            preferredJingJie: nextJingJie),
+                        new DiscoverSkillPanelDescriptor("长明殿，选择1张下一境界的火牌",
+                            descriptor: new(wuXing: WuXing.Huo, pred: e => e.LowestJingJie == nextJingJie, count: 3),
+                            preferredJingJie: nextJingJie),
+                        new DiscoverSkillPanelDescriptor("环岳岭，选择1张下一境界的土牌",
+                            descriptor: new(wuXing: WuXing.Tu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
+                            preferredJingJie: nextJingJie),
+                        // 易宝斋，得到2/4/8/16金钱，访问一次商店
+                        new ShopPanelDescriptor(nextJingJie)
+                            .SetEnter(() =>
+                            {
+                                env.SetDGoldProcedure(2 * RoomDescriptor.GoldRewardTable[room.Ladder]);
+                            }),
+                        new DialogPanelDescriptor("剑池，获得2张当前境界的攻击牌")
+                            .SetReward(new DrawSkillReward("2张当前境界的攻击牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Attack, count: 2))),
+                        new DialogPanelDescriptor("风雨楼，获得2张当前境界的防御牌")
+                            .SetReward(new DrawSkillReward("2张当前境界的防御牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Defend, count: 2))),
+                        new DialogPanelDescriptor("百草堂，得到4/8/16/32气血上限")
+                            .SetReward(new ResourceReward(health: 4 * RoomDescriptor.GoldRewardTable[room.Ladder])),
+                        new DialogPanelDescriptor("星宫，获得2张当前境界的灵气牌")
+                            .SetReward(new DrawSkillReward("2张当前境界的灵气牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Mana, count: 2))),
+                        new DialogPanelDescriptor("天机阁，卡池中，当前及以下境界的牌，被移除一半")
+                            .SetEnter(() =>
+                            {
+                                List<SkillEntry> lowList = new();
+                                while (env.SkillPool.TryPopItem(out SkillEntry skillEntry, pred: s => s.LowestJingJie <= currJingJie))
+                                    lowList.Add(skillEntry);
+
+                                int count = lowList.Count / 2;
+                                count.Do(i => env.SkillPool.Populate(lowList[i]));
+                                
+                                env.SkillPool.Shuffle();
+                            }),
+                        new CardPickerPanelDescriptor("散修，选择一张牌提升至下一境界")
+                            .SetConfirmOperation(iRunSkillList =>
+                            {
+                                foreach (var iRunSkill in iRunSkillList)
+                                {
+                                    if (iRunSkill is RunSkill skill)
+                                    {
+                                        skill.JingJie = nextJingJie;
+                                        // staging
+                                        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+                                    }
+                                    else if (iRunSkill is SkillSlot slot)
+                                    {
+                                        slot.Skill.JingJie = nextJingJie;
+                                        // staging
+                                        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+                                    }
+                                }
+                                return null;
+                            }),
+                    };
+                    
+                    Pool<int> pool = new Pool<int>();
+                    12.Do(i => pool.Populate(i));
+                    pool.Shuffle();
+                    int[] popped = new int[4];
+                    popped.Length.Do(i => pool.TryPopItem(out popped[i]));
+
+                    DialogOption[] dialogOptions = new DialogOption[popped.Length];
+                    dialogOptions.Length.Do(i =>
+                    {
+                        int index = popped[i];
+                        dialogOptions[i] = new DialogOption(titles[index]);
+                        dialogOptions[i].SetSelect(option =>
+                        {
+                            env.NextJingJieProcedure();
+                            return panels[index];
+                        });
+                    });
+                    
+                    DialogPanelDescriptor A = new("你感到很久以来的瓶颈将被突破", dialogOptions);
 
                     return A;
                 }),
@@ -300,24 +427,6 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option =>
                     {
                         RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Victory);
-                        return null;
-                    });
-
-                    return A;
-                }),
-            
-            new(id:                                 "突破境界",
-                description:                        "突破境界",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogPanelDescriptor A = new("你感到很久以来的瓶颈将被突破",
-                        "突破");
-
-                    A[0].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.NextJingJieProcedure();
                         return null;
                     });
 

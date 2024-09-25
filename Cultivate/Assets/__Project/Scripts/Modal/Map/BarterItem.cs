@@ -18,7 +18,7 @@ public class BarterItem : Addressable
         _accessors = new()
         {
             { "FromSkill",         () => FromSkill },
-            { "ToSkill",               () => ToSkill },
+            { "ToSkill",           () => ToSkill },
         };
         FromSkill = fromSkill;
         ToSkill = toSkill;

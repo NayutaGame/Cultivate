@@ -21,9 +21,11 @@ public class BarterPanelDescriptor : PanelDescriptor
     {
         base.DefaultEnter();
 
+        RunEnvironment env = RunManager.Instance.Environment;
+
         Pool<SkillEntryDescriptor> pool = new Pool<SkillEntryDescriptor>();
-        pool.Populate(RunManager.Instance.Environment.TraversalDeckIndices()
-            .Map(deckIndex => RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex) as RunSkill)
+        pool.Populate(env.TraversalDeckIndices()
+            .Map(env.GetSkillAtDeckIndex)
             .FilterObj(skill => skill != null)
             .Map(SkillEntryDescriptor.FromRunSkill));
         pool.Shuffle();
@@ -46,7 +48,7 @@ public class BarterPanelDescriptor : PanelDescriptor
                     return true;
                 }, fromSkills[i].JingJie);
             Assert.IsTrue(fromSkills[i].JingJie.HasValue);
-            toSkills[i] = SkillEntryDescriptor.FromEntryJingJie(RunManager.Instance.Environment.DrawSkill(descriptor), fromSkills[i].JingJie.Value); // distinct, non consume
+            toSkills[i] = SkillEntryDescriptor.FromEntryJingJie(env.DrawSkill(descriptor), fromSkills[i].JingJie.Value); // distinct, non consume
         }
         
         _inventory = new();

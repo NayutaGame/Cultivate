@@ -249,6 +249,8 @@ public class StageEntity : Addressable, StageEventListener
 
     public bool IsLowHealth
         => Hp <= GetLowHealthThreshold();
+    public bool IsOverpower
+        => Hp >= Opponent().Hp;
     public bool Forward
         => GetStackOfBuff("鹤回翔") == 0;
     public int ExhaustedCount
@@ -287,6 +289,10 @@ public class StageEntity : Addressable, StageEventListener
     public bool HasRuanRuoRecord;
     public bool HasNeiShangRecord;
     public bool HasFuXiuRecord;
+
+    public bool TriggeredCrit;
+    public bool TriggeredLifesteal;
+    public bool TriggeredPenetrate;
 
     public bool TriggeredJiaShiRecord;
     public bool TriggeredEndRecord;
@@ -342,6 +348,10 @@ public class StageEntity : Addressable, StageEventListener
         HasRuanRuoRecord = false;
         HasNeiShangRecord = false;
         HasFuXiuRecord = false;
+        
+        TriggeredCrit = false;
+        TriggeredLifesteal = false;
+        TriggeredPenetrate = false;
         
         TriggeredJiaShiRecord = false;
         TriggeredEndRecord = false;
@@ -617,11 +627,18 @@ public class StageEntity : Addressable, StageEventListener
         return false;
     }
 
-    public async Task TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming, int? upperBound = null)
+    public async Task TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming, int? maxFlow = null, int? upperBound = null)
     {
         int flow = GetStackOfBuff(fromBuff) / fromStack;
         if (upperBound.HasValue)
-            flow.ClampUpper(upperBound.Value);
+        {
+            int gap = upperBound.Value - GetStackOfBuff(toBuff);
+            if (gap >= 0)
+                flow = flow.ClampUpper(gap);
+        }
+        
+        if (maxFlow.HasValue)
+            flow = flow.ClampUpper(maxFlow.Value);
         
         if (consuming)
             await LoseBuffProcedure(fromBuff, flow * fromStack);

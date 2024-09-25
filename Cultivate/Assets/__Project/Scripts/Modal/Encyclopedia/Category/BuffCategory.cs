@@ -216,7 +216,7 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new(id:                         "多重",
-                description:                "下一张牌额外使用[层数]次",
+                description:                "下一张牌额外使用[层数]次，最高20层",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
@@ -344,22 +344,22 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("暴击", "下一次攻击具有暴击", BuffStackRule.Add, true, false,
+            new("暴击", "下一次攻击造成的伤害翻倍", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
-
                         if (b.Owner != d.Src || b.Owner == d.Tgt || d.Crit) return;
+                        
                         d.Crit = true;
                         b.PlayPingAnimation();
                         await b.SetDStack(-1);
                     }),
                 }),
             
-            new("二动", "下一张牌二动", BuffStackRule.Add, true, false,
+            new("二动", "下一回合二动", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
@@ -368,6 +368,7 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)stageEventDetails;
 
                         if (b.Owner != d.Owner) return;
+                        
                         b.Owner.SetActionPoint(2);
                         b.PlayPingAnimation();
                         await b.SetDStack(-1);
@@ -672,12 +673,12 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (b.Owner == d.Src)
-                        {
-                            b.PlayPingAnimation();
-                            d.LifeSteal = true;
-                            await b.SetDStack(-1);
-                        }
+                        if (b.Owner != d.Src) return;
+                        if (d.LifeSteal) return;
+                        
+                        b.PlayPingAnimation();
+                        d.LifeSteal = true;
+                        await b.SetDStack(-1);
                     }),
                 }),
             
@@ -779,12 +780,13 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (b.Owner == d.Src && d.Src != d.Tgt && !d.Penetrate)
-                        {
-                            d.Penetrate = true;
-                            b.PlayPingAnimation();
-                            await b.SetDStack(-1);
-                        }
+                        if (b.Owner != d.Src) return;
+                        if (d.Src == d.Tgt) return;
+                        if (d.Penetrate) return;
+                        
+                        d.Penetrate = true;
+                        b.PlayPingAnimation();
+                        await b.SetDStack(-1);
                     }),
                 }),
             
@@ -1417,7 +1419,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("苦寒", "下[层数]次，攻击时，二动+1", BuffStackRule.Add, true, false,
+            new("苦寒", "下[层数]次，攻击后，下一回合具有二动", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
@@ -1426,6 +1428,7 @@ public class BuffCategory : Category<BuffEntry>
                         AttackDetails d = (AttackDetails)stageEventDetails;
                         if (b.Owner != d.Src) return;
                         if (!d.Recursive) return;
+                        
                         b.PlayPingAnimation();
                         await b.SetDStack(-1);
                         await d.Src.GainBuffProcedure("二动", induced: true);

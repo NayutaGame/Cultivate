@@ -11,10 +11,20 @@ public abstract class PanelDescriptor : Addressable
     public Action _enter;
     public void Enter() => _enter.Invoke();
     public virtual void DefaultEnter() { }
+    public PanelDescriptor SetEnter(Action enter)
+    {
+        _enter = enter;
+        return this;
+    }
 
     public Action _exit;
     public void Exit() => _exit.Invoke();
     public virtual void DefaultExit() { }
+    public PanelDescriptor SetExit(Action exit)
+    {
+        _exit = exit;
+        return this;
+    }
 
     protected Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();

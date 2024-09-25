@@ -18,7 +18,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     private SkillEntryCollectionDescriptor _descriptor;
     private JingJie _preferredJingJie;
 
-    public DiscoverSkillPanelDescriptor(string titleText = null, string detailedText = null)
+    public DiscoverSkillPanelDescriptor(string titleText = null, string detailedText = null, SkillEntryCollectionDescriptor descriptor = null, JingJie? preferredJingJie = null)
     {
         _accessors = new()
         {
@@ -29,8 +29,8 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         _titleText = titleText ?? "";
         _detailedText = detailedText ?? "请选择一张卡作为奖励";
 
-        _descriptor = new(jingJie: RunManager.Instance.Environment.JingJie, count: 3);
-        _preferredJingJie = RunManager.Instance.Environment.JingJie;
+        _descriptor = descriptor ?? new(jingJie: RunManager.Instance.Environment.JingJie, count: 3);
+        _preferredJingJie = preferredJingJie ?? RunManager.Instance.Environment.JingJie;
         
         _skills = new();
     }

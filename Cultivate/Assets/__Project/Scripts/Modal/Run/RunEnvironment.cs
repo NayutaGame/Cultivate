@@ -556,7 +556,7 @@ public class RunEnvironment : Addressable, RunEventListener
             if (omit.Contains(deckIndex))
                 continue;
             RunSkill skill = GetSkillAtDeckIndex(deckIndex);
-            if (skill != null && d.Contains(skill.GetEntry()))
+            if (skill != null && d.Contains(skill))
             {
                 result = deckIndex;
                 return true;

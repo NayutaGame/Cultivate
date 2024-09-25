@@ -66,6 +66,26 @@ public class SkillEntryDescriptor : ISkillModel
         return true;
     }
     
+    public bool Contains(RunSkill skill)
+    {
+        if (_entry != null && skill.GetEntry() != _entry)
+            return false;
+        
+        if (_pred != null && !_pred(skill.GetEntry()))
+            return false;
+
+        if (_wuXing != null && skill.GetEntry().WuXing != _wuXing)
+            return false;
+
+        if (_jingJie != null && skill.JingJie != _jingJie)
+            return false;
+
+        if (_skillTypeComposite != null && !skill.GetEntry().GetSkillTypeComposite().Contains(_skillTypeComposite))
+            return false;
+
+        return true;
+    }
+    
     public bool Contains(SkillEntryDescriptor descriptor)
     {
         if (_entry != null && _entry != descriptor._entry)
