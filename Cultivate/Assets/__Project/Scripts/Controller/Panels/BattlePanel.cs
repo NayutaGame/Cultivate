@@ -38,8 +38,11 @@ public class BattlePanel : Panel
         EnemyView.SetAddress(_address.Append(".Enemy"));
 
         CombatButton.ClickNeuron.Join(Combat);
-        SkipButton.onClick.RemoveAllListeners();
-        SkipButton.onClick.AddListener(Skip);
+        if (SkipButton != null)
+        {
+            SkipButton.onClick.RemoveAllListeners();
+            SkipButton.onClick.AddListener(Skip);
+        }
     }
 
     public override void Refresh()

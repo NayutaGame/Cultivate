@@ -1311,52 +1311,6 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
-            new(id:                                 "忘忧堂",
-                description:                        "忘忧堂",
-                ladderBound:                        new Bound(5, 15),
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogPanelDescriptor A = new("你来到了忘忧堂，听说这里的服务是将不想再见到的卡牌交给他们。忘忧堂会为您斩断与此牌的因果。",
-                        "走进去看一看",
-                        "离开");
-
-                    CardPickerPanelDescriptor B = new("请选择0到5张牌", bound: new Bound(0, 6));
-                    DialogPanelDescriptor C = new("果然还是难以割舍心爱的卡牌。");
-                    DialogPanelDescriptor D = new("你感到身上轻了一些。");
-
-                    B.SetConfirmOperation(iRunSkillList =>
-                    {
-                        int count = iRunSkillList.Count;
-                        if (count == 0)
-                            return C;
-
-                        foreach (object iSkill in iRunSkillList)
-                        {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skill.GetEntry());
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                if (slot.Skill != null)
-                                {
-                                    RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == slot.Skill.GetEntry());
-                                    slot.Skill = null;
-                                }
-                            }
-                        }
-                        
-                        return D;
-                    });
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-
-                    return A;
-                }),
-
             new(id:                                 "山木",
                 description:                        "山木",
                 ladderBound:                        new Bound(0, 15),
@@ -1617,6 +1571,52 @@ public class RoomCategory : Category<RoomEntry>
             #endregion
 
             #region Reserved
+
+            new(id:                                 "忘忧堂",
+                description:                        "忘忧堂",
+                ladderBound:                        new Bound(5, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogPanelDescriptor A = new("你来到了忘忧堂，听说这里的服务是将不想再见到的卡牌交给他们。忘忧堂会为您斩断与此牌的因果。",
+                        "走进去看一看",
+                        "离开");
+
+                    CardPickerPanelDescriptor B = new("请选择0到5张牌", bound: new Bound(0, 6));
+                    DialogPanelDescriptor C = new("果然还是难以割舍心爱的卡牌。");
+                    DialogPanelDescriptor D = new("你感到身上轻了一些。");
+
+                    B.SetConfirmOperation(iRunSkillList =>
+                    {
+                        int count = iRunSkillList.Count;
+                        if (count == 0)
+                            return C;
+
+                        foreach (object iSkill in iRunSkillList)
+                        {
+                            if (iSkill is RunSkill skill)
+                            {
+                                RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skill.GetEntry());
+                                RunManager.Instance.Environment.Hand.Remove(skill);
+                            }
+                            else if (iSkill is SkillSlot slot)
+                            {
+                                if (slot.Skill != null)
+                                {
+                                    RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == slot.Skill.GetEntry());
+                                    slot.Skill = null;
+                                }
+                            }
+                        }
+                        
+                        return D;
+                    });
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
+
+                    return A;
+                }),
             
             new(id:                                 "人间世",
                 description:                        "人间世",

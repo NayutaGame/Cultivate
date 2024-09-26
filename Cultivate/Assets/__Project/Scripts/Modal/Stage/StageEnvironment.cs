@@ -151,7 +151,8 @@ public class StageEnvironment : Addressable, StageEventListener
 
             await Play(new FragileVFXAnimation(false, d), induced);
         }
-        
+
+        d.Src.HighestAttackRecord = Mathf.Max(d.Src.HighestAttackRecord, d.Value);
         await Play(new HitVFXAnimation(false, d), induced);
 
         bool isGuarded = d.Value == 0;
@@ -290,6 +291,7 @@ public class StageEnvironment : Addressable, StageEventListener
             return;
 
         d.Owner.Hp -= d.Value;
+        d.Owner.TriggeredLowHealth |= d.Owner.IsLowHealth;
 
         await _eventDict.SendEvent(StageEventDict.DID_LOSE_HEALTH, d);
     }
@@ -463,9 +465,9 @@ public class StageEnvironment : Addressable, StageEventListener
         await _eventDict.SendEvent(StageEventDict.DID_EXHAUST, d);
     }
 
-    public async Task CycleProcedure(StageEntity owner, WuXing wuXing, int gain, int recover)
-        => await CycleProcedure(new CycleDetails(owner, wuXing, gain, recover));
-    public async Task CycleProcedure(CycleDetails d)
+    public async Task CycleProcedure(StageEntity owner, WuXing wuXing, int gain, int recover, bool induced)
+        => await CycleProcedure(new CycleDetails(owner, wuXing, gain, recover), induced);
+    public async Task CycleProcedure(CycleDetails d, bool induced)
     {
         await _eventDict.SendEvent(StageEventDict.WIL_CYCLE, d);
 
@@ -477,10 +479,12 @@ public class StageEnvironment : Addressable, StageEventListener
             fromWuXing = fromWuXing.Prev;
         
         int flow = d.Owner.GetStackOfBuff(fromWuXing._elementaryBuff);
-        await d.Owner.TryConsumeProcedure(fromWuXing._elementaryBuff, flow);
 
-        await d.Owner.GainBuffProcedure(fromWuXing._elementaryBuff, Mathf.Min(flow, d.Recover));
-        await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, flow + Mathf.Min(flow, d.Gain));
+        int consume = flow - Mathf.Min(flow, d.Recover);
+        await d.Owner.TryConsumeProcedure(fromWuXing._elementaryBuff, consume);
+
+        int gain = flow + Mathf.Min(flow, d.Gain);
+        await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, gain, induced: induced);
 
         await _eventDict.SendEvent(StageEventDict.DID_CYCLE, d);
     }

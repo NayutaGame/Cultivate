@@ -869,11 +869,8 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;
-                        if (b.Owner != d.Tgt)
-                            return;
-
-                        if (d.Src != d.Tgt)
-                            return;
+                        if (b.Owner != d.Tgt) return;
+                        if (d.Src != d.Tgt) return;
                         
                         b.PlayPingAnimation();
                         await b.Owner.GainBuffProcedure("灼烧", b.Stack);
@@ -1465,7 +1462,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("龙象", "下[层数]次，攻击时，护甲+击伤值", BuffStackRule.Add, true, false,
+            new("击伤赋予护甲", "下[层数]次，攻击时，护甲+击伤值", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ATTACK, 0, async (listener, stageEventDetails) =>
@@ -1480,7 +1477,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("逆脉", "下[层数]次，失去护甲时，返还", BuffStackRule.Add, true, false,
+            new("护甲返还", "下[层数]次，失去护甲时，返还", BuffStackRule.Add, true, false,
                 eventDescriptors: new StageEventDescriptor[]
                 {
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_LOSE_ARMOR, 0, async (listener, stageEventDetails) =>

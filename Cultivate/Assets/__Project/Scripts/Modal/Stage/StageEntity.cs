@@ -269,6 +269,7 @@ public class StageEntity : Addressable, StageEventListener
         return oppoHasFragile;
     }
 
+    public int HighestAttackRecord;
     public int LostArmorRecord;
     public int GeneratedManaRecord;
     public int HighestManaRecord;
@@ -293,6 +294,8 @@ public class StageEntity : Addressable, StageEventListener
     public bool TriggeredCrit;
     public bool TriggeredLifesteal;
     public bool TriggeredPenetrate;
+
+    public bool TriggeredLowHealth;
 
     public bool TriggeredJiaShiRecord;
     public bool TriggeredEndRecord;
@@ -328,6 +331,7 @@ public class StageEntity : Addressable, StageEventListener
         HpChangedNeuron = new();
         ArmorChangedNeuron = new();
 
+        HighestAttackRecord = 0;
         LostArmorRecord = 0;
         GeneratedManaRecord = 0;
         HighestManaRecord = 0;
@@ -352,6 +356,8 @@ public class StageEntity : Addressable, StageEventListener
         TriggeredCrit = false;
         TriggeredLifesteal = false;
         TriggeredPenetrate = false;
+
+        TriggeredLowHealth = false;
         
         TriggeredJiaShiRecord = false;
         TriggeredEndRecord = false;
@@ -606,8 +612,8 @@ public class StageEntity : Addressable, StageEventListener
     public async Task FormationProcedure(RunFormation runFormation, bool recursive = true)
         => await _env.FormationProcedure(this, runFormation, recursive);
 
-    public async Task CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0)
-        => await _env.CycleProcedure(this, wuXing, gain, recover);
+    public async Task CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0, bool induced = false)
+        => await _env.CycleProcedure(this, wuXing, gain, recover, induced);
     
     public async Task DispelProcedure(int stack)
         => await _env.DispelProcedure(this, stack);
