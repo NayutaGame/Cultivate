@@ -483,7 +483,7 @@ public class StageEnvironment : Addressable, StageEventListener
         int consume = flow - Mathf.Min(flow, d.Recover);
         await d.Owner.TryConsumeProcedure(fromWuXing._elementaryBuff, consume);
 
-        int gain = flow + Mathf.Min(flow, d.Gain);
+        int gain = flow + d.Gain;
         await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, gain, induced: induced);
 
         await _eventDict.SendEvent(StageEventDict.DID_CYCLE, d);

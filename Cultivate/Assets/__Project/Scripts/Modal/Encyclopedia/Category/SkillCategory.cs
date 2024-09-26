@@ -1198,8 +1198,8 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Mana,
                 cost:                       async (env, entity, skill, recursive) =>
-                    new HealthCostResult(entity.IsLowHealth ? 0 : 10),
-                costDescription:            CostDescription.HealthFromValue(10),
+                    new HealthCostResult(entity.IsLowHealth ? 0 : 8),
+                costDescription:            CostDescription.HealthFromValue(8),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{4 + dj}".ApplyMana() +
                     $"\n残血：免除消耗",
@@ -1482,13 +1482,18 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n残血：消耗每1灵气，多{1 + dj}攻".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
-                    int mana = caster.GetMana();
-
-                    bool cond = caster.IsLowHealth;
-                    if (!cond)
-                        await caster.LoseBuffProcedure("灵气", mana);
+                    int value = 8 + 3 * skill.Dj;
                     
-                    await caster.AttackProcedure(8 + 3 * skill.Dj + mana * (1 + skill.Dj), wuXing: skill.Entry.WuXing);
+                    bool cond = caster.IsLowHealth;
+                    if (cond)
+                    {
+                        int mana = caster.GetMana();
+                        await caster.LoseBuffProcedure("灵气", mana);
+                        value += mana * (1 + skill.Dj);
+                    }
+                    
+                    await caster.AttackProcedure(value, wuXing: skill.Entry.WuXing);
+                    
                     return cond.ToCastResult();
                 }),
             
