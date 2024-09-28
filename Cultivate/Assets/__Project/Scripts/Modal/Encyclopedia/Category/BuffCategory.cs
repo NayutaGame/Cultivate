@@ -1138,8 +1138,8 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Owner) return;
 
-                        bool allowBelow0 = b.Owner.GetStackOfBuff("人间无戈") >= 0 ||
-                                           b.Owner.Opponent().GetStackOfBuff("人间无戈") >= 0;
+                        bool allowBelow0 = b.Owner.GetStackOfBuff("人间无戈") > 0 ||
+                                           b.Owner.Opponent().GetStackOfBuff("人间无戈") > 0;
                         bool isBelow0 = b.Owner.Hp <= 0;
 
                         if (isBelow0 && !allowBelow0) return;

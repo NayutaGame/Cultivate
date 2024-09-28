@@ -652,7 +652,7 @@ public class StageEntity : Addressable, StageEventListener
         await GainBuffProcedure(toBuff, flow * toStack);
     }
 
-    public async Task<bool> ToggleJiaShiProcedure()
+    public async Task<bool> JiaShiProcedure()
     {
         // if (GetStackOfBuff("天人合一") > 0)
         // {
@@ -660,11 +660,9 @@ public class StageEntity : Addressable, StageEventListener
         //     return true;
         // }
 
-        int reducedCost = GetStackOfBuff("架势消耗减少");
-
-        if (GetStackOfBuff("架势") >= 3 - reducedCost)
+        if (GetStackOfBuff("架势") > 0)
         {
-            await LoseBuffProcedure("架势", 3 - reducedCost);
+            await LoseBuffProcedure("架势");
             TriggeredJiaShiRecord = true;
             return true;
         }
