@@ -977,22 +977,22 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("看破", "无效化敌人下一次攻击，并且反击", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
-                {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -2, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        AttackDetails d = (AttackDetails)stageEventDetails;
-                        if (!d.Recursive) return;
-                        if (d.Src != b.Owner && d.Tgt == b.Owner)
-                        {
-                            b.PlayPingAnimation();
-                            await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Penetrate, d.Crit, false, d.DidDamage);
-                            d.Cancel = true;
-                        }
-                    }),
-                }),
+            // new("看破", "无效化敌人下一次攻击，并且反击", BuffStackRule.Add, true, false,
+            //     eventDescriptors: new StageEventDescriptor[]
+            //     {
+            //         new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -2, async (listener, stageEventDetails) =>
+            //         {
+            //             Buff b = (Buff)listener;
+            //             AttackDetails d = (AttackDetails)stageEventDetails;
+            //             if (!d.Recursive) return;
+            //             if (d.Src != b.Owner && d.Tgt == b.Owner)
+            //             {
+            //                 b.PlayPingAnimation();
+            //                 await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Penetrate, d.Crit, false, d.DidDamage);
+            //                 d.Cancel = true;
+            //             }
+            //         }),
+            //     }),
 
             new("待激活的人间无戈", "20锋锐觉醒：死亡不会导致战斗结算", BuffStackRule.One, true, false,
                 eventDescriptors: new StageEventDescriptor[]

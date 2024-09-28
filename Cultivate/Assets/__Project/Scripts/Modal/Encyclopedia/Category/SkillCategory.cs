@@ -87,7 +87,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"2攻".ApplyAttack() +
-                    $"\n击伤：施加{5 + 5 * dj}减甲".ApplyCond(castResult),
+                    $"\n击伤：施加{5 + 5 * dj}破甲".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     bool cond = false;
@@ -367,7 +367,7 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"30攻".ApplyAttack() +
-                    $"\n击伤：伤害转为减甲".ApplyCond(castResult),
+                    $"\n击伤：伤害转为破甲".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     bool cond = false;
@@ -1462,7 +1462,7 @@ public class SkillCategory : Category<SkillEntry>
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{(5 * dj * dj + 35 * dj + 50) / 2}攻".ApplyAttack() +
                     $"\n遭受4跳回合".ApplyDebuff() +
-                    $"\n唯一攻击牌：免除跳回合".ApplyCond(castResult),
+                    $"\n唯一攻击牌：免除".ApplyCond(castResult),
                 cast:                       async (env, caster, skill, recursive) =>
                 {
                     int value = (5 * skill.Dj * skill.Dj + 35 * skill.Dj + 50) / 2;
