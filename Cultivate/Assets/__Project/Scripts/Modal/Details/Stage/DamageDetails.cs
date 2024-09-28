@@ -11,7 +11,7 @@ public class DamageDetails : EventDetails
     public bool LifeSteal;
     public bool Recursive;
 
-    public Func<DamageDetails, Task> WillDamage;
+    public Func<DamageDetails, Task> WilDamage;
     public Func<DamageDetails, Task> Undamaged;
     public Func<DamageDetails, Task> DidDamage;
 
@@ -19,7 +19,7 @@ public class DamageDetails : EventDetails
         bool crit = false,
         bool lifeSteal = false,
         bool recursive = true,
-        Func<DamageDetails, Task> willDamage = null,
+        Func<DamageDetails, Task> wilDamage = null,
         Func<DamageDetails, Task> undamaged = null,
         Func<DamageDetails, Task> didDamage = null)
     {
@@ -30,10 +30,10 @@ public class DamageDetails : EventDetails
         LifeSteal = lifeSteal;
         Recursive = recursive;
 
-        WillDamage = willDamage;
+        WilDamage = wilDamage;
         Undamaged = undamaged;
         DidDamage = didDamage;
     }
 
-    public DamageDetails Clone() => new(Src, Tgt, Value, Crit, LifeSteal, Recursive, WillDamage, Undamaged, DidDamage);
+    public DamageDetails Clone() => new(Src, Tgt, Value, Crit, LifeSteal, Recursive, WilDamage, Undamaged, DidDamage);
 }

@@ -21,7 +21,9 @@ public class AttackDetails : EventDetails
     public bool Penetrate;
     public bool Evade;
     public bool Recursive;
-    public Func<DamageDetails, Task> WillDamage;
+    public Func<AttackDetails, Task> WilAttack;
+    public Func<AttackDetails, Task> DidAttack;
+    public Func<DamageDetails, Task> WilDamage;
     public Func<DamageDetails, Task> Undamaged;
     public Func<DamageDetails, Task> DidDamage;
 
@@ -35,7 +37,9 @@ public class AttackDetails : EventDetails
         bool penetrate = false,
         bool evade = false,
         bool recursive = true,
-        Func<DamageDetails, Task> willDamage = null,
+        Func<AttackDetails, Task> wilAttack = null,
+        Func<AttackDetails, Task> didAttack = null,
+        Func<DamageDetails, Task> wilDamage = null,
         Func<DamageDetails, Task> undamaged = null,
         Func<DamageDetails, Task> didDamage = null)
     {
@@ -48,7 +52,9 @@ public class AttackDetails : EventDetails
         Penetrate = penetrate;
         Evade = evade;
         Recursive = recursive;
-        WillDamage = willDamage;
+        WilAttack = wilAttack;
+        DidAttack = didAttack;
+        WilDamage = wilDamage;
         Undamaged = undamaged;
         DidDamage = didDamage;
     }
@@ -63,7 +69,9 @@ public class AttackDetails : EventDetails
         Penetrate,
         Evade,
         Recursive,
-        WillDamage,
+        WilAttack,
+        DidAttack,
+        WilDamage,
         Undamaged,
         DidDamage);
 }

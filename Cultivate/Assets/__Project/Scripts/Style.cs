@@ -1,6 +1,4 @@
 
-using System.Collections.Generic;
-
 public static class Style
 {
     public static string ApplyStyle(this string s, CastResult castResult, string styleName)
@@ -36,40 +34,17 @@ public static class Style
     public static string ApplyCond(this string s, CastResult castResult)
         => s.ApplyStyle(castResult, "cond");
 
-    public static string ApplyOdd(this string s, CastResult castResult)
-        => s.ApplyStyle(castResult, "odd");
-
-    public static string ApplyEven(this string s, CastResult castResult)
-        => s.ApplyStyle(castResult, "even");
-
-    public static CastResult New() => new();
-
-    public static CastResult Append(this CastResult castResult, string key, bool cond)
+    public static void Append(this CastResult castResult, string key, bool cond)
     {
-        if (!cond)
-            castResult[key] = "Inactive";
-        return castResult;
+        if (!cond) castResult[key] = "Inactive";
     }
 
-    public static CastResult Merge(this CastResult castResult,
-        CastResult other)
-    {
-        foreach (KeyValuePair<string, string> kvp in other)
-            castResult[kvp.Key] = kvp.Value;
+    public static void AppendCond(this CastResult castResult, bool cond)
+        => castResult.Append("cond", cond);
 
-        return castResult;
-    }
-
-    public static CastResult CastResultFromBools(params bool[] bools)
+    public static void AppendBools(this CastResult castResult, params bool[] bools)
     {
-        var executeResult = New();
         for (int i = 0; i < bools.Length; i++)
-            executeResult.Append(i.ToString(), bools[i]);
-        return executeResult;
+            castResult.Append(i.ToString(), bools[i]);
     }
-
-    public static CastResult ToCastResult(this bool cond) => New().Append("cond", cond);
-
-    public static CastResult CastResultFromOddEven(bool odd, bool even) =>
-        New().Append("odd", odd).Append("even", even);
 }

@@ -88,8 +88,9 @@ public class StageEntity : Addressable, StageEventListener
         {
             await _env.Play(new ShiftAnimation(), false);
             _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}的开局效果");
-        
-            await skill.Entry.StartStageCast(_env, this, skill, recursive);
+
+            CastResult castResult = new();
+            await skill.Entry.StartStageCast(_env, this, skill, recursive, castResult);
             _env.Result.TryAppendNote(Index, skill, _costResult, null);
             _env.Result.TryAppend($"\n");
         }
@@ -107,8 +108,8 @@ public class StageEntity : Addressable, StageEventListener
         await _env.Play(new ShiftAnimation(), false);
         _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}");
         
-        
-        CastResult castResult = await skill.Entry.Cast(_env, this, skill, recursive);
+        CastResult castResult = new();
+        await skill.Entry.Cast(_env, this, skill, recursive, castResult);
         _env.Result.TryAppendNote(Index, skill, _costResult, castResult);
         
         
@@ -133,8 +134,8 @@ public class StageEntity : Addressable, StageEventListener
         _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}");
 
         
-        CastResult castResult = await skill.Entry.Cast(_env, this, skill, recursive);
-        
+        CastResult castResult = new();
+        await skill.Entry.Cast(_env, this, skill, recursive, castResult);
         
         _env.Result.TryAppend($"\n");
         // did cast report
@@ -562,8 +563,13 @@ public class StageEntity : Addressable, StageEventListener
     #region Procedure
 
     public async Task AttackProcedure(int value, WuXing? wuXing = null, int times = 1, bool crit = false, bool lifeSteal = false, bool penetrate = false, bool recursive = true,
-        Func<DamageDetails, Task> willDamage = null, Func<DamageDetails, Task> undamaged = null, Func<DamageDetails, Task> didDamage = null, bool induced = false)
-        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, wuXing, crit, lifeSteal, penetrate, false, recursive, willDamage, undamaged, didDamage), times, induced);
+        Func<AttackDetails, Task> wilAttack = null,
+        Func<AttackDetails, Task> didAttack = null,
+        Func<DamageDetails, Task> wilDamage = null,
+        Func<DamageDetails, Task> undamaged = null,
+        Func<DamageDetails, Task> didDamage = null, bool induced = false)
+        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, wuXing, crit, lifeSteal, penetrate, false, recursive,
+            wilAttack, didAttack, wilDamage, undamaged, didDamage), times, induced);
 
     public async Task IndirectProcedure(int value, WuXing? wuXing = null, bool recursive = true, bool induced = false)
         => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, wuXing, recursive), induced);

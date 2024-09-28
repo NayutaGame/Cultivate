@@ -95,14 +95,16 @@ public class StageEnvironment : Addressable, StageEventListener
     /// <param name="lifeSteal">是否吸血</param>
     /// <param name="pierce">是否穿透</param>
     /// <param name="recursive">是否会递归</param>
-    /// <param name="willDamage">造成伤害前的额外行为</param>
+    /// <param name="wilDamage">造成伤害前的额外行为</param>
     /// <param name="undamaged">如果未造成伤害的额外行为</param>
     /// <param name="didDamage">如果造成伤害时候的额外行为</param>
     /// <param name="induced">该行为是间接行为，不会引起额外的角色动画</param>
     public async Task AttackProcedure(StageEntity src, StageEntity tgt, int value, WuXing? wuXing = null, int times = 1,
         bool crit = false, bool lifeSteal = false, bool penetrate = false, bool recursive = true,
-        Func<DamageDetails, Task> willDamage = null, Func<DamageDetails, Task> undamaged = null, Func<DamageDetails, Task> didDamage = null, bool induced = false)
-        => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, crit, lifeSteal, penetrate, false, recursive, willDamage, undamaged, didDamage), times, induced);
+        Func<AttackDetails, Task> wilAttack = null, Func<AttackDetails, Task> didAttack = null,
+        Func<DamageDetails, Task> wilDamage = null, Func<DamageDetails, Task> undamaged = null, Func<DamageDetails, Task> didDamage = null, bool induced = false)
+        => await AttackProcedure(new AttackDetails(src, tgt, value, wuXing, crit, lifeSteal, penetrate, false, recursive,
+            wilAttack, didAttack, wilDamage, undamaged, didDamage), times, induced);
     public async Task AttackProcedure(AttackDetails attackDetails, int times, bool induced)
     {
         if (await attackDetails.Src.TryConsumeProcedure("追击"))
@@ -114,8 +116,12 @@ public class StageEnvironment : Addressable, StageEventListener
         for (int i = 0; i < times; i++)
         {
             AttackDetails d = attackDetails.Clone();
+            if (d.WilAttack != null)
+                await d.WilAttack(d);
             await _eventDict.SendEvent(StageEventDict.WIL_ATTACK, d);
             await SingleAttackProcedure(d, induced);
+            if (d.DidAttack != null)
+                await d.DidAttack(d);
             await _eventDict.SendEvent(StageEventDict.DID_ATTACK, d);
             await NextKey(induced);
         }
@@ -165,7 +171,7 @@ public class StageEnvironment : Addressable, StageEventListener
             return;
         }
 
-        await DamageProcedure(new DamageDetails(d.Src, d.Tgt, d.Value, crit: d.Crit, lifeSteal: d.LifeSteal, willDamage: d.WillDamage, undamaged: d.Undamaged, didDamage: d.DidDamage), induced);
+        await DamageProcedure(new DamageDetails(d.Src, d.Tgt, d.Value, crit: d.Crit, lifeSteal: d.LifeSteal, wilDamage: d.WilDamage, undamaged: d.Undamaged, didDamage: d.DidDamage), induced);
         
         _result.TryAppend($"    敌方气血[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
     }
@@ -255,8 +261,8 @@ public class StageEnvironment : Addressable, StageEventListener
         if (d.Crit)
             d.Value *= 2;
         
-        if (d.WillDamage != null)
-            await d.WillDamage(d);
+        if (d.WilDamage != null)
+            await d.WilDamage(d);
         await _eventDict.SendEvent(StageEventDict.WIL_DAMAGE, d);
 
         d.Src.TriggeredCrit |= d.Crit;
