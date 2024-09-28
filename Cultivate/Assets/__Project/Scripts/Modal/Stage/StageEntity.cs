@@ -562,8 +562,8 @@ public class StageEntity : Addressable, StageEventListener
     #region Procedure
 
     public async Task AttackProcedure(int value, WuXing? wuXing = null, int times = 1, bool crit = false, bool lifeSteal = false, bool penetrate = false, bool recursive = true,
-        Func<DamageDetails, Task> willDamage = null, Func<DamageDetails, Task> undamaged = null, Func<DamageDetails, Task> didDamage = null, bool fromSeamless = false, bool induced = false)
-        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, wuXing, crit, lifeSteal, penetrate, false, recursive, willDamage, undamaged, didDamage, fromSeamless), times, induced);
+        Func<DamageDetails, Task> willDamage = null, Func<DamageDetails, Task> undamaged = null, Func<DamageDetails, Task> didDamage = null, bool induced = false)
+        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, wuXing, crit, lifeSteal, penetrate, false, recursive, willDamage, undamaged, didDamage), times, induced);
 
     public async Task IndirectProcedure(int value, WuXing? wuXing = null, bool recursive = true, bool induced = false)
         => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, wuXing, recursive), induced);

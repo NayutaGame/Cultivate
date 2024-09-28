@@ -831,7 +831,7 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)stageEventDetails;
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
-                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo, fromSeamless: true);
+                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo);
                     }),
                     new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CAST, 0, async (listener, stageEventDetails) =>
                     {
