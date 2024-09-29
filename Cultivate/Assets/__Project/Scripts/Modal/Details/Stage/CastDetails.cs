@@ -26,9 +26,6 @@ public class CastDetails : EventDetails
 
     public async Task AttackProcedure(int value,
         WuXing? wuXing = null,
-        bool crit = false,
-        bool lifeSteal = false,
-        bool penetrate = false,
         bool recursive = true,
         Func<AttackDetails, CastResult, Task> wilAttack = null,
         Func<AttackDetails, CastResult, Task> didAttack = null,
@@ -37,7 +34,7 @@ public class CastDetails : EventDetails
         Func<DamageDetails, CastResult, Task> didDamage = null,
         int times = 1,
         bool induced = false)
-        => await Env.AttackProcedure(new AttackDetails(Caster, Caster.Opponent(), value, Skill, wuXing ?? Skill.Entry.WuXing, crit, lifeSteal, penetrate, false, recursive, wilAttack, didAttack, wilDamage, undamaged, didDamage), times, CastResult, induced);
+        => await Env.AttackProcedure(new AttackDetails(Caster, Caster.Opponent(), value, Skill, wuXing ?? Skill.Entry.WuXing, crit: false, lifeSteal: false, penetrate: false, false, recursive, wilAttack, didAttack, wilDamage, undamaged, didDamage), times, CastResult, induced);
 
     public async Task IndirectProcedure(
         int value,

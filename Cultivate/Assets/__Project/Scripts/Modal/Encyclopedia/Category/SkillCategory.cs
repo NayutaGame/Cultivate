@@ -272,10 +272,14 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n敌方有破甲：暴击".ApplyCond(castResult),
                 cast:                       async d =>
                 {
+                    async Task WilAttack(AttackDetails d, CastResult castResult)
+                    {
+                        await d.Src.GainBuffProcedure("暴击");
+                    }
                     bool cond = await d.Caster.OppoHasFragile(useFocus: true);
-                    await d.AttackProcedure(3 + 3 * d.Dj, crit: cond);
+                    await d.AttackProcedure(3 + 3 * d.Dj, wilAttack: cond ? WilAttack : null);
                     cond = cond || await d.Caster.OppoHasFragile(useFocus: true);
-                    await d.AttackProcedure(3 + 3 * d.Dj, crit: cond);
+                    await d.AttackProcedure(3 + 3 * d.Dj, wilAttack: cond ? WilAttack : null);
                     d.CastResult.AppendCond(cond);
                 }),
 
@@ -2201,8 +2205,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n遭受{3 + 2 * dj}腐朽".ApplyDebuff(),
                 cast:                       async d =>
                 {
-                    await d.AttackProcedure(20 + 20 * d.Skill.Dj);
-                    await d.GainBuffProcedure("腐朽", stack: 3 + 2 * d.Skill.Dj, induced: true);
+                    await d.AttackProcedure(20 + 20 * d.Dj);
+                    await d.GainBuffProcedure("腐朽", stack: 3 + 2 * d.Dj, induced: true);
                 }),
             
             new(id:                         "0509",
@@ -2217,7 +2221,7 @@ public class SkillCategory : Category<SkillEntry>
                     $"{40 + 20 * dj}攻".ApplyAttack(),
                 cast:                       async d =>
                 {
-                    await d.AttackProcedure(40 + 20 * d.Skill.Dj);
+                    await d.AttackProcedure(40 + 20 * d.Dj);
                 }),
             
             // new(id:                         "0322",
