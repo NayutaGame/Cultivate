@@ -1,7 +1,6 @@
 
 using System;
 using System.Threading.Tasks;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class AttackDetails : EventDetails
@@ -15,37 +14,40 @@ public class AttackDetails : EventDetails
         set => _value = Mathf.Max(0, value);
     }
 
+    public StageSkill SrcSkill;
     public WuXing? WuXing;
     public bool Crit;
     public bool LifeSteal;
     public bool Penetrate;
     public bool Evade;
     public bool Recursive;
-    public Func<AttackDetails, Task> WilAttack;
-    public Func<AttackDetails, Task> DidAttack;
-    public Func<DamageDetails, Task> WilDamage;
-    public Func<DamageDetails, Task> Undamaged;
-    public Func<DamageDetails, Task> DidDamage;
+    public Func<AttackDetails, CastResult, Task> WilAttack;
+    public Func<AttackDetails, CastResult, Task> DidAttack;
+    public Func<DamageDetails, CastResult, Task> WilDamage;
+    public Func<DamageDetails, CastResult, Task> Undamaged;
+    public Func<DamageDetails, CastResult, Task> DidDamage;
 
     public AttackDetails(
         StageEntity src,
         StageEntity tgt,
         int value,
+        StageSkill srcSkill,
         WuXing? wuxing,
         bool crit = false,
         bool lifeSteal = false,
         bool penetrate = false,
         bool evade = false,
         bool recursive = true,
-        Func<AttackDetails, Task> wilAttack = null,
-        Func<AttackDetails, Task> didAttack = null,
-        Func<DamageDetails, Task> wilDamage = null,
-        Func<DamageDetails, Task> undamaged = null,
-        Func<DamageDetails, Task> didDamage = null)
+        Func<AttackDetails, CastResult, Task> wilAttack = null,
+        Func<AttackDetails, CastResult, Task> didAttack = null,
+        Func<DamageDetails, CastResult, Task> wilDamage = null,
+        Func<DamageDetails, CastResult, Task> undamaged = null,
+        Func<DamageDetails, CastResult, Task> didDamage = null)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
+        SrcSkill = srcSkill;
         WuXing = wuxing;
         Crit = crit;
         LifeSteal = lifeSteal;
@@ -63,6 +65,7 @@ public class AttackDetails : EventDetails
         Src,
         Tgt,
         Value,
+        SrcSkill,
         WuXing,
         Crit,
         LifeSteal,

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
 
 public class StageSkill
 {
@@ -163,5 +162,10 @@ public class StageSkill
             return null;
 
         return _owner._skills[index];
+    }
+
+    public override string ToString()
+    {
+        return $"{_jingJie} {_entry.GetName()}";
     }
 }

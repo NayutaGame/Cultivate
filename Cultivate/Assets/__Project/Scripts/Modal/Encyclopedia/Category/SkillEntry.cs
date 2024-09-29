@@ -35,15 +35,15 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
     public CostDescription GetCostDescription(JingJie showingJingJie, CostResult costResult)
         => _costDescription(showingJingJie, showingJingJie - LowestJingJie, costResult);
     
-    private Func<StageEnvironment, StageEntity, StageSkill, bool, CastResult, Task> _cast;
-    public async Task Cast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive, CastResult castResult)
-        => await _cast(env, caster, skill, recursive, castResult);
-    private async Task DefaultCast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive, CastResult castResult) { }
+    private Func<CastDetails, Task> _cast;
+    public async Task Cast(CastDetails d)
+        => await _cast(d);
+    private async Task DefaultCast(CastDetails d) { }
 
-    private Func<StageEnvironment, StageEntity, StageSkill, bool, CastResult, Task> _startStageCast;
-    public async Task StartStageCast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive, CastResult castResult)
-        => await _startStageCast(env, caster, skill, recursive, castResult);
-    private async Task DefaultStartStageCast(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive, CastResult castResult) { }
+    private Func<StartStageCastDetails, Task> _startStageCast;
+    public async Task StartStageCast(StartStageCastDetails d)
+        => await _startStageCast(d);
+    private async Task DefaultStartStageCast(StartStageCastDetails d) { }
 
     public bool HasStartStageCast() => _startStageCast != DefaultStartStageCast;
 
@@ -77,10 +77,10 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
         
         Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> cost = null,
         Func<JingJie, int, CostResult, CostDescription> costDescription = null,
-        Func<StageEnvironment, StageEntity, StageSkill, bool, CastResult, Task> cast = null,
+        Func<CastDetails, Task> cast = null,
         Func<JingJie, int, CostResult, CastResult, string> castDescription = null,
         
-        Func<StageEnvironment, StageEntity, StageSkill, bool, CastResult, Task> startStageCast = null,
+        Func<StartStageCastDetails, Task> startStageCast = null,
         
         string trivia = null,
         bool withinPool = true

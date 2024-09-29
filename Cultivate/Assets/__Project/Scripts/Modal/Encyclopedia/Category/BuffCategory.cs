@@ -192,7 +192,7 @@ public class BuffCategory : Category<BuffEntry>
                         ExecuteDetails d = (ExecuteDetails)stageEventDetails;
                         if (b.Owner != d.Caster) return;
                         b.PlayPingAnimation();
-                        d.CastTimes = 2;
+                        d.CastTimes = Mathf.Max(2, d.CastTimes);
                     }),
                 }),
             
