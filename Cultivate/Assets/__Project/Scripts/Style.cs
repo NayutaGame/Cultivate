@@ -34,12 +34,6 @@ public static class Style
     public static string ApplyCond(this string s, CastResult castResult)
         => s.ApplyStyle(castResult, "cond");
 
-    public static string ApplyDidDamage(this string s, CastResult castResult)
-    {
-        castResult["didDamage"] ??= "Inactive";
-        return s.ApplyStyle(castResult, "didDamage");
-    }
-
 
     public static void Append(this CastResult castResult, string key, bool cond)
     {
@@ -49,14 +43,6 @@ public static class Style
 
     public static void AppendCond(this CastResult castResult, bool cond)
         => castResult.Append("cond", cond);
-
-    public static void AppendDidDamage(this CastResult castResult, bool didDamage = true)
-    {
-        if (didDamage)
-            castResult.Remove("didDamage");
-        else
-            castResult["didDamage"] = "Inactive";
-    }
 
     public static void AppendBools(this CastResult castResult, params bool[] bools)
     {

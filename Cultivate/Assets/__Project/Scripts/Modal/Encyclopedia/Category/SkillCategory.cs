@@ -95,9 +95,10 @@ public class SkillCategory : Category<SkillEntry>
                     async Task DidDamage(DamageDetails d, CastResult castResult)
                     {
                         await d.Src.RemoveArmorProcedure(5 + 5 * d.SrcSkill.Dj);
-                        castResult.AppendDidDamage();
+                        castResult.AppendCond(true);
                     }
-                    
+
+                    d.CastResult.AppendCond(false);
                     await d.AttackProcedure(2,
                         didDamage: DidDamage);
                 }),
@@ -128,16 +129,17 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Mana,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"4攻".ApplyAttack() +
-                    ($"\n击伤：" + $"灵气+{1 + dj}".ApplyMana()).ApplyDidDamage(castResult) +
+                    ($"\n击伤：" + $"灵气+{1 + dj}".ApplyMana()).ApplyCond(castResult) +
                     $"\n开局：" + $"灵气+{1 + dj}".ApplyMana(),
                 cast:                       async d =>
                 {
                     async Task DidDamage(DamageDetails d, CastResult castResult)
                     {
                         await d.Src.GainBuffProcedure("灵气", 1 + d.SrcSkill.Dj, induced: true);
-                        castResult.AppendDidDamage();
+                        castResult.AppendCond(true);
                     }
 
+                    d.CastResult.AppendCond(false);
                     await d.AttackProcedure(4,
                         didDamage: DidDamage);
                 },
@@ -159,9 +161,10 @@ public class SkillCategory : Category<SkillEntry>
                     async Task DidDamage(DamageDetails d, CastResult castResult)
                     {
                         await d.Src.GainBuffProcedure("暴击", induced: true);
-                        castResult.AppendDidDamage();
+                        castResult.AppendCond(true);
                     }
 
+                    d.CastResult.AppendCond(false);
                     await d.AttackProcedure(6 + 3 * d.Dj,
                         didDamage: DidDamage);
                 }),
@@ -205,7 +208,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{6 + 4 * dj}攻".ApplyAttack() +
-                    $"\n敌方有破甲：追加{6 + 4 * dj}攻".ApplyStyle(castResult, "cond"),
+                    $"\n敌方有破甲：追加{6 + 4 * dj}攻".ApplyCond(castResult),
                 cast:                       async d =>
                 {
                     bool cond = await d.Caster.OppoHasFragile(useFocus: true);
@@ -382,6 +385,7 @@ public class SkillCategory : Category<SkillEntry>
                         castResult.AppendCond(true);
                     }
                     
+                    d.CastResult.AppendCond(false);
                     await d.AttackProcedure(30,
                         wilDamage: WilDamage);
                 }),
@@ -455,16 +459,13 @@ public class SkillCategory : Category<SkillEntry>
                     async Task DidDamage(DamageDetails d, CastResult castResult)
                     {
                         if (d.SrcSkill.GetJingJie() < JingJie.JinDan)
-                        {
                             await d.Src.CycleProcedure(WuXing.Shui, gain: 1);
-                            castResult.AppendCond(true);
-                        }
                         else
-                        {
                             await d.Src.CycleProcedure(WuXing.Shui, gain: d.Value / (10 - d.SrcSkill.Dj));
-                        }
+                        castResult.AppendCond(true);
                     }
                     
+                    d.CastResult.AppendCond(false);
                     await d.AttackProcedure(2 + 4 * d.Dj,
                         didDamage: DidDamage);
                 }),
@@ -509,6 +510,7 @@ public class SkillCategory : Category<SkillEntry>
                         (8 + 4 * d.Dj) :
                         24;
                     
+                    d.CastResult.AppendCond(false);
                     await d.AttackProcedure(value,
                         undamaged: Undamaged);
                 }),
@@ -576,6 +578,7 @@ public class SkillCategory : Category<SkillEntry>
                         castResult.AppendBools(crit, lifeSteal, penetrate);
                     }
 
+                    d.CastResult.AppendBools(false, false, false);
                     await d.AttackProcedure(10 + 4 * d.Dj,
                         didAttack: DidAttack);
                     
@@ -702,6 +705,7 @@ public class SkillCategory : Category<SkillEntry>
                         castResult.AppendCond(true);
                     }
                     
+                    d.CastResult.AppendCond(false);
                     await d.AttackProcedure(1,
                         didDamage: DidDamage);
                 }),
