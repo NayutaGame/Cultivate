@@ -1,4 +1,4 @@
 
-public class EnvironmentUpdateDetails : EventDetails
+public class EnvironmentUpdateDetails : ClosureDetails
 {
 }

@@ -14,14 +14,14 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
-                eventDescriptors:           null),
+                closures:                   null),
             
             new(id:                         "灵气",
                 description:                "可以消耗灵气使用技能",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
-                eventDescriptors:           null),
+                closures:                   null),
 
             new("齐物论",     "奇偶同时激活两个效果",                    BuffStackRule.One, true, false),
             new("追击",      "持续[层数]次，下次攻击时，次数+1",            BuffStackRule.Add, true, false),
@@ -41,9 +41,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         StartStepDetails d = (StartStepDetails)stageEventDetails;
@@ -59,9 +59,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -77,9 +77,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ACTION, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ACTION, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ActionDetails d = (ActionDetails)stageEventDetails;
@@ -89,7 +89,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         await b.SetDStack(-1);
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -104,9 +104,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 1, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -115,7 +115,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         await b.SetDStack(-1);
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -130,9 +130,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -148,9 +148,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -166,9 +166,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -3, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, -3, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -184,9 +184,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_EXECUTE, -1, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_EXECUTE, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ExecuteDetails d = (ExecuteDetails)stageEventDetails;
@@ -201,9 +201,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_EXECUTE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_EXECUTE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ExecuteDetails d = (ExecuteDetails)stageEventDetails;
@@ -220,9 +220,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_EXECUTE, 1, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_EXECUTE, 1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ExecuteDetails d = (ExecuteDetails)stageEventDetails;
@@ -237,9 +237,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 100, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 100, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -255,9 +255,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   false,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_HEAL, -3, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_HEAL, -3, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         HealDetails d = (HealDetails)stageEventDetails;
@@ -272,9 +272,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_MANA_COST, -3, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_MANA_COST, -3, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ManaCostResult d = (ManaCostResult)stageEventDetails;
@@ -290,9 +290,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_MANA_COST, -2, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_MANA_COST, -2, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ManaCostResult d = (ManaCostResult)stageEventDetails;
@@ -308,9 +308,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
                 dispellable:                false,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_MANA_COST, -1, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_MANA_COST, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ManaCostResult d = (ManaCostResult)stageEventDetails;
@@ -329,9 +329,9 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
-                eventDescriptors:           new StageEventDescriptor[]
+                closures:                   new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;
@@ -345,9 +345,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("暴击", "下一次攻击造成的伤害翻倍", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -360,9 +360,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("二动", "下一回合二动", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -376,9 +376,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("六爻化劫", "第二轮开始时，双方重置气血上限，回[层数]%血", BuffStackRule.Max, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         RoundDetails d = (RoundDetails)stageEventDetails;
@@ -405,9 +405,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("灵气回收", "下一次灵气减少时，加回", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_LOSE_BUFF, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_LOSE_BUFF, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         LoseBuffDetails d = (LoseBuffDetails)eventDetails;
@@ -421,9 +421,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("护甲回收", "下一次护甲减少时，加回", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_LOSE_ARMOR, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_LOSE_ARMOR, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         LoseArmorDetails d = (LoseArmorDetails)eventDetails;
@@ -437,9 +437,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("长明灯", "获得灵气时：每1，气血+3", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         GainBuffDetails d = (GainBuffDetails)eventDetails;
@@ -451,9 +451,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("尖刺陷阱", "下次受到攻击时，对对方施加等量减甲", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ATTACK, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_ATTACK, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)eventDetails;
@@ -464,9 +464,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("回合力量", "回合开始时：力量+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)eventDetails;
@@ -477,9 +477,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("回合免疫", "此回合无法收到伤害", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)eventDetails;
@@ -487,7 +487,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         await b.Owner.RemoveBuff(b);
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_DAMAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_DAMAGE, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)eventDetails;
@@ -500,9 +500,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("外骨骼", "每次攻击前，护甲+3", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)eventDetails;
@@ -513,9 +513,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("永动机", "[层数]回合后死亡", BuffStackRule.Min, false, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)eventDetails;
@@ -528,9 +528,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("火箭靴", "使用灵气牌时：获得二动", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_STEP, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_STEP, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         EndStepDetails d = (EndStepDetails)eventDetails;
@@ -544,9 +544,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("定龙桩", "对方二动时：暴击补至1", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ACTION, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_ACTION, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ActionDetails d = (ActionDetails)eventDetails;
@@ -561,9 +561,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("飞行器", "成功闪避时，对方跳回合补至1", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_EVADE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_EVADE, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         EvadedDetails d = (EvadedDetails)eventDetails;
@@ -577,9 +577,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("延迟攻", "下回合，[层数]攻", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -592,9 +592,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("延迟护甲", "下回合，护甲+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -607,9 +607,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("诸行无常", "击伤时：施加[层数]减甲", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;
@@ -621,9 +621,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("锋锐", "回合结束时：[层数]间接攻击", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -635,9 +635,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("抱朴", "每回合：灵气+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -649,9 +649,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("敛息", "击伤时：伤害替换为减甲", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_DAMAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;
@@ -667,9 +667,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("吸血", "下[层数]次攻击时，根据造成伤害值，回复气血", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -683,9 +683,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("幻月狂乱", "攻击一直具有吸血，使用非攻击牌时：遭受1跳回合", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_STEP, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_STEP, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         EndStepDetails d = (EndStepDetails)stageEventDetails;
@@ -698,7 +698,7 @@ public class BuffCategory : Category<BuffEntry>
                             }
                         }
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -711,9 +711,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("吐纳", "治疗可以穿上限", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_HEAL, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_HEAL, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         HealDetails d = (HealDetails)stageEventDetails;
@@ -726,9 +726,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("格挡", "受攻击时：攻击力-[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 1, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -742,9 +742,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("闪避", "下[层数]次受攻击时：忽略攻击", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -758,9 +758,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("轮闪避", "每轮：闪避补至[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         RoundDetails d = (RoundDetails)stageEventDetails;
@@ -774,9 +774,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("穿透", "下[层数]次攻击时，忽略对方护甲/闪避/格挡", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -791,9 +791,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("力量", "攻击时：多[层数]攻", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -806,9 +806,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("回马枪", "下次受攻击后：[层数]攻 穿透", BuffStackRule.Max, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -823,9 +823,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -833,7 +833,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo);
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CAST, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_CAST, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         CastDetails d = (CastDetails)stageEventDetails;
@@ -848,9 +848,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("业火", "卡牌变成疲劳时：使用2次", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_EXHAUST, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_EXHAUST, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ExhaustDetails d = (ExhaustDetails)stageEventDetails;
@@ -863,9 +863,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("淬体", "燃命时：灼烧+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;
@@ -878,9 +878,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("观众生", "使用牌前，如果是非攻击牌，变得疲劳", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_EXECUTE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_EXECUTE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ExecuteDetails d = (ExecuteDetails)stageEventDetails;
@@ -896,9 +896,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("盛开", "受到治疗时：力量+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_HEAL, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_HEAL, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         HealDetails d = (HealDetails)stageEventDetails;
@@ -911,9 +911,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("灼烧", "受到敌方攻击后：[层数]间接攻击", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -924,7 +924,7 @@ public class BuffCategory : Category<BuffEntry>
                             await b.Owner.IndirectProcedure(b.Stack, recursive: false);
                         }
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_INDIRECT, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_INDIRECT, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         IndirectDetails d = (IndirectDetails)stageEventDetails;
@@ -938,9 +938,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("柔韧", "对方回合开始时：护甲+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_TURN, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -953,9 +953,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("两仪", "获得护甲时/施加减甲时：额外+[层数]", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_GAIN_ARMOR, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_GAIN_ARMOR, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         GainArmorDetails d = (GainArmorDetails)stageEventDetails;
@@ -965,7 +965,7 @@ public class BuffCategory : Category<BuffEntry>
                             d.Value += b.Stack;
                         }
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_LOSE_ARMOR, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_LOSE_ARMOR, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         LoseArmorDetails d = (LoseArmorDetails)stageEventDetails;
@@ -995,9 +995,9 @@ public class BuffCategory : Category<BuffEntry>
             //     }),
 
             new("待激活的人间无戈", "20锋锐觉醒：死亡不会导致战斗结算", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -1013,9 +1013,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("人间无戈", "死亡不会停止战斗", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_COMMIT, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_COMMIT, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         CommitDetails d = (CommitDetails)stageEventDetails;
@@ -1025,9 +1025,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("待激活的摩诃钵特摩", "20格挡觉醒：八动，如果受伤则死亡", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -1043,7 +1043,7 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("摩诃钵特摩", "八动，如果受伤则死亡", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
                     // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_APPEAR, 0, async (listener, stageEventDetails) =>
                     // {
@@ -1063,7 +1063,7 @@ public class BuffCategory : Category<BuffEntry>
                     //     b.PlayPingAnimation();
                     //     await b.Owner.LoseHealthProcedure(b.Owner.Hp);
                     // }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;
@@ -1078,9 +1078,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("待激活的通透世界", "20力量觉醒：永久穿透和集中", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -1096,9 +1096,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("通透世界", "永久穿透和集中", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, -1, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -1111,9 +1111,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("待激活的凤凰涅槃", "20灼烧觉醒：每轮气血恢复至上限", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -1129,9 +1129,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("凤凰涅槃", "每轮以及强制结算前：气血恢复至上限", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_STAGE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_STAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         StageDetails d = (StageDetails)stageEventDetails;
@@ -1147,7 +1147,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp, induced: false);
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         RoundDetails d = (RoundDetails)stageEventDetails;
@@ -1160,9 +1160,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("待激活的那由他", "20柔韧觉醒：灵气消耗为零，Step阶段无法受影响，所有Buff层数不会再变化", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -1178,9 +1178,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("那由他", "灵气/吟唱消耗为零，Step阶段无法受影响，所有Buff层数不会再变化", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_MANA_COST, -4, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_MANA_COST, -4, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ManaCostResult d = (ManaCostResult)stageEventDetails;
@@ -1188,7 +1188,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         d.Value = 0;
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -1196,7 +1196,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         d._stack = 0;
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_LOSE_BUFF, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_LOSE_BUFF, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         LoseBuffDetails d = (LoseBuffDetails)stageEventDetails;
@@ -1204,7 +1204,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         d._stack = 0;
                     }),
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 101, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 101, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
@@ -1215,9 +1215,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("钟声", "使用一张牌前：升级", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CAST, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_CAST, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         CastDetails d = (CastDetails)eventDetails;
@@ -1246,9 +1246,9 @@ public class BuffCategory : Category<BuffEntry>
             //     }),
 
             new("轮暴击", "每轮：获得[层数]暴击", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         RoundDetails d = (RoundDetails)eventDetails;
@@ -1260,9 +1260,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("轮吸血", "每轮：获得[层数]吸血", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         RoundDetails d = (RoundDetails)eventDetails;
@@ -1274,9 +1274,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
 
             new("轮穿透", "每轮：获得[层数]穿透", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (listener, eventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         RoundDetails d = (RoundDetails)eventDetails;
@@ -1288,9 +1288,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("疲劳", "使用下一张牌后变成疲劳", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_STEP, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         StartStepDetails d = (StartStepDetails)stageEventDetails;
@@ -1306,9 +1306,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("清心", "获得灵气时：每1，回复[层数]气血", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -1322,9 +1322,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("太虚", "第二轮：气血回满", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         RoundDetails d = (RoundDetails)stageEventDetails;
@@ -1339,9 +1339,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("灵气返还", "失去灵气时：返还[层数]点", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_LOSE_BUFF, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_LOSE_BUFF, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         LoseBuffDetails d = (LoseBuffDetails)stageEventDetails;
@@ -1355,9 +1355,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("灵敏", "使用二动牌时，获得[层数]闪避", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ACTION, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ACTION, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ActionDetails d = (ActionDetails)stageEventDetails;
@@ -1370,9 +1370,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("五行亲和", "使用五行卡牌后，发生对应的流转", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_EXECUTE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_EXECUTE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         ExecuteDetails d = (ExecuteDetails)stageEventDetails;
@@ -1388,9 +1388,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("相克流转", "流转步数为2", BuffStackRule.One, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_CYCLE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_CYCLE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         CycleDetails d = (CycleDetails)stageEventDetails;
@@ -1402,9 +1402,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("素弦", "下[层数]次，攻击时，灵气+2", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -1417,9 +1417,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("苦寒", "下[层数]次，攻击后，下一回合具有二动", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -1433,9 +1433,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("弱昙", "下[层数]次，攻击时，力量+1", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -1448,9 +1448,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("狂焰", "下[层数]次，攻击时，追加12攻", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -1463,9 +1463,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("击伤赋予护甲", "下[层数]次，攻击时，护甲+击伤值", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_ATTACK, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_ATTACK, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         AttackDetails d = (AttackDetails)stageEventDetails;
@@ -1478,9 +1478,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("护甲返还", "下[层数]次，失去护甲时，返还", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_LOSE_ARMOR, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_LOSE_ARMOR, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         LoseArmorDetails d = (LoseArmorDetails)stageEventDetails;
@@ -1492,9 +1492,9 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("一梦如是", "下[层数]次，受伤害时，变为治疗", BuffStackRule.Add, true, false,
-                eventDescriptors: new StageEventDescriptor[]
+                closures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
+                    new(StageClosureDict.DID_DAMAGE, 0, async (listener, stageEventDetails) =>
                     {
                         Buff b = (Buff)listener;
                         DamageDetails d = (DamageDetails)stageEventDetails;

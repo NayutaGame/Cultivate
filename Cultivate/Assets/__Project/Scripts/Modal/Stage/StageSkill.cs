@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-public class StageSkill
+public class StageSkill : StageClosureOwner
 {
     private readonly StageEntity _owner;
     public StageEntity Owner => _owner;

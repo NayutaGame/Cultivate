@@ -1,5 +1,5 @@
 
-public class HealDetails : EventDetails
+public class HealDetails : ClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

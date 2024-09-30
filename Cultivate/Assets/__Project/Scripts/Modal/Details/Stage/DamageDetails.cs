@@ -1,8 +1,5 @@
 
-using System;
-using System.Threading.Tasks;
-
-public class DamageDetails : EventDetails
+public class DamageDetails : ClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
@@ -11,19 +8,14 @@ public class DamageDetails : EventDetails
     public bool Crit;
     public bool LifeSteal;
     public bool Recursive;
-
-    public Func<DamageDetails, CastResult, Task> WilDamage;
-    public Func<DamageDetails, CastResult, Task> Undamaged;
-    public Func<DamageDetails, CastResult, Task> DidDamage;
+    public CastResult CastResult;
 
     public DamageDetails(StageEntity src, StageEntity tgt, int value,
         StageSkill srcSkill,
         bool crit = false,
         bool lifeSteal = false,
         bool recursive = true,
-        Func<DamageDetails, CastResult, Task> wilDamage = null,
-        Func<DamageDetails, CastResult, Task> undamaged = null,
-        Func<DamageDetails, CastResult, Task> didDamage = null)
+        CastResult castResult = null)
     {
         Src = src;
         Tgt = tgt;
@@ -32,11 +24,14 @@ public class DamageDetails : EventDetails
         Crit = crit;
         LifeSteal = lifeSteal;
         Recursive = recursive;
-
-        WilDamage = wilDamage;
-        Undamaged = undamaged;
-        DidDamage = didDamage;
+        CastResult = castResult;
     }
 
-    public DamageDetails Clone() => new(Src, Tgt, Value, SrcSkill, Crit, LifeSteal, Recursive, WilDamage, Undamaged, DidDamage);
+    public DamageDetails ShallowClone() => new(Src, Tgt, Value, SrcSkill, Crit, LifeSteal, Recursive, CastResult);
+
+    public static DamageDetails FromAttackDetails(AttackDetails d)
+        => new(d.Src, d.Tgt, d.Value, d.SrcSkill, crit: d.Crit, lifeSteal: d.LifeSteal, castResult: d.CastResult);
+
+    public static DamageDetails FromAttackDetailsUndamaged(AttackDetails d)
+        => new(d.Src, d.Tgt, 0, d.SrcSkill, crit: d.Crit, lifeSteal: d.LifeSteal, castResult: d.CastResult);
 }

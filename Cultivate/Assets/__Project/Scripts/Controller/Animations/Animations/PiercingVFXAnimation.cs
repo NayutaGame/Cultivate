@@ -8,7 +8,7 @@ public class PiercingVFXAnimation : Animation
 
     public PiercingVFXAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait)
     {
-        _attackDetails = attackDetails.Clone();
+        _attackDetails = attackDetails.ShallowClone();
     }
 
     public override AnimationHandle GetHandle()

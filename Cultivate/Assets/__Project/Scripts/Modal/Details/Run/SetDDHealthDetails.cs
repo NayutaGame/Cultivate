@@ -1,5 +1,5 @@
 
-public class SetDDHealthDetails : EventDetails
+public class SetDDHealthDetails : ClosureDetails
 {
     public int Value;
 

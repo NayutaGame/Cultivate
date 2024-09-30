@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public abstract class CostResult : EventDetails
+public abstract class CostResult : ClosureDetails
 {
     public enum CostState
     {

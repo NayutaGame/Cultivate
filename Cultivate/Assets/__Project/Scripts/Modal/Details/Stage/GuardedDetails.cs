@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GuardedDetails : EventDetails
+public class GuardedDetails : ClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
@@ -19,4 +19,7 @@ public class GuardedDetails : EventDetails
     }
 
     public GuardedDetails Clone() => new(Src, Tgt, _value);
+
+    public static GuardedDetails FromAttackDetails(AttackDetails d)
+        => new(d.Src, d.Tgt, d.Value);
 }

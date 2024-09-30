@@ -1,5 +1,5 @@
 
-public class GainFormationDetails : EventDetails
+public class GainFormationDetails : ClosureDetails
 {
     public RunFormation _formation;
 

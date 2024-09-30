@@ -1,5 +1,5 @@
 
-public class CommitDetails : EventDetails
+public class CommitDetails : ClosureDetails
 {
     public StageEntity Owner;
     public int Flag;

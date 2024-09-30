@@ -107,7 +107,7 @@ public class PuzzlePanelDescriptor : PanelDescriptor
             {
                 CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
 
-                await env.EventDict.SendEvent(StageEventDict.WIL_COMMIT, d);
+                await env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
 
                 if (forced)
                 {
@@ -124,7 +124,7 @@ public class PuzzlePanelDescriptor : PanelDescriptor
                     d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
                 }
 
-                await env.EventDict.SendEvent(StageEventDict.DID_COMMIT, d);
+                await env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
 
                 if (d.Flag == 0)
                     return d.Flag;

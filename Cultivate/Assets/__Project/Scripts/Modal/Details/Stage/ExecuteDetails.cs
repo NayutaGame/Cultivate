@@ -1,5 +1,5 @@
 
-public class ExecuteDetails : EventDetails
+public class ExecuteDetails : ClosureDetails
 {
     public StageEntity Caster;
     public StageSkill Skill;

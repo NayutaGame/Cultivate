@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-public class DepleteDetails : EventDetails
+public class DepleteDetails : ClosureDetails
 {
     public RunEntity Owner;
     public List<ISkillModel> DepletedSkills;

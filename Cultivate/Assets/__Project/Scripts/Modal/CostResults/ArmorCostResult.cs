@@ -13,7 +13,7 @@ public class ArmorCostResult : CostResult
 
     public override async Task WillCostEvent()
     {
-        await Env.EventDict.SendEvent(StageEventDict.WIL_ARMOR_COST, this);
+        await Env.ClosureDict.SendEvent(StageClosureDict.WIL_ARMOR_COST, this);
     }
     
     public override async Task ApplyCost()
@@ -31,6 +31,6 @@ public class ArmorCostResult : CostResult
 
     public override async Task DidCostEvent()
     {
-        await Env.EventDict.SendEvent(StageEventDict.DID_ARMOR_COST, this);
+        await Env.ClosureDict.SendEvent(StageClosureDict.DID_ARMOR_COST, this);
     }
 }

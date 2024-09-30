@@ -7,21 +7,21 @@ public class DifficultyEntry : Entry
     
     public string Description;
 
-    public RunEventDescriptor[] _runEventDescriptors;
-    public StageEventDescriptor[] _stageEventDescriptors;
+    public RunClosure[] _runClosures;
+    public StageClosure[] _stageClosures;
 
     private string[] AdditionalDifficultyNames;
     public DifficultyEntry[] AdditionalDifficulties;
 
     public DifficultyEntry(string id, string description = null, string[] _additionalDifficultyNames = null,
-        RunEventDescriptor[] runEventDescriptors = null,
-        StageEventDescriptor[] stageEventDescriptors = null) : base(id)
+        RunClosure[] runClosures = null,
+        StageClosure[] stageClosures = null) : base(id)
     {
         Description = description ?? "没有描述";
         AdditionalDifficultyNames = _additionalDifficultyNames ?? Array.Empty<string>();
 
-        _runEventDescriptors = runEventDescriptors ?? Array.Empty<RunEventDescriptor>();
-        _stageEventDescriptors = stageEventDescriptors ?? Array.Empty<StageEventDescriptor>();
+        _runClosures = runClosures ?? Array.Empty<RunClosure>();
+        _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
     }
 
     public void CalcAdditionalDifficulties()

@@ -1,5 +1,5 @@
 
-public class ActionDetails : EventDetails
+public class ActionDetails : ClosureDetails
 {
     public StageEntity Owner;
     public int CurrActionPoint;

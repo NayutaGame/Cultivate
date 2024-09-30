@@ -1,6 +1,5 @@
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
@@ -55,13 +54,15 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        d.LifeSteal = true;
-                    }
-                    
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            d.LifeSteal = true;
+                        });
+
                     await d.AttackProcedure(Fib.ToValue(3 + d.Dj) * 2,
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
 
             #endregion
@@ -92,15 +93,17 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n击伤：施加{5 + 5 * dj}破甲".ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    async Task DidDamage(DamageDetails d, CastResult castResult)
-                    {
-                        await d.Src.RemoveArmorProcedure(5 + 5 * d.SrcSkill.Dj);
-                        castResult.AppendCond(true);
-                    }
+                    StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            d.Src.RemoveArmorProcedure(5 + 5 * d.SrcSkill.Dj);
+                            d.CastResult.AppendCond(true);
+                        });
 
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(2,
-                        didDamage: DidDamage);
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0115",
@@ -133,15 +136,17 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n开局：" + $"灵气+{1 + dj}".ApplyMana(),
                 cast:                       async d =>
                 {
-                    async Task DidDamage(DamageDetails d, CastResult castResult)
-                    {
-                        await d.Src.GainBuffProcedure("灵气", 1 + d.SrcSkill.Dj, induced: true);
-                        castResult.AppendCond(true);
-                    }
+                    StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            await d.Src.GainBuffProcedure("灵气", 1 + d.SrcSkill.Dj, induced: true);
+                            d.CastResult.AppendCond(true);
+                        });
 
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(4,
-                        didDamage: DidDamage);
+                        closures: new [] { closure });
                 },
                 startStageCast:             async d =>
                 {
@@ -158,15 +163,17 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n击伤：暴击+1".ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    async Task DidDamage(DamageDetails d, CastResult castResult)
-                    {
-                        await d.Src.GainBuffProcedure("暴击", induced: true);
-                        castResult.AppendCond(true);
-                    }
+                    StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            await d.Src.GainBuffProcedure("暴击", induced: true);
+                            d.CastResult.AppendCond(true);
+                        });
 
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(6 + 3 * d.Dj,
-                        didDamage: DidDamage);
+                        closures: new [] { closure });
                 }),
 
              // new(id:                         "0107",
@@ -232,15 +239,17 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n吸血".ApplyHeal(),
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        d.LifeSteal = true;
-                        d.Value += d.Src.GetStackOfBuff("锋锐");
-                    }
-                    
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            d.LifeSteal = true;
+                            d.Value += d.Src.GetStackOfBuff("锋锐");
+                        });
+
                     await d.CycleProcedure(WuXing.Jin, gain: 1 + d.Dj);
                     await d.AttackProcedure(0,
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0110",
@@ -272,14 +281,18 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n敌方有破甲：暴击".ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        await d.Src.GainBuffProcedure("暴击");
-                    }
+
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            await d.Src.GainBuffProcedure("暴击");
+                        });
+                    
                     bool cond = await d.Caster.OppoHasFragile(useFocus: true);
-                    await d.AttackProcedure(3 + 3 * d.Dj, wilAttack: cond ? WilAttack : null);
+                    await d.AttackProcedure(3 + 3 * d.Dj, closures: cond ? new [] { closure } : null);
                     cond = cond || await d.Caster.OppoHasFragile(useFocus: true);
-                    await d.AttackProcedure(3 + 3 * d.Dj, wilAttack: cond ? WilAttack : null);
+                    await d.AttackProcedure(3 + 3 * d.Dj, closures: cond ? new [] { closure } : null);
                     d.CastResult.AppendCond(cond);
                 }),
 
@@ -294,14 +307,16 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n下{1 + dj}次攻击也触发",
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        await d.Src.GainBuffProcedure("灵气", 2);
-                        await d.Src.GainBuffProcedure("素弦", 1 + d.SrcSkill.Dj);
-                    }
-                    
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            await d.Src.GainBuffProcedure("灵气", 2);
+                            await d.Src.GainBuffProcedure("素弦", 1 + d.SrcSkill.Dj);
+                        });
+
                     await d.AttackProcedure(2,
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0116",
@@ -351,23 +366,25 @@ public class SkillCategory : Category<SkillEntry>
                     ($"\n终结：" + "1攻".ApplyAttack() + " 暴击释放").ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    async Task WilDamage(DamageDetails d, CastResult castResult)
-                    {
-                        bool cond = await d.SrcSkill.IsEnd();
-                        if (cond)
+                    StageClosure closure = new(StageClosureDict.WIL_DAMAGE, 0,
+                        async (owner, closureDetails) =>
                         {
-                            int critStack = d.Src.GetStackOfBuff("暴击");
-                            await d.Src.TryConsumeProcedure("暴击", critStack);
-                            d.Value *= 1 + critStack;
-                        }
-                        castResult.AppendCond(cond);
-                    }
+                            DamageDetails d = closureDetails as DamageDetails;
+                            bool cond = await d.SrcSkill.IsEnd();
+                            if (cond)
+                            {
+                                int critStack = d.Src.GetStackOfBuff("暴击");
+                                await d.Src.TryConsumeProcedure("暴击", critStack);
+                                d.Value *= 1 + critStack;
+                            }
+                            d.CastResult.AppendCond(cond);
+                        });
                     
                     await d.GainBuffProcedure("暴击", 2);
                     await d.RemoveArmorProcedure(10);
-                    
+
                     await d.AttackProcedure(1,
-                        wilDamage: WilDamage);
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0118",
@@ -382,16 +399,18 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n击伤：伤害转为破甲".ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    async Task WilDamage(DamageDetails d, CastResult castResult)
-                    {
-                        await d.Src.RemoveArmorProcedure(d.Value);
-                        d.Cancel = true;
-                        castResult.AppendCond(true);
-                    }
+                    StageClosure closure = new(StageClosureDict.WIL_DAMAGE, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            await d.Src.RemoveArmorProcedure(d.Value);
+                            d.Cancel = true;
+                            d.CastResult.AppendCond(true);
+                        });
                     
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(30,
-                        wilDamage: WilDamage);
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0119",
@@ -437,13 +456,16 @@ public class SkillCategory : Category<SkillEntry>
                     $"{Fib.ToValue(3 + dj) * 2}攻".ApplyAttack() + " 吸血".ApplyHeal(),
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        d.LifeSteal = true;
-                    }
 
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            d.LifeSteal = true;
+                        });
+                    
                     await d.AttackProcedure(Fib.ToValue(3 + d.Dj) * 2,
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0203",
@@ -460,18 +482,20 @@ public class SkillCategory : Category<SkillEntry>
                         $"\n每造成{10 - dj}点伤害，格挡+1".ApplyDefend()),
                 cast:                       async d =>
                 {
-                    async Task DidDamage(DamageDetails d, CastResult castResult)
-                    {
-                        if (d.SrcSkill.GetJingJie() < JingJie.JinDan)
-                            await d.Src.CycleProcedure(WuXing.Shui, gain: 1);
-                        else
-                            await d.Src.CycleProcedure(WuXing.Shui, gain: d.Value / (10 - d.SrcSkill.Dj));
-                        castResult.AppendCond(true);
-                    }
-                    
+                    StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            if (d.SrcSkill.GetJingJie() < JingJie.JinDan)
+                                await d.Src.CycleProcedure(WuXing.Shui, gain: 1);
+                            else
+                                await d.Src.CycleProcedure(WuXing.Shui, gain: d.Value / (10 - d.SrcSkill.Dj));
+                            d.CastResult.AppendCond(true);
+                        });
+
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(2 + 4 * d.Dj,
-                        didDamage: DidDamage);
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0204",
@@ -504,19 +528,21 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n未击伤：受到治疗".ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    async Task Undamaged(DamageDetails d, CastResult castResult)
-                    {
-                        await d.Src.HealProcedure(d.Value, induced: true);
-                        castResult.AppendCond(true);
-                    }
+                    StageClosure closure = new(StageClosureDict.UNDAMAGED, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            await d.Src.HealProcedure(d.Value, induced: true);
+                            d.CastResult.AppendCond(true);
+                        });
                     
                     int value = d.J < JingJie.HuaShen ?
                         (8 + 4 * d.Dj) :
                         24;
-                    
+
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(value,
-                        undamaged: Undamaged);
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0206",
@@ -531,13 +557,16 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n每携带1水：消耗-1",
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        d.LifeSteal = true;
-                    }
+
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            d.LifeSteal = true;
+                        });
 
                     await d.AttackProcedure(12 + 6 * d.Dj,
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0208",
@@ -561,6 +590,32 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 2 - dj),
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_DAMAGE, 1, async (owner, closureDetails) =>
+                    {
+                        StageSkill s = owner as StageSkill;
+                        DamageDetails d = (DamageDetails)closureDetails;
+                    
+                        if (s.Owner != d.Src) return;
+                    
+                        string critKey = "TriggeredCrit";
+                        s.Owner.Memory.PerformOperation(critKey, false, record => record | d.Crit);
+                        
+                        string lifestealKey = "TriggeredLifesteal";
+                        s.Owner.Memory.PerformOperation(lifestealKey, false, record => record | d.LifeSteal);
+                    }),
+                    new(StageClosureDict.WIL_ATTACK, 1, async (owner, closureDetails) =>
+                    {
+                        StageSkill s = owner as StageSkill;
+                        AttackDetails d = (AttackDetails)closureDetails;
+                    
+                        if (s.Owner != d.Src) return;
+                        
+                        string penetrateKey = "TriggeredPenetrate";
+                        s.Owner.Memory.PerformOperation(penetrateKey, false, record => record | d.Penetrate);
+                    }),
+                },
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{10 + 4 * dj}攻".ApplyAttack() +
                     $"\n返还" +
@@ -571,21 +626,26 @@ public class SkillCategory : Category<SkillEntry>
                     $"穿透".ApplyStyle(castResult, "2"),
                 cast:                       async d =>
                 {
-                    async Task DidAttack(AttackDetails d, CastResult castResult)
-                    {
-                        bool crit = d.Src.TriggeredCrit;
-                        bool lifeSteal = d.Src.TriggeredLifesteal;
-                        bool penetrate = d.Src.TriggeredPenetrate;
-                        if (crit) await d.Src.GainBuffProcedure("暴击", induced: true);
-                        if (lifeSteal) await d.Src.GainBuffProcedure("吸血", induced: true);
-                        if (penetrate) await d.Src.GainBuffProcedure("穿透", induced: true);
-                        castResult.AppendBools(crit, lifeSteal, penetrate);
-                    }
+
+                    StageClosure closure = new(StageClosureDict.DID_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            string critKey = "TriggeredCrit";
+                            string lifestealKey = "TriggeredLifesteal";
+                            string penetrateKey = "TriggeredPenetrate";
+                            bool crit = d.Src.Memory.TryGetVariable(critKey, false);
+                            bool lifeSteal = d.Src.Memory.TryGetVariable(lifestealKey, false);
+                            bool penetrate = d.Src.Memory.TryGetVariable(penetrateKey, false);
+                            if (crit) await d.Src.GainBuffProcedure("暴击", induced: true);
+                            if (lifeSteal) await d.Src.GainBuffProcedure("吸血", induced: true);
+                            if (penetrate) await d.Src.GainBuffProcedure("穿透", induced: true);
+                            d.CastResult.AppendBools(crit, lifeSteal, penetrate);
+                        });
 
                     d.CastResult.AppendBools(false, false, false);
                     await d.AttackProcedure(10 + 4 * d.Dj,
-                        didAttack: DidAttack);
-                    
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0211",
@@ -652,17 +712,20 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n下{1 + dj}次攻击也触发",
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        if (d.Src.GetActionPoint() < 2)
-                            d.Src.SetActionPoint(2);
-                        else
-                            await d.Src.GainBuffProcedure("二动");
-                        await d.Src.GainBuffProcedure("苦寒", 1 + d.SrcSkill.Dj);
-                    }
-                    
-                    await d.AttackProcedure(2, 
-                        wilAttack: WilAttack);
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            if (d.Src.GetActionPoint() < 2)
+                                d.Src.SetActionPoint(2);
+                            else
+                                await d.Src.GainBuffProcedure("二动");
+                            await d.Src.GainBuffProcedure("苦寒", 1 + d.SrcSkill.Dj);
+                        });
+
+                    d.CastResult.AppendCond(false);
+                    await d.AttackProcedure(2,
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0220",
@@ -684,11 +747,28 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Mana,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closureDetails) =>
+                    {
+                        StageSkill s = owner as StageSkill;
+                        GainBuffDetails d = (GainBuffDetails)closureDetails;
+
+                        if (s.Owner != d.Tgt) return;
+                        if (d._buffEntry.GetName() != "灵气") return;
+
+                        string key = "HighestManaRecord";
+                        s.Owner.Memory.PerformOperation(key, 0, record => Mathf.Max(record, s.Owner.GetStackOfBuff("灵气")));
+                    }),
+                },
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气补至本局最高+{1 + dj}".ApplyMana(),
                 cast:                       async d =>
                 {
-                    int space = d.Caster.HighestManaRecord - d.Caster.GetStackOfBuff("灵气") + 1 + d.Dj;
+                    string key = "HighestManaRecord";
+
+                    int highestManaRecord = d.Caster.Memory.TryGetVariable(key, 0);
+                    int space = highestManaRecord - d.Caster.GetStackOfBuff("灵气") + 1 + d.Dj;
                     await d.GainBuffProcedure("灵气", space);
                 }),
 
@@ -703,15 +783,18 @@ public class SkillCategory : Category<SkillEntry>
                     ($"\n击伤：" + "下1次受伤转为治疗".ApplyHeal()).ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    async Task DidDamage(DamageDetails d, CastResult castResult)
-                    {
-                        await d.Src.GainBuffProcedure("一梦如是", induced: true);
-                        castResult.AppendCond(true);
-                    }
-                    
+
+                    StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            await d.Src.GainBuffProcedure("一梦如是", induced: true);
+                            d.CastResult.AppendCond(true);
+                        });
+
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(1,
-                        didDamage: DidDamage);
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0218",
@@ -725,14 +808,17 @@ public class SkillCategory : Category<SkillEntry>
                     $"15攻".ApplyAttack() + " 暴击" + " 吸血".ApplyHeal(),
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        d.Crit = true;
-                        d.LifeSteal = true;
-                    }
+
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            d.Crit = true;
+                            d.LifeSteal = true;
+                        });
 
                     await d.AttackProcedure(15,
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0219",
@@ -789,14 +875,16 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n成长：多{Fib.ToValue(3 + dj)}攻",
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        d.Penetrate = true;
-                        d.Value += Fib.ToValue(3 + d.SrcSkill.Dj) * d.SrcSkill.StageCastedCount;
-                    }
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            d.Penetrate = true;
+                            d.Value += Fib.ToValue(3 + d.SrcSkill.Dj) * d.SrcSkill.StageCastedCount;
+                        });
 
                     await d.AttackProcedure(Fib.ToValue(4 + d.Dj),
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0302",
@@ -843,22 +931,27 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n击伤：穿透+1".ApplyStyle(castResult, "1"),
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        bool cond = await d.SrcSkill.IsEnd(useFocus: true);
-                        d.Penetrate |= cond;
-                        castResult.AppendBool(0, cond);
-                    }
+
+                    StageClosure wilAttack = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            bool cond = await d.SrcSkill.IsEnd(useFocus: true);
+                            d.Penetrate |= cond;
+                            d.CastResult.AppendBool(0, cond);
+                        });
                     
-                    async Task DidDamage(DamageDetails d, CastResult castResult)
-                    {
-                        await d.Src.GainBuffProcedure("穿透", induced: true);
-                        castResult.AppendBool(1, true);
-                    }
-                    
+                    StageClosure didDamage = new(StageClosureDict.DID_DAMAGE, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            await d.Src.GainBuffProcedure("穿透", induced: true);
+                            d.CastResult.AppendBool(1, true);
+                        });
+
+                    d.CastResult.AppendCond(false);
                     await d.AttackProcedure(7 + 3 * d.Dj,
-                        wilAttack: WilAttack,
-                        didDamage: DidDamage);
+                        closures: new [] { wilAttack, didDamage });
                 }),
 
             new(id:                         "0306",
@@ -921,13 +1014,15 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n对方每有{4 - dj}护甲，多1",
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        d.Value += d.Src.Opponent().Armor / (4 - d.SrcSkill.Dj);
-                    }
-                    
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            d.Value += d.Src.Opponent().Armor / (4 - d.SrcSkill.Dj);
+                        });
+
                     await d.AttackProcedure(1,
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0310",
@@ -984,14 +1079,16 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n下{1 + dj}次攻击也触发",
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        await d.Src.GainBuffProcedure("力量");
-                        await d.Src.GainBuffProcedure("弱昙", 1 + d.SrcSkill.Dj);
-                    }
-                    
-                    await d.AttackProcedure(2, 
-                        wilAttack: WilAttack);
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            await d.Src.GainBuffProcedure("力量");
+                            await d.Src.GainBuffProcedure("弱昙", 1 + d.SrcSkill.Dj);
+                        });
+
+                    await d.AttackProcedure(2,
+                        closures: new [] { closure });
                 }),
     
             new(id:                         "0314",
@@ -1310,16 +1407,18 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n下{1 + dj}次攻击也触发",
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        await d.Src.AttackProcedure(12, wuXing: d.SrcSkill.Entry.WuXing,
-                            srcSkill: d.SrcSkill,
-                            castResult: castResult);
-                        await d.Src.GainBuffProcedure("狂焰", 1 + d.SrcSkill.Dj);
-                    }
-                    
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            await d.Src.AttackProcedure(12, wuXing: d.SrcSkill.Entry.WuXing,
+                                srcSkill: d.SrcSkill,
+                                castResult: d.CastResult);
+                            await d.Src.GainBuffProcedure("狂焰", 1 + d.SrcSkill.Dj);
+                        });
+
                     await d.AttackProcedure(2,
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0415",
@@ -1355,13 +1454,37 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closureDetails) =>
+                    {
+                        StageSkill s = owner as StageSkill;
+                        GainBuffDetails d = (GainBuffDetails)closureDetails;
+
+                        if (s.Owner != d.Tgt) return;
+                        if (d._buffEntry.GetName() != "闪避") return;
+
+                        string key = "GainedEvadeRecord";
+                        s.Owner.Memory.PerformOperation(key, 0, record => record + d._stack);
+                    }),
+                },
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() +
                     $"\n每获得过1闪避，多1次",
                 cast:                       async d =>
                 {
+
+                    StageClosure closure = new(StageClosureDict.WIL_FULL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            string key = "GainedEvadeRecord";
+                            int gainedEvadeRecord = d.Src.Memory.TryGetVariable(key, 0);
+                            d.Times += gainedEvadeRecord;
+                        });
+
                     await d.AttackProcedure(1,
-                        times: d.Caster.GainedEvadeRecord + 1);
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0419",
@@ -1430,16 +1553,19 @@ public class SkillCategory : Category<SkillEntry>
                     ($"\n架势：" + "每1护甲，1攻".ApplyAttack()).ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        d.Value += Mathf.Max(0, d.Src.Armor);
-                    }
+
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            d.Value += Mathf.Max(0, d.Src.Armor);
+                        });
                     
                     await d.GainArmorProcedure(Fib.ToValue(4 + d.Dj), induced: false);
                     bool cond = await d.JiaShiProcedure();
                     if (cond)
                         await d.AttackProcedure(1,
-                            wilAttack: WilAttack);
+                            closures: new [] { closure });
                     
                     d.CastResult.AppendCond(cond);
                 }),
@@ -1454,15 +1580,17 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n对手有灵气：多{Fib.ToValue(4 + dj)}".ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        bool cond = d.Src.Opponent().GetStackOfBuff("灵气") > 0;
-                        d.Value += cond ? Fib.ToValue(4 + d.SrcSkill.Dj) : 0;
-                        castResult.AppendCond(cond);
-                    }
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            bool cond = d.Src.Opponent().GetStackOfBuff("灵气") > 0;
+                            d.Value += cond ? Fib.ToValue(4 + d.SrcSkill.Dj) : 0;
+                            d.CastResult.AppendCond(cond);
+                        });
 
                     await d.AttackProcedure(Fib.ToValue(4 + d.Dj),
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
             
             new(id:                         "0504",
@@ -1509,18 +1637,18 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n架势：消耗每1灵气，多{1 + dj}攻".ApplyCond(castResult),
                 cast:                       async d =>
                 {
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            int mana = d.Src.GetStackOfBuff("灵气");
+                            await d.Src.LoseBuffProcedure("灵气", mana);
+                            d.Value += mana * (1 + d.SrcSkill.Dj);
+                        });
+                    
                     bool cond = await d.JiaShiProcedure();
-                    
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        int mana = d.Src.GetStackOfBuff("灵气");
-                        await d.Src.LoseBuffProcedure("灵气", mana);
-                        d.Value += mana * (1 + d.SrcSkill.Dj);
-                    }
-
                     await d.AttackProcedure(8 + 3 * d.Dj,
-                        wilAttack: cond ? WilAttack : null);
-                    
+                        closures: cond ? new [] { closure } : null);
                     d.CastResult.AppendCond(cond);
                 }),
             
@@ -1529,17 +1657,35 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan,
                 skillTypeComposite:         SkillType.Attack,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.DID_ATTACK, -1, async (owner, closureDetails) =>
+                    {
+                        StageSkill s = owner as StageSkill;
+                        AttackDetails d = (AttackDetails)closureDetails;
+
+                        if (s.Owner != d.Src) return;
+
+                        string key = "HighestAttackRecord";
+                        s.Owner.Memory.PerformOperation(key, 0, record => Mathf.Max(record, d.Value));
+                    }),
+                },
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"造成本局最高攻".ApplyAttack(),
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        d.Value = Mathf.Max(d.Value, d.Src.HighestAttackRecord);
-                    }
-                    
+
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, -1,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            string key = "HighestAttackRecord";
+                            int highestAttackRecord = d.Src.Memory.TryGetVariable(key, 0);
+                            d.Value = Mathf.Max(d.Value, highestAttackRecord);
+                        });
+
                     await d.AttackProcedure(1,
-                        wilAttack: WilAttack);
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0510",
@@ -1607,14 +1753,17 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n架势：下{1 + dj}次攻击也触发".ApplyStyle(castResult, "1"),
                 cast:                       async d =>
                 {
-                    async Task DidDamage(DamageDetails d, CastResult castResult)
-                    {
-                        await d.Src.GainArmorProcedure(d.Value, induced: true);
-                        castResult.AppendBool(0, true);
-                    }
+
+                    StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            await d.Src.GainArmorProcedure(d.Value, induced: true);
+                            d.CastResult.AppendBool(0, true);
+                        });
                     
                     await d.AttackProcedure(16 + 9 * d.Dj,
-                        didDamage: DidDamage);
+                        closures: new [] { closure });
                     
                     bool jiaShi = await d.JiaShiProcedure();
                     if (jiaShi)
@@ -1633,22 +1782,23 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n不消耗剑阵效果",
                 cast:                       async d =>
                 {
-                    async Task WilAttack(AttackDetails d, CastResult castResult)
-                    {
-                        BuffEntry[] buffs = new BuffEntry[] { "素弦", "苦寒", "弱昙", "狂焰" };
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            BuffEntry[] buffs = new BuffEntry[] { "素弦", "苦寒", "弱昙", "狂焰" };
 
-                        bool cond = d.SrcSkill.GetJingJie() < JingJie.HuaShen;
-                        int times = cond ? 1 : 2;
-                        foreach (BuffEntry b in buffs)
-                            if (d.Src.GetStackOfBuff(b) > 0)
-                                await d.Src.GainBuffProcedure(b, times, induced: true);
-                    }
+                            bool cond = d.SrcSkill.GetJingJie() < JingJie.HuaShen;
+                            int times = cond ? 1 : 2;
+                            foreach (BuffEntry b in buffs)
+                                if (d.Src.GetStackOfBuff(b) > 0)
+                                    await d.Src.GainBuffProcedure(b, times, induced: true);
+                        });
                     
                     bool cond = d.J < JingJie.HuaShen;
                     int times = cond ? 1 : 2;
-                    await d.AttackProcedure(2, 
-                        wilAttack: WilAttack,
-                        times: times);
+                    await d.AttackProcedure(2, times,
+                        closures: new [] { closure });
                 }),
 
             new(id:                         "0515",

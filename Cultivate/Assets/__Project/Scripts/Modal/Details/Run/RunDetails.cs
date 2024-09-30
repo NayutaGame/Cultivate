@@ -1,5 +1,5 @@
 
-public class RunDetails : EventDetails
+public class RunDetails : ClosureDetails
 {
 
 }

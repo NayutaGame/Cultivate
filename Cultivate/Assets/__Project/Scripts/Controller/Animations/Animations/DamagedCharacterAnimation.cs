@@ -8,7 +8,7 @@ public class DamagedCharacterAnimation : Animation
 
     public DamagedCharacterAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait)
     {
-        _damageDetails = damageDetails.Clone();
+        _damageDetails = damageDetails.ShallowClone();
     }
 
     public override AnimationHandle GetHandle()

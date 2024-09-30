@@ -1,5 +1,5 @@
 
-public class BuffDisappearDetails : EventDetails
+public class BuffDisappearDetails : ClosureDetails
 {
     public Buff _buff;
 

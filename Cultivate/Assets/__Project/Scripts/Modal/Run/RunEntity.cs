@@ -125,7 +125,7 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             slot.PlacedSkill = null;
         });
 
-        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WILL_PLACEMENT, d);
+        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.WILL_PLACEMENT, d);
 
         TraversalCurrentSlots().Do(slot =>
         {
@@ -141,18 +141,18 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
             slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(d.OverridingSkillEntry, d.OverridingJingJie);
         });
 
-        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_PLACEMENT, d);
+        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.DID_PLACEMENT, d);
     }
 
     public void DepleteProcedure()
     {
         DepleteDetails d = new(this);
 
-        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WILL_DEPLETE, d);
+        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.WILL_DEPLETE, d);
 
         _slots.Traversal().Do(slot => slot.TryDeplete(d));
 
-        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_DEPLETE, d);
+        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.DID_DEPLETE, d);
     }
 
     #region Formation
@@ -167,12 +167,12 @@ public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceive
 
         _formations.Clear();
 
-        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.WIL_FORMATION, d);
+        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.WIL_FORMATION, d);
 
         _formations.AddRange(Encyclopedia.FormationCategory.Traversal
             .Map(e => RunFormation.From(e, e.GetProgress(this, d))));
 
-        RunManager.Instance.Environment.EventDict.SendEvent(RunEventDict.DID_FORMATION, d);
+        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.DID_FORMATION, d);
 
         _showingFormations.Refresh();
     }

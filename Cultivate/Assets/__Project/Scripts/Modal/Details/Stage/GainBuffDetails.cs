@@ -1,5 +1,5 @@
 
-public class GainBuffDetails : EventDetails
+public class GainBuffDetails : ClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

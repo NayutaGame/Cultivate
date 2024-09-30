@@ -1,5 +1,5 @@
 
-public class LoseFormationDetails : EventDetails
+public class LoseFormationDetails : ClosureDetails
 {
     public Formation _formation;
 

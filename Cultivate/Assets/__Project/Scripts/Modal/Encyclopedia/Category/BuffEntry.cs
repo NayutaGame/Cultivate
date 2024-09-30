@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,16 +16,12 @@ public class BuffEntry : Entry, IAnnotation
     private SpriteEntry _spriteEntry;
     public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingBuffIcon().Sprite;
 
-    private BuffStackRule _buffStackRule;
-    public BuffStackRule BuffStackRule => _buffStackRule;
+    public readonly BuffStackRule BuffStackRule;
+    public readonly bool Friendly;
+    public readonly bool Dispellable;
 
-    private bool _friendly;
-    public bool Friendly => _friendly;
-
-    private bool _dispellable;
-    public bool Dispellable => _dispellable;
-
-    public Dictionary<int, StageEventDescriptor> _eventDescriptorDict;
+    [NonSerialized]
+    public readonly StageClosure[] Closures;
 
     /// <summary>
     /// 定义一个Buff
@@ -34,23 +31,18 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="buffStackRule">堆叠规则</param>
     /// <param name="friendly">是否有益</param>
     /// <param name="dispellable">是否可驱散</param>
-    /// <param name="eventDescriptors">事件捕获</param>
+    /// <param name="trivia">趣闻</param>
+    /// <param name="closures">事件捕获</param>
     public BuffEntry(string id, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable, string trivia = null,
-        params StageEventDescriptor[] eventDescriptors
+        params StageClosure[] closures
     ) : base(id)
     {
         _description = description;
         _trivia = trivia;
-        // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
-        _buffStackRule = buffStackRule;
-        _friendly = friendly;
-        _dispellable = dispellable;
-
-        _eventDescriptorDict = new Dictionary<int, StageEventDescriptor>();
-        if (eventDescriptors != null)
-            foreach (var eventDescriptor in eventDescriptors)
-                _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
-
+        BuffStackRule = buffStackRule;
+        Friendly = friendly;
+        Dispellable = dispellable;
+        Closures = closures ?? Array.Empty<StageClosure>();
         _spriteEntry = GetName();
     }
     

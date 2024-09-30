@@ -8,18 +8,18 @@ public class CharacterEntry : Entry
     public string Description;
     public string AbilityDescription;
 
-    public RunEventDescriptor[] _runEventDescriptors;
-    public StageEventDescriptor[] _stageEventDescriptors;
+    public RunClosure[] _runClosures;
+    public StageClosure[] _stageClosures;
 
     public CharacterEntry(string id, string description = null, string abilityDescription = null,
-        RunEventDescriptor[] runEventDescriptors = null,
-        StageEventDescriptor[] stageEventDescriptors = null) : base(id)
+        RunClosure[] runClosures = null,
+        StageClosure[] stageClosures = null) : base(id)
     {
         Description = description ?? "没有描述";
         AbilityDescription = abilityDescription ?? "没有技能描述";
 
-        _runEventDescriptors = runEventDescriptors ?? Array.Empty<RunEventDescriptor>();
-        _stageEventDescriptors = stageEventDescriptors ?? Array.Empty<StageEventDescriptor>();
+        _runClosures = runClosures ?? Array.Empty<RunClosure>();
+        _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
     }
 
     public static implicit operator CharacterEntry(string id) => Encyclopedia.CharacterCategory[id];

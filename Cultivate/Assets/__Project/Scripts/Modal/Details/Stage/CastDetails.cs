@@ -1,9 +1,8 @@
 
-using System;
 using System.Threading.Tasks;
 using CLLibrary;
 
-public class CastDetails : EventDetails
+public class CastDetails : ClosureDetails
 {
     public StageEnvironment Env;
     public StageEntity Caster;
@@ -25,16 +24,13 @@ public class CastDetails : EventDetails
     public int Cc => Skill.StageCastedCount;
 
     public async Task AttackProcedure(int value,
+        int times = 1,
         WuXing? wuXing = null,
         bool recursive = true,
-        Func<AttackDetails, CastResult, Task> wilAttack = null,
-        Func<AttackDetails, CastResult, Task> didAttack = null,
-        Func<DamageDetails, CastResult, Task> wilDamage = null,
-        Func<DamageDetails, CastResult, Task> undamaged = null,
-        Func<DamageDetails, CastResult, Task> didDamage = null,
-        int times = 1,
+        StageClosure[] closures = null,
         bool induced = false)
-        => await Env.AttackProcedure(new AttackDetails(Caster, Caster.Opponent(), value, Skill, wuXing ?? Skill.Entry.WuXing, crit: false, lifeSteal: false, penetrate: false, false, recursive, wilAttack, didAttack, wilDamage, undamaged, didDamage), times, CastResult, induced);
+        => await Env.AttackProcedure(new AttackDetails(src: Caster, tgt: Caster.Opponent(), value, times, Skill, wuxing: wuXing ?? Skill.Entry.WuXing,
+            crit: false, lifeSteal: false, penetrate: false, evade: false, recursive: recursive, castResult: CastResult, closures: closures), induced);
 
     public async Task IndirectProcedure(
         int value,
@@ -46,19 +42,13 @@ public class CastDetails : EventDetails
     public async Task DamageSelfProcedure(
         int value,
         bool recursive = true,
-        Func<DamageDetails, CastResult, Task> wilDamage = null,
-        Func<DamageDetails, CastResult, Task> undamaged = null,
-        Func<DamageDetails, CastResult, Task> didDamage = null,
         bool induced = false)
-        => await Env.DamageProcedure(new DamageDetails(Caster, Caster, value, Skill, crit: false, lifeSteal: false, recursive, wilDamage, undamaged, didDamage), CastResult, induced);
+        => await Env.DamageProcedure(new DamageDetails(Caster, Caster, value, Skill, crit: false, lifeSteal: false, recursive, CastResult), induced);
 
     public async Task DamageOppoProcedure(int value,
         bool recursive = true,
-        Func<DamageDetails, CastResult, Task> wilDamage = null,
-        Func<DamageDetails, CastResult, Task> undamaged = null,
-        Func<DamageDetails, CastResult, Task> didDamage = null,
         bool induced = false)
-        => await Env.DamageProcedure(new DamageDetails(Caster, Caster.Opponent(), value, Skill, crit: false, lifeSteal: false, recursive, wilDamage, undamaged, didDamage), CastResult, induced);
+        => await Env.DamageProcedure(new DamageDetails(Caster, Caster.Opponent(), value, Skill, crit: false, lifeSteal: false, recursive, CastResult), induced);
 
     public async Task LoseHealthProcedure(int value)
         => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster, value));

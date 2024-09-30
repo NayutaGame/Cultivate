@@ -1,5 +1,5 @@
 
-public class CycleDetails : EventDetails
+public class CycleDetails : ClosureDetails
 {
     public StageEntity Owner;
     public WuXing WuXing;

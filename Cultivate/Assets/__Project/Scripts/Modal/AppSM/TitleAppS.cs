@@ -24,7 +24,7 @@ public class TitleAppS : AppS
         {
             RunConfigForm form = AppManager.Instance.ProfileManager.RunConfigForm;
             await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(0);
-            return new RunConfig(form, DesignerEnvironment.GetDesignerConfig());
+            return new RunConfig(form);
         }
 
         throw new Exception($"Undefined navigation {GetType()} -> {d.ToState.GetType()}");

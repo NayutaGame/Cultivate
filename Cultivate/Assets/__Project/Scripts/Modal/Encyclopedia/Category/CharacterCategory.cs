@@ -11,9 +11,9 @@ public class CharacterCategory : Category<CharacterEntry>
         AddRange(new List<CharacterEntry>()
         {
             new("徐福", abilityDescription: "命元上限+2",
-                runEventDescriptors: new RunEventDescriptor[]
+                runClosures: new RunClosure[]
                 {
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.START_RUN, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.START_RUN, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         RunDetails d = (RunDetails)eventDetails;
@@ -23,9 +23,9 @@ public class CharacterCategory : Category<CharacterEntry>
                     }),
                 }),
             new("浮千舟", abilityDescription: "失去灵气时获得1点",
-                stageEventDescriptors: new StageEventDescriptor[]
+                stageClosures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -38,9 +38,9 @@ public class CharacterCategory : Category<CharacterEntry>
                     }),
                 }),
             new("语真幻", abilityDescription: "使用二动牌时，获得1闪避",
-                stageEventDescriptors: new StageEventDescriptor[]
+                stageClosures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -53,9 +53,9 @@ public class CharacterCategory : Category<CharacterEntry>
                     }),
                 }),
             new("子非鱼", abilityDescription: "使用五行卡牌后，发生对应的流转",
-                stageEventDescriptors: new StageEventDescriptor[]
+                stageClosures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -68,9 +68,9 @@ public class CharacterCategory : Category<CharacterEntry>
                     }),
                 }),
             new("子非燕", abilityDescription: "流转步数为2",
-                stageEventDescriptors: new StageEventDescriptor[]
+                stageClosures: new StageClosure[]
                 {
-                    new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -84,9 +84,9 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
             new("念无劫", abilityDescription: "气血上限增加，战斗开始时，力量-1/2/3/4/5"),
             new("风雨晴", abilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
-                runEventDescriptors: new RunEventDescriptor[]
+                runClosures: new RunClosure[]
                 {
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WIL_FORMATION, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.WIL_FORMATION, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         RunFormationDetails d = (RunFormationDetails)eventDetails;
@@ -109,9 +109,9 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
             new("彼此卿", abilityDescription: "卡组中第一张空位将模仿对方对位的牌\n" +
                                            "如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿的卡",
-                runEventDescriptors: new RunEventDescriptor[]
+                runClosures: new RunClosure[]
                 {
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WILL_PLACEMENT, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.WILL_PLACEMENT, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         PlacementDetails d = (PlacementDetails)eventDetails;
@@ -141,7 +141,7 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         env.SetVariable("CopiedSkill", copiedSkill != null ? SkillEntryDescriptor.FromRunSkill(copiedSkill) : null);
                     }),
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.WILL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.WILL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
@@ -155,9 +155,9 @@ public class CharacterCategory : Category<CharacterEntry>
                     }),
                 }),
             new("花辞树", abilityDescription: "金丹之后移除所有练气牌；化神后移除所有筑基牌",
-                runEventDescriptors: new RunEventDescriptor[]
+                runClosures: new RunClosure[]
                 {
-                    new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         SetJingJieDetails d = (SetJingJieDetails)eventDetails;

@@ -1,5 +1,5 @@
 
-public class SetMaxMingYuanDetails : EventDetails
+public class SetMaxMingYuanDetails : ClosureDetails
 {
     public int Value;
 

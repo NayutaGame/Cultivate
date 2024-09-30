@@ -1,5 +1,5 @@
 
-public class SetJingJieDetails : EventDetails
+public class SetJingJieDetails : ClosureDetails
 {
     public JingJie FromJingJie;
     public JingJie ToJingJie;

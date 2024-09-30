@@ -22,9 +22,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n击伤时：施加6减甲" +
                                                                                     "\n开局效果额外触发一次" +
                                                                                     "\n死亡不会停止战斗",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -35,7 +35,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("诸行无常", 6);
                                 await f.Owner.GainBuffProcedure("人间无戈");
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_START_STAGE_CAST, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_START_STAGE_CAST, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StartStageCastDetails d = (StartStageCastDetails)stageEventDetails;
@@ -51,9 +51,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rewardDescription:                                          "开局及每轮：获得1暴击" +
                                                                                     "\n击伤时：施加6减甲" +
                                                                                     "\n开局效果额外触发一次",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -63,7 +63,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("轮暴击");
                                 await f.Owner.GainBuffProcedure("诸行无常", 6);
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_START_STAGE_CAST, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_START_STAGE_CAST, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StartStageCastDetails d = (StartStageCastDetails)stageEventDetails;
@@ -78,9 +78,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "开局及每轮：获得1暴击" +
                                                                                     "\n击伤时：施加6减甲",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -96,9 +96,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                2,
                         trivia:                                                     null,
                         rewardDescription:                                          "开局及每轮：获得1暴击",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -125,9 +125,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n开局及每轮：获得1吸血" +
                                                                                     "\n所有耗蓝-1" +
                                                                                     "\n八动，如果受伤则死亡",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -138,7 +138,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("轮吸血");
                                 await f.Owner.GainBuffProcedure("心斋");
                             }),
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_TURN, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 TurnDetails d = (TurnDetails)stageEventDetails;
@@ -158,9 +158,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rewardDescription:                                          "开局：获得1二动" +
                                                                                     "\n开局及每轮：获得1吸血" +
                                                                                     "\n所有耗蓝-1",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -178,9 +178,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "开局：获得1二动" +
                                                                                     "\n开局及每轮：获得1吸血",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -196,9 +196,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                2,
                         trivia:                                                     null,
                         rewardDescription:                                          "开局：获得1二动",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -224,9 +224,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n开局及每轮：获得1穿透" +
                                                                                     "\n所有牌算作使用过一次" +
                                                                                     "\n永久穿透和集中",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -247,9 +247,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rewardDescription:                                          "第一张牌使用两次" +
                                                                                     "\n开局及每轮：获得1穿透" +
                                                                                     "\n所有牌算作使用过一次",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -268,9 +268,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "第一张牌使用两次" +
                                                                                     "\n开局及每轮：获得1穿透",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -286,9 +286,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                2,
                         trivia:                                                     null,
                         rewardDescription:                                          "第一张牌使用两次",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -314,9 +314,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n燃命时：获得1灼烧" +
                                                                                     "\n暂缺" +
                                                                                     "\n每轮气血恢复至上限",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -334,9 +334,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rewardDescription:                                          "使用第一张牌后，变成疲劳" +
                                                                                     "\n燃命时：获得1灼烧" +
                                                                                     "\n暂缺",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -352,9 +352,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "使用第一张牌后，变成疲劳" +
                                                                                     "\n燃命时：获得1灼烧",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -369,9 +369,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                2,
                         trivia:                                                     null,
                         rewardDescription:                                          "使用第一张牌后，变成疲劳",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -397,9 +397,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n开局：获得25护甲" +
                                                                                     "\n开局准备好架势" +
                                                                                     "\n天人合一（未设计）",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -418,9 +418,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rewardDescription:                                          "架势消耗-1" +
                                                                                     "\n开局：获得25护甲" +
                                                                                     "\n开局准备好架势",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -437,9 +437,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "架势消耗-1" +
                                                                                     "\n开局：获得25护甲",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -454,9 +454,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                2,
                         trivia:                                                     null,
                         rewardDescription:                                          "架势消耗-1",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -600,9 +600,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rewardDescription:                                          "开局：获得4灵气" +
                                                                                     "\n每回合：获得1灵气" +
                                                                                     "\n获得灵气时：每1，回复2气血",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -619,9 +619,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "开局：获得4灵气" +
                                                                                     "\n每回合：获得1灵气",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -636,9 +636,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                3,
                         trivia:                                                     null,
                         rewardDescription:                                          "开局：获得4灵气",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -663,9 +663,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rewardDescription:                                          "开局：气血及上限变为1.2倍" +
                                                                                     "\n第二轮：气血回复到上限" +
                                                                                     "\n受到治疗时：力量+1",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -684,9 +684,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "开局：气血及上限变为1.2倍" +
                                                                                     "\n第二轮：气血回复到上限",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -703,9 +703,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                3,
                         trivia:                                                     null,
                         rewardDescription:                                          "开局：气血及上限变为1.2倍",
-                        eventDescriptors: new StageEventDescriptor[]
+                        closures: new StageClosure[]
                         {
-                            new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;

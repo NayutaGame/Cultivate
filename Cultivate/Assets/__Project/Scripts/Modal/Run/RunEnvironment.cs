@@ -5,7 +5,7 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class RunEnvironment : Addressable, RunEventListener
+public class RunEnvironment : Addressable, RunClosureOwner
 {
     #region Memory
 
@@ -25,9 +25,9 @@ public class RunEnvironment : Addressable, RunEventListener
     private void BattleEnvironmentUpdateProcedure()
     {
         EnvironmentUpdateDetails d = new();
-        _eventDict.SendEvent(RunEventDict.WIL_UPDATE, d);
+        _closureDict.SendEvent(RunClosureDict.WIL_UPDATE, d);
         SimulateProcedure();
-        _eventDict.SendEvent(RunEventDict.DID_UPDATE, d);
+        _closureDict.SendEvent(RunClosureDict.DID_UPDATE, d);
     }
     
     #endregion
@@ -45,7 +45,7 @@ public class RunEnvironment : Addressable, RunEventListener
         SetDGoldProcedure(Map.Entry._gold);
         DrawSkillsProcedure(new(jingJie: Map.Entry._skillJingJie, count: Map.Entry._skillCount));
         
-        _eventDict.SendEvent(RunEventDict.START_RUN, d);
+        _closureDict.SendEvent(RunClosureDict.START_RUN, d);
     }
 
     private void InitSkillPool()
@@ -59,7 +59,7 @@ public class RunEnvironment : Addressable, RunEventListener
         => SetJingJieProcedure(new SetJingJieDetails(JingJie, toJingJie));
     private void SetJingJieProcedure(SetJingJieDetails d)
     {
-        _eventDict.SendEvent(RunEventDict.WIL_SET_JINGJIE, d);
+        _closureDict.SendEvent(RunClosureDict.WIL_SET_JINGJIE, d);
         if (d.Cancel)
             return;
 
@@ -71,7 +71,7 @@ public class RunEnvironment : Addressable, RunEventListener
         _home.SetJingJie(d.ToJingJie);
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToJingJie));
 
-        _eventDict.SendEvent(RunEventDict.DID_SET_JINGJIE, d);
+        _closureDict.SendEvent(RunClosureDict.DID_SET_JINGJIE, d);
     }
 
     public PanelDescriptor ReceiveSignalProcedure(Signal signal)
@@ -154,13 +154,13 @@ public class RunEnvironment : Addressable, RunEventListener
         => SetDMingYuanProcedure(new SetDMingYuanDetails(value));
     private void SetDMingYuanProcedure(SetDMingYuanDetails d)
     {
-        _eventDict.SendEvent(RunEventDict.WIL_SET_D_MINGYUAN, d);
+        _closureDict.SendEvent(RunClosureDict.WIL_SET_D_MINGYUAN, d);
 
         if (d.Cancel)
             return;
 
         _home.MingYuan.Curr += d.Value;
-        _eventDict.SendEvent(RunEventDict.DID_SET_D_MINGYUAN, d);
+        _closureDict.SendEvent(RunClosureDict.DID_SET_D_MINGYUAN, d);
 
         // register this as a defeat check
         if (GetMingYuan().Curr <= 0)
@@ -171,33 +171,33 @@ public class RunEnvironment : Addressable, RunEventListener
         => SetDGoldProcedure(new SetDGoldDetails(value));
     private void SetDGoldProcedure(SetDGoldDetails d)
     {
-        _eventDict.SendEvent(RunEventDict.WILL_SET_D_GOLD, d);
+        _closureDict.SendEvent(RunClosureDict.WILL_SET_D_GOLD, d);
 
         if (d.Cancel)
             return;
 
         _gold.Curr += d.Value;
-        _eventDict.SendEvent(RunEventDict.DID_SET_D_GOLD, d);
+        _closureDict.SendEvent(RunClosureDict.DID_SET_D_GOLD, d);
     }
 
     public void SetDDHealthProcedure(int value)
         => SetDDHealthProcedure(new SetDDHealthDetails(value));
     private void SetDDHealthProcedure(SetDDHealthDetails d)
     {
-        _eventDict.SendEvent(RunEventDict.WILL_SET_DDHEALTH, d);
+        _closureDict.SendEvent(RunClosureDict.WILL_SET_DDHEALTH, d);
 
         if (d.Cancel)
             return;
 
         _home.SetDHealth(_home.GetDHealth() + d.Value);
-        _eventDict.SendEvent(RunEventDict.DID_SET_DDHEALTH, d);
+        _closureDict.SendEvent(RunClosureDict.DID_SET_DDHEALTH, d);
     }
 
     public void SetMaxMingYuanProcedure(int value)
         => SetMaxMingYuanProcedure(new SetMaxMingYuanDetails(value));
     private void SetMaxMingYuanProcedure(SetMaxMingYuanDetails d)
     {
-        _eventDict.SendEvent(RunEventDict.WILL_SET_MAX_MINGYUAN, d);
+        _closureDict.SendEvent(RunClosureDict.WILL_SET_MAX_MINGYUAN, d);
 
         if (d.Cancel)
             return;
@@ -208,17 +208,17 @@ public class RunEnvironment : Addressable, RunEventListener
 
         _home.MingYuan.UpperBound = d.Value;
 
-        _eventDict.SendEvent(RunEventDict.DID_SET_MAX_MINGYUAN, d);
+        _closureDict.SendEvent(RunClosureDict.DID_SET_MAX_MINGYUAN, d);
     }
 
     public void DiscoverSkillProcedure(DiscoverSkillDetails d)
     {
-        _eventDict.SendEvent(RunEventDict.WILL_DISCOVER_SKILL, d);
+        _closureDict.SendEvent(RunClosureDict.WILL_DISCOVER_SKILL, d);
 
         List<SkillEntry> entries = DrawSkills(d.Descriptor);
         d.Skills.AddRange(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
 
-        _eventDict.SendEvent(RunEventDict.DID_DISCOVER_SKILL, d);
+        _closureDict.SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
     }
 
     #endregion
@@ -233,7 +233,8 @@ public class RunEnvironment : Addressable, RunEventListener
     private BoundedInt _gold;
     private JingJie _jingJie;
     public JingJie JingJie => _jingJie;
-    private RunEventDict _eventDict; public RunEventDict EventDict => _eventDict;
+    private RunClosureDict _closureDict;
+    public RunClosureDict ClosureDict => _closureDict;
 
     public StageResult SimulateResult;
     public RunResult Result { get; }
@@ -267,7 +268,7 @@ public class RunEnvironment : Addressable, RunEventListener
         TechInventory = new();
         SkillPool = new();
         Hand = new();
-        _eventDict = new();
+        _closureDict = new();
 
         Result = new RunResult();
 
@@ -303,38 +304,32 @@ public class RunEnvironment : Addressable, RunEventListener
 
     public void Register()
     {
-        RegisterList(_config.CharacterProfile.GetEntry()._runEventDescriptors);
+        RegisterList(_config.CharacterProfile.GetEntry()._runClosures);
 
         DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
-        RegisterList(difficultyEntry._runEventDescriptors);
+        RegisterList(difficultyEntry._runClosures);
         foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
-            RegisterList(additionalDifficultyEntry._runEventDescriptors);
-
-        RegisterList(_config.DesignerConfig._runEventDescriptors);
+            RegisterList(additionalDifficultyEntry._runClosures);
     }
 
-    private void RegisterList(RunEventDescriptor[] list)
+    private void RegisterList(RunClosure[] list)
     {
-        list.FilterObj(d => d.ListenerId == RunEventDict.RUN_ENVIRONMENT)
-            .Do(e => _eventDict.Register(this, e));
+        list.Do(e => _closureDict.Register(this, e));
     }
 
     public void Unregister()
     {
-        UnregisterList(_config.CharacterProfile.GetEntry()._runEventDescriptors);
+        UnregisterList(_config.CharacterProfile.GetEntry()._runClosures);
 
         DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
-        UnregisterList(difficultyEntry._runEventDescriptors);
+        UnregisterList(difficultyEntry._runClosures);
         foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
-            UnregisterList(additionalDifficultyEntry._runEventDescriptors);
-
-        UnregisterList(_config.DesignerConfig._runEventDescriptors);
+            UnregisterList(additionalDifficultyEntry._runClosures);
     }
 
-    private void UnregisterList(RunEventDescriptor[] list)
+    private void UnregisterList(RunClosure[] list)
     {
-        list.FilterObj(d => d.ListenerId == RunEventDict.RUN_ENVIRONMENT)
-            .Do(e => _eventDict.Unregister(this, e));
+        list.Do(e => _closureDict.Unregister(this, e));
     }
 
     public MergePreresult GetMergePreresult(RunSkill lhs, RunSkill rhs)
@@ -352,7 +347,7 @@ public class RunEnvironment : Addressable, RunEventListener
     {
         MergeDetails d = new MergeDetails(lhs, rhs);
         
-        _eventDict.SendEvent(RunEventDict.WIL_MERGE, d);
+        _closureDict.SendEvent(RunClosureDict.WIL_MERGE, d);
 
         if (d.Cancel)
             return false;
@@ -361,7 +356,7 @@ public class RunEnvironment : Addressable, RunEventListener
         if (!success)
             return false;
         
-        _eventDict.SendEvent(RunEventDict.DID_MERGE, d);
+        _closureDict.SendEvent(RunClosureDict.DID_MERGE, d);
         return true;
     }
 

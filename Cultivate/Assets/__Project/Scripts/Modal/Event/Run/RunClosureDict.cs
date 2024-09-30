@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class RunEventDict : Dictionary<int, RunEventElementList>
+public class RunClosureDict : Dictionary<int, RunClosureList>
 {
     public static readonly int START_RUN             = 100;
     public static readonly int END_RUN               = 101;
@@ -28,32 +28,30 @@ public class RunEventDict : Dictionary<int, RunEventElementList>
     public static readonly int WIL_MERGE             = 122;
     public static readonly int DID_MERGE             = 123;
 
-    public static readonly int RUN_ENVIRONMENT       = 100;
-
-    public void Register(RunEventListener listener, RunEventDescriptor eventDescriptor)
+    public void Register(RunClosureOwner listener, RunClosure closure)
     {
-        int eventId = eventDescriptor.EventId;
+        int eventId = closure.EventId;
         if (!ContainsKey(eventId))
             this[eventId] = new();
 
-        this[eventId].Add(listener, eventDescriptor);
+        this[eventId].Add(listener, closure);
     }
 
-    public void Unregister(RunEventListener listener, RunEventDescriptor eventDescriptor)
+    public void Unregister(RunClosureOwner listener, RunClosure closure)
     {
-        int eventId = eventDescriptor.EventId;
+        int eventId = closure.EventId;
         this[eventId].Remove(listener);
     }
 
-    public void SendEvent(int eventId, EventDetails eventDetails)
+    public void SendEvent(int eventId, ClosureDetails closureDetails)
     {
         if (!ContainsKey(eventId))
             return;
-        RunEventElementList eventElementList = this[eventId];
-        foreach (Tuple<RunEventListener, RunEventDescriptor> tuple in eventElementList.Traversal())
+        RunClosureList closureList = this[eventId];
+        foreach (Tuple<RunClosureOwner, RunClosure> tuple in closureList.Traversal())
         {
-            if (eventDetails.Cancel) return;
-            tuple.Item2.Invoke(tuple.Item1, eventDetails);
+            if (closureDetails.Cancel) return;
+            tuple.Item2.Invoke(tuple.Item1, closureDetails);
         }
     }
 }

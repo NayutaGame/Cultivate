@@ -12,7 +12,7 @@ public class ManaCostResult : CostResult
     
     public override async Task WillCostEvent()
     {
-        await Env.EventDict.SendEvent(StageEventDict.WIL_MANA_COST, this);
+        await Env.ClosureDict.SendEvent(StageClosureDict.WIL_MANA_COST, this);
     }
 
     public override async Task ApplyCost()
@@ -33,6 +33,6 @@ public class ManaCostResult : CostResult
 
     public override async Task DidCostEvent()
     {
-        await Env.EventDict.SendEvent(StageEventDict.DID_MANA_COST, this);
+        await Env.ClosureDict.SendEvent(StageClosureDict.DID_MANA_COST, this);
     }
 }

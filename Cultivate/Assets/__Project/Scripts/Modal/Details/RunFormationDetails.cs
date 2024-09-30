@@ -1,5 +1,5 @@
 
-public class RunFormationDetails : EventDetails
+public class RunFormationDetails : ClosureDetails
 {
     public RunEntity Owner;
 

@@ -1,5 +1,5 @@
 
-public class DispelDetails : EventDetails
+public class DispelDetails : ClosureDetails
 {
     public StageEntity Owner;
     public int Stack;

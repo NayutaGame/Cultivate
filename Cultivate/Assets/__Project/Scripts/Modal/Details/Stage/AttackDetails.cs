@@ -1,9 +1,8 @@
 
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
 
-public class AttackDetails : EventDetails
+public class AttackDetails : ClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
@@ -14,6 +13,7 @@ public class AttackDetails : EventDetails
         set => _value = Mathf.Max(0, value);
     }
 
+    public int Times;
     public StageSkill SrcSkill;
     public WuXing? WuXing;
     public bool Crit;
@@ -21,16 +21,14 @@ public class AttackDetails : EventDetails
     public bool Penetrate;
     public bool Evade;
     public bool Recursive;
-    public Func<AttackDetails, CastResult, Task> WilAttack;
-    public Func<AttackDetails, CastResult, Task> DidAttack;
-    public Func<DamageDetails, CastResult, Task> WilDamage;
-    public Func<DamageDetails, CastResult, Task> Undamaged;
-    public Func<DamageDetails, CastResult, Task> DidDamage;
+    public CastResult CastResult;
+    public StageClosure[] Closures;
 
     public AttackDetails(
         StageEntity src,
         StageEntity tgt,
         int value,
+        int times,
         StageSkill srcSkill,
         WuXing? wuxing,
         bool crit = false,
@@ -38,15 +36,13 @@ public class AttackDetails : EventDetails
         bool penetrate = false,
         bool evade = false,
         bool recursive = true,
-        Func<AttackDetails, CastResult, Task> wilAttack = null,
-        Func<AttackDetails, CastResult, Task> didAttack = null,
-        Func<DamageDetails, CastResult, Task> wilDamage = null,
-        Func<DamageDetails, CastResult, Task> undamaged = null,
-        Func<DamageDetails, CastResult, Task> didDamage = null)
+        CastResult castResult = null,
+        StageClosure[] closures = null)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
+        Times = times;
         SrcSkill = srcSkill;
         WuXing = wuxing;
         Crit = crit;
@@ -54,17 +50,15 @@ public class AttackDetails : EventDetails
         Penetrate = penetrate;
         Evade = evade;
         Recursive = recursive;
-        WilAttack = wilAttack;
-        DidAttack = didAttack;
-        WilDamage = wilDamage;
-        Undamaged = undamaged;
-        DidDamage = didDamage;
+        CastResult = castResult;
+        Closures = closures ?? Array.Empty<StageClosure>();
     }
 
-    public AttackDetails Clone() => new(
+    public AttackDetails ShallowClone() => new(
         Src,
         Tgt,
         Value,
+        Times,
         SrcSkill,
         WuXing,
         Crit,
@@ -72,9 +66,6 @@ public class AttackDetails : EventDetails
         Penetrate,
         Evade,
         Recursive,
-        WilAttack,
-        DidAttack,
-        WilDamage,
-        Undamaged,
-        DidDamage);
+        CastResult,
+        Closures);
 }

@@ -21,6 +21,12 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
 
     private SkillTypeComposite _skillTypeComposite;
 
+
+
+    public StageClosure[] Closures;
+    
+    
+
     private Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> _cost;
     public async Task<CostResult> Cost(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
     {
@@ -75,6 +81,8 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
         CLLibrary.Bound jingJieBound,
         SkillTypeComposite skillTypeComposite = null,
         
+        StageClosure[] closures = null,
+        
         Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> cost = null,
         Func<JingJie, int, CostResult, CostDescription> costDescription = null,
         Func<CastDetails, Task> cast = null,
@@ -90,6 +98,8 @@ public class SkillEntry : Entry, IAnnotation, ISkillModel
         _wuXing = wuXing;
         _jingJieBound = jingJieBound;
         _skillTypeComposite = skillTypeComposite ?? 0;
+
+        Closures = closures ?? Array.Empty<StageClosure>();
         
         _cost = cost ?? CostResult.Empty;
         _costDescription = costDescription ?? CostDescription.Empty;

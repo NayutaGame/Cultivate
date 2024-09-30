@@ -1,9 +1,9 @@
 
-public class EventDetails
+public class ClosureDetails
 {
     public bool Cancel;
 
-    protected EventDetails()
+    protected ClosureDetails()
     {
         Cancel = false;
     }

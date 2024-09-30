@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class FormationEntry : IFormationModel, Addressable
 {
@@ -22,7 +23,8 @@ public class FormationEntry : IFormationModel, Addressable
     private int _requirement;
     public int GetRequirement() => _requirement;
 
-    public Dictionary<int, StageEventDescriptor> _eventDescriptorDict;
+    [NonSerialized]
+    public readonly StageClosure[] Closures;
 
     public ListModel<MarkModel> GetMarks() => _formationGroupEntry.GetMarks();
 
@@ -34,9 +36,9 @@ public class FormationEntry : IFormationModel, Addressable
     /// <param name="jingJie">境界</param>
     /// <param name="conditionDescription">条件的描述</param>
     /// <param name="rewardDescription">奖励的描述</param>
-    /// <param name="eventDescriptors">事件捕获</param>
+    /// <param name="closures">事件捕获</param>
     public FormationEntry(JingJie jingJie, string rewardDescription, string trivia, int requirement,
-        params StageEventDescriptor[] eventDescriptors
+        params StageClosure[] closures
     )
     {
         _accessors = new Dictionary<string, Func<object>>()
@@ -49,10 +51,7 @@ public class FormationEntry : IFormationModel, Addressable
         _trivia = trivia;
         _requirement = requirement;
         // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
-
-        _eventDescriptorDict = new Dictionary<int, StageEventDescriptor>();
-        foreach (var eventDescriptor in eventDescriptors)
-            _eventDescriptorDict[eventDescriptor.EventId] = eventDescriptor;
+        Closures = closures;
     }
 
     #region IFormationModel

@@ -1,5 +1,5 @@
 
-public class BuffAppearDetails : EventDetails
+public class BuffAppearDetails : ClosureDetails
 {
     public StageEntity Owner;
     public BuffEntry Entry;

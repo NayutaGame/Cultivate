@@ -14,14 +14,14 @@ public class ChannelCostResult : CostResult
 
     public override async Task WillCostEvent()
     {
-        await Env.EventDict.SendEvent(StageEventDict.WIL_CHANNEL_COST, this);
+        await Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANNEL_COST, this);
         _counter = Value;
     }
     
     public override async Task ApplyCost()
     {
         ChannelDetails d = new ChannelDetails(Entity, Skill, _counter, Value);
-        await Env.EventDict.SendEvent(StageEventDict.WIL_CHANNEL, d);
+        await Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANNEL, d);
 
         Blocking = _counter > 0;
         if (Blocking)
@@ -32,11 +32,11 @@ public class ChannelCostResult : CostResult
             _counter -= 1;
         }
         
-        await Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL, d);
+        await Env.ClosureDict.SendEvent(StageClosureDict.DID_CHANNEL, d);
     }
 
     public override async Task DidCostEvent()
     {
-        await Env.EventDict.SendEvent(StageEventDict.DID_CHANNEL_COST, this);
+        await Env.ClosureDict.SendEvent(StageClosureDict.DID_CHANNEL_COST, this);
     }
 }

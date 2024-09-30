@@ -1,5 +1,5 @@
 
-public class PlacementDetails : EventDetails
+public class PlacementDetails : ClosureDetails
 {
     public RunEntity Owner;
     public SkillEntry OverridingSkillEntry;

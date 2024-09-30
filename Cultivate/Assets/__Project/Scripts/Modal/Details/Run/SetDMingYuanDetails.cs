@@ -1,5 +1,5 @@
 
-public class SetDMingYuanDetails : EventDetails
+public class SetDMingYuanDetails : ClosureDetails
 {
     public int Value;
 

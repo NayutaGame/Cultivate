@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Formation
 /// </summary>
-public class Formation : StageEventListener, IFormationModel, Addressable
+public class Formation : StageClosureOwner, IFormationModel, Addressable
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -13,8 +13,6 @@ public class Formation : StageEventListener, IFormationModel, Addressable
     private RunFormation _runFormation;
 
     public FormationEntry GetEntry() => _runFormation.GetEntry();
-
-    public StageEventDict _eventDict;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -27,44 +25,18 @@ public class Formation : StageEventListener, IFormationModel, Addressable
 
         _owner = owner;
         _runFormation = runFormation;
-
-        _eventDict = new();
     }
 
     public void Register()
     {
-        foreach (int eventId in GetEntry()._eventDescriptorDict.Keys)
-        {
-            StageEventDescriptor eventDescriptor = GetEntry()._eventDescriptorDict[eventId];
-            int senderId = eventDescriptor.ListenerId;
-
-            if (senderId == StageEventDict.STAGE_ENVIRONMENT)
-                _owner.Env.EventDict.Register(this, eventDescriptor);
-            else if (senderId == StageEventDict.STAGE_ENTITY)
-                ;
-            else if (senderId == StageEventDict.STAGE_BUFF)
-                ;
-            else if (senderId == StageEventDict.STAGE_FORMATION)
-                _eventDict.Register(this, eventDescriptor);
-        }
+        foreach (StageClosure closure in GetEntry().Closures)
+            _owner.Env.ClosureDict.Register(this, closure);
     }
 
     public void Unregister()
     {
-        foreach (int eventId in GetEntry()._eventDescriptorDict.Keys)
-        {
-            StageEventDescriptor eventDescriptor = GetEntry()._eventDescriptorDict[eventId];
-            int senderId = eventDescriptor.ListenerId;
-
-            if (senderId == StageEventDict.STAGE_ENVIRONMENT)
-                _owner.Env.EventDict.Unregister(this, eventDescriptor);
-            else if (senderId == StageEventDict.STAGE_ENTITY)
-                ;
-            else if (senderId == StageEventDict.STAGE_BUFF)
-                ;
-            else if (senderId == StageEventDict.STAGE_FORMATION)
-                _eventDict.Unregister(this, eventDescriptor);
-        }
+        foreach (StageClosure closure in GetEntry().Closures)
+            _owner.Env.ClosureDict.Unregister(this, closure);
     }
 
     #region IFormationModel

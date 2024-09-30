@@ -6,15 +6,11 @@ public class RunConfig : Config
 
     public MapEntry MapEntry;
 
-    public DesignerConfig DesignerConfig;
-
-    public RunConfig(RunConfigForm runConfigForm, DesignerConfig designerConfig)
+    public RunConfig(RunConfigForm runConfigForm)
     {
         CharacterProfile = runConfigForm.CharacterProfile;
         DifficultyProfile = runConfigForm.DifficultyProfile;
 
         MapEntry = "标准";
-
-        DesignerConfig = designerConfig;
     }
 }

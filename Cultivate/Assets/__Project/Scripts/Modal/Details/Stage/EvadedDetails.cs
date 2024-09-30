@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class EvadedDetails : EventDetails
+public class EvadedDetails : ClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
@@ -20,4 +20,7 @@ public class EvadedDetails : EventDetails
     }
 
     public EvadedDetails Clone() => new(Src, Tgt, _value);
+
+    public static EvadedDetails FromAttackDetails(AttackDetails d)
+        => new(d.Src, d.Tgt, d.Value);
 }
