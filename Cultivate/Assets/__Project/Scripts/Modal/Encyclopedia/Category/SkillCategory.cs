@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using CLLibrary;
 
@@ -1154,12 +1155,43 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_FULL_ATTACK, -1, async (owner, closureDetails) =>
+                    {
+                        StageSkill s = owner as StageSkill;
+                        AttackDetails d = (AttackDetails)closureDetails;
+
+                        if (s.Owner != d.Src) return;
+                        if (d.SrcSkill == s) return;
+
+                        string key = "UsedClosureDict";
+                        s.Owner.Memory.PerformOperation(key, new Dictionary<StageSkill, StageClosure[]>(), record =>
+                        {
+                            if (record.ContainsKey(d.SrcSkill))
+                            {
+                                bool newHasMore = d.Closures.Length > record[d.SrcSkill].Length;
+                                if (newHasMore)
+                                    record[d.SrcSkill] = d.Closures;
+                                return record;
+                            }
+                            record[d.SrcSkill] = d.Closures;
+                            return record;
+                        });
+                    }),
+                },
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() +
-                    $"\n具有所有已触发的攻击描述（未实现）",
+                    $"\n具有所有已触发的攻击描述",
                 cast:                       async d =>
                 {
-                    await d.AttackProcedure(1);
+                    string key = "UsedClosureDict";
+                    Dictionary<StageSkill, StageClosure[]> dict = d.Caster.Memory.TryGetVariable(key, new Dictionary<StageSkill, StageClosure[]>());
+                    List<StageClosure> flattenedList = new List<StageClosure>();
+                    dict.Do(kvp => flattenedList.AddRange(kvp.Value));
+                    
+                    StageClosure[] closures = flattenedList.ToArray();
+                    await d.AttackProcedure(1, closures: closures);
                 }),
 
             new(id:                         "0318",
@@ -1655,7 +1687,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0521",
                 name:                       "连环腿",
                 wuXing:                     WuXing.Tu,
-                jingJieBound:               JingJie.JinDan,
+                jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 closures:                   new StageClosure[]
                 {

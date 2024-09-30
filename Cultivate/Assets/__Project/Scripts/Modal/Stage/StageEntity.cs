@@ -123,30 +123,6 @@ public class StageEntity : Addressable, StageClosureOwner
         return castResult;
     }
 
-    public async Task<CastResult> CastProcedureNoTween(StageSkill skill, bool recursive = true)
-    {
-        CastResult castResult = new();
-        CastDetails d = new CastDetails(_env, this, skill, recursive, castResult);
-        await _env.ClosureDict.SendEvent(StageClosureDict.WIL_CAST, d);
-
-        
-        // will cast report
-        _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}");
-
-        
-        await skill.Entry.Cast(d);
-        
-        _env.Result.TryAppend($"\n");
-        // did cast report
-        
-        
-        if (this == skill.Owner)
-            skill.IncreaseCastedCount();
-        await _env.ClosureDict.SendEvent(StageClosureDict.DID_CAST, d);
-
-        return castResult;
-    }
-
     private async Task StepProcedure()
     {
         StartStepDetails startD = new StartStepDetails(this, _p);
@@ -269,12 +245,6 @@ public class StageEntity : Addressable, StageClosureOwner
         return oppoHasFragile;
     }
 
-    public int GainedFengRuiRecord;
-    public int GainedGeDangRecord;
-    public int GainedLiLiangRecord;
-    public int GainedZhuoShaoRecord;
-    public int GainedRouRenRecord;
-
     public bool HasChannelRecord;
     
     public bool HasZhiQiRecord;
@@ -319,12 +289,6 @@ public class StageEntity : Addressable, StageClosureOwner
         HpChangedNeuron = new();
         ArmorChangedNeuron = new();
 
-        GainedFengRuiRecord = 0;
-        GainedGeDangRecord = 0;
-        GainedLiLiangRecord = 0;
-        GainedZhuoShaoRecord = 0;
-        GainedRouRenRecord = 0;
-
         HasChannelRecord = false;
         
         HasZhiQiRecord = false;
@@ -347,6 +311,7 @@ public class StageEntity : Addressable, StageClosureOwner
         _closures = new StageClosure[]
         {
             new(StageClosureDict.DID_GAIN_BUFF, -1, BuffRecorder),
+            new(StageClosureDict.DID_CHANNEL, -1, ChannelRecorder),
         };
         
         _env.ClosureDict.Register(this, _closures);
@@ -387,17 +352,17 @@ public class StageEntity : Addressable, StageClosureOwner
     public async Task BuffRecorder(StageClosureOwner listener, ClosureDetails closureDetails)
     {
         GainBuffDetails d = (GainBuffDetails)closureDetails;
-        if (d._buffEntry.GetName() == "锋锐")
-            GainedFengRuiRecord += d._stack;
-        else if (d._buffEntry.GetName() == "格挡")
-            GainedGeDangRecord += d._stack;
-        else if (d._buffEntry.GetName() == "力量")
-            GainedLiLiangRecord += d._stack;
-        else if (d._buffEntry.GetName() == "灼烧")
-            GainedZhuoShaoRecord += d._stack;
-        else if (d._buffEntry.GetName() == "柔韧")
-            GainedRouRenRecord += d._stack;
-        else if (d._buffEntry.GetName() == "滞气")
+        // if (d._buffEntry.GetName() == "锋锐")
+        //     GainedFengRuiRecord += d._stack;
+        // else if (d._buffEntry.GetName() == "格挡")
+        //     GainedGeDangRecord += d._stack;
+        // else if (d._buffEntry.GetName() == "力量")
+        //     GainedLiLiangRecord += d._stack;
+        // else if (d._buffEntry.GetName() == "灼烧")
+        //     GainedZhuoShaoRecord += d._stack;
+        // else if (d._buffEntry.GetName() == "柔韧")
+        //     GainedRouRenRecord += d._stack;
+        if (d._buffEntry.GetName() == "滞气")
             HasZhiQiRecord = true;
         else if (d._buffEntry.GetName() == "缠绕")
             HasChanRaoRecord = true;

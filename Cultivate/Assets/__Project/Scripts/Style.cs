@@ -37,8 +37,14 @@ public static class Style
 
     public static void Append(this CastResult castResult, string key, bool cond)
     {
-        if (!cond) castResult[key] = "Inactive";
-        else castResult.Remove(key);
+        if (!cond)
+        {
+            castResult[key] = "Inactive";
+            return;
+        }
+        
+        if (castResult.ContainsKey(key))
+            castResult.Remove(key);
     }
 
     public static void AppendCond(this CastResult castResult, bool cond)

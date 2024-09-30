@@ -16,7 +16,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
     //     => await SimpleProcedure(new SimpleDetails(args));
     // public async Task SimpleProcedure(SimpleDetails d)
     // {
-    //     await _eventDict.SendEvent(StageEventDict.WILL_SIMPLE, d);
+    //     await _eventDict.SendEvent(StageEventDict.WIL_SIMPLE, d);
     //     if (d.Cancel)
     //         return;
     //
@@ -27,12 +27,15 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
     public async Task CoreProcedure()
     {
-        StageClosure writeManaShortage = new StageClosure(StageClosureDict.DID_MANA_SHORTAGE, 0, WriteShortage);
-        StageClosure writeArmorShortage = new StageClosure(StageClosureDict.DID_ARMOR_SHORTAGE, 0, WriteShortage);
-        StageClosure writeManaCost = new StageClosure(StageClosureDict.DID_MANA_COST, 0, WriteCost);
-        StageClosure writeChannelCost = new StageClosure(StageClosureDict.DID_CHANNEL_COST, 0, WriteCost);
-        StageClosure writeHealthCost = new StageClosure(StageClosureDict.DID_HEALTH_COST, 0, WriteCost);
-        StageClosure writeArmorCost = new StageClosure(StageClosureDict.DID_ARMOR_COST, 0, WriteCost);
+        StageClosure[] closures = new StageClosure[]
+        {
+            new(StageClosureDict.DID_MANA_SHORTAGE, 0, WriteShortage),
+            new(StageClosureDict.DID_ARMOR_SHORTAGE, 0, WriteShortage),
+            new(StageClosureDict.DID_MANA_COST, 0, WriteCost),
+            new(StageClosureDict.DID_CHANNEL_COST, 0, WriteCost),
+            new(StageClosureDict.DID_HEALTH_COST, 0, WriteCost),
+            new(StageClosureDict.DID_ARMOR_COST, 0, WriteCost),
+        };
 
         ClearResults();
 
@@ -45,21 +48,11 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await FormationProcedure();
         await StartStageProcedure();
 
-        _closureDict.Register(this, writeManaShortage);
-        _closureDict.Register(this, writeArmorShortage);
-        _closureDict.Register(this, writeManaCost);
-        _closureDict.Register(this, writeChannelCost);
-        _closureDict.Register(this, writeHealthCost);
-        _closureDict.Register(this, writeArmorCost);
+        _closureDict.Register(this, closures);
 
         await BodyProcedure();
 
-        _closureDict.Unregister(this, writeManaShortage);
-        _closureDict.Unregister(this, writeArmorShortage);
-        _closureDict.Unregister(this, writeManaCost);
-        _closureDict.Unregister(this, writeChannelCost);
-        _closureDict.Unregister(this, writeHealthCost);
-        _closureDict.Unregister(this, writeArmorCost);
+        _closureDict.Unregister(this, closures);
 
         await EndStageProcedure();
 
@@ -296,7 +289,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
             return;
 
         d.Owner.Hp -= d.Value;
-        // d.Owner.TriggeredLowHealth |= d.Owner.IsLowHealth;
 
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_HEALTH, d);
     }
@@ -326,7 +318,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
         }
 
         tgt.Hp += actualHealed;
-        // tgt.HealedRecord += actualHealed;
 
         await Play(new HealCharacterAnimation(true, d), induced);
         await Play(new HealVFXAnimation(false, d), induced);
@@ -429,9 +420,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
         if (d.Cancel)
             return;
-
-        // if (d.Tgt.Armor >= 0)
-        //     d.Tgt.LostArmorRecord += Mathf.Min(d.Tgt.Armor, d.Value);
 
         d.Tgt.Armor -= d.Value;
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");

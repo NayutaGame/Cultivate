@@ -34,7 +34,7 @@ public class StageResult : Addressable
         WriteResult = config.WriteResult;
     }
 
-    // use Neuron (observer pattern)
+    // use Closure
 
     public void TryAppend(string s)
         => _reportBuilder?.Append(s);

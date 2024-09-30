@@ -976,41 +976,6 @@ public class BuffCategory : Category<BuffEntry>
                         }
                     }),
                 }),
-
-            // new("看破", "无效化敌人下一次攻击，并且反击", BuffStackRule.Add, true, false,
-            //     eventDescriptors: new StageEventDescriptor[]
-            //     {
-            //         new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ATTACK, -2, async (listener, stageEventDetails) =>
-            //         {
-            //             Buff b = (Buff)listener;
-            //             AttackDetails d = (AttackDetails)stageEventDetails;
-            //             if (!d.Recursive) return;
-            //             if (d.Src != b.Owner && d.Tgt == b.Owner)
-            //             {
-            //                 b.PlayPingAnimation();
-            //                 await b.Owner.AttackProcedure(d.Value, d.WuXing, 1, d.LifeSteal, d.Penetrate, d.Crit, false, d.DidDamage);
-            //                 d.Cancel = true;
-            //             }
-            //         }),
-            //     }),
-
-            new("待激活的人间无戈", "20锋锐觉醒：死亡不会导致战斗结算", BuffStackRule.One, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
-
-                        if (b.Owner != d.Tgt) return;
-                        if (b.Owner.GainedFengRuiRecord < 20) return;
-                        if (b.Owner.GetStackOfBuff("人间无戈") != 0) return;
-
-                        b.PlayPingAnimation();
-                        await b.Owner.GainBuffProcedure("人间无戈");
-                        await b.Owner.RemoveBuff(b);
-                    }),
-                }),
             
             new("人间无戈", "死亡不会停止战斗", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
@@ -1021,24 +986,6 @@ public class BuffCategory : Category<BuffEntry>
                         CommitDetails d = (CommitDetails)stageEventDetails;
 
                         d.Cancel = true;
-                    }),
-                }),
-
-            new("待激活的摩诃钵特摩", "20格挡觉醒：八动，如果受伤则死亡", BuffStackRule.One, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
-
-                        if (b.Owner != d.Tgt) return;
-                        if (b.Owner.GainedGeDangRecord < 20) return;
-                        if (b.Owner.GetStackOfBuff("摩诃钵特摩") != 0) return;
-
-                        b.PlayPingAnimation();
-                        await b.Owner.GainBuffProcedure("摩诃钵特摩");
-                        await b.Owner.RemoveBuff(b);
                     }),
                 }),
             
@@ -1077,24 +1024,6 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("待激活的通透世界", "20力量觉醒：永久穿透和集中", BuffStackRule.One, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
-
-                        if (b.Owner != d.Tgt) return;
-                        if (b.Owner.GainedLiLiangRecord < 20) return;
-                        if (b.Owner.GetStackOfBuff("通透世界") != 0) return;
-
-                        b.PlayPingAnimation();
-                        await b.Owner.GainBuffProcedure("通透世界");
-                        await b.Owner.RemoveBuff(b);
-                    }),
-                }),
-
             new("通透世界", "永久穿透和集中", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
@@ -1107,24 +1036,6 @@ public class BuffCategory : Category<BuffEntry>
                             b.PlayPingAnimation();
                             d.Penetrate = true;
                         }
-                    }),
-                }),
-            
-            new("待激活的凤凰涅槃", "20灼烧觉醒：每轮气血恢复至上限", BuffStackRule.One, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
-
-                        if (b.Owner != d.Tgt) return;
-                        if (b.Owner.GainedZhuoShaoRecord < 20) return;
-                        if (b.Owner.GetStackOfBuff("凤凰涅槃") != 0) return;
-
-                        b.PlayPingAnimation();
-                        await b.Owner.GainBuffProcedure("凤凰涅槃");
-                        await b.Owner.RemoveBuff(b);
                     }),
                 }),
             
@@ -1156,24 +1067,6 @@ public class BuffCategory : Category<BuffEntry>
                         
                         b.PlayPingAnimation();
                         await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp, induced: false);
-                    }),
-                }),
-
-            new("待激活的那由他", "20柔韧觉醒：灵气消耗为零，Step阶段无法受影响，所有Buff层数不会再变化", BuffStackRule.One, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
-                    {
-                        Buff b = (Buff)listener;
-                        GainBuffDetails d = (GainBuffDetails)stageEventDetails;
-
-                        if (b.Owner != d.Tgt) return;
-                        if (b.Owner.GainedRouRenRecord < 20) return;
-                        if (b.Owner.GetStackOfBuff("那由他") != 0) return;
-
-                        b.PlayPingAnimation();
-                        await b.Owner.GainBuffProcedure("那由他");
-                        await b.Owner.RemoveBuff(b);
                     }),
                 }),
             
