@@ -365,7 +365,7 @@ public class RoomCategory : Category<RoomEntry>
                     });
                     
                     DialogPanelDescriptor A = new("你感到很久以来的瓶颈将被突破", dialogOptions);
-
+                    RunManager.Instance.SetBackgroundFromJingJie(nextJingJie);
                     return A;
                 }),
 

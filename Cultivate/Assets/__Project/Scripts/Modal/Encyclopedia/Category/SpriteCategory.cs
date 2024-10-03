@@ -145,7 +145,12 @@ public class SpriteCategory : Category<SpriteEntry>
             new("冰肌",                                "Images/Cards/冰肌"),
             new("一诺五岳",                              "Images/Cards/一诺五岳"),
             
-            
+            // 卡牌
+            new("练气背景", "Images/StageBackgrounds/StageBackground01"),
+            new("筑基背景", "Images/StageBackgrounds/StageBackground02"),
+            new("金丹背景", "Images/StageBackgrounds/StageBackground03"),
+            new("元婴背景", "Images/StageBackgrounds/StageBackground04"),
+            new("化神背景", "Images/StageBackgrounds/StageBackground05"),
         });
     }
 

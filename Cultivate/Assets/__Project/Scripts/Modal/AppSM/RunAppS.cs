@@ -9,6 +9,8 @@ public class RunAppS : AppS
 
         RunConfig runConfig = config as RunConfig;
         RunManager.Instance.SetEnvironmentFromConfig(runConfig);
+        
+        RunManager.Instance.SetBackgroundFromJingJie(JingJie.LianQi);
 
         RunEnvironment runEnv = RunManager.Instance.Environment;
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;

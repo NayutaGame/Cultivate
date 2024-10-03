@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
+using UnityEngine;
 
 public class RunManager : Singleton<RunManager>, Addressable
 {
@@ -12,6 +13,8 @@ public class RunManager : Singleton<RunManager>, Addressable
     // public RunAnimationController AnimationController;
     public RunEnvironment Environment;
     public Arena Arena;
+
+    public SpriteRenderer BackgroundRenderer;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -55,4 +58,14 @@ public class RunManager : Singleton<RunManager>, Addressable
 
     public event Action<StatusChangedDetails> StatusChangedEvent;
     public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
+
+    public void SetBackgroundFromJingJie(JingJie j)
+    {
+        SetBackground($"{j.Name}背景");
+    }
+    
+    private void SetBackground(SpriteEntry background)
+    {
+        BackgroundRenderer.sprite = background.Sprite;
+    }
 }
