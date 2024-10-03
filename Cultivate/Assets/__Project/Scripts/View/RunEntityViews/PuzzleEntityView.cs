@@ -30,7 +30,7 @@ public class PuzzleEntityView : SimpleView
     {
         base.Refresh();
         
-        EntityModel entity = Get<EntityModel>();
+        IEntity entity = Get<IEntity>();
 
         NameText.text = $"{entity.GetJingJie()} {entity.GetEntry().GetName()}";
 

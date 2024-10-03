@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class StageNote : ISkillModel
+public class StageNote : ISkill
 {
     public int EntityIndex;
     public int TemporalIndex;

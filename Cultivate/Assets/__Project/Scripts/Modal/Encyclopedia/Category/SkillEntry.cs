@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 [Serializable]
-public class SkillEntry : Entry, IAnnotation, ISkillModel
+public class SkillEntry : Entry, IAnnotation, ISkill
 {
     private string _name;
     

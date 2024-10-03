@@ -27,8 +27,6 @@ public class StageManager : Singleton<StageManager>, Addressable
     public StageTimeline Timeline;
     private Task _task;
 
-    public SpriteRenderer BackgroundRenderer;
-
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public override void DidAwake()

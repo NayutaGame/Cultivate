@@ -1,5 +1,5 @@
 
-public interface EntityModel
+public interface IEntity
 {
     EntityEntry GetEntry();
     void SetEntry(EntityEntry entry);

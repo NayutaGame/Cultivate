@@ -14,7 +14,7 @@ public class SkillBarView : SimpleView
     {
         base.Refresh();
 
-        ISkillModel skill = Get<ISkillModel>();
+        ISkill skill = Get<ISkill>();
         BackgroundImage.color = skill.GetColor();
         WuXingImage.sprite = skill.GetWuXingSprite();
         NameText.text = skill.GetName();

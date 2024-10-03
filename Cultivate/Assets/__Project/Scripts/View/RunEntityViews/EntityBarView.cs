@@ -10,7 +10,7 @@ public class EntityBarView : SimpleView
     {
         base.Refresh();
 
-        EntityModel entity = Get<EntityModel>();
+        IEntity entity = Get<IEntity>();
 
         NameText.text = entity.GetEntry()?.GetName() ?? "未命名";
         JingJieText.text = entity.GetJingJie().ToString();

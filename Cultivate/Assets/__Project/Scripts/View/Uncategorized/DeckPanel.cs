@@ -116,7 +116,7 @@ public class DeckPanel : Panel
 
     private void HighlightContributors(InteractBehaviour ib, PointerEventData d)
     {
-        Predicate<ISkillModel> pred = ib.GetCLView().Get<IFormationModel>().GetContributorPred();
+        Predicate<ISkill> pred = ib.GetCLView().Get<IFormationModel>().GetContributorPred();
         PlayerEntity.SkillList.TraversalActive().Do(HighlightSlot);
         HandView.TraversalActive().Do(HighlightSkill);
 
@@ -135,7 +135,7 @@ public class DeckPanel : Panel
         
         void HighlightSkill(ItemBehaviour itemBehaviour)
         {
-            ISkillModel runSkill = itemBehaviour.GetSimpleView().Get<ISkillModel>();
+            ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
             if (runSkill != null && pred(runSkill))
                 itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(true);
         }
@@ -155,7 +155,7 @@ public class DeckPanel : Panel
         
         void UnhighlightSkill(ItemBehaviour itemBehaviour)
         {
-            ISkillModel runSkill = itemBehaviour.GetSimpleView().Get<ISkillModel>();
+            ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
             if (runSkill != null)
                 itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(false);
         }

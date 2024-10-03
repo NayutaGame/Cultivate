@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public interface ISkillModel
+public interface ISkill
 {
     int GetCurrCounter();
     int GetMaxCounter();

@@ -3,7 +3,7 @@ using System;
 using CLLibrary;
 using UnityEngine;
 
-public class SkillEntryDescriptor : ISkillModel
+public class SkillEntryDescriptor : ISkill
 {
     private Predicate<SkillEntry> _pred;
     

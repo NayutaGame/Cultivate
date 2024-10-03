@@ -14,7 +14,7 @@ public class StageSkillCardView : SkillCardView
         if (!gameObject.activeSelf)
             return;
 
-        ISkillModel skill = Get<ISkillModel>();
+        ISkill skill = Get<ISkill>();
         SetCounter(skill.GetCurrCounter(), skill.GetMaxCounter());
     }
 

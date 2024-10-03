@@ -160,7 +160,7 @@ public class EntityEditorEntityView : SimpleView
         base.Refresh();
         if (GetAddress() == null)
             return;
-        EntityModel entity = Get<EntityModel>();
+        IEntity entity = Get<IEntity>();
         if (entity == null)
             return;
         SetEntry(entity.GetEntry());
@@ -177,21 +177,21 @@ public class EntityEditorEntityView : SimpleView
 
     private void EntryChanged(int entityEntryIndex)
     {
-        EntityModel entity = Get<EntityModel>();
+        IEntity entity = Get<IEntity>();
         entity.SetEntry(Encyclopedia.EntityCategory[entityEntryIndex]);
         Refresh();
     }
 
     private void JingJieChanged(int jingJie)
     {
-        EntityModel entity = Get<EntityModel>();
+        IEntity entity = Get<IEntity>();
         entity.SetJingJie(jingJie);
         Refresh();
     }
 
     private void SlotCountChanged(float value)
     {
-        EntityModel entity = Get<EntityModel>();
+        IEntity entity = Get<IEntity>();
         entity.SetSlotCount((int)value);
         Refresh();
     }
@@ -201,21 +201,21 @@ public class EntityEditorEntityView : SimpleView
         int.TryParse(value, out int health);
         health = Mathf.Clamp(health, 1, 9999);
 
-        EntityModel entity = Get<EntityModel>();
+        IEntity entity = Get<IEntity>();
         entity.SetBaseHealth(health);
         Refresh();
     }
 
     private void LadderChanged(float value)
     {
-        EntityModel entity = Get<EntityModel>();
+        IEntity entity = Get<IEntity>();
         entity.SetLadder((int)value);
         Refresh();
     }
 
     private void InPoolChanged(bool value)
     {
-        EntityModel entity = Get<EntityModel>();
+        IEntity entity = Get<IEntity>();
         entity.SetInPool(value);
         Refresh();
     }

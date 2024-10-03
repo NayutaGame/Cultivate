@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class DepleteDetails : ClosureDetails
 {
     public RunEntity Owner;
-    public List<ISkillModel> DepletedSkills;
+    public List<ISkill> DepletedSkills;
 
     public DepleteDetails(RunEntity owner)
     {

@@ -11,5 +11,5 @@ public interface IFormationModel : IMarkedSliderModel
     string GetTriviaFromJingJie(JingJie jingJie);
     JingJie GetIncrementedJingJie(JingJie jingJie);
     int GetRequirementFromJingJie(JingJie jingJie);
-    Predicate<ISkillModel> GetContributorPred();
+    Predicate<ISkill> GetContributorPred();
 }

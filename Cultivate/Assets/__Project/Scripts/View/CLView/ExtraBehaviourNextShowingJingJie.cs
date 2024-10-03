@@ -26,7 +26,7 @@ public class ExtraBehaviourNextShowingJingJie : ExtraBehaviour
     
     private void ResetJingJie(InteractBehaviour ib, PointerEventData d)
     {
-        ISkillModel skill = _skillView.Get<ISkillModel>();
+        ISkill skill = _skillView.Get<ISkill>();
         if (skill == null)
             return;
         _skillView.Refresh();
@@ -34,7 +34,7 @@ public class ExtraBehaviourNextShowingJingJie : ExtraBehaviour
     
     private void NextJingJie(InteractBehaviour ib, PointerEventData d)
     {
-        ISkillModel skill = _skillView.Get<ISkillModel>();
+        ISkill skill = _skillView.Get<ISkill>();
         if (skill == null)
             return;
         _skillView.SetShowingJingJie(skill.NextJingJie(_skillView.GetShowingJingJie()));

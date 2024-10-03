@@ -48,7 +48,7 @@ public class RunFormation : IFormationModel, Addressable
     public string GetTriviaFromJingJie(JingJie jingJie) => _formationEntry.GetTriviaFromJingJie(jingJie);
     public JingJie GetIncrementedJingJie(JingJie jingJie) => _formationEntry.GetIncrementedJingJie(jingJie);
     public int GetRequirementFromJingJie(JingJie jingJie) => _formationEntry.GetRequirementFromJingJie(jingJie);
-    public Predicate<ISkillModel> GetContributorPred() => _formationEntry.GetContributorPred();
+    public Predicate<ISkill> GetContributorPred() => _formationEntry.GetContributorPred();
 
     #endregion
 

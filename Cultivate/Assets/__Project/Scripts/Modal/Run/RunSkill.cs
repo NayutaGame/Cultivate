@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 [Serializable]
-public class RunSkill : ISkillModel, ISerializationCallbackReceiver
+public class RunSkill : ISkill, ISerializationCallbackReceiver
 {
     [SerializeField] private SkillSlot _skillSlot;
     public SkillSlot GetSkillSlot() => _skillSlot;

@@ -6,7 +6,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class RunEntity : Addressable, EntityModel, ISerializationCallbackReceiver
+public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
 {
     public Neuron EnvironmentChangedNeuron;
 

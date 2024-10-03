@@ -38,7 +38,7 @@ public class SkillCardView : SimpleView
     {
         base.Refresh();
 
-        ISkillModel skill = Get<ISkillModel>();
+        ISkill skill = Get<ISkill>();
         SetShowingJingJie(skill.GetJingJie());
     }
 
@@ -49,7 +49,7 @@ public class SkillCardView : SimpleView
     {
         _showingJingJie = jingJie;
 
-        ISkillModel skill = Get<ISkillModel>();
+        ISkill skill = Get<ISkill>();
         SetSprite(skill.GetSprite());
         SetCostDescription(skill.GetCostDescription(_showingJingJie));
         SetName(skill.GetName());

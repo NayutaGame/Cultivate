@@ -15,7 +15,7 @@ public class SkillAnnotationView : SimpleView
     {
         base.Refresh();
 
-        ISkillModel skill = GetSkill();
+        ISkill skill = GetSkill();
 
         if (skill == null)
         {
@@ -34,11 +34,11 @@ public class SkillAnnotationView : SimpleView
         SetTrivia(skill.GetTrivia());
     }
 
-    private ISkillModel GetSkill()
+    private ISkill GetSkill()
     {
         object obj = Get<object>();
 
-        if (obj is ISkillModel s)
+        if (obj is ISkill s)
             return s;
 
         if (obj is SkillSlot slot)

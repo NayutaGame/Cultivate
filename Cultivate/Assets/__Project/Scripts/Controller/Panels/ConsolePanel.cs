@@ -189,7 +189,7 @@ public class ConsolePanel : Panel
 
     private void JingJieChanged(int jingJie)
     {
-        EntityModel entity = RunManager.Instance.Environment.Home;
+        IEntity entity = RunManager.Instance.Environment.Home;
         entity.SetJingJie(jingJie);
         CanvasManager.Instance.RunCanvas.Refresh();
     }

@@ -104,7 +104,7 @@ public class BattlePanel : Panel
         {
             skill = slot.Skill;
             
-            EntityModel entity = EnemyView.Get<EntityModel>();
+            IEntity entity = EnemyView.Get<IEntity>();
             string reactionKey = entity.GetReactionKeyFromSkill(skill);
             Sprite reactionSprite = ReactionDict[reactionKey];
             ReactionView.BeginDrag(reactionSprite, IntensityFromMousePosition(d.position));
@@ -115,7 +115,7 @@ public class BattlePanel : Panel
         {
             skill = runSkill;
             
-            EntityModel entity = EnemyView.Get<EntityModel>();
+            IEntity entity = EnemyView.Get<IEntity>();
             string reactionKey = entity.GetReactionKeyFromSkill(skill);
             Sprite reactionSprite = ReactionDict[reactionKey];
             ReactionView.BeginDrag(reactionSprite, IntensityFromMousePosition(d.position));
