@@ -1,10 +1,11 @@
 
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class IStageModel : MonoBehaviour
 {
     // AnimationHandle BuffSelfEvent();
-    public void BuffSelfEvent()
+    public async Task BuffSelfEvent(GainBuffDetails gainBuffDetails)
     {
         
     }
