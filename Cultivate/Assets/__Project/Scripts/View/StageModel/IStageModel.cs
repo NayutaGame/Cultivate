@@ -1,6 +1,14 @@
 
-public interface IStageModel
+using UnityEngine;
+
+public class IStageModel : MonoBehaviour
 {
+    // AnimationHandle BuffSelfEvent();
+    public void BuffSelfEvent()
+    {
+        
+    }
+
     // buffSelf
     // buffOppo		buffedByOppo
     // debuffSelf

@@ -6,7 +6,7 @@ public class EntitySlot : MonoBehaviour
 {
     public Transform EntityTransform;
     public Transform VFXTransform;
-    
-    // IStageModel
+
+    public IStageModel Model;
     public SkeletonAnimation Skeleton;
 }

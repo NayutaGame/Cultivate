@@ -1,7 +1,5 @@
 
-using UnityEngine;
-
-public class SpriteModel : MonoBehaviour, IStageModel
+public class SpriteModel : IStageModel
 {
     
 }

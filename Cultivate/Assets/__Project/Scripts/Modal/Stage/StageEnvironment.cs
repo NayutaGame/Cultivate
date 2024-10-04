@@ -337,6 +337,8 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
         d.Cancel |= d._stack <= 0;
         if (d.Cancel) return;
+        
+        // await d.Src.Slot().Model.BuffSelfEvent(d);
 
         await Play(new BuffCharacterAnimation(true, d), induced);
         await Play(new BuffVFXAnimation(false, d), induced);
