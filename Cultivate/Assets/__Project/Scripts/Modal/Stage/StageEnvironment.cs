@@ -45,7 +45,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         Opening();
 
         await MingYuanPenaltyProcedure();
-        await FormationProcedure();
+        await GainFormationProcedure();
         await StartStageProcedure();
 
         _closureDict.Register(this, closures);
@@ -62,22 +62,141 @@ public class StageEnvironment : Addressable, StageClosureOwner
         UnregisterConfig();
     }
 
-    public async Task FormationProcedure(StageEntity owner, RunFormation formation, bool recursive = true)
-        => await FormationProcedure(new FormationDetails(owner, formation, recursive));
-
-    public async Task FormationProcedure(FormationDetails d)
+    private async Task GainFormationProcedure()
     {
-        await _closureDict.SendEvent(StageClosureDict.WIL_ADD_FORMATION, d);
+        List<GainFormationDetails> details = new();
+
+        foreach (var entity in _entities)
+        foreach (var runFormation in entity.RunFormations())
+            if (runFormation.IsActivated())
+                details.Add(new GainFormationDetails(entity, runFormation));
+
+        details.Sort((lhs, rhs) => lhs._formation.GetEntry().GetOrder() - rhs._formation.GetEntry().GetOrder());
+
+        foreach (var d in details)
+            await GainFormationProcedure(d);
+    }
+
+    public async Task GainFormationProcedure(GainFormationDetails d)
+    {
+        await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_FORMATION, d);
         if (d.Cancel) return;
 
-        await d.Owner.AddFormation(new GainFormationDetails(d._formation));
-
+        Formation formation = await GainFormation(d);
+        
+        // Gain Formation Staging
         // await TryPlayTween(new BuffTweenDescriptor(d));
-
         _result.TryAppend($"    {d._formation.GetName()} is set");
 
-        if (d.Cancel) return;
-        await _closureDict.SendEvent(StageClosureDict.DID_ADD_FORMATION, d);
+        await _closureDict.SendEvent(StageClosureDict.DID_GAIN_FORMATION, d);
+    }
+
+    private async Task<Formation> GainFormation(GainFormationDetails d)
+    {
+        Formation formation = new Formation(d.Owner, d._formation);
+        formation.Register();
+        d.Owner.AddFormation(formation);
+        return formation;
+    }
+
+    private async Task LoseFormation(StageEntity owner, Formation formation)
+    {
+        formation.Unregister();
+        owner.RemoveFormation(formation);
+    }
+
+    public async Task GainBuffProcedure(GainBuffDetails d)
+    {
+        await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_BUFF, d);
+
+        d.Cancel |= d._stack <= 0;
+        
+        if (d.Cancel)
+            return;
+
+        Buff buff = d.Tgt.FindBuff(d._buffEntry);
+        
+        bool generateNew = buff == null || d._buffEntry.BuffStackRule == BuffStackRule.Individual;
+        if (generateNew)
+        {
+            buff = await GainBuff(d);
+        }
+        else
+        {
+            int newStack = buff.Stack;
+            switch (d._buffEntry.BuffStackRule)
+            {
+                case BuffStackRule.One:
+                    return;
+                    break;
+                case BuffStackRule.Add:
+                    newStack = buff.Stack + d._stack;
+                    break;
+                case BuffStackRule.Min:
+                    newStack = Mathf.Min(buff.Stack, d._stack);
+                    break;
+                case BuffStackRule.Max:
+                    newStack = Mathf.Max(buff.Stack, d._stack);
+                    break;
+                case BuffStackRule.Overwrite:
+                    newStack = d._stack;
+                    break;
+            }
+
+            await ChangeStack(buff, newStack);
+        }
+
+        await GainBuffStaging(d, buff);
+        await _closureDict.SendEvent(StageClosureDict.DID_GAIN_BUFF, d);
+    }
+
+    private async Task GainBuffStaging(GainBuffDetails d, Buff buff)
+    {
+        // await d.Src.Slot().Model.BuffSelfEvent(d);
+        await Play(new BuffCharacterAnimation(true, d));
+        await Play(new BuffVFXAnimation(false, d));
+        await Play(new BuffTextAnimation(false, d));
+        _result.TryAppend($"    {d._buffEntry.GetName()} + {d._stack}");
+        buff.PlayPingAnimation();
+    }
+
+    public async Task LoseBuffProcedure(LoseBuffDetails d)
+    {
+        await _closureDict.SendEvent(StageClosureDict.WIL_LOSE_BUFF, d);
+
+        if (d.Cancel)
+            return;
+
+        Buff b = d.Tgt.FindBuff(d._buffEntry);
+        if (b != null)
+            await ChangeStack(b, Mathf.Max(0, b.Stack - d._stack));
+
+        // LoseBuffStaging
+        await _closureDict.SendEvent(StageClosureDict.DID_LOSE_BUFF, d);
+    }
+
+    private async Task<Buff> GainBuff(GainBuffDetails d)
+    { 
+        Buff buff = new Buff(d.Tgt, d._buffEntry);
+        buff.Register();
+        await ChangeStack(buff, d._stack);
+        d.Tgt.AddBuff(buff);
+        return buff;
+    }
+
+    private async Task LoseBuff(StageEntity owner, Buff buff)
+    {
+        buff.Unregister();
+        owner.RemoveBuff(buff);
+    }
+
+    private async Task ChangeStack(Buff buff, int stack)
+    {
+        buff.SetStack(stack);
+        if (stack <= 0)
+            await LoseBuff(buff.Owner, buff);
+        else
+            buff.StackChangedNeuron.Invoke();
     }
 
     public async Task AttackProcedure(AttackDetails attackDetails)
@@ -275,100 +394,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_HEAL, d);
     }
 
-    public async Task GainBuffProcedure(GainBuffDetails d)
-    {
-        await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_BUFF, d);
-
-        d.Cancel |= d._stack <= 0;
-        
-        if (d.Cancel)
-            return;
-
-        Buff buff = d.Tgt.FindBuff(d._buffEntry);
-        
-        bool generateNew = buff == null || d._buffEntry.BuffStackRule == BuffStackRule.Individual;
-        if (generateNew)
-        {
-            buff = await GainBuff(d.Tgt, d._buffEntry, d._stack);
-        }
-        else
-        {
-            int newStack = buff.Stack;
-            switch (d._buffEntry.BuffStackRule)
-            {
-                case BuffStackRule.One:
-                    return;
-                    break;
-                case BuffStackRule.Add:
-                    newStack = buff.Stack + d._stack;
-                    break;
-                case BuffStackRule.Min:
-                    newStack = Mathf.Min(buff.Stack, d._stack);
-                    break;
-                case BuffStackRule.Max:
-                    newStack = Mathf.Max(buff.Stack, d._stack);
-                    break;
-                case BuffStackRule.Overwrite:
-                    newStack = d._stack;
-                    break;
-            }
-
-            await ChangeStack(buff, newStack);
-        }
-
-        await GainBuffStaging(d, buff);
-        await _closureDict.SendEvent(StageClosureDict.DID_GAIN_BUFF, d);
-    }
-
-    private async Task GainBuffStaging(GainBuffDetails d, Buff buff)
-    {
-        // await d.Src.Slot().Model.BuffSelfEvent(d);
-        await Play(new BuffCharacterAnimation(true, d));
-        await Play(new BuffVFXAnimation(false, d));
-        await Play(new BuffTextAnimation(false, d));
-        _result.TryAppend($"    {d._buffEntry.GetName()} + {d._stack}");
-        buff.PlayPingAnimation();
-    }
-
-    public async Task LoseBuffProcedure(LoseBuffDetails d)
-    {
-        await _closureDict.SendEvent(StageClosureDict.WIL_LOSE_BUFF, d);
-
-        if (d.Cancel)
-            return;
-
-        Buff b = d.Tgt.FindBuff(d._buffEntry);
-        if (b != null)
-            await ChangeStack(b, Mathf.Max(0, b.Stack - d._stack));
-
-        // LoseBuffStaging
-        await _closureDict.SendEvent(StageClosureDict.DID_LOSE_BUFF, d);
-    }
-
-    private async Task<Buff> GainBuff(StageEntity owner, BuffEntry entry, int initialStack)
-    {
-        Buff buff = new Buff(owner, entry);
-        buff.Register();
-        await ChangeStack(buff, initialStack);
-        owner.AddBuff(buff);
-        return buff;
-    }
-
-    private async Task LoseBuff(StageEntity owner, Buff buff)
-    {
-        buff.Unregister();
-        owner.RemoveBuff(buff);
-    }
-
-    private async Task ChangeStack(Buff buff, int stack)
-    {
-        buff.SetStack(stack);
-        if (stack <= 0)
-            await LoseBuff(buff.Owner, buff);
-        else
-            buff.StackChangedNeuron.Invoke();
-    }
-
     public async Task GainArmorProcedure(GainArmorDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_ARMOR, d);
@@ -479,21 +504,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
     {
         await _entities[0].MingYuan.MingYuanPenaltyProcedure(_entities[0]);
         await _entities[1].MingYuan.MingYuanPenaltyProcedure(_entities[1]);
-    }
-
-    private async Task FormationProcedure()
-    {
-        List<FormationDetails> details = new List<FormationDetails>();
-
-        foreach (var entity in _entities)
-        foreach (var runFormation in entity.RunFormations())
-            if (runFormation.IsActivated())
-                details.Add(new FormationDetails(entity, runFormation));
-
-        details.Sort((lhs, rhs) => lhs._formation.GetEntry().GetOrder() - rhs._formation.GetEntry().GetOrder());
-
-        foreach (var d in details)
-            await FormationProcedure(d);
     }
 
     private async Task StartStageProcedure()

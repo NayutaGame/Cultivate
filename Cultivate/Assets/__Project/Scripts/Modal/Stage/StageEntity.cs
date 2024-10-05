@@ -384,28 +384,15 @@ public class StageEntity : Addressable, StageClosureOwner
 
     private ListModel<Formation> _formations;
 
-    public async Task AddFormation(GainFormationDetails d)
-    {
-        Formation formation = new Formation(this, d._formation);
-        formation.Register();
-        await Env.ClosureDict.SendEvent(StageClosureDict.GAIN_FORMATION, d);
-        _formations.Add(formation);
-    }
+    public void AddFormation(Formation f)
+        => _formations.Add(f);
 
-    public async Task RemoveFormation(Formation f)
-    {
-        await Env.ClosureDict.SendEvent(StageClosureDict.LOSE_FORMATION, new LoseFormationDetails(f));
-        f.Unregister();
-        _formations.Remove(f);
-    }
+    public void RemoveFormation(Formation f)
+        => _formations.Remove(f);
 
     public async Task RemoveAllFormations()
     {
-        await _formations.Traversal().Do(async f =>
-        {
-            await Env.ClosureDict.SendEvent(StageClosureDict.LOSE_FORMATION, new LoseFormationDetails(f));
-            f.Unregister();
-        });
+        await _formations.Traversal().Do(async f => f.Unregister());
         _formations.Clear();
     }
 
@@ -424,11 +411,7 @@ public class StageEntity : Addressable, StageClosureOwner
 
     public async Task RemoveAllBuffs()
     {
-        await _buffs.Traversal().Do(async b =>
-        {
-            // await Env.ClosureDict.SendEvent(StageClosureDict.BUFF_DISAPPEAR, new BuffDisappearDetails(b));
-            b.Unregister();
-        });
+        await _buffs.Traversal().Do(async b => b.Unregister());
         _buffs.Clear();
     }
 
@@ -501,9 +484,6 @@ public class StageEntity : Addressable, StageClosureOwner
     
     public async Task RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await _env.LoseBuffProcedure(new LoseBuffDetails(this, Opponent(), buffEntry, stack, recursive, induced));
-    
-    public async Task FormationProcedure(RunFormation runFormation, bool recursive = true)
-        => await _env.FormationProcedure(this, runFormation, recursive);
     
     public async Task CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0, bool induced = false)
         => await _env.CycleProcedure(new CycleDetails(this, wuXing, gain, recover, induced));

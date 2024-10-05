@@ -83,9 +83,6 @@ public class CastDetails : ClosureDetails
     public async Task RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await Env.LoseBuffProcedure(new LoseBuffDetails(Caster, Caster.Opponent(), buffEntry, stack, recursive, induced));
 
-    public async Task FormationProcedure(RunFormation runFormation, bool recursive = true)
-        => await Env.FormationProcedure(Caster, runFormation, recursive);
-
     public async Task CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0, bool induced = false)
         => await Env.CycleProcedure(new CycleDetails(Caster, wuXing, gain, recover, induced));
     
