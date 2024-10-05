@@ -6,7 +6,7 @@ public class BuffVFXAnimation : Animation
 {
     public GainBuffDetails GainBuffDetails;
 
-    public BuffVFXAnimation(bool isAwait, GainBuffDetails gainBuffDetails) : base(isAwait)
+    public BuffVFXAnimation(bool isAwait, GainBuffDetails gainBuffDetails) : base(isAwait, gainBuffDetails.Induced)
     {
         GainBuffDetails = gainBuffDetails.Clone();
     }

@@ -6,7 +6,7 @@ public class PreAttackedCharacterAnimation : Animation
 {
     private AttackDetails _attackDetails;
 
-    public PreAttackedCharacterAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait)
+    public PreAttackedCharacterAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait, attackDetails.Induced)
     {
         _attackDetails = attackDetails.ShallowClone();
     }

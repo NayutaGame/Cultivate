@@ -6,7 +6,7 @@ public class PiercingVFXAnimation : Animation
 {
     private AttackDetails _attackDetails;
 
-    public PiercingVFXAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait)
+    public PiercingVFXAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait, attackDetails.Induced)
     {
         _attackDetails = attackDetails.ShallowClone();
     }

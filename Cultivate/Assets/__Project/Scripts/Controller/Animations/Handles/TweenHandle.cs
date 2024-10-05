@@ -18,7 +18,7 @@ public class TweenHandle : AnimationHandle
 
     public override async Task NextKey(float speed)
     {
-        if (!_animation.IsAwait())
+        if (!_animation.IsAwait)
             return;
         await _handle.AsyncWaitForCompletion();
     }

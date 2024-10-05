@@ -7,7 +7,7 @@ public class UndamagedTextAnimation : Animation
 {
     private DamageDetails _damageDetails;
 
-    public UndamagedTextAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait)
+    public UndamagedTextAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait, damageDetails.Induced)
     {
         _damageDetails = damageDetails.ShallowClone();
     }

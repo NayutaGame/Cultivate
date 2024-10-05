@@ -81,7 +81,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async d =>
                 {
                     await d.AttackProcedure(Fib.ToValue(4 + d.Dj));
-                    await d.RemoveArmorProcedure(Fib.ToValue(3 + d.Dj));
+                    await d.RemoveArmorProcedure(Fib.ToValue(3 + d.Dj), false);
                 }),
 
             new(id:                         "0102",
@@ -98,7 +98,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
-                            d.Src.RemoveArmorProcedure(5 + 5 * d.SrcSkill.Dj);
+                            d.Src.RemoveArmorProcedure(5 + 5 * d.SrcSkill.Dj, false);
                             d.CastResult.AppendCond(true);
                         });
 
@@ -265,11 +265,11 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     int fragile = -d.Caster.Armor.ClampUpper(0);
                     int value = 5 + 5 * d.Dj + fragile;
-                    await d.RemoveArmorProcedure(value);
+                    await d.RemoveArmorProcedure(value, false);
                 },
                 startStageCast:             async d =>
                 {
-                    await d.Caster.RemoveArmorProcedure(5 + 5 * d.Skill.Dj);
+                    await d.Caster.RemoveArmorProcedure(5 + 5 * d.Skill.Dj, false);
                 }),
 
             new(id:                         "0113",
@@ -382,7 +382,7 @@ public class SkillCategory : Category<SkillEntry>
                         });
                     
                     await d.GainBuffProcedure("暴击", 2);
-                    await d.RemoveArmorProcedure(10);
+                    await d.RemoveArmorProcedure(10, false);
 
                     await d.AttackProcedure(1,
                         closures: new [] { closure });
@@ -404,7 +404,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
-                            await d.Src.RemoveArmorProcedure(d.Value);
+                            await d.Src.RemoveArmorProcedure(d.Value, false);
                             d.Cancel = true;
                             d.CastResult.AppendCond(true);
                         });
@@ -851,7 +851,7 @@ public class SkillCategory : Category<SkillEntry>
                     int manaConsume = d.Caster.GetStackOfBuff("灵气");
 
                     if (healthConsume > 0)
-                        await d.LoseHealthProcedure(healthConsume);
+                        await d.LoseHealthProcedure(healthConsume, induced: true);
                     if (manaConsume > 0)
                         await d.LoseBuffProcedure("灵气", manaConsume);
 
@@ -861,7 +861,7 @@ public class SkillCategory : Category<SkillEntry>
                     if (healthGain > 0)
                         await d.HealProcedure(healthGain, induced: true);
                     if (manaGain > 0)
-                        await d.GainBuffProcedure("灵气", manaGain, induced: false);
+                        await d.GainBuffProcedure("灵气", manaGain);
                 }),
             
             new(id:                         "0301",

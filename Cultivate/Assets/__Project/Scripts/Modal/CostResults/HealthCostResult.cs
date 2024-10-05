@@ -18,7 +18,7 @@ public class HealthCostResult : CostResult
     public override async Task ApplyCost()
     {
         Env.Result.TryAppend($"{Entity.GetName()}消耗了{Value}气血，以使用{Skill.Entry.GetName()}\n");
-        await Env.LoseHealthProcedure(Entity, Value);
+        await Env.LoseHealthProcedure(Entity, Value, induced: true);
     }
 
     public override async Task DidCostEvent()

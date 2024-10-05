@@ -7,7 +7,7 @@ public class HealTextAnimation : Animation
 {
     private HealDetails _healDetails;
 
-    public HealTextAnimation(bool isAwait, HealDetails healDetails) : base(isAwait)
+    public HealTextAnimation(bool isAwait, HealDetails healDetails) : base(isAwait, healDetails.Induced)
     {
         _healDetails = healDetails.Clone();
     }

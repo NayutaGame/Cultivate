@@ -5,7 +5,7 @@ public class GainArmorVFXAnimation : Animation
 {
     private GainArmorDetails _gainArmorDetails;
 
-    public GainArmorVFXAnimation(bool isAwait, GainArmorDetails gainArmorDetails) : base(isAwait)
+    public GainArmorVFXAnimation(bool isAwait, GainArmorDetails gainArmorDetails) : base(isAwait, gainArmorDetails.Induced)
     {
         _gainArmorDetails = gainArmorDetails.Clone();
     }

@@ -29,7 +29,7 @@ public class SpineHandle : AnimationHandle
 
     public override async Task NextKey(float speed)
     {
-        if (!_animation.IsAwait())
+        if (!_animation.IsAwait)
             return;
         
         if (_index < _intervals.Length)

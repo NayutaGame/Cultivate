@@ -6,7 +6,7 @@ public class DamagedCharacterAnimation : Animation
 {
     private DamageDetails _damageDetails;
 
-    public DamagedCharacterAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait)
+    public DamagedCharacterAnimation(bool isAwait, DamageDetails damageDetails) : base(isAwait, damageDetails.Induced)
     {
         _damageDetails = damageDetails.ShallowClone();
     }

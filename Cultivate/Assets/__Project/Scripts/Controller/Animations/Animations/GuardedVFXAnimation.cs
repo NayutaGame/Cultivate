@@ -5,7 +5,7 @@ public class GuardedVFXAnimation : Animation
 {
     private GuardedDetails _guardedDetails;
 
-    public GuardedVFXAnimation(bool isAwait, GuardedDetails guardedDetails) : base(isAwait)
+    public GuardedVFXAnimation(bool isAwait, GuardedDetails guardedDetails) : base(isAwait, guardedDetails.Induced)
     {
         _guardedDetails = guardedDetails.Clone();
     }

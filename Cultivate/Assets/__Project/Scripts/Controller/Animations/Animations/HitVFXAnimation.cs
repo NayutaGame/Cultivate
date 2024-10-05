@@ -6,7 +6,7 @@ public class HitVFXAnimation : Animation
 {
     private AttackDetails _attackDetails;
 
-    public HitVFXAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait)
+    public HitVFXAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait, attackDetails.Induced)
     {
         _attackDetails = attackDetails.ShallowClone();
     }

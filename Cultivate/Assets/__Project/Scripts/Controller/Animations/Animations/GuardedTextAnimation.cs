@@ -7,7 +7,7 @@ public class GuardedTextAnimation : Animation
 {
     private GuardedDetails _guardedDetails;
 
-    public GuardedTextAnimation(bool isAwait, GuardedDetails guardedDetails) : base(isAwait)
+    public GuardedTextAnimation(bool isAwait, GuardedDetails guardedDetails) : base(isAwait, guardedDetails.Induced)
     {
         _guardedDetails = guardedDetails.Clone();
     }

@@ -1,11 +1,7 @@
 
-using System;
 using System.Threading.Tasks;
 using CLLibrary;
 
-/// <summary>
-/// Buff
-/// </summary>
 public class Buff : StageClosureOwner
 {
     private StageEntity _owner;
@@ -23,31 +19,8 @@ public class Buff : StageClosureOwner
 
     private int _stack;
     public int Stack => _stack;
-    public async Task SetStack(int stack)
-    {
-        await _owner.Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANGE_STACK, new BuffStackChangeDetails(_stack, stack));
-        _stack = stack;
-        await _owner.Env.ClosureDict.SendEvent(StageClosureDict.DID_CHANGE_STACK, new BuffStackChangeDetails(_stack, stack));
-
-        if(_stack <= 0)
-            await _owner.RemoveBuff(this);
-        else
-            StackChangedNeuron.Invoke();
-            
-    }
-
-    public async Task SetDStack(int dStack)
-        => await SetStack(_stack + dStack);
-
-    /// <summary>
-    /// 是否有益
-    /// </summary>
-    public bool Friendly => _entry.Friendly;
-
-    /// <summary>
-    /// 是否可驱散
-    /// </summary>
-    public bool Dispellable => _entry.Dispellable;
+    public void SetStack(int value)
+        => _stack = value;
 
     public Buff(StageEntity owner, BuffEntry entry)
     {
@@ -75,4 +48,10 @@ public class Buff : StageClosureOwner
         foreach (StageClosure closure in _entry.Closures)
             _owner.Env.ClosureDict.Unregister(this, closure);
     }
+
+    public async Task GainStackProcedure(int stack)
+        => await _owner.Env.GainBuffProcedure(new(_owner, _owner, GetEntry(), stack, true, true));
+
+    public async Task LoseStackProcedure(int stack = 1)
+        => await _owner.Env.LoseBuffProcedure(new(_owner, _owner, GetEntry(), stack, true, true));
 }

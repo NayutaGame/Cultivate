@@ -7,7 +7,7 @@ public class GainArmorTextAnimation : Animation
 {
     public GainArmorDetails _gainArmorDetails;
 
-    public GainArmorTextAnimation(bool isAwait, GainArmorDetails gainArmorDetails) : base(isAwait)
+    public GainArmorTextAnimation(bool isAwait, GainArmorDetails gainArmorDetails) : base(isAwait, gainArmorDetails.Induced)
     {
         _gainArmorDetails = gainArmorDetails.Clone();
     }

@@ -6,7 +6,7 @@ public class FragileVFXAnimation : Animation
 {
     private AttackDetails _attackDetails;
 
-    public FragileVFXAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait)
+    public FragileVFXAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait, attackDetails.Induced)
     {
         _attackDetails = attackDetails;
     }

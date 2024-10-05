@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
 
 public class LoseArmorDetails : ClosureDetails
 {
@@ -9,10 +5,13 @@ public class LoseArmorDetails : ClosureDetails
     public StageEntity Tgt;
     public int Value;
 
-    public LoseArmorDetails(StageEntity src, StageEntity tgt, int value)
+    public LoseArmorDetails(StageEntity src, StageEntity tgt, int value, bool induced)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
+        Induced = induced;
     }
+    
+    public LoseArmorDetails Clone() => new(Src, Tgt, Value, Induced);
 }

@@ -6,7 +6,7 @@ public class AttackCharacterAnimation : Animation
 {
     private AttackDetails _attackDetails;
 
-    public AttackCharacterAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait)
+    public AttackCharacterAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait, attackDetails.Induced)
     {
         _attackDetails = attackDetails.ShallowClone();
     }

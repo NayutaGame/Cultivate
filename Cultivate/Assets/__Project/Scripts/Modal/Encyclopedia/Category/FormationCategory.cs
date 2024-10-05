@@ -471,7 +471,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner) return;
 
                                 await f.Owner.GainBuffProcedure("架势消耗减少");
-                                await f.Owner.GainArmorProcedure(25, induced: false);
+                                await f.Owner.GainArmorProcedure(25);
                                 await f.Owner.GainBuffProcedure("架势", 2);
                                 // await f.Owner.GainBuffProcedure("天人合一");
                             }),
@@ -492,7 +492,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner) return;
 
                                 await f.Owner.GainBuffProcedure("架势消耗减少");
-                                await f.Owner.GainArmorProcedure(25, induced: false);
+                                await f.Owner.GainArmorProcedure(25);
                                 await f.Owner.GainBuffProcedure("架势", 2);
                             }),
                         }),
@@ -511,7 +511,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (f.Owner != d.Owner) return;
 
                                 await f.Owner.GainBuffProcedure("架势消耗减少");
-                                await f.Owner.GainArmorProcedure(25, induced: false);
+                                await f.Owner.GainArmorProcedure(25);
                             }),
                         }),
                     new FormationEntry(
@@ -749,7 +749,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 int value = (int)(f.Owner.MaxHp * 0.2f);
                                 f.Owner.MaxHp += value;
-                                await f.Owner.HealProcedure(value, induced: false);
+                                await f.Owner.HealProcedure(value);
                                 await f.Owner.GainBuffProcedure("太虚");
                                 await f.Owner.GainBuffProcedure("盛开");
                             }),
@@ -770,7 +770,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 
                                 int value = (int)(f.Owner.MaxHp * 0.2f);
                                 f.Owner.MaxHp += value;
-                                await f.Owner.HealProcedure(value, induced: false);
+                                await f.Owner.HealProcedure(value);
                                 await f.Owner.GainBuffProcedure("太虚");
                             }),
                         }),
@@ -789,7 +789,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 int value = (int)(f.Owner.MaxHp * 0.2f);
                                 f.Owner.MaxHp += value;
-                                await f.Owner.HealProcedure(value, induced: false);
+                                await f.Owner.HealProcedure(value);
                             }),
                         }),
                 }),

@@ -1,7 +1,7 @@
 
 public class ShiftAnimation : Animation
 {
-    public ShiftAnimation() : base(true)
+    public ShiftAnimation() : base(true, false)
     {
     }
 

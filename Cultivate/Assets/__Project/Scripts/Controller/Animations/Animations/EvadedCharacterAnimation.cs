@@ -6,9 +6,9 @@ public class EvadedCharacterAnimation : Animation
 {
     private StageEntity _tgt;
 
-    public EvadedCharacterAnimation(bool isAwait, StageEntity tgt) : base(isAwait)
+    public EvadedCharacterAnimation(bool isAwait, EvadedDetails d) : base(isAwait, d.Induced)
     {
-        _tgt = tgt;
+        _tgt = d.Tgt;
     }
 
     public override AnimationHandle GetHandle()

@@ -5,7 +5,7 @@ public class BuffCharacterAnimation : Animation
 {
     private GainBuffDetails _gainBuffDetails;
 
-    public BuffCharacterAnimation(bool isAwait, GainBuffDetails gainBuffDetails) : base(isAwait)
+    public BuffCharacterAnimation(bool isAwait, GainBuffDetails gainBuffDetails) : base(isAwait, gainBuffDetails.Induced)
     {
         _gainBuffDetails = gainBuffDetails.Clone();
     }

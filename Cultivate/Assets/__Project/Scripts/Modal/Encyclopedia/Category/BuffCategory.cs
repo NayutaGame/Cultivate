@@ -50,7 +50,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         d.Cancel = true;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -68,7 +68,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         await b.Owner.LoseBuffProcedure("灵气", b.Stack);
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -87,7 +87,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (!d.IsSwift) return;
                         d.Cancel = true;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                     new(StageClosureDict.DID_TURN, 0, async (listener, stageEventDetails) =>
                     {
@@ -95,7 +95,7 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)stageEventDetails;
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -113,7 +113,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Src) return;
                         d.Value -= b.Stack;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                     new(StageClosureDict.DID_TURN, 0, async (listener, stageEventDetails) =>
                     {
@@ -121,7 +121,7 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)stageEventDetails;
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -137,9 +137,9 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)listener;
                         TurnDetails d = (TurnDetails)stageEventDetails;
                         if (b.Owner != d.Owner) return;
-                        await b.Owner.LoseArmorProcedure(b.Stack);
+                        await b.Owner.LoseArmorProcedure(b.Stack, false);
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -157,7 +157,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         await d.Owner.DamageSelfProcedure(b.Stack);
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -175,7 +175,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Src) return;
                         b.PlayPingAnimation();
                         d.Cancel = true;
-                        await b.SetDStack(d.Value);
+                        await b.GainStackProcedure(d.Value);
                     }),
                 }),
             
@@ -211,7 +211,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (d.CastTimes > 1) return;
                         d.CastTimes = 2;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -228,7 +228,7 @@ public class BuffCategory : Category<BuffEntry>
                         ExecuteDetails d = (ExecuteDetails)stageEventDetails;
                         if (b.Owner != d.Caster) return;
                         d.CastTimes += b.Stack;
-                        await b.Owner.RemoveBuff(b);
+                        await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                     }),
                 }),
             
@@ -246,7 +246,8 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         d.Cancel = true;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.Owner.LoseBuffProcedure(b.GetEntry(), 1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -320,7 +321,7 @@ public class BuffCategory : Category<BuffEntry>
                         
                         d.Value = 0;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -355,7 +356,7 @@ public class BuffCategory : Category<BuffEntry>
                         
                         d.Crit = true;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -371,7 +372,7 @@ public class BuffCategory : Category<BuffEntry>
                         
                         b.Owner.SetActionPoint(2);
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -400,38 +401,38 @@ public class BuffCategory : Category<BuffEntry>
                         await oppo.HealProcedure(oppoHpGap, induced: true);
 
                         b.PlayPingAnimation();
-                        await self.RemoveBuff(b);
+                        await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                     }),
                 }),
 
             new("灵气回收", "下一次灵气减少时，加回", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_LOSE_BUFF, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_LOSE_BUFF, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         LoseBuffDetails d = (LoseBuffDetails)eventDetails;
                         if (b.Owner != d.Tgt) return;
                         if (d._buffEntry.GetName() != "灵气") return;
 
                         await d.Tgt.GainBuffProcedure("灵气", d._stack);
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
 
             new("护甲回收", "下一次护甲减少时，加回", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_LOSE_ARMOR, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_LOSE_ARMOR, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         LoseArmorDetails d = (LoseArmorDetails)eventDetails;
                         if (b.Owner == d.Tgt)
                         {
                             await b.Owner.GainArmorProcedure(d.Value, induced: true);
                             b.PlayPingAnimation();
-                            await b.SetDStack(-1);
+                            await b.LoseStackProcedure();
                         }
                     }),
                 }),
@@ -439,9 +440,9 @@ public class BuffCategory : Category<BuffEntry>
             new("长明灯", "获得灵气时：每1，气血+3", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         GainBuffDetails d = (GainBuffDetails)eventDetails;
                         if (b.Owner != d.Tgt) return;
                         if (d._buffEntry.GetName() != "灵气") return;
@@ -453,22 +454,22 @@ public class BuffCategory : Category<BuffEntry>
             new("尖刺陷阱", "下次受到攻击时，对对方施加等量减甲", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_ATTACK, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_ATTACK, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         AttackDetails d = (AttackDetails)eventDetails;
                         if (b.Owner != d.Tgt || d.Src == d.Tgt) return;
                         b.PlayPingAnimation();
-                        await b.Owner.RemoveArmorProcedure(d.Value);
+                        await b.Owner.RemoveArmorProcedure(d.Value, false);
                     }),
                 }),
 
             new("回合力量", "回合开始时：力量+[层数]", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_TURN, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         TurnDetails d = (TurnDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
@@ -479,17 +480,17 @@ public class BuffCategory : Category<BuffEntry>
             new("回合免疫", "此回合无法收到伤害", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_TURN, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         TurnDetails d = (TurnDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
-                        await b.Owner.RemoveBuff(b);
+                        await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                     }),
-                    new(StageClosureDict.WIL_DAMAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_DAMAGE, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         DamageDetails d = (DamageDetails)eventDetails;
                         if (b.Owner == d.Tgt)
                         {
@@ -502,9 +503,9 @@ public class BuffCategory : Category<BuffEntry>
             new("外骨骼", "每次攻击前，护甲+3", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_ATTACK, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_ATTACK, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         AttackDetails d = (AttackDetails)eventDetails;
                         if (b.Owner != d.Src) return;
                         b.PlayPingAnimation();
@@ -515,13 +516,13 @@ public class BuffCategory : Category<BuffEntry>
             new("永动机", "[层数]回合后死亡", BuffStackRule.Min, false, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_TURN, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_TURN, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         TurnDetails d = (TurnDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                         if (b.Owner.GetStackOfBuff("永动机") == 0)
                             await b.Owner.LoseHealthProcedure(b.Owner.Hp);
                     }),
@@ -530,9 +531,9 @@ public class BuffCategory : Category<BuffEntry>
             new("火箭靴", "使用灵气牌时：获得二动", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_STEP, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_STEP, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         EndStepDetails d = (EndStepDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
                         if (d.Skill != null && d.Skill.GetSkillType().Contains(SkillType.Mana))
@@ -546,9 +547,9 @@ public class BuffCategory : Category<BuffEntry>
             new("定龙桩", "对方二动时：暴击补至1", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_ACTION, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_ACTION, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         ActionDetails d = (ActionDetails)eventDetails;
                         if (b.Owner == d.Owner) return;
                         if (!d.IsSwift) return;
@@ -563,9 +564,9 @@ public class BuffCategory : Category<BuffEntry>
             new("飞行器", "成功闪避时，对方跳回合补至1", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_EVADE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.DID_EVADE, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         EvadedDetails d = (EvadedDetails)eventDetails;
                         if (b.Owner != d.Tgt) return;
                         if (b.Owner.GetStackOfBuff("跳回合") == 0)
@@ -587,7 +588,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
                         await b.Owner.AttackProcedure(b.Stack);
-                        await b.Owner.RemoveBuff(b);
+                        await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                     }),
                 }),
 
@@ -601,8 +602,8 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
-                        await b.Owner.GainArmorProcedure(b.Stack, induced: false);
-                        await b.Owner.RemoveBuff(b);
+                        await b.Owner.GainArmorProcedure(b.Stack);
+                        await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                     }),
                 }),
 
@@ -616,7 +617,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (!(b.Owner == d.Src && d.Src != d.Tgt))
                             return;
                         b.PlayPingAnimation();
-                        await b.Owner.RemoveArmorProcedure(b.Stack);
+                        await b.Owner.RemoveArmorProcedure(b.Stack, false);
                     }),
                 }),
 
@@ -660,8 +661,8 @@ public class BuffCategory : Category<BuffEntry>
                         {
                             d.Cancel = true;
                             b.PlayPingAnimation();
-                            await b.Owner.RemoveArmorProcedure(d.Value);
-                            await b.SetDStack(-1);
+                            await b.Owner.RemoveArmorProcedure(d.Value, false);
+                            await b.LoseStackProcedure();
                         }
                     }),
                 }),
@@ -678,7 +679,7 @@ public class BuffCategory : Category<BuffEntry>
                         
                         b.PlayPingAnimation();
                         d.LifeSteal = true;
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -752,7 +753,7 @@ public class BuffCategory : Category<BuffEntry>
                         {
                             d.Evade = true;
                             b.PlayPingAnimation();
-                            await b.SetDStack(-1);
+                            await b.LoseStackProcedure();
                         }
                     }),
                 }),
@@ -786,7 +787,7 @@ public class BuffCategory : Category<BuffEntry>
                         
                         d.Penetrate = true;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -817,7 +818,7 @@ public class BuffCategory : Category<BuffEntry>
                         {
                             b.PlayPingAnimation();
                             await b.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Mu, recursive: false, induced: true);
-                            await b.Owner.RemoveBuff(b);
+                            await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                         }
                     }),
                 }),
@@ -842,7 +843,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (d.Skill.GetSkillType().Contains(SkillType.Attack))
                         {
                             b.PlayPingAnimation();
-                            await b.Owner.RemoveBuff(b);
+                            await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                         }
                     }),
                 }),
@@ -891,7 +892,7 @@ public class BuffCategory : Category<BuffEntry>
                         
                         b.PlayPingAnimation();
                         await d.Skill.ExhaustProcedure();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
 
@@ -1056,7 +1057,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (isBelow0 && !allowBelow0) return;
                         
                         b.PlayPingAnimation();
-                        await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp, induced: false);
+                        await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
                     }),
                     new(StageClosureDict.WIL_ROUND, 0, async (listener, stageEventDetails) =>
                     {
@@ -1066,7 +1067,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         
                         b.PlayPingAnimation();
-                        await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp, induced: false);
+                        await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
                     }),
                 }),
             
@@ -1110,16 +1111,16 @@ public class BuffCategory : Category<BuffEntry>
             new("钟声", "使用一张牌前：升级", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_CAST, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_CAST, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         CastDetails d = (CastDetails)eventDetails;
                         if (b.Owner != d.Caster || d.Caster != d.Skill.Owner) return;
 
                         if (await d.Skill.TryUpgradeJingJie())
                         {
                             b.PlayPingAnimation();
-                            await b.SetDStack(-1);
+                            await b.LoseStackProcedure();
                         }
                     }),
                 }),
@@ -1127,7 +1128,7 @@ public class BuffCategory : Category<BuffEntry>
             // new("轮气血上限", "每轮：气血上限+[层数]", BuffStackRule.Add, true, false,
             //     eventDescriptors: new StageEventDescriptor[]
             //     {
-            //         new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+            //         new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.WIL_ROUND, 0, async (lowner, eventDetails) =>
             //         {
             //             Buff b = (Buff)listener;
             //             RoundDetails d = (RoundDetails)eventDetails;
@@ -1141,9 +1142,9 @@ public class BuffCategory : Category<BuffEntry>
             new("轮暴击", "每轮：获得[层数]暴击", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         RoundDetails d = (RoundDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
 
@@ -1155,9 +1156,9 @@ public class BuffCategory : Category<BuffEntry>
             new("轮吸血", "每轮：获得[层数]吸血", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         RoundDetails d = (RoundDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
 
@@ -1169,9 +1170,9 @@ public class BuffCategory : Category<BuffEntry>
             new("轮穿透", "每轮：获得[层数]穿透", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_ROUND, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_ROUND, 0, async (owner, eventDetails) =>
                     {
-                        Buff b = (Buff)listener;
+                        Buff b = (Buff)owner;
                         RoundDetails d = (RoundDetails)eventDetails;
                         if (b.Owner != d.Owner) return;
 
@@ -1194,7 +1195,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         await skill.ExhaustProcedure();
                         
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -1226,8 +1227,8 @@ public class BuffCategory : Category<BuffEntry>
                         
                         b.PlayPingAnimation();
                         int gap = b.Owner.MaxHp - b.Owner.Hp;
-                        await b.Owner.HealProcedure(gap, induced: false);
-                        await b.SetDStack(-1);
+                        await b.Owner.HealProcedure(gap);
+                        await b.LoseStackProcedure();
                     }),
                 }),
             
@@ -1304,7 +1305,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Src) return;
                         if (!d.Recursive) return;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                         await d.Src.GainBuffProcedure("灵气", 2, induced: true);
                     }),
                 }),
@@ -1320,7 +1321,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (!d.Recursive) return;
                         
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                         await d.Src.GainBuffProcedure("二动", induced: true);
                     }),
                 }),
@@ -1335,7 +1336,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Src) return;
                         if (!d.Recursive) return;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                         await d.Src.GainBuffProcedure("力量", induced: true);
                     }),
                 }),
@@ -1350,7 +1351,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Src) return;
                         if (!d.Recursive) return;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                         await d.Src.AttackProcedure(12, wuXing: WuXing.Huo, induced: true, recursive: false);
                     }),
                 }),
@@ -1365,7 +1366,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Src) return;
                         if (!d.Recursive) return;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                         await d.Src.GainArmorProcedure(d.Value, induced: true);
                     }),
                 }),
@@ -1379,7 +1380,7 @@ public class BuffCategory : Category<BuffEntry>
                         LoseArmorDetails d = (LoseArmorDetails)stageEventDetails;
                         if (b.Owner != d.Tgt) return;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                         await b.Owner.GainArmorProcedure(d.Value, induced: true);
                     }),
                 }),
@@ -1393,7 +1394,7 @@ public class BuffCategory : Category<BuffEntry>
                         DamageDetails d = (DamageDetails)stageEventDetails;
                         if (b.Owner != d.Tgt) return;
                         b.PlayPingAnimation();
-                        await b.SetDStack(-1);
+                        await b.LoseStackProcedure();
                         d.Cancel = true;
                         await b.Owner.HealProcedure(d.Value, induced: true);
                     }),

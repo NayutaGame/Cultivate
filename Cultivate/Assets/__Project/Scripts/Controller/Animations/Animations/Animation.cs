@@ -1,12 +1,13 @@
 
 public abstract class Animation
 {
-    protected bool _isAwait;
-    public bool IsAwait() => _isAwait;
+    public readonly bool IsAwait;
+    public readonly bool Induced;
 
-    public Animation(bool isAwait)
+    public Animation(bool isAwait, bool induced)
     {
-        _isAwait = isAwait;
+        IsAwait = isAwait;
+        Induced = induced;
     }
 
     public abstract AnimationHandle GetHandle();

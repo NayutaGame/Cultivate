@@ -34,7 +34,7 @@ public class StageAnimationController
         track.SetSpeed(_speed);
         track.Play();
         
-        if (animation.IsAwait())
+        if (animation.IsAwait)
         {
             _mainTrack = track;
         }

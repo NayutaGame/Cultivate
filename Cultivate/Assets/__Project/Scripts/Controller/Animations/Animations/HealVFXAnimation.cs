@@ -6,7 +6,7 @@ public class HealVFXAnimation : Animation
 {
     private HealDetails _healDetails;
 
-    public HealVFXAnimation(bool isAwait, HealDetails healDetails) : base(isAwait)
+    public HealVFXAnimation(bool isAwait, HealDetails healDetails) : base(isAwait, healDetails.Induced)
     {
         _healDetails = healDetails.Clone();
     }
