@@ -51,6 +51,30 @@ public class SpriteCategory : Category<SpriteEntry>
             new("漫画3", "Images/Cutscenes/漫画3"),
             new("漫画4", "Images/Cutscenes/漫画4"),
             new("漫画5", "Images/Cutscenes/漫画5"),
+            
+            // Characters
+            new("徐福", "Images/Characters/01"),
+            new("子非鱼", "Images/Characters/02"),
+            new("子非燕", "Images/Characters/03"),
+            new("风雨晴", "Images/Characters/04"),
+            new("梦乃遥", "Images/Characters/05"),
+            
+            // Entities
+            new("噬金甲", "Images/Bestiary/01"),
+            new("墨蛟", "Images/Bestiary/02"),
+            new("渊虾", "Images/Bestiary/03"),
+            new("九尾狐", "Images/Bestiary/04"),
+            new("推山兽", "Images/Bestiary/05"),
+            new("白泽", "Images/Bestiary/06"),
+            new("鲲", "Images/Bestiary/07"),
+            new("毕方", "Images/Bestiary/08"),
+            new("火蟾", "Images/Bestiary/09"),
+            new("麒麟", "Images/Bestiary/10"),
+            new("凌霄大圣", "Images/Bestiary/凌霄大圣"),
+            new("龟仙人", "Images/Bestiary/龟仙人"),
+            new("鹤仙人", "Images/Bestiary/鹤仙人"),
+            new("鹿仙人", "Images/Bestiary/鹿仙人"),
+            new("土行大圣", "Images/Bestiary/土行大圣"),
 
             // 卡牌
             new("缺失卡面插画", "Images/CardIllustrations/Default"),

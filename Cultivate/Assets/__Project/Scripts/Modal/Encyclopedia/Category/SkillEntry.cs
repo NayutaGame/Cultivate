@@ -21,10 +21,8 @@ public class SkillEntry : Entry, IAnnotation, ISkill
 
     private SkillTypeComposite _skillTypeComposite;
 
-
-
-    public StageClosure[] Closures;
     
+    public StageClosure[] Closures;
     
 
     private Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> _cost;

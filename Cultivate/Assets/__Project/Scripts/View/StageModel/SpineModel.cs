@@ -7,7 +7,17 @@ public class SpineModel : IStageModel
     public Transform BaseTransform;
     public Transform Transform;
     public SkeletonAnimation Skeleton;
-    
+
+    public override void Opening()
+    {
+        // Skeleton.AnimationState.SetAnimation(0, "idle", true);
+    }
+
+    public override void SetSpeed(float speed)
+    {
+        // Skeleton.timeScale = speed;
+    }
+
     public override Animation GetAnimationFromBuffSelf(bool induced)
     {
         return new BuffSelfTweenAnimation(BaseTransform, Transform, true, induced);

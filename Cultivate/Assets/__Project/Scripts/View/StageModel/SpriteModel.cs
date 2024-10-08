@@ -6,7 +6,11 @@ public class SpriteModel : IStageModel
     public Transform BaseTransform;
     public Transform Transform;
     public SpriteRenderer SR;
-    
+
+    public override void Opening() { }
+
+    public override void SetSpeed(float speed) { }
+
     public override Animation GetAnimationFromBuffSelf(bool induced)
     {
         return new BuffSelfTweenAnimation(BaseTransform, Transform, true, induced);

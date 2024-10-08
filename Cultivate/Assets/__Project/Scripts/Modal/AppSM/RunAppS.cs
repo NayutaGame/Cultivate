@@ -11,6 +11,7 @@ public class RunAppS : AppS
         RunManager.Instance.SetEnvironmentFromConfig(runConfig);
         
         RunManager.Instance.SetBackgroundFromJingJie(JingJie.LianQi);
+        StageManager.Instance.SetHomeFromCharacterProfile(runConfig.CharacterProfile);
 
         RunEnvironment runEnv = RunManager.Instance.Environment;
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;

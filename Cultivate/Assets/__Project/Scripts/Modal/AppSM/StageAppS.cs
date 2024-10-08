@@ -15,7 +15,10 @@ public class StageAppS : AppS
         await base.Enter(d, config);
 
         AppManager.Instance.StageManager.gameObject.SetActive(true);
+        
         StageManager.Instance.SetEnvironmentFromConfig(_config);
+        StageManager.Instance.SetAwayFromRunEntity(_config.Away);
+        
         CanvasManager.Instance.StageCanvas.Configure();
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(true);
         CanvasManager.Instance.StageCanvas.InitialSetup();

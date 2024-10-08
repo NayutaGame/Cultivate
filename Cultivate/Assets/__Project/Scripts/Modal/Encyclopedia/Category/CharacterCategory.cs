@@ -22,36 +22,6 @@ public class CharacterCategory : Category<CharacterEntry>
                         env.SetDMingYuanProcedure(2);
                     }),
                 }),
-            new("浮千舟", abilityDescription: "失去灵气时获得1点",
-                stageClosures: new StageClosure[]
-                {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
-                    {
-                        StageEnvironment env = (StageEnvironment)listener;
-                        StageDetails d = (StageDetails)eventDetails;
-
-                        bool ownerIsHome = env.Entities[0] == d.Owner;
-                        if (!ownerIsHome)
-                            return;
-
-                        await d.Owner.GainBuffProcedure("灵气返还");
-                    }),
-                }),
-            new("语真幻", abilityDescription: "使用二动牌时，获得1闪避",
-                stageClosures: new StageClosure[]
-                {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
-                    {
-                        StageEnvironment env = (StageEnvironment)listener;
-                        StageDetails d = (StageDetails)eventDetails;
-
-                        bool ownerIsHome = env.Entities[0] == d.Owner;
-                        if (!ownerIsHome)
-                            return;
-
-                        await d.Owner.GainBuffProcedure("灵敏");
-                    }),
-                }),
             new("子非鱼", abilityDescription: "使用五行卡牌后，发生对应的流转",
                 stageClosures: new StageClosure[]
                 {
@@ -82,7 +52,6 @@ public class CharacterCategory : Category<CharacterEntry>
                         await d.Owner.GainBuffProcedure("相克流转");
                     }),
                 }),
-            new("念无劫", abilityDescription: "气血上限增加，战斗开始时，力量-1/2/3/4/5"),
             new("风雨晴", abilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
                 runClosures: new RunClosure[]
                 {
@@ -154,27 +123,103 @@ public class CharacterCategory : Category<CharacterEntry>
                         env.SetVariable<SkillEntryDescriptor>("CopiedSkill", null);
                     }),
                 }),
-            new("花辞树", abilityDescription: "金丹之后移除所有练气牌；化神后移除所有筑基牌",
+            new("梦乃遥", abilityDescription: "梦乃遥的能力",
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
-                    {
-                        RunEnvironment env = (RunEnvironment)listener;
-                        SetJingJieDetails d = (SetJingJieDetails)eventDetails;
-                    
-                        if (d.ToJingJie == JingJie.JinDan)
-                        {
-                            env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.LianQi));
-                            return;
-                        }
-                    
-                        if (d.ToJingJie == JingJie.HuaShen)
-                        {
-                            env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.ZhuJi));
-                            return;
-                        }
-                    }),
+                    // new(RunClosureDict.WILL_PLACEMENT, 0, (listener, eventDetails) =>
+                    // {
+                    //     RunEnvironment env = (RunEnvironment)listener;
+                    //     PlacementDetails d = (PlacementDetails)eventDetails;
+                    //
+                    //     bool ownerIsHome = env.Home == d.Owner;
+                    //     if (!ownerIsHome)
+                    //         return;
+                    //
+                    //     if (env.AwayIsDummy())
+                    //         return;
+                    //
+                    //     RunEntity oppo = env.Away;
+                    //     SkillSlot slotToPaste = d.Owner.TraversalCurrentSlots()
+                    //         .FirstObj(slot => slot.Skill == null && oppo.GetSlot(slot.Index).Skill != null);
+                    //
+                    //     if (slotToPaste == null)
+                    //     {
+                    //         env.SetVariable<RunSkill>("CopiedSkill", null);
+                    //         return;
+                    //     }
+                    //
+                    //     SkillSlot slotToCopy = oppo.GetSlot(slotToPaste.Index);
+                    //
+                    //     slotToPaste.PlacedSkill = PlacedSkill.FromEntryAndJingJie(slotToCopy.Skill.GetEntry(), slotToCopy.Skill.GetJingJie());
+                    //
+                    //     RunSkill copiedSkill = slotToCopy.Skill as RunSkill;
+                    //
+                    //     env.SetVariable("CopiedSkill", copiedSkill != null ? SkillEntryDescriptor.FromRunSkill(copiedSkill) : null);
+                    // }),
+                    // new(RunClosureDict.WILL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
+                    // {
+                    //     RunEnvironment env = (RunEnvironment)listener;
+                    //     DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
+                    //
+                    //     SkillEntryDescriptor copiedSkillEntry = env.GetVariable<SkillEntryDescriptor>("CopiedSkill");
+                    //     if (copiedSkillEntry == null)
+                    //         return;
+                    //
+                    //     d.Skills.Add(copiedSkillEntry);
+                    //     env.SetVariable<SkillEntryDescriptor>("CopiedSkill", null);
+                    // }),
                 }),
+            // new("浮千舟", abilityDescription: "失去灵气时获得1点",
+            //     stageClosures: new StageClosure[]
+            //     {
+            //         new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+            //         {
+            //             StageEnvironment env = (StageEnvironment)listener;
+            //             StageDetails d = (StageDetails)eventDetails;
+            //
+            //             bool ownerIsHome = env.Entities[0] == d.Owner;
+            //             if (!ownerIsHome)
+            //                 return;
+            //
+            //             await d.Owner.GainBuffProcedure("灵气返还");
+            //         }),
+            //     }),
+            // new("语真幻", abilityDescription: "使用二动牌时，获得1闪避",
+            //     stageClosures: new StageClosure[]
+            //     {
+            //         new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+            //         {
+            //             StageEnvironment env = (StageEnvironment)listener;
+            //             StageDetails d = (StageDetails)eventDetails;
+            //
+            //             bool ownerIsHome = env.Entities[0] == d.Owner;
+            //             if (!ownerIsHome)
+            //                 return;
+            //
+            //             await d.Owner.GainBuffProcedure("灵敏");
+            //         }),
+            //     }),
+            // new("花辞树", abilityDescription: "金丹之后移除所有练气牌；化神后移除所有筑基牌",
+            //     runClosures: new RunClosure[]
+            //     {
+            //         new(RunClosureDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
+            //         {
+            //             RunEnvironment env = (RunEnvironment)listener;
+            //             SetJingJieDetails d = (SetJingJieDetails)eventDetails;
+            //         
+            //             if (d.ToJingJie == JingJie.JinDan)
+            //             {
+            //                 env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.LianQi));
+            //                 return;
+            //             }
+            //         
+            //             if (d.ToJingJie == JingJie.HuaShen)
+            //             {
+            //                 env.SkillPool.Depopulate(e => e.JingJieContains(JingJie.ZhuJi));
+            //                 return;
+            //             }
+            //         }),
+            //     }),
             // new("心斩心鬼", abilityDescription: "剑类卡牌获得集中\n" +
             //                                 "卡池中塞入剑阵系类套牌：素弦，苦寒，弱昙，狂焰，孤山，周天，图南，尘缘，泪颜"),
             // new("墨虚雪", abilityDescription: "游戏开始时以及境界提升时，获得一张机关牌\n" +

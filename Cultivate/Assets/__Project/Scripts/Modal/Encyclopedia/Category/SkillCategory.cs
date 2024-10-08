@@ -1435,22 +1435,24 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"2攻".ApplyAttack() +
-                    $"\n追加12攻".ApplyAttack() +
+                    $"\n追加12攻".ApplyAttack() + "（未实现）" +
                     $"\n下{1 + dj}次攻击也触发",
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            await d.Src.AttackProcedure(12, wuXing: d.SrcSkill.Entry.WuXing,
-                                srcSkill: d.SrcSkill,
-                                castResult: d.CastResult);
-                            await d.Src.GainBuffProcedure("狂焰", 1 + d.SrcSkill.Dj);
-                        });
+                    // StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                    //     async (owner, closureDetails) =>
+                    //     {
+                    //         AttackDetails d = closureDetails as AttackDetails;
+                    //         await d.Src.AttackProcedure(12, wuXing: d.SrcSkill.Entry.WuXing,
+                    //             srcSkill: d.SrcSkill,
+                    //             castResult: d.CastResult);
+                    //         await d.Src.GainBuffProcedure("狂焰", 1 + d.SrcSkill.Dj);
+                    //     });
+                    //
+                    // await d.AttackProcedure(2,
+                    //     closures: new [] { closure });
 
-                    await d.AttackProcedure(2,
-                        closures: new [] { closure });
+                    await d.AttackProcedure(2);
                 }),
 
             new(id:                         "0415",

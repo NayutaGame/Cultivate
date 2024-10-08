@@ -1,5 +1,6 @@
 
 using System;
+using UnityEngine;
 
 public class CharacterEntry : Entry
 {
@@ -11,6 +12,8 @@ public class CharacterEntry : Entry
     public RunClosure[] _runClosures;
     public StageClosure[] _stageClosures;
 
+    private SpriteEntry _spriteEntry;
+
     public CharacterEntry(string id, string description = null, string abilityDescription = null,
         RunClosure[] runClosures = null,
         StageClosure[] stageClosures = null) : base(id)
@@ -20,7 +23,12 @@ public class CharacterEntry : Entry
 
         _runClosures = runClosures ?? Array.Empty<RunClosure>();
         _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
+
+        _spriteEntry = GetName();
     }
 
     public static implicit operator CharacterEntry(string id) => Encyclopedia.CharacterCategory[id];
+    
+    // public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
+    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
 }

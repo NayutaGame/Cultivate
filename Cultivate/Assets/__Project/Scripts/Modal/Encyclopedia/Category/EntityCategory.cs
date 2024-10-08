@@ -5,11 +5,6 @@ public class EntityCategory : Category<EntityEntry>
 {
     public EntityCategory()
     {
-         // AddRange(new List<EntityEntry>()
-         // {
-         //     new("鶸", "除了聚气什么都不会的废物"),
-         // });
-
         AddRange(new List<EntityEntry>()
         {
             new("鶸", "除了聚气什么都不会的废物"),

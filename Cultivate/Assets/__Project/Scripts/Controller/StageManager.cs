@@ -94,4 +94,14 @@ public class StageManager : Singleton<StageManager>, Addressable
             VFXPool.GetChild(i).gameObject.SetActive(false);
         }
     }
+
+    public void SetHomeFromCharacterProfile(CharacterProfile characterProfile)
+    {
+        _slots[0].SR.sprite = characterProfile.GetEntry().GetSprite();
+    }
+
+    public void SetAwayFromRunEntity(RunEntity runEntity)
+    {
+        _slots[1].SR.sprite = runEntity.GetEntry().GetSprite();
+    }
 }

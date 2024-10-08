@@ -1,7 +1,6 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine;
 
 public class StageAnimationController
 {
@@ -25,7 +24,7 @@ public class StageAnimationController
     public void Opening()
     {
         foreach (EntitySlot entitySlot in StageManager.Instance._slots)
-            entitySlot.Skeleton.AnimationState.SetAnimation(0, "idle", true);
+            entitySlot.Model.Opening();
     }
 
     public async Task Play(Animation animation)
@@ -56,14 +55,14 @@ public class StageAnimationController
     public void Pause()
     {
         foreach (EntitySlot slot in StageManager.Instance._slots)
-            slot.Skeleton.timeScale = 0;
+            slot.Model.SetSpeed(0);
         _mainTrack?.Pause();
     }
 
     public void Resume()
     {
         foreach (EntitySlot slot in StageManager.Instance._slots)
-            slot.Skeleton.timeScale = _speed;
+            slot.Model.SetSpeed(_speed);
         _mainTrack?.Resume(_speed);
     }
 
@@ -71,7 +70,7 @@ public class StageAnimationController
     {
         _speed = speed;
         foreach (EntitySlot slot in StageManager.Instance._slots)
-            slot.Skeleton.timeScale = _speed;
+            slot.Model.SetSpeed(_speed);
         _mainTrack?.SetSpeed(_speed);
         // _sideTracks
     }
