@@ -26,7 +26,7 @@ public class ChannelCostResult : CostResult
         Blocking = _counter > 0;
         if (Blocking)
         {
-            await Env.Play(new ShiftAnimation());
+            await Env.PlayAsync(new ShiftAnimation());
             Env.Result.TryAppendChannelNote(Entity.Index, Skill, _counter, Value);
             Env.Result.TryAppend($"{Entity.GetName()}吟唱了{Skill.Entry.GetName()} 进度: {_counter}//{Value}\n");
             _counter -= 1;

@@ -17,7 +17,7 @@ public class SpineHandle : AnimationHandle
     public SpineHandle(Animation animation, float[] intervals, SkeletonAnimation skeleton, Action playFunc) : base(animation)
     {
         _index = 0;
-        _intervals = intervals;
+        _intervals = intervals ?? Array.Empty<float>();
         _skeleton = skeleton;
         _playFunc = playFunc;
     }
@@ -34,7 +34,8 @@ public class SpineHandle : AnimationHandle
         
         if (_index < _intervals.Length)
         {
-            _handle = DOTween.Sequence().AppendInterval(_intervals[_index]).AppendCallback(() => { });
+            _handle = DOTween.Sequence()
+                .AppendInterval(_intervals[_index]).AppendCallback(() => { });
             _handle.timeScale = speed;
             _handle.SetAutoKill().Restart();
             _index++;

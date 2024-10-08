@@ -86,7 +86,7 @@ public class StageEntity : Addressable, StageClosureOwner
 
         for (int i = 0; i < d.Times; i++)
         {
-            await _env.Play(new ShiftAnimation());
+            await _env.PlayAsync(new ShiftAnimation());
             _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}的开局效果");
 
             await skill.Entry.StartStageCast(d);
@@ -105,7 +105,7 @@ public class StageEntity : Addressable, StageClosureOwner
         
         
         // will cast report
-        await _env.Play(new ShiftAnimation());
+        await _env.PlayAsync(new ShiftAnimation());
         _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}");
         
         await skill.Entry.Cast(d);

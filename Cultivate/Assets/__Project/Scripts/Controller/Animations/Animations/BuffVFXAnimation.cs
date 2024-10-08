@@ -23,19 +23,23 @@ public class BuffVFXAnimation : Animation
     {
         GainBuffDetails d = GainBuffDetails;
 
-        GameObject prefab;
-
-        if (d._buffEntry.GetName() == "灵气")
-            prefab = StageManager.Instance.LingQiVFXPrefab;
-        else
-            prefab = d._buffEntry.Friendly
-                ? StageManager.Instance.BuffVFXPrefab
-                : StageManager.Instance.DebuffVFXPrefab;
+        GameObject prefab = GetPrefab(d._buffEntry);
         
         GameObject gao = GameObject.Instantiate(prefab, d.Tgt.Slot().VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         
         VFX vfx = gao.GetComponent<VFX>();
         vfx.Play();
+    }
+
+    private GameObject GetPrefab(BuffEntry buffEntry)
+    {
+        if (buffEntry.GetName() == "灵气")
+            return StageManager.Instance.LingQiVFXPrefab;
+
+        if (buffEntry.Friendly)
+            return StageManager.Instance.BuffVFXPrefab;
+        
+        return StageManager.Instance.DebuffVFXPrefab;
     }
 }

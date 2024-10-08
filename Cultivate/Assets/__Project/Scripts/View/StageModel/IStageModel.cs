@@ -1,14 +1,23 @@
 
-using System.Threading.Tasks;
 using UnityEngine;
 
-public class IStageModel : MonoBehaviour
+public abstract class IStageModel : MonoBehaviour
 {
-    // AnimationHandle BuffSelfEvent();
-    public async Task BuffSelfEvent(GainBuffDetails gainBuffDetails)
-    {
-        
-    }
+    public abstract Animation GetAnimationFromBuffSelf(bool induced);
+
+    public abstract Animation GetAnimationFromEvaded(bool induced);
+
+    public abstract Animation GetAnimationFromAttack(bool induced);
+
+    public abstract Animation GetAnimationFromDamaged(bool induced);
+
+    public abstract Animation GetAnimationFromGainArmor(bool induced);
+
+    public abstract Animation GetAnimationFromHeal(bool induced);
+
+    public abstract Animation GetAnimationFromGuard(bool induced);
+    
+    public abstract Animation GetAnimationFromUnguard(bool induced);
 
     // buffSelf
     // buffOppo		buffedByOppo
