@@ -1044,7 +1044,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "0311",
-                name:                       "狂花",
+                name:                       "彼岸花",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>

@@ -124,7 +124,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("若竹",                                "Images/Cards/若竹"),
             new("入木三分",                              "Images/Cards/入木三分"),
             new("飞龙在天",                              "Images/Cards/飞龙在天"),
-            new("狂花",                                "Images/Cards/狂花"),
+            new("彼岸花",                                "Images/Cards/彼岸花"),
             new("钟声",                                "Images/Cards/钟声"),
             new("弱昙",                                "Images/Cards/弱昙"),
             new("鹤回翔",                               "Images/Cards/鹤回翔"),
@@ -169,7 +169,10 @@ public class SpriteCategory : Category<SpriteEntry>
             new("冰肌",                                "Images/Cards/冰肌"),
             new("一诺五岳",                              "Images/Cards/一诺五岳"),
             
-            // 卡牌
+            new("正域彼四方",                              "Images/Cards/正域彼四方"),
+            new("射落金乌",                              "Images/Cards/射落金乌"),
+            
+            // 背景
             new("练气背景", "Images/StageBackgrounds/StageBackground01"),
             new("筑基背景", "Images/StageBackgrounds/StageBackground02"),
             new("金丹背景", "Images/StageBackgrounds/StageBackground03"),
