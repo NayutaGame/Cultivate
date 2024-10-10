@@ -7,7 +7,6 @@ public interface ISkill
     int GetMaxCounter();
     Sprite GetSprite();
     WuXing? GetWuXing();
-    Sprite GetWuXingSprite();
     string GetName();
     SkillTypeComposite GetSkillTypeComposite();
     string GetExplanation();
@@ -18,6 +17,4 @@ public interface ISkill
     string GetHighlight(JingJie showingJingJie);
     Sprite GetJingJieSprite(JingJie showingJingJie);
     JingJie NextJingJie(JingJie showingJingJie);
-    
-    Color GetColor();
 }

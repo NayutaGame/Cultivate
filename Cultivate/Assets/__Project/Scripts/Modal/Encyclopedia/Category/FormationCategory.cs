@@ -536,7 +536,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                 order: 0,
                 contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack),
                 progressDescription: "携带越多攻击牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Attack] + d.Proficiency,
+                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Attack._index] + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(
@@ -601,7 +601,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                 order: 0,
                 contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend),
                 progressDescription: "携带越多防御牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Attack] + d.Proficiency,
+                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Defend._index] + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(

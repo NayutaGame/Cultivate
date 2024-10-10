@@ -1,4 +1,7 @@
 
+using System.Text;
+using UnityEngine;
+
 public class RunFormationDetails : ClosureDetails
 {
     public RunEntity Owner;
@@ -33,6 +36,14 @@ public class RunFormationDetails : ClosureDetails
                 skillTypeComposite = skillTypeComposite >> 1;
             }
         }
+
+        StringBuilder sb = new();
+        for (int i = 0; i < TypeCounts.Length; i++)
+        {
+            sb.Append($"{SkillType.FromIndex(i)._name} => {TypeCounts[i]}\n");
+        }
+        Debug.Log(sb.ToString());
+
 
         Proficiency = 0;
     }

@@ -20,10 +20,10 @@ public class MergePreresultView : SimpleView
     
     [SerializeField] private Image CardImage;
     [SerializeField] private TMP_Text CostText;
+    [SerializeField] private Image CostIcon;
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private Image JingJieImage;
-    [SerializeField] private Image WuXingImage;
     [SerializeField] private Image EffectImage;
 
     [SerializeField] private TMP_Text MergeTypeText;
@@ -61,7 +61,6 @@ public class MergePreresultView : SimpleView
         SetDescriptionFromMergePreresult();
         SetSkillTypeCompositeFromMergePreresult();
         SetJingJieSpriteFromMergePreresult();
-        SetWuXingSpriteFromMergePreresult();
         SetMergeTypeTextFromMergePreresult();
         SetErrorMessageFromMergePreresult();
     }
@@ -83,13 +82,26 @@ public class MergePreresultView : SimpleView
     
     protected virtual void SetSpriteFromMergePreresult()
     {
-        if (_mergePreresult.ResultEntry == null)
+        if (!_mergePreresult.Valid)
         {
-            CardImage.sprite = _mergePreresult.Valid ? CanvasManager.Instance.MergePreresultValidSprite : CanvasManager.Instance.MergePreresultInvalidSprite;
+            CardImage.sprite = Encyclopedia.SpriteCategory["无法合成"].Sprite;
             return;
         }
         
-        CardImage.sprite = _mergePreresult.ResultEntry.GetSprite();
+        if (_mergePreresult.ResultEntry != null)
+        {
+            CardImage.sprite = _mergePreresult.ResultEntry.GetSprite();
+            return;
+        }
+
+        if (_mergePreresult.ResultWuXing != null)
+        {
+            WuXing wuXing = _mergePreresult.ResultWuXing.Value;
+            CardImage.sprite = Encyclopedia.SpriteCategory[$"{wuXing._name}合成"].Sprite;
+            return;
+        }
+
+        CardImage.sprite = Encyclopedia.SpriteCategory["可以合成"].Sprite;
     }
     
     protected virtual void SetCostDescriptionFromMergePreresult()
@@ -102,48 +114,51 @@ public class MergePreresultView : SimpleView
 
         JingJie jingJie = _mergePreresult.ResultJingJie ?? _mergePreresult.ResultEntry.LowestJingJie;
         CostDescription costDescription = _mergePreresult.ResultEntry.GetCostDescription(jingJie);
-        
-        int value = costDescription.Value;
-        if (value == 0)
-        {
-            CostText.text = "";
-            return;
-        }
-    
         switch (costDescription.Type)
         {
+            case CostDescription.CostType.Empty:
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[0];
+                CostText.text = "";
+                break;
             case CostDescription.CostType.Mana:
-                CostText.text = $"{value}灵";
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[1];
+                CostText.text = costDescription.Value.ToString();
                 break;
             case CostDescription.CostType.Health:
-                CostText.text = $"{value}血";
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[2];
+                CostText.text = costDescription.Value.ToString();
                 break;
             case CostDescription.CostType.Channel:
-                CostText.text = $"{value}时";
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[3];
+                CostText.text = costDescription.Value.ToString();
                 break;
             case CostDescription.CostType.Armor:
-                CostText.text = $"{value}甲";
+                CostIcon.sprite = CanvasManager.Instance.CostIconSprites[4];
+                CostText.text = costDescription.Value.ToString();
                 break;
         }
-        
-        Color color = CanvasManager.Instance.CostColors[0];
+
+        int? i = null;
         switch (costDescription.State)
         {
             case CostResult.CostState.Unwritten:
-                color = CanvasManager.Instance.CostColors[0];
+                i = 0;
                 break;
             case CostResult.CostState.Normal:
-                color = CanvasManager.Instance.CostColors[1];
+                i = 1;
                 break;
             case CostResult.CostState.Reduced:
-                color = CanvasManager.Instance.CostColors[2];
+                i = 2;
                 break;
             case CostResult.CostState.Shortage:
-                color = CanvasManager.Instance.CostColors[3];
+                i = 3;
                 break;
         }
-    
-        CostText.color = color;
+
+        if (i.HasValue)
+        {
+            CostText.color = CanvasManager.Instance.CostColors[i.Value];
+        }
     }
     
     protected virtual void SetNameFromMergePreresult()
@@ -196,22 +211,6 @@ public class MergePreresultView : SimpleView
     {
         JingJie jingJie = _mergePreresult.ResultJingJie ?? _mergePreresult.ResultEntry?.LowestJingJie ?? JingJie.LianQi;
         JingJieImage.sprite = CanvasManager.Instance.JingJieSprites[jingJie];
-    }
-    
-    protected virtual void SetWuXingSpriteFromMergePreresult()
-    {
-        WuXing? wuXing = _mergePreresult.ResultWuXing ?? _mergePreresult.ResultEntry?.WuXing;
-        Sprite wuXingSprite = CanvasManager.Instance.GetWuXingSprite(wuXing);
-        
-        if (wuXingSprite != null)
-        {
-            WuXingImage.sprite = wuXingSprite;
-            WuXingImage.enabled = true;
-        }
-        else
-        {
-            WuXingImage.enabled = false;
-        }
     }
 
     protected virtual void SetMergeTypeTextFromMergePreresult()

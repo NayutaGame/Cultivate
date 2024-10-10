@@ -15,8 +15,8 @@ public class SkillBarView : SimpleView
         base.Refresh();
 
         ISkill skill = Get<ISkill>();
-        BackgroundImage.color = skill.GetColor();
-        WuXingImage.sprite = skill.GetWuXingSprite();
+        BackgroundImage.color = CanvasManager.Instance.JingJieColors[skill.GetJingJie()];
+        WuXingImage.color = CanvasManager.Instance.GetWuXingColor(skill.GetWuXing());
         NameText.text = skill.GetName();
     }
 }

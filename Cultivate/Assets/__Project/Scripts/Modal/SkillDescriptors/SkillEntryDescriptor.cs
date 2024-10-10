@@ -110,9 +110,6 @@ public class SkillEntryDescriptor : ISkill
     public WuXing? GetWuXing()
         => _entry?.WuXing;
 
-    public Sprite GetWuXingSprite()
-        => _entry?.GetWuXingSprite();
-
     public string GetName()
         => _entry?.GetName();
 
@@ -139,7 +136,4 @@ public class SkillEntryDescriptor : ISkill
 
     public JingJie NextJingJie(JingJie showingJingJie)
         => _entry?.NextJingJie(showingJingJie) ?? global::JingJie.LianQi;
-
-    public Color GetColor()
-        => _entry?.GetColor() ?? Color.white;
 }

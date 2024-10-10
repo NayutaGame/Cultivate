@@ -17,7 +17,6 @@ public class SkillCardView : SimpleView
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private Image JingJieImage;
-    [SerializeField] private Image WuXingImage;
     [SerializeField] private Image EffectImage;
 
     private Material _outlineMaterial;
@@ -56,7 +55,6 @@ public class SkillCardView : SimpleView
         SetDescription(skill.GetHighlight(_showingJingJie));
         SetSkillTypeComposite(skill.GetSkillTypeComposite());
         SetJingJieSprite(skill.GetJingJieSprite(_showingJingJie));
-        // SetWuXingSprite(skill.GetWuXingSprite());
     }
 
     private Tween _highlightHandle;
@@ -157,18 +155,5 @@ public class SkillCardView : SimpleView
     protected virtual void SetJingJieSprite(Sprite jingJieSprite)
     {
         JingJieImage.sprite = jingJieSprite;
-    }
-
-    protected virtual void SetWuXingSprite(Sprite wuXingSprite)
-    {
-        if (wuXingSprite != null)
-        {
-            WuXingImage.sprite = wuXingSprite;
-            WuXingImage.enabled = true;
-        }
-        else
-        {
-            WuXingImage.enabled = false;
-        }
     }
 }

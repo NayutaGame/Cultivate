@@ -15,9 +15,6 @@ public class SkillEntry : Entry, IAnnotation, ISkill
     public bool JingJieContains(JingJie jingJie) => _jingJieBound.Contains(jingJie);
     public JingJie LowestJingJie => _jingJieBound.Start;
     public JingJie HighestJingJie => _jingJieBound.End - 1;
-    
-    public Color GetColor(JingJie jingJie)
-        => CanvasManager.Instance.JingJieColors[jingJie];
 
     private SkillTypeComposite _skillTypeComposite;
 
@@ -119,7 +116,6 @@ public class SkillEntry : Entry, IAnnotation, ISkill
 
     public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
     public WuXing? GetWuXing() => WuXing;
-    public Sprite GetWuXingSprite() => CanvasManager.Instance.GetWuXingSprite(WuXing);
     public string GetName() => _name;
     public SkillTypeComposite GetSkillTypeComposite() => _skillTypeComposite;
     public string GetExplanation() => _annotationArray.GetExplanation();
@@ -137,6 +133,4 @@ public class SkillEntry : Entry, IAnnotation, ISkill
 
         return LowestJingJie;
     }
-
-    public Color GetColor() => GetColor(LowestJingJie);
 }

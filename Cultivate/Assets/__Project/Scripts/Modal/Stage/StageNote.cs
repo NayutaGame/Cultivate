@@ -38,9 +38,6 @@ public class StageNote : ISkill
     public WuXing? GetWuXing()
         => Skill.Entry.GetWuXing();
 
-    public Sprite GetWuXingSprite()
-        => Skill.Entry.GetWuXingSprite();
-
     public string GetName()
         => Skill.Entry.GetName();
 
@@ -71,7 +68,4 @@ public class StageNote : ISkill
 
     public JingJie NextJingJie(JingJie showingJingJie)
         => Skill.Entry.NextJingJie(showingJingJie);
-
-    public Color GetColor()
-        => Skill.Entry.GetColor(GetJingJie());
 }

@@ -87,9 +87,6 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     public WuXing? GetWuXing()
         => _entry.WuXing;
 
-    public Sprite GetWuXingSprite()
-        => _entry.GetWuXingSprite();
-
     public string GetName()
         => _entry.GetName();
 
@@ -120,9 +117,6 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
 
     public JingJie NextJingJie(JingJie showingJingJie)
         => _entry.NextJingJie(showingJingJie);
-
-    public Color GetColor()
-        => _entry.GetColor(GetJingJie());
 
     public override string ToString()
         => $"[{GetJingJie()}]{GetEntry().GetName()}";

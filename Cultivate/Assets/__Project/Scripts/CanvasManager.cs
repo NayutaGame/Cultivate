@@ -40,7 +40,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     public Color[] JingJieColors;
     public Sprite[] JingJieSprites;
-    [SerializeField] private Sprite[] WuXingSprites;
+    public Color[] WuXingColors;
 
     public Color TechColorGreen;
     public Color TechColorYellow;
@@ -50,15 +50,12 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     public Sprite[] CostIconSprites;
 
-    public Sprite MergePreresultValidSprite;
-    public Sprite MergePreresultInvalidSprite;
-
-    public Sprite GetWuXingSprite(WuXing? wuXing)
+    public Color GetWuXingColor(WuXing? wuXing)
     {
         if (wuXing == null)
-            return null;
+            return WuXingColors[^1];
 
-        return WuXingSprites[wuXing.Value._index];
+        return WuXingColors[wuXing.Value._index];
     }
 
     private Dictionary<string, Func<object>> _accessors;

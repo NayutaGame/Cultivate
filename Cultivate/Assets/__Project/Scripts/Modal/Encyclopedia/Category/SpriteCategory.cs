@@ -77,7 +77,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("土行大圣", "Images/Bestiary/土行大圣"),
 
             // 卡牌
-            new("缺失卡面插画", "Images/CardIllustrations/Default"),
+            new("缺失卡面插画", "Images/MissingSprite"),
             // new("聚气术", "Images/Cards/聚气术"),
             // new("冲撞", "Images/Cards/冲撞"),
             
@@ -171,6 +171,15 @@ public class SpriteCategory : Category<SpriteEntry>
             
             new("正域彼四方",                              "Images/Cards/正域彼四方"),
             new("射落金乌",                              "Images/Cards/射落金乌"),
+            
+            // 合成
+            new("无法合成", "Images/MergeIllustrations/Invalid"),
+            new("可以合成", "Images/MergeIllustrations/Valid"),
+            new("金合成", "Images/MergeIllustrations/Jin"),
+            new("水合成", "Images/MergeIllustrations/Shui"),
+            new("木合成", "Images/MergeIllustrations/Mu"),
+            new("火合成", "Images/MergeIllustrations/Huo"),
+            new("土合成", "Images/MergeIllustrations/Tu"),
             
             // 背景
             new("练气背景", "Images/StageBackgrounds/StageBackground01"),
