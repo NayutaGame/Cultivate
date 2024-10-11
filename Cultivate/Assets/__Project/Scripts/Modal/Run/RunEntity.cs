@@ -160,6 +160,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     [NonSerialized] private ListModel<RunFormation> _formations;
     public IEnumerable<RunFormation> TraversalFormations => _formations.Traversal();
     [NonSerialized] private FilteredListModel<RunFormation> _showingFormations;
+    [NonSerialized] private FilteredListModel<RunFormation> _activeFormations;
 
     public void FormationProcedure()
     {
@@ -175,6 +176,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.DID_FORMATION, d);
 
         _showingFormations.Refresh();
+        _activeFormations.Refresh();
     }
 
     #endregion
@@ -206,6 +208,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
             { "Slots", () => _filteredSlots },
             { "RunFormations", () => _formations },
             { "ShowingFormations", () => _showingFormations },
+            { "ActiveFormations", () => _activeFormations },
             { "SmirkAgainstSlots", () => _smirkAgainstSlots },
             { "AfraidAgainstSlots", () => _afraidAgainstSlots },
         };
@@ -244,6 +247,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
             { "Slots", () => _filteredSlots },
             { "RunFormations", () => _formations },
             { "ShowingFormations", () => _showingFormations },
+            { "ActiveFormations", () => _activeFormations },
             { "SmirkAgainstSlots", () => _smirkAgainstSlots },
             { "AfraidAgainstSlots", () => _afraidAgainstSlots },
         };
@@ -268,6 +272,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         _formations = new();
         _showingFormations = new(_formations, f =>
             f.GetMin() <= f.GetProgress() && _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
+        _activeFormations = new(_formations, f => f.IsActivated());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
     }
 }

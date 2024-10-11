@@ -2299,12 +2299,6 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0.4563403, g: 0, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
-  WuXingSprites:
-  - {fileID: 8292447929574576883, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
-  - {fileID: 8149245822705470765, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
-  - {fileID: -2194607438364983757, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
-  - {fileID: -3136879333733846665, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
-  - {fileID: -1297964740939190250, guid: 5442e2ebe36d116408117ceff34fcc5f, type: 3}
   TechColorGreen: {r: 0.62352943, g: 0.81960785, b: 0.6392157, a: 1}
   TechColorYellow: {r: 0.77254903, g: 0.78431374, b: 0.5647059, a: 1}
   TechColorRed: {r: 0.9137255, g: 0.6745098, b: 0.6745098, a: 1}
@@ -2319,8 +2313,6 @@ MonoBehaviour:
   - {fileID: 6054793087220200548, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
   - {fileID: 8819295655754421081, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
   - {fileID: 706331043141627348, guid: 49fbb7c4764df1a47a77e38bde503745, type: 3}
-  MergePreresultValidSprite: {fileID: 21300000, guid: 57ef7805f13953e4890485f803c6e256, type: 3}
-  MergePreresultInvalidSprite: {fileID: 21300000, guid: 56290e6f4f530294590b7c1ddff2378a, type: 3}
   _volume: {fileID: 1778296600}
   _shakeTransform: {fileID: 659905182}
   VFXPoolTransform: {fileID: 1854006636}

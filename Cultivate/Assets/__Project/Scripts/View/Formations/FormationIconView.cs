@@ -1,11 +1,15 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FormationIconView : SimpleView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text ProgressText;
+    [SerializeField] private Image Glow;
+    [SerializeField] private Image Background;
+    [SerializeField] private Image Icon;
 
     public override void Refresh()
     {
@@ -17,37 +21,23 @@ public class FormationIconView : SimpleView
         if (formationIsNull)
             return;
 
-        JingJie? jingJie = formation.GetActivatedJingJie();
-        if (jingJie != null)
-            NameText.text = $"<style={jingJie.ToString()}>{formation.GetName()}</style>";
-        else
-            NameText.text = formation.GetName();
-
-        if (ProgressText != null)
+        NameText.text = formation.GetName();
+        
+        if (formation is RunFormation rf)
         {
-            if (formation is RunFormation f)
+            if (ProgressText != null)
             {
-                int progress = f.GetProgress();
-                
-                JingJie nextJingJie;
-                JingJie? activatedJingJie = f.GetActivatedJingJie();
-                JingJie highestJingJie = f.GetEntry().GetFormationGroupEntry().SubFormationEntries[0].GetJingJie();
-                if (!activatedJingJie.HasValue)
-                {
-                    nextJingJie = f.GetLowestJingJie();
-                }
-                else if (activatedJingJie != highestJingJie)
-                {
-                    nextJingJie = f.GetIncrementedJingJie(activatedJingJie.Value);
-                }
-                else
-                {
-                    nextJingJie = highestJingJie;
-                }
-                
-                int requirement = formation.GetRequirementFromJingJie(nextJingJie);
+                JingJie nextActivatingJingJie = rf.GetNextActivatingJingJie();
+                int progress = rf.GetProgress();
+                int requirement = formation.GetRequirementFromJingJie(nextActivatingJingJie);
                 ProgressText.text = $"{progress}/{requirement}";
             }
         }
+        
+        JingJie? activatedJingJie = formation.GetActivatedJingJie();
+        SpriteEntry spriteEntry = activatedJingJie == null ? "未激活阵法背景" : $"{activatedJingJie.Value.Name}阵法背景";
+        Background.sprite = spriteEntry.Sprite;
+
+        Glow.sprite = Encyclopedia.SpriteCategory["普通阵法发光"].Sprite;
     }
 }

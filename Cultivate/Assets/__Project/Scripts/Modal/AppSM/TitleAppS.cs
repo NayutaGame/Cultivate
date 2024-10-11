@@ -10,6 +10,7 @@ public class TitleAppS : AppS
         
         AudioManager.Play("BGMTitle");
         CanvasManager.Instance.Curtain.SetState(1);
+        await Task.Delay(1000);
         await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(1);
     }
 

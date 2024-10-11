@@ -37,6 +37,19 @@ public class RunFormation : IFormationModel, Addressable
 
         return new(entry, progress, true, firstActivated);
     }
+    
+    public JingJie GetNextActivatingJingJie()
+    {
+        JingJie? activatedJingJie = GetActivatedJingJie();
+        JingJie highestJingJie = GetEntry().GetFormationGroupEntry().SubFormationEntries[0].GetJingJie();
+        if (!activatedJingJie.HasValue)
+            return GetLowestJingJie();
+        
+        if (activatedJingJie != highestJingJie)
+            return GetIncrementedJingJie(activatedJingJie.Value);
+        
+        return highestJingJie;
+    }
 
     #region IFormationModel
 

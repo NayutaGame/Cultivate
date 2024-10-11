@@ -3,11 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using CLLibrary;
-using UnityEngine;
-using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using UnityEngine;
 
 public class AppManager : Singleton<AppManager>, Addressable
 {

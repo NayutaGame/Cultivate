@@ -182,11 +182,22 @@ public class SpriteCategory : Category<SpriteEntry>
             new("土合成", "Images/MergeIllustrations/Tu"),
             
             // 背景
-            new("练气背景", "Images/StageBackgrounds/StageBackground01"),
-            new("筑基背景", "Images/StageBackgrounds/StageBackground02"),
-            new("金丹背景", "Images/StageBackgrounds/StageBackground03"),
-            new("元婴背景", "Images/StageBackgrounds/StageBackground04"),
-            new("化神背景", "Images/StageBackgrounds/StageBackground05"),
+            new("练气背景", "Images/StageBackgrounds/01"),
+            new("筑基背景", "Images/StageBackgrounds/02"),
+            new("金丹背景", "Images/StageBackgrounds/03"),
+            new("元婴背景", "Images/StageBackgrounds/04"),
+            new("化神背景", "Images/StageBackgrounds/05"),
+            
+            // 阵法
+            new("未激活阵法背景", "Images/Formation/Backgrounds/Inactive"),
+            new("练气阵法背景", "Images/Formation/Backgrounds/LianQi"),
+            new("筑基阵法背景", "Images/Formation/Backgrounds/ZhuJi"),
+            new("金丹阵法背景", "Images/Formation/Backgrounds/JinDan"),
+            new("元婴阵法背景", "Images/Formation/Backgrounds/YuanYing"),
+            new("化神阵法背景", "Images/Formation/Backgrounds/HuaShen"),
+            
+            new("普通阵法发光", "Images/Formation/Glow/Normal"),
+            new("接近激活阵法发光", "Images/Formation/Glow/NearExcited"),
         });
     }
 

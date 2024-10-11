@@ -19,7 +19,7 @@ public class BattleEntityView : SimpleView
         base.SetAddress(address);
         
         SkillList.SetAddress(GetAddress().Append(".Slots"));
-        FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
+        FormationList.SetAddress(GetAddress().Append(".ActiveFormations"));
     }
 
     public override void Refresh()

@@ -610,6 +610,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 4143773158143428072, guid: a5d2ef2ee47a3854199d5cc0a352e623, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4143773158143428075, guid: a5d2ef2ee47a3854199d5cc0a352e623, type: 3}
       propertyPath: UVModule.sprites.Array.data[0].sprite
       value: 
