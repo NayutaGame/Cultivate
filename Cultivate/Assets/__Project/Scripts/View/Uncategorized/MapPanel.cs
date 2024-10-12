@@ -24,13 +24,13 @@ public class MapPanel : Panel
         CloseZone._onPointerEnter = TryHide;
     }
 
-    protected override void InitStateMachine()
+    protected override void InitAnimator()
     {
-        SM = new(3);
+        Animator = new(3);
         // 0 for hide, 1 for show, 2 for locked
-        SM[-1, 2] = LockTween;
-        SM[-1, 1] = ShowTween;
-        SM[-1, 0] = HideTween;
+        Animator[-1, 2] = LockTween;
+        Animator[-1, 1] = ShowTween;
+        Animator[-1, 0] = HideTween;
     }
 
     public override void Refresh()
@@ -60,8 +60,8 @@ public class MapPanel : Panel
 
     private Tween _animationHandle;
 
-    private void TryShow(PointerEventData eventData) => SetStateAsync(1);
-    private void TryHide(PointerEventData eventData) => SetStateAsync(0);
+    private void TryShow(PointerEventData eventData) => Animator.SetStateAsync(1);
+    private void TryHide(PointerEventData eventData) => Animator.SetStateAsync(0);
 
     public override Tween ShowTween()
         => DOTween.Sequence()

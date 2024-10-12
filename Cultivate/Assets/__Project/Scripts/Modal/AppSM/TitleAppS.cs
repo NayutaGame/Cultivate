@@ -9,9 +9,9 @@ public class TitleAppS : AppS
         await base.Enter(d, config);
         
         AudioManager.Play("BGMTitle");
-        CanvasManager.Instance.Curtain.SetState(1);
+        CanvasManager.Instance.Curtain.Animator.SetState(1);
         await Task.Delay(1000);
-        await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(1);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.Animator.SetStateAsync(1);
     }
 
     public override async Task<Config> CEnter(NavigateDetails d)
@@ -24,7 +24,7 @@ public class TitleAppS : AppS
         if (d.ToState is RunAppS)
         {
             RunConfigForm form = AppManager.Instance.ProfileManager.RunConfigForm;
-            await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(0);
+            await CanvasManager.Instance.AppCanvas.TitlePanel.Animator.SetStateAsync(0);
             return new RunConfig(form);
         }
 
@@ -40,13 +40,13 @@ public class TitleAppS : AppS
 
         AudioManager.Play("BGMTitle");
         
-        await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(1);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.Animator.SetStateAsync(1);
     }
 
     public override async Task<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
-        await CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(0);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.Animator.SetStateAsync(0);
         return new();
     }
 }

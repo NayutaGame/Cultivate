@@ -92,14 +92,14 @@ public class RunCanvas : Panel
         if (oldState.Equals(newState))
         {
             if (PanelSM.GetCurrPanel() != null)
-                await PanelSM.GetCurrPanel().SetStateAsync(1);
+                await PanelSM.GetCurrPanel().Animator.SetStateAsync(1);
             return;
         }
 
         if (PanelSM[oldState] != null)
-            await PanelSM[oldState].SetStateAsync(0);
+            await PanelSM[oldState].Animator.SetStateAsync(0);
         else
-            await SetStateAsync(1);
+            await Animator.SetStateAsync(1);
 
         PanelSM.SetState(newState);
 
@@ -107,19 +107,19 @@ public class RunCanvas : Panel
         {
             PanelSM[newState].Configure();
             PanelSM[newState].Refresh();
-            await PanelSM[newState].SetStateAsync(1);
+            await PanelSM[newState].Animator.SetStateAsync(1);
         }
         else
-            await SetStateAsync(0);
+            await Animator.SetStateAsync(0);
 
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
         if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
         {
-            await DeckPanel.SetStateAsync(2);
+            await DeckPanel.Animator.SetStateAsync(2);
         }
         else
         {
-            await DeckPanel.SetStateAsync(0);
+            await DeckPanel.Animator.SetStateAsync(0);
         }
     }
 
@@ -131,14 +131,14 @@ public class RunCanvas : Panel
         if (oldState.Equals(newState))
         {
             if (PanelSM.GetCurrPanel() != null)
-                PanelSM.GetCurrPanel().SetState(1);
+                PanelSM.GetCurrPanel().Animator.SetState(1);
             return;
         }
 
         if (PanelSM[oldState] != null)
-            PanelSM[oldState].SetState(0);
+            PanelSM[oldState].Animator.SetState(0);
         else
-            SetState(1);
+            Animator.SetState(1);
 
         PanelSM.SetState(newState);
 
@@ -146,19 +146,19 @@ public class RunCanvas : Panel
         {
             PanelSM[newState].Configure();
             PanelSM[newState].Refresh();
-            PanelSM[newState].SetState(1);
+            PanelSM[newState].Animator.SetState(1);
         }
         else
-            SetState(0);
+            Animator.SetState(0);
 
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
         if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
         {
-            DeckPanel.SetState(2);
+            DeckPanel.Animator.SetState(2);
         }
         else
         {
-            DeckPanel.SetState(0);
+            DeckPanel.Animator.SetState(0);
         }
     }
 

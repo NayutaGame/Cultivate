@@ -18,14 +18,14 @@ public class TitlePanel : Panel
     [SerializeField] private RectTransform _layer3RT;
     [SerializeField] private Image _layer3curtain;
 
-    protected override void InitStateMachine()
+    protected override void InitAnimator()
     {
-        SM = new(3);
+        Animator = new(3);
         // 0 for hide, 1 for title, 2 for run config
-        SM[0, 1] = ShowTween;
-        SM[1, 2] = TitleToRunConfigTween;
-        SM[2, 1] = RunConfigToTitleTween;
-        SM[-1, 0] = HideTween;
+        Animator[0, 1] = ShowTween;
+        Animator[1, 2] = TitleToRunConfigTween;
+        Animator[2, 1] = RunConfigToTitleTween;
+        Animator[-1, 0] = HideTween;
     }
 
     public override void Configure()
@@ -45,7 +45,7 @@ public class TitlePanel : Panel
 
     private void StartRun()
     {
-        SetStateAsync(2);
+        Animator.SetStateAsync(2);
         // CanvasManager.Instance.AppCanvas.OpenRunConfigPanel();
     }
 
@@ -95,13 +95,13 @@ public class TitlePanel : Panel
     {
         return DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
-            .Append(CanvasManager.Instance.Curtain.SetStateTween(0));
+            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0));
     }
 
     public override Tween HideTween()
     {
         return DOTween.Sequence().SetAutoKill()
-            .Append(CanvasManager.Instance.Curtain.SetStateTween(1))
+            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(1))
             .Append(RunConfigToTitleTween())
             .AppendCallback(() => gameObject.SetActive(false));
     }

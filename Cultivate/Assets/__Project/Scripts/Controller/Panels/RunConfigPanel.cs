@@ -46,7 +46,7 @@ public class RunConfigPanel : Panel
 
     private void Return()
     {
-        CanvasManager.Instance.AppCanvas.TitlePanel.SetStateAsync(1);
+        CanvasManager.Instance.AppCanvas.TitlePanel.Animator.SetStateAsync(1);
     }
 
     private void StartRun()

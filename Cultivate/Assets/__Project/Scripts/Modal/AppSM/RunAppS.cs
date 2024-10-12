@@ -22,13 +22,13 @@ public class RunAppS : AppS
         runCanvas.Configure();
         runCanvas.SetPanelS(panelS);
         runCanvas.TopBar.Refresh();
-        await CanvasManager.Instance.Curtain.SetStateAsync(0);
+        await CanvasManager.Instance.Curtain.Animator.SetStateAsync(0);
     }
 
     public override async Task<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
-        await CanvasManager.Instance.Curtain.SetStateAsync(1);
+        await CanvasManager.Instance.Curtain.Animator.SetStateAsync(1);
         
         RunEnvironment runEnv = RunManager.Instance.Environment;
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
@@ -48,7 +48,7 @@ public class RunAppS : AppS
         if (d.ToState is MenuAppS)
             return new();
 
-        await CanvasManager.Instance.Curtain.SetStateAsync(1);
+        await CanvasManager.Instance.Curtain.Animator.SetStateAsync(1);
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
         return new();
     }
@@ -62,6 +62,6 @@ public class RunAppS : AppS
 
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         CanvasManager.Instance.RunCanvas.Refresh();
-        await CanvasManager.Instance.Curtain.SetStateAsync(0);
+        await CanvasManager.Instance.Curtain.Animator.SetStateAsync(0);
     }
 }

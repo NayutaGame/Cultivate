@@ -16,15 +16,15 @@ public class MenuAppS : AppS
             CanvasManager.Instance.AppCanvas.SettingsPanel.ShowExitButtons();
         }
 
-        CanvasManager.Instance.AppCanvas.SettingsPanel.SetState(0);
-        await CanvasManager.Instance.AppCanvas.SettingsPanel.SetStateAsync(1);
+        CanvasManager.Instance.AppCanvas.SettingsPanel.Animator.SetState(0);
+        await CanvasManager.Instance.AppCanvas.SettingsPanel.Animator.SetStateAsync(1);
     }
 
     public override async Task<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
 
-        await CanvasManager.Instance.AppCanvas.SettingsPanel.SetStateAsync(0);
+        await CanvasManager.Instance.AppCanvas.SettingsPanel.Animator.SetStateAsync(0);
         return new();
     }
 }

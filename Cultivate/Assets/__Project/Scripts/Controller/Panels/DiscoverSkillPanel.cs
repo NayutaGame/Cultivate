@@ -26,14 +26,14 @@ public class DiscoverSkillPanel : Panel
         SkillViews.LeftClickNeuron.Join(PickSkill);
     }
 
-    protected override void InitStateMachine()
+    protected override void InitAnimator()
     {
-        SM = new(2);
+        Animator = new(2);
         // 0 for hide, 1 for show
-        SM[0, 1] = ShowTween;
-        SM[-1, 0] = HideTween;
+        Animator[0, 1] = ShowTween;
+        Animator[-1, 0] = HideTween;
         
-        SetState(0);
+        Animator.SetState(0);
     }
 
     public override void Refresh()
