@@ -5,7 +5,7 @@ public class SimpleView : CLView
 {
     public override SimpleView GetSimpleView() => this;
 
-    private RectTransform RectTransform;
+    protected RectTransform RectTransform;
     public override RectTransform GetDisplayTransform() => RectTransform;
     public override void SetDisplayTransform(RectTransform pivot)
     {

@@ -40,7 +40,8 @@ public class Animator : StateMachine<int>
     public override void SetState(int state)
     {
         _handle?.Kill();
-        SetStateTween(state).SetAutoKill().Complete(true);
+        _handle = SetStateTween(state).SetAutoKill();
+        _handle.Complete(true);
     }
 
     public async Task SetStateAsync(int state)

@@ -43,15 +43,16 @@ public class DialogPanel : Panel
         Buttons[3].onClick.AddListener(SelectOption3);
     }
 
-    protected override void InitAnimator()
+    protected override Animator InitAnimator()
     {
-        Animator = new(2);
         // 0 for hide, 1 for show
-        Animator[0, 1] = ShowTween;
-        Animator[1, 1] = SelfTransitionTween;
-        Animator[-1, 0] = HideTween;
+        Animator animator = new(2);
+        animator[0, 1] = ShowTween;
+        animator[1, 1] = SelfTransitionTween;
+        animator[-1, 0] = HideTween;
         
-        Animator.SetState(0);
+        animator.SetState(0);
+        return animator;
     }
 
     public override void Refresh()

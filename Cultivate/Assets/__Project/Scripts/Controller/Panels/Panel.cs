@@ -12,16 +12,16 @@ public abstract class Panel : MonoBehaviour
     public virtual void Configure()
     {
         RectTransform ??= GetComponent<RectTransform>();
-        if (Animator == null)
-            InitAnimator();
+        Animator ??= InitAnimator();
     }
 
-    protected virtual void InitAnimator()
+    protected virtual Animator InitAnimator()
     {
-        Animator = new(2);
         // 0 for hide, 1 for show
-        Animator[0, 1] = ShowTween;
-        Animator[-1, 0] = HideTween;
+        Animator animator = new(2);
+        animator[0, 1] = ShowTween;
+        animator[-1, 0] = HideTween;
+        return animator;
     }
 
     public virtual void Refresh() { }

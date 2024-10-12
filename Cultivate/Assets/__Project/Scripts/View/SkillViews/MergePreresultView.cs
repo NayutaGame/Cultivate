@@ -1,4 +1,5 @@
 
+using System.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -38,33 +39,46 @@ public class MergePreresultView : SimpleView
         //     _outlineMaterial = EffectImage.materialForRendering;
         // }
 
-        if (_animator == null)
-        {
-            InitAnimator();
-        }
+        _animator ??= InitAnimator();
     }
 
-    private void InitAnimator()
+    private Animator InitAnimator()
     {
-        _animator = new(3);
         // 0 for hide, 1 for show, 2 for success merge
-        _animator[0, 1] = ShowTween;
-        _animator[-1, 0] = HideTween;
+        Animator animator = new(3);
+        animator[0, 1] = ShowTween;
+        animator[-1, 0] = HideTween;
+        animator[-1, 2] = SuccessTween;
+        return animator;
+    }
+    
+    public MergePreresult GetMergePreresult() => _mergePreresult;
+    public async Task SetMergePreresultAsync(int state, MergePreresult mergePreresult)
+    {
+        _mergePreresult = mergePreresult;
+
+        switch (state)
+        {
+            case 0:
+                _animator.SetStateAsync(0);
+                return;
+                break;
+            case 1:
+                _animator.SetStateAsync(1);
+                break;
+            case 2:
+                await _animator.SetStateAsync(2);
+                _animator.SetStateAsync(0);
+                return;
+                break;
+        }
+        
+        Refresh();
     }
     
     public override void Refresh()
     {
         base.Refresh();
-
-        if (_mergePreresult == null)
-        {
-            if (_animator.State == 1)
-                _animator.SetStateAsync(0);
-            return;
-        }
-        
-        if (_animator.State == 0)
-            _animator.SetStateAsync(1);
         
         SetSpriteFromMergePreresult();
         SetCostDescriptionFromMergePreresult();
@@ -79,19 +93,25 @@ public class MergePreresultView : SimpleView
     public Tween ShowTween()
         => DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
-            .Append(CanvasGroup.DOFade(1, 0.3f));
+            .Append(CanvasGroup.DOFade(1, 0.3f))
+            .Join(DOTween.Sequence()
+                .Append(RectTransform.DOScale(1f, 0.3f)))
+                .Append(RectTransform.DOScale(0.9f, 1f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo));
 
     public Tween HideTween()
         => DOTween.Sequence()
-            .Append(CanvasGroup.DOFade(0, 0.15f))
+            .Append(CanvasGroup.DOFade(0, 0.3f))
+            .Join(RectTransform.DOScale(0.6f, 0.3f))
             .AppendCallback(() => gameObject.SetActive(false));
-    
-    public MergePreresult GetMergePreresult() => _mergePreresult;
-    public void SetMergePreresult(MergePreresult mergePreresult)
-    {
-        _mergePreresult = mergePreresult;
-        Refresh();
-    }
+
+    public Tween SuccessTween()
+        => DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(CanvasGroup.DOFade(1, 0.15f))
+            .Join(RectTransform.DOScale(1f, 0.15f).SetEase(Ease.InQuad))
+            // .AppendInterval(0.1f)
+            .Append(RectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.InQuad).SetLoops(2, LoopType.Yoyo))
+            .AppendInterval(0.1f);
     
     // public void SetHighlight(bool highlight)
     // {

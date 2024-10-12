@@ -18,14 +18,15 @@ public class TitlePanel : Panel
     [SerializeField] private RectTransform _layer3RT;
     [SerializeField] private Image _layer3curtain;
 
-    protected override void InitAnimator()
+    protected override Animator InitAnimator()
     {
-        Animator = new(3);
         // 0 for hide, 1 for title, 2 for run config
-        Animator[0, 1] = ShowTween;
-        Animator[1, 2] = TitleToRunConfigTween;
-        Animator[2, 1] = RunConfigToTitleTween;
-        Animator[-1, 0] = HideTween;
+        Animator animator = new(3);
+        animator[0, 1] = ShowTween;
+        animator[1, 2] = TitleToRunConfigTween;
+        animator[2, 1] = RunConfigToTitleTween;
+        animator[-1, 0] = HideTween;
+        return animator;
     }
 
     public override void Configure()

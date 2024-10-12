@@ -5,6 +5,7 @@ public class ExtraBehaviourGhost : ExtraBehaviour
 {
     public string GhostAddress;
     private GhostView Ghost;
+    // private Animator _animator;
 
     public override void Init(CLView clView)
     {
@@ -13,7 +14,17 @@ public class ExtraBehaviourGhost : ExtraBehaviour
         Ghost = new Address(GhostAddress).Get<GhostView>();
 
         InitInteractBehaviour();
+        // _animator ??= InitAnimator();
     }
+
+    // private Animator InitAnimator()
+    // {
+    //     // 0 for hide, 1 for show
+    //     Animator animator = new(2);
+    //     animator[-1, 1] = () => TweenAnimation.TweenFromAction(Hide);
+    //     animator[-1, 0] = HideTween;
+    //     return animator;
+    // }
 
     private void InitInteractBehaviour()
     {

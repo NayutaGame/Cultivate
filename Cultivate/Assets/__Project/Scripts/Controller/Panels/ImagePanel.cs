@@ -18,15 +18,16 @@ public class ImagePanel : Panel
         ImageButton.onClick.AddListener(ClickedSignal);
     }
 
-    protected override void InitAnimator()
+    protected override Animator InitAnimator()
     {
-        Animator = new(2);
         // 0 for hide, 1 for show
-        Animator[0, 1] = ShowTween;
-        Animator[1, 1] = RefreshTween;
-        Animator[-1, 0] = HideTween;
+        Animator animator = new(2);
+        animator[0, 1] = ShowTween;
+        animator[1, 1] = RefreshTween;
+        animator[-1, 0] = HideTween;
         
-        Animator.SetState(0);
+        animator.SetState(0);
+        return animator;
     }
 
     private Tween RefreshTween()

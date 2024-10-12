@@ -24,13 +24,14 @@ public class MapPanel : Panel
         CloseZone._onPointerEnter = TryHide;
     }
 
-    protected override void InitAnimator()
+    protected override Animator InitAnimator()
     {
-        Animator = new(3);
         // 0 for hide, 1 for show, 2 for locked
-        Animator[-1, 2] = LockTween;
-        Animator[-1, 1] = ShowTween;
-        Animator[-1, 0] = HideTween;
+        Animator animator = new(3);
+        animator[-1, 2] = LockTween;
+        animator[-1, 1] = ShowTween;
+        animator[-1, 0] = HideTween;
+        return animator;
     }
 
     public override void Refresh()

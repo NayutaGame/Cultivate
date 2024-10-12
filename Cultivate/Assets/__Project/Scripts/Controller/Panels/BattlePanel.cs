@@ -82,6 +82,8 @@ public class BattlePanel : Panel
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.BeginDragNeuron.Join(ReactionFromBeginDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.EndDragNeuron.Join(ReactionFromEndDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.DragNeuron.Join(ReactionFromDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.MergeSuccessNeuron.Join(ReactionFromDrop);
+        CanvasManager.Instance.RunCanvas.DeckPanel.MergeFailureNeuron.Join(ReactionFromDrop);
     }
 
     private void OnDisable()
@@ -93,6 +95,8 @@ public class BattlePanel : Panel
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.BeginDragNeuron.Remove(ReactionFromBeginDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.EndDragNeuron.Remove(ReactionFromEndDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.DragNeuron.Remove(ReactionFromDrag);
+        CanvasManager.Instance.RunCanvas.DeckPanel.MergeSuccessNeuron.Remove(ReactionFromDrop);
+        CanvasManager.Instance.RunCanvas.DeckPanel.MergeFailureNeuron.Remove(ReactionFromDrop);
     }
 
     private void ReactionFromBeginDrag(InteractBehaviour ib, PointerEventData d)

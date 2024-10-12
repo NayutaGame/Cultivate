@@ -59,6 +59,9 @@ public class DeckPanel : Panel
 
         SortButton.onClick.RemoveAllListeners();
         SortButton.onClick.AddListener(Sort);
+        
+        MergeSuccessNeuron.Join(MergeSuccess);
+        MergeFailureNeuron.Join(MergeFailure);
     }
 
     private void DraggingEnter(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
@@ -69,21 +72,22 @@ public class DeckPanel : Panel
         RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
         RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
 
-        CanvasManager.Instance.MergePreresultView.SetMergePreresult(env.GetMergePreresult(lhs, rhs));
+        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(1, env.GetMergePreresult(lhs, rhs));
     }
 
     private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        CanvasManager.Instance.MergePreresultView.SetMergePreresult(null);
+        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }
 
-    protected override void InitAnimator()
+    protected override Animator InitAnimator()
     {
-        Animator = new(3);
         // 0 for hide, 1 for show, 2 for locked
-        Animator[-1, 2] = LockTween;
-        Animator[-1, 1] = ShowTween;
-        Animator[-1, 0] = HideTween;
+        Animator animator = new(3);
+        animator[-1, 2] = LockTween;
+        animator[-1, 1] = ShowTween;
+        animator[-1, 0] = HideTween;
+        return animator;
     }
 
     public override void Refresh()
@@ -170,6 +174,9 @@ public class DeckPanel : Panel
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
+    
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> MergeSuccessNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> MergeFailureNeuron = new();
 
     private void Merge(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
@@ -181,21 +188,27 @@ public class DeckPanel : Panel
         bool success = env.MergeProcedure(lhs, rhs);
         if (!success)
         {
-            // merge fail staging
-            CanvasManager.Instance.MergePreresultView.SetMergePreresult(null);
+            MergeFailureNeuron.Invoke(from, to, d);
             return;
         }
         
-        CanvasManager.Instance.MergePreresultView.SetMergePreresult(null);
+        MergeSuccessNeuron.Invoke(from, to, d);
+    }
+
+    private void MergeSuccess(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(2, null);
+        
+        RunEnvironment env = RunManager.Instance.Environment;
         env.ReceiveSignalProcedure(new FieldChangedSignal());
         
-        MergeStaging(from, to, d);
+        MergeSuccessStaging(from, to, d);
 
         CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private void MergeStaging(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void MergeSuccessStaging(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
         // From: 本体被移除
         
@@ -209,6 +222,11 @@ public class DeckPanel : Panel
             extraBehaviourPivot.SetPathAnimated(ghost.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
 
         AudioManager.Play("CardUpgrade");
+    }
+
+    private void MergeFailure(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }
 
     private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData d)

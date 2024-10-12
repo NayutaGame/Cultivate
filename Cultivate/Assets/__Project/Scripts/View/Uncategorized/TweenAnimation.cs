@@ -1,9 +1,10 @@
 
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class TweenAnimation
+public static class TweenAnimation
 {
     public static Tween Show(RectTransform target, Vector2 idlePosition)
     {
