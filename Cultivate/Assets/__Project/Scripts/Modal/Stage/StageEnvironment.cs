@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 
@@ -12,9 +12,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
     #region Procedures
 
-    // public async Task SimpleProcedure(Args args)
+    // public async UniTask SimpleProcedure(Args args)
     //     => await SimpleProcedure(new SimpleDetails(args));
-    // public async Task SimpleProcedure(SimpleDetails d)
+    // public async UniTask SimpleProcedure(SimpleDetails d)
     // {
     //     await _eventDict.SendEvent(StageEventDict.WIL_SIMPLE, d);
     //     if (d.Cancel)
@@ -25,7 +25,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
     //     await _eventDict.SendEvent(StageEventDict.DID_SIMPLE, d);
     // }
 
-    public async Task CoreProcedure()
+    public async UniTask CoreProcedure()
     {
         StageClosure[] closures = new StageClosure[]
         {
@@ -62,7 +62,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         UnregisterConfig();
     }
 
-    private async Task GainFormationProcedure()
+    private async UniTask GainFormationProcedure()
     {
         List<GainFormationDetails> details = new();
 
@@ -77,7 +77,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await GainFormationProcedure(d);
     }
 
-    private async Task GainFormationProcedure(GainFormationDetails d)
+    private async UniTask GainFormationProcedure(GainFormationDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_FORMATION, d);
         if (d.Cancel) return;
@@ -91,7 +91,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_FORMATION, d);
     }
 
-    private async Task<Formation> GainFormation(GainFormationDetails d)
+    private async UniTask<Formation> GainFormation(GainFormationDetails d)
     {
         Formation formation = new Formation(d.Owner, d._formation);
         formation.Register();
@@ -99,13 +99,13 @@ public class StageEnvironment : Addressable, StageClosureOwner
         return formation;
     }
 
-    private async Task LoseFormation(StageEntity owner, Formation formation)
+    private async UniTask LoseFormation(StageEntity owner, Formation formation)
     {
         formation.Unregister();
         owner.RemoveFormation(formation);
     }
 
-    public async Task GainBuffProcedure(GainBuffDetails d)
+    public async UniTask GainBuffProcedure(GainBuffDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_BUFF, d);
 
@@ -150,7 +150,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_BUFF, d);
     }
 
-    private async Task GainBuffStaging(GainBuffDetails d, Buff buff)
+    private async UniTask GainBuffStaging(GainBuffDetails d, Buff buff)
     {
         if (d.Src == d.Tgt)
         {
@@ -168,7 +168,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         buff.PlayPingAnimation();
     }
 
-    public async Task LoseBuffProcedure(LoseBuffDetails d)
+    public async UniTask LoseBuffProcedure(LoseBuffDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_LOSE_BUFF, d);
 
@@ -183,7 +183,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_BUFF, d);
     }
 
-    private async Task<Buff> GainBuff(GainBuffDetails d)
+    private async UniTask<Buff> GainBuff(GainBuffDetails d)
     { 
         Buff buff = new Buff(d.Tgt, d._buffEntry);
         buff.Register();
@@ -192,13 +192,13 @@ public class StageEnvironment : Addressable, StageClosureOwner
         return buff;
     }
 
-    private async Task LoseBuff(StageEntity owner, Buff buff)
+    private async UniTask LoseBuff(StageEntity owner, Buff buff)
     {
         buff.Unregister();
         owner.RemoveBuff(buff);
     }
 
-    private async Task ChangeStack(Buff buff, int stack)
+    private async UniTask ChangeStack(Buff buff, int stack)
     {
         buff.SetStack(stack);
         if (stack <= 0)
@@ -207,7 +207,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
             buff.StackChangedNeuron.Invoke();
     }
 
-    public async Task AttackProcedure(AttackDetails attackDetails)
+    public async UniTask AttackProcedure(AttackDetails attackDetails)
     {
         RegisterAttackClosure(attackDetails);
 
@@ -228,7 +228,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         UnregisterAttackClosure(attackDetails);
     }
 
-    private async Task FullAttackStaging(AttackDetails attackDetails)
+    private async UniTask FullAttackStaging(AttackDetails attackDetails)
     {
         int armor = attackDetails.Tgt.Armor;
         
@@ -244,7 +244,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await PlayAsync(attackDetails.Src.Slot().Model.GetAnimationFromAttack(attackDetails.Induced));
     }
 
-    private async Task SingleAttackProcedure(AttackDetails d)
+    private async UniTask SingleAttackProcedure(AttackDetails d)
     {
         await PlayAsync(new PiercingVFXAnimation(false, d));
 
@@ -286,7 +286,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         _result.TryAppend($"    敌方气血[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
     }
 
-    private async Task EvadedProcedure(EvadedDetails d)
+    private async UniTask EvadedProcedure(EvadedDetails d)
     {
         await PlayAsync(d.Tgt.Slot().Model.GetAnimationFromEvaded(d.Induced));
         _result.TryAppend($"    攻击被闪避");
@@ -294,18 +294,18 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_EVADE, d);
     }
 
-    private async Task GuardedProcedure(GuardedDetails d)
+    private async UniTask GuardedProcedure(GuardedDetails d)
     {
         await PlayAsync(new GuardedVFXAnimation(false, d));
         await PlayAsync(new GuardedTextAnimation(false, d));
         _result.TryAppend($"    攻击被格挡");
     }
 
-    public async Task IndirectProcedure(StageEntity src, StageEntity tgt, int value, StageSkill srcSkill,
+    public async UniTask IndirectProcedure(StageEntity src, StageEntity tgt, int value, StageSkill srcSkill,
         CastResult castResult, WuXing? wuXing = null, bool recursive = true, bool induced = false)
         => await IndirectProcedure(new IndirectDetails(src, tgt, value, srcSkill, wuXing, recursive, castResult, induced));
 
-    public async Task IndirectProcedure(IndirectDetails indirectDetails)
+    public async UniTask IndirectProcedure(IndirectDetails indirectDetails)
     {
         IndirectDetails d = indirectDetails.Clone();
 
@@ -345,7 +345,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_INDIRECT, d);
     }
 
-    public async Task DamageProcedure(DamageDetails d)
+    public async UniTask DamageProcedure(DamageDetails d)
     {
         if (d.Crit)
             d.Value *= 2;
@@ -369,10 +369,10 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await HealProcedure(d.Src, d.Src, d.Value, false, true);
     }
 
-    public async Task LoseHealthProcedure(StageEntity owner, int value, bool induced)
+    public async UniTask LoseHealthProcedure(StageEntity owner, int value, bool induced)
         => await LoseHealthProcedure(new LoseHealthDetails(owner, value, induced));
 
-    public async Task LoseHealthProcedure(LoseHealthDetails d)
+    public async UniTask LoseHealthProcedure(LoseHealthDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_LOSE_HEALTH, d);
         if (d.Cancel)
@@ -383,10 +383,10 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_HEALTH, d);
     }
 
-    public async Task HealProcedure(StageEntity src, StageEntity tgt, int value, bool penetrate, bool induced)
+    public async UniTask HealProcedure(StageEntity src, StageEntity tgt, int value, bool penetrate, bool induced)
         => await HealProcedure(new HealDetails(src, tgt, value, penetrate, induced));
 
-    public async Task HealProcedure(HealDetails d)
+    public async UniTask HealProcedure(HealDetails d)
     {
         StageEntity src = d.Src;
         StageEntity tgt = d.Tgt;
@@ -417,7 +417,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_HEAL, d);
     }
 
-    public async Task GainArmorProcedure(GainArmorDetails d)
+    public async UniTask GainArmorProcedure(GainArmorDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_ARMOR, d);
 
@@ -434,7 +434,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_ARMOR, d);
     }
 
-    public async Task LoseArmorProcedure(LoseArmorDetails d)
+    public async UniTask LoseArmorProcedure(LoseArmorDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_LOSE_ARMOR, d);
 
@@ -451,7 +451,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_ARMOR, d);
     }
 
-    public async Task ManaShortageProcedure(ManaCostResult d)
+    public async UniTask ManaShortageProcedure(ManaCostResult d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_MANA_SHORTAGE, d);
 
@@ -461,7 +461,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_MANA_SHORTAGE, d);
     }
 
-    public async Task ArmorShortageProcedure(ArmorCostResult d)
+    public async UniTask ArmorShortageProcedure(ArmorCostResult d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_ARMOR_SHORTAGE, d);
 
@@ -471,10 +471,10 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_ARMOR_SHORTAGE, d);
     }
 
-    public async Task ExhaustProcedure(StageEntity owner, StageSkill skill)
+    public async UniTask ExhaustProcedure(StageEntity owner, StageSkill skill)
         => await ExhaustProcedure(new ExhaustDetails(owner, skill));
 
-    public async Task ExhaustProcedure(ExhaustDetails d)
+    public async UniTask ExhaustProcedure(ExhaustDetails d)
     {
         if (d.Skill.Exhausted)
             return;
@@ -486,7 +486,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_EXHAUST, d);
     }
     
-    public async Task CycleProcedure(CycleDetails d)
+    public async UniTask CycleProcedure(CycleDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_CYCLE, d);
 
@@ -508,7 +508,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_CYCLE, d);
     }
     
-    public async Task DispelProcedure(DispelDetails d)
+    public async UniTask DispelProcedure(DispelDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_DISPEL, d);
 
@@ -523,13 +523,13 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_DISPEL, d);
     }
 
-    private async Task MingYuanPenaltyProcedure()
+    private async UniTask MingYuanPenaltyProcedure()
     {
         await _entities[0].MingYuan.MingYuanPenaltyProcedure(_entities[0]);
         await _entities[1].MingYuan.MingYuanPenaltyProcedure(_entities[1]);
     }
 
-    private async Task StartStageProcedure()
+    private async UniTask StartStageProcedure()
     {
         foreach (var e in _entities)
             await _closureDict.SendEvent(StageClosureDict.WIL_STAGE, new StageDetails(e));
@@ -538,7 +538,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await e.StartStageExecuteProcedure();
     }
 
-    private async Task BodyProcedure()
+    private async UniTask BodyProcedure()
     {
         int whosTurn = 0;
         for (int turnCount = 0; turnCount < MAX_TURN_COUNT; turnCount++)
@@ -563,7 +563,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         }
     }
 
-    private async Task EndStageProcedure()
+    private async UniTask EndStageProcedure()
     {
         await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(_entities[1]));
         await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(_entities[0]));
@@ -650,7 +650,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         StageManager.Instance.StageAnimationController.Play(animation);
     }
 
-    public async Task PlayAsync(Animation animation)
+    public async UniTask PlayAsync(Animation animation)
     {
         if (!_config.Animated)
             return;
@@ -661,7 +661,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await StageManager.Instance.StageAnimationController.Play(animation);
     }
 
-    public async Task NextKey(bool induced)
+    public async UniTask NextKey(bool induced)
     {
         if (!_config.Animated)
             return;
@@ -678,13 +678,13 @@ public class StageEnvironment : Addressable, StageClosureOwner
         _config.Home.DepleteProcedure();
     }
 
-    private async Task WriteShortage(StageClosureOwner listener, ClosureDetails stageClosureDetails)
+    private async UniTask WriteShortage(StageClosureOwner listener, ClosureDetails stageClosureDetails)
     {
         CostResult d = (CostResult)stageClosureDetails;
         d.State = CostResult.CostState.Shortage;
     }
 
-    private async Task WriteCost(StageClosureOwner listener, ClosureDetails stageClosureDetails)
+    private async UniTask WriteCost(StageClosureOwner listener, ClosureDetails stageClosureDetails)
     {
         CostResult d = (CostResult)stageClosureDetails;
         if (d.State == CostResult.CostState.Shortage)

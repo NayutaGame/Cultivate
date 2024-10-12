@@ -1,6 +1,6 @@
 
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [Serializable]
@@ -22,8 +22,8 @@ public class SkillEntry : Entry, IAnnotation, ISkill
     public StageClosure[] Closures;
     
 
-    private Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> _cost;
-    public async Task<CostResult> Cost(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
+    private Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> _cost;
+    public async UniTask<CostResult> Cost(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
     {
         CostResult result = await _cost(env, caster, skill, recursive);
         result.Env = env;
@@ -36,15 +36,15 @@ public class SkillEntry : Entry, IAnnotation, ISkill
     public CostDescription GetCostDescription(JingJie showingJingJie, CostResult costResult)
         => _costDescription(showingJingJie, showingJingJie - LowestJingJie, costResult);
     
-    private Func<CastDetails, Task> _cast;
-    public async Task Cast(CastDetails d)
+    private Func<CastDetails, UniTask> _cast;
+    public async UniTask Cast(CastDetails d)
         => await _cast(d);
-    private async Task DefaultCast(CastDetails d) { }
+    private async UniTask DefaultCast(CastDetails d) { }
 
-    private Func<StartStageCastDetails, Task> _startStageCast;
-    public async Task StartStageCast(StartStageCastDetails d)
+    private Func<StartStageCastDetails, UniTask> _startStageCast;
+    public async UniTask StartStageCast(StartStageCastDetails d)
         => await _startStageCast(d);
-    private async Task DefaultStartStageCast(StartStageCastDetails d) { }
+    private async UniTask DefaultStartStageCast(StartStageCastDetails d) { }
 
     public bool HasStartStageCast() => _startStageCast != DefaultStartStageCast;
 
@@ -78,12 +78,12 @@ public class SkillEntry : Entry, IAnnotation, ISkill
         
         StageClosure[] closures = null,
         
-        Func<StageEnvironment, StageEntity, StageSkill, bool, Task<CostResult>> cost = null,
+        Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> cost = null,
         Func<JingJie, int, CostResult, CostDescription> costDescription = null,
-        Func<CastDetails, Task> cast = null,
+        Func<CastDetails, UniTask> cast = null,
         Func<JingJie, int, CostResult, CastResult, string> castDescription = null,
         
-        Func<StartStageCastDetails, Task> startStageCast = null,
+        Func<StartStageCastDetails, UniTask> startStageCast = null,
         
         string trivia = null,
         bool withinPool = true

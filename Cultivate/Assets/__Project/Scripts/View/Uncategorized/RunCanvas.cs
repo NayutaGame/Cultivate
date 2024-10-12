@@ -1,9 +1,8 @@
 
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RunCanvas : Panel
@@ -84,7 +83,7 @@ public class RunCanvas : Panel
         ConsolePanel.Refresh();
     }
 
-    public async Task SetPanelSAsync(PanelS panelS)
+    public async UniTask SetPanelSAsync(PanelS panelS)
     {
         PanelS oldState = PanelSM.State;
         PanelS newState = panelS;

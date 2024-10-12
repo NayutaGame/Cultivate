@@ -1,5 +1,5 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class ManaCostResult : CostResult
 {
@@ -10,12 +10,12 @@ public class ManaCostResult : CostResult
     public override CostDescription.CostType ToType()
         => CostDescription.CostType.Mana;
     
-    public override async Task WillCostEvent()
+    public override async UniTask WillCostEvent()
     {
         await Env.ClosureDict.SendEvent(StageClosureDict.WIL_MANA_COST, this);
     }
 
-    public override async Task ApplyCost()
+    public override async UniTask ApplyCost()
     {
         bool manaSufficient = Entity.GetStackOfBuff("灵气") >= Value;
         if (manaSufficient)
@@ -31,7 +31,7 @@ public class ManaCostResult : CostResult
         Blocking = !manaSufficient;
     }
 
-    public override async Task DidCostEvent()
+    public override async UniTask DidCostEvent()
     {
         await Env.ClosureDict.SendEvent(StageClosureDict.DID_MANA_COST, this);
     }

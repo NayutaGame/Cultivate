@@ -1,7 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using CLLibrary;
 
 public class StageClosureDict : Dictionary<int, StageClosureList>
@@ -94,7 +94,7 @@ public class StageClosureDict : Dictionary<int, StageClosureList>
         this[eventId].Remove(owner);
     }
 
-    public async Task SendEvent(int eventId, ClosureDetails closureDetails)
+    public async UniTask SendEvent(int eventId, ClosureDetails closureDetails)
     {
         if (!ContainsKey(eventId))
             return;

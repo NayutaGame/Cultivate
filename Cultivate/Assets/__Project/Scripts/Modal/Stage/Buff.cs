@@ -1,5 +1,5 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using CLLibrary;
 
 public class Buff : StageClosureOwner
@@ -49,9 +49,9 @@ public class Buff : StageClosureOwner
             _owner.Env.ClosureDict.Unregister(this, closure);
     }
 
-    public async Task GainStackProcedure(int stack)
+    public async UniTask GainStackProcedure(int stack)
         => await _owner.Env.GainBuffProcedure(new(_owner, _owner, GetEntry(), stack, true, true));
 
-    public async Task LoseStackProcedure(int stack = 1)
+    public async UniTask LoseStackProcedure(int stack = 1)
         => await _owner.Env.LoseBuffProcedure(new(_owner, _owner, GetEntry(), stack, true, true));
 }

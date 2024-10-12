@@ -1,6 +1,6 @@
 
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Spine.Unity;
 
@@ -27,7 +27,7 @@ public class SpineHandle : AnimationHandle
         _playFunc();
     }
 
-    public override async Task NextKey(float speed)
+    public override async UniTask NextKey(float speed)
     {
         if (!_animation.IsAwait)
             return;

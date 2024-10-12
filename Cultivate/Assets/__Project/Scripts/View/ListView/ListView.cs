@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -191,14 +191,14 @@ public class ListView : SimpleView
         }
     }
 
-    private event Func<int, object, Task> InsertGate;
-    private async Task InvokeInsertGate(int index, object item) { if (InsertGate != null) await InsertGate(index, item); }
-    private event Func<int, Task> RemoveAtGate;
-    private async Task InvokeRemoveAtGate(int index) { if (RemoveAtGate != null) await RemoveAtGate(index); }
-    private event Func<int, Task> ModifiedGate;
-    private async Task InvokeModifiedGate(int index) { if (ModifiedGate != null) await ModifiedGate(index); }
-    private event Func<Task> ResyncGate;
-    private async Task InvokeResyncGate() { if (ResyncGate != null) await ResyncGate(); }
+    private event Func<int, object, UniTask> InsertGate;
+    private async UniTask InvokeInsertGate(int index, object item) { if (InsertGate != null) await InsertGate(index, item); }
+    private event Func<int, UniTask> RemoveAtGate;
+    private async UniTask InvokeRemoveAtGate(int index) { if (RemoveAtGate != null) await RemoveAtGate(index); }
+    private event Func<int, UniTask> ModifiedGate;
+    private async UniTask InvokeModifiedGate(int index) { if (ModifiedGate != null) await ModifiedGate(index); }
+    private event Func<UniTask> ResyncGate;
+    private async UniTask InvokeResyncGate() { if (ResyncGate != null) await ResyncGate(); }
 
     private void OnEnable()
     {
@@ -215,24 +215,24 @@ public class ListView : SimpleView
         ResyncGate -= Resync;
     }
 
-    protected virtual async Task InsertItem(int index, object item)
+    protected virtual async UniTask InsertItem(int index, object item)
     {
         int prefabIndex = GetPrefabIndex(item);
         int orderInPool = FetchItemBehaviour(prefabIndex);
         EnableItemBehaviour(prefabIndex, orderInPool, index);
     }
 
-    protected virtual async Task RemoveAt(int index)
+    protected virtual async UniTask RemoveAt(int index)
     {
         DisableItemBehaviour(index);
     }
 
-    protected virtual async Task Modified(int index)
+    protected virtual async UniTask Modified(int index)
     {
         _activePool[index].GetSimpleView().Refresh();
     }
 
-    protected virtual async Task Resync()
+    protected virtual async UniTask Resync()
         => Sync();
 
     #endregion

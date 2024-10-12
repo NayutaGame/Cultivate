@@ -1,8 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace CLLibrary
 {
@@ -126,7 +125,7 @@ namespace CLLibrary
             foreach (T e in enumerable) func(e);
         }
 
-        public static async Task Do<T>(this IEnumerable<T> enumerable, Func<T, Task> func)
+        public static async UniTask Do<T>(this IEnumerable<T> enumerable, Func<T, UniTask> func)
         {
             foreach (T e in enumerable) await func(e);
         }

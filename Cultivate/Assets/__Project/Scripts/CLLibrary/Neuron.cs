@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace CLLibrary
 {
@@ -40,13 +40,13 @@ namespace CLLibrary
     
     public class AsyncNeuron
     {
-        private Func<Task> Action;
+        private Func<UniTask> Action;
 
         public void ClearAction() => Action = null;
 
-        public void Add(Func<Task> action) => Action += action;
-        public void Remove(Func<Task> action) => Action -= action;
-        public void Join(params Func<Task>[] actions)
+        public void Add(Func<UniTask> action) => Action += action;
+        public void Remove(Func<UniTask> action) => Action -= action;
+        public void Join(params Func<UniTask>[] actions)
             => actions.FilterObj(action => Action == null || !Action.GetInvocationList().Contains(action)).Do(action => Action += action);
 
         private List<AsyncNeuron> _neurons;
@@ -58,7 +58,7 @@ namespace CLLibrary
         public void Join(params AsyncNeuron[] neurons)
             => neurons.FilterObj(n => !_neurons.Contains(n)).Do(_neurons.Add);
 
-        public async Task Invoke()
+        public async UniTask Invoke()
         {
             if (Action != null)
                 await Action.Invoke();

@@ -1,10 +1,10 @@
 
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class StageKernel
 {
-    private async Task<int> DefaultCommitProcedure(StageEnvironment env, int turn, int whosTurn, bool forced)
+    private async UniTask<int> DefaultCommitProcedure(StageEnvironment env, int turn, int whosTurn, bool forced)
     {
         CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
         
@@ -47,12 +47,12 @@ public class StageKernel
         return d.Flag;
     }
 
-    private Func<StageEnvironment, int, int, bool, Task<int>> _commitProcedure;
+    private Func<StageEnvironment, int, int, bool, UniTask<int>> _commitProcedure;
 
-    public async Task<int> CommitProcedure(StageEnvironment env, int turn, int whosTurn, bool forced)
+    public async UniTask<int> CommitProcedure(StageEnvironment env, int turn, int whosTurn, bool forced)
         => await _commitProcedure(env, turn, whosTurn, forced);
     
-    public StageKernel(Func<StageEnvironment, int, int, bool, Task<int>> commitProcedure = null)
+    public StageKernel(Func<StageEnvironment, int, int, bool, UniTask<int>> commitProcedure = null)
     {
         _commitProcedure = commitProcedure ?? DefaultCommitProcedure;
     }

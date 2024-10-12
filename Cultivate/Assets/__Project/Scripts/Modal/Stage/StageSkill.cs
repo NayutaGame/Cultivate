@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class StageSkill : StageClosureOwner
 {
@@ -29,7 +29,7 @@ public class StageSkill : StageClosureOwner
 
     private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
-    public async Task<bool> TryUpgradeJingJie()
+    public async UniTask<bool> TryUpgradeJingJie()
     {
         if (_jingJie >= _entry.HighestJingJie)
             return false;
@@ -43,7 +43,7 @@ public class StageSkill : StageClosureOwner
         get => _exhausted;
         set => _exhausted = value;
     }
-    public async Task ExhaustProcedure()
+    public async UniTask ExhaustProcedure()
         => await _owner.Env.ExhaustProcedure(_owner, this);
 
     public int StageCastedCount { get; private set; }
@@ -85,7 +85,7 @@ public class StageSkill : StageClosureOwner
     public bool IsEven
         => SlotIndex % 2 == 1 || _owner.GetStackOfBuff("森罗万象") > 0;
 
-    public async Task<bool> IsFirstTime(bool useFocus = false)
+    public async UniTask<bool> IsFirstTime(bool useFocus = false)
     {
         bool isFirstTime = StageCastedCount == 0;
         if (!isFirstTime)
@@ -96,7 +96,7 @@ public class StageSkill : StageClosureOwner
         return isFirstTime;
     }
 
-    public async Task<bool> IsEnd(bool useFocus = false)
+    public async UniTask<bool> IsEnd(bool useFocus = false)
     {
         bool isEnd = SlotIndex == _owner._skills.Length - 1;
         if (!isEnd)

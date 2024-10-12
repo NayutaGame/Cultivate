@@ -1,5 +1,5 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class StageAppS : AppS
 {
@@ -10,7 +10,7 @@ public class StageAppS : AppS
         _config = config;
     }
 
-    public override async Task Enter(NavigateDetails d, Config config)
+    public override async UniTask Enter(NavigateDetails d, Config config)
     {
         await base.Enter(d, config);
 
@@ -26,7 +26,7 @@ public class StageAppS : AppS
         await CanvasManager.Instance.Curtain.Animator.SetStateAsync(0);
     }
 
-    public override async Task<Result> Exit(NavigateDetails d)
+    public override async UniTask<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
         await CanvasManager.Instance.Curtain.Animator.SetStateAsync(1);

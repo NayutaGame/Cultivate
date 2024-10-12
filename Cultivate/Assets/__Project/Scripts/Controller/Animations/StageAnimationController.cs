@@ -1,6 +1,6 @@
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class StageAnimationController
 {
@@ -27,7 +27,7 @@ public class StageAnimationController
             entitySlot.Model.Opening();
     }
 
-    public async Task Play(Animation animation)
+    public async UniTask Play(Animation animation)
     {
         AnimationHandle track = animation.GetHandle();
         track.SetSpeed(_speed);
@@ -47,7 +47,7 @@ public class StageAnimationController
         // CanvasManager.Instance.StageCanvas.Refresh();
     }
 
-    public async Task NextKey()
+    public async UniTask NextKey()
     {
         await _mainTrack.NextKey(_speed);
     }

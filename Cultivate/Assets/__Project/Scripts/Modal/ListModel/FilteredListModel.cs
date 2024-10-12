@@ -1,14 +1,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class FilteredListModel<T> : IListModel
 {
-    public event Func<int, object, Task> InsertEvent;
-    public event Func<int, Task> RemoveAtEvent;
-    public event Func<int, Task> ModifiedEvent;
-    public event Func<Task> ResyncEvent;
+    public event Func<int, object, UniTask> InsertEvent;
+    public event Func<int, UniTask> RemoveAtEvent;
+    public event Func<int, UniTask> ModifiedEvent;
+    public event Func<UniTask> ResyncEvent;
 
     public int Count()
         => _filteredList.Count;

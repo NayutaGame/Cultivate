@@ -1,7 +1,7 @@
 
 using System;
 using System.Text;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 [Serializable]
 public class MingYuan : BoundedInt
@@ -62,7 +62,7 @@ public class MingYuan : BoundedInt
         return sb.ToString();
     }
 
-    public async Task MingYuanPenaltyProcedure(StageEntity entity)
+    public async UniTask MingYuanPenaltyProcedure(StageEntity entity)
     {
         if (Curr >= 10)
             return;

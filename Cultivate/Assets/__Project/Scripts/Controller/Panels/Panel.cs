@@ -1,6 +1,6 @@
 
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -26,7 +26,7 @@ public abstract class Panel : MonoBehaviour
 
     public virtual void Refresh() { }
 
-    public async Task ToggleShowing()
+    public async UniTask ToggleShowing()
         => await Animator.SetStateAsync(Animator.State != 0 ? 0 : 1);
 
     public virtual Tween ShowTween()

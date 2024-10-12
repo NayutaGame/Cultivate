@@ -1,10 +1,10 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class AppS
 {
-    public virtual async Task<Config> CEnter(NavigateDetails d) => new();
-    public virtual async Task Enter(NavigateDetails d, Config config) { }
-    public virtual async Task<Result> Exit(NavigateDetails d) => new();
-    public virtual async Task CExit(NavigateDetails d, Result result) { }
+    public virtual async UniTask<Config> CEnter(NavigateDetails d) => new();
+    public virtual async UniTask Enter(NavigateDetails d, Config config) { }
+    public virtual async UniTask<Result> Exit(NavigateDetails d) => new();
+    public virtual async UniTask CExit(NavigateDetails d, Result result) { }
 }

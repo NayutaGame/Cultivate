@@ -1,6 +1,6 @@
 
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 
@@ -8,14 +8,14 @@ public class AnimatedListView : ListView
 {
     [SerializeField] private RectTransform Displays;
 
-    protected override Task InsertItem(int index, object item)
+    protected override UniTask InsertItem(int index, object item)
     {
-        Task task = base.InsertItem(index, item);
+        UniTask task = base.InsertItem(index, item);
         RefreshPivots();
         return task;
     }
 
-    protected override Task RemoveAt(int index)
+    protected override UniTask RemoveAt(int index)
     {
         var task = base.RemoveAt(index);
         RefreshPivots();

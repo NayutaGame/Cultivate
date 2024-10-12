@@ -1,9 +1,9 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class MenuAppS : AppS
 {
-    public override async Task Enter(NavigateDetails d, Config config)
+    public override async UniTask Enter(NavigateDetails d, Config config)
     {
         await base.Enter(d, config);
 
@@ -20,7 +20,7 @@ public class MenuAppS : AppS
         await CanvasManager.Instance.AppCanvas.SettingsPanel.Animator.SetStateAsync(1);
     }
 
-    public override async Task<Result> Exit(NavigateDetails d)
+    public override async UniTask<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
 

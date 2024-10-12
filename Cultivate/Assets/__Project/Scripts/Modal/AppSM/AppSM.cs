@@ -1,6 +1,6 @@
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class AppSM
 {
@@ -20,7 +20,7 @@ public class AppSM
         _stack = new List<AppS>();
     }
 
-    public async Task Push(AppS state)
+    public async UniTask Push(AppS state)
     {
         NavigateDetails d = new NavigateDetails(Current, state);
         Config config = null;
@@ -31,7 +31,7 @@ public class AppSM
         await Current.Enter(d, config);
     }
 
-    public async Task Pop(int times = 1)
+    public async UniTask Pop(int times = 1)
     {
         for (int i = 0; i < times; i++)
         {

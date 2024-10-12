@@ -1,5 +1,5 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ArmorCostResult : CostResult
@@ -11,12 +11,12 @@ public class ArmorCostResult : CostResult
     public override CostDescription.CostType ToType()
         => CostDescription.CostType.Armor;
 
-    public override async Task WillCostEvent()
+    public override async UniTask WillCostEvent()
     {
         await Env.ClosureDict.SendEvent(StageClosureDict.WIL_ARMOR_COST, this);
     }
     
-    public override async Task ApplyCost()
+    public override async UniTask ApplyCost()
     {
         int shortage = Mathf.Max(Value - Mathf.Max(0, Entity.Armor), 0);
         if (shortage > 0)
@@ -29,7 +29,7 @@ public class ArmorCostResult : CostResult
         await Env.LoseHealthProcedure(Entity, Value, induced: true);
     }
 
-    public override async Task DidCostEvent()
+    public override async UniTask DidCostEvent()
     {
         await Env.ClosureDict.SendEvent(StageClosureDict.DID_ARMOR_COST, this);
     }

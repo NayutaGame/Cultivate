@@ -1,5 +1,5 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class ChannelCostResult : CostResult
 {
@@ -12,13 +12,13 @@ public class ChannelCostResult : CostResult
     public override CostDescription.CostType ToType()
         => CostDescription.CostType.Channel;
 
-    public override async Task WillCostEvent()
+    public override async UniTask WillCostEvent()
     {
         await Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANNEL_COST, this);
         _counter = Value;
     }
     
-    public override async Task ApplyCost()
+    public override async UniTask ApplyCost()
     {
         ChannelDetails d = new ChannelDetails(Entity, Skill, _counter, Value);
         await Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANNEL, d);
@@ -35,7 +35,7 @@ public class ChannelCostResult : CostResult
         await Env.ClosureDict.SendEvent(StageClosureDict.DID_CHANNEL, d);
     }
 
-    public override async Task DidCostEvent()
+    public override async UniTask DidCostEvent()
     {
         await Env.ClosureDict.SendEvent(StageClosureDict.DID_CHANNEL_COST, this);
     }

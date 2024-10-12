@@ -1,9 +1,9 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class RunAppS : AppS
 {
-    public override async Task Enter(NavigateDetails d, Config config)
+    public override async UniTask Enter(NavigateDetails d, Config config)
     {
         await base.Enter(d, config);
 
@@ -25,7 +25,7 @@ public class RunAppS : AppS
         await CanvasManager.Instance.Curtain.Animator.SetStateAsync(0);
     }
 
-    public override async Task<Result> Exit(NavigateDetails d)
+    public override async UniTask<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
         await CanvasManager.Instance.Curtain.Animator.SetStateAsync(1);
@@ -41,7 +41,7 @@ public class RunAppS : AppS
         return result;
     }
 
-    public override async Task<Config> CEnter(NavigateDetails d)
+    public override async UniTask<Config> CEnter(NavigateDetails d)
     {
         await base.CEnter(d);
 
@@ -53,7 +53,7 @@ public class RunAppS : AppS
         return new();
     }
 
-    public override async Task CExit(NavigateDetails d, Result result)
+    public override async UniTask CExit(NavigateDetails d, Result result)
     {
         await base.CExit(d, result);
 

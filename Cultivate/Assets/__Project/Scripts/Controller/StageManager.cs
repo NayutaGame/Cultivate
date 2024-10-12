@@ -1,11 +1,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
+using Cysharp.Threading.Tasks;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 public class StageManager : Singleton<StageManager>, Addressable
 {
@@ -25,7 +24,7 @@ public class StageManager : Singleton<StageManager>, Addressable
     public StageAnimationController StageAnimationController;
     private StageEnvironment _environment;
     public StageTimeline Timeline;
-    private Task _task;
+    private UniTask _task;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -48,14 +47,14 @@ public class StageManager : Singleton<StageManager>, Addressable
         Timeline = StageEnvironment.CalcTimeline(config);
     }
 
-    public async Task Enter()
+    public async UniTask Enter()
     {
         _task = _environment.CoreProcedure();
         await _task;
         AppManager.Pop();
     }
 
-    public async Task Exit()
+    public async UniTask Exit()
     {
         DisableVFX();
 

@@ -1,5 +1,5 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public abstract class AnimationHandle
 {
@@ -12,7 +12,7 @@ public abstract class AnimationHandle
 
     public abstract void Play();
     
-    public virtual async Task NextKey(float speed) { }
+    public virtual async UniTask NextKey(float speed) { }
 
     public abstract void Pause();
 

@@ -1,5 +1,5 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -53,7 +53,7 @@ public class MergePreresultView : SimpleView
     }
     
     public MergePreresult GetMergePreresult() => _mergePreresult;
-    public async Task SetMergePreresultAsync(int state, MergePreresult mergePreresult)
+    public async UniTask SetMergePreresultAsync(int state, MergePreresult mergePreresult)
     {
         _mergePreresult = mergePreresult;
 

@@ -1,6 +1,6 @@
 
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using CLLibrary;
 using DG.Tweening;
 
@@ -44,7 +44,7 @@ public class Animator : StateMachine<int>
         _handle.Complete(true);
     }
 
-    public async Task SetStateAsync(int state)
+    public async UniTask SetStateAsync(int state)
     {
         _handle?.Kill();
         _handle = SetStateTween(state);

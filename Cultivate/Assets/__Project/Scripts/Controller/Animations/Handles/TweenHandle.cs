@@ -1,5 +1,5 @@
 
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 
 public class TweenHandle : AnimationHandle
@@ -16,7 +16,7 @@ public class TweenHandle : AnimationHandle
         _handle.SetAutoKill().Restart();
     }
 
-    public override async Task NextKey(float speed)
+    public override async UniTask NextKey(float speed)
     {
         if (!_animation.IsAwait)
             return;

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
@@ -10,7 +10,7 @@ public class StageEntity : Addressable, StageClosureOwner
 {
     public Memory Memory;
     
-    public async Task TurnProcedure(int turnCount)
+    public async UniTask TurnProcedure(int turnCount)
     {
         TurnDetails d = new TurnDetails(this, turnCount);
         ResetActionPoint();
@@ -23,7 +23,7 @@ public class StageEntity : Addressable, StageClosureOwner
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_TURN, d);
     }
 
-    private async Task ActionProcedure(int currActionCount)
+    private async UniTask ActionProcedure(int currActionCount)
     {
         ActionDetails d = new ActionDetails(this, currActionCount);
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_ACTION, d);
@@ -39,7 +39,7 @@ public class StageEntity : Addressable, StageClosureOwner
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_ACTION, d);
     }
 
-    private async Task<bool> CostProcedure()
+    private async UniTask<bool> CostProcedure()
     {
         if (_costResult == null)
         {
@@ -56,7 +56,7 @@ public class StageEntity : Addressable, StageClosureOwner
         return true;
     }
 
-    public async Task StartStageExecuteProcedure()
+    public async UniTask StartStageExecuteProcedure()
     {
         foreach (var skill in _skills)
         {
@@ -65,7 +65,7 @@ public class StageEntity : Addressable, StageClosureOwner
         }
     }
 
-    private async Task ExecuteProcedure()
+    private async UniTask ExecuteProcedure()
     {
         StageSkill skill = _skills[_p];
         ExecuteDetails d = new ExecuteDetails(this, skill);
@@ -79,7 +79,7 @@ public class StageEntity : Addressable, StageClosureOwner
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_EXECUTE, d);
     }
 
-    private async Task StartStageCastProcedure(StageSkill skill, bool recursive = true)
+    private async UniTask StartStageCastProcedure(StageSkill skill, bool recursive = true)
     {
         StartStageCastDetails d = new StartStageCastDetails(_env, this, skill, recursive, new());
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_START_STAGE_CAST, d);
@@ -97,7 +97,7 @@ public class StageEntity : Addressable, StageClosureOwner
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_START_STAGE_CAST, d);
     }
 
-    public async Task<CastResult> CastProcedure(StageSkill skill, bool recursive = true)
+    public async UniTask<CastResult> CastProcedure(StageSkill skill, bool recursive = true)
     {
         CastResult castResult = new();
         CastDetails d = new CastDetails(_env, this, skill, recursive, castResult);
@@ -123,7 +123,7 @@ public class StageEntity : Addressable, StageClosureOwner
         return castResult;
     }
 
-    private async Task StepProcedure()
+    private async UniTask StepProcedure()
     {
         StartStepDetails startD = new StartStepDetails(this, _p);
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_STEP, startD);
@@ -236,7 +236,7 @@ public class StageEntity : Addressable, StageClosureOwner
     public int CountSuch(Func<StageSkill, bool> pred)
         => _skills.Count(pred);
 
-    public async Task<bool> OppoHasFragile(bool useFocus = false)
+    public async UniTask<bool> OppoHasFragile(bool useFocus = false)
     {
         bool oppoHasFragile = Opponent().Armor < 0;
         if (!oppoHasFragile)
@@ -349,7 +349,7 @@ public class StageEntity : Addressable, StageClosureOwner
         // }
     }
 
-    public async Task BuffRecorder(StageClosureOwner listener, ClosureDetails closureDetails)
+    public async UniTask BuffRecorder(StageClosureOwner listener, ClosureDetails closureDetails)
     {
         GainBuffDetails d = (GainBuffDetails)closureDetails;
         // if (d._buffEntry.GetName() == "锋锐")
@@ -374,7 +374,7 @@ public class StageEntity : Addressable, StageClosureOwner
             HasFuXiuRecord = true;
     }
 
-    public async Task ChannelRecorder(StageClosureOwner owner, ClosureDetails closureDetails)
+    public async UniTask ChannelRecorder(StageClosureOwner owner, ClosureDetails closureDetails)
     {
         ChannelDetails d = (ChannelDetails)closureDetails;
         HasChannelRecord = true;
@@ -390,7 +390,7 @@ public class StageEntity : Addressable, StageClosureOwner
     public void RemoveFormation(Formation f)
         => _formations.Remove(f);
 
-    public async Task RemoveAllFormations()
+    public async UniTask RemoveAllFormations()
     {
         await _formations.Traversal().Do(async f => f.Unregister());
         _formations.Clear();
@@ -409,7 +409,7 @@ public class StageEntity : Addressable, StageClosureOwner
     public void RemoveBuff(Buff b)
         => _buffs.Remove(b);
 
-    public async Task RemoveAllBuffs()
+    public async UniTask RemoveAllBuffs()
     {
         await _buffs.Traversal().Do(async b => b.Unregister());
         _buffs.Clear();
@@ -419,7 +419,7 @@ public class StageEntity : Addressable, StageClosureOwner
 
     public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
 
-    public async Task<bool> IsFocused()
+    public async UniTask<bool> IsFocused()
     {
         if (GetStackOfBuff("永久集中") > 0 || GetStackOfBuff("通透世界") > 0)
             return true;
@@ -430,7 +430,7 @@ public class StageEntity : Addressable, StageClosureOwner
 
     #region Procedure
     
-    public async Task AttackProcedure(int value,
+    public async UniTask AttackProcedure(int value,
         int times = 1,
         StageSkill srcSkill = null,
         WuXing? wuXing = null,
@@ -443,55 +443,55 @@ public class StageEntity : Addressable, StageClosureOwner
         bool induced = false)
         => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, times, srcSkill, wuXing, crit, lifeSteal, penetrate, false, recursive, castResult, closures, induced));
     
-    public async Task IndirectProcedure(int value, StageSkill srcSkill = null, CastResult castResult = null, WuXing? wuXing = null, bool recursive = true, bool induced = false)
+    public async UniTask IndirectProcedure(int value, StageSkill srcSkill = null, CastResult castResult = null, WuXing? wuXing = null, bool recursive = true, bool induced = false)
         => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, srcSkill, wuXing, recursive, castResult, induced));
     
-    public async Task DamageSelfProcedure(int value, StageSkill srcSkill = null, CastResult castResult = null, bool recursive = true, bool induced = false)
+    public async UniTask DamageSelfProcedure(int value, StageSkill srcSkill = null, CastResult castResult = null, bool recursive = true, bool induced = false)
         => await _env.DamageProcedure(new DamageDetails(this, this, value, srcSkill, crit: false, lifeSteal: false, recursive, castResult, induced));
     
-    public async Task DamageOppoProcedure(int value, StageSkill srcSkill, CastResult castResult, bool recursive = true, bool induced = false)
+    public async UniTask DamageOppoProcedure(int value, StageSkill srcSkill, CastResult castResult, bool recursive = true, bool induced = false)
         => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, srcSkill, crit: false, lifeSteal: false, recursive, castResult, induced));
     
-    public async Task LoseHealthProcedure(int value, bool induced = false)
+    public async UniTask LoseHealthProcedure(int value, bool induced = false)
         => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value, induced));
     
-    public async Task HealProcedure(int value, bool induced = false)
+    public async UniTask HealProcedure(int value, bool induced = false)
         => await _env.HealProcedure(new HealDetails(this, this, value, false, induced));
     
-    public async Task HealOppoProcedure(int value, bool induced = false)
+    public async UniTask HealOppoProcedure(int value, bool induced = false)
         => await _env.HealProcedure(new HealDetails(this, Opponent(), value, false, induced));
     
-    public async Task GainArmorProcedure(int value, bool induced = false)
+    public async UniTask GainArmorProcedure(int value, bool induced = false)
         => await _env.GainArmorProcedure(new GainArmorDetails(this, this, value, induced));
     
-    public async Task GiveArmorProcedure(int value, bool induced = false)
+    public async UniTask GiveArmorProcedure(int value, bool induced = false)
         => await _env.GainArmorProcedure(new GainArmorDetails(this, Opponent(), value, induced));
     
-    public async Task LoseArmorProcedure(int value, bool induced = false)
+    public async UniTask LoseArmorProcedure(int value, bool induced = false)
         => await _env.LoseArmorProcedure(new LoseArmorDetails(this, this, value, induced));
     
-    public async Task RemoveArmorProcedure(int value, bool induced = false)
+    public async UniTask RemoveArmorProcedure(int value, bool induced = false)
         => await _env.LoseArmorProcedure(new LoseArmorDetails(this, Opponent(), value, induced));
     
-    public async Task GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
+    public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await _env.GainBuffProcedure(new GainBuffDetails(this, this, buffEntry, stack, recursive, induced));
     
-    public async Task GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
+    public async UniTask GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await _env.GainBuffProcedure(new GainBuffDetails(this, Opponent(), buffEntry, stack, recursive, induced));
     
-    public async Task LoseBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
+    public async UniTask LoseBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await _env.LoseBuffProcedure(new LoseBuffDetails(this, this, buffEntry, stack, recursive, induced));
     
-    public async Task RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
+    public async UniTask RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await _env.LoseBuffProcedure(new LoseBuffDetails(this, Opponent(), buffEntry, stack, recursive, induced));
     
-    public async Task CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0, bool induced = false)
+    public async UniTask CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0, bool induced = false)
         => await _env.CycleProcedure(new CycleDetails(this, wuXing, gain, recover, induced));
     
-    public async Task DispelProcedure(int stack, bool induced = false)
+    public async UniTask DispelProcedure(int stack, bool induced = false)
         => await _env.DispelProcedure(new DispelDetails(this, stack, induced));
 
-    public async Task<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
+    public async UniTask<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {
         if (stack == 0)
             return true;
@@ -506,7 +506,7 @@ public class StageEntity : Addressable, StageClosureOwner
         return false;
     }
     
-    public async Task TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming, int? maxFlow = null, int? upperBound = null)
+    public async UniTask TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming, int? maxFlow = null, int? upperBound = null)
     {
         int flow = GetStackOfBuff(fromBuff) / fromStack;
         if (upperBound.HasValue)
@@ -525,7 +525,7 @@ public class StageEntity : Addressable, StageClosureOwner
         await GainBuffProcedure(toBuff, flow * toStack);
     }
     
-    public async Task<bool> JiaShiProcedure()
+    public async UniTask<bool> JiaShiProcedure()
     {
         // if (GetStackOfBuff("天人合一") > 0)
         // {
@@ -550,7 +550,7 @@ public class StageEntity : Addressable, StageClosureOwner
         return false;
     }
     
-    public async Task BecomeLowHealth()
+    public async UniTask BecomeLowHealth()
     {
         int gap = Hp - GetLowHealthThreshold();
         if (gap > 0)
