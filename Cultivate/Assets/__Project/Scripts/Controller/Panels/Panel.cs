@@ -23,8 +23,6 @@ public abstract class Panel : MonoBehaviour
         Animator[0, 1] = ShowTween;
         Animator[-1, 0] = HideTween;
     }
-    
-    
 
     public virtual void Refresh() { }
 

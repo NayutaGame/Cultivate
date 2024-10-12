@@ -8,15 +8,7 @@ using UnityEngine.UI;
 public class MergePreresultView : SimpleView
 {
     private MergePreresult _mergePreresult;
-    
-    public MergePreresult GetMergePreresult() => _mergePreresult;
-    public void SetMergePreresult(MergePreresult mergePreresult)
-    {
-        _mergePreresult = mergePreresult;
-        Refresh();
-    }
-    
-    private bool _highlight;
+    private Animator _animator;
     
     [SerializeField] private Image CardImage;
     [SerializeField] private TMP_Text CostText;
@@ -29,18 +21,35 @@ public class MergePreresultView : SimpleView
     [SerializeField] private TMP_Text MergeTypeText;
     [SerializeField] private TMP_Text ErrorMessage;
     
-    private Material _outlineMaterial;
+    // private bool _highlight;
+    // private Tween _highlightHandle;
+    // private static readonly int OuterOutlineFade = Shader.PropertyToID("_OuterOutlineFade");
+    //
+    // private Material _outlineMaterial;
     // private Material _dissolveMaterial;
     
     public override void AwakeFunction()
     {
         base.AwakeFunction();
     
-        if (EffectImage != null)
+        // if (EffectImage != null)
+        // {
+        //     EffectImage.material = Instantiate(EffectImage.material);
+        //     _outlineMaterial = EffectImage.materialForRendering;
+        // }
+
+        if (_animator == null)
         {
-            EffectImage.material = Instantiate(EffectImage.material);
-            _outlineMaterial = EffectImage.materialForRendering;
+            InitAnimator();
         }
+    }
+
+    private void InitAnimator()
+    {
+        _animator = new(3);
+        // 0 for hide, 1 for show, 2 for success merge
+        _animator[0, 1] = ShowTween;
+        _animator[-1, 0] = HideTween;
     }
     
     public override void Refresh()
@@ -49,36 +58,52 @@ public class MergePreresultView : SimpleView
 
         if (_mergePreresult == null)
         {
-            gameObject.SetActive(false);
+            if (_animator.State == 1)
+                _animator.SetStateAsync(0);
             return;
         }
         
-        gameObject.SetActive(true);
+        if (_animator.State == 0)
+            _animator.SetStateAsync(1);
         
         SetSpriteFromMergePreresult();
         SetCostDescriptionFromMergePreresult();
         SetNameFromMergePreresult();
         SetDescriptionFromMergePreresult();
-        SetSkillTypeCompositeFromMergePreresult();
+        // SetSkillTypeCompositeFromMergePreresult();
         SetJingJieSpriteFromMergePreresult();
         SetMergeTypeTextFromMergePreresult();
         SetErrorMessageFromMergePreresult();
     }
+
+    public Tween ShowTween()
+        => DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(CanvasGroup.DOFade(1, 0.3f));
+
+    public Tween HideTween()
+        => DOTween.Sequence()
+            .Append(CanvasGroup.DOFade(0, 0.15f))
+            .AppendCallback(() => gameObject.SetActive(false));
     
-    private Tween _highlightHandle;
-    private static readonly int OuterOutlineFade = Shader.PropertyToID("_OuterOutlineFade");
-    
-    public void SetHighlight(bool highlight)
+    public MergePreresult GetMergePreresult() => _mergePreresult;
+    public void SetMergePreresult(MergePreresult mergePreresult)
     {
-        _highlight = highlight;
-        
-        _highlightHandle?.Kill();
-        _highlightHandle = DOTween.To(GetOutlineFade, SetOutlineFade, _highlight ? 1 : 0, 0.3f).SetEase(Ease.InOutQuad);
-        _highlightHandle.SetAutoKill().Restart();
+        _mergePreresult = mergePreresult;
+        Refresh();
     }
     
-    private float GetOutlineFade() => _outlineMaterial.GetFloat(OuterOutlineFade);
-    private void SetOutlineFade(float value) => _outlineMaterial.SetFloat(OuterOutlineFade, value);
+    // public void SetHighlight(bool highlight)
+    // {
+    //     _highlight = highlight;
+    //     
+    //     _highlightHandle?.Kill();
+    //     _highlightHandle = DOTween.To(GetOutlineFade, SetOutlineFade, _highlight ? 1 : 0, 0.3f).SetEase(Ease.InOutQuad);
+    //     _highlightHandle.SetAutoKill().Restart();
+    // }
+    //
+    // private float GetOutlineFade() => _outlineMaterial.GetFloat(OuterOutlineFade);
+    // private void SetOutlineFade(float value) => _outlineMaterial.SetFloat(OuterOutlineFade, value);
     
     protected virtual void SetSpriteFromMergePreresult()
     {

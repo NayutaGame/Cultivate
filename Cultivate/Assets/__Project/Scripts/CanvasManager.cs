@@ -82,6 +82,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         FormationAnnotation.Awake();
         SkillGhost.Awake();
         SlotGhost.Awake();
+        MergePreresultView.Awake();
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
         

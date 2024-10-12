@@ -18,7 +18,7 @@ public class SimpleView : CLView
         RectTransform.localPosition = localPosition;
     }
 
-    private CanvasGroup CanvasGroup;
+    protected CanvasGroup CanvasGroup;
     public void SetVisible(bool value)
     {
         if (CanvasGroup != null)
