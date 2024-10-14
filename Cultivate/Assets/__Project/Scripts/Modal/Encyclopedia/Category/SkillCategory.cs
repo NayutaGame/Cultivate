@@ -59,6 +59,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             d.LifeSteal = true;
                         });
 
@@ -98,6 +99,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             d.Src.RemoveArmorProcedure(5 + 5 * d.SrcSkill.Dj, false);
                             d.CastResult.AppendCond(true);
                         });
@@ -141,6 +143,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.GainBuffProcedure("灵气", 1 + d.SrcSkill.Dj, induced: true);
                             d.CastResult.AppendCond(true);
                         });
@@ -168,6 +171,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.GainBuffProcedure("暴击", induced: true);
                             d.CastResult.AppendCond(true);
                         });
@@ -244,6 +248,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             d.LifeSteal = true;
                             d.Value += d.Src.GetStackOfBuff("锋锐");
                         });
@@ -287,6 +292,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.GainBuffProcedure("暴击");
                         });
                     
@@ -312,6 +318,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.GainBuffProcedure("灵气", 2);
                             await d.Src.GainBuffProcedure("素弦", 1 + d.SrcSkill.Dj);
                         });
@@ -371,6 +378,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             bool cond = await d.SrcSkill.IsEnd();
                             if (cond)
                             {
@@ -404,6 +412,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.RemoveArmorProcedure(d.Value, false);
                             d.Cancel = true;
                             d.CastResult.AppendCond(true);
@@ -462,6 +471,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             d.LifeSteal = true;
                         });
                     
@@ -487,6 +497,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             if (d.SrcSkill.GetJingJie() < JingJie.JinDan)
                                 await d.Src.CycleProcedure(WuXing.Shui, gain: 1);
                             else
@@ -533,6 +544,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.HealProcedure(d.Value, induced: true);
                             d.CastResult.AppendCond(true);
                         });
@@ -563,6 +575,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             d.LifeSteal = true;
                         });
 
@@ -632,6 +645,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             string critKey = "TriggeredCrit";
                             string lifestealKey = "TriggeredLifesteal";
                             string penetrateKey = "TriggeredPenetrate";
@@ -717,6 +731,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             if (d.Src.GetActionPoint() < 2)
                                 d.Src.SetActionPoint(2);
                             else
@@ -789,6 +804,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.GainBuffProcedure("一梦如是", induced: true);
                             d.CastResult.AppendCond(true);
                         });
@@ -814,6 +830,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             d.Crit = true;
                             d.LifeSteal = true;
                         });
@@ -880,6 +897,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             d.Penetrate = true;
                             d.Value += Fib.ToValue(3 + d.SrcSkill.Dj) * d.SrcSkill.StageCastedCount;
                         });
@@ -937,6 +955,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             bool cond = await d.SrcSkill.IsEnd(useFocus: true);
                             d.Penetrate |= cond;
                             d.CastResult.AppendBool(0, cond);
@@ -946,6 +965,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.GainBuffProcedure("穿透", induced: true);
                             d.CastResult.AppendBool(1, true);
                         });
@@ -1019,6 +1039,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             d.Value += d.Src.Opponent().Armor / (4 - d.SrcSkill.Dj);
                         });
 
@@ -1084,6 +1105,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.GainBuffProcedure("力量");
                             await d.Src.GainBuffProcedure("弱昙", 1 + d.SrcSkill.Dj);
                         });
@@ -1443,6 +1465,7 @@ public class SkillCategory : Category<SkillEntry>
                     //     async (owner, closureDetails) =>
                     //     {
                     //         AttackDetails d = closureDetails as AttackDetails;
+                    //         if (owner != d.SrcSkill) return;
                     //         await d.Src.AttackProcedure(12, wuXing: d.SrcSkill.Entry.WuXing,
                     //             srcSkill: d.SrcSkill,
                     //             castResult: d.CastResult);
@@ -1512,6 +1535,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             string key = "GainedEvadeRecord";
                             int gainedEvadeRecord = d.Src.Memory.TryGetVariable(key, 0);
                             d.Times += gainedEvadeRecord;
@@ -1592,6 +1616,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             d.Value += Mathf.Max(0, d.Src.Armor);
                         });
                     
@@ -1618,6 +1643,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             bool cond = d.Src.Opponent().GetStackOfBuff("灵气") > 0;
                             d.Value += cond ? Fib.ToValue(4 + d.SrcSkill.Dj) : 0;
                             d.CastResult.AppendCond(cond);
@@ -1675,6 +1701,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             int mana = d.Src.GetStackOfBuff("灵气");
                             await d.Src.LoseBuffProcedure("灵气", mana);
                             d.Value += mana * (1 + d.SrcSkill.Dj);
@@ -1713,6 +1740,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             string key = "HighestAttackRecord";
                             int highestAttackRecord = d.Src.Memory.TryGetVariable(key, 0);
                             d.Value = Mathf.Max(d.Value, highestAttackRecord);
@@ -1792,6 +1820,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.SrcSkill) return;
                             await d.Src.GainArmorProcedure(d.Value, induced: true);
                             d.CastResult.AppendBool(0, true);
                         });
@@ -1820,6 +1849,7 @@ public class SkillCategory : Category<SkillEntry>
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
                             BuffEntry[] buffs = new BuffEntry[] { "素弦", "苦寒", "弱昙", "狂焰" };
 
                             bool cond = d.SrcSkill.GetJingJie() < JingJie.HuaShen;
