@@ -214,7 +214,6 @@ public class DeckPanel : Panel
         
         // Ghost
         ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-        ghost.Hide();
         
         // To: Ghost Display -> ToIdle + Ping Animation
         ExtraBehaviourPivot extraBehaviourPivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
@@ -226,6 +225,17 @@ public class DeckPanel : Panel
 
     private void MergeFailure(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
+        // From
+        
+        // Ghost
+        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        
+        // To
+        ExtraBehaviourPivot extraBehaviourPivot = from.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+            extraBehaviourPivot.SetPathAnimated(ghost.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
+        
+        
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }
 
@@ -262,7 +272,6 @@ public class DeckPanel : Panel
         
         // Ghost
         ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-        ghost.Hide();
         
         // New IB: Ghost Display -> To Idle
         InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();

@@ -49,7 +49,6 @@ public abstract class CLView : MonoBehaviour
     }
 
     private TableSM _sm;
-
     private TableSM InitSM()
     {
         // 0 for hide, 1 for show

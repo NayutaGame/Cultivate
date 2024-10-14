@@ -21,8 +21,10 @@ public class GhostView : MonoBehaviour
     private Tween _animationHandle;
     public bool IsAnimating => _animationHandle != null && _animationHandle.active;
 
-    public void BeginDrag(InteractBehaviour ib, PointerEventData eventData)
+    public void BeginDrag(InteractBehaviour ib, PointerEventData d)
     {
+        ib.GetCLView().SetHide(ib, d);
+        
         gameObject.SetActive(true);
 
         SimpleView.SetAddress(ib.GetSimpleView().GetAddress());
@@ -31,7 +33,7 @@ public class GhostView : MonoBehaviour
         ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
         {
-            _mouseOffset = eventData.position;
+            _mouseOffset = d.position;
             AnimateDisplay(extraBehaviourPivot.GetDisplayTransform(), extraBehaviourPivot.FollowTransform);
         }
     }
@@ -40,6 +42,8 @@ public class GhostView : MonoBehaviour
 
     public void EndDrag(InteractBehaviour ib, PointerEventData d)
     {
+        ib.GetCLView().SetShow(ib, d);
+        
         bool dropOnNothing = !CanvasManager.Instance.RayCastIsHit(d);
         if (dropOnNothing)
         {
@@ -48,6 +52,12 @@ public class GhostView : MonoBehaviour
                 extraBehaviourPivot.SetPathAnimated(SimpleView.GetDisplayTransform(), extraBehaviourPivot.IdleTransform);
         }
         
+        gameObject.SetActive(false);
+    }
+
+    public void Dropping(InteractBehaviour ib, PointerEventData d)
+    {
+        ib.GetCLView().SetShow(ib, d);
         gameObject.SetActive(false);
     }
 

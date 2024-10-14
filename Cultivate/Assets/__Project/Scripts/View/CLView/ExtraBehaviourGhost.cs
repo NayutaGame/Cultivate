@@ -9,9 +9,7 @@ public class ExtraBehaviourGhost : ExtraBehaviour
     public override void Init(CLView clView)
     {
         base.Init(clView);
-
         Ghost ??= new Address(GhostAddress).Get<GhostView>();
-
         InitInteractBehaviour();
     }
 
@@ -22,18 +20,9 @@ public class ExtraBehaviourGhost : ExtraBehaviour
             return;
 
         ib.BeginDragNeuron.Join(Ghost.BeginDrag);
-        ib.BeginDragNeuron.Join(CLView.SetHide);
-        
         ib.EndDragNeuron.Join(Ghost.EndDrag);
-        ib.EndDragNeuron.Join(CLView.SetShow);
-        
         ib.DragNeuron.Join(Ghost.Drag);
-    }
-
-    public void Hide()
-    {
-        CLView.SetShow();
-        Ghost.gameObject.SetActive(false);
+        ib.DroppingNeuron.Join(Ghost.Dropping);
     }
 
     public RectTransform GetDisplayTransform()

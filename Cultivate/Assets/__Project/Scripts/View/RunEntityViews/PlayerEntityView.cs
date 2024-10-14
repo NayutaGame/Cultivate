@@ -70,7 +70,6 @@ public class PlayerEntityView : SimpleView
         
         // Ghost
         ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-        ghost.Hide();
         
         // To: Ghost Display -> To Idle
         toPivot.SetPathAnimated(ghost.GetDisplayTransform(), toPivot.IdleTransform);
@@ -113,7 +112,6 @@ public class PlayerEntityView : SimpleView
         
         // Ghost
         ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
-        ghost.Hide();
         
         // To: Ghost Display -> To Idle
         toPivot.SetPathAnimated(ghost.GetDisplayTransform(), toPivot.IdleTransform);
