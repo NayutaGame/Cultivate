@@ -44,40 +44,43 @@ public abstract class CLView : MonoBehaviour
 
         ExtraBehaviours ??= GetComponents<ExtraBehaviour>();
         ExtraBehaviours.Do(b => b.Init(this));
+
+        _sm = InitSM();
     }
 
-    private void SetInteractable(bool value)
+    private TableSM _sm;
+
+    private TableSM InitSM()
+    {
+        // 0 for hide, 1 for show
+        TableSM sm = new(2);
+        sm[-1, 1] = Show;
+        sm[-1, 0] = Hide;
+        return sm;
+    }
+
+    private void Show()
     {
         if (InteractBehaviour != null)
-            InteractBehaviour.SetInteractable(value);
+            InteractBehaviour.SetInteractable(true);
+        GetSimpleView().SetVisible(true);
     }
 
-    private void SetVisible(bool value)
-        => GetSimpleView().SetVisible(value);
+    private void Hide()
+    {
+        if (InteractBehaviour != null)
+            InteractBehaviour.SetInteractable(false);
+        GetSimpleView().SetVisible(false);
+    }
 
-    public void SetInteractableToTrue(InteractBehaviour ib, PointerEventData d)
-        => SetInteractable(true);
+    public void SetShow(InteractBehaviour ib, PointerEventData d)
+        => _sm.SetState(1);
 
-    public void SetInteractableToTrue()
-        => SetInteractable(true);
+    public void SetShow()
+        => _sm.SetState(1);
 
-    public void SetInteractableToFalse(InteractBehaviour ib, PointerEventData d)
-        => SetInteractable(false);
-
-    public void SetInteractableToFalse()
-        => SetInteractable(false);
-
-    public void SetVisibleToTrue(InteractBehaviour ib, PointerEventData d)
-        => SetVisible(true);
-
-    public void SetVisibleToTrue()
-        => SetVisible(true);
-
-    public void SetVisibleToFalse(InteractBehaviour ib, PointerEventData d)
-        => SetVisible(false);
-
-    public void SetVisibleToFalse()
-        => SetVisible(false);
+    public void SetHide(InteractBehaviour ib, PointerEventData d)
+        => _sm.SetState(0);
     
     public abstract Address GetAddress();
     public abstract T Get<T>() where T : class;

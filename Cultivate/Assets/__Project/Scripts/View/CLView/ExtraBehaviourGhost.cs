@@ -5,26 +5,15 @@ public class ExtraBehaviourGhost : ExtraBehaviour
 {
     public string GhostAddress;
     private GhostView Ghost;
-    // private Animator _animator;
 
     public override void Init(CLView clView)
     {
         base.Init(clView);
 
-        Ghost = new Address(GhostAddress).Get<GhostView>();
+        Ghost ??= new Address(GhostAddress).Get<GhostView>();
 
         InitInteractBehaviour();
-        // _animator ??= InitAnimator();
     }
-
-    // private Animator InitAnimator()
-    // {
-    //     // 0 for hide, 1 for show
-    //     Animator animator = new(2);
-    //     animator[-1, 1] = () => TweenAnimation.TweenFromAction(Hide);
-    //     animator[-1, 0] = HideTween;
-    //     return animator;
-    // }
 
     private void InitInteractBehaviour()
     {
@@ -33,20 +22,17 @@ public class ExtraBehaviourGhost : ExtraBehaviour
             return;
 
         ib.BeginDragNeuron.Join(Ghost.BeginDrag);
-        ib.BeginDragNeuron.Join(CLView.SetInteractableToFalse);
-        ib.BeginDragNeuron.Join(CLView.SetVisibleToFalse);
+        ib.BeginDragNeuron.Join(CLView.SetHide);
         
         ib.EndDragNeuron.Join(Ghost.EndDrag);
-        ib.EndDragNeuron.Join(CLView.SetInteractableToTrue);
-        ib.EndDragNeuron.Join(CLView.SetVisibleToTrue);
+        ib.EndDragNeuron.Join(CLView.SetShow);
         
         ib.DragNeuron.Join(Ghost.Drag);
     }
 
     public void Hide()
     {
-        CLView.SetInteractableToTrue();
-        CLView.SetVisibleToTrue();
+        CLView.SetShow();
         Ghost.gameObject.SetActive(false);
     }
 

@@ -25,7 +25,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 9614
+  controlID: 11979
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -540,7 +540,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 9585
+  controlID: 11958
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -600,7 +600,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: fafaffff4a88000072880000
+      m_ExpandedIDs: b004fdff6805fdffb25dfdfffafaffff4a88000072880000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -691,22 +691,22 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/__Project/Scripts
+    - Assets/__Project/Scripts/Modal
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/__Project/Scripts
+  - Assets/__Project/Scripts/Modal
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\86130\Documents\UnityWorkspace\Cultivate\Cultivate
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: f4340100
-    m_LastClickedID: 79092
-    m_ExpandedIDs: 00000000da340100dc34010000ca9a3b
+    m_SelectedIDs: 5c3b0100
+    m_LastClickedID: 80732
+    m_ExpandedIDs: 00000000da340100dc340100f434010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -759,8 +759,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: 4caa0900
+    m_LastClickedInstanceID: 633420
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000485201006672010076ee0100828c0000
     m_RenameOverlay:
@@ -851,7 +851,7 @@ MonoBehaviour:
     m_CachedPref: -510
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: -1
+  m_LastInspectedObjectInstanceID: 633420
   m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
