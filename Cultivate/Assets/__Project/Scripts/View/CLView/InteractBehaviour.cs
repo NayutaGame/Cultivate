@@ -20,7 +20,40 @@ public class InteractBehaviour : MonoBehaviour,
 
         Image ??= GetComponent<Image>();
         CanvasGroup ??= GetComponent<CanvasGroup>();
+
+        // AppendDebugLog();
     }
+
+    private void AppendDebugLog()
+    {
+        PointerEnterNeuron.Join(PointerEnterLog);
+        PointerExitNeuron.Join(PointerExitLog);
+        PointerMoveNeuron.Join(PointerMoveLog);
+        BeginDragNeuron.Join(BeginDragLog);
+        EndDragNeuron.Join(EndDragLog);
+        DragNeuron.Join(DragLog);
+        LeftClickNeuron.Join(LeftClickLog);
+        RightClickNeuron.Join(RightClickLog);
+        DroppingNeuron.Join(DroppingLog);
+        DropNeuron.Join(DropLog);
+        DraggingEnterNeuron.Join(DraggingEnterLog);
+        DraggingExitNeuron.Join(DraggingExitLog);
+        DraggingMoveNeuron.Join(DraggingMoveLog);
+    }
+    
+    private void PointerEnterLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"PointerEnter");
+    private void PointerExitLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"PointerExit");
+    private void PointerMoveLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"PointerMove");
+    private void BeginDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"BeginDrag");
+    private void EndDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"EndDrag");
+    private void DragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"Drag");
+    private void LeftClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"LeftClick");
+    private void RightClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"RightClick");
+    private void DroppingLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"Dropping");
+    private void DropLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"Drop");
+    private void DraggingEnterLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"DraggingEnter");
+    private void DraggingExitLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"DraggingExit");
+    private void DraggingMoveLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"DraggingMove");
 
     private Image Image;
     private CanvasGroup CanvasGroup;
@@ -42,6 +75,7 @@ public class InteractBehaviour : MonoBehaviour,
     public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> DroppingNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
 
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
@@ -114,6 +148,7 @@ public class InteractBehaviour : MonoBehaviour,
         if (dragging == null)
             return;
 
+        dragging.DroppingNeuron.Invoke(dragging, eventData);
         DropNeuron.Invoke(dragging, this, eventData);
     }
 

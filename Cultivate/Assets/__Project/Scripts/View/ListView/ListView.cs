@@ -272,6 +272,7 @@ public class ListView : SimpleView
     public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> DroppingNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
 
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
@@ -292,6 +293,7 @@ public class ListView : SimpleView
         ib.DragNeuron.Join(DragNeuron);
         ib.LeftClickNeuron.Join(LeftClickNeuron);
         ib.RightClickNeuron.Join(RightClickNeuron);
+        ib.DroppingNeuron.Join(DroppingNeuron);
         ib.DropNeuron.Join(DropNeuron);
         
         ib.DraggingEnterNeuron.Join(DraggingEnterNeuron);

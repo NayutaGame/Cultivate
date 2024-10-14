@@ -50,6 +50,8 @@ public class DeckPanel : Panel
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        HandView.DroppingNeuron.Join(RemoveMergePreresult);
+        HandView.EndDragNeuron.Join(RemoveMergePreresult);
         HandView.DropNeuron.Join(Merge, Unequip);
         
         HandView.DraggingEnterNeuron.Join(DraggingEnter);
@@ -225,6 +227,11 @@ public class DeckPanel : Panel
     }
 
     private void MergeFailure(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
+    }
+
+    private void RemoveMergePreresult(InteractBehaviour from, PointerEventData d)
     {
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }

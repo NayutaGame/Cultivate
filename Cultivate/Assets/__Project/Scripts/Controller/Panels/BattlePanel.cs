@@ -107,6 +107,8 @@ public class BattlePanel : Panel
         if (obj is SkillSlot slot)
         {
             skill = slot.Skill;
+            if (skill == null)
+                return;
             
             IEntity entity = EnemyView.Get<IEntity>();
             string reactionKey = entity.GetReactionKeyFromSkill(skill);
@@ -126,7 +128,7 @@ public class BattlePanel : Panel
             return;
         }
         
-        Debug.Log($"BeginDrag, {obj}");
+        Debug.Log($"Error: BeginDrag, {obj}");
     }
 
     private void ReactionFromEndDrag(InteractBehaviour ib, PointerEventData d)
