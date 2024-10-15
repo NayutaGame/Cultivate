@@ -78,7 +78,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(4 + dj)}攻".ApplyAttack() +
-                    $"\n施加{Fib.ToValue(3 + dj)}减甲",
+                    $"\n施加{Fib.ToValue(3 + dj)}破甲",
                 cast:                       async d =>
                 {
                     await d.AttackProcedure(Fib.ToValue(4 + d.Dj));
@@ -2144,7 +2144,7 @@ public class SkillCategory : Category<SkillEntry>
             //     costDescription:            CostDescription.ChannelFromDj(dj => 4 - dj),
             //     castDescription:            (j, dj, costResult, castResult) =>
             //         $"疲劳" +
-            //         $"\n击伤时：施加{3 + 2 * dj}减甲" +
+            //         $"\n击伤时：施加{3 + 2 * dj}破甲" +
             //         $"\n每携带1金，层数+1",
             //     withinPool:                 false,
             //     cast:                       async d =>
@@ -2360,7 +2360,7 @@ public class SkillCategory : Category<SkillEntry>
             //     skillTypeComposite:         SkillType.Exhaust,
             //     castDescription:            (j, dj, costResult, castResult) =>
             //         $"疲劳" +
-            //         $"\n获得护甲时/施加减甲时：额外+{3 + dj}",
+            //         $"\n获得护甲时/施加破甲时：额外+{3 + dj}",
             //     cost:                       CostResult.ChannelFromDj(dj => 5 - 2 * dj),
             //     costDescription:            CostDescription.ChannelFromDj(dj => 5 - 2 * dj),
             //     withinPool:                 false,
@@ -2539,7 +2539,7 @@ public class SkillCategory : Category<SkillEntry>
             //     costDescription:            CostDescription.ManaFromValue(1),
             //     castDescription:            (j, dj, costResult, castResult) =>
             //         $"奇偶：" +
-            //         $"施加{8 + 2 * dj}减甲".ApplyOdd(castResult) +
+            //         $"施加{8 + 2 * dj}破甲".ApplyOdd(castResult) +
             //         $"/" +
             //         $"锋锐+{1 + dj}".ApplyEven(castResult),
             //     withinPool:                 false,
@@ -2559,7 +2559,7 @@ public class SkillCategory : Category<SkillEntry>
             //     wuXing:                     WuXing.Jin,
             //     jingJieBound:               JingJie.YuanYing2HuaShen,
             //     castDescription:            (j, dj, costResult, castResult) =>
-            //         $"每1柔韧，施加2减甲",
+            //         $"每1柔韧，施加2破甲",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
@@ -3142,7 +3142,7 @@ public class SkillCategory : Category<SkillEntry>
             //     skillTypeComposite:         SkillType.Deplete,
             //     cost:                       CostResult.ChannelFromValue(2),
             //     costDescription:            CostDescription.ChannelFromValue(2),
-            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n下次受到攻击时，对对方施加等量减甲",
+            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n下次受到攻击时，对对方施加等量破甲",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
