@@ -583,6 +583,645 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
+            new(id:                                 "教学1",
+                description:                        "教学1",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物1")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetDHealth(-30);
+                    
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌1").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌1").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学2",
+                description:                        "教学2",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物2")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌2").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌2").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学3",
+                description:                        "教学3",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物3")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌3").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌3").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学4",
+                description:                        "教学4",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物4")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌4").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌4").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学5",
+                description:                        "教学5",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物5")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌5").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌5").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学6",
+                description:                        "教学6",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物6")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌6").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌6").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学7",
+                description:                        "教学7",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物7")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌7").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌7").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学8",
+                description:                        "教学8",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物8")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌8").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌8").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学9",
+                description:                        "教学9",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物9")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌9").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌9").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学10",
+                description:                        "教学10",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物10")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌10").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌10").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学11",
+                description:                        "教学11",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物11")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌11").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌11").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学12",
+                description:                        "教学12",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物12")));
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
+                                             "左边是自己最终血量\n" +
+                                             "右边是敌方最终血量\n" +
+                                             "当左边大于右边的时候主角将会胜利\n" +
+                                             "点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
+                    
+                    DialogPanelDescriptor R = new("请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.ClearDeck();
+                    EditorManager.FindEntity("玩家手牌12").TraversalCurrentSlots().Do(s =>
+                    {
+                        SkillEntry entry = s.Skill?.GetEntry();
+                        if (entry != null)
+                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                    });
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        EditorManager.FindEntity("玩家手牌12").TraversalCurrentSlots().Do(s =>
+                        {
+                            SkillEntry entry = s.Skill?.GetEntry();
+                            if (entry != null)
+                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                        });
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+                    
+                    return A;
+                }),
+
             #endregion
 
             #region Shop

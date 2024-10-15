@@ -83,6 +83,31 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
+            new(id: "序章",
+                envJingJie: JingJie.LianQi,
+                slotCount: 1,
+                gold: 0,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDescriptor[][]
+                {
+                    new RoomDescriptor[]
+                    {
+                        new DirectRoomDescriptor(0, "教学1"),
+                        new DirectRoomDescriptor(0, "教学2"),
+                        new DirectRoomDescriptor(0, "教学3"),
+                        new DirectRoomDescriptor(0, "教学4"),
+                        new DirectRoomDescriptor(0, "教学5"),
+                        new DirectRoomDescriptor(0, "教学6"),
+                        new DirectRoomDescriptor(0, "教学7"),
+                        new DirectRoomDescriptor(0, "教学8"),
+                        new DirectRoomDescriptor(0, "教学9"),
+                        new DirectRoomDescriptor(0, "教学10"),
+                        new DirectRoomDescriptor(0, "教学11"),
+                        new DirectRoomDescriptor(0, "教学12"),
+                    },
+                }),
+            
             new(id: "教程",
                 envJingJie: JingJie.LianQi,
                 slotCount: 1,
