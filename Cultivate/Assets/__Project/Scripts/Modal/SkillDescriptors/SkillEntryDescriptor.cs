@@ -34,6 +34,9 @@ public class SkillEntryDescriptor : ISkill
     public static SkillEntryDescriptor FromEntry(SkillEntry entry)
         => new(entry: entry);
 
+    public static SkillEntryDescriptor FromName(string name)
+        => new(entry: SkillEntry.FromName(name));
+
     public static SkillEntryDescriptor FromPredJingJie(Predicate<SkillEntry> pred, JingJie? jingJie)
         => new(pred: pred, jingJie: jingJie);
     

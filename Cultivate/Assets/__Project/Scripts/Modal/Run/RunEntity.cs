@@ -26,6 +26,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     [SerializeField] [OptionalField(VersionAdded = 2)] private int _dHealth;
     public int GetDHealth() => _dHealth;
     public void SetDHealth(int dHealth) => _dHealth = dHealth;
+    public void SetHealthByModifyingDHealth(int finalHealth) => _dHealth = finalHealth - _baseHealth;
 
     public int GetFinalHealth() => _baseHealth + _dHealth;
     public BoundedInt GetFinalHealthBounded() => new(GetFinalHealth());

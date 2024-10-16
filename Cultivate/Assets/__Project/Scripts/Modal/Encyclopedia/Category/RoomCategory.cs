@@ -589,12 +589,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物1")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物1"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌1");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -606,12 +609,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
-                    RunManager.Instance.Environment.Home.SetDHealth(-30);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌1").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -621,7 +623,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌1").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -645,12 +647,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物2")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物2"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌2");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -662,9 +667,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌2").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -674,7 +681,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌2").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -698,12 +705,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物3")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物3"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌3");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -715,9 +725,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌3").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -727,7 +739,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌3").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -751,12 +763,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物4")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物4"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌4");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -768,9 +783,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌4").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -780,7 +797,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌4").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -804,12 +821,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物5")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物5"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌5");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -821,9 +841,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌5").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -833,7 +855,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌5").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -857,12 +879,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物6")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物6"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌6");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -874,9 +899,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌6").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -886,7 +913,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌6").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -910,12 +937,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物7")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物7"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌7");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -927,9 +957,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌7").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -939,7 +971,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌7").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -963,12 +995,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物8")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物8"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌8");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -980,9 +1015,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌8").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -992,7 +1029,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌8").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -1016,12 +1053,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物9")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物9"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌9");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -1033,9 +1073,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌9").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -1045,7 +1087,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌9").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -1069,12 +1111,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物10")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物10"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌10");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -1086,9 +1131,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌10").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -1098,7 +1145,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌10").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -1122,12 +1169,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物11")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物11"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌11");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -1139,9 +1189,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌11").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -1151,7 +1203,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌11").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
@@ -1175,12 +1227,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattlePanelDescriptor A = new(RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物12")));
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物12"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌12");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromEntry("0003"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
                                              "左边是自己最终血量\n" +
                                              "右边是敌方最终血量\n" +
@@ -1192,9 +1247,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor R = new("请重新尝试教学");
                     R[0].SetSelect(option => A);
                     
-                    RunManager.Instance.Environment.Home.SetSlotCount(1);
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    
                     RunManager.Instance.Environment.ClearDeck();
-                    EditorManager.FindEntity("玩家手牌12").TraversalCurrentSlots().Do(s =>
+                    playerTemplate.TraversalCurrentSlots().Do(s =>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
@@ -1204,7 +1261,7 @@ public class RoomCategory : Category<RoomEntry>
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        EditorManager.FindEntity("玩家手牌12").TraversalCurrentSlots().Do(s =>
+                        playerTemplate.TraversalCurrentSlots().Do(s =>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)

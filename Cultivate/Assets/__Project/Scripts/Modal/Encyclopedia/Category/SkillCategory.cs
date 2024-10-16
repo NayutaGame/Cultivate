@@ -31,41 +31,6 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     await d.GainBuffProcedure("灵气");
                 }),
-            
-            new(id:                         "0002",
-                name:                       "冲撞",
-                wuXing:                     null,
-                jingJieBound:               JingJie.LianQiOnly,
-                skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"4攻".ApplyAttack(),
-                withinPool:                 false,
-                cast:                       async d =>
-                {
-                    await d.AttackProcedure(4);
-                }),
-            
-            new(id:                         "0003",
-                name:                       "点水",
-                wuXing:                     WuXing.Shui,
-                jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack | SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"{Fib.ToValue(3 + dj) * 2}攻".ApplyAttack() + " 吸血".ApplyHeal(),
-                withinPool:                 false,
-                cast:                       async d =>
-                {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.SrcSkill) return;
-                            d.LifeSteal = true;
-                        });
-
-                    await d.AttackProcedure(Fib.ToValue(3 + d.Dj) * 2,
-                        closures: new [] { closure });
-                }),
 
             #endregion
 
@@ -2129,6 +2094,45 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async d =>
                 {
                     await d.GiveBuffProcedure("内伤", 3);
+                }),
+
+            #endregion
+            
+            #region 教程
+            
+            new(id:                         "0701",
+                name:                       "冲撞",
+                wuXing:                     null,
+                jingJieBound:               JingJie.LianQiOnly,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"4攻".ApplyAttack(),
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    await d.AttackProcedure(4);
+                }),
+            
+            new(id:                         "0702",
+                name:                       "点水",
+                wuXing:                     WuXing.Shui,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Attack | SkillType.Health,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{Fib.ToValue(3 + dj) * 2}攻".ApplyAttack() + " 吸血".ApplyHeal(),
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
+                            d.LifeSteal = true;
+                        });
+
+                    await d.AttackProcedure(Fib.ToValue(3 + d.Dj) * 2,
+                        closures: new [] { closure });
                 }),
 
             #endregion
