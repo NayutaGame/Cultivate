@@ -2,6 +2,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GuideView : MonoBehaviour
 {
@@ -11,12 +12,22 @@ public class GuideView : MonoBehaviour
     public void SetAddress(Address address)
     {
         _address = address;
+        _button.onClick.RemoveAllListeners();
+        _button.onClick.AddListener(ButtonClick);
     }
 
     [SerializeField] private TMP_Text _comment;
     [SerializeField] private RectTransform _cursor;
+    [SerializeField] private Button _button;
 
     private Tween _handle;
+
+    private void ButtonClick()
+    {
+        RunEnvironment env = RunManager.Instance.Environment;
+        env.ReceiveSignalProcedure(new ConfirmGuideSignal());
+        CanvasManager.Instance.RunCanvas.Refresh();
+    }
     
     public void Refresh()
     {
@@ -30,9 +41,17 @@ public class GuideView : MonoBehaviour
             return;
         }
 
-        if (guide is EquipGuide equipGuide)
+        if (guide is ConfirmGuide confirmGuide)
         {
-            _comment.text = equipGuide.GetComment();
+            _comment.text = guide.GetComment();
+            _cursor.gameObject.SetActive(false);
+            _button.gameObject.SetActive(true);
+        }
+        else if (guide is EquipGuide equipGuide)
+        {
+            _comment.text = guide.GetComment();
+            _cursor.gameObject.SetActive(true);
+            _button.gameObject.SetActive(false);
 
             bool complete = equipGuide.CheckComplete(out DeckIndex[] result);
             if (complete)
@@ -54,7 +73,9 @@ public class GuideView : MonoBehaviour
         }
         else if (guide is UnequipGuide unequipGuide)
         {
-            _comment.text = unequipGuide.GetComment();
+            _comment.text = guide.GetComment();
+            _cursor.gameObject.SetActive(true);
+            _button.gameObject.SetActive(false);
             
             bool complete = unequipGuide.CheckComplete(out DeckIndex from);
             if (complete)
@@ -75,7 +96,9 @@ public class GuideView : MonoBehaviour
         }
         else if (guide is MergeGuide mergeGuide)
         {
-            _comment.text = mergeGuide.GetComment();
+            _comment.text = guide.GetComment();
+            _cursor.gameObject.SetActive(true);
+            _button.gameObject.SetActive(false);
 
             bool complete = mergeGuide.CheckComplete(out DeckIndex[] result);
             if (complete)
@@ -97,7 +120,9 @@ public class GuideView : MonoBehaviour
         }
         else if (guide is ClickBattleGuide clickBattleGuide)
         {
-            _comment.text = clickBattleGuide.GetComment();
+            _comment.text = guide.GetComment();
+            _cursor.gameObject.SetActive(true);
+            _button.gameObject.SetActive(false);
             
             // Vector2? position = clickBattleGuide.GetPosition();
             // if (position.HasValue)

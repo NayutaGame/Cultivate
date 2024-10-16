@@ -1,13 +1,10 @@
 
 public class UnequipGuide : Guide
 {
-    private string _comment;
-    public string GetComment() => _comment;
     private SkillEntryDescriptor _from;
 
-    public UnequipGuide(string comment, SkillEntryDescriptor from)
+    public UnequipGuide(string comment, SkillEntryDescriptor from) : base(comment)
     {
-        _comment = comment;
         _from = from;
     }
 

@@ -596,6 +596,9 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
+                        new ConfirmGuide("左边是自己最终血量\n" +
+                                         "右边是敌方最终血量\n" +
+                                         "当左边大于右边的时候主角将会胜利\n"),
                         new EquipGuide("将卡牌置入战斗区",
                             SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
                         new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +

@@ -1,14 +1,11 @@
 
 public class MergeGuide : Guide
 {
-    private string _comment;
-    public string GetComment() => _comment;
     private SkillEntryDescriptor _from;
     private SkillEntryDescriptor _to;
 
-    public MergeGuide(string comment, SkillEntryDescriptor from, SkillEntryDescriptor to)
+    public MergeGuide(string comment, SkillEntryDescriptor from, SkillEntryDescriptor to) : base(comment)
     {
-        _comment = comment;
         _from = from;
         _to = to;
     }
