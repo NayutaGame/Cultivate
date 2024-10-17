@@ -10,4 +10,7 @@ public class EncounterRoomDescriptor : RoomDescriptor
     public EncounterRoomDescriptor(int ladder) : base(ladder)
     {
     }
+
+    public override SpriteEntry GetSprite()
+        => "EncounterRoomIcon";
 }

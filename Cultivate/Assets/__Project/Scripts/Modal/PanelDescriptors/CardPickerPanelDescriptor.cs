@@ -5,8 +5,9 @@ using CLLibrary;
 
 public class CardPickerPanelDescriptor : PanelDescriptor
 {
-    private string _detailedText;
-    public string GetDetailedText() => _detailedText;
+    private string _instruction;
+    public string GetContentText(int count)
+        => $"{_instruction}\n可以选择 {Bound.Start} ~ {Bound.End - 1} 张卡\n已选   {count}   张";
 
     private Bound _bound;
     public Bound Bound => _bound;
@@ -20,7 +21,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
 
     private RunSkillDescriptor _descriptor;
 
-    public CardPickerPanelDescriptor(string detailedText = null, Bound bound = null,
+    public CardPickerPanelDescriptor(string instruction = null, Bound bound = null,
         Func<List<object>, PanelDescriptor> confirmOperation = null,
         RunSkillDescriptor descriptor = null)
     {
@@ -29,7 +30,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
             { "Guide",                    GetGuideDescriptor },
         };
         
-        _detailedText = detailedText ?? "请选择卡";
+        _instruction = instruction ?? "请选择卡";
         _bound = bound ?? new Bound(1);
         _confirmOperation = confirmOperation;
         _descriptor = descriptor;
@@ -54,7 +55,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     public static CardPickerPanelDescriptor GetTemplate()
     {
         CardPickerPanelDescriptor template = new CardPickerPanelDescriptor(
-            detailedText:       "请提交一张二动牌",
+            instruction:       "请提交一张二动牌",
             bound:              new Bound(0, 2),
             descriptor:         new RunSkillDescriptor(skillTypeComposite: SkillType.Swift));
         

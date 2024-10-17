@@ -2,10 +2,11 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class MapPanel : Panel
 {
-    [SerializeField] private ListView StepItemListView;
+    [SerializeField] private ListView RoomListView;
     
     [SerializeField] private RectTransform BodyTransform;
     [SerializeField] private RectTransform BodyShowPivot;
@@ -18,7 +19,7 @@ public class MapPanel : Panel
     {
         base.Configure();
         
-        StepItemListView.SetAddress(new Address("Run.Environment.Map.CurrLevel.Rooms"));
+        RoomListView.SetAddress(new Address("Run.Environment.Map.CurrLevel.Rooms"));
 
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;
@@ -37,7 +38,7 @@ public class MapPanel : Panel
     public override void Refresh()
     {
         base.Refresh();
-        StepItemListView.Refresh();
+        RoomListView.Refresh();
     }
 
     private void OnEnable()
@@ -53,7 +54,7 @@ public class MapPanel : Panel
 
     private void Sync()
     {
-        StepItemListView.Refresh();
+        RoomListView.Refresh();
     }
 
     // private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)

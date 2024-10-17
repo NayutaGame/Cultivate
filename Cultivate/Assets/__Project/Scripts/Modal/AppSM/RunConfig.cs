@@ -11,7 +11,7 @@ public class RunConfig : Config
         CharacterProfile = runConfigForm.CharacterProfile;
         DifficultyProfile = runConfigForm.DifficultyProfile;
 
-        // MapEntry = "标准";
-        MapEntry = "序章";
+        MapEntry = "标准";
+        // MapEntry = "序章";
     }
 }

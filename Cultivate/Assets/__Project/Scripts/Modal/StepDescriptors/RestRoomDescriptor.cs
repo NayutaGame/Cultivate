@@ -9,4 +9,7 @@ public class RestRoomDescriptor : RoomDescriptor
     public RestRoomDescriptor(int ladder) : base(ladder)
     {
     }
+
+    public override SpriteEntry GetSprite()
+        => "RestRoomIcon";
 }

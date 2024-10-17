@@ -9,4 +9,7 @@ public class SuccessRoomDescriptor : RoomDescriptor
     public SuccessRoomDescriptor(int ladder) : base(ladder)
     {
     }
+
+    public override SpriteEntry GetSprite()
+        => "AscensionRoomIcon";
 }

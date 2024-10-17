@@ -3,15 +3,13 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CardPickerPanel : Panel
 {
-    public TMP_Text InfoText;
-    public TMP_Text StatusText;
-    public Button BackButton;
+    public TMP_Text TitleText;
+    public TMP_Text ContentText;
     public Button ConfirmButton;
 
     [NonSerialized] public ListView SkillListView;
@@ -68,8 +66,8 @@ public class CardPickerPanel : Panel
 
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
-        InfoText.text = d.GetDetailedText();
-        StatusText.text = $"可以选择 {d.Bound.Start} ~ {d.Bound.End - 1} 张卡\n已选   {SelectionCount}   张";
+        // TitleText.text = d.GetContentText();
+        ContentText.text = d.GetContentText(SelectionCount);
         ConfirmButton.interactable = d.Bound.Contains(SelectionCount);
     }
 

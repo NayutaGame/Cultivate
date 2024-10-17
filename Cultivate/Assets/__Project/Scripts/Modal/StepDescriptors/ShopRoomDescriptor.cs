@@ -21,6 +21,9 @@ public class ShopRoomDescriptor : RoomDescriptor
         return entry;
     }
 
+    public override SpriteEntry GetSprite()
+        => "ShopRoomIcon";
+
     public ShopRoomDescriptor(int ladder) : base(ladder)
     {
     }

@@ -24,7 +24,12 @@ public class AdventureRoomDescriptor : RoomDescriptor
         return entry;
     }
 
+    public override SpriteEntry GetSprite()
+        => "AdventureRoomIcon";
+
     public AdventureRoomDescriptor(int ladder) : base(ladder)
     {
     }
+    
+    
 }

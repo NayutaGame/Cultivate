@@ -12,6 +12,8 @@ public abstract class RoomDescriptor
     
     public abstract RoomEntry Draw(Map map, Room room);
 
+    public abstract SpriteEntry GetSprite();
+
     public int Ladder;
     public RoomDescriptor(int ladder)
     {

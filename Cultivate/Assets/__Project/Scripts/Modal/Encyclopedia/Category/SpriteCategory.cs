@@ -35,22 +35,6 @@ public class SpriteCategory : Category<SpriteEntry>
             new("悟道", "Images/NodeIcons/WuDao"),
             new("修炼", "Images/NodeIcons/XiuLian"),
             new("以物易物", "Images/NodeIcons/YiWuYiWu"),
-
-            // 演出用
-            new("同境界合成教学1", "Images/Cutscenes/同境界合成教学1"),
-            new("同境界合成教学2", "Images/Cutscenes/同境界合成教学2"),
-            new("同境界合成教学3", "Images/Cutscenes/同境界合成教学3"),
-            new("命元教学1", "Images/Cutscenes/命元教学1"),
-            new("命元教学2", "Images/Cutscenes/命元教学2"),
-            new("命元教学3", "Images/Cutscenes/命元教学3"),
-            new("战斗教学1", "Images/Cutscenes/战斗教学1"),
-            new("战斗教学2", "Images/Cutscenes/战斗教学2"),
-            new("战斗教学3", "Images/Cutscenes/战斗教学3"),
-            new("漫画1", "Images/Cutscenes/漫画1"),
-            new("漫画2", "Images/Cutscenes/漫画2"),
-            new("漫画3", "Images/Cutscenes/漫画3"),
-            new("漫画4", "Images/Cutscenes/漫画4"),
-            new("漫画5", "Images/Cutscenes/漫画5"),
             
             // Characters
             new("徐福", "Images/Characters/01"),
@@ -198,6 +182,16 @@ public class SpriteCategory : Category<SpriteEntry>
             
             new("普通阵法发光", "Images/Formation/Glow/Normal"),
             new("接近激活阵法发光", "Images/Formation/Glow/NearExcited"),
+            
+            // RoomIcons
+            new("AdventureRoomIcon", "Images/RoomIcons/AdventureRoomIcon"),
+            new("AscensionRoomIcon", "Images/RoomIcons/AscensionRoomIcon"),
+            new("BossRoomIcon", "Images/RoomIcons/BossRoomIcon"),
+            new("EliteRoomIcon", "Images/RoomIcons/EliteRoomIcon"),
+            new("UnderlingRoomIcon", "Images/RoomIcons/UnderlingRoomIcon"),
+            new("RestRoomIcon", "Images/RoomIcons/RestRoomIcon"),
+            new("ShopRoomIcon", "Images/RoomIcons/ShopRoomIcon"),
+            new("EncounterRoomIcon", "Images/RoomIcons/EncounterRoomIcon"),
         });
     }
 

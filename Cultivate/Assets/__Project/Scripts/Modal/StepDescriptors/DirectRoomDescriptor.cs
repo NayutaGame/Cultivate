@@ -12,4 +12,7 @@ public class DirectRoomDescriptor : RoomDescriptor
     {
         return _roomEntry;
     }
+
+    public override SpriteEntry GetSprite()
+        => "AdventureRoomIcon";
 }

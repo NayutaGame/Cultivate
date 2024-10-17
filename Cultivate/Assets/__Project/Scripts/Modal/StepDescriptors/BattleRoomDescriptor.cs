@@ -6,6 +6,8 @@ public class BattleRoomDescriptor : RoomDescriptor
     public int _baseGoldReward;
     public bool _isBoss;
 
+    private SpriteEntry _spriteEntry;
+
     public bool ShouldUpdateSlotCount => _slotCountBefore != _slotCountAfter;
 
     private static readonly bool[] IsBossTable = new bool[]
@@ -23,6 +25,13 @@ public class BattleRoomDescriptor : RoomDescriptor
         _slotCountAfter = slotCountAfter;
         _baseGoldReward = GoldRewardTable[ladder];
         _isBoss = IsBossTable[ladder];
+
+        if (ladder % 3 == 0)
+            _spriteEntry = "UnderlingRoomIcon";
+        else if (ladder % 3 == 1)
+            _spriteEntry = "EliteRoomIcon";
+        else
+            _spriteEntry = "BossRoomIcon";
     }
     
     public override RoomEntry Draw(Map map, Room room)
@@ -32,4 +41,7 @@ public class BattleRoomDescriptor : RoomDescriptor
         room.Details["Entity"] = entity;
         return "战斗";
     }
+
+    public override SpriteEntry GetSprite()
+        => _spriteEntry;
 }
