@@ -53,8 +53,8 @@ public class GuideView : MonoBehaviour
             _cursor.gameObject.SetActive(true);
             _button.gameObject.SetActive(false);
 
-            bool complete = equipGuide.CheckComplete(out DeckIndex[] result);
-            if (complete)
+            bool found = equipGuide.GetFlowOfIndices(out DeckIndex[] result);
+            if (!found)
                 return;
 
             Address start = result[0].ToAddress();

@@ -12,7 +12,7 @@ public class EquipGuide : Guide
 
     public override bool ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
     {
-        if (signal is FieldChangedSignal && CheckComplete(out _))
+        if (signal is FieldChangedSignal fieldChangedSignal && CheckComplete(fieldChangedSignal))
         {
             SetComplete(panelDescriptor);
             return true;
@@ -21,11 +21,16 @@ public class EquipGuide : Guide
         return false;
     }
 
-    public bool CheckComplete(out DeckIndex[] result)
+    public bool GetFlowOfIndices(out DeckIndex[] result)
     {
         result = new DeckIndex[2];
         result[1] = _to;
-        return !RunManager.Instance.Environment.FindDeckIndex(out result[0], _from, omit: new[] { _to });
+        return RunManager.Instance.Environment.FindDeckIndex(out result[0], _from, omit: new[] { _to });
+    }
+
+    public bool CheckComplete(FieldChangedSignal fieldChangedSignal)
+    {
+        return _from.Contains(RunManager.Instance.Environment.GetSkillAtDeckIndex(_to));
     }
 
     private void SetComplete(PanelDescriptor panelDescriptor)

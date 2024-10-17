@@ -200,7 +200,7 @@ public class DeckPanel : Panel
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(2, null);
         
         RunEnvironment env = RunManager.Instance.Environment;
-        env.ReceiveSignalProcedure(new FieldChangedSignal());
+        env.ReceiveSignalProcedure(new FieldChangedSignal(DeckIndex.FromHand(), DeckIndex.FromHand()));
         
         MergeSuccessStaging(from, to, d);
 
@@ -257,7 +257,7 @@ public class DeckPanel : Panel
         if (!result.Success)
             return;
         
-        env.ReceiveSignalProcedure(new FieldChangedSignal());
+        env.ReceiveSignalProcedure(new FieldChangedSignal(slot.ToDeckIndex(), DeckIndex.FromHand()));
 
         UnequipStaging(from);
 

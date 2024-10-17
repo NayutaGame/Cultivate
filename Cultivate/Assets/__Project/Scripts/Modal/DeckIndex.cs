@@ -41,4 +41,10 @@ public struct DeckIndex : IEquatable<DeckIndex>
         string r = _inField ? "战斗区" : "手牌区";
         return $"{r}#{_index}";
     }
+
+    public static DeckIndex FromField(int index)
+        => new(true, index);
+    
+    public static DeckIndex FromHand(int index = 0)
+        => new(false, index);
 }

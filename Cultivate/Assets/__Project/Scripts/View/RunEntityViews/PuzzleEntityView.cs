@@ -54,7 +54,7 @@ public class PuzzleEntityView : SimpleView
         if (!success)
             return;
         
-        env.ReceiveSignalProcedure(new FieldChangedSignal());
+        env.ReceiveSignalProcedure(new FieldChangedSignal(DeckIndex.FromHand(), slot.ToDeckIndex()));
 
         EquipStaging(from, to, isReplace);
         
@@ -96,7 +96,7 @@ public class PuzzleEntityView : SimpleView
         if (!success)
             return;
         
-        env.ReceiveSignalProcedure(new FieldChangedSignal());
+        env.ReceiveSignalProcedure(new FieldChangedSignal(fromSlot.ToDeckIndex(), toSlot.ToDeckIndex()));
 
         SwapStaging(from, to, isReplace);
 

@@ -2103,36 +2103,44 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0701",
                 name:                       "冲撞",
                 wuXing:                     null,
-                jingJieBound:               JingJie.LianQiOnly,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"4攻".ApplyAttack(),
+                    $"{3 + dj}攻".ApplyAttack(),
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    await d.AttackProcedure(4);
+                    await d.AttackProcedure(3 + d.Dj);
                 }),
             
             new(id:                         "0702",
-                name:                       "点水",
-                wuXing:                     WuXing.Shui,
+                name:                       "劈砍",
+                wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack | SkillType.Health,
+                skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{Fib.ToValue(3 + dj) * 2}攻".ApplyAttack() + " 吸血".ApplyHeal(),
+                    $"{4 + 2 * dj}攻".ApplyAttack(),
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.SrcSkill) return;
-                            d.LifeSteal = true;
-                        });
-
-                    await d.AttackProcedure(Fib.ToValue(3 + d.Dj) * 2,
-                        closures: new [] { closure });
+                    await d.AttackProcedure(4 + 2 * d.Dj);
+                }),
+            
+            new(id:                         "0703",
+                name:                       "冰弹",
+                wuXing:                     null,
+                jingJieBound:               JingJie.LianQiOnly,
+                skillTypeComposite:         SkillType.Attack,
+                cost:                       CostResult.ManaFromValue(2),
+                costDescription:            CostDescription.ManaFromValue(2),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{8 + dj}攻".ApplyAttack() +
+                    $"\n格挡+1",
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    await d.AttackProcedure(8 + d.Dj);
+                    await d.GainBuffProcedure("格挡");
                 }),
 
             #endregion

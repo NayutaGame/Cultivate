@@ -108,6 +108,9 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         EnvironmentChangedNeuron = new();
     }
     
+    public DeckIndex ToDeckIndex()
+        => DeckIndex.FromField(_index);
+    
     #region Deprecated
     
     public enum SkillSlotState { Hidden, Empty, Occupied, }

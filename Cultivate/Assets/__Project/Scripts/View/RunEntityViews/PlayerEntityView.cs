@@ -1,4 +1,5 @@
 
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerEntityView : SimpleView
@@ -47,7 +48,7 @@ public class PlayerEntityView : SimpleView
         if (!success)
             return;
         
-        env.ReceiveSignalProcedure(new FieldChangedSignal());
+        env.ReceiveSignalProcedure(new FieldChangedSignal(DeckIndex.FromHand(), slot.ToDeckIndex()));
 
         EquipStaging(from, to, isReplace);
         
@@ -89,7 +90,7 @@ public class PlayerEntityView : SimpleView
         if (!success)
             return;
         
-        env.ReceiveSignalProcedure(new FieldChangedSignal());
+        env.ReceiveSignalProcedure(new FieldChangedSignal(fromSlot.ToDeckIndex(), toSlot.ToDeckIndex()));
 
         SwapStaging(from, to, isReplace);
 

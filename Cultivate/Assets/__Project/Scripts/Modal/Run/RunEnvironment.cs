@@ -37,13 +37,13 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public void StartRunProcedure(RunDetails d)
     {
         InitSkillPool();
-
-        Map.Init();
         
         SetJingJieProcedure(Map.Entry._envJingJie);
         _home.SetSlotCount(Map.Entry._slotCount);
         SetDGoldProcedure(Map.Entry._gold);
         DrawSkillsProcedure(new(jingJie: Map.Entry._skillJingJie, count: Map.Entry._skillCount));
+
+        Map.Init();
         
         _closureDict.SendEvent(RunClosureDict.START_RUN, d);
     }
@@ -539,7 +539,24 @@ public class RunEnvironment : Addressable, RunClosureOwner
             return Hand[deckIndex.Index];
     }
 
-    public bool FindDeckIndex(out DeckIndex result, SkillEntryDescriptor d,
+    public bool GetDeckIndexOfSkill(out DeckIndex result, RunSkill toFind)
+    {
+        result = default;
+        
+        foreach (DeckIndex deckIndex in TraversalDeckIndices())
+        {
+            RunSkill skill = GetSkillAtDeckIndex(deckIndex);
+            if (skill == toFind)
+            {
+                result = deckIndex;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool FindDeckIndex(out DeckIndex result, SkillEntryDescriptor descriptor,
         bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
     {
         omit ??= Array.Empty<DeckIndex>();
@@ -551,7 +568,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
             if (omit.Contains(deckIndex))
                 continue;
             RunSkill skill = GetSkillAtDeckIndex(deckIndex);
-            if (skill != null && d.Contains(skill))
+            if (skill != null && descriptor.Contains(skill))
             {
                 result = deckIndex;
                 return true;
