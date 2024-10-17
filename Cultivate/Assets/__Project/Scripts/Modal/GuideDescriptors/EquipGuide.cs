@@ -30,7 +30,10 @@ public class EquipGuide : Guide
 
     public bool CheckComplete(FieldChangedSignal fieldChangedSignal)
     {
-        return _from.Contains(RunManager.Instance.Environment.GetSkillAtDeckIndex(_to));
+        RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(_to);
+        if (skill == null)
+            return true;
+        return _from.Contains(skill);
     }
 
     private void SetComplete(PanelDescriptor panelDescriptor)

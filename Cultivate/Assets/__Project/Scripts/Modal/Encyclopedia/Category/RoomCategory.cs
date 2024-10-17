@@ -583,8 +583,8 @@ public class RoomCategory : Category<RoomEntry>
             //         return A;
             //     }),
 
-            new(id:                                 "1教学1",
-                description:                        "1教学1",
+            new(id:                                 "教学1",
+                description:                        "教学1",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, room) =>
@@ -596,16 +596,18 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
-                        new ConfirmGuide("左边的-1自己最终血量" +
-                                         "\n右边的10是敌方最终血量" +
-                                         "\n现在对手会以10血战胜自己"),
-                        new EquipGuide("将劈砍置入战斗区",
+                        new ConfirmGuide("这个界面是准备界面" +
+                                         "\n徐福和对手准备进行战斗" +
+                                         "\n战斗开始之后，徐福和对手会依次使用准备区中的牌"),
+                        new ConfirmGuide("左边的-2是徐福最终血量" +
+                                         "\n右边的10是对手最终血量" +
+                                         "\n现在对手会以10血打败徐福"),
+                        new EquipGuide("将卡牌置入战斗区",
                             SkillEntryDescriptor.FromName("劈砍"), new DeckIndex(true, 0)),
-                        new ConfirmGuide("将劈砍置入后，左边大于右边" +
-                                         "\n表示，战斗的最终结果是主角以14血战胜对手" +
-                                         "\n此时主角将会胜利"),
-                        new ClickBattleGuide("确认了自己将获得胜利后，便可以点击开始战斗，进入战斗界面" +
-                                             "\n战斗界面中，玩家和怪物会依次使用战斗区布置好的牌",
+                        new ConfirmGuide("将劈砍置入后，左边血量大于右边。" +
+                                         "\n表示战斗的最终结果是徐福以4血战胜对手"),
+                        new ClickBattleGuide("徐福胜利后，便可以点击对决按钮，进入战斗界面" +
+                                             "\n战斗界面中，徐福和对手会依次使用战斗区布置好的牌",
                             new Vector2(965f, 913.5f)),
                     });
                     
@@ -657,14 +659,14 @@ public class RoomCategory : Category<RoomEntry>
 
                     A.SetGuideDescriptors(new Guide[]
                     {
-                        new ConfirmGuide("战斗结束后，气血将会回复到满" +
-                                         "\n现在徐福面临着下一个敌人"),
+                        new ConfirmGuide("战斗结束后，气血将会回复到满格" +
+                                         "\n现在徐福面临着下一个对手"),
                         new EquipGuide("现在将卡牌置入战斗区",
                             SkillEntryDescriptor.FromName("恋花"), DeckIndex.FromField(1)),
                         new ConfirmGuide("此时未能胜利是因为对方初始血量高于我们" +
-                                         "\n我们注意到恋花左上角蓝色的消耗标志，表示恋花需要消耗一点灵气"),
-                        new UnequipGuide("缺少灵气时，角色会消耗一回合用于聚集灵气" +
-                                         "\n战斗区放空时，角色也会聚集一点灵气" +
+                                         "\n我们注意到恋花左上角的消耗标志，表示恋花需要消耗一点灵气"),
+                        new ConfirmGuide("缺少灵气时，角色会消耗一回合用于聚集灵气"),
+                        new UnequipGuide("战斗区放空时，角色也会聚集一点灵气" +
                                          "\n所以我们可以将劈砍卸下",
                             SkillEntryDescriptor.FromName("劈砍")),
                         new ClickBattleGuide("此时虽然我们卡牌更少，但是不会缺少灵气，使得我们出牌更快" +
@@ -712,9 +714,11 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
-                        new ConfirmGuide("现在双方都使用恋花战斗" +
+                        new ConfirmGuide("恋花可以吸血，刚才的战斗，因为双方互相吸血" +
+                                         "\n使得战斗进行了很长的时间，所幸最终还是赢了"),
+                        new ConfirmGuide("现在双方都使用恋花战斗，而且都没有缺少灵气" +
                                          "\n伤害和吸血互相抵消，都打不死对方" +
-                                         "\n决斗会在120回合之后强制结束"),
+                                         "\n这种情况战斗会在120回合之后强制结束"),
                         new ConfirmGuide("结束时，双方都存活，但是因为对方气血值是15高于徐福，因此还是对方胜利"),
                         new EquipGuide("这次选择置入寻猎" +
                                        "\n虽然使用恋花的时候缺少灵气，但是寻猎可以赋予对方5破甲",
@@ -884,7 +888,7 @@ public class RoomCategory : Category<RoomEntry>
                             SkillEntryDescriptor.FromName("潜龙在渊"), DeckIndex.FromField(1)),
                         new ConfirmGuide("潜龙在渊可以提供一次闪避" +
                                          "\n使敌方下次攻击无效" +
-                                         "\n成长类的卡牌会越来越强，可以搭配防御牌将回合拖到成长牌变得强力的时候"),
+                                         "\n成长类的卡牌随着每次使用会越来越强，可以搭配防御牌将回合拖到成长牌变得强力的时候"),
                         new ClickBattleGuide("点击开始战斗吧",
                             new Vector2(965f, 913.5f)),
                     });
@@ -944,9 +948,9 @@ public class RoomCategory : Category<RoomEntry>
                             SkillEntryDescriptor.FromName("劈砍"), DeckIndex.FromField(0)),
                         new EquipGuide("将卡牌置入战斗区",
                             SkillEntryDescriptor.FromName("云袖"), DeckIndex.FromField(1)),
-                        new EquipGuide("失误了，徐福打出云袖，对方打出潜龙在渊" +
-                                       "\n徐福到下一回合打出的劈砍不巧被闪避掉了" +
-                                       "\n试试交换顺序",
+                        new ConfirmGuide("失误了，徐福打出云袖，对方打出潜龙在渊" +
+                                         "\n徐福到下一回合打出的劈砍不巧被闪避掉了"),
+                        new EquipGuide("试试交换顺序",
                             SkillEntryDescriptor.FromName("云袖"), DeckIndex.FromField(0)),
                         new ClickBattleGuide("现在劈砍可以正好击中对手" +
                                              "\n点击开始战斗吧",
@@ -1109,8 +1113,8 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
-            new(id:                                 "教学1",
-                description:                        "教学1",
+            new(id:                                 "教学10",
+                description:                        "教学10",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, room) =>
@@ -1122,13 +1126,24 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
+                        new ConfirmGuide("这题我会诶，血量一样，卡牌一样" +
+                                         "\n加上徐福还是先手，对手甚至还卡了费用"),
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
-                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
-                                             "左边是自己最终血量\n" +
-                                             "右边是敌方最终血量\n" +
-                                             "当左边大于右边的时候主角将会胜利\n" +
-                                             "点击开始战斗吧",
+                            SkillEntryDescriptor.FromName("明神"), DeckIndex.FromField(0)),
+                        new EquipGuide("将卡牌置入战斗区",
+                            SkillEntryDescriptor.FromName("小松"), DeckIndex.FromField(1)),
+                        new ConfirmGuide("不对啊，徐福怎么可能输" +
+                                         "\n是不是程序模拟错了"),
+                        new ConfirmGuide("看来阵法的知识，需要解释一下" +
+                                         "\n在对决中，根据战斗区的牌的成分，会形成不同的阵法" +
+                                         "\n敌方和徐福都有两张木属性的牌，形成了最基础的木灵阵"),
+                        new ConfirmGuide("己方阵法和敌方阵法分别在上面和下面可以看到"),
+                        new ConfirmGuide("激活了阵法后，战斗时就能获得一些奖励" +
+                                         "\n木灵阵就是第一张牌可以使用两次" +
+                                         "\n对方虽然花了一回合聚集灵气，但是小松使用了两次"),
+                        new EquipGuide("徐福已经完全懂了，调换一下卡牌顺序",
+                            SkillEntryDescriptor.FromName("小松"), DeckIndex.FromField(0)),
+                        new ClickBattleGuide("点击开始战斗吧",
                             new Vector2(965f, 913.5f)),
                     });
                     
@@ -1161,122 +1176,9 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetWinOperation(() =>
                     {
-                        return null;
-                    });
-                    
-                    return A;
-                }),
-
-            new(id:                                 "教学11",
-                description:                        "教学11",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物11"));
-                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌11");
-                    
-                    BattlePanelDescriptor A = new(enemyEntity);
-                    
-                    A.SetGuideDescriptors(new Guide[]
-                    {
-                        new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
-                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
-                                             "左边是自己最终血量\n" +
-                                             "右边是敌方最终血量\n" +
-                                             "当左边大于右边的时候主角将会胜利\n" +
-                                             "点击开始战斗吧",
-                            new Vector2(965f, 913.5f)),
-                    });
-                    
-                    DialogPanelDescriptor R = new("请重新尝试教学");
-                    R[0].SetSelect(option => A);
-                    
-                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
-                    
-                    RunManager.Instance.Environment.ClearDeck();
-                    playerTemplate.TraversalCurrentSlots().Do(s =>
-                    {
-                        SkillEntry entry = s.Skill?.GetEntry();
-                        if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
-                    });
-                    
-                    A.SetLoseOperation(() =>
-                    {
                         RunManager.Instance.Environment.ClearDeck();
-                        playerTemplate.TraversalCurrentSlots().Do(s =>
-                        {
-                            SkillEntry entry = s.Skill?.GetEntry();
-                            if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
-                        });
-                        A.ResetGuideIndex();
-                        return R;
-                    });
-                    
-                    A.SetWinOperation(() =>
-                    {
-                        return null;
-                    });
-                    
-                    return A;
-                }),
-
-            new(id:                                 "教学12",
-                description:                        "教学12",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物12"));
-                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌12");
-                    
-                    BattlePanelDescriptor A = new(enemyEntity);
-                    
-                    A.SetGuideDescriptors(new Guide[]
-                    {
-                        new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromName("冲撞"), new DeckIndex(true, 0)),
-                        new ClickBattleGuide("主角可以知道战斗的模拟结果\n" +
-                                             "左边是自己最终血量\n" +
-                                             "右边是敌方最终血量\n" +
-                                             "当左边大于右边的时候主角将会胜利\n" +
-                                             "点击开始战斗吧",
-                            new Vector2(965f, 913.5f)),
-                    });
-                    
-                    DialogPanelDescriptor R = new("请重新尝试教学");
-                    R[0].SetSelect(option => A);
-                    
-                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
-                    
-                    RunManager.Instance.Environment.ClearDeck();
-                    playerTemplate.TraversalCurrentSlots().Do(s =>
-                    {
-                        SkillEntry entry = s.Skill?.GetEntry();
-                        if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
-                    });
-                    
-                    A.SetLoseOperation(() =>
-                    {
-                        RunManager.Instance.Environment.ClearDeck();
-                        playerTemplate.TraversalCurrentSlots().Do(s =>
-                        {
-                            SkillEntry entry = s.Skill?.GetEntry();
-                            if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
-                        });
-                        A.ResetGuideIndex();
-                        return R;
-                    });
-                    
-                    A.SetWinOperation(() =>
-                    {
+                        RunManager.Instance.Environment.Home.SetSlotCount(3);
+                        RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(40);
                         return null;
                     });
                     
