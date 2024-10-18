@@ -297,7 +297,7 @@ public class RoomCategory : Category<RoomEntry>
                             descriptor: new(wuXing: WuXing.Tu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
                         // 易宝斋，得到2/4/8/16金钱，访问一次商店
-                        new ShopPanelDescriptor(nextJingJie).SetEnter(panelDescriptor =>
+                        new ShopPanelDescriptor(nextJingJie, "收藏家").SetEnter(panelDescriptor =>
                             {
                                 panelDescriptor.DefaultEnter(panelDescriptor);
                                 env.SetDGoldProcedure(2 * RoomDescriptor.GoldRewardTable[room.Ladder]);
@@ -1067,7 +1067,7 @@ public class RoomCategory : Category<RoomEntry>
                     
                     DialogPanelDescriptor A = new("你发现了一个黑市，这里有少量高境界卡牌。", "进去看一看");
                     
-                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie);
+                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie, "黑市");
                     B.SetEnter(panelDescriptor =>
                     {
                         CommodityListModel commodities = new CommodityListModel();
@@ -1101,7 +1101,7 @@ public class RoomCategory : Category<RoomEntry>
                 {
                     DialogPanelDescriptor A = new("你遇到了一位收藏家，他邀请你去看看他的藏品");
                     
-                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie);
+                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie, "收藏家");
 
                     A[0].SetSelect(option => B);
                     
@@ -1131,7 +1131,7 @@ public class RoomCategory : Category<RoomEntry>
                 {
                     DialogPanelDescriptor A = new("一阵噪音惊扰了你的休息，原来是灵韵宗的毕业季到了，学子们完成了学业后，纷纷将不要的技能打折卖出。");
                     
-                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie);
+                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie, "毕业季");
                     B.SetEnter(panelDescriptor =>
                     {
                         CommodityListModel commodities = new CommodityListModel();

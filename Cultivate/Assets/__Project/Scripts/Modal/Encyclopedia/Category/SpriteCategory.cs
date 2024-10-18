@@ -183,6 +183,17 @@ public class SpriteCategory : Category<SpriteEntry>
             new("普通阵法发光", "Images/Formation/Glow/Normal"),
             new("接近激活阵法发光", "Images/Formation/Glow/NearExcited"),
             
+            new("金灵阵", "Images/Formation/Icons/金灵阵"),
+            new("水灵阵", "Images/Formation/Icons/水灵阵"),
+            new("木灵阵", "Images/Formation/Icons/木灵阵"),
+            new("火灵阵", "Images/Formation/Icons/火灵阵"),
+            new("土灵阵", "Images/Formation/Icons/土灵阵"),
+            new("攻击阵", "Images/Formation/Icons/攻击阵"),
+            new("防御阵", "Images/Formation/Icons/防御阵"),
+            new("灵气阵", "Images/Formation/Icons/灵气阵"),
+            new("气血阵", "Images/Formation/Icons/气血阵"),
+            new("燃命阵", "Images/Formation/Icons/燃命阵"),
+            
             // RoomIcons
             new("AdventureRoomIcon", "Images/RoomIcons/AdventureRoomIcon"),
             new("AscensionRoomIcon", "Images/RoomIcons/AscensionRoomIcon"),
@@ -192,6 +203,13 @@ public class SpriteCategory : Category<SpriteEntry>
             new("RestRoomIcon", "Images/RoomIcons/RestRoomIcon"),
             new("ShopRoomIcon", "Images/RoomIcons/ShopRoomIcon"),
             new("EncounterRoomIcon", "Images/RoomIcons/EncounterRoomIcon"),
+            
+            // ShopIllustrations
+            new("以物易物", "Images/ShopIllustrations/以物易物"),
+            new("收藏家", "Images/ShopIllustrations/收藏家"),
+            new("毕业季", "Images/ShopIllustrations/毕业季"),
+            new("盲盒", "Images/ShopIllustrations/盲盒"),
+            new("黑市", "Images/ShopIllustrations/黑市"),
         });
     }
 

@@ -10,7 +10,10 @@ public class ShopPanelDescriptor : PanelDescriptor
     public CommodityListModel GetCommodities() => _commodities;
     public void SetCommodities(CommodityListModel commodities) => _commodities = commodities;
 
-    public ShopPanelDescriptor(JingJie jingJie)
+    private SpriteEntry _spriteEntry;
+    public SpriteEntry GetSprite() => _spriteEntry;
+
+    public ShopPanelDescriptor(JingJie jingJie, SpriteEntry spriteEntry)
     {
         _accessors = new()
         {
@@ -19,6 +22,7 @@ public class ShopPanelDescriptor : PanelDescriptor
         };
         
         _jingJie = jingJie;
+        _spriteEntry = spriteEntry;
     }
 
     public override void DefaultEnter(PanelDescriptor panelDescriptor)

@@ -50,6 +50,7 @@ public class Formation : StageClosureOwner, IFormationModel, Addressable
     public JingJie GetIncrementedJingJie(JingJie jingJie) => _runFormation.GetIncrementedJingJie(jingJie);
     public int GetRequirementFromJingJie(JingJie jingJie) => _runFormation.GetRequirementFromJingJie(jingJie);
     public Predicate<ISkill> GetContributorPred() => _runFormation.GetContributorPred();
+    public SpriteEntry GetSprite() => _runFormation.GetSprite();
 
     #endregion
 

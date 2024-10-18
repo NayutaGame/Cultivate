@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 51661091716083872}
   - component: {fileID: 4500435149914716080}
   m_Layer: 0
-  m_Name: DetailedTextRef
+  m_Name: ContentTextRef
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 1232226013006756532}
   - component: {fileID: 2603282283811107058}
   m_Layer: 0
-  m_Name: CardsRef
+  m_Name: ListViewRef
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -540,7 +540,7 @@ GameObject:
   - component: {fileID: 5875548607656818426}
   - component: {fileID: 8547782225459925130}
   m_Layer: 0
-  m_Name: DetailedText
+  m_Name: ContentText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -674,6 +674,10 @@ PrefabInstance:
     - target: {fileID: 2110307976924435871, guid: 1bbc6e5a367654148bb79a08a91474ae, type: 3}
       propertyPath: m_Name
       value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191272646116477029, guid: 1bbc6e5a367654148bb79a08a91474ae, type: 3}
+      propertyPath: m_text
+      value: "\u786E\u8BA4\u9009\u62E9"
       objectReference: {fileID: 0}
     - target: {fileID: 5795333747399418298, guid: 1bbc6e5a367654148bb79a08a91474ae, type: 3}
       propertyPath: m_Pivot.x

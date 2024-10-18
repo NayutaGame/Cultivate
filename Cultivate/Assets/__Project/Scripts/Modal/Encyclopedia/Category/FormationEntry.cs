@@ -65,6 +65,7 @@ public class FormationEntry : IFormationModel, Addressable
     public JingJie GetIncrementedJingJie(JingJie jingJie) => _formationGroupEntry.GetIncrementedJingJie(jingJie);
     public int GetRequirementFromJingJie(JingJie jingJie) => _formationGroupEntry.GetRequirementFromJingJie(jingJie);
     public Predicate<ISkill> GetContributorPred() => _formationGroupEntry.GetContributorPred();
+    public SpriteEntry GetSprite() => _formationGroupEntry.GetSprite();
 
     #endregion
 

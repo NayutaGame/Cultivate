@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ShopPanel : Panel
 {
     public ListView CommodityListView;
-
+    public Image Illustration;
     public Button ExitButton;
 
     private Address _address;
@@ -38,6 +38,9 @@ public class ShopPanel : Panel
     {
         base.Refresh();
         CommodityListView.Refresh();
+
+        ShopPanelDescriptor pd = _address.Get<ShopPanelDescriptor>();
+        Illustration.sprite = pd.GetSprite().Sprite;
     }
 
     private void BuySkill(InteractBehaviour ib, PointerEventData eventData)

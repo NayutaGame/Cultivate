@@ -29,6 +29,8 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
     private ListModel<MarkModel> _markListModel;
     public ListModel<MarkModel> GetMarks() => _markListModel;
 
+    private SpriteEntry _spriteEntry;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public FormationGroupEntry(string id, int order, Predicate<ISkill> contributorPred, string progressDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(id)
@@ -57,6 +59,8 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
         _markListModel = new();
         _markListModel.AddRange(_subFormationEntries.Traversal().Map(e =>
             new MarkModel(e.GetRequirement(), e.GetJingJie().ToString())));
+
+        _spriteEntry = id;
     }
 
     public FormationEntry FirstActivatedFormation(int progress)
@@ -88,6 +92,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
     }
     public int GetRequirementFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetRequirement();
     public Predicate<ISkill> GetContributorPred() => _contributorPred;
+    public SpriteEntry GetSprite() => _spriteEntry;
 
     #endregion
 

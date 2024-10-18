@@ -12,4 +12,5 @@ public interface IFormationModel : IMarkedSliderModel
     JingJie GetIncrementedJingJie(JingJie jingJie);
     int GetRequirementFromJingJie(JingJie jingJie);
     Predicate<ISkill> GetContributorPred();
+    SpriteEntry GetSprite();
 }
