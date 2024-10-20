@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b50ea6cc1f9bb3846a10de8ddc32eb14
+guid: 3cc5b880806654f47a12b32629d34092
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,18 +93,18 @@ ScriptedImporter:
     spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
-  - name: LabelTextRef
+  - name: TextRef
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 95
-      width: 100
-      height: 29
-    spriteID: 111530f9e6e1d1445bdf62ef7853b32b
+      x: 1084
+      y: 4
+      width: 174
+      height: 32
+    spriteID: ac4cfba6bd83c124a87d62e327939643
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -113,8 +113,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 4, y: 95}
-    spritePosition: {x: 63, y: 29}
+    uvTransform: {x: 1084, y: 4}
+    spritePosition: {x: 118, y: 21}
   - name: NumberTextRef
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -122,11 +122,11 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 983
+      x: 1604
       y: 4
-      width: 35
-      height: 23
-    spriteID: 72b8b0d1c88ca8b4d910d100d3ce35b0
+      width: 34
+      height: 22
+    spriteID: 7b7ecc8f7924f3448a5598cf201796ea
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -135,20 +135,20 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 983, y: 4}
-    spritePosition: {x: 566, y: 30}
-  - name: Handle
+    uvTransform: {x: 1604, y: 4}
+    spritePosition: {x: 607, y: 25}
+  - name: SliderKnot
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 983
-      y: 35
-      width: 26
-      height: 26
-    spriteID: ae472f2c1c79ae24eab76e5b41398176
+      x: 4
+      y: 85
+      width: 31
+      height: 36
+    spriteID: c5731248ff0c51f4d91e77609d0d453d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -157,20 +157,20 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 983, y: 35}
-    spritePosition: {x: 892, y: 28}
-  - name: Slider
+    uvTransform: {x: 4, y: 85}
+    spritePosition: {x: 895, y: 17}
+  - name: Rail
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 112
-      y: 95
-      width: 325
-      height: 3
-    spriteID: 73d32a4709e91b14aa0c4a06f9c8ade7
+      x: 1266
+      y: 4
+      width: 330
+      height: 4
+    spriteID: 98c80ca5cd507eb4d9777d4df150f17a
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -179,9 +179,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 112, y: 95}
-    spritePosition: {x: 623, y: 40}
-  - name: Background
+    uvTransform: {x: 1266, y: 4}
+    spritePosition: {x: 652, y: 34}
+  - name: Background8
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -190,9 +190,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 971
-      height: 83
-    spriteID: b101e6ba514ddd3448df677fc7eaac8c
+      width: 1072
+      height: 73
+    spriteID: 9d172d13a2ae45c4b958dd87a1ef79aa
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -277,13 +277,13 @@ ScriptedImporter:
   resliceFromLayer: 0
   mosaicPSDLayers: []
   rigPSDLayers:
-  - name: LabelTextRef
-    spriteName: LabelTextRef
+  - name: TextRef
+    spriteName: TextRef
     isGroup: 0
     parentIndex: -1
-    spriteID: 111530f9e6e1d1445bdf62ef7853b32b
-    layerID: 7
-    mosaicPosition: {x: 4, y: 95}
+    spriteID: ac4cfba6bd83c124a87d62e327939643
+    layerID: 18
+    mosaicPosition: {x: 1084, y: 4}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -291,42 +291,52 @@ ScriptedImporter:
     spriteName: NumberTextRef
     isGroup: 0
     parentIndex: -1
-    spriteID: 72b8b0d1c88ca8b4d910d100d3ce35b0
-    layerID: 6
-    mosaicPosition: {x: 983, y: 4}
+    spriteID: 7b7ecc8f7924f3448a5598cf201796ea
+    layerID: 16
+    mosaicPosition: {x: 1604, y: 4}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Handle
-    spriteName: Handle
+  - name: SliderKnot
+    spriteName: SliderKnot
     isGroup: 0
     parentIndex: -1
-    spriteID: ae472f2c1c79ae24eab76e5b41398176
-    layerID: 5
-    mosaicPosition: {x: 983, y: 35}
+    spriteID: c5731248ff0c51f4d91e77609d0d453d
+    layerID: 14
+    mosaicPosition: {x: 4, y: 85}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Slider
-    spriteName: Slider
+  - name: Rail
+    spriteName: Rail
     isGroup: 0
     parentIndex: -1
-    spriteID: 73d32a4709e91b14aa0c4a06f9c8ade7
-    layerID: 4
-    mosaicPosition: {x: 112, y: 95}
+    spriteID: 98c80ca5cd507eb4d9777d4df150f17a
+    layerID: 13
+    mosaicPosition: {x: 1266, y: 4}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Background
-    spriteName: Background
+  - name: Background8
+    spriteName: Background8
     isGroup: 0
     parentIndex: -1
-    spriteID: b101e6ba514ddd3448df677fc7eaac8c
-    layerID: 3
+    spriteID: 9d172d13a2ae45c4b958dd87a1ef79aa
+    layerID: 12
     mosaicPosition: {x: 4, y: 4}
     flatten: 0
     isImported: 1
     isVisible: 1
+  - name: "\u56FE\u5C42 563"
+    spriteName: 
+    isGroup: 0
+    parentIndex: -1
+    spriteID: bfe7cef161731bd4190baa1b98fa7019
+    layerID: 38
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 0
   sharedRigPSDLayers: []
   pSDLayerImportSetting: []
   generateGOHierarchy: 0

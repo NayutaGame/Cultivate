@@ -7,10 +7,11 @@ using UnityEngine.UI;
 public class SettingsToggle : SimpleView
 {
     [SerializeField] private TMP_Text LabelText;
-    [SerializeField] private Button Button;
+    [SerializeField] private Button FillRect;
 
-    [SerializeField] private CanvasGroup OpenSign;
-    [SerializeField] private CanvasGroup ClosedSign;
+    [SerializeField] private Transform FillRectTransform;
+    [SerializeField] private Transform OnTransform;
+    [SerializeField] private Transform OffTransform;
 
     private ToggleModel _model;
 
@@ -29,9 +30,9 @@ public class SettingsToggle : SimpleView
 
         if (LabelText != null)
             LabelText.text = _model.Name;
-
-        Button.onClick.RemoveAllListeners();
-        Button.onClick.AddListener(Toggle);
+        
+        FillRect.onClick.RemoveAllListeners();
+        FillRect.onClick.AddListener(Toggle);
     }
 
     private Tween _handle;
@@ -40,13 +41,10 @@ public class SettingsToggle : SimpleView
     {
         _model.Toggle();
 
-        float on = _model.Value ? 1 : 0;
+        bool on = _model.Value;
 
-        if (_handle != null)
-            _handle.Kill();
-        _handle = DOTween.Sequence().SetAutoKill()
-            .Append(OpenSign.DOFade(on, 0.15f))
-            .Append(ClosedSign.DOFade(1 - on, 0.15f));
-        _handle.Restart();
+        _handle?.Kill();
+        _handle = FillRectTransform.DOMove(on ? OnTransform.position : OffTransform.position, 0.15f).SetEase(Ease.InOutQuad);
+        _handle.SetAutoKill().Restart();
     }
 }
