@@ -19,6 +19,15 @@ public class BattleRoomDescriptor : RoomDescriptor
         false, false, true,
     };
 
+    private static readonly string[] SpriteTable = new string[]
+    {
+        "UnderlingRoomIcon", /*"EliteRoomIcon",*/ "BossRoomIcon",
+        "UnderlingRoomIcon", "EliteRoomIcon", "BossRoomIcon",
+        "UnderlingRoomIcon", "EliteRoomIcon", "BossRoomIcon",
+        "UnderlingRoomIcon", "EliteRoomIcon", "BossRoomIcon",
+        "UnderlingRoomIcon", "EliteRoomIcon", "BossRoomIcon",
+    };
+
     public BattleRoomDescriptor(int ladder, int slotCountBefore, int slotCountAfter) : base(ladder)
     {
         _slotCountBefore = slotCountBefore;
@@ -26,12 +35,7 @@ public class BattleRoomDescriptor : RoomDescriptor
         _baseGoldReward = GoldRewardTable[ladder];
         _isBoss = IsBossTable[ladder];
 
-        if (ladder % 3 == 0)
-            _spriteEntry = "UnderlingRoomIcon";
-        else if (ladder % 3 == 1)
-            _spriteEntry = "EliteRoomIcon";
-        else
-            _spriteEntry = "BossRoomIcon";
+        _spriteEntry = SpriteTable[ladder];
     }
     
     public override RoomEntry Draw(Map map, Room room)

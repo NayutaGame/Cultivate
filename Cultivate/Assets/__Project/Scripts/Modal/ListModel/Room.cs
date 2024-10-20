@@ -12,6 +12,7 @@ public class Room
 
     private RoomState _state;
     public RoomState State => _state;
+    public void SetState(RoomState state) => _state = state;
 
     private RoomDescriptor _descriptor;
     public RoomDescriptor Descriptor => _descriptor;

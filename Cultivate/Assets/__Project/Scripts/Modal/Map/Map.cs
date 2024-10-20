@@ -71,6 +71,7 @@ public class Map : Addressable
 
     public void NextStep()
     {
+        CurrRoom.SetState(Room.RoomState.Past);
         _stepIndex++;
         
         CreatePanel();
@@ -87,6 +88,7 @@ public class Map : Addressable
         if (!CurrRoom.HasEntry())
             CurrRoom.DrawEntry(this);
         CurrRoom.CreatePanel(this);
+        CurrRoom.SetState(Room.RoomState.Curr);
     }
 
     public void InsertRoom(RoomEntry roomEntry)

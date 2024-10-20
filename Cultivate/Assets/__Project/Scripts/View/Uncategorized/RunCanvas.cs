@@ -53,9 +53,6 @@ public class RunCanvas : Panel
         DeckPanel.Configure();
         MapPanel.Configure();
 
-        // MapButton.onClick.RemoveAllListeners();
-        // MapButton.onClick.AddListener(() => LegacyMapPanel.ToggleShowing());
-
         ReservedLayer.Configure();
         TopBar.Configure();
 
@@ -87,6 +84,8 @@ public class RunCanvas : Panel
     {
         PanelS oldState = PanelSM.State;
         PanelS newState = panelS;
+        
+        MapPanel.Refresh();
 
         if (oldState.Equals(newState))
         {
@@ -126,6 +125,8 @@ public class RunCanvas : Panel
     {
         PanelS oldState = PanelSM.State;
         PanelS newState = panelS;
+        
+        MapPanel.Refresh();
 
         if (oldState.Equals(newState))
         {
@@ -133,7 +134,7 @@ public class RunCanvas : Panel
                 PanelSM.GetCurrPanel().Animator.SetState(1);
             return;
         }
-
+        
         if (PanelSM[oldState] != null)
             PanelSM[oldState].Animator.SetState(0);
         else

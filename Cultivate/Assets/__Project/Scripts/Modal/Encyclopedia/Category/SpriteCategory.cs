@@ -210,6 +210,10 @@ public class SpriteCategory : Category<SpriteEntry>
             new("毕业季", "Images/ShopIllustrations/毕业季"),
             new("盲盒", "Images/ShopIllustrations/盲盒"),
             new("黑市", "Images/ShopIllustrations/黑市"),
+            
+            // FaceIcons
+            new("Afraid", "Images/FaceIcons/Afraid"),
+            new("Smirk", "Images/FaceIcons/Smirk"),
         });
     }
 

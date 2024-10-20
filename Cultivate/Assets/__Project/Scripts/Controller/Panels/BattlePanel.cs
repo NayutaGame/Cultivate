@@ -24,9 +24,6 @@ public class BattlePanel : Panel
     [SerializeField] public Color WinColor;
     [SerializeField] public Color LoseColor;
 
-    [SerializeField] public Sprite SmirkSprite;
-    [SerializeField] public Sprite AfraidSprite;
-
     private Address _address;
 
     public override void Configure()
@@ -74,7 +71,7 @@ public class BattlePanel : Panel
     private void OnEnable()
     {
         ReactionDict ??= new Dictionary<string, Sprite>()
-            { { RunEntity.NORMAL_KEY, null }, { RunEntity.SMIRK_KEY, SmirkSprite }, { RunEntity.AFRAID_KEY, AfraidSprite }, };
+            { { RunEntity.NORMAL_KEY, null }, { RunEntity.SMIRK_KEY, Encyclopedia.SpriteCategory["Smirk"].Sprite }, { RunEntity.AFRAID_KEY, Encyclopedia.SpriteCategory["Afraid"].Sprite }, };
         CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.BeginDragNeuron.Join(ReactionFromBeginDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.EndDragNeuron.Join(ReactionFromEndDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.DragNeuron.Join(ReactionFromDrag);
