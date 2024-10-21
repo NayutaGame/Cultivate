@@ -31,9 +31,9 @@ public class TimelineView : Singleton<TimelineView>
         foreach (var v in _views)
             ConfigureNeuron(v.GetComponent<InteractBehaviour>());
 
-        TotalCount = HomeSlots.Length;
+        // TotalCount = HomeSlots.Length;
         FutureCount = HomeSlots.Length - (IndexOfCurr + 1);
-        PastCount = IndexOfCurr;
+        // PastCount = IndexOfCurr;
     }
 
     private void ConfigureNeuron(InteractBehaviour stageSkillIb)
