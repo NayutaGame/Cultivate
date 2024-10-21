@@ -53,7 +53,6 @@ public class ListView : SimpleView
         if (!IsInited())
             Init();
 
-        Model = Get<IListModel>();
         Sync();
     }
 
@@ -77,7 +76,8 @@ public class ListView : SimpleView
     {
         DisableAllItemBehaviours();
 
-        for (int i = 0; i < _model.Count(); i++)
+        Model = Get<IListModel>();
+        for (int i = 0; i < Model.Count(); i++)
             InsertItem(i, GetAddress().Append($"#{i}").Get<object>());
 
         Refresh();

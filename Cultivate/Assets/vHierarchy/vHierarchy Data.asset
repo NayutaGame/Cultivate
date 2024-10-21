@@ -15,7 +15,11 @@ MonoBehaviour:
   sceneDatas_byGuid:
     keys:
     - 904aff4e73af6d64ea5b862fb677488d
+    - 704b41a132fabce48a20e93c35ef590f
     values:
+    - goDatas_byGlobalId:
+        keys: []
+        values: []
     - goDatas_byGlobalId:
         keys: []
         values: []

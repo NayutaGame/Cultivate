@@ -1,12 +1,11 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Settings : Addressable
 {
-    private SettingsContentModel[] _options;
-    private int _index;
+    private SettingsTabListModel _tabs;
+    private SettingsTab _selectedTab;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -14,10 +13,12 @@ public class Settings : Addressable
     {
         _accessors = new()
         {
-            { "CurrentWidgets",                 () => GetCurrentContentModel().Widgets },
+            { "Tabs",                           () => _tabs },
+            { "CurrentWidgets",                 () => _selectedTab.Widgets },
         };
 
-        _options = new SettingsContentModel[]
+        _tabs = new();
+        _tabs.AddRange(new SettingsTab[]
         {
             new("综合", new WidgetListModel(new WidgetModel[]
             {
@@ -36,19 +37,14 @@ public class Settings : Addressable
                 new SliderModel("音效", 0, 100, true, AudioManager.SetSFXVolume),
                 new ButtonModel("推荐音量"),
             })),
-        };
-
-        _index = 0;
+        });
+        
+        ResetSelectedTab();
     }
 
-    public SettingsContentModel GetCurrentContentModel()
-        => _options[_index];
-
-    public void ChangeIndex(int i)
-    {
-        _index = i;
-    }
-
-    public string GetLabelForIndex(int i)
-        => _options[i].Name;
+    public SettingsTab GetSelectedTab() => _selectedTab;
+    public void SetSelectedTab(SettingsTab settingsTab) => _selectedTab = settingsTab;
+    public void ResetSelectedTab() => _selectedTab = _tabs.Count() > 0 ? _tabs[0] : null;
+    public bool IsSelectedTab(SettingsTab settingsTab) => settingsTab == _selectedTab;
+    public int FindIndexOfTab(SettingsTab settingsTab) => _tabs.IndexOf(settingsTab);
 }

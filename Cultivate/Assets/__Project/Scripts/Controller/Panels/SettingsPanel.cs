@@ -1,7 +1,7 @@
 
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SettingsPanel : Panel
@@ -10,16 +10,11 @@ public class SettingsPanel : Panel
     [SerializeField] private Image DarkCurtainImage;
     [SerializeField] private Button DarkCurtainButton;
 
-    [SerializeField] private ListView Widgets;
-    [SerializeField] private Transform WidgetsTransform;
-    [SerializeField] private CanvasGroup WidgetsCanvasGroup;
+    [SerializeField] private ListView WidgetListView;
+    [SerializeField] public Transform WidgetsTransform;
+    [SerializeField] public CanvasGroup WidgetsCanvasGroup;
 
-    [SerializeField] private Transform[] TabRectTransforms;
-    [SerializeField] private Button[] TabButtons;
-    [SerializeField] private TMP_Text[] TabLabels;
-
-    [SerializeField] private Transform CurrentTabTransform;
-    [SerializeField] private TMP_Text CurrentTabLabel;
+    [SerializeField] private ListView TabListView;
 
     [SerializeField] private Button ToTitleButton;
     [SerializeField] private Button ToDesktopButton;
@@ -56,17 +51,12 @@ public class SettingsPanel : Panel
         ToDesktopButton.onClick.AddListener(ToDesktop);
 
         Settings settings = _address.Get<Settings>();
-        settings.ChangeIndex(0);
+        settings.ResetSelectedTab();
+        
+        TabListView.SetAddress(_address.Append(".Tabs"));
+        TabListView.LeftClickNeuron.Join(ClickedTab);
 
-        for (int i = 0; i < TabButtons.Length; i++)
-        {
-            int index = i;
-            TabButtons[i].onClick.RemoveAllListeners();
-            TabButtons[i].onClick.AddListener(() => ClickedTab(index));
-            TabLabels[i].text = settings.GetLabelForIndex(i);
-        }
-
-        Widgets.SetPrefabProvider(model =>
+        WidgetListView.SetPrefabProvider(model =>
         {
             WidgetModel widgetModel = (WidgetModel)model;
             if (widgetModel is SliderModel)
@@ -79,14 +69,15 @@ public class SettingsPanel : Panel
                 return 3;
             return -1;
         });
-        Widgets.SetAddress(_address.Append(".CurrentWidgets"));
-        Widgets.Refresh();
+        WidgetListView.SetAddress(_address.Append(".CurrentWidgets"));
+        WidgetListView.Refresh();
     }
 
     public override void Refresh()
     {
         base.Refresh();
-        Widgets.Refresh();
+        TabListView.Refresh();
+        WidgetListView.Refresh();
     }
 
     private void Resume()
@@ -104,39 +95,9 @@ public class SettingsPanel : Panel
         AppManager.ExitGame();
     }
 
-    private Tween _handle;
-
-    private void ClickedTab(int index)
-    {
-        Settings settings = _address.Get<Settings>();
-        settings.ChangeIndex(index);
-
-        Widgets.SetAddress(_address.Append(".CurrentWidgets"));
-
-        _handle?.Kill();
-        _handle = TabChangedAnimation(index, settings.GetCurrentContentModel().Name);
-        _handle.Restart();
-    }
-
-    public Tween TabChangedAnimation(int index, string newLabel)
-    {
-        return DOTween.Sequence().SetAutoKill()
-            .Append(CurrentTabTransform.DOMove(TabRectTransforms[index].position, 0.15f))
-            .Join(DOTween.Sequence()
-                .Append(CurrentTabLabel.DOFade(0, 0.075f))
-                .AppendCallback(() => CurrentTabLabel.text = newLabel)
-                .Append(CurrentTabLabel.DOFade(1, 0.075f)))
-            .Join(DOTween.Sequence()
-                .Append(WidgetsCanvasGroup.DOFade(0.4f, 0.075f).SetEase(Ease.OutQuad))
-                .Join(WidgetsTransform.DOScale(0.9f, 0.075f))
-                .AppendCallback(Refresh)
-                .Append(WidgetsTransform.DOScale(1f, 0.075f))
-                .Join(WidgetsCanvasGroup.DOFade(1, 0.075f)).SetEase(Ease.InQuad));
-    }
-
     public override Tween ShowTween()
     {
-        return DOTween.Sequence().SetAutoKill()
+        return DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
             .Join(RectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CoreCanvasGroup.DOFade(1f, 0.15f))
@@ -145,10 +106,47 @@ public class SettingsPanel : Panel
 
     public override Tween HideTween()
     {
-        return DOTween.Sequence().SetAutoKill()
+        return DOTween.Sequence()
             .Join(RectTransform.DOScale(1.4f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CoreCanvasGroup.DOFade(0f, 0.15f))
             .Join(DarkCurtainImage.DOFade(0f, 0.15f))
             .AppendCallback(() => gameObject.SetActive(false));
+    }
+
+    private Tween _handle;
+
+    private void ClickedTab(InteractBehaviour toIb, PointerEventData d)
+    {
+        SettingsTab fromTab = AppManager.Instance.Settings.GetSelectedTab();
+        SettingsTab toTab = toIb.GetSimpleView().Get<SettingsTab>();
+
+        if (fromTab == toTab)
+            return;
+        
+        AppManager.Instance.Settings.SetSelectedTab(toTab);
+
+        
+        // Staging
+        SettingsTabView fromTabView = TabListView.ActivePool[AppManager.Instance.Settings.FindIndexOfTab(fromTab)]
+            .GetInteractBehaviour().GetCLView() as SettingsTabView;
+        SettingsTabView toTabView = toIb.GetCLView() as SettingsTabView;
+        
+        _handle?.Kill();
+        _handle = TabChangedAnimation(fromTabView, toTabView);
+        _handle.SetAutoKill().Restart();
+        
+        fromTabView.Unselect();
+        toTabView.Select();
+    }
+
+    public Tween TabChangedAnimation(SettingsTabView fromTabView, SettingsTabView toTabView)
+    {
+        return DOTween.Sequence()
+            .Join(DOTween.Sequence()
+                .Append(WidgetsCanvasGroup.DOFade(0.4f, 0.075f).SetEase(Ease.OutQuad))
+                .Join(WidgetsTransform.DOScale(0.9f, 0.075f))
+                .AppendCallback(() => WidgetListView.Sync())
+                .Append(WidgetsTransform.DOScale(1f, 0.075f))
+                .Join(WidgetsCanvasGroup.DOFade(1, 0.075f)).SetEase(Ease.InQuad));
     }
 }
