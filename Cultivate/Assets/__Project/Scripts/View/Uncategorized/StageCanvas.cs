@@ -8,7 +8,7 @@ public class StageCanvas : MonoBehaviour
 {
     public TMP_Text SpeedText;
     public Slider SpeedSlider;
-    public Button SkipButton;
+    // public Button SkipButton;
 
     [SerializeField] private StageEntityView HomeStageEntityView;
     [SerializeField] private StageEntityView AwayStageEntityView;
@@ -24,8 +24,8 @@ public class StageCanvas : MonoBehaviour
         SpeedSlider.onValueChanged.RemoveAllListeners();
         SpeedSlider.onValueChanged.AddListener(SpeedChanged);
 
-        SkipButton.onClick.RemoveAllListeners();
-        SkipButton.onClick.AddListener(Skip);
+        // SkipButton.onClick.RemoveAllListeners();
+        // SkipButton.onClick.AddListener(Skip);
 
         HomeStageEntityView.SetAddress(_address.Append(".Environment.Home"));
         AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));

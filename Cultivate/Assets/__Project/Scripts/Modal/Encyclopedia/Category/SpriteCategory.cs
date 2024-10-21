@@ -214,6 +214,10 @@ public class SpriteCategory : Category<SpriteEntry>
             // FaceIcons
             new("Afraid", "Images/FaceIcons/Afraid"),
             new("Smirk", "Images/FaceIcons/Smirk"),
+            
+            // ArmorIcons
+            new("ArmorIcon", "Images/ArmorIcons/ArmorIcon"),
+            new("FragileIcon", "Images/ArmorIcons/FragileIcon"),
         });
     }
 

@@ -50,6 +50,9 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     public Sprite[] CostIconSprites;
 
+    public TMP_FontAsset ArmorFontAsset;
+    public TMP_FontAsset FragileFontAsset;
+
     public Color GetWuXingColor(WuXing? wuXing)
     {
         if (wuXing == null)

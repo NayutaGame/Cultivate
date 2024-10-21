@@ -2,6 +2,7 @@
 using Renge.PPB;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class StageEntityView : SimpleView
@@ -10,7 +11,7 @@ public class StageEntityView : SimpleView
     [SerializeField] private ListView Buffs;
     [SerializeField] private ProceduralProgressBar HealthBar;
     [SerializeField] private TMP_Text HealthText;
-    [SerializeField] private Image ArmorImage;
+    [SerializeField] private Image ArmorIcon;
     [SerializeField] private TMP_Text ArmorText;
 
     public override void SetAddress(Address address)
@@ -74,13 +75,23 @@ public class StageEntityView : SimpleView
 
     private void ArmorChanged(int armor)
     {
-        if (armor == 0)
+        if (armor > 0)
         {
-            ArmorText.text = "";
-        }
-        else
-        {
+            ArmorIcon.gameObject.SetActive(true);
+            ArmorText.font = CanvasManager.Instance.ArmorFontAsset;
             ArmorText.text = $"{armor}";
+            ArmorIcon.sprite = Encyclopedia.SpriteCategory["ArmorIcon"].Sprite;
+        }
+        else if (armor == 0)
+        {
+            ArmorIcon.gameObject.SetActive(false);
+        }
+        else // armor < 0
+        {
+            ArmorIcon.gameObject.SetActive(true);
+            ArmorText.font = CanvasManager.Instance.FragileFontAsset;
+            ArmorText.text = $"{-armor}";
+            ArmorIcon.sprite = Encyclopedia.SpriteCategory["FragileIcon"].Sprite;
         }
     }
 }
