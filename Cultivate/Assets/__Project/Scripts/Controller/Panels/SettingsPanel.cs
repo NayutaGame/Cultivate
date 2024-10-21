@@ -37,6 +37,8 @@ public class SettingsPanel : Panel
     {
         base.Configure();
         _address = new Address("Settings");
+        Settings settings = _address.Get<Settings>();
+        settings.ResetSelectedTab();
 
         ResumeButton.onClick.RemoveAllListeners();
         ResumeButton.onClick.AddListener(Resume);
@@ -49,9 +51,6 @@ public class SettingsPanel : Panel
 
         ToDesktopButton.onClick.RemoveAllListeners();
         ToDesktopButton.onClick.AddListener(ToDesktop);
-
-        Settings settings = _address.Get<Settings>();
-        settings.ResetSelectedTab();
         
         TabListView.SetAddress(_address.Append(".Tabs"));
         TabListView.LeftClickNeuron.Join(ClickedTab);
@@ -124,7 +123,6 @@ public class SettingsPanel : Panel
             return;
         
         AppManager.Instance.Settings.SetSelectedTab(toTab);
-
         
         // Staging
         SettingsTabView fromTabView = TabListView.ActivePool[AppManager.Instance.Settings.FindIndexOfTab(fromTab)]

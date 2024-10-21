@@ -27,6 +27,8 @@ public class SettingsSwitch : SimpleView
 
         if (LabelText != null)
             LabelText.text = _model.Name;
+        
+        ContentText.text = _model.GetContentText();
 
         PrevButton.onClick.RemoveAllListeners();
         PrevButton.onClick.AddListener(Prev);

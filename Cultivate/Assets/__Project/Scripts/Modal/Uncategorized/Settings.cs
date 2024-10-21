@@ -32,10 +32,10 @@ public class Settings : Addressable
             })),
             new("声音", new WidgetListModel(new WidgetModel[]
             {
-                new SliderModel("主音量", 0, 100, true, AudioManager.SetMasterVolume),
-                new SliderModel("音乐", 0, 100, true, AudioManager.SetMusicVolume),
-                new SliderModel("音效", 0, 100, true, AudioManager.SetSFXVolume),
-                new ButtonModel("推荐音量"),
+                new SliderModel("主音量", AudioManager.GetMasterVolume, AudioManager.SetMasterVolume),
+                new SliderModel("音乐", AudioManager.GetMusicVolume, AudioManager.SetMusicVolume),
+                new SliderModel("音效", AudioManager.GetSFXVolume, AudioManager.SetSFXVolume),
+                new ButtonModel("推荐音量", AudioManager.SetPreferredVolume),
             })),
         });
         

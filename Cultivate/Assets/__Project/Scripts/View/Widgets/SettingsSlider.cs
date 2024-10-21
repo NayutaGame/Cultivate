@@ -29,7 +29,7 @@ public class SettingsSlider : SimpleView
         Slider.minValue = _model.MinValue;
         Slider.maxValue = _model.MaxValue;
         Slider.wholeNumbers = _model.WholeNumbers;
-
+        
         Slider.onValueChanged.RemoveAllListeners();
         Slider.onValueChanged.AddListener(OnValueChanged);
     }
@@ -37,6 +37,7 @@ public class SettingsSlider : SimpleView
     public override void Refresh()
     {
         base.Refresh();
+        Slider.SetValueWithoutNotify(_model.Value);
         NumberText.text = ((int)Slider.value).ToString();
     }
 

@@ -4,10 +4,12 @@ using System;
 public class SliderModel : WidgetModel
 {
     private float _value;
-
+    
+    private Func<float> _getFunc;
+    private Action<float> _setFunc;
     public float Value
     {
-        get => _value;
+        get => _getFunc?.Invoke() ?? _value;
         set
         {
             _value = value;
@@ -19,16 +21,15 @@ public class SliderModel : WidgetModel
     public float MaxValue;
     public bool WholeNumbers;
 
-    private Action<float> _setFunc;
-
-    public SliderModel(string name, int minValue, int maxValue, bool wholeNumbers, Action<float> setFunc = null) : base(name)
+    public SliderModel(string name, Func<float> getFunc = null, Action<float> setFunc = null, int minValue = 0, int maxValue = 100, bool wholeNumbers = true) : base(name)
     {
+        _getFunc = getFunc;
+        _setFunc = setFunc;
         MinValue = minValue;
         MaxValue = maxValue;
         WholeNumbers = wholeNumbers;
-        _setFunc = setFunc;
     }
 
     public static SliderModel Default
-        => new("默认Slider", 0, 100, true);
+        => new("默认Slider");
 }

@@ -2,6 +2,7 @@
 using CLLibrary;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine;
 
 public class AudioManager : Singleton<AudioManager>
 {
@@ -17,7 +18,8 @@ public class AudioManager : Singleton<AudioManager>
         MusicBus = RuntimeManager.GetBus("bus:/Music");
         SFXBus = RuntimeManager.GetBus("bus:/SFX");
 
-        SetAudible(true);
+        // read from save actually
+        SetPreferredVolume();
     }
 
     private AudioEntry PlayingEntry;
@@ -57,17 +59,10 @@ public class AudioManager : Singleton<AudioManager>
         BGMEventInstance.start();
     }
 
-    private bool _audible;
-    public bool IsAudible => _audible;
-    public void SetAudible(bool audible)
+    public static float GetMasterVolume()
     {
-        _audible = audible;
-        // _audioSource.volume = _audible ? 1 : 0;
-    }
-
-    public void ToggleAudible()
-    {
-        SetAudible(!IsAudible);
+        Instance.MasterBus.getVolume(out float volume);
+        return volume * 100;
     }
 
     public static void SetMasterVolume(float value)
@@ -75,13 +70,34 @@ public class AudioManager : Singleton<AudioManager>
         Instance.MasterBus.setVolume(value / 100);
     }
 
+    public static float GetMusicVolume()
+    {
+        Instance.MusicBus.getVolume(out float volume);
+        return volume * 100;
+    }
+
     public static void SetMusicVolume(float value)
     {
         Instance.MusicBus.setVolume(value / 100);
     }
 
+    public static float GetSFXVolume()
+    {
+        Instance.SFXBus.getVolume(out float volume);
+        return volume * 100;
+    }
+
     public static void SetSFXVolume(float value)
     {
         Instance.SFXBus.setVolume(value / 100);
+    }
+
+    public static void SetPreferredVolume()
+    {
+        SetMasterVolume(50);
+        SetMusicVolume(80);
+        SetSFXVolume(100);
+        
+        CanvasManager.Instance.AppCanvas.SettingsPanel.Refresh();
     }
 }

@@ -1,11 +1,18 @@
 
+using System;
+
 public class ButtonModel : WidgetModel
 {
-    public ButtonModel(string name) : base(name) { }
+    private Action _click;
+    
+    public ButtonModel(string name, Action click = null) : base(name)
+    {
+        _click = click;
+    }
 
     public void Click()
     {
-
+        _click?.Invoke();
     }
 
     public static ButtonModel Default

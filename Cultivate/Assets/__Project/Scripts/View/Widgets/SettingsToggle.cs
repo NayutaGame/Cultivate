@@ -30,6 +30,9 @@ public class SettingsToggle : SimpleView
 
         if (LabelText != null)
             LabelText.text = _model.Name;
+
+        bool on = _model.Value;
+        FillRectTransform.position = on ? OnTransform.position : OffTransform.position;
         
         FillRect.onClick.RemoveAllListeners();
         FillRect.onClick.AddListener(Toggle);
