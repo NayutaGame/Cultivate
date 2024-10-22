@@ -6,6 +6,7 @@ using UnityEngine;
 public class SkillAnnotationView : SimpleView
 {
     [SerializeField] private TMP_Text TitleText;
+    [SerializeField] private GameObject TypeTagGameObject;
     [SerializeField] private TypeTag[] TypeTagList;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private GameObject LowerSeparator;
@@ -26,8 +27,16 @@ public class SkillAnnotationView : SimpleView
         TitleText.text = skill.GetName();
 
         List<SkillType> skillTypes = skill.GetSkillTypeComposite().SkillTypes;
-        for (int i = 0; i < TypeTagList.Length; i++)
-            TypeTagList[i].SetText(i < skillTypes.Count ? skillTypes[i]._name : null);
+        if (skillTypes.Count <= 0)
+        {
+            TypeTagGameObject.SetActive(false);
+        }
+        else
+        {
+            for (int i = 0; i < TypeTagList.Length; i++)
+                TypeTagList[i].SetText(i < skillTypes.Count ? skillTypes[i]._name : null);
+            TypeTagGameObject.SetActive(true);
+        }
 
         DescriptionText.text = skill.GetExplanation();
 

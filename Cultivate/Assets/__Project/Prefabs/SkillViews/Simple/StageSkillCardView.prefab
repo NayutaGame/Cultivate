@@ -810,7 +810,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 480}
+  m_SizeDelta: {x: 240, y: 384}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4340962464578969089
 MonoBehaviour:
@@ -831,7 +831,6 @@ MonoBehaviour:
   NameText: {fileID: 2471190289421646669}
   DescriptionText: {fileID: 7084708345918064906}
   JingJieImage: {fileID: 8355148512020901812}
-  WuXingImage: {fileID: 0}
   EffectImage: {fileID: 0}
   CounterImage: {fileID: 868353637407979949}
 --- !u!114 &5519611095636434936
