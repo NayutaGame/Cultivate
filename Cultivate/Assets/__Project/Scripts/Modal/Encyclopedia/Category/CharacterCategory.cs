@@ -1,8 +1,6 @@
 
 using System.Collections.Generic;
-using System.Text;
 using CLLibrary;
-using UnityEngine;
 
 public class CharacterCategory : Category<CharacterEntry>
 {
@@ -76,8 +74,8 @@ public class CharacterCategory : Category<CharacterEntry>
                         d.Proficiency = 2;
                     }),
                 }),
-            new("彼此卿", abilityDescription: "卡组中第一张空位将模仿对方对位的牌\n" +
-                                           "如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿的卡",
+            new("彼此卿", abilityDescription: "卡组中第一张空位将模仿对方对位的牌" +
+                                           "\n如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿的卡",
                 runClosures: new RunClosure[]
                 {
                     new(RunClosureDict.WILL_PLACEMENT, 0, (listener, eventDetails) =>

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2287683260123687058}
   - component: {fileID: 3453078354024671584}
   - component: {fileID: 2719685553521851524}
+  - component: {fileID: 8398864141387163263}
   m_Layer: 0
   m_Name: "\u8FB9\u6846"
   m_TagString: Untagged
@@ -76,6 +77,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8398864141387163263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218526532468698788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &334776178896299307
 GameObject:
   m_ObjectHideFlags: 0
@@ -992,6 +1005,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1378721603750656602}
+  - component: {fileID: 1008933113826067431}
+  - component: {fileID: 2296149928219642540}
   m_Layer: 5
   m_Name: CharacterIconView
   m_TagString: Untagged
@@ -1022,6 +1037,34 @@ RectTransform:
   m_AnchoredPosition: {x: -874.5, y: -474}
   m_SizeDelta: {x: 113, y: 116}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1008933113826067431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5810006934214191017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6366abd63faa0de46bede71dc79d0a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractBehaviour: {fileID: 8398864141387163263}
+  Icon: {fileID: 4571898669279891825}
+--- !u!114 &2296149928219642540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5810006934214191017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnnotationAddress: Canvas.CharacterAnnotation
+  HoverTransform: {fileID: 0}
 --- !u!1 &6448448966188746111
 GameObject:
   m_ObjectHideFlags: 0
@@ -1250,7 +1293,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -426.1}
-  m_SizeDelta: {x: 1920, y: 240}
+  m_SizeDelta: {x: 1722.1, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &906183976623172107
 CanvasRenderer:
@@ -1738,6 +1781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 819e6a992f91ef54bb476a0a793e8dfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CharacterIconView: {fileID: 1008933113826067431}
   PlayerEntity: {fileID: 268888669412290631}
   PlayerEntityTransform: {fileID: 8817764272801723719}
   PlayerEntityShowPivot: {fileID: 5625534843741518944}

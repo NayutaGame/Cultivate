@@ -20,6 +20,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [SerializeField] private GraphicRaycaster Raycaster;
 
     [Header("Annotations")]
+    public AnnotationView CharacterAnnotation;
     public AnnotationView SkillAnnotation;
     public AnnotationView BuffAnnotation;
     public AnnotationView FormationAnnotation;
@@ -69,6 +70,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
         _accessors = new Dictionary<string, Func<object>>()
         {
+            { "CharacterAnnotation", () => CharacterAnnotation },
             { "SkillAnnotation", () => SkillAnnotation },
             { "BuffAnnotation", () => BuffAnnotation },
             { "FormationAnnotation", () => FormationAnnotation },
@@ -80,6 +82,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         
         _results = new();
 
+        CharacterAnnotation.Awake();
         SkillAnnotation.Awake();
         BuffAnnotation.Awake();
         FormationAnnotation.Awake();

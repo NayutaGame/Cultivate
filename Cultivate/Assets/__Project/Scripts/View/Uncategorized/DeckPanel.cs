@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class DeckPanel : Panel
 {
+    [SerializeField] private CharacterIconView CharacterIconView;
+    
     public PlayerEntityView PlayerEntity;
     [SerializeField] private RectTransform PlayerEntityTransform;
     [SerializeField] private RectTransform PlayerEntityShowPivot;
