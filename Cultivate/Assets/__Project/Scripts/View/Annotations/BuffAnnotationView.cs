@@ -1,11 +1,14 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuffAnnotationView : SimpleView
 {
+    [SerializeField] private Image Icon;
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text DescriptionText;
+    [SerializeField] private TMP_Text AnnotationText;
     [SerializeField] private GameObject LowerSeparator;
     [SerializeField] private TMP_Text TriviaText;
 
@@ -14,9 +17,10 @@ public class BuffAnnotationView : SimpleView
         base.Refresh();
 
         Buff buff = Get<Buff>();
-
-        TitleText.text = $"{buff.Stack} {buff.GetName()}\n\n{buff.GetEntry().GetDescription()}";
-        DescriptionText.text = buff.GetExplanation();
+        Icon.sprite = buff.GetEntry().GetSprite();
+        TitleText.text = $"{buff.GetName()} {buff.Stack}";
+        DescriptionText.text = buff.GetEntry().GetDescription();
+        AnnotationText.text = buff.GetExplanation();
 
         string trivia = buff.GetTrivia();
         bool hasTrivia = trivia != null;
