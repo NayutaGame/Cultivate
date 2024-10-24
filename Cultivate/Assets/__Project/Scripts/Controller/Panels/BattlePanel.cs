@@ -13,7 +13,13 @@ public class BattlePanel : Panel
     [SerializeField] private ReactionView ReactionView;
     
     [SerializeField] private TMP_Text HomeHealth;
+    [SerializeField] private PropagatePointer HomePropagatePointer;
+    [SerializeField] private RectTransform HomeHealthTransform;
+    
     [SerializeField] private TMP_Text AwayHealth;
+    [SerializeField] private PropagatePointer AwayPropagatePointer;
+    [SerializeField] private RectTransform AwayHealthTransform;
+    
     [SerializeField] public CombatButton CombatButton;
     [SerializeField] private Button SkipButton;
     [SerializeField] private GameObject VictoryStamp;
@@ -40,6 +46,30 @@ public class BattlePanel : Panel
             SkipButton.onClick.RemoveAllListeners();
             SkipButton.onClick.AddListener(Skip);
         }
+    }
+
+    private void PointerEnterHomeHealth(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerEnter(HomeHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Home.GetFinalHealth()}");
+    }
+
+    private void PointerExitHomeHealth(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerExit(d);
+    }
+
+    private void PointerEnterAwayHealth(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerEnter(AwayHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Away.GetFinalHealth()}");
+    }
+
+    private void PointerExitAwayHealth(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerExit(d);
     }
 
     public override void Refresh()
@@ -81,6 +111,11 @@ public class BattlePanel : Panel
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.DragNeuron.Join(ReactionFromDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.MergeSuccessNeuron.Join(ReactionFromDrop);
         CanvasManager.Instance.RunCanvas.DeckPanel.MergeFailureNeuron.Join(ReactionFromDrop);
+        
+        HomePropagatePointer._onPointerEnter = PointerEnterHomeHealth;
+        HomePropagatePointer._onPointerExit = PointerExitHomeHealth;
+        AwayPropagatePointer._onPointerEnter = PointerEnterAwayHealth;
+        AwayPropagatePointer._onPointerExit = PointerExitAwayHealth;
     }
 
     private void OnDisable()
@@ -94,6 +129,11 @@ public class BattlePanel : Panel
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.DragNeuron.Remove(ReactionFromDrag);
         CanvasManager.Instance.RunCanvas.DeckPanel.MergeSuccessNeuron.Remove(ReactionFromDrop);
         CanvasManager.Instance.RunCanvas.DeckPanel.MergeFailureNeuron.Remove(ReactionFromDrop);
+        
+        HomePropagatePointer._onPointerEnter -= PointerEnterHomeHealth;
+        HomePropagatePointer._onPointerExit -= PointerExitHomeHealth;
+        AwayPropagatePointer._onPointerEnter -= PointerEnterAwayHealth;
+        AwayPropagatePointer._onPointerExit -= PointerExitAwayHealth;
     }
 
     private void ReactionFromBeginDrag(InteractBehaviour ib, PointerEventData d)

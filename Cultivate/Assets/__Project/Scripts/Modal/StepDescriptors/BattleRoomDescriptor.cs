@@ -48,4 +48,7 @@ public class BattleRoomDescriptor : RoomDescriptor
 
     public override SpriteEntry GetSprite()
         => _spriteEntry;
+
+    public override string GetDescription()
+        => "将会发生战斗";
 }

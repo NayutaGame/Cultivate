@@ -44,6 +44,8 @@ public class DeckPanel : Panel
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;
         
+        CharacterIconView.SetAddress(new Address("Run.Environment.Config.CharacterProfile"));
+        
         PlayerEntity.SetAddress(new Address("Run.Environment.Home"));
         PlayerEntity.FormationList.PointerEnterNeuron.Join(HighlightContributors);
         PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
@@ -95,6 +97,7 @@ public class DeckPanel : Panel
     public override void Refresh()
     {
         base.Refresh();
+        CharacterIconView.Refresh();
         PlayerEntity.Refresh();
         HandView.Refresh();
     }

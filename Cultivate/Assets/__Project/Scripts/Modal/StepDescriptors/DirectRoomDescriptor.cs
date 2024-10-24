@@ -15,4 +15,7 @@ public class DirectRoomDescriptor : RoomDescriptor
 
     public override SpriteEntry GetSprite()
         => "AdventureRoomIcon";
+
+    public override string GetDescription()
+        => "将会遭遇事件";
 }

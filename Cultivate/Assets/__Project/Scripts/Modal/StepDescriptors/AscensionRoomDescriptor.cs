@@ -12,4 +12,7 @@ public class AscensionRoomDescriptor : RoomDescriptor
 
     public override SpriteEntry GetSprite()
         => "AscensionRoomIcon";
+
+    public override string GetDescription()
+        => "将会突破境界";
 }

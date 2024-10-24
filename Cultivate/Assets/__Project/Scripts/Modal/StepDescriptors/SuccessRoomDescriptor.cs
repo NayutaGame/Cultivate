@@ -12,4 +12,7 @@ public class SuccessRoomDescriptor : RoomDescriptor
 
     public override SpriteEntry GetSprite()
         => "AscensionRoomIcon";
+
+    public override string GetDescription()
+        => "将会取得游戏胜利";
 }

@@ -1,11 +1,10 @@
 
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class CharacterAnnotationView : SimpleView
+public class RoomAnnotationView : SimpleView
 {
-    [SerializeField] private TMP_Text TitleText;
+    // [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text DescriptionText;
     // [SerializeField] private TMP_Text AnnotationText;
     // [SerializeField] private GameObject LowerSeparator;
@@ -15,9 +14,8 @@ public class CharacterAnnotationView : SimpleView
     {
         base.Refresh();
 
-        CharacterProfile characterProfile = Get<CharacterProfile>();
-        TitleText.text = characterProfile.GetEntry().GetName();
-        DescriptionText.text = characterProfile.GetEntry().AbilityDescription;
+        Room room = Get<Room>();
+        DescriptionText.text = room.Descriptor.GetDescription();
         // Debug.Log(characterProfile.GetEntry().GetName());
 
         // Buff buff = Get<Buff>();

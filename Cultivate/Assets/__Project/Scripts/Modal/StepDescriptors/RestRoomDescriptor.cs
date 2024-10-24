@@ -12,4 +12,7 @@ public class RestRoomDescriptor : RoomDescriptor
 
     public override SpriteEntry GetSprite()
         => "RestRoomIcon";
+
+    public override string GetDescription()
+        => "可以休息";
 }

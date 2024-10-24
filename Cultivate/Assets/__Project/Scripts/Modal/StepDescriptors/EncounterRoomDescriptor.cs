@@ -13,4 +13,7 @@ public class EncounterRoomDescriptor : RoomDescriptor
 
     public override SpriteEntry GetSprite()
         => "EncounterRoomIcon";
+
+    public override string GetDescription()
+        => "将会遭遇其他角色";
 }

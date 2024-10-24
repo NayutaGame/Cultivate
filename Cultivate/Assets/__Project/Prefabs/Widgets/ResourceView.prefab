@@ -5332,7 +5332,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1680995573, guid: a376e45cf9975744a88bf559e56db31f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0ec298a9cbea08142a3c4c5af29a9737, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5407,9 +5407,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa25a11bfa591cc47ad5db3f5aa8584b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _propagateTransform: {fileID: 3707083764538645517}
+  _propagatePointer: {fileID: 6719025443701863627}
   _textTransform: {fileID: 8515182870123939123}
   _text: {fileID: 8208820578036969252}
-  _propagatePointer: {fileID: 6719025443701863627}
   _emitterTransform: {fileID: 4143773158943779563}
   _emitter: {fileID: 4143773158143428075}
   _attractor: {fileID: 4143773159727297450}

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7544390073035436434}
   - component: {fileID: 7902316801738629446}
   - component: {fileID: 1644238570233787940}
+  - component: {fileID: 2228417526630189739}
+  - component: {fileID: 2997715185126353778}
   m_Layer: 0
   m_Name: RoomIconView
   m_TagString: Untagged
@@ -90,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9e92c07b770504882b7e2d6a1b625f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 0}
+  InteractBehaviour: {fileID: 2228417526630189739}
   Icon: {fileID: 7544390073035436434}
 --- !u!114 &1644238570233787940
 MonoBehaviour:
@@ -104,3 +106,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2228417526630189739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5740887206749143658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2997715185126353778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5740887206749143658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnnotationAddress: Canvas.RoomAnnotation
+  HoverTransform: {fileID: 0}

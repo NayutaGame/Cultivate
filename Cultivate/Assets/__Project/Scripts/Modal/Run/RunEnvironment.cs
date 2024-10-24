@@ -570,6 +570,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     {
         _accessors = new()
         {
+            { "Config",                () => _config },
             { "Home",                  () => _home },
             { "Map",                   () => Map },
             { "TechInventory",         () => TechInventory },

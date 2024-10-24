@@ -5,12 +5,15 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class ResourceView : MonoBehaviour
 {
+    [SerializeField] private RectTransform _propagateTransform;
+    [SerializeField] private PropagatePointer _propagatePointer;
+    
     [SerializeField] private RectTransform _textTransform;
     [SerializeField] private TMP_Text _text;
-    [SerializeField] private PropagatePointer _propagatePointer;
     [SerializeField] private RectTransform _emitterTransform;
     [SerializeField] private ParticleSystem _emitter;
     [SerializeField] private UIParticleAttractor _attractor;
@@ -24,7 +27,6 @@ public class ResourceView : MonoBehaviour
     private void OnEnable()
     {
         _propagatePointer._onPointerEnter += PointerEnter;
-        _propagatePointer._onPointerMove += PointerMove;
         _propagatePointer._onPointerExit += PointerExit;
         _attractor.onAttracted.AddListener(OnAttracted);
     }
@@ -32,7 +34,6 @@ public class ResourceView : MonoBehaviour
     private void OnDisable()
     {
         _propagatePointer._onPointerEnter -= PointerEnter;
-        _propagatePointer._onPointerMove -= PointerMove;
         _propagatePointer._onPointerExit -= PointerExit;
         _attractor.onAttracted.RemoveListener(OnAttracted);
     }
@@ -51,23 +52,17 @@ public class ResourceView : MonoBehaviour
 
         _gapStart = 0;
     }
-
-    private void PointerEnter(PointerEventData eventData)
+    
+    private void PointerEnter(PointerEventData d)
     {
-        if (eventData.dragging) return;
-        CanvasManager.Instance.TextHint.SetText(_hintDelegate?.Invoke());
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerEnter(_propagateTransform, d, _hintDelegate?.Invoke());
     }
 
-    private void PointerExit(PointerEventData eventData)
+    private void PointerExit(PointerEventData d)
     {
-        if (eventData.dragging) return;
-        CanvasManager.Instance.TextHint.SetText(null);
-    }
-
-    private void PointerMove(PointerEventData eventData)
-    {
-        if (eventData.dragging) return;
-        CanvasManager.Instance.TextHint.UpdateMousePos(eventData.position);
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerExit(d);
     }
 
     public void Gain(Vector2 position, int value)

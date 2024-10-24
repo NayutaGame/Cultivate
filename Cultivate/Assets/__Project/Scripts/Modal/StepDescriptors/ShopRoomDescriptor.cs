@@ -24,6 +24,9 @@ public class ShopRoomDescriptor : RoomDescriptor
     public override SpriteEntry GetSprite()
         => "ShopRoomIcon";
 
+    public override string GetDescription()
+        => "可以购买东西";
+
     public ShopRoomDescriptor(int ladder) : base(ladder)
     {
     }

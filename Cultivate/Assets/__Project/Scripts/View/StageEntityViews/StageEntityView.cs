@@ -2,6 +2,7 @@
 using Renge.PPB;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -13,6 +14,9 @@ public class StageEntityView : SimpleView
     [SerializeField] private TMP_Text HealthText;
     [SerializeField] private Image ArmorIcon;
     [SerializeField] private TMP_Text ArmorText;
+
+    [SerializeField] private PropagatePointer ArmorPropagatePointer;
+    [SerializeField] private RectTransform ArmorRectTransform;
 
     public override void SetAddress(Address address)
     {
@@ -43,6 +47,8 @@ public class StageEntityView : SimpleView
 
     private void OnEnable()
     {
+        ArmorPropagatePointer._onPointerEnter = PointerEnter;
+        ArmorPropagatePointer._onPointerExit = PointerExit;
     }
 
     private void OnDisable()
@@ -51,6 +57,41 @@ public class StageEntityView : SimpleView
         {
             e1.HpChangedNeuron.Remove(HpChanged);
             e1.ArmorChangedNeuron.Remove(ArmorChanged);
+        }
+        ArmorPropagatePointer._onPointerEnter -= PointerEnter;
+        ArmorPropagatePointer._onPointerExit -= PointerExit;
+    }
+
+    private void PointerEnter(PointerEventData d)
+    {
+        if (d.dragging) return;
+        StageManager.Instance.Pause();
+        CanvasManager.Instance.TextHint.PointerEnter(ArmorRectTransform, d, GetArmorHint());
+    }
+
+    private void PointerExit(PointerEventData d)
+    {
+        if (d.dragging) return;
+        StageManager.Instance.Resume();
+        CanvasManager.Instance.TextHint.PointerExit(d);
+    }
+
+    private string GetArmorHint()
+    {
+        StageEntity entity = Get<StageEntity>();
+        int armor = entity.Armor;
+        
+        if (armor > 0)
+        {
+            return "护甲\n可以抵消受到的攻击伤害";
+        }
+        else if (armor == 0)
+        {
+            return "没有护甲时，受到的攻击伤害不变";
+        }
+        else // armor < 0
+        {
+            return "破甲\n会加深下一次受到的攻击伤害";
         }
     }
 

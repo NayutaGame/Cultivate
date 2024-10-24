@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 172499908645970617}
   - component: {fileID: 172499908645970599}
   - component: {fileID: 172499908645970616}
+  - component: {fileID: 4377560320671923165}
   m_Layer: 0
   m_Name: ArmorIcon
   m_TagString: Untagged
@@ -423,6 +424,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4377560320671923165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172499908645970618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 681e7e478b3acd8439f88049e1826349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &172499909538855786
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,6 +890,8 @@ MonoBehaviour:
   HealthText: {fileID: 4375530236320545620}
   ArmorIcon: {fileID: 4375530236599502182}
   ArmorText: {fileID: 4375530235687825702}
+  ArmorPropagatePointer: {fileID: 2304999578431003459}
+  ArmorRectTransform: {fileID: 4375530236599502183}
 --- !u!1 &1964505645432078586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1286,7 +1301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1507,6 +1522,7 @@ GameObject:
   - component: {fileID: 4375530236599502183}
   - component: {fileID: 4375530236599502201}
   - component: {fileID: 4375530236599502182}
+  - component: {fileID: 2304999578431003459}
   m_Layer: 0
   m_Name: ArmorIcon
   m_TagString: Untagged
@@ -1573,6 +1589,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2304999578431003459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4375530236599502180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 681e7e478b3acd8439f88049e1826349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4375530236943948980
 GameObject:
   m_ObjectHideFlags: 0
@@ -2582,6 +2610,8 @@ MonoBehaviour:
   HealthText: {fileID: 172499908283210890}
   ArmorIcon: {fileID: 172499908645970616}
   ArmorText: {fileID: 172499907678607096}
+  ArmorPropagatePointer: {fileID: 4377560320671923165}
+  ArmorRectTransform: {fileID: 172499908645970617}
 --- !u!1 &8381199243827100086
 GameObject:
   m_ObjectHideFlags: 0

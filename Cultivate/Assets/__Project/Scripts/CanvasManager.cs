@@ -24,6 +24,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public AnnotationView SkillAnnotation;
     public AnnotationView BuffAnnotation;
     public AnnotationView FormationAnnotation;
+    public AnnotationView RoomAnnotation;
     public TextHint TextHint;
 
     [Header("Ghosts")]
@@ -74,6 +75,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "SkillAnnotation", () => SkillAnnotation },
             { "BuffAnnotation", () => BuffAnnotation },
             { "FormationAnnotation", () => FormationAnnotation },
+            { "RoomAnnotation", () => RoomAnnotation },
             { "SkillGhost", () => SkillGhost },
             { "SlotGhost", () => SlotGhost },
         };
@@ -86,6 +88,8 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         SkillAnnotation.Awake();
         BuffAnnotation.Awake();
         FormationAnnotation.Awake();
+        RoomAnnotation.Awake();
+        
         SkillGhost.Awake();
         SlotGhost.Awake();
         MergePreresultView.Awake();
