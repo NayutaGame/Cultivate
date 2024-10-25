@@ -173,8 +173,7 @@ public class RunCanvas : Panel
         ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
         {
-            extraBehaviourPivot.FollowTransform.position = position;
-            extraBehaviourPivot.SetPathAnimated(extraBehaviourPivot.FollowTransform, extraBehaviourPivot.IdleTransform);
+            extraBehaviourPivot.PositionToIdle(position);
         }
 
         // AudioManager.Play("CardPlacement");

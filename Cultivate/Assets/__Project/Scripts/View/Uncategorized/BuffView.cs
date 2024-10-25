@@ -50,6 +50,8 @@ public class BuffView : SimpleView
 
     private void PingAnimation()
     {
-        GetComponent<ExtraBehaviourPivot>()?.PlayPingAnimation();
+        ExtraBehaviourPivot extraBehaviourPivot = GetComponent<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+            extraBehaviourPivot.PlayPingAnimation();
     }
 }

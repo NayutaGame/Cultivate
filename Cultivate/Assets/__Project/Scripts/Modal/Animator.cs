@@ -47,8 +47,8 @@ public class Animator : StateMachine<int>
     public async UniTask SetStateAsync(int state)
     {
         _handle?.Kill();
-        _handle = SetStateTween(state);
-        _handle.SetAutoKill().Restart();
+        _handle = SetStateTween(state).SetAutoKill();
+        _handle.Restart();
         await _handle.AsyncWaitForCompletion();
     }
 }

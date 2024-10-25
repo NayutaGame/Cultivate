@@ -1,4 +1,5 @@
 
+using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class DiscoverSkillPanel : Panel
     [SerializeField] private RectTransform DetailedTextTransform;
     [SerializeField] private RectTransform DetailedTextIdlePivot;
     [SerializeField] private TMP_Text DetailedText;
-    [SerializeField] private ListView SkillViews;
+    [SerializeField] private ListView SkillList;
 
     private Address _address;
 
@@ -21,9 +22,9 @@ public class DiscoverSkillPanel : Panel
         base.Configure();
 
         _address = new Address("Run.Environment.ActivePanel");
-        SkillViews.SetAddress(_address.Append(".Skills"));
-        SkillViews.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        SkillViews.LeftClickNeuron.Join(PickSkill);
+        SkillList.SetAddress(_address.Append(".Skills"));
+        SkillList.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        SkillList.LeftClickNeuron.Join(PickSkill);
     }
 
     protected override Animator InitAnimator()
@@ -32,6 +33,7 @@ public class DiscoverSkillPanel : Panel
         Animator animator = new(2);
         animator[0, 1] = ShowTween;
         animator[-1, 0] = HideTween;
+        animator[1, 1] = SelfTransitionTween;
         
         animator.SetState(0);
         return animator;
@@ -52,17 +54,12 @@ public class DiscoverSkillPanel : Panel
 
     private void PickSkill(InteractBehaviour ib, PointerEventData eventData)
     {
-        // talks to model
-        // staging
-        
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
-
         SkillEntryDescriptor skill = ib.GetSimpleView().Get<SkillEntryDescriptor>();
-        // TODO: Discover Animation
+        // staging
         PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedOptionSignal(d.GetIndexOfSkill(skill)));
         PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
         CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
-        
         CanvasManager.Instance.SkillAnnotation.PointerExit(ib, eventData);
     }
 
@@ -70,21 +67,34 @@ public class DiscoverSkillPanel : Panel
     {
         return DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
-            // make skills not interactable
             .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
             .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DetailedText))
-            // dissolve of skills
-            // make skills interactable
+            // .AppendCallback(TraversalPlayAppearAnimation)
             ;
     }
 
     public override Tween HideTween()
     {
         return DOTween.Sequence()
-            // make skills not interactable
+            // make skills non interactable
             // dissolve of skills
             .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
             .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DetailedText))
             .AppendCallback(() => gameObject.SetActive(false));
+    }
+
+    public Tween SelfTransitionTween()
+    {
+        return DOTween.Sequence()
+            .AppendCallback(SkillList.Refresh);
+    }
+
+    public void TraversalPlayAppearAnimation()
+    {
+        SkillList.TraversalActive().Do(item =>
+        {
+            ExtraBehaviourPivot extraBehaviourPivot = item.GetExtraBehaviour<ExtraBehaviourPivot>();
+            extraBehaviourPivot.PlayAppearAnimation();
+        });
     }
 }

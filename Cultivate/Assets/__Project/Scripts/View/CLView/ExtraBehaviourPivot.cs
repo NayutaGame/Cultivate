@@ -11,9 +11,16 @@ public class ExtraBehaviourPivot : ExtraBehaviour
 
     private Tween _handle;
 
+    private Animator _animator;
+
+    public RectTransform GetDisplayTransform()
+        => CLView.GetDisplayTransform();
+
     public override void Init(CLView clView)
     {
         base.Init(clView);
+
+        _animator = InitAnimator();
 
         InteractBehaviour ib = CLView.GetInteractBehaviour();
         if (ib == null)
@@ -27,51 +34,64 @@ public class ExtraBehaviourPivot : ExtraBehaviour
     {
         _handle?.Kill();
     }
-
-    public RectTransform GetDisplayTransform()
-        => CLView.GetDisplayTransform();
-
-    public void SetDisplayTransform(RectTransform pivot)
-        => CLView.SetDisplayTransform(pivot);
-
-    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
-        => SetTargetAnimated(HoverTransform);
-
-    private void PointerExit(InteractBehaviour ib, PointerEventData d)
-        => SetTargetAnimated(IdleTransform);
-
-    private void SetTarget(RectTransform end)
+    
+    protected Animator InitAnimator()
     {
-        _handle?.Kill();
-        SetDisplayTransform(end);
+        // 0 for hide, 1 for idle, 2 for hover, 3 for follow, 4 for ping
+        Animator animator = new(5);
+        animator[-1, 0] = HideTween;
+        animator[-1, 1] = IdleTween;
+        animator[-1, 2] = HoverTween;
+        animator[-1, 3] = FollowTween;
+        animator[-1, 4] = PingTween;
+        return animator;
     }
 
-    private void SetTargetAnimated(RectTransform end)
+    public void PlayAppearAnimation()
     {
-        _handle?.Kill();
-        FollowAnimation f = new FollowAnimation(GetDisplayTransform(), end);
-        _handle = f.GetHandle();
-        _handle.SetAutoKill().Restart();
-    }
-
-    public void SetPathAnimated(RectTransform start, RectTransform end)
-    {
-        SetTarget(start);
-        SetTargetAnimated(end);
-    }
-
-    public void PlayPingAnimation()
-    {
-        _handle?.Kill();
-
-        _handle = GetDisplayTransform()
-            .DOScale(1.5f, 0.075f)
-            .SetEase(Ease.OutQuad)
-            .SetLoops(2, loopType: LoopType.Yoyo);
-        
-        _handle.SetAutoKill().Restart();
+        _animator.SetState(0);
+        _animator.SetStateAsync(1);
     }
 
     public void RefreshPivots()
-        => SetTargetAnimated(IdleTransform);
+        => _animator.SetStateAsync(1);
+
+    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+        => _animator.SetStateAsync(1);
+
+    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
+        => _animator.SetStateAsync(2);
+
+    public void PlayPingAnimation()
+        => _animator.SetStateAsync(4);
+
+    public void RectTransformToIdle(RectTransform rectTransform)
+    {
+        FollowTransform.position = rectTransform.position;
+        FollowTransform.localScale = rectTransform.localScale;
+        _animator.SetState(3);
+        _animator.SetStateAsync(1);
+    }
+
+    public void PositionToIdle(Vector3 position)
+    {
+        FollowTransform.position = position;
+        _animator.SetState(3);
+        _animator.SetStateAsync(1);
+    }
+
+    private Tween HideTween()
+        => GetDisplayTransform().DOScale(0, 0.15f).SetEase(Ease.OutQuad);
+
+    private Tween IdleTween()
+        => new FollowAnimation(GetDisplayTransform(), IdleTransform).GetHandle();
+
+    private Tween HoverTween()
+        => new FollowAnimation(GetDisplayTransform(), HoverTransform).GetHandle();
+
+    private Tween FollowTween()
+        => new FollowAnimation(GetDisplayTransform(), FollowTransform).GetHandle();
+
+    private Tween PingTween()
+        => GetDisplayTransform().DOScale(1.5f, 0.075f).SetEase(Ease.OutQuad).SetLoops(2, loopType: LoopType.Yoyo);
 }

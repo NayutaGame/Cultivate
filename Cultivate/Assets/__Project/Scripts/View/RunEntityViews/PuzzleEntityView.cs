@@ -72,14 +72,14 @@ public class PuzzleEntityView : SimpleView
         if (isReplace)
         {
             if (fromPivot != null)
-                fromPivot.SetPathAnimated(toPivot.GetDisplayTransform(), fromPivot.IdleTransform);
+                fromPivot.RectTransformToIdle(toPivot.GetDisplayTransform());
         }
         
         // Ghost
         ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
         
         // To: Ghost Display -> To Idle
-        toPivot.SetPathAnimated(ghost.GetDisplayTransform(), toPivot.IdleTransform);
+        toPivot.RectTransformToIdle(ghost.GetDisplayTransform());
 
         AudioManager.Play("CardPlacement");
     }
@@ -114,14 +114,14 @@ public class PuzzleEntityView : SimpleView
         if (isReplace)
         {
             if (fromPivot != null)
-                fromPivot.SetPathAnimated(toPivot.GetDisplayTransform(), fromPivot.IdleTransform);
+                fromPivot.RectTransformToIdle(toPivot.GetDisplayTransform());
         }
         
         // Ghost
         ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
         
         // To: Ghost Display -> To Idle
-        toPivot.SetPathAnimated(ghost.GetDisplayTransform(), toPivot.IdleTransform);
+        toPivot.RectTransformToIdle(ghost.GetDisplayTransform());
 
         AudioManager.Play("CardPlacement");
     }
