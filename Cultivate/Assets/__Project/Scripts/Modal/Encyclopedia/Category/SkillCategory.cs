@@ -1639,7 +1639,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{(5 * dj * dj + 35 * dj + 50) / 2}攻".ApplyAttack() +
-                    $"\n遭受4跳回合".ApplyDebuff() +
+                    $"\n遭受4跳行动".ApplyDebuff() +
                     $"\n唯一攻击牌：免除".ApplyCond(castResult),
                 cast:                       async d =>
                 {
@@ -1648,7 +1648,7 @@ public class SkillCategory : Category<SkillEntry>
 
                     bool cond = d.Skill.NoOtherAttack;
                     if (!cond)
-                        await d.GainBuffProcedure("跳回合", 4);
+                        await d.GainBuffProcedure("跳行动", 4);
                     d.CastResult.AppendCond(cond);
                 }),
             
@@ -2230,7 +2230,7 @@ public class SkillCategory : Category<SkillEntry>
             //     costDescription:            CostDescription.ChannelFromDj(dj => 5 - 2 * dj),
             //     castDescription:            (j, dj, costResult, castResult) =>
             //         $"疲劳 所有攻击具有吸血" +
-            //         $"\n回合内未攻击：遭受1跳回合",
+            //         $"\n回合内未攻击：遭受1跳行动",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
@@ -2629,14 +2629,14 @@ public class SkillCategory : Category<SkillEntry>
             //     jingJieBound:               JingJie.ZhuJi2HuaShen,
             //     castDescription:            (j, dj, costResult, castResult) =>
             //         $"护甲+{10 + 4 * dj}\n" +
-            //         $"初次：遭受1跳回合".ApplyCond(castResult),
+            //         $"初次：遭受1跳行动".ApplyCond(castResult),
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
             //         await caster.GainArmorProcedure(10 + 4 * skill.Dj, induced: false);
             //         bool cond = !await skill.IsFirstTime();
             //         if (!cond)
-            //             await caster.GainBuffProcedure("跳回合");
+            //             await caster.GainBuffProcedure("跳行动");
             //         return cond.ToCastResult();
             //     }),
             //
@@ -2647,11 +2647,11 @@ public class SkillCategory : Category<SkillEntry>
             //     cost:                       CostResult.ManaFromDj(dj => 1 - dj),
             //     costDescription:            CostDescription.ManaFromDj(dj => 1 - dj),
             //     castDescription:            (j, dj, costResult, castResult) =>
-            //         $"施加1跳回合",
+            //         $"施加1跳行动",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
-            //         await caster.GiveBuffProcedure("跳回合");
+            //         await caster.GiveBuffProcedure("跳行动");
             //         return null;
             //     }),
             //
@@ -3200,13 +3200,13 @@ public class SkillCategory : Category<SkillEntry>
             //     skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
             //     cost:                       CostResult.ChannelFromValue(2),
             //     costDescription:            CostDescription.ChannelFromValue(2),
-            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n回合被跳过时，该回合无法受到伤害\n遭受12跳回合",
+            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n回合被跳过时，该回合无法受到伤害\n遭受12跳行动",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
             //         await skill.ExhaustProcedure();
             //         await caster.GainBuffProcedure("浮空艇");
-            //         await caster.GainBuffProcedure("跳回合", 12);
+            //         await caster.GainBuffProcedure("跳行动", 12);
             //         return null;
             //     }),
             //
@@ -3328,7 +3328,7 @@ public class SkillCategory : Category<SkillEntry>
             //     skillTypeComposite:         SkillType.Deplete | SkillType.Exhaust,
             //     cost:                       CostResult.ChannelFromValue(2),
             //     costDescription:            CostDescription.ChannelFromValue(2),
-            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n成功闪避时，如果对方没有跳回合，施加1",
+            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n疲劳\n成功闪避时，如果对方没有跳行动，施加1",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {

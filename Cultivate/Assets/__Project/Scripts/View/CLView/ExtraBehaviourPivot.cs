@@ -38,8 +38,9 @@ public class ExtraBehaviourPivot : ExtraBehaviour
     protected Animator InitAnimator()
     {
         // 0 for hide, 1 for idle, 2 for hover, 3 for follow, 4 for ping
-        Animator animator = new(5);
+        Animator animator = new(5, CLView.name);
         animator[-1, 0] = HideTween;
+        animator[0, -1] = SetInteractable;
         animator[-1, 1] = IdleTween;
         animator[-1, 2] = HoverTween;
         animator[-1, 3] = FollowTween;
@@ -52,12 +53,25 @@ public class ExtraBehaviourPivot : ExtraBehaviour
         _animator.SetState(0);
         _animator.SetStateAsync(1);
     }
+    
+    public void PlayDisappearAnimation()
+    {
+        _animator.SetStateAsync(0);
+    }
+
+    public void Disappear()
+    {
+        _animator.SetState(0);
+    }
 
     public void RefreshPivots()
         => _animator.SetStateAsync(1);
 
     private void PointerExit(InteractBehaviour ib, PointerEventData d)
-        => _animator.SetStateAsync(1);
+    {
+        if (_animator.State != 0)
+            _animator.SetStateAsync(1);
+    }
 
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
         => _animator.SetStateAsync(2);
@@ -81,10 +95,18 @@ public class ExtraBehaviourPivot : ExtraBehaviour
     }
 
     private Tween HideTween()
-        => GetDisplayTransform().DOScale(0, 0.15f).SetEase(Ease.OutQuad);
+        => DOTween.Sequence()
+            .AppendCallback(() => CLView.GetInteractBehaviour().SetInteractable(false))
+            .Append(GetDisplayTransform().DOScale(0, 0.15f).SetEase(Ease.OutQuad));
 
     private Tween IdleTween()
-        => new FollowAnimation(GetDisplayTransform(), IdleTransform).GetHandle();
+        => DOTween.Sequence()
+            .Append(new FollowAnimation(GetDisplayTransform(), IdleTransform).GetHandle());
+            // .AppendCallback(() => CLView.GetInteractBehaviour().SetInteractable(true))
+
+    private Tween SetInteractable()
+        => DOTween.Sequence()
+            .AppendCallback(() => CLView.GetInteractBehaviour().SetInteractable(true));
 
     private Tween HoverTween()
         => new FollowAnimation(GetDisplayTransform(), HoverTransform).GetHandle();

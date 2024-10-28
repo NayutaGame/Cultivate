@@ -5,9 +5,9 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     public string GetTitleText() => _titleText;
     public void SetTitleText(string value) => _titleText = value;
 
-    private string _detailedText;
-    public string GetDetailedText() => _detailedText;
-    public void SetDetailedText(string value) => _detailedText = value;
+    private string _descriptionText;
+    public string GetDescriptionText() => _descriptionText;
+    public void SetDescriptionText(string value) => _descriptionText = value;
 
     private ListModel<SkillEntryDescriptor> _skills;
     public ListModel<SkillEntryDescriptor> GetSkills() => _skills;
@@ -18,7 +18,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     private SkillEntryCollectionDescriptor _descriptor;
     private JingJie _preferredJingJie;
 
-    public DiscoverSkillPanelDescriptor(string titleText = null, string detailedText = null, SkillEntryCollectionDescriptor descriptor = null, JingJie? preferredJingJie = null)
+    public DiscoverSkillPanelDescriptor(string titleText = null, string descriptionText = null, SkillEntryCollectionDescriptor descriptor = null, JingJie? preferredJingJie = null)
     {
         _accessors = new()
         {
@@ -26,8 +26,8 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
             { "Skills",                   GetSkills },
         };
 
-        _titleText = titleText ?? "";
-        _detailedText = detailedText ?? "请选择一张卡作为奖励";
+        _titleText = titleText ?? "灵感";
+        _descriptionText = descriptionText ?? "请选择一张卡作为奖励";
 
         _descriptor = descriptor ?? new(jingJie: RunManager.Instance.Environment.JingJie, count: 3);
         _preferredJingJie = preferredJingJie ?? RunManager.Instance.Environment.JingJie;
@@ -47,10 +47,10 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {
-        if (signal is SelectedOptionSignal selectedOptionSignal)
+        if (signal is PickedSkillSignal pickedSkillSignal)
         {
-            SkillEntryDescriptor skill = _skills[selectedOptionSignal.Selected];
-            RunManager.Instance.Environment.AddSkillProcedure(skill.Entry, skill.JingJie);
+            // SkillEntryDescriptor skill = _skills[pickedSkillSignal.Selected];
+            // CanvasManager.Instance.RunCanvas.AddSkillProcedure(skill);
             return null;
         }
 

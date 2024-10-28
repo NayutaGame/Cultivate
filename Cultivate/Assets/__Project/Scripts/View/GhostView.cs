@@ -43,14 +43,21 @@ public class GhostView : MonoBehaviour
     public void EndDrag(InteractBehaviour ib, PointerEventData d)
     {
         ib.GetCLView().SetShow(ib, d);
+
+        // InteractBehaviour firstHit = CanvasManager.Instance.FirstRayCastHit(d);
+        //
+        // bool dropOnNothing = firstHit == null;
+        // bool dropOnSelf = firstHit == ib;
+        // if (dropOnNothing || dropOnSelf)
+        // {
+        //     ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        //     if (extraBehaviourPivot != null)
+        //         extraBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
+        // }
         
-        bool dropOnNothing = !CanvasManager.Instance.RayCastIsHit(d);
-        if (dropOnNothing)
-        {
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
-                extraBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
-        }
+        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+            extraBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
         
         gameObject.SetActive(false);
     }

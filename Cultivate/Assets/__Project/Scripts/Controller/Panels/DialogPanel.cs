@@ -46,7 +46,7 @@ public class DialogPanel : Panel
     protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for show
-        Animator animator = new(2);
+        Animator animator = new(2, "Dialog Panel");
         animator[0, 1] = ShowTween;
         animator[1, 1] = SelfTransitionTween;
         animator[-1, 0] = HideTween;

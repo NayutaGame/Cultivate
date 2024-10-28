@@ -21,7 +21,7 @@ public class ImagePanel : Panel
     protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for show
-        Animator animator = new(2);
+        Animator animator = new(2, "Image Panel");
         animator[0, 1] = ShowTween;
         animator[1, 1] = RefreshTween;
         animator[-1, 0] = HideTween;

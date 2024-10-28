@@ -3,6 +3,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 using DG.Tweening;
+using UnityEngine;
 
 public class Animator : StateMachine<int>
 {
@@ -12,12 +13,15 @@ public class Animator : StateMachine<int>
         get => _table[from, to];
         set => _table[from, to] = value;
     }
+
+    private string _id;
     
     private Tween _handle;
 
-    public Animator(int size)
+    public Animator(int size, string id)
     {
         _table = new(size);
+        _id = id;
     }
 
     public Tween SetStateTween(int state)
@@ -29,6 +33,7 @@ public class Animator : StateMachine<int>
         if (this[State, state] is { } second)
             seq.Append(second());
         
+        // Debug.Log($"{_id}: {State} => {state}");
         seq.AppendCallback(() => base.SetState(state));
 
         if (this[-1, state] is { } third)

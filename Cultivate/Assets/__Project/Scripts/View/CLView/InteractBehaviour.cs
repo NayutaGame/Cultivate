@@ -28,36 +28,36 @@ public class InteractBehaviour : MonoBehaviour,
     {
         PointerEnterNeuron.Join(PointerEnterLog);
         PointerExitNeuron.Join(PointerExitLog);
-        PointerMoveNeuron.Join(PointerMoveLog);
+        // PointerMoveNeuron.Join(PointerMoveLog);
         BeginDragNeuron.Join(BeginDragLog);
         EndDragNeuron.Join(EndDragLog);
-        DragNeuron.Join(DragLog);
+        // DragNeuron.Join(DragLog);
         LeftClickNeuron.Join(LeftClickLog);
         RightClickNeuron.Join(RightClickLog);
         DroppingNeuron.Join(DroppingLog);
         DropNeuron.Join(DropLog);
         DraggingEnterNeuron.Join(DraggingEnterLog);
         DraggingExitNeuron.Join(DraggingExitLog);
-        DraggingMoveNeuron.Join(DraggingMoveLog);
+        // DraggingMoveNeuron.Join(DraggingMoveLog);
     }
     
-    private void PointerEnterLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"PointerEnter");
-    private void PointerExitLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"PointerExit");
-    private void PointerMoveLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"PointerMove");
-    private void BeginDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"BeginDrag");
-    private void EndDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"EndDrag");
-    private void DragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"Drag");
-    private void LeftClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"LeftClick");
-    private void RightClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"RightClick");
-    private void DroppingLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"Dropping");
-    private void DropLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"Drop");
-    private void DraggingEnterLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"DraggingEnter");
-    private void DraggingExitLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"DraggingExit");
-    private void DraggingMoveLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"DraggingMove");
+    private void PointerEnterLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} PointerEnter");
+    private void PointerExitLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} PointerExit");
+    private void PointerMoveLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} PointerMove");
+    private void BeginDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} BeginDrag");
+    private void EndDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} EndDrag");
+    private void DragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} Drag");
+    private void LeftClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} LeftClick");
+    private void RightClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} RightClick");
+    private void DroppingLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} Dropping");
+    private void DropLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} Drop");
+    private void DraggingEnterLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} DraggingEnter");
+    private void DraggingExitLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} DraggingExit");
+    private void DraggingMoveLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} DraggingMove");
 
     private Image Image;
     private CanvasGroup CanvasGroup;
-
+    
     public void SetInteractable(bool value)
     {
         if (Image != null)

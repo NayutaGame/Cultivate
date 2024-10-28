@@ -232,8 +232,8 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new(id:                         "跳回合",
-                description:                "跳过[层数]次回合",
+            new(id:                         "跳行动",
+                description:                "跳过[层数]次行动",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                false,
@@ -561,7 +561,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("飞行器", "成功闪避时，对方跳回合补至1", BuffStackRule.One, true, false,
+            new("飞行器", "成功闪避时，对方跳行动补至1", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_EVADE, 0, async (owner, closureDetails) =>
@@ -569,10 +569,10 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)owner;
                         EvadedDetails d = (EvadedDetails)closureDetails;
                         if (b.Owner != d.Tgt) return;
-                        if (b.Owner.GetStackOfBuff("跳回合") == 0)
+                        if (b.Owner.GetStackOfBuff("跳行动") == 0)
                         {
                             b.PlayPingAnimation();
-                            await b.Owner.GainBuffProcedure("跳回合");
+                            await b.Owner.GainBuffProcedure("跳行动");
                         }
                     }),
                 }),
@@ -683,7 +683,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("幻月狂乱", "攻击一直具有吸血，使用非攻击牌时：遭受1跳回合", BuffStackRule.One, true, false,
+            new("幻月狂乱", "攻击一直具有吸血，使用非攻击牌时：遭受1跳行动", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_STEP, 0, async (owner, closureDetails) =>
@@ -695,7 +695,7 @@ public class BuffCategory : Category<BuffEntry>
                             if (!d.Skill.GetSkillType().Contains(SkillType.Attack))
                             {
                                 b.PlayPingAnimation();
-                                await d.Owner.GainBuffProcedure("跳回合");
+                                await d.Owner.GainBuffProcedure("跳行动");
                             }
                         }
                     }),

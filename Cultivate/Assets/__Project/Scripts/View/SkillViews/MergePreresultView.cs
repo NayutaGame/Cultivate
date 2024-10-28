@@ -45,7 +45,7 @@ public class MergePreresultView : SimpleView
     private Animator InitAnimator()
     {
         // 0 for hide, 1 for show, 2 for success merge
-        Animator animator = new(3);
+        Animator animator = new(3, "Merge Preresult View");
         animator[0, 1] = ShowTween;
         animator[-1, 0] = HideTween;
         animator[-1, 2] = SuccessTween;

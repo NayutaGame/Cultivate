@@ -28,7 +28,7 @@ public class MapPanel : Panel
     protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for show, 2 for locked
-        Animator animator = new(3);
+        Animator animator = new(3, "Map Panel");
         animator[-1, 2] = LockTween;
         animator[-1, 1] = ShowTween;
         animator[-1, 0] = HideTween;

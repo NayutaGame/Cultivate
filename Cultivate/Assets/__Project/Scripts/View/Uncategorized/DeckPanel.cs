@@ -87,7 +87,7 @@ public class DeckPanel : Panel
     protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for show, 2 for locked
-        Animator animator = new(3);
+        Animator animator = new(3, "Deck Panel");
         animator[-1, 2] = LockTween;
         animator[-1, 1] = ShowTween;
         animator[-1, 0] = HideTween;
@@ -187,6 +187,7 @@ public class DeckPanel : Panel
     {
         if (!(from is HandSkillInteractBehaviour))
             return;
+        
         RunEnvironment env = RunManager.Instance.Environment;
         RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
         RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
@@ -256,6 +257,7 @@ public class DeckPanel : Panel
     {
         if (!(from is FieldSlotInteractBehaviour))
             return;
+        
         RunEnvironment env = RunManager.Instance.Environment;
         SkillSlot slot = from.GetSimpleView().Get<SkillSlot>();
         UnequipResult result = env.UnequipProcedure(slot, null);

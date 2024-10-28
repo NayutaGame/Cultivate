@@ -21,7 +21,7 @@ public class TitlePanel : Panel
     protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for title, 2 for run config
-        Animator animator = new(3);
+        Animator animator = new(3, "Title Panel");
         animator[0, 1] = ShowTween;
         animator[1, 2] = TitleToRunConfigTween;
         animator[2, 1] = RunConfigToTitleTween;

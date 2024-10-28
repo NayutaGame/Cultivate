@@ -46,7 +46,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         A.SetWinOperation(() =>
                         {
-                            B.SetDetailedText($"获得了<style=\"Gold\">{goldValue}金钱</style>\n请选择<style=\"Red\">一张卡牌</style>作为奖励");
+                            B.SetDescriptionText($"获得了<style=\"Gold\">{goldValue}金钱</style>\n请选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return B;
@@ -55,7 +55,7 @@ public class RoomCategory : Category<RoomEntry>
                         A.SetLoseOperation(() =>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
-                            C.SetDetailedText($"<style=\"Gray\">你没能击败对手，损失了一些命元</style>" +
+                            C.SetDescriptionText($"<style=\"Gray\">你没能击败对手，损失了一些命元</style>" +
                                        $"\n但获得了<style=\"Gold\">{goldValue}金钱</style>，以及选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
@@ -67,7 +67,7 @@ public class RoomCategory : Category<RoomEntry>
                         A.SetWinOperation(() =>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(3);
-                            B.SetDetailedText($"跨越境界使得你的命元恢复了3" +
+                            B.SetDescriptionText($"跨越境界使得你的命元恢复了3" +
                                               $"\n获得了{goldValue}金，请选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
@@ -76,7 +76,7 @@ public class RoomCategory : Category<RoomEntry>
 
                         A.SetLoseOperation(() =>
                         {
-                            C.SetDetailedText($"<style=\"Gray\">你没能击败对手，幸好跨越境界抵消了你的命元伤害。</style>" +
+                            C.SetDescriptionText($"<style=\"Gray\">你没能击败对手，幸好跨越境界抵消了你的命元伤害。</style>" +
                                               $"\n获得了<style=\"Gold\">{goldValue}金钱</style>，请选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
@@ -259,7 +259,7 @@ public class RoomCategory : Category<RoomEntry>
                     // 9 -> 星宫，选择2张当前境界的灵气牌
                     // 10 -> 天机阁，卡池中，当前及以下境界的牌，被移除一半
                     // 11 -> 散修，选择一张牌提升至下一境界
-                    string[] titles = new string[12]
+                    string[] descriptions = new string[12]
                     {
                         "凌云峰，选择1张下一境界的金牌",
                         "逍遥海，选择1张下一境界的水牌",
@@ -281,19 +281,19 @@ public class RoomCategory : Category<RoomEntry>
 
                     PanelDescriptor[] panels = new PanelDescriptor[12]
                     {
-                        new DiscoverSkillPanelDescriptor("凌云峰，选择1张下一境界的金牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: "凌云峰，选择1张下一境界的金牌",
                             descriptor: new(wuXing: WuXing.Jin, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor("逍遥海，选择1张下一境界的水牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: "逍遥海，选择1张下一境界的水牌",
                             descriptor: new(wuXing: WuXing.Shui, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor("桃花宫，选择1张下一境界的木牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: "桃花宫，选择1张下一境界的木牌",
                             descriptor: new(wuXing: WuXing.Mu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor("长明殿，选择1张下一境界的火牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: "长明殿，选择1张下一境界的火牌",
                             descriptor: new(wuXing: WuXing.Huo, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor("环岳岭，选择1张下一境界的土牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: "环岳岭，选择1张下一境界的土牌",
                             descriptor: new(wuXing: WuXing.Tu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
                         // 易宝斋，得到2/4/8/16金钱，访问一次商店
@@ -356,7 +356,7 @@ public class RoomCategory : Category<RoomEntry>
                     dialogOptions.Length.Do(i =>
                     {
                         int index = popped[i];
-                        dialogOptions[i] = new DialogOption(titles[index]);
+                        dialogOptions[i] = new DialogOption(descriptions[index]);
                         dialogOptions[i].SetSelect(option =>
                         {
                             env.NextJingJieProcedure();
@@ -2931,7 +2931,7 @@ public class RoomCategory : Category<RoomEntry>
                 create:                             (map, room) =>
                 {
                     DiscoverSkillPanelDescriptor A = new("灵感");
-                    A.SetDetailedText($"请选择一张卡作为奖励");
+                    A.SetDescriptionText($"请选择一张卡作为奖励");
 
                     return A;
                 }),

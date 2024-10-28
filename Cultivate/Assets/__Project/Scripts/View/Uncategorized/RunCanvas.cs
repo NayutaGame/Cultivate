@@ -164,9 +164,24 @@ public class RunCanvas : Panel
 
     #region Staging
 
-    public void GainSkillProcedure(Vector3 position, SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+    public void DrawSkillProcedure(Vector3 position, SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
     {
         RunManager.Instance.Environment.DrawSkillProcedure(descriptor, preferredDeckIndex);
+        Refresh();
+        
+        InteractBehaviour newIB = DeckPanel.HandView.ActivePool.Last().GetInteractBehaviour();
+        ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+        {
+            extraBehaviourPivot.PositionToIdle(position);
+        }
+
+        // AudioManager.Play("CardPlacement");
+    }
+
+    public void AddSkillProcedure(Vector3 position, SkillEntryDescriptor descriptor)
+    {
+        RunManager.Instance.Environment.AddSkillProcedure(descriptor.Entry, descriptor.JingJie);
         Refresh();
         
         InteractBehaviour newIB = DeckPanel.HandView.ActivePool.Last().GetInteractBehaviour();

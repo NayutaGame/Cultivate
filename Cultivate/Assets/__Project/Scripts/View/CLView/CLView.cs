@@ -65,7 +65,7 @@ public abstract class CLView : MonoBehaviour
         GetSimpleView().SetVisible(true);
     }
 
-    private void Hide()
+    public void Hide()
     {
         if (InteractBehaviour != null)
             InteractBehaviour.SetInteractable(false);

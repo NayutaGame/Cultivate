@@ -63,7 +63,7 @@ MonoBehaviour:
   TitleText: {fileID: 3303111663411079584}
   DetailedTextTransform: {fileID: 5376611161353433064}
   DetailedTextIdlePivot: {fileID: 5495382552087520240}
-  DetailedText: {fileID: 1925912715784416185}
+  DescriptionText: {fileID: 1925912715784416185}
   SkillList: {fileID: 2358580731822903858}
 --- !u!1 &807695200578824965
 GameObject:

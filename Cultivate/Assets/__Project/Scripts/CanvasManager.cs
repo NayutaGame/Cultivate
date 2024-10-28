@@ -114,6 +114,16 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         return _results.Count >= 1 && _results[0].gameObject.GetComponent<InteractBehaviour>() != null;
     }
 
+    public InteractBehaviour FirstRayCastHit(PointerEventData d)
+    {
+        _results.Clear();
+        Raycaster.Raycast(d, _results);
+        if (_results.Count < 1)
+            return null;
+        
+        return _results[0].gameObject.GetComponent<InteractBehaviour>();
+    }
+
     public Vector3 UI2World(Vector2 screenPosition)
     {
         return Camera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, 10));

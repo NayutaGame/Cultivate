@@ -18,7 +18,7 @@ public abstract class Panel : MonoBehaviour
     protected virtual Animator InitAnimator()
     {
         // 0 for hide, 1 for show
-        Animator animator = new(2);
+        Animator animator = new(2, "Panel");
         animator[0, 1] = ShowTween;
         animator[-1, 0] = HideTween;
         return animator;
