@@ -254,7 +254,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         if (d.Cancel)
             return false;
 
-        bool success = InterMergeProcedure(d);
+        bool success = InnerMergeProcedure(d);
         if (!success)
             return false;
         
@@ -262,7 +262,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return true;
     }
 
-    private bool InterMergeProcedure(MergeDetails d)
+    private bool InnerMergeProcedure(MergeDetails d)
     {
         RunSkill lhs = d.Lhs;
         RunSkill rhs = d.Rhs;
@@ -519,16 +519,19 @@ public class RunEnvironment : Addressable, RunClosureOwner
         else
             Hand.Replace(deckIndex.Index, skill);
     }
-
+    
+    // need staging
     public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
     {
         List<SkillEntry> entries = DrawSkills(descriptor);
         entries.Do(e => AddSkill(CreateSkill(e, descriptor.JingJie)));
     }
 
+    // need staging
     public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
         => AddSkill(CreateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
 
+    // need staging
     public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
         => AddSkill(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
 

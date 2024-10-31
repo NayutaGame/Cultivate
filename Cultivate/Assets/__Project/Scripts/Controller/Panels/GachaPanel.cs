@@ -70,9 +70,8 @@ public class GachaPanel : Panel
 
     private void Exit()
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new ExitShopSignal());
-        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
+        Signal signal = new ExitShopSignal();
+        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
     }
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)

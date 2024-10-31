@@ -62,9 +62,7 @@ public class StageManager : Singleton<StageManager>, Addressable
             return;
 
         Signal signal = new BattleResultSignal(_environment.Result.Flag == 1);
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(signal);
-        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        await CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
+        await CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
         _environment.WriteResult();
     }
 

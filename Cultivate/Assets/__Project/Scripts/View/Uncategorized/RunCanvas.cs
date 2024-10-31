@@ -80,7 +80,16 @@ public class RunCanvas : Panel
         ConsolePanel.Refresh();
     }
 
-    public async UniTask SetPanelSAsync(PanelS panelS)
+    public async UniTask SetPanelSAsyncFromSignal(Signal signal)
+    {
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(signal);
+        // if (RunManager.Instance.Environment == null)
+        //     return;
+        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
+        await SetPanelSAsync(panelS);
+    }
+
+    private async UniTask SetPanelSAsync(PanelS panelS)
     {
         PanelS oldState = PanelSM.State;
         PanelS newState = panelS;
@@ -163,32 +172,50 @@ public class RunCanvas : Panel
     }
 
     #region Staging
-
-    public void DrawSkillProcedure(Vector3 position, SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+    
+    public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor, Vector3? preferredPosition = null)
     {
+        preferredPosition ??= CanvasManager.Instance.ScreenCenterInWorld();
+        
+        RunManager.Instance.Environment.DrawSkillsProcedure(descriptor);
+        Refresh();
+        
+        // traversal new IBs
+    }
+
+    public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null, Vector3? preferredPosition = null)
+    {
+        preferredPosition ??= CanvasManager.Instance.ScreenCenterInWorld();
+        
         RunManager.Instance.Environment.DrawSkillProcedure(descriptor, preferredDeckIndex);
         Refresh();
+        
+        // IB from preferredDeckIndex
         
         InteractBehaviour newIB = DeckPanel.HandView.ActivePool.Last().GetInteractBehaviour();
         ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
         {
-            extraBehaviourPivot.PositionToIdle(position);
+            extraBehaviourPivot.PositionToIdle(preferredPosition.Value);
         }
 
         // AudioManager.Play("CardPlacement");
     }
 
-    public void AddSkillProcedure(Vector3 position, SkillEntryDescriptor descriptor)
+    public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null, Vector3? preferredPosition = null)
     {
-        RunManager.Instance.Environment.AddSkillProcedure(descriptor.Entry, descriptor.JingJie);
+        preferredPosition ??= CanvasManager.Instance.ScreenCenterInWorld();
+        
+        RunManager.Instance.Environment.AddSkillProcedure(skillEntry, preferredJingJie, preferredDeckIndex);
         Refresh();
+        
+        // IB from preferredDeckIndex
         
         InteractBehaviour newIB = DeckPanel.HandView.ActivePool.Last().GetInteractBehaviour();
         ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
         {
-            extraBehaviourPivot.PositionToIdle(position);
+            extraBehaviourPivot.PositionToIdle(preferredPosition.Value);
         }
 
         // AudioManager.Play("CardPlacement");

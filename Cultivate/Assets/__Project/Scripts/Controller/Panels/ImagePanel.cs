@@ -42,8 +42,7 @@ public class ImagePanel : Panel
 
     private void ClickedSignal()
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickedSignal());
-        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
+        Signal signal = new ClickedSignal();
+        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
     }
 }

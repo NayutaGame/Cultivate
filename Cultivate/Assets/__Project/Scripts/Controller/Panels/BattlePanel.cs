@@ -202,9 +202,8 @@ public class BattlePanel : Panel
     private void Skip()
     {
         RunEnvironment env = RunManager.Instance.Environment;
-        PanelDescriptor panelDescriptor = env.ReceiveSignalProcedure(new SkipCombatSignal(env.SimulateResult.Flag == 1));
-        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
+        Signal signal = new SkipCombatSignal(env.SimulateResult.Flag == 1);
+        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
     }
 
     private void SetVictory(bool victory)

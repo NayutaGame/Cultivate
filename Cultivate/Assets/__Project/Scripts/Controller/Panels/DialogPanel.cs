@@ -78,12 +78,8 @@ public class DialogPanel : Panel
 
     private void SelectedOption(int i)
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedOptionSignal(i));
-        if (RunManager.Instance.Environment == null)
-            return;
-        
-        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
+        Signal signal = new SelectedOptionSignal(i);
+        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
     }
 
     private void SelectOption0() => SelectedOption(0);

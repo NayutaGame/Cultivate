@@ -188,10 +188,9 @@ public class DeckPanel : Panel
         if (!(from is HandSkillInteractBehaviour))
             return;
         
-        RunEnvironment env = RunManager.Instance.Environment;
         RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
         RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
-        bool success = env.MergeProcedure(lhs, rhs);
+        bool success = RunManager.Instance.Environment.MergeProcedure(lhs, rhs);
         if (!success)
         {
             MergeFailureNeuron.Invoke(from, to, d);
@@ -205,8 +204,7 @@ public class DeckPanel : Panel
     {
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(2, null);
         
-        RunEnvironment env = RunManager.Instance.Environment;
-        env.ReceiveSignalProcedure(new FieldChangedSignal(DeckIndex.FromHand(), DeckIndex.FromHand()));
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal(DeckIndex.FromHand(), DeckIndex.FromHand()));
         
         MergeSuccessStaging(from, to, d);
 

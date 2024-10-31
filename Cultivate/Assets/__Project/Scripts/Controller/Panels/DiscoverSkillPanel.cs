@@ -58,14 +58,13 @@ public class DiscoverSkillPanel : Panel
         SkillEntryDescriptor skill = ib.GetSimpleView().Get<SkillEntryDescriptor>();
         
         // staging
-        CanvasManager.Instance.RunCanvas.AddSkillProcedure(ib.transform.position, skill);
+        CanvasManager.Instance.RunCanvas.AddSkillProcedure(skill.Entry, skill.JingJie, preferredPosition: ib.transform.position);
         ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
             extraBehaviourPivot.Disappear();
-        
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(new PickedSkillSignal(d.GetIndexOfSkill(skill)));
-        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        CanvasManager.Instance.RunCanvas.SetPanelSAsync(panelS);
+
+        Signal signal = new PickedSkillSignal(d.GetIndexOfSkill(skill));
+        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
         CanvasManager.Instance.SkillAnnotation.PointerExit(ib, eventData);
     }
 
