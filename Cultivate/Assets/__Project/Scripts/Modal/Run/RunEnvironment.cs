@@ -277,7 +277,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         WuXing? lWuXing = lEntry.WuXing;
         WuXing? rWuXing = rEntry.WuXing;
         JingJie playerJingJie = _home.GetJingJie();
-        DeckIndex rhsDeckIndex = new DeckIndex(false, Hand.IndexOf(rhs));
+        DeckIndex rhsDeckIndex = rhs.ToDeckIndex();
         
         if (MergePreresult.IsCongruent(lhs, rhs, playerJingJie))
         {
@@ -399,62 +399,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         fromSlot.Skill = toSlot.Skill;
         toSlot.Skill = temp;
         return true;
-    }
-    
-    public IEnumerable<DeckIndex> TraversalDeckIndices(bool excludingField = false, bool excludingHand = false)
-    {
-        if (!excludingField)
-            foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
-                yield return new DeckIndex(true, slot.Index);
-        if (!excludingHand)
-            for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
-                yield return new DeckIndex(false, i);
-    }
-
-    public RunSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
-    {
-        if (deckIndex.InField)
-            return Home.GetSlot(deckIndex.Index).Skill;
-        else
-            return Hand[deckIndex.Index];
-    }
-
-    public bool GetDeckIndexOfSkill(out DeckIndex result, RunSkill toFind)
-    {
-        result = default;
-        
-        foreach (DeckIndex deckIndex in TraversalDeckIndices())
-        {
-            RunSkill skill = GetSkillAtDeckIndex(deckIndex);
-            if (skill == toFind)
-            {
-                result = deckIndex;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public bool FindDeckIndex(out DeckIndex result, SkillEntryDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
-    {
-        omit ??= Array.Empty<DeckIndex>();
-        
-        result = default;
-        
-        foreach (DeckIndex deckIndex in TraversalDeckIndices(excludingField, excludingHand))
-        {
-            if (omit.Contains(deckIndex))
-                continue;
-            RunSkill skill = GetSkillAtDeckIndex(deckIndex);
-            if (skill != null && descriptor.Contains(skill))
-            {
-                result = deckIndex;
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public void ClearDeck()
@@ -652,5 +596,56 @@ public class RunEnvironment : Addressable, RunClosureOwner
     private void UnregisterList(RunClosure[] list)
     {
         list.Do(e => _closureDict.Unregister(this, e));
+    }
+
+    public RunSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
+    {
+        if (deckIndex.InField)
+            return Home.GetSlot(deckIndex.Index).Skill;
+        else
+            return Hand[deckIndex.Index];
+    }
+
+    public DeckIndex? GetDeckIndexOfSkill(RunSkill runSkill)
+    {
+        SkillSlot skillSlot = runSkill.GetSkillSlot();
+        if (skillSlot != null)
+            return DeckIndex.FromField(skillSlot.Index);
+
+        if (Hand.Contains(runSkill))
+            return DeckIndex.FromHand(Hand.IndexOf(runSkill));
+
+        return null;
+    }
+
+    public bool FindDeckIndex(out DeckIndex result, SkillEntryDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
+    {
+        omit ??= Array.Empty<DeckIndex>();
+        
+        result = default;
+        
+        foreach (DeckIndex deckIndex in TraversalDeckIndices(excludingField, excludingHand))
+        {
+            if (omit.Contains(deckIndex))
+                continue;
+            RunSkill skill = GetSkillAtDeckIndex(deckIndex);
+            if (skill != null && descriptor.Contains(skill))
+            {
+                result = deckIndex;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public IEnumerable<DeckIndex> TraversalDeckIndices(bool excludingField = false, bool excludingHand = false)
+    {
+        if (!excludingField)
+            foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
+                yield return new DeckIndex(true, slot.Index);
+        if (!excludingHand)
+            for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
+                yield return new DeckIndex(false, i);
     }
 }
