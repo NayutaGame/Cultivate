@@ -327,7 +327,7 @@ public class RunCanvas : Panel
         DrawSkillStaging(SkillInteractBehaviourFromDeckIndex(preferredDeckIndex), preferredPosition.Value);
     }
 
-    public void PickDiscoveredSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null, Vector3? preferredPosition = null)
+    public void AddSkillProcedureWithoutShowAnimation(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null, Vector3? preferredPosition = null)
     {
         preferredPosition ??= Vector3.zero;
         

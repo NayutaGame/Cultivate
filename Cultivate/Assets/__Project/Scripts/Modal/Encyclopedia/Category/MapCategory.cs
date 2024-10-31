@@ -183,6 +183,7 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
+                        new ShopRoomDescriptor(0),
                         new DirectRoomDescriptor(0, "发现一张牌"),
                         new DirectRoomDescriptor(0, "发现一张牌"),
                         new DirectRoomDescriptor(0, "发现一张牌"),
