@@ -11,7 +11,7 @@ public class DrawSkillReward : Reward
     }
 
     public override void Claim()
-        => RunManager.Instance.Environment.DrawSkillsProcedure(_descriptor);
+        => CanvasManager.Instance.RunCanvas.DrawSkillsProcedure(_descriptor);
 
     public override string GetDescription() => _description;
 }

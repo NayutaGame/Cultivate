@@ -41,6 +41,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         SetJingJieProcedure(Map.Entry._envJingJie);
         _home.SetSlotCount(Map.Entry._slotCount);
         SetDGoldProcedure(Map.Entry._gold);
+        
         DrawSkillsProcedure(new(jingJie: Map.Entry._skillJingJie, count: Map.Entry._skillCount));
 
         Map.Init();
@@ -471,7 +472,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         entries.Do(e => AddSkill(CreateSkill(e, descriptor.JingJie)));
     }
 
-    // need staging
     public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
         => AddSkill(CreateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
 

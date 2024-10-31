@@ -57,8 +57,7 @@ public class DiscoverSkillPanel : Panel
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
         SkillEntryDescriptor skill = ib.GetSimpleView().Get<SkillEntryDescriptor>();
         
-        // staging
-        CanvasManager.Instance.RunCanvas.AddSkillProcedure(skill.Entry, skill.JingJie, preferredPosition: ib.transform.position);
+        CanvasManager.Instance.RunCanvas.PickDiscoveredSkillProcedure(skill.Entry, skill.JingJie, preferredPosition: ib.transform.position);
         ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
             extraBehaviourPivot.Disappear();

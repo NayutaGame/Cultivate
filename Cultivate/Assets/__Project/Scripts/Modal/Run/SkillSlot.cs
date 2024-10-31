@@ -109,7 +109,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     }
     
     public DeckIndex ToDeckIndex()
-        => RunManager.Instance.Environment.GetDeckIndexOfSkill(_skill).Value;
+        => DeckIndex.FromField(_index);
     
     #region Deprecated
     

@@ -12,6 +12,7 @@ public class ExtraBehaviourPivot : ExtraBehaviour
     private Tween _handle;
 
     private Animator _animator;
+    public Animator Animator => _animator;
 
     public RectTransform GetDisplayTransform()
         => CLView.GetDisplayTransform();

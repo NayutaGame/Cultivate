@@ -1598,54 +1598,54 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
-            new(id:                                 "天界树",
-                description:                        "天界树",
-                ladderBound:                        new Bound(11, 15),
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogPanelDescriptor A = new("你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
-                        "吃树上的果子",
-                        "尝试感悟五行相生的规律");
-
-                    DialogPanelDescriptor B = new DialogPanelDescriptor("久闻天界树，3000年才能开花结果，醒来之后，身上所有伤都不见了。\n\n命元+2")
-                        .SetReward(Reward.FromMingYuan(2));
-                    DialogPanelDescriptor C = new("你感受到了天界树的记忆。活，死，活，活，死，死，活，活，死死死死死死死。。。。。。活？" +
-                                                  "所有的生命都逐渐凋零，所有的死者彷佛又有了生命。你感觉如果继续感悟下去，现在手中所有的卡牌都即将不属于自己，要继续感悟么？",
-                        "停止感悟，吃树上的果子",
-                        "继续感悟");
-                    DialogPanelDescriptor D = new("金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。" +
-                                                  "到最后，你已经不知道你是树，还是树是你了。" +
-                                                  "感悟了五行相生，所有五行牌都被相生的元素替换了。");
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    C[0].SetSelect(option => B);
-                    C[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
-                        {
-                            RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex);
-                            if (skill == null)
-                                return;
-
-                            SkillEntry entry = skill.GetEntry();
-                            if (!entry.WuXing.HasValue)
-                                return;
-
-                            WuXing wuXing = entry.WuXing.Value.Next;
-                            JingJie jingJie = RandomManager.Range(skill.GetJingJie(), RunManager.Instance.Environment.JingJie + 1);
-                            
-                            RunManager.Instance.Environment.DrawSkillProcedure(
-                                SkillEntryDescriptor.FromWuXingJingJie(wuXing, jingJie),
-                                deckIndex);
-                        });
-
-                        return D;
-                    });
-
-                    return A;
-                }),
+            // new(id:                                 "天界树",
+            //     description:                        "天界树",
+            //     ladderBound:                        new Bound(11, 15),
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogPanelDescriptor A = new("你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
+            //             "吃树上的果子",
+            //             "尝试感悟五行相生的规律");
+            //
+            //         DialogPanelDescriptor B = new DialogPanelDescriptor("久闻天界树，3000年才能开花结果，醒来之后，身上所有伤都不见了。\n\n命元+2")
+            //             .SetReward(Reward.FromMingYuan(2));
+            //         DialogPanelDescriptor C = new("你感受到了天界树的记忆。活，死，活，活，死，死，活，活，死死死死死死死。。。。。。活？" +
+            //                                       "所有的生命都逐渐凋零，所有的死者彷佛又有了生命。你感觉如果继续感悟下去，现在手中所有的卡牌都即将不属于自己，要继续感悟么？",
+            //             "停止感悟，吃树上的果子",
+            //             "继续感悟");
+            //         DialogPanelDescriptor D = new("金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。" +
+            //                                       "到最后，你已经不知道你是树，还是树是你了。" +
+            //                                       "感悟了五行相生，所有五行牌都被相生的元素替换了。");
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         C[0].SetSelect(option => B);
+            //         C[1].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
+            //             {
+            //                 RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex);
+            //                 if (skill == null)
+            //                     return;
+            //
+            //                 SkillEntry entry = skill.GetEntry();
+            //                 if (!entry.WuXing.HasValue)
+            //                     return;
+            //
+            //                 WuXing wuXing = entry.WuXing.Value.Next;
+            //                 JingJie jingJie = RandomManager.Range(skill.GetJingJie(), RunManager.Instance.Environment.JingJie + 1);
+            //                 
+            //                 RunManager.Instance.Environment.DrawSkillProcedure(
+            //                     SkillEntryDescriptor.FromWuXingJingJie(wuXing, jingJie),
+            //                     deckIndex);
+            //             });
+            //
+            //             return D;
+            //         });
+            //
+            //         return A;
+            //     }),
 
             new(id:                                 "连抽五张",
                 description:                        "连抽五张",

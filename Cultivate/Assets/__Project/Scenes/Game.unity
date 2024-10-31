@@ -2993,6 +2993,7 @@ MonoBehaviour:
   StageCanvas: {fileID: 1904362866}
   Camera: {fileID: 900511290}
   Raycaster: {fileID: 1125990555}
+  Canvas: {fileID: 1125990557}
   CharacterAnnotation: {fileID: 1768750246}
   SkillAnnotation: {fileID: 581571932}
   BuffAnnotation: {fileID: 241239586}
