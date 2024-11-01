@@ -10,7 +10,6 @@ public class ReservedLayer : MonoBehaviour
     // public Button FormationBrowserButton;
     public Button CloseButton;
 
-    public TechTreePanel TechTreePanel;
     public EntityEditorPanel EntityEditorPanel;
     public SkillBrowserPanel SkillBrowserPanel;
     public FormationBrowserPanel FormationBrowserPanel;
@@ -41,7 +40,6 @@ public class ReservedLayer : MonoBehaviour
             _currentPanel.Refresh();
     }
 
-    public void OpenTechTreePanel() => ChangePanel(TechTreePanel);
     public void OpenEntityEditorPanel() => ChangePanel(EntityEditorPanel);
     public void OpenSkillBrowserPanel() => ChangePanel(SkillBrowserPanel);
     public void OpenFormationBrowserPanel() => ChangePanel(FormationBrowserPanel);

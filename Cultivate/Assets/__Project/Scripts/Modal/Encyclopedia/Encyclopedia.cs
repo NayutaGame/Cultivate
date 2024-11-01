@@ -11,7 +11,6 @@ public class Encyclopedia : Addressable
     public static BuffCategory BuffCategory;
     public static SkillCategory SkillCategory;
     public static EntityCategory EntityCategory;
-    public static TechCategory TechCategory;
     public static RoomCategory RoomCategory;
     public static FormationCategory FormationCategory;
     public static CharacterCategory CharacterCategory;
@@ -38,14 +37,11 @@ public class Encyclopedia : Addressable
         BuffCategory = new();
         SkillCategory = new();
         EntityCategory = new();
-        TechCategory = new();
         RoomCategory = new();
         FormationCategory = new();
         CharacterCategory = new();
         DifficultyCategory = new();
         MapCategory = new();
-
-        TechCategory.Init();
 
         KeywordCategory.Init();
         BuffCategory.Init();

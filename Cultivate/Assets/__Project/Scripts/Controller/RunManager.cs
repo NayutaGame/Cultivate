@@ -53,9 +53,6 @@ public class RunManager : Singleton<RunManager>, Addressable
     public event Action<StageCommitDetails> StageCommitEvent;
     public void StageCommit(StageCommitDetails d) => StageCommitEvent?.Invoke(d);
 
-    public event Action<GainSkillDetails> GainSkillEvent;
-    public void Acquire(GainSkillDetails d) => GainSkillEvent?.Invoke(d);
-
     public event Action<StatusChangedDetails> StatusChangedEvent;
     public void StatusChanged(StatusChangedDetails d) => StatusChangedEvent?.Invoke(d);
 

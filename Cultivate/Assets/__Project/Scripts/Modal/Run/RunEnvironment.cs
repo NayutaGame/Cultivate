@@ -157,23 +157,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public MingYuan GetMingYuan()
         => _home.MingYuan;
 
-    public bool CanAffordTech(Address address)
-    {
-        RunTech runTech = address.Get<RunTech>();
-        return runTech.GetCost() <= GetGold().Curr;
-    }
-
-    public bool TrySetDoneTech(Address address)
-    {
-        if (!CanAffordTech(address))
-            return false;
-
-        RunTech runTech = address.Get<RunTech>();
-        GetGold().Curr -= runTech.GetCost();
-        TechInventory.SetDone(runTech);
-        return true;
-    }
-
     public void SetDMingYuanProcedure(int value)
         => SetDMingYuanProcedure(new SetDMingYuanDetails(value));
     private void SetDMingYuanProcedure(SetDMingYuanDetails d)
@@ -449,12 +432,18 @@ public class RunEnvironment : Addressable, RunClosureOwner
         JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
         return RunSkill.FromEntryJingJie(skillEntry, jingJie);
     }
+
+    public Neuron<GainSkillDetails> GainSkillNeuron = new();
+    public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
+    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
     
     private void AddSkill(RunSkill skill, DeckIndex? preferredDeckIndex = null)
     {
         if (!preferredDeckIndex.HasValue)
         {
+            int last = Hand.Count();
             Hand.Add(skill);
+            GainSkillNeuron.Invoke(new GainSkillDetails(DeckIndex.FromHand(last), skill));
             return;
         }
 
@@ -463,21 +452,44 @@ public class RunEnvironment : Addressable, RunClosureOwner
             Home.GetSlot(deckIndex.Index).Skill = skill;
         else
             Hand.Replace(deckIndex.Index, skill);
+        
+        GainSkillNeuron.Invoke(new GainSkillDetails(deckIndex, skill));
     }
     
-    // need staging
     public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
     {
+        int start = Hand.Count();
+
+        DeckIndex[] indices = new DeckIndex[descriptor.Count];
+        
         List<SkillEntry> entries = DrawSkills(descriptor);
-        entries.Do(e => AddSkill(CreateSkill(e, descriptor.JingJie)));
+        
+        for (int i = 0; i < descriptor.Count; i++)
+        {
+            SkillEntry e = entries[i];
+            
+            RunSkill skill = CreateSkill(e, descriptor.JingJie);
+            Hand.Add(skill);
+
+            indices[i] = DeckIndex.FromHand(start + i);
+        }
+        
+        GainSkillsNeuron.Invoke(new GainSkillsDetails(indices));
     }
 
     public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
         => AddSkill(CreateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
 
-    // need staging
     public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
         => AddSkill(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
+
+    public void PickDiscoveredSkillProcedure(int pickedIndex, SkillEntryDescriptor skillDescriptor)
+    {
+        RunSkill skill = CreateSkill(skillDescriptor.Entry, skillDescriptor.JingJie);
+        int last = Hand.Count();
+        Hand.Add(skill);
+        PickDiscoveredSkillNeuron.Invoke(new(DeckIndex.FromHand(last), pickedIndex));
+    }
 
     public void DiscoverSkillProcedure(DiscoverSkillDetails d)
     {
@@ -495,7 +507,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
     private RunEntity _home; public RunEntity Home => _home;
     private RunEntity _away; public RunEntity Away => _away;
     public Map Map { get; private set; }
-    public TechInventory TechInventory { get; private set; }
     public Pool<SkillEntry> SkillPool;
     public SkillInventory Hand { get; private set; }
     private BoundedInt _gold;
@@ -520,7 +531,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
             { "Config",                () => _config },
             { "Home",                  () => _home },
             { "Map",                   () => Map },
-            { "TechInventory",         () => TechInventory },
             { "Hand",                  () => Hand },
             { "ActivePanel",           GetActivePanel },
         };
@@ -534,7 +544,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         SetAway(null);
 
         Map = new(_config.MapEntry);
-        TechInventory = new();
         SkillPool = new();
         Hand = new();
         _closureDict = new();

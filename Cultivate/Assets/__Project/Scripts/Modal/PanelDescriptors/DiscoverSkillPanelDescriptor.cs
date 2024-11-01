@@ -47,10 +47,11 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)
     {
-        if (signal is PickedSkillSignal pickedSkillSignal)
+        if (signal is PickDiscoveredSkillSignal pickDiscoveredSkillSignal)
         {
-            // SkillEntryDescriptor skill = _skills[pickedSkillSignal.Selected];
-            // CanvasManager.Instance.RunCanvas.AddSkillProcedure(skill);
+            int pickedIndex = pickDiscoveredSkillSignal.Selected;
+            SkillEntryDescriptor skill = _skills[pickedIndex];
+            RunManager.Instance.Environment.PickDiscoveredSkillProcedure(pickedIndex, skill);
             return null;
         }
 

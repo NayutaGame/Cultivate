@@ -196,7 +196,7 @@ public class ConsolePanel : Panel
 
     private void DrawSkill()
     {
-        CanvasManager.Instance.RunCanvas.DrawSkillProcedure(SkillEntryDescriptor.FromJingJie(RunManager.Instance.Environment.JingJie));
-        // CanvasManager.Instance.RunCanvas.DrawSkillsProcedure(new SkillEntryCollectionDescriptor(jingJie: RunManager.Instance.Environment.JingJie, count: 5));
+        RunManager.Instance.Environment.DrawSkillProcedure(SkillEntryDescriptor.FromJingJie(RunManager.Instance.Environment.JingJie));
+        // RunManager.Instance.Environment.DrawSkillsProcedure(new SkillEntryCollectionDescriptor(jingJie: RunManager.Instance.Environment.JingJie, count: 5));
     }
 }

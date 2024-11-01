@@ -1,4 +1,5 @@
 
+using System;
 using CLLibrary;
 using DG.Tweening;
 using TMPro;
@@ -24,7 +25,7 @@ public class DiscoverSkillPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         SkillList.SetAddress(_address.Append(".Skills"));
         SkillList.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        SkillList.LeftClickNeuron.Join(PickSkill);
+        SkillList.LeftClickNeuron.Join(PickDiscoveredSkill);
     }
 
     protected override Animator InitAnimator()
@@ -49,44 +50,62 @@ public class DiscoverSkillPanel : Panel
         DescriptionText.text = d.GetDescriptionText();
     }
 
+    private void OnEnable()
+    {
+        RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Add(PickDiscoveredSkillStaging);
+    }
+
+    private void OnDisable()
+    {
+        RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Remove(PickDiscoveredSkillStaging);
+    }
+
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
 
-    private void PickSkill(InteractBehaviour ib, PointerEventData eventData)
+    private void PickDiscoveredSkill(InteractBehaviour ib, PointerEventData eventData)
     {
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
         SkillEntryDescriptor skill = ib.GetSimpleView().Get<SkillEntryDescriptor>();
-        
-        CanvasManager.Instance.RunCanvas.AddSkillProcedureWithoutShowAnimation(skill.Entry, skill.JingJie, preferredPosition: ib.transform.position);
-        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
-            extraBehaviourPivot.Disappear();
 
-        Signal signal = new PickedSkillSignal(d.GetIndexOfSkill(skill));
+        Signal signal = new PickDiscoveredSkillSignal(d.GetIndexOfSkill(skill));
         CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
         CanvasManager.Instance.SkillAnnotation.PointerExit(ib, eventData);
+    }
+
+    private void PickDiscoveredSkillStaging(PickDiscoveredSkillDetails d)
+    {
+        int pickedIndex = d.PickedIndex;
+        InteractBehaviour discoverIB = SkillList.ActivePool[pickedIndex].GetInteractBehaviour();
+        InteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
+
+        CanvasManager.Instance.RunCanvas.PickDiscoveredSkillStaging(cardIB, discoverIB);
+        
+        ExtraBehaviourPivot extraBehaviourPivot = discoverIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        if (extraBehaviourPivot != null)
+            extraBehaviourPivot.Disappear();
     }
 
     public override Tween ShowTween()
     {
         return DOTween.Sequence()
-            .AppendCallback(() => gameObject.SetActive(true))
-            .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
-            .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
-            .AppendCallback(TraversalPlayAppearAnimation)
-            ;
+                .AppendCallback(() => gameObject.SetActive(true))
+                .AppendCallback(TraversalSetDisappear)
+                .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
+                .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
+                .AppendCallback(TraversalPlayAppearAnimation);
     }
 
     public override Tween HideTween()
     {
         return DOTween.Sequence()
-            // make skills non interactable
-            // dissolve of skills
-            .AppendCallback(TraversalPlayDisappearAnimation)
-            .AppendInterval(0.15f)
-            .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
-            .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
-            .AppendCallback(() => gameObject.SetActive(false));
+                // make skills non interactable
+                // dissolve of skills
+                .AppendCallback(TraversalPlayDisappearAnimation)
+                .AppendInterval(0.15f)
+                .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
+                .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
+                .AppendCallback(() => gameObject.SetActive(false));
     }
 
     public Tween SelfTransitionTween()
@@ -97,6 +116,16 @@ public class DiscoverSkillPanel : Panel
             .AppendCallback(SkillList.Refresh)
             .AppendCallback(Refresh)
             .AppendCallback(TraversalPlayAppearAnimation);
+    }
+
+    public void TraversalSetDisappear()
+    {
+        SkillList.TraversalActive().Do(item =>
+        {
+            ExtraBehaviourPivot extraBehaviourPivot = item.GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+                extraBehaviourPivot.Animator.SetState(0);
+        });
     }
 
     public void TraversalPlayAppearAnimation()

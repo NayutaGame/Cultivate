@@ -1,4 +1,5 @@
 
+using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using CLLibrary;
@@ -79,6 +80,18 @@ public class RunCanvas : Panel
         ReservedLayer.Refresh();
         TopBar.Refresh();
         ConsolePanel.Refresh();
+    }
+
+    private void OnEnable()
+    {
+        RunManager.Instance.Environment.GainSkillNeuron.Add(GainSkillStaging);
+        RunManager.Instance.Environment.GainSkillsNeuron.Add(GainSkillsStaging);
+    }
+
+    private void OnDisable()
+    {
+        RunManager.Instance.Environment.GainSkillNeuron.Remove(GainSkillStaging);
+        RunManager.Instance.Environment.GainSkillsNeuron.Remove(GainSkillsStaging);
     }
 
     public async UniTask SetPanelSAsyncFromSignal(Signal signal)
@@ -173,99 +186,8 @@ public class RunCanvas : Panel
     }
 
     #region Staging
-    
-    public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor, Vector3? preferredPosition = null)
-    {
-        int startCount = DeckPanel.HandView.ActivePool.Count;
 
-        preferredPosition ??= Vector3.zero;
-        
-        RunManager.Instance.Environment.DrawSkillsProcedure(descriptor);
-        Refresh();
-
-        DrawSkillsStaging(startCount, descriptor.Count, preferredPosition.Value);
-    }
-
-    private void DrawSkillsStaging(int startCount, int count, Vector3 position)
-    {
-        void SetSkillPosition(int handIndex, Vector3 position)
-        {
-            InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(DeckIndex.FromHand(handIndex));
-            ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
-            {
-                extraBehaviourPivot.FollowTransform.position = position;
-                extraBehaviourPivot.FollowTransform.localScale = Vector3.zero;
-                extraBehaviourPivot.Animator.SetState(3);
-                newIB.SetInteractable(false);
-            }
-        }
-
-        void SetSkillShow(int handIndex, Vector3 position)
-        {
-            InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(DeckIndex.FromHand(handIndex));
-            ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
-            {
-                extraBehaviourPivot.FollowTransform.position = position;
-                extraBehaviourPivot.FollowTransform.localScale = extraBehaviourPivot.HoverTransform.localScale;
-                extraBehaviourPivot.Animator.SetStateAsync(3);
-            }
-        }
-
-        void GainSkillStaging(int handIndex, Vector3 position)
-        {
-            InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(DeckIndex.FromHand(handIndex));
-            newIB.SetInteractable(true);
-            ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
-            {
-                extraBehaviourPivot.PositionToIdle(position);
-            }
-            // AudioManager.Play("CardPlacement");
-        }
-        
-        int offset = 1;
-        
-        for (int i = 0; i < count; i++)
-        {
-            int handIndex = i;
-            SetSkillPosition(startCount + handIndex, position + handIndex * offset * Vector3.left);
-        }
-        
-        Sequence seq = DOTween.Sequence();
-        seq.AppendInterval(0.05f);
-
-        for (int i = 0; i < count; i++)
-        {
-            int handIndex = i;
-            seq.AppendCallback(() => SetSkillShow(startCount + handIndex, position + handIndex * offset * Vector3.left))
-                .AppendInterval(0.1f);
-        }
-        
-        seq.AppendInterval(0.2f);
-        
-        for (int i = 0; i < count; i++)
-        {
-            int handIndex = i;
-            seq.AppendCallback(() => GainSkillStaging(startCount + handIndex, position + handIndex * offset * Vector3.left))
-                .AppendInterval(0.1f);
-        }
-
-        seq.SetAutoKill().Restart();
-    }
-
-    public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null, Vector3? preferredPosition = null)
-    {
-        preferredPosition ??= Vector3.zero;
-        
-        RunManager.Instance.Environment.DrawSkillProcedure(descriptor, preferredDeckIndex);
-        Refresh();
-        
-        DrawSkillStaging(SkillInteractBehaviourFromDeckIndex(preferredDeckIndex), preferredPosition.Value);
-    }
-
-    private void DrawSkillStaging(InteractBehaviour ib, Vector3 position)
+    private void GainSkillStaging(GainSkillDetails d)
     {
         void SetSkillPosition(InteractBehaviour ib, Vector3 position)
         {
@@ -287,10 +209,11 @@ public class RunCanvas : Panel
                 extraBehaviourPivot.FollowTransform.position = position;
                 extraBehaviourPivot.FollowTransform.localScale = extraBehaviourPivot.HoverTransform.localScale;
                 extraBehaviourPivot.Animator.SetStateAsync(3);
+                ib.SetInteractable(false);
             }
         }
 
-        void GainSkillStaging(InteractBehaviour ib, Vector3 position)
+        void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
             ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
@@ -300,6 +223,11 @@ public class RunCanvas : Panel
             }
             // AudioManager.Play("CardPlacement");
         }
+        
+        Refresh();
+        Vector3 position = Vector3.zero;
+
+        InteractBehaviour ib = SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
         
         SetSkillPosition(ib, position);
         
@@ -311,20 +239,115 @@ public class RunCanvas : Panel
         
         seq.AppendInterval(0.2f);
         
-        seq.AppendCallback(() => GainSkillStaging(ib, position))
+        seq.AppendCallback(() => SetSkillMove(ib, position))
             .AppendInterval(0.1f);
 
         seq.SetAutoKill().Restart();
     }
 
-    public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null, Vector3? preferredPosition = null)
+    private void GainSkillsStaging(GainSkillsDetails d)
     {
-        preferredPosition ??= Vector3.zero;
+        void SetSkillPosition(DeckIndex deckIndex, Vector3 position)
+        {
+            InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
+            ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+            {
+                extraBehaviourPivot.FollowTransform.position = position;
+                extraBehaviourPivot.FollowTransform.localScale = Vector3.zero;
+                extraBehaviourPivot.Animator.SetState(3);
+                newIB.SetInteractable(false);
+            }
+        }
+
+        void SetSkillShow(DeckIndex deckIndex, Vector3 position)
+        {
+            InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
+            ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+            {
+                extraBehaviourPivot.FollowTransform.position = position;
+                extraBehaviourPivot.FollowTransform.localScale = extraBehaviourPivot.HoverTransform.localScale;
+                extraBehaviourPivot.Animator.SetStateAsync(3);
+                newIB.SetInteractable(false);
+            }
+        }
+
+        void SetSkillMove(DeckIndex deckIndex, Vector3 position)
+        {
+            InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
+            newIB.SetInteractable(true);
+            ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+            {
+                extraBehaviourPivot.PositionToIdle(position);
+            }
+            // AudioManager.Play("CardPlacement");
+        }
         
-        RunManager.Instance.Environment.AddSkillProcedure(skillEntry, preferredJingJie, preferredDeckIndex);
+        Refresh();
+        Vector3 position = Vector3.zero;
+        
+        int offset = 1;
+
+        for (int i = 0; i < d.DeckIndices.Length; i++)
+        {
+            int index = i;
+            SetSkillPosition(d.DeckIndices[index], position + index * offset * Vector3.left);
+        }
+        
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(0.05f);
+
+        for (int i = 0; i < d.DeckIndices.Length; i++)
+        {
+            int index = i;
+            seq.AppendCallback(() => SetSkillShow(d.DeckIndices[index], position + index * offset * Vector3.left))
+                .AppendInterval(0.1f);
+        }
+        
+        seq.AppendInterval(0.2f);
+
+        for (int i = 0; i < d.DeckIndices.Length; i++)
+        {
+            int index = i;
+            seq.AppendCallback(() => SetSkillMove(d.DeckIndices[index], position + index * offset * Vector3.left))
+                .AppendInterval(0.1f);
+        }
+
+        seq.SetAutoKill().Restart();
+    }
+
+    public void PickDiscoveredSkillStaging(InteractBehaviour cardIB, InteractBehaviour discoverIB)
+    {
+        void SetSkillPosition(InteractBehaviour ib, InteractBehaviour discoverIB)
+        {
+            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+            {
+                Transform t = discoverIB.GetSimpleView().transform;
+                extraBehaviourPivot.FollowTransform.position = t.position;
+                extraBehaviourPivot.FollowTransform.localScale = t.localScale;
+                extraBehaviourPivot.Animator.SetState(3);
+                ib.SetInteractable(false);
+            }
+        }
+
+        void SetSkillMove(InteractBehaviour ib, Vector3 position)
+        {
+            ib.SetInteractable(true);
+            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+            {
+                extraBehaviourPivot.PositionToIdle(position);
+            }
+            // AudioManager.Play("CardPlacement");
+        }
+        
         Refresh();
         
-        DrawSkillStaging(SkillInteractBehaviourFromDeckIndex(preferredDeckIndex), preferredPosition.Value);
+        SetSkillPosition(cardIB, discoverIB);
+        SetSkillMove(cardIB, discoverIB.transform.position);
     }
 
     public void AddSkillProcedureWithoutShowAnimation(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null, Vector3? preferredPosition = null)

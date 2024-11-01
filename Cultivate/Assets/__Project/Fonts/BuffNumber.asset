@@ -62,9 +62,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: BuffNumber
   m_EditorClassIdentifier: 
-  hashCode: -1124154896
+  hashCode: -153514348
   material: {fileID: 5827317227227896951}
-  materialHashCode: -1612496304
+  materialHashCode: 1802085556
   m_Version: 1.1.0
   m_SourceFontFileGUID: 06d72df740ce71a4288d3fbf2491a225
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 06d72df740ce71a4288d3fbf2491a225, type: 3}
@@ -2622,7 +2622,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: "\u732B\u5543\u73E0\u5706\u4F53 MaokenZhuyuanTi Atlas Material"
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - UNDERLAY_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -2698,7 +2699,7 @@ Material:
     - _StencilWriteMask: 255
     - _TextureHeight: 1024
     - _TextureWidth: 1024
-    - _UnderlayDilate: 0
+    - _UnderlayDilate: 0.6
     - _UnderlayOffsetX: 0
     - _UnderlayOffsetY: 0
     - _UnderlaySoftness: 0
@@ -2716,5 +2717,5 @@ Material:
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
