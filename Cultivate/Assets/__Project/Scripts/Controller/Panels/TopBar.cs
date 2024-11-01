@@ -28,26 +28,22 @@ public class TopBar : MonoBehaviour
 
     private void OnEnable()
     {
-        CanvasManager.Instance.RunCanvas.GainMingYuanStagingNeuron.Add(GainMingYuan);
-        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Add(MingYuan.NumberChangeNoAnimation);
-        
-        CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Add(GainGold);
-        CanvasManager.Instance.RunCanvas.LoseGoldStagingNeuron.Add(Gold.NumberChange);
-        
-        CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Add(GainDHealth);
-        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Add(Health.NumberChange);
+        RunManager.Instance.Environment.GainMingYuanNeuron.Add(GainMingYuan);
+        RunManager.Instance.Environment.LoseMingYuanNeuron.Add(MingYuan.LoseNoAnimation);
+        RunManager.Instance.Environment.GainGoldNeuron.Add(GainGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Add(Gold.Lose);
+        RunManager.Instance.Environment.GainDHealthNeuron.Add(GainDHealth);
+        RunManager.Instance.Environment.LoseDHealthNeuron.Add(Health.Lose);
     }
 
     private void OnDisable()
     {
-        CanvasManager.Instance.RunCanvas.GainMingYuanStagingNeuron.Remove(GainMingYuan);
-        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Remove(MingYuan.NumberChangeNoAnimation);
-        
-        CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Remove(GainGold);
-        CanvasManager.Instance.RunCanvas.LoseGoldStagingNeuron.Remove(Gold.NumberChange);
-        
-        CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Remove(GainDHealth);
-        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Remove(Health.NumberChange);
+        RunManager.Instance.Environment.GainMingYuanNeuron.Remove(GainMingYuan);
+        RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuan.LoseNoAnimation);
+        RunManager.Instance.Environment.GainGoldNeuron.Remove(GainGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Remove(Gold.Lose);
+        RunManager.Instance.Environment.GainDHealthNeuron.Remove(GainDHealth);
+        RunManager.Instance.Environment.LoseDHealthNeuron.Remove(Health.Lose);
     }
 
     private void GainMingYuan(int value)

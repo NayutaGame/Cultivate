@@ -1,6 +1,7 @@
 
 using System;
 using CLLibrary;
+using Cysharp.Threading.Tasks.Triggers;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -121,22 +122,22 @@ public class ConsolePanel : Panel
 
     private void OnEnable()
     {
-        CanvasManager.Instance.RunCanvas.GainMingYuanStagingNeuron.Add(RefreshMingYuan);
-        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Add(RefreshMingYuan);
-        CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Add(RefreshGold);
-        CanvasManager.Instance.RunCanvas.LoseGoldStagingNeuron.Add(RefreshGold);
-        CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Add(RefreshDHealth);
-        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Add(RefreshDHealth);
+        RunManager.Instance.Environment.GainMingYuanNeuron.Add(RefreshMingYuan);
+        RunManager.Instance.Environment.LoseMingYuanNeuron.Add(RefreshMingYuan);
+        RunManager.Instance.Environment.GainGoldNeuron.Add(RefreshGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Add(RefreshGold);
+        RunManager.Instance.Environment.GainDHealthNeuron.Add(RefreshDHealth);
+        RunManager.Instance.Environment.LoseDHealthNeuron.Add(RefreshDHealth);
     }
 
     private void OnDisable()
     {
-        CanvasManager.Instance.RunCanvas.GainMingYuanStagingNeuron.Remove(RefreshMingYuan);
-        CanvasManager.Instance.RunCanvas.LoseMingYuanStagingNeuron.Remove(RefreshMingYuan);
-        CanvasManager.Instance.RunCanvas.GainGoldStagingNeuron.Remove(RefreshGold);
-        CanvasManager.Instance.RunCanvas.LoseGoldStagingNeuron.Remove(RefreshGold);
-        CanvasManager.Instance.RunCanvas.GainDHealthStagingNeuron.Remove(RefreshDHealth);
-        CanvasManager.Instance.RunCanvas.LoseDHealthStagingNeuron.Remove(RefreshDHealth);
+        RunManager.Instance.Environment.GainMingYuanNeuron.Remove(RefreshMingYuan);
+        RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(RefreshMingYuan);
+        RunManager.Instance.Environment.GainGoldNeuron.Remove(RefreshGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Remove(RefreshGold);
+        RunManager.Instance.Environment.GainDHealthNeuron.Remove(RefreshDHealth);
+        RunManager.Instance.Environment.LoseDHealthNeuron.Remove(RefreshDHealth);
     }
 
     private void RefreshMingYuan(int value)
@@ -159,32 +160,32 @@ public class ConsolePanel : Panel
 
     private void AddMingYuan()
     {
-        CanvasManager.Instance.RunCanvas.GainMingYuanProcedure(1);
+        RunManager.Instance.Environment.SetDMingYuanProcedure(1);
     }
 
     private void ReduceMingYuan()
     {
-        CanvasManager.Instance.RunCanvas.LoseMingYuanProcedure(-1);
+        RunManager.Instance.Environment.SetDMingYuanProcedure(-1);
     }
 
     private void AddGold()
     {
-        CanvasManager.Instance.RunCanvas.GainGoldProcedure(10);
+        RunManager.Instance.Environment.SetDGoldProcedure(10);
     }
 
     private void ReduceGold()
     {
-        CanvasManager.Instance.RunCanvas.LoseGoldProcedure(-10);
+        RunManager.Instance.Environment.SetDGoldProcedure(-10);
     }
 
     private void AddHealth()
     {
-        CanvasManager.Instance.RunCanvas.GainDHealthProcedure(10);
+        RunManager.Instance.Environment.SetDDHealthProcedure(10);
     }
 
     private void ReduceHealth()
     {
-        CanvasManager.Instance.RunCanvas.LoseDHealthProcedure(-10);
+        RunManager.Instance.Environment.SetDDHealthProcedure(-10);
     }
 
     private void JingJieChanged(int jingJie)

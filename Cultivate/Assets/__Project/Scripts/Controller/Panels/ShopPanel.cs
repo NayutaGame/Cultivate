@@ -72,6 +72,7 @@ public class ShopPanel : Panel
         InteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
 
         CanvasManager.Instance.RunCanvas.BuySkillStaging(cardIB, commodityIB);
+        CanvasManager.Instance.SkillAnnotation.PointerExit();
         
         // ExtraBehaviourPivot extraBehaviourPivot = commodityIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         // if (extraBehaviourPivot != null)

@@ -78,7 +78,7 @@ public class RunCanvas : Panel
         DeckPanel.Refresh();
         MapPanel.Refresh();
         ReservedLayer.Refresh();
-        TopBar.Refresh();
+        // TopBar.Refresh();
         ConsolePanel.Refresh();
     }
 
@@ -86,12 +86,14 @@ public class RunCanvas : Panel
     {
         RunManager.Instance.Environment.GainSkillNeuron.Add(GainSkillStaging);
         RunManager.Instance.Environment.GainSkillsNeuron.Add(GainSkillsStaging);
+        RunManager.Instance.Environment.LoseMingYuanNeuron.Add(MingYuanDamageStaging);
     }
 
     private void OnDisable()
     {
         RunManager.Instance.Environment.GainSkillNeuron.Remove(GainSkillStaging);
         RunManager.Instance.Environment.GainSkillsNeuron.Remove(GainSkillsStaging);
+        RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuanDamageStaging);
     }
 
     public async UniTask SetPanelSAsyncFromSignal(Signal signal)
@@ -393,52 +395,12 @@ public class RunCanvas : Panel
 
         return DeckPanel.HandView.ActivePool[deckIndex.Value.Index].GetInteractBehaviour();
     }
-    
-    // TODO: Audio
-    public Neuron<int> GainMingYuanStagingNeuron = new();
-    public Neuron<int> LoseMingYuanStagingNeuron = new();
-    public Neuron<int> GainGoldStagingNeuron = new();
-    public Neuron<int> LoseGoldStagingNeuron = new();
-    public Neuron<int> GainDHealthStagingNeuron = new();
-    public Neuron<int> LoseDHealthStagingNeuron = new();
 
-    public void GainMingYuanProcedure(int value)
+    public void MingYuanDamageStaging(int value)
     {
-        RunManager.Instance.Environment.SetDMingYuanProcedure(value);
-        GainMingYuanStagingNeuron.Invoke(value);
-    }
-
-    public void LoseMingYuanProcedure(int value)
-    {
-        RunManager.Instance.Environment.SetDMingYuanProcedure(value);
         CanvasManager.Instance.RedFlashAnimation();
         CanvasManager.Instance.CanvasShakeAnimation();
         CanvasManager.Instance.UIFloatTextVFX(value.ToString(), Color.red);
-        LoseMingYuanStagingNeuron.Invoke(value);
-    }
-
-    public void GainGoldProcedure(int value)
-    {
-        RunManager.Instance.Environment.SetDGoldProcedure(value);
-        GainGoldStagingNeuron.Invoke(value);
-    }
-
-    public void LoseGoldProcedure(int value)
-    {
-        RunManager.Instance.Environment.SetDGoldProcedure(value);
-        LoseGoldStagingNeuron.Invoke(value);
-    }
-    
-    public void GainDHealthProcedure(int value)
-    {
-        RunManager.Instance.Environment.SetDDHealthProcedure(value);
-        GainDHealthStagingNeuron.Invoke(value);
-    }
-
-    public void LoseDHealthProcedure(int value)
-    {
-        RunManager.Instance.Environment.SetDDHealthProcedure(value);
-        LoseDHealthStagingNeuron.Invoke(value);
     }
 
     #endregion

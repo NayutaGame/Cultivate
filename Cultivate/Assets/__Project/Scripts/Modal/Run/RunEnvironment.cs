@@ -151,73 +151,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         _away.FormationProcedure();
     }
 
-    public BoundedInt GetGold()
-        => _gold;
-
-    public MingYuan GetMingYuan()
-        => _home.MingYuan;
-
-    public void SetDMingYuanProcedure(int value)
-        => SetDMingYuanProcedure(new SetDMingYuanDetails(value));
-    private void SetDMingYuanProcedure(SetDMingYuanDetails d)
-    {
-        _closureDict.SendEvent(RunClosureDict.WIL_SET_D_MINGYUAN, d);
-
-        if (d.Cancel)
-            return;
-
-        _home.MingYuan.Curr += d.Value;
-        _closureDict.SendEvent(RunClosureDict.DID_SET_D_MINGYUAN, d);
-
-        // register this as a defeat check
-        if (GetMingYuan().Curr <= 0)
-            CommitRunProcedure(RunResult.RunResultState.Defeat);
-    }
-
-    public void SetDGoldProcedure(int value)
-        => SetDGoldProcedure(new SetDGoldDetails(value));
-    private void SetDGoldProcedure(SetDGoldDetails d)
-    {
-        _closureDict.SendEvent(RunClosureDict.WILL_SET_D_GOLD, d);
-
-        if (d.Cancel)
-            return;
-
-        _gold.Curr += d.Value;
-        _closureDict.SendEvent(RunClosureDict.DID_SET_D_GOLD, d);
-    }
-
-    public void SetDDHealthProcedure(int value)
-        => SetDDHealthProcedure(new SetDDHealthDetails(value));
-    private void SetDDHealthProcedure(SetDDHealthDetails d)
-    {
-        _closureDict.SendEvent(RunClosureDict.WILL_SET_DDHEALTH, d);
-
-        if (d.Cancel)
-            return;
-
-        _home.SetDHealth(_home.GetDHealth() + d.Value);
-        _closureDict.SendEvent(RunClosureDict.DID_SET_DDHEALTH, d);
-    }
-
-    public void SetMaxMingYuanProcedure(int value)
-        => SetMaxMingYuanProcedure(new SetMaxMingYuanDetails(value));
-    private void SetMaxMingYuanProcedure(SetMaxMingYuanDetails d)
-    {
-        _closureDict.SendEvent(RunClosureDict.WILL_SET_MAX_MINGYUAN, d);
-
-        if (d.Cancel)
-            return;
-
-        int diff = _home.MingYuan.Curr - d.Value;
-        if (diff > 0)
-            SetDMingYuanProcedure(diff);
-
-        _home.MingYuan.UpperBound = d.Value;
-
-        _closureDict.SendEvent(RunClosureDict.DID_SET_MAX_MINGYUAN, d);
-    }
-
     public MergePreresult GetMergePreresult(RunSkill lhs, RunSkill rhs)
     {
         JingJie playerJingJie = _home.GetJingJie();
@@ -390,6 +323,88 @@ public class RunEnvironment : Addressable, RunClosureOwner
         Hand.Clear();
         Home.TraversalCurrentSlots().Do(s => s.Skill = null);
     }
+    
+    public void SetDMingYuanProcedure(int value)
+        => SetDMingYuanProcedure(new SetDMingYuanDetails(value));
+    private void SetDMingYuanProcedure(SetDMingYuanDetails d)
+    {
+        if (d.Value == 0)
+            return;
+        
+        _closureDict.SendEvent(RunClosureDict.WIL_SET_D_MINGYUAN, d);
+
+        if (d.Cancel)
+            return;
+
+        _home.MingYuan.Curr += d.Value;
+        _closureDict.SendEvent(RunClosureDict.DID_SET_D_MINGYUAN, d);
+        if (d.Value >= 0)
+            GainMingYuanNeuron.Invoke(d.Value);
+        else
+            LoseMingYuanNeuron.Invoke(d.Value);
+
+        // register this as a defeat check
+        if (GetMingYuan().Curr <= 0)
+            CommitRunProcedure(RunResult.RunResultState.Defeat);
+    }
+
+    public void SetDGoldProcedure(int value)
+        => SetDGoldProcedure(new SetDGoldDetails(value));
+    private void SetDGoldProcedure(SetDGoldDetails d)
+    {
+        if (d.Value == 0)
+            return;
+        
+        _closureDict.SendEvent(RunClosureDict.WILL_SET_D_GOLD, d);
+
+        if (d.Cancel)
+            return;
+
+        _gold.Curr += d.Value;
+        _closureDict.SendEvent(RunClosureDict.DID_SET_D_GOLD, d);
+        if (d.Value >= 0)
+            GainGoldNeuron.Invoke(d.Value);
+        else
+            LoseGoldNeuron.Invoke(d.Value);
+    }
+
+    public void SetDDHealthProcedure(int value)
+        => SetDDHealthProcedure(new SetDDHealthDetails(value));
+    private void SetDDHealthProcedure(SetDDHealthDetails d)
+    {
+        if (d.Value == 0)
+            return;
+        
+        _closureDict.SendEvent(RunClosureDict.WILL_SET_DDHEALTH, d);
+
+        if (d.Cancel)
+            return;
+
+        _home.SetDHealth(_home.GetDHealth() + d.Value);
+        _closureDict.SendEvent(RunClosureDict.DID_SET_DDHEALTH, d);
+        if (d.Value >= 0)
+            GainDHealthNeuron.Invoke(d.Value);
+        else
+            LoseDHealthNeuron.Invoke(d.Value);
+    }
+
+    public void SetMaxMingYuanProcedure(int value)
+        => SetMaxMingYuanProcedure(new SetMaxMingYuanDetails(value));
+    private void SetMaxMingYuanProcedure(SetMaxMingYuanDetails d)
+    {
+        _closureDict.SendEvent(RunClosureDict.WILL_SET_MAX_MINGYUAN, d);
+
+        if (d.Cancel)
+            return;
+
+        int diff = _home.MingYuan.Curr - d.Value;
+        if (diff > 0)
+            SetDMingYuanProcedure(diff);
+
+        _home.MingYuan.UpperBound = d.Value;
+
+        _closureDict.SendEvent(RunClosureDict.DID_SET_MAX_MINGYUAN, d);
+    }
 
     public void DiscoverSkillProcedure(DiscoverSkillDetails d)
     {
@@ -442,11 +457,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
         return RunSkill.FromEntryJingJie(skillEntry, jingJie);
     }
-
-    public Neuron<GainSkillDetails> GainSkillNeuron = new();
-    public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
-    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
-    public Neuron<BuySkillDetails> BuySkillNeuron = new();
     
     private void AddSkill(RunSkill skill, DeckIndex? preferredDeckIndex = null)
     {
@@ -528,8 +538,17 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public RunResult Result { get; }
     private RunResultPanelDescriptor _runResultPanelDescriptor;
 
-    public static RunEnvironment FromConfig(RunConfig config)
-        => new(config);
+    public Neuron<GainSkillDetails> GainSkillNeuron = new();
+    public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
+    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
+    public Neuron<BuySkillDetails> BuySkillNeuron = new();
+    public Neuron<int> GainMingYuanNeuron = new();
+    public Neuron<int> LoseMingYuanNeuron = new();
+    public Neuron<int> GainGoldNeuron = new();
+    public Neuron<int> LoseGoldNeuron = new();
+    public Neuron<int> GainDHealthNeuron = new();
+    public Neuron<int> LoseDHealthNeuron = new();
+    // Audio
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -561,6 +580,9 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
         BattleChangedNeuron.Add(BattleEnvironmentUpdateProcedure);
     }
+
+    public static RunEnvironment FromConfig(RunConfig config)
+        => new(config);
 
     public PanelDescriptor GetActivePanel()
         => _runResultPanelDescriptor ?? Map.Panel;
@@ -615,6 +637,12 @@ public class RunEnvironment : Addressable, RunClosureOwner
     {
         list.Do(e => _closureDict.Unregister(this, e));
     }
+
+    public BoundedInt GetGold()
+        => _gold;
+
+    public MingYuan GetMingYuan()
+        => _home.MingYuan;
 
     public RunSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
     {

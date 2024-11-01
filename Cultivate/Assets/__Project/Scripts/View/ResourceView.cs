@@ -19,9 +19,9 @@ public class ResourceView : MonoBehaviour
     [SerializeField] private UIParticleAttractor _attractor;
 
     private int _unit;
-    private BoundedInt _content;
+    private BoundedInt _value;
 
-    private Func<BoundedInt> _refreshDelegate;
+    private Func<BoundedInt> _getFunc;
     private Func<string> _hintDelegate;
 
     private void OnEnable()
@@ -38,17 +38,17 @@ public class ResourceView : MonoBehaviour
         _attractor.onAttracted.RemoveListener(OnAttracted);
     }
 
-    public void Configure(int unit, Func<BoundedInt> refreshDelegate, Func<string> hintDelegate)
+    public void Configure(int unit, Func<BoundedInt> getFunc, Func<string> hintDelegate)
     {
         _unit = unit;
-        _refreshDelegate = refreshDelegate;
+        _getFunc = getFunc;
         _hintDelegate = hintDelegate;
     }
 
     public void Refresh()
     {
-        _content = _refreshDelegate?.Invoke().Clone();
-        _text.text = _content?.ToString();
+        _value = _getFunc?.Invoke().Clone();
+        _text.text = _value?.ToString();
 
         _gapStart = 0;
     }
@@ -75,16 +75,15 @@ public class ResourceView : MonoBehaviour
 
     private void OnAttracted()
     {
-        _expandHandle?.Kill();
-
-        _content.Curr += _unit;
-        _text.text = _content.ToString();
+        _value.Curr += _unit;
+        _text.text = _value.ToString();
 
         _gapStart++;
 
         if (_textTransform.localScale.x >= 1.5f)
             _textTransform.localScale = Vector3.one * 1.5f;
         
+        _expandHandle?.Kill();
         _expandHandle = DOTween.Sequence()
             .Append(_textTransform.DOScale(2, 0.08f).SetEase(Ease.OutQuad))
             .Append(_textTransform.DOScale(1, 0.08f).SetEase(Ease.InQuad));
@@ -94,18 +93,18 @@ public class ResourceView : MonoBehaviour
     private Tween _numberHandle;
     private int _gap;
 
-    private int _contentStart;
+    private int _valueStart;
     private int _gapStart;
     private float _gapT;
 
     [SerializeField] private TMP_Text _gapText;
 
-    public void NumberChange(int value)
+    public void Lose(int value)
     {
         _gap += value;
         _gapText.text = _gap.ToString();
         
-        _contentStart = _content.Curr;
+        _valueStart = _value.Curr;
         _gapStart = _gap;
         _gapT = 0;
         
@@ -124,14 +123,14 @@ public class ResourceView : MonoBehaviour
         _gapT = value;
         _gap = (int) Mathf.Lerp(_gapStart, 0, _gapT);
         _gapText.text = _gap.ToString();
-        _content.Curr = _contentStart + _gapStart - _gap;
-        _text.text = _content.Curr.ToString();
+        _value.Curr = _valueStart + _gapStart - _gap;
+        _text.text = _value.Curr.ToString();
     }
 
-    public void NumberChangeNoAnimation(int value)
+    public void LoseNoAnimation(int value)
     {
-        _content.Curr += value;
-        _text.text = _content.ToString();
+        _value.Curr += value;
+        _text.text = _value.ToString();
 
         _gapStart -= value;
     }

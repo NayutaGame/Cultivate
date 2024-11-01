@@ -29,6 +29,8 @@ public class AnnotationView : MonoBehaviour
     public void PointerExit(InteractBehaviour ib, PointerEventData d) => PointerExit(ib, d, ib.GetSimpleView().GetAddress());
     public void PointerExit(InteractBehaviour ib, PointerEventData d, Address address)
         => gameObject.SetActive(false);
+    public void PointerExit()
+        => gameObject.SetActive(false);
 
     public void PointerMove(InteractBehaviour ib, PointerEventData d) => PointerMove(ib, d, ib.GetSimpleView().GetAddress());
     public void PointerMove(InteractBehaviour ib, PointerEventData d, Address address)
