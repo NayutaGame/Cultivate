@@ -350,21 +350,37 @@ public class RunCanvas : Panel
         SetSkillMove(cardIB, discoverIB.transform.position);
     }
 
-    public void AddSkillProcedureWithoutShowAnimation(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null, Vector3? preferredPosition = null)
+    public void BuySkillStaging(InteractBehaviour cardIB, InteractBehaviour commodityIB)
     {
-        preferredPosition ??= Vector3.zero;
-        
-        RunManager.Instance.Environment.AddSkillProcedure(skillEntry, preferredJingJie, preferredDeckIndex);
-        Refresh();
-        
-        InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(preferredDeckIndex);
-        ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
+        void SetSkillPosition(InteractBehaviour ib, InteractBehaviour commodityIB)
         {
-            extraBehaviourPivot.PositionToIdle(preferredPosition.Value);
+            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+            {
+                Transform t = commodityIB.GetSimpleView().transform;
+                extraBehaviourPivot.FollowTransform.position = t.position;
+                extraBehaviourPivot.FollowTransform.localScale = t.localScale;
+                extraBehaviourPivot.Animator.SetState(3);
+                ib.SetInteractable(false);
+            }
         }
 
-        // AudioManager.Play("CardPlacement");
+        void SetSkillMove(InteractBehaviour ib, Vector3 position)
+        {
+            ib.SetInteractable(true);
+            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+            {
+                extraBehaviourPivot.PositionToIdle(position);
+            }
+            // AudioManager.Play("CardPlacement");
+        }
+        
+        Refresh();
+        
+        SetSkillPosition(cardIB, commodityIB);
+        SetSkillMove(cardIB, commodityIB.transform.position);
+        // AudioManager.Instance.Play("钱币");
     }
 
     public InteractBehaviour SkillInteractBehaviourFromDeckIndex(DeckIndex? deckIndex)

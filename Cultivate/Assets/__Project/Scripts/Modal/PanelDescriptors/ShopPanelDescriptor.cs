@@ -54,11 +54,8 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         RunManager.Instance.Environment.SetDGoldProcedure(-commodity.FinalPrice);
         _commodities.Remove(commodity);
-        
-        // CanvasManager.Instance.RunCanvas.AddSkillProcedureWithoutShowAnimation();
-        
-        RunManager.Instance.Environment.AddSkillProcedure(commodity.Skill.Entry, commodity.Skill.JingJie);
 
+        RunManager.Instance.Environment.BuySkillProcedure(commodity, _commodities.IndexOf(commodity));
         return true;
     }
 

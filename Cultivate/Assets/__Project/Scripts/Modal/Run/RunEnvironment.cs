@@ -391,6 +391,24 @@ public class RunEnvironment : Addressable, RunClosureOwner
         Home.TraversalCurrentSlots().Do(s => s.Skill = null);
     }
 
+    public void DiscoverSkillProcedure(DiscoverSkillDetails d)
+    {
+        _closureDict.SendEvent(RunClosureDict.WILL_DISCOVER_SKILL, d);
+
+        List<SkillEntry> entries = DrawSkills(d.Descriptor);
+        d.Skills.AddRange(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
+
+        _closureDict.SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
+    }
+    
+    public SkillEntry DrawSkill(SkillEntryDescriptor descriptor)
+    {
+        SkillPool.Shuffle();
+        SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
+        skillEntry ??= Encyclopedia.SkillCategory[0];
+        return skillEntry;
+    }
+
     public List<SkillEntry> DrawSkills(SkillEntryCollectionDescriptor d)
     {
         List<SkillEntry> toRet = new();
@@ -419,14 +437,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return toRet;
     }
     
-    public SkillEntry DrawSkill(SkillEntryDescriptor descriptor)
-    {
-        SkillPool.Shuffle();
-        SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
-        skillEntry ??= Encyclopedia.SkillCategory[0];
-        return skillEntry;
-    }
-    
     private RunSkill CreateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
     {
         JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
@@ -436,6 +446,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public Neuron<GainSkillDetails> GainSkillNeuron = new();
     public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
+    public Neuron<BuySkillDetails> BuySkillNeuron = new();
     
     private void AddSkill(RunSkill skill, DeckIndex? preferredDeckIndex = null)
     {
@@ -491,14 +502,12 @@ public class RunEnvironment : Addressable, RunClosureOwner
         PickDiscoveredSkillNeuron.Invoke(new(DeckIndex.FromHand(last), pickedIndex));
     }
 
-    public void DiscoverSkillProcedure(DiscoverSkillDetails d)
+    public void BuySkillProcedure(Commodity commodity, int commodityIndex)
     {
-        _closureDict.SendEvent(RunClosureDict.WILL_DISCOVER_SKILL, d);
-
-        List<SkillEntry> entries = DrawSkills(d.Descriptor);
-        d.Skills.AddRange(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
-
-        _closureDict.SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
+        RunSkill skill = CreateSkill(commodity.Skill.Entry, commodity.Skill.JingJie);
+        int last = Hand.Count();
+        Hand.Add(skill);
+        BuySkillNeuron.Invoke(new(DeckIndex.FromHand(last), commodityIndex));
     }
 
     #endregion

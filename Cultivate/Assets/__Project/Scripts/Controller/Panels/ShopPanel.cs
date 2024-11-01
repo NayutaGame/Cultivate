@@ -1,4 +1,6 @@
 
+using System;
+using System.Linq;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -43,6 +45,16 @@ public class ShopPanel : Panel
         Illustration.sprite = pd.GetSprite().Sprite;
     }
 
+    private void OnEnable()
+    {
+        RunManager.Instance.Environment.BuySkillNeuron.Add(BuySkillStaging);
+    }
+
+    private void OnDisable()
+    {
+        RunManager.Instance.Environment.BuySkillNeuron.Remove(BuySkillStaging);
+    }
+
     private void BuySkill(InteractBehaviour ib, PointerEventData eventData)
         => BuySkill(ib.GetSimpleView());
 
@@ -51,19 +63,19 @@ public class ShopPanel : Panel
         Commodity commodity = v.Get<Commodity>();
 
         ShopPanelDescriptor d = _address.Get<ShopPanelDescriptor>();
-
-        bool success = d.Buy(commodity);
-        if (!success)
-            return false;
-
-        BuyStaging();
-        CanvasManager.Instance.RunCanvas.Refresh();
-        return true;
+        return d.Buy(commodity);
     }
 
-    private void BuyStaging()
+    private void BuySkillStaging(BuySkillDetails d)
     {
-        // AudioManager.Instance.Play("钱币");
+        InteractBehaviour commodityIB = CommodityListView.InactivePools[0][^1].GetInteractBehaviour();
+        InteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
+
+        CanvasManager.Instance.RunCanvas.BuySkillStaging(cardIB, commodityIB);
+        
+        // ExtraBehaviourPivot extraBehaviourPivot = commodityIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        // if (extraBehaviourPivot != null)
+        //     extraBehaviourPivot.Disappear();
     }
 
     private void Exit()

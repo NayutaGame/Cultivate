@@ -15,6 +15,7 @@ public class ListView : SimpleView
     protected List<ItemBehaviour> _activePool;
     public List<ItemBehaviour> ActivePool => _activePool;
     protected List<ItemBehaviour>[] _inactivePools;
+    public List<ItemBehaviour>[] InactivePools => _inactivePools;
 
     #region List Operations
 
