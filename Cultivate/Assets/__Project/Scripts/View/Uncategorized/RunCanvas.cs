@@ -385,6 +385,39 @@ public class RunCanvas : Panel
         // AudioManager.Instance.Play("钱币");
     }
 
+    public void GachaStaging(InteractBehaviour cardIB, InteractBehaviour gachaIB)
+    {
+        void SetSkillPosition(InteractBehaviour ib, InteractBehaviour gachaIB)
+        {
+            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+            {
+                Transform t = gachaIB.GetSimpleView().transform;
+                extraBehaviourPivot.FollowTransform.position = t.position;
+                extraBehaviourPivot.FollowTransform.localScale = t.localScale;
+                extraBehaviourPivot.Animator.SetState(3);
+                ib.SetInteractable(false);
+            }
+        }
+
+        void SetSkillMove(InteractBehaviour ib, Vector3 position)
+        {
+            ib.SetInteractable(true);
+            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+            if (extraBehaviourPivot != null)
+            {
+                extraBehaviourPivot.PositionToIdle(position);
+            }
+            // AudioManager.Play("CardPlacement");
+        }
+        
+        Refresh();
+        
+        SetSkillPosition(cardIB, gachaIB);
+        SetSkillMove(cardIB, gachaIB.transform.position);
+        // AudioManager.Instance.Play("钱币");
+    }
+
     public InteractBehaviour SkillInteractBehaviourFromDeckIndex(DeckIndex? deckIndex)
     {
         if (!deckIndex.HasValue)

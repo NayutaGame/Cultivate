@@ -938,7 +938,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("柔韧", "对方回合开始时：护甲+[层数]", BuffStackRule.Add, true, false,
+            new("坚毅", "对方回合开始时：护甲+[层数]", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_TURN, 0, async (owner, closureDetails) =>

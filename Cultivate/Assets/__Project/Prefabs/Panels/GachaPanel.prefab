@@ -372,7 +372,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2195821517975033062}
-  - component: {fileID: 6315446105269740649}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -410,30 +409,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1316, y: 828}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6315446105269740649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2978112672356384329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 67
-    m_Right: 0
-    m_Top: 25
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 220, y: 348.5}
-  m_Spacing: {x: 35, y: 84}
-  m_Constraint: 0
-  m_ConstraintCount: 2
 --- !u!1 &3488257225984720659
 GameObject:
   m_ObjectHideFlags: 0
@@ -1607,10 +1582,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GachaItemView (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1712,10 +1683,6 @@ PrefabInstance:
     - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Name
       value: GachaItemView (6)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x
@@ -1819,10 +1786,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GachaItemView (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1924,10 +1887,6 @@ PrefabInstance:
     - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Name
       value: GachaItemView
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x
@@ -2031,10 +1990,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GachaItemView (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2137,10 +2092,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GachaItemView (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2242,10 +2193,6 @@ PrefabInstance:
     - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Name
       value: GachaItemView (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x
@@ -2579,10 +2526,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GachaItemView (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2685,10 +2628,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GachaItemView (9)
       objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2790,10 +2729,6 @@ PrefabInstance:
     - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Name
       value: GachaItemView (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085986264311966347, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8152188524626589071, guid: f55507779d5daed4796e442f59cdc9c3, type: 3}
       propertyPath: m_Pivot.x

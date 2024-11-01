@@ -43,7 +43,7 @@ public class BuffEntry : Entry, IAnnotation
         Friendly = friendly;
         Dispellable = dispellable;
         Closures = closures ?? Array.Empty<StageClosure>();
-        _spriteEntry = GetName();
+        _spriteEntry = $"Buff{GetName()}";
     }
     
     private AnnotationArray _annotationArray;

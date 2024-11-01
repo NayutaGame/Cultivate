@@ -107,7 +107,7 @@ public class SkillEntry : Entry, IAnnotation, ISkill
         _trivia = trivia;
         _withinPool = withinPool;
 
-        _spriteEntry = GetName();
+        _spriteEntry = $"Skill{GetName()}";
     }
 
     public static implicit operator SkillEntry(string id) => Encyclopedia.SkillCategory[id];

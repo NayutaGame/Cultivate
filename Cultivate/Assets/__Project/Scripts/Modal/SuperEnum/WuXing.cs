@@ -25,7 +25,7 @@ public struct WuXing : IEquatable<WuXing>
             new(1, "水", "格挡"),
             new(2, "木", "力量"),
             new(3, "火", "灼烧"),
-            new(4, "土", "柔韧"),
+            new(4, "土", "坚毅"),
         };
     }
 

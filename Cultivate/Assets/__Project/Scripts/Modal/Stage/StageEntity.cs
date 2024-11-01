@@ -328,7 +328,7 @@ public class StageEntity : Addressable, StageClosureOwner
             _skills[i] = StageSkill.FromPlacedSkill(this, i, slot.PlacedSkill);
         }
 
-        _manaShortageAction = StageSkill.FromSkillEntry(this, "0001");
+        _manaShortageAction = StageSkill.FromSkillEntry(this, "0002");
 
         _p = 0;
     }
@@ -360,7 +360,7 @@ public class StageEntity : Addressable, StageClosureOwner
         //     GainedLiLiangRecord += d._stack;
         // else if (d._buffEntry.GetName() == "灼烧")
         //     GainedZhuoShaoRecord += d._stack;
-        // else if (d._buffEntry.GetName() == "柔韧")
+        // else if (d._buffEntry.GetName() == "坚毅")
         //     GainedRouRenRecord += d._stack;
         if (d._buffEntry.GetName() == "滞气")
             HasZhiQiRecord = true;

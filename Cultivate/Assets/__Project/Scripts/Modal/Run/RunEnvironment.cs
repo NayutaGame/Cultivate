@@ -520,6 +520,14 @@ public class RunEnvironment : Addressable, RunClosureOwner
         BuySkillNeuron.Invoke(new(DeckIndex.FromHand(last), commodityIndex));
     }
 
+    public void GachaProcedure(SkillEntryDescriptor skillDescriptor, int gachaIndex)
+    {
+        RunSkill skill = CreateSkill(skillDescriptor.Entry, skillDescriptor.JingJie);
+        int last = Hand.Count();
+        Hand.Add(skill);
+        GachaNeuron.Invoke(new(DeckIndex.FromHand(last), gachaIndex));
+    }
+
     #endregion
 
     private RunConfig _config;
@@ -542,6 +550,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
     public Neuron<BuySkillDetails> BuySkillNeuron = new();
+    public Neuron<GachaDetails> GachaNeuron = new();
     public Neuron<int> GainMingYuanNeuron = new();
     public Neuron<int> LoseMingYuanNeuron = new();
     public Neuron<int> GainGoldNeuron = new();

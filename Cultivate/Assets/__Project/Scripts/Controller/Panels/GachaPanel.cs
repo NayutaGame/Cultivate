@@ -26,7 +26,7 @@ public class GachaPanel : Panel
         PriceTag.text = $"每抽 {d.GetPrice()} 金";
         
         BuyButton.onClick.RemoveAllListeners();
-        BuyButton.onClick.AddListener(BuySkill);
+        BuyButton.onClick.AddListener(Gacha);
         
         BuyButton.interactable = !d.ItemsIsEmpty;
 
@@ -49,23 +49,34 @@ public class GachaPanel : Panel
         ListView.Refresh();
     }
 
-    private void BuySkill()
+    private void OnEnable()
+    {
+        RunManager.Instance.Environment.GachaNeuron.Add(GachaStaging);
+    }
+
+    private void OnDisable()
+    {
+        RunManager.Instance.Environment.GachaNeuron.Remove(GachaStaging);
+    }
+
+    private void Gacha()
     {
         GachaPanelDescriptor d = _address.Get<GachaPanelDescriptor>();
-
-        bool success = d.Buy();
-        if (!success)
-            return;
-
-        BuyStaging();
-        CanvasManager.Instance.RunCanvas.Refresh();
-
+        d.Buy();
         BuyButton.interactable = !d.ItemsIsEmpty;
     }
 
-    private void BuyStaging()
+    private void GachaStaging(GachaDetails d)
     {
-        // AudioManager.Instance.Play("钱币");
+        InteractBehaviour gachaIB = ListView.InactivePools[0][^1].GetInteractBehaviour();
+        InteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
+
+        CanvasManager.Instance.RunCanvas.GachaStaging(cardIB, gachaIB);
+        CanvasManager.Instance.SkillAnnotation.PointerExit();
+        
+        // ExtraBehaviourPivot extraBehaviourPivot = commodityIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        // if (extraBehaviourPivot != null)
+        //     extraBehaviourPivot.Disappear();
     }
 
     private void Exit()

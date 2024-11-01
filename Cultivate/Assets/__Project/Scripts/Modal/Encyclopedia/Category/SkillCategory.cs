@@ -13,7 +13,7 @@ public class SkillCategory : Category<SkillEntry>
             #region 特殊牌
             
             new(id:                         "0000",
-                name:                       "不存在的技能",
+                name:                       "卡池已空",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQiOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -22,6 +22,18 @@ public class SkillCategory : Category<SkillEntry>
 
             new(id:                         "0001",
                 name:                       "聚气术",
+                wuXing:                     null,
+                jingJieBound:               JingJie.LianQiOnly,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    "灵气+1".ApplyMana(),
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    await d.GainBuffProcedure("灵气");
+                }),
+
+            new(id:                         "0002",
+                name:                       "灵气匮乏",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQiOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1739,13 +1751,13 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"柔韧+{2 + dj}" +
-                    $"\n每4柔韧，暴击+1",
+                    $"坚毅+{2 + dj}" +
+                    $"\n每4坚毅，暴击+1",
                 cast:                       async d =>
                 {
-                    await d.GainBuffProcedure("柔韧", 2 + d.Dj);
+                    await d.GainBuffProcedure("坚毅", 2 + d.Dj);
                     await d.CycleProcedure(WuXing.Tu);
-                    int stack = d.Caster.GetStackOfBuff("柔韧");
+                    int stack = d.Caster.GetStackOfBuff("坚毅");
                     int add = stack / 4;
                     await d.GainBuffProcedure("暴击", add);
                 }),
@@ -1837,7 +1849,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ChannelFromDj(dj => 2 + dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 2 + dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"柔韧+{4 + 5 * dj}",
+                    $"坚毅+{4 + 5 * dj}",
                 cast:                       async d =>
                 {
                     await d.CycleProcedure(WuXing.Tu, gain: 4 + 5 * d.Dj);
@@ -1848,7 +1860,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"柔韧+{3 + dj}" +
+                    $"坚毅+{3 + dj}" +
                     $"\n遭受{3 + dj}滞气".ApplyDebuff(),
                 cast:                       async d =>
                 {
@@ -2407,7 +2419,7 @@ public class SkillCategory : Category<SkillEntry>
             //     jingJieBound:               JingJie.HuaShenOnly,
             //     skillTypeComposite:         SkillType.Exhaust,
             //     castDescription:            (j, dj, costResult, castResult) =>
-            //         $"20柔韧觉醒：没有耗蓝阶段，Step阶段无法受影响，所有Buff层数不会再变化",
+            //         $"20坚毅觉醒：没有耗蓝阶段，Step阶段无法受影响，所有Buff层数不会再变化",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
@@ -2571,11 +2583,11 @@ public class SkillCategory : Category<SkillEntry>
             //     wuXing:                     WuXing.Jin,
             //     jingJieBound:               JingJie.YuanYing2HuaShen,
             //     castDescription:            (j, dj, costResult, castResult) =>
-            //         $"每1柔韧，施加2破甲",
+            //         $"每1坚毅，施加2破甲",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
-            //         await caster.RemoveArmorProcedure(2 * caster.GetStackOfBuff("柔韧"));
+            //         await caster.RemoveArmorProcedure(2 * caster.GetStackOfBuff("坚毅"));
             //         return null;
             //     }),
             //
@@ -2786,12 +2798,12 @@ public class SkillCategory : Category<SkillEntry>
             //     skillTypeComposite:         SkillType.Exhaust,
             //     castDescription:            (j, dj, costResult, castResult) =>
             //         $"疲劳" +
-            //         $"\n柔韧+{1 + (1 + dj) / 2}",
+            //         $"\n坚毅+{1 + (1 + dj) / 2}",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
             //         await skill.ExhaustProcedure();
-            //         await caster.GainBuffProcedure("柔韧", 1 + (1 + skill.Dj) / 2);
+            //         await caster.GainBuffProcedure("坚毅", 1 + (1 + skill.Dj) / 2);
             //         return null;
             //     }),
             //
@@ -2998,12 +3010,12 @@ public class SkillCategory : Category<SkillEntry>
             //     wuXing:                     null,
             //     jingJieBound:               JingJie.YuanYingOnly,
             //     skillTypeComposite:         SkillType.Deplete,
-            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n护甲+20\n柔韧+2",
+            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n护甲+20\n坚毅+2",
             //     withinPool:                 false,
             //     cast:                       async d =>
             //     {
             //         await caster.GainArmorProcedure(20, induced: false);
-            //         await caster.GainBuffProcedure("柔韧", 2);
+            //         await caster.GainBuffProcedure("坚毅", 2);
             //         return null;
             //     }),
             //

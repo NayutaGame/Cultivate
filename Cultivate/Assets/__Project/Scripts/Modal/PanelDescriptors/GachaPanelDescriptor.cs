@@ -70,11 +70,11 @@ public class GachaPanelDescriptor : PanelDescriptor
 
         RunManager.Instance.Environment.SetDGoldProcedure(-_price);
 
-        int i = RandomManager.Range(0, _items.Count());
-        SkillEntryDescriptor item = _items.Get(i) as SkillEntryDescriptor;
-        _items.RemoveAt(i);
-        
-        RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie);
+        int gachaIndex = RandomManager.Range(0, _items.Count());
+        SkillEntryDescriptor item = _items.Get(gachaIndex) as SkillEntryDescriptor;
+        _items.RemoveAt(gachaIndex);
+
+        RunManager.Instance.Environment.GachaProcedure(item, gachaIndex);
 
         return true;
     }
