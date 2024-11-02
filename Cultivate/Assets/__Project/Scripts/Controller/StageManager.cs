@@ -19,17 +19,16 @@ public class StageManager : Singleton<StageManager>, Addressable
     public GameObject GainArmorVFXPrefab;
     public GameObject GuardedVFXPrefab;
     public GameObject FragileVFXPrefab;
-    public EntitySlot[] _slots;
 
     public Transform HomeAnchor;
     private PrefabEntry HomePrefabEntry;
     private GameObject HomeGameObject;
-    private IStageModel HomeModel;
+    [HideInInspector] public IStageModel HomeModel;
     
     public Transform AwayAnchor;
     private PrefabEntry AwayPrefabEntry;
     private GameObject AwayGameObject;
-    private IStageModel AwayModel;
+    [HideInInspector] public IStageModel AwayModel;
 
     public StageAnimationController StageAnimationController;
     private StageEnvironment _environment;
@@ -104,14 +103,14 @@ public class StageManager : Singleton<StageManager>, Addressable
 
     public void SetHomeFromCharacterProfile(CharacterProfile characterProfile)
     {
-        _slots[0].SR.sprite = characterProfile.GetEntry().GetSprite();
-        // SetHomeModel(null);
+        // _slots[0].SR.sprite = characterProfile.GetEntry().GetSprite();
+        SetHomeModel(characterProfile.GetEntry().GetStagePrefabEntry());
     }
 
     public void SetAwayFromRunEntity(RunEntity runEntity)
     {
-        _slots[1].SR.sprite = runEntity.GetEntry().GetSprite();
-        // SetAwayModel(runEntity.GetEntry().GetUIEntityModelPrefabEntry());
+        // _slots[1].SR.sprite = runEntity.GetEntry().GetSprite();
+        SetAwayModel(runEntity.GetEntry().GetStageModelPrefabEntry());
     }
     
     private void SetHomeModel(PrefabEntry targetPrefabEntry)
@@ -125,6 +124,8 @@ public class StageManager : Singleton<StageManager>, Addressable
         HomePrefabEntry = targetPrefabEntry;
         HomeGameObject = Instantiate(HomePrefabEntry.Prefab, HomeAnchor);
         HomeModel = HomeGameObject.GetComponent<IStageModel>();
+
+        HomeModel.BaseTransform = HomeAnchor;
     }
     
     private void SetAwayModel(PrefabEntry targetPrefabEntry)
@@ -138,5 +139,7 @@ public class StageManager : Singleton<StageManager>, Addressable
         AwayPrefabEntry = targetPrefabEntry;
         AwayGameObject = Instantiate(AwayPrefabEntry.Prefab, AwayAnchor);
         AwayModel = AwayGameObject.GetComponent<IStageModel>();
+        
+        AwayModel.BaseTransform = AwayAnchor;
     }
 }

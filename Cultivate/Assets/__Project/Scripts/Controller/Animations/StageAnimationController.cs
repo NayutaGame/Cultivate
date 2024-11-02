@@ -23,8 +23,8 @@ public class StageAnimationController
 
     public void Opening()
     {
-        foreach (EntitySlot entitySlot in StageManager.Instance._slots)
-            entitySlot.Model.Opening();
+        StageManager.Instance.HomeModel.Opening();
+        StageManager.Instance.AwayModel.Opening();
     }
 
     public async UniTask Play(Animation animation)
@@ -54,23 +54,23 @@ public class StageAnimationController
 
     public void Pause()
     {
-        foreach (EntitySlot slot in StageManager.Instance._slots)
-            slot.Model.SetSpeed(0);
+        StageManager.Instance.HomeModel.SetSpeed(0);
+        StageManager.Instance.AwayModel.SetSpeed(0);
         _mainTrack?.Pause();
     }
 
     public void Resume()
     {
-        foreach (EntitySlot slot in StageManager.Instance._slots)
-            slot.Model.SetSpeed(_speed);
+        StageManager.Instance.HomeModel.SetSpeed(_speed);
+        StageManager.Instance.AwayModel.SetSpeed(_speed);
         _mainTrack?.Resume(_speed);
     }
 
     public void SetSpeed(float speed)
     {
         _speed = speed;
-        foreach (EntitySlot slot in StageManager.Instance._slots)
-            slot.Model.SetSpeed(_speed);
+        StageManager.Instance.HomeModel.SetSpeed(_speed);
+        StageManager.Instance.AwayModel.SetSpeed(_speed);
         _mainTrack?.SetSpeed(_speed);
         // _sideTracks
     }

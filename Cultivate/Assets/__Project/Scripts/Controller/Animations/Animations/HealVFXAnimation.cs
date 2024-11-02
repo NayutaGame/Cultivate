@@ -24,7 +24,7 @@ public class HealVFXAnimation : Animation
         StageEntity tgt = _healDetails.Tgt;
         int value = _healDetails.Value;
 
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.HealVFXPrefab, tgt.Slot().VFXTransform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.HealVFXPrefab, tgt.Model().VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.SetIntensity(IntensityFromValue(value));

@@ -152,19 +152,22 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
     private async UniTask GainBuffStaging(GainBuffDetails d, Buff buff)
     {
+        _result.TryAppend($"    {d._buffEntry.GetName()} + {d._stack}");
+        
+        if (!_config.Animated)
+            return;
         if (d.Src == d.Tgt)
         {
-            await PlayAsync(d.Src.Slot().Model.GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
             Play(new BuffVFXAnimation(false, d));
             Play(new BuffTextAnimation(false, d));
         }
         else
         {
-            await PlayAsync(d.Src.Slot().Model.GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
             Play(new BuffVFXAnimation(false, d));
             Play(new BuffTextAnimation(false, d));
         }
-        _result.TryAppend($"    {d._buffEntry.GetName()} + {d._stack}");
         buff.PlayPingAnimation();
     }
 
@@ -230,18 +233,21 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
     private async UniTask FullAttackStaging(AttackDetails attackDetails)
     {
+        if (!_config.Animated)
+            return;
+        
         int armor = attackDetails.Tgt.Armor;
         
         if (armor > 0)
         {
-            await PlayAsync(attackDetails.Tgt.Slot().Model.GetAnimationFromGuard(attackDetails.Induced));
+            await PlayAsync(attackDetails.Tgt.Model().GetAnimationFromGuard(attackDetails.Induced));
         }
         else if (armor < 0)
         {
-            await PlayAsync(attackDetails.Tgt.Slot().Model.GetAnimationFromUnguard(attackDetails.Induced));
+            await PlayAsync(attackDetails.Tgt.Model().GetAnimationFromUnguard(attackDetails.Induced));
         }
         
-        await PlayAsync(attackDetails.Src.Slot().Model.GetAnimationFromAttack(attackDetails.Induced));
+        await PlayAsync(attackDetails.Src.Model().GetAnimationFromAttack(attackDetails.Induced));
     }
 
     private async UniTask SingleAttackProcedure(AttackDetails d)
@@ -288,7 +294,8 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
     private async UniTask EvadedProcedure(EvadedDetails d)
     {
-        await PlayAsync(d.Tgt.Slot().Model.GetAnimationFromEvaded(d.Induced));
+        if (_config.Animated)
+            await PlayAsync(d.Tgt.Model().GetAnimationFromEvaded(d.Induced));
         _result.TryAppend($"    攻击被闪避");
 
         await _closureDict.SendEvent(StageClosureDict.DID_EVADE, d);
@@ -359,8 +366,11 @@ public class StageEnvironment : Addressable, StageClosureOwner
             return;
         }
         
-        await PlayAsync(d.Tgt.Slot().Model.GetAnimationFromDamaged(d.Induced));
-        await PlayAsync(new DamagedTextAnimation(false, d));
+        if (_config.Animated)
+        {
+            await PlayAsync(d.Tgt.Model().GetAnimationFromDamaged(d.Induced));
+            await PlayAsync(new DamagedTextAnimation(false, d));
+        }
         await LoseHealthProcedure(d.Tgt, d.Value, d.Induced);
 
         await _closureDict.SendEvent(StageClosureDict.DID_DAMAGE, d);
@@ -409,9 +419,12 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
         tgt.Hp += actualHealed;
 
-        await PlayAsync(d.Src.Slot().Model.GetAnimationFromHeal(d.Induced));
-        await PlayAsync(new HealVFXAnimation(false, d));
-        await PlayAsync(new HealTextAnimation(false, d));
+        if (_config.Animated)
+        {
+            await PlayAsync(d.Src.Model().GetAnimationFromHeal(d.Induced));
+            await PlayAsync(new HealVFXAnimation(false, d));
+            await PlayAsync(new HealTextAnimation(false, d));
+        }
         _result.TryAppend($"    气血变成了${tgt.Hp}");
 
         await _closureDict.SendEvent(StageClosureDict.DID_HEAL, d);
@@ -426,9 +439,12 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
         d.Tgt.Armor += d.Value;
 
-        await PlayAsync(d.Tgt.Slot().Model.GetAnimationFromGainArmor(d.Induced));
-        await PlayAsync(new GainArmorTextAnimation(false, d));
-        await PlayAsync(new GainArmorVFXAnimation(false, d));
+        if (_config.Animated)
+        {
+            await PlayAsync(d.Tgt.Model().GetAnimationFromGainArmor(d.Induced));
+            await PlayAsync(new GainArmorTextAnimation(false, d));
+            await PlayAsync(new GainArmorVFXAnimation(false, d));
+        }
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_ARMOR, d);

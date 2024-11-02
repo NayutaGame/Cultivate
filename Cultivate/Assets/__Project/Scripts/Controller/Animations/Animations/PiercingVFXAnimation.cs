@@ -26,7 +26,7 @@ public class PiercingVFXAnimation : Animation
         int value = _attackDetails.Value;
 
         int orient = -(src.Index * 2 - 1);
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.PiercingVFXFromWuXing[wuXing], src.Slot().VFXTransform.position + 2 * orient * Vector3.right,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.PiercingVFXFromWuXing[wuXing], src.Model().VFXTransform.position + 2 * orient * Vector3.right,
             Quaternion.Euler(0, src.Index * 180, 0), StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.SetIntensity(IntensityFromValue(value));

@@ -23,7 +23,7 @@ public class GainArmorVFXAnimation : Animation
         StageEntity tgt = _gainArmorDetails.Tgt;
         int value = _gainArmorDetails.Value;
         
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.GainArmorVFXPrefab, tgt.Slot().VFXTransform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.GainArmorVFXPrefab, tgt.Model().VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.SetIntensity(IntensityFromValue(value));

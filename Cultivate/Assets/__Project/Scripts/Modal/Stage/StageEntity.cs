@@ -209,8 +209,8 @@ public class StageEntity : Addressable, StageClosureOwner
 
     // public abstract GameObject GetPrefab();
     public string GetName() => _index == 0 ? "主场" : "客场";
-    public EntitySlot Slot() => StageManager.Instance._slots[_index];
     public StageEntity Opponent() => _env.Entities[1 - _index];
+    public IStageModel Model() => _index == 0 ? StageManager.Instance.HomeModel : StageManager.Instance.AwayModel;
 
     public int _p;
     private int _actionPoint;

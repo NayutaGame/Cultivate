@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SpineModel : IStageModel
 {
-    public Transform BaseTransform;
-    public Transform Transform;
     public SkeletonAnimation Skeleton;
 
     public override void Opening()

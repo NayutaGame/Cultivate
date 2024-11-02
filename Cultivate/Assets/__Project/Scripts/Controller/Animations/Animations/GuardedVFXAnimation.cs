@@ -22,7 +22,7 @@ public class GuardedVFXAnimation : Animation
     {
         StageEntity tgt = _guardedDetails.Tgt;
 
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.GuardedVFXPrefab, tgt.Slot().VFXTransform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.GuardedVFXPrefab, tgt.Model().VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.Play();

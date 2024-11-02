@@ -21,13 +21,13 @@ public class EntityEntry : Entry
 
         _spriteEntry = GetName();
 
-        // _stageModel = $"StageModel{modelName}";
-        _uiEntityModel = $"UIEntityModel{modelName}";
+        _stageModel = $"StageModel{modelName ?? GetName()}";
+        _uiEntityModel = $"UIEntityModel{modelName ?? GetName()}";
     }
 
     public static implicit operator EntityEntry(string id) => Encyclopedia.EntityCategory[id];
     
-    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingCharacterPortrait().Sprite;
-    public PrefabEntry GetStageModelPrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingUIEntityModel();
+    // public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingCharacterPortrait().Sprite;
+    public PrefabEntry GetStageModelPrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
     public PrefabEntry GetUIEntityModelPrefabEntry() => _uiEntityModel ?? Encyclopedia.PrefabCategory.MissingUIEntityModel();
 }

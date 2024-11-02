@@ -27,7 +27,7 @@ public class HitVFXAnimation : Animation
         int value = _attackDetails.Value;
 
         int orient = -(src.Index * 2 - 1);
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.HitVFXFromWuXing[wuXing], tgt.Slot().VFXTransform.position + -0.5f * orient * Vector3.right,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.HitVFXFromWuXing[wuXing], tgt.Model().VFXTransform.position + -0.5f * orient * Vector3.right,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.SetIntensity(IntensityFromValue(value));

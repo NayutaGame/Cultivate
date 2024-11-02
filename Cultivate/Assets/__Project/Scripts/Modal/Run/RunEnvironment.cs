@@ -220,7 +220,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         if (MergePreresult.IsSameWuXing(lhs, rhs, playerJingJie))
         {
-            DrawSkillProcedure(new(
+            DrawSkillProcedureNoAnimation(new(
                     pred: skillEntry => skillEntry != lEntry && skillEntry != rEntry,
                     wuXing: rWuXing,
                     jingJie: rJingJie + 1),
@@ -232,7 +232,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         if (MergePreresult.IsXiangShengWuXing(lhs, rhs, playerJingJie))
         {
-            DrawSkillProcedure(new(
+            DrawSkillProcedureNoAnimation(new(
                     wuXing: WuXing.XiangShengNext(lWuXing, rWuXing).Value,
                     jingJie: rJingJie + 1),
                 preferredDeckIndex: rhsDeckIndex);
@@ -243,7 +243,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         if (MergePreresult.IsSameJingJie(lhs, rhs, playerJingJie))
         {
-            DrawSkillProcedure(new(
+            DrawSkillProcedureNoAnimation(new(
                     pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
                                         skillEntry.WuXing != rWuXing,
                     jingJie: rJingJie + 1),
@@ -255,7 +255,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         if (MergePreresult.IsHuaShenReroll(lhs, rhs, playerJingJie))
         {
-            DrawSkillProcedure(new(
+            DrawSkillProcedureNoAnimation(new(
                     pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
                                         skillEntry.WuXing != rWuXing,
                     jingJie: rJingJie),
@@ -476,6 +476,23 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         GainSkillNeuron.Invoke(new GainSkillDetails(deckIndex, skill));
     }
+
+    private void AddSkillNoAnimation(RunSkill skill, DeckIndex? preferredDeckIndex = null)
+    {
+        if (!preferredDeckIndex.HasValue)
+        {
+            int last = Hand.Count();
+            Hand.Add(skill);
+            GainSkillNeuron.Invoke(new GainSkillDetails(DeckIndex.FromHand(last), skill));
+            return;
+        }
+
+        DeckIndex deckIndex = preferredDeckIndex.Value;
+        if (deckIndex.InField)
+            Home.GetSlot(deckIndex.Index).Skill = skill;
+        else
+            Hand.Replace(deckIndex.Index, skill);
+    }
     
     public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
     {
@@ -500,6 +517,9 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
         => AddSkill(CreateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
+    
+    private void DrawSkillProcedureNoAnimation(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+        => AddSkillNoAnimation(CreateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
 
     public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
         => AddSkill(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);

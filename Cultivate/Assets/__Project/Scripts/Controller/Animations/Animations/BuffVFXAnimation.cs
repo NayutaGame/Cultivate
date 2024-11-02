@@ -25,7 +25,7 @@ public class BuffVFXAnimation : Animation
 
         GameObject prefab = GetPrefab(d._buffEntry);
         
-        GameObject gao = GameObject.Instantiate(prefab, d.Tgt.Slot().VFXTransform.position,
+        GameObject gao = GameObject.Instantiate(prefab, d.Tgt.Model().VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         
         VFX vfx = gao.GetComponent<VFX>();

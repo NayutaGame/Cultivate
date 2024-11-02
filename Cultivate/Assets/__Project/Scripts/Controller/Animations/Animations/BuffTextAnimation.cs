@@ -22,7 +22,7 @@ public class BuffTextAnimation : Animation
     {
         GainBuffDetails d = GainBuffDetails;
 
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, d.Tgt.Slot().transform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, d.Tgt.Model().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         gao.GetComponent<FloatTextVFX>().Text.text = $"{d._buffEntry.GetName()} +{d._stack}";
     }

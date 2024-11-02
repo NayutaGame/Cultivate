@@ -25,7 +25,7 @@ public class DamagedTextAnimation : Animation
         StageEntity tgt = _damageDetails.Tgt;
         int value = _damageDetails.Value;
     
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, tgt.Slot().transform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, tgt.Model().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
     
         TMP_Text text = gao.GetComponent<FloatTextVFX>().Text;

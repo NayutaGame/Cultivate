@@ -1,8 +1,6 @@
 
-using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +27,8 @@ public class RunCanvas : Panel
     public ArbitraryCardPickerPanel ArbitraryCardPickerPanel;
     public ImagePanel ImagePanel;
     public RunResultPanel RunResultPanel;
+
+    private Tween _blockingAnimation;
 
     public override void Configure()
     {
@@ -107,6 +107,9 @@ public class RunCanvas : Panel
 
     private async UniTask SetPanelSAsync(PanelS panelS)
     {
+        if (_blockingAnimation != null && _blockingAnimation.IsPlaying())
+            await _blockingAnimation.AsyncWaitForCompletion();
+        
         PanelS oldState = PanelSM.State;
         PanelS newState = panelS;
         
@@ -245,6 +248,8 @@ public class RunCanvas : Panel
             .AppendInterval(0.1f);
 
         seq.SetAutoKill().Restart();
+
+        _blockingAnimation = seq;
     }
 
     private void GainSkillsStaging(GainSkillsDetails d)
@@ -318,6 +323,8 @@ public class RunCanvas : Panel
         }
 
         seq.SetAutoKill().Restart();
+
+        _blockingAnimation = seq;
     }
 
     public void PickDiscoveredSkillStaging(InteractBehaviour cardIB, InteractBehaviour discoverIB)

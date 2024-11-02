@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class SpriteModel : IStageModel
 {
-    public Transform BaseTransform;
-    public Transform Transform;
     public SpriteRenderer SR;
 
     public override void Opening() { }
