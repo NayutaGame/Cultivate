@@ -20,6 +20,11 @@ public class StageSkillCardView : SkillCardView
 
     private void SetCounter(int currCounter, int maxCounter)
     {
+        if (maxCounter == 0)
+        {
+            CounterImage.fillAmount = 0;
+            return;
+        }
         CounterImage.fillAmount = (float)currCounter / maxCounter;
     }
 
