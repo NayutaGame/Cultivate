@@ -14,6 +14,8 @@ public class CharacterEntry : Entry
 
     private SpriteEntry _spriteEntry;
 
+    private PrefabEntry _stageModel;
+
     public CharacterEntry(string id, string description = null, string abilityDescription = null,
         RunClosure[] runClosures = null,
         StageClosure[] stageClosures = null) : base(id)
@@ -25,10 +27,12 @@ public class CharacterEntry : Entry
         _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
 
         _spriteEntry = GetName();
+        _stageModel = GetName();
     }
 
     public static implicit operator CharacterEntry(string id) => Encyclopedia.CharacterCategory[id];
     
     // public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
     public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
+    public PrefabEntry GetStagePrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
 }

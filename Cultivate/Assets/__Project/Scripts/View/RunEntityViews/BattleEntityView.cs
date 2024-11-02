@@ -34,15 +34,14 @@ public class BattleEntityView : SimpleView
 
         NameText.text = $"{entity.GetJingJie()} {entity.GetEntry().GetName()}";
         
-        RefreshModel(entity);
+        SetModel(entity.GetEntry().GetUIEntityModelPrefabEntry());
 
         SkillList.Refresh();
         FormationList.Refresh();
     }
 
-    private void RefreshModel(IEntity entity)
+    private void SetModel(PrefabEntry targetPrefabEntry)
     {
-        PrefabEntry targetPrefabEntry = entity.GetEntry().GetUIEntityModelPrefabEntry();
         if (CurrPrefabEntry == targetPrefabEntry)
             return;
         

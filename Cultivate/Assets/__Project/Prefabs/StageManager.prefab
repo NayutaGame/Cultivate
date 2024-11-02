@@ -119,6 +119,10 @@ MonoBehaviour:
   _slots:
   - {fileID: 427517689024503909}
   - {fileID: 427517689852698380}
+  HomeAnchor: {fileID: 427517689024503914}
+  AwayAnchor: {fileID: 427517689852698381}
+  HomeModel: {fileID: 0}
+  AwayModel: {fileID: 0}
 --- !u!1 &427517689024503915
 GameObject:
   m_ObjectHideFlags: 0

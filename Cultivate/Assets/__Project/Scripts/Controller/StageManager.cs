@@ -22,10 +22,14 @@ public class StageManager : Singleton<StageManager>, Addressable
     public EntitySlot[] _slots;
 
     public Transform HomeAnchor;
+    private PrefabEntry HomePrefabEntry;
+    private GameObject HomeGameObject;
+    private IStageModel HomeModel;
+    
     public Transform AwayAnchor;
-
-    public IStageModel HomeModel;
-    public IStageModel AwayModel;
+    private PrefabEntry AwayPrefabEntry;
+    private GameObject AwayGameObject;
+    private IStageModel AwayModel;
 
     public StageAnimationController StageAnimationController;
     private StageEnvironment _environment;
@@ -101,10 +105,38 @@ public class StageManager : Singleton<StageManager>, Addressable
     public void SetHomeFromCharacterProfile(CharacterProfile characterProfile)
     {
         _slots[0].SR.sprite = characterProfile.GetEntry().GetSprite();
+        // SetHomeModel(null);
     }
 
     public void SetAwayFromRunEntity(RunEntity runEntity)
     {
         _slots[1].SR.sprite = runEntity.GetEntry().GetSprite();
+        // SetAwayModel(runEntity.GetEntry().GetUIEntityModelPrefabEntry());
+    }
+    
+    private void SetHomeModel(PrefabEntry targetPrefabEntry)
+    {
+        if (HomePrefabEntry == targetPrefabEntry)
+            return;
+        
+        if (HomeGameObject != null)
+            Destroy(HomeGameObject);
+
+        HomePrefabEntry = targetPrefabEntry;
+        HomeGameObject = Instantiate(HomePrefabEntry.Prefab, HomeAnchor);
+        HomeModel = HomeGameObject.GetComponent<IStageModel>();
+    }
+    
+    private void SetAwayModel(PrefabEntry targetPrefabEntry)
+    {
+        if (AwayPrefabEntry == targetPrefabEntry)
+            return;
+        
+        if (AwayGameObject != null)
+            Destroy(AwayGameObject);
+
+        AwayPrefabEntry = targetPrefabEntry;
+        AwayGameObject = Instantiate(AwayPrefabEntry.Prefab, AwayAnchor);
+        AwayModel = AwayGameObject.GetComponent<IStageModel>();
     }
 }
