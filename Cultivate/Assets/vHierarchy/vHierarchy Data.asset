@@ -16,7 +16,11 @@ MonoBehaviour:
     keys:
     - 904aff4e73af6d64ea5b862fb677488d
     - 704b41a132fabce48a20e93c35ef590f
+    - 4a2d0eff61998344ebaad65a1447b4dd
     values:
+    - goDatas_byGlobalId:
+        keys: []
+        values: []
     - goDatas_byGlobalId:
         keys: []
         values: []

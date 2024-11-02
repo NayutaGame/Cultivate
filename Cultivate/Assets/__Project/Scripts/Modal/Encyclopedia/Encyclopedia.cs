@@ -6,6 +6,7 @@ public class Encyclopedia : Addressable
 {
     public static SpriteCategory SpriteCategory;
     public static AudioCategory AudioCategory;
+    public static PrefabCategory PrefabCategory;
 
     public static KeywordCategory KeywordCategory;
     public static BuffCategory BuffCategory;
@@ -32,6 +33,7 @@ public class Encyclopedia : Addressable
 
         SpriteCategory = new();
         AudioCategory = new();
+        PrefabCategory = new();
 
         KeywordCategory = new();
         BuffCategory = new();

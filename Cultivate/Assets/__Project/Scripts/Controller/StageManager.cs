@@ -21,6 +21,12 @@ public class StageManager : Singleton<StageManager>, Addressable
     public GameObject FragileVFXPrefab;
     public EntitySlot[] _slots;
 
+    public Transform HomeAnchor;
+    public Transform AwayAnchor;
+
+    public IStageModel HomeModel;
+    public IStageModel AwayModel;
+
     public StageAnimationController StageAnimationController;
     private StageEnvironment _environment;
     public StageTimeline Timeline;

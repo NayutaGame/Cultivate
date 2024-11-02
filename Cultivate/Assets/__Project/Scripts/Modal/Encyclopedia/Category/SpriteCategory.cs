@@ -72,7 +72,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("以物易物", "Images/NodeIcons/YiWuYiWu"),
             
             // Characters
-            new("CharacterTachie缺失立绘", "Images/Characters/缺失立绘"),
+            new("CharacterPortrait缺失立绘", "Images/Characters/缺失立绘"),
             new("徐福", "Images/Characters/01"),
             new("子非鱼", "Images/Characters/02"),
             new("子非燕", "Images/Characters/03"),
@@ -261,5 +261,5 @@ public class SpriteCategory : Category<SpriteEntry>
     public SpriteEntry MissingSkillIllustration() => this["Skill缺失插画"];
     public SpriteEntry ErrorBuffIcon() => this["Buff不存在"];
     public SpriteEntry MissingBuffIcon() => this["Buff缺失插画"];
-    public SpriteEntry MissingCharacterTachie() => this["CharacterTachie缺失立绘"];
+    public SpriteEntry MissingCharacterPortrait() => this["CharacterPortrait缺失立绘"];
 }

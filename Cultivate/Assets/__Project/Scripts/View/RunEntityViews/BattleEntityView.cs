@@ -14,6 +14,10 @@ public class BattleEntityView : SimpleView
     [SerializeField] private RectTransform SkillListHidePivot;
     [SerializeField] private CanvasGroup SkillListCanvasGroup;
 
+    [SerializeField] private Transform Anchor;
+    private PrefabEntry CurrPrefabEntry;
+    private GameObject Model;
+
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
@@ -29,9 +33,24 @@ public class BattleEntityView : SimpleView
         IEntity entity = Get<IEntity>();
 
         NameText.text = $"{entity.GetJingJie()} {entity.GetEntry().GetName()}";
+        
+        RefreshModel(entity);
 
         SkillList.Refresh();
         FormationList.Refresh();
+    }
+
+    private void RefreshModel(IEntity entity)
+    {
+        PrefabEntry targetPrefabEntry = entity.GetEntry().GetUIEntityModelPrefabEntry();
+        if (CurrPrefabEntry == targetPrefabEntry)
+            return;
+        
+        if (Model != null)
+            Destroy(Model);
+
+        CurrPrefabEntry = targetPrefabEntry;
+        Model = Instantiate(CurrPrefabEntry.Prefab, Anchor);
     }
 
     public Tween ShowTween()

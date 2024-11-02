@@ -12,13 +12,22 @@ public class EntityEntry : Entry
 
     private SpriteEntry _spriteEntry;
 
-    public EntityEntry(string id, string description, string model = null) : base(id)
+    private PrefabEntry _stageModel;
+    private PrefabEntry _uiEntityModel;
+
+    public EntityEntry(string id, string description, string modelName = null) : base(id)
     {
         _description = description;
 
-        _spriteEntry = model ?? GetName();
+        _spriteEntry = GetName();
+
+        // _stageModel = $"StageModel{modelName}";
+        _uiEntityModel = $"UIEntityModel{modelName}";
     }
 
     public static implicit operator EntityEntry(string id) => Encyclopedia.EntityCategory[id];
-    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingCharacterTachie().Sprite;
+    
+    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingCharacterPortrait().Sprite;
+    public PrefabEntry GetStageModelPrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingUIEntityModel();
+    public PrefabEntry GetUIEntityModelPrefabEntry() => _uiEntityModel ?? Encyclopedia.PrefabCategory.MissingUIEntityModel();
 }
