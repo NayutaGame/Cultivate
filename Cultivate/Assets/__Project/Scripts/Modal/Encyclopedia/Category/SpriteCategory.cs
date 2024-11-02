@@ -72,6 +72,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("以物易物", "Images/NodeIcons/YiWuYiWu"),
             
             // Characters
+            new("CharacterTachie缺失立绘", "Images/Characters/缺失立绘"),
             new("徐福", "Images/Characters/01"),
             new("子非鱼", "Images/Characters/02"),
             new("子非燕", "Images/Characters/03"),
@@ -79,21 +80,21 @@ public class SpriteCategory : Category<SpriteEntry>
             new("梦乃遥", "Images/Characters/05"),
             
             // Entities
-            new("噬金甲", "Images/Bestiary/01"),
-            new("墨蛟", "Images/Bestiary/02"),
-            new("渊虾", "Images/Bestiary/03"),
-            new("九尾狐", "Images/Bestiary/04"),
-            new("推山兽", "Images/Bestiary/05"),
-            new("白泽", "Images/Bestiary/06"),
-            new("鲲", "Images/Bestiary/07"),
-            new("毕方", "Images/Bestiary/08"),
-            new("火蟾", "Images/Bestiary/09"),
-            new("麒麟", "Images/Bestiary/10"),
-            new("凌霄大圣", "Images/Bestiary/凌霄大圣"),
-            new("龟仙人", "Images/Bestiary/龟仙人"),
-            new("鹤仙人", "Images/Bestiary/鹤仙人"),
-            new("鹿仙人", "Images/Bestiary/鹿仙人"),
-            new("土行大圣", "Images/Bestiary/土行大圣"),
+            new("噬金甲", "Images/Monsters/01"),
+            new("墨蛟", "Images/Monsters/02"),
+            new("渊虾", "Images/Monsters/03"),
+            new("九尾狐", "Images/Monsters/04"),
+            new("推山兽", "Images/Monsters/05"),
+            new("白泽", "Images/Monsters/06"),
+            new("鲲", "Images/Monsters/07"),
+            new("毕方", "Images/Monsters/08"),
+            new("火蟾", "Images/Monsters/09"),
+            new("麒麟", "Images/Monsters/10"),
+            new("凌霄大圣", "Images/Monsters/鹿仙人"),
+            new("龟仙人", "Images/Monsters/鹤仙人"),
+            new("鹤仙人", "Images/Monsters/鹿仙人"),
+            new("鹿仙人", "Images/Monsters/鹤仙人"),
+            new("土行大圣", "Images/Monsters/鹿仙人"),
 
             // 卡牌
             new("Skill缺失插画",                              "Images/CardIllustrations/缺失插画"),
@@ -260,4 +261,5 @@ public class SpriteCategory : Category<SpriteEntry>
     public SpriteEntry MissingSkillIllustration() => this["Skill缺失插画"];
     public SpriteEntry ErrorBuffIcon() => this["Buff不存在"];
     public SpriteEntry MissingBuffIcon() => this["Buff缺失插画"];
+    public SpriteEntry MissingCharacterTachie() => this["CharacterTachie缺失立绘"];
 }
