@@ -56,4 +56,11 @@ public class Animator : StateMachine<int>
         _handle.Restart();
         await _handle.AsyncWaitForCompletion();
     }
+
+    public async UniTask ToBeFinished()
+    {
+        if (_handle == null)
+            return;
+        await _handle.AsyncWaitForCompletion();
+    }
 }

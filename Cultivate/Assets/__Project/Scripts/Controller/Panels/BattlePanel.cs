@@ -231,9 +231,9 @@ public class BattlePanel : Panel
 
     public override Tween ShowTween()
         => DOTween.Sequence()
-            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(PlayBattleBGM)
+            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
             .Append(EnemyView.ShowTween());
 
     public override Tween HideTween()

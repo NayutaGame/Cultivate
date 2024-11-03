@@ -22,6 +22,7 @@ public class RunAppS : AppS
         runCanvas.Configure();
         runCanvas.SetPanelS(panelS);
         runCanvas.TopBar.Refresh();
+        CanvasManager.Instance.Curtain.Animator.SetState(1);
         await CanvasManager.Instance.Curtain.Animator.SetStateAsync(0);
     }
 
