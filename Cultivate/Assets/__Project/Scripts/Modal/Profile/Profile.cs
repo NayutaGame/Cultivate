@@ -7,7 +7,9 @@ using UnityEngine;
 public class Profile : Addressable, ISerializationCallbackReceiver
 {
     private CharacterProfileList _characterProfileList;
+    public CharacterProfileList CharacterProfileList => _characterProfileList;
     private DifficultyProfileList _difficultyProfileList;
+    public DifficultyProfileList DifficultyProfileList => _difficultyProfileList;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();

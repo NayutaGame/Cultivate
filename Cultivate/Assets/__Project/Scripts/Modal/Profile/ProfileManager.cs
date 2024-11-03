@@ -5,7 +5,8 @@ using CLLibrary;
 
 public class ProfileManager : Addressable
 {
-    private ProfileList ProfileList;
+    private ProfileList _profileList;
+    public ProfileList ProfileList => _profileList;
 
     public RunConfigForm RunConfigForm;
 
@@ -15,7 +16,7 @@ public class ProfileManager : Addressable
     {
         _accessors = new()
         {
-            { "ProfileList",           () => ProfileList },
+            { "ProfileList",           () => _profileList },
         };
 
         Load();
@@ -23,14 +24,14 @@ public class ProfileManager : Addressable
 
     public void Save()
     {
-        FileUtility.WriteToFile(ProfileList, ProfileList.Filename);
+        FileUtility.WriteToFile(_profileList, ProfileList.Filename);
     }
 
     public void Load()
     {
-        ProfileList = FileUtility.ReadFromFile<ProfileList>(ProfileList.Filename);
+        _profileList = FileUtility.ReadFromFile<ProfileList>(ProfileList.Filename);
     }
 
     public static void WriteRunResultToCurrent(RunResult result)
-        => AppManager.Instance.ProfileManager.ProfileList.GetCurrent().WriteRunResult(result);
+        => AppManager.Instance.ProfileManager._profileList.GetCurrent().WriteRunResult(result);
 }

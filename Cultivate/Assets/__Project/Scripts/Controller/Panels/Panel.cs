@@ -31,8 +31,8 @@ public abstract class Panel : MonoBehaviour
 
     public virtual Tween ShowTween()
         => DOTween.Sequence()
-            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
-            .AppendCallback(() => gameObject.SetActive(true));
+            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0));
 
     public virtual Tween HideTween()
         => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(false));
