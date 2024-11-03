@@ -528,7 +528,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A.SetGuideDescriptors(new Guide[]
                     {
-                        new ConfirmGuide("战斗结束后，气血将会回复到满格" +
+                        new ConfirmGuide("战斗结束后，气血将会完全回复" +
                                          "\n现在徐福面临着下一个对手"),
                         new EquipGuide("现在将卡牌置入战斗区",
                             SkillEntryDescriptor.FromName("恋花"), DeckIndex.FromField(1)),

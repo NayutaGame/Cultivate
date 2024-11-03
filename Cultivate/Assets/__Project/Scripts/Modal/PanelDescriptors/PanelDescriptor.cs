@@ -38,6 +38,12 @@ public abstract class PanelDescriptor : Addressable
         ResetGuideIndex();
     }
 
+    public void SetGuideToFinish()
+    {
+        if (_guideDescriptors != null)
+            _index = _guideDescriptors.Length;
+    }
+
     public void ResetGuideIndex()
         => _index = 0;
 

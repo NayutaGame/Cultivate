@@ -1,5 +1,4 @@
 
-using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -43,4 +42,12 @@ public static class TweenAnimation
             .Append(target.DOAnchorPos(idlePosition + Vector2.left * 100, 0.15f).From(idlePosition).SetEase(Ease.InQuad))
             .Join(text.DOFade(0, 0.15f).From(1).SetEase(Ease.InQuad));
     }
+
+    public static Tween Beats(RectTransform target)
+        => DOTween.Sequence()
+            .Append(target.DOScale(0.8f, 0.1f).SetEase(Ease.InQuad))
+            .Append(target.DOScale(1.5f, 0.1f).SetEase(Ease.Linear))
+            .Append(target.DOScale(1f, 0.2f).SetEase(Ease.OutQuad))
+            .AppendInterval(0.6f)
+            .SetLoops(-1, loopType: LoopType.Restart);
 }

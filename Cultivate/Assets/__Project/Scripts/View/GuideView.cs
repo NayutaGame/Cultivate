@@ -2,31 +2,27 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GuideView : MonoBehaviour
 {
+    [SerializeField] private TMP_Text _comment;
+    [SerializeField] private RectTransform _dragCursor;
+    [SerializeField] private RectTransform _clickCursor;
+    [SerializeField] private Button _button;
+    [SerializeField] private RectTransform ConfirmAnchor;
+    [SerializeField] private RectTransform BattleButtonAnchor;
+    [SerializeField] private GameObject _clickHint;
+
+    private Tween _handle;
+    
     private Address _address;
     public Address GetAddress() => _address;
     public T Get<T>() => _address.Get<T>();
     public void SetAddress(Address address)
     {
         _address = address;
-        _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(ButtonClick);
-    }
-
-    [SerializeField] private TMP_Text _comment;
-    [SerializeField] private RectTransform _cursor;
-    [SerializeField] private Button _button;
-
-    private Tween _handle;
-
-    private void ButtonClick()
-    {
-        RunEnvironment env = RunManager.Instance.Environment;
-        env.ReceiveSignalProcedure(new ConfirmGuideSignal());
-        CanvasManager.Instance.RunCanvas.Refresh();
     }
     
     public void Refresh()
@@ -44,14 +40,21 @@ public class GuideView : MonoBehaviour
         if (guide is ConfirmGuide confirmGuide)
         {
             _comment.text = guide.GetComment();
-            _cursor.gameObject.SetActive(false);
-            _button.gameObject.SetActive(true);
+            _dragCursor.gameObject.SetActive(false);
+            _clickCursor.gameObject.SetActive(true);
+            _clickCursor.position = ConfirmAnchor.position;
+            SetCanClick(true);
+            
+            _handle?.Kill();
+            _handle = TweenAnimation.Beats(_clickCursor);
+            _handle.SetAutoKill().Restart();
         }
         else if (guide is EquipGuide equipGuide)
         {
             _comment.text = guide.GetComment();
-            _cursor.gameObject.SetActive(true);
-            _button.gameObject.SetActive(false);
+            _dragCursor.gameObject.SetActive(true);
+            _clickCursor.gameObject.SetActive(false);
+            SetCanClick(false);
 
             bool found = equipGuide.GetFlowOfIndices(out DeckIndex[] result);
             if (!found)
@@ -61,8 +64,8 @@ public class GuideView : MonoBehaviour
             Address end = result[1].ToAddress();
             
             _handle?.Kill();
-            _cursor.localScale = Vector3.one;
-            GuideAnimation anim = new GuideAnimation(_cursor,
+            _dragCursor.localScale = Vector3.one;
+            GuideAnimation anim = new GuideAnimation(_dragCursor,
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(end));
             _handle = DOTween.Sequence()
@@ -74,8 +77,9 @@ public class GuideView : MonoBehaviour
         else if (guide is UnequipGuide unequipGuide)
         {
             _comment.text = guide.GetComment();
-            _cursor.gameObject.SetActive(true);
-            _button.gameObject.SetActive(false);
+            _dragCursor.gameObject.SetActive(true);
+            _clickCursor.gameObject.SetActive(false);
+            SetCanClick(false);
             
             bool complete = unequipGuide.CheckComplete(out DeckIndex from);
             if (complete)
@@ -84,8 +88,8 @@ public class GuideView : MonoBehaviour
             Address start = from.ToAddress();
             
             _handle?.Kill();
-            _cursor.localScale = Vector3.one;
-            GuideAnimation anim = new GuideAnimation(_cursor,
+            _dragCursor.localScale = Vector3.one;
+            GuideAnimation anim = new GuideAnimation(_dragCursor,
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
                 CanvasManager.Instance.RunCanvas.DeckPanel.DropRectTransform);
             _handle = DOTween.Sequence()
@@ -97,8 +101,9 @@ public class GuideView : MonoBehaviour
         else if (guide is MergeGuide mergeGuide)
         {
             _comment.text = guide.GetComment();
-            _cursor.gameObject.SetActive(true);
-            _button.gameObject.SetActive(false);
+            _dragCursor.gameObject.SetActive(true);
+            _clickCursor.gameObject.SetActive(false);
+            SetCanClick(false);
 
             bool complete = mergeGuide.CheckComplete(out DeckIndex[] result);
             if (complete)
@@ -108,8 +113,8 @@ public class GuideView : MonoBehaviour
             Address end = result[1].ToAddress();
             
             _handle?.Kill();
-            _cursor.localScale = Vector3.one;
-            GuideAnimation anim = new GuideAnimation(_cursor,
+            _dragCursor.localScale = Vector3.one;
+            GuideAnimation anim = new GuideAnimation(_dragCursor,
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
                 CanvasManager.Instance.RunCanvas.DeckPanel.Find(end));
             _handle = DOTween.Sequence()
@@ -121,8 +126,10 @@ public class GuideView : MonoBehaviour
         else if (guide is ClickBattleGuide clickBattleGuide)
         {
             _comment.text = guide.GetComment();
-            _cursor.gameObject.SetActive(true);
-            _button.gameObject.SetActive(false);
+            _dragCursor.gameObject.SetActive(false);
+            _clickCursor.gameObject.SetActive(true);
+            _clickCursor.position = BattleButtonAnchor.position;
+            SetCanClick(false);
             
             // Vector2? position = clickBattleGuide.GetPosition();
             // if (position.HasValue)
@@ -136,20 +143,30 @@ public class GuideView : MonoBehaviour
             //     _cursor.position = rt.position + new Vector3(rect.xMax, rect.yMin);
             // }
 
-            _cursor.position = CanvasManager.Instance.RunCanvas.BattlePanel.CombatButton._rectTransform.position;
+            // _clickCursor.position = CanvasManager.Instance.RunCanvas.BattlePanel.CombatButton._rectTransform.position;
             
             _handle?.Kill();
-            _handle = DOTween.Sequence()
-                .Append(_cursor.DOScale(0.8f, 0.1f).SetEase(Ease.InQuad))
-                .Append(_cursor.DOScale(1.5f, 0.1f).SetEase(Ease.Linear))
-                .Append(_cursor.DOScale(1f, 0.2f).SetEase(Ease.OutQuad))
-                .AppendInterval(0.6f)
-                .SetLoops(-1, loopType: LoopType.Restart);
+            _handle = TweenAnimation.Beats(_clickCursor);
             _handle.SetAutoKill().Restart();
         }
         else
         {
             _handle?.Kill();
         }
+    }
+
+    private void SetCanClick(bool canClick)
+    {
+        _button.onClick.RemoveAllListeners();
+        _clickHint.SetActive(canClick);
+        if (canClick)
+            _button.onClick.AddListener(ButtonClick);
+    }
+
+    private void ButtonClick()
+    {
+        RunEnvironment env = RunManager.Instance.Environment;
+        env.ReceiveSignalProcedure(new ConfirmGuideSignal());
+        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }

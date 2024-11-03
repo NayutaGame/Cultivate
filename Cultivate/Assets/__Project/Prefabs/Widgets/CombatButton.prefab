@@ -67,10 +67,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 183
       objectReference: {fileID: 0}
-    - target: {fileID: 1732585426804574295, guid: 7cbb2a3b61519e54789d34635a74824c, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -6505761176782701510, guid: ba9cd855487eeaa4886994f20d15e497, type: 3}
     - target: {fileID: 1732585426952318165, guid: 7cbb2a3b61519e54789d34635a74824c, type: 3}
       propertyPath: m_SizeDelta.x
       value: 194
@@ -79,10 +75,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 183
       objectReference: {fileID: 0}
-    - target: {fileID: 1732585426952318170, guid: 7cbb2a3b61519e54789d34635a74824c, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 4831823052827585357, guid: ba9cd855487eeaa4886994f20d15e497, type: 3}
     - target: {fileID: 1732585428422478912, guid: 7cbb2a3b61519e54789d34635a74824c, type: 3}
       propertyPath: m_Name
       value: BreathingButton

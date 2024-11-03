@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8025909786599381453}
   - component: {fileID: 2846215246779974837}
   m_Layer: 0
-  m_Name: "\u88C5\u9970"
+  m_Name: Decoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -504,7 +504,7 @@ GameObject:
   - component: {fileID: 694586233177746260}
   - component: {fileID: 100386264844107096}
   m_Layer: 0
-  m_Name: "\u5BF9\u9635"
+  m_Name: TextRef
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -585,7 +585,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3838476214123085689
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1963,7 +1963,6 @@ MonoBehaviour:
   SkillListHidePivot: {fileID: 8848716997843359409}
   SkillListCanvasGroup: {fileID: 7506869415179819198}
   Anchor: {fileID: 7296552590866864460}
-  Model: {fileID: 0}
 --- !u!1 &8993417852597970511
 GameObject:
   m_ObjectHideFlags: 0
@@ -3466,6 +3465,10 @@ PrefabInstance:
     - target: {fileID: 9176695831387659956, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
       propertyPath: m_Name
       value: CombatButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 9176695831387659956, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}

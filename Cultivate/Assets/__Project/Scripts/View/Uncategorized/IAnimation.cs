@@ -40,16 +40,24 @@ public struct FollowAnimation : IAnimation
 
 public struct GuideAnimation : IAnimation
 {
-    private RectTransform Start;
-    private RectTransform End;
+    // private RectTransform Start;
+    // private RectTransform End;
 
     private RectTransform Subject;
+
+    private Vector3 StartPosition;
+    private Vector3 EndPosition;
+
+    private Vector3 StartScale;
+    private Vector3 EndScale;
 
     public GuideAnimation(RectTransform subject, RectTransform start, RectTransform end)
     {
         Subject = subject;
-        Start = start;
-        End = end;
+        StartPosition = start.position;
+        StartScale = start.localScale;
+        EndPosition = end.position;
+        EndScale = end.localScale;
     }
 
     public Tween GetHandle()
@@ -59,7 +67,8 @@ public struct GuideAnimation : IAnimation
 
     public void SetProgress(float t)
     {
-        Subject.position = Vector2.Lerp(Start.position, End.position, t);
+        Subject.position = Vector3.Lerp(StartPosition, EndPosition, t);
+        Subject.localScale = Vector3.Lerp(StartScale, EndScale, t);
     }
 }
 

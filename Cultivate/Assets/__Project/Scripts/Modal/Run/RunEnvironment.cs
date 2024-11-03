@@ -723,4 +723,9 @@ public class RunEnvironment : Addressable, RunClosureOwner
             for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
                 yield return new DeckIndex(false, i);
     }
+
+    public void SetGuideToFinish()
+    {
+        GetActivePanel().SetGuideToFinish();
+    }
 }
