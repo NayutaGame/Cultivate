@@ -94,6 +94,7 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
+                        new DirectRoomDescriptor(0, "漫画"),
                         new DirectRoomDescriptor(0, "教学1"),
                         new DirectRoomDescriptor(0, "教学2"),
                         new DirectRoomDescriptor(0, "教学3"),

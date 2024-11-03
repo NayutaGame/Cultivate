@@ -230,12 +230,11 @@ public class BattlePanel : Panel
     }
 
     public override Tween ShowTween()
-    {
-        return DOTween.Sequence()
+        => DOTween.Sequence()
+            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(PlayBattleBGM)
             .Append(EnemyView.ShowTween());
-    }
 
     public override Tween HideTween()
     {

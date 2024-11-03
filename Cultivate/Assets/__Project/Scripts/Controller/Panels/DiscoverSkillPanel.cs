@@ -87,36 +87,31 @@ public class DiscoverSkillPanel : Panel
     }
 
     public override Tween ShowTween()
-    {
-        return DOTween.Sequence()
-                .AppendCallback(() => gameObject.SetActive(true))
-                .AppendCallback(TraversalSetDisappear)
-                .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
-                .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
-                .AppendCallback(TraversalPlayAppearAnimation);
-    }
+        => DOTween.Sequence()
+            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
+            .AppendCallback(() => gameObject.SetActive(true))
+            .AppendCallback(TraversalSetDisappear)
+            .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
+            .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
+            .AppendCallback(TraversalPlayAppearAnimation);
 
     public override Tween HideTween()
-    {
-        return DOTween.Sequence()
-                // make skills non interactable
-                // dissolve of skills
-                .AppendCallback(TraversalPlayDisappearAnimation)
-                .AppendInterval(0.15f)
-                .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
-                .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
-                .AppendCallback(() => gameObject.SetActive(false));
-    }
+        => DOTween.Sequence()
+            // make skills non interactable
+            // dissolve of skills
+            .AppendCallback(TraversalPlayDisappearAnimation)
+            .AppendInterval(0.15f)
+            .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
+            .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
+            .AppendCallback(() => gameObject.SetActive(false));
 
     public Tween SelfTransitionTween()
-    {
-        return DOTween.Sequence()
+        => DOTween.Sequence()
             .AppendCallback(TraversalPlayDisappearAnimation)
             .AppendInterval(0.15f)
             .AppendCallback(SkillList.Refresh)
             .AppendCallback(Refresh)
             .AppendCallback(TraversalPlayAppearAnimation);
-    }
 
     public void TraversalSetDisappear()
     {

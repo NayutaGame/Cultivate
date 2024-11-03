@@ -47,6 +47,10 @@ public class PrefabCategory : Category<PrefabEntry>
             new("StageModel麒麟", "Prefabs/StageModels/麒麟"),
             new("StageModel鹤仙人", "Prefabs/StageModels/鹤仙人"),
             new("StageModel鹿仙人", "Prefabs/StageModels/鹿仙人"),
+            
+            // Comics
+            new("第一张", "Prefabs/Comics/Comic1"),
+            new("第二张", "Prefabs/Comics/Comic2"),
         });
     }
 

@@ -439,6 +439,19 @@ public class RoomCategory : Category<RoomEntry>
 
             #region Tutorial
 
+            new(id:                                 "漫画",
+                description:                        "漫画",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    ComicPanelDescriptor A = new("第一张");
+                    ComicPanelDescriptor B = new("第二张");
+                    A.Next = B;
+                    B.Next = null;
+                    return A;
+                }),
+
             new(id:                                 "教学1",
                 description:                        "教学1",
                 ladderBound:                        new Bound(0, 15),

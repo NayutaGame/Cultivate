@@ -26,6 +26,7 @@ public class RunCanvas : Panel
     public GachaPanel GachaPanel;
     public ArbitraryCardPickerPanel ArbitraryCardPickerPanel;
     public ImagePanel ImagePanel;
+    public ComicPanel ComicPanel;
     public RunResultPanel RunResultPanel;
 
     private Tween _blockingAnimation;
@@ -47,6 +48,7 @@ public class RunCanvas : Panel
             GachaPanel,
             ArbitraryCardPickerPanel,
             ImagePanel,
+            ComicPanel,
             RunResultPanel,
         });
 
@@ -151,6 +153,8 @@ public class RunCanvas : Panel
 
     public void SetPanelS(PanelS panelS)
     {
+        _blockingAnimation.Complete();
+        
         PanelS oldState = PanelSM.State;
         PanelS newState = panelS;
         
@@ -229,7 +233,7 @@ public class RunCanvas : Panel
             // AudioManager.Play("CardPlacement");
         }
         
-        Refresh();
+        // Refresh();
         Vector3 position = Vector3.zero;
 
         InteractBehaviour ib = SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
@@ -292,7 +296,7 @@ public class RunCanvas : Panel
             // AudioManager.Play("CardPlacement");
         }
         
-        Refresh();
+        // Refresh();
         Vector3 position = Vector3.zero;
         
         int offset = 1;
@@ -353,7 +357,7 @@ public class RunCanvas : Panel
             // AudioManager.Play("CardPlacement");
         }
         
-        Refresh();
+        // Refresh();
         
         SetSkillPosition(cardIB, discoverIB);
         SetSkillMove(cardIB, discoverIB.transform.position);
@@ -385,7 +389,7 @@ public class RunCanvas : Panel
             // AudioManager.Play("CardPlacement");
         }
         
-        Refresh();
+        // Refresh();
         
         SetSkillPosition(cardIB, commodityIB);
         SetSkillMove(cardIB, commodityIB.transform.position);
@@ -418,7 +422,7 @@ public class RunCanvas : Panel
             // AudioManager.Play("CardPlacement");
         }
         
-        Refresh();
+        // Refresh();
         
         SetSkillPosition(cardIB, gachaIB);
         SetSkillMove(cardIB, gachaIB.transform.position);

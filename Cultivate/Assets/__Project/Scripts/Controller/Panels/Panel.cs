@@ -30,8 +30,15 @@ public abstract class Panel : MonoBehaviour
         => await Animator.SetStateAsync(Animator.State != 0 ? 0 : 1);
 
     public virtual Tween ShowTween()
-        => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(true));
+        => DOTween.Sequence()
+            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
+            .AppendCallback(() => gameObject.SetActive(true));
 
     public virtual Tween HideTween()
         => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(false));
+
+    public virtual Tween HideTweenWithCurtain()
+        => DOTween.Sequence()
+            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(1))
+            .AppendCallback(() => gameObject.SetActive(false));
 }
