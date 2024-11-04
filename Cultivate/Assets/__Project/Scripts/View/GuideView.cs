@@ -58,7 +58,10 @@ public class GuideView : MonoBehaviour
 
             bool found = equipGuide.GetFlowOfIndices(out DeckIndex[] result);
             if (!found)
+            {
+                _dragCursor.gameObject.SetActive(false);
                 return;
+            }
 
             Address start = result[0].ToAddress();
             Address end = result[1].ToAddress();
@@ -83,7 +86,10 @@ public class GuideView : MonoBehaviour
             
             bool complete = unequipGuide.CheckComplete(out DeckIndex from);
             if (complete)
+            {
+                _dragCursor.gameObject.SetActive(false);
                 return;
+            }
             
             Address start = from.ToAddress();
             
@@ -107,7 +113,10 @@ public class GuideView : MonoBehaviour
 
             bool complete = mergeGuide.CheckComplete(out DeckIndex[] result);
             if (complete)
+            {
+                _dragCursor.gameObject.SetActive(false);
                 return;
+            }
 
             Address start = result[0].ToAddress();
             Address end = result[1].ToAddress();

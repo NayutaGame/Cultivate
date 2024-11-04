@@ -5,24 +5,66 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Tween = DG.Tweening.Tween;
 
-public class CombatButton : MonoBehaviour
+public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    [SerializeField] public RectTransform _rectTransform;
-    [SerializeField] private BreathingButton _breathingButton;
+    [SerializeField] public RectTransform _target;
 
-    public Neuron<PointerEventData> ClickNeuron = new();
+    private Animator _animator;
+    private Tween _handle;
 
-    private void Start()
+    [HideInInspector] public Neuron<PointerEventData> ClickNeuron = new();
+    private bool _isAttractive;
+    public void SetAttractive(bool value)
     {
-        _breathingButton.ClickNeuron.Join(ClickNeuron);
-        _breathingButton.SetBreathing(true);
+        _isAttractive = value;
+        if (_animator.State != 3)
+            _animator.SetStateAsync(!_isAttractive ? 1 : 2);
     }
 
-    private Tween _handle;
-    public void SetBaseScale(float scale)
+    public void Configure()
     {
-        _handle?.Kill();
-        _handle = _rectTransform.DOScale(scale, 0.2f).SetAutoKill();
-        _handle.Restart();
+        _animator ??= InitAnimator();
+        
+        ClickNeuron.Join(ClickVFX);
+    }
+
+    protected virtual Animator InitAnimator()
+    {
+        // 0 for no state, 1 for idle, 2 for attractive, 3 for hover
+        Animator animator = new(4, "CombatButton");
+        animator[0, 1] = IdleTween;
+        animator[2, 1] = IdleTween;
+        animator[3, 1] = IdleTween;
+        animator[0, 2] = AttractiveTween;
+        animator[1, 2] = AttractiveTween;
+        animator[3, 2] = AttractiveTween;
+        animator[0, 3] = HoverTween;
+        animator[1, 3] = HoverTween;
+        animator[2, 3] = HoverTween;
+        
+        return animator;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+        => _animator.SetStateAsync(3);
+
+    public void OnPointerExit(PointerEventData eventData)
+        => _animator.SetStateAsync(!_isAttractive ? 1 : 2);
+
+    public void OnPointerClick(PointerEventData eventData)
+        => ClickNeuron.Invoke(eventData);
+
+    private Tween IdleTween()
+        => TweenAnimation.Jump(_target);
+    
+    private Tween AttractiveTween()
+        => TweenAnimation.Beats(_target);
+
+    private Tween HoverTween()
+        => _target.DOScale(1.2f * Vector3.one, 0.2f).SetEase(Ease.OutQuad);
+
+    private void ClickVFX(PointerEventData d)
+    {
+        
     }
 }

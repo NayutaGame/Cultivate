@@ -32,6 +32,8 @@ public class BattlePanel : Panel
 
     private Address _address;
 
+    private Neuron<bool> SetVictoryNeuron = new();
+
     public override void Configure()
     {
         base.Configure();
@@ -40,36 +42,15 @@ public class BattlePanel : Panel
 
         EnemyView.SetAddress(_address.Append(".Enemy"));
 
+        CombatButton.Configure();
         CombatButton.ClickNeuron.Join(Combat);
+        SetVictoryNeuron.Join(CombatButton.SetAttractive);
+        
         if (SkipButton != null)
         {
             SkipButton.onClick.RemoveAllListeners();
             SkipButton.onClick.AddListener(Skip);
         }
-    }
-
-    private void PointerEnterHomeHealth(PointerEventData d)
-    {
-        if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerEnter(HomeHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Home.GetFinalHealth()}");
-    }
-
-    private void PointerExitHomeHealth(PointerEventData d)
-    {
-        if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerExit(d);
-    }
-
-    private void PointerEnterAwayHealth(PointerEventData d)
-    {
-        if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerEnter(AwayHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Away.GetFinalHealth()}");
-    }
-
-    private void PointerExitAwayHealth(PointerEventData d)
-    {
-        if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerExit(d);
     }
 
     public override void Refresh()
@@ -94,6 +75,30 @@ public class BattlePanel : Panel
         }
         
         CanvasManager.Instance.RefreshGuide();
+    }
+
+    private void PointerEnterHomeHealth(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerEnter(HomeHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Home.GetFinalHealth()}");
+    }
+
+    private void PointerExitHomeHealth(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerExit(d);
+    }
+
+    private void PointerEnterAwayHealth(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerEnter(AwayHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Away.GetFinalHealth()}");
+    }
+
+    private void PointerExitAwayHealth(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerExit(d);
     }
 
     private Dictionary<string, Sprite> ReactionDict;
@@ -208,9 +213,9 @@ public class BattlePanel : Panel
 
     private void SetVictory(bool victory)
     {
-        CombatButton.SetBaseScale(victory ? WinBaseScale : LoseBaseScale);
         VictoryStamp.SetActive(victory);
         HomeHealth.color = victory ? WinColor : LoseColor;
+        SetVictoryNeuron.Invoke(victory);
     }
 
     private void PlayBattleBGM()
