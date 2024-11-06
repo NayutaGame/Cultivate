@@ -29,6 +29,7 @@ public class ExtraBehaviourPivot : ExtraBehaviour
 
         ib.PointerEnterNeuron.Join(PointerEnter);
         ib.PointerExitNeuron.Join(PointerExit);
+        ib.DraggingExitNeuron.Join(DraggingExit);
     }
 
     private void OnDisable()
@@ -69,6 +70,12 @@ public class ExtraBehaviourPivot : ExtraBehaviour
         => _animator.SetStateAsync(1);
 
     private void PointerExit(InteractBehaviour ib, PointerEventData d)
+    {
+        if (_animator.State != 0)
+            _animator.SetStateAsync(1);
+    }
+
+    private void DraggingExit(InteractBehaviour dragging, InteractBehaviour onto, PointerEventData d)
     {
         if (_animator.State != 0)
             _animator.SetStateAsync(1);
