@@ -71,7 +71,8 @@ public class StageManager : Singleton<StageManager>, Addressable
             return;
 
         Signal signal = new BattleResultSignal(_environment.Result.Flag == 1);
-        await CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
+        CanvasManager.Instance.RunCanvas.SetPanelSFromSignal(signal);
+        CanvasManager.Instance.Curtain.Animator.SetState(1);
         _environment.WriteResult();
     }
 

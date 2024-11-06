@@ -1317,6 +1317,7 @@ public class SkillCategory : Category<SkillEntry>
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(2 + dj) * 10}攻".ApplyAttack() +
                     "\n成为残血",
+                withinPool:                 false,
                 cast:                       async d =>
                 {
                     await d.AttackProcedure(Fib.ToValue(2 + d.Dj) * 10);

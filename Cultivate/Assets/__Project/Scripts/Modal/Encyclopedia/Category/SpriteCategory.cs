@@ -9,6 +9,9 @@ public class SpriteCategory : Category<SpriteEntry>
         {
             new("缺失卡面插画", "Images/MissingSprite"),
             
+            // Event Illustrations
+            new("Event缺失插画", "Images/EventIllustrations/缺失插画"),
+            
             // BuffIcons
             new("Buff不存在", "Images/BuffIcons/不存在"),
             new("Buff缺失插画", "Images/BuffIcons/缺失插画"),
@@ -262,4 +265,5 @@ public class SpriteCategory : Category<SpriteEntry>
     public SpriteEntry ErrorBuffIcon() => this["Buff不存在"];
     public SpriteEntry MissingBuffIcon() => this["Buff缺失插画"];
     public SpriteEntry MissingCharacterPortrait() => this["CharacterPortrait缺失立绘"];
+    public SpriteEntry MissingEventIllustration() => this["Event缺失插画"];
 }

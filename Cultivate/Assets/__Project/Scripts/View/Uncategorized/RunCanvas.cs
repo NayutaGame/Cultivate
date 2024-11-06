@@ -151,6 +151,15 @@ public class RunCanvas : Panel
         }
     }
 
+    public void SetPanelSFromSignal(Signal signal)
+    {
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(signal);
+        // if (RunManager.Instance.Environment == null)
+        //     return;
+        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
+        SetPanelS(panelS);
+    }
+
     public void SetPanelS(PanelS panelS)
     {
         _blockingAnimation.Complete();

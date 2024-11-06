@@ -89,8 +89,8 @@ public class DialogPanel : Panel
 
     public override Tween ShowTween()
         => DOTween.Sequence()
-            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
             .AppendCallback(() => gameObject.SetActive(true))
+            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
             .Append(TweenAnimation.Show(RectTransform, Vector2.zero, CanvasGroup))
             .Join(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleCanvasGroup))
             .Join(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition,

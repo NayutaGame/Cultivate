@@ -178,8 +178,8 @@ MonoBehaviour:
       floating: 0
       collapsed: 0
       displayed: 1
-      snapOffset: {x: -101, y: -26}
-      snapOffsetDelta: {x: 0, y: 0}
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: -98.666626, y: -26}
       snapCorner: 3
       id: Tool Settings
       index: 0
@@ -244,7 +244,7 @@ MonoBehaviour:
       floating: 0
       collapsed: 0
       displayed: 1
-      snapOffset: {x: 0, y: 25.333334}
+      snapOffset: {x: 0, y: 24.666666}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: unity-transform-toolbar
@@ -436,9 +436,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.12550521, y: -1.7002258, z: -0.077735364}
+    m_Target: {x: 1329.7799, y: 517.1149, z: 3.631292}
     speed: 2
-    m_Value: {x: 0.12550521, y: -1.7002258, z: -0.077735364}
+    m_Value: {x: 1329.7799, y: 517.1149, z: 3.631292}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -489,9 +489,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 10.781823
+    m_Target: 738.81744
     speed: 2
-    m_Value: 10.781823
+    m_Value: 738.81744
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -540,7 +540,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 153
+  controlID: 167
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -600,7 +600,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: b8a3feff6aa4fefff8f7fefffcfaffff
+      m_ExpandedIDs: 068dfbffbc8dfbfff2ddfbff5ce7fbff12e8fbfff23bfcffbcd7fcff8a9efdff22aefdff26aefdff1eaffdfffcfaffff888800002c98070074a60a00e0b70a00a6bf0a00
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -691,22 +691,22 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/__Project/Scripts/Controller/Panels
+    - Assets/__Project/Scenes
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/__Project/Scripts/Controller/Panels
+  - Assets/__Project/Prefabs/Widgets
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\86130\Documents\UnityWorkspace\Cultivate\Cultivate
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 74420100
-    m_LastClickedID: 82548
-    m_ExpandedIDs: 0000000066310100683101008c3701007642010000ca9a3b
+    m_SelectedIDs: 16310100
+    m_LastClickedID: 78102
+    m_ExpandedIDs: 00000000fe2a0100002b0100083101000e31010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -734,7 +734,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000006631010068310100
+    m_ExpandedIDs: 00000000fe2a0100002b0100022b0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -762,7 +762,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000485201006672010076ee0100828c00005a3d0100dc740100a4fc0200f8160100a832010080430100000000005a3302009a26060094c3000098650800308a0100f0a00300788f0000
+    m_ExpandedInstanceIDs: c6230000485201006672010076ee0100828c00005a3d0100dc740100a4fc0200f8160100a8320100804301005a3302009a26060094c3000098650800308a0100f0a00300788f000000000000f4c2000062960700181e0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -800,7 +800,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: InspectorWindow
+  m_Name: ConsoleWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -809,14 +809,14 @@ MonoBehaviour:
     y: 0
     width: 622.6666
     height: 1299.3334
-  m_MinSize: {x: 276, y: 71}
+  m_MinSize: {x: 101, y: 121}
   m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 11}
+  m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 11}
   - {fileID: 12}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52

@@ -38,6 +38,7 @@ public class MapPanel : Panel
     public override void Refresh()
     {
         base.Refresh();
+        RoomListView.Sync();
         RoomListView.Refresh();
     }
 
