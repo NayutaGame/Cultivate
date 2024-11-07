@@ -5,12 +5,11 @@ using UnityEngine.EventSystems;
 
 public class HoverGhostView : MonoBehaviour
 {
-    public SimpleView SimpleView;
+    [SerializeField] private SkillCardView _skillView;
 
     public void Awake()
     {
-        SimpleView ??= GetComponent<SimpleView>();
-        SimpleView.AwakeFunction();
+        _skillView.AwakeFunction();
     }
 
     private void OnDisable()
@@ -28,8 +27,8 @@ public class HoverGhostView : MonoBehaviour
         
         gameObject.SetActive(true);
 
-        SimpleView.SetAddress(ib.GetSimpleView().GetAddress());
-        SimpleView.Refresh();
+        _skillView.SetAddress(ib.GetSimpleView().GetAddress());
+        _skillView.Refresh();
 
         ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
@@ -45,7 +44,7 @@ public class HoverGhostView : MonoBehaviour
         
         ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         if (extraBehaviourPivot != null)
-            extraBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
+            extraBehaviourPivot.RectTransformToIdle(_skillView.GetDisplayTransform());
         
         gameObject.SetActive(false);
     }
@@ -80,11 +79,11 @@ public class HoverGhostView : MonoBehaviour
         pivot.position = CanvasManager.Instance.UI2World(mouse);
         if (IsAnimating)
             return;
-        SimpleView.SetDisplayTransform(pivot);
+        _skillView.SetDisplayTransform(pivot);
     }
 
     public RectTransform GetDisplayTransform()
-        => SimpleView.GetDisplayTransform();
+        => _skillView.GetDisplayTransform();
 
 
 
@@ -95,7 +94,7 @@ public class HoverGhostView : MonoBehaviour
     private void SetDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        SimpleView.SetDisplayTransform(end);
+        _skillView.SetDisplayTransform(end);
     }
 
     private void AnimateDisplay(RectTransform start, RectTransform end)
@@ -107,8 +106,34 @@ public class HoverGhostView : MonoBehaviour
     private void AnimateDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(SimpleView.GetDisplayTransform(), end);
+        FollowAnimation f = new FollowAnimation(_skillView.GetDisplayTransform(), end);
         _animationHandle = f.GetHandle();
         _animationHandle.SetAutoKill().Restart();
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public void ResetJingJie(InteractBehaviour ib, PointerEventData d)
+    {
+        ISkill skill = _skillView.Get<ISkill>();
+        if (skill == null)
+            return;
+        _skillView.Refresh();
+    }
+    
+    public void NextJingJie(InteractBehaviour ib, PointerEventData d)
+    {
+        ISkill skill = _skillView.Get<ISkill>();
+        if (skill == null)
+            return;
+        _skillView.SetShowingJingJie(skill.NextJingJie(_skillView.GetShowingJingJie()));
     }
 }

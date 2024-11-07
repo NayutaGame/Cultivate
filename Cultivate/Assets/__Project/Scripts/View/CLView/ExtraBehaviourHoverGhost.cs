@@ -25,6 +25,10 @@ public class ExtraBehaviourHoverGhost : ExtraBehaviour
         ib.BeginDragNeuron.Join(Ghost.BeginDrag);
         ib.DraggingExitNeuron.Join(Ghost.DraggingExit);
         // ib.DroppingNeuron.Join(Ghost.Dropping);
+
+        ib.BeginDragNeuron.Join(Ghost.ResetJingJie);
+        ib.PointerExitNeuron.Join(Ghost.ResetJingJie);
+        ib.RightClickNeuron.Join(Ghost.NextJingJie);
     }
 
     public RectTransform GetDisplayTransform()

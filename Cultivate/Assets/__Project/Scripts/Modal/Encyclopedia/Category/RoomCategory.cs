@@ -100,13 +100,21 @@ public class RoomCategory : Category<RoomEntry>
 
                     B._receiveSignal = signal =>
                     {
-                        RunManager.Instance.Environment.SetDGoldProcedure(goldValue);
+                        if (signal is PickDiscoveredSkillSignal)
+                        {
+                            RunManager.Instance.Environment.SetDGoldProcedure(goldValue);
+                        }
+
                         return B.DefaultReceiveSignal(signal);
                     };
 
                     C._receiveSignal = signal =>
                     {
-                        RunManager.Instance.Environment.SetDGoldProcedure(goldValue);
+                        if (signal is PickDiscoveredSkillSignal)
+                        {
+                            RunManager.Instance.Environment.SetDGoldProcedure(goldValue);
+                        }
+
                         return C.DefaultReceiveSignal(signal);
                     };
 

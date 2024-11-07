@@ -6,6 +6,8 @@ using UnityEngine;
 public class SkillAnnotationView : SimpleView
 {
     [SerializeField] private TMP_Text TitleText;
+    [SerializeField] private GameObject WuXingGameObject;
+    [SerializeField] private TMP_Text WuXingText;
     [SerializeField] private GameObject TypeTagGameObject;
     [SerializeField] private TypeTag[] TypeTagList;
     [SerializeField] private TMP_Text DescriptionText;
@@ -25,6 +27,7 @@ public class SkillAnnotationView : SimpleView
         }
 
         TitleText.text = skill.GetName();
+        SetWuXing(skill.GetWuXing());
 
         List<SkillType> skillTypes = skill.GetSkillTypeComposite().SkillTypes;
         if (skillTypes.Count <= 0)
@@ -65,5 +68,17 @@ public class SkillAnnotationView : SimpleView
 
         if (hasTrivia)
             TriviaText.text = trivia;
+    }
+
+    private void SetWuXing(WuXing? wuXing)
+    {
+        if (wuXing.HasValue)
+        {
+            WuXingGameObject.SetActive(true);
+            WuXingText.text = wuXing.Value.ToString();
+            return;
+        }
+        
+        WuXingGameObject.SetActive(false);
     }
 }
