@@ -58,6 +58,13 @@ public class RunFormation : IFormationModel, Addressable
     public JingJie? GetActivatedJingJie() => IsActivated() ? _formationEntry.GetActivatedJingJie() : null;
     public string GetConditionDescription() => _formationEntry.GetConditionDescription();
     public string GetRewardDescriptionFromJingJie(JingJie jingJie) => _formationEntry.GetRewardDescriptionFromJingJie(jingJie);
+
+    public string GetHighlightedRewardDescriptionFromJingJie(JingJie jingJie)
+        => _formationEntry.GetHighlightedRewardDescriptionFromJingJie(jingJie);
+
+    public string GetRewardDescriptionAnnotationFromJingJie(JingJie jingJie)
+        => _formationEntry.GetRewardDescriptionAnnotationFromJingJie(jingJie);
+
     public string GetTriviaFromJingJie(JingJie jingJie) => _formationEntry.GetTriviaFromJingJie(jingJie);
     public JingJie GetIncrementedJingJie(JingJie jingJie) => _formationEntry.GetIncrementedJingJie(jingJie);
     public int GetRequirementFromJingJie(JingJie jingJie) => _formationEntry.GetRequirementFromJingJie(jingJie);

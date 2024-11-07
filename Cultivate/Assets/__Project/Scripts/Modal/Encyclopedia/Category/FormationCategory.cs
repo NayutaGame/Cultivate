@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using CLLibrary;
 
 public class FormationCategory : Category<FormationGroupEntry>
 {
@@ -932,5 +933,10 @@ public class FormationCategory : Category<FormationGroupEntry>
             //             }),
             //     }),
         });
+    }
+
+    public void Init()
+    {
+        List.Do(entry => entry.GenerateAnnotations());
     }
 }

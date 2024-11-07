@@ -1,7 +1,6 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine.Serialization;
 
 public class FormationEntry : IFormationModel, Addressable
 {
@@ -16,6 +15,16 @@ public class FormationEntry : IFormationModel, Addressable
 
     private string _rewardDescription;
     public string GetRewardDescription() => _rewardDescription;
+    public string GetHighlightedRewardDescription() => GetHighlight();
+    public string GetRewardDescriptionAnnotation() => _annotationArray.GetExplanation();
+    
+    private AnnotationArray _annotationArray;
+    public void GenerateAnnotations()
+        => _annotationArray = AnnotationArray.FromDescription(GetRewardDescription());
+    public string GetHighlight(string description)
+        => _annotationArray.HighlightFromDescription(description);
+    public string GetHighlight()
+        => GetHighlight(GetRewardDescription());
 
     private string _trivia;
     public string GetTrivia() => _trivia;
@@ -61,6 +70,13 @@ public class FormationEntry : IFormationModel, Addressable
     public JingJie? GetActivatedJingJie() => _jingJie;
     public string GetConditionDescription() => _formationGroupEntry.GetConditionDescription();
     public string GetRewardDescriptionFromJingJie(JingJie jingJie) => _formationGroupEntry.GetRewardDescriptionFromJingJie(jingJie);
+
+    public string GetHighlightedRewardDescriptionFromJingJie(JingJie jingJie)
+        => _formationGroupEntry.GetHighlightedRewardDescriptionFromJingJie(jingJie);
+
+    public string GetRewardDescriptionAnnotationFromJingJie(JingJie jingJie)
+        => _formationGroupEntry.GetRewardDescriptionAnnotationFromJingJie(jingJie);
+
     public string GetTriviaFromJingJie(JingJie jingJie) => _formationGroupEntry.GetTriviaFromJingJie(jingJie);
     public JingJie GetIncrementedJingJie(JingJie jingJie) => _formationGroupEntry.GetIncrementedJingJie(jingJie);
     public int GetRequirementFromJingJie(JingJie jingJie) => _formationGroupEntry.GetRequirementFromJingJie(jingJie);

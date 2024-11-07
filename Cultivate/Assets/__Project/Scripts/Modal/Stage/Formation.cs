@@ -46,6 +46,13 @@ public class Formation : StageClosureOwner, IFormationModel, Addressable
     public JingJie? GetActivatedJingJie() => _runFormation.GetActivatedJingJie();
     public string GetConditionDescription() => _runFormation.GetConditionDescription();
     public string GetRewardDescriptionFromJingJie(JingJie jingJie) => _runFormation.GetRewardDescriptionFromJingJie(jingJie);
+
+    public string GetHighlightedRewardDescriptionFromJingJie(JingJie jingJie)
+        => _runFormation.GetHighlightedRewardDescriptionFromJingJie(jingJie);
+
+    public string GetRewardDescriptionAnnotationFromJingJie(JingJie jingJie)
+        => _runFormation.GetRewardDescriptionAnnotationFromJingJie(jingJie);
+
     public string GetTriviaFromJingJie(JingJie jingJie) => _runFormation.GetTriviaFromJingJie(jingJie);
     public JingJie GetIncrementedJingJie(JingJie jingJie) => _runFormation.GetIncrementedJingJie(jingJie);
     public int GetRequirementFromJingJie(JingJie jingJie) => _runFormation.GetRequirementFromJingJie(jingJie);

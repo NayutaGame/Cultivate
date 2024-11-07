@@ -49,8 +49,8 @@ public class FormationAnnotationView : SimpleView
             markView.SetState(activated, showing);
         });
 
-        RewardDescriptionText.text = formation.GetRewardDescriptionFromJingJie(_showingJingJie);
-        // AnnotationText.text = formationEntry.GetAnnotationText();
+        RewardDescriptionText.text = formation.GetHighlightedRewardDescriptionFromJingJie(_showingJingJie);
+        AnnotationText.text = formation.GetRewardDescriptionAnnotationFromJingJie(_showingJingJie);
 
         SetTrivia(formation.GetTriviaFromJingJie(_showingJingJie));
     }

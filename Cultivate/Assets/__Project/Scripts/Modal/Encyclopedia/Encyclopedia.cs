@@ -49,6 +49,7 @@ public class Encyclopedia : Addressable
         BuffCategory.Init();
         SkillCategory.Init();
         DifficultyCategory.Init();
+        FormationCategory.Init();
 
         JingJieToAudio = new()
         {
