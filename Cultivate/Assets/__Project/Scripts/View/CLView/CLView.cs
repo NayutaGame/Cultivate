@@ -80,6 +80,11 @@ public abstract class CLView : MonoBehaviour
 
     public void SetHide(InteractBehaviour ib, PointerEventData d)
         => _sm.SetState(0);
+
+    public void SetVisible(bool value)
+    {
+        GetSimpleView().SetVisible(value);
+    }
     
     public abstract Address GetAddress();
     public abstract T Get<T>() where T : class;

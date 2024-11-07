@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 1832592112482970397}
   - component: {fileID: 7601611789361509271}
   - component: {fileID: 8398556966840544696}
+  - component: {fileID: 8546662760238362350}
   - component: {fileID: 1093431292185408473}
   - component: {fileID: 8757560907916859652}
   m_Layer: 5
@@ -221,6 +222,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GhostAddress: Canvas.SkillGhost
+--- !u!114 &8546662760238362350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c87efa4f8bd4442903060541aef875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GhostAddress: Canvas.SkillHoverGhost
 --- !u!114 &1093431292185408473
 MonoBehaviour:
   m_ObjectHideFlags: 0

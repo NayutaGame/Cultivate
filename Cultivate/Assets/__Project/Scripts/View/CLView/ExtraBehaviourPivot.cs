@@ -69,20 +69,22 @@ public class ExtraBehaviourPivot : ExtraBehaviour
     public void RefreshPivots()
         => _animator.SetStateAsync(1);
 
-    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+    private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        if (_animator.State != 0)
-            _animator.SetStateAsync(1);
-    }
-
-    private void DraggingExit(InteractBehaviour dragging, InteractBehaviour onto, PointerEventData d)
-    {
-        if (_animator.State != 0)
-            _animator.SetStateAsync(1);
+        // if (_animator.State != 0)
+        //     _animator.SetStateAsync(1);
     }
 
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
-        => _animator.SetStateAsync(2);
+    {
+        // _animator.SetStateAsync(2);
+    }
+
+    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+    {
+        // if (_animator.State != 0)
+        //     _animator.SetStateAsync(1);
+    }
 
     public void PlayPingAnimation()
         => _animator.SetStateAsync(4);

@@ -30,6 +30,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [Header("Ghosts")]
     public GhostView SkillGhost;
     public GhostView SlotGhost;
+    public HoverGhostView SkillHoverGhost;
 
     [Header("MergePreresultView")]
     public MergePreresultView MergePreresultView;
@@ -78,6 +79,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "RoomAnnotation", () => RoomAnnotation },
             { "SkillGhost", () => SkillGhost },
             { "SlotGhost", () => SlotGhost },
+            { "SkillHoverGhost", () => SkillHoverGhost },
         };
 
         _volume.profile.TryGet(out _vignette);
@@ -92,6 +94,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         
         SkillGhost.Awake();
         SlotGhost.Awake();
+        SkillHoverGhost.Awake();
         MergePreresultView.Awake();
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
