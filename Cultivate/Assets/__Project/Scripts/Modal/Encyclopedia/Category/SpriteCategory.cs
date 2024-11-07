@@ -104,7 +104,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Skill聚气术",                               "Images/CardIllustrations/聚气术"),
             new("Skill灵气匮乏",                               "Images/CardIllustrations/灵气匮乏"),
             new("Skill卡池已空",                               "Images/CardIllustrations/卡池已空"),
-            // new("冲撞", "Images/Cards/冲撞"),
+            
             new("Skill金刃",                                "Images/CardIllustrations/金刃"),
             new("Skill寻猎",                                "Images/CardIllustrations/寻猎"),
             new("Skill山风",                                "Images/CardIllustrations/山风"),
@@ -193,8 +193,12 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Skill冰肌",                                "Images/CardIllustrations/冰肌"),
             new("Skill一诺五岳",                              "Images/CardIllustrations/一诺五岳"),
             
-            new("Skill正域彼四方",                              "Images/Cards/正域彼四方"),
-            new("Skill射落金乌",                              "Images/Cards/射落金乌"),
+            new("Skill正域彼四方",                              "Images/CardIllustrations/正域彼四方"),
+            new("Skill射落金乌",                              "Images/CardIllustrations/射落金乌"),
+            
+            new("Skill冲撞",                               "Images/CardIllustrations/冲撞"),
+            new("Skill劈砍",                               "Images/CardIllustrations/劈砍"),
+            new("Skill冰弹",                               "Images/CardIllustrations/冰弹"),
             
             // 合成
             new("无法合成", "Images/MergeIllustrations/Invalid"),
