@@ -420,6 +420,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8767097356885083549}
     m_Modifications:
+    - target: {fileID: 2175392259050709164, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4970350602697973923, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+      propertyPath: InteractBehaviour
+      value: 
+      objectReference: {fileID: 5517985162561767932}
+    - target: {fileID: 7969793575853840762, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7969793575853840762, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8085986264311966347, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
       propertyPath: m_Name
       value: SkillView
@@ -531,7 +547,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4970350602697973923, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
   m_PrefabInstance: {fileID: 2242475874789882935}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 8010195401791198908}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2a4048e1a2046946b864aaa9e02d586, type: 3}
@@ -542,6 +558,50 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8152188524626589071, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
   m_PrefabInstance: {fileID: 2242475874789882935}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8010195401791198908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8085986264311966347, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+  m_PrefabInstance: {fileID: 2242475874789882935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3110308514148937619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010195401791198908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnnotationAddress: Canvas.SkillAnnotation
+  HoverTransform: {fileID: 7943430173781248440}
+--- !u!114 &3985701054376263568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010195401791198908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4810d2aed8e55f42a1979a36d2afe81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skillView: {fileID: 6621668484462795924}
+--- !u!114 &5517985162561767932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010195401791198908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3242505650776748454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -549,6 +609,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8767097356885083549}
     m_Modifications:
+    - target: {fileID: 2175392259050709164, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4970350602697973923, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+      propertyPath: InteractBehaviour
+      value: 
+      objectReference: {fileID: 4826035508518059821}
+    - target: {fileID: 7969793575853840762, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7969793575853840762, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8085986264311966347, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
       propertyPath: m_Name
       value: PlayerSkillView
@@ -655,6 +731,50 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+--- !u!1 &6685734520814967597 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8085986264311966347, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
+  m_PrefabInstance: {fileID: 3242505650776748454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4826035508518059821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6685734520814967597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6378679402340136557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6685734520814967597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4810d2aed8e55f42a1979a36d2afe81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skillView: {fileID: 7495549161140949253}
+--- !u!114 &6744861009215584245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6685734520814967597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnnotationAddress: Canvas.SkillAnnotation
+  HoverTransform: {fileID: 6763797445787550761}
 --- !u!224 &6763797445787550761 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8152188524626589071, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
@@ -665,7 +785,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4970350602697973923, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
   m_PrefabInstance: {fileID: 3242505650776748454}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6685734520814967597}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2a4048e1a2046946b864aaa9e02d586, type: 3}

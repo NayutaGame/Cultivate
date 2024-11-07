@@ -3282,7 +3282,7 @@ MonoBehaviour:
   TextHint: {fileID: 1795900226}
   SkillGhost: {fileID: 1098813947}
   SlotGhost: {fileID: 744935921}
-  SkillHoverGhost: {fileID: 0}
+  SkillHoverGhost: {fileID: 6976845967696928344}
   MergePreresultView: {fileID: 8157607860756342956}
   GuideView: {fileID: 327832333}
   Curtain: {fileID: 1721285357}
@@ -6950,7 +6950,7 @@ GameObject:
   - component: {fileID: 6127960649107835771}
   - component: {fileID: 5382614039479347086}
   - component: {fileID: 6976845967696928343}
-  - component: {fileID: 9195471530309668820}
+  - component: {fileID: 6976845967696928344}
   m_Layer: 5
   m_Name: SkillHoverGhost
   m_TagString: Untagged
@@ -7033,6 +7033,19 @@ MonoBehaviour:
   DescriptionText: {fileID: 2814854995459726258}
   JingJieImage: {fileID: 499646671650165953}
   EffectImage: {fileID: 0}
+--- !u!114 &6976845967696928344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6061764083156751487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41b7e8e06c0ea864ab232936e4d5de3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SimpleView: {fileID: 6976845967696928343}
 --- !u!1 &7280169552475868510
 GameObject:
   m_ObjectHideFlags: 0
@@ -7396,16 +7409,3 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 323, y: 501}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &9195471530309668820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6061764083156751487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e14fe7fea4744df4ebe49f4a99bb1874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SimpleView: {fileID: 6976845967696928343}

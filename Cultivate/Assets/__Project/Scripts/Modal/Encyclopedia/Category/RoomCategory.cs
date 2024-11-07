@@ -324,7 +324,7 @@ public class RoomCategory : Category<RoomEntry>
                                 
                                 env.SkillPool.Shuffle();
                             }),
-                        new CardPickerPanelDescriptor("散修，选择一张牌提升至下一境界")
+                        new CardPickerPanelDescriptor("散修，请选择一张牌提升至下一境界")
                             .SetConfirmOperation(iRunSkillList =>
                             {
                                 foreach (var iRunSkill in iRunSkillList)
@@ -379,7 +379,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     JingJie targetJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, JingJie.HuaShen);
                     CardPickerPanelDescriptor B = new CardPickerPanelDescriptor(
-                        instruction:       $"在菩提树下坐了一段时间，对境界有了新的见解。\n请选择至多一张低于{targetJingJie}的卡牌提升至{targetJingJie}",
+                        contentText:       $"在菩提树下坐了一段时间，对境界有了新的见解。\n请选择至多一张低于{targetJingJie}的卡牌提升至{targetJingJie}",
                         bound:              new Bound(0, 2),
                         descriptor:         RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, targetJingJie));
                     B.SetConfirmOperation(iRunSkillList =>
@@ -1303,11 +1303,11 @@ public class RoomCategory : Category<RoomEntry>
                         "请教两人路怎么走（需要一张治疗牌）");
 
                     CardPickerPanelDescriptor B = new CardPickerPanelDescriptor(
-                        instruction:       "请提交一张二动牌",
+                        contentText:       "请提交一张二动牌",
                         bound:              new Bound(0, 2),
                         descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.Swift));
                     CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
-                        instruction:       "请提交一张治疗牌",
+                        contentText:       "请提交一张治疗牌",
                         bound:              new Bound(0, 2),
                         descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.Health));
 
@@ -2567,7 +2567,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor BPass = new DialogPanelDescriptor("少年将你的招式记在了心里，又开始了自顾自的练习。", "继续上路");
                     
                     CardPickerPanelDescriptor C = new CardPickerPanelDescriptor(
-                        instruction:       "请提交一张牌",
+                        contentText:       "请提交一张牌",
                         bound:              new Bound(0, 2));
         
                     DialogPanelDescriptor CWin = new("少年感谢你赠与的秘籍，已经准备好开始练习了。", "继续上路");
