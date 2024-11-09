@@ -1556,7 +1556,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor D = new DialogPanelDescriptor("考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
                                                                         "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
                                                   "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张疲劳牌", new(jingJie: RunManager.Instance.Environment.JingJie, skillTypeComposite: SkillType.Exhaust)));
+                        .SetReward(new DrawSkillReward("得到一张升华牌", new(jingJie: RunManager.Instance.Environment.JingJie, skillTypeComposite: SkillType.Exhaust)));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);

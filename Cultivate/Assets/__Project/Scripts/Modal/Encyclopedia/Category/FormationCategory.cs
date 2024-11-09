@@ -418,7 +418,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳" +
+                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华" +
                                                                                     "\n4张：燃命时：获得1灼烧" +
                                                                                     "\n6张：暂缺" +
                                                                                     "\n9张：每轮气血恢复至上限",
@@ -430,7 +430,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("疲劳");
+                                await f.Owner.GainBuffProcedure("最后一张牌升华");
                                 await f.Owner.GainBuffProcedure("淬体");
                                 await f.Owner.GainBuffProcedure("凤凰涅槃");
                             }),
@@ -439,7 +439,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳" +
+                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华" +
                         "\n4张：燃命时：获得1灼烧" +
                         "\n6张：暂缺" +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -451,7 +451,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("疲劳");
+                                await f.Owner.GainBuffProcedure("最后一张牌升华");
                                 await f.Owner.GainBuffProcedure("淬体");
                             }),
                         }),
@@ -459,7 +459,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳" +
+                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华" +
                         "\n4张：燃命时：获得1灼烧" +
                         "\n6张：暂缺".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -471,7 +471,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("疲劳");
+                                await f.Owner.GainBuffProcedure("最后一张牌升华");
                                 await f.Owner.GainBuffProcedure("淬体");
                             }),
                         }),
@@ -479,7 +479,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳" +
+                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华" +
                         "\n4张：燃命时：获得1灼烧".ApplyInactive() +
                         "\n6张：暂缺".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -491,14 +491,14 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("疲劳");
+                                await f.Owner.GainBuffProcedure("最后一张牌升华");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳".ApplyInactive() +
+                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华".ApplyInactive() +
                         "\n4张：燃命时：获得1灼烧".ApplyInactive() +
                         "\n6张：暂缺".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive()),

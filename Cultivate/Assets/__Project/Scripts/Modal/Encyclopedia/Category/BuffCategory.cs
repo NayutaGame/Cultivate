@@ -848,7 +848,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("业火", "卡牌变成疲劳时：使用2次", BuffStackRule.One, true, false,
+            new("业火", "卡牌变成升华时：使用2次", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_EXHAUST, 0, async (owner, closureDetails) =>
@@ -878,7 +878,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("观众生", "使用牌前，如果是非攻击牌，变得疲劳", BuffStackRule.Add, true, false,
+            new("观众生", "使用牌前，如果是非攻击牌，使其升华", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_EXECUTE, 0, async (owner, closureDetails) =>
@@ -1181,7 +1181,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("疲劳", "使用下一张牌后变成疲劳", BuffStackRule.Add, true, false,
+            new("升华", "下一张牌在使用后，暂时移出卡组，战斗结束返还", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STEP, 0, async (owner, closureDetails) =>
@@ -1191,6 +1191,27 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Owner) return;
                         StageSkill skill = d.Owner._skills[d.P];
+                        
+                        b.PlayPingAnimation();
+                        await skill.ExhaustProcedure();
+                        
+                        await b.LoseStackProcedure();
+                    }),
+                }),
+            
+            new("最后一张牌升华", "卡组最后一张牌在使用后，暂时移出卡组，战斗结束返还", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_STEP, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        StartStepDetails d = (StartStepDetails)closureDetails;
+                        
+                        if (b.Owner != d.Owner) return;
+                        StageSkill skill = d.Owner._skills[d.P];
+                        bool isEnd = skill.SlotIndex == skill.Owner._skills.Length - 1;
+                        if (!isEnd)
+                            return;
                         
                         b.PlayPingAnimation();
                         await skill.ExhaustProcedure();
