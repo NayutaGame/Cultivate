@@ -461,7 +461,7 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
-                        new DirectRoomDescriptor(0, "出门"),
+                        new DirectRoomDescriptor(0, "连抽五张"),
                         //
                         new DirectRoomDescriptor(0, "教学1"),
                         new DirectRoomDescriptor(0, "教学2"),

@@ -73,6 +73,8 @@ public class RunEnvironment : Addressable, RunClosureOwner
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToJingJie));
 
         _closureDict.SendEvent(RunClosureDict.DID_SET_JINGJIE, d);
+        
+        CanvasManager.Instance.RunCanvas.TopBar.Refresh();
     }
 
     public PanelDescriptor ReceiveSignalProcedure(Signal signal)
