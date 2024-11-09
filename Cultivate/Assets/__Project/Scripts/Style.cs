@@ -31,6 +31,9 @@ public static class Style
     public static string ApplyDebuff(this string s)
         => $"<style=\"Debuff\">{s}</style>";
     
+    public static string ApplyInactive(this string s)
+        => $"<style=\"Inactive\">{s}</style>";
+    
     public static string ApplyCond(this string s, CastResult castResult)
         => s.ApplyStyle(castResult, "cond");
 

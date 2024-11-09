@@ -84,10 +84,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1暴击" +
-                                                                                    "\n击伤时：施加6减甲" +
-                                                                                    "\n开局效果额外触发一次" +
-                                                                                    "\n死亡不会停止战斗",
+                        rewardDescription:                                          "2张：开局及每轮：获得1暴击" +
+                                                                                    "\n4张：击伤时：施加6减甲" +
+                                                                                    "\n6张：开局效果额外触发一次" +
+                                                                                    "\n9张：死亡不会停止战斗",
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -114,9 +114,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1暴击" +
-                                                                                    "\n击伤时：施加6减甲" +
-                                                                                    "\n开局效果额外触发一次",
+                        rewardDescription:                                          "2张：开局及每轮：获得1暴击" +
+                        "\n4张：击伤时：施加6减甲" +
+                        "\n6张：开局效果额外触发一次" +
+                        "\n9张：死亡不会停止战斗".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -142,8 +143,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1暴击" +
-                                                                                    "\n击伤时：施加6减甲",
+                        rewardDescription:                                          "2张：开局及每轮：获得1暴击" +
+                        "\n4张：击伤时：施加6减甲" +
+                        "\n6张：开局效果额外触发一次".ApplyInactive() +
+                        "\n9张：死亡不会停止战斗".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -161,7 +164,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局及每轮：获得1暴击",
+                        rewardDescription:                                          "2张：开局及每轮：获得1暴击" +
+                        "\n4张：击伤时：施加6减甲".ApplyInactive() +
+                        "\n6张：开局效果额外触发一次".ApplyInactive() +
+                        "\n9张：死亡不会停止战斗".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -174,6 +180,14 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("轮暴击");
                             }),
                         }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                0,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "2张：开局及每轮：获得1暴击".ApplyInactive() +
+                        "\n4张：击伤时：施加6减甲".ApplyInactive() +
+                        "\n6张：开局效果额外触发一次".ApplyInactive() +
+                        "\n9张：死亡不会停止战斗".ApplyInactive()),
                 }),
 
             new(id: "水灵阵",
@@ -187,10 +201,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：获得1二动" +
-                                                                                    "\n开局及每轮：获得1吸血" +
-                                                                                    "\n所有耗蓝-1" +
-                                                                                    "\n八动，如果受伤则死亡",
+                        rewardDescription:                                          "2张：开局：获得1二动" +
+                                                                                    "\n4张：开局及每轮：获得1吸血" +
+                                                                                    "\n6张：所有耗蓝-1" +
+                                                                                    "\n9张：八动，如果受伤则死亡",
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -221,9 +235,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：获得1二动" +
-                                                                                    "\n开局及每轮：获得1吸血" +
-                                                                                    "\n所有耗蓝-1",
+                        rewardDescription:                                          "2张：开局：获得1二动" +
+                        "\n4张：开局及每轮：获得1吸血" +
+                        "\n6张：所有耗蓝-1" +
+                        "\n9张：八动，如果受伤则死亡".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -242,8 +257,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：获得1二动" +
-                                                                                    "\n开局及每轮：获得1吸血",
+                        rewardDescription:                                          "2张：开局：获得1二动" +
+                        "\n4张：开局及每轮：获得1吸血" +
+                        "\n6张：所有耗蓝-1".ApplyInactive() +
+                        "\n9张：八动，如果受伤则死亡".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -261,7 +278,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：获得1二动",
+                        rewardDescription:                                          "2张：开局：获得1二动" +
+                        "\n4张：开局及每轮：获得1吸血".ApplyInactive() +
+                        "\n6张：所有耗蓝-1".ApplyInactive() +
+                        "\n9张：八动，如果受伤则死亡".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -273,6 +293,14 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("二动");
                             }),
                         }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                0,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "2张：开局：获得1二动".ApplyInactive() +
+                        "\n4张：开局及每轮：获得1吸血".ApplyInactive() +
+                        "\n6张：所有耗蓝-1".ApplyInactive() +
+                        "\n9张：八动，如果受伤则死亡".ApplyInactive()),
                 }),
 
             new(id: "木灵阵",
@@ -286,10 +314,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "第一张牌使用两次" +
-                                                                                    "\n开局及每轮：获得1穿透" +
-                                                                                    "\n所有牌算作使用过一次" +
-                                                                                    "\n永久穿透和集中",
+                        rewardDescription:                                          "2张：第一张牌使用两次" +
+                                                                                    "\n4张：开局及每轮：获得1穿透" +
+                                                                                    "\n6张：所有牌算作使用过一次" +
+                                                                                    "\n9张：永久穿透和集中",
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -310,9 +338,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "第一张牌使用两次" +
-                                                                                    "\n开局及每轮：获得1穿透" +
-                                                                                    "\n所有牌算作使用过一次",
+                        rewardDescription:                                          "2张：第一张牌使用两次" +
+                        "\n4张：开局及每轮：获得1穿透" +
+                        "\n6张：所有牌算作使用过一次" +
+                        "\n9张：永久穿透和集中".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -332,8 +361,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "第一张牌使用两次" +
-                                                                                    "\n开局及每轮：获得1穿透",
+                        rewardDescription:                                          "2张：第一张牌使用两次" +
+                        "\n4张：开局及每轮：获得1穿透" +
+                        "\n6张：所有牌算作使用过一次".ApplyInactive() +
+                        "\n9张：永久穿透和集中".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -351,7 +382,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "第一张牌使用两次",
+                        rewardDescription:                                          "2张：第一张牌使用两次" +
+                        "\n4张：开局及每轮：获得1穿透".ApplyInactive() +
+                        "\n6张：所有牌算作使用过一次".ApplyInactive() +
+                        "\n9张：永久穿透和集中".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -363,6 +397,14 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("多重");
                             }),
                         }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                0,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "2张：第一张牌使用两次".ApplyInactive() +
+                        "\n4张：开局及每轮：获得1穿透".ApplyInactive() +
+                        "\n6张：所有牌算作使用过一次".ApplyInactive() +
+                        "\n9张：永久穿透和集中".ApplyInactive()),
                 }),
 
             new(id: "火灵阵",
@@ -376,10 +418,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "使用第一张牌后，变成疲劳" +
-                                                                                    "\n燃命时：获得1灼烧" +
-                                                                                    "\n暂缺" +
-                                                                                    "\n每轮气血恢复至上限",
+                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳" +
+                                                                                    "\n4张：燃命时：获得1灼烧" +
+                                                                                    "\n6张：暂缺" +
+                                                                                    "\n9张：每轮气血恢复至上限",
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -397,9 +439,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "使用第一张牌后，变成疲劳" +
-                                                                                    "\n燃命时：获得1灼烧" +
-                                                                                    "\n暂缺",
+                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳" +
+                        "\n4张：燃命时：获得1灼烧" +
+                        "\n6张：暂缺" +
+                        "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -416,8 +459,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "使用第一张牌后，变成疲劳" +
-                                                                                    "\n燃命时：获得1灼烧",
+                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳" +
+                        "\n4张：燃命时：获得1灼烧" +
+                        "\n6张：暂缺".ApplyInactive() +
+                        "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -434,7 +479,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "使用第一张牌后，变成疲劳",
+                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳" +
+                        "\n4张：燃命时：获得1灼烧".ApplyInactive() +
+                        "\n6张：暂缺".ApplyInactive() +
+                        "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -446,6 +494,14 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("疲劳");
                             }),
                         }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                0,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "2张：使用第一张牌后，变成疲劳".ApplyInactive() +
+                        "\n4张：燃命时：获得1灼烧".ApplyInactive() +
+                        "\n6张：暂缺".ApplyInactive() +
+                        "\n9张：每轮气血恢复至上限".ApplyInactive()),
                 }),
 
             new(id: "土灵阵",
@@ -459,10 +515,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "架势消耗-1" +
-                                                                                    "\n开局：获得25护甲" +
-                                                                                    "\n开局准备好架势" +
-                                                                                    "\n天人合一（未设计）",
+                        rewardDescription:                                          "2张：架势消耗-1" +
+                                                                                    "\n4张：开局：获得25护甲" +
+                                                                                    "\n6张：开局准备好架势" +
+                                                                                    "\n9张：天人合一（未设计）",
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -481,9 +537,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "架势消耗-1" +
-                                                                                    "\n开局：获得25护甲" +
-                                                                                    "\n开局准备好架势",
+                        rewardDescription:                                          "2张：架势消耗-1" +
+                        "\n4张：开局：获得25护甲" +
+                        "\n6张：开局准备好架势" +
+                        "\n9张：天人合一（未设计）".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -501,8 +558,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "架势消耗-1" +
-                                                                                    "\n开局：获得25护甲",
+                        rewardDescription:                                          "2张：架势消耗-1" +
+                        "\n4张：开局：获得25护甲" +
+                        "\n6张：开局准备好架势".ApplyInactive() +
+                        "\n9张：天人合一（未设计）".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -519,7 +578,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "架势消耗-1",
+                        rewardDescription:                                          "2张：架势消耗-1" +
+                        "\n4张：开局：获得25护甲".ApplyInactive() +
+                        "\n6张：开局准备好架势".ApplyInactive() +
+                        "\n9张：天人合一（未设计）".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -531,137 +593,145 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("架势消耗减少");
                             }),
                         }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                0,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "2张：架势消耗-1".ApplyInactive() +
+                        "\n4张：开局：获得25护甲".ApplyInactive() +
+                        "\n6张：开局准备好架势".ApplyInactive() +
+                        "\n9张：天人合一（未设计）".ApplyInactive()),
                 }),
             
-            new(id: "攻击阵",
-                order: 0,
-                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack),
-                progressDescription: "携带越多攻击牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Attack._index] + d.Proficiency,
-                formationEntries: new[]
-                {
-                    new FormationEntry(
-                        jingJie:                                                    JingJie.HuaShen,
-                        requirement:                                                9,
-                        trivia:                                                     null,
-                        rewardDescription:                                          "",
-                        closures: new StageClosure[]
-                        {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                StageDetails d = (StageDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-                            }),
-                        }),
-                    new FormationEntry(
-                        jingJie:                                                    JingJie.YuanYing,
-                        requirement:                                                6,
-                        trivia:                                                     null,
-                        rewardDescription:                                          "",
-                        closures: new StageClosure[]
-                        {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                StageDetails d = (StageDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-                            }),
-                        }),
-                    new FormationEntry(
-                        jingJie:                                                    JingJie.JinDan,
-                        requirement:                                                4,
-                        trivia:                                                     null,
-                        rewardDescription:                                          "",
-                        closures: new StageClosure[]
-                        {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                StageDetails d = (StageDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-                            }),
-                        }),
-                    new FormationEntry(
-                        jingJie:                                                    JingJie.ZhuJi,
-                        requirement:                                                2,
-                        trivia:                                                     null,
-                        rewardDescription:                                          "",
-                        closures: new StageClosure[]
-                        {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                StageDetails d = (StageDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-                            }),
-                        }),
-                }),
-            
-            new(id: "防御阵",
-                order: 0,
-                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend),
-                progressDescription: "携带越多防御牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Defend._index] + d.Proficiency,
-                formationEntries: new[]
-                {
-                    new FormationEntry(
-                        jingJie:                                                    JingJie.HuaShen,
-                        requirement:                                                9,
-                        trivia:                                                     null,
-                        rewardDescription:                                          "",
-                        closures: new StageClosure[]
-                        {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                StageDetails d = (StageDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-                            }),
-                        }),
-                    new FormationEntry(
-                        jingJie:                                                    JingJie.YuanYing,
-                        requirement:                                                6,
-                        trivia:                                                     null,
-                        rewardDescription:                                          "",
-                        closures: new StageClosure[]
-                        {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                StageDetails d = (StageDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-                            }),
-                        }),
-                    new FormationEntry(
-                        jingJie:                                                    JingJie.JinDan,
-                        requirement:                                                4,
-                        trivia:                                                     null,
-                        rewardDescription:                                          "",
-                        closures: new StageClosure[]
-                        {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                StageDetails d = (StageDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-                            }),
-                        }),
-                    new FormationEntry(
-                        jingJie:                                                    JingJie.ZhuJi,
-                        requirement:                                                2,
-                        trivia:                                                     null,
-                        rewardDescription:                                          "",
-                        closures: new StageClosure[]
-                        {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                StageDetails d = (StageDetails)stageEventDetails;
-                                if (f.Owner != d.Owner) return;
-                            }),
-                        }),
-                }),
+            // new(id: "攻击阵",
+            //     order: 0,
+            //     contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack),
+            //     progressDescription: "携带越多攻击牌越强大",
+            //     progressEvaluator: (e, d) => d.TypeCounts[SkillType.Attack._index] + d.Proficiency,
+            //     formationEntries: new[]
+            //     {
+            //         new FormationEntry(
+            //             jingJie:                                                    JingJie.HuaShen,
+            //             requirement:                                                9,
+            //             trivia:                                                     null,
+            //             rewardDescription:                                          "",
+            //             closures: new StageClosure[]
+            //             {
+            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+            //                 {
+            //                     Formation f = (Formation)listener;
+            //                     StageDetails d = (StageDetails)stageEventDetails;
+            //                     if (f.Owner != d.Owner) return;
+            //                 }),
+            //             }),
+            //         new FormationEntry(
+            //             jingJie:                                                    JingJie.YuanYing,
+            //             requirement:                                                6,
+            //             trivia:                                                     null,
+            //             rewardDescription:                                          "",
+            //             closures: new StageClosure[]
+            //             {
+            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+            //                 {
+            //                     Formation f = (Formation)listener;
+            //                     StageDetails d = (StageDetails)stageEventDetails;
+            //                     if (f.Owner != d.Owner) return;
+            //                 }),
+            //             }),
+            //         new FormationEntry(
+            //             jingJie:                                                    JingJie.JinDan,
+            //             requirement:                                                4,
+            //             trivia:                                                     null,
+            //             rewardDescription:                                          "",
+            //             closures: new StageClosure[]
+            //             {
+            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+            //                 {
+            //                     Formation f = (Formation)listener;
+            //                     StageDetails d = (StageDetails)stageEventDetails;
+            //                     if (f.Owner != d.Owner) return;
+            //                 }),
+            //             }),
+            //         new FormationEntry(
+            //             jingJie:                                                    JingJie.ZhuJi,
+            //             requirement:                                                2,
+            //             trivia:                                                     null,
+            //             rewardDescription:                                          "",
+            //             closures: new StageClosure[]
+            //             {
+            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+            //                 {
+            //                     Formation f = (Formation)listener;
+            //                     StageDetails d = (StageDetails)stageEventDetails;
+            //                     if (f.Owner != d.Owner) return;
+            //                 }),
+            //             }),
+            //     }),
+            //
+            // new(id: "防御阵",
+            //     order: 0,
+            //     contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend),
+            //     progressDescription: "携带越多防御牌越强大",
+            //     progressEvaluator: (e, d) => d.TypeCounts[SkillType.Defend._index] + d.Proficiency,
+            //     formationEntries: new[]
+            //     {
+            //         new FormationEntry(
+            //             jingJie:                                                    JingJie.HuaShen,
+            //             requirement:                                                9,
+            //             trivia:                                                     null,
+            //             rewardDescription:                                          "",
+            //             closures: new StageClosure[]
+            //             {
+            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+            //                 {
+            //                     Formation f = (Formation)listener;
+            //                     StageDetails d = (StageDetails)stageEventDetails;
+            //                     if (f.Owner != d.Owner) return;
+            //                 }),
+            //             }),
+            //         new FormationEntry(
+            //             jingJie:                                                    JingJie.YuanYing,
+            //             requirement:                                                6,
+            //             trivia:                                                     null,
+            //             rewardDescription:                                          "",
+            //             closures: new StageClosure[]
+            //             {
+            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+            //                 {
+            //                     Formation f = (Formation)listener;
+            //                     StageDetails d = (StageDetails)stageEventDetails;
+            //                     if (f.Owner != d.Owner) return;
+            //                 }),
+            //             }),
+            //         new FormationEntry(
+            //             jingJie:                                                    JingJie.JinDan,
+            //             requirement:                                                4,
+            //             trivia:                                                     null,
+            //             rewardDescription:                                          "",
+            //             closures: new StageClosure[]
+            //             {
+            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+            //                 {
+            //                     Formation f = (Formation)listener;
+            //                     StageDetails d = (StageDetails)stageEventDetails;
+            //                     if (f.Owner != d.Owner) return;
+            //                 }),
+            //             }),
+            //         new FormationEntry(
+            //             jingJie:                                                    JingJie.ZhuJi,
+            //             requirement:                                                2,
+            //             trivia:                                                     null,
+            //             rewardDescription:                                          "",
+            //             closures: new StageClosure[]
+            //             {
+            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+            //                 {
+            //                     Formation f = (Formation)listener;
+            //                     StageDetails d = (StageDetails)stageEventDetails;
+            //                     if (f.Owner != d.Owner) return;
+            //                 }),
+            //             }),
+            //     }),
             
             new(id: "灵气阵",
                 order: 0,
@@ -674,9 +744,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：获得4灵气" +
-                                                                                    "\n每回合：获得1灵气" +
-                                                                                    "\n获得灵气时：每1，回复2气血",
+                        rewardDescription:                                          "3张：开局：获得4灵气" +
+                                                                                    "\n5张：每回合：获得1灵气" +
+                                                                                    "\n7张：获得灵气时：每1，回复2气血",
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -694,8 +764,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                5,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：获得4灵气" +
-                                                                                    "\n每回合：获得1灵气",
+                        rewardDescription:                                          "3张：开局：获得4灵气" +
+                        "\n5张：每回合：获得1灵气" +
+                        "\n7张：获得灵气时：每1，回复2气血".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -712,7 +783,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                3,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：获得4灵气",
+                        rewardDescription:                                          "3张：开局：获得4灵气" +
+                        "\n5张：每回合：获得1灵气".ApplyInactive() +
+                        "\n7张：获得灵气时：每1，回复2气血".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -724,6 +797,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("灵气", 4);
                             }),
                         }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                0,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "3张：开局：获得4灵气".ApplyInactive() +
+                        "\n5张：每回合：获得1灵气".ApplyInactive() +
+                        "\n7张：获得灵气时：每1，回复2气血".ApplyInactive()),
                 }),
             
             new(id: "气血阵",
@@ -737,9 +817,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：气血及上限变为1.2倍" +
-                                                                                    "\n第二轮：气血回复到上限" +
-                                                                                    "\n受到治疗时：力量+1",
+                        rewardDescription:                                          "3张：开局：气血及上限变为1.2倍" +
+                                                                                    "\n5张：第二轮：气血回复到上限" +
+                                                                                    "\n7张：受到治疗时：力量+1",
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -759,8 +839,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                5,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：气血及上限变为1.2倍" +
-                                                                                    "\n第二轮：气血回复到上限",
+                        rewardDescription:                                          "3张：开局：气血及上限变为1.2倍" +
+                        "\n5张：第二轮：气血回复到上限" +
+                        "\n7张：受到治疗时：力量+1".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -779,7 +860,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                3,
                         trivia:                                                     null,
-                        rewardDescription:                                          "开局：气血及上限变为1.2倍",
+                        rewardDescription:                                          "3张：开局：气血及上限变为1.2倍" +
+                        "\n5张：第二轮：气血回复到上限".ApplyInactive() +
+                        "\n7张：受到治疗时：力量+1".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -793,6 +876,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.HealProcedure(value);
                             }),
                         }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                0,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "3张：开局：气血及上限变为1.2倍".ApplyInactive() +
+                        "\n5张：第二轮：气血回复到上限".ApplyInactive() +
+                        "\n7张：受到治疗时：力量+1".ApplyInactive()),
                 }),
             
             // new(id: "燃命阵",

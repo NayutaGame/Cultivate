@@ -32,7 +32,7 @@ public class RunFormation : IFormationModel, Addressable
     public static RunFormation From(FormationGroupEntry entry, int progress)
     {
         FormationEntry firstActivated = entry.FirstActivatedFormation(progress);
-        if (firstActivated == null)
+        if (firstActivated == null || firstActivated.GetJingJie() <= JingJie.LianQi)
             return new(entry, progress, false, entry.FormationWithLowestJingJie());
 
         return new(entry, progress, true, firstActivated);

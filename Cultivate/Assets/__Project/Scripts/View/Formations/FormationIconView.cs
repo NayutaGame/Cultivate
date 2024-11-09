@@ -27,7 +27,7 @@ public class FormationIconView : SimpleView
                 JingJie nextActivatingJingJie = rf.GetNextActivatingJingJie();
                 int progress = rf.GetProgress();
                 int requirement = formation.GetRequirementFromJingJie(nextActivatingJingJie);
-                ProgressText.text = $"{progress}/{requirement}";
+                ProgressText.text = $"{progress}";
             }
         }
         
