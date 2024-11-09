@@ -21,8 +21,6 @@ public class RunConfig : Config, Addressable
         CharacterProfile = runConfigForm.CharacterProfile;
         DifficultyProfile = runConfigForm.DifficultyProfile;
 
-        // MapEntry = "发现";
-        // MapEntry = "标准";
-        MapEntry = "序章";
+        MapEntry = "测试";
     }
 }

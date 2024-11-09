@@ -267,6 +267,7 @@ public class RoomCategory : Category<RoomEntry>
                     // 9 -> 星宫，选择2张当前境界的灵气牌
                     // 10 -> 天机阁，卡池中，当前及以下境界的牌，被移除一半
                     // 11 -> 散修，选择一张牌提升至下一境界
+                    
                     string[] descriptions = new string[12]
                     {
                         "凌云峰，选择1张下一境界的金牌",
@@ -274,10 +275,10 @@ public class RoomCategory : Category<RoomEntry>
                         "桃花宫，选择1张下一境界的木牌",
                         "长明殿，选择1张下一境界的火牌",
                         "环岳岭，选择1张下一境界的土牌",
-                        "易宝斋，得到2/4/8/16金钱，访问一次商店",
+                        $"易宝斋，得到{2 * RoomDescriptor.GoldRewardTable[room.Ladder]}金钱，访问一次商店",
                         "剑池，选择2张当前境界的攻击牌",
                         "风雨楼，选择2张当前境界的防御牌",
-                        "百草堂，得到4/8/16/32气血上限",
+                        $"百草堂，得到{4 * RoomDescriptor.GoldRewardTable[room.Ladder]}气血上限",
                         "星宫，选择2张当前境界的灵气牌",
                         "天机阁，卡池中，当前及以下境界的牌，被移除一半",
                         "散修，选择一张牌提升至下一境界",
@@ -314,7 +315,7 @@ public class RoomCategory : Category<RoomEntry>
                             .SetReward(new DrawSkillReward("2张当前境界的攻击牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Attack, count: 2))),
                         new DialogPanelDescriptor("风雨楼，获得2张当前境界的防御牌")
                             .SetReward(new DrawSkillReward("2张当前境界的防御牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Defend, count: 2))),
-                        new DialogPanelDescriptor("百草堂，得到4/8/16/32气血上限")
+                        new DialogPanelDescriptor($"百草堂，得到{4 * RoomDescriptor.GoldRewardTable[room.Ladder]}气血上限")
                             .SetReward(new ResourceReward(health: 4 * RoomDescriptor.GoldRewardTable[room.Ladder])),
                         new DialogPanelDescriptor("星宫，获得2张当前境界的灵气牌")
                             .SetReward(new DrawSkillReward("2张当前境界的灵气牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Mana, count: 2))),

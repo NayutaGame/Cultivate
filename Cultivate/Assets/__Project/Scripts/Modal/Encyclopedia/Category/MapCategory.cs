@@ -94,9 +94,6 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
-                        new BattleRoomDescriptor(0, 3, 3),
-                        new BattleRoomDescriptor(0, 3, 3),
-                        //
                         new DirectRoomDescriptor(0, "漫画"),
                         new DirectRoomDescriptor(0, "教学1"),
                         new DirectRoomDescriptor(0, "教学2"),
@@ -451,6 +448,30 @@ public class MapCategory : Category<MapEntry>
                         new ShopRoomDescriptor(12),
                         new BattleRoomDescriptor(13, 12, 12),
                         new SuccessRoomDescriptor(13),
+                    },
+                }),
+            
+            new(id: "测试",
+                envJingJie: JingJie.LianQi,
+                slotCount: 3,
+                gold: 3,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDescriptor[][]
+                {
+                    new RoomDescriptor[]
+                    {
+                        //
+                        new DirectRoomDescriptor(0, "教学1"),
+                        new DirectRoomDescriptor(0, "教学2"),
+                        new DirectRoomDescriptor(0, "教学3"),
+                        new DirectRoomDescriptor(0, "教学4"),
+                        new DirectRoomDescriptor(0, "教学5"),
+                        new DirectRoomDescriptor(0, "教学6"),
+                        new DirectRoomDescriptor(0, "教学7"),
+                        new DirectRoomDescriptor(0, "教学8"),
+                        new DirectRoomDescriptor(0, "教学9"),
+                        new DirectRoomDescriptor(0, "教学10"),
                     },
                 }),
         });
