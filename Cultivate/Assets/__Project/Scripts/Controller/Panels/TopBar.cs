@@ -1,6 +1,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TopBar : MonoBehaviour
@@ -10,6 +11,8 @@ public class TopBar : MonoBehaviour
     public ResourceView Health;
     
     public TMP_Text JingJieText;
+    public PropagatePointer PropagateJingJieText;
+    public RectTransform PropagateRT;
 
     public Button MenuButton;
 
@@ -23,7 +26,7 @@ public class TopBar : MonoBehaviour
         Gold.Configure(1, RunManager.Instance.Environment.GetGold,
             () => "金钱");
         Health.Configure(1, RunManager.Instance.Environment.Home.GetFinalHealthBounded,
-            () => "气血上限");
+            () => "气血上限\n战斗开始的气血");
     }
 
     private void OnEnable()
@@ -34,6 +37,9 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.LoseGoldNeuron.Add(Gold.Lose);
         RunManager.Instance.Environment.GainDHealthNeuron.Add(GainDHealth);
         RunManager.Instance.Environment.LoseDHealthNeuron.Add(Health.Lose);
+
+        PropagateJingJieText._onPointerEnter += PointerEnterJingJieText;
+        PropagateJingJieText._onPointerExit += PointerExitJingJieText;
     }
 
     private void OnDisable()
@@ -44,6 +50,9 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.LoseGoldNeuron.Remove(Gold.Lose);
         RunManager.Instance.Environment.GainDHealthNeuron.Remove(GainDHealth);
         RunManager.Instance.Environment.LoseDHealthNeuron.Remove(Health.Lose);
+
+        PropagateJingJieText._onPointerEnter -= PointerEnterJingJieText;
+        PropagateJingJieText._onPointerExit -= PointerExitJingJieText;
     }
 
     private void GainMingYuan(int value)
@@ -73,5 +82,17 @@ public class TopBar : MonoBehaviour
     private void OpenMenu()
     {
         AppManager.Push(new MenuAppS());
+    }
+    
+    private void PointerEnterJingJieText(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerEnter(PropagateRT, d, RunManager.Instance.Environment.GetJingJieHintText());
+    }
+
+    private void PointerExitJingJieText(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerExit(d);
     }
 }

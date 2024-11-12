@@ -5,9 +5,12 @@ using CLLibrary;
 
 public class CardPickerPanelDescriptor : PanelDescriptor
 {
-    private string _contentText;
-    public string GetContentText(int count)
-        => $"{_contentText}\n可以点击选择 {Bound.Start} ~ {Bound.End - 1} 张卡\n已选   {count}   张";
+    private string _titleText;
+    public string GetTitleText() => _titleText;
+    
+    private string _detailedText;
+    public string GetDetailedText(int count)
+        => $"{_detailedText}\n可以点击选择 {Bound.Start} ~ {Bound.End - 1} 张卡\n已选   {count}   张";
 
     private Bound _bound;
     public Bound Bound => _bound;
@@ -21,7 +24,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
 
     private RunSkillDescriptor _descriptor;
 
-    public CardPickerPanelDescriptor(string contentText = null, Bound bound = null,
+    public CardPickerPanelDescriptor(string titleText, string detailedText = null, Bound bound = null,
         Func<List<object>, PanelDescriptor> confirmOperation = null,
         RunSkillDescriptor descriptor = null)
     {
@@ -29,8 +32,9 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         {
             { "Guide",                    GetGuideDescriptor },
         };
-        
-        _contentText = contentText ?? "请选择卡";
+
+        _titleText = titleText;
+        _detailedText = detailedText ?? "请选择卡";
         _bound = bound ?? new Bound(1);
         _confirmOperation = confirmOperation;
         _descriptor = descriptor;
@@ -55,12 +59,17 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     public static CardPickerPanelDescriptor GetTemplate()
     {
         CardPickerPanelDescriptor template = new CardPickerPanelDescriptor(
-            contentText:       "请选择一张二动牌",
+            titleText:         "选择",
+            detailedText:       "请选择一张二动牌",
             bound:              new Bound(0, 2),
             descriptor:         new RunSkillDescriptor(skillTypeComposite: SkillType.Swift));
         
-        DialogPanelDescriptor win = new("成功对话。");
-        DialogPanelDescriptor lose = new("失败对话。");
+        DialogPanelDescriptor win = new(
+            titleText: "成功",
+            detailedText: "成功对话。");
+        DialogPanelDescriptor lose = new(
+            titleText: "失败",
+            detailedText: "失败对话。");
 
         template.SetConfirmOperation(iRunSkillList =>
         {

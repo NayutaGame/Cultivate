@@ -5,6 +5,9 @@ using CLLibrary;
 
 public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
 {
+    private string _titleText;
+    public string GetTitleText() => _titleText;
+    
     private string _detailedText;
     public string GetDetailedText() => _detailedText;
 
@@ -26,6 +29,7 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
     }
 
     public ArbitraryCardPickerPanelDescriptor(
+        string titleText = null,
         string detailedText = null,
         Bound bound = null,
         SkillEntryDescriptor descriptor = null,
@@ -36,7 +40,8 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
             { "Guide",                    GetGuideDescriptor },
             { "Inventory",                GetInventory },
         };
-        
+
+        _titleText = titleText ?? "选牌";
         _detailedText = detailedText ?? "请选择卡";
         _bound = bound ?? new Bound(1);
         _confirmOperation = confirmOperation;

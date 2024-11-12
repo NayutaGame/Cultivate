@@ -293,8 +293,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -7.099243, y: 1.7}
-  m_SizeDelta: {x: 732.21643, y: 40}
+  m_AnchoredPosition: {x: 35.146, y: 1.7}
+  m_SizeDelta: {x: 816.71, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2962576877010090392
 CanvasRenderer:
@@ -324,7 +324,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u53EF\u6D88\u8017\u91D1\u94B1\u8D2D\u4E70\u5361\u724C\uFF0C\u53EF\u6D88\u8017\u91D1\u94B1\u8D2D\u4E70\u5361\u724C"
+  m_text: "\u6728\u7CFB\uFF0C\u64C5\u957F\u4F1A\u6210\u957F\u7684\u6CD5\u672F\uFF0C\u6CD5\u672F\u6BCF\u6B21\u4F7F\u7528\u540E\u4F1A\u9010\u6E10\u53D8\u5F3A"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
@@ -351,10 +351,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38
+  m_fontSize: 34
   m_fontSizeBase: 38
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

@@ -463,7 +463,7 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
-                        //
+                        // new DirectRoomDescriptor(0, "漫画"),
                         // new DirectRoomDescriptor(0, "教学1"),
                         // new DirectRoomDescriptor(0, "教学2"),
                         // new DirectRoomDescriptor(0, "教学3"),
@@ -472,14 +472,11 @@ public class MapCategory : Category<MapEntry>
                         // new DirectRoomDescriptor(0, "教学6"),
                         // new DirectRoomDescriptor(0, "教学7"),
                         // new DirectRoomDescriptor(0, "教学8"),
-                        // new DirectRoomDescriptor(0, "教学9"),
-                        // new DirectRoomDescriptor(0, "教学10"),
                         new DirectRoomDescriptor(0, "序章出门"),
                         new BattleRoomDescriptor(0, 3, 3),
                         new DirectRoomDescriptor(0, "教学9"),
                         new DirectRoomDescriptor(0, "教学10"),
                         new DirectRoomDescriptor(0, "教学11"),
-                        new BattleRoomDescriptor(0, 3, 3),
                     },
                 }),
         });

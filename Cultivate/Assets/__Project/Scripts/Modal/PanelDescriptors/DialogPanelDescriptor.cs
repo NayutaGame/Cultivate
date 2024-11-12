@@ -1,6 +1,9 @@
 
 public class DialogPanelDescriptor : PanelDescriptor
 {
+    private string _titleText;
+    public string GetTitleText() => _titleText;
+    
     private string _detailedText;
     public string GetDetailedText() => _detailedText;
     public string SetDetailedText(string value) => _detailedText = value;
@@ -18,13 +21,14 @@ public class DialogPanelDescriptor : PanelDescriptor
         return this;
     }
 
-    public DialogPanelDescriptor(string detailedText, params DialogOption[] options)
+    public DialogPanelDescriptor(string titleText, string detailedText, params DialogOption[] options)
     {
         _accessors = new()
         {
             { "Guide",                    GetGuideDescriptor },
         };
 
+        _titleText = titleText;
         _detailedText = detailedText;
         _options = options.Length > 0 ? options : new DialogOption[] { "确认" };
     }

@@ -730,4 +730,9 @@ public class RunEnvironment : Addressable, RunClosureOwner
     {
         GetActivePanel().SetGuideToFinish();
     }
+
+    public string GetJingJieHintText()
+    {
+        return "有五个境界：\n练气，筑基\n金丹，元婴\n化神";
+    }
 }

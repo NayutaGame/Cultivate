@@ -138,8 +138,8 @@ public class PuzzlePanelDescriptor : PanelDescriptor
         );
         
         PuzzlePanelDescriptor template = new(puzzle);
-        DialogPanelDescriptor pass = new DialogPanelDescriptor("通过对话。");
-        DialogPanelDescriptor noPass = new DialogPanelDescriptor("未通过对话");
+        DialogPanelDescriptor pass = new DialogPanelDescriptor("通过", "通过对话");
+        DialogPanelDescriptor noPass = new DialogPanelDescriptor("未通过", "未通过对话");
         template.SetOperation(s =>
         {
             if (s.Flag == 1)

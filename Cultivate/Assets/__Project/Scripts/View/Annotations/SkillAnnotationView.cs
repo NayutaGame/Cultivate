@@ -27,19 +27,18 @@ public class SkillAnnotationView : SimpleView
         }
 
         TitleText.text = skill.GetName();
-        SetWuXing(skill.GetWuXing());
+
+        WuXing? wuXing = skill.GetWuXing();
+        SetWuXing(wuXing);
 
         List<SkillType> skillTypes = skill.GetSkillTypeComposite().SkillTypes;
-        if (skillTypes.Count <= 0)
-        {
-            TypeTagGameObject.SetActive(false);
-        }
-        else
-        {
-            for (int i = 0; i < TypeTagList.Length; i++)
-                TypeTagList[i].SetText(i < skillTypes.Count ? skillTypes[i]._name : null);
-            TypeTagGameObject.SetActive(true);
-        }
+
+        bool isActive = wuXing != null || skillTypes.Count > 0;
+        
+        TypeTagGameObject.SetActive(isActive);
+        
+        for (int i = 0; i < TypeTagList.Length; i++)
+            TypeTagList[i].SetText(i < skillTypes.Count ? skillTypes[i]._name : null);
 
         DescriptionText.text = skill.GetExplanation();
 
