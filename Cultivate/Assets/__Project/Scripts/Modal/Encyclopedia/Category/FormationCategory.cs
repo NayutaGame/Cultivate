@@ -515,10 +515,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：架势消耗-1" +
+                        rewardDescription:                                          "2张：第一次失去护甲时返还" +
                                                                                     "\n4张：开局：获得25护甲" +
                                                                                     "\n6张：开局准备好架势" +
-                                                                                    "\n9张：天人合一（未设计）",
+                                                                                    "\n9张：暂缺",// 天人合一（未设计）
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -527,7 +527,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("架势消耗减少");
+                                await f.Owner.GainBuffProcedure("护甲返还");
                                 await f.Owner.GainArmorProcedure(25);
                                 await f.Owner.GainBuffProcedure("架势", 2);
                                 // await f.Owner.GainBuffProcedure("天人合一");
@@ -537,10 +537,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：架势消耗-1" +
+                        rewardDescription:                                          "2张：第一次失去护甲时返还" +
                         "\n4张：开局：获得25护甲" +
                         "\n6张：开局准备好架势" +
-                        "\n9张：天人合一（未设计）".ApplyInactive(),
+                        "\n9张：暂缺".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -549,7 +549,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("架势消耗减少");
+                                await f.Owner.GainBuffProcedure("护甲返还");
                                 await f.Owner.GainArmorProcedure(25);
                                 await f.Owner.GainBuffProcedure("架势", 2);
                             }),
@@ -558,10 +558,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：架势消耗-1" +
+                        rewardDescription:                                          "2张：第一次失去护甲时返还" +
                         "\n4张：开局：获得25护甲" +
                         "\n6张：开局准备好架势".ApplyInactive() +
-                        "\n9张：天人合一（未设计）".ApplyInactive(),
+                        "\n9张：暂缺".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -570,7 +570,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("架势消耗减少");
+                                await f.Owner.GainBuffProcedure("护甲返还");
                                 await f.Owner.GainArmorProcedure(25);
                             }),
                         }),
@@ -578,10 +578,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：架势消耗-1" +
+                        rewardDescription:                                          "2张：第一次失去护甲时返还" +
                         "\n4张：开局：获得25护甲".ApplyInactive() +
                         "\n6张：开局准备好架势".ApplyInactive() +
-                        "\n9张：天人合一（未设计）".ApplyInactive(),
+                        "\n9张：暂缺".ApplyInactive(),
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -590,17 +590,17 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("架势消耗减少");
+                                await f.Owner.GainBuffProcedure("护甲返还");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：架势消耗-1".ApplyInactive() +
+                        rewardDescription:                                          "2张：第一次失去护甲时返还".ApplyInactive() +
                         "\n4张：开局：获得25护甲".ApplyInactive() +
                         "\n6张：开局准备好架势".ApplyInactive() +
-                        "\n9张：天人合一（未设计）".ApplyInactive()),
+                        "\n9张：暂缺".ApplyInactive()),
                 }),
             
             // new(id: "攻击阵",

@@ -180,7 +180,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Skill窑土",                                "Images/CardIllustrations/窑土"),
             new("Skill寸劲",                                "Images/CardIllustrations/寸劲"),
             new("Skill八极拳",                               "Images/CardIllustrations/八极拳"),
-            new("Skill满招损",                               "Images/CardIllustrations/满招损"),
+            new("Skill点穴",                               "Images/CardIllustrations/点穴"),
             new("Skill流沙",                                "Images/CardIllustrations/流沙"),
             new("Skill一力降十会",                                 "Images/CardIllustrations/一力降十会"),
             new("Skill边腿",                                "Images/CardIllustrations/边腿"),

@@ -37,6 +37,9 @@ public class SkillEntryDescriptor : ISkill
     public static SkillEntryDescriptor FromName(string name)
         => new(entry: SkillEntry.FromName(name));
 
+    public static SkillEntryDescriptor FromNameJingJie(string name, JingJie jingJie)
+        => new(entry: SkillEntry.FromName(name), jingJie: jingJie);
+
     public static SkillEntryDescriptor FromPredJingJie(Predicate<SkillEntry> pred, JingJie? jingJie)
         => new(pred: pred, jingJie: jingJie);
     
@@ -48,6 +51,9 @@ public class SkillEntryDescriptor : ISkill
 
     public static SkillEntryDescriptor FromWuXingJingJie(WuXing wuXing, JingJie jingJie)
         => new(wuXing: wuXing, jingJie: jingJie);
+
+    public static SkillEntryDescriptor AnySkill()
+        => new();
     
     public bool Contains(SkillEntry skillEntry)
     {

@@ -56,7 +56,11 @@ public class SkillEntry : Entry, IAnnotation, ISkill
 
     private AnnotationArray _annotationArray;
     public void GenerateAnnotations()
-        => _annotationArray = AnnotationArray.FromDescription(GetDescription());
+    {
+        CostDescription costDescription = _costDescription(LowestJingJie, 0, null);
+        _annotationArray = AnnotationArray.FromDescriptionAndCostType(GetDescription(), costDescription.Type);
+    }
+
     public string GetHighlight(string description)
         => _annotationArray.HighlightFromDescription(description);
     public string GetHighlight()

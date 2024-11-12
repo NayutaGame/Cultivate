@@ -246,7 +246,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         d.Cancel = true;
                         b.PlayPingAnimation();
-                        await b.Owner.LoseBuffProcedure(b.GetEntry(), 1);
+                        // await b.Owner.LoseBuffProcedure(b.GetEntry(), 1);
                         await b.LoseStackProcedure();
                     }),
                 }),
