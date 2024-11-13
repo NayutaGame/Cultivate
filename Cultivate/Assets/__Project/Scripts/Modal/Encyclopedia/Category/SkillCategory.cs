@@ -598,7 +598,7 @@ public class SkillCategory : Category<SkillEntry>
                 },
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{10 + 4 * dj}攻".ApplyAttack() +
-                    $"\n返还" +
+                    $"\n返还触发过的" +
                     $"暴击".ApplyStyle(castResult, "0") +
                     $"/" +
                     $"吸血".ApplyStyle(castResult, "1") +
@@ -1979,8 +1979,6 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Health,
-                cost:                       CostResult.ChannelFromValue(3),
-                costDescription:            CostDescription.ChannelFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"治疗{18 + dj * 6}".ApplyHeal(),
                 withinPool:                 false,
@@ -2010,14 +2008,12 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Health,
-                cost:                       CostResult.ChannelFromValue(3),
-                costDescription:            CostDescription.ChannelFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"治疗{18 + dj * 6}".ApplyHeal(),
+                    $"治疗{24 + dj * 6}".ApplyHeal(),
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    await d.HealProcedure(18 + d.Dj * 6, induced: false);
+                    await d.HealProcedure(24 + d.Dj * 6, induced: false);
                 }),
 
             new(id:                         "0602",
@@ -2060,10 +2056,13 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"玄武吐息法",
+                    $"升华\n生命回复至上限",
                 withinPool:                 false,
                 cast:                       async d =>
                 {
+                    int gap = d.Caster.MaxHp - d.Caster.Hp;
+                    await d.Caster.HealProcedure(gap);
+                    await d.Skill.ExhaustProcedure();
                 }),
 
             new(id:                         "0609",
@@ -2076,6 +2075,20 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async d =>
                 {
                     await d.GiveBuffProcedure("内伤", 3);
+                }),
+            
+            new(id:                         "0612",
+                name:                       "观棋烂柯",
+                wuXing:                     WuXing.Shui,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
+                cost:                       CostResult.ManaFromDj(dj => 1 - dj),
+                costDescription:            CostDescription.ManaFromDj(dj => 1 - dj),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"施加1跳行动",
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    await d.Caster.GiveBuffProcedure("跳行动");
                 }),
 
             #endregion
@@ -2593,21 +2606,6 @@ public class SkillCategory : Category<SkillEntry>
             //         if (!cond)
             //             await caster.GainBuffProcedure("跳行动");
             //         return cond.ToCastResult();
-            //     }),
-            //
-            // new(id:                         "0211",
-            //     name:                       "观棋烂柯",
-            //     wuXing:                     WuXing.Shui,
-            //     jingJieBound:               JingJie.YuanYing2HuaShen,
-            //     cost:                       CostResult.ManaFromDj(dj => 1 - dj),
-            //     costDescription:            CostDescription.ManaFromDj(dj => 1 - dj),
-            //     castDescription:            (j, dj, costResult, castResult) =>
-            //         $"施加1跳行动",
-            //     withinPool:                 false,
-            //     cast:                       async d =>
-            //     {
-            //         await caster.GiveBuffProcedure("跳行动");
-            //         return null;
             //     }),
             //
             // new(id:                         "0212",

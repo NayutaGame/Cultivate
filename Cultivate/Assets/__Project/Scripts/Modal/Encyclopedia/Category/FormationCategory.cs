@@ -418,7 +418,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华" +
+                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还" +
                                                                                     "\n4张：燃命时：获得1灼烧" +
                                                                                     "\n6张：暂缺" +
                                                                                     "\n9张：每轮气血恢复至上限",
@@ -439,7 +439,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华" +
+                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还" +
                         "\n4张：燃命时：获得1灼烧" +
                         "\n6张：暂缺" +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -459,7 +459,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华" +
+                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还" +
                         "\n4张：燃命时：获得1灼烧" +
                         "\n6张：暂缺".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -479,7 +479,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华" +
+                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还" +
                         "\n4张：燃命时：获得1灼烧".ApplyInactive() +
                         "\n6张：暂缺".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -498,7 +498,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后第一张牌时，使其升华".ApplyInactive() +
+                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还".ApplyInactive() +
                         "\n4张：燃命时：获得1灼烧".ApplyInactive() +
                         "\n6张：暂缺".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive()),

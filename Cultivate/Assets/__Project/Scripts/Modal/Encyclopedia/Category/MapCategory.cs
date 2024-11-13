@@ -119,6 +119,9 @@ public class MapCategory : Category<MapEntry>
                     },
                     new RoomDescriptor[]
                     {
+                        // 教学12 同名合成
+                        new DirectRoomDescriptor(2, "教学12"),
+                        
                         new BattleRoomDescriptor(2, 5, 6),
                         new AdventureRoomDescriptor(2),
                         new ShopRoomDescriptor(2),
@@ -130,6 +133,9 @@ public class MapCategory : Category<MapEntry>
                     },
                     new RoomDescriptor[]
                     {
+                        // 教学13 同境界合成
+                        new DirectRoomDescriptor(5, "教学13"),
+                        
                         new BattleRoomDescriptor(5, 8, 8),
                         new AdventureRoomDescriptor(5),
                         new ShopRoomDescriptor(5),
@@ -463,6 +469,9 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
+                        new DirectRoomDescriptor(0, "序章出门"),
+                        new DirectRoomDescriptor(0, "教学12"),
+                        new DirectRoomDescriptor(0, "教学13"),
                         // new DirectRoomDescriptor(0, "漫画"),
                         // new DirectRoomDescriptor(0, "教学1"),
                         // new DirectRoomDescriptor(0, "教学2"),

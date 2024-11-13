@@ -360,41 +360,41 @@ public class RoomCategory : Category<RoomEntry>
                     // 10 -> 天机阁，卡池中，当前及以下境界的牌，被移除一半
                     // 11 -> 散修，选择一张牌提升至下一境界
                     
-                    string[] descriptions = new string[12]
-                    {
-                        "凌云峰，选择1张下一境界的金牌",
-                        "逍遥海，选择1张下一境界的水牌",
-                        "桃花宫，选择1张下一境界的木牌",
-                        "长明殿，选择1张下一境界的火牌",
-                        "环岳岭，选择1张下一境界的土牌",
-                        $"易宝斋，得到{2 * RoomDescriptor.GoldRewardTable[room.Ladder]}金钱，访问一次商店",
-                        "剑池，选择2张当前境界的攻击牌",
-                        "风雨楼，选择2张当前境界的防御牌",
-                        $"百草堂，得到{4 * RoomDescriptor.GoldRewardTable[room.Ladder]}气血上限",
-                        "星宫，选择2张当前境界的灵气牌",
-                        "天机阁，卡池中，当前及以下境界的牌，被移除一半",
-                        "散修，选择一张牌提升至下一境界",
-                    };
-                    
                     RunEnvironment env = RunManager.Instance.Environment;
                     JingJie currJingJie = env.JingJie;
                     JingJie nextJingJie = (env.JingJie + 1).ClampUpper(JingJie.HuaShen);
+                    
+                    string[] descriptions = new string[12]
+                    {
+                        $"凌云峰，选择1张{nextJingJie}金牌",
+                        $"逍遥海，选择1张{nextJingJie}水牌",
+                        $"桃花宫，选择1张{nextJingJie}木牌",
+                        $"长明殿，选择1张{nextJingJie}火牌",
+                        $"环岳岭，选择1张{nextJingJie}土牌",
+                        $"易宝斋，得到{2 * RoomDescriptor.GoldRewardTable[room.Ladder]}金钱，访问一次商店",
+                        $"剑池，获得2张{currJingJie}攻击牌",
+                        $"风雨楼，获得2张{currJingJie}防御牌",
+                        $"百草堂，得到{4 * RoomDescriptor.GoldRewardTable[room.Ladder]}气血上限",
+                        $"星宫，获得2张{currJingJie}灵气牌",
+                        $"天机阁，从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌",
+                        $"散修，选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
+                    };
 
                     PanelDescriptor[] panels = new PanelDescriptor[12]
                     {
-                        new DiscoverSkillPanelDescriptor(descriptionText: "凌云峰，选择1张下一境界的金牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: $"凌云峰，选择1张{nextJingJie}金牌",
                             descriptor: new(wuXing: WuXing.Jin, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor(descriptionText: "逍遥海，选择1张下一境界的水牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: $"逍遥海，选择1张{nextJingJie}水牌",
                             descriptor: new(wuXing: WuXing.Shui, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor(descriptionText: "桃花宫，选择1张下一境界的木牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: $"桃花宫，选择1张{nextJingJie}木牌",
                             descriptor: new(wuXing: WuXing.Mu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor(descriptionText: "长明殿，选择1张下一境界的火牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: $"长明殿，选择1张{nextJingJie}火牌",
                             descriptor: new(wuXing: WuXing.Huo, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor(descriptionText: "环岳岭，选择1张下一境界的土牌",
+                        new DiscoverSkillPanelDescriptor(descriptionText: $"环岳岭，选择1张{nextJingJie}土牌",
                             descriptor: new(wuXing: WuXing.Tu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
                         // 易宝斋，得到2/4/8/16金钱，访问一次商店
@@ -403,15 +403,15 @@ public class RoomCategory : Category<RoomEntry>
                                 panelDescriptor.DefaultEnter(panelDescriptor);
                                 env.SetDGoldProcedure(2 * RoomDescriptor.GoldRewardTable[room.Ladder]);
                             }),
-                        new DialogPanelDescriptor("剑池", "获得2张当前境界的攻击牌")
-                            .SetReward(new DrawSkillReward("2张当前境界的攻击牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Attack, count: 2))),
-                        new DialogPanelDescriptor("风雨楼", "获得2张当前境界的防御牌")
-                            .SetReward(new DrawSkillReward("2张当前境界的防御牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Defend, count: 2))),
-                        new DialogPanelDescriptor($"百草堂", "得到{4 * RoomDescriptor.GoldRewardTable[room.Ladder]}气血上限")
+                        new DialogPanelDescriptor("剑池", $"获得2张{currJingJie}攻击牌")
+                            .SetReward(new DrawSkillReward($"2张{currJingJie}攻击牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Attack, count: 2))),
+                        new DialogPanelDescriptor("风雨楼", $"获得2张{currJingJie}防御牌")
+                            .SetReward(new DrawSkillReward($"2张{currJingJie}防御牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Defend, count: 2))),
+                        new DialogPanelDescriptor($"百草堂", $"得到{4 * RoomDescriptor.GoldRewardTable[room.Ladder]}气血上限")
                             .SetReward(new ResourceReward(health: 4 * RoomDescriptor.GoldRewardTable[room.Ladder])),
-                        new DialogPanelDescriptor("星宫", "获得2张当前境界的灵气牌")
-                            .SetReward(new DrawSkillReward("2张当前境界的灵气牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Mana, count: 2))),
-                        new DialogPanelDescriptor("天机阁", "卡池中，当前及以下境界的牌，被移除一半")
+                        new DialogPanelDescriptor("星宫", $"获得2张{currJingJie}灵气牌")
+                            .SetReward(new DrawSkillReward($"2张{currJingJie}灵气牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Mana, count: 2))),
+                        new DialogPanelDescriptor("天机阁", $"从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌")
                             .SetEnter(panelDescriptor =>
                             {
                                 panelDescriptor.DefaultEnter(panelDescriptor);
@@ -425,7 +425,11 @@ public class RoomCategory : Category<RoomEntry>
                                 
                                 env.SkillPool.Shuffle();
                             }),
-                        new CardPickerPanelDescriptor("散修", "请选择一张牌提升至下一境界")
+                        new CardPickerPanelDescriptor(
+                                titleText: "提升",
+                                detailedText: $"选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
+                                bound: new Bound(0, 2),
+                                descriptor: RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie))
                             .SetConfirmOperation(iRunSkillList =>
                             {
                                 foreach (var iRunSkill in iRunSkillList)
@@ -484,25 +488,27 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "最近有些空闲的时间，你决定要",
                         "加紧修炼", "去温泉", "喝点人参茶");
 
-                    JingJie targetJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, JingJie.HuaShen);
+                    JingJie currJingJie = RunManager.Instance.Environment.JingJie;
+                    JingJie nextJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, JingJie.HuaShen);
                     CardPickerPanelDescriptor B = new CardPickerPanelDescriptor(
                         titleText:          "感悟",
-                        detailedText:        $"在菩提树下坐了一段时间，对境界有了新的见解。\n请选择至多一张低于{targetJingJie}的卡牌提升至{targetJingJie}",
+                        detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。" +
+                                            $"\n选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
                         bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, targetJingJie));
+                        descriptor:         RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie));
                     B.SetConfirmOperation(iRunSkillList =>
                     {
                         foreach (var iRunSkill in iRunSkillList)
                         {
                             if (iRunSkill is RunSkill skill)
                             {
-                                skill.JingJie = targetJingJie;
+                                skill.JingJie = nextJingJie;
                                 // staging
                                 CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
                             }
                             else if (iRunSkill is SkillSlot slot)
                             {
-                                slot.Skill.JingJie = targetJingJie;
+                                slot.Skill.JingJie = nextJingJie;
                                 // staging
                                 CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
                             }
@@ -1177,6 +1183,82 @@ public class RoomCategory : Category<RoomEntry>
                     return D1;
                 }),
 
+            new(id:                                 "教学12",
+                description:                        "教学12",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    RunEnvironment env = RunManager.Instance.Environment;
+                    
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物12"));
+                    BattlePanelDescriptor B = new(enemyEntity);
+                    
+                    DialogPanelDescriptor A = new DialogPanelDescriptor(
+                            titleText: "同名合成",
+                            detailedText: "回想起来一些以前修行时的法术。对之前合成的规则有些疑问，正好可以试验一下。");
+                    
+                    B.SetGuideDescriptors(new Guide[]
+                    {
+                        new ConfirmGuide("之前尝试的合成是名字相同，境界也相同。这次的两张牌，名字相同，但是境界不同" +
+                                         "但是理论上来说，也有合成的可能性"),
+                        new MergeGuide("让我来试试",
+                            SkillEntryDescriptor.FromNameJingJie("云袖", JingJie.LianQi), SkillEntryDescriptor.FromNameJingJie("云袖", JingJie.ZhuJi)),
+                        new ConfirmGuide("真的合成了诶。徐福找到了规律，同名同境界的时候，合成可以跨两个境界，即从练气到金丹"),
+                        new ConfirmGuide("同名不同境界的时候，合成可以提升一个境界，即从筑基到金丹。"),
+                        new ConfirmGuide("想提前确认合成之后的卡牌效果时，可以右键点击卡牌查看。"),
+                        new ConfirmGuide("用现有的牌击败对手吧"),
+                    });
+                    
+                    A[0].SetSelect(option =>
+                    {
+                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("云袖"), JingJie.LianQi);
+                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("云袖"), JingJie.ZhuJi);
+                        return B;
+                    });
+                    B.SetWinOperation(() => null);
+                    B.SetLoseOperation(() => null);
+                    
+                    return A;
+                }),
+
+            new(id:                                 "教学13",
+                description:                        "教学13",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    RunEnvironment env = RunManager.Instance.Environment;
+                    
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物13"));
+                    BattlePanelDescriptor B = new(enemyEntity);
+                    
+                    DialogPanelDescriptor A = new DialogPanelDescriptor(
+                        titleText: "同境界合成",
+                        detailedText: "又回想起来一些以前修行时的法术。掌握的法术有点多了啊，之前一直不敢尝试的合成今天感觉有机会了。");
+                    
+                    B.SetGuideDescriptors(new Guide[]
+                    {
+                        new ConfirmGuide("之前是同名不同境界的合成。" +
+                                         "但是理论上来说，不限同名，只要是同境界的牌之间还是有合成的可能性"),
+                        new MergeGuide("让我来试试",
+                            SkillEntryDescriptor.FromNameJingJie("流沙", JingJie.LianQi), SkillEntryDescriptor.FromNameJingJie("拂晓", JingJie.LianQi)),
+                        new ConfirmGuide("真的合成了诶。徐福又找到了规律，同名的卡合成出来都是同名的，但是同境界会合成出随机牌"),
+                        new ConfirmGuide("用现有的牌击败对手吧"),
+                    });
+                    
+                    A[0].SetSelect(option =>
+                    {
+                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("流沙"), JingJie.LianQi);
+                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("拂晓"), JingJie.LianQi);
+                        return B;
+                    });
+                    B.SetWinOperation(() => null);
+                    B.SetLoseOperation(() => null);
+                    
+                    return A;
+                }),
+
             #endregion
 
             #region Shop
@@ -1487,7 +1569,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor BWin2 = new(
                         titleText: "迷路",
                         detailedText: "你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
-                    BWin2.SetReward(new AddSkillReward("0211", RunManager.Instance.Environment.JingJie));
+                    BWin2.SetReward(new AddSkillReward(SkillEntry.FromName("观棋烂柯"), RunManager.Instance.Environment.JingJie));
 
                     DialogPanelDescriptor BLose = new(
                         titleText: "迷路",
@@ -1505,7 +1587,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor CWin2 = new(
                         titleText: "迷路",
                         detailedText: "即使空气非常粘稠，你也可以呼吸自如。慢慢回到了正常的感觉，你悟出了一个关于吐纳的功法。");
-                    CWin2.SetReward(new AddSkillReward("0608", RunManager.Instance.Environment.JingJie));
+                    CWin2.SetReward(new AddSkillReward(SkillEntry.FromName("玄武吐息法"), RunManager.Instance.Environment.JingJie));
 
                     DialogPanelDescriptor CLose = new(
                         titleText: "迷路",
@@ -1780,8 +1862,8 @@ public class RoomCategory : Category<RoomEntry>
                         "试试这个机器可以做什么", "离开");
 
                     CardPickerPanelDescriptor B = new(
-                        titleText: "分子打印机",
-                        detailedText: "请选择2张牌",
+                        titleText: "选择",
+                        detailedText: "请选择2张牌，随机将其中一张变成另一张",
                         bound: new Bound(0, 3));
                     DialogPanelDescriptor C = new(
                         titleText: "分子打印机",
@@ -1822,6 +1904,7 @@ public class RoomCategory : Category<RoomEntry>
                         }
 
                         count.Do(i => RunManager.Instance.Environment.Hand.Add(copyingSkill));
+                        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
                         return D;
                     });
 
@@ -2349,7 +2432,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     CardPickerPanelDescriptor B = new(
                         titleText: "割舍",
-                        detailedText: "请选择0到5张牌",
+                        detailedText: "请选择0到5张牌送出",
                         bound: new Bound(0, 6));
                     DialogPanelDescriptor C = new(
                         titleText: "割舍",

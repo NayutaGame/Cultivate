@@ -32,6 +32,11 @@ public struct JingJie : IEquatable<JingJie>
         };
     }
 
+    private static readonly string[] COLOR_NAMES = new string[] { "灰", "绿", "蓝", "紫", "金", "红" };
+
+    public string GetColorName()
+        => COLOR_NAMES[_index];
+
     public static int Length => _list.Length;
 
     public static JingJie LianQi => _list[0];

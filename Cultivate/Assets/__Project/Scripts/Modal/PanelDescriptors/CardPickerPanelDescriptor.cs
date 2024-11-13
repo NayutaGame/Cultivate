@@ -24,7 +24,10 @@ public class CardPickerPanelDescriptor : PanelDescriptor
 
     private RunSkillDescriptor _descriptor;
 
-    public CardPickerPanelDescriptor(string titleText, string detailedText = null, Bound bound = null,
+    public CardPickerPanelDescriptor(
+        string titleText = null,
+        string detailedText = null,
+        Bound bound = null,
         Func<List<object>, PanelDescriptor> confirmOperation = null,
         RunSkillDescriptor descriptor = null)
     {
@@ -33,7 +36,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
             { "Guide",                    GetGuideDescriptor },
         };
 
-        _titleText = titleText;
+        _titleText = titleText ?? "选择";
         _detailedText = detailedText ?? "请选择卡";
         _bound = bound ?? new Bound(1);
         _confirmOperation = confirmOperation;
@@ -59,8 +62,8 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     public static CardPickerPanelDescriptor GetTemplate()
     {
         CardPickerPanelDescriptor template = new CardPickerPanelDescriptor(
-            titleText:         "选择",
-            detailedText:       "请选择一张二动牌",
+            titleText:          "选择",
+            detailedText:       "请选择一张牌",
             bound:              new Bound(0, 2),
             descriptor:         new RunSkillDescriptor(skillTypeComposite: SkillType.Swift));
         

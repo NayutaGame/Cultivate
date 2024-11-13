@@ -66,7 +66,7 @@ public class CardPickerPanel : Panel
 
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
-        // TitleText.text = d.GetContentText();
+        TitleText.text = d.GetTitleText();
         ContentText.text = d.GetDetailedText(SelectionCount);
         ConfirmButton.interactable = d.Bound.Contains(SelectionCount);
     }
