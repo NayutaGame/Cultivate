@@ -1143,6 +1143,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
+                withinPool:                 false,
                 closures:                   new StageClosure[]
                 {
                     new(StageClosureDict.WIL_FULL_ATTACK, -1, async (owner, closureDetails) =>

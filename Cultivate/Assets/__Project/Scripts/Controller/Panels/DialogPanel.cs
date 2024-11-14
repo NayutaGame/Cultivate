@@ -61,6 +61,8 @@ public class DialogPanel : Panel
 
         DialogPanelDescriptor d = _address.Get<DialogPanelDescriptor>();
 
+        TitleText.text = d.GetTitleText();
+
         DetailedText.text = d.GetDetailedText();
 
         for (int i = 0; i < Buttons.Length; i++)

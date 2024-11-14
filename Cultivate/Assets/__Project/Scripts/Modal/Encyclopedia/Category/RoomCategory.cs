@@ -1138,7 +1138,7 @@ public class RoomCategory : Category<RoomEntry>
                         new ConfirmGuide("阵法，使用带有相同属性的牌就可以激活阵法。" +
                                          "\n己方阵法和敌方阵法分别在上面和下面可以看到。" +
                                          "\n对方携带了2张火属性的牌，会激活火灵阵，效果是使用最后一张牌暂时移除掉。"),
-                        new ConfirmGuide("正念也具有升华，即会在使用后移除掉，打到后面卡组中就只剩1张牌了，这样每次使用的都是那张牌。"),
+                        new ConfirmGuide("对面手中的正念也具有升华，即，会在使用后移除掉，打到后面卡组中就只剩1张牌了，这样每次使用的都是那张牌。"),
                         new ConfirmGuide("只不过，对手将高质量的八极拳放在了最后，被升华掉了，最后剩的牌就剩云袖了。"),
                         new ConfirmGuide("尝试用现有卡牌击败对手吧。"),
                     });
@@ -2083,11 +2083,11 @@ public class RoomCategory : Category<RoomEntry>
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor(
                             titleText: "许愿",
-                            detailedText: "实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n气血上限+10")
+                            detailedText: "实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n气血上限+8")
                         .SetReward(Reward.FromHealth(8));
                     DialogPanelDescriptor C = new DialogPanelDescriptor(
                             titleText: "许愿",
-                            detailedText: "实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+100")
+                            detailedText: "实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+8")
                         .SetReward(Reward.FromGold(8));
                     DialogPanelDescriptor D = new(
                         titleText: "许愿",
@@ -2097,7 +2097,7 @@ public class RoomCategory : Category<RoomEntry>
                     BattlePanelDescriptor E = new(template);
                     DialogPanelDescriptor EWin = new DialogPanelDescriptor(
                             titleText: "许愿",
-                            detailedText: "哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n气血上限+10，金+100")
+                            detailedText: "哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n气血上限+8，金+8")
                         .SetReward(new ResourceReward(gold: 8, health: 8));
                     DialogPanelDescriptor ELose = new(
                         titleText: "许愿",
