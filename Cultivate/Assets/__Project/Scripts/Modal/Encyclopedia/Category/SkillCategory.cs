@@ -1598,7 +1598,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(4 + dj)}攻".ApplyAttack() +
-                    $"\n对手有灵气：多{Fib.ToValue(4 + dj)}".ApplyCond(castResult),
+                    $"\n对手有灵气：多{Fib.ToValue(4 + dj)}攻".ApplyCond(castResult),
                 cast:                       async d =>
                 {
                     StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,

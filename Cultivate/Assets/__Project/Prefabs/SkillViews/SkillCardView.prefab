@@ -362,8 +362,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284172103
-  m_fontColor: {r: 0.2784314, g: 0.2784314, b: 0.35686275, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -794,8 +794,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5fd53cd62062e1a47a71d871b6f3253d, type: 2}
-  m_sharedMaterial: {fileID: 5827317227227896951, guid: 5fd53cd62062e1a47a71d871b6f3253d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 21cd66939430905418039359a9171cf7, type: 2}
+  m_sharedMaterial: {fileID: -2592351739226310272, guid: 21cd66939430905418039359a9171cf7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -939,5 +939,4 @@ MonoBehaviour:
   NameText: {fileID: 8442254787056217276}
   DescriptionText: {fileID: 5799446260533967536}
   JingJieImage: {fileID: 7649928440981184567}
-  WuXingImage: {fileID: 0}
   EffectImage: {fileID: 3251653271539475439}

@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\n\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\n\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341"
+  m_text: "\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\n\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\n\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
   m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
@@ -151,8 +151,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284172103
-  m_fontColor: {r: 0.2784314, g: 0.2784314, b: 0.35686275, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -431,8 +431,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u5165\u6728\u4E09\u5206\u4E09\u5206"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5fd53cd62062e1a47a71d871b6f3253d, type: 2}
-  m_sharedMaterial: {fileID: 5827317227227896951, guid: 5fd53cd62062e1a47a71d871b6f3253d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 21cd66939430905418039359a9171cf7, type: 2}
+  m_sharedMaterial: {fileID: -2592351739226310272, guid: 21cd66939430905418039359a9171cf7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -729,7 +729,6 @@ MonoBehaviour:
   NameText: {fileID: 2810038588358263909}
   DescriptionText: {fileID: 2814854995396553205}
   JingJieImage: {fileID: 499646671310694022}
-  WuXingImage: {fileID: 0}
   EffectImage: {fileID: 0}
 --- !u!114 &9195471530507074963
 MonoBehaviour:
