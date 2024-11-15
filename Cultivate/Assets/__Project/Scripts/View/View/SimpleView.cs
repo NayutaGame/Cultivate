@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class SimpleView : CLView
+public class SimpleView : XView
 {
     public override SimpleView GetSimpleView() => this;
 

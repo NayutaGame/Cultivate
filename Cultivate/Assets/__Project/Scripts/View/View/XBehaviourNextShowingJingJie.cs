@@ -2,20 +2,20 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ExtraBehaviourNextShowingJingJie : ExtraBehaviour
+public class XBehaviourNextShowingJingJie : XBehaviour
 {
     [SerializeField] private SkillCardView _skillView;
 
-    public override void Init(CLView clView)
+    public override void Init(XView xView)
     {
-        base.Init(clView);
+        base.Init(xView);
 
         InitInteractBehaviour();
     }
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = CLView.GetInteractBehaviour();
+        InteractBehaviour ib = XView.GetInteractBehaviour();
         if (ib == null)
             return;
 

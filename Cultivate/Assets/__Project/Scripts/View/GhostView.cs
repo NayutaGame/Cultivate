@@ -30,11 +30,11 @@ public class GhostView : MonoBehaviour
         SimpleView.SetAddress(ib.GetSimpleView().GetAddress());
         SimpleView.Refresh();
 
-        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
+        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        if (xBehaviourPivot != null)
         {
             _mouseOffset = d.position;
-            AnimateDisplay(extraBehaviourPivot.GetDisplayTransform(), extraBehaviourPivot.FollowTransform);
+            AnimateDisplay(xBehaviourPivot.GetDisplayTransform(), xBehaviourPivot.FollowTransform);
         }
     }
 
@@ -55,9 +55,9 @@ public class GhostView : MonoBehaviour
         //         extraBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
         // }
         
-        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
-            extraBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
+        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        if (xBehaviourPivot != null)
+            xBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
         
         gameObject.SetActive(false);
     }
@@ -70,10 +70,10 @@ public class GhostView : MonoBehaviour
 
     public void Drag(InteractBehaviour ib, PointerEventData eventData)
     {
-        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
+        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        if (xBehaviourPivot != null)
         {
-            Drag(extraBehaviourPivot.FollowTransform, eventData.position);
+            Drag(xBehaviourPivot.FollowTransform, eventData.position);
         }
     }
 

@@ -1,21 +1,21 @@
 
 using UnityEngine;
 
-public class ExtraBehaviourHoverGhost : ExtraBehaviour
+public class XBehaviourHoverGhost : XBehaviour
 {
     public string GhostAddress;
     private HoverGhostView Ghost;
 
-    public override void Init(CLView clView)
+    public override void Init(XView xView)
     {
-        base.Init(clView);
+        base.Init(xView);
         Ghost ??= new Address(GhostAddress).Get<HoverGhostView>();
         InitInteractBehaviour();
     }
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = CLView.GetInteractBehaviour();
+        InteractBehaviour ib = XView.GetInteractBehaviour();
         if (ib == null)
             return;
         

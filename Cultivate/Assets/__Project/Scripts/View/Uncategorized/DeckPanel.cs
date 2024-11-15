@@ -217,12 +217,12 @@ public class DeckPanel : Panel
         // From: 本体被移除
         
         // Ghost
-        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
         
         // To: Ghost Display -> ToIdle + Ping Animation
-        ExtraBehaviourPivot extraBehaviourPivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
-            extraBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
+        XBehaviourPivot xBehaviourPivot = to.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        if (xBehaviourPivot != null)
+            xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
 
         AudioManager.Play("CardUpgrade");
     }
@@ -232,12 +232,12 @@ public class DeckPanel : Panel
         // From
         
         // Ghost
-        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
         
         // To
-        ExtraBehaviourPivot extraBehaviourPivot = from.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
-            extraBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
+        XBehaviourPivot xBehaviourPivot = from.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        if (xBehaviourPivot != null)
+            xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
         
         
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
@@ -276,13 +276,13 @@ public class DeckPanel : Panel
         // From: No Animation
         
         // Ghost
-        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
         
         // New IB: Ghost Display -> To Idle
         InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
-        ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
-            extraBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
+        XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        if (xBehaviourPivot != null)
+            xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
 
         AudioManager.Play("CardPlacement");
     }

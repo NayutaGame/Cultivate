@@ -3,7 +3,7 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class CLView : MonoBehaviour
+public abstract class XView : MonoBehaviour
 {
     public abstract SimpleView GetSimpleView();
 
@@ -19,9 +19,9 @@ public abstract class CLView : MonoBehaviour
     private SelectBehaviour SelectBehaviour;
     public SelectBehaviour GetSelectBehaviour() => SelectBehaviour;
 
-    private ExtraBehaviour[] ExtraBehaviours;
-    public ExtraBehaviour[] GetExtraBehaviours() => ExtraBehaviours;
-    public T GetExtraBehaviour<T>() where T : ExtraBehaviour => ExtraBehaviours.FirstObj(b => b is T) as T;
+    private XBehaviour[] ExtraBehaviours;
+    public XBehaviour[] GetExtraBehaviours() => ExtraBehaviours;
+    public T GetExtraBehaviour<T>() where T : XBehaviour => ExtraBehaviours.FirstObj(b => b is T) as T;
 
     public virtual void Awake()
     {
@@ -42,7 +42,7 @@ public abstract class CLView : MonoBehaviour
         if (SelectBehaviour != null)
             SelectBehaviour.Init(this);
 
-        ExtraBehaviours ??= GetComponents<ExtraBehaviour>();
+        ExtraBehaviours ??= GetComponents<XBehaviour>();
         ExtraBehaviours.Do(b => b.Init(this));
 
         _sm = InitSM();

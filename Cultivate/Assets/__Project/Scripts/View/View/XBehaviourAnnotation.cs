@@ -1,16 +1,16 @@
 
 using UnityEngine;
 
-public class ExtraBehaviourAnnotation : ExtraBehaviour
+public class XBehaviourAnnotation : XBehaviour
 {
     public string AnnotationAddress;
     private AnnotationView Annotation;
     public AnnotationView GetAnnotationView() => Annotation;
     public RectTransform HoverTransform;
 
-    public override void Init(CLView clView)
+    public override void Init(XView xView)
     {
-        base.Init(clView);
+        base.Init(xView);
 
         Annotation = new Address(AnnotationAddress).Get<AnnotationView>();
 
@@ -19,7 +19,7 @@ public class ExtraBehaviourAnnotation : ExtraBehaviour
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = CLView.GetInteractBehaviour();
+        InteractBehaviour ib = XView.GetInteractBehaviour();
         if (ib == null)
             return;
 

@@ -65,8 +65,8 @@ public class PuzzleEntityView : SimpleView
 
     private static void EquipStaging(InteractBehaviour from, InteractBehaviour to, bool isReplace)
     {
-        ExtraBehaviourPivot fromPivot = from.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        ExtraBehaviourPivot toPivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        XBehaviourPivot fromPivot = from.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot toPivot = to.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
         
         // From: if ths slot has skill, To Display -> From Idle
         if (isReplace)
@@ -76,7 +76,7 @@ public class PuzzleEntityView : SimpleView
         }
         
         // Ghost
-        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
         
         // To: Ghost Display -> To Idle
         toPivot.RectTransformToIdle(ghost.GetDisplayTransform());
@@ -107,8 +107,8 @@ public class PuzzleEntityView : SimpleView
 
     private static void SwapStaging(InteractBehaviour from, InteractBehaviour to, bool isReplace)
     {
-        ExtraBehaviourPivot fromPivot = from.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        ExtraBehaviourPivot toPivot = to.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
+        XBehaviourPivot fromPivot = from.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot toPivot = to.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
         
         // From: if ths slot has skill, To Display -> From Idle
         if (isReplace)
@@ -118,7 +118,7 @@ public class PuzzleEntityView : SimpleView
         }
         
         // Ghost
-        ExtraBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<ExtraBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
         
         // To: Ghost Display -> To Idle
         toPivot.RectTransformToIdle(ghost.GetDisplayTransform());

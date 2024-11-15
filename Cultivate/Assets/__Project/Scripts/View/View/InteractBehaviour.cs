@@ -10,13 +10,13 @@ public class InteractBehaviour : MonoBehaviour,
     IDropHandler,
     IPointerClickHandler
 {
-    private CLView CLView;
-    public CLView GetCLView() => CLView;
-    public SimpleView GetSimpleView() => CLView.GetSimpleView();
+    private XView _xView;
+    public XView GetCLView() => _xView;
+    public SimpleView GetSimpleView() => _xView.GetSimpleView();
 
-    public void Init(CLView clView)
+    public void Init(XView xView)
     {
-        CLView = clView;
+        _xView = xView;
 
         Image ??= GetComponent<Image>();
         CanvasGroup ??= GetComponent<CanvasGroup>();

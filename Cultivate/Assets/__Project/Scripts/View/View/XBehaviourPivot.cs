@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ExtraBehaviourPivot : ExtraBehaviour
+public class XBehaviourPivot : XBehaviour
 {
     public RectTransform IdleTransform;
     public RectTransform HoverTransform;
@@ -15,15 +15,15 @@ public class ExtraBehaviourPivot : ExtraBehaviour
     public Animator Animator => _animator;
 
     public RectTransform GetDisplayTransform()
-        => CLView.GetDisplayTransform();
+        => XView.GetDisplayTransform();
 
-    public override void Init(CLView clView)
+    public override void Init(XView xView)
     {
-        base.Init(clView);
+        base.Init(xView);
 
         _animator = InitAnimator();
 
-        InteractBehaviour ib = CLView.GetInteractBehaviour();
+        InteractBehaviour ib = XView.GetInteractBehaviour();
         if (ib == null)
             return;
 
@@ -40,7 +40,7 @@ public class ExtraBehaviourPivot : ExtraBehaviour
     protected Animator InitAnimator()
     {
         // 0 for hide, 1 for idle, 2 for hover, 3 for follow, 4 for ping
-        Animator animator = new(5, CLView.name);
+        Animator animator = new(5, XView.name);
         animator[-1, 0] = HideTween;
         animator[0, -1] = SetInteractable;
         animator[-1, 1] = IdleTween;
@@ -106,7 +106,7 @@ public class ExtraBehaviourPivot : ExtraBehaviour
 
     private Tween HideTween()
         => DOTween.Sequence()
-            .AppendCallback(() => CLView.GetInteractBehaviour().SetInteractable(false))
+            .AppendCallback(() => XView.GetInteractBehaviour().SetInteractable(false))
             .Append(GetDisplayTransform().DOScale(0, 0.15f).SetEase(Ease.OutQuad));
 
     private Tween IdleTween()
@@ -116,7 +116,7 @@ public class ExtraBehaviourPivot : ExtraBehaviour
 
     private Tween SetInteractable()
         => DOTween.Sequence()
-            .AppendCallback(() => CLView.GetInteractBehaviour().SetInteractable(true));
+            .AppendCallback(() => XView.GetInteractBehaviour().SetInteractable(true));
 
     private Tween HoverTween()
         => new FollowAnimation(GetDisplayTransform(), HoverTransform).GetHandle();
