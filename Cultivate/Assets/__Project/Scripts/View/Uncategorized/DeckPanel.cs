@@ -73,8 +73,8 @@ public class DeckPanel : Panel
         if (!(from is HandSkillInteractBehaviour))
             return;
         RunEnvironment env = RunManager.Instance.Environment;
-        RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
-        RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
+        RunSkill lhs = from.Get<RunSkill>();
+        RunSkill rhs = to.Get<RunSkill>();
 
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(1, env.GetMergePreresult(lhs, rhs));
     }
@@ -125,7 +125,7 @@ public class DeckPanel : Panel
 
     private void HighlightContributors(InteractBehaviour ib, PointerEventData d)
     {
-        Predicate<ISkill> pred = ib.GetCLView().Get<IFormationModel>().GetContributorPred();
+        Predicate<ISkill> pred = ib.Get<IFormationModel>().GetContributorPred();
         PlayerEntity.SkillList.TraversalActive().Do(HighlightSlot);
         HandView.TraversalActive().Do(HighlightSkill);
 
@@ -144,16 +144,16 @@ public class DeckPanel : Panel
         
         void HighlightSkill(ItemBehaviour itemBehaviour)
         {
-            ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
+            ISkill runSkill = itemBehaviour.Get<ISkill>();
             if (runSkill != null && pred(runSkill))
-                itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(true);
+                itemBehaviour.GetView().GetComponent<SkillCardView>().SetHighlight(true);
         }
         
         void HighlightSlot(ItemBehaviour itemBehaviour)
         {
-            SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
+            SkillSlot skillSlot = itemBehaviour.Get<SkillSlot>();
             if (skillSlot != null && skillSlot.Skill != null && pred(skillSlot.Skill))
-                itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(true);
+                itemBehaviour.GetView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(true);
         }
     }
 
@@ -164,16 +164,16 @@ public class DeckPanel : Panel
         
         void UnhighlightSkill(ItemBehaviour itemBehaviour)
         {
-            ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
+            ISkill runSkill = itemBehaviour.Get<ISkill>();
             if (runSkill != null)
-                itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(false);
+                itemBehaviour.GetView().GetComponent<SkillCardView>().SetHighlight(false);
         }
         
         void UnhighlightSlot(ItemBehaviour itemBehaviour)
         {
-            SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
+            SkillSlot skillSlot = itemBehaviour.Get<SkillSlot>();
             if (skillSlot != null)
-                itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(false);
+                itemBehaviour.GetView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(false);
         }
     }
 
@@ -188,8 +188,8 @@ public class DeckPanel : Panel
         if (!(from is HandSkillInteractBehaviour))
             return;
         
-        RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
-        RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
+        RunSkill lhs = from.Get<RunSkill>();
+        RunSkill rhs = to.Get<RunSkill>();
         bool success = RunManager.Instance.Environment.MergeProcedure(lhs, rhs);
         if (!success)
         {
@@ -217,10 +217,10 @@ public class DeckPanel : Panel
         // From: 本体被移除
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetBehaviour<XBehaviourGhost>();
         
         // To: Ghost Display -> ToIdle + Ping Animation
-        XBehaviourPivot xBehaviourPivot = to.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = to.GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
             xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
 
@@ -232,10 +232,10 @@ public class DeckPanel : Panel
         // From
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetBehaviour<XBehaviourGhost>();
         
         // To
-        XBehaviourPivot xBehaviourPivot = from.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = from.GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
             xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
         
@@ -257,7 +257,7 @@ public class DeckPanel : Panel
             return;
         
         RunEnvironment env = RunManager.Instance.Environment;
-        SkillSlot slot = from.GetSimpleView().Get<SkillSlot>();
+        SkillSlot slot = from.Get<SkillSlot>();
         UnequipResult result = env.UnequipProcedure(slot, null);
         if (!result.Success)
             return;
@@ -276,11 +276,11 @@ public class DeckPanel : Panel
         // From: No Animation
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetBehaviour<XBehaviourGhost>();
         
         // New IB: Ghost Display -> To Idle
         InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
-        XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = newIB.GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
             xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
 
@@ -292,11 +292,11 @@ public class DeckPanel : Panel
     public RectTransform Find(Address address)
     {
         ItemBehaviour itemBehaviour =
-            HandView.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address)) ??
-            PlayerEntity.SkillList.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address));
+            HandView.ActivePool.Find(item => item.GetAddress().Equals(address)) ??
+            PlayerEntity.SkillList.ActivePool.Find(item => item.GetAddress().Equals(address));
         if (itemBehaviour == null)
             return null;
-        return itemBehaviour.GetDisplayTransform();
+        return itemBehaviour.GetView().RectTransform;
     }
 
     private Tween _animationHandle;

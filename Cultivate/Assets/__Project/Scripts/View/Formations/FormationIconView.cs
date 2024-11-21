@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FormationIconView : SimpleView
+public class FormationIconView : XView
 {
     [SerializeField] private TMP_Text ProgressText;
     [SerializeField] private Image Glow;

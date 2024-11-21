@@ -117,7 +117,7 @@ public class SettingsPanel : Panel
     private void ClickedTab(InteractBehaviour toIb, PointerEventData d)
     {
         SettingsTab fromTab = AppManager.Instance.Settings.GetSelectedTab();
-        SettingsTab toTab = toIb.GetSimpleView().Get<SettingsTab>();
+        SettingsTab toTab = toIb.Get<SettingsTab>();
 
         if (fromTab == toTab)
             return;
@@ -126,8 +126,8 @@ public class SettingsPanel : Panel
         
         // Staging
         SettingsTabView fromTabView = TabListView.ActivePool[AppManager.Instance.Settings.FindIndexOfTab(fromTab)]
-            .GetInteractBehaviour().GetCLView() as SettingsTabView;
-        SettingsTabView toTabView = toIb.GetCLView() as SettingsTabView;
+            .GetView() as SettingsTabView;
+        SettingsTabView toTabView = toIb.GetView() as SettingsTabView;
         
         _handle?.Kill();
         _handle = TabChangedAnimation(fromTabView, toTabView);

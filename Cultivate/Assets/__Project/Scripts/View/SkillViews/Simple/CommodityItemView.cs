@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CommodityItemView : SimpleView
+public class CommodityItemView : XView
 {
-    public SimpleView SkillView;
+    public XView SkillView;
     public TMP_Text PriceText;
     public GameObject DiscountSign;
     public TMP_Text DiscountText;

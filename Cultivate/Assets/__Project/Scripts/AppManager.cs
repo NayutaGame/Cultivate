@@ -34,6 +34,8 @@ public class AppManager : Singleton<AppManager>, Addressable
         base.DidAwake();
 
         _mainThread = Thread.CurrentThread;
+        
+        Address.SetValueOnRoot("Root", this);
 
         _accessors = new Dictionary<string, Func<object>>()
         {

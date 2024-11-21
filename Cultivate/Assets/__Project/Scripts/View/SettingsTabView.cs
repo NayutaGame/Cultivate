@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SettingsTabView : SimpleView
+public class SettingsTabView : XView
 {
     [SerializeField] public Image HoverImage;
     [SerializeField] private TMP_Text Text;

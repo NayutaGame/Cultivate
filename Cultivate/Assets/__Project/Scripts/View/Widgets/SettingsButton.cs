@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsButton : SimpleView
+public class SettingsButton : XView
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private Button Button;

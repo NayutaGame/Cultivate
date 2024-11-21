@@ -10,13 +10,18 @@ public class InteractBehaviour : MonoBehaviour,
     IDropHandler,
     IPointerClickHandler
 {
-    private XView _xView;
-    public XView GetCLView() => _xView;
-    public SimpleView GetSimpleView() => _xView.GetSimpleView();
-
-    public void Init(XView xView)
+    private XView View;
+    public XView GetView() => View;
+    public void SetView(XView view) => View = view;
+    
+    public T GetBehaviour<T>() where T : XBehaviour => View.GetBehaviour<T>();
+    public Address GetAddress() => View.GetAddress();
+    public T Get<T>() where T : class => View.Get<T>();
+    public void Refresh() => View.Refresh();
+    
+    public void AwakeFunction(XView view)
     {
-        _xView = xView;
+        View = view;
 
         Image ??= GetComponent<Image>();
         CanvasGroup ??= GetComponent<CanvasGroup>();
@@ -41,19 +46,19 @@ public class InteractBehaviour : MonoBehaviour,
         // DraggingMoveNeuron.Join(DraggingMoveLog);
     }
     
-    private void PointerEnterLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} PointerEnter");
-    private void PointerExitLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} PointerExit");
-    private void PointerMoveLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} PointerMove");
-    private void BeginDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} BeginDrag");
-    private void EndDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} EndDrag");
-    private void DragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} Drag");
-    private void LeftClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} LeftClick");
-    private void RightClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} RightClick");
-    private void DroppingLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetSimpleView().name} Dropping");
-    private void DropLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} Drop");
-    private void DraggingEnterLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} DraggingEnter");
-    private void DraggingExitLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} DraggingExit");
-    private void DraggingMoveLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} DraggingMove");
+    private void PointerEnterLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{View.name} PointerEnter");
+    private void PointerExitLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{View.name} PointerExit");
+    private void PointerMoveLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{View.name} PointerMove");
+    private void BeginDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{View.name} BeginDrag");
+    private void EndDragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{View.name} EndDrag");
+    private void DragLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{View.name} Drag");
+    private void LeftClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{View.name} LeftClick");
+    private void RightClickLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{View.name} RightClick");
+    private void DroppingLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{View.name} Dropping");
+    private void DropLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{View.name} Drop");
+    private void DraggingEnterLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{View.name} DraggingEnter");
+    private void DraggingExitLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{View.name} DraggingExit");
+    private void DraggingMoveLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{View.name} DraggingMove");
 
     private Image Image;
     private CanvasGroup CanvasGroup;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class SkillAnnotationView : SimpleView
+public class SkillAnnotationView : XView
 {
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private GameObject WuXingGameObject;

@@ -6,16 +6,16 @@ public class XBehaviourNextShowingJingJie : XBehaviour
 {
     [SerializeField] private SkillCardView _skillView;
 
-    public override void Init(XView xView)
+    public override void AwakeFunction(XView view)
     {
-        base.Init(xView);
+        base.AwakeFunction(view);
 
         InitInteractBehaviour();
     }
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = XView.GetInteractBehaviour();
+        InteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 

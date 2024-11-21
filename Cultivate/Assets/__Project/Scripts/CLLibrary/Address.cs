@@ -11,6 +11,8 @@ public class Address : IEquatable<Address>
 {
     private static Regex Pattern = new Regex(@"\w+");
 
+    private static Dictionary<string, object> Root = new();
+
     private string _rawString;
     private readonly List<CLKey> _values;
     public List<CLKey> Values => _values;
@@ -28,9 +30,14 @@ public class Address : IEquatable<Address>
         }).ToList();
     }
 
+    public static implicit operator Address(string address) => new(address);
+
+    public static void SetValueOnRoot(string key, object root)
+        => Root[key] = root;
+
     public T Get<T>()
     {
-        object curr = AppManager.Instance;
+        object curr = Root;
         foreach (var clKey in Values)
         {
             if (clKey is IntKey { Key: int i })
@@ -57,6 +64,10 @@ public class Address : IEquatable<Address>
                 if (curr is Addressable addressable)
                 {
                     curr = addressable.Get(s);
+                }
+                else if (curr == Root)
+                {
+                    curr = Root[s];
                 }
                 else
                 {

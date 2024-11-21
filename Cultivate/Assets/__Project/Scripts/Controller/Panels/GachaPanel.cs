@@ -35,13 +35,13 @@ public class GachaPanel : Panel
     }
 
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
+        => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetAddress().Append(".Skill"));
 
     private void PointerExit(InteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
+        => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetAddress().Append(".Skill"));
 
     private void PointerMove(InteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
+        => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetAddress().Append(".Skill"));
 
     public override void Refresh()
     {

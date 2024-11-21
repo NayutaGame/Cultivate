@@ -32,7 +32,7 @@ public class AnimatedListView : ListView
 
     private void ReparentSimpleView(ItemBehaviour itemBehaviour)
     {
-        RectTransform displayTransform = itemBehaviour.GetDisplayTransform();
+        RectTransform displayTransform = itemBehaviour.GetView().RectTransform;
         displayTransform.SetParent(Displays);
         displayTransform.name = Traversal().Count().ToString();
     }
@@ -41,7 +41,7 @@ public class AnimatedListView : ListView
     {
         ItemBehaviour itemBehaviour = base.EnableItemBehaviour(prefabIndex, orderInPool, index);
 
-        RectTransform displayTransform = itemBehaviour.GetDisplayTransform();
+        RectTransform displayTransform = itemBehaviour.GetView().RectTransform;
         displayTransform.SetSiblingIndex(index);
         displayTransform.gameObject.SetActive(true);
 
@@ -52,7 +52,7 @@ public class AnimatedListView : ListView
     {
         ItemBehaviour itemBehaviour = base.DisableItemBehaviour(index);
 
-        RectTransform displayTransform = itemBehaviour.GetDisplayTransform();
+        RectTransform displayTransform = itemBehaviour.GetView().RectTransform;
         displayTransform.gameObject.SetActive(false);
         displayTransform.SetAsLastSibling();
 
@@ -71,7 +71,7 @@ public class AnimatedListView : ListView
             _activePool.RemoveAt(index);
             _inactivePools[itemBehaviour.PrefabIndex].Insert(0, itemBehaviour);
 
-            RectTransform displayTransform = itemBehaviour.GetDisplayTransform();
+            RectTransform displayTransform = itemBehaviour.GetView().RectTransform;
             displayTransform.gameObject.SetActive(false);
         }
     }
@@ -81,7 +81,7 @@ public class AnimatedListView : ListView
     public void RefreshPivots()
         => _activePool.Do(itemBehaviour =>
         {
-            XBehaviourPivot xBehaviourPivot = itemBehaviour.GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = itemBehaviour.GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
                 xBehaviourPivot.RefreshPivots();
         });

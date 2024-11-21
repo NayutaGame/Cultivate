@@ -1,49 +1,56 @@
 
+using System;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class XView : MonoBehaviour
+public class XView : MonoBehaviour
 {
-    public abstract SimpleView GetSimpleView();
+    [NonSerialized] public RectTransform RectTransform;
+    
+    
+    
+    
+    protected CanvasGroup CanvasGroup;
+    public void SetVisible(bool value)
+    {
+        if (CanvasGroup != null)
+            CanvasGroup.alpha = value ? 1 : 0;
+    }
 
-    public abstract RectTransform GetDisplayTransform();
-    public abstract void SetDisplayTransform(RectTransform pivot);
 
-    [SerializeField] private InteractBehaviour InteractBehaviour;
-    public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
+    
+    
+    private InteractBehaviour _interactBehaviour;
+    public InteractBehaviour GetInteractBehaviour() => _interactBehaviour;
+    public void SetInteractBehaviour(InteractBehaviour ib) => _interactBehaviour = ib;
 
-    private ItemBehaviour ItemBehaviour;
-    public ItemBehaviour GetItemBehaviour() => ItemBehaviour;
+    private XBehaviour[] _behaviours;
+    public XBehaviour[] GetBehaviours() => _behaviours;
+    public ItemBehaviour GetItemBehaviour() => GetBehaviour<ItemBehaviour>();
+    public SelectBehaviour GetSelectBehaviour() => GetBehaviour<SelectBehaviour>();
+    public T GetBehaviour<T>() where T : XBehaviour => _behaviours.FirstObj(b => b is T) as T;
 
-    private SelectBehaviour SelectBehaviour;
-    public SelectBehaviour GetSelectBehaviour() => SelectBehaviour;
-
-    private XBehaviour[] ExtraBehaviours;
-    public XBehaviour[] GetExtraBehaviours() => ExtraBehaviours;
-    public T GetExtraBehaviour<T>() where T : XBehaviour => ExtraBehaviours.FirstObj(b => b is T) as T;
-
+    [NonSerialized] public bool _hasAwoken;
     public virtual void Awake()
     {
+        CheckAwake();
+    }
+
+    public void CheckAwake()
+    {
+        if (_hasAwoken)
+            return;
+        _hasAwoken = true;
         AwakeFunction();
     }
 
     public virtual void AwakeFunction()
     {
-        InteractBehaviour ??= GetComponent<InteractBehaviour>();
-        if (InteractBehaviour != null)
-            InteractBehaviour.Init(this);
-
-        ItemBehaviour ??= GetComponent<ItemBehaviour>();
-        if (ItemBehaviour != null)
-            ItemBehaviour.Init(this);
-
-        SelectBehaviour ??= GetComponent<SelectBehaviour>();
-        if (SelectBehaviour != null)
-            SelectBehaviour.Init(this);
-
-        ExtraBehaviours ??= GetComponents<XBehaviour>();
-        ExtraBehaviours.Do(b => b.Init(this));
+        RectTransform = GetComponent<RectTransform>();
+        
+        _behaviours ??= GetComponents<XBehaviour>();
+        _behaviours.Do(b => b.AwakeFunction(this));
 
         _sm = InitSM();
     }
@@ -60,16 +67,18 @@ public abstract class XView : MonoBehaviour
 
     private void Show()
     {
-        if (InteractBehaviour != null)
-            InteractBehaviour.SetInteractable(true);
-        GetSimpleView().SetVisible(true);
+        InteractBehaviour ib = GetInteractBehaviour();
+        if (ib != null)
+            ib.SetInteractable(true);
+        SetVisible(true);
     }
 
     public void Hide()
     {
-        if (InteractBehaviour != null)
-            InteractBehaviour.SetInteractable(false);
-        GetSimpleView().SetVisible(false);
+        InteractBehaviour ib = GetInteractBehaviour();
+        if (ib != null)
+            ib.SetInteractable(false);
+        SetVisible(false);
     }
 
     public void SetShow(InteractBehaviour ib, PointerEventData d)
@@ -80,14 +89,16 @@ public abstract class XView : MonoBehaviour
 
     public void SetHide(InteractBehaviour ib, PointerEventData d)
         => _sm.SetState(0);
-
-    public void SetVisible(bool value)
-    {
-        GetSimpleView().SetVisible(value);
-    }
     
-    public abstract Address GetAddress();
-    public abstract T Get<T>() where T : class;
-    public abstract void SetAddress(Address address);
-    public abstract void Refresh();
+    private Address _address;
+    public virtual Address GetAddress() => _address;
+    public virtual T Get<T>() where T : class => _address?.Get<T>();
+    public virtual void SetAddress(Address address)
+    {
+        _address = address;
+    }
+
+    public virtual void Refresh()
+    {
+    }
 }

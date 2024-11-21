@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 
 [SelectionBase]
-public class FormationGroupDetailedView : SimpleView
+public class FormationGroupDetailedView : XView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private ListView FormationListView;

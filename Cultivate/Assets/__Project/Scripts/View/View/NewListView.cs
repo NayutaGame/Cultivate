@@ -4,41 +4,61 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using CLLibrary;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class ListView : XView
+public class NewListView : XView
 {
-    public RectTransform Container;
-    public GameObject[] Prefabs;
+    private RectTransform SlotContainer;
+    private RectTransform ViewContainer;
+    [SerializeField] private GameObject[] Prefabs;
 
-    protected List<ItemBehaviour> _activePool;
+    private List<ItemBehaviour> _activePool;
+    private List<ItemBehaviour>[] _inactivePools;
+
+    #region Accessors
+    
     public List<ItemBehaviour> ActivePool => _activePool;
-    protected List<ItemBehaviour>[] _inactivePools;
     public List<ItemBehaviour>[] InactivePools => _inactivePools;
 
-    #region List Operations
-
-    public IEnumerable<ItemBehaviour> Traversal()
+    public IEnumerable<T> Traversal<T>() where T : XBehaviour
     {
         foreach (var itemBehaviour in _activePool)
-            yield return itemBehaviour;
+            yield return itemBehaviour.GetBehaviour<T>();
         foreach (var itemBehaviourList in _inactivePools)
         foreach (var itemBehaviour in itemBehaviourList)
-            yield return itemBehaviour;
+            yield return itemBehaviour.GetBehaviour<T>();
     }
 
-    public IEnumerable<ItemBehaviour> TraversalActive()
+    public IEnumerable<T> TraversalActive<T>() where T : XBehaviour
     {
         foreach (var itemBehaviour in _activePool)
-            yield return itemBehaviour;
+            yield return itemBehaviour.GetBehaviour<T>();
     }
 
-    private bool IsInited()
-        => _activePool != null;
-
-    private void Init()
+    public int? IndexFromItemBehaviour(ItemBehaviour toGetIndex)
     {
+        if (toGetIndex == null)
+            return null;
+        return _activePool.FirstIdx(itemBehaviour => itemBehaviour == toGetIndex);
+    }
+
+    public ItemBehaviour ItemBehaviourFromIndex(int i)
+        => _activePool[i];
+
+    #endregion
+
+    #region List Operations
+    
+    public override void AwakeFunction()
+    {
+        base.AwakeFunction();
+
+        SlotContainer = transform.GetChild(0).GetComponent<RectTransform>();
+        ViewContainer = transform.GetChild(1).GetComponent<RectTransform>();
+        
         _activePool = new List<ItemBehaviour>();
         _inactivePools = new List<ItemBehaviour>[Prefabs.Length];
         for (int i = 0; i < _inactivePools.Length; i++)
@@ -50,10 +70,7 @@ public class ListView : XView
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-
-        if (!IsInited())
-            Init();
-
+        CheckAwake();
         Sync();
     }
 
@@ -64,48 +81,85 @@ public class ListView : XView
             itemBehaviour.Refresh());
     }
 
-    private void RegisterExists()
+    public void Sync()
     {
-        for (int i = 0; i < Container.childCount; i++)
-        {
-            ItemBehaviour itemBehaviour = RegisterItemBehaviour(Container.GetChild(i).gameObject);
-            InitItemBehaviour(itemBehaviour, itemBehaviour.PrefabIndex);
-        }
-    }
+        DisableAllItems();
 
-    public virtual void Sync()
-    {
-        DisableAllItemBehaviours();
-
-        Model = Get<IListModel>();
-        for (int i = 0; i < Model.Count(); i++)
+        _model = Get<IListModel>();
+        for (int i = 0; i < _model.Count(); i++)
             InsertItem(i, GetAddress().Append($"#{i}").Get<object>());
 
         Refresh();
     }
 
-    #endregion
-
-    #region Atomic Operations
-
-    private ItemBehaviour AllocItemBehaviour(int prefabIndex)
-        => Instantiate(Prefabs[prefabIndex], Container).GetComponent<ItemBehaviour>();
-
-    private ItemBehaviour RegisterItemBehaviour(GameObject go)
-        => go.GetComponent<ItemBehaviour>();
-
-    protected virtual void InitItemBehaviour(ItemBehaviour itemBehaviour, int prefabIndex)
+    private void RegisterExists()
     {
+        int existsCount = SlotContainer.childCount;
+        for (int i = 0; i < existsCount; i++)
+        {
+            GameObject viewGo = SlotContainer.GetChild(0).gameObject;
+            ItemBehaviour itemBehaviour = viewGo.GetOrAddComponent<ItemBehaviour>();
+            CreateSlot(viewGo, i);
+            
+            itemBehaviour.AwakeFunction(viewGo.GetComponent<XView>());
+            InitItem(itemBehaviour, itemBehaviour.PrefabIndex);
+        }
+    }
+
+    private ItemBehaviour AllocItem(int prefabIndex)
+        => Instantiate(Prefabs[prefabIndex], ViewContainer).GetComponent<ItemBehaviour>();
+
+    private void CreateSlot(GameObject viewGo, int index)
+    {
+        GameObject slotGo = new GameObject($"Slot#{index}", typeof(RectTransform), typeof(Image), typeof(InteractBehaviour));
+        RectTransform slotRt = slotGo.GetComponent<RectTransform>();
+        Image slotImage = slotGo.GetComponent<Image>();
+        InteractBehaviour slotIb = slotGo.GetComponent<InteractBehaviour>();
+
+        XView view = viewGo.GetComponent<XView>();
+        RectTransform viewRt = viewGo.GetComponent<RectTransform>();
+        
+        slotGo.transform.SetParent(SlotContainer);
+        slotRt.anchorMin = new Vector2(0f, 1f);
+        slotRt.anchorMax = new Vector2(0f, 1f);
+        slotRt.pivot = new Vector2(0.5f, 0.5f);
+
+        slotRt.localScale = viewRt.localScale;
+        slotRt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, viewRt.rect.width);
+        slotRt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, viewRt.rect.height);
+
+        Debug.Log(viewRt.position);
+        slotRt.position = viewRt.position;
+        
+        viewGo.transform.SetParent(ViewContainer);
+        viewRt.position = slotRt.position;
+        viewRt.anchorMin = new Vector2(0.5f, 0.5f);
+        viewRt.anchorMax = new Vector2(0.5f, 0.5f);
+        viewRt.pivot = new Vector2(0.5f, 0.5f);
+
+        // slotImage.color = new Color(0, 0, 0, 0);
+        slotImage.color = new Color(1, 1, 1, 1);
+        
+        slotIb.SetView(view);
+        view.SetInteractBehaviour(slotIb);
+    }
+
+    protected virtual void InitItem(ItemBehaviour itemBehaviour, int prefabIndex)
+    {
+        InteractBehaviour ib = itemBehaviour.GetInteractBehaviour();
         itemBehaviour.GetComponent<XView>().AwakeFunction();
         itemBehaviour.gameObject.SetActive(false);
+        
+        if (ib != null)
+            ib.gameObject.SetActive(false);
 
         itemBehaviour.PrefabIndex = prefabIndex;
         _inactivePools[prefabIndex].Add(itemBehaviour);
-        BindInteractBehaviour(itemBehaviour);
-        itemBehaviour.name = Traversal().Count().ToString();
+        BindInteractBehaviour(ib);
+        itemBehaviour.name = $"View#{Traversal<ItemBehaviour>().Count() - 1}";
     }
 
-    protected virtual ItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
+    private ItemBehaviour EnableItem(int prefabIndex, int orderInPool, int index)
     {
         List<ItemBehaviour> pool = _inactivePools[prefabIndex];
         ItemBehaviour itemBehaviour = pool[orderInPool];
@@ -121,11 +175,16 @@ public class ListView : XView
 
         itemBehaviour.transform.SetSiblingIndex(index);
         itemBehaviour.gameObject.SetActive(true);
+        
+        
+        InteractBehaviour ib = itemBehaviour.GetInteractBehaviour();
+        if (ib != null)
+            ib.gameObject.SetActive(true);
 
         return itemBehaviour;
     }
 
-    protected virtual ItemBehaviour DisableItemBehaviour(int index)
+    private ItemBehaviour DisableItem(int index)
     {
         ItemBehaviour itemBehaviour = _activePool[index];
 
@@ -141,7 +200,7 @@ public class ListView : XView
         return itemBehaviour;
     }
 
-    protected virtual void DisableAllItemBehaviours()
+    private void DisableAllItems()
     {
         while (_activePool.Count != 0)
         {
@@ -153,6 +212,17 @@ public class ListView : XView
             _activePool.RemoveAt(index);
             _inactivePools[itemBehaviour.PrefabIndex].Insert(0, itemBehaviour);
         }
+    }
+    
+    private int FetchItemBehaviour(int prefabIndex)
+    {
+        List<ItemBehaviour> pool = _inactivePools[prefabIndex];
+        if (pool.Count != 0)
+            return 0;
+
+        ItemBehaviour itemBehaviour = AllocItem(prefabIndex);
+        InitItem(itemBehaviour, prefabIndex);
+        return 0;
     }
 
     #endregion
@@ -166,100 +236,33 @@ public class ListView : XView
 
     #endregion
 
-    #region Model Delegates
+    #region Staging
 
     private IListModel _model;
-    protected IListModel Model
-    {
-        get => _model;
-        set
-        {
-            if (_model != null)
-            {
-                _model.InsertEvent -= InvokeInsertGate;
-                _model.RemoveAtEvent -= InvokeRemoveAtGate;
-                _model.ModifiedEvent -= InvokeModifiedGate;
-                _model.ResyncEvent -= InvokeResyncGate;
-            }
-            _model = value;
-            if (_model != null)
-            {
-                _model.InsertEvent += InvokeInsertGate;
-                _model.RemoveAtEvent += InvokeRemoveAtGate;
-                _model.ModifiedEvent += InvokeModifiedGate;
-                _model.ResyncEvent += InvokeResyncGate;
-            }
-        }
-    }
 
-    private event Func<int, object, UniTask> InsertGate;
-    private async UniTask InvokeInsertGate(int index, object item) { if (InsertGate != null) await InsertGate(index, item); }
-    private event Func<int, UniTask> RemoveAtGate;
-    private async UniTask InvokeRemoveAtGate(int index) { if (RemoveAtGate != null) await RemoveAtGate(index); }
-    private event Func<int, UniTask> ModifiedGate;
-    private async UniTask InvokeModifiedGate(int index) { if (ModifiedGate != null) await ModifiedGate(index); }
-    private event Func<UniTask> ResyncGate;
-    private async UniTask InvokeResyncGate() { if (ResyncGate != null) await ResyncGate(); }
-
-    private void OnEnable()
-    {
-        InsertGate += InsertItem;
-        RemoveAtGate += RemoveAt;
-        ModifiedGate += Modified;
-        ResyncGate += Resync;
-    }
-    private void OnDisable()
-    {
-        InsertGate -= InsertItem;
-        RemoveAtGate -= RemoveAt;
-        ModifiedGate -= Modified;
-        ResyncGate -= Resync;
-    }
-
-    protected virtual async UniTask InsertItem(int index, object item)
+    public async UniTask InsertItemStaging(int index, object item)
     {
         int prefabIndex = GetPrefabIndex(item);
         int orderInPool = FetchItemBehaviour(prefabIndex);
-        EnableItemBehaviour(prefabIndex, orderInPool, index);
+        EnableItem(prefabIndex, orderInPool, index);
     }
 
-    protected virtual async UniTask RemoveAt(int index)
+    public void InsertItem(int index, object item)
     {
-        DisableItemBehaviour(index);
+        int prefabIndex = GetPrefabIndex(item);
+        int orderInPool = FetchItemBehaviour(prefabIndex);
+        EnableItem(prefabIndex, orderInPool, index);
     }
 
-    protected virtual async UniTask Modified(int index)
+    public async UniTask RemoveAtStaging(int index)
+    {
+        DisableItem(index);
+    }
+
+    public async UniTask ModifiedStaging(int index)
     {
         _activePool[index].Refresh();
     }
-
-    protected virtual async UniTask Resync()
-        => Sync();
-
-    #endregion
-
-    #region Helper Operations
-
-    private int FetchItemBehaviour(int prefabIndex)
-    {
-        List<ItemBehaviour> pool = _inactivePools[prefabIndex];
-        if (pool.Count != 0)
-            return 0;
-
-        ItemBehaviour itemBehaviour = AllocItemBehaviour(prefabIndex);
-        InitItemBehaviour(itemBehaviour, prefabIndex);
-        return 0;
-    }
-
-    public int? IndexFromItemBehaviour(ItemBehaviour toGetIndex)
-    {
-        if (toGetIndex == null)
-            return null;
-        return _activePool.FirstIdx(itemBehaviour => itemBehaviour == toGetIndex);
-    }
-
-    public ItemBehaviour ItemBehaviourFromIndex(int i)
-        => _activePool[i];
 
     #endregion
 
@@ -280,9 +283,8 @@ public class ListView : XView
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingExitNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingMoveNeuron = new();
 
-    private void BindInteractBehaviour(ItemBehaviour itemBehaviour)
+    private void BindInteractBehaviour(InteractBehaviour ib)
     {
-        InteractBehaviour ib = itemBehaviour.GetInteractBehaviour();
         if (ib == null)
             return;
 

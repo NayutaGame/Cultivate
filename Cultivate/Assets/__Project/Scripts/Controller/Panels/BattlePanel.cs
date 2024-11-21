@@ -143,7 +143,7 @@ public class BattlePanel : Panel
 
     private void ReactionFromBeginDrag(InteractBehaviour ib, PointerEventData d)
     {
-        object obj = ib.GetSimpleView().Get<object>();
+        object obj = ib.Get<object>();
         RunSkill skill;
 
         if (obj is SkillSlot slot)

@@ -15,15 +15,15 @@ public class XBehaviourPivot : XBehaviour
     public Animator Animator => _animator;
 
     public RectTransform GetDisplayTransform()
-        => XView.GetDisplayTransform();
+        => View.RectTransform;
 
-    public override void Init(XView xView)
+    public override void AwakeFunction(XView view)
     {
-        base.Init(xView);
+        base.AwakeFunction(view);
 
         _animator = InitAnimator();
 
-        InteractBehaviour ib = XView.GetInteractBehaviour();
+        InteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 
@@ -40,7 +40,7 @@ public class XBehaviourPivot : XBehaviour
     protected Animator InitAnimator()
     {
         // 0 for hide, 1 for idle, 2 for hover, 3 for follow, 4 for ping
-        Animator animator = new(5, XView.name);
+        Animator animator = new(5, View.name);
         animator[-1, 0] = HideTween;
         animator[0, -1] = SetInteractable;
         animator[-1, 1] = IdleTween;
@@ -106,7 +106,7 @@ public class XBehaviourPivot : XBehaviour
 
     private Tween HideTween()
         => DOTween.Sequence()
-            .AppendCallback(() => XView.GetInteractBehaviour().SetInteractable(false))
+            .AppendCallback(() => View.GetInteractBehaviour().SetInteractable(false))
             .Append(GetDisplayTransform().DOScale(0, 0.15f).SetEase(Ease.OutQuad));
 
     private Tween IdleTween()
@@ -116,7 +116,7 @@ public class XBehaviourPivot : XBehaviour
 
     private Tween SetInteractable()
         => DOTween.Sequence()
-            .AppendCallback(() => XView.GetInteractBehaviour().SetInteractable(true));
+            .AppendCallback(() => View.GetInteractBehaviour().SetInteractable(true));
 
     private Tween HoverTween()
         => new FollowAnimation(GetDisplayTransform(), HoverTransform).GetHandle();

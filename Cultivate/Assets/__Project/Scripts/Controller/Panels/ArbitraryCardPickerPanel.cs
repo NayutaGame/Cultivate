@@ -12,7 +12,7 @@ public class ArbitraryCardPickerPanel : Panel
     public Button ConfirmButton;
     public ListView SkillListView;
 
-    private List<SimpleView> _selections;
+    private List<XView> _selections;
     private Address _address;
 
     public override void Configure()
@@ -23,7 +23,7 @@ public class ArbitraryCardPickerPanel : Panel
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
-        _selections = new List<SimpleView>();
+        _selections = new List<XView>();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
         SkillListView.PointerEnterNeuron.Join(PlayCardHoverSFX);
@@ -51,9 +51,9 @@ public class ArbitraryCardPickerPanel : Panel
     }
 
     private void ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
-        => ToggleSkill(ib.GetSimpleView());
+        => ToggleSkill(ib.GetView());
 
-    private bool ToggleSkill(SimpleView v)
+    private bool ToggleSkill(XView v)
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 

@@ -111,8 +111,8 @@ public class EntityEditorPanel : Panel
             return;
 
         // SkillBarView -> EntityEditorSlotView
-        RunSkill skill = from.GetSimpleView().Get<RunSkill>();
-        SkillSlot slot = to.GetSimpleView().Get<SkillSlot>();
+        RunSkill skill = from.Get<RunSkill>();
+        SkillSlot slot = to.Get<SkillSlot>();
 
         slot.Skill = skill;
         Refresh();
@@ -124,7 +124,7 @@ public class EntityEditorPanel : Panel
             return;
 
         // EntityEditorSlotView -> SkillBarView
-        SkillSlot slot = from.GetSimpleView().Get<SkillSlot>();
+        SkillSlot slot = from.Get<SkillSlot>();
 
         slot.Skill = null;
         Refresh();
@@ -136,8 +136,8 @@ public class EntityEditorPanel : Panel
             return;
 
         // EntityEditorSlotView -> EntityEditorSlotView
-        SkillSlot fromSlot = from.GetSimpleView().Get<SkillSlot>();
-        SkillSlot toSlot = to.GetSimpleView().Get<SkillSlot>();
+        SkillSlot fromSlot = from.Get<SkillSlot>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
 
         (fromSlot.Skill, toSlot.Skill) = (toSlot.Skill, fromSlot.Skill);
         Refresh();
@@ -145,15 +145,15 @@ public class EntityEditorPanel : Panel
 
     private void IncreaseJingJie(InteractBehaviour ib, PointerEventData eventData)
     {
-        SkillSlot slot = ib.GetSimpleView().Get<SkillSlot>();
+        SkillSlot slot = ib.Get<SkillSlot>();
         slot.TryIncreaseJingJie();
-        ib.GetSimpleView().Refresh();
+        ib.Refresh();
         RefreshOperationBoard();
         // CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
     private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
-        => SelectEntity(ib.GetSimpleView().GetSelectBehaviour());
+        => SelectEntity(ib.GetBehaviour<SelectBehaviour>());
 
     private void DeselectEntity(InteractBehaviour ib, PointerEventData eventData)
         => SelectEntity(null);
@@ -164,14 +164,14 @@ public class EntityEditorPanel : Panel
             _selection.SetSelected(false);
 
         _selection = selectBehaviour;
-        _selectionIndex = EntityBrowser.IndexFromItemBehaviour(_selection == null ? null : _selection.GetSimpleView().GetItemBehaviour());
+        _selectionIndex = EntityBrowser.IndexFromItemBehaviour(_selection == null ? null : _selection.GetItemBehaviour());
 
         // TODO: submit form
         EditorManager.Instance.SetSelectionIndex(_selectionIndex);
 
         if (_selection != null)
         {
-            AwayEntityView.SetAddress(_selection.GetSimpleView().GetAddress());
+            AwayEntityView.SetAddress(_selection.GetAddress());
             AwayEntityView.Refresh();
             _selection.SetSelected(true);
         }

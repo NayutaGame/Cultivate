@@ -3,9 +3,9 @@ public class XBehaviourAnnotationSwitch : XBehaviour
 {
     private XBehaviourAnnotation _xBehaviourAnnotation;
 
-    public override void Init(XView xView)
+    public override void AwakeFunction(XView view)
     {
-        base.Init(xView);
+        base.AwakeFunction(view);
 
         _xBehaviourAnnotation = GetComponent<XBehaviourAnnotation>();
 
@@ -14,12 +14,12 @@ public class XBehaviourAnnotationSwitch : XBehaviour
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = XView.GetInteractBehaviour();
+        InteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 
         AnnotationView annotationView = _xBehaviourAnnotation.GetAnnotationView();
-        SimpleView simpleView = annotationView.GetSimpleView();
+        XView simpleView = annotationView.GetSimpleView();
 
         if (simpleView is FormationAnnotationView formationAnnotationView)
         {

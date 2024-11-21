@@ -1,7 +1,7 @@
 
 using TMPro;
 
-public class EntityBarView : SimpleView
+public class EntityBarView : XView
 {
     public TMP_Text NameText;
     public TMP_Text JingJieText;

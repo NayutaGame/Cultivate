@@ -6,16 +6,16 @@ public class XBehaviourHoverGhost : XBehaviour
     public string GhostAddress;
     private HoverGhostView Ghost;
 
-    public override void Init(XView xView)
+    public override void AwakeFunction(XView view)
     {
-        base.Init(xView);
+        base.AwakeFunction(view);
         Ghost ??= new Address(GhostAddress).Get<HoverGhostView>();
         InitInteractBehaviour();
     }
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = XView.GetInteractBehaviour();
+        InteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
         

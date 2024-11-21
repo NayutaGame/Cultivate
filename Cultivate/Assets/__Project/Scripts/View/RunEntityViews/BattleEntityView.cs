@@ -3,7 +3,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class BattleEntityView : SimpleView
+public class BattleEntityView : XView
 {
     public TMP_Text NameText;
     public ListView SkillList;

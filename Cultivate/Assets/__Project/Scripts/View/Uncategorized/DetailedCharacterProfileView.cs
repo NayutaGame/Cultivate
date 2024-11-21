@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class DetailedCharacterProfileView : SimpleView
+public class DetailedCharacterProfileView : XView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text AbilityDescriptionText;

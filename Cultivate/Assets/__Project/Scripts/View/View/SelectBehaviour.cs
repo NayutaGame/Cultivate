@@ -4,16 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(XView))]
-public class SelectBehaviour : MonoBehaviour
+public class SelectBehaviour : XBehaviour
 {
-    private XView _xView;
-    public SimpleView GetSimpleView() => _xView.GetSimpleView();
-
-    public void Init(XView xView)
-    {
-        _xView = xView;
-    }
-
     [SerializeField] private Image SelectionImage;
 
     private bool _selected;

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FormationAnnotationView : SimpleView
+public class FormationAnnotationView : XView
 {
     private JingJie _showingJingJie;
     private int _showingMark;
@@ -40,7 +40,7 @@ public class FormationAnnotationView : SimpleView
         MarkedSlider.Refresh();
         MarkedSlider.MarkList.TraversalActive().Do(itemBehaviour =>
         {
-            MarkView markView = itemBehaviour.GetSimpleView() as MarkView;
+            MarkView markView = itemBehaviour.GetView() as MarkView;
             MarkModel markModel = markView.Get<MarkModel>();
 
             bool activated = IsActivatedFromFormation(formation, markModel._mark);

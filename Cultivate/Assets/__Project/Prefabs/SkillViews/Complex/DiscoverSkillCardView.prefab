@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 3414853875830604055}
   - component: {fileID: 559504600653186729}
   - component: {fileID: 5785436400301228804}
+  - component: {fileID: 6574108128008327069}
   m_Layer: 0
   m_Name: InteractBehaviour
   m_TagString: Untagged
@@ -128,6 +129,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6574108128008327069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7295327600375619233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a04e5e79738b6fa4d86e276f9acb98ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8085986264311966347
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8152188524626589071}
   - component: {fileID: 7969793575853840762}
-  - component: {fileID: 7397361287467134187}
+  - component: {fileID: 1050304043079327424}
   - component: {fileID: 7087443956240245204}
   - component: {fileID: 9123748273384752262}
   - component: {fileID: 36790783206244266}
@@ -184,7 +197,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &7397361287467134187
+--- !u!114 &1050304043079327424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,11 +206,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8085986264311966347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05306d648c3bf6d409b497c36ff07309, type: 3}
+  m_Script: {fileID: 11500000, guid: a04e5e79738b6fa4d86e276f9acb98ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 5785436400301228804}
-  SimpleView: {fileID: 5873020884640946797}
 --- !u!114 &7087443956240245204
 MonoBehaviour:
   m_ObjectHideFlags: 0

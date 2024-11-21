@@ -1,7 +1,7 @@
 
-public class ArbitraryPickerSkillView : SimpleView
+public class ArbitraryPickerSkillView : XView
 {
-    public SimpleView SkillView;
+    public XView SkillView;
 
     public override void SetAddress(Address address)
     {

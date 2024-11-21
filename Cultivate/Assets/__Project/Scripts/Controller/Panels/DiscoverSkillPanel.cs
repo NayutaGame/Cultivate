@@ -66,7 +66,7 @@ public class DiscoverSkillPanel : Panel
     private void PickDiscoveredSkill(InteractBehaviour ib, PointerEventData eventData)
     {
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
-        SkillEntryDescriptor skill = ib.GetSimpleView().Get<SkillEntryDescriptor>();
+        SkillEntryDescriptor skill = ib.Get<SkillEntryDescriptor>();
 
         Signal signal = new PickDiscoveredSkillSignal(d.GetIndexOfSkill(skill));
         CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
@@ -81,7 +81,7 @@ public class DiscoverSkillPanel : Panel
 
         CanvasManager.Instance.RunCanvas.PickDiscoveredSkillStaging(cardIB, discoverIB);
         
-        XBehaviourPivot xBehaviourPivot = discoverIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = discoverIB.GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
             xBehaviourPivot.Disappear();
     }
@@ -117,7 +117,7 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            XBehaviourPivot xBehaviourPivot = item.GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = item.GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
                 xBehaviourPivot.Animator.SetState(0);
         });
@@ -127,7 +127,7 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            XBehaviourPivot xBehaviourPivot = item.GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = item.GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
                 xBehaviourPivot.PlayAppearAnimation();
         });
@@ -137,7 +137,7 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            XBehaviourPivot xBehaviourPivot = item.GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = item.GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
                 xBehaviourPivot.PlayDisappearAnimation();
         });

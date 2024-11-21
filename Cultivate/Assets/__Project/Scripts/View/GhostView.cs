@@ -5,11 +5,11 @@ using UnityEngine.EventSystems;
 
 public class GhostView : MonoBehaviour
 {
-    public SimpleView SimpleView;
+    public XView SimpleView;
 
     public void Awake()
     {
-        SimpleView ??= GetComponent<SimpleView>();
+        SimpleView ??= GetComponent<XView>();
         SimpleView.AwakeFunction();
     }
 
@@ -23,14 +23,14 @@ public class GhostView : MonoBehaviour
 
     public void BeginDrag(InteractBehaviour ib, PointerEventData d)
     {
-        ib.GetCLView().SetHide(ib, d);
+        ib.GetView().SetHide(ib, d);
         
         gameObject.SetActive(true);
 
-        SimpleView.SetAddress(ib.GetSimpleView().GetAddress());
+        SimpleView.SetAddress(ib.GetAddress());
         SimpleView.Refresh();
 
-        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = ib.GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
         {
             _mouseOffset = d.position;
@@ -42,7 +42,7 @@ public class GhostView : MonoBehaviour
 
     public void EndDrag(InteractBehaviour ib, PointerEventData d)
     {
-        ib.GetCLView().SetShow(ib, d);
+        ib.GetView().SetShow(ib, d);
 
         // InteractBehaviour firstHit = CanvasManager.Instance.FirstRayCastHit(d);
         //
@@ -55,22 +55,22 @@ public class GhostView : MonoBehaviour
         //         extraBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
         // }
         
-        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = ib.GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
-            xBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
+            xBehaviourPivot.RectTransformToIdle(SimpleView.RectTransform);
         
         gameObject.SetActive(false);
     }
 
     public void Dropping(InteractBehaviour ib, PointerEventData d)
     {
-        ib.GetCLView().SetShow(ib, d);
+        ib.GetView().SetShow(ib, d);
         gameObject.SetActive(false);
     }
 
     public void Drag(InteractBehaviour ib, PointerEventData eventData)
     {
-        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = ib.GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
         {
             Drag(xBehaviourPivot.FollowTransform, eventData.position);
@@ -82,11 +82,13 @@ public class GhostView : MonoBehaviour
         pivot.position = CanvasManager.Instance.UI2World(mouse);
         if (IsAnimating)
             return;
-        SimpleView.SetDisplayTransform(pivot);
+        
+        SimpleView.RectTransform.position = pivot.position;
+        SimpleView.RectTransform.localScale = pivot.localScale;
     }
 
     public RectTransform GetDisplayTransform()
-        => SimpleView.GetDisplayTransform();
+        => SimpleView.RectTransform;
 
 
 
@@ -97,7 +99,8 @@ public class GhostView : MonoBehaviour
     private void SetDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        SimpleView.SetDisplayTransform(end);
+        SimpleView.RectTransform.position = end.position;
+        SimpleView.RectTransform.localScale = end.localScale;
     }
 
     private void AnimateDisplay(RectTransform start, RectTransform end)
@@ -109,7 +112,7 @@ public class GhostView : MonoBehaviour
     private void AnimateDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(SimpleView.GetDisplayTransform(), end);
+        FollowAnimation f = new FollowAnimation(SimpleView.RectTransform, end);
         _animationHandle = f.GetHandle();
         _animationHandle.SetAutoKill().Restart();
     }

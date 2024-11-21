@@ -23,14 +23,14 @@ public class HoverGhostView : MonoBehaviour
     public void PointerEnter(InteractBehaviour ib, PointerEventData d)
     {
         // ib.GetCLView().SetHide(ib, d);
-        ib.GetCLView().SetVisible(false);
+        ib.GetView().SetVisible(false);
         
         gameObject.SetActive(true);
 
-        _skillView.SetAddress(ib.GetSimpleView().GetAddress());
+        _skillView.SetAddress(ib.GetAddress());
         _skillView.Refresh();
 
-        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = ib.GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
         {
             AnimateDisplay(xBehaviourPivot.GetDisplayTransform(), xBehaviourPivot.HoverTransform);
@@ -40,11 +40,11 @@ public class HoverGhostView : MonoBehaviour
     public void PointerExit(InteractBehaviour ib, PointerEventData d)
     {
         // ib.GetCLView().SetShow(ib, d);
-        ib.GetCLView().SetVisible(true);
+        ib.GetView().SetVisible(true);
         
-        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = ib.GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
-            xBehaviourPivot.RectTransformToIdle(_skillView.GetDisplayTransform());
+            xBehaviourPivot.RectTransformToIdle(_skillView.RectTransform);
         
         gameObject.SetActive(false);
     }
@@ -56,7 +56,7 @@ public class HoverGhostView : MonoBehaviour
 
     public void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        to.GetCLView().SetVisible(true);
+        to.GetView().SetVisible(true);
     }
 
     public void Dropping(InteractBehaviour ib, PointerEventData d)
@@ -79,11 +79,12 @@ public class HoverGhostView : MonoBehaviour
         pivot.position = CanvasManager.Instance.UI2World(mouse);
         if (IsAnimating)
             return;
-        _skillView.SetDisplayTransform(pivot);
+        _skillView.RectTransform.position = pivot.position;
+        _skillView.RectTransform.localScale = pivot.localScale;
     }
 
     public RectTransform GetDisplayTransform()
-        => _skillView.GetDisplayTransform();
+        => _skillView.RectTransform;
 
 
 
@@ -94,7 +95,8 @@ public class HoverGhostView : MonoBehaviour
     private void SetDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        _skillView.SetDisplayTransform(end);
+        _skillView.RectTransform.position = end.position;
+        _skillView.RectTransform.localScale = end.localScale;
     }
 
     private void AnimateDisplay(RectTransform start, RectTransform end)
@@ -106,7 +108,7 @@ public class HoverGhostView : MonoBehaviour
     private void AnimateDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(_skillView.GetDisplayTransform(), end);
+        FollowAnimation f = new FollowAnimation(_skillView.RectTransform, end);
         _animationHandle = f.GetHandle();
         _animationHandle.SetAutoKill().Restart();
     }

@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class StageEntityView : SimpleView
+public class StageEntityView : XView
 {
     [SerializeField] private ListView Formations;
     [SerializeField] private ListView Buffs;

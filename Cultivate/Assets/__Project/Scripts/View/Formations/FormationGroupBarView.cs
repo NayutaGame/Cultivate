@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class FormationGroupBarView : SimpleView
+public class FormationGroupBarView : XView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private Image SelectionImage;

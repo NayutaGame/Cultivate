@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerEntityView : SimpleView
+public class PlayerEntityView : XView
 {
     public ListView SkillList;
     public ListView FormationList;
@@ -42,8 +42,8 @@ public class PlayerEntityView : SimpleView
         if (!(from is HandSkillInteractBehaviour))
             return;
         RunEnvironment env = RunManager.Instance.Environment;
-        RunSkill toEquip = from.GetSimpleView().Get<RunSkill>();
-        SkillSlot slot = to.GetSimpleView().Get<SkillSlot>();
+        RunSkill toEquip = from.Get<RunSkill>();
+        SkillSlot slot = to.Get<SkillSlot>();
         bool success = env.EquipProcedure(out bool isReplace, toEquip, slot);
         if (!success)
             return;
@@ -59,8 +59,8 @@ public class PlayerEntityView : SimpleView
 
     private static void EquipStaging(InteractBehaviour from, InteractBehaviour to, bool isReplace)
     {
-        XBehaviourPivot fromPivot = from.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
-        XBehaviourPivot toPivot = to.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot fromPivot = from.GetBehaviour<XBehaviourPivot>();
+        XBehaviourPivot toPivot = to.GetBehaviour<XBehaviourPivot>();
         
         // From: if ths slot has skill, To Display -> From Idle
         if (isReplace)
@@ -70,7 +70,7 @@ public class PlayerEntityView : SimpleView
         }
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetBehaviour<XBehaviourGhost>();
         
         // To: Ghost Display -> To Idle
         toPivot.RectTransformToIdle(ghost.GetDisplayTransform());
@@ -84,8 +84,8 @@ public class PlayerEntityView : SimpleView
             return;
 
         RunEnvironment env = RunManager.Instance.Environment;
-        SkillSlot fromSlot = from.GetSimpleView().Get<SkillSlot>();
-        SkillSlot toSlot = to.GetSimpleView().Get<SkillSlot>();
+        SkillSlot fromSlot = from.Get<SkillSlot>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
         bool success = env.SwapProcedure(out bool isReplace, fromSlot, toSlot);
         if (!success)
             return;
@@ -101,8 +101,8 @@ public class PlayerEntityView : SimpleView
 
     private static void SwapStaging(InteractBehaviour from, InteractBehaviour to, bool isReplace)
     {
-        XBehaviourPivot fromPivot = from.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
-        XBehaviourPivot toPivot = to.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot fromPivot = from.GetBehaviour<XBehaviourPivot>();
+        XBehaviourPivot toPivot = to.GetBehaviour<XBehaviourPivot>();
         
         // From: if ths slot has skill, To Display -> From Idle
         if (isReplace)
@@ -112,7 +112,7 @@ public class PlayerEntityView : SimpleView
         }
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetBehaviour<XBehaviourGhost>();
         
         // To: Ghost Display -> To Idle
         toPivot.RectTransformToIdle(ghost.GetDisplayTransform());

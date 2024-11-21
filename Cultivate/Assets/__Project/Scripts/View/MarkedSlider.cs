@@ -3,7 +3,7 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MarkedSlider : SimpleView
+public class MarkedSlider : XView
 {
     [SerializeField] public ListView MarkList;
     [SerializeField] private Slider _slider;
@@ -18,8 +18,8 @@ public class MarkedSlider : SimpleView
 
     private void SetPositionForMarkView(MarkView markView, int mark)
     {
-        Vector3 oldPosition = markView.GetDisplayTransform().localPosition;
-        markView.SetLocalPosition(new Vector3(XFromMark(mark), oldPosition.y, oldPosition.z));
+        Vector3 oldPosition = markView.RectTransform.localPosition;
+        markView.RectTransform.localPosition = new Vector3(XFromMark(mark), oldPosition.y, oldPosition.z);
     }
 
     private void SetPositionForMarkCursor(float mark)
@@ -48,7 +48,7 @@ public class MarkedSlider : SimpleView
         MarkList.Refresh();
         MarkList.TraversalActive().Do(itemBehaviour =>
         {
-            MarkView markView = itemBehaviour.GetSimpleView() as MarkView;
+            MarkView markView = itemBehaviour.GetView() as MarkView;
             MarkModel markModel = markView.Get<MarkModel>();
             SetPositionForMarkView(markView, markModel._mark);
         });

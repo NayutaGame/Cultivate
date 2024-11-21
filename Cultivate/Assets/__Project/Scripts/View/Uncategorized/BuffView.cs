@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuffView : SimpleView
+public class BuffView : XView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text StackText;

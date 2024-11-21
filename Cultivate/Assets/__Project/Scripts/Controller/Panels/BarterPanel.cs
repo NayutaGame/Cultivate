@@ -22,7 +22,7 @@ public class BarterPanel : Panel
 
         foreach (ItemBehaviour itemBehaviour in BarterItemListView.ActivePool)
         {
-            BarterItemView barterItemView = itemBehaviour.GetSimpleView() as BarterItemView;
+            BarterItemView barterItemView = itemBehaviour.GetView() as BarterItemView;
             barterItemView.ClearExchangeEvent();
             barterItemView.ExchangeEvent += ExchangeEvent;
         }

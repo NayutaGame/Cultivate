@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3844685011734911568}
   - component: {fileID: 3090333459586823845}
-  - component: {fileID: 4059958619330092207}
+  - component: {fileID: 7609192179315200155}
   m_Layer: 5
   m_Name: SimpleView
   m_TagString: Untagged
@@ -50,7 +50,7 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &4059958619330092207
+--- !u!114 &7609192179315200155
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3769026126359872852}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3dc41bf402e02749b28fbd338a48fc5, type: 3}
+  m_Script: {fileID: 11500000, guid: a04e5e79738b6fa4d86e276f9acb98ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4373178309398520956
@@ -179,7 +179,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8152188524626589071}
-  - component: {fileID: 667069671973666689}
+  - component: {fileID: 7119728188509238852}
   m_Layer: 5
   m_Name: ComplexView
   m_TagString: Untagged
@@ -209,7 +209,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &667069671973666689
+--- !u!114 &7119728188509238852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -218,10 +218,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8085986264311966347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05306d648c3bf6d409b497c36ff07309, type: 3}
+  m_Script: {fileID: 11500000, guid: a04e5e79738b6fa4d86e276f9acb98ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SimpleView: {fileID: 4059958619330092207}
 --- !u!1 &9146373138707187191
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,6 +233,7 @@ GameObject:
   - component: {fileID: 3797585231420267073}
   - component: {fileID: 2023108389119041023}
   - component: {fileID: 568225517561051659}
+  - component: {fileID: 1834425854573459115}
   m_Layer: 0
   m_Name: PivotBehaviour
   m_TagString: Untagged
@@ -312,5 +312,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1834425854573459115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9146373138707187191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a04e5e79738b6fa4d86e276f9acb98ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
