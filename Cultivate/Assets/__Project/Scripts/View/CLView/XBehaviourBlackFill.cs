@@ -13,11 +13,11 @@ public class XBehaviourBlackFill : XBehaviour
 
     private Tween _handle;
 
-    public override void Init(XView xView)
+    public override void Init(XView view)
     {
-        base.Init(xView);
+        base.Init(view);
 
-        InteractBehaviour ib = XView.GetInteractBehaviour();
+        InteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 

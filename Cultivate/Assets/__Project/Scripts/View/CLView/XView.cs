@@ -13,8 +13,7 @@ public abstract class XView : MonoBehaviour
     [SerializeField] private InteractBehaviour InteractBehaviour;
     public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
 
-    private ItemBehaviour ItemBehaviour;
-    public ItemBehaviour GetItemBehaviour() => ItemBehaviour;
+    public ItemBehaviour GetItemBehaviour() => Get<ItemBehaviour>();
 
     private SelectBehaviour SelectBehaviour;
     public SelectBehaviour GetSelectBehaviour() => SelectBehaviour;
@@ -43,10 +42,6 @@ public abstract class XView : MonoBehaviour
         InteractBehaviour ??= GetComponent<InteractBehaviour>();
         if (InteractBehaviour != null)
             InteractBehaviour.Init(this);
-
-        ItemBehaviour ??= GetComponent<ItemBehaviour>();
-        if (ItemBehaviour != null)
-            ItemBehaviour.Init(this);
 
         SelectBehaviour ??= GetComponent<SelectBehaviour>();
         if (SelectBehaviour != null)

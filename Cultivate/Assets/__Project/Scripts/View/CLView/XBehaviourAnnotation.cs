@@ -8,9 +8,9 @@ public class XBehaviourAnnotation : XBehaviour
     public AnnotationView GetAnnotationView() => Annotation;
     public RectTransform HoverTransform;
 
-    public override void Init(XView xView)
+    public override void Init(XView view)
     {
-        base.Init(xView);
+        base.Init(view);
 
         Annotation = new Address(AnnotationAddress).Get<AnnotationView>();
 
@@ -19,7 +19,7 @@ public class XBehaviourAnnotation : XBehaviour
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = XView.GetInteractBehaviour();
+        InteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 

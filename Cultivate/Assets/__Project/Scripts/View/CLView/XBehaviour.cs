@@ -4,10 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(XView))]
 public abstract class XBehaviour : MonoBehaviour
 {
-    protected XView XView;
+    protected XView View;
 
-    public virtual void Init(XView xView)
+    public virtual void Init(XView view)
     {
-        XView = xView;
+        View = view;
     }
 }

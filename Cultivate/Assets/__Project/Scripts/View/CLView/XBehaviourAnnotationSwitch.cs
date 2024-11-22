@@ -3,9 +3,9 @@ public class XBehaviourAnnotationSwitch : XBehaviour
 {
     private XBehaviourAnnotation _xBehaviourAnnotation;
 
-    public override void Init(XView xView)
+    public override void Init(XView view)
     {
-        base.Init(xView);
+        base.Init(view);
 
         _xBehaviourAnnotation = GetComponent<XBehaviourAnnotation>();
 
@@ -14,7 +14,7 @@ public class XBehaviourAnnotationSwitch : XBehaviour
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = XView.GetInteractBehaviour();
+        InteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 
