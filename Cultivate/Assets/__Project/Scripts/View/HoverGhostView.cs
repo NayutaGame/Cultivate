@@ -30,10 +30,10 @@ public class HoverGhostView : MonoBehaviour
         _skillView.SetAddress(ib.GetSimpleView().GetAddress());
         _skillView.Refresh();
 
-        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
+        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        if (xBehaviourPivot != null)
         {
-            AnimateDisplay(extraBehaviourPivot.GetDisplayTransform(), extraBehaviourPivot.HoverTransform);
+            AnimateDisplay(xBehaviourPivot.GetDisplayTransform(), xBehaviourPivot.HoverTransform);
         }
     }
 
@@ -42,9 +42,9 @@ public class HoverGhostView : MonoBehaviour
         // ib.GetCLView().SetShow(ib, d);
         ib.GetCLView().SetVisible(true);
         
-        ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        if (extraBehaviourPivot != null)
-            extraBehaviourPivot.RectTransformToIdle(_skillView.GetDisplayTransform());
+        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        if (xBehaviourPivot != null)
+            xBehaviourPivot.RectTransformToIdle(_skillView.GetDisplayTransform());
         
         gameObject.SetActive(false);
     }

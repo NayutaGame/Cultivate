@@ -1,21 +1,21 @@
 
 using UnityEngine;
 
-public class ExtraBehaviourGhost : ExtraBehaviour
+public class XBehaviourGhost : XBehaviour
 {
     public string GhostAddress;
     private GhostView Ghost;
 
-    public override void Init(CLView clView)
+    public override void Init(XView xView)
     {
-        base.Init(clView);
+        base.Init(xView);
         Ghost ??= new Address(GhostAddress).Get<GhostView>();
         InitInteractBehaviour();
     }
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = CLView.GetInteractBehaviour();
+        InteractBehaviour ib = XView.GetInteractBehaviour();
         if (ib == null)
             return;
 

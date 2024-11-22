@@ -209,24 +209,24 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, Vector3 position)
         {
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
-                extraBehaviourPivot.FollowTransform.position = position;
-                extraBehaviourPivot.FollowTransform.localScale = Vector3.zero;
-                extraBehaviourPivot.Animator.SetState(3);
+                xBehaviourPivot.FollowTransform.position = position;
+                xBehaviourPivot.FollowTransform.localScale = Vector3.zero;
+                xBehaviourPivot.Animator.SetState(3);
                 ib.SetInteractable(false);
             }
         }
 
         void SetSkillShow(InteractBehaviour ib, Vector3 position)
         {
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
-                extraBehaviourPivot.FollowTransform.position = position;
-                extraBehaviourPivot.FollowTransform.localScale = extraBehaviourPivot.HoverTransform.localScale;
-                extraBehaviourPivot.Animator.SetStateAsync(3);
+                xBehaviourPivot.FollowTransform.position = position;
+                xBehaviourPivot.FollowTransform.localScale = xBehaviourPivot.HoverTransform.localScale;
+                xBehaviourPivot.Animator.SetStateAsync(3);
                 ib.SetInteractable(false);
             }
         }
@@ -234,10 +234,10 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
-                extraBehaviourPivot.PositionToIdle(position);
+                xBehaviourPivot.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }
@@ -270,12 +270,12 @@ public class RunCanvas : Panel
         void SetSkillPosition(DeckIndex deckIndex, Vector3 position)
         {
             InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
-                extraBehaviourPivot.FollowTransform.position = position;
-                extraBehaviourPivot.FollowTransform.localScale = Vector3.zero;
-                extraBehaviourPivot.Animator.SetState(3);
+                xBehaviourPivot.FollowTransform.position = position;
+                xBehaviourPivot.FollowTransform.localScale = Vector3.zero;
+                xBehaviourPivot.Animator.SetState(3);
                 newIB.SetInteractable(false);
             }
         }
@@ -283,12 +283,12 @@ public class RunCanvas : Panel
         void SetSkillShow(DeckIndex deckIndex, Vector3 position)
         {
             InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
-                extraBehaviourPivot.FollowTransform.position = position;
-                extraBehaviourPivot.FollowTransform.localScale = extraBehaviourPivot.HoverTransform.localScale;
-                extraBehaviourPivot.Animator.SetStateAsync(3);
+                xBehaviourPivot.FollowTransform.position = position;
+                xBehaviourPivot.FollowTransform.localScale = xBehaviourPivot.HoverTransform.localScale;
+                xBehaviourPivot.Animator.SetStateAsync(3);
                 newIB.SetInteractable(false);
             }
         }
@@ -297,10 +297,10 @@ public class RunCanvas : Panel
         {
             InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
             newIB.SetInteractable(true);
-            ExtraBehaviourPivot extraBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
-                extraBehaviourPivot.PositionToIdle(position);
+                xBehaviourPivot.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }
@@ -344,13 +344,13 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, InteractBehaviour discoverIB)
         {
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
                 Transform t = discoverIB.GetSimpleView().transform;
-                extraBehaviourPivot.FollowTransform.position = t.position;
-                extraBehaviourPivot.FollowTransform.localScale = t.localScale;
-                extraBehaviourPivot.Animator.SetState(3);
+                xBehaviourPivot.FollowTransform.position = t.position;
+                xBehaviourPivot.FollowTransform.localScale = t.localScale;
+                xBehaviourPivot.Animator.SetState(3);
                 ib.SetInteractable(false);
             }
         }
@@ -358,10 +358,10 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
-                extraBehaviourPivot.PositionToIdle(position);
+                xBehaviourPivot.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }
@@ -376,13 +376,13 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, InteractBehaviour commodityIB)
         {
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
                 Transform t = commodityIB.GetSimpleView().transform;
-                extraBehaviourPivot.FollowTransform.position = t.position;
-                extraBehaviourPivot.FollowTransform.localScale = t.localScale;
-                extraBehaviourPivot.Animator.SetState(3);
+                xBehaviourPivot.FollowTransform.position = t.position;
+                xBehaviourPivot.FollowTransform.localScale = t.localScale;
+                xBehaviourPivot.Animator.SetState(3);
                 ib.SetInteractable(false);
             }
         }
@@ -390,10 +390,10 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
-                extraBehaviourPivot.PositionToIdle(position);
+                xBehaviourPivot.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }
@@ -409,13 +409,13 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, InteractBehaviour gachaIB)
         {
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
                 Transform t = gachaIB.GetSimpleView().transform;
-                extraBehaviourPivot.FollowTransform.position = t.position;
-                extraBehaviourPivot.FollowTransform.localScale = t.localScale;
-                extraBehaviourPivot.Animator.SetState(3);
+                xBehaviourPivot.FollowTransform.position = t.position;
+                xBehaviourPivot.FollowTransform.localScale = t.localScale;
+                xBehaviourPivot.Animator.SetState(3);
                 ib.SetInteractable(false);
             }
         }
@@ -423,10 +423,10 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-            if (extraBehaviourPivot != null)
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            if (xBehaviourPivot != null)
             {
-                extraBehaviourPivot.PositionToIdle(position);
+                xBehaviourPivot.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }

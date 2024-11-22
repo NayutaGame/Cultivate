@@ -3,15 +3,15 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CLView))]
+[RequireComponent(typeof(XView))]
 public class SelectBehaviour : MonoBehaviour
 {
-    private CLView CLView;
-    public SimpleView GetSimpleView() => CLView.GetSimpleView();
+    private XView _xView;
+    public SimpleView GetSimpleView() => _xView.GetSimpleView();
 
-    public void Init(CLView clView)
+    public void Init(XView xView)
     {
-        CLView = clView;
+        _xView = xView;
     }
 
     [SerializeField] private Image SelectionImage;

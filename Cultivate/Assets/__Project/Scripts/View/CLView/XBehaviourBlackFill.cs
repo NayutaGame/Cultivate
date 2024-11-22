@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ExtraBehaviourBlackFill : ExtraBehaviour
+public class XBehaviourBlackFill : XBehaviour
 {
     [SerializeField] private Image _target;
 
@@ -13,11 +13,11 @@ public class ExtraBehaviourBlackFill : ExtraBehaviour
 
     private Tween _handle;
 
-    public override void Init(CLView clView)
+    public override void Init(XView xView)
     {
-        base.Init(clView);
+        base.Init(xView);
 
-        InteractBehaviour ib = CLView.GetInteractBehaviour();
+        InteractBehaviour ib = XView.GetInteractBehaviour();
         if (ib == null)
             return;
 

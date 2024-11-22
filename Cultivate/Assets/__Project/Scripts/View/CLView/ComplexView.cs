@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class ComplexView : CLView
+public class ComplexView : XView
 {
     [SerializeField] public SimpleView SimpleView;
 

@@ -17,7 +17,7 @@ public class AnnotationView : MonoBehaviour
     public void PointerEnter(InteractBehaviour ib, PointerEventData d, Address address)
     {
         RectTransform rt = ib.GetSimpleView().GetDisplayTransform();
-        RectTransform hoverRT = ib.transform.parent.GetComponent<ExtraBehaviourAnnotation>()?.HoverTransform;
+        RectTransform hoverRT = ib.transform.parent.GetComponent<XBehaviourAnnotation>()?.HoverTransform;
         if (hoverRT == null)
             hoverRT = rt;
         UpdateCornerPos(rt, hoverRT);
