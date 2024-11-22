@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class XBehaviourAnnotation : XBehaviour
+public class AnnotationBehaviour : XBehaviour
 {
     public string AnnotationAddress;
     private AnnotationView Annotation;

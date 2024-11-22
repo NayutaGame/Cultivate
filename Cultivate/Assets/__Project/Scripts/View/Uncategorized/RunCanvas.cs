@@ -209,24 +209,24 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, Vector3 position)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
-                xBehaviourPivot.FollowTransform.position = position;
-                xBehaviourPivot.FollowTransform.localScale = Vector3.zero;
-                xBehaviourPivot.Animator.SetState(3);
+                pivotBehaviour.FollowTransform.position = position;
+                pivotBehaviour.FollowTransform.localScale = Vector3.zero;
+                pivotBehaviour.Animator.SetState(3);
                 ib.SetInteractable(false);
             }
         }
 
         void SetSkillShow(InteractBehaviour ib, Vector3 position)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
-                xBehaviourPivot.FollowTransform.position = position;
-                xBehaviourPivot.FollowTransform.localScale = xBehaviourPivot.HoverTransform.localScale;
-                xBehaviourPivot.Animator.SetStateAsync(3);
+                pivotBehaviour.FollowTransform.position = position;
+                pivotBehaviour.FollowTransform.localScale = pivotBehaviour.HoverTransform.localScale;
+                pivotBehaviour.Animator.SetStateAsync(3);
                 ib.SetInteractable(false);
             }
         }
@@ -234,10 +234,10 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
-                xBehaviourPivot.PositionToIdle(position);
+                pivotBehaviour.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }
@@ -270,12 +270,12 @@ public class RunCanvas : Panel
         void SetSkillPosition(DeckIndex deckIndex, Vector3 position)
         {
             InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
-                xBehaviourPivot.FollowTransform.position = position;
-                xBehaviourPivot.FollowTransform.localScale = Vector3.zero;
-                xBehaviourPivot.Animator.SetState(3);
+                pivotBehaviour.FollowTransform.position = position;
+                pivotBehaviour.FollowTransform.localScale = Vector3.zero;
+                pivotBehaviour.Animator.SetState(3);
                 newIB.SetInteractable(false);
             }
         }
@@ -283,12 +283,12 @@ public class RunCanvas : Panel
         void SetSkillShow(DeckIndex deckIndex, Vector3 position)
         {
             InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
-                xBehaviourPivot.FollowTransform.position = position;
-                xBehaviourPivot.FollowTransform.localScale = xBehaviourPivot.HoverTransform.localScale;
-                xBehaviourPivot.Animator.SetStateAsync(3);
+                pivotBehaviour.FollowTransform.position = position;
+                pivotBehaviour.FollowTransform.localScale = pivotBehaviour.HoverTransform.localScale;
+                pivotBehaviour.Animator.SetStateAsync(3);
                 newIB.SetInteractable(false);
             }
         }
@@ -297,10 +297,10 @@ public class RunCanvas : Panel
         {
             InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
             newIB.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
-                xBehaviourPivot.PositionToIdle(position);
+                pivotBehaviour.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }
@@ -344,13 +344,13 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, InteractBehaviour discoverIB)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
                 Transform t = discoverIB.GetSimpleView().transform;
-                xBehaviourPivot.FollowTransform.position = t.position;
-                xBehaviourPivot.FollowTransform.localScale = t.localScale;
-                xBehaviourPivot.Animator.SetState(3);
+                pivotBehaviour.FollowTransform.position = t.position;
+                pivotBehaviour.FollowTransform.localScale = t.localScale;
+                pivotBehaviour.Animator.SetState(3);
                 ib.SetInteractable(false);
             }
         }
@@ -358,10 +358,10 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
-                xBehaviourPivot.PositionToIdle(position);
+                pivotBehaviour.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }
@@ -376,13 +376,13 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, InteractBehaviour commodityIB)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
                 Transform t = commodityIB.GetSimpleView().transform;
-                xBehaviourPivot.FollowTransform.position = t.position;
-                xBehaviourPivot.FollowTransform.localScale = t.localScale;
-                xBehaviourPivot.Animator.SetState(3);
+                pivotBehaviour.FollowTransform.position = t.position;
+                pivotBehaviour.FollowTransform.localScale = t.localScale;
+                pivotBehaviour.Animator.SetState(3);
                 ib.SetInteractable(false);
             }
         }
@@ -390,10 +390,10 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
-                xBehaviourPivot.PositionToIdle(position);
+                pivotBehaviour.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }
@@ -409,13 +409,13 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, InteractBehaviour gachaIB)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
                 Transform t = gachaIB.GetSimpleView().transform;
-                xBehaviourPivot.FollowTransform.position = t.position;
-                xBehaviourPivot.FollowTransform.localScale = t.localScale;
-                xBehaviourPivot.Animator.SetState(3);
+                pivotBehaviour.FollowTransform.position = t.position;
+                pivotBehaviour.FollowTransform.localScale = t.localScale;
+                pivotBehaviour.Animator.SetState(3);
                 ib.SetInteractable(false);
             }
         }
@@ -423,10 +423,10 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
+            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
             {
-                xBehaviourPivot.PositionToIdle(position);
+                pivotBehaviour.PositionToIdle(position);
             }
             // AudioManager.Play("CardPlacement");
         }

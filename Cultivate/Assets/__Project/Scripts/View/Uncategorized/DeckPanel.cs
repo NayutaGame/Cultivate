@@ -217,12 +217,12 @@ public class DeckPanel : Panel
         // From: 本体被移除
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetBehaviour<XBehaviourGhost>();
+        GhostBehaviour ghost = from.GetCLView().GetBehaviour<GhostBehaviour>();
         
         // To: Ghost Display -> ToIdle + Ping Animation
-        XBehaviourPivot xBehaviourPivot = to.GetCLView().GetBehaviour<XBehaviourPivot>();
-        if (xBehaviourPivot != null)
-            xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
+        PivotBehaviour pivotBehaviour = to.GetCLView().GetBehaviour<PivotBehaviour>();
+        if (pivotBehaviour != null)
+            pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
 
         AudioManager.Play("CardUpgrade");
     }
@@ -232,12 +232,12 @@ public class DeckPanel : Panel
         // From
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetBehaviour<XBehaviourGhost>();
+        GhostBehaviour ghost = from.GetCLView().GetBehaviour<GhostBehaviour>();
         
         // To
-        XBehaviourPivot xBehaviourPivot = from.GetCLView().GetBehaviour<XBehaviourPivot>();
-        if (xBehaviourPivot != null)
-            xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
+        PivotBehaviour pivotBehaviour = from.GetCLView().GetBehaviour<PivotBehaviour>();
+        if (pivotBehaviour != null)
+            pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
         
         
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
@@ -276,13 +276,13 @@ public class DeckPanel : Panel
         // From: No Animation
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetBehaviour<XBehaviourGhost>();
+        GhostBehaviour ghost = from.GetCLView().GetBehaviour<GhostBehaviour>();
         
         // New IB: Ghost Display -> To Idle
         InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
-        XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetBehaviour<XBehaviourPivot>();
-        if (xBehaviourPivot != null)
-            xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
+        PivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<PivotBehaviour>();
+        if (pivotBehaviour != null)
+            pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
 
         AudioManager.Play("CardPlacement");
     }

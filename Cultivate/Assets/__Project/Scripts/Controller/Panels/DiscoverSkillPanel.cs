@@ -81,9 +81,9 @@ public class DiscoverSkillPanel : Panel
 
         CanvasManager.Instance.RunCanvas.PickDiscoveredSkillStaging(cardIB, discoverIB);
         
-        XBehaviourPivot xBehaviourPivot = discoverIB.GetCLView().GetBehaviour<XBehaviourPivot>();
-        if (xBehaviourPivot != null)
-            xBehaviourPivot.Disappear();
+        PivotBehaviour pivotBehaviour = discoverIB.GetCLView().GetBehaviour<PivotBehaviour>();
+        if (pivotBehaviour != null)
+            pivotBehaviour.Disappear();
     }
 
     public override Tween ShowTween()
@@ -117,9 +117,9 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            XBehaviourPivot xBehaviourPivot = item.GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
-                xBehaviourPivot.Animator.SetState(0);
+            PivotBehaviour pivotBehaviour = item.GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
+                pivotBehaviour.Animator.SetState(0);
         });
     }
 
@@ -127,9 +127,9 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            XBehaviourPivot xBehaviourPivot = item.GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
-                xBehaviourPivot.PlayAppearAnimation();
+            PivotBehaviour pivotBehaviour = item.GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
+                pivotBehaviour.PlayAppearAnimation();
         });
     }
 
@@ -137,9 +137,9 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            XBehaviourPivot xBehaviourPivot = item.GetBehaviour<XBehaviourPivot>();
-            if (xBehaviourPivot != null)
-                xBehaviourPivot.PlayDisappearAnimation();
+            PivotBehaviour pivotBehaviour = item.GetBehaviour<PivotBehaviour>();
+            if (pivotBehaviour != null)
+                pivotBehaviour.PlayDisappearAnimation();
         });
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class XBehaviourNextShowingJingJie : XBehaviour
+public class NextShowingJingJieBehaviour : XBehaviour
 {
     [SerializeField] private SkillCardView _skillView;
 

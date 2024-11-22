@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class XBehaviourPivot : XBehaviour
+public class PivotBehaviour : XBehaviour
 {
     public RectTransform IdleTransform;
     public RectTransform HoverTransform;

@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class XBehaviourGhost : XBehaviour
+public class GhostBehaviour : XBehaviour
 {
     public string GhostAddress;
     private GhostView Ghost;
