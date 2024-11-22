@@ -9,15 +9,19 @@ using UnityEngine.EventSystems;
 
 public class ListView : SimpleView
 {
+    private RectTransform SlotContainer;
+    private RectTransform ViewContainer;
+    
     public RectTransform Container;
     public GameObject[] Prefabs;
 
     protected List<ItemBehaviour> _activePool;
-    public List<ItemBehaviour> ActivePool => _activePool;
     protected List<ItemBehaviour>[] _inactivePools;
-    public List<ItemBehaviour>[] InactivePools => _inactivePools;
 
-    #region List Operations
+    #region Accessors
+    
+    public List<ItemBehaviour> ActivePool => _activePool;
+    public List<ItemBehaviour>[] InactivePools => _inactivePools;
 
     public IEnumerable<ItemBehaviour> Traversal()
     {
@@ -34,11 +38,24 @@ public class ListView : SimpleView
             yield return itemBehaviour;
     }
 
-    private bool IsInited()
-        => _activePool != null;
-
-    private void Init()
+    public int? IndexFromItemBehaviour(ItemBehaviour toGetIndex)
     {
+        if (toGetIndex == null)
+            return null;
+        return _activePool.FirstIdx(itemBehaviour => itemBehaviour == toGetIndex);
+    }
+
+    public ItemBehaviour ItemBehaviourFromIndex(int i)
+        => _activePool[i];
+
+    #endregion
+
+    #region List Operations
+
+    public override void AwakeFunction()
+    {
+        base.AwakeFunction();
+        
         _activePool = new List<ItemBehaviour>();
         _inactivePools = new List<ItemBehaviour>[Prefabs.Length];
         for (int i = 0; i < _inactivePools.Length; i++)
@@ -50,9 +67,8 @@ public class ListView : SimpleView
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-
-        if (!IsInited())
-            Init();
+        
+        CheckAwake();
 
         Sync();
     }
@@ -101,7 +117,7 @@ public class ListView : SimpleView
 
         itemBehaviour.PrefabIndex = prefabIndex;
         _inactivePools[prefabIndex].Add(itemBehaviour);
-        BindInteractBehaviour(itemBehaviour);
+        BindInteractBehaviour(itemBehaviour.GetInteractBehaviour());
         itemBehaviour.name = Traversal().Count().ToString();
     }
 
@@ -153,6 +169,17 @@ public class ListView : SimpleView
             _activePool.RemoveAt(index);
             _inactivePools[itemBehaviour.PrefabIndex].Insert(0, itemBehaviour);
         }
+    }
+
+    private int FetchItemBehaviour(int prefabIndex)
+    {
+        List<ItemBehaviour> pool = _inactivePools[prefabIndex];
+        if (pool.Count != 0)
+            return 0;
+
+        ItemBehaviour itemBehaviour = AllocItemBehaviour(prefabIndex);
+        InitItemBehaviour(itemBehaviour, prefabIndex);
+        return 0;
     }
 
     #endregion
@@ -238,31 +265,6 @@ public class ListView : SimpleView
 
     #endregion
 
-    #region Helper Operations
-
-    private int FetchItemBehaviour(int prefabIndex)
-    {
-        List<ItemBehaviour> pool = _inactivePools[prefabIndex];
-        if (pool.Count != 0)
-            return 0;
-
-        ItemBehaviour itemBehaviour = AllocItemBehaviour(prefabIndex);
-        InitItemBehaviour(itemBehaviour, prefabIndex);
-        return 0;
-    }
-
-    public int? IndexFromItemBehaviour(ItemBehaviour toGetIndex)
-    {
-        if (toGetIndex == null)
-            return null;
-        return _activePool.FirstIdx(itemBehaviour => itemBehaviour == toGetIndex);
-    }
-
-    public ItemBehaviour ItemBehaviourFromIndex(int i)
-        => _activePool[i];
-
-    #endregion
-
     #region Interact Behaviour
 
     public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
@@ -280,9 +282,8 @@ public class ListView : SimpleView
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingExitNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingMoveNeuron = new();
 
-    private void BindInteractBehaviour(ItemBehaviour itemBehaviour)
+    private void BindInteractBehaviour(InteractBehaviour ib)
     {
-        InteractBehaviour ib = itemBehaviour.GetInteractBehaviour();
         if (ib == null)
             return;
 
