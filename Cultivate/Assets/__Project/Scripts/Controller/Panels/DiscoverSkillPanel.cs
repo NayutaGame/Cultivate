@@ -117,7 +117,7 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            XBehaviourPivot xBehaviourPivot = item.GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = item.GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
                 xBehaviourPivot.Animator.SetState(0);
         });
@@ -127,7 +127,7 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            XBehaviourPivot xBehaviourPivot = item.GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = item.GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
                 xBehaviourPivot.PlayAppearAnimation();
         });
@@ -137,7 +137,7 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            XBehaviourPivot xBehaviourPivot = item.GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = item.GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
                 xBehaviourPivot.PlayDisappearAnimation();
         });
