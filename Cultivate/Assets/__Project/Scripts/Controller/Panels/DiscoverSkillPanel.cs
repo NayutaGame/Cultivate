@@ -81,7 +81,7 @@ public class DiscoverSkillPanel : Panel
 
         CanvasManager.Instance.RunCanvas.PickDiscoveredSkillStaging(cardIB, discoverIB);
         
-        XBehaviourPivot xBehaviourPivot = discoverIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = discoverIB.GetCLView().GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
             xBehaviourPivot.Disappear();
     }

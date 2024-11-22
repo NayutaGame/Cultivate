@@ -217,10 +217,10 @@ public class DeckPanel : Panel
         // From: 本体被移除
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetCLView().GetBehaviour<XBehaviourGhost>();
         
         // To: Ghost Display -> ToIdle + Ping Animation
-        XBehaviourPivot xBehaviourPivot = to.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = to.GetCLView().GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
             xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
 
@@ -232,10 +232,10 @@ public class DeckPanel : Panel
         // From
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetCLView().GetBehaviour<XBehaviourGhost>();
         
         // To
-        XBehaviourPivot xBehaviourPivot = from.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = from.GetCLView().GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
             xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
         
@@ -276,11 +276,11 @@ public class DeckPanel : Panel
         // From: No Animation
         
         // Ghost
-        XBehaviourGhost ghost = from.GetCLView().GetExtraBehaviour<XBehaviourGhost>();
+        XBehaviourGhost ghost = from.GetCLView().GetBehaviour<XBehaviourGhost>();
         
         // New IB: Ghost Display -> To Idle
         InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
-        XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
             xBehaviourPivot.RectTransformToIdle(ghost.GetDisplayTransform());
 

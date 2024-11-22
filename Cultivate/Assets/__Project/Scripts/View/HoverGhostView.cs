@@ -30,7 +30,7 @@ public class HoverGhostView : MonoBehaviour
         _skillView.SetAddress(ib.GetSimpleView().GetAddress());
         _skillView.Refresh();
 
-        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
         {
             AnimateDisplay(xBehaviourPivot.GetDisplayTransform(), xBehaviourPivot.HoverTransform);
@@ -42,7 +42,7 @@ public class HoverGhostView : MonoBehaviour
         // ib.GetCLView().SetShow(ib, d);
         ib.GetCLView().SetVisible(true);
         
-        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+        XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
         if (xBehaviourPivot != null)
             xBehaviourPivot.RectTransformToIdle(_skillView.GetDisplayTransform());
         

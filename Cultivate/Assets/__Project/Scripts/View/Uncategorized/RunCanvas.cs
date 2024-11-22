@@ -209,7 +209,7 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, Vector3 position)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 xBehaviourPivot.FollowTransform.position = position;
@@ -221,7 +221,7 @@ public class RunCanvas : Panel
 
         void SetSkillShow(InteractBehaviour ib, Vector3 position)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 xBehaviourPivot.FollowTransform.position = position;
@@ -234,7 +234,7 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 xBehaviourPivot.PositionToIdle(position);
@@ -270,7 +270,7 @@ public class RunCanvas : Panel
         void SetSkillPosition(DeckIndex deckIndex, Vector3 position)
         {
             InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 xBehaviourPivot.FollowTransform.position = position;
@@ -283,7 +283,7 @@ public class RunCanvas : Panel
         void SetSkillShow(DeckIndex deckIndex, Vector3 position)
         {
             InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 xBehaviourPivot.FollowTransform.position = position;
@@ -297,7 +297,7 @@ public class RunCanvas : Panel
         {
             InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
             newIB.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = newIB.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 xBehaviourPivot.PositionToIdle(position);
@@ -344,7 +344,7 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, InteractBehaviour discoverIB)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 Transform t = discoverIB.GetSimpleView().transform;
@@ -358,7 +358,7 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 xBehaviourPivot.PositionToIdle(position);
@@ -376,7 +376,7 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, InteractBehaviour commodityIB)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 Transform t = commodityIB.GetSimpleView().transform;
@@ -390,7 +390,7 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 xBehaviourPivot.PositionToIdle(position);
@@ -409,7 +409,7 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(InteractBehaviour ib, InteractBehaviour gachaIB)
         {
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 Transform t = gachaIB.GetSimpleView().transform;
@@ -423,7 +423,7 @@ public class RunCanvas : Panel
         void SetSkillMove(InteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetExtraBehaviour<XBehaviourPivot>();
+            XBehaviourPivot xBehaviourPivot = ib.GetCLView().GetBehaviour<XBehaviourPivot>();
             if (xBehaviourPivot != null)
             {
                 xBehaviourPivot.PositionToIdle(position);

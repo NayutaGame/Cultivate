@@ -12,8 +12,8 @@ public class ItemBehaviour : MonoBehaviour
     public RectTransform GetDisplayTransform() => _xView.GetDisplayTransform();
     public InteractBehaviour GetInteractBehaviour() => _xView.GetInteractBehaviour();
     public SelectBehaviour GetSelectBehaviour() => _xView.GetSelectBehaviour();
-    public XBehaviour[] GetExtraBehaviours() => _xView.GetExtraBehaviours();
-    public T GetExtraBehaviour<T>() where T : XBehaviour => _xView.GetExtraBehaviour<T>();
+    public XBehaviour[] GetExtraBehaviours() => _xView.GetBehaviours();
+    public T GetExtraBehaviour<T>() where T : XBehaviour => _xView.GetBehaviour<T>();
 
     public void Init(XView xView)
     {
