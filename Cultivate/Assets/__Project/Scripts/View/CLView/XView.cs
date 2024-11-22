@@ -12,15 +12,12 @@ public abstract class XView : MonoBehaviour
 
     [SerializeField] private InteractBehaviour InteractBehaviour;
     public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
-
-    public ItemBehaviour GetItemBehaviour() => Get<ItemBehaviour>();
-
-    private SelectBehaviour SelectBehaviour;
-    public SelectBehaviour GetSelectBehaviour() => SelectBehaviour;
-
+    
     private XBehaviour[] _behaviours;
     public XBehaviour[] GetBehaviours() => _behaviours;
     public T GetBehaviour<T>() where T : XBehaviour => _behaviours.FirstObj(b => b is T) as T;
+    public ItemBehaviour GetItemBehaviour() => Get<ItemBehaviour>();
+    public SelectBehaviour GetSelectBehaviour() => Get<SelectBehaviour>();
 
     private bool _hasAwoken;
 
@@ -42,10 +39,6 @@ public abstract class XView : MonoBehaviour
         InteractBehaviour ??= GetComponent<InteractBehaviour>();
         if (InteractBehaviour != null)
             InteractBehaviour.Init(this);
-
-        SelectBehaviour ??= GetComponent<SelectBehaviour>();
-        if (SelectBehaviour != null)
-            SelectBehaviour.Init(this);
 
         _behaviours ??= GetComponents<XBehaviour>();
         _behaviours.Do(b => b.Init(this));
