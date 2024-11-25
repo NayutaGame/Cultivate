@@ -2,10 +2,10 @@
 using System;
 using UnityEngine.UI;
 
-public class BarterItemView : SimpleView
+public class BarterItemView : LegacySimpleView
 {
-    public SimpleView PlayerSkillView;
-    public SimpleView SkillView;
+    public LegacySimpleView PlayerSkillView;
+    public LegacySimpleView SkillView;
     public GlowingButton ExchangeButton;
 
     // TODO: use Neuron

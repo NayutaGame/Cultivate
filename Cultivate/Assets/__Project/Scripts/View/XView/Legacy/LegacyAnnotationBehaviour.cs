@@ -1,14 +1,14 @@
 
 using UnityEngine;
 
-public class AnnotationBehaviour : XBehaviour
+public class LegacyAnnotationBehaviour : LegacyBehaviour
 {
     public string AnnotationAddress;
     private AnnotationView Annotation;
     public AnnotationView GetAnnotationView() => Annotation;
     public RectTransform HoverTransform;
 
-    public override void Init(XView view)
+    public override void Init(LegacyView view)
     {
         base.Init(view);
 
@@ -19,7 +19,7 @@ public class AnnotationBehaviour : XBehaviour
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = View.GetInteractBehaviour();
+        LegacyInteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 

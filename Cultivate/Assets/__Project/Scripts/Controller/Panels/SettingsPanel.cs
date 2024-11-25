@@ -10,11 +10,11 @@ public class SettingsPanel : Panel
     [SerializeField] private Image DarkCurtainImage;
     [SerializeField] private Button DarkCurtainButton;
 
-    [SerializeField] private ListView WidgetListView;
+    [SerializeField] private LegacyListView WidgetListView;
     [SerializeField] public Transform WidgetsTransform;
     [SerializeField] public CanvasGroup WidgetsCanvasGroup;
 
-    [SerializeField] private ListView TabListView;
+    [SerializeField] private LegacyListView TabListView;
 
     [SerializeField] private Button ToTitleButton;
     [SerializeField] private Button ToDesktopButton;
@@ -114,7 +114,7 @@ public class SettingsPanel : Panel
 
     private Tween _handle;
 
-    private void ClickedTab(InteractBehaviour toIb, PointerEventData d)
+    private void ClickedTab(LegacyInteractBehaviour toIb, PointerEventData d)
     {
         SettingsTab fromTab = AppManager.Instance.Settings.GetSelectedTab();
         SettingsTab toTab = toIb.GetSimpleView().Get<SettingsTab>();

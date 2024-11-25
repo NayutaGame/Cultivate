@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class SkillCardView : SimpleView
+public class SkillCardView : LegacySimpleView
 {
     private JingJie _showingJingJie;
     private bool _highlight;

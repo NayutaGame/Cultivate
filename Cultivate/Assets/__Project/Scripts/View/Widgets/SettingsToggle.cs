@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsToggle : SimpleView
+public class SettingsToggle : LegacySimpleView
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private Button FillRect;

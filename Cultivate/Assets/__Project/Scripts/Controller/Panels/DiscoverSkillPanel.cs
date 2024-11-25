@@ -14,7 +14,7 @@ public class DiscoverSkillPanel : Panel
     [SerializeField] private RectTransform DetailedTextTransform;
     [SerializeField] private RectTransform DetailedTextIdlePivot;
     [SerializeField] private TMP_Text DescriptionText;
-    [SerializeField] private ListView SkillList;
+    [SerializeField] private LegacyListView SkillList;
 
     private Address _address;
 
@@ -60,10 +60,10 @@ public class DiscoverSkillPanel : Panel
         RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Remove(PickDiscoveredSkillStaging);
     }
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
 
-    private void PickDiscoveredSkill(InteractBehaviour ib, PointerEventData eventData)
+    private void PickDiscoveredSkill(LegacyInteractBehaviour ib, PointerEventData eventData)
     {
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
         SkillEntryDescriptor skill = ib.GetSimpleView().Get<SkillEntryDescriptor>();
@@ -76,12 +76,12 @@ public class DiscoverSkillPanel : Panel
     private void PickDiscoveredSkillStaging(PickDiscoveredSkillDetails d)
     {
         int pickedIndex = d.PickedIndex;
-        InteractBehaviour discoverIB = SkillList.ActivePool[pickedIndex].GetInteractBehaviour();
-        InteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
+        LegacyInteractBehaviour discoverIB = SkillList.ActivePool[pickedIndex].GetInteractBehaviour();
+        LegacyInteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
 
         CanvasManager.Instance.RunCanvas.PickDiscoveredSkillStaging(cardIB, discoverIB);
         
-        PivotBehaviour pivotBehaviour = discoverIB.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour pivotBehaviour = discoverIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
             pivotBehaviour.Disappear();
     }
@@ -117,7 +117,7 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            PivotBehaviour pivotBehaviour = item.GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = item.GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
                 pivotBehaviour.Animator.SetState(0);
         });
@@ -127,7 +127,7 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            PivotBehaviour pivotBehaviour = item.GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = item.GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
                 pivotBehaviour.PlayAppearAnimation();
         });
@@ -137,7 +137,7 @@ public class DiscoverSkillPanel : Panel
     {
         SkillList.TraversalActive().Do(item =>
         {
-            PivotBehaviour pivotBehaviour = item.GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = item.GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
                 pivotBehaviour.PlayDisappearAnimation();
         });

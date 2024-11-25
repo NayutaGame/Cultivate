@@ -1,11 +1,11 @@
 
 using UnityEngine;
 
-public class ComplexView : XView
+public class LegacyComplexView : LegacyView
 {
-    [SerializeField] public SimpleView SimpleView;
+    [SerializeField] public LegacySimpleView SimpleView;
 
-    public override SimpleView GetView() => SimpleView.GetView();
+    public override LegacySimpleView GetView() => SimpleView.GetView();
     public override RectTransform GetViewTransform() => SimpleView.GetViewTransform();
     public override void SetViewTransform(RectTransform pivot) => SimpleView.SetViewTransform(pivot);
 

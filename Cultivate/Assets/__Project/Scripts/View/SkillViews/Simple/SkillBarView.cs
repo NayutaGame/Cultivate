@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class SkillBarView : SimpleView
+public class SkillBarView : LegacySimpleView
 {
     [SerializeField] private Image BackgroundImage;
     [SerializeField] private Image WuXingImage;

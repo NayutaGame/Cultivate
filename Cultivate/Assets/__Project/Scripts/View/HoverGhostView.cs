@@ -20,7 +20,7 @@ public class HoverGhostView : MonoBehaviour
     private Tween _animationHandle;
     public bool IsAnimating => _animationHandle != null && _animationHandle.active;
 
-    public void PointerEnter(InteractBehaviour ib, PointerEventData d)
+    public void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
     {
         // ib.GetCLView().SetHide(ib, d);
         ib.GetCLView().SetVisible(false);
@@ -30,42 +30,42 @@ public class HoverGhostView : MonoBehaviour
         _skillView.SetAddress(ib.GetSimpleView().GetAddress());
         _skillView.Refresh();
 
-        PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
         {
             AnimateDisplay(pivotBehaviour.GetDisplayTransform(), pivotBehaviour.HoverTransform);
         }
     }
 
-    public void PointerExit(InteractBehaviour ib, PointerEventData d)
+    public void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
     {
         // ib.GetCLView().SetShow(ib, d);
         ib.GetCLView().SetVisible(true);
         
-        PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
             pivotBehaviour.RectTransformToIdle(_skillView.GetViewTransform());
         
         gameObject.SetActive(false);
     }
 
-    public void BeginDrag(InteractBehaviour ib, PointerEventData d)
+    public void BeginDrag(LegacyInteractBehaviour ib, PointerEventData d)
     {
         gameObject.SetActive(false);
     }
 
-    public void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    public void DraggingExit(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         to.GetCLView().SetVisible(true);
     }
 
-    public void Dropping(InteractBehaviour ib, PointerEventData d)
+    public void Dropping(LegacyInteractBehaviour ib, PointerEventData d)
     {
         // ib.GetCLView().SetShow(ib, d);
         // gameObject.SetActive(false);
     }
 
-    public void Drag(InteractBehaviour ib, PointerEventData eventData)
+    public void Drag(LegacyInteractBehaviour ib, PointerEventData eventData)
     {
         // ExtraBehaviourPivot extraBehaviourPivot = ib.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
         // if (extraBehaviourPivot != null)
@@ -121,7 +121,7 @@ public class HoverGhostView : MonoBehaviour
     
     
     
-    public void ResetJingJie(InteractBehaviour ib, PointerEventData d)
+    public void ResetJingJie(LegacyInteractBehaviour ib, PointerEventData d)
     {
         ISkill skill = _skillView.Get<ISkill>();
         if (skill == null)
@@ -129,7 +129,7 @@ public class HoverGhostView : MonoBehaviour
         _skillView.Refresh();
     }
     
-    public void NextJingJie(InteractBehaviour ib, PointerEventData d)
+    public void NextJingJie(LegacyInteractBehaviour ib, PointerEventData d)
     {
         ISkill skill = _skillView.Get<ISkill>();
         if (skill == null)

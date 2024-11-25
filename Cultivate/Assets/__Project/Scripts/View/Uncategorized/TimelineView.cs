@@ -29,14 +29,14 @@ public class TimelineView : Singleton<TimelineView>
         ClearViews();
         _views = new List<StageSkillCardView>();
         foreach (var v in _views)
-            ConfigureNeuron(v.GetComponent<InteractBehaviour>());
+            ConfigureNeuron(v.GetComponent<LegacyInteractBehaviour>());
 
         // TotalCount = HomeSlots.Length;
         FutureCount = HomeSlots.Length - (IndexOfCurr + 1);
         // PastCount = IndexOfCurr;
     }
 
-    private void ConfigureNeuron(InteractBehaviour stageSkillIb)
+    private void ConfigureNeuron(LegacyInteractBehaviour stageSkillIb)
     {
         stageSkillIb.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter, StageManager.Instance.Pause);
         stageSkillIb.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit, StageManager.Instance.Resume);
@@ -58,7 +58,7 @@ public class TimelineView : Singleton<TimelineView>
             v.transform.localScale = 0.5f * Vector3.one;
             _views.Add(v);
             v.SetAddress(new Address($"Stage.Timeline.Notes#{note.TemporalIndex}"));
-            ConfigureNeuron(v.GetComponent<InteractBehaviour>());
+            ConfigureNeuron(v.GetComponent<LegacyInteractBehaviour>());
             v.Refresh();
         }
     }
@@ -131,7 +131,7 @@ public class TimelineView : Singleton<TimelineView>
         v.transform.localScale = 0.5f * Vector3.one;
         _views.Add(v);
         v.SetAddress(new Address($"Stage.Timeline.Notes#{toCreate.TemporalIndex}"));
-        ConfigureNeuron(v.GetComponent<InteractBehaviour>());
+        ConfigureNeuron(v.GetComponent<LegacyInteractBehaviour>());
         v.Refresh();
     }
 }

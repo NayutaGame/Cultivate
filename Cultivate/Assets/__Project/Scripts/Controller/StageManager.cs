@@ -79,13 +79,13 @@ public class StageManager : Singleton<StageManager>, Addressable
     public void Pause()
         => StageAnimationController.Pause();
 
-    public void Pause(InteractBehaviour ib, PointerEventData eventData)
+    public void Pause(LegacyInteractBehaviour ib, PointerEventData eventData)
         => Pause();
 
     public void Resume()
         => StageAnimationController.Resume();
 
-    public void Resume(InteractBehaviour ib, PointerEventData eventData)
+    public void Resume(LegacyInteractBehaviour ib, PointerEventData eventData)
         => Resume();
 
     public void SetSpeed(float speed)

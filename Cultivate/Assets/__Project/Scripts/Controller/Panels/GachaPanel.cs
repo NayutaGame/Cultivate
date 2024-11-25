@@ -8,7 +8,7 @@ public class GachaPanel : Panel
     public TMP_Text PriceTag;
     public Button BuyButton;
     public Button ExitButton;
-    public ListView ListView;
+    public LegacyListView ListView;
 
     private Address _address;
 
@@ -34,13 +34,13 @@ public class GachaPanel : Panel
         ExitButton.onClick.AddListener(Exit);
     }
 
-    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
+    private void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
         => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
-    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+    private void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
         => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
-    private void PointerMove(InteractBehaviour ib, PointerEventData d)
+    private void PointerMove(LegacyInteractBehaviour ib, PointerEventData d)
         => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
     public override void Refresh()
@@ -68,8 +68,8 @@ public class GachaPanel : Panel
 
     private void GachaStaging(GachaDetails d)
     {
-        InteractBehaviour gachaIB = ListView.InactivePools[0][^1].GetInteractBehaviour();
-        InteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
+        LegacyInteractBehaviour gachaIB = ListView.InactivePools[0][^1].GetInteractBehaviour();
+        LegacyInteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
 
         CanvasManager.Instance.RunCanvas.GachaStaging(cardIB, gachaIB);
         CanvasManager.Instance.SkillAnnotation.PointerExit();
@@ -85,6 +85,6 @@ public class GachaPanel : Panel
         CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
     }
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
 }

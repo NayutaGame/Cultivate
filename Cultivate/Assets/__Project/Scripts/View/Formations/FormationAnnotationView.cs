@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FormationAnnotationView : SimpleView
+public class FormationAnnotationView : LegacySimpleView
 {
     private JingJie _showingJingJie;
     private int _showingMark;
@@ -75,7 +75,7 @@ public class FormationAnnotationView : SimpleView
             TriviaText.text = trivia;
     }
 
-    public void SwitchShowingJingJie(InteractBehaviour ib, PointerEventData d)
+    public void SwitchShowingJingJie(LegacyInteractBehaviour ib, PointerEventData d)
     {
         IFormationModel formation = Get<IFormationModel>();
         _showingJingJie = formation.GetIncrementedJingJie(_showingJingJie);

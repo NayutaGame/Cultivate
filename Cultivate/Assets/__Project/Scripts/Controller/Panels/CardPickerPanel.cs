@@ -12,8 +12,8 @@ public class CardPickerPanel : Panel
     public TMP_Text ContentText;
     public Button ConfirmButton;
 
-    [NonSerialized] public ListView SkillListView;
-    [NonSerialized] public ListView SlotListView;
+    [NonSerialized] public LegacyListView SkillListView;
+    [NonSerialized] public LegacyListView SlotListView;
 
     private List<int> _skillSelections;
     private List<int> _slotSelections;
@@ -73,11 +73,11 @@ public class CardPickerPanel : Panel
 
     private int SelectionCount => _skillSelections.Count + _slotSelections.Count;
 
-    private void ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
+    private void ToggleSkill(LegacyInteractBehaviour ib, PointerEventData eventData)
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
         
-        ItemBehaviour currItemBehaviour = ib.GetCLView().GetItemBehaviour();
+        LegacyItemBehaviour currItemBehaviour = ib.GetCLView().GetItemBehaviour();
         
         int index = SkillListView.ActivePool.FindIndex(itemBehaviour => itemBehaviour == currItemBehaviour);
         bool isSelected = _skillSelections.Contains(index);
@@ -110,11 +110,11 @@ public class CardPickerPanel : Panel
         }
     }
 
-    private void ToggleSkillSlot(InteractBehaviour ib, PointerEventData eventData)
+    private void ToggleSkillSlot(LegacyInteractBehaviour ib, PointerEventData eventData)
     {
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
 
-        ItemBehaviour currItemBehaviour = ib.GetCLView().GetItemBehaviour();
+        LegacyItemBehaviour currItemBehaviour = ib.GetCLView().GetItemBehaviour();
         int index = SlotListView.ActivePool.FindIndex(itemBehaviour => itemBehaviour == currItemBehaviour);
         bool isSelected = _slotSelections.Contains(index);
 

@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class RoomAnnotationView : SimpleView
+public class RoomAnnotationView : LegacySimpleView
 {
     // [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text DescriptionText;

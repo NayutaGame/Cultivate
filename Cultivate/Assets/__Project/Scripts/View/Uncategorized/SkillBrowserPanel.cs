@@ -6,7 +6,7 @@ public class SkillBrowserPanel : Panel
 {
     private Address _address;
 
-    public ListView SkillInventoryView;
+    public LegacyListView SkillInventoryView;
     public Button[] SortButtons;
 
     public override void Configure()

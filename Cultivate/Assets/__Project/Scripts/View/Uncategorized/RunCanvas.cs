@@ -207,9 +207,9 @@ public class RunCanvas : Panel
 
     private void GainSkillStaging(GainSkillDetails d)
     {
-        void SetSkillPosition(InteractBehaviour ib, Vector3 position)
+        void SetSkillPosition(LegacyInteractBehaviour ib, Vector3 position)
         {
-            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 pivotBehaviour.FollowTransform.position = position;
@@ -219,9 +219,9 @@ public class RunCanvas : Panel
             }
         }
 
-        void SetSkillShow(InteractBehaviour ib, Vector3 position)
+        void SetSkillShow(LegacyInteractBehaviour ib, Vector3 position)
         {
-            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 pivotBehaviour.FollowTransform.position = position;
@@ -231,10 +231,10 @@ public class RunCanvas : Panel
             }
         }
 
-        void SetSkillMove(InteractBehaviour ib, Vector3 position)
+        void SetSkillMove(LegacyInteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 pivotBehaviour.PositionToIdle(position);
@@ -245,7 +245,7 @@ public class RunCanvas : Panel
         // Refresh();
         Vector3 position = Vector3.zero;
 
-        InteractBehaviour ib = SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
+        LegacyInteractBehaviour ib = SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
         
         SetSkillPosition(ib, position);
         
@@ -269,8 +269,8 @@ public class RunCanvas : Panel
     {
         void SetSkillPosition(DeckIndex deckIndex, Vector3 position)
         {
-            InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            PivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyInteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
+            LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 pivotBehaviour.FollowTransform.position = position;
@@ -282,8 +282,8 @@ public class RunCanvas : Panel
 
         void SetSkillShow(DeckIndex deckIndex, Vector3 position)
         {
-            InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            PivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyInteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
+            LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 pivotBehaviour.FollowTransform.position = position;
@@ -295,9 +295,9 @@ public class RunCanvas : Panel
 
         void SetSkillMove(DeckIndex deckIndex, Vector3 position)
         {
-            InteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
+            LegacyInteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
             newIB.SetInteractable(true);
-            PivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 pivotBehaviour.PositionToIdle(position);
@@ -340,11 +340,11 @@ public class RunCanvas : Panel
         _blockingAnimation = seq;
     }
 
-    public void PickDiscoveredSkillStaging(InteractBehaviour cardIB, InteractBehaviour discoverIB)
+    public void PickDiscoveredSkillStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour discoverIB)
     {
-        void SetSkillPosition(InteractBehaviour ib, InteractBehaviour discoverIB)
+        void SetSkillPosition(LegacyInteractBehaviour ib, LegacyInteractBehaviour discoverIB)
         {
-            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 Transform t = discoverIB.GetSimpleView().transform;
@@ -355,10 +355,10 @@ public class RunCanvas : Panel
             }
         }
 
-        void SetSkillMove(InteractBehaviour ib, Vector3 position)
+        void SetSkillMove(LegacyInteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 pivotBehaviour.PositionToIdle(position);
@@ -372,11 +372,11 @@ public class RunCanvas : Panel
         SetSkillMove(cardIB, discoverIB.transform.position);
     }
 
-    public void BuySkillStaging(InteractBehaviour cardIB, InteractBehaviour commodityIB)
+    public void BuySkillStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour commodityIB)
     {
-        void SetSkillPosition(InteractBehaviour ib, InteractBehaviour commodityIB)
+        void SetSkillPosition(LegacyInteractBehaviour ib, LegacyInteractBehaviour commodityIB)
         {
-            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 Transform t = commodityIB.GetSimpleView().transform;
@@ -387,10 +387,10 @@ public class RunCanvas : Panel
             }
         }
 
-        void SetSkillMove(InteractBehaviour ib, Vector3 position)
+        void SetSkillMove(LegacyInteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 pivotBehaviour.PositionToIdle(position);
@@ -405,11 +405,11 @@ public class RunCanvas : Panel
         // AudioManager.Instance.Play("钱币");
     }
 
-    public void GachaStaging(InteractBehaviour cardIB, InteractBehaviour gachaIB)
+    public void GachaStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour gachaIB)
     {
-        void SetSkillPosition(InteractBehaviour ib, InteractBehaviour gachaIB)
+        void SetSkillPosition(LegacyInteractBehaviour ib, LegacyInteractBehaviour gachaIB)
         {
-            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 Transform t = gachaIB.GetSimpleView().transform;
@@ -420,10 +420,10 @@ public class RunCanvas : Panel
             }
         }
 
-        void SetSkillMove(InteractBehaviour ib, Vector3 position)
+        void SetSkillMove(LegacyInteractBehaviour ib, Vector3 position)
         {
             ib.SetInteractable(true);
-            PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
             {
                 pivotBehaviour.PositionToIdle(position);
@@ -438,7 +438,7 @@ public class RunCanvas : Panel
         // AudioManager.Instance.Play("钱币");
     }
 
-    public InteractBehaviour SkillInteractBehaviourFromDeckIndex(DeckIndex? deckIndex)
+    public LegacyInteractBehaviour SkillInteractBehaviourFromDeckIndex(DeckIndex? deckIndex)
     {
         if (!deckIndex.HasValue)
             return DeckPanel.HandView.ActivePool.Last().GetInteractBehaviour();

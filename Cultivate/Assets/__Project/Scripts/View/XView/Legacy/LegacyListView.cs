@@ -7,20 +7,20 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ListView : SimpleView
+public class LegacyListView : LegacySimpleView
 {
     public RectTransform Container;
     public GameObject[] Prefabs;
 
-    protected List<ItemBehaviour> _activePool;
-    protected List<ItemBehaviour>[] _inactivePools;
+    protected List<LegacyItemBehaviour> _activePool;
+    protected List<LegacyItemBehaviour>[] _inactivePools;
 
     #region Accessors
     
-    public List<ItemBehaviour> ActivePool => _activePool;
-    public List<ItemBehaviour>[] InactivePools => _inactivePools;
+    public List<LegacyItemBehaviour> ActivePool => _activePool;
+    public List<LegacyItemBehaviour>[] InactivePools => _inactivePools;
 
-    public IEnumerable<ItemBehaviour> Traversal()
+    public IEnumerable<LegacyItemBehaviour> Traversal()
     {
         foreach (var itemBehaviour in _activePool)
             yield return itemBehaviour;
@@ -29,20 +29,20 @@ public class ListView : SimpleView
             yield return itemBehaviour;
     }
 
-    public IEnumerable<ItemBehaviour> TraversalActive()
+    public IEnumerable<LegacyItemBehaviour> TraversalActive()
     {
         foreach (var itemBehaviour in _activePool)
             yield return itemBehaviour;
     }
 
-    public int? IndexFromItemBehaviour(ItemBehaviour toGetIndex)
+    public int? IndexFromItemBehaviour(LegacyItemBehaviour toGetIndex)
     {
         if (toGetIndex == null)
             return null;
         return _activePool.FirstIdx(itemBehaviour => itemBehaviour == toGetIndex);
     }
 
-    public ItemBehaviour ItemBehaviourFromIndex(int i)
+    public LegacyItemBehaviour ItemBehaviourFromIndex(int i)
         => _activePool[i];
 
     #endregion
@@ -53,10 +53,10 @@ public class ListView : SimpleView
     {
         base.AwakeFunction();
         
-        _activePool = new List<ItemBehaviour>();
-        _inactivePools = new List<ItemBehaviour>[Prefabs.Length];
+        _activePool = new List<LegacyItemBehaviour>();
+        _inactivePools = new List<LegacyItemBehaviour>[Prefabs.Length];
         for (int i = 0; i < _inactivePools.Length; i++)
-            _inactivePools[i] = new List<ItemBehaviour>();
+            _inactivePools[i] = new List<LegacyItemBehaviour>();
 
         RegisterExists();
     }
@@ -79,7 +79,7 @@ public class ListView : SimpleView
     {
         for (int i = 0; i < Container.childCount; i++)
         {
-            ItemBehaviour itemBehaviour = RegisterItemBehaviour(Container.GetChild(i).gameObject);
+            LegacyItemBehaviour itemBehaviour = RegisterItemBehaviour(Container.GetChild(i).gameObject);
             InitItemBehaviour(itemBehaviour, itemBehaviour.PrefabIndex);
         }
     }
@@ -99,15 +99,15 @@ public class ListView : SimpleView
 
     #region Atomic Operations
 
-    private ItemBehaviour AllocItemBehaviour(int prefabIndex)
-        => Instantiate(Prefabs[prefabIndex], Container).GetComponent<ItemBehaviour>();
+    private LegacyItemBehaviour AllocItemBehaviour(int prefabIndex)
+        => Instantiate(Prefabs[prefabIndex], Container).GetComponent<LegacyItemBehaviour>();
 
-    private ItemBehaviour RegisterItemBehaviour(GameObject go)
-        => go.GetComponent<ItemBehaviour>();
+    private LegacyItemBehaviour RegisterItemBehaviour(GameObject go)
+        => go.GetComponent<LegacyItemBehaviour>();
 
-    protected virtual void InitItemBehaviour(ItemBehaviour itemBehaviour, int prefabIndex)
+    protected virtual void InitItemBehaviour(LegacyItemBehaviour itemBehaviour, int prefabIndex)
     {
-        itemBehaviour.GetComponent<XView>().AwakeFunction();
+        itemBehaviour.GetComponent<LegacyView>().AwakeFunction();
         itemBehaviour.gameObject.SetActive(false);
 
         itemBehaviour.PrefabIndex = prefabIndex;
@@ -116,10 +116,10 @@ public class ListView : SimpleView
         itemBehaviour.name = Traversal().Count().ToString();
     }
 
-    protected virtual ItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
+    protected virtual LegacyItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
     {
-        List<ItemBehaviour> pool = _inactivePools[prefabIndex];
-        ItemBehaviour itemBehaviour = pool[orderInPool];
+        List<LegacyItemBehaviour> pool = _inactivePools[prefabIndex];
+        LegacyItemBehaviour itemBehaviour = pool[orderInPool];
 
         pool.RemoveAt(orderInPool);
         _activePool.Insert(index, itemBehaviour);
@@ -136,9 +136,9 @@ public class ListView : SimpleView
         return itemBehaviour;
     }
 
-    protected virtual ItemBehaviour DisableItemBehaviour(int index)
+    protected virtual LegacyItemBehaviour DisableItemBehaviour(int index)
     {
-        ItemBehaviour itemBehaviour = _activePool[index];
+        LegacyItemBehaviour itemBehaviour = _activePool[index];
 
         itemBehaviour.gameObject.SetActive(false);
         itemBehaviour.transform.SetAsLastSibling();
@@ -157,7 +157,7 @@ public class ListView : SimpleView
         while (_activePool.Count != 0)
         {
             int index = _activePool.Count - 1;
-            ItemBehaviour itemBehaviour = _activePool[index];
+            LegacyItemBehaviour itemBehaviour = _activePool[index];
 
             itemBehaviour.gameObject.SetActive(false);
 
@@ -168,11 +168,11 @@ public class ListView : SimpleView
 
     private int FetchItemBehaviour(int prefabIndex)
     {
-        List<ItemBehaviour> pool = _inactivePools[prefabIndex];
+        List<LegacyItemBehaviour> pool = _inactivePools[prefabIndex];
         if (pool.Count != 0)
             return 0;
 
-        ItemBehaviour itemBehaviour = AllocItemBehaviour(prefabIndex);
+        LegacyItemBehaviour itemBehaviour = AllocItemBehaviour(prefabIndex);
         InitItemBehaviour(itemBehaviour, prefabIndex);
         return 0;
     }
@@ -262,22 +262,22 @@ public class ListView : SimpleView
 
     #region Interact Behaviour
 
-    public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerMoveNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> BeginDragNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> EndDragNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> DroppingNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
+    public Neuron<LegacyInteractBehaviour, PointerEventData> PointerEnterNeuron = new();
+    public Neuron<LegacyInteractBehaviour, PointerEventData> PointerExitNeuron = new();
+    public Neuron<LegacyInteractBehaviour, PointerEventData> PointerMoveNeuron = new();
+    public Neuron<LegacyInteractBehaviour, PointerEventData> BeginDragNeuron = new();
+    public Neuron<LegacyInteractBehaviour, PointerEventData> EndDragNeuron = new();
+    public Neuron<LegacyInteractBehaviour, PointerEventData> DragNeuron = new();
+    public Neuron<LegacyInteractBehaviour, PointerEventData> LeftClickNeuron = new();
+    public Neuron<LegacyInteractBehaviour, PointerEventData> RightClickNeuron = new();
+    public Neuron<LegacyInteractBehaviour, PointerEventData> DroppingNeuron = new();
+    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> DropNeuron = new();
 
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingExitNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingMoveNeuron = new();
+    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
+    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> DraggingExitNeuron = new();
+    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> DraggingMoveNeuron = new();
 
-    private void BindInteractBehaviour(InteractBehaviour ib)
+    private void BindInteractBehaviour(LegacyInteractBehaviour ib)
     {
         if (ib == null)
             return;

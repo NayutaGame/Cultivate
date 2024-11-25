@@ -3,21 +3,21 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class XView : MonoBehaviour
+public abstract class LegacyView : MonoBehaviour
 {
-    public abstract SimpleView GetView();
+    public abstract LegacySimpleView GetView();
 
     public abstract RectTransform GetViewTransform();
     public abstract void SetViewTransform(RectTransform pivot);
 
-    [SerializeField] private InteractBehaviour InteractBehaviour;
-    public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
+    [SerializeField] private LegacyInteractBehaviour InteractBehaviour;
+    public LegacyInteractBehaviour GetInteractBehaviour() => InteractBehaviour;
     
-    private XBehaviour[] _behaviours;
-    public XBehaviour[] GetBehaviours() => _behaviours;
-    public T GetBehaviour<T>() where T : XBehaviour => _behaviours.FirstObj(b => b is T) as T;
-    public ItemBehaviour GetItemBehaviour() => Get<ItemBehaviour>();
-    public SelectBehaviour GetSelectBehaviour() => Get<SelectBehaviour>();
+    private LegacyBehaviour[] _behaviours;
+    public LegacyBehaviour[] GetBehaviours() => _behaviours;
+    public T GetBehaviour<T>() where T : LegacyBehaviour => _behaviours.FirstObj(b => b is T) as T;
+    public LegacyItemBehaviour GetItemBehaviour() => Get<LegacyItemBehaviour>();
+    public LegacySelectBehaviour GetSelectBehaviour() => Get<LegacySelectBehaviour>();
 
     private bool _hasAwoken;
 
@@ -36,11 +36,11 @@ public abstract class XView : MonoBehaviour
 
     public virtual void AwakeFunction()
     {
-        InteractBehaviour ??= GetComponent<InteractBehaviour>();
+        InteractBehaviour ??= GetComponent<LegacyInteractBehaviour>();
         if (InteractBehaviour != null)
             InteractBehaviour.Init(this);
 
-        _behaviours ??= GetComponents<XBehaviour>();
+        _behaviours ??= GetComponents<LegacyBehaviour>();
         _behaviours.Do(b => b.Init(this));
 
         _sm = InitSM();
@@ -70,10 +70,10 @@ public abstract class XView : MonoBehaviour
         GetView().SetVisible(true);
     }
 
-    public void SetIdle(InteractBehaviour ib, PointerEventData d)
+    public void SetIdle(LegacyInteractBehaviour ib, PointerEventData d)
         => _sm.SetState(1);
 
-    public void SetInactive(InteractBehaviour ib, PointerEventData d)
+    public void SetInactive(LegacyInteractBehaviour ib, PointerEventData d)
         => _sm.SetState(0);
 
     public void SetVisible(bool value)

@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class EntityEditorPanel : Panel
 {
-    [SerializeField] private ListView EntityBrowser;
+    [SerializeField] private LegacyListView EntityBrowser;
     private int? _selectionIndex;
-    private SelectBehaviour _selection;
+    private LegacySelectBehaviour _selection;
 
-    [SerializeField] private ListView SkillBrowser;
+    [SerializeField] private LegacyListView SkillBrowser;
 
     [SerializeField] private EntityEditorEntityView AwayEntityView;
     [SerializeField] private EntityEditorEntityView HomeEntityView;
@@ -105,7 +105,7 @@ public class EntityEditorPanel : Panel
         Refresh();
     }
 
-    private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    private void Equip(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData eventData)
     {
         if (!(from is EntityEditorSkillBarInteractBehaviour))
             return;
@@ -118,7 +118,7 @@ public class EntityEditorPanel : Panel
         Refresh();
     }
 
-    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    private void Unequip(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData eventData)
     {
         if (!(from is EntityEditorSlotInteractBehaviour))
             return;
@@ -130,7 +130,7 @@ public class EntityEditorPanel : Panel
         Refresh();
     }
 
-    private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    private void Swap(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData eventData)
     {
         if (!(from is EntityEditorSlotInteractBehaviour))
             return;
@@ -143,7 +143,7 @@ public class EntityEditorPanel : Panel
         Refresh();
     }
 
-    private void IncreaseJingJie(InteractBehaviour ib, PointerEventData eventData)
+    private void IncreaseJingJie(LegacyInteractBehaviour ib, PointerEventData eventData)
     {
         SkillSlot slot = ib.GetSimpleView().Get<SkillSlot>();
         slot.TryIncreaseJingJie();
@@ -152,13 +152,13 @@ public class EntityEditorPanel : Panel
         // CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
-    private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
+    private void SelectEntity(LegacyInteractBehaviour ib, PointerEventData eventData)
         => SelectEntity(ib.GetSimpleView().GetSelectBehaviour());
 
-    private void DeselectEntity(InteractBehaviour ib, PointerEventData eventData)
+    private void DeselectEntity(LegacyInteractBehaviour ib, PointerEventData eventData)
         => SelectEntity(null);
 
-    private void SelectEntity(SelectBehaviour selectBehaviour)
+    private void SelectEntity(LegacySelectBehaviour selectBehaviour)
     {
         if (_selection != null)
             _selection.SetSelected(false);

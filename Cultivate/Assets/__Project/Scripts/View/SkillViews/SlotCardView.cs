@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SlotCardView : SimpleView
+public class SlotCardView : LegacySimpleView
 {
     [SerializeField] public SkillCardView SkillCardView;
 

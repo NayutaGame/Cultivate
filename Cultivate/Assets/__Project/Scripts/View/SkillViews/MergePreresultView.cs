@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class MergePreresultView : SimpleView
+public class MergePreresultView : LegacySimpleView
 {
     private MergePreresult _mergePreresult;
     private Animator _animator;

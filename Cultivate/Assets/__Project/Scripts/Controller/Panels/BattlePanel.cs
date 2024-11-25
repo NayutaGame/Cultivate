@@ -141,7 +141,7 @@ public class BattlePanel : Panel
         AwayPropagatePointer._onPointerExit -= PointerExitAwayHealth;
     }
 
-    private void ReactionFromBeginDrag(InteractBehaviour ib, PointerEventData d)
+    private void ReactionFromBeginDrag(LegacyInteractBehaviour ib, PointerEventData d)
     {
         object obj = ib.GetSimpleView().Get<object>();
         RunSkill skill;
@@ -173,17 +173,17 @@ public class BattlePanel : Panel
         Debug.Log($"Error: BeginDrag, {obj}");
     }
 
-    private void ReactionFromEndDrag(InteractBehaviour ib, PointerEventData d)
+    private void ReactionFromEndDrag(LegacyInteractBehaviour ib, PointerEventData d)
     {
         ReactionView.EndDrag();
     }
 
-    private void ReactionFromDrop(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void ReactionFromDrop(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         ReactionView.EndDrag();
     }
 
-    private void ReactionFromDrag(InteractBehaviour ib, PointerEventData d)
+    private void ReactionFromDrag(LegacyInteractBehaviour ib, PointerEventData d)
     {
         float intensity = IntensityFromMousePosition(d.position);
         ReactionView.Drag(intensity);

@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 public class MapPanel : Panel
 {
-    [SerializeField] private ListView RoomListView;
+    [SerializeField] private LegacyListView RoomListView;
     
     [SerializeField] private RectTransform BodyTransform;
     [SerializeField] private RectTransform BodyShowPivot;

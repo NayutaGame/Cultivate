@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class ShopPanel : Panel
 {
-    public ListView CommodityListView;
+    public LegacyListView CommodityListView;
     public Image Illustration;
     public Button ExitButton;
 
@@ -25,13 +25,13 @@ public class ShopPanel : Panel
         ExitButton.onClick.AddListener(Exit);
     }
 
-    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
+    private void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
         => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
-    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+    private void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
         => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
-    private void PointerMove(InteractBehaviour ib, PointerEventData d)
+    private void PointerMove(LegacyInteractBehaviour ib, PointerEventData d)
         => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
     public override void Refresh()
@@ -53,10 +53,10 @@ public class ShopPanel : Panel
         RunManager.Instance.Environment.BuySkillNeuron.Remove(BuySkillStaging);
     }
 
-    private void BuySkill(InteractBehaviour ib, PointerEventData eventData)
+    private void BuySkill(LegacyInteractBehaviour ib, PointerEventData eventData)
         => BuySkill(ib.GetSimpleView());
 
-    private bool BuySkill(SimpleView v)
+    private bool BuySkill(LegacySimpleView v)
     {
         Commodity commodity = v.Get<Commodity>();
 
@@ -66,8 +66,8 @@ public class ShopPanel : Panel
 
     private void BuySkillStaging(BuySkillDetails d)
     {
-        InteractBehaviour commodityIB = CommodityListView.InactivePools[0][^1].GetInteractBehaviour();
-        InteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
+        LegacyInteractBehaviour commodityIB = CommodityListView.InactivePools[0][^1].GetInteractBehaviour();
+        LegacyInteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
 
         CanvasManager.Instance.RunCanvas.BuySkillStaging(cardIB, commodityIB);
         CanvasManager.Instance.SkillAnnotation.PointerExit();
@@ -83,6 +83,6 @@ public class ShopPanel : Panel
         CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
     }
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
+    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
 }

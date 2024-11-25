@@ -3,9 +3,9 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MarkedSlider : SimpleView
+public class MarkedSlider : LegacySimpleView
 {
-    [SerializeField] public ListView MarkList;
+    [SerializeField] public LegacyListView MarkList;
     [SerializeField] private Slider _slider;
     [SerializeField] private RectTransform FillRect;
     [SerializeField] private MarkCursorView MarkCursorView;

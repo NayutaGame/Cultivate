@@ -10,9 +10,9 @@ public class ArbitraryCardPickerPanel : Panel
 {
     public TMP_Text DetailedText;
     public Button ConfirmButton;
-    public ListView SkillListView;
+    public LegacyListView SkillListView;
 
-    private List<SimpleView> _selections;
+    private List<LegacySimpleView> _selections;
     private Address _address;
 
     public override void Configure()
@@ -23,7 +23,7 @@ public class ArbitraryCardPickerPanel : Panel
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
-        _selections = new List<SimpleView>();
+        _selections = new List<LegacySimpleView>();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
         SkillListView.PointerEnterNeuron.Join(PlayCardHoverSFX);
@@ -50,10 +50,10 @@ public class ArbitraryCardPickerPanel : Panel
         SkillListView.Refresh();
     }
 
-    private void ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
+    private void ToggleSkill(LegacyInteractBehaviour ib, PointerEventData eventData)
         => ToggleSkill(ib.GetSimpleView());
 
-    private bool ToggleSkill(SimpleView v)
+    private bool ToggleSkill(LegacySimpleView v)
     {
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
@@ -82,7 +82,7 @@ public class ArbitraryCardPickerPanel : Panel
         return true;
     }
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
+    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 
     private void ConfirmSelections()

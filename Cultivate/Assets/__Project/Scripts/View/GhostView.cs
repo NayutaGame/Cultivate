@@ -5,11 +5,11 @@ using UnityEngine.EventSystems;
 
 public class GhostView : MonoBehaviour
 {
-    public SimpleView SimpleView;
+    public LegacySimpleView SimpleView;
 
     public void Awake()
     {
-        SimpleView ??= GetComponent<SimpleView>();
+        SimpleView ??= GetComponent<LegacySimpleView>();
         SimpleView.AwakeFunction();
     }
 
@@ -21,7 +21,7 @@ public class GhostView : MonoBehaviour
     private Tween _animationHandle;
     public bool IsAnimating => _animationHandle != null && _animationHandle.active;
 
-    public void BeginDrag(InteractBehaviour ib, PointerEventData d)
+    public void BeginDrag(LegacyInteractBehaviour ib, PointerEventData d)
     {
         ib.GetCLView().SetInactive(ib, d);
         
@@ -30,7 +30,7 @@ public class GhostView : MonoBehaviour
         SimpleView.SetAddress(ib.GetSimpleView().GetAddress());
         SimpleView.Refresh();
 
-        PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
         {
             _mouseOffset = d.position;
@@ -40,7 +40,7 @@ public class GhostView : MonoBehaviour
 
     private Vector2 _mouseOffset;
 
-    public void EndDrag(InteractBehaviour ib, PointerEventData d)
+    public void EndDrag(LegacyInteractBehaviour ib, PointerEventData d)
     {
         ib.GetCLView().SetIdle(ib, d);
 
@@ -55,22 +55,22 @@ public class GhostView : MonoBehaviour
         //         extraBehaviourPivot.RectTransformToIdle(SimpleView.GetDisplayTransform());
         // }
         
-        PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
             pivotBehaviour.RectTransformToIdle(SimpleView.GetViewTransform());
         
         gameObject.SetActive(false);
     }
 
-    public void Dropping(InteractBehaviour ib, PointerEventData d)
+    public void Dropping(LegacyInteractBehaviour ib, PointerEventData d)
     {
         ib.GetCLView().SetIdle(ib, d);
         gameObject.SetActive(false);
     }
 
-    public void Drag(InteractBehaviour ib, PointerEventData eventData)
+    public void Drag(LegacyInteractBehaviour ib, PointerEventData eventData)
     {
-        PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
         {
             Drag(pivotBehaviour.FollowTransform, eventData.position);

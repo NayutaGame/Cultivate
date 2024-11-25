@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class FormationBrowserPanel : Panel
 {
-    public ListView FormationBrowser;
+    public LegacyListView FormationBrowser;
 
     [SerializeField] private FormationGroupDetailedView _detailedGroupView;
     private FormationGroupBarView _selection;
@@ -22,7 +22,7 @@ public class FormationBrowserPanel : Panel
         FormationBrowser.Refresh();
     }
 
-    private void SelectFormation(InteractBehaviour ib, PointerEventData eventData)
+    private void SelectFormation(LegacyInteractBehaviour ib, PointerEventData eventData)
     {
         FormationGroupBarView view = ib.GetSimpleView() as FormationGroupBarView;
         if (view == null)

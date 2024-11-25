@@ -4,20 +4,20 @@ using UnityEngine.EventSystems;
 
 public class AnnotationView : MonoBehaviour
 {
-    private SimpleView SimpleView;
-    public SimpleView GetSimpleView() => SimpleView;
+    private LegacySimpleView SimpleView;
+    public LegacySimpleView GetSimpleView() => SimpleView;
 
     public void Awake()
     {
-        SimpleView ??= GetComponent<SimpleView>();
+        SimpleView ??= GetComponent<LegacySimpleView>();
         SimpleView.AwakeFunction();
     }
 
-    public void PointerEnter(InteractBehaviour ib, PointerEventData d) => PointerEnter(ib, d, ib.GetSimpleView().GetAddress());
-    public void PointerEnter(InteractBehaviour ib, PointerEventData d, Address address)
+    public void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d) => PointerEnter(ib, d, ib.GetSimpleView().GetAddress());
+    public void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d, Address address)
     {
         RectTransform rt = ib.GetSimpleView().GetViewTransform();
-        RectTransform hoverRT = ib.transform.parent.GetComponent<AnnotationBehaviour>()?.HoverTransform;
+        RectTransform hoverRT = ib.transform.parent.GetComponent<LegacyAnnotationBehaviour>()?.HoverTransform;
         if (hoverRT == null)
             hoverRT = rt;
         UpdateCornerPos(rt, hoverRT);
@@ -26,14 +26,14 @@ public class AnnotationView : MonoBehaviour
         SimpleView.Refresh();
     }
 
-    public void PointerExit(InteractBehaviour ib, PointerEventData d) => PointerExit(ib, d, ib.GetSimpleView().GetAddress());
-    public void PointerExit(InteractBehaviour ib, PointerEventData d, Address address)
+    public void PointerExit(LegacyInteractBehaviour ib, PointerEventData d) => PointerExit(ib, d, ib.GetSimpleView().GetAddress());
+    public void PointerExit(LegacyInteractBehaviour ib, PointerEventData d, Address address)
         => gameObject.SetActive(false);
     public void PointerExit()
         => gameObject.SetActive(false);
 
-    public void PointerMove(InteractBehaviour ib, PointerEventData d) => PointerMove(ib, d, ib.GetSimpleView().GetAddress());
-    public void PointerMove(InteractBehaviour ib, PointerEventData d, Address address)
+    public void PointerMove(LegacyInteractBehaviour ib, PointerEventData d) => PointerMove(ib, d, ib.GetSimpleView().GetAddress());
+    public void PointerMove(LegacyInteractBehaviour ib, PointerEventData d, Address address)
     {
         // UpdateMousePos(d.position);
     }

@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class RunConfigPanel : Panel
 {
     [Header("Character Picker")]
-    [SerializeField] private ListView CharacterListView;
+    [SerializeField] private LegacyListView CharacterListView;
     // TODO: move select into ListView
-    private SelectBehaviour _selection;
+    private LegacySelectBehaviour _selection;
     [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
 
     [Header("Difficulty Picker")]
@@ -63,10 +63,10 @@ public class RunConfigPanel : Panel
     private void Select(int i)
         => Select(CharacterListView.ItemBehaviourFromIndex(i).GetSelectBehaviour());
 
-    private void Select(InteractBehaviour ib, PointerEventData eventData)
+    private void Select(LegacyInteractBehaviour ib, PointerEventData eventData)
         => Select(ib.GetSimpleView().GetSelectBehaviour());
 
-    private void Select(SelectBehaviour selectBehaviour)
+    private void Select(LegacySelectBehaviour selectBehaviour)
     {
         if (_selection != null)
             _selection.SetSelected(false);

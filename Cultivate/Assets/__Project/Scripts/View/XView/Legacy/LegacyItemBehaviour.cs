@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-public class ItemBehaviour : XBehaviour
+public class LegacyItemBehaviour : LegacyBehaviour
 {
     [NonSerialized] public int PrefabIndex;
 }

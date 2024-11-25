@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsSlider : SimpleView
+public class SettingsSlider : LegacySimpleView
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private TMP_Text NumberText;

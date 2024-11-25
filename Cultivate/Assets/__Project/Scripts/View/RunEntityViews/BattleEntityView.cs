@@ -3,11 +3,11 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class BattleEntityView : SimpleView
+public class BattleEntityView : LegacySimpleView
 {
     public TMP_Text NameText;
-    public ListView SkillList;
-    public ListView FormationList;
+    public LegacyListView SkillList;
+    public LegacyListView FormationList;
     
     [SerializeField] public RectTransform SkillListTransform;
     [SerializeField] private RectTransform SkillListShowPivot;

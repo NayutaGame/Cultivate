@@ -1,12 +1,12 @@
 
 using UnityEngine;
 
-public class XBehaviourHoverGhost : XBehaviour
+public class LegacyBehaviourHoverGhost : LegacyBehaviour
 {
     public string GhostAddress;
     private HoverGhostView Ghost;
 
-    public override void Init(XView view)
+    public override void Init(LegacyView view)
     {
         base.Init(view);
         Ghost ??= new Address(GhostAddress).Get<HoverGhostView>();
@@ -15,7 +15,7 @@ public class XBehaviourHoverGhost : XBehaviour
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = View.GetInteractBehaviour();
+        LegacyInteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
         

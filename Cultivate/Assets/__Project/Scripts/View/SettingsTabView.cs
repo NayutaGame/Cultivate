@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SettingsTabView : SimpleView
+public class SettingsTabView : LegacySimpleView
 {
     [SerializeField] public Image HoverImage;
     [SerializeField] private TMP_Text Text;
@@ -48,7 +48,7 @@ public class SettingsTabView : SimpleView
         SetAlpha(0);
     }
     
-    public void Hover(InteractBehaviour ib, PointerEventData d)
+    public void Hover(LegacyInteractBehaviour ib, PointerEventData d)
     {
         SettingsTab settingsTab = Get<SettingsTab>();
         if (AppManager.Instance.Settings.IsSelectedTab(settingsTab))
@@ -57,7 +57,7 @@ public class SettingsTabView : SimpleView
         SetAlpha(0.1f);
     }
 
-    public void Unhover(InteractBehaviour ib, PointerEventData d)
+    public void Unhover(LegacyInteractBehaviour ib, PointerEventData d)
     {
         SettingsTab settingsTab = Get<SettingsTab>();
         if (AppManager.Instance.Settings.IsSelectedTab(settingsTab))

@@ -3,9 +3,9 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectBehaviour : XBehaviour
+public class LegacySelectBehaviour : LegacyBehaviour
 {
-    public SimpleView GetSimpleView() => View.GetView();
+    public LegacySimpleView GetSimpleView() => View.GetView();
 
     [SerializeField] private Image SelectionImage;
 

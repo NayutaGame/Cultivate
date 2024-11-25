@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class XBehaviourBlackFill : XBehaviour
+public class LegacyBehaviourBlackFill : LegacyBehaviour
 {
     [SerializeField] private Image _target;
 
@@ -13,11 +13,11 @@ public class XBehaviourBlackFill : XBehaviour
 
     private Tween _handle;
 
-    public override void Init(XView view)
+    public override void Init(LegacyView view)
     {
         base.Init(view);
 
-        InteractBehaviour ib = View.GetInteractBehaviour();
+        LegacyInteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 
@@ -25,12 +25,12 @@ public class XBehaviourBlackFill : XBehaviour
         ib.PointerExitNeuron.Join(PointerExit);
     }
 
-    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
+    private void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
     {
         AnimateState(HoverState);
     }
 
-    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+    private void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
     {
         AnimateState(IdleState);
     }

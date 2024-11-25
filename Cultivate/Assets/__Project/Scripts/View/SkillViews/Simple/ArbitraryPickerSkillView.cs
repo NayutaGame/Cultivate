@@ -1,7 +1,7 @@
 
-public class ArbitraryPickerSkillView : SimpleView
+public class ArbitraryPickerSkillView : LegacySimpleView
 {
-    public SimpleView SkillView;
+    public LegacySimpleView SkillView;
 
     public override void SetAddress(Address address)
     {

@@ -1,2 +1,2 @@
 
-public class HandSkillInteractBehaviour : InteractBehaviour { }
+public class HandSkillInteractBehaviour : LegacyInteractBehaviour { }

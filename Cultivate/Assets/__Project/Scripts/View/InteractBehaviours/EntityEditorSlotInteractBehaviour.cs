@@ -1,2 +1,2 @@
 
-public class EntityEditorSlotInteractBehaviour : InteractBehaviour { }
+public class EntityEditorSlotInteractBehaviour : LegacyInteractBehaviour { }

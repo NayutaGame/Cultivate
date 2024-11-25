@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 
-public class AnimatedListView : ListView
+public class LegacyAnimatedListView : LegacyListView
 {
     [SerializeField] private RectTransform Displays;
 
@@ -24,22 +24,22 @@ public class AnimatedListView : ListView
 
     #region Atomic Operations
 
-    protected override void InitItemBehaviour(ItemBehaviour itemBehaviour, int prefabIndex)
+    protected override void InitItemBehaviour(LegacyItemBehaviour itemBehaviour, int prefabIndex)
     {
         base.InitItemBehaviour(itemBehaviour, prefabIndex);
         ReparentSimpleView(itemBehaviour);
     }
 
-    private void ReparentSimpleView(ItemBehaviour itemBehaviour)
+    private void ReparentSimpleView(LegacyItemBehaviour itemBehaviour)
     {
         RectTransform displayTransform = itemBehaviour.GetDisplayTransform();
         displayTransform.SetParent(Displays);
         displayTransform.name = Traversal().Count().ToString();
     }
 
-    protected override ItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
+    protected override LegacyItemBehaviour EnableItemBehaviour(int prefabIndex, int orderInPool, int index)
     {
-        ItemBehaviour itemBehaviour = base.EnableItemBehaviour(prefabIndex, orderInPool, index);
+        LegacyItemBehaviour itemBehaviour = base.EnableItemBehaviour(prefabIndex, orderInPool, index);
 
         RectTransform displayTransform = itemBehaviour.GetDisplayTransform();
         displayTransform.SetSiblingIndex(index);
@@ -48,9 +48,9 @@ public class AnimatedListView : ListView
         return itemBehaviour;
     }
 
-    protected override ItemBehaviour DisableItemBehaviour(int index)
+    protected override LegacyItemBehaviour DisableItemBehaviour(int index)
     {
-        ItemBehaviour itemBehaviour = base.DisableItemBehaviour(index);
+        LegacyItemBehaviour itemBehaviour = base.DisableItemBehaviour(index);
 
         RectTransform displayTransform = itemBehaviour.GetDisplayTransform();
         displayTransform.gameObject.SetActive(false);
@@ -64,7 +64,7 @@ public class AnimatedListView : ListView
         while (_activePool.Count != 0)
         {
             int index = _activePool.Count - 1;
-            ItemBehaviour itemBehaviour = _activePool[index];
+            LegacyItemBehaviour itemBehaviour = _activePool[index];
 
             itemBehaviour.gameObject.SetActive(false);
 
@@ -81,7 +81,7 @@ public class AnimatedListView : ListView
     public void RefreshPivots()
         => _activePool.Do(itemBehaviour =>
         {
-            PivotBehaviour pivotBehaviour = itemBehaviour.GetBehaviour<PivotBehaviour>();
+            LegacyPivotBehaviour pivotBehaviour = itemBehaviour.GetBehaviour<LegacyPivotBehaviour>();
             if (pivotBehaviour != null)
                 pivotBehaviour.RefreshPivots();
         });

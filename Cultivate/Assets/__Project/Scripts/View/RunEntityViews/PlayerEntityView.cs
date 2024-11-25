@@ -2,10 +2,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerEntityView : SimpleView
+public class PlayerEntityView : LegacySimpleView
 {
-    public ListView SkillList;
-    public ListView FormationList;
+    public LegacyListView SkillList;
+    public LegacyListView FormationList;
 
     public override void SetAddress(Address address)
     {
@@ -34,10 +34,10 @@ public class PlayerEntityView : SimpleView
 
     #region IInteractable
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
+    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 
-    private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void Equip(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         if (!(from is HandSkillInteractBehaviour))
             return;
@@ -57,10 +57,10 @@ public class PlayerEntityView : SimpleView
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private static void EquipStaging(InteractBehaviour from, InteractBehaviour to, bool isReplace)
+    private static void EquipStaging(LegacyInteractBehaviour from, LegacyInteractBehaviour to, bool isReplace)
     {
-        PivotBehaviour fromPivot = from.GetCLView().GetBehaviour<PivotBehaviour>();
-        PivotBehaviour toPivot = to.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour fromPivot = from.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
+        LegacyPivotBehaviour toPivot = to.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         
         // From: if ths slot has skill, To Display -> From Idle
         if (isReplace)
@@ -70,7 +70,7 @@ public class PlayerEntityView : SimpleView
         }
         
         // Ghost
-        GhostBehaviour ghost = from.GetCLView().GetBehaviour<GhostBehaviour>();
+        LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
         
         // To: Ghost Display -> To Idle
         toPivot.RectTransformToIdle(ghost.GetDisplayTransform());
@@ -78,7 +78,7 @@ public class PlayerEntityView : SimpleView
         AudioManager.Play("CardPlacement");
     }
 
-    private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void Swap(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         if (!(from is FieldSlotInteractBehaviour))
             return;
@@ -99,10 +99,10 @@ public class PlayerEntityView : SimpleView
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private static void SwapStaging(InteractBehaviour from, InteractBehaviour to, bool isReplace)
+    private static void SwapStaging(LegacyInteractBehaviour from, LegacyInteractBehaviour to, bool isReplace)
     {
-        PivotBehaviour fromPivot = from.GetCLView().GetBehaviour<PivotBehaviour>();
-        PivotBehaviour toPivot = to.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour fromPivot = from.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
+        LegacyPivotBehaviour toPivot = to.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         
         // From: if ths slot has skill, To Display -> From Idle
         if (isReplace)
@@ -112,7 +112,7 @@ public class PlayerEntityView : SimpleView
         }
         
         // Ghost
-        GhostBehaviour ghost = from.GetCLView().GetBehaviour<GhostBehaviour>();
+        LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
         
         // To: Ghost Display -> To Idle
         toPivot.RectTransformToIdle(ghost.GetDisplayTransform());

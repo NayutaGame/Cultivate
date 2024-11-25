@@ -114,17 +114,17 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     {
         _results.Clear();
         Raycaster.Raycast(d, _results);
-        return _results.Count >= 1 && _results[0].gameObject.GetComponent<InteractBehaviour>() != null;
+        return _results.Count >= 1 && _results[0].gameObject.GetComponent<LegacyInteractBehaviour>() != null;
     }
 
-    public InteractBehaviour FirstRayCastHit(PointerEventData d)
+    public LegacyInteractBehaviour FirstRayCastHit(PointerEventData d)
     {
         _results.Clear();
         Raycaster.Raycast(d, _results);
         if (_results.Count < 1)
             return null;
         
-        return _results[0].gameObject.GetComponent<InteractBehaviour>();
+        return _results[0].gameObject.GetComponent<LegacyInteractBehaviour>();
     }
 
     public Vector3 UI2World(Vector2 screenPosition)

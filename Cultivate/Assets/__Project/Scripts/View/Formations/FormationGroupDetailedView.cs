@@ -3,10 +3,10 @@ using TMPro;
 using UnityEngine;
 
 [SelectionBase]
-public class FormationGroupDetailedView : SimpleView
+public class FormationGroupDetailedView : LegacySimpleView
 {
     [SerializeField] private TMP_Text NameText;
-    [SerializeField] private ListView FormationListView;
+    [SerializeField] private LegacyListView FormationListView;
 
     public override void SetAddress(Address address)
     {

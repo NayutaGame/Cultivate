@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class MarkView : SimpleView
+public class MarkView : LegacySimpleView
 {
     [SerializeField] private Image BackgroundImage;
     [SerializeField] private TMP_Text JingJieText;

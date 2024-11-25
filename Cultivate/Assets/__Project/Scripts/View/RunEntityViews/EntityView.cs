@@ -1,13 +1,13 @@
 
 using TMPro;
 
-public class EntityView : SimpleView
+public class EntityView : LegacySimpleView
 {
     public TMP_Text NameText;
     public TMP_Text JingJieText;
     public TMP_Text HPText;
     public TMP_Text DescriptionText;
-    public ListView SlotListView;
+    public LegacyListView SlotListView;
 
     public override void SetAddress(Address address)
     {

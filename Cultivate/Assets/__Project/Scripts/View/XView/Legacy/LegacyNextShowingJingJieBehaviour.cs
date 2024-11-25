@@ -2,11 +2,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class NextShowingJingJieBehaviour : XBehaviour
+public class LegacyNextShowingJingJieBehaviour : LegacyBehaviour
 {
     [SerializeField] private SkillCardView _skillView;
 
-    public override void Init(XView view)
+    public override void Init(LegacyView view)
     {
         base.Init(view);
 
@@ -15,7 +15,7 @@ public class NextShowingJingJieBehaviour : XBehaviour
 
     private void InitInteractBehaviour()
     {
-        InteractBehaviour ib = View.GetInteractBehaviour();
+        LegacyInteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 
@@ -24,7 +24,7 @@ public class NextShowingJingJieBehaviour : XBehaviour
         ib.RightClickNeuron.Join(NextJingJie);
     }
     
-    private void ResetJingJie(InteractBehaviour ib, PointerEventData d)
+    private void ResetJingJie(LegacyInteractBehaviour ib, PointerEventData d)
     {
         ISkill skill = _skillView.Get<ISkill>();
         if (skill == null)
@@ -32,7 +32,7 @@ public class NextShowingJingJieBehaviour : XBehaviour
         _skillView.Refresh();
     }
     
-    private void NextJingJie(InteractBehaviour ib, PointerEventData d)
+    private void NextJingJie(LegacyInteractBehaviour ib, PointerEventData d)
     {
         ISkill skill = _skillView.Get<ISkill>();
         if (skill == null)

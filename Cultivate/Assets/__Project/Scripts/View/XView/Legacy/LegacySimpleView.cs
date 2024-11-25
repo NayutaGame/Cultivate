@@ -1,9 +1,9 @@
 
 using UnityEngine;
 
-public class SimpleView : XView
+public class LegacySimpleView : LegacyView
 {
-    public override SimpleView GetView() => this;
+    public override LegacySimpleView GetView() => this;
 
     protected RectTransform RectTransform;
     public override RectTransform GetViewTransform() => RectTransform;

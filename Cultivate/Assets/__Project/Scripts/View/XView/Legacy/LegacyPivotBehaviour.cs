@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PivotBehaviour : XBehaviour
+public class LegacyPivotBehaviour : LegacyBehaviour
 {
     public RectTransform IdleTransform;
     public RectTransform HoverTransform;
@@ -17,13 +17,13 @@ public class PivotBehaviour : XBehaviour
     public RectTransform GetDisplayTransform()
         => View.GetViewTransform();
 
-    public override void Init(XView view)
+    public override void Init(LegacyView view)
     {
         base.Init(view);
 
         _animator = InitAnimator();
 
-        InteractBehaviour ib = View.GetInteractBehaviour();
+        LegacyInteractBehaviour ib = View.GetInteractBehaviour();
         if (ib == null)
             return;
 
@@ -69,18 +69,18 @@ public class PivotBehaviour : XBehaviour
     public void RefreshPivots()
         => _animator.SetStateAsync(1);
 
-    private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void DraggingExit(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         // if (_animator.State != 0)
         //     _animator.SetStateAsync(1);
     }
 
-    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
+    private void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
     {
         // _animator.SetStateAsync(2);
     }
 
-    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+    private void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
     {
         // if (_animator.State != 0)
         //     _animator.SetStateAsync(1);

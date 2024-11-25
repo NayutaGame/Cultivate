@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuffView : SimpleView
+public class BuffView : LegacySimpleView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text StackText;
@@ -50,7 +50,7 @@ public class BuffView : SimpleView
 
     private void PingAnimation()
     {
-        PivotBehaviour pivotBehaviour = GetComponent<PivotBehaviour>();
+        LegacyPivotBehaviour pivotBehaviour = GetComponent<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
             pivotBehaviour.PlayPingAnimation();
     }

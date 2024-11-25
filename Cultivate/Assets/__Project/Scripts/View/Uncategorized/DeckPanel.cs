@@ -16,7 +16,7 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform PlayerEntityShowPivot;
     [SerializeField] private RectTransform PlayerEntityHidePivot;
 
-    public AnimatedListView HandView;
+    public LegacyAnimatedListView HandView;
     [SerializeField] private RectTransform HandTransform;
     [SerializeField] private RectTransform HandShowPivot;
     [SerializeField] private RectTransform HandHidePivot;
@@ -68,7 +68,7 @@ public class DeckPanel : Panel
         MergeFailureNeuron.Join(MergeFailure);
     }
 
-    private void DraggingEnter(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void DraggingEnter(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         if (!(from is HandSkillInteractBehaviour))
             return;
@@ -79,7 +79,7 @@ public class DeckPanel : Panel
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(1, env.GetMergePreresult(lhs, rhs));
     }
 
-    private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void DraggingExit(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }
@@ -123,7 +123,7 @@ public class DeckPanel : Panel
 
     #region IInteractable
 
-    private void HighlightContributors(InteractBehaviour ib, PointerEventData d)
+    private void HighlightContributors(LegacyInteractBehaviour ib, PointerEventData d)
     {
         Predicate<ISkill> pred = ib.GetCLView().Get<IFormationModel>().GetContributorPred();
         PlayerEntity.SkillList.TraversalActive().Do(HighlightSlot);
@@ -142,14 +142,14 @@ public class DeckPanel : Panel
         // { typeof(ImagePanelDescriptor), 11 },
         // { typeof(RunResultPanelDescriptor), 12 },
         
-        void HighlightSkill(ItemBehaviour itemBehaviour)
+        void HighlightSkill(LegacyItemBehaviour itemBehaviour)
         {
             ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
             if (runSkill != null && pred(runSkill))
                 itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(true);
         }
         
-        void HighlightSlot(ItemBehaviour itemBehaviour)
+        void HighlightSlot(LegacyItemBehaviour itemBehaviour)
         {
             SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
             if (skillSlot != null && skillSlot.Skill != null && pred(skillSlot.Skill))
@@ -157,19 +157,19 @@ public class DeckPanel : Panel
         }
     }
 
-    private void UnhighlightContributors(InteractBehaviour ib, PointerEventData d)
+    private void UnhighlightContributors(LegacyInteractBehaviour ib, PointerEventData d)
     {
         PlayerEntity.SkillList.TraversalActive().Do(UnhighlightSlot);
         HandView.TraversalActive().Do(UnhighlightSkill);
         
-        void UnhighlightSkill(ItemBehaviour itemBehaviour)
+        void UnhighlightSkill(LegacyItemBehaviour itemBehaviour)
         {
             ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
             if (runSkill != null)
                 itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(false);
         }
         
-        void UnhighlightSlot(ItemBehaviour itemBehaviour)
+        void UnhighlightSlot(LegacyItemBehaviour itemBehaviour)
         {
             SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
             if (skillSlot != null)
@@ -177,13 +177,13 @@ public class DeckPanel : Panel
         }
     }
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
+    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
     
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> MergeSuccessNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> MergeFailureNeuron = new();
+    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> MergeSuccessNeuron = new();
+    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> MergeFailureNeuron = new();
 
-    private void Merge(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void Merge(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         if (!(from is HandSkillInteractBehaviour))
             return;
@@ -200,7 +200,7 @@ public class DeckPanel : Panel
         MergeSuccessNeuron.Invoke(from, to, d);
     }
 
-    private void MergeSuccess(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void MergeSuccess(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(2, null);
         
@@ -212,30 +212,30 @@ public class DeckPanel : Panel
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private void MergeSuccessStaging(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void MergeSuccessStaging(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         // From: 本体被移除
         
         // Ghost
-        GhostBehaviour ghost = from.GetCLView().GetBehaviour<GhostBehaviour>();
+        LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
         
         // To: Ghost Display -> ToIdle + Ping Animation
-        PivotBehaviour pivotBehaviour = to.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour pivotBehaviour = to.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
             pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
 
         AudioManager.Play("CardUpgrade");
     }
 
-    private void MergeFailure(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void MergeFailure(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         // From
         
         // Ghost
-        GhostBehaviour ghost = from.GetCLView().GetBehaviour<GhostBehaviour>();
+        LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
         
         // To
-        PivotBehaviour pivotBehaviour = from.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyPivotBehaviour pivotBehaviour = from.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
             pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
         
@@ -243,15 +243,15 @@ public class DeckPanel : Panel
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }
 
-    private void RemoveMergePreresult(InteractBehaviour from, PointerEventData d)
+    private void RemoveMergePreresult(LegacyInteractBehaviour from, PointerEventData d)
     {
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }
 
-    private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData d)
+    private void Unequip(LegacyInteractBehaviour from, MonoBehaviour to, PointerEventData d)
         => Unequip(from, null, d);
 
-    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void Unequip(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
     {
         if (!(from is FieldSlotInteractBehaviour))
             return;
@@ -271,16 +271,16 @@ public class DeckPanel : Panel
         CanvasManager.Instance.RunCanvas.Refresh();
     }
 
-    private void UnequipStaging(InteractBehaviour from)
+    private void UnequipStaging(LegacyInteractBehaviour from)
     {
         // From: No Animation
         
         // Ghost
-        GhostBehaviour ghost = from.GetCLView().GetBehaviour<GhostBehaviour>();
+        LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
         
         // New IB: Ghost Display -> To Idle
-        InteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
-        PivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<PivotBehaviour>();
+        LegacyInteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
+        LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
             pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
 
@@ -291,7 +291,7 @@ public class DeckPanel : Panel
 
     public RectTransform Find(Address address)
     {
-        ItemBehaviour itemBehaviour =
+        LegacyItemBehaviour itemBehaviour =
             HandView.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address)) ??
             PlayerEntity.SkillList.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address));
         if (itemBehaviour == null)

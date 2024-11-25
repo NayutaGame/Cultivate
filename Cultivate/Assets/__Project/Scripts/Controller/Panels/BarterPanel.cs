@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class BarterPanel : Panel
 {
-    public ListView BarterItemListView;
+    public LegacyListView BarterItemListView;
 
     public Button ExitButton;
 
@@ -20,7 +20,7 @@ public class BarterPanel : Panel
         BarterItemListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
         BarterItemListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
 
-        foreach (ItemBehaviour itemBehaviour in BarterItemListView.ActivePool)
+        foreach (LegacyItemBehaviour itemBehaviour in BarterItemListView.ActivePool)
         {
             BarterItemView barterItemView = itemBehaviour.GetSimpleView() as BarterItemView;
             barterItemView.ClearExchangeEvent();
@@ -50,6 +50,6 @@ public class BarterPanel : Panel
         CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
     }
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
+    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomIconView : SimpleView
+public class RoomIconView : LegacySimpleView
 {
     [SerializeField] private Image Icon;
     
