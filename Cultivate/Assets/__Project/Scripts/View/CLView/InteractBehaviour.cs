@@ -12,7 +12,10 @@ public class InteractBehaviour : MonoBehaviour,
 {
     private XView _xView;
     public XView GetCLView() => _xView;
-    public SimpleView GetSimpleView() => _xView.GetSimpleView();
+    public SimpleView GetSimpleView() => _xView.GetView();
+
+    private Image Image;
+    private CanvasGroup CanvasGroup;
 
     public void Init(XView xView)
     {
@@ -22,6 +25,15 @@ public class InteractBehaviour : MonoBehaviour,
         CanvasGroup ??= GetComponent<CanvasGroup>();
 
         // AppendDebugLog();
+    }
+    
+    public void SetInteractable(bool value)
+    {
+        if (Image != null)
+            Image.raycastTarget = value;
+
+        if (CanvasGroup != null)
+            CanvasGroup.interactable = value;
     }
 
     private void AppendDebugLog()
@@ -54,18 +66,6 @@ public class InteractBehaviour : MonoBehaviour,
     private void DraggingEnterLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} DraggingEnter");
     private void DraggingExitLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} DraggingExit");
     private void DraggingMoveLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetSimpleView().name} DraggingMove");
-
-    private Image Image;
-    private CanvasGroup CanvasGroup;
-    
-    public void SetInteractable(bool value)
-    {
-        if (Image != null)
-            Image.raycastTarget = value;
-
-        if (CanvasGroup != null)
-            CanvasGroup.interactable = value;
-    }
 
     public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();

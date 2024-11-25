@@ -15,7 +15,7 @@ public class PivotBehaviour : XBehaviour
     public Animator Animator => _animator;
 
     public RectTransform GetDisplayTransform()
-        => View.GetDisplayTransform();
+        => View.GetViewTransform();
 
     public override void Init(XView view)
     {

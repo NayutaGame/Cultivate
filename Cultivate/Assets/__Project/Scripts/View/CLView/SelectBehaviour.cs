@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SelectBehaviour : XBehaviour
 {
-    public SimpleView GetSimpleView() => View.GetSimpleView();
+    public SimpleView GetSimpleView() => View.GetView();
 
     [SerializeField] private Image SelectionImage;
 

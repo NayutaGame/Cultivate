@@ -23,7 +23,7 @@ public class GhostView : MonoBehaviour
 
     public void BeginDrag(InteractBehaviour ib, PointerEventData d)
     {
-        ib.GetCLView().SetHide(ib, d);
+        ib.GetCLView().SetInactive(ib, d);
         
         gameObject.SetActive(true);
 
@@ -42,7 +42,7 @@ public class GhostView : MonoBehaviour
 
     public void EndDrag(InteractBehaviour ib, PointerEventData d)
     {
-        ib.GetCLView().SetShow(ib, d);
+        ib.GetCLView().SetIdle(ib, d);
 
         // InteractBehaviour firstHit = CanvasManager.Instance.FirstRayCastHit(d);
         //
@@ -57,14 +57,14 @@ public class GhostView : MonoBehaviour
         
         PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
         if (pivotBehaviour != null)
-            pivotBehaviour.RectTransformToIdle(SimpleView.GetDisplayTransform());
+            pivotBehaviour.RectTransformToIdle(SimpleView.GetViewTransform());
         
         gameObject.SetActive(false);
     }
 
     public void Dropping(InteractBehaviour ib, PointerEventData d)
     {
-        ib.GetCLView().SetShow(ib, d);
+        ib.GetCLView().SetIdle(ib, d);
         gameObject.SetActive(false);
     }
 
@@ -82,11 +82,11 @@ public class GhostView : MonoBehaviour
         pivot.position = CanvasManager.Instance.UI2World(mouse);
         if (IsAnimating)
             return;
-        SimpleView.SetDisplayTransform(pivot);
+        SimpleView.SetViewTransform(pivot);
     }
 
     public RectTransform GetDisplayTransform()
-        => SimpleView.GetDisplayTransform();
+        => SimpleView.GetViewTransform();
 
 
 
@@ -97,7 +97,7 @@ public class GhostView : MonoBehaviour
     private void SetDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        SimpleView.SetDisplayTransform(end);
+        SimpleView.SetViewTransform(end);
     }
 
     private void AnimateDisplay(RectTransform start, RectTransform end)
@@ -109,7 +109,7 @@ public class GhostView : MonoBehaviour
     private void AnimateDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(SimpleView.GetDisplayTransform(), end);
+        FollowAnimation f = new FollowAnimation(SimpleView.GetViewTransform(), end);
         _animationHandle = f.GetHandle();
         _animationHandle.SetAutoKill().Restart();
     }

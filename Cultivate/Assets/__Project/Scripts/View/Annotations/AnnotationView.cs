@@ -16,7 +16,7 @@ public class AnnotationView : MonoBehaviour
     public void PointerEnter(InteractBehaviour ib, PointerEventData d) => PointerEnter(ib, d, ib.GetSimpleView().GetAddress());
     public void PointerEnter(InteractBehaviour ib, PointerEventData d, Address address)
     {
-        RectTransform rt = ib.GetSimpleView().GetDisplayTransform();
+        RectTransform rt = ib.GetSimpleView().GetViewTransform();
         RectTransform hoverRT = ib.transform.parent.GetComponent<AnnotationBehaviour>()?.HoverTransform;
         if (hoverRT == null)
             hoverRT = rt;
@@ -41,7 +41,7 @@ public class AnnotationView : MonoBehaviour
     private void UpdateMousePos(Vector2 pos)
     {
         Vector2 pivot = new Vector2(Mathf.RoundToInt(pos.x / Screen.width), Mathf.RoundToInt(pos.y / Screen.height));
-        RectTransform rectTransform = SimpleView.GetDisplayTransform();
+        RectTransform rectTransform = SimpleView.GetViewTransform();
         rectTransform.pivot = pivot;
         rectTransform.position = pos;
     }
@@ -52,8 +52,8 @@ public class AnnotationView : MonoBehaviour
         Vector2 quadrant = new Vector2(Mathf.RoundToInt(uiPosition.x / Screen.width),
             Mathf.RoundToInt(uiPosition.y / Screen.height));
         
-        SimpleView.GetDisplayTransform().pivot = quadrant;
-        SimpleView.GetDisplayTransform().position = hoverRT.TransformPoint(
+        SimpleView.GetViewTransform().pivot = quadrant;
+        SimpleView.GetViewTransform().position = hoverRT.TransformPoint(
             (quadrant.x < 0.5f ? hoverRT.sizeDelta.x / 2 : -hoverRT.sizeDelta.x / 2),
             (quadrant.y > 0.5f ? hoverRT.sizeDelta.y / 2 : -hoverRT.sizeDelta.y / 2), 0);
     }

@@ -9,9 +9,6 @@ using UnityEngine.EventSystems;
 
 public class ListView : SimpleView
 {
-    private RectTransform SlotContainer;
-    private RectTransform ViewContainer;
-    
     public RectTransform Container;
     public GameObject[] Prefabs;
 
@@ -67,9 +64,7 @@ public class ListView : SimpleView
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        
         CheckAwake();
-
         Sync();
     }
 

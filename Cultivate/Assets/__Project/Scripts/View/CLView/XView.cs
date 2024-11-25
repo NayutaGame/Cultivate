@@ -5,10 +5,10 @@ using UnityEngine.EventSystems;
 
 public abstract class XView : MonoBehaviour
 {
-    public abstract SimpleView GetSimpleView();
+    public abstract SimpleView GetView();
 
-    public abstract RectTransform GetDisplayTransform();
-    public abstract void SetDisplayTransform(RectTransform pivot);
+    public abstract RectTransform GetViewTransform();
+    public abstract void SetViewTransform(RectTransform pivot);
 
     [SerializeField] private InteractBehaviour InteractBehaviour;
     public InteractBehaviour GetInteractBehaviour() => InteractBehaviour;
@@ -49,39 +49,36 @@ public abstract class XView : MonoBehaviour
     private TableSM _sm;
     private TableSM InitSM()
     {
-        // 0 for hide, 1 for show
+        // 0 for inactive, 1 for idle
         TableSM sm = new(2);
-        sm[-1, 1] = Show;
-        sm[-1, 0] = Hide;
+        sm[-1, 0] = GoToInactive;
+        sm[-1, 1] = GoToIdle;
         return sm;
     }
 
-    private void Show()
-    {
-        if (InteractBehaviour != null)
-            InteractBehaviour.SetInteractable(true);
-        GetSimpleView().SetVisible(true);
-    }
-
-    public void Hide()
+    private void GoToInactive()
     {
         if (InteractBehaviour != null)
             InteractBehaviour.SetInteractable(false);
-        GetSimpleView().SetVisible(false);
+        GetView().SetVisible(false);
     }
 
-    public void SetShow(InteractBehaviour ib, PointerEventData d)
+    private void GoToIdle()
+    {
+        if (InteractBehaviour != null)
+            InteractBehaviour.SetInteractable(true);
+        GetView().SetVisible(true);
+    }
+
+    public void SetIdle(InteractBehaviour ib, PointerEventData d)
         => _sm.SetState(1);
 
-    public void SetShow()
-        => _sm.SetState(1);
-
-    public void SetHide(InteractBehaviour ib, PointerEventData d)
+    public void SetInactive(InteractBehaviour ib, PointerEventData d)
         => _sm.SetState(0);
 
     public void SetVisible(bool value)
     {
-        GetSimpleView().SetVisible(value);
+        GetView().SetVisible(value);
     }
     
     public abstract Address GetAddress();

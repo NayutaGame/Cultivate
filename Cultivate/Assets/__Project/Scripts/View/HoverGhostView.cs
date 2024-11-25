@@ -44,7 +44,7 @@ public class HoverGhostView : MonoBehaviour
         
         PivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<PivotBehaviour>();
         if (pivotBehaviour != null)
-            pivotBehaviour.RectTransformToIdle(_skillView.GetDisplayTransform());
+            pivotBehaviour.RectTransformToIdle(_skillView.GetViewTransform());
         
         gameObject.SetActive(false);
     }
@@ -79,11 +79,11 @@ public class HoverGhostView : MonoBehaviour
         pivot.position = CanvasManager.Instance.UI2World(mouse);
         if (IsAnimating)
             return;
-        _skillView.SetDisplayTransform(pivot);
+        _skillView.SetViewTransform(pivot);
     }
 
     public RectTransform GetDisplayTransform()
-        => _skillView.GetDisplayTransform();
+        => _skillView.GetViewTransform();
 
 
 
@@ -94,7 +94,7 @@ public class HoverGhostView : MonoBehaviour
     private void SetDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        _skillView.SetDisplayTransform(end);
+        _skillView.SetViewTransform(end);
     }
 
     private void AnimateDisplay(RectTransform start, RectTransform end)
@@ -106,7 +106,7 @@ public class HoverGhostView : MonoBehaviour
     private void AnimateDisplay(RectTransform end)
     {
         _animationHandle?.Kill();
-        FollowAnimation f = new FollowAnimation(_skillView.GetDisplayTransform(), end);
+        FollowAnimation f = new FollowAnimation(_skillView.GetViewTransform(), end);
         _animationHandle = f.GetHandle();
         _animationHandle.SetAutoKill().Restart();
     }

@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class SimpleView : XView
 {
-    public override SimpleView GetSimpleView() => this;
+    public override SimpleView GetView() => this;
 
     protected RectTransform RectTransform;
-    public override RectTransform GetDisplayTransform() => RectTransform;
-    public override void SetDisplayTransform(RectTransform pivot)
+    public override RectTransform GetViewTransform() => RectTransform;
+    public override void SetViewTransform(RectTransform pivot)
     {
         RectTransform.position = pivot.position;
         RectTransform.localScale = pivot.localScale;

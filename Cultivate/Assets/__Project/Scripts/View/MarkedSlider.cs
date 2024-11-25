@@ -18,7 +18,7 @@ public class MarkedSlider : SimpleView
 
     private void SetPositionForMarkView(MarkView markView, int mark)
     {
-        Vector3 oldPosition = markView.GetDisplayTransform().localPosition;
+        Vector3 oldPosition = markView.GetViewTransform().localPosition;
         markView.SetLocalPosition(new Vector3(XFromMark(mark), oldPosition.y, oldPosition.z));
     }
 

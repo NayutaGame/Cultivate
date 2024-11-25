@@ -11,8 +11,8 @@ public abstract class XBehaviour : MonoBehaviour
         View = view;
     }
 
-    public SimpleView GetSimpleView() => View.GetSimpleView();
-    public RectTransform GetDisplayTransform() => View.GetDisplayTransform();
+    public SimpleView GetSimpleView() => View.GetView();
+    public RectTransform GetDisplayTransform() => View.GetViewTransform();
     public InteractBehaviour GetInteractBehaviour() => View.GetInteractBehaviour();
     public SelectBehaviour GetSelectBehaviour() => View.GetSelectBehaviour();
     public XBehaviour[] GetBehaviours() => View.GetBehaviours();
