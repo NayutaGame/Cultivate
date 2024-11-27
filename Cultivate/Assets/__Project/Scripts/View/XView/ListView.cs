@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks;
 using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,6 +14,8 @@ public class ListView : XView
 
     protected List<XView> _activePool;
     protected List<XView>[] _inactivePools;
+
+    private bool _autoSync;
 
     #region Accessors
 
@@ -58,6 +59,28 @@ public class ListView : XView
     public XView ViewFromIndex(int i)
         => _activePool[i];
 
+    public bool IsAutoSync() => _autoSync;
+
+    public void SetAutoSync(bool autoSync)
+    {
+        _autoSync = autoSync;
+        CheckNeurons();
+    }
+
+    #endregion
+
+    #region Core
+
+    private void OnEnable()
+    {
+        CheckNeurons();
+    }
+
+    private void OnDisable()
+    {
+        CheckNeurons();
+    }
+
     #endregion
 
     #region List Operations
@@ -65,6 +88,8 @@ public class ListView : XView
     public override void AwakeFunction()
     {
         base.AwakeFunction();
+
+        _viewContainer = transform.GetChild(0).GetComponent<RectTransform>();
         
         _activePool = new List<XView>();
         _inactivePools = new List<XView>[Prefabs.Length];
@@ -102,7 +127,7 @@ public class ListView : XView
 
         _model = Get<IListModel>();
         for (int i = 0; i < _model.Count(); i++)
-            InsertItemStaging(i, GetAddress().Append($"#{i}").Get<object>());
+            InsertItem(i, GetAddress().Append($"#{i}").Get<object>());
 
         Refresh();
     }
@@ -200,25 +225,60 @@ public class ListView : XView
     #region Model Delegates
 
     private IListModel _model;
+    
+    protected IListModel Model
+    {
+        get => _model;
+        set
+        {
+            _model = value;
+            CheckNeurons();
+        }
+    }
 
-    protected virtual async UniTask InsertItemStaging(int index, object item)
+    private void CheckNeurons()
+    {
+        // _model.InsertEvent -= InsertItem;
+        // _model.RemoveAtEvent -= RemoveItemAt;
+        // _model.ModifiedEvent -= Modified;
+        // _model.ResyncEvent -= Resync;
+        
+        bool isActive = gameObject.activeInHierarchy;
+        bool hasModel = _model != null;
+        bool autoSync = _autoSync;
+
+        if (!isActive || !hasModel || !autoSync)
+            return;
+        
+        // _model.InsertEvent += InsertItem;
+        // _model.RemoveAtEvent += RemoveItemAt;
+        // _model.ModifiedEvent += Modified;
+        // _model.ResyncEvent += Resync;
+    }
+
+    public virtual void AddItem(object item)
+    {
+        InsertItem(_activePool.Count, item);
+    }
+
+    public virtual void InsertItem(int index, object item)
     {
         int prefabIndex = GetPrefabIndex(item);
         int orderInPool = FetchItemBehaviour(prefabIndex);
         EnableItem(prefabIndex, orderInPool, index);
     }
 
-    protected virtual async UniTask RemoveAtStaging(int index)
+    public virtual void RemoveItemAt(int index)
     {
         DisableItem(index);
     }
 
-    protected virtual async UniTask ModifiedStaging(int index)
+    public virtual void Modified(int index)
     {
         _activePool[index].Refresh();
     }
 
-    protected virtual async UniTask Resync()
+    public virtual void Resync()
         => Sync();
 
     #endregion

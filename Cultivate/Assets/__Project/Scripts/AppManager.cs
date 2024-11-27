@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using CLLibrary;
+using SpriteShadersUltimate.Demo;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -53,6 +54,9 @@ public class AppManager : Singleton<AppManager>, Addressable
 
             { "Canvas", () => CanvasManager.Instance },
         };
+
+        foreach (var kvp in _accessors)
+            Address.AddToRoot(kvp.Key, kvp.Value);
 
         Application.targetFrameRate = 120;
 
