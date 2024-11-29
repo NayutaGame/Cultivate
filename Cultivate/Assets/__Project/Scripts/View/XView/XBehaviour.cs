@@ -1,6 +1,7 @@
 
 using UnityEngine;
 
+[RequireComponent(typeof(XView))]
 public class XBehaviour : MonoBehaviour
 {
     private XView _view;
@@ -20,7 +21,7 @@ public class XBehaviour : MonoBehaviour
         AwakeFunction();
     }
 
-    public void AwakeFunction()
+    public virtual void AwakeFunction()
     {
     }
 

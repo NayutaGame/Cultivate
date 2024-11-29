@@ -9,8 +9,6 @@ public class LegacyPivotBehaviour : LegacyBehaviour
     public RectTransform HoverTransform;
     public RectTransform FollowTransform;
 
-    private Tween _handle;
-
     private Animator _animator;
     public Animator Animator => _animator;
 
@@ -30,11 +28,6 @@ public class LegacyPivotBehaviour : LegacyBehaviour
         ib.PointerEnterNeuron.Join(PointerEnter);
         ib.PointerExitNeuron.Join(PointerExit);
         ib.DraggingExitNeuron.Join(DraggingExit);
-    }
-
-    private void OnDisable()
-    {
-        _handle?.Kill();
     }
     
     protected Animator InitAnimator()

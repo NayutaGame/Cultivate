@@ -5,17 +5,18 @@ using UnityEngine;
 public class XView : MonoBehaviour
 {
     private RectTransform _rect;
-
-    // [SerializeField] private InteractBehaviour _interactBehaviour;
-    // public InteractBehaviour GetInteractBehaviour() => _interactBehaviour;
+    public RectTransform GetRect() => _rect;
     
     private XBehaviour[] _behaviours;
     public XBehaviour[] GetBehaviours() => _behaviours;
     public T GetBehaviour<T>() where T : XBehaviour => _behaviours.FirstObj(b => b is T) as T;
-    // public ItemBehaviour GetItemBehaviour() => Get<ItemBehaviour>();
+    public InteractBehaviour GetInteractBehaviour() => GetBehaviour<InteractBehaviour>();
+    public ItemBehaviour GetItemBehaviour() => Get<ItemBehaviour>();
     // public SelectBehaviour GetSelectBehaviour() => Get<SelectBehaviour>();
     
     private bool _hasAwoken;
+    private Animator _animator;
+    protected Animator GetAnimator() => _animator;
 
     public virtual void Awake()
     {
@@ -32,10 +33,6 @@ public class XView : MonoBehaviour
 
     public virtual void AwakeFunction()
     {
-        // _interactBehaviour ??= GetComponent<InteractBehaviour>();
-        // if (InteractBehaviour != null)
-        //     InteractBehaviour.Init(this);
-        
         _rect ??= GetComponent<RectTransform>();
 
         _behaviours ??= GetComponents<XBehaviour>();
@@ -45,43 +42,25 @@ public class XView : MonoBehaviour
             b.SetView(this);
         });
 
-        // _sm = InitSM();
+        _animator = InitAnimator();
+        
+        InteractBehaviour ib = GetInteractBehaviour();
+        if (ib != null)
+            InitInteractBehaviour(ib);
     }
 
-    // private TableSM _sm;
-    // private TableSM InitSM()
-    // {
-    //     // 0 for inactive, 1 for idle
-    //     TableSM sm = new(2);
-    //     sm[-1, 0] = GoToInactive;
-    //     sm[-1, 1] = GoToIdle;
-    //     return sm;
-    // }
-    //
-    // private void GoToInactive()
-    // {
-    //     if (InteractBehaviour != null)
-    //         InteractBehaviour.SetInteractable(false);
-    //     GetView().SetVisible(false);
-    // }
-    //
-    // private void GoToIdle()
-    // {
-    //     if (InteractBehaviour != null)
-    //         InteractBehaviour.SetInteractable(true);
-    //     GetView().SetVisible(true);
-    // }
-    //
-    // public void SetIdle(LegacyInteractBehaviour ib, PointerEventData d)
-    //     => _sm.SetState(1);
-    //
-    // public void SetInactive(LegacyInteractBehaviour ib, PointerEventData d)
-    //     => _sm.SetState(0);
-    //
-    // public void SetVisible(bool value)
-    // {
-    //     GetView().SetVisible(value);
-    // }
+    protected virtual Animator InitAnimator()
+    {
+        return null;
+        // 0. inactive
+        // 1. hide
+        // TableSM sm = new(2);
+        // sm[-1, 0] = GoToHide;
+        // sm[-1, 1] = GoToIdle;
+        // return sm;
+    }
+
+    protected virtual void InitInteractBehaviour(InteractBehaviour ib) { }
 
     private Address _address;
     public virtual Address GetAddress() => _address;

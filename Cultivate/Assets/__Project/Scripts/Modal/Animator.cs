@@ -15,13 +15,12 @@ public class Animator : StateMachine<int>
     }
 
     private string _id;
-    
     private Tween _handle;
 
-    public Animator(int size, string id)
+    public Animator(int size, string id = null)
     {
         _table = new(size);
-        _id = id;
+        _id = id ?? "Anonymous";
     }
 
     public Tween SetStateTween(int state)

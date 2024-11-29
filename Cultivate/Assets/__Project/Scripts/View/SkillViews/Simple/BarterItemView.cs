@@ -1,6 +1,5 @@
 
 using System;
-using UnityEngine.UI;
 
 public class BarterItemView : LegacySimpleView
 {

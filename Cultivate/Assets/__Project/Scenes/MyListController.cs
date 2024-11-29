@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MyDataController : MonoBehaviour
+public class MyListController : MonoBehaviour
 {
     [SerializeField] private Button _addButton;
     

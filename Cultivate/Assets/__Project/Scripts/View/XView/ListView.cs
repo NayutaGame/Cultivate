@@ -10,7 +10,7 @@ public class ListView : XView
 {
     public GameObject[] Prefabs;
     
-    private RectTransform _viewContainer;
+    private RectTransform _container;
 
     protected List<XView> _activePool;
     protected List<XView>[] _inactivePools;
@@ -71,25 +71,11 @@ public class ListView : XView
 
     #region Core
 
-    private void OnEnable()
-    {
-        CheckNeurons();
-    }
-
-    private void OnDisable()
-    {
-        CheckNeurons();
-    }
-
-    #endregion
-
-    #region List Operations
-
     public override void AwakeFunction()
     {
         base.AwakeFunction();
 
-        _viewContainer = transform.GetChild(0).GetComponent<RectTransform>();
+        InitContainer();
         
         _activePool = new List<XView>();
         _inactivePools = new List<XView>[Prefabs.Length];
@@ -97,6 +83,11 @@ public class ListView : XView
             _inactivePools[i] = new List<XView>();
 
         RegisterExists();
+    }
+
+    protected virtual void InitContainer()
+    {
+        _container = transform.GetChild(0).GetComponent<RectTransform>();
     }
 
     public override void SetAddress(Address address)
@@ -114,10 +105,10 @@ public class ListView : XView
 
     private void RegisterExists()
     {
-        for (int i = 0; i < _viewContainer.childCount; i++)
+        for (int i = 0; i < _container.childCount; i++)
         {
-            XView item = _viewContainer.GetChild(i).GetComponent<XView>();
-            InitItem(item, item.GetComponent<ItemBehaviour>()?.PrefabIndex ?? 0);
+            XView item = _container.GetChild(i).GetComponent<XView>();
+            InitItem(item, item.GetItemBehaviour()?.PrefabIndex ?? 0);
         }
     }
 
@@ -132,12 +123,22 @@ public class ListView : XView
         Refresh();
     }
 
+    private void OnEnable()
+    {
+        CheckNeurons();
+    }
+
+    private void OnDisable()
+    {
+        CheckNeurons();
+    }
+
     #endregion
 
     #region Atomic Operations
 
     private XView AllocItem(int prefabIndex)
-        => Instantiate(Prefabs[prefabIndex], _viewContainer).GetComponent<XView>();
+        => Instantiate(Prefabs[prefabIndex], _container).GetComponent<XView>();
 
     protected virtual void InitItem(XView item, int prefabIndex)
     {
