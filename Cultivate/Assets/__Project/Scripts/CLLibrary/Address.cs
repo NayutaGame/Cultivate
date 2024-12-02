@@ -11,7 +11,7 @@ public class Address : IEquatable<Address>
 {
     private static Regex Pattern = new Regex(@"\w+");
 
-    private static Dictionary<string, object> _root = new();
+    private static Dictionary<string, Func<object>> _root = new();
 
     private string _rawString;
     private readonly List<CLKey> _values;
@@ -30,7 +30,7 @@ public class Address : IEquatable<Address>
         }).ToList();
     }
 
-    public static void AddToRoot(string key, object value)
+    public static void AddToRoot(string key, Func<object> value)
     {
         _root[key] = value;
     }
@@ -67,7 +67,7 @@ public class Address : IEquatable<Address>
                 }
                 else if (curr == _root)
                 {
-                    curr = _root[s];
+                    curr = _root[s]();
                 }
                 else
                 {

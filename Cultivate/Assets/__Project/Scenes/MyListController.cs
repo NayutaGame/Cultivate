@@ -19,7 +19,7 @@ public class MyListController : MonoBehaviour
         _model.Add(new("二"));
         _model.Add(new("三"));
         
-        Address.AddToRoot("SkillList", _model);
+        Address.AddToRoot("SkillList", () => _model);
         
         SkillListView.SetAddress("SkillList");
         

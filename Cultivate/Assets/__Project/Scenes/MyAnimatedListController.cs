@@ -1,4 +1,5 @@
 
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ public class MyAnimatedListController : MonoBehaviour
         _model.Add(new("二"));
         _model.Add(new("三"));
         
-        Address.AddToRoot("AnimatedSkillList", _model);
+        Address.AddToRoot("AnimatedSkillList", () => _model);
         
         SkillAnimatedListView.SetAddress("AnimatedSkillList");
         
