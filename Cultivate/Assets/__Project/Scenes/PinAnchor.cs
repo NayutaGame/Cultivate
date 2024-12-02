@@ -1,15 +1,13 @@
 
-using CLLibrary;
 using UnityEngine;
 
-public class PinAnchor : Singleton<PinAnchor>
+public class PinAnchor : MonoBehaviour
 {
     private RectTransform _rect;
     public RectTransform GetRect() => _rect;
-    
-    public override void DidAwake()
+
+    private void Awake()
     {
-        base.DidAwake();
         _rect = GetComponent<RectTransform>();
     }
 }

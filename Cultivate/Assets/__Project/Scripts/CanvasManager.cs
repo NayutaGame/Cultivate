@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -28,6 +29,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public TextHint TextHint;
 
     [Header("Ghosts")]
+    public PinAnchor PinAnchor;
     public GhostView SkillGhost;
     public GhostView SlotGhost;
     public HoverGhostView SkillHoverGhost;
@@ -40,17 +42,13 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     [Header("Curtain")]
     public Curtain Curtain;
-
+    
+    [ColorPalette("JingJie")]
     public Color[] JingJieColors;
     public Sprite[] JingJieSprites;
+    [ColorPalette("WuXing")]
     public Color[] WuXingColors;
-
-    public Color TechColorGreen;
-    public Color TechColorYellow;
-    public Color TechColorRed;
-
     public Color[] CostColors;
-
     public Sprite[] CostIconSprites;
 
     public TMP_FontAsset ArmorFontAsset;
@@ -63,6 +61,9 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
         return WuXingColors[wuXing.Value._index];
     }
+
+    public RectTransform GetPinAnchorRect()
+        => PinAnchor.GetRect();
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();

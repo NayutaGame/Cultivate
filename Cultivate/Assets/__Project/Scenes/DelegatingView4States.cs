@@ -50,7 +50,7 @@ public class DelegatingView4States : DelegatingView
 
     private Tween GoToFollow()
     {
-        return new FollowAnimation(GetDelegatedView().GetRect(), PinAnchor.Instance.GetRect()).GetHandle();
+        return new FollowAnimation(GetDelegatedView().GetRect(), CanvasManager.Instance.GetPinAnchorRect()).GetHandle();
     }
 
     private Tween GoToConfiguration(Configuration configuration)
@@ -87,7 +87,7 @@ public class DelegatingView4States : DelegatingView
 
     private void ReparentToAnchor()
     {
-        GetDelegatedView().GetRect().SetParent(PinAnchor.Instance.GetRect());
+        GetDelegatedView().GetRect().SetParent(CanvasManager.Instance.GetPinAnchorRect());
     }
 
     private void RecoverReparent()
@@ -111,8 +111,8 @@ public class DelegatingView4States : DelegatingView
     
     private void Drag(InteractBehaviour ib, PointerEventData eventData)
     {
-        Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, 10));
-        PinAnchor.Instance.GetRect().position = position;
+        Vector3 position = CanvasManager.Instance.UI2World(eventData.position);
+        CanvasManager.Instance.GetPinAnchorRect().position = position;
     }
 
 

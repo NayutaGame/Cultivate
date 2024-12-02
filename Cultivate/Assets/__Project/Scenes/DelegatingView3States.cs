@@ -76,7 +76,7 @@ public class DelegatingView3States : DelegatingView
 
     private void ReparentToAnchor()
     {
-        GetDelegatedView().GetRect().SetParent(PinAnchor.Instance.GetRect());
+        GetDelegatedView().GetRect().SetParent(CanvasManager.Instance.GetPinAnchorRect());
     }
 
     private void RecoverReparent()
