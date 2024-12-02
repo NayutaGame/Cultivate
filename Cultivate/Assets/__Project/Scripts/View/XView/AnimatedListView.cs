@@ -30,6 +30,8 @@ public class AnimatedListView : ListView
     protected override void InitItem(XView item, int prefabIndex)
     {
         base.InitItem(item, prefabIndex);
+        DelegatingView delegatingView = item as DelegatingView;
+        delegatingView.SetParentListView(this);
         ReparentItem(item);
     }
 
@@ -92,4 +94,11 @@ public class AnimatedListView : ListView
             // if (pivotBehaviour != null)
             //     pivotBehaviour.RefreshPivots();
         });
+
+    public void RecoverDelegatingView(DelegatingView delegatingView)
+    {
+        delegatingView.GetDelegatedView().GetRect().SetParent(_viewContainer);
+        int siblingIndex = IndexFromView(delegatingView).Value;
+        delegatingView.GetDelegatedView().GetRect().SetSiblingIndex(siblingIndex);
+    }
 }

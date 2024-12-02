@@ -62,4 +62,6 @@ public class Animator : StateMachine<int>
             return;
         await _handle.AsyncWaitForCompletion();
     }
+    
+    public bool IsAnimating => _handle != null && _handle.active;
 }

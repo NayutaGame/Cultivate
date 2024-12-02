@@ -4,8 +4,11 @@ using UnityEngine;
 public class DelegatingView : XView
 {
     [SerializeField] private XView _delegatedView;
-
     public XView GetDelegatedView() => _delegatedView;
+
+    private AnimatedListView _parentListView;
+    public AnimatedListView GetParentListView() => _parentListView;
+    public void SetParentListView(AnimatedListView parentListView) => _parentListView = parentListView;
 
     public override Address GetAddress() => _delegatedView.GetAddress();
     public override T Get<T>() => _delegatedView.Get<T>();
