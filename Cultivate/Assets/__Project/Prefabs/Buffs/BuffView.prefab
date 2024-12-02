@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cf0b6ffe8ecbc48a0273ee6871dfe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 2174912840750869188}
+  InteractBehaviour: {fileID: 0}
   NameText: {fileID: 3896687707735671168}
   StackText: {fileID: 5321332257272614936}
   IconImage: {fileID: 3290540958268984079}
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 8911729687666404612}
   - component: {fileID: 5443958290613147781}
   - component: {fileID: 5272751174139168749}
-  - component: {fileID: 2174912840750869188}
+  - component: {fileID: 3016993401199041048}
   m_Layer: 0
   m_Name: InteractBehaviour
   m_TagString: Untagged
@@ -352,7 +352,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2174912840750869188
+--- !u!114 &3016993401199041048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -361,7 +361,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2998176207599924103}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d6cca7092a4c5e4e9b698b88b2475ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3365174150710500810
