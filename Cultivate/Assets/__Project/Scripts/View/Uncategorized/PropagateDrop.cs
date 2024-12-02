@@ -14,7 +14,7 @@ public class PropagateDrop : MonoBehaviour,
 
         LegacyInteractBehaviour dragged = eventData.pointerDrag.GetComponent<LegacyInteractBehaviour>();
 
-        if (dragged != null)
+        if (dragged != null && _onDrop != null)
             _onDrop.Invoke(dragged, this, eventData);
     }
 }

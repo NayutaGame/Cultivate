@@ -14,14 +14,6 @@ public struct DeckIndex : IEquatable<DeckIndex>
         _index = index;
     }
 
-    public Address ToAddress()
-    {
-        if (_inField)
-            return new Address($"Run.Environment.Home.Slots#{_index}");
-        else
-            return new Address($"Run.Environment.Hand#{_index}");
-    }
-
     public bool Equals(DeckIndex other)
     {
         return _inField == other._inField && _index == other._index;

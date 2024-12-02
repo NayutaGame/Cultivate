@@ -47,22 +47,22 @@ public class DeckPanel : Panel
         CharacterIconView.SetAddress(new Address("Run.Environment.Config.CharacterProfile"));
         
         PlayerEntity.SetAddress(new Address("Run.Environment.Home"));
-        PlayerEntity.FormationList.PointerEnterNeuron.Join(HighlightContributors);
-        PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
+        // PlayerEntity.FormationList.PointerEnterNeuron.Join(HighlightContributors);
+        // PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
 
         HandView.SetAddress(new Address("Run.Environment.Hand"));
-        HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        HandView.DroppingNeuron.Join(RemoveMergePreresult);
-        HandView.EndDragNeuron.Join(RemoveMergePreresult);
-        HandView.DropNeuron.Join(Merge, Unequip);
+        // HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        // HandView.DroppingNeuron.Join(RemoveMergePreresult);
+        // HandView.EndDragNeuron.Join(RemoveMergePreresult);
+        // HandView.DropNeuron.Join(Merge, Unequip);
         
-        HandView.DraggingEnterNeuron.Join(DraggingEnter);
-        HandView.DraggingExitNeuron.Join(DraggingExit);
+        // HandView.DraggingEnterNeuron.Join(DraggingEnter);
+        // HandView.DraggingExitNeuron.Join(DraggingExit);
         
-        HandView.GetComponent<PropagateDrop>()._onDrop = Unequip;
+        // HandView.GetComponent<PropagateDrop>()._onDrop = Unequip;
 
         SortButton.onClick.RemoveAllListeners();
-        SortButton.onClick.AddListener(Sort);
+        // SortButton.onClick.AddListener(Sort);
         
         MergeSuccessNeuron.Join(MergeSuccess);
         MergeFailureNeuron.Join(MergeFailure);
@@ -126,8 +126,8 @@ public class DeckPanel : Panel
     private void HighlightContributors(LegacyInteractBehaviour ib, PointerEventData d)
     {
         Predicate<ISkill> pred = ib.GetCLView().Get<IFormationModel>().GetContributorPred();
-        PlayerEntity.SkillList.TraversalActive().Do(HighlightSlot);
-        HandView.TraversalActive().Do(HighlightSkill);
+        // PlayerEntity.SkillList.TraversalActive().Do(HighlightSlot);
+        // HandView.TraversalActive().Do(HighlightSkill);
 
         // extra views
         // { typeof(BattlePanelDescriptor), 2 },
@@ -159,8 +159,8 @@ public class DeckPanel : Panel
 
     private void UnhighlightContributors(LegacyInteractBehaviour ib, PointerEventData d)
     {
-        PlayerEntity.SkillList.TraversalActive().Do(UnhighlightSlot);
-        HandView.TraversalActive().Do(UnhighlightSkill);
+        // PlayerEntity.SkillList.TraversalActive().Do(UnhighlightSlot);
+        // HandView.TraversalActive().Do(UnhighlightSkill);
         
         void UnhighlightSkill(LegacyItemBehaviour itemBehaviour)
         {
@@ -279,7 +279,7 @@ public class DeckPanel : Panel
         LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
         
         // New IB: Ghost Display -> To Idle
-        LegacyInteractBehaviour newIB = HandView.ActivePool.Last().GetInteractBehaviour();
+        LegacyInteractBehaviour newIB = LatestSkillItem().GetInteractBehaviour();
         LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
             pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
@@ -289,40 +289,43 @@ public class DeckPanel : Panel
 
     #endregion
 
-    public RectTransform Find(Address address)
+    public LegacyItemBehaviour SkillItemFromDeckIndex(DeckIndex deckIndex)
     {
-        LegacyItemBehaviour itemBehaviour =
-            HandView.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address)) ??
-            PlayerEntity.SkillList.ActivePool.Find(item => item.GetSimpleView().GetAddress().Equals(address));
-        if (itemBehaviour == null)
-            return null;
-        return itemBehaviour.GetDisplayTransform();
+        if (deckIndex.InField)
+            return PlayerEntity.SkillList.ActivePool[deckIndex.Index];
+
+        return HandView.ActivePool[deckIndex.Index];
+    }
+
+    public LegacyItemBehaviour LatestSkillItem()
+    {
+        return HandView.ActivePool.Last();
     }
 
     private Tween _animationHandle;
 
     private void Sort()
     {
-        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-
-        _animationHandle?.Kill();
-
-        _animationHandle = DOTween.Sequence()
-            .AppendCallback(() =>
-            {
-                HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 0);
-                HandView.RefreshPivots();
-            })
-            .AppendInterval(0.2f)
-            .AppendCallback(() =>
-            {
-                HandView.Get<SkillInventory>().SortByComparisonId(0);
-                CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
-                HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 1134);
-                HandView.RefreshPivots();
-            });
-
-        _animationHandle.SetAutoKill().Restart();
+        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        //
+        // _animationHandle?.Kill();
+        //
+        // _animationHandle = DOTween.Sequence()
+        //     .AppendCallback(() =>
+        //     {
+        //         HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 0);
+        //         HandView.RefreshPivots();
+        //     })
+        //     .AppendInterval(0.2f)
+        //     .AppendCallback(() =>
+        //     {
+        //         HandView.Get<SkillInventory>().SortByComparisonId(0);
+        //         CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+        //         HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 1134);
+        //         HandView.RefreshPivots();
+        //     });
+        //
+        // _animationHandle.SetAutoKill().Restart();
     }
 
     private void TryShow(PointerEventData eventData) => Animator.SetStateAsync(1);

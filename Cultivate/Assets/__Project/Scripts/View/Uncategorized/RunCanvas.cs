@@ -441,13 +441,13 @@ public class RunCanvas : Panel
     public LegacyInteractBehaviour SkillInteractBehaviourFromDeckIndex(DeckIndex? deckIndex)
     {
         if (!deckIndex.HasValue)
-            return DeckPanel.HandView.ActivePool.Last().GetInteractBehaviour();
+            return LatestSkillInteractBehaviour();
         
-        if (deckIndex.Value.InField)
-            return DeckPanel.PlayerEntity.SkillList.ActivePool[deckIndex.Value.Index].GetInteractBehaviour();
-
-        return DeckPanel.HandView.ActivePool[deckIndex.Value.Index].GetInteractBehaviour();
+        return DeckPanel.SkillItemFromDeckIndex(deckIndex.Value).GetInteractBehaviour();
     }
+
+    public LegacyInteractBehaviour LatestSkillInteractBehaviour()
+        => DeckPanel.LatestSkillItem().GetInteractBehaviour();
 
     public void MingYuanDamageStaging(int value)
     {

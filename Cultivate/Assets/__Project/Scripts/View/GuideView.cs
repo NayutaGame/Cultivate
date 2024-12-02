@@ -62,15 +62,12 @@ public class GuideView : MonoBehaviour
                 _dragCursor.gameObject.SetActive(false);
                 return;
             }
-
-            Address start = result[0].ToAddress();
-            Address end = result[1].ToAddress();
             
             _handle?.Kill();
             _dragCursor.localScale = Vector3.one;
             GuideAnimation anim = new GuideAnimation(_dragCursor,
-                CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
-                CanvasManager.Instance.RunCanvas.DeckPanel.Find(end));
+                CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[0])?.GetDisplayTransform(),
+                CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[1])?.GetDisplayTransform());
             _handle = DOTween.Sequence()
                 .Append(anim.GetHandle())
                 .AppendInterval(0.4f)
@@ -91,12 +88,10 @@ public class GuideView : MonoBehaviour
                 return;
             }
             
-            Address start = from.ToAddress();
-            
             _handle?.Kill();
             _dragCursor.localScale = Vector3.one;
             GuideAnimation anim = new GuideAnimation(_dragCursor,
-                CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
+                CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(from)?.GetDisplayTransform(),
                 CanvasManager.Instance.RunCanvas.DeckPanel.DropRectTransform);
             _handle = DOTween.Sequence()
                 .Append(anim.GetHandle())
@@ -117,15 +112,12 @@ public class GuideView : MonoBehaviour
                 _dragCursor.gameObject.SetActive(false);
                 return;
             }
-
-            Address start = result[0].ToAddress();
-            Address end = result[1].ToAddress();
             
             _handle?.Kill();
             _dragCursor.localScale = Vector3.one;
             GuideAnimation anim = new GuideAnimation(_dragCursor,
-                CanvasManager.Instance.RunCanvas.DeckPanel.Find(start),
-                CanvasManager.Instance.RunCanvas.DeckPanel.Find(end));
+                CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[0])?.GetDisplayTransform(),
+                CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[1])?.GetDisplayTransform());
             _handle = DOTween.Sequence()
                 .Append(anim.GetHandle())
                 .AppendInterval(0.4f)
