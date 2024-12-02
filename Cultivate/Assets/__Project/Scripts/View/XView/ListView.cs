@@ -5,6 +5,7 @@ using System.Linq;
 using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ListView : XView
 {
@@ -147,7 +148,7 @@ public class ListView : XView
 
         item.GetOrAddComponent<ItemBehaviour>().PrefabIndex = prefabIndex;
         _inactivePools[prefabIndex].Add(item);
-        // BindInteractBehaviour(itemBehaviour.GetInteractBehaviour());
+        BindInteractBehaviour(item.GetInteractBehaviour());
         item.name = Traversal().Count().ToString();
     }
 
@@ -284,43 +285,43 @@ public class ListView : XView
 
     #endregion
 
-    // #region Interact Behaviour
-    //
-    // public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
-    // public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();
-    // public Neuron<InteractBehaviour, PointerEventData> PointerMoveNeuron = new();
-    // public Neuron<InteractBehaviour, PointerEventData> BeginDragNeuron = new();
-    // public Neuron<InteractBehaviour, PointerEventData> EndDragNeuron = new();
-    // public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
-    // public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
-    // public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
-    // public Neuron<InteractBehaviour, PointerEventData> DroppingNeuron = new();
-    // public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
-    //
-    // public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
-    // public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingExitNeuron = new();
-    // public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingMoveNeuron = new();
-    //
-    // private void BindInteractBehaviour(InteractBehaviour ib)
-    // {
-    //     if (ib == null)
-    //         return;
-    //
-    //     ib.PointerEnterNeuron.Join(PointerEnterNeuron);
-    //     ib.PointerExitNeuron.Join(PointerExitNeuron);
-    //     ib.PointerMoveNeuron.Join(PointerMoveNeuron);
-    //     ib.BeginDragNeuron.Join(BeginDragNeuron);
-    //     ib.EndDragNeuron.Join(EndDragNeuron);
-    //     ib.DragNeuron.Join(DragNeuron);
-    //     ib.LeftClickNeuron.Join(LeftClickNeuron);
-    //     ib.RightClickNeuron.Join(RightClickNeuron);
-    //     ib.DroppingNeuron.Join(DroppingNeuron);
-    //     ib.DropNeuron.Join(DropNeuron);
-    //     
-    //     ib.DraggingEnterNeuron.Join(DraggingEnterNeuron);
-    //     ib.DraggingExitNeuron.Join(DraggingExitNeuron);
-    //     ib.DraggingMoveNeuron.Join(DraggingMoveNeuron);
-    // }
-    //
-    // #endregion
+    #region Interact Behaviour
+    
+    public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerMoveNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> BeginDragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> EndDragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> DroppingNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
+    
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingExitNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingMoveNeuron = new();
+    
+    private void BindInteractBehaviour(InteractBehaviour ib)
+    {
+        if (ib == null)
+            return;
+    
+        ib.PointerEnterNeuron.Join(PointerEnterNeuron);
+        ib.PointerExitNeuron.Join(PointerExitNeuron);
+        ib.PointerMoveNeuron.Join(PointerMoveNeuron);
+        ib.BeginDragNeuron.Join(BeginDragNeuron);
+        ib.EndDragNeuron.Join(EndDragNeuron);
+        ib.DragNeuron.Join(DragNeuron);
+        ib.LeftClickNeuron.Join(LeftClickNeuron);
+        ib.RightClickNeuron.Join(RightClickNeuron);
+        ib.DroppingNeuron.Join(DroppingNeuron);
+        ib.DropNeuron.Join(DropNeuron);
+        
+        ib.DraggingEnterNeuron.Join(DraggingEnterNeuron);
+        ib.DraggingExitNeuron.Join(DraggingExitNeuron);
+        ib.DraggingMoveNeuron.Join(DraggingMoveNeuron);
+    }
+    
+    #endregion
 }
