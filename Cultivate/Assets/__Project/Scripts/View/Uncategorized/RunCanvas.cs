@@ -86,14 +86,18 @@ public class RunCanvas : Panel
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.GainSkillNeuron.Add(GainSkillStaging);
+        RunManager.Instance.Environment.AddSkillNeuron.Add(AddSkillStaging);
+        
+        RunManager.Instance.Environment.LegacyGainSkillNeuron.Add(GainSkillStaging);
         RunManager.Instance.Environment.GainSkillsNeuron.Add(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(MingYuanDamageStaging);
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.GainSkillNeuron.Remove(GainSkillStaging);
+        RunManager.Instance.Environment.AddSkillNeuron.Remove(AddSkillStaging);
+        
+        RunManager.Instance.Environment.LegacyGainSkillNeuron.Remove(GainSkillStaging);
         RunManager.Instance.Environment.GainSkillsNeuron.Remove(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuanDamageStaging);
     }
@@ -204,6 +208,51 @@ public class RunCanvas : Panel
     }
 
     #region Staging
+
+    private void AddSkillStaging(AddSkillDetails d)
+    {
+        void SetPosition(DelegatingView5States view, Vector3 position)
+        {
+            view.GetAnimator().SetState(4);
+            view.GetDelegatedView().GetRect().position = position;
+            view.GetDelegatedView().GetRect().localScale = Vector3.zero;
+        }
+
+        void SetShow(DelegatingView5States view)
+        {
+            view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
+        }
+
+        void SetIdle(DelegatingView5States view)
+        {
+            view.GetAnimator().SetStateAsync(1);
+            // AudioManager.Play("CardPlacement");
+        }
+
+        if (d.DeckIndex.InField)
+        {
+            return;
+        }
+        else
+        {
+            DeckPanel.HandView.InsertItem(d.DeckIndex.Index);
+        }
+
+        DelegatingView5States view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView5States;
+        Vector3 position = Vector3.zero;
+        
+        SetPosition(view, position);
+
+        Sequence seq = DOTween.Sequence()
+            .AppendInterval(0.05f)
+            .AppendCallback(() => SetShow(view))
+            .AppendInterval(0.3f)
+            .AppendCallback(() => SetIdle(view));
+
+        seq.SetAutoKill().Restart();
+
+        _blockingAnimation = seq;
+    }
 
     private void GainSkillStaging(GainSkillDetails d)
     {
@@ -443,11 +492,11 @@ public class RunCanvas : Panel
         if (!deckIndex.HasValue)
             return LatestSkillInteractBehaviour();
         
-        return DeckPanel.SkillItemFromDeckIndex(deckIndex.Value).GetInteractBehaviour();
+        return DeckPanel.LegacySkillItemFromDeckIndex(deckIndex.Value).GetInteractBehaviour();
     }
 
     public LegacyInteractBehaviour LatestSkillInteractBehaviour()
-        => DeckPanel.LatestSkillItem().GetInteractBehaviour();
+        => DeckPanel.LegacyLatestSkillItem().GetInteractBehaviour();
 
     public void MingYuanDamageStaging(int value)
     {

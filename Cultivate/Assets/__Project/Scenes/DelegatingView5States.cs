@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DelegatingView4States : DelegatingView
+public class DelegatingView5States : DelegatingView
 {
     protected override Animator InitAnimator()
     {
@@ -11,17 +11,17 @@ public class DelegatingView4States : DelegatingView
         // 1. idle
         // 2. hover
         // 3. follow
-        Animator animator = new(4, name);
-        animator[-1, 0] = GoToHide;
-        animator[-1, 1] = GoToIdle;
-        animator[-1, 2] = GoToHover;
-        animator[-1, 3] = GoToFollow;
+        // 4. free
+        Animator animator = new(5, name);
+        animator[-1, 0] = EnterHide;
+        animator[-1, 1] = EnterIdle;
+        animator[-1, 2] = EnterHover;
+        animator[-1, 3] = EnterFollow;
+        animator[-1, 4] = EnterFree;
+        animator[4, -1] = ExitFree;
         return animator;
         
-        // // 0 for hide, 1 for idle, 2 for hover, 3 for follow, 4 for ping
-        // animator[0, -1] = SetInteractable;
         // animator[-1, 4] = PingTween;
-        // return animator;
     }
 
     protected override void InitInteractBehaviour(InteractBehaviour ib)
@@ -39,19 +39,27 @@ public class DelegatingView4States : DelegatingView
     private static Configuration HoverConfiguration = new(localPosition: 1.6f * Vector3.up, localScale: 0.75f * Vector3.one);
     private static Configuration FollowConfiguration = new(localScale: 0.75f * Vector3.one);
 
-    private Tween GoToHide()
+    private Tween EnterHide()
         => GoToConfiguration(HideConfiguration);
 
-    private Tween GoToIdle()
+    private Tween EnterIdle()
         => GoToConfiguration(IdleConfiguration);
 
-    private Tween GoToHover()
+    private Tween EnterHover()
         => GoToConfiguration(HoverConfiguration);
 
-    private Tween GoToFollow()
+    private Tween EnterFollow()
     {
         return new FollowAnimation(GetDelegatedView().GetRect(), CanvasManager.Instance.GetPinAnchorRect()).GetHandle();
     }
+
+    private Tween EnterFree()
+        => DOTween.Sequence()
+            .AppendCallback(() => GetInteractBehaviour().SetInteractable(false));
+
+    private Tween ExitFree()
+        => DOTween.Sequence()
+            .AppendCallback(() => GetInteractBehaviour().SetInteractable(true));
 
     private Tween GoToConfiguration(Configuration configuration)
     {

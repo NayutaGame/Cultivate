@@ -165,66 +165,66 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         option =>
                         { // 0 -> 凌云峰，5张金牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Jin, count: 5));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Jin, count: 5));
                             return null;
                         },
                         option =>
                         { // 1 -> 逍遥海，5张水牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Shui, count: 5));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Shui, count: 5));
                             return null;
                         },
                         option =>
                         { // 2 -> 桃花宫，5张木牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Mu, count: 5));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Mu, count: 5));
                             return null;
                         },
                         option =>
                         { // 3 -> 长明殿，5张火牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Huo, count: 5));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Huo, count: 5));
                             return null;
                         },
                         option =>
                         { // 4 -> 环岳岭，5张土牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Tu, count: 5));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Tu, count: 5));
                             return null;
                         },
                         option =>
                         { // 5 -> 易宝斋，6张随机牌，5金钱
                             env.SetDGoldProcedure(5);
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 6));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 6));
                             return null;
                         },
                         option =>
                         { // 6 -> 剑池，6张攻击牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack), count: 6));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack), count: 6));
                             return null;
                         },
                         option =>
                         { // 7 -> 风雨楼，6张防御牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend), count: 6));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend), count: 6));
                             return null;
                         },
                         option =>
                         { // 8 -> 百草堂，6张随机牌，5气血上限
                             env.SetDDHealthProcedure(5);
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 6));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 6));
                             return null;
                         },
                         option =>
                         { // 9 -> 星宫，3张灵气牌，2张随机牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Mana), count: 3));
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 2));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Mana), count: 3));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 2));
                             return null;
                         },
                         option =>
                         { // 10 -> 天机阁，2张筑基牌，3张随机牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.ZhuJi, count: 2));
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 3));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.ZhuJi, count: 2));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 3));
                             return null;
                         },
                         option =>
                         { // 11 -> 散修，8张随机牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 8));
+                            env.LegacyDrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 8));
                             return null;
                         },
                     };
@@ -281,37 +281,37 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         option =>
                         { // 0 -> 凌云峰，5张金牌
-                            env.AddSkillProcedure(SkillEntry.FromName("金刃"));
-                            env.AddSkillProcedure(SkillEntry.FromName("寻猎"));
-                            env.AddSkillProcedure(SkillEntry.FromName("起势"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("金刃"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("寻猎"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("起势"));
                             return null;
                         },
                         option =>
                         { // 1 -> 逍遥海，5张水牌
-                            env.AddSkillProcedure(SkillEntry.FromName("吐纳"));
-                            env.AddSkillProcedure(SkillEntry.FromName("恋花"));
-                            env.AddSkillProcedure(SkillEntry.FromName("空幻"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("吐纳"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("恋花"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("空幻"));
                             return null;
                         },
                         option =>
                         { // 2 -> 桃花宫，5张木牌
-                            env.AddSkillProcedure(SkillEntry.FromName("明神"));
-                            env.AddSkillProcedure(SkillEntry.FromName("小松"));
-                            env.AddSkillProcedure(SkillEntry.FromName("潜龙在渊"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("明神"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("小松"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("潜龙在渊"));
                             return null;
                         },
                         option =>
                         { // 3 -> 长明殿，5张火牌
-                            env.AddSkillProcedure(SkillEntry.FromName("拂晓"));
-                            env.AddSkillProcedure(SkillEntry.FromName("轰天"));
-                            env.AddSkillProcedure(SkillEntry.FromName("云袖"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("拂晓"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("轰天"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("云袖"));
                             return null;
                         },
                         option =>
                         { // 4 -> 环岳岭，5张土牌
-                            env.AddSkillProcedure(SkillEntry.FromName("寸劲"));
-                            env.AddSkillProcedure(SkillEntry.FromName("八极拳"));
-                            env.AddSkillProcedure(SkillEntry.FromName("点穴"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("寸劲"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("八极拳"));
+                            env.LegacyAddSkillProcedure(SkillEntry.FromName("点穴"));
                             return null;
                         },
                     };
@@ -613,7 +613,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                            RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                     });
                     
                     A.SetLoseOperation(() =>
@@ -623,7 +623,7 @@ public class RoomCategory : Category<RoomEntry>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                                RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                         });
                         A.ResetGuideIndex();
                         return R;
@@ -674,14 +674,14 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("劈砍"), preferredDeckIndex: DeckIndex.FromField(0));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
+                    RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("劈砍"), preferredDeckIndex: DeckIndex.FromField(0));
+                    RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("恋花"));
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("劈砍"), preferredDeckIndex: DeckIndex.FromField(0));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
+                        RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("劈砍"), preferredDeckIndex: DeckIndex.FromField(0));
+                        RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("恋花"));
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -730,14 +730,14 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
+                    RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
+                    RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("寻猎"));
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
+                        RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
+                        RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("寻猎"));
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -787,14 +787,14 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"), preferredDeckIndex: DeckIndex.FromField(0));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("流沙"));
+                    RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("寻猎"), preferredDeckIndex: DeckIndex.FromField(0));
+                    RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("流沙"));
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"), preferredDeckIndex: DeckIndex.FromField(0));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("流沙"));
+                        RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("寻猎"), preferredDeckIndex: DeckIndex.FromField(0));
+                        RunManager.Instance.Environment.LegacyAddSkillProcedure(SkillEntry.FromName("流沙"));
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -844,7 +844,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                            RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                     });
                     
                     A.SetLoseOperation(() =>
@@ -854,7 +854,7 @@ public class RoomCategory : Category<RoomEntry>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                                RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                         });
                         A.ResetGuideIndex();
                         return R;
@@ -905,7 +905,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                            RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                     });
                     
                     A.SetLoseOperation(() =>
@@ -915,7 +915,7 @@ public class RoomCategory : Category<RoomEntry>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                                RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                         });
                         A.ResetGuideIndex();
                         return R;
@@ -971,7 +971,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                            RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                     });
                     
                     A.SetLoseOperation(() =>
@@ -981,7 +981,7 @@ public class RoomCategory : Category<RoomEntry>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                                RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                         });
                         A.ResetGuideIndex();
                         return R;
@@ -1035,7 +1035,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         SkillEntry entry = s.Skill?.GetEntry();
                         if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
+                            RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                     });
                     
                     A.SetLoseOperation(() =>
@@ -1045,7 +1045,7 @@ public class RoomCategory : Category<RoomEntry>
                         {
                             SkillEntry entry = s.Skill?.GetEntry();
                             if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
+                                RunManager.Instance.Environment.LegacyAddSkillProcedure(entry);
                         });
                         A.ResetGuideIndex();
                         return R;
@@ -1113,7 +1113,7 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A[0].SetSelect(option =>
                     {
-                        env.AddSkillProcedure(descriptors[firstIdx].Entry, descriptors[firstIdx].JingJie);
+                        env.LegacyAddSkillProcedure(descriptors[firstIdx].Entry, descriptors[firstIdx].JingJie);
                         return B;
                     });
                     B.SetWinOperation(() => null);
@@ -1212,8 +1212,8 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A[0].SetSelect(option =>
                     {
-                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("云袖"), JingJie.LianQi);
-                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("云袖"), JingJie.ZhuJi);
+                        env.LegacyAddSkillProcedure(skillEntry: SkillEntry.FromName("云袖"), JingJie.LianQi);
+                        env.LegacyAddSkillProcedure(skillEntry: SkillEntry.FromName("云袖"), JingJie.ZhuJi);
                         return B;
                     });
                     B.SetWinOperation(() => null);
@@ -1249,8 +1249,8 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A[0].SetSelect(option =>
                     {
-                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("流沙"), JingJie.LianQi);
-                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("拂晓"), JingJie.LianQi);
+                        env.LegacyAddSkillProcedure(skillEntry: SkillEntry.FromName("流沙"), JingJie.LianQi);
+                        env.LegacyAddSkillProcedure(skillEntry: SkillEntry.FromName("拂晓"), JingJie.LianQi);
                         return B;
                     });
                     B.SetWinOperation(() => null);
@@ -1295,7 +1295,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         CommodityListModel commodities = new CommodityListModel();
 
-                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                        List<SkillEntry> entries = RunManager.Instance.Environment.LegacyDrawSkills(new(
                             pred: e => e.LowestJingJie - RunManager.Instance.Environment.JingJie >= 2,
                             count: 2,
                             consume: false));
@@ -1365,7 +1365,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         CommodityListModel commodities = new CommodityListModel();
 
-                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                        List<SkillEntry> entries = RunManager.Instance.Environment.LegacyDrawSkills(new(
                             pred: e => e.LowestJingJie <= JingJie.ZhuJi,
                             count: 4,
                             consume: false));
@@ -1674,35 +1674,35 @@ public class RoomCategory : Category<RoomEntry>
 
                     A0[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Jin,
+                        RunManager.Instance.Environment.LegacyDrawSkillsProcedure(new(wuXing: WuXing.Jin,
                             jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
 
                     A0[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Shui,
+                        RunManager.Instance.Environment.LegacyDrawSkillsProcedure(new(wuXing: WuXing.Shui,
                             jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
 
                     A0[2].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Mu,
+                        RunManager.Instance.Environment.LegacyDrawSkillsProcedure(new(wuXing: WuXing.Mu,
                             jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
 
                     A1[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Huo,
+                        RunManager.Instance.Environment.LegacyDrawSkillsProcedure(new(wuXing: WuXing.Huo,
                             jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
 
                     A1[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Tu,
+                        RunManager.Instance.Environment.LegacyDrawSkillsProcedure(new(wuXing: WuXing.Tu,
                             jingJie: RunManager.Instance.Environment.JingJie));
                         return B;
                     });
@@ -1732,7 +1732,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         Bound manaCost = 0;
 
-                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                        List<SkillEntry> entries = RunManager.Instance.Environment.LegacyDrawSkills(new(
                             pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie).ByType(CostDescription.CostType.Mana)),
                             jingJie: RunManager.Instance.Environment.JingJie,
                             count: 3,
@@ -1745,7 +1745,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         Bound manaCost = new Bound(1, 10);
 
-                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                        List<SkillEntry> entries = RunManager.Instance.Environment.LegacyDrawSkills(new(
                             pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie).ByType(CostDescription.CostType.Mana)),
                             jingJie: RunManager.Instance.Environment.JingJie,
                             count: 3,
@@ -1756,7 +1756,7 @@ public class RoomCategory : Category<RoomEntry>
                     });
                     A[2].SetSelect(option =>
                     {
-                        List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(
+                        List<SkillEntry> entries = RunManager.Instance.Environment.LegacyDrawSkills(new(
                             jingJie: RunManager.Instance.Environment.JingJie,
                             skillTypeComposite: SkillType.Mana,
                             count: 3,
@@ -1768,7 +1768,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     B.SetConfirmOperation(skills =>
                     {
-                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
+                        skills.Do(item => RunManager.Instance.Environment.LegacyAddSkillProcedure(item.Entry, item.JingJie));
                         return C;
                     });
 
@@ -1791,11 +1791,11 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "天机阁",
                         detailedText: "刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
 
-                    List<SkillEntry> entries = RunManager.Instance.Environment.DrawSkills(new(jingJie: RunManager.Instance.Environment.JingJie, count: 10, consume: false));
+                    List<SkillEntry> entries = RunManager.Instance.Environment.LegacyDrawSkills(new(jingJie: RunManager.Instance.Environment.JingJie, count: 10, consume: false));
                     B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
                     B.SetConfirmOperation(skills =>
                     {
-                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
+                        skills.Do(item => RunManager.Instance.Environment.LegacyAddSkillProcedure(item.Entry, item.JingJie));
                         return C;
                     });
                     
@@ -2900,7 +2900,7 @@ public class RoomCategory : Category<RoomEntry>
                         if (signal is SelectedOptionSignal selectedOptionSignal)
                         {
                             int index = selectedOptionSignal.Selected;
-                            RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: options[index],
+                            RunManager.Instance.Environment.LegacyDrawSkillsProcedure(new(wuXing: options[index],
                                 jingJie: RunManager.Instance.Environment.JingJie));
                         }
                         return null;

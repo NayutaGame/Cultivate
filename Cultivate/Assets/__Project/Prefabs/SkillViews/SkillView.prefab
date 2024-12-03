@@ -282,7 +282,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce19d3df2f604b24fb2f7625f447321b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactBehaviour: {fileID: 0}
+  Illustration: {fileID: 2992915090873120700}
+  CostText: {fileID: 3069860122334367824}
+  CostIcon: {fileID: 7191770744752915315}
   NameText: {fileID: 1543386079984827108}
+  DescriptionText: {fileID: 3474554790091730152}
+  JingJieImage: {fileID: 750374815608862319}
+  EffectImage: {fileID: 5576562334568838583}
 --- !u!1 &2485106884428637875
 GameObject:
   m_ObjectHideFlags: 0

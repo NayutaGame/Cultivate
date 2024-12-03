@@ -16,7 +16,9 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform PlayerEntityShowPivot;
     [SerializeField] private RectTransform PlayerEntityHidePivot;
 
-    public LegacyAnimatedListView HandView;
+    public ListView HandView;
+
+    public LegacyAnimatedListView LegacyHandView;
     [SerializeField] private RectTransform HandTransform;
     [SerializeField] private RectTransform HandShowPivot;
     [SerializeField] private RectTransform HandHidePivot;
@@ -44,13 +46,15 @@ public class DeckPanel : Panel
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;
         
-        CharacterIconView.SetAddress(new Address("Run.Environment.Config.CharacterProfile"));
+        CharacterIconView.SetAddress("Run.Environment.Config.CharacterProfile");
         
-        PlayerEntity.SetAddress(new Address("Run.Environment.Home"));
+        PlayerEntity.SetAddress("Run.Environment.Home");
         // PlayerEntity.FormationList.PointerEnterNeuron.Join(HighlightContributors);
         // PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
 
-        HandView.SetAddress(new Address("Run.Environment.Hand"));
+        HandView.SetAddress("Run.Environment.Hand");
+
+        LegacyHandView.SetAddress("Run.Environment.Hand");
         // HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
         // HandView.DroppingNeuron.Join(RemoveMergePreresult);
         // HandView.EndDragNeuron.Join(RemoveMergePreresult);
@@ -99,7 +103,7 @@ public class DeckPanel : Panel
         base.Refresh();
         CharacterIconView.Refresh();
         PlayerEntity.Refresh();
-        HandView.Refresh();
+        LegacyHandView.Refresh();
     }
 
     private void OnEnable()
@@ -117,7 +121,7 @@ public class DeckPanel : Panel
 
     private void Sync()
     {
-        HandView.Sync();
+        LegacyHandView.Sync();
         PlayerEntity.Sync();
     }
 
@@ -279,7 +283,7 @@ public class DeckPanel : Panel
         LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
         
         // New IB: Ghost Display -> To Idle
-        LegacyInteractBehaviour newIB = LatestSkillItem().GetInteractBehaviour();
+        LegacyInteractBehaviour newIB = LegacyLatestSkillItem().GetInteractBehaviour();
         LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
         if (pivotBehaviour != null)
             pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
@@ -289,17 +293,26 @@ public class DeckPanel : Panel
 
     #endregion
 
-    public LegacyItemBehaviour SkillItemFromDeckIndex(DeckIndex deckIndex)
+    public XView SkillItemFromDeckIndex(DeckIndex deckIndex)
+    {
+        if (deckIndex.InField)
+            // return PlayerEntity.SkillList.ActivePool[deckIndex.Index];
+            return null;
+
+        return HandView.ViewFromIndex(deckIndex.Index);
+    }
+
+    public LegacyItemBehaviour LegacySkillItemFromDeckIndex(DeckIndex deckIndex)
     {
         if (deckIndex.InField)
             return PlayerEntity.SkillList.ActivePool[deckIndex.Index];
 
-        return HandView.ActivePool[deckIndex.Index];
+        return LegacyHandView.ActivePool[deckIndex.Index];
     }
 
-    public LegacyItemBehaviour LatestSkillItem()
+    public LegacyItemBehaviour LegacyLatestSkillItem()
     {
-        return HandView.ActivePool.Last();
+        return LegacyHandView.ActivePool.Last();
     }
 
     private Tween _animationHandle;

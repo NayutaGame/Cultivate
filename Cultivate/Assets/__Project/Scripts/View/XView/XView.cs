@@ -6,17 +6,19 @@ public class XView : MonoBehaviour
 {
     private RectTransform _rect;
     public RectTransform GetRect() => _rect;
+
+    [SerializeField] private InteractBehaviour _interactBehaviour;
+    public InteractBehaviour GetInteractBehaviour() => _interactBehaviour;
     
     private XBehaviour[] _behaviours;
     public XBehaviour[] GetBehaviours() => _behaviours;
     public T GetBehaviour<T>() where T : XBehaviour => _behaviours.FirstObj(b => b is T) as T;
-    public InteractBehaviour GetInteractBehaviour() => GetBehaviour<InteractBehaviour>();
     public ItemBehaviour GetItemBehaviour() => Get<ItemBehaviour>();
     // public SelectBehaviour GetSelectBehaviour() => Get<SelectBehaviour>();
     
     private bool _hasAwoken;
     private Animator _animator;
-    protected Animator GetAnimator() => _animator;
+    public Animator GetAnimator() => _animator;
 
     public virtual void Awake()
     {
@@ -46,7 +48,11 @@ public class XView : MonoBehaviour
         
         InteractBehaviour ib = GetInteractBehaviour();
         if (ib != null)
+        {
+            ib.SetView(this);
+            ib.CheckAwake();
             InitInteractBehaviour(ib);
+        }
     }
 
     protected virtual Animator InitAnimator()

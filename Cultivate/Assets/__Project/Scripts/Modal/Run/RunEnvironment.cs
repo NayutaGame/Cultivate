@@ -32,6 +32,198 @@ public class RunEnvironment : Addressable, RunClosureOwner
     
     #endregion
 
+    #region Core
+    
+    private RunConfig _config;
+    private RunEntity _home; public RunEntity Home => _home;
+    private RunEntity _away; public RunEntity Away => _away;
+    public Map Map { get; private set; }
+    public Pool<SkillEntry> SkillPool;
+    public SkillInventory Hand { get; private set; }
+    private BoundedInt _gold;
+    private JingJie _jingJie;
+    public JingJie JingJie => _jingJie;
+    private RunClosureDict _closureDict;
+    public RunClosureDict ClosureDict => _closureDict;
+
+    public StageResult SimulateResult;
+    public RunResult Result { get; }
+    private RunResultPanelDescriptor _runResultPanelDescriptor;
+
+    public Neuron<AddSkillDetails> AddSkillNeuron = new();
+    public Neuron<GainSkillDetails> LegacyGainSkillNeuron = new();
+    public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
+    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
+    public Neuron<BuySkillDetails> BuySkillNeuron = new();
+    public Neuron<GachaDetails> GachaNeuron = new();
+    public Neuron<int> GainMingYuanNeuron = new();
+    public Neuron<int> LoseMingYuanNeuron = new();
+    public Neuron<int> GainGoldNeuron = new();
+    public Neuron<int> LoseGoldNeuron = new();
+    public Neuron<int> GainDHealthNeuron = new();
+    public Neuron<int> LoseDHealthNeuron = new();
+    // Audio
+
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
+    private RunEnvironment(RunConfig config)
+    {
+        _accessors = new()
+        {
+            { "Config",                () => _config },
+            { "Home",                  () => _home },
+            { "Map",                   () => Map },
+            { "Hand",                  () => Hand },
+            { "ActivePanel",           GetActivePanel },
+        };
+
+        _gold = new(0);
+        _config = config;
+
+        _memory = new();
+
+        SetHome(RunEntity.Default());
+        SetAway(null);
+
+        Map = new(_config.MapEntry);
+        SkillPool = new();
+        Hand = new();
+        _closureDict = new();
+
+        Result = new RunResult();
+
+        BattleChangedNeuron.Add(BattleEnvironmentUpdateProcedure);
+    }
+
+    public static RunEnvironment FromConfig(RunConfig config)
+        => new(config);
+
+    #endregion
+
+    #region Accessors
+    
+    public PanelDescriptor GetActivePanel()
+        => _runResultPanelDescriptor ?? Map.Panel;
+
+    public void SetHome(RunEntity home)
+    {
+        _home?.EnvironmentChangedNeuron.Remove(BattleChangedNeuron);
+        _home = home;
+        _home?.EnvironmentChangedNeuron.Add(BattleChangedNeuron);
+    }
+
+    public void SetAway(RunEntity away)
+    {
+        _awayIsDummy = away == null;
+        away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
+        
+        _away?.EnvironmentChangedNeuron.Remove(BattleChangedNeuron);
+        _away = away;
+        _away?.EnvironmentChangedNeuron.Add(BattleChangedNeuron);
+    }
+
+    [NonSerialized] private bool _awayIsDummy;
+    public bool AwayIsDummy() => _awayIsDummy;
+
+    public void Register()
+    {
+        RegisterList(_config.CharacterProfile.GetEntry()._runClosures);
+
+        DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
+        RegisterList(difficultyEntry._runClosures);
+        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+            RegisterList(additionalDifficultyEntry._runClosures);
+    }
+
+    private void RegisterList(RunClosure[] list)
+    {
+        list.Do(e => _closureDict.Register(this, e));
+    }
+
+    public void Unregister()
+    {
+        UnregisterList(_config.CharacterProfile.GetEntry()._runClosures);
+
+        DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
+        UnregisterList(difficultyEntry._runClosures);
+        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+            UnregisterList(additionalDifficultyEntry._runClosures);
+    }
+
+    private void UnregisterList(RunClosure[] list)
+    {
+        list.Do(e => _closureDict.Unregister(this, e));
+    }
+
+    public BoundedInt GetGold()
+        => _gold;
+
+    public MingYuan GetMingYuan()
+        => _home.MingYuan;
+
+    public RunSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
+    {
+        if (deckIndex.InField)
+            return Home.GetSlot(deckIndex.Index).Skill;
+        else
+            return Hand[deckIndex.Index];
+    }
+
+    public DeckIndex? GetDeckIndexOfSkill(RunSkill runSkill)
+    {
+        SkillSlot skillSlot = runSkill.GetSkillSlot();
+        if (skillSlot != null)
+            return DeckIndex.FromField(skillSlot.Index);
+
+        if (Hand.Contains(runSkill))
+            return DeckIndex.FromHand(Hand.IndexOf(runSkill));
+
+        return null;
+    }
+
+    public bool FindDeckIndex(out DeckIndex result, SkillEntryDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
+    {
+        omit ??= Array.Empty<DeckIndex>();
+        
+        result = default;
+        
+        foreach (DeckIndex deckIndex in TraversalDeckIndices(excludingField, excludingHand))
+        {
+            if (omit.Contains(deckIndex))
+                continue;
+            RunSkill skill = GetSkillAtDeckIndex(deckIndex);
+            if (skill != null && descriptor.Contains(skill))
+            {
+                result = deckIndex;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public IEnumerable<DeckIndex> TraversalDeckIndices(bool excludingField = false, bool excludingHand = false)
+    {
+        if (!excludingField)
+            foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
+                yield return new DeckIndex(true, slot.Index);
+        if (!excludingHand)
+            for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
+                yield return new DeckIndex(false, i);
+    }
+
+    public void SetGuideToFinish()
+    {
+        GetActivePanel().SetGuideToFinish();
+    }
+
+    public string GetJingJieHintText()
+    {
+        return "有五个境界：\n练气，筑基\n金丹，元婴\n化神";
+    }
+
+    #endregion
+
     #region Procedures
 
     public void StartRunProcedure(RunDetails d)
@@ -42,7 +234,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         _home.SetSlotCount(Map.Entry._slotCount);
         SetDGoldProcedure(Map.Entry._gold);
         
-        DrawSkillsProcedure(new(jingJie: Map.Entry._skillJingJie, count: Map.Entry._skillCount));
+        LegacyDrawSkillsProcedure(new(jingJie: Map.Entry._skillJingJie, count: Map.Entry._skillCount));
 
         Map.Init();
         
@@ -56,8 +248,10 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void NextJingJieProcedure()
         => SetJingJieProcedure(JingJie + 1);
+    
     public void SetJingJieProcedure(JingJie toJingJie)
         => SetJingJieProcedure(new SetJingJieDetails(JingJie, toJingJie));
+    
     private void SetJingJieProcedure(SetJingJieDetails d)
     {
         _closureDict.SendEvent(RunClosureDict.WIL_SET_JINGJIE, d);
@@ -222,7 +416,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         if (MergePreresult.IsSameWuXing(lhs, rhs, playerJingJie))
         {
-            DrawSkillProcedureNoAnimation(new(
+            LegacyDrawSkillProcedureNoAnimation(new(
                     pred: skillEntry => skillEntry != lEntry && skillEntry != rEntry,
                     wuXing: rWuXing,
                     jingJie: rJingJie + 1),
@@ -234,7 +428,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         if (MergePreresult.IsXiangShengWuXing(lhs, rhs, playerJingJie))
         {
-            DrawSkillProcedureNoAnimation(new(
+            LegacyDrawSkillProcedureNoAnimation(new(
                     wuXing: WuXing.XiangShengNext(lWuXing, rWuXing).Value,
                     jingJie: rJingJie + 1),
                 preferredDeckIndex: rhsDeckIndex);
@@ -245,7 +439,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         if (MergePreresult.IsSameJingJie(lhs, rhs, playerJingJie))
         {
-            DrawSkillProcedureNoAnimation(new(
+            LegacyDrawSkillProcedureNoAnimation(new(
                     pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
                                         skillEntry.WuXing != rWuXing,
                     jingJie: rJingJie + 1),
@@ -257,7 +451,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         if (MergePreresult.IsHuaShenReroll(lhs, rhs, playerJingJie))
         {
-            DrawSkillProcedureNoAnimation(new(
+            LegacyDrawSkillProcedureNoAnimation(new(
                     pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
                                         skillEntry.WuXing != rWuXing,
                     jingJie: rJingJie),
@@ -328,6 +522,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     
     public void SetDMingYuanProcedure(int value)
         => SetDMingYuanProcedure(new SetDMingYuanDetails(value));
+    
     private void SetDMingYuanProcedure(SetDMingYuanDetails d)
     {
         if (d.Value == 0)
@@ -352,6 +547,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void SetDGoldProcedure(int value)
         => SetDGoldProcedure(new SetDGoldDetails(value));
+    
     private void SetDGoldProcedure(SetDGoldDetails d)
     {
         if (d.Value == 0)
@@ -372,6 +568,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void SetDDHealthProcedure(int value)
         => SetDDHealthProcedure(new SetDDHealthDetails(value));
+    
     private void SetDDHealthProcedure(SetDDHealthDetails d)
     {
         if (d.Value == 0)
@@ -392,6 +589,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void SetMaxMingYuanProcedure(int value)
         => SetMaxMingYuanProcedure(new SetMaxMingYuanDetails(value));
+    
     private void SetMaxMingYuanProcedure(SetMaxMingYuanDetails d)
     {
         _closureDict.SendEvent(RunClosureDict.WILL_SET_MAX_MINGYUAN, d);
@@ -412,13 +610,13 @@ public class RunEnvironment : Addressable, RunClosureOwner
     {
         _closureDict.SendEvent(RunClosureDict.WILL_DISCOVER_SKILL, d);
 
-        List<SkillEntry> entries = DrawSkills(d.Descriptor);
+        List<SkillEntry> entries = LegacyDrawSkills(d.Descriptor);
         d.Skills.AddRange(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
 
         _closureDict.SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
     }
     
-    public SkillEntry DrawSkill(SkillEntryDescriptor descriptor)
+    public SkillEntry LegacyDrawSkill(SkillEntryDescriptor descriptor)
     {
         SkillPool.Shuffle();
         SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
@@ -426,7 +624,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return skillEntry;
     }
 
-    public List<SkillEntry> DrawSkills(SkillEntryCollectionDescriptor d)
+    public List<SkillEntry> LegacyDrawSkills(SkillEntryCollectionDescriptor d)
     {
         List<SkillEntry> toRet = new();
         
@@ -460,13 +658,13 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return RunSkill.FromEntryJingJie(skillEntry, jingJie);
     }
     
-    private void AddSkill(RunSkill skill, DeckIndex? preferredDeckIndex = null)
+    private void LegacyAddSkill(RunSkill skill, DeckIndex? preferredDeckIndex = null)
     {
         if (!preferredDeckIndex.HasValue)
         {
             int last = Hand.Count();
             Hand.Add(skill);
-            GainSkillNeuron.Invoke(new GainSkillDetails(DeckIndex.FromHand(last), skill));
+            LegacyGainSkillNeuron.Invoke(new GainSkillDetails(DeckIndex.FromHand(last), skill));
             return;
         }
 
@@ -476,16 +674,16 @@ public class RunEnvironment : Addressable, RunClosureOwner
         else
             Hand.Replace(deckIndex.Index, skill);
         
-        GainSkillNeuron.Invoke(new GainSkillDetails(deckIndex, skill));
+        LegacyGainSkillNeuron.Invoke(new GainSkillDetails(deckIndex, skill));
     }
 
-    private void AddSkillNoAnimation(RunSkill skill, DeckIndex? preferredDeckIndex = null)
+    private void LegacyAddSkillNoAnimation(RunSkill skill, DeckIndex? preferredDeckIndex = null)
     {
         if (!preferredDeckIndex.HasValue)
         {
             int last = Hand.Count();
             Hand.Add(skill);
-            GainSkillNeuron.Invoke(new GainSkillDetails(DeckIndex.FromHand(last), skill));
+            LegacyGainSkillNeuron.Invoke(new GainSkillDetails(DeckIndex.FromHand(last), skill));
             return;
         }
 
@@ -496,13 +694,13 @@ public class RunEnvironment : Addressable, RunClosureOwner
             Hand.Replace(deckIndex.Index, skill);
     }
     
-    public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
+    public void LegacyDrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
     {
         int start = Hand.Count();
 
         DeckIndex[] indices = new DeckIndex[descriptor.Count];
         
-        List<SkillEntry> entries = DrawSkills(descriptor);
+        List<SkillEntry> entries = LegacyDrawSkills(descriptor);
         
         for (int i = 0; i < descriptor.Count; i++)
         {
@@ -517,14 +715,50 @@ public class RunEnvironment : Addressable, RunClosureOwner
         GainSkillsNeuron.Invoke(new GainSkillsDetails(indices));
     }
 
-    public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
-        => AddSkill(CreateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
+    public void LegacyDrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+        => LegacyAddSkill(CreateSkill(LegacyDrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
     
-    private void DrawSkillProcedureNoAnimation(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
-        => AddSkillNoAnimation(CreateSkill(DrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
+    private void LegacyDrawSkillProcedureNoAnimation(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+        => LegacyAddSkillNoAnimation(CreateSkill(LegacyDrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
+
+    public void LegacyAddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
+        => LegacyAddSkill(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
 
     public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
-        => AddSkill(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
+        => AddSkillProcedure(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
+
+    public void AddSkillProcedure(RunSkill skill, DeckIndex? preferredDeckIndex = null)
+    {
+        if (!preferredDeckIndex.HasValue)
+        {
+            int last = Hand.Count();
+            Hand.Add(skill);
+            AddSkillNeuron.Invoke(new AddSkillDetails(DeckIndex.FromHand(last), skill));
+            return;
+        }
+        
+        DeckIndex deckIndex = preferredDeckIndex.Value;
+        if (deckIndex.InField)
+        {
+            Home.GetSlot(deckIndex.Index).Skill = skill;
+            AddSkillNeuron.Invoke(new AddSkillDetails(deckIndex, skill));
+            return;
+        }
+        
+        Hand.Replace(deckIndex.Index, skill);
+        AddSkillNeuron.Invoke(new AddSkillDetails(deckIndex, skill));
+    }
+    
+    public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+    {
+        SkillPool.Shuffle();
+        SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
+        skillEntry ??= Encyclopedia.SkillCategory[0];
+        
+        AddSkillProcedure(skillEntry,
+            preferredJingJie: descriptor.JingJie,
+            preferredDeckIndex: preferredDeckIndex);
+    }
 
     public void PickDiscoveredSkillProcedure(int pickedIndex, SkillEntryDescriptor skillDescriptor)
     {
@@ -551,188 +785,4 @@ public class RunEnvironment : Addressable, RunClosureOwner
     }
 
     #endregion
-
-    private RunConfig _config;
-    private RunEntity _home; public RunEntity Home => _home;
-    private RunEntity _away; public RunEntity Away => _away;
-    public Map Map { get; private set; }
-    public Pool<SkillEntry> SkillPool;
-    public SkillInventory Hand { get; private set; }
-    private BoundedInt _gold;
-    private JingJie _jingJie;
-    public JingJie JingJie => _jingJie;
-    private RunClosureDict _closureDict;
-    public RunClosureDict ClosureDict => _closureDict;
-
-    public StageResult SimulateResult;
-    public RunResult Result { get; }
-    private RunResultPanelDescriptor _runResultPanelDescriptor;
-
-    public Neuron<GainSkillDetails> GainSkillNeuron = new();
-    public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
-    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
-    public Neuron<BuySkillDetails> BuySkillNeuron = new();
-    public Neuron<GachaDetails> GachaNeuron = new();
-    public Neuron<int> GainMingYuanNeuron = new();
-    public Neuron<int> LoseMingYuanNeuron = new();
-    public Neuron<int> GainGoldNeuron = new();
-    public Neuron<int> LoseGoldNeuron = new();
-    public Neuron<int> GainDHealthNeuron = new();
-    public Neuron<int> LoseDHealthNeuron = new();
-    // Audio
-
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
-    private RunEnvironment(RunConfig config)
-    {
-        _accessors = new()
-        {
-            { "Config",                () => _config },
-            { "Home",                  () => _home },
-            { "Map",                   () => Map },
-            { "Hand",                  () => Hand },
-            { "ActivePanel",           GetActivePanel },
-        };
-
-        _gold = new(0);
-        _config = config;
-
-        _memory = new();
-
-        SetHome(RunEntity.Default());
-        SetAway(null);
-
-        Map = new(_config.MapEntry);
-        SkillPool = new();
-        Hand = new();
-        _closureDict = new();
-
-        Result = new RunResult();
-
-        BattleChangedNeuron.Add(BattleEnvironmentUpdateProcedure);
-    }
-
-    public static RunEnvironment FromConfig(RunConfig config)
-        => new(config);
-
-    public PanelDescriptor GetActivePanel()
-        => _runResultPanelDescriptor ?? Map.Panel;
-
-    public void SetHome(RunEntity home)
-    {
-        _home?.EnvironmentChangedNeuron.Remove(BattleChangedNeuron);
-        _home = home;
-        _home?.EnvironmentChangedNeuron.Add(BattleChangedNeuron);
-    }
-
-    public void SetAway(RunEntity away)
-    {
-        _awayIsDummy = away == null;
-        away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
-        
-        _away?.EnvironmentChangedNeuron.Remove(BattleChangedNeuron);
-        _away = away;
-        _away?.EnvironmentChangedNeuron.Add(BattleChangedNeuron);
-    }
-
-    [NonSerialized] private bool _awayIsDummy;
-    public bool AwayIsDummy()
-        => _awayIsDummy;
-
-    public void Register()
-    {
-        RegisterList(_config.CharacterProfile.GetEntry()._runClosures);
-
-        DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
-        RegisterList(difficultyEntry._runClosures);
-        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
-            RegisterList(additionalDifficultyEntry._runClosures);
-    }
-
-    private void RegisterList(RunClosure[] list)
-    {
-        list.Do(e => _closureDict.Register(this, e));
-    }
-
-    public void Unregister()
-    {
-        UnregisterList(_config.CharacterProfile.GetEntry()._runClosures);
-
-        DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
-        UnregisterList(difficultyEntry._runClosures);
-        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
-            UnregisterList(additionalDifficultyEntry._runClosures);
-    }
-
-    private void UnregisterList(RunClosure[] list)
-    {
-        list.Do(e => _closureDict.Unregister(this, e));
-    }
-
-    public BoundedInt GetGold()
-        => _gold;
-
-    public MingYuan GetMingYuan()
-        => _home.MingYuan;
-
-    public RunSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
-    {
-        if (deckIndex.InField)
-            return Home.GetSlot(deckIndex.Index).Skill;
-        else
-            return Hand[deckIndex.Index];
-    }
-
-    public DeckIndex? GetDeckIndexOfSkill(RunSkill runSkill)
-    {
-        SkillSlot skillSlot = runSkill.GetSkillSlot();
-        if (skillSlot != null)
-            return DeckIndex.FromField(skillSlot.Index);
-
-        if (Hand.Contains(runSkill))
-            return DeckIndex.FromHand(Hand.IndexOf(runSkill));
-
-        return null;
-    }
-
-    public bool FindDeckIndex(out DeckIndex result, SkillEntryDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
-    {
-        omit ??= Array.Empty<DeckIndex>();
-        
-        result = default;
-        
-        foreach (DeckIndex deckIndex in TraversalDeckIndices(excludingField, excludingHand))
-        {
-            if (omit.Contains(deckIndex))
-                continue;
-            RunSkill skill = GetSkillAtDeckIndex(deckIndex);
-            if (skill != null && descriptor.Contains(skill))
-            {
-                result = deckIndex;
-                return true;
-            }
-        }
-
-        return false;
-    }
-    
-    public IEnumerable<DeckIndex> TraversalDeckIndices(bool excludingField = false, bool excludingHand = false)
-    {
-        if (!excludingField)
-            foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
-                yield return new DeckIndex(true, slot.Index);
-        if (!excludingHand)
-            for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
-                yield return new DeckIndex(false, i);
-    }
-
-    public void SetGuideToFinish()
-    {
-        GetActivePanel().SetGuideToFinish();
-    }
-
-    public string GetJingJieHintText()
-    {
-        return "有五个境界：\n练气，筑基\n金丹，元婴\n化神";
-    }
 }

@@ -13,9 +13,9 @@ public class AnimatedListView : ListView
         _viewContainer = transform.GetChild(1).GetComponent<RectTransform>();
     }
 
-    public override void InsertItem(int index, object item)
+    public override void InsertItem(int index)
     {
-        base.InsertItem(index, item);
+        base.InsertItem(index);
         RefreshPivots();
     }
 
@@ -90,9 +90,8 @@ public class AnimatedListView : ListView
     public void RefreshPivots()
         => _activePool.Do(view =>
         {
-            // LegacyPivotBehaviour pivotBehaviour = itemBehaviour.GetBehaviour<LegacyPivotBehaviour>();
-            // if (pivotBehaviour != null)
-            //     pivotBehaviour.RefreshPivots();
+            DelegatingView5States delegatingView = view as DelegatingView5States;
+            delegatingView.GetAnimator().SetStateAsync(1);
         });
 
     public void RecoverDelegatingView(DelegatingView delegatingView)

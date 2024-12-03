@@ -31,7 +31,7 @@ public class MyListController : MonoBehaviour
     {
         SkillModel item = new("四");
         _model.Add(item);
-        SkillListView.AddItem(item);
+        SkillListView.AddItem();
         // AddItemStaging().GetAwaiter().GetResult();
     }
 

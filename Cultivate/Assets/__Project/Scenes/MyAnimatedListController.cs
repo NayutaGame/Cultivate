@@ -33,7 +33,7 @@ public class MyAnimatedListController : MonoBehaviour
     {
         SkillModel item = new("四");
         _model.Add(item);
-        SkillAnimatedListView.AddItem(item);
+        SkillAnimatedListView.AddItem();
         // AddItemStaging().GetAwaiter().GetResult();
     }
 

@@ -48,7 +48,7 @@ public class BarterPanelDescriptor : PanelDescriptor
                     return true;
                 }, fromSkills[i].JingJie);
             Assert.IsTrue(fromSkills[i].JingJie.HasValue);
-            toSkills[i] = SkillEntryDescriptor.FromEntryJingJie(env.DrawSkill(descriptor), fromSkills[i].JingJie.Value); // distinct, non consume
+            toSkills[i] = SkillEntryDescriptor.FromEntryJingJie(env.LegacyDrawSkill(descriptor), fromSkills[i].JingJie.Value); // distinct, non consume
         }
         
         _inventory = new();
@@ -65,7 +65,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         if (!success)
             return false;
         
-        RunManager.Instance.Environment.AddSkillProcedure(barterItem.ToSkill.Entry, barterItem.ToSkill.JingJie, deckIndex);
+        RunManager.Instance.Environment.LegacyAddSkillProcedure(barterItem.ToSkill.Entry, barterItem.ToSkill.JingJie, deckIndex);
         _inventory.Remove(barterItem);
         return true;
     }

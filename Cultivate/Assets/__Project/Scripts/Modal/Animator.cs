@@ -3,7 +3,9 @@ using System;
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
+using Sequence = DG.Tweening.Sequence;
 
 public class Animator : StateMachine<int>
 {
@@ -42,24 +44,30 @@ public class Animator : StateMachine<int>
     }
 
     public override void SetState(int state)
-    {
-        _handle?.Kill();
-        _handle = SetStateTween(state).SetAutoKill();
-        _handle.Complete(true);
-    }
+        => SetTween(SetStateTween(state));
 
     public async UniTask SetStateAsync(int state)
-    {
-        _handle?.Kill();
-        _handle = SetStateTween(state).SetAutoKill();
-        _handle.Restart();
-        await _handle.AsyncWaitForCompletion();
-    }
+        => await SetTweenAsync(SetStateTween(state));
 
     public async UniTask ToBeFinished()
     {
         if (_handle == null)
             return;
+        await _handle.AsyncWaitForCompletion();
+    }
+
+    public void SetTween(Tween tween)
+    {
+        _handle?.Kill();
+        _handle = tween.SetAutoKill();
+        _handle.Complete(true);
+    }
+
+    public async UniTask SetTweenAsync(Tween tween)
+    {
+        _handle?.Kill();
+        _handle = tween.SetAutoKill();
+        _handle.Restart();
         await _handle.AsyncWaitForCompletion();
     }
     

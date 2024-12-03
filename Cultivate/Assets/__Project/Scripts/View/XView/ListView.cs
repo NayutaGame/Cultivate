@@ -119,7 +119,7 @@ public class ListView : XView
 
         _model = Get<IListModel>();
         for (int i = 0; i < _model.Count(); i++)
-            InsertItem(i, GetAddress().Append($"#{i}").Get<object>());
+            InsertItem(i);
 
         Refresh();
     }
@@ -258,13 +258,14 @@ public class ListView : XView
         // _model.ResyncEvent += Resync;
     }
 
-    public virtual void AddItem(object item)
+    public virtual void AddItem()
     {
-        InsertItem(_activePool.Count, item);
+        InsertItem(_activePool.Count);
     }
 
-    public virtual void InsertItem(int index, object item)
+    public virtual void InsertItem(int index)
     {
+        object item = _model.Get(index);
         int prefabIndex = GetPrefabIndex(item);
         int orderInPool = FetchItemBehaviour(prefabIndex);
         EnableItem(prefabIndex, orderInPool, index);
@@ -279,9 +280,6 @@ public class ListView : XView
     {
         _activePool[index].Refresh();
     }
-
-    public virtual void Resync()
-        => Sync();
 
     #endregion
 

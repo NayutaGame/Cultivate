@@ -4,19 +4,32 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InteractBehaviour : XBehaviour,
+public class InteractBehaviour : MonoBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
     IBeginDragHandler, IEndDragHandler, IDragHandler,
     IDropHandler,
     IPointerClickHandler
 {
+    private XView _view;
+    public XView GetView() => _view;
+    public void SetView(XView view) => _view = view;
+    
     private Image Image;
     private CanvasGroup CanvasGroup;
-    
-    public override void AwakeFunction()
+
+    private bool _isAwoken;
+
+    public void CheckAwake()
     {
-        base.AwakeFunction();
-        
+        if (_isAwoken)
+            return;
+
+        _isAwoken = true;
+        AwakeFunction();
+    }
+    
+    public void AwakeFunction()
+    {
         Image ??= GetComponent<Image>();
         CanvasGroup ??= GetComponent<CanvasGroup>();
         // AppendDebugLog();

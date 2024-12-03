@@ -3,6 +3,8 @@ using UnityEngine.EventSystems;
 
 public class PlayerEntityView : LegacySimpleView
 {
+    public ListView FieldView;
+    
     public LegacyListView SkillList;
     public LegacyListView FormationList;
 
@@ -10,9 +12,11 @@ public class PlayerEntityView : LegacySimpleView
     {
         base.SetAddress(address);
         
+        FieldView.SetAddress(GetAddress().Append(".Slots"));
+        
         SkillList.SetAddress(GetAddress().Append(".Slots"));
-        SkillList.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        SkillList.DropNeuron.Join(Equip, Swap);
+        // SkillList.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        // SkillList.DropNeuron.Join(Equip, Swap);
         
         FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
     }
