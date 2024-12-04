@@ -40,8 +40,8 @@ public class XView : MonoBehaviour
         _behaviours ??= GetComponents<XBehaviour>();
         _behaviours.Do(b =>
         {
-            b.CheckAwake();
             b.SetView(this);
+            b.CheckAwake();
         });
 
         _animator = InitAnimator();

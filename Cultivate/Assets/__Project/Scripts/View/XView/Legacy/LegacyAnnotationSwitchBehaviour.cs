@@ -18,12 +18,12 @@ public class LegacyAnnotationSwitchBehaviour : LegacyBehaviour
         if (ib == null)
             return;
 
-        AnnotationView annotationView = _legacyAnnotationBehaviour.GetAnnotationView();
-        LegacySimpleView simpleView = annotationView.GetSimpleView();
-
-        if (simpleView is FormationAnnotationView formationAnnotationView)
-        {
-            ib.RightClickNeuron.Join(formationAnnotationView.SwitchShowingJingJie);
-        }
+        // AnnotationView annotationView = _legacyAnnotationBehaviour.GetAnnotationView();
+        // LegacySimpleView simpleView = annotationView.GetSimpleView();
+        //
+        // if (simpleView is FormationAnnotationView formationAnnotationView)
+        // {
+        //     ib.RightClickNeuron.Join(formationAnnotationView.SwitchShowingJingJie);
+        // }
     }
 }

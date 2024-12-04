@@ -27,21 +27,15 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public AnnotationView FormationAnnotation;
     public AnnotationView RoomAnnotation;
     public TextHint TextHint;
-
-    [Header("Ghosts")]
+    
+    [Header("Others")]
     public PinAnchor PinAnchor;
-    public GhostView SkillGhost;
-    public GhostView SlotGhost;
-    public HoverGhostView SkillHoverGhost;
-
-    [Header("MergePreresultView")]
     public MergePreresultView MergePreresultView;
-
-    [Header("Guide")]
     public GuideView GuideView;
-
-    [Header("Curtain")]
     public Curtain Curtain;
+
+    public TMP_FontAsset ArmorFontAsset;
+    public TMP_FontAsset FragileFontAsset;
     
     [ColorPalette("JingJie")]
     public Color[] JingJieColors;
@@ -50,9 +44,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public Color[] WuXingColors;
     public Color[] CostColors;
     public Sprite[] CostIconSprites;
-
-    public TMP_FontAsset ArmorFontAsset;
-    public TMP_FontAsset FragileFontAsset;
 
     public Color GetWuXingColor(WuXing? wuXing)
     {
@@ -78,9 +69,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "BuffAnnotation", () => BuffAnnotation },
             { "FormationAnnotation", () => FormationAnnotation },
             { "RoomAnnotation", () => RoomAnnotation },
-            { "SkillGhost", () => SkillGhost },
-            { "SlotGhost", () => SlotGhost },
-            { "SkillHoverGhost", () => SkillHoverGhost },
         };
 
         _volume.profile.TryGet(out _vignette);
@@ -93,9 +81,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         FormationAnnotation.Awake();
         RoomAnnotation.Awake();
         
-        SkillGhost.Awake();
-        SlotGhost.Awake();
-        SkillHoverGhost.Awake();
         MergePreresultView.CheckAwake();
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));

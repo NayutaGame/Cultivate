@@ -35,8 +35,8 @@ public class EntityEditorPanel : Panel
         EntityBrowser.RightClickNeuron.Join(DeselectEntity);
 
         SkillBrowser.SetAddress(new Address("SkillInventory"));
-        SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-            CanvasManager.Instance.FormationAnnotation.PointerExit);
+        // SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
+        //     CanvasManager.Instance.FormationAnnotation.PointerExit);
         SkillBrowser.DropNeuron.Join(Unequip);
 
         AwayEntityView.SetAddress(null);

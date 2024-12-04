@@ -46,7 +46,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3809487136158471207}
   - component: {fileID: 7251691019053714116}
-  - component: {fileID: 4204281414060978771}
   - component: {fileID: 2979950147111082531}
   - component: {fileID: 5041309120827258932}
   m_Layer: 0
@@ -91,20 +90,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionImage: {fileID: 1700886740570696041}
---- !u!114 &4204281414060978771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6909311244611928932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AnnotationAddress: Canvas.SkillAnnotation
-  HoverTransform: {fileID: 3576686238807551982}
 --- !u!114 &2979950147111082531
 MonoBehaviour:
   m_ObjectHideFlags: 0

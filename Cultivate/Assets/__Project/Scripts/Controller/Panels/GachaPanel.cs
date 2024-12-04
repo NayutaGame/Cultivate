@@ -18,9 +18,9 @@ public class GachaPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         ListView.SetAddress(_address.Append(".Items"));
-        ListView.PointerEnterNeuron.Join(PointerEnter);
-        ListView.PointerExitNeuron.Join(PointerExit);
-        ListView.PointerMoveNeuron.Join(PointerMove);
+        // ListView.PointerEnterNeuron.Join(PointerEnter);
+        // ListView.PointerExitNeuron.Join(PointerExit);
+        // ListView.PointerMoveNeuron.Join(PointerMove);
         
         GachaPanelDescriptor d = _address.Get<GachaPanelDescriptor>();
         PriceTag.text = $"每抽 {d.GetPrice()} 金";
@@ -34,14 +34,14 @@ public class GachaPanel : Panel
         ExitButton.onClick.AddListener(Exit);
     }
 
-    private void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
-
-    private void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
-
-    private void PointerMove(LegacyInteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
+    // private void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
+    //     => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
+    //
+    // private void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
+    //     => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
+    //
+    // private void PointerMove(LegacyInteractBehaviour ib, PointerEventData d)
+    //     => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
     public override void Refresh()
     {

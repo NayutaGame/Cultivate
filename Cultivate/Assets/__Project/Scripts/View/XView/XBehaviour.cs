@@ -28,8 +28,8 @@ public class XBehaviour : MonoBehaviour
     public void SetView(XView view) => _view = view;
 
     public XView GetView() => _view;
-    // public LegacyInteractBehaviour GetInteractBehaviour() => View.GetInteractBehaviour();
-    // public LegacySelectBehaviour GetSelectBehaviour() => View.GetSelectBehaviour();
+    public InteractBehaviour GetInteractBehaviour() => _view.GetInteractBehaviour();
+    // public SelectBehaviour GetSelectBehaviour() => View.GetSelectBehaviour();
     public XBehaviour[] GetBehaviours() => _view.GetBehaviours();
     public T GetBehaviour<T>() where T : XBehaviour => _view.GetBehaviour<T>();
 

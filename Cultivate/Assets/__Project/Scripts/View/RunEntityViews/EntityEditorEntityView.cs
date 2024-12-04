@@ -80,10 +80,10 @@ public class EntityEditorEntityView : LegacySimpleView
         if (FieldView != null)
         {
             FieldView.SetAddress(GetAddress().Append(".Slots"));
-            FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-            FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
-            FieldView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-                CanvasManager.Instance.FormationAnnotation.PointerExit);
+            // FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
+            // FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
+            // FieldView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
+            //     CanvasManager.Instance.FormationAnnotation.PointerExit);
             FieldView.RightClickNeuron.Join(RightClickSlotNeuron);
             FieldView.DropNeuron.Join(DropSlotNeuron);
         }
@@ -99,10 +99,10 @@ public class EntityEditorEntityView : LegacySimpleView
         if (SmirkAgainstListView != null)
         {
             SmirkAgainstListView.SetAddress(GetAddress().Append(".SmirkAgainstSlots"));
-            SmirkAgainstListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-            SmirkAgainstListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
-            SmirkAgainstListView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-                CanvasManager.Instance.FormationAnnotation.PointerExit);
+            // SmirkAgainstListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
+            // SmirkAgainstListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
+            // SmirkAgainstListView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
+            //     CanvasManager.Instance.FormationAnnotation.PointerExit);
             // SmirkAgainstListView.RightClickNeuron.Join(RightClickSlotNeuron);
             SmirkAgainstListView.DropNeuron.Join(DropSmirkAgainstSlotNeuron);
         }
@@ -110,10 +110,10 @@ public class EntityEditorEntityView : LegacySimpleView
         if (AfraidAgainstListView != null)
         {
             AfraidAgainstListView.SetAddress(GetAddress().Append(".AfraidAgainstSlots"));
-            AfraidAgainstListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-            AfraidAgainstListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
-            AfraidAgainstListView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-                CanvasManager.Instance.FormationAnnotation.PointerExit);
+            // AfraidAgainstListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
+            // AfraidAgainstListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
+            // AfraidAgainstListView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
+            //     CanvasManager.Instance.FormationAnnotation.PointerExit);
             // AfraidAgainstListView.RightClickNeuron.Join(RightClickSlotNeuron);
             AfraidAgainstListView.DropNeuron.Join(DropAfraidAgainstSlotNeuron);
         }

@@ -70,7 +70,7 @@ public class DiscoverSkillPanel : Panel
 
         Signal signal = new PickDiscoveredSkillSignal(d.GetIndexOfSkill(skill));
         CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
-        CanvasManager.Instance.SkillAnnotation.PointerExit(ib, eventData);
+        CanvasManager.Instance.SkillAnnotation.PointerExit();
     }
 
     private void PickDiscoveredSkillStaging(PickDiscoveredSkillDetails d)

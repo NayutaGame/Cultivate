@@ -16,23 +16,23 @@ public class ShopPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         CommodityListView.SetAddress(_address.Append(".Commodities"));
-        CommodityListView.PointerEnterNeuron.Join(PointerEnter);
-        CommodityListView.PointerExitNeuron.Join(PointerExit);
-        CommodityListView.PointerMoveNeuron.Join(PointerMove);
+        // CommodityListView.PointerEnterNeuron.Join(PointerEnter);
+        // CommodityListView.PointerExitNeuron.Join(PointerExit);
+        // CommodityListView.PointerMoveNeuron.Join(PointerMove);
         CommodityListView.LeftClickNeuron.Join(BuySkill);
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(Exit);
     }
 
-    private void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
-
-    private void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
-
-    private void PointerMove(LegacyInteractBehaviour ib, PointerEventData d)
-        => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
+    // private void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
+    //     => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
+    //
+    // private void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
+    //     => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
+    //
+    // private void PointerMove(LegacyInteractBehaviour ib, PointerEventData d)
+    //     => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
     public override void Refresh()
     {

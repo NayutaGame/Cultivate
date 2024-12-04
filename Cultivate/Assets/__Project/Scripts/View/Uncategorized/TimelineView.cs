@@ -38,9 +38,9 @@ public class TimelineView : Singleton<TimelineView>
 
     private void ConfigureNeuron(LegacyInteractBehaviour stageSkillIb)
     {
-        stageSkillIb.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter, StageManager.Instance.Pause);
-        stageSkillIb.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit, StageManager.Instance.Resume);
-        stageSkillIb.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
+        // stageSkillIb.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter, StageManager.Instance.Pause);
+        // stageSkillIb.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit, StageManager.Instance.Resume);
+        // stageSkillIb.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
     }
 
     public void InitialSetup()

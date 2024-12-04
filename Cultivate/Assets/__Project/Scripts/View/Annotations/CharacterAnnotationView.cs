@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class CharacterAnnotationView : LegacySimpleView
+public class CharacterAnnotationView : XView
 {
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text DescriptionText;

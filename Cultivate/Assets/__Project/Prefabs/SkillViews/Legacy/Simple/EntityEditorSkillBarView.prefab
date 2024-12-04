@@ -164,7 +164,6 @@ GameObject:
   - component: {fileID: 659533699458876294}
   - component: {fileID: 6343232113136730364}
   - component: {fileID: 4343541909256888022}
-  - component: {fileID: 8754839285560053589}
   - component: {fileID: 7170938377839784045}
   m_Layer: 5
   m_Name: EntityEditorSkillBarView
@@ -236,19 +235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8754839285560053589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4117575424005972447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5aeb8b11309bd7c479de5b48e7068e99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GhostAddress: Canvas.SkillGhost
 --- !u!114 &7170938377839784045
 MonoBehaviour:
   m_ObjectHideFlags: 0
