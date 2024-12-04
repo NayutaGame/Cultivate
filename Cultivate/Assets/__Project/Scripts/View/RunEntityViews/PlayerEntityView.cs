@@ -11,7 +11,7 @@ public class PlayerEntityView : LegacySimpleView
         base.SetAddress(address);
         
         FieldView.SetAddress(GetAddress().Append(".Slots"));
-        // FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
         FieldView.DropNeuron.Join(Equip, Swap);
         
         FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
@@ -33,7 +33,7 @@ public class PlayerEntityView : LegacySimpleView
 
     #region IInteractable
 
-    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 
     private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
@@ -50,7 +50,11 @@ public class PlayerEntityView : LegacySimpleView
         if (!(from is FieldSlotInteractBehaviour))
             return;
 
-        SwapDetails swapDetails = new(from.Get<SkillSlot>(), to.Get<SkillSlot>());
+        SkillSlot fromSkillSlot = from.Get<SkillSlot>();
+        if (fromSkillSlot.Skill == null)
+            return;
+
+        SwapDetails swapDetails = new(fromSkillSlot, to.Get<SkillSlot>());
         CanvasManager.Instance.RunCanvas.SwapEvent.Invoke(swapDetails);
     }
 

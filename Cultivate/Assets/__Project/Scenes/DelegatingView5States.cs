@@ -40,18 +40,24 @@ public class DelegatingView5States : DelegatingView
     private static Configuration FollowConfiguration = new(localScale: 0.75f * Vector3.one);
 
     private Tween EnterHide()
-        => GoToConfiguration(HideConfiguration);
+        => DOTween.Sequence()
+            .AppendCallback(RecoverReparent)
+            .Append(GoToConfiguration(HideConfiguration));
 
     private Tween EnterIdle()
-        => GoToConfiguration(IdleConfiguration);
+        => DOTween.Sequence()
+            .AppendCallback(RecoverReparent)
+            .Append(GoToConfiguration(IdleConfiguration));
 
     private Tween EnterHover()
-        => GoToConfiguration(HoverConfiguration);
+        => DOTween.Sequence()
+            .AppendCallback(ReparentToAnchor)
+            .Append(GoToConfiguration(HoverConfiguration));
 
     private Tween EnterFollow()
-    {
-        return new FollowAnimation(GetDelegatedView().GetRect(), CanvasManager.Instance.GetPinAnchorRect()).GetHandle();
-    }
+        => DOTween.Sequence()
+            .AppendCallback(ReparentToAnchor)
+            .Append(new FollowAnimation(GetDelegatedView().GetRect(), CanvasManager.Instance.GetPinAnchorRect()).GetHandle());
 
     private Tween EnterFree()
         => DOTween.Sequence()
@@ -70,35 +76,30 @@ public class DelegatingView5States : DelegatingView
     
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
     {
-        ReparentToAnchor();
         GetAnimator().SetStateAsync(2);
     }
     
     private void PointerExit(InteractBehaviour ib, PointerEventData d)
     {
-        RecoverReparent();
-        // if (GetAnimator().State != 0)
         GetAnimator().SetStateAsync(1);
     }
     
     private void BeginDrag(InteractBehaviour ib, PointerEventData d)
     {
-        ReparentToAnchor();
         GetAnimator().SetStateAsync(3);
     }
     
     public void EndDrag(InteractBehaviour ib, PointerEventData d)
     {
-        RecoverReparent();
         GetAnimator().SetStateAsync(1);
     }
 
-    private void ReparentToAnchor()
+    public void ReparentToAnchor()
     {
         GetDelegatedView().GetRect().SetParent(CanvasManager.Instance.GetPinAnchorRect());
     }
 
-    private void RecoverReparent()
+    public void RecoverReparent()
     {
         AnimatedListView parent = GetParentListView();
         if (parent != null)

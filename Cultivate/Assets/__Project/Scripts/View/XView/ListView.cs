@@ -60,6 +60,9 @@ public class ListView : XView
     public XView ViewFromIndex(int i)
         => _activePool[i];
 
+    public XView LastView()
+        => _activePool[^1];
+
     public bool IsAutoSync() => _autoSync;
 
     public void SetAutoSync(bool autoSync)

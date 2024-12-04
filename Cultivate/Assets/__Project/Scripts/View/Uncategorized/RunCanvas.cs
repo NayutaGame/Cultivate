@@ -94,6 +94,9 @@ public class RunCanvas : Panel
         SwapEvent.Add(RunManager.Instance.Environment.SwapProcedure);
         RunManager.Instance.Environment.SwapNeuron.Add(SwapStaging);
         
+        UnequipEvent.Add(RunManager.Instance.Environment.UnequipProcedure);
+        RunManager.Instance.Environment.UnequipNeuron.Add(UnequipStaging);
+        
         RunManager.Instance.Environment.LegacyGainSkillNeuron.Add(GainSkillStaging);
         RunManager.Instance.Environment.GainSkillsNeuron.Add(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(MingYuanDamageStaging);
@@ -105,6 +108,12 @@ public class RunCanvas : Panel
         
         EquipEvent.Remove(RunManager.Instance.Environment.EquipProcedure);
         RunManager.Instance.Environment.EquipNeuron.Remove(EquipStaging);
+        
+        SwapEvent.Remove(RunManager.Instance.Environment.SwapProcedure);
+        RunManager.Instance.Environment.SwapNeuron.Remove(SwapStaging);
+        
+        UnequipEvent.Remove(RunManager.Instance.Environment.UnequipProcedure);
+        RunManager.Instance.Environment.UnequipNeuron.Remove(UnequipStaging);
         
         RunManager.Instance.Environment.LegacyGainSkillNeuron.Remove(GainSkillStaging);
         RunManager.Instance.Environment.GainSkillsNeuron.Remove(GainSkillsStaging);
@@ -218,6 +227,7 @@ public class RunCanvas : Panel
 
     public Neuron<EquipDetails> EquipEvent = new();
     public Neuron<SwapDetails> SwapEvent = new();
+    public Neuron<UnequipDetails> UnequipEvent = new();
 
     #region Staging
 
@@ -243,7 +253,7 @@ public class RunCanvas : Panel
 
         if (d.DeckIndex.InField)
         {
-            DeckPanel.PlayerEntity.FieldView.InsertItem(d.DeckIndex.Index);
+            DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
         }
         else
         {
@@ -295,6 +305,8 @@ public class RunCanvas : Panel
             to.GetDelegatedView().GetRect().localScale = from.GetDelegatedView().GetRect().localScale;
             to.GetAnimator().SetStateAsync(1);
             
+            from.GetAnimator().SetStateAsync(1);
+            
             DeckPanel.HandView.RemoveItemAt(d.FromDeckIndex.Index);
         }
         
@@ -339,6 +351,28 @@ public class RunCanvas : Panel
         
         AudioManager.Play("CardPlacement");
         
+        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        // CanvasManager.Instance.RunCanvas.Refresh();
+    }
+
+    private void UnequipStaging(UnequipDetails d)
+    {
+        // env.ReceiveSignalProcedure(new FieldChangedSignal(slot.ToDeckIndex(), DeckIndex.FromHand()));
+        
+        DeckPanel.HandView.AddItem();
+        
+        DelegatingView5States from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView5States;
+        DelegatingView5States to = DeckPanel.LatestSkillItem() as DelegatingView5States;
+        
+        from.Refresh();
+        
+        to.GetDelegatedView().GetRect().position = from.GetDelegatedView().GetRect().position;
+        to.GetDelegatedView().GetRect().localScale = from.GetDelegatedView().GetRect().localScale;
+        to.GetAnimator().SetStateAsync(1);
+
+        AudioManager.Play("CardPlacement");
+
+        // PlayerEntity.Refresh();
         // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
         // CanvasManager.Instance.RunCanvas.Refresh();
     }

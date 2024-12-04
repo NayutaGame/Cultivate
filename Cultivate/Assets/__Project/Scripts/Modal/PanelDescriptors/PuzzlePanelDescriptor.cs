@@ -66,7 +66,7 @@ public class PuzzlePanelDescriptor : PanelDescriptor
         foreach (SkillSlot skillSlot in puzzleHome.TraversalCurrentSlots())
         {
             if (skillSlot.Skill != null)
-                env.UnequipProcedure(skillSlot, null);
+                env.LegacyUnequipProcedure(skillSlot, null);
         }
     }
     

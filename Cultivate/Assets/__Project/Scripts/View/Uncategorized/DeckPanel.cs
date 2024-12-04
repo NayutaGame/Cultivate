@@ -50,10 +50,11 @@ public class DeckPanel : Panel
         // PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
 
         HandView.SetAddress("Run.Environment.Hand");
-        // HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        HandView.DropNeuron.Join(Unequip);
+        // HandView.DropNeuron.Join(Merge, Unequip);
         // HandView.DroppingNeuron.Join(RemoveMergePreresult);
         // HandView.EndDragNeuron.Join(RemoveMergePreresult);
-        // HandView.DropNeuron.Join(Merge, Unequip);
         //
         // HandView.DraggingEnterNeuron.Join(DraggingEnter);
         // HandView.DraggingExitNeuron.Join(DraggingExit);
@@ -176,7 +177,7 @@ public class DeckPanel : Panel
         }
     }
 
-    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
     
     public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> MergeSuccessNeuron = new();
@@ -247,43 +248,20 @@ public class DeckPanel : Panel
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }
 
-    private void Unequip(LegacyInteractBehaviour from, MonoBehaviour to, PointerEventData d)
+    private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData d)
         => Unequip(from, null, d);
 
-    private void Unequip(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
+    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
         if (!(from is FieldSlotInteractBehaviour))
             return;
-        
-        RunEnvironment env = RunManager.Instance.Environment;
-        SkillSlot slot = from.GetSimpleView().Get<SkillSlot>();
-        UnequipResult result = env.UnequipProcedure(slot, null);
-        if (!result.Success)
+
+        SkillSlot skillSlot = from.Get<SkillSlot>();
+        if (skillSlot.Skill == null)
             return;
         
-        env.ReceiveSignalProcedure(new FieldChangedSignal(slot.ToDeckIndex(), DeckIndex.FromHand()));
-
-        UnequipStaging(from);
-
-        PlayerEntity.Refresh();
-        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.Refresh();
-    }
-
-    private void UnequipStaging(LegacyInteractBehaviour from)
-    {
-        // From: No Animation
-        
-        // Ghost
-        LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
-        
-        // New IB: Ghost Display -> To Idle
-        LegacyInteractBehaviour newIB = LegacyLatestSkillItem().GetInteractBehaviour();
-        LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-        if (pivotBehaviour != null)
-            pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
-
-        AudioManager.Play("CardPlacement");
+        UnequipDetails unequipDetails = new(skillSlot);
+        CanvasManager.Instance.RunCanvas.UnequipEvent.Invoke(unequipDetails);
     }
 
     #endregion
@@ -295,6 +273,9 @@ public class DeckPanel : Panel
 
         return HandView.ViewFromIndex(deckIndex.Index);
     }
+
+    public XView LatestSkillItem()
+        => HandView.LastView();
 
     public LegacyItemBehaviour LegacySkillItemFromDeckIndex(DeckIndex deckIndex)
     {

@@ -53,6 +53,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public Neuron<AddSkillDetails> AddSkillNeuron = new();
     public Neuron<EquipDetails> EquipNeuron = new();
     public Neuron<SwapDetails> SwapNeuron = new();
+    public Neuron<UnequipDetails> UnequipNeuron = new();
     
     public Neuron<GainSkillDetails> LegacyGainSkillNeuron = new();
     public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
@@ -496,6 +497,14 @@ public class RunEnvironment : Addressable, RunClosureOwner
         d.ToSlot.Skill = temp;
         SwapNeuron.Invoke(d);
     }
+
+    public void UnequipProcedure(UnequipDetails d)
+    {
+        RunSkill toUnequip = d.SkillSlot.Skill;
+        Hand.Add(toUnequip);
+        d.SkillSlot.Skill = null;
+        UnequipNeuron.Invoke(d);
+    }
     
     public bool LegacyEquipProcedure(out bool isReplace, RunSkill toEquip, SkillSlot slot)
     {
@@ -515,7 +524,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return true;
     }
 
-    public UnequipResult UnequipProcedure(SkillSlot slot, object _)
+    public UnequipResult LegacyUnequipProcedure(SkillSlot slot, object _)
     {
         RunSkill toUnequip = slot.Skill;
         if (toUnequip == null)
