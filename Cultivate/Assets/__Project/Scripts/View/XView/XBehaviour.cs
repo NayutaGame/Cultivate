@@ -32,4 +32,7 @@ public class XBehaviour : MonoBehaviour
     // public LegacySelectBehaviour GetSelectBehaviour() => View.GetSelectBehaviour();
     public XBehaviour[] GetBehaviours() => _view.GetBehaviours();
     public T GetBehaviour<T>() where T : XBehaviour => _view.GetBehaviour<T>();
+
+    public T Get<T>() where T : class => _view.Get<T>();
+    public virtual Address GetAddress() => _view.GetAddress();
 }

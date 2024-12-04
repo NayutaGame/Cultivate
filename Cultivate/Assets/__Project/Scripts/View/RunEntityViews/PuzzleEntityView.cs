@@ -50,7 +50,7 @@ public class PuzzleEntityView : LegacySimpleView
         RunEnvironment env = RunManager.Instance.Environment;
         RunSkill toEquip = from.GetSimpleView().Get<RunSkill>();
         SkillSlot slot = to.GetSimpleView().Get<SkillSlot>();
-        bool success = env.EquipProcedure(out bool isReplace, toEquip, slot);
+        bool success = env.LegacyEquipProcedure(out bool isReplace, toEquip, slot);
         if (!success)
             return;
         
@@ -92,7 +92,7 @@ public class PuzzleEntityView : LegacySimpleView
         RunEnvironment env = RunManager.Instance.Environment;
         SkillSlot fromSlot = from.GetSimpleView().Get<SkillSlot>();
         SkillSlot toSlot = to.GetSimpleView().Get<SkillSlot>();
-        bool success = env.SwapProcedure(out bool isReplace, fromSlot, toSlot);
+        bool success = env.LegacySwapProcedure(out bool isReplace, fromSlot, toSlot);
         if (!success)
             return;
         

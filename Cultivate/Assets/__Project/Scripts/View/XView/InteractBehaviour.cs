@@ -35,6 +35,9 @@ public class InteractBehaviour : MonoBehaviour,
         // AppendDebugLog();
     }
     
+    public T Get<T>() where T : class => _view.Get<T>();
+    public virtual Address GetAddress() => _view.GetAddress();
+    
     public void SetInteractable(bool value)
     {
         if (Image != null)

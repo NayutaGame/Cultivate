@@ -1,2 +1,2 @@
 
-public class FieldSlotInteractBehaviour : LegacyInteractBehaviour { }
+public class FieldSlotInteractBehaviour : InteractBehaviour { }

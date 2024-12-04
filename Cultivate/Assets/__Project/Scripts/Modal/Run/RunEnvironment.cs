@@ -51,6 +51,9 @@ public class RunEnvironment : Addressable, RunClosureOwner
     private RunResultPanelDescriptor _runResultPanelDescriptor;
 
     public Neuron<AddSkillDetails> AddSkillNeuron = new();
+    public Neuron<EquipDetails> EquipNeuron = new();
+    public Neuron<SwapDetails> SwapNeuron = new();
+    
     public Neuron<GainSkillDetails> LegacyGainSkillNeuron = new();
     public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
@@ -464,7 +467,37 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return false;
     }
 
-    public bool EquipProcedure(out bool isReplace, RunSkill toEquip, SkillSlot slot)
+    public void EquipProcedure(EquipDetails d)
+    {
+        RunSkill toUnequip = d.SkillSlot.Skill;
+        RunSkill toEquip = d.Skill;
+
+        if (toUnequip == null)
+        {
+            d.IsReplace = false;
+            Hand.Remove(toEquip);
+        }
+        else
+        {
+            d.IsReplace = true;
+            Hand.Replace(toEquip, toUnequip);
+        }
+        
+        d.SkillSlot.Skill = toEquip;
+        
+        EquipNeuron.Invoke(d);
+    }
+
+    public void SwapProcedure(SwapDetails d)
+    {
+        d.IsReplace = d.ToSlot.Skill != null;
+        RunSkill temp = d.FromSlot.Skill;
+        d.FromSlot.Skill = d.ToSlot.Skill;
+        d.ToSlot.Skill = temp;
+        SwapNeuron.Invoke(d);
+    }
+    
+    public bool LegacyEquipProcedure(out bool isReplace, RunSkill toEquip, SkillSlot slot)
     {
         RunSkill toUnequip = slot.Skill;
 
@@ -505,7 +538,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return new(false);
     }
 
-    public bool SwapProcedure(out bool isReplace, SkillSlot fromSlot, SkillSlot toSlot)
+    public bool LegacySwapProcedure(out bool isReplace, SkillSlot fromSlot, SkillSlot toSlot)
     {
         isReplace = toSlot.Skill != null;
         RunSkill temp = fromSlot.Skill;

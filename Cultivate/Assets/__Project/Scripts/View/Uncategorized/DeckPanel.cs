@@ -1,6 +1,5 @@
 
 using System;
-using System.Linq;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
@@ -17,8 +16,6 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform PlayerEntityHidePivot;
 
     public ListView HandView;
-
-    public LegacyAnimatedListView LegacyHandView;
     [SerializeField] private RectTransform HandTransform;
     [SerializeField] private RectTransform HandShowPivot;
     [SerializeField] private RectTransform HandHidePivot;
@@ -53,13 +50,11 @@ public class DeckPanel : Panel
         // PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
 
         HandView.SetAddress("Run.Environment.Hand");
-
-        LegacyHandView.SetAddress("Run.Environment.Hand");
         // HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
         // HandView.DroppingNeuron.Join(RemoveMergePreresult);
         // HandView.EndDragNeuron.Join(RemoveMergePreresult);
         // HandView.DropNeuron.Join(Merge, Unequip);
-        
+        //
         // HandView.DraggingEnterNeuron.Join(DraggingEnter);
         // HandView.DraggingExitNeuron.Join(DraggingExit);
         
@@ -103,7 +98,7 @@ public class DeckPanel : Panel
         base.Refresh();
         CharacterIconView.Refresh();
         PlayerEntity.Refresh();
-        LegacyHandView.Refresh();
+        // LegacyHandView.Refresh();
     }
 
     private void OnEnable()
@@ -121,7 +116,7 @@ public class DeckPanel : Panel
 
     private void Sync()
     {
-        LegacyHandView.Sync();
+        // LegacyHandView.Sync();
         PlayerEntity.Sync();
     }
 
@@ -296,23 +291,19 @@ public class DeckPanel : Panel
     public XView SkillItemFromDeckIndex(DeckIndex deckIndex)
     {
         if (deckIndex.InField)
-            // return PlayerEntity.SkillList.ActivePool[deckIndex.Index];
-            return null;
+            return PlayerEntity.FieldView.ViewFromIndex(deckIndex.Index);
 
         return HandView.ViewFromIndex(deckIndex.Index);
     }
 
     public LegacyItemBehaviour LegacySkillItemFromDeckIndex(DeckIndex deckIndex)
     {
-        if (deckIndex.InField)
-            return PlayerEntity.SkillList.ActivePool[deckIndex.Index];
-
-        return LegacyHandView.ActivePool[deckIndex.Index];
+        return null;
     }
 
     public LegacyItemBehaviour LegacyLatestSkillItem()
     {
-        return LegacyHandView.ActivePool.Last();
+        return null;
     }
 
     private Tween _animationHandle;

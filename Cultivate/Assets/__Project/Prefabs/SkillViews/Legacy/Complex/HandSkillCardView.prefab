@@ -118,13 +118,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8152188524626589071}
-  - component: {fileID: 667069671973666689}
-  - component: {fileID: 6235700318288661557}
   - component: {fileID: 1832592112482970397}
-  - component: {fileID: 7601611789361509271}
-  - component: {fileID: 8398556966840544696}
-  - component: {fileID: 8546662760238362350}
   - component: {fileID: 1093431292185408473}
+  - component: {fileID: 1293843060207912805}
   m_Layer: 5
   m_Name: HandSkillCardView
   m_TagString: Untagged
@@ -154,32 +150,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &667069671973666689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05306d648c3bf6d409b497c36ff07309, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 8561154415829639275}
-  SimpleView: {fileID: 36960541036400508}
---- !u!114 &6235700318288661557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1832592112482970397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,47 +163,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionImage: {fileID: 5678816666692279922}
---- !u!114 &7601611789361509271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c65a4a36ff17a42b0cf06aa5e710bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IdleTransform: {fileID: 4796206874295199143}
-  HoverTransform: {fileID: 3394486588855632418}
-  FollowTransform: {fileID: 7960068332090044278}
---- !u!114 &8398556966840544696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5aeb8b11309bd7c479de5b48e7068e99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GhostAddress: Canvas.SkillGhost
---- !u!114 &8546662760238362350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085986264311966347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c87efa4f8bd4442903060541aef875, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GhostAddress: Canvas.SkillHoverGhost
 --- !u!114 &1093431292185408473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,6 +177,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnnotationAddress: Canvas.SkillAnnotation
   HoverTransform: {fileID: 2044971423209688610}
+--- !u!114 &1293843060207912805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085986264311966347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3dc41bf402e02749b28fbd338a48fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractBehaviour: {fileID: 0}
 --- !u!1 &8328739717491656342
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,17 +415,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
---- !u!114 &36960541036400508 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4970350602697973923, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}
-  m_PrefabInstance: {fileID: 4934103374562357215}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2a4048e1a2046946b864aaa9e02d586, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &3844685011734911568 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8152188524626589071, guid: 74c9692b5485aed4ba756d11fe787511, type: 3}

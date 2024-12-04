@@ -45,13 +45,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3809487136158471207}
-  - component: {fileID: 3227768574806530679}
-  - component: {fileID: 4419701240816622406}
   - component: {fileID: 7251691019053714116}
-  - component: {fileID: 6632588455849426417}
-  - component: {fileID: 2805574848568216759}
   - component: {fileID: 4204281414060978771}
   - component: {fileID: 2979950147111082531}
+  - component: {fileID: 5041309120827258932}
   m_Layer: 0
   m_Name: FieldSlotCardView
   m_TagString: Untagged
@@ -81,32 +78,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3227768574806530679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6909311244611928932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05306d648c3bf6d409b497c36ff07309, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 6366695378176641851}
-  SimpleView: {fileID: 650999001944790570}
---- !u!114 &4419701240816622406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6909311244611928932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7251691019053714116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,34 +91,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionImage: {fileID: 1700886740570696041}
---- !u!114 &6632588455849426417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6909311244611928932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c65a4a36ff17a42b0cf06aa5e710bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IdleTransform: {fileID: 5791721495220957128}
-  HoverTransform: {fileID: 4464328574044997709}
-  FollowTransform: {fileID: 8977942656677405977}
---- !u!114 &2805574848568216759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6909311244611928932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5aeb8b11309bd7c479de5b48e7068e99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GhostAddress: Canvas.SlotGhost
 --- !u!114 &4204281414060978771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +118,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skillView: {fileID: 6473565730071640167}
+--- !u!114 &5041309120827258932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6909311244611928932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3dc41bf402e02749b28fbd338a48fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractBehaviour: {fileID: 0}
 --- !u!1 &7782687821140348824
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,17 +429,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
---- !u!114 &650999001944790570 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7089014795065758992, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
-  m_PrefabInstance: {fileID: 7739978299105837882}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2230d1545ad12342a9d1a439ff3f678, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1280068599386798715 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8838977114607417665, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
