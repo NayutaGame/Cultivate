@@ -146,10 +146,11 @@ public class ListView : XView
 
     protected virtual void InitItem(XView item, int prefabIndex)
     {
+        item.GetOrAddComponent<ItemBehaviour>().PrefabIndex = prefabIndex;
+        
         item.CheckAwake();
         item.gameObject.SetActive(false);
 
-        item.GetOrAddComponent<ItemBehaviour>().PrefabIndex = prefabIndex;
         _inactivePools[prefabIndex].Add(item);
         BindInteractBehaviour(item.GetInteractBehaviour());
         item.name = Traversal().Count().ToString();

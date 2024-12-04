@@ -5,14 +5,14 @@ using UnityEngine.EventSystems;
 public class PropagateDrop : MonoBehaviour,
     IDropHandler
 {
-    public Action<LegacyInteractBehaviour, MonoBehaviour, PointerEventData> _onDrop;
+    public Action<InteractBehaviour, MonoBehaviour, PointerEventData> _onDrop;
 
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag == gameObject)
             return;
 
-        LegacyInteractBehaviour dragged = eventData.pointerDrag.GetComponent<LegacyInteractBehaviour>();
+        InteractBehaviour dragged = eventData.pointerDrag.GetComponent<InteractBehaviour>();
 
         if (dragged != null && _onDrop != null)
             _onDrop.Invoke(dragged, this, eventData);

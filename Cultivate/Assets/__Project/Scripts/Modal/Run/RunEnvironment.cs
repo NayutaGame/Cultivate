@@ -54,6 +54,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public Neuron<EquipDetails> EquipNeuron = new();
     public Neuron<SwapDetails> SwapNeuron = new();
     public Neuron<UnequipDetails> UnequipNeuron = new();
+    public Neuron<MergeDetails> MergeNeuron = new();
     
     public Neuron<GainSkillDetails> LegacyGainSkillNeuron = new();
     public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
@@ -362,23 +363,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return MergePreresult.FromDefault(lhs, rhs, playerJingJie);
     }
 
-    public bool MergeProcedure(RunSkill lhs, RunSkill rhs)
-    {
-        MergeDetails d = new MergeDetails(lhs, rhs);
-        
-        _closureDict.SendEvent(RunClosureDict.WIL_MERGE, d);
-
-        if (d.Cancel)
-            return false;
-
-        bool success = InnerMergeProcedure(d);
-        if (!success)
-            return false;
-        
-        _closureDict.SendEvent(RunClosureDict.DID_MERGE, d);
-        return true;
-    }
-
     private bool InnerMergeProcedure(MergeDetails d)
     {
         RunSkill lhs = d.Lhs;
@@ -505,6 +489,21 @@ public class RunEnvironment : Addressable, RunClosureOwner
         d.SkillSlot.Skill = null;
         UnequipNeuron.Invoke(d);
     }
+
+    public void MergeProcedure(MergeDetails d)
+    {
+        _closureDict.SendEvent(RunClosureDict.WIL_MERGE, d);
+
+        if (d.Cancel)
+            return;
+
+        bool success = InnerMergeProcedure(d);
+        if (!success)
+            return;
+        
+        _closureDict.SendEvent(RunClosureDict.DID_MERGE, d);
+        MergeNeuron.Invoke(d);
+    }
     
     public bool LegacyEquipProcedure(out bool isReplace, RunSkill toEquip, SkillSlot slot)
     {
@@ -524,27 +523,18 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return true;
     }
 
-    public UnequipResult LegacyUnequipProcedure(SkillSlot slot, object _)
+    public void LegacyUnequipProcedure(SkillSlot slot, object _)
     {
         RunSkill toUnequip = slot.Skill;
         if (toUnequip == null)
-            return new(false);
+            return;
 
         if (toUnequip is RunSkill runSkill)
         {
             Hand.Add(runSkill);
 
             slot.Skill = null;
-
-            UnequipResult result = new(true)
-            {
-                RunSkill = runSkill.Clone()
-            };
-
-            return result;
         }
-
-        return new(false);
     }
 
     public bool LegacySwapProcedure(out bool isReplace, SkillSlot fromSlot, SkillSlot toSlot)
@@ -756,9 +746,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         GainSkillsNeuron.Invoke(new GainSkillsDetails(indices));
     }
-
-    public void LegacyDrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
-        => LegacyAddSkill(CreateSkill(LegacyDrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
     
     private void LegacyDrawSkillProcedureNoAnimation(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
         => LegacyAddSkillNoAnimation(CreateSkill(LegacyDrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
@@ -768,6 +755,16 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
         => AddSkillProcedure(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     public void AddSkillProcedure(RunSkill skill, DeckIndex? preferredDeckIndex = null)
     {

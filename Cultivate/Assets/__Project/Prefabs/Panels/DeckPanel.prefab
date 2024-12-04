@@ -1696,6 +1696,7 @@ MonoBehaviour:
   DropRectTransform: {fileID: 8860361189759415353}
   HandViewPivotTransform: {fileID: 2731331376382772170}
   HandViewLayout: {fileID: 5454982078139951587}
+  UnequipZone: {fileID: 2002192993294638775}
 --- !u!1 &8947037693111348692
 GameObject:
   m_ObjectHideFlags: 0

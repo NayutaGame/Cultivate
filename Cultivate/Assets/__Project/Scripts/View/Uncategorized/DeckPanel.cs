@@ -36,6 +36,8 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform HandViewPivotTransform;
     [SerializeField] private HorizontalLayoutGroup HandViewLayout;
 
+    [SerializeField] private PropagateDrop UnequipZone;
+
     public override void Configure()
     {
         base.Configure();
@@ -51,21 +53,17 @@ public class DeckPanel : Panel
 
         HandView.SetAddress("Run.Environment.Hand");
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        HandView.DropNeuron.Join(Unequip);
-        // HandView.DropNeuron.Join(Merge, Unequip);
+        HandView.DropNeuron.Join(Merge, Unequip);
         // HandView.DroppingNeuron.Join(RemoveMergePreresult);
         // HandView.EndDragNeuron.Join(RemoveMergePreresult);
         //
         // HandView.DraggingEnterNeuron.Join(DraggingEnter);
         // HandView.DraggingExitNeuron.Join(DraggingExit);
         
-        // HandView.GetComponent<PropagateDrop>()._onDrop = Unequip;
+        UnequipZone._onDrop = Unequip;
 
         SortButton.onClick.RemoveAllListeners();
         // SortButton.onClick.AddListener(Sort);
-        
-        MergeSuccessNeuron.Join(MergeSuccess);
-        MergeFailureNeuron.Join(MergeFailure);
     }
 
     private void DraggingEnter(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
@@ -179,69 +177,6 @@ public class DeckPanel : Panel
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
-    
-    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> MergeSuccessNeuron = new();
-    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> MergeFailureNeuron = new();
-
-    private void Merge(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
-    {
-        if (!(from is HandSkillInteractBehaviour))
-            return;
-        
-        RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
-        RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
-        bool success = RunManager.Instance.Environment.MergeProcedure(lhs, rhs);
-        if (!success)
-        {
-            MergeFailureNeuron.Invoke(from, to, d);
-            return;
-        }
-        
-        MergeSuccessNeuron.Invoke(from, to, d);
-    }
-
-    private void MergeSuccess(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
-    {
-        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(2, null);
-        
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal(DeckIndex.FromHand(), DeckIndex.FromHand()));
-        
-        MergeSuccessStaging(from, to, d);
-
-        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        CanvasManager.Instance.RunCanvas.Refresh();
-    }
-
-    private void MergeSuccessStaging(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
-    {
-        // From: 本体被移除
-        
-        // Ghost
-        LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
-        
-        // To: Ghost Display -> ToIdle + Ping Animation
-        LegacyPivotBehaviour pivotBehaviour = to.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-        if (pivotBehaviour != null)
-            pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
-
-        AudioManager.Play("CardUpgrade");
-    }
-
-    private void MergeFailure(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
-    {
-        // From
-        
-        // Ghost
-        LegacyGhostBehaviour ghost = from.GetCLView().GetBehaviour<LegacyGhostBehaviour>();
-        
-        // To
-        LegacyPivotBehaviour pivotBehaviour = from.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-        if (pivotBehaviour != null)
-            pivotBehaviour.RectTransformToIdle(ghost.GetDisplayTransform());
-        
-        
-        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
-    }
 
     private void RemoveMergePreresult(LegacyInteractBehaviour from, PointerEventData d)
     {
@@ -262,6 +197,15 @@ public class DeckPanel : Panel
         
         UnequipDetails unequipDetails = new(skillSlot);
         CanvasManager.Instance.RunCanvas.UnequipEvent.Invoke(unequipDetails);
+    }
+
+    private void Merge(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        if (!(from is HandSkillInteractBehaviour))
+            return;
+
+        MergeDetails mergeDetails = new(from.Get<RunSkill>(), to.Get<RunSkill>());
+        CanvasManager.Instance.RunCanvas.MergeEvent.Invoke(mergeDetails);
     }
 
     #endregion
