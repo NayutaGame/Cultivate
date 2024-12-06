@@ -1,7 +1,9 @@
 
+using System.Collections.Generic;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,9 +30,7 @@ public class RunCanvas : Panel
     public ImagePanel ImagePanel;
     public ComicPanel ComicPanel;
     public RunResultPanel RunResultPanel;
-
-    public Tween _blockingAnimation;
-
+    
     public override void AwakeFunction()
     {
         base.AwakeFunction();
@@ -142,13 +142,55 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuanDamageStaging);
     }
 
+
+    #region AnimationQueue
+
+    private Queue<Tween> _animationQueue;
+
+    public void CompleteAnimationQueue()
+    {
+        while (_animationQueue.Count > 0)
+        {
+            Tween t = _animationQueue.Peek();
+            t.Complete();
+            _animationQueue.Dequeue();
+        }
+    }
+
+    public async UniTask WaitForQueueToComplete()
+    {
+        while (_animationQueue.Count > 0)
+            await _animationQueue.Peek().AsyncWaitForCompletion();
+    }
+
+    public async UniTask TryProcessAnimationQueue()
+    {
+        if (_animationQueue.Count != 0)
+            return;
+        
+        while (_animationQueue.Count > 0)
+        {
+            Tween t = _animationQueue.Peek();
+            t.SetAutoKill().Restart();
+            await t.AsyncWaitForCompletion();
+            _animationQueue.Dequeue();
+        }
+    }
+
+    public void QueueAnimation(Tween tween)
+    {
+        _animationQueue.Enqueue(tween);
+        TryProcessAnimationQueue();
+    }
+
+    #endregion
+    
     public void ChangePanel(PanelChangedDetails d)
         => ChangePanelAsync(d);
     
     public async UniTask ChangePanelAsync(PanelChangedDetails panelChangedDetails)
     {
-        if (_blockingAnimation != null && _blockingAnimation.IsPlaying())
-            await _blockingAnimation.AsyncWaitForCompletion();
+        await WaitForQueueToComplete();
         
         PanelS oldState = PanelSM.State;
         PanelS newState = PanelS.FromPanelDescriptor(panelChangedDetails.ToPanel);
@@ -200,8 +242,7 @@ public class RunCanvas : Panel
 
     public async UniTask LegacySetPanelSAsync(PanelS panelS)
     {
-        if (_blockingAnimation != null && _blockingAnimation.IsPlaying())
-            await _blockingAnimation.AsyncWaitForCompletion();
+        await WaitForQueueToComplete();
         
         PanelS oldState = PanelSM.State;
         PanelS newState = panelS;
@@ -253,7 +294,7 @@ public class RunCanvas : Panel
 
     public void LegacySetPanelS(PanelS panelS)
     {
-        _blockingAnimation.Complete();
+        CompleteAnimationQueue();
         
         PanelS oldState = PanelSM.State;
         PanelS newState = panelS;
@@ -340,10 +381,8 @@ public class RunCanvas : Panel
             .AppendCallback(() => SetShow(view))
             .AppendInterval(0.3f)
             .AppendCallback(() => SetIdle(view));
-
-        seq.SetAutoKill().Restart();
-
-        _blockingAnimation = seq;
+        
+        QueueAnimation(seq);
     }
 
     private void EquipStaging(EquipDetails d)
@@ -520,9 +559,7 @@ public class RunCanvas : Panel
         seq.AppendCallback(() => SetSkillMove(ib, position))
             .AppendInterval(0.1f);
 
-        seq.SetAutoKill().Restart();
-
-        _blockingAnimation = seq;
+        QueueAnimation(seq);
     }
 
     private void GainSkillsStaging(GainSkillsDetails d)
@@ -595,9 +632,7 @@ public class RunCanvas : Panel
                 .AppendInterval(0.1f);
         }
 
-        seq.SetAutoKill().Restart();
-
-        _blockingAnimation = seq;
+        QueueAnimation(seq);
     }
 
     public void BuySkillStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour commodityIB)

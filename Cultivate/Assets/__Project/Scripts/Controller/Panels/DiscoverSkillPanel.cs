@@ -101,9 +101,8 @@ public class DiscoverSkillPanel : Panel
         view.SetMoveFromRectToIdle(rect);
         
         discoveredView.GetAnimator().SetState(0);
-        GetAnimator().SetStateAsync(2);
-        
-        // CanvasManager.Instance.RunCanvas._blockingAnimation = ;
+
+        CanvasManager.Instance.RunCanvas.QueueAnimation(GetAnimator().TweenFromSetState(2));
     }
 
     public override Tween EnterHide()
