@@ -9,9 +9,9 @@ public class SkillBrowserPanel : Panel
     public LegacyListView SkillInventoryView;
     public Button[] SortButtons;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         _address = new Address("App.SkillInventory");
         SkillInventoryView.SetAddress(_address);

@@ -38,12 +38,8 @@ public class PuzzleEntityView : LegacySimpleView
         FormationList.Refresh();
     }
 
-    #region IInteractable
-
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
-
-    #endregion
 
     public Tween ShowAnimation()
         => DOTween.Sequence().AppendInterval(0.3f)

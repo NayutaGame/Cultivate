@@ -53,7 +53,7 @@ public class ReservedLayer : MonoBehaviour
         if (_currentPanel != null)
         {
             _currentPanel.gameObject.SetActive(true);
-            _currentPanel.Configure();
+            _currentPanel.AwakeFunction();
             _currentPanel.Refresh();
         }
     }

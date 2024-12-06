@@ -19,6 +19,7 @@ public class XView : MonoBehaviour
     private bool _hasAwoken;
     private Animator _animator;
     public Animator GetAnimator() => _animator;
+    public void SetAnimator(Animator animator) => _animator = animator;
 
     public virtual void Awake()
     {

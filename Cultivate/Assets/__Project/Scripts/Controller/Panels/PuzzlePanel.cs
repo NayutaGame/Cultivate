@@ -19,9 +19,9 @@ public class PuzzlePanel : Panel
 
     private Address _address;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
         
@@ -68,7 +68,7 @@ public class PuzzlePanel : Panel
     {
         PuzzlePanelDescriptor d = _address.Get<PuzzlePanelDescriptor>();
         Signal signal = new PuzzleResultSignal(d.GetResult().Flag);
-        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
+        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
     }
     
     // public override Tween ShowAnimation()

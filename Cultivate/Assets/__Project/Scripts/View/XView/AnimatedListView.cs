@@ -41,6 +41,7 @@ public class AnimatedListView : ListView
         RectTransform rect = delegatedView.GetRect();
         rect.SetParent(_viewContainer);
         rect.name = Traversal().Count().ToString();
+        rect.gameObject.SetActive(false);
     }
 
     protected override XView EnableItem(int prefabIndex, int orderInPool, int index)
@@ -67,7 +68,7 @@ public class AnimatedListView : ListView
         return item;
     }
 
-    protected override void DisableAllItemBehaviours()
+    protected override void DisableAllItems()
     {
         while (_activePool.Count != 0)
         {
@@ -77,7 +78,7 @@ public class AnimatedListView : ListView
             item.gameObject.SetActive(false);
 
             _activePool.RemoveAt(index);
-            _inactivePools[item.GetItemBehaviour().PrefabIndex].Insert(0, item);
+            _inactivePools[item.GetComponent<ItemBehaviour>().PrefabIndex].Insert(0, item);
 
             XView delegatedView = (item as DelegatingView).GetDelegatedView();
             RectTransform rect = delegatedView.GetRect();
@@ -90,7 +91,7 @@ public class AnimatedListView : ListView
     public void RefreshPivots()
         => _activePool.Do(view =>
         {
-            DelegatingView5States delegatingView = view as DelegatingView5States;
+            DelegatingView delegatingView = view as DelegatingView;
             delegatingView.GetAnimator().SetStateAsync(1);
         });
 

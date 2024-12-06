@@ -20,4 +20,11 @@ public class DelegatingView : XView
         base.AwakeFunction();
         _delegatedView.CheckAwake();
     }
+
+    public void SetMoveFromRectToIdle(RectTransform rect)
+    {
+        GetDelegatedView().GetRect().position = rect.position;
+        GetDelegatedView().GetRect().localScale = rect.localScale;
+        GetAnimator().SetStateAsync(1);
+    }
 }

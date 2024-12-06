@@ -9,9 +9,9 @@ public class FormationBrowserPanel : Panel
     [SerializeField] private FormationGroupDetailedView _detailedGroupView;
     private FormationGroupBarView _selection;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
         FormationBrowser.SetAddress(new Address("App.FormationInventory"));
         FormationBrowser.LeftClickNeuron.Add(SelectFormation);
     }

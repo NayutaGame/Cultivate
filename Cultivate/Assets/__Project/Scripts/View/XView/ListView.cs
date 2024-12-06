@@ -6,6 +6,7 @@ using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ListView : XView
 {
@@ -71,6 +72,11 @@ public class ListView : XView
         CheckNeurons();
     }
 
+    public void ForceRebuildLayout()
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_container);
+    }
+
     #endregion
 
     #region Core
@@ -118,7 +124,7 @@ public class ListView : XView
 
     public virtual void Sync()
     {
-        DisableAllItemBehaviours();
+        DisableAllItems();
 
         _model = Get<IListModel>();
         for (int i = 0; i < _model.Count(); i++)
@@ -192,7 +198,7 @@ public class ListView : XView
         return item;
     }
 
-    protected virtual void DisableAllItemBehaviours()
+    protected virtual void DisableAllItems()
     {
         while (_activePool.Count != 0)
         {

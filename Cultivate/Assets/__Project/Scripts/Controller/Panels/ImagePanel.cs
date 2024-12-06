@@ -9,9 +9,9 @@ public class ImagePanel : Panel
 
     private Address _address;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
         ImageButton.onClick.RemoveAllListeners();
@@ -22,9 +22,9 @@ public class ImagePanel : Panel
     {
         // 0 for hide, 1 for show
         Animator animator = new(2, "Image Panel");
-        animator[0, 1] = ShowTween;
+        animator[0, 1] = EnterIdle;
         animator[1, 1] = RefreshTween;
-        animator[-1, 0] = HideTween;
+        animator[-1, 0] = EnterHide;
         
         animator.SetState(0);
         return animator;
@@ -43,6 +43,6 @@ public class ImagePanel : Panel
     private void ClickedSignal()
     {
         Signal signal = new ClickedSignal();
-        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
+        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
     }
 }

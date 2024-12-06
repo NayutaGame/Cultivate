@@ -26,9 +26,9 @@ public class EntityEditorPanel : Panel
     [SerializeField] private Button SaveButton;
     [SerializeField] private Button LoadButton;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         EntityBrowser.SetAddress(new Address("Editor.EntityEditableList"));
         EntityBrowser.LeftClickNeuron.Join(SelectEntity);
@@ -87,14 +87,14 @@ public class EntityEditorPanel : Panel
     private void CopyToTop()
     {
         AppManager.Instance.EditorManager.CopyToTop();
-        Configure();
+        AwakeFunction();
         Refresh();
     }
 
     private void SwapTopAndBottom()
     {
         AppManager.Instance.EditorManager.SwapTopAndBottom();
-        Configure();
+        AwakeFunction();
         Refresh();
     }
 
@@ -238,7 +238,7 @@ public class EntityEditorPanel : Panel
     private void Load()
     {
         EditorManager.Instance.Load();
-        Configure();
+        AwakeFunction();
     }
 
     // private bool TryMerge(IInteractable from, IInteractable to)

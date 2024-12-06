@@ -11,14 +11,14 @@ public class TitlePanel : Panel
     {
         // 0 for hide, 1 for title
         Animator animator = new(2, "Title Panel");
-        animator[0, 1] = ShowTween;
+        animator[0, 1] = EnterIdle;
         animator[-1, 0] = HideTweenWithCurtain;
         return animator;
     }
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         StartRunButton.onClick.RemoveAllListeners();
         SettingsButton.onClick.RemoveAllListeners();

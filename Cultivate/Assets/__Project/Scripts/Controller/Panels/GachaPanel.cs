@@ -12,9 +12,9 @@ public class GachaPanel : Panel
 
     private Address _address;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
         ListView.SetAddress(_address.Append(".Items"));
@@ -82,7 +82,7 @@ public class GachaPanel : Panel
     private void Exit()
     {
         Signal signal = new ExitShopSignal();
-        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
+        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
     }
 
     private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData eventData)

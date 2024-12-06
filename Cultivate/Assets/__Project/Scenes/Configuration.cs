@@ -1,6 +1,8 @@
 
+using System;
 using UnityEngine;
 
+[Serializable]
 public struct Configuration
 {
     public Vector3 LocalPosition;

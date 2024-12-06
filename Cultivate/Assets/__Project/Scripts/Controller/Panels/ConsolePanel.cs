@@ -23,6 +23,8 @@ public class ConsolePanel : Panel
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
 
+    public Button Button1;
+    public Button Button5;
     public Button Button10;
     public Button Button25;
     public Button Button50;
@@ -37,17 +39,17 @@ public class ConsolePanel : Panel
 
     private void Update() => _update?.Invoke();
 
-    public override Tween ShowTween()
+    public override Tween EnterIdle()
         => DOTween.Sequence().SetAutoKill()
-            .Append(RectTransform.DOAnchorPosY(243f, 0.3f).SetEase(Ease.OutQuad));
+            .AppendCallback(() => GetRect().anchoredPosition = new Vector2(GetRect().anchoredPosition.x, 243f));
 
-    public override Tween HideTween()
+    public override Tween EnterHide()
         => DOTween.Sequence().SetAutoKill()
-            .Append(RectTransform.DOAnchorPosY(771f, 0.3f).SetEase(Ease.InQuad));
+            .AppendCallback(() => GetRect().anchoredPosition = new Vector2(GetRect().anchoredPosition.x, 840f));
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         AddMingYuanButton.onClick.RemoveAllListeners();
         AddMingYuanButton.onClick.AddListener(AddMingYuan);
@@ -76,6 +78,11 @@ public class ConsolePanel : Panel
         ToggleButton.onClick.RemoveAllListeners();
         ToggleButton.onClick.AddListener(() => ToggleShowing());
         
+        
+        Button1.onClick.RemoveAllListeners();
+        Button1.onClick.AddListener(() => Time.timeScale = 0.01f);
+        Button5.onClick.RemoveAllListeners();
+        Button5.onClick.AddListener(() => Time.timeScale = 0.05f);
         Button10.onClick.RemoveAllListeners();
         Button10.onClick.AddListener(() => Time.timeScale = 0.1f);
         Button25.onClick.RemoveAllListeners();

@@ -15,9 +15,9 @@ public class ArbitraryCardPickerPanel : Panel
     private List<LegacySimpleView> _selections;
     private Address _address;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
         _address = new Address("Run.Environment.ActivePanel");
 
         ConfirmButton.onClick.RemoveAllListeners();
@@ -89,6 +89,6 @@ public class ArbitraryCardPickerPanel : Panel
     {
         List<SkillEntryDescriptor> mapped = _selections.Map(v => v.Get<SkillEntryDescriptor>()).ToList();
         Signal signal = new ConfirmSkillsSignal(mapped);
-        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
+        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
     }
 }

@@ -46,7 +46,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3809487136158471207}
   - component: {fileID: 7251691019053714116}
-  - component: {fileID: 2979950147111082531}
   - component: {fileID: 5041309120827258932}
   m_Layer: 0
   m_Name: FieldSlotCardView
@@ -90,19 +89,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionImage: {fileID: 1700886740570696041}
---- !u!114 &2979950147111082531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6909311244611928932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4810d2aed8e55f42a1979a36d2afe81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _skillView: {fileID: 6473565730071640167}
 --- !u!114 &5041309120827258932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,16 +414,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6473565730071640167 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3656734857656040285, guid: 76472c622b4744d4d9fbdf9c47792054, type: 3}
-  m_PrefabInstance: {fileID: 7739978299105837882}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2a4048e1a2046946b864aaa9e02d586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

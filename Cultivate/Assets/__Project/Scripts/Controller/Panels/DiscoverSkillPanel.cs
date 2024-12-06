@@ -1,5 +1,4 @@
 
-using System;
 using CLLibrary;
 using DG.Tweening;
 using TMPro;
@@ -14,28 +13,27 @@ public class DiscoverSkillPanel : Panel
     [SerializeField] private RectTransform DetailedTextTransform;
     [SerializeField] private RectTransform DetailedTextIdlePivot;
     [SerializeField] private TMP_Text DescriptionText;
-    [SerializeField] private LegacyListView SkillList;
+    [SerializeField] public ListView SkillList;
 
     private Address _address;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
-
         _address = new Address("Run.Environment.ActivePanel");
         SkillList.SetAddress(_address.Append(".Skills"));
         SkillList.PointerEnterNeuron.Join(PlayCardHoverSFX);
         SkillList.LeftClickNeuron.Join(PickDiscoveredSkill);
+        base.AwakeFunction();
     }
 
     protected override Animator InitAnimator()
     {
-        // 0 for hide, 1 for show
-        Animator animator = new(2, "Discover Panel");
-        animator[0, 1] = ShowTween;
-        animator[-1, 0] = HideTween;
+        // 0 for hide, 1 for idle, 2 for selected
+        Animator animator = new(3, "Discover Panel");
+        animator[-1, 0] = EnterHide;
+        animator[0, 1] = EnterIdle;
         animator[1, 1] = SelfTransitionTween;
-        
+        animator[-1, 2] = EnterSelected;
         animator.SetState(0);
         return animator;
     }
@@ -50,96 +48,116 @@ public class DiscoverSkillPanel : Panel
         DescriptionText.text = d.GetDescriptionText();
     }
 
+    public void LayoutRebuild()
+    {
+        (SkillList as AnimatedListView).RefreshPivots();
+    }
+
+    private Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillEvent = new();
+    
     private void OnEnable()
     {
+        PickDiscoveredSkillEvent.Add(RunManager.Instance.Environment.PickDiscoveredSkillProcedure);
         RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Add(PickDiscoveredSkillStaging);
     }
 
     private void OnDisable()
     {
+        PickDiscoveredSkillEvent.Remove(RunManager.Instance.Environment.PickDiscoveredSkillProcedure);
         RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Remove(PickDiscoveredSkillStaging);
     }
 
-    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData eventData)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
 
-    private void PickDiscoveredSkill(LegacyInteractBehaviour ib, PointerEventData eventData)
+    private void PickDiscoveredSkill(InteractBehaviour ib, PointerEventData eventData)
     {
-        DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
-        SkillEntryDescriptor skill = ib.GetSimpleView().Get<SkillEntryDescriptor>();
-
-        Signal signal = new PickDiscoveredSkillSignal(d.GetIndexOfSkill(skill));
-        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
-        CanvasManager.Instance.SkillAnnotation.PointerExit();
-    }
-
-    private void PickDiscoveredSkillStaging(PickDiscoveredSkillDetails d)
-    {
-        int pickedIndex = d.PickedIndex;
-        LegacyInteractBehaviour discoverIB = SkillList.ActivePool[pickedIndex].GetInteractBehaviour();
-        LegacyInteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
-
-        CanvasManager.Instance.RunCanvas.PickDiscoveredSkillStaging(cardIB, discoverIB);
+        // int i = 0;
+        // Signal signal = new PickDiscoveredSkillSignal(i);
+        // PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(signal);
+        // PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
+        // CanvasManager.Instance.RunCanvas.LegacySetPanelSAsync(panelS);
+        //
+        // CanvasManager.Instance.SkillAnnotation.PointerExit();
         
-        LegacyPivotBehaviour pivotBehaviour = discoverIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-        if (pivotBehaviour != null)
-            pivotBehaviour.Disappear();
+        SkillEntryDescriptor skill = ib.Get<SkillEntryDescriptor>();
+        int pickedIndex = SkillList.IndexFromView(ib.GetView()).Value;
+        PickDiscoveredSkillDetails details = new(skill, pickedIndex);
+        PickDiscoveredSkillEvent.Invoke(details);
+    }
+    
+    public void PickDiscoveredSkillStaging(PickDiscoveredSkillDetails d)
+    {
+        // AudioManager.Play("CardPlacement");
+
+        SkillList.TraversalActive().Do(v => v.GetInteractBehaviour().SetInteractable(false));
+        
+        int pickedIndex = d.PickedIndex;
+        DelegatingView discoveredView = SkillList.ViewFromIndex(pickedIndex) as DelegatingView;
+        RectTransform rect = discoveredView.GetDelegatedView().GetRect();
+        discoveredView.GetAnimator().DelayedSetState(0);
+
+        GetAnimator().SetStateAsync(2);
+
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.AddItem();
+        DelegatingView view = CanvasManager.Instance.RunCanvas.DeckPanel.LatestSkillItem() as DelegatingView;
+        view.SetMoveFromRectToIdle(rect);
+        // making unselected skills disappear
+        // pivotBehaviour.Disappear();
+        // CanvasManager.Instance.RunCanvas._blockingAnimation = ;
     }
 
-    public override Tween ShowTween()
+    public override Tween EnterHide()
         => DOTween.Sequence()
-            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
-            .AppendCallback(() => gameObject.SetActive(true))
-            .AppendCallback(TraversalSetDisappear)
-            .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
-            .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
-            .AppendCallback(TraversalPlayAppearAnimation);
-
-    public override Tween HideTween()
-        => DOTween.Sequence()
-            // make skills non interactable
-            // dissolve of skills
-            .AppendCallback(TraversalPlayDisappearAnimation)
-            .AppendInterval(0.15f)
             .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
             .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
             .AppendCallback(() => gameObject.SetActive(false));
 
+    public override Tween EnterIdle()
+        => DOTween.Sequence()
+            .AppendCallback(TraversalSetHide)
+            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0)) // move to pair with show curtain
+            .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
+            .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
+            .Append(TraversalEnterIdle());
+
     public Tween SelfTransitionTween()
         => DOTween.Sequence()
-            .AppendCallback(TraversalPlayDisappearAnimation)
-            .AppendInterval(0.15f)
+            .Append(EnterSelected())
             .AppendCallback(SkillList.Refresh)
             .AppendCallback(Refresh)
-            .AppendCallback(TraversalPlayAppearAnimation);
+            .Append(TraversalEnterIdle());
 
-    public void TraversalSetDisappear()
+    public Tween EnterSelected()
+        // dissolve of skills
+        => DOTween.Sequence().Append(TraversalEnterHide());
+
+    public void TraversalSetHide()
     {
         SkillList.TraversalActive().Do(item =>
         {
-            LegacyPivotBehaviour pivotBehaviour = item.GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-                pivotBehaviour.Animator.SetState(0);
+            item.GetAnimator().SetState(0);
         });
     }
 
-    public void TraversalPlayAppearAnimation()
+    public Tween TraversalEnterIdle()
     {
+        Sequence seq = DOTween.Sequence();
         SkillList.TraversalActive().Do(item =>
         {
-            LegacyPivotBehaviour pivotBehaviour = item.GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-                pivotBehaviour.PlayAppearAnimation();
+            seq.Append(item.GetAnimator().TweenFromSetState(1));
         });
+        return seq;
     }
 
-    public void TraversalPlayDisappearAnimation()
+    public Tween TraversalEnterHide()
     {
+        Sequence seq = DOTween.Sequence();
         SkillList.TraversalActive().Do(item =>
         {
-            LegacyPivotBehaviour pivotBehaviour = item.GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-                pivotBehaviour.PlayDisappearAnimation();
+            seq.Append(item.GetAnimator().TweenFromSetState(0));
         });
+        return seq;
     }
 }

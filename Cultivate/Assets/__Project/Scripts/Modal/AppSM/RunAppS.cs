@@ -20,22 +20,25 @@ public class RunAppS : AppS
         PanelDescriptor panelDescriptor = runEnv.Map.Panel;
         PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
         
-        runCanvas.Configure();
-        runCanvas.SetPanelS(panelS);
+        runCanvas.AwakeFunction();
+        runCanvas.LegacySetPanelS(panelS);
         runCanvas.TopBar.Refresh();
-        CanvasManager.Instance.Curtain.Animator.SetState(1);
-        await CanvasManager.Instance.Curtain.Animator.SetStateAsync(0);
+        CanvasManager.Instance.Curtain.GetAnimator().SetState(1);
+        await UniTask.WaitForSeconds(0.1f);
+        runCanvas.LayoutRebuild();
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
+        runCanvas.Refresh();
     }
 
     public override async UniTask<Result> Exit(NavigateDetails d)
     {
         await base.Exit(d);
-        await CanvasManager.Instance.Curtain.Animator.SetStateAsync(1);
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
         
         RunEnvironment runEnv = RunManager.Instance.Environment;
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
         
-        runCanvas.SetPanelS(PanelS.FromHide());
+        runCanvas.LegacySetPanelS(PanelS.FromHide());
         
         RunResult result = runEnv.Result;
         RunManager.Instance.SetEnvironmentToNull();
@@ -50,7 +53,7 @@ public class RunAppS : AppS
         if (d.ToState is MenuAppS)
             return new();
 
-        await CanvasManager.Instance.Curtain.Animator.SetStateAsync(1);
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
         return new();
     }
@@ -64,6 +67,6 @@ public class RunAppS : AppS
 
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         CanvasManager.Instance.RunCanvas.Refresh();
-        await CanvasManager.Instance.Curtain.Animator.SetStateAsync(0);
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
     }
 }

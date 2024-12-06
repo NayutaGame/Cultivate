@@ -34,9 +34,9 @@ public class BattlePanel : Panel
 
     private Neuron<bool> SetVictoryNeuron = new();
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
 
@@ -194,7 +194,7 @@ public class BattlePanel : Panel
 
     private void Combat(PointerEventData eventData)
     {
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickCombatSignal());
+        RunManager.Instance.Environment.LegacyReceiveSignalProcedure(new ClickCombatSignal());
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat();
         CanvasManager.Instance.RunCanvas.Refresh();
@@ -204,7 +204,7 @@ public class BattlePanel : Panel
     {
         RunEnvironment env = RunManager.Instance.Environment;
         Signal signal = new SkipCombatSignal(env.SimulateResult.Flag == 1);
-        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
+        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
     }
 
     private void SetVictory(bool victory)
@@ -230,14 +230,14 @@ public class BattlePanel : Panel
         AudioManager.Play(audio);
     }
 
-    public override Tween ShowTween()
+    public override Tween EnterIdle()
         => DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(PlayBattleBGM)
-            .Append(CanvasManager.Instance.Curtain.Animator.SetStateTween(0))
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0))
             .Append(EnemyView.ShowTween());
 
-    public override Tween HideTween()
+    public override Tween EnterHide()
     {
         return DOTween.Sequence()
             .AppendCallback(PlayJingJieBGM)

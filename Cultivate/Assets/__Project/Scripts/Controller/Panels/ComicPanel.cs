@@ -14,9 +14,9 @@ public class ComicPanel : Panel
     private GameObject ComicGameObject;
     private ComicView ComicView;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
         ImageButton.onClick.RemoveAllListeners();
@@ -30,7 +30,7 @@ public class ComicPanel : Panel
     {
         // 0 for hide, 1 for show
         Animator animator = new(2, "Comic Panel");
-        animator[0, 1] = ShowTween;
+        animator[0, 1] = EnterIdle;
         animator[1, 1] = SelfTransitionTween;
         animator[-1, 0] = HideTweenWithCurtain;
         
@@ -59,7 +59,7 @@ public class ComicPanel : Panel
         
         ImageButton.onClick.RemoveAllListeners();
         Signal signal = new FinishedComicSignal();
-        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
+        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
     }
     
     private void SetPrefabEntry(PrefabEntry targetPrefabEntry)

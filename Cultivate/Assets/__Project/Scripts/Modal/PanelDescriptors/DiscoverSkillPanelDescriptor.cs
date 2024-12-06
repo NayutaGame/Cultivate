@@ -51,7 +51,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         {
             int pickedIndex = pickDiscoveredSkillSignal.Selected;
             SkillEntryDescriptor skill = _skills[pickedIndex];
-            RunManager.Instance.Environment.PickDiscoveredSkillProcedure(pickedIndex, skill);
+            // RunManager.Instance.Environment.PickDiscoveredSkillProcedure(pickedIndex, skill);
             return null;
         }
 

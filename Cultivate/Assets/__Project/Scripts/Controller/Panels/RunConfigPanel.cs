@@ -18,9 +18,9 @@ public class RunConfigPanel : Panel
     [SerializeField] private Button ReturnButton;
     [SerializeField] private Button StartRunButton;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         DifficultyPickerView.Configure();
 
@@ -46,7 +46,7 @@ public class RunConfigPanel : Panel
 
     private void Return()
     {
-        CanvasManager.Instance.AppCanvas.TitlePanel.Animator.SetStateAsync(1);
+        CanvasManager.Instance.AppCanvas.TitlePanel.GetAnimator().SetStateAsync(1);
     }
 
     private void StartRun()

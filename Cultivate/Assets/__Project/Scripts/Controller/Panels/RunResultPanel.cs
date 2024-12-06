@@ -9,9 +9,9 @@ public class RunResultPanel : Panel
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private Button ReturnButton;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         ReturnButton.onClick.RemoveAllListeners();
         ReturnButton.onClick.AddListener(Return);

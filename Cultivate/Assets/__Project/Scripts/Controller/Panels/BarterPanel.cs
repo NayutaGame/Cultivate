@@ -10,9 +10,9 @@ public class BarterPanel : Panel
 
     private Address _address;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
         BarterItemListView.SetAddress(_address.Append(".Inventory"));
@@ -47,7 +47,7 @@ public class BarterPanel : Panel
     private void Exit()
     {
         Signal signal = new ExitShopSignal();
-        CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
+        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
     }
 
     private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)

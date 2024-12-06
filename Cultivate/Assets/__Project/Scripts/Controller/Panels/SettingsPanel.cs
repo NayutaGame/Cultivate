@@ -33,9 +33,9 @@ public class SettingsPanel : Panel
     }
 
     private Address _address;
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
         _address = new Address("Settings");
         Settings settings = _address.Get<Settings>();
         settings.ResetSelectedTab();
@@ -94,19 +94,19 @@ public class SettingsPanel : Panel
         AppManager.ExitGame();
     }
 
-    public override Tween ShowTween()
+    public override Tween EnterIdle()
     {
         return DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
-            .Join(RectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
+            .Join(GetRect().DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CoreCanvasGroup.DOFade(1f, 0.15f))
             .Join(DarkCurtainImage.DOFade(0.7f, 0.15f));
     }
 
-    public override Tween HideTween()
+    public override Tween EnterHide()
     {
         return DOTween.Sequence()
-            .Join(RectTransform.DOScale(1.4f, 0.15f).SetEase(Ease.OutQuad))
+            .Join(GetRect().DOScale(1.4f, 0.15f).SetEase(Ease.OutQuad))
             .Join(CoreCanvasGroup.DOFade(0f, 0.15f))
             .Join(DarkCurtainImage.DOFade(0f, 0.15f))
             .AppendCallback(() => gameObject.SetActive(false));

@@ -55,10 +55,11 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public Neuron<SwapDetails> SwapNeuron = new();
     public Neuron<UnequipDetails> UnequipNeuron = new();
     public Neuron<MergeDetails> MergeNeuron = new();
+    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
+    public Neuron<PanelChangedDetails> PanelChangedNeuron = new();
     
     public Neuron<GainSkillDetails> LegacyGainSkillNeuron = new();
     public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
-    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
     public Neuron<BuySkillDetails> BuySkillNeuron = new();
     public Neuron<GachaDetails> GachaNeuron = new();
     public Neuron<int> GainMingYuanNeuron = new();
@@ -276,11 +277,8 @@ public class RunEnvironment : Addressable, RunClosureOwner
         CanvasManager.Instance.RunCanvas.TopBar.Refresh();
     }
 
-    public PanelDescriptor ReceiveSignalProcedure(Signal signal)
+    public PanelDescriptor LegacyReceiveSignalProcedure(Signal signal)
     {
-        // if (Map.CurrNode == null)
-        //     return null;
-        
         Guide guide = Map.Panel.GetGuideDescriptor();
         if (guide != null)
         {
@@ -319,6 +317,65 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         Map.NextStep();
         return Map.Panel;
+    }
+    
+    public void ReceiveSignalProcedure(Signal signal)
+    {
+        Guide guide = Map.Panel.GetGuideDescriptor();
+        if (guide != null)
+        {
+            bool blocksSignal = guide.ReceiveSignal(Map.Panel, signal);
+            if (blocksSignal)
+                return;
+        }
+        
+        PanelDescriptor panelDescriptor = Map.Panel.ReceiveSignal(signal);
+        bool runIsUnfinished = Result.State == RunResult.RunResultState.Unfinished;
+
+        if (!runIsUnfinished)
+        {
+            _runResultPanelDescriptor = new RunResultPanelDescriptor(Result);
+
+            PanelDescriptor fromPanel = Map.Panel;
+            Map.Panel = _runResultPanelDescriptor;
+            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
+            PanelChangedNeuron.Invoke(panelChangedDetails);
+            return;
+        }
+        
+        if (panelDescriptor != null) // descriptor of panel descriptor
+        {
+            PanelDescriptor fromPanel = Map.Panel;
+            Map.Panel = panelDescriptor;
+            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
+            PanelChangedNeuron.Invoke(panelChangedDetails);
+            return;
+        }
+        
+        if (Map.IsLastLevelAndLastStep())
+        {
+            PanelDescriptor fromPanel = Map.Panel;
+            CommitRunProcedure(RunResult.RunResultState.Victory);
+            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
+            PanelChangedNeuron.Invoke(panelChangedDetails);
+            return;
+        }
+        
+        if (Map.IsLastStep())
+        {
+            PanelDescriptor fromPanel = Map.Panel;
+            Map.NextLevel();
+            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
+            PanelChangedNeuron.Invoke(panelChangedDetails);
+            return;
+        }
+        
+        {
+            PanelDescriptor fromPanel = Map.Panel;
+            Map.NextStep();
+            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
+            PanelChangedNeuron.Invoke(panelChangedDetails);
+        }
     }
 
     public void CommitRunProcedure(RunResult.RunResultState state)
@@ -684,12 +741,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return toRet;
     }
     
-    private RunSkill CreateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
-    {
-        JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
-        return RunSkill.FromEntryJingJie(skillEntry, jingJie);
-    }
-    
     private void LegacyAddSkill(RunSkill skill, DeckIndex? preferredDeckIndex = null)
     {
         if (!preferredDeckIndex.HasValue)
@@ -752,19 +803,25 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void LegacyAddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
         => LegacyAddSkill(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private RunSkill CreateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
+    {
+        JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
+        return RunSkill.FromEntryJingJie(skillEntry, jingJie);
+    }
 
     public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
         => AddSkillProcedure(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     public void AddSkillProcedure(RunSkill skill, DeckIndex? preferredDeckIndex = null)
     {
@@ -799,12 +856,12 @@ public class RunEnvironment : Addressable, RunClosureOwner
             preferredDeckIndex: preferredDeckIndex);
     }
 
-    public void PickDiscoveredSkillProcedure(int pickedIndex, SkillEntryDescriptor skillDescriptor)
+    public void PickDiscoveredSkillProcedure(PickDiscoveredSkillDetails d)
     {
-        RunSkill skill = CreateSkill(skillDescriptor.Entry, skillDescriptor.JingJie);
-        int last = Hand.Count();
+        RunSkill skill = CreateSkill(d.Skill.Entry, d.Skill.JingJie);
         Hand.Add(skill);
-        PickDiscoveredSkillNeuron.Invoke(new(DeckIndex.FromHand(last), pickedIndex));
+        PickDiscoveredSkillNeuron.Invoke(d);
+        // ReceiveSignalProcedure(new PickDiscoveredSkillSignal(d.PickedIndex));
     }
 
     public void BuySkillProcedure(Commodity commodity, int commodityIndex)

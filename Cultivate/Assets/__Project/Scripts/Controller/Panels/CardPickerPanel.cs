@@ -20,9 +20,9 @@ public class CardPickerPanel : Panel
     //
     // private Address _address;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         // _address = new Address("Run.Environment.ActivePanel");
         //

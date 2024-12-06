@@ -13,37 +13,31 @@ using UnityEngine.UI;
 
 public class CanvasManager : Singleton<CanvasManager>, Addressable
 {
-    public AppCanvas AppCanvas;
-    public RunCanvas RunCanvas;
-    public StageCanvas StageCanvas;
-    
-    [SerializeField] private Camera Camera;
-    [SerializeField] private GraphicRaycaster Raycaster;
+    [TabGroup("General")] public AppCanvas AppCanvas;
+    [TabGroup("General")] public RunCanvas RunCanvas;
+    [TabGroup("General")] public StageCanvas StageCanvas;
+    [TabGroup("General")] [SerializeField] private Camera Camera;
+    [TabGroup("General")] [SerializeField] private GraphicRaycaster Raycaster;
 
-    [Header("Annotations")]
-    public AnnotationView CharacterAnnotation;
-    public AnnotationView SkillAnnotation;
-    public AnnotationView BuffAnnotation;
-    public AnnotationView FormationAnnotation;
-    public AnnotationView RoomAnnotation;
-    public TextHint TextHint;
+    [TabGroup("Annotations")] public AnnotationView CharacterAnnotation;
+    [TabGroup("Annotations")] public AnnotationView SkillAnnotation;
+    [TabGroup("Annotations")] public AnnotationView BuffAnnotation;
+    [TabGroup("Annotations")] public AnnotationView FormationAnnotation;
+    [TabGroup("Annotations")] public AnnotationView RoomAnnotation;
+    [TabGroup("Annotations")] public TextHint TextHint;
     
-    [Header("Others")]
-    public PinAnchor PinAnchor;
-    public MergePreresultView MergePreresultView;
-    public GuideView GuideView;
-    public Curtain Curtain;
-
-    public TMP_FontAsset ArmorFontAsset;
-    public TMP_FontAsset FragileFontAsset;
+    [TabGroup("Others")]public PinAnchor PinAnchor;
+    [TabGroup("Others")]public MergePreresultView MergePreresultView;
+    [TabGroup("Others")]public GuideView GuideView;
+    [TabGroup("Others")]public Curtain Curtain;
+    [TabGroup("Others")]public TMP_FontAsset ArmorFontAsset;
+    [TabGroup("Others")]public TMP_FontAsset FragileFontAsset;
     
-    [ColorPalette("JingJie")]
-    public Color[] JingJieColors;
-    public Sprite[] JingJieSprites;
-    [ColorPalette("WuXing")]
-    public Color[] WuXingColors;
-    public Color[] CostColors;
-    public Sprite[] CostIconSprites;
+    [TabGroup("List")] [ColorPalette("JingJie")] public Color[] JingJieColors;
+    [TabGroup("List")] public Sprite[] JingJieSprites;
+    [TabGroup("List")] [ColorPalette("WuXing")] public Color[] WuXingColors;
+    [TabGroup("List")] public Color[] CostColors;
+    [TabGroup("List")] public Sprite[] CostIconSprites;
 
     public Color GetWuXingColor(WuXing? wuXing)
     {
@@ -86,7 +80,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
         
         AppCanvas.Configure();
-        Curtain.Configure();
+        Curtain.AwakeFunction();
     }
 
     public void RefreshGuide()
@@ -140,7 +134,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         return _results[0].gameObject.name;
     }
 
-    [SerializeField] private Volume _volume;
+    [TabGroup("Effect")] [SerializeField] private Volume _volume;
 
     #region RedFlash
     
@@ -168,7 +162,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     #region CanvasShake
 
-    [SerializeField] private RectTransform _shakeTransform;
+    [TabGroup("Effect")] [SerializeField] private RectTransform _shakeTransform;
     private Tween _shakeHandle;
 
     public void CanvasShakeAnimation()
@@ -184,8 +178,8 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     
     #region FloatText
 
-    [SerializeField] private Transform VFXPoolTransform;
-    [SerializeField] private GameObject FloatTextVFXPrefab;
+    [TabGroup("Effect")] [SerializeField] private Transform VFXPoolTransform;
+    [TabGroup("Effect")] [SerializeField] private GameObject FloatTextVFXPrefab;
 
     public void UIFloatTextVFX(string context, Color color)
     {

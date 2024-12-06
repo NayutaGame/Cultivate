@@ -140,8 +140,8 @@ MonoBehaviour:
     y: 0
     width: 1425.3334
     height: 1299.3334
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 67
+  controlID: 39
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -192,8 +192,8 @@ MonoBehaviour:
     y: 0
     width: 514.6666
     height: 571.3333
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -244,8 +244,8 @@ MonoBehaviour:
     y: 0
     width: 620
     height: 1299.3334
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 11}
   m_Panes:
   - {fileID: 12}
@@ -420,7 +420,7 @@ MonoBehaviour:
       floating: 0
       collapsed: 0
       displayed: 1
-      snapOffset: {x: 0, y: 24.666666}
+      snapOffset: {x: 0, y: 25.333334}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: unity-transform-toolbar
@@ -612,9 +612,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.07973254, y: -0.21879554, z: -0.11563986}
+    m_Target: {x: 0.02367767, y: -0.21907985, z: -0.032597013}
     speed: 2
-    m_Value: {x: 0.07973254, y: -0.21879554, z: -0.11563986}
+    m_Value: {x: 0.02367767, y: -0.21907985, z: -0.032597013}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -665,9 +665,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 9.555883
+    m_Target: 9.879113
     speed: 2
-    m_Value: 9.555883
+    m_Value: 9.879113
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -814,24 +814,24 @@ MonoBehaviour:
     m_SaveData: []
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
+      scrollPos: {x: 0, y: 128}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 0843ffffd048ffffd05dffff3cd6ffff42d6ffff64d6ffffeefaffff
+      m_ExpandedIDs: 18ddfdff644affff1ad8ffff20d8fffff8eeffff36efffffe0f6fffffaf6fffffcfaffff4c8b0000768b0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Container
+        m_OriginalName: Container
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: 333380
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 8}
       m_SearchString: 
@@ -894,10 +894,10 @@ MonoBehaviour:
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 176.99994}
-    m_SelectedIDs: bc630100
-    m_LastClickedID: 91068
-    m_ExpandedIDs: 00000000ce2f0100d02f0100d22f0100d42f0100f6330100fc3301002e340100303401006234010000ca9a3b
+    scrollPos: {x: 0, y: 127}
+    m_SelectedIDs: 682f0100
+    m_LastClickedID: 77672
+    m_ExpandedIDs: 000000000c2b01000e2b0100102b0100122b0100142b0100162b0100182b01001a2b01001c2b0100742f0100782f0100ea30010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -925,7 +925,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ce2f0100d02f0100d22f0100d42f0100
+    m_ExpandedIDs: 000000000c2b01000e2b0100102b0100122b0100142b0100162b0100182b01001a2b01001c2b0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -953,21 +953,21 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000dc0a0100
+    m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: DiscoverSkillView
+      m_OriginalName: DiscoverSkillView
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 41468
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 9}
     m_CreateAssetUtility:

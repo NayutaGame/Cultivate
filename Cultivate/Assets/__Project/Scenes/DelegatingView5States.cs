@@ -34,10 +34,10 @@ public class DelegatingView5States : DelegatingView
         // ib.DraggingExitNeuron.Join(DraggingExit);
     }
 
-    private static Configuration HideConfiguration = new(localScale: Vector3.zero);
-    private static Configuration IdleConfiguration = new(localScale: 0.5f * Vector3.one);
-    private static Configuration HoverConfiguration = new(localPosition: 0.75f * Vector3.up, localScale: 0.75f * Vector3.one);
-    private static Configuration FollowConfiguration = new(localScale: 0.75f * Vector3.one);
+    [SerializeField] private Configuration HideConfiguration = new(localScale: Vector3.zero);
+    [SerializeField] private Configuration IdleConfiguration = new(localScale: 0.5f * Vector3.one);
+    [SerializeField] private Configuration HoverConfiguration = new(localPosition: 0.75f * Vector3.up, localScale: 0.75f * Vector3.one);
+    [SerializeField] private Configuration FollowConfiguration = new(localScale: 0.75f * Vector3.one);
 
     private Tween EnterHide()
         => DOTween.Sequence()
@@ -70,8 +70,6 @@ public class DelegatingView5States : DelegatingView
     private Tween GoToConfiguration(Configuration configuration)
     {
         return new GoToConfigurationAnimation(GetRect(), GetDelegatedView().GetRect(), configuration).GetHandle();
-        //         .AppendCallback(() => GetInteractBehaviour().SetInteractable(false))
-        //         .Append(GetDelegatedView().GetRect().DOScale(0, 0.15f).SetEase(Ease.OutQuad));
     }
     
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)

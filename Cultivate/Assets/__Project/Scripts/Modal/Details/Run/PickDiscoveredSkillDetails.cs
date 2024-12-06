@@ -1,12 +1,12 @@
 
 public class PickDiscoveredSkillDetails : ClosureDetails
 {
-    public DeckIndex DeckIndex;
+    public SkillEntryDescriptor Skill;
     public int PickedIndex;
     
-    public PickDiscoveredSkillDetails(DeckIndex deckIndex, int pickedIndex)
+    public PickDiscoveredSkillDetails(SkillEntryDescriptor skill, int pickedIndex)
     {
-        DeckIndex = deckIndex;
+        Skill = skill;
         PickedIndex = pickedIndex;
     }
 }

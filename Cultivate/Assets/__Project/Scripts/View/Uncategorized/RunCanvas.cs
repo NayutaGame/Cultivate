@@ -29,11 +29,11 @@ public class RunCanvas : Panel
     public ComicPanel ComicPanel;
     public RunResultPanel RunResultPanel;
 
-    private Tween _blockingAnimation;
+    public Tween _blockingAnimation;
 
-    public override void Configure()
+    public override void AwakeFunction()
     {
-        base.Configure();
+        base.AwakeFunction();
 
         PanelSM = new(new Panel[]
         {
@@ -54,13 +54,13 @@ public class RunCanvas : Panel
 
         // _panelDict.Do(kvp => kvp.Value.Configure());
 
-        DeckPanel.Configure();
-        MapPanel.Configure();
+        DeckPanel.CheckAwake();
+        MapPanel.CheckAwake();
 
         ReservedLayer.Configure();
         TopBar.Configure();
 
-        ConsolePanel.Configure();
+        ConsolePanel.CheckAwake();
 
         if (!Application.isEditor)
             ConsolePanel.gameObject.SetActive(false);
@@ -73,7 +73,7 @@ public class RunCanvas : Panel
         Panel currentPanel = PanelSM.GetCurrPanel();
         if (currentPanel != null)
         {
-            currentPanel.Configure();
+            currentPanel.AwakeFunction();
             currentPanel.Refresh();
         }
 
@@ -82,6 +82,18 @@ public class RunCanvas : Panel
         ReservedLayer.Refresh();
         // TopBar.Refresh();
         ConsolePanel.Refresh();
+    }
+
+    public void LayoutRebuild()
+    {
+        Panel currentPanel = PanelSM.GetCurrPanel();
+        if (currentPanel == null)
+            return;
+
+        if (currentPanel is DiscoverSkillPanel p)
+        {
+            p.LayoutRebuild();
+        }
     }
 
     private void OnEnable()
@@ -99,6 +111,8 @@ public class RunCanvas : Panel
         
         MergeEvent.Add(RunManager.Instance.Environment.MergeProcedure);
         RunManager.Instance.Environment.MergeNeuron.Add(MergeStaging);
+        
+        RunManager.Instance.Environment.PanelChangedNeuron.Add(ChangePanel);
         
         RunManager.Instance.Environment.LegacyGainSkillNeuron.Add(GainSkillStaging);
         RunManager.Instance.Environment.GainSkillsNeuron.Add(GainSkillsStaging);
@@ -121,21 +135,70 @@ public class RunCanvas : Panel
         MergeEvent.Remove(RunManager.Instance.Environment.MergeProcedure);
         RunManager.Instance.Environment.MergeNeuron.Remove(MergeStaging);
         
+        RunManager.Instance.Environment.PanelChangedNeuron.Remove(ChangePanel);
+        
         RunManager.Instance.Environment.LegacyGainSkillNeuron.Remove(GainSkillStaging);
         RunManager.Instance.Environment.GainSkillsNeuron.Remove(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuanDamageStaging);
     }
 
-    public async UniTask SetPanelSAsyncFromSignal(Signal signal)
+    public void ChangePanel(PanelChangedDetails d)
+        => ChangePanelAsync(d);
+    
+    public async UniTask ChangePanelAsync(PanelChangedDetails panelChangedDetails)
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(signal);
+        if (_blockingAnimation != null && _blockingAnimation.IsPlaying())
+            await _blockingAnimation.AsyncWaitForCompletion();
+        
+        PanelS oldState = PanelSM.State;
+        PanelS newState = PanelS.FromPanelDescriptor(panelChangedDetails.ToPanel);
+        
+        MapPanel.Refresh();
+
+        if (oldState.Equals(newState))
+        {
+            if (PanelSM.GetCurrPanel() != null)
+                await PanelSM.GetCurrPanel().GetAnimator().SetStateAsync(1);
+            return;
+        }
+
+        if (PanelSM[oldState] != null)
+            await PanelSM[oldState].GetAnimator().SetStateAsync(0);
+        else
+            await GetAnimator().SetStateAsync(1);
+
+        PanelSM.SetState(newState);
+
+        if (PanelSM[newState] != null)
+        {
+            PanelSM[newState].AwakeFunction();
+            PanelSM[newState].Refresh();
+            await PanelSM[newState].GetAnimator().SetStateAsync(1);
+        }
+        else
+            await GetAnimator().SetStateAsync(0);
+
+        PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
+        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
+        {
+            await DeckPanel.GetAnimator().SetStateAsync(2);
+        }
+        else
+        {
+            await DeckPanel.GetAnimator().SetStateAsync(0);
+        }
+    }
+
+    public async UniTask LegacySetPanelSAsyncFromSignal(Signal signal)
+    {
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.LegacyReceiveSignalProcedure(signal);
         // if (RunManager.Instance.Environment == null)
         //     return;
         PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        await SetPanelSAsync(panelS);
+        await LegacySetPanelSAsync(panelS);
     }
 
-    private async UniTask SetPanelSAsync(PanelS panelS)
+    public async UniTask LegacySetPanelSAsync(PanelS panelS)
     {
         if (_blockingAnimation != null && _blockingAnimation.IsPlaying())
             await _blockingAnimation.AsyncWaitForCompletion();
@@ -148,47 +211,47 @@ public class RunCanvas : Panel
         if (oldState.Equals(newState))
         {
             if (PanelSM.GetCurrPanel() != null)
-                await PanelSM.GetCurrPanel().Animator.SetStateAsync(1);
+                await PanelSM.GetCurrPanel().GetAnimator().SetStateAsync(1);
             return;
         }
 
         if (PanelSM[oldState] != null)
-            await PanelSM[oldState].Animator.SetStateAsync(0);
+            await PanelSM[oldState].GetAnimator().SetStateAsync(0);
         else
-            await Animator.SetStateAsync(1);
+            await GetAnimator().SetStateAsync(1);
 
         PanelSM.SetState(newState);
 
         if (PanelSM[newState] != null)
         {
-            PanelSM[newState].Configure();
+            PanelSM[newState].AwakeFunction();
             PanelSM[newState].Refresh();
-            await PanelSM[newState].Animator.SetStateAsync(1);
+            await PanelSM[newState].GetAnimator().SetStateAsync(1);
         }
         else
-            await Animator.SetStateAsync(0);
+            await GetAnimator().SetStateAsync(0);
 
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
-        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
+        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor || d is DiscoverSkillPanelDescriptor)
         {
-            await DeckPanel.Animator.SetStateAsync(2);
+            await DeckPanel.GetAnimator().SetStateAsync(2);
         }
         else
         {
-            await DeckPanel.Animator.SetStateAsync(0);
+            await DeckPanel.GetAnimator().SetStateAsync(0);
         }
     }
 
-    public void SetPanelSFromSignal(Signal signal)
+    public void LegacySetPanelSFromSignal(Signal signal)
     {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(signal);
+        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.LegacyReceiveSignalProcedure(signal);
         // if (RunManager.Instance.Environment == null)
         //     return;
         PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        SetPanelS(panelS);
+        LegacySetPanelS(panelS);
     }
 
-    public void SetPanelS(PanelS panelS)
+    public void LegacySetPanelS(PanelS panelS)
     {
         _blockingAnimation.Complete();
         
@@ -200,34 +263,34 @@ public class RunCanvas : Panel
         if (oldState.Equals(newState))
         {
             if (PanelSM.GetCurrPanel() != null)
-                PanelSM.GetCurrPanel().Animator.SetState(1);
+                PanelSM.GetCurrPanel().GetAnimator().SetState(1);
             return;
         }
         
         if (PanelSM[oldState] != null)
-            PanelSM[oldState].Animator.SetState(0);
+            PanelSM[oldState].GetAnimator().SetState(0);
         else
-            Animator.SetState(1);
+            GetAnimator().SetState(1);
 
         PanelSM.SetState(newState);
 
         if (PanelSM[newState] != null)
         {
-            PanelSM[newState].Configure();
+            PanelSM[newState].CheckAwake();
             PanelSM[newState].Refresh();
-            PanelSM[newState].Animator.SetState(1);
+            PanelSM[newState].GetAnimator().SetState(1);
         }
         else
-            Animator.SetState(0);
+            GetAnimator().SetState(0);
 
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
-        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
+        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor || d is DiscoverSkillPanelDescriptor)
         {
-            DeckPanel.Animator.SetState(2);
+            DeckPanel.GetAnimator().SetState(2);
         }
         else
         {
-            DeckPanel.Animator.SetState(0);
+            DeckPanel.GetAnimator().SetState(0);
         }
     }
 
@@ -293,13 +356,9 @@ public class RunCanvas : Panel
             DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
             DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
             to.Refresh();
-            to.GetDelegatedView().GetRect().position = from.GetDelegatedView().GetRect().position;
-            to.GetDelegatedView().GetRect().localScale = from.GetDelegatedView().GetRect().localScale;
-            to.GetAnimator().SetStateAsync(1);
-        
-            from.GetDelegatedView().GetRect().position = to.GetRect().position;
-            from.GetDelegatedView().GetRect().localScale = to.GetRect().localScale;
-            from.GetAnimator().SetStateAsync(1);
+            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            
+            from.SetMoveFromRectToIdle(to.GetRect());
             
             DeckPanel.HandView.Modified(d.FromDeckIndex.Index);
         }
@@ -308,9 +367,7 @@ public class RunCanvas : Panel
             DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
             DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
             to.Refresh();
-            to.GetDelegatedView().GetRect().position = from.GetDelegatedView().GetRect().position;
-            to.GetDelegatedView().GetRect().localScale = from.GetDelegatedView().GetRect().localScale;
-            to.GetAnimator().SetStateAsync(1);
+            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
             
             from.GetAnimator().SetStateAsync(1);
             
@@ -332,13 +389,9 @@ public class RunCanvas : Panel
             DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
             DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
             to.Refresh();
-            to.GetDelegatedView().GetRect().position = from.GetDelegatedView().GetRect().position;
-            to.GetDelegatedView().GetRect().localScale = from.GetDelegatedView().GetRect().localScale;
-            to.GetAnimator().SetStateAsync(1);
-        
-            from.GetDelegatedView().GetRect().position = to.GetRect().position;
-            from.GetDelegatedView().GetRect().localScale = to.GetRect().localScale;
-            from.GetAnimator().SetStateAsync(1);
+            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            
+            from.SetMoveFromRectToIdle(to.GetRect());
             
             DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
             DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
@@ -348,9 +401,7 @@ public class RunCanvas : Panel
             DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
             DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
             to.Refresh();
-            to.GetDelegatedView().GetRect().position = from.GetDelegatedView().GetRect().position;
-            to.GetDelegatedView().GetRect().localScale = from.GetDelegatedView().GetRect().localScale;
-            to.GetAnimator().SetStateAsync(1);
+            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
             
             DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
             DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
@@ -373,9 +424,8 @@ public class RunCanvas : Panel
         
         DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
         
-        to.GetDelegatedView().GetRect().position = from.GetDelegatedView().GetRect().position;
-        to.GetDelegatedView().GetRect().localScale = from.GetDelegatedView().GetRect().localScale;
-        to.GetAnimator().SetStateAsync(1);
+        to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+        
         from.GetAnimator().SetStateAsync(1);
         
         AudioManager.Play("CardPlacement");
@@ -394,9 +444,7 @@ public class RunCanvas : Panel
         DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
         DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
         
-        to.GetDelegatedView().GetRect().position = from.GetDelegatedView().GetRect().position;
-        to.GetDelegatedView().GetRect().localScale = from.GetDelegatedView().GetRect().localScale;
-        to.GetAnimator().SetStateAsync(1);
+        to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
         from.GetAnimator().SetStateAsync(1);
         
         DeckPanel.HandView.RemoveItemAt(d.FromDeckIndex.Index);
@@ -550,38 +598,6 @@ public class RunCanvas : Panel
         seq.SetAutoKill().Restart();
 
         _blockingAnimation = seq;
-    }
-
-    public void PickDiscoveredSkillStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour discoverIB)
-    {
-        void SetSkillPosition(LegacyInteractBehaviour ib, LegacyInteractBehaviour discoverIB)
-        {
-            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                Transform t = discoverIB.GetSimpleView().transform;
-                pivotBehaviour.FollowTransform.position = t.position;
-                pivotBehaviour.FollowTransform.localScale = t.localScale;
-                pivotBehaviour.Animator.SetState(3);
-                ib.SetInteractable(false);
-            }
-        }
-
-        void SetSkillMove(LegacyInteractBehaviour ib, Vector3 position)
-        {
-            ib.SetInteractable(true);
-            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                pivotBehaviour.PositionToIdle(position);
-            }
-            // AudioManager.Play("CardPlacement");
-        }
-        
-        // Refresh();
-        
-        SetSkillPosition(cardIB, discoverIB);
-        SetSkillMove(cardIB, discoverIB.transform.position);
     }
 
     public void BuySkillStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour commodityIB)

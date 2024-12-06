@@ -8,7 +8,7 @@ public class AppCanvas : MonoBehaviour
 
     public void Configure()
     {
-        SettingsPanel.Configure();
-        TitlePanel.Configure();
+        SettingsPanel.AwakeFunction();
+        TitlePanel.AwakeFunction();
     }
 }
