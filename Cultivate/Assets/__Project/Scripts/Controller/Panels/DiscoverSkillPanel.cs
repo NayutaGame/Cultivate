@@ -78,7 +78,6 @@ public class DiscoverSkillPanel : Panel
         // PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
         // CanvasManager.Instance.RunCanvas.LegacySetPanelSAsync(panelS);
         //
-        // CanvasManager.Instance.SkillAnnotation.PointerExit();
         
         SkillEntryDescriptor skill = ib.Get<SkillEntryDescriptor>();
         int pickedIndex = SkillList.IndexFromView(ib.GetView()).Value;
@@ -91,19 +90,19 @@ public class DiscoverSkillPanel : Panel
         // AudioManager.Play("CardPlacement");
 
         SkillList.TraversalActive().Do(v => v.GetInteractBehaviour().SetInteractable(false));
+        CanvasManager.Instance.SkillAnnotation.PointerExit();
         
         int pickedIndex = d.PickedIndex;
         DelegatingView discoveredView = SkillList.ViewFromIndex(pickedIndex) as DelegatingView;
         RectTransform rect = discoveredView.GetDelegatedView().GetRect();
-        discoveredView.GetAnimator().DelayedSetState(0);
-
-        GetAnimator().SetStateAsync(2);
 
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.AddItem();
         DelegatingView view = CanvasManager.Instance.RunCanvas.DeckPanel.LatestSkillItem() as DelegatingView;
         view.SetMoveFromRectToIdle(rect);
-        // making unselected skills disappear
-        // pivotBehaviour.Disappear();
+        
+        discoveredView.GetAnimator().SetState(0);
+        GetAnimator().SetStateAsync(2);
+        
         // CanvasManager.Instance.RunCanvas._blockingAnimation = ;
     }
 
@@ -156,7 +155,7 @@ public class DiscoverSkillPanel : Panel
         Sequence seq = DOTween.Sequence();
         SkillList.TraversalActive().Do(item =>
         {
-            seq.Append(item.GetAnimator().TweenFromSetState(0));
+            seq.Join(item.GetAnimator().TweenFromSetState(0));
         });
         return seq;
     }

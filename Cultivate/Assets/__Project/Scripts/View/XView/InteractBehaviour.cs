@@ -1,4 +1,5 @@
 
+using System;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -40,6 +41,20 @@ public class InteractBehaviour : MonoBehaviour,
     
     public void SetInteractable(bool value)
     {
+        PointerEnterNeuron.Active = value;
+        PointerExitNeuron.Active = value;
+        PointerMoveNeuron.Active = value;
+        BeginDragNeuron.Active = value;
+        EndDragNeuron.Active = value;
+        DragNeuron.Active = value;
+        LeftClickNeuron.Active = value;
+        RightClickNeuron.Active = value;
+        DroppingNeuron.Active = value;
+        DropNeuron.Active = value;
+        DraggingEnterNeuron.Active = value;
+        DraggingExitNeuron.Active = value;
+        DraggingMoveNeuron.Active = value;
+        
         if (Image != null)
             Image.raycastTarget = value;
 
@@ -88,7 +103,6 @@ public class InteractBehaviour : MonoBehaviour,
     public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> DroppingNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
-
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingExitNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingMoveNeuron = new();

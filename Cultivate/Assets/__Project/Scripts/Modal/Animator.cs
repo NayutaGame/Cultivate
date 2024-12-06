@@ -113,6 +113,12 @@ public class Animator : StateMachine<int>
         SetTween(TweenFromSetState(state));
     }
 
+    public async UniTask SetStateDelayed(int state)
+    {
+        SetTween(TweenFromSetState(state));
+        await UniTask.WaitForSeconds(0.05f);
+    }
+
     public override void SetState(int state)
         => SetTween(TweenFromSetState(state));
 

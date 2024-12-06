@@ -28,12 +28,16 @@ namespace CLLibrary
 
         public void Invoke()
         {
+            if (!Active) return;
             Action?.Invoke();
             _neurons.Do(neuron => neuron.Invoke());
         }
 
+        public bool Active;
+
         public Neuron()
         {
+            Active = true;
             _neurons = new();
         }
     }
@@ -60,13 +64,17 @@ namespace CLLibrary
 
         public async UniTask Invoke()
         {
+            if (!Active) return;
             if (Action != null)
                 await Action.Invoke();
             await _neurons.Do(async neuron => await neuron.Invoke());
         }
 
+        public bool Active;
+
         public AsyncNeuron()
         {
+            Active = true;
             _neurons = new();
         }
     }
@@ -93,12 +101,16 @@ namespace CLLibrary
 
         public void Invoke(T1 t1)
         {
+            if (!Active) return;
             Action?.Invoke(t1);
             _neurons.Do(neuron => neuron.Invoke(t1));
         }
 
+        public bool Active;
+
         public Neuron()
         {
+            Active = true;
             _neurons = new();
         }
     }
@@ -125,12 +137,16 @@ namespace CLLibrary
 
         public void Invoke(T1 t1, T2 t2)
         {
+            if (!Active) return;
             Action?.Invoke(t1, t2);
             _neurons.Do(neuron => neuron.Invoke(t1, t2));
         }
 
+        public bool Active;
+
         public Neuron()
         {
+            Active = true;
             _neurons = new();
         }
     }
@@ -157,12 +173,16 @@ namespace CLLibrary
 
         public void Invoke(T1 t1, T2 t2, T3 t3)
         {
+            if (!Active) return;
             Action?.Invoke(t1, t2, t3);
             _neurons.Do(neuron => neuron.Invoke(t1, t2, t3));
         }
 
+        public bool Active;
+
         public Neuron()
         {
+            Active = true;
             _neurons = new();
         }
     }
@@ -189,12 +209,16 @@ namespace CLLibrary
 
         public void Invoke(T1 t1, T2 t2, T3 t3, T4 t4)
         {
+            if (!Active) return;
             Action?.Invoke(t1, t2, t3, t4);
             _neurons.Do(neuron => neuron.Invoke(t1, t2, t3, t4));
         }
 
+        public bool Active;
+
         public Neuron()
         {
+            Active = true;
             _neurons = new();
         }
     }
@@ -221,12 +245,16 @@ namespace CLLibrary
 
         public void Invoke(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5)
         {
+            if (!Active) return;
             Action?.Invoke(t1, t2, t3, t4, t5);
             _neurons.Do(neuron => neuron.Invoke(t1, t2, t3, t4, t5));
         }
 
+        public bool Active;
+
         public Neuron()
         {
+            Active = true;
             _neurons = new();
         }
     }
@@ -253,12 +281,16 @@ namespace CLLibrary
 
         public void Invoke(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6)
         {
+            if (!Active) return;
             Action?.Invoke(t1, t2, t3, t4, t5, t6);
             _neurons.Do(neuron => neuron.Invoke(t1, t2, t3, t4, t5, t6));
         }
 
+        public bool Active;
+
         public Neuron()
         {
+            Active = true;
             _neurons = new();
         }
     }
