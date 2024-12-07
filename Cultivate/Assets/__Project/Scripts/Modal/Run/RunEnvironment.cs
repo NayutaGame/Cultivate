@@ -861,7 +861,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         RunSkill skill = CreateSkill(d.Skill.Entry, d.Skill.JingJie);
         Hand.Add(skill);
         PickDiscoveredSkillNeuron.Invoke(d);
-        // ReceiveSignalProcedure(new PickDiscoveredSkillSignal(d.PickedIndex));
+        ReceiveSignalProcedure(new PickDiscoveredSkillSignal(d.PickedIndex));
     }
 
     public void BuySkillProcedure(Commodity commodity, int commodityIndex)

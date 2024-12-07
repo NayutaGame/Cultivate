@@ -33,6 +33,7 @@ public class DiscoverSkillPanel : Panel
         animator[-1, 0] = EnterHide;
         animator[0, 1] = EnterIdle;
         animator[1, 1] = SelfTransitionTween;
+        animator[2, 1] = SelfTransitionTween;
         animator[-1, 2] = EnterSelected;
         animator.SetState(0);
         return animator;
@@ -102,7 +103,7 @@ public class DiscoverSkillPanel : Panel
         
         discoveredView.GetAnimator().SetState(0);
 
-        CanvasManager.Instance.RunCanvas.QueueAnimation(GetAnimator().TweenFromSetState(2));
+        CanvasManager.Instance.RunCanvas.GetAnimationQueue().QueueAnimation(GetAnimator().TweenFromSetState(2));
     }
 
     public override Tween EnterHide()
@@ -145,6 +146,7 @@ public class DiscoverSkillPanel : Panel
         SkillList.TraversalActive().Do(item =>
         {
             seq.Append(item.GetAnimator().TweenFromSetState(1));
+            seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(true));
         });
         return seq;
     }
@@ -152,6 +154,10 @@ public class DiscoverSkillPanel : Panel
     public Tween TraversalEnterHide()
     {
         Sequence seq = DOTween.Sequence();
+        SkillList.TraversalActive().Do(item =>
+        {
+            seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(false));
+        });
         SkillList.TraversalActive().Do(item =>
         {
             seq.Join(item.GetAnimator().TweenFromSetState(0));
