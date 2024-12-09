@@ -103,7 +103,7 @@ public class RunCanvas : Panel
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.AddSkillNeuron.Add(AddSkillStaging);
+        RunManager.Instance.Environment.GainSkillNeuron.Add(GainSkillStaging);
         
         EquipEvent.Add(RunManager.Instance.Environment.EquipProcedure);
         RunManager.Instance.Environment.EquipNeuron.Add(EquipStaging);
@@ -119,14 +119,13 @@ public class RunCanvas : Panel
         
         RunManager.Instance.Environment.PanelChangedNeuron.Add(ChangePanel);
         
-        RunManager.Instance.Environment.LegacyGainSkillNeuron.Add(GainSkillStaging);
-        RunManager.Instance.Environment.GainSkillsNeuron.Add(GainSkillsStaging);
+        RunManager.Instance.Environment.GainSkillsNeuron.Add(LegacyGainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(MingYuanDamageStaging);
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.AddSkillNeuron.Remove(AddSkillStaging);
+        RunManager.Instance.Environment.GainSkillNeuron.Remove(GainSkillStaging);
         
         EquipEvent.Remove(RunManager.Instance.Environment.EquipProcedure);
         RunManager.Instance.Environment.EquipNeuron.Remove(EquipStaging);
@@ -142,8 +141,7 @@ public class RunCanvas : Panel
         
         RunManager.Instance.Environment.PanelChangedNeuron.Remove(ChangePanel);
         
-        RunManager.Instance.Environment.LegacyGainSkillNeuron.Remove(GainSkillStaging);
-        RunManager.Instance.Environment.GainSkillsNeuron.Remove(GainSkillsStaging);
+        RunManager.Instance.Environment.GainSkillsNeuron.Remove(LegacyGainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuanDamageStaging);
     }
     
@@ -304,7 +302,7 @@ public class RunCanvas : Panel
 
     #region Staging
 
-    private void AddSkillStaging(AddSkillDetails d)
+    private void GainSkillStaging(GainSkillDetails d)
     {
         void SetPosition(DelegatingView view, Vector3 position)
         {
@@ -346,187 +344,10 @@ public class RunCanvas : Panel
         
         _animationQueue.QueueAnimation(seq);
     }
-
-    private void EquipStaging(EquipDetails d)
+    
+    private void LegacyGainSkillsStaging(GainSkillsDetails d)
     {
-        // env.ReceiveSignalProcedure(new FieldChangedSignal(DeckIndex.FromHand(), slot.ToDeckIndex()));
-        // FieldChangeNeuron O-- Refresh All Field
-        
-        if (d.IsReplace)
-        {
-            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
-            to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
-            
-            from.SetMoveFromRectToIdle(to.GetRect());
-            
-            DeckPanel.HandView.Modified(d.FromDeckIndex.Index);
-        }
-        else
-        {
-            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
-            to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
-            
-            from.GetAnimator().SetStateAsync(1);
-            
-            DeckPanel.HandView.RemoveItemAt(d.FromDeckIndex.Index);
-        }
-        
-        AudioManager.Play("CardPlacement");
-        
-        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        // CanvasManager.Instance.RunCanvas.Refresh();
-    }
-
-    private void SwapStaging(SwapDetails d)
-    {
-        // env.ReceiveSignalProcedure(new FieldChangedSignal(fromSlot.ToDeckIndex(), toSlot.ToDeckIndex()));
-        
-        if (d.IsReplace)
-        {
-            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
-            to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
-            
-            from.SetMoveFromRectToIdle(to.GetRect());
-            
-            DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
-            DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
-        }
-        else
-        {
-            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
-            to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
-            
-            DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
-            DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
-        }
-        
-        AudioManager.Play("CardPlacement");
-        
-        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        // CanvasManager.Instance.RunCanvas.Refresh();
-    }
-
-    private void UnequipStaging(UnequipDetails d)
-    {
-        // env.ReceiveSignalProcedure(new FieldChangedSignal(slot.ToDeckIndex(), DeckIndex.FromHand()));
-        
-        DeckPanel.HandView.AddItem();
-        
-        DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-        DelegatingView to = DeckPanel.LatestSkillItem() as DelegatingView;
-        
-        DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
-        
-        to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
-        
-        from.GetAnimator().SetStateAsync(1);
-        
-        AudioManager.Play("CardPlacement");
-
-        // PlayerEntity.Refresh();
-        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        // CanvasManager.Instance.RunCanvas.Refresh();
-    }
-
-    private void MergeStaging(MergeDetails d)
-    {
-        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(2, null);
-        
-        // RunManager.Instance.Environment.ReceiveSignalProcedure(new FieldChangedSignal(DeckIndex.FromHand(), DeckIndex.FromHand()));
-        
-        DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-        DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
-        
-        to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
-        from.GetAnimator().SetStateAsync(1);
-        
-        DeckPanel.HandView.RemoveItemAt(d.FromDeckIndex.Index);
-        if (d.FromDeckIndex.Index > d.ToDeckIndex.Index)
-            DeckPanel.HandView.Modified(d.ToDeckIndex.Index);
-        else
-            DeckPanel.HandView.Modified(d.ToDeckIndex.Index - 1);
-        
-        AudioManager.Play("CardUpgrade");
-    
-        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        // CanvasManager.Instance.RunCanvas.Refresh();
-    }
-    
-    
-    
-    
-    
-    
-    
-    private void GainSkillStaging(GainSkillDetails d)
-    {
-        void SetSkillPosition(LegacyInteractBehaviour ib, Vector3 position)
-        {
-            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                pivotBehaviour.FollowTransform.position = position;
-                pivotBehaviour.FollowTransform.localScale = Vector3.zero;
-                pivotBehaviour.Animator.SetState(3);
-                ib.SetInteractable(false);
-            }
-        }
-
-        void SetSkillShow(LegacyInteractBehaviour ib, Vector3 position)
-        {
-            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                pivotBehaviour.FollowTransform.position = position;
-                pivotBehaviour.FollowTransform.localScale = pivotBehaviour.HoverTransform.localScale;
-                pivotBehaviour.Animator.SetStateAsync(3);
-                ib.SetInteractable(false);
-            }
-        }
-
-        void SetSkillMove(LegacyInteractBehaviour ib, Vector3 position)
-        {
-            ib.SetInteractable(true);
-            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                pivotBehaviour.PositionToIdle(position);
-            }
-            // AudioManager.Play("CardPlacement");
-        }
-        
-        // Refresh();
-        Vector3 position = Vector3.zero;
-
-        LegacyInteractBehaviour ib = SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
-        
-        SetSkillPosition(ib, position);
-        
-        Sequence seq = DOTween.Sequence();
-        seq.AppendInterval(0.05f);
-
-        seq.AppendCallback(() => SetSkillShow(ib, position))
-            .AppendInterval(0.1f);
-        
-        seq.AppendInterval(0.2f);
-        
-        seq.AppendCallback(() => SetSkillMove(ib, position))
-            .AppendInterval(0.1f);
-
-        _animationQueue.QueueAnimation(seq);
-    }
-
-    private void GainSkillsStaging(GainSkillsDetails d)
-    {
-        void SetSkillPosition(DeckIndex deckIndex, Vector3 position)
+        void SetPosition(DeckIndex deckIndex, Vector3 position)
         {
             LegacyInteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
             LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
@@ -572,7 +393,7 @@ public class RunCanvas : Panel
         for (int i = 0; i < d.DeckIndices.Length; i++)
         {
             int index = i;
-            SetSkillPosition(d.DeckIndices[index], position + index * offset * Vector3.left);
+            SetPosition(d.DeckIndices[index], position + index * offset * Vector3.left);
         }
         
         Sequence seq = DOTween.Sequence();
@@ -596,6 +417,118 @@ public class RunCanvas : Panel
 
         _animationQueue.QueueAnimation(seq);
     }
+
+    private void EquipStaging(EquipDetails d)
+    {
+        if (d.IsReplace)
+        {
+            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
+            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+            to.Refresh();
+            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            
+            from.SetMoveFromRectToIdle(to.GetRect());
+            
+            DeckPanel.HandView.Modified(d.FromDeckIndex.Index);
+        }
+        else
+        {
+            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
+            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+            to.Refresh();
+            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            
+            from.GetAnimator().SetStateAsync(1);
+            
+            DeckPanel.HandView.RemoveItemAt(d.FromDeckIndex.Index);
+        }
+        
+        AudioManager.Play("CardPlacement");
+        
+        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        // CanvasManager.Instance.RunCanvas.Refresh();
+    }
+
+    private void SwapStaging(SwapDetails d)
+    {
+        if (d.IsReplace)
+        {
+            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
+            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+            to.Refresh();
+            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            
+            from.SetMoveFromRectToIdle(to.GetRect());
+            
+            DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
+            DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
+        }
+        else
+        {
+            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
+            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+            to.Refresh();
+            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            
+            DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
+            DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
+        }
+        
+        AudioManager.Play("CardPlacement");
+        
+        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        // CanvasManager.Instance.RunCanvas.Refresh();
+    }
+
+    private void UnequipStaging(UnequipDetails d)
+    {
+        DeckPanel.HandView.AddItem();
+        
+        DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
+        DelegatingView to = DeckPanel.LatestSkillItem() as DelegatingView;
+        
+        DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
+        
+        to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+        
+        from.GetAnimator().SetStateAsync(1);
+        
+        AudioManager.Play("CardPlacement");
+
+        // PlayerEntity.Refresh();
+        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        // CanvasManager.Instance.RunCanvas.Refresh();
+    }
+
+    private void MergeStaging(MergeDetails d)
+    {
+        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(2, null);
+        
+        DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
+        DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+        
+        to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+        from.GetAnimator().SetStateAsync(1);
+        
+        DeckPanel.HandView.RemoveItemAt(d.FromDeckIndex.Index);
+        if (d.FromDeckIndex.Index > d.ToDeckIndex.Index)
+            DeckPanel.HandView.Modified(d.ToDeckIndex.Index);
+        else
+            DeckPanel.HandView.Modified(d.ToDeckIndex.Index - 1);
+        
+        AudioManager.Play("CardUpgrade");
+    
+        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+        // CanvasManager.Instance.RunCanvas.Refresh();
+    }
+    
+    
+    
+    
+    
+    
+    
+
 
     public void BuySkillStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour commodityIB)
     {

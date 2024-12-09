@@ -5,15 +5,10 @@ public class ConfirmGuide : Guide
     {
     }
 
-    public override bool ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
+    public override void ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
     {
         if (signal is ConfirmGuideSignal)
-        {
             SetComplete(panelDescriptor);
-            return true;
-        }
-    
-        return false;
     }
     
     private void SetComplete(PanelDescriptor panelDescriptor)

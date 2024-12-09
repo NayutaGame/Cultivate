@@ -5,8 +5,6 @@ public class RunClosureDict : Dictionary<int, RunClosureList>
 {
     public static readonly int START_RUN             = 100;
     public static readonly int END_RUN               = 101;
-    public static readonly int WIL_UPDATE            = 102;
-    public static readonly int DID_UPDATE            = 103;
     public static readonly int WIL_SET_JINGJIE       = 104;
     public static readonly int DID_SET_JINGJIE       = 105;
     public static readonly int WIL_SET_D_MINGYUAN    = 106;

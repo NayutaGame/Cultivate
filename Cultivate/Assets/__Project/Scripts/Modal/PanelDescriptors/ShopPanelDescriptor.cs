@@ -31,7 +31,7 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         _commodities = new CommodityListModel();
 
-        List<SkillEntry> entries = RunManager.Instance.Environment.LegacyDrawSkills(new(
+        List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
             jingJie: _jingJie,
             count: 8,
             consume: false));

@@ -16,7 +16,7 @@ public class AddSkillReward : Reward
 
     public override void Claim()
     {
-        RunManager.Instance.Environment.LegacyAddSkillProcedure(_entry, _jingJie);
+        RunManager.Instance.Environment.AddSkillProcedure(_entry, _jingJie);
     }
 
     public override string GetDescription() => _description;

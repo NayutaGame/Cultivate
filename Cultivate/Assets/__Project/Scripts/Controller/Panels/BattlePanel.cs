@@ -57,8 +57,8 @@ public class BattlePanel : Panel
     {
         EnemyView.Refresh();
 
-        BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-        if (d.GetResult() is { } result)
+        // BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
+        if (RunManager.Instance.Environment.GetSimulateResult() is { } result)
         {
             HomeHealth.text = result.HomeLeftHp.ToString();
             AwayHealth.text = result.AwayLeftHp.ToString();
@@ -203,7 +203,7 @@ public class BattlePanel : Panel
     private void Skip()
     {
         RunEnvironment env = RunManager.Instance.Environment;
-        Signal signal = new SkipCombatSignal(env.SimulateResult.Flag == 1);
+        Signal signal = new SkipCombatSignal(env.GetSimulateResult().Flag == 1);
         CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
     }
 

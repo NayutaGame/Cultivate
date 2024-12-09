@@ -10,15 +10,10 @@ public class EquipGuide : Guide
         _to = to;
     }
 
-    public override bool ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
+    public override void ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
     {
-        if (signal is FieldChangedSignal fieldChangedSignal && CheckComplete(fieldChangedSignal))
-        {
+        if (signal is DeckChangedSignal fieldChangedSignal && CheckComplete(fieldChangedSignal))
             SetComplete(panelDescriptor);
-            return true;
-        }
-
-        return false;
     }
 
     public bool GetFlowOfIndices(out DeckIndex[] result)
@@ -28,7 +23,7 @@ public class EquipGuide : Guide
         return RunManager.Instance.Environment.FindDeckIndex(out result[0], _from, omit: new[] { _to });
     }
 
-    public bool CheckComplete(FieldChangedSignal fieldChangedSignal)
+    public bool CheckComplete(DeckChangedSignal deckChangedSignal)
     {
         RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(_to);
         if (skill == null)

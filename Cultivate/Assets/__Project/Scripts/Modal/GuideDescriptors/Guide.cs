@@ -8,6 +8,7 @@ public abstract class Guide
     {
         _comment = comment;
     }
-    
-    public virtual bool ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal) => false;
+
+    public virtual void ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
+    { }
 }

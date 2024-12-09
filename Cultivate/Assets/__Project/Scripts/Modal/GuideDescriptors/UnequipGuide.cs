@@ -8,15 +8,10 @@ public class UnequipGuide : Guide
         _from = from;
     }
 
-    public override bool ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
+    public override void ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
     {
-        if (signal is FieldChangedSignal && CheckComplete(out _))
-        {
+        if (signal is DeckChangedSignal && CheckComplete(out _))
             SetComplete(panelDescriptor);
-            return true;
-        }
-
-        return false;
     }
 
     private void SetComplete(PanelDescriptor panelDescriptor)

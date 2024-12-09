@@ -6,13 +6,13 @@ using UnityEngine;
 public class BattleEntityView : LegacySimpleView
 {
     public TMP_Text NameText;
-    public LegacyListView SkillList;
+    public ListView FieldView;
     public LegacyListView FormationList;
     
-    [SerializeField] public RectTransform SkillListTransform;
-    [SerializeField] private RectTransform SkillListShowPivot;
-    [SerializeField] private RectTransform SkillListHidePivot;
-    [SerializeField] private CanvasGroup SkillListCanvasGroup;
+    [SerializeField] public RectTransform FieldViewTransform;
+    [SerializeField] private RectTransform FieldViewShowPivot;
+    [SerializeField] private RectTransform FieldViewHidePivot;
+    [SerializeField] private CanvasGroup FieldViewCanvasGroup;
 
     [SerializeField] private Transform Anchor;
     private PrefabEntry CurrPrefabEntry;
@@ -22,7 +22,7 @@ public class BattleEntityView : LegacySimpleView
     {
         base.SetAddress(address);
         
-        SkillList.SetAddress(GetAddress().Append(".Slots"));
+        FieldView.SetAddress(GetAddress().Append(".Slots"));
         FormationList.SetAddress(GetAddress().Append(".ActiveFormations"));
     }
 
@@ -36,7 +36,7 @@ public class BattleEntityView : LegacySimpleView
         
         SetModel(entity.GetEntry().GetUIEntityModelPrefabEntry());
 
-        SkillList.Refresh();
+        FieldView.Refresh();
         FormationList.Refresh();
     }
 
@@ -54,9 +54,9 @@ public class BattleEntityView : LegacySimpleView
 
     public Tween ShowTween()
         => DOTween.Sequence().AppendInterval(0.3f)
-            .Append(SkillListTransform.DOAnchorPos(SkillListShowPivot.anchoredPosition, 0.15f)
-                .From(SkillListHidePivot.anchoredPosition).SetEase(Ease.OutQuad))
-            .Join(SkillListCanvasGroup.DOFade(1, 0.15f)
+            .Append(FieldViewTransform.DOAnchorPos(FieldViewShowPivot.anchoredPosition, 0.15f)
+                .From(FieldViewHidePivot.anchoredPosition).SetEase(Ease.OutQuad))
+            .Join(FieldViewCanvasGroup.DOFade(1, 0.15f)
                 .From(0).SetEase(Ease.OutQuad));
 
     public Tween HideTween()

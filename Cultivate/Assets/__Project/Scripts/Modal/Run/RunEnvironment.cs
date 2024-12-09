@@ -20,15 +20,27 @@ public class RunEnvironment : Addressable, RunClosureOwner
     #endregion
 
     #region Neurons
-
-    public Neuron BattleChangedNeuron = new();
-    private void BattleEnvironmentUpdateProcedure()
-    {
-        EnvironmentUpdateDetails d = new();
-        _closureDict.SendEvent(RunClosureDict.WIL_UPDATE, d);
-        SimulateProcedure();
-        _closureDict.SendEvent(RunClosureDict.DID_UPDATE, d);
-    }
+    
+    public Neuron<EquipDetails> EquipNeuron = new();
+    public Neuron<SwapDetails> SwapNeuron = new();
+    public Neuron<UnequipDetails> UnequipNeuron = new();
+    public Neuron<MergeDetails> MergeNeuron = new();
+    public Neuron<GainSkillDetails> GainSkillNeuron = new();
+    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
+    public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
+    public Neuron<BuySkillDetails> BuySkillNeuron = new();
+    public Neuron<GachaDetails> GachaNeuron = new();
+    public Neuron<SelectOptionDetails> SelectOptionNeuron = new();
+    public Neuron<PanelChangedDetails> PanelChangedNeuron = new();
+    public Neuron<DeckChangedDetails> DeckChangedNeuron = new();
+    public Neuron FieldChangedNeuron = new();
+    
+    public Neuron<int> GainMingYuanNeuron = new();
+    public Neuron<int> LoseMingYuanNeuron = new();
+    public Neuron<int> GainGoldNeuron = new();
+    public Neuron<int> LoseGoldNeuron = new();
+    public Neuron<int> GainDHealthNeuron = new();
+    public Neuron<int> LoseDHealthNeuron = new();
     
     #endregion
 
@@ -46,30 +58,10 @@ public class RunEnvironment : Addressable, RunClosureOwner
     private RunClosureDict _closureDict;
     public RunClosureDict ClosureDict => _closureDict;
 
-    public StageResult SimulateResult;
+    public Dirty<StageResult> SimulateResult;
+    public StageResult GetSimulateResult() => SimulateResult.Value;
     public RunResult Result { get; }
     private RunResultPanelDescriptor _runResultPanelDescriptor;
-
-    public Neuron<AddSkillDetails> AddSkillNeuron = new();
-    public Neuron<EquipDetails> EquipNeuron = new();
-    public Neuron<SwapDetails> SwapNeuron = new();
-    public Neuron<UnequipDetails> UnequipNeuron = new();
-    public Neuron<MergeDetails> MergeNeuron = new();
-    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
-    public Neuron<SelectOptionDetails> SelectOptionNeuron = new();
-    public Neuron<PanelChangedDetails> PanelChangedNeuron = new();
-    
-    public Neuron<GainSkillDetails> LegacyGainSkillNeuron = new();
-    public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
-    public Neuron<BuySkillDetails> BuySkillNeuron = new();
-    public Neuron<GachaDetails> GachaNeuron = new();
-    public Neuron<int> GainMingYuanNeuron = new();
-    public Neuron<int> LoseMingYuanNeuron = new();
-    public Neuron<int> GainGoldNeuron = new();
-    public Neuron<int> LoseGoldNeuron = new();
-    public Neuron<int> GainDHealthNeuron = new();
-    public Neuron<int> LoseDHealthNeuron = new();
-    // Audio
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -98,8 +90,10 @@ public class RunEnvironment : Addressable, RunClosureOwner
         _closureDict = new();
 
         Result = new RunResult();
+        SimulateResult = new(Simulate);
 
-        BattleChangedNeuron.Add(BattleEnvironmentUpdateProcedure);
+        FieldChangedNeuron.Add(SimulateResult.SetDirty);
+        DeckChangedNeuron.Add(GuideProcedure);
     }
 
     public static RunEnvironment FromConfig(RunConfig config)
@@ -114,9 +108,9 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void SetHome(RunEntity home)
     {
-        _home?.EnvironmentChangedNeuron.Remove(BattleChangedNeuron);
+        _home?.EnvironmentChangedNeuron.Remove(FieldChangedNeuron);
         _home = home;
-        _home?.EnvironmentChangedNeuron.Add(BattleChangedNeuron);
+        _home?.EnvironmentChangedNeuron.Add(FieldChangedNeuron);
     }
 
     public void SetAway(RunEntity away)
@@ -124,9 +118,9 @@ public class RunEnvironment : Addressable, RunClosureOwner
         _awayIsDummy = away == null;
         away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
         
-        _away?.EnvironmentChangedNeuron.Remove(BattleChangedNeuron);
+        _away?.EnvironmentChangedNeuron.Remove(FieldChangedNeuron);
         _away = away;
-        _away?.EnvironmentChangedNeuron.Add(BattleChangedNeuron);
+        _away?.EnvironmentChangedNeuron.Add(FieldChangedNeuron);
     }
 
     [NonSerialized] private bool _awayIsDummy;
@@ -241,7 +235,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         _home.SetSlotCount(Map.Entry._slotCount);
         SetDGoldProcedure(Map.Entry._gold);
         
-        LegacyDrawSkillsProcedure(new(jingJie: Map.Entry._skillJingJie, count: Map.Entry._skillCount));
+        DrawSkillsProcedure(new(jingJie: Map.Entry._skillJingJie, count: Map.Entry._skillCount));
 
         Map.Init();
         
@@ -281,12 +275,10 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public PanelDescriptor LegacyReceiveSignalProcedure(Signal signal)
     {
         Guide guide = Map.Panel.GetGuideDescriptor();
-        if (guide != null)
-        {
-            bool blocksSignal = guide.ReceiveSignal(Map.Panel, signal);
-            if (blocksSignal)
-                return Map.Panel;
-        }
+        guide?.ReceiveSignal(Map.Panel, signal);
+
+        if (signal is DeckChangedSignal)
+            return Map.Panel;
         
         PanelDescriptor panelDescriptor = Map.Panel.ReceiveSignal(signal);
         bool runIsUnfinished = Result.State == RunResult.RunResultState.Unfinished;
@@ -319,16 +311,17 @@ public class RunEnvironment : Addressable, RunClosureOwner
         Map.NextStep();
         return Map.Panel;
     }
+
+    public void GuideProcedure(DeckChangedDetails d)
+    {
+        Guide guide = Map.Panel.GetGuideDescriptor();
+        guide?.ReceiveSignal(Map.Panel, new DeckChangedSignal(d.FromIndex, d.ToIndex));
+    }
     
     public void ReceiveSignalProcedure(Signal signal)
     {
-        Guide guide = Map.Panel.GetGuideDescriptor();
-        if (guide != null)
-        {
-            bool blocksSignal = guide.ReceiveSignal(Map.Panel, signal);
-            if (blocksSignal)
-                return;
-        }
+        if (signal is DeckChangedSignal)
+            return;
         
         PanelDescriptor panelDescriptor = Map.Panel.ReceiveSignal(signal);
         bool runIsUnfinished = Result.State == RunResult.RunResultState.Unfinished;
@@ -379,23 +372,12 @@ public class RunEnvironment : Addressable, RunClosureOwner
         }
     }
 
-    public void CommitRunProcedure(RunResult.RunResultState state)
-    {
-        Result.State = state;
-    }
-
-    public void Combat()
-    {
-        StageEnvironment.Combat(StageConfig.ForCombat(_home, _away, _config));
-    }
-
-    // TODO: cache result
-    private void SimulateProcedure()
+    private StageResult Simulate()
     {
         PlacementProcedure();
         FormationProcedure();
 
-        SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(_home, _away, _config));
+        return StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(_home, _away, _config));
     }
 
     private void PlacementProcedure()
@@ -421,7 +403,24 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return MergePreresult.FromDefault(lhs, rhs, playerJingJie);
     }
 
-    private bool InnerMergeProcedure(MergeDetails d)
+    public void MergeProcedure(MergeDetails d)
+    {
+        _closureDict.SendEvent(RunClosureDict.WIL_MERGE, d);
+
+        if (d.Cancel)
+            return;
+
+        bool success = InnerMerge(d);
+        if (!success)
+            return;
+        
+        _closureDict.SendEvent(RunClosureDict.DID_MERGE, d);
+        
+        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+        MergeNeuron.Invoke(d);
+    }
+
+    private bool InnerMerge(MergeDetails d)
     {
         RunSkill lhs = d.Lhs;
         RunSkill rhs = d.Rhs;
@@ -441,18 +440,14 @@ public class RunEnvironment : Addressable, RunClosureOwner
         if (MergePreresult.IsCongruent(lhs, rhs, playerJingJie))
         {
             rhs.JingJie = (rJingJie + 2).ClampUpper(rEntry.HighestJingJie);
-            Hand.Remove(lhs);
-            Hand.SetModified(rhs);
-            BattleChangedNeuron.Invoke();
+            Hand.Remove(d.Lhs);
             return true;
         }
         
         if (MergePreresult.IsSameName(lhs, rhs, playerJingJie))
         {
             rhs.JingJie = (Mathf.Max(lJingJie, rJingJie) + 1).ClampUpper(rEntry.HighestJingJie);
-            Hand.Remove(lhs);
-            Hand.SetModified(rhs);
-            BattleChangedNeuron.Invoke();
+            Hand.Remove(d.Lhs);
             return true;
         }
 
@@ -462,48 +457,48 @@ public class RunEnvironment : Addressable, RunClosureOwner
         
         if (MergePreresult.IsSameWuXing(lhs, rhs, playerJingJie))
         {
-            LegacyDrawSkillProcedureNoAnimation(new(
-                    pred: skillEntry => skillEntry != lEntry && skillEntry != rEntry,
-                    wuXing: rWuXing,
-                    jingJie: rJingJie + 1),
-                preferredDeckIndex: rhsDeckIndex);
-            Hand.Remove(lhs);
-            BattleChangedNeuron.Invoke();
+            DeckIndex? refDeckIndex = rhsDeckIndex;
+            SkillEntryDescriptor skillEntryDescriptor = new(
+                pred: skillEntry => skillEntry != lEntry && skillEntry != rEntry,
+                wuXing: rWuXing,
+                jingJie: rJingJie + 1);
+            InnerDrawCreateAdd(skillEntryDescriptor, ref refDeckIndex);
+            Hand.Remove(d.Lhs);
             return true;
         }
         
         if (MergePreresult.IsXiangShengWuXing(lhs, rhs, playerJingJie))
         {
-            LegacyDrawSkillProcedureNoAnimation(new(
-                    wuXing: WuXing.XiangShengNext(lWuXing, rWuXing).Value,
-                    jingJie: rJingJie + 1),
-                preferredDeckIndex: rhsDeckIndex);
-            Hand.Remove(lhs);
-            BattleChangedNeuron.Invoke();
+            DeckIndex? refDeckIndex = rhsDeckIndex;
+            SkillEntryDescriptor skillEntryDescriptor = new(
+                wuXing: WuXing.XiangShengNext(lWuXing, rWuXing).Value,
+                jingJie: rJingJie + 1);
+            InnerDrawCreateAdd(skillEntryDescriptor, ref refDeckIndex);
+            Hand.Remove(d.Lhs);
             return true;
         }
         
         if (MergePreresult.IsSameJingJie(lhs, rhs, playerJingJie))
         {
-            LegacyDrawSkillProcedureNoAnimation(new(
-                    pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
-                                        skillEntry.WuXing != rWuXing,
-                    jingJie: rJingJie + 1),
-                preferredDeckIndex: rhsDeckIndex);
-            Hand.Remove(lhs);
-            BattleChangedNeuron.Invoke();
+            DeckIndex? refDeckIndex = rhsDeckIndex;
+            SkillEntryDescriptor skillEntryDescriptor = new(
+                pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
+                                    skillEntry.WuXing != rWuXing,
+                jingJie: rJingJie + 1);
+            InnerDrawCreateAdd(skillEntryDescriptor, ref refDeckIndex);
+            Hand.Remove(d.Lhs);
             return true;
         }
         
         if (MergePreresult.IsHuaShenReroll(lhs, rhs, playerJingJie))
         {
-            LegacyDrawSkillProcedureNoAnimation(new(
-                    pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
-                                        skillEntry.WuXing != rWuXing,
-                    jingJie: rJingJie),
-                preferredDeckIndex: rhsDeckIndex);
-            Hand.Remove(lhs);
-            BattleChangedNeuron.Invoke();
+            DeckIndex? refDeckIndex = rhsDeckIndex;
+            SkillEntryDescriptor skillEntryDescriptor = new(
+                pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
+                                    skillEntry.WuXing != rWuXing,
+                jingJie: rJingJie);
+            InnerDrawCreateAdd(skillEntryDescriptor, ref refDeckIndex);
+            Hand.Remove(d.Lhs);
             return true;
         }
         
@@ -527,7 +522,9 @@ public class RunEnvironment : Addressable, RunClosureOwner
         }
         
         d.SkillSlot.Skill = toEquip;
-        
+
+        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+        FieldChangedNeuron.Invoke();
         EquipNeuron.Invoke(d);
     }
 
@@ -537,6 +534,9 @@ public class RunEnvironment : Addressable, RunClosureOwner
         RunSkill temp = d.FromSlot.Skill;
         d.FromSlot.Skill = d.ToSlot.Skill;
         d.ToSlot.Skill = temp;
+
+        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+        FieldChangedNeuron.Invoke();
         SwapNeuron.Invoke(d);
     }
 
@@ -545,40 +545,10 @@ public class RunEnvironment : Addressable, RunClosureOwner
         RunSkill toUnequip = d.SkillSlot.Skill;
         Hand.Add(toUnequip);
         d.SkillSlot.Skill = null;
-        UnequipNeuron.Invoke(d);
-    }
-
-    public void MergeProcedure(MergeDetails d)
-    {
-        _closureDict.SendEvent(RunClosureDict.WIL_MERGE, d);
-
-        if (d.Cancel)
-            return;
-
-        bool success = InnerMergeProcedure(d);
-        if (!success)
-            return;
         
-        _closureDict.SendEvent(RunClosureDict.DID_MERGE, d);
-        MergeNeuron.Invoke(d);
-    }
-    
-    public bool LegacyEquipProcedure(out bool isReplace, RunSkill toEquip, SkillSlot slot)
-    {
-        RunSkill toUnequip = slot.Skill;
-
-        isReplace = false;
-
-        if (toUnequip == null)
-            Hand.Remove(toEquip);
-        else if (toUnequip is RunSkill runSkill)
-        {
-            isReplace = true;
-            Hand.Replace(toEquip, runSkill);
-        }
-
-        slot.Skill = toEquip;
-        return true;
+        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, DeckIndex.FromHand(Hand.Count() - 1)));
+        FieldChangedNeuron.Invoke();
+        UnequipNeuron.Invoke(d);
     }
 
     public void LegacyUnequipProcedure(SkillSlot slot, object _)
@@ -595,19 +565,20 @@ public class RunEnvironment : Addressable, RunClosureOwner
         }
     }
 
-    public bool LegacySwapProcedure(out bool isReplace, SkillSlot fromSlot, SkillSlot toSlot)
-    {
-        isReplace = toSlot.Skill != null;
-        RunSkill temp = fromSlot.Skill;
-        fromSlot.Skill = toSlot.Skill;
-        toSlot.Skill = temp;
-        return true;
-    }
-
     public void ClearDeck()
     {
         Hand.Clear();
         Home.TraversalCurrentSlots().Do(s => s.Skill = null);
+    }
+
+    public void CommitRunProcedure(RunResult.RunResultState state)
+    {
+        Result.State = state;
+    }
+
+    public void Combat()
+    {
+        StageEnvironment.Combat(StageConfig.ForCombat(_home, _away, _config));
     }
     
     public void SetDMingYuanProcedure(int value)
@@ -700,21 +671,73 @@ public class RunEnvironment : Addressable, RunClosureOwner
     {
         _closureDict.SendEvent(RunClosureDict.WILL_DISCOVER_SKILL, d);
 
-        List<SkillEntry> entries = LegacyDrawSkills(d.Descriptor);
+        List<SkillEntry> entries = InnerDrawSkills(d.Descriptor);
         d.Skills.AddRange(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
 
         _closureDict.SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
     }
     
-    public SkillEntry LegacyDrawSkill(SkillEntryDescriptor descriptor)
+    #endregion
+
+    #region SkillRelatedProcedures
+    
+    public SkillEntry InnerDrawSkill(SkillEntryDescriptor descriptor)
     {
         SkillPool.Shuffle();
         SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
         skillEntry ??= Encyclopedia.SkillCategory[0];
         return skillEntry;
     }
+    
+    private RunSkill InnerCreateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
+    {
+        JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
+        return RunSkill.FromEntryJingJie(skillEntry, jingJie);
+    }
 
-    public List<SkillEntry> LegacyDrawSkills(SkillEntryCollectionDescriptor d)
+    private void InnerAddSkill(RunSkill skill, ref DeckIndex? preferredDeckIndex)
+    {
+        if (!preferredDeckIndex.HasValue)
+        {
+            Hand.Add(skill);
+            preferredDeckIndex = DeckIndex.FromHand(Hand.Count() - 1);
+            return;
+        }
+        
+        DeckIndex deckIndex = preferredDeckIndex.Value;
+        if (deckIndex.InField)
+        {
+            Home.GetSlot(deckIndex.Index).Skill = skill;
+            return;
+        }
+        
+        Hand.Replace(deckIndex.Index, skill);
+    }
+    
+    private void InnerCreateAdd(SkillEntry skillEntry, JingJie? preferredJingJie, ref DeckIndex? preferredDeckIndex)
+        => InnerAddSkill(InnerCreateSkill(skillEntry, preferredJingJie), ref preferredDeckIndex);
+    
+    private void InnerDrawCreateAdd(SkillEntryDescriptor descriptor, ref DeckIndex? preferredDeckIndex)
+        => InnerAddSkill(InnerCreateSkill(InnerDrawSkill(descriptor), descriptor.JingJie), ref preferredDeckIndex);
+    
+    public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
+    {
+        RunSkill skill = InnerCreateSkill(skillEntry, preferredJingJie);
+        DeckIndex? refDeckIndex = preferredDeckIndex;
+        InnerAddSkill(skill, ref refDeckIndex);
+        GainSkillNeuron.Invoke(new GainSkillDetails(refDeckIndex.Value, skill));
+    }
+    
+    public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+    {
+        SkillEntry skillEntry = InnerDrawSkill(descriptor);
+        RunSkill skill = InnerCreateSkill(skillEntry, descriptor.JingJie);
+        DeckIndex? refDeckIndex = preferredDeckIndex;
+        InnerAddSkill(skill, ref refDeckIndex);
+        GainSkillNeuron.Invoke(new GainSkillDetails(refDeckIndex.Value, skill));
+    }
+    
+    public List<SkillEntry> InnerDrawSkills(SkillEntryCollectionDescriptor d)
     {
         List<SkillEntry> toRet = new();
         
@@ -741,56 +764,18 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
         return toRet;
     }
-    
-    private void LegacyAddSkill(RunSkill skill, DeckIndex? preferredDeckIndex = null)
-    {
-        if (!preferredDeckIndex.HasValue)
-        {
-            int last = Hand.Count();
-            Hand.Add(skill);
-            LegacyGainSkillNeuron.Invoke(new GainSkillDetails(DeckIndex.FromHand(last), skill));
-            return;
-        }
 
-        DeckIndex deckIndex = preferredDeckIndex.Value;
-        if (deckIndex.InField)
-            Home.GetSlot(deckIndex.Index).Skill = skill;
-        else
-            Hand.Replace(deckIndex.Index, skill);
+    public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
+    {
+        List<SkillEntry> entries = InnerDrawSkills(descriptor);
         
-        LegacyGainSkillNeuron.Invoke(new GainSkillDetails(deckIndex, skill));
-    }
-
-    private void LegacyAddSkillNoAnimation(RunSkill skill, DeckIndex? preferredDeckIndex = null)
-    {
-        if (!preferredDeckIndex.HasValue)
-        {
-            int last = Hand.Count();
-            Hand.Add(skill);
-            LegacyGainSkillNeuron.Invoke(new GainSkillDetails(DeckIndex.FromHand(last), skill));
-            return;
-        }
-
-        DeckIndex deckIndex = preferredDeckIndex.Value;
-        if (deckIndex.InField)
-            Home.GetSlot(deckIndex.Index).Skill = skill;
-        else
-            Hand.Replace(deckIndex.Index, skill);
-    }
-    
-    public void LegacyDrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
-    {
         int start = Hand.Count();
-
         DeckIndex[] indices = new DeckIndex[descriptor.Count];
-        
-        List<SkillEntry> entries = LegacyDrawSkills(descriptor);
-        
         for (int i = 0; i < descriptor.Count; i++)
         {
             SkillEntry e = entries[i];
             
-            RunSkill skill = CreateSkill(e, descriptor.JingJie);
+            RunSkill skill = InnerCreateSkill(e, descriptor.JingJie);
             Hand.Add(skill);
 
             indices[i] = DeckIndex.FromHand(start + i);
@@ -799,82 +784,17 @@ public class RunEnvironment : Addressable, RunClosureOwner
         GainSkillsNeuron.Invoke(new GainSkillsDetails(indices));
     }
     
-    private void LegacyDrawSkillProcedureNoAnimation(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
-        => LegacyAddSkillNoAnimation(CreateSkill(LegacyDrawSkill(descriptor), descriptor.JingJie), preferredDeckIndex);
-
-    public void LegacyAddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
-        => LegacyAddSkill(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private RunSkill CreateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
-    {
-        JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
-        return RunSkill.FromEntryJingJie(skillEntry, jingJie);
-    }
-
-    public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
-        => AddSkillProcedure(CreateSkill(skillEntry, preferredJingJie), preferredDeckIndex);
-
-    public void AddSkillProcedure(RunSkill skill, DeckIndex? preferredDeckIndex = null)
-    {
-        if (!preferredDeckIndex.HasValue)
-        {
-            int last = Hand.Count();
-            Hand.Add(skill);
-            AddSkillNeuron.Invoke(new AddSkillDetails(DeckIndex.FromHand(last), skill));
-            return;
-        }
-        
-        DeckIndex deckIndex = preferredDeckIndex.Value;
-        if (deckIndex.InField)
-        {
-            Home.GetSlot(deckIndex.Index).Skill = skill;
-            AddSkillNeuron.Invoke(new AddSkillDetails(deckIndex, skill));
-            return;
-        }
-        
-        Hand.Replace(deckIndex.Index, skill);
-        AddSkillNeuron.Invoke(new AddSkillDetails(deckIndex, skill));
-    }
-    
-    public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
-    {
-        SkillPool.Shuffle();
-        SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
-        skillEntry ??= Encyclopedia.SkillCategory[0];
-        
-        AddSkillProcedure(skillEntry,
-            preferredJingJie: descriptor.JingJie,
-            preferredDeckIndex: preferredDeckIndex);
-    }
-
     public void PickDiscoveredSkillProcedure(PickDiscoveredSkillDetails d)
     {
-        RunSkill skill = CreateSkill(d.Skill.Entry, d.Skill.JingJie);
+        RunSkill skill = InnerCreateSkill(d.Skill.Entry, d.Skill.JingJie);
         Hand.Add(skill);
         PickDiscoveredSkillNeuron.Invoke(d);
         ReceiveSignalProcedure(new PickDiscoveredSkillSignal(d.PickedIndex));
     }
 
-    public void SelectOptionProcedure(SelectOptionDetails d)
-    {
-        SelectOptionNeuron.Invoke(d);
-        Signal signal = new SelectedOptionSignal(d.SelectedIndex);
-        ReceiveSignalProcedure(signal);
-    }
-
     public void BuySkillProcedure(Commodity commodity, int commodityIndex)
     {
-        RunSkill skill = CreateSkill(commodity.Skill.Entry, commodity.Skill.JingJie);
+        RunSkill skill = InnerCreateSkill(commodity.Skill.Entry, commodity.Skill.JingJie);
         int last = Hand.Count();
         Hand.Add(skill);
         BuySkillNeuron.Invoke(new(DeckIndex.FromHand(last), commodityIndex));
@@ -882,10 +802,17 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void GachaProcedure(SkillEntryDescriptor skillDescriptor, int gachaIndex)
     {
-        RunSkill skill = CreateSkill(skillDescriptor.Entry, skillDescriptor.JingJie);
+        RunSkill skill = InnerCreateSkill(skillDescriptor.Entry, skillDescriptor.JingJie);
         int last = Hand.Count();
         Hand.Add(skill);
         GachaNeuron.Invoke(new(DeckIndex.FromHand(last), gachaIndex));
+    }
+
+    public void SelectOptionProcedure(SelectOptionDetails d)
+    {
+        SelectOptionNeuron.Invoke(d);
+        Signal signal = new SelectedOptionSignal(d.SelectedIndex);
+        ReceiveSignalProcedure(signal);
     }
 
     #endregion

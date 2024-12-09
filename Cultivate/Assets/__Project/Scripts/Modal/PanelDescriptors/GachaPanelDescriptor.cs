@@ -28,17 +28,17 @@ public class GachaPanelDescriptor : PanelDescriptor
 
         _items = new();
         
-        List<SkillEntry> entries1 = RunManager.Instance.Environment.LegacyDrawSkills(new(
+        List<SkillEntry> entries1 = RunManager.Instance.Environment.InnerDrawSkills(new(
             pred: e => e.LowestJingJie <= JingJie.ZhuJi,
             count: 7,
             consume: false));
         
-        List<SkillEntry> entries2 = RunManager.Instance.Environment.LegacyDrawSkills(new(
+        List<SkillEntry> entries2 = RunManager.Instance.Environment.InnerDrawSkills(new(
             pred: e => JingJie.JinDan <= e.LowestJingJie && e.LowestJingJie <= JingJie.YuanYing,
             count: 2,
             consume: false));
         
-        List<SkillEntry> entries3 = RunManager.Instance.Environment.LegacyDrawSkills(new(
+        List<SkillEntry> entries3 = RunManager.Instance.Environment.InnerDrawSkills(new(
             pred: e => JingJie.HuaShen <= e.LowestJingJie,
             count: 1,
             consume: false));

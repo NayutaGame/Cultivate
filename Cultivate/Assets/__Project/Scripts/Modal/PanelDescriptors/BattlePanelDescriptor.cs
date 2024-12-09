@@ -12,10 +12,8 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         _enemy = enemy;
         RunManager.Instance.Environment.SetAway(_enemy);
-        RunManager.Instance.Environment.BattleChangedNeuron.Invoke();
+        RunManager.Instance.Environment.FieldChangedNeuron.Invoke();
     }
-
-    public StageResult GetResult() => RunManager.Instance.Environment.SimulateResult;
 
     public BattlePanelDescriptor(RunEntity template)
     {
