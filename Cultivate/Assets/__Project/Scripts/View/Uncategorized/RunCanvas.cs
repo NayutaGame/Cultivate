@@ -183,7 +183,7 @@ public class RunCanvas : Panel
             await GetAnimator().SetStateAsync(0);
 
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
-        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor)
+        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor || d is DiscoverSkillPanelDescriptor)
         {
             await DeckPanel.GetAnimator().SetStateAsync(2);
         }

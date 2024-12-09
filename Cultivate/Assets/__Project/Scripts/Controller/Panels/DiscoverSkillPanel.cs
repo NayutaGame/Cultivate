@@ -73,13 +73,6 @@ public class DiscoverSkillPanel : Panel
 
     private void PickDiscoveredSkill(InteractBehaviour ib, PointerEventData eventData)
     {
-        // int i = 0;
-        // Signal signal = new PickDiscoveredSkillSignal(i);
-        // PanelDescriptor panelDescriptor = RunManager.Instance.Environment.ReceiveSignalProcedure(signal);
-        // PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        // CanvasManager.Instance.RunCanvas.LegacySetPanelSAsync(panelS);
-        //
-        
         SkillEntryDescriptor skill = ib.Get<SkillEntryDescriptor>();
         int pickedIndex = SkillList.IndexFromView(ib.GetView()).Value;
         PickDiscoveredSkillDetails details = new(skill, pickedIndex);

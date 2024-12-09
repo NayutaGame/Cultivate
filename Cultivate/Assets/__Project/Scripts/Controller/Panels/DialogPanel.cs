@@ -1,4 +1,5 @@
 
+using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -78,16 +79,39 @@ public class DialogPanel : Panel
         }
     }
 
-    private void SelectedOption(int i)
+    private Neuron<SelectOptionDetails> SelectOptionEvent = new();
+    
+    private void OnEnable()
     {
-        Signal signal = new SelectedOptionSignal(i);
-        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
+        SelectOptionEvent.Add(RunManager.Instance.Environment.SelectOptionProcedure);
+        RunManager.Instance.Environment.SelectOptionNeuron.Add(SelectOptionStaging);
     }
 
-    private void SelectOption0() => SelectedOption(0);
-    private void SelectOption1() => SelectedOption(1);
-    private void SelectOption2() => SelectedOption(2);
-    private void SelectOption3() => SelectedOption(3);
+    private void OnDisable()
+    {
+        SelectOptionEvent.Remove(RunManager.Instance.Environment.SelectOptionProcedure);
+        RunManager.Instance.Environment.SelectOptionNeuron.Remove(SelectOptionStaging);
+    }
+
+    private void SelectOption(int selectedIndex)
+    {
+        SelectOptionDetails details = new(selectedIndex);
+        SelectOptionEvent.Invoke(details);
+    }
+
+    private void SelectOption0() => SelectOption(0);
+    private void SelectOption1() => SelectOption(1);
+    private void SelectOption2() => SelectOption(2);
+    private void SelectOption3() => SelectOption(3);
+    
+    public void SelectOptionStaging(SelectOptionDetails d)
+    {
+        // AudioManager.Play("CardPlacement");
+
+        Buttons.Do(b => b.interactable = false);
+
+        // CanvasManager.Instance.RunCanvas.GetAnimationQueue().QueueAnimation(GetAnimator().TweenFromSetState(2));
+    }
 
     public override Tween EnterIdle()
         => DOTween.Sequence()
@@ -95,30 +119,23 @@ public class DialogPanel : Panel
             .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0))
             .Append(TweenAnimation.Show(GetRect(), Vector2.zero, CanvasGroup))
             .Join(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleCanvasGroup))
-            .Join(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition,
-                DetailedTextCanvasGroup).SetDelay(0.05f))
-            .Join(TweenAnimation.Show(OptionsTransform, OptionsIdlePivot.anchoredPosition, OptionsCanvasGroup)
-                .SetDelay(0.10f));
+            .Join(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DetailedTextCanvasGroup).SetDelay(0.05f))
+            .Join(TweenAnimation.Show(OptionsTransform, OptionsIdlePivot.anchoredPosition, OptionsCanvasGroup).SetDelay(0.10f))
+            .AppendCallback(() => Buttons.Do(b => b.interactable = true));
 
     public Tween SelfTransitionTween()
         => DOTween.Sequence()
-            .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition,
-                DetailedTextCanvasGroup))
+            .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DetailedTextCanvasGroup))
             .Join(TweenAnimation.Hide(OptionsTransform, OptionsIdlePivot.anchoredPosition, OptionsCanvasGroup))
             .AppendCallback(Refresh)
-            .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition,
-                DetailedTextCanvasGroup))
-            .Join(TweenAnimation.Show(OptionsTransform, OptionsIdlePivot.anchoredPosition, OptionsCanvasGroup)
-                .SetDelay(0.05f));
+            .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DetailedTextCanvasGroup))
+            .Join(TweenAnimation.Show(OptionsTransform, OptionsIdlePivot.anchoredPosition, OptionsCanvasGroup).SetDelay(0.05f));
 
     public override Tween EnterHide()
         => DOTween.Sequence()
             .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleCanvasGroup))
-            .Join(TweenAnimation
-                .Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DetailedTextCanvasGroup)
-                .SetDelay(0.05f))
-            .Join(TweenAnimation.Hide(OptionsTransform, OptionsIdlePivot.anchoredPosition, OptionsCanvasGroup)
-                .SetDelay(0.10f))
+            .Join(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DetailedTextCanvasGroup).SetDelay(0.05f))
+            .Join(TweenAnimation.Hide(OptionsTransform, OptionsIdlePivot.anchoredPosition, OptionsCanvasGroup).SetDelay(0.10f))
             .Join(TweenAnimation.Hide(GetRect(), Vector2.zero, CanvasGroup).SetDelay(0.15f))
             .AppendCallback(() => gameObject.SetActive(false));
 }

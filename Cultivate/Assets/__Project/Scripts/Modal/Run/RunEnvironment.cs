@@ -56,6 +56,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public Neuron<UnequipDetails> UnequipNeuron = new();
     public Neuron<MergeDetails> MergeNeuron = new();
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
+    public Neuron<SelectOptionDetails> SelectOptionNeuron = new();
     public Neuron<PanelChangedDetails> PanelChangedNeuron = new();
     
     public Neuron<GainSkillDetails> LegacyGainSkillNeuron = new();
@@ -862,6 +863,13 @@ public class RunEnvironment : Addressable, RunClosureOwner
         Hand.Add(skill);
         PickDiscoveredSkillNeuron.Invoke(d);
         ReceiveSignalProcedure(new PickDiscoveredSkillSignal(d.PickedIndex));
+    }
+
+    public void SelectOptionProcedure(SelectOptionDetails d)
+    {
+        SelectOptionNeuron.Invoke(d);
+        Signal signal = new SelectedOptionSignal(d.SelectedIndex);
+        ReceiveSignalProcedure(signal);
     }
 
     public void BuySkillProcedure(Commodity commodity, int commodityIndex)
