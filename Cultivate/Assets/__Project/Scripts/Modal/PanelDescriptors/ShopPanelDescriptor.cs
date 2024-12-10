@@ -44,19 +44,19 @@ public class ShopPanelDescriptor : PanelDescriptor
         }
     }
 
-    public bool Buy(Commodity commodity)
+    public void BuySkillProcedure(BuySkillDetails d)
     {
+        Commodity commodity = d.Commodity;
         if (!_commodities.Contains(commodity))
-            return false;
+            return;
 
         if (RunManager.Instance.Environment.GetGold().Curr < commodity.FinalPrice)
-            return false;
+            return;
 
         RunManager.Instance.Environment.SetDGoldProcedure(-commodity.FinalPrice);
         _commodities.Remove(commodity);
 
-        RunManager.Instance.Environment.BuySkillProcedure(commodity, _commodities.IndexOf(commodity));
-        return true;
+        RunManager.Instance.Environment.BuySkillProcedure(d);
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)

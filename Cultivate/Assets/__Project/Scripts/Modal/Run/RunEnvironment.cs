@@ -676,6 +676,11 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
         _closureDict.SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
     }
+
+    public void ExitShopProcedure()
+    {
+        ReceiveSignalProcedure(new ExitShopSignal());
+    }
     
     #endregion
 
@@ -792,12 +797,13 @@ public class RunEnvironment : Addressable, RunClosureOwner
         ReceiveSignalProcedure(new PickDiscoveredSkillSignal(d.PickedIndex));
     }
 
-    public void BuySkillProcedure(Commodity commodity, int commodityIndex)
+    public void BuySkillProcedure(BuySkillDetails d)
     {
-        RunSkill skill = InnerCreateSkill(commodity.Skill.Entry, commodity.Skill.JingJie);
+        RunSkill skill = InnerCreateSkill(d.Commodity.Skill.Entry, d.Commodity.Skill.JingJie);
         int last = Hand.Count();
         Hand.Add(skill);
-        BuySkillNeuron.Invoke(new(DeckIndex.FromHand(last), commodityIndex));
+        d.DeckIndex = DeckIndex.FromHand(last);
+        BuySkillNeuron.Invoke(d);
     }
 
     public void GachaProcedure(SkillEntryDescriptor skillDescriptor, int gachaIndex)

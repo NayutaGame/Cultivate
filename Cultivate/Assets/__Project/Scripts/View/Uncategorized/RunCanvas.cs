@@ -119,7 +119,7 @@ public class RunCanvas : Panel
         
         RunManager.Instance.Environment.PanelChangedNeuron.Add(ChangePanel);
         
-        RunManager.Instance.Environment.GainSkillsNeuron.Add(LegacyGainSkillsStaging);
+        RunManager.Instance.Environment.GainSkillsNeuron.Add(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(MingYuanDamageStaging);
     }
 
@@ -141,7 +141,7 @@ public class RunCanvas : Panel
         
         RunManager.Instance.Environment.PanelChangedNeuron.Remove(ChangePanel);
         
-        RunManager.Instance.Environment.GainSkillsNeuron.Remove(LegacyGainSkillsStaging);
+        RunManager.Instance.Environment.GainSkillsNeuron.Remove(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuanDamageStaging);
     }
     
@@ -345,73 +345,54 @@ public class RunCanvas : Panel
         _animationQueue.QueueAnimation(seq);
     }
     
-    private void LegacyGainSkillsStaging(GainSkillsDetails d)
+    private void GainSkillsStaging(GainSkillsDetails d)
     {
-        void SetPosition(DeckIndex deckIndex, Vector3 position)
+        void SetPosition(DelegatingView view, Vector3 position)
         {
-            LegacyInteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                pivotBehaviour.FollowTransform.position = position;
-                pivotBehaviour.FollowTransform.localScale = Vector3.zero;
-                pivotBehaviour.Animator.SetState(3);
-                newIB.SetInteractable(false);
-            }
+            view.GetAnimator().SetState(4);
+            view.GetDelegatedView().GetRect().position = position;
+            view.GetDelegatedView().GetRect().localScale = Vector3.zero;
         }
-
-        void SetSkillShow(DeckIndex deckIndex, Vector3 position)
+        
+        void SetShow(DelegatingView view)
         {
-            LegacyInteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                pivotBehaviour.FollowTransform.position = position;
-                pivotBehaviour.FollowTransform.localScale = pivotBehaviour.HoverTransform.localScale;
-                pivotBehaviour.Animator.SetStateAsync(3);
-                newIB.SetInteractable(false);
-            }
+            view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
         }
-
-        void SetSkillMove(DeckIndex deckIndex, Vector3 position)
+        
+        void SetIdle(DelegatingView view)
         {
-            LegacyInteractBehaviour newIB = SkillInteractBehaviourFromDeckIndex(deckIndex);
-            newIB.SetInteractable(true);
-            LegacyPivotBehaviour pivotBehaviour = newIB.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                pivotBehaviour.PositionToIdle(position);
-            }
+            view.GetAnimator().SetStateAsync(1);
             // AudioManager.Play("CardPlacement");
         }
         
-        // Refresh();
-        Vector3 position = Vector3.zero;
+        d.DeckIndices.Length.Do(i => DeckPanel.HandView.AddItem());
         
+        Vector3 position = Vector3.zero;
         int offset = 1;
 
         for (int i = 0; i < d.DeckIndices.Length; i++)
         {
-            int index = i;
-            SetPosition(d.DeckIndices[index], position + index * offset * Vector3.left);
+            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndices[i]) as DelegatingView;
+            Vector3 showPosition = position + i * offset * Vector3.left;
+            SetPosition(view, showPosition);
         }
         
         Sequence seq = DOTween.Sequence();
         seq.AppendInterval(0.05f);
 
-        for (int i = 0; i < d.DeckIndices.Length; i++)
+        foreach (DeckIndex deckIndex in d.DeckIndices)
         {
-            int index = i;
-            seq.AppendCallback(() => SetSkillShow(d.DeckIndices[index], position + index * offset * Vector3.left))
+            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as DelegatingView;
+            seq.AppendCallback(() => SetShow(view))
                 .AppendInterval(0.1f);
         }
         
         seq.AppendInterval(0.2f);
 
-        for (int i = 0; i < d.DeckIndices.Length; i++)
+        foreach (DeckIndex deckIndex in d.DeckIndices)
         {
-            int index = i;
-            seq.AppendCallback(() => SetSkillMove(d.DeckIndices[index], position + index * offset * Vector3.left))
+            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as DelegatingView;
+            seq.AppendCallback(() => SetIdle(view))
                 .AppendInterval(0.1f);
         }
 
@@ -530,37 +511,32 @@ public class RunCanvas : Panel
     
 
 
-    public void BuySkillStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour commodityIB)
+    public void BuySkillStaging(BuySkillDetails d)
     {
-        void SetSkillPosition(LegacyInteractBehaviour ib, LegacyInteractBehaviour commodityIB)
+        void SetPosition(DelegatingView view, Vector3 position, Vector3 localScale)
         {
-            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                Transform t = commodityIB.GetSimpleView().transform;
-                pivotBehaviour.FollowTransform.position = t.position;
-                pivotBehaviour.FollowTransform.localScale = t.localScale;
-                pivotBehaviour.Animator.SetState(3);
-                ib.SetInteractable(false);
-            }
-        }
-
-        void SetSkillMove(LegacyInteractBehaviour ib, Vector3 position)
-        {
-            ib.SetInteractable(true);
-            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                pivotBehaviour.PositionToIdle(position);
-            }
-            // AudioManager.Play("CardPlacement");
+            view.GetAnimator().SetState(4);
+            view.GetDelegatedView().GetRect().position = position;
+            view.GetDelegatedView().GetRect().localScale = localScale;
         }
         
-        // Refresh();
+        void SetIdle(DelegatingView view)
+        {
+            view.GetAnimator().SetStateAsync(1);
+        }
         
-        SetSkillPosition(cardIB, commodityIB);
-        SetSkillMove(cardIB, commodityIB.transform.position);
+        // AudioManager.Play("CardPlacement");
         // AudioManager.Instance.Play("钱币");
+        
+        DeckPanel.HandView.AddItem();
+        
+        DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
+        DelegatingView commodityView = ShopPanel.CommodityItemFromIndex(d.CommodityIndex) as DelegatingView;
+        
+        ShopPanel.CommodityListView.RemoveItemAt(d.CommodityIndex);
+        
+        SetPosition(view, commodityView.GetRect().position, commodityView.GetRect().localScale);
+        SetIdle(view);
     }
 
     public void GachaStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour gachaIB)

@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 997528417164191660}
   - component: {fileID: 8451619000142963623}
   - component: {fileID: 2260193962904907248}
-  - component: {fileID: 2405321879005697485}
+  - component: {fileID: 7536779396942873148}
   m_Layer: 5
   m_Name: InteractBehaviour
   m_TagString: Untagged
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2405321879005697485
+--- !u!114 &7536779396942873148
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5822712034224908152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20856fa918421a94cb33ee9e2a953168, type: 3}
+  m_Script: {fileID: 11500000, guid: 0533921ce9bac534f89b9ff88b9aadde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8155228337873847611
@@ -135,11 +135,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8086324285004126783}
-  - component: {fileID: 5742922262591282243}
-  - component: {fileID: 2321122406348745492}
-  - component: {fileID: 3796569229162288698}
+  - component: {fileID: 5805233460815238631}
   m_Layer: 5
-  m_Name: FieldSlotView
+  m_Name: EnemyFieldSlotView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,7 +165,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5742922262591282243
+--- !u!114 &5805233460815238631
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,10 +174,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8155228337873847611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2536791c891adf84cb32ef01bf335a1e, type: 3}
+  m_Script: {fileID: 11500000, guid: c9276e1c4af3c944b9135906ff2a4761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactBehaviour: {fileID: 2405321879005697485}
+  _interactBehaviour: {fileID: 7536779396942873148}
   _delegatedView: {fileID: 6869161373903514875}
   HideConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
@@ -190,36 +188,6 @@ MonoBehaviour:
   HoverConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
     LocalScale: {x: 0.75, y: 0.75, z: 0.75}
-  FollowConfiguration:
-    LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 0.75, y: 0.75, z: 0.75}
---- !u!114 &2321122406348745492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8155228337873847611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AnnotationAddress: Canvas.SkillAnnotation
-  HoverTransform: {fileID: 2389559373453481017}
---- !u!114 &3796569229162288698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8155228337873847611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aad0da1be55e3074c8090765b43f1ac9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _skillView: {fileID: 3877830227938690711}
 --- !u!1001 &5984462886594015716
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -321,6 +289,40 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f00172c11bdd30a40aff47ece12c3946, type: 3}
+--- !u!1 &1717961545395335278 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4961411691995726218, guid: f00172c11bdd30a40aff47ece12c3946, type: 3}
+  m_PrefabInstance: {fileID: 5984462886594015716}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5379062462618611691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717961545395335278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637b7bb92a0d96240a4ccaa132416877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 7536779396942873148}
+  _skillView: {fileID: 3877830227938690711}
+--- !u!114 &3828348146133271958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717961545395335278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 7536779396942873148}
+  AnnotationAddress: Canvas.SkillAnnotation
+  HoverTransform: {fileID: 2389559373453481017}
 --- !u!224 &3001455169898186917 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8838977114607417665, guid: f00172c11bdd30a40aff47ece12c3946, type: 3}
@@ -331,7 +333,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7412299649035220851, guid: f00172c11bdd30a40aff47ece12c3946, type: 3}
   m_PrefabInstance: {fileID: 5984462886594015716}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1717961545395335278}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce19d3df2f604b24fb2f7625f447321b, type: 3}

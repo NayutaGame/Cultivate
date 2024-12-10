@@ -29,7 +29,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2154680017236854132}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -69,7 +69,7 @@ RectTransform:
   - {fileID: 7916926923647850014}
   - {fileID: 7916926923843084947}
   m_Father: {fileID: 2154680017236854132}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -131,8 +131,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2154680016776041518}
   - {fileID: 2154680016714771099}
+  - {fileID: 2154680016776041518}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7ccb0aa35749a4e962e4e87efc395d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactBehaviour: {fileID: 0}
   Prefabs:
   - {fileID: 8155228337873847611, guid: 0fe41872bdd306640a6e5113f57b2ad4, type: 3}
 --- !u!1001 &2154680017675466924

@@ -32,8 +32,6 @@ public class BattlePanel : Panel
 
     private Address _address;
 
-    private Neuron<bool> SetVictoryNeuron = new();
-
     public override void AwakeFunction()
     {
         base.AwakeFunction();
@@ -44,7 +42,6 @@ public class BattlePanel : Panel
 
         CombatButton.Configure();
         CombatButton.ClickNeuron.Join(Combat);
-        SetVictoryNeuron.Join(CombatButton.SetAttractive);
         
         if (SkipButton != null)
         {
@@ -58,6 +55,13 @@ public class BattlePanel : Panel
         EnemyView.Refresh();
 
         // BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
+        RefreshOperationPanel();
+        
+        CanvasManager.Instance.RefreshGuide();
+    }
+
+    private void RefreshOperationPanel()
+    {
         if (RunManager.Instance.Environment.GetSimulateResult() is { } result)
         {
             HomeHealth.text = result.HomeLeftHp.ToString();
@@ -73,8 +77,6 @@ public class BattlePanel : Panel
             HomeHealth.alpha = 1f;
             AwayHealth.alpha = 1f;
         }
-        
-        CanvasManager.Instance.RefreshGuide();
     }
 
     private void PointerEnterHomeHealth(PointerEventData d)
@@ -119,6 +121,8 @@ public class BattlePanel : Panel
         HomePropagatePointer._onPointerExit = PointerExitHomeHealth;
         AwayPropagatePointer._onPointerEnter = PointerEnterAwayHealth;
         AwayPropagatePointer._onPointerExit = PointerExitAwayHealth;
+        
+        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshOperationPanel);
     }
 
     private void OnDisable()
@@ -135,6 +139,8 @@ public class BattlePanel : Panel
         HomePropagatePointer._onPointerExit -= PointerExitHomeHealth;
         AwayPropagatePointer._onPointerEnter -= PointerEnterAwayHealth;
         AwayPropagatePointer._onPointerExit -= PointerExitAwayHealth;
+        
+        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshOperationPanel);
     }
 
     private void ReactionFromBeginDrag(LegacyInteractBehaviour ib, PointerEventData d)
@@ -211,7 +217,7 @@ public class BattlePanel : Panel
     {
         VictoryStamp.SetActive(victory);
         HomeHealth.color = victory ? WinColor : LoseColor;
-        SetVictoryNeuron.Invoke(victory);
+        CombatButton.SetAttractive(victory);
     }
 
     private void PlayBattleBGM()

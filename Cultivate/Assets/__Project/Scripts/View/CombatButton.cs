@@ -16,6 +16,9 @@ public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private bool _isAttractive;
     public void SetAttractive(bool value)
     {
+        if (_isAttractive == value)
+            return;
+        
         _isAttractive = value;
         if (_animator.State != 3)
             _animator.SetStateAsync(!_isAttractive ? 1 : 2);

@@ -149,9 +149,9 @@ public class DeckPanel : Panel
         
         void HighlightSlot(LegacyItemBehaviour itemBehaviour)
         {
-            SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
-            if (skillSlot != null && skillSlot.Skill != null && pred(skillSlot.Skill))
-                itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(true);
+            // SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
+            // if (skillSlot != null && skillSlot.Skill != null && pred(skillSlot.Skill))
+            //     itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(true);
         }
     }
 
@@ -169,9 +169,9 @@ public class DeckPanel : Panel
         
         void UnhighlightSlot(LegacyItemBehaviour itemBehaviour)
         {
-            SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
-            if (skillSlot != null)
-                itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(false);
+            // SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
+            // if (skillSlot != null)
+            //     itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(false);
         }
     }
 

@@ -47,14 +47,12 @@ public class AnnotationView : MonoBehaviour
         // UpdateMousePos(d.position);
     }
 
-    public void PointerEnter(InteractBehaviour ib, PointerEventData d)
+    public void PointerEnter(RectTransform rect, RectTransform hoverRect, Address address)
     {
-        RectTransform rect = ib.GetView().GetRect();
-        RectTransform hoverRT = ib.GetView().GetBehaviour<AnnotationBehaviour>()?.HoverTransform;
-        if (hoverRT == null)
-            hoverRT = rect;
-        UpdateCornerPos(rect, hoverRT);
-        _view.SetAddress(ib.GetAddress());
+        if (hoverRect == null)
+            hoverRect = rect;
+        UpdateCornerPos(rect, hoverRect);
+        _view.SetAddress(address);
         gameObject.SetActive(true);
         _view.Refresh();
     }

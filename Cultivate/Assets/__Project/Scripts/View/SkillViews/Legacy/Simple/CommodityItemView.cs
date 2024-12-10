@@ -2,9 +2,9 @@
 using TMPro;
 using UnityEngine;
 
-public class CommodityItemView : LegacySimpleView
+public class CommodityItemView : XView
 {
-    public LegacySimpleView SkillView;
+    public SkillView SkillView;
     public TMP_Text PriceText;
     public GameObject DiscountSign;
     public TMP_Text DiscountText;

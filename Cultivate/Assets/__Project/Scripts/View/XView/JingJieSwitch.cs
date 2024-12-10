@@ -2,8 +2,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class NextShowingJingJieBehaviour : XBehaviour
+public class JingJieSwitch : XBehaviour
 {
+    [SerializeField] private InteractBehaviour _ib;
     [SerializeField] private SkillView _skillView;
 
     public override void AwakeFunction()
@@ -14,13 +15,12 @@ public class NextShowingJingJieBehaviour : XBehaviour
 
     private void BindInteractBehaviour()
     {
-        InteractBehaviour ib = GetInteractBehaviour();
-        if (ib == null)
+        if (_ib == null)
             return;
 
-        ib.BeginDragNeuron.Join(ResetJingJie);
-        ib.PointerExitNeuron.Join(ResetJingJie);
-        ib.RightClickNeuron.Join(NextJingJie);
+        _ib.BeginDragNeuron.Join(ResetJingJie);
+        _ib.PointerExitNeuron.Join(ResetJingJie);
+        _ib.RightClickNeuron.Join(NextJingJie);
     }
     
     private void ResetJingJie(InteractBehaviour ib, PointerEventData d)

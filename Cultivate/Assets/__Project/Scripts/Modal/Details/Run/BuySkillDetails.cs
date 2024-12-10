@@ -1,12 +1,14 @@
 
 public class BuySkillDetails : ClosureDetails
 {
-    public DeckIndex DeckIndex;
+    public Commodity Commodity;
     public int CommodityIndex;
+
+    public DeckIndex DeckIndex;
     
-    public BuySkillDetails(DeckIndex deckIndex, int commodityIndex)
+    public BuySkillDetails(Commodity commodity, int commodityIndex)
     {
-        DeckIndex = deckIndex;
+        Commodity = commodity;
         CommodityIndex = commodityIndex;
     }
 }

@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138aba0b4866dd4eac1f9e71247e966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 0}
+  _interactBehaviour: {fileID: 0}
   SkillView: {fileID: 7412299649035220851}
 --- !u!1001 &6101977849721535833
 PrefabInstance:
@@ -75,6 +75,10 @@ PrefabInstance:
     - target: {fileID: 1185833340277898451, guid: 624e353993f651047b0108a03c633312, type: 3}
       propertyPath: m_Name
       value: SkillView
+      objectReference: {fileID: 0}
+    - target: {fileID: 1185833340277898451, guid: 624e353993f651047b0108a03c633312, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1252485361950958551, guid: 624e353993f651047b0108a03c633312, type: 3}
       propertyPath: m_Pivot.x
