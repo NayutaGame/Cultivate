@@ -221,16 +221,6 @@ public class DeckPanel : Panel
     public XView LatestSkillItem()
         => HandView.LastView();
 
-    public LegacyItemBehaviour LegacySkillItemFromDeckIndex(DeckIndex deckIndex)
-    {
-        return null;
-    }
-
-    public LegacyItemBehaviour LegacyLatestSkillItem()
-    {
-        return null;
-    }
-
     private Tween _animationHandle;
 
     private void Sort()

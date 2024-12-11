@@ -60,23 +60,24 @@ public class GachaPanelDescriptor : PanelDescriptor
         _price /= 10;
     }
 
-    public bool Buy()
+    public void GachaProcedure()
     {
         if (_items.Count() <= 0)
-            return false;
+            return;
 
         if (RunManager.Instance.Environment.GetGold().Curr < _price)
-            return false;
+            return;
 
         RunManager.Instance.Environment.SetDGoldProcedure(-_price);
 
         int gachaIndex = RandomManager.Range(0, _items.Count());
-        SkillEntryDescriptor item = _items.Get(gachaIndex) as SkillEntryDescriptor;
+        SkillEntryDescriptor skillEntryDescriptor = _items.Get(gachaIndex) as SkillEntryDescriptor;
+
+        GachaDetails details = new(skillEntryDescriptor, gachaIndex);
+        
         _items.RemoveAt(gachaIndex);
 
-        RunManager.Instance.Environment.GachaProcedure(item, gachaIndex);
-
-        return true;
+        RunManager.Instance.Environment.GachaProcedure(details);
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)

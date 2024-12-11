@@ -1,12 +1,14 @@
 
 public class GachaDetails : ClosureDetails
 {
-    public DeckIndex DeckIndex;
+    public SkillEntryDescriptor SkillEntryDescriptor;
     public int GachaIndex;
+
+    public DeckIndex DeckIndex;
     
-    public GachaDetails(DeckIndex deckIndex, int gachaIndex)
+    public GachaDetails(SkillEntryDescriptor skillEntryDescriptor, int gachaIndex)
     {
-        DeckIndex = deckIndex;
+        SkillEntryDescriptor = skillEntryDescriptor;
         GachaIndex = gachaIndex;
     }
 }

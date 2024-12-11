@@ -801,9 +801,8 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public void BuySkillProcedure(BuySkillDetails d)
     {
         RunSkill skill = InnerCreateSkill(d.Commodity.Skill.Entry, d.Commodity.Skill.JingJie);
-        int last = Hand.Count();
         Hand.Add(skill);
-        d.DeckIndex = DeckIndex.FromHand(last);
+        d.DeckIndex = DeckIndex.FromHand(Hand.Count() - 1);
         BuySkillNeuron.Invoke(d);
     }
 
@@ -812,12 +811,12 @@ public class RunEnvironment : Addressable, RunClosureOwner
         ExchangeSkillNeuron.Invoke(d);
     }
 
-    public void GachaProcedure(SkillEntryDescriptor skillDescriptor, int gachaIndex)
+    public void GachaProcedure(GachaDetails d)
     {
-        RunSkill skill = InnerCreateSkill(skillDescriptor.Entry, skillDescriptor.JingJie);
-        int last = Hand.Count();
+        RunSkill skill = InnerCreateSkill(d.SkillEntryDescriptor.Entry, d.SkillEntryDescriptor.JingJie);
         Hand.Add(skill);
-        GachaNeuron.Invoke(new(DeckIndex.FromHand(last), gachaIndex));
+        d.DeckIndex = DeckIndex.FromHand(Hand.Count() - 1);
+        GachaNeuron.Invoke(d);
     }
 
     public void SelectOptionProcedure(SelectOptionDetails d)

@@ -8,7 +8,7 @@ public class GachaPanel : Panel
     public TMP_Text PriceTag;
     public Button BuyButton;
     public Button ExitButton;
-    public LegacyListView ListView;
+    public AnimatedListView ListView;
 
     private Address _address;
 
@@ -18,9 +18,6 @@ public class GachaPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         ListView.SetAddress(_address.Append(".Items"));
-        // ListView.PointerEnterNeuron.Join(PointerEnter);
-        // ListView.PointerExitNeuron.Join(PointerExit);
-        // ListView.PointerMoveNeuron.Join(PointerMove);
         
         GachaPanelDescriptor d = _address.Get<GachaPanelDescriptor>();
         PriceTag.text = $"每抽 {d.GetPrice()} 金";
@@ -31,17 +28,8 @@ public class GachaPanel : Panel
         BuyButton.interactable = !d.ItemsIsEmpty;
 
         ExitButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.AddListener(Exit);
+        ExitButton.onClick.AddListener(RunManager.Instance.Environment.ExitShopProcedure);
     }
-
-    // private void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)
-    //     => CanvasManager.Instance.SkillAnnotation.PointerEnter(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
-    //
-    // private void PointerExit(LegacyInteractBehaviour ib, PointerEventData d)
-    //     => CanvasManager.Instance.SkillAnnotation.PointerExit(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
-    //
-    // private void PointerMove(LegacyInteractBehaviour ib, PointerEventData d)
-    //     => CanvasManager.Instance.SkillAnnotation.PointerMove(ib, d, ib.GetSimpleView().GetAddress().Append(".Skill"));
 
     public override void Refresh()
     {
@@ -51,38 +39,26 @@ public class GachaPanel : Panel
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.GachaNeuron.Add(GachaStaging);
+        RunManager.Instance.Environment.GachaNeuron.Add(CanvasManager.Instance.RunCanvas.GachaStaging);
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.GachaNeuron.Remove(GachaStaging);
+        RunManager.Instance.Environment.GachaNeuron.Remove(CanvasManager.Instance.RunCanvas.GachaStaging);
     }
 
     private void Gacha()
     {
-        GachaPanelDescriptor d = _address.Get<GachaPanelDescriptor>();
-        d.Buy();
-        BuyButton.interactable = !d.ItemsIsEmpty;
-    }
-
-    private void GachaStaging(GachaDetails d)
-    {
-        LegacyInteractBehaviour gachaIB = ListView.InactivePools[0][^1].GetInteractBehaviour();
-        LegacyInteractBehaviour cardIB = CanvasManager.Instance.RunCanvas.SkillInteractBehaviourFromDeckIndex(d.DeckIndex);
-
-        CanvasManager.Instance.RunCanvas.GachaStaging(cardIB, gachaIB);
         CanvasManager.Instance.SkillAnnotation.PointerExit();
         
-        // ExtraBehaviourPivot extraBehaviourPivot = commodityIB.GetCLView().GetExtraBehaviour<ExtraBehaviourPivot>();
-        // if (extraBehaviourPivot != null)
-        //     extraBehaviourPivot.Disappear();
+        GachaPanelDescriptor gachaPanelDescriptor = _address.Get<GachaPanelDescriptor>();
+        gachaPanelDescriptor.GachaProcedure();
+        BuyButton.interactable = !gachaPanelDescriptor.ItemsIsEmpty;
     }
 
-    private void Exit()
+    public XView GachaItemFromIndex(int gachaIndex)
     {
-        Signal signal = new ExitShopSignal();
-        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
+        return ListView.ViewFromIndex(gachaIndex);
     }
 
     private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData eventData)

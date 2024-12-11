@@ -565,49 +565,32 @@ public class RunCanvas : Panel
         SetIdle(view);
     }
 
-    public void GachaStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour gachaIB)
+    public void GachaStaging(GachaDetails d)
     {
-        void SetSkillPosition(LegacyInteractBehaviour ib, LegacyInteractBehaviour gachaIB)
+        void SetPosition(DelegatingView view, Vector3 position, Vector3 localScale)
         {
-            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                Transform t = gachaIB.GetSimpleView().transform;
-                pivotBehaviour.FollowTransform.position = t.position;
-                pivotBehaviour.FollowTransform.localScale = t.localScale;
-                pivotBehaviour.Animator.SetState(3);
-                ib.SetInteractable(false);
-            }
-        }
-
-        void SetSkillMove(LegacyInteractBehaviour ib, Vector3 position)
-        {
-            ib.SetInteractable(true);
-            LegacyPivotBehaviour pivotBehaviour = ib.GetCLView().GetBehaviour<LegacyPivotBehaviour>();
-            if (pivotBehaviour != null)
-            {
-                pivotBehaviour.PositionToIdle(position);
-            }
-            // AudioManager.Play("CardPlacement");
+            view.GetAnimator().SetState(4);
+            view.GetDelegatedView().GetRect().position = position;
+            view.GetDelegatedView().GetRect().localScale = localScale;
         }
         
-        // Refresh();
+        void SetIdle(DelegatingView view)
+        {
+            view.GetAnimator().SetStateAsync(1);
+        }
         
-        SetSkillPosition(cardIB, gachaIB);
-        SetSkillMove(cardIB, gachaIB.transform.position);
         // AudioManager.Instance.Play("钱币");
-    }
-
-    public LegacyInteractBehaviour SkillInteractBehaviourFromDeckIndex(DeckIndex? deckIndex)
-    {
-        if (!deckIndex.HasValue)
-            return LatestSkillInteractBehaviour();
         
-        return DeckPanel.LegacySkillItemFromDeckIndex(deckIndex.Value).GetInteractBehaviour();
+        DeckPanel.HandView.AddItem();
+        
+        DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
+        DelegatingView gachaItemView = GachaPanel.GachaItemFromIndex(d.GachaIndex) as DelegatingView;
+        
+        GachaPanel.ListView.RemoveItemAt(d.GachaIndex);
+        
+        SetPosition(view, gachaItemView.GetRect().position, gachaItemView.GetRect().localScale);
+        SetIdle(view);
     }
-
-    public LegacyInteractBehaviour LatestSkillInteractBehaviour()
-        => DeckPanel.LegacyLatestSkillItem().GetInteractBehaviour();
 
     public void MingYuanDamageStaging(int value)
     {

@@ -193,9 +193,9 @@ public class MapCategory : Category<MapEntry>
                     new RoomDescriptor[]
                     {
                         new DirectRoomDescriptor(0, "发现一张牌"),
+                        new DirectRoomDescriptor(0, "盲盒"),
                         new DirectRoomDescriptor(0, "以物易物"),
                         new DirectRoomDescriptor(0, "收藏家"),
-                        new DirectRoomDescriptor(0, "盲盒"),
                         new ShopRoomDescriptor(5),
                         new BattleRoomDescriptor(12, 12, 12),
                         new DirectRoomDescriptor(0, "发现一张牌"),
