@@ -1,10 +1,11 @@
 
+using CLLibrary;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BarterPanel : Panel
 {
-    public LegacyListView BarterItemListView;
+    public AnimatedListView BarterItemListView;
 
     public Button ExitButton;
 
@@ -17,15 +18,24 @@ public class BarterPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         BarterItemListView.SetAddress(_address.Append(".Inventory"));
 
-        foreach (LegacyItemBehaviour itemBehaviour in BarterItemListView.ActivePool)
+        BarterItemListView.Traversal().Do(v =>
         {
-            BarterItemView barterItemView = itemBehaviour.GetSimpleView() as BarterItemView;
-            barterItemView.ClearExchangeEvent();
-            barterItemView.ExchangeEvent += ExchangeEvent;
-        }
+            BarterItemView barterItemView = (v as DelegatingView).GetDelegatedView() as BarterItemView;
+            barterItemView.ExchangeSkillEvent.Join(ExchangeSkill);
+        });
 
         ExitButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.AddListener(Exit);
+        ExitButton.onClick.AddListener(RunManager.Instance.Environment.ExitShopProcedure);
+    }
+
+    private void OnEnable()
+    {
+        RunManager.Instance.Environment.ExchangeSkillNeuron.Add(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
+    }
+
+    private void OnDisable()
+    {
+        RunManager.Instance.Environment.ExchangeSkillNeuron.Remove(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
     }
 
     public override void Refresh()
@@ -34,17 +44,17 @@ public class BarterPanel : Panel
         BarterItemListView.Refresh();
     }
 
-    private void ExchangeEvent(BarterItem barterItem)
+    public XView BarterItemFromIndex(int commodityIndex)
     {
-        BarterPanelDescriptor d = _address.Get<BarterPanelDescriptor>();
-        d.Exchange(barterItem);
-        // AudioManager.Instance.Play("钱币");
+        return BarterItemListView.ViewFromIndex(commodityIndex);
     }
 
-    private void Exit()
+    private void ExchangeSkill(BarterItem barterItem)
     {
-        Signal signal = new ExitShopSignal();
-        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
+        BarterPanelDescriptor barterPanelDescriptor = _address.Get<BarterPanelDescriptor>();
+        ExchangeSkillDetails details = new(barterItem);
+        barterPanelDescriptor.ExchangeSkillProcedure(details);
+        // AudioManager.Instance.Play("钱币");
     }
 
     private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)

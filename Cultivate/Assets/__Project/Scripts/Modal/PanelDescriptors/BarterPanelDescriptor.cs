@@ -56,18 +56,23 @@ public class BarterPanelDescriptor : PanelDescriptor
             _inventory.Add(new BarterItem(fromSkills[i], toSkills[i]));
     }
 
-    public bool Exchange(BarterItem barterItem)
+    public void ExchangeSkillProcedure(ExchangeSkillDetails d)
     {
+        BarterItem barterItem = d.BarterItem;
         if (!_inventory.Contains(barterItem))
-            return false;
+            return;
         
         bool success = RunManager.Instance.Environment.FindDeckIndex(out DeckIndex deckIndex, barterItem.FromSkill);
         if (!success)
-            return false;
-        
-        RunManager.Instance.Environment.AddSkillProcedure(barterItem.ToSkill.Entry, barterItem.ToSkill.JingJie, deckIndex);
+            return;
+
+        DeckIndex? refDeckIndex = deckIndex;
+        RunManager.Instance.Environment.InnerDrawCreateAdd(barterItem.ToSkill, ref refDeckIndex);
+
+        d.BarterItemIndex = _inventory.IndexOf(barterItem);
         _inventory.Remove(barterItem);
-        return true;
+
+        RunManager.Instance.Environment.ExchangeSkillProcedure(d);
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)

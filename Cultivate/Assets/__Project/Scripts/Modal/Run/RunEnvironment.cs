@@ -29,6 +29,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
     public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
     public Neuron<BuySkillDetails> BuySkillNeuron = new();
+    public Neuron<ExchangeSkillDetails> ExchangeSkillNeuron = new();
     public Neuron<GachaDetails> GachaNeuron = new();
     public Neuron<SelectOptionDetails> SelectOptionNeuron = new();
     public Neuron<PanelChangedDetails> PanelChangedNeuron = new();
@@ -722,7 +723,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     private void InnerCreateAdd(SkillEntry skillEntry, JingJie? preferredJingJie, ref DeckIndex? preferredDeckIndex)
         => InnerAddSkill(InnerCreateSkill(skillEntry, preferredJingJie), ref preferredDeckIndex);
     
-    private void InnerDrawCreateAdd(SkillEntryDescriptor descriptor, ref DeckIndex? preferredDeckIndex)
+    public void InnerDrawCreateAdd(SkillEntryDescriptor descriptor, ref DeckIndex? preferredDeckIndex)
         => InnerAddSkill(InnerCreateSkill(InnerDrawSkill(descriptor), descriptor.JingJie), ref preferredDeckIndex);
     
     public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
@@ -804,6 +805,11 @@ public class RunEnvironment : Addressable, RunClosureOwner
         Hand.Add(skill);
         d.DeckIndex = DeckIndex.FromHand(last);
         BuySkillNeuron.Invoke(d);
+    }
+
+    public void ExchangeSkillProcedure(ExchangeSkillDetails d)
+    {
+        ExchangeSkillNeuron.Invoke(d);
     }
 
     public void GachaProcedure(SkillEntryDescriptor skillDescriptor, int gachaIndex)

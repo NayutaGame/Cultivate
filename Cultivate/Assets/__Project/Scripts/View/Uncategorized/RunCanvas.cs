@@ -539,6 +539,32 @@ public class RunCanvas : Panel
         SetIdle(view);
     }
 
+    public void ExchangeSkillStaging(ExchangeSkillDetails d)
+    {
+        void SetPosition(DelegatingView view, Vector3 position, Vector3 localScale)
+        {
+            view.GetAnimator().SetState(4);
+            view.GetDelegatedView().GetRect().position = position;
+            view.GetDelegatedView().GetRect().localScale = localScale;
+        }
+        
+        void SetIdle(DelegatingView view)
+        {
+            view.GetAnimator().SetStateAsync(1);
+        }
+        
+        // AudioManager.Play("CardPlacement");
+        
+        DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
+        DelegatingView barterItemView = BarterPanel.BarterItemFromIndex(d.BarterItemIndex) as DelegatingView;
+        
+        DeckPanel.HandView.Modified(d.DeckIndex.Index);
+        BarterPanel.BarterItemListView.RemoveItemAt(d.BarterItemIndex);
+        
+        SetPosition(view, barterItemView.GetRect().position, barterItemView.GetRect().localScale);
+        SetIdle(view);
+    }
+
     public void GachaStaging(LegacyInteractBehaviour cardIB, LegacyInteractBehaviour gachaIB)
     {
         void SetSkillPosition(LegacyInteractBehaviour ib, LegacyInteractBehaviour gachaIB)

@@ -1,21 +1,26 @@
 
-using System;
+using CLLibrary;
 
-public class BarterItemView : LegacySimpleView
+public class BarterItemView : XView
 {
-    public LegacySimpleView PlayerSkillView;
-    public LegacySimpleView SkillView;
+    public SkillView LeftSkillView;
+    public SkillView RightSkillView;
     public GlowingButton ExchangeButton;
 
-    // TODO: use Neuron
-    public event Action<BarterItem> ExchangeEvent;
-    public void ClearExchangeEvent() => ExchangeEvent = null;
+    public Neuron<BarterItem> ExchangeSkillEvent = new();
+
+    public override void AwakeFunction()
+    {
+        base.AwakeFunction();
+        LeftSkillView.CheckAwake();
+        RightSkillView.CheckAwake();
+    }
 
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        PlayerSkillView.SetAddress(GetAddress().Append(".FromSkill"));
-        SkillView.SetAddress(GetAddress().Append(".ToSkill"));
+        LeftSkillView.SetAddress(GetAddress().Append(".FromSkill"));
+        RightSkillView.SetAddress(GetAddress().Append(".ToSkill"));
 
         ExchangeButton.OnClickNeuron.Join(Exchange);
     }
@@ -30,15 +35,14 @@ public class BarterItemView : LegacySimpleView
         if (!isReveal)
             return;
 
-        PlayerSkillView.Refresh();
-        SkillView.Refresh();
+        LeftSkillView.Refresh();
+        RightSkillView.Refresh();
         ExchangeButton.SetInteractable(barterItem.Affordable());
     }
 
     private void Exchange()
     {
         BarterItem barterItem = Get<BarterItem>();
-        ExchangeEvent?.Invoke(barterItem);
-        CanvasManager.Instance.RunCanvas.Refresh();
+        ExchangeSkillEvent.Invoke(barterItem);
     }
 }
