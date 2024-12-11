@@ -33,7 +33,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 140}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 450, y: 720}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5822712034224908152
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 997528417164191660}
   - component: {fileID: 8451619000142963623}
   - component: {fileID: 2260193962904907248}
-  - component: {fileID: 4113891524565381955}
+  - component: {fileID: 5489096030302424017}
   m_Layer: 5
   m_Name: InteractBehaviour
   m_TagString: Untagged
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4113891524565381955
+--- !u!114 &5489096030302424017
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5822712034224908152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d6cca7092a4c5e4e9b698b88b2475ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 0533921ce9bac534f89b9ff88b9aadde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8155228337873847611
@@ -135,10 +135,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8086324285004126783}
-  - component: {fileID: 5742922262591282243}
-  - component: {fileID: 3841785023129441109}
+  - component: {fileID: 6873166039787339240}
+  - component: {fileID: 1032722210218496254}
   m_Layer: 5
-  m_Name: HandSkillView
+  m_Name: ArbitraryPickerSkillView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,7 +153,7 @@ RectTransform:
   m_GameObject: {fileID: 8155228337873847611}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 997528417164191660}
@@ -166,7 +166,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5742922262591282243
+--- !u!114 &6873166039787339240
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,24 +175,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 8155228337873847611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2536791c891adf84cb32ef01bf335a1e, type: 3}
+  m_Script: {fileID: 11500000, guid: c9276e1c4af3c944b9135906ff2a4761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactBehaviour: {fileID: 4113891524565381955}
+  _interactBehaviour: {fileID: 5489096030302424017}
   _delegatedView: {fileID: 6368054548778372923}
   HideConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
     LocalScale: {x: 0, y: 0, z: 0}
   IdleConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+    LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   HoverConfiguration:
-    LocalPosition: {x: 0, y: 0.75, z: 0}
-    LocalScale: {x: 0.75, y: 0.75, z: 0.75}
-  FollowConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
     LocalScale: {x: 0.75, y: 0.75, z: 0.75}
---- !u!114 &3841785023129441109
+--- !u!114 &1032722210218496254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -329,22 +326,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1185833340277898451, guid: 624e353993f651047b0108a03c633312, type: 3}
   m_PrefabInstance: {fileID: 7650643915002201361}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4313742828179873413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8815903167928728002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ib: {fileID: 4113891524565381955}
-  AnnotationAddress: Canvas.SkillAnnotation
-  HoverTransform: {fileID: 9108489489931938011}
---- !u!114 &7608358642332705789
+--- !u!114 &1378395254332169169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -356,8 +338,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 637b7bb92a0d96240a4ccaa132416877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ib: {fileID: 4113891524565381955}
+  _ib: {fileID: 5489096030302424017}
   _skillView: {fileID: 6368054548778372923}
+--- !u!114 &6626407154674565904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8815903167928728002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 5489096030302424017}
+  AnnotationAddress: Canvas.SkillAnnotation
+  HoverTransform: {fileID: 9108489489931938011}
 --- !u!224 &8884815741749257926 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1252485361950958551, guid: 624e353993f651047b0108a03c633312, type: 3}

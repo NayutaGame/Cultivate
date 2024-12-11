@@ -1,13 +1,12 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ConfirmDeckSignal : Signal
 {
-    public List<object> Selected;
+    public List<DeckIndex> Indices;
 
-    public ConfirmDeckSignal(List<object> selected)
+    public ConfirmDeckSignal(List<DeckIndex> indices)
     {
-        Selected = selected;
+        Indices = indices;
     }
 }

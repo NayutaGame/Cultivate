@@ -31,9 +31,9 @@ public class RunConfigPanel : Panel
         StartRunButton.onClick.AddListener(StartRun);
 
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
-        CharacterListView.LeftClickNeuron.Join(Select);
+        // CharacterListView.LeftClickNeuron.Join(Select);
 
-        Select(0);
+        // Select(0);
     }
 
     public override void Refresh()
@@ -60,24 +60,24 @@ public class RunConfigPanel : Panel
         AppManager.Push(new RunAppS());
     }
 
-    private void Select(int i)
-        => Select(CharacterListView.ItemBehaviourFromIndex(i).GetSelectBehaviour());
-
-    private void Select(LegacyInteractBehaviour ib, PointerEventData eventData)
-        => Select(ib.GetSimpleView().GetSelectBehaviour());
-
-    private void Select(LegacySelectBehaviour selectBehaviour)
-    {
-        if (_selection != null)
-            _selection.SetSelected(false);
-
-        _selection = selectBehaviour;
-
-        if (_selection != null)
-        {
-            DetailedCharacterProfileView.SetAddress(_selection.GetSimpleView().GetAddress());
-            DetailedCharacterProfileView.Refresh();
-            _selection.SetSelected(true);
-        }
-    }
+    // private void Select(int i)
+    //     => Select(CharacterListView.ItemBehaviourFromIndex(i).GetSelectBehaviour());
+    //
+    // private void Select(LegacyInteractBehaviour ib, PointerEventData eventData)
+    //     => Select(ib.GetSimpleView().GetSelectBehaviour());
+    //
+    // private void Select(LegacySelectBehaviour selectBehaviour)
+    // {
+    //     if (_selection != null)
+    //         _selection.SetSelected(false);
+    //
+    //     _selection = selectBehaviour;
+    //
+    //     if (_selection != null)
+    //     {
+    //         DetailedCharacterProfileView.SetAddress(_selection.GetSimpleView().GetAddress());
+    //         DetailedCharacterProfileView.Refresh();
+    //         _selection.SetSelected(true);
+    //     }
+    // }
 }

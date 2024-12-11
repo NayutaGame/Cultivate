@@ -430,23 +430,10 @@ public class RoomCategory : Category<RoomEntry>
                                 detailedText: $"选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
                                 bound: new Bound(0, 2),
                                 descriptor: RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie))
-                            .SetConfirmOperation(iRunSkillList =>
+                            .SetConfirmOperation(indices =>
                             {
-                                foreach (var iRunSkill in iRunSkillList)
-                                {
-                                    if (iRunSkill is RunSkill skill)
-                                    {
-                                        skill.JingJie = nextJingJie;
-                                        // staging
-                                        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
-                                    }
-                                    else if (iRunSkill is SkillSlot slot)
-                                    {
-                                        slot.Skill.JingJie = nextJingJie;
-                                        // staging
-                                        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
-                                    }
-                                }
+                                foreach (var deckIndex in indices)
+                                    RunManager.Instance.Environment.SetJingJieAtDeckIndexProcedure(nextJingJie, deckIndex);
                                 return null;
                             }),
                     };
@@ -496,24 +483,10 @@ public class RoomCategory : Category<RoomEntry>
                                             $"\n选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
                         bound:              new Bound(0, 2),
                         descriptor:         RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie));
-                    B.SetConfirmOperation(iRunSkillList =>
+                    B.SetConfirmOperation(indices =>
                     {
-                        foreach (var iRunSkill in iRunSkillList)
-                        {
-                            if (iRunSkill is RunSkill skill)
-                            {
-                                skill.JingJie = nextJingJie;
-                                // staging
-                                CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
-                            }
-                            else if (iRunSkill is SkillSlot slot)
-                            {
-                                slot.Skill.JingJie = nextJingJie;
-                                // staging
-                                CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
-                            }
-                        }
-
+                        foreach (var deckIndex in indices)
+                            RunManager.Instance.Environment.SetJingJieAtDeckIndexProcedure(nextJingJie, deckIndex);
                         return null;
                     });
 
@@ -1601,43 +1574,21 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    B.SetConfirmOperation(iRunSkillList =>
+                    B.SetConfirmOperation(indices =>
                     {
-                        if (iRunSkillList.Count == 0)
+                        if (indices.Count == 0)
                             return BLose;
 
-                        foreach (object iSkill in iRunSkillList)
-                        {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                slot.Skill = null;
-                            }
-                        }
-
+                        indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
                         return BWin;
                     });
 
-                    C.SetConfirmOperation(iRunSkillList =>
+                    C.SetConfirmOperation(indices =>
                     {
-                        if (iRunSkillList.Count == 0)
+                        if (indices.Count == 0)
                             return CLose;
 
-                        foreach (object iSkill in iRunSkillList)
-                        {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                slot.Skill = null;
-                            }
-                        }
-
+                        indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
                         return CWin;
                     });
 
@@ -1872,39 +1823,15 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "分子打印机",
                         detailedText: "劈里啪啦一阵响声过后，正在你担心自己的卡牌会受到什么非人的折磨的时候。机器的运转声停止了。打开后，你发现两个插槽里面的卡变成同一张了。\n\n得到两张牌");
 
-                    B.SetConfirmOperation(iRunSkillList =>
+                    B.SetConfirmOperation(indices =>
                     {
-                        int count = iRunSkillList.Count;
+                        int count = indices.Count;
                         if (count == 0 || count == 1)
                             return C;
 
-                        RunSkill copyingSkill = null;
-                        object copying = iRunSkillList[RandomManager.Range(0, count)];
-                        if (copying is RunSkill runSkill)
-                        {
-                            copyingSkill = runSkill;
-                        }
-                        else if (copying is SkillSlot slot)
-                        {
-                            RunSkill rSkill = slot.Skill as RunSkill;
-                            Assert.IsTrue(rSkill != null);
-                            copyingSkill = rSkill;
-                        }
-
-                        foreach (object iSkill in iRunSkillList)
-                        {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                slot.Skill = null;
-                            }
-                        }
-
-                        count.Do(i => RunManager.Instance.Environment.Hand.Add(copyingSkill));
-                        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+                        DeckIndex copyingDeckIndex = indices[RandomManager.Range(0, count)];
+                        RunSkill copyingSkill = RunManager.Instance.Environment.GetSkillAtDeckIndex(copyingDeckIndex);
+                        indices.Do(index => RunManager.Instance.Environment.ReplaceSkillAtDeckIndexProcedure(copyingSkill, index));
                         return D;
                     });
 
@@ -2441,28 +2368,18 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "割舍",
                         detailedText: "你感到身上轻了一些。");
 
-                    B.SetConfirmOperation(iRunSkillList =>
+                    B.SetConfirmOperation(indices =>
                     {
-                        int count = iRunSkillList.Count;
+                        int count = indices.Count;
                         if (count == 0)
                             return C;
 
-                        foreach (object iSkill in iRunSkillList)
+                        indices.Do(index =>
                         {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skill.GetEntry());
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                if (slot.Skill != null)
-                                {
-                                    RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == slot.Skill.GetEntry());
-                                    slot.Skill = null;
-                                }
-                            }
-                        }
+                            RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(index);
+                            RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure(index);
+                            RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skill.GetEntry());
+                        });
                         
                         return D;
                     });
@@ -2762,22 +2679,12 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "那人已经离开。留下了这个机关在这里，你非常好奇，想必是哪位墨苑大家留下来的手笔。留在这里也是可惜，你取出了其中有用的机关带走了。\n\n得到两个机关");
 
                     A[0].SetSelect(option => BPick);
-                    BPick.SetConfirmOperation(iRunSkillList =>
+                    BPick.SetConfirmOperation(indices =>
                     {
-                        if (iRunSkillList.Count == 0)
+                        if (indices.Count == 0)
                             return A;
 
-                        foreach (object iSkill in iRunSkillList)
-                        {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                slot.Skill = null;
-                            }
-                        }
+                        indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
 
                         return B;
                     });
@@ -3034,22 +2941,12 @@ public class RoomCategory : Category<RoomEntry>
 
                         return A;
                     });
-                    C.SetConfirmOperation(iRunSkillList =>
+                    C.SetConfirmOperation(indices =>
                     {
-                        if (iRunSkillList.Count == 0)
+                        if (indices.Count == 0)
                             return A;
 
-                        foreach (object iSkill in iRunSkillList)
-                        {
-                            if (iSkill is RunSkill skill)
-                            {
-                                RunManager.Instance.Environment.Hand.Remove(skill);
-                            }
-                            else if (iSkill is SkillSlot slot)
-                            {
-                                slot.Skill = null;
-                            }
-                        }
+                        indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
 
                         RunManager.Instance.Environment.Map.InsertRoom("后羿2");
                         return CWin;

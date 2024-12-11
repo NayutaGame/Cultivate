@@ -14,9 +14,11 @@ public class CardPickerPanelDescriptor : PanelDescriptor
 
     private Bound _bound;
     public Bound Bound => _bound;
+    public bool HasSpace(int occupied)
+        => _bound.End - 1 > occupied;
 
-    private Func<List<object>, PanelDescriptor> _confirmOperation;
-    public CardPickerPanelDescriptor SetConfirmOperation(Func<List<object>, PanelDescriptor> select)
+    private Func<List<DeckIndex>, PanelDescriptor> _confirmOperation;
+    public CardPickerPanelDescriptor SetConfirmOperation(Func<List<DeckIndex>, PanelDescriptor> select)
     {
         _confirmOperation = select;
         return this;
@@ -28,7 +30,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         string titleText = null,
         string detailedText = null,
         Bound bound = null,
-        Func<List<object>, PanelDescriptor> confirmOperation = null,
+        Func<List<DeckIndex>, PanelDescriptor> confirmOperation = null,
         RunSkillDescriptor descriptor = null)
     {
         _accessors = new()
@@ -53,7 +55,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     {
         if (signal is ConfirmDeckSignal confirmDeckSignal && _confirmOperation != null)
         {
-            return _confirmOperation(confirmDeckSignal.Selected);
+            return _confirmOperation(confirmDeckSignal.Indices);
         }
 
         return this;
@@ -74,23 +76,12 @@ public class CardPickerPanelDescriptor : PanelDescriptor
             titleText: "失败",
             detailedText: "失败对话。");
 
-        template.SetConfirmOperation(iRunSkillList =>
+        template.SetConfirmOperation(indices =>
         {
-            if (iRunSkillList.Count == 0)
+            if (indices.Count == 0)
                 return lose;
 
-            foreach (object iSkill in iRunSkillList)
-            {
-                if (iSkill is RunSkill skill)
-                {
-                    RunManager.Instance.Environment.Hand.Remove(skill);
-                }
-                else if (iSkill is SkillSlot slot)
-                {
-                    slot.Skill = null;
-                }
-            }
-
+            indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
             return win;
         });
         

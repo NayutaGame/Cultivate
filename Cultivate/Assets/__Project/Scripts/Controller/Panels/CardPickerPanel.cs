@@ -1,5 +1,4 @@
 
-using System;
 using System.Collections.Generic;
 using CLLibrary;
 using TMPro;
@@ -11,149 +10,105 @@ public class CardPickerPanel : Panel
     public TMP_Text TitleText;
     public TMP_Text ContentText;
     public Button ConfirmButton;
-
-    // [NonSerialized] public LegacyListView SkillListView;
-    // [NonSerialized] public LegacyListView SlotListView;
-    //
-    // private List<int> _skillSelections;
-    // private List<int> _slotSelections;
-    //
-    // private Address _address;
+    
+    private Address _address;
+    private List<SelectBehaviour> _selections;
 
     public override void AwakeFunction()
     {
         base.AwakeFunction();
+        
+        _selections = new();
 
-        // _address = new Address("Run.Environment.ActivePanel");
-        //
-        // ConfirmButton.onClick.RemoveAllListeners();
-        // ConfirmButton.onClick.AddListener(ConfirmSelections);
-        //
-        // SkillListView = CanvasManager.Instance.RunCanvas.DeckPanel.HandView;
-        // SlotListView = CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList;
-        // _skillSelections ??= new List<int>();
-        // _slotSelections ??= new List<int>();
+        _address = new Address("Run.Environment.ActivePanel");
+        
+        ConfirmButton.onClick.RemoveAllListeners();
+        ConfirmButton.onClick.AddListener(ConfirmSelections);
     }
 
     private void OnEnable()
     {
-        // CanvasManager.Instance.RunCanvas.DeckPanel.HandView.LeftClickNeuron.Add(ToggleSkill);
-        // CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.LeftClickNeuron.Add(ToggleSkillSlot);
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.LeftClickNeuron.Add(ToggleSelection);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.FieldView.LeftClickNeuron.Add(ToggleSelection);
     }
 
     public void OnDisable()
     {
-        // CanvasManager.Instance.RunCanvas.DeckPanel.HandView.LeftClickNeuron.Remove(ToggleSkill);
-        // CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.LeftClickNeuron.Remove(ToggleSkillSlot);
-        //
-        // ClearAllSelections();
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.LeftClickNeuron.Remove(ToggleSelection);
+        CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.FieldView.LeftClickNeuron.Remove(ToggleSelection);
+        ClearSelections();
     }
 
-    public void ClearAllSelections()
+    private void ClearSelections()
     {
-        // if (SkillListView == null)
-        //     return;
-        //
-        // SkillListView.Traversal().Do(itemBehaviour => itemBehaviour.GetSelectBehaviour().SetSelected(false, animated: false));
-        // _skillSelections.Clear();
-        // SlotListView.Traversal().Do(itemBehaviour => itemBehaviour.GetSelectBehaviour().SetSelected(false, animated: false));
-        // _slotSelections.Clear();
+        _selections.Do(s => s.GetAnimator().SetState(0));
+        _selections.Clear();
     }
 
     public override void Refresh()
     {
         base.Refresh();
 
-        // CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
-        //
-        // TitleText.text = d.GetTitleText();
-        // ContentText.text = d.GetDetailedText(SelectionCount);
-        // ConfirmButton.interactable = d.Bound.Contains(SelectionCount);
+        CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
+        
+        TitleText.text = d.GetTitleText();
+        ContentText.text = d.GetDetailedText(_selections.Count);
+        ConfirmButton.interactable = d.Bound.Contains(_selections.Count);
     }
+    
+    private void ToggleSelection(InteractBehaviour ib, PointerEventData eventData)
+    {
+        SelectBehaviour selectBehaviour = ib.GetView().GetBehaviour<SelectBehaviour>();
+        bool isSelected = _selections.Contains(selectBehaviour);
+    
+        if (isSelected)
+        {
+            selectBehaviour.GetAnimator().SetStateAsync(0);
+            _selections.Remove(selectBehaviour);
+        }
+        else
+        {
+            CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
+            object obj = selectBehaviour.Get<object>();
+            if (obj is RunSkill skill && !d.CanSelect(skill))
+                return;
+            else if (obj is SkillSlot slot && !d.CanSelect(slot))
+                return;
 
-    // private int SelectionCount => _skillSelections.Count + _slotSelections.Count;
-    //
-    // private void ToggleSkill(LegacyInteractBehaviour ib, PointerEventData eventData)
-    // {
-    //     CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
-    //     
-    //     LegacyItemBehaviour currItemBehaviour = ib.GetCLView().GetItemBehaviour();
-    //     
-    //     int index = SkillListView.ActivePool.FindIndex(itemBehaviour => itemBehaviour == currItemBehaviour);
-    //     bool isSelected = _skillSelections.Contains(index);
-    //
-    //     if (isSelected)
-    //     {
-    //         currItemBehaviour.GetSelectBehaviour().SetSelected(false);
-    //         _skillSelections.Remove(index);
-    //
-    //         CanvasManager.Instance.RunCanvas.Refresh();
-    //         // return true;
-    //     }
-    //     else
-    //     {
-    //         int space = d.Bound.End - 1 - SelectionCount;
-    //         if (space <= 0)
-    //             return;
-    //             // return false;
-    //
-    //         RunSkill runSkill = ib.GetSimpleView().Get<RunSkill>();
-    //         if (!d.CanSelect(runSkill))
-    //             return;
-    //             // return false;
-    //
-    //         currItemBehaviour.GetSelectBehaviour().SetSelected(true);
-    //         _skillSelections.Add(index);
-    //
-    //         CanvasManager.Instance.RunCanvas.Refresh();
-    //         // return true;
-    //     }
-    // }
-    //
-    // private void ToggleSkillSlot(LegacyInteractBehaviour ib, PointerEventData eventData)
-    // {
-    //     CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
-    //
-    //     LegacyItemBehaviour currItemBehaviour = ib.GetCLView().GetItemBehaviour();
-    //     int index = SlotListView.ActivePool.FindIndex(itemBehaviour => itemBehaviour == currItemBehaviour);
-    //     bool isSelected = _slotSelections.Contains(index);
-    //
-    //     if (isSelected)
-    //     {
-    //         currItemBehaviour.GetSelectBehaviour().SetSelected(false);
-    //         _slotSelections.Remove(index);
-    //
-    //         CanvasManager.Instance.RunCanvas.Refresh();
-    //         // return true;
-    //     }
-    //     else
-    //     {
-    //         int space = d.Bound.End - 1 - SelectionCount;
-    //         if (space <= 0)
-    //             return;
-    //             // return false;
-    //
-    //         SkillSlot slot = ib.GetSimpleView().Get<SkillSlot>();
-    //         if (!d.CanSelect(slot))
-    //             return;
-    //             // return false;
-    //
-    //         currItemBehaviour.GetSelectBehaviour().SetSelected(true);
-    //         _slotSelections.Add(index);
-    //
-    //         CanvasManager.Instance.RunCanvas.Refresh();
-    //         // return true;
-    //     }
-    // }
-    //
-    // private void ConfirmSelections()
-    // {
-    //     CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
-    //     List<object> iRunSkillList = new List<object>();
-    //     iRunSkillList.AddRange(_skillSelections.Map(i => SkillListView.ActivePool[i].GetSimpleView().Get<object>()));
-    //     iRunSkillList.AddRange(_slotSelections.Map(i => SlotListView.ActivePool[i].GetSimpleView().Get<object>()));
-    //
-    //     Signal signal = new ConfirmDeckSignal(iRunSkillList);
-    //     CanvasManager.Instance.RunCanvas.SetPanelSAsyncFromSignal(signal);
-    // }
+            if (!d.HasSpace(_selections.Count))
+            {
+                if (_selections.Count > 0)
+                {
+                    SelectBehaviour first = _selections[0];
+                    first.GetAnimator().SetStateAsync(0);
+                    _selections.Remove(first);
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            selectBehaviour.GetAnimator().SetStateAsync(1);
+            _selections.Add(selectBehaviour);
+        }
+        
+        Refresh();
+    }
+    
+    private void ConfirmSelections()
+    {
+        CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
+        List<DeckIndex> indices = new List<DeckIndex>();
+        _selections.Do(selectBehaviour =>
+        {
+            object obj = selectBehaviour.Get<object>();
+            if (obj is RunSkill skill)
+                indices.Add(skill.ToDeckIndex());
+            else if (obj is SkillSlot slot)
+                indices.Add(slot.ToDeckIndex());
+        });
+        
+        RunManager.Instance.Environment.ConfirmDeckSelectionsProcedure(indices);
+    }
 }

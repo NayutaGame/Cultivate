@@ -682,6 +682,13 @@ public class RunEnvironment : Addressable, RunClosureOwner
     {
         ReceiveSignalProcedure(new ExitShopSignal());
     }
+
+    public void SelectOptionProcedure(SelectOptionDetails d)
+    {
+        SelectOptionNeuron.Invoke(d);
+        Signal signal = new SelectedOptionSignal(d.SelectedIndex);
+        ReceiveSignalProcedure(signal);
+    }
     
     #endregion
 
@@ -818,12 +825,50 @@ public class RunEnvironment : Addressable, RunClosureOwner
         d.DeckIndex = DeckIndex.FromHand(Hand.Count() - 1);
         GachaNeuron.Invoke(d);
     }
-
-    public void SelectOptionProcedure(SelectOptionDetails d)
+    
+    public void ConfirmSelectionsProcedure(List<SkillEntryDescriptor> descriptors)
     {
-        SelectOptionNeuron.Invoke(d);
-        Signal signal = new SelectedOptionSignal(d.SelectedIndex);
+        Signal signal = new ConfirmSkillsSignal(descriptors);
         ReceiveSignalProcedure(signal);
+    }
+
+    public void ConfirmDeckSelectionsProcedure(List<DeckIndex> indices)
+    {
+        Signal signal = new ConfirmDeckSignal(indices);
+        ReceiveSignalProcedure(signal);
+    }
+
+    public void RemoveSkillAtDeckIndexProcedure(DeckIndex deckIndex)
+    {
+        if (deckIndex.InField)
+            Home.GetSlot(deckIndex.Index).Skill = null;
+        else
+            Hand.RemoveAt(deckIndex.Index);
+        
+        // staging
+        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+    }
+
+    public void SetJingJieAtDeckIndexProcedure(JingJie jingJie, DeckIndex deckIndex)
+    {
+        if (deckIndex.InField)
+            _home.GetSlot(deckIndex.Index).Skill.JingJie = jingJie;
+        else
+            Hand[deckIndex.Index].JingJie = jingJie;
+        
+        // staging
+        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+    }
+
+    public void ReplaceSkillAtDeckIndexProcedure(RunSkill template, DeckIndex deckIndex)
+    {
+        if (deckIndex.InField)
+            Home.GetSlot(deckIndex.Index).Skill = template.Clone();
+        else
+            Hand.Replace(deckIndex.Index, template.Clone());
+        
+        // staging
+        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
     }
 
     #endregion

@@ -14,7 +14,6 @@ public abstract class LegacyBehaviour : MonoBehaviour
     public LegacySimpleView GetSimpleView() => View.GetView();
     public RectTransform GetDisplayTransform() => View.GetViewTransform();
     public LegacyInteractBehaviour GetInteractBehaviour() => View.GetInteractBehaviour();
-    public LegacySelectBehaviour GetSelectBehaviour() => View.GetSelectBehaviour();
     public LegacyBehaviour[] GetBehaviours() => View.GetBehaviours();
     public T GetBehaviour<T>() where T : LegacyBehaviour => View.GetBehaviour<T>();
 }

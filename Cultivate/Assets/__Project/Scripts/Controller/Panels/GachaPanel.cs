@@ -61,6 +61,6 @@ public class GachaPanel : Panel
         return ListView.ViewFromIndex(gachaIndex);
     }
 
-    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData eventData)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
 }

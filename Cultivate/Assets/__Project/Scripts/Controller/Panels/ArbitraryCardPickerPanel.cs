@@ -10,9 +10,9 @@ public class ArbitraryCardPickerPanel : Panel
 {
     public TMP_Text DetailedText;
     public Button ConfirmButton;
-    public LegacyListView SkillListView;
+    public ListView SkillListView;
 
-    private List<LegacySimpleView> _selections;
+    private List<SelectBehaviour> _selections;
     private Address _address;
 
     public override void AwakeFunction()
@@ -23,7 +23,7 @@ public class ArbitraryCardPickerPanel : Panel
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
 
-        _selections = new List<LegacySimpleView>();
+        _selections = new();
 
         SkillListView.SetAddress(_address.Append(".Inventory"));
         SkillListView.PointerEnterNeuron.Join(PlayCardHoverSFX);
@@ -32,7 +32,7 @@ public class ArbitraryCardPickerPanel : Panel
 
     public void OnDisable()
     {
-        _selections.Do(v => v.GetSelectBehaviour().SetSelected(false));
+        _selections.Do(b => b.GetAnimator().SetState(0));
         _selections.Clear();
     }
 
@@ -50,45 +50,53 @@ public class ArbitraryCardPickerPanel : Panel
         SkillListView.Refresh();
     }
 
-    private void ToggleSkill(LegacyInteractBehaviour ib, PointerEventData eventData)
-        => ToggleSkill(ib.GetSimpleView());
+    private void ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
+        => ToggleSkill(ib.GetView().GetBehaviour<SelectBehaviour>());
 
-    private bool ToggleSkill(LegacySimpleView v)
+    private void ToggleSkill(SelectBehaviour selectBehaviour)
     {
-        ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
-
-        bool isSelected = _selections.Contains(v);
+        bool isSelected = _selections.Contains(selectBehaviour);
 
         if (isSelected)
         {
-            v.GetSelectBehaviour().SetSelected(false);
-            _selections.Remove(v);
+            selectBehaviour.GetAnimator().SetStateAsync(0);
+            _selections.Remove(selectBehaviour);
         }
         else
         {
-            if (!d.HasSpace(_selections.Count))
-                return false;
-
-            SkillEntryDescriptor skill = v.Get<SkillEntryDescriptor>();
+            ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
+            SkillEntryDescriptor skill = selectBehaviour.Get<SkillEntryDescriptor>();
+            
             if (!d.CanSelect(skill))
-                return false;
-
-            v.GetSelectBehaviour().SetSelected(true);
-            _selections.Add(v);
+                return;
+            
+            if (!d.HasSpace(_selections.Count))
+            {
+                if (_selections.Count > 0)
+                {
+                    SelectBehaviour first = _selections[0];
+                    first.GetAnimator().SetStateAsync(0);
+                    _selections.Remove(first);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            
+            selectBehaviour.GetAnimator().SetStateAsync(1);
+            _selections.Add(selectBehaviour);
         }
 
         Refresh();
-
-        return true;
     }
 
-    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 
     private void ConfirmSelections()
     {
-        List<SkillEntryDescriptor> mapped = _selections.Map(v => v.Get<SkillEntryDescriptor>()).ToList();
-        Signal signal = new ConfirmSkillsSignal(mapped);
-        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
+        List<SkillEntryDescriptor> descriptors = _selections.Map(v => v.Get<SkillEntryDescriptor>()).ToList();
+        RunManager.Instance.Environment.ConfirmSelectionsProcedure(descriptors);
     }
 }

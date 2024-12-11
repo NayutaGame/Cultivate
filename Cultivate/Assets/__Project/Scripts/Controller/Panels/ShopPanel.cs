@@ -57,6 +57,6 @@ public class ShopPanel : Panel
         return CommodityListView.ViewFromIndex(commodityIndex);
     }
 
-    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData eventData)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
 }

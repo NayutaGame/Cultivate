@@ -110,7 +110,7 @@ public class DelegatingView5States : DelegatingView
         }
     }
     
-    // public void Dropping(LegacyInteractBehaviour ib, PointerEventData d)
+    // public void Dropping(InteractBehaviour ib, PointerEventData d)
     // {
     //     ib.GetCLView().SetIdle(ib, d);
     //     gameObject.SetActive(false);

@@ -57,6 +57,6 @@ public class BarterPanel : Panel
         // AudioManager.Instance.Play("钱币");
     }
 
-    private void PlayCardHoverSFX(LegacyInteractBehaviour ib, PointerEventData d)
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 }
