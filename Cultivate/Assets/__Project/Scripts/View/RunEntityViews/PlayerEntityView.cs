@@ -1,7 +1,7 @@
 
 using UnityEngine.EventSystems;
 
-public class PlayerEntityView : LegacySimpleView
+public class PlayerEntityView : XView
 {
     public ListView FieldView;
     public ListView FormationList;
