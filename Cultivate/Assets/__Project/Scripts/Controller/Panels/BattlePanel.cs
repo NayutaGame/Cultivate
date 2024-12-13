@@ -52,16 +52,16 @@ public class BattlePanel : Panel
 
     public override void Refresh()
     {
-        EnemyView.Refresh();
-
-        // BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-        RefreshOperationPanel();
+        RefreshField();
         
         CanvasManager.Instance.RefreshGuide();
     }
 
-    private void RefreshOperationPanel()
+    private void RefreshField()
     {
+        EnemyView.Refresh();
+        
+        // BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         if (RunManager.Instance.Environment.GetSimulateResult() is { } result)
         {
             HomeHealth.text = result.HomeLeftHp.ToString();
@@ -122,7 +122,7 @@ public class BattlePanel : Panel
         AwayPropagatePointer._onPointerEnter = PointerEnterAwayHealth;
         AwayPropagatePointer._onPointerExit = PointerExitAwayHealth;
         
-        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshOperationPanel);
+        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshField);
     }
 
     private void OnDisable()
@@ -140,7 +140,7 @@ public class BattlePanel : Panel
         AwayPropagatePointer._onPointerEnter -= PointerEnterAwayHealth;
         AwayPropagatePointer._onPointerExit -= PointerExitAwayHealth;
         
-        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshOperationPanel);
+        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshField);
     }
 
     private void ReactionFromBeginDrag(LegacyInteractBehaviour ib, PointerEventData d)

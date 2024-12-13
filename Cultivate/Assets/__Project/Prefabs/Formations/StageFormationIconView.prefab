@@ -162,9 +162,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3730836485673369251}
   - component: {fileID: 4162078557098956384}
-  - component: {fileID: 4626522958406216293}
-  - component: {fileID: 1128675602949936068}
-  - component: {fileID: -8987019744644550879}
+  - component: {fileID: 9218123654132668337}
+  - component: {fileID: 6195276979864358415}
   - component: {fileID: 7191967471023871962}
   m_Layer: 0
   m_Name: StageFormationIconView
@@ -208,12 +207,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bb457b31aeda14f888785120077706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 4626522958406216293}
+  _interactBehaviour: {fileID: 0}
   ProgressText: {fileID: 0}
   Glow: {fileID: 8075901007188913733}
   Background: {fileID: 1677805338478869753}
   Icon: {fileID: 1394822568673548365}
---- !u!114 &4626522958406216293
+--- !u!114 &9218123654132668337
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,10 +221,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6193414529329671437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
+  m_Script: {fileID: 11500000, guid: 0533921ce9bac534f89b9ff88b9aadde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1128675602949936068
+--- !u!114 &6195276979864358415
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -234,21 +233,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6193414529329671437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-8987019744644550879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193414529329671437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _ib: {fileID: 0}
   AnnotationAddress: Canvas.FormationAnnotation
   HoverTransform: {fileID: 0}
 --- !u!114 &7191967471023871962

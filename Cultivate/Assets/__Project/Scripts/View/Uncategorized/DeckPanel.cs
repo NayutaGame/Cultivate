@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -103,15 +104,19 @@ public class DeckPanel : Panel
 
     private void OnEnable()
     {
-        // if (RunManager.Instance != null && RunManager.Instance.Environment != null)
-        //     RunManager.Instance.Environment.MapJingJieChangedEvent += SyncSlot;
         Sync();
+
+        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshField);
     }
 
     private void OnDisable()
     {
-        // if (RunManager.Instance != null && RunManager.Instance.Environment != null)
-        //     RunManager.Instance.Environment.MapJingJieChangedEvent -= SyncSlot;
+        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshField);
+    }
+
+    private void RefreshField()
+    {
+        PlayerEntity.RefreshField();
     }
 
     private void Sync()

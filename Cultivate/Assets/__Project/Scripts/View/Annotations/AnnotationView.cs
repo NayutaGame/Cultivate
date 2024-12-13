@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class AnnotationView : MonoBehaviour
 {
     private XView _view;
+    public XView GetView() => _view;
 
     private bool _hasAwoken;
     

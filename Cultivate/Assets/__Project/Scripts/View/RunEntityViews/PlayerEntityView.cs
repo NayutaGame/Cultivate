@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class PlayerEntityView : LegacySimpleView
 {
     public ListView FieldView;
-    public LegacyListView FormationList;
+    public ListView FormationList;
 
     public override void SetAddress(Address address)
     {
@@ -23,6 +23,12 @@ public class PlayerEntityView : LegacySimpleView
 
         // SkillList.Refresh();
         FormationList.Refresh();
+    }
+
+    public void RefreshField()
+    {
+        FieldView.Refresh();
+        FormationList.Sync();
     }
 
     public void Sync()

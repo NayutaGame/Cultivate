@@ -7,7 +7,7 @@ public class BattleEntityView : LegacySimpleView
 {
     public TMP_Text NameText;
     public ListView FieldView;
-    public LegacyListView FormationList;
+    public ListView FormationList;
     
     [SerializeField] public RectTransform FieldViewTransform;
     [SerializeField] private RectTransform FieldViewShowPivot;
@@ -37,7 +37,7 @@ public class BattleEntityView : LegacySimpleView
         SetModel(entity.GetEntry().GetUIEntityModelPrefabEntry());
 
         FieldView.Refresh();
-        FormationList.Refresh();
+        FormationList.Sync();
     }
 
     private void SetModel(PrefabEntry targetPrefabEntry)

@@ -75,7 +75,7 @@ public class FormationAnnotationView : XView
             TriviaText.text = trivia;
     }
 
-    public void SwitchShowingJingJie(LegacyInteractBehaviour ib, PointerEventData d)
+    public void SwitchShowingJingJie(InteractBehaviour ib, PointerEventData d)
     {
         IFormationModel formation = Get<IFormationModel>();
         _showingJingJie = formation.GetIncrementedJingJie(_showingJingJie);

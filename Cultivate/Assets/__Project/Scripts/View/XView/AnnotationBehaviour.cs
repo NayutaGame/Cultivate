@@ -7,6 +7,7 @@ public class AnnotationBehaviour : XBehaviour
     [SerializeField] private InteractBehaviour _ib;
     public string AnnotationAddress;
     private AnnotationView _annotation;
+    public AnnotationView GetAnnotationView() => _annotation;
     public RectTransform HoverTransform;
 
     public override void AwakeFunction()
