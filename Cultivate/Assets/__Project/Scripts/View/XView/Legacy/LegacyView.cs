@@ -17,7 +17,6 @@ public abstract class LegacyView : MonoBehaviour
     public LegacyBehaviour[] GetBehaviours() => _behaviours;
     public T GetBehaviour<T>() where T : LegacyBehaviour => _behaviours.FirstObj(b => b is T) as T;
     public LegacyItemBehaviour GetItemBehaviour() => Get<LegacyItemBehaviour>();
-    public LegacySelectBehaviour GetSelectBehaviour() => Get<LegacySelectBehaviour>();
 
     private bool _hasAwoken;
 

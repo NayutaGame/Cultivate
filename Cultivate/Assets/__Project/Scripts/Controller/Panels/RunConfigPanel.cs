@@ -8,7 +8,7 @@ public class RunConfigPanel : Panel
     [Header("Character Picker")]
     [SerializeField] private LegacyListView CharacterListView;
     // TODO: move select into ListView
-    private LegacySelectBehaviour _selection;
+    // private LegacySelectBehaviour _selection;
     [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
 
     [Header("Difficulty Picker")]
@@ -54,8 +54,11 @@ public class RunConfigPanel : Panel
         // this form should contains: selected character, selected difficulty, selected mutators, selected seed
 
         AppManager.Instance.ProfileManager.RunConfigForm = new RunConfigForm(
-            _selection.GetSimpleView().Get<CharacterProfile>(),
+            null,
             DifficultyPickerView.GetSelection());
+        // AppManager.Instance.ProfileManager.RunConfigForm = new RunConfigForm(
+        //     _selection.GetSimpleView().Get<CharacterProfile>(),
+        //     DifficultyPickerView.GetSelection());
 
         AppManager.Push(new RunAppS());
     }

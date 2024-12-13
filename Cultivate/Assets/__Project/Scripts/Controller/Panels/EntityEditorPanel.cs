@@ -152,8 +152,11 @@ public class EntityEditorPanel : Panel
         // CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
+    // private void SelectEntity(LegacyInteractBehaviour ib, PointerEventData eventData)
+    //     => SelectEntity(ib.GetSimpleView().GetSelectBehaviour());
+
     private void SelectEntity(LegacyInteractBehaviour ib, PointerEventData eventData)
-        => SelectEntity(ib.GetSimpleView().GetSelectBehaviour());
+        => SelectEntity(null);
 
     private void DeselectEntity(LegacyInteractBehaviour ib, PointerEventData eventData)
         => SelectEntity(null);

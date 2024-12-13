@@ -1772,7 +1772,7 @@ MonoBehaviour:
   - {fileID: 5628230050546237653}
   - {fileID: 1152007540866546736}
   NoteContainer: {fileID: 3333930249471562716}
-  NotePrefab: {fileID: 8085986264311966347, guid: b2029d1cb6b8f26408841ef3d1f317bd, type: 3}
+  NotePrefab: {fileID: 8155228337873847611, guid: 0ed6a590d1cef9042b3820a5d72e15b4, type: 3}
 --- !u!1 &6480860567880382837
 GameObject:
   m_ObjectHideFlags: 0

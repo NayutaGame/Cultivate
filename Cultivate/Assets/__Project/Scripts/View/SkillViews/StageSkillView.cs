@@ -1,18 +1,18 @@
 
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StageSkillCardView : SkillCardView
+public class StageSkillView : DelegatingView
 {
     [SerializeField] private Image CounterImage;
+    [SerializeField] public RectTransform TimelineScale;
 
     public override void Refresh()
     {
         base.Refresh();
 
-        if (!gameObject.activeSelf)
-            return;
+        // if (!gameObject.activeSelf)
+        //     return;
 
         ISkill skill = Get<ISkill>();
         SetCounter(skill.GetCurrCounter(), skill.GetMaxCounter());
@@ -26,19 +26,5 @@ public class StageSkillCardView : SkillCardView
             return;
         }
         CounterImage.fillAmount = (float)currCounter / maxCounter;
-    }
-
-    public Tween GetExpandTween()
-    {
-        Sequence seq = DOTween.Sequence();
-        seq.Join(GetViewTransform().DOScale(1, 0.6f).SetEase(Ease.InOutQuad));
-        return seq;
-    }
-
-    public Tween GetShrinkTween()
-    {
-        Sequence seq = DOTween.Sequence();
-        seq.Join(GetViewTransform().DOScale(0.5f, 0.6f).SetEase(Ease.InOutQuad));
-        return seq;
     }
 }

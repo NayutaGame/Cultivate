@@ -150,7 +150,7 @@ public class DeckPanel : Panel
         {
             ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
             if (runSkill != null && pred(runSkill))
-                itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(true);
+                itemBehaviour.GetSimpleView().GetComponent<SkillView>().SetHighlight(true);
         }
         
         void HighlightSlot(LegacyItemBehaviour itemBehaviour)
@@ -170,7 +170,7 @@ public class DeckPanel : Panel
         {
             ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
             if (runSkill != null)
-                itemBehaviour.GetSimpleView().GetComponent<SkillCardView>().SetHighlight(false);
+                itemBehaviour.GetSimpleView().GetComponent<SkillView>().SetHighlight(false);
         }
         
         void UnhighlightSlot(LegacyItemBehaviour itemBehaviour)

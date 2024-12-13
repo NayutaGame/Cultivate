@@ -50,8 +50,11 @@ public class BuffView : XView
 
     private void PingAnimation()
     {
-        LegacyPivotBehaviour pivotBehaviour = GetComponent<LegacyPivotBehaviour>();
-        if (pivotBehaviour != null)
-            pivotBehaviour.PlayPingAnimation();
+        // LegacyPivotBehaviour pivotBehaviour = GetComponent<LegacyPivotBehaviour>();
+        // if (pivotBehaviour != null)
+        //     pivotBehaviour.PlayPingAnimation();
     }
+    
+    // private Tween PingTween()
+    //     => GetDisplayTransform().DOScale(1.5f, 0.075f).SetEase(Ease.OutQuad).SetLoops(2, loopType: LoopType.Yoyo);
 }

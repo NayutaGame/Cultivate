@@ -12,6 +12,9 @@ public class TimelineView : Singleton<TimelineView>
     public RectTransform[] AwaySlots;
     public RectTransform[] HomeSlots;
 
+    private static readonly Vector3 SHRINK_SCALE = Vector3.one * 0.5f;
+    private static readonly Vector3 EXPAND_SCALE = Vector3.one * 1;
+
     [NonSerialized] public int TotalCount;
     [NonSerialized] public int FutureCount;
     [NonSerialized] public int PastCount;
@@ -19,28 +22,27 @@ public class TimelineView : Singleton<TimelineView>
     public RectTransform NoteContainer;
     public GameObject NotePrefab;
 
-    private List<StageSkillCardView> _views;
-    public List<StageSkillCardView> Views => _views;
+    private List<StageSkillView> _views;
+    public List<StageSkillView> Views => _views;
 
     private int _time;
 
     public void Configure()
     {
         ClearViews();
-        _views = new List<StageSkillCardView>();
+        _views = new();
         foreach (var v in _views)
-            ConfigureNeuron(v.GetComponent<LegacyInteractBehaviour>());
+            ConfigureNeuron(v.GetInteractBehaviour());
 
         // TotalCount = HomeSlots.Length;
         FutureCount = HomeSlots.Length - (IndexOfCurr + 1);
         // PastCount = IndexOfCurr;
     }
 
-    private void ConfigureNeuron(LegacyInteractBehaviour stageSkillIb)
+    private void ConfigureNeuron(InteractBehaviour ib)
     {
-        // stageSkillIb.PointerEnterNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerEnter, StageManager.Instance.Pause);
-        // stageSkillIb.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit, StageManager.Instance.Resume);
-        // stageSkillIb.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
+        ib.PointerEnterNeuron.Join(StageManager.Instance.Pause);
+        ib.PointerExitNeuron.Join(StageManager.Instance.Resume);
     }
 
     public void InitialSetup()
@@ -54,11 +56,12 @@ public class TimelineView : Singleton<TimelineView>
         {
             StageNote note = batch[i];
             RectTransform slot = (note.IsHome ? HomeSlots : AwaySlots)[IndexOfCurr + 1 + i];
-            StageSkillCardView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillCardView>();
-            v.transform.localScale = 0.5f * Vector3.one;
+            StageSkillView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillView>();
             _views.Add(v);
+            v.CheckAwake();
             v.SetAddress(new Address($"Stage.Timeline.Notes#{note.TemporalIndex}"));
-            ConfigureNeuron(v.GetComponent<LegacyInteractBehaviour>());
+            v.TimelineScale.localScale = SHRINK_SCALE;
+            ConfigureNeuron(v.GetInteractBehaviour());
             v.Refresh();
         }
     }
@@ -82,13 +85,13 @@ public class TimelineView : Singleton<TimelineView>
 
         for (int i = 0; i < _views.Count; i++)
         {
-            StageSkillCardView v = _views[i];
+            StageSkillView v = _views[i];
             StageNote note = v.Get<StageNote>();
             int spatialIndex = note.TemporalIndex - nextTime + 1 + IndexOfCurr;
 
             if (spatialIndex == 0)
             {
-                StageSkillCardView toDestroy = _views[i];
+                StageSkillView toDestroy = _views[i];
                 _views.RemoveAt(i);
                 Destroy(toDestroy.gameObject);
                 i--;
@@ -103,11 +106,11 @@ public class TimelineView : Singleton<TimelineView>
 
             if (spatialIndex == IndexOfCurr)
             {
-                seq.Join(_views[i].GetShrinkTween());
+                seq.Join(_views[i].TimelineScale.DOScale(SHRINK_SCALE, 0.6f).SetEase(Ease.InOutQuad));
             }
             else if (spatialIndex == IndexOfCurr + 1)
             {
-                seq.Join(_views[i].GetExpandTween());
+                seq.Join(_views[i].TimelineScale.DOScale(EXPAND_SCALE, 0.6f).SetEase(Ease.InOutQuad));
             }
         }
 
@@ -127,11 +130,12 @@ public class TimelineView : Singleton<TimelineView>
             return;
 
         RectTransform slot = toCreate.IsHome ? HomeSlots[^1] : AwaySlots[^1];
-        StageSkillCardView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillCardView>();
-        v.transform.localScale = 0.5f * Vector3.one;
+        StageSkillView v = Instantiate(NotePrefab, slot.position, slot.rotation, NoteContainer).GetComponent<StageSkillView>();
         _views.Add(v);
+        v.CheckAwake();
         v.SetAddress(new Address($"Stage.Timeline.Notes#{toCreate.TemporalIndex}"));
-        ConfigureNeuron(v.GetComponent<LegacyInteractBehaviour>());
+        v.TimelineScale.localScale = SHRINK_SCALE;
+        ConfigureNeuron(v.GetInteractBehaviour());
         v.Refresh();
     }
 }
