@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [SelectionBase]
-public class MergePreresultView : LegacySimpleView
+public class MergePreresultView : XView
 {
     private MergePreresult _mergePreresult;
     private Animator _animator;
@@ -21,6 +21,8 @@ public class MergePreresultView : LegacySimpleView
 
     [SerializeField] private TMP_Text MergeTypeText;
     [SerializeField] private TMP_Text ErrorMessage;
+
+    [SerializeField] private CanvasGroup CanvasGroup;
     
     // private bool _highlight;
     // private Tween _highlightHandle;
@@ -95,22 +97,22 @@ public class MergePreresultView : LegacySimpleView
             .AppendCallback(() => gameObject.SetActive(true))
             .Append(CanvasGroup.DOFade(1, 0.3f))
             .Join(DOTween.Sequence()
-                .Append(RectTransform.DOScale(1f, 0.3f)))
-                .Append(RectTransform.DOScale(0.9f, 1f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo));
+                .Append(GetRect().DOScale(1f, 0.3f)))
+                .Append(GetRect().DOScale(0.9f, 1f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo));
 
     public Tween HideTween()
         => DOTween.Sequence()
             .Append(CanvasGroup.DOFade(0, 0.3f))
-            .Join(RectTransform.DOScale(0.6f, 0.3f))
+            .Join(GetRect().DOScale(0.6f, 0.3f))
             .AppendCallback(() => gameObject.SetActive(false));
 
     public Tween SuccessTween()
         => DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
             .Append(CanvasGroup.DOFade(1, 0.15f))
-            .Join(RectTransform.DOScale(1f, 0.15f).SetEase(Ease.InQuad))
+            .Join(GetRect().DOScale(1f, 0.15f).SetEase(Ease.InQuad))
             // .AppendInterval(0.1f)
-            .Append(RectTransform.DOScale(1.2f, 0.15f).SetEase(Ease.InQuad).SetLoops(2, LoopType.Yoyo))
+            .Append(GetRect().DOScale(1.2f, 0.15f).SetEase(Ease.InQuad).SetLoops(2, LoopType.Yoyo))
             .AppendInterval(0.1f);
     
     // public void SetHighlight(bool highlight)

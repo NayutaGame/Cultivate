@@ -8,8 +8,13 @@ public class AnnotationView : MonoBehaviour
     public XView GetView() => _view;
 
     private bool _hasAwoken;
+
+    public void Awake()
+    {
+        CheckAwake();
+    }
     
-    private void CheckAwake()
+    public void CheckAwake()
     {
         if (_hasAwoken)
             return;
@@ -21,11 +26,6 @@ public class AnnotationView : MonoBehaviour
     {
         _view ??= GetComponent<XView>();
         _view.CheckAwake();
-    }
-
-    public void Awake()
-    {
-        CheckAwake();
     }
 
     public void PointerEnter(LegacyInteractBehaviour ib, PointerEventData d)

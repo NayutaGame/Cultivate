@@ -50,17 +50,17 @@ public class DeckPanel : Panel
         CharacterIconView.SetAddress("Run.Environment.Config.CharacterProfile");
         
         PlayerEntity.SetAddress("Run.Environment.Home");
-        // PlayerEntity.FormationList.PointerEnterNeuron.Join(HighlightContributors);
-        // PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
+        PlayerEntity.FormationList.PointerEnterNeuron.Join(HighlightContributors);
+        PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
 
         HandView.SetAddress("Run.Environment.Hand");
         HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
         HandView.DropNeuron.Join(Merge, Unequip);
-        // HandView.DroppingNeuron.Join(RemoveMergePreresult);
-        // HandView.EndDragNeuron.Join(RemoveMergePreresult);
-        //
-        // HandView.DraggingEnterNeuron.Join(DraggingEnter);
-        // HandView.DraggingExitNeuron.Join(DraggingExit);
+        
+        HandView.DroppingNeuron.Join(RemoveMergePreresult);
+        HandView.EndDragNeuron.Join(RemoveMergePreresult);
+        HandView.DraggingEnterNeuron.Join(DraggingEnter);
+        HandView.DraggingExitNeuron.Join(DraggingExit);
         
         UnequipZone._onDrop = Unequip;
 
@@ -68,18 +68,18 @@ public class DeckPanel : Panel
         SortButton.onClick.AddListener(Sort);
     }
 
-    private void DraggingEnter(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
+    private void DraggingEnter(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
         if (!(from is HandSkillInteractBehaviour))
             return;
         RunEnvironment env = RunManager.Instance.Environment;
-        RunSkill lhs = from.GetSimpleView().Get<RunSkill>();
-        RunSkill rhs = to.GetSimpleView().Get<RunSkill>();
+        RunSkill lhs = from.Get<RunSkill>();
+        RunSkill rhs = to.Get<RunSkill>();
 
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(1, env.GetMergePreresult(lhs, rhs));
     }
 
-    private void DraggingExit(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
+    private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }
@@ -123,66 +123,70 @@ public class DeckPanel : Panel
         PlayerEntity.Sync();
     }
 
+    // extra views
+    // { typeof(BattlePanelDescriptor), 2 },
+    // { typeof(PuzzlePanelDescriptor), 3 },
+    // { typeof(DialogPanelDescriptor), 4 },
+    // { typeof(DiscoverSkillPanelDescriptor), 5 },
+    // { typeof(CardPickerPanelDescriptor), 6 },
+    // { typeof(ShopPanelDescriptor), 7 },
+    // { typeof(BarterPanelDescriptor), 8 },
+    // { typeof(GachaPanelDescriptor), 9 },
+    // { typeof(ArbitraryCardPickerPanelDescriptor), 10 },
+    // { typeof(ImagePanelDescriptor), 11 },
+    // { typeof(RunResultPanelDescriptor), 12 },
+
     #region IInteractable
 
-    private void HighlightContributors(LegacyInteractBehaviour ib, PointerEventData d)
+    private void HighlightContributors(InteractBehaviour ib, PointerEventData d)
     {
-        Predicate<ISkill> pred = ib.GetCLView().Get<IFormationModel>().GetContributorPred();
-        // PlayerEntity.SkillList.TraversalActive().Do(HighlightSlot);
-        // HandView.TraversalActive().Do(HighlightSkill);
-
-        // extra views
-        // { typeof(BattlePanelDescriptor), 2 },
-        // { typeof(PuzzlePanelDescriptor), 3 },
-        // { typeof(DialogPanelDescriptor), 4 },
-        // { typeof(DiscoverSkillPanelDescriptor), 5 },
-        // { typeof(CardPickerPanelDescriptor), 6 },
-        // { typeof(ShopPanelDescriptor), 7 },
-        // { typeof(BarterPanelDescriptor), 8 },
-        // { typeof(GachaPanelDescriptor), 9 },
-        // { typeof(ArbitraryCardPickerPanelDescriptor), 10 },
-        // { typeof(ImagePanelDescriptor), 11 },
-        // { typeof(RunResultPanelDescriptor), 12 },
+        Predicate<ISkill> pred = ib.Get<IFormationModel>().GetContributorPred();
+        PlayerEntity.FieldView.TraversalActive().Do(HighlightSlot);
+        HandView.TraversalActive().Do(HighlightSkill);
         
-        void HighlightSkill(LegacyItemBehaviour itemBehaviour)
+        void HighlightSkill(XView view)
         {
-            ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
-            if (runSkill != null && pred(runSkill))
-                itemBehaviour.GetSimpleView().GetComponent<SkillView>().SetHighlight(true);
+            ISkill runSkill = view.Get<ISkill>();
+            if (runSkill == null || !pred(runSkill))
+                return;
+            ((view as DelegatingView).GetDelegatedView() as SkillView).SetHighlight(true);
         }
         
-        void HighlightSlot(LegacyItemBehaviour itemBehaviour)
+        void HighlightSlot(XView view)
         {
-            // SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
-            // if (skillSlot != null && skillSlot.Skill != null && pred(skillSlot.Skill))
-            //     itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(true);
+            SkillSlot skillSlot = view.Get<SkillSlot>();
+            if (skillSlot == null || skillSlot.Skill == null || !pred(skillSlot.Skill))
+                return;
+            ((view as DelegatingView).GetDelegatedView() as SlotView).SkillView.SetHighlight(true);
         }
     }
 
-    private void UnhighlightContributors(LegacyInteractBehaviour ib, PointerEventData d)
+    private void UnhighlightContributors(InteractBehaviour ib, PointerEventData d)
     {
-        // PlayerEntity.SkillList.TraversalActive().Do(UnhighlightSlot);
-        // HandView.TraversalActive().Do(UnhighlightSkill);
+        PlayerEntity.FieldView.TraversalActive().Do(UnhighlightSlot);
+        HandView.TraversalActive().Do(UnhighlightSkill);
         
-        void UnhighlightSkill(LegacyItemBehaviour itemBehaviour)
+        void UnhighlightSkill(XView view)
         {
-            ISkill runSkill = itemBehaviour.GetSimpleView().Get<ISkill>();
-            if (runSkill != null)
-                itemBehaviour.GetSimpleView().GetComponent<SkillView>().SetHighlight(false);
+            ISkill runSkill = view.Get<ISkill>();
+            if (runSkill == null)
+                return;
+            ((view as DelegatingView).GetDelegatedView() as SkillView).SetHighlight(false);
         }
         
-        void UnhighlightSlot(LegacyItemBehaviour itemBehaviour)
+        void UnhighlightSlot(XView view)
         {
-            // SkillSlot skillSlot = itemBehaviour.GetSimpleView().Get<SkillSlot>();
-            // if (skillSlot != null)
-            //     itemBehaviour.GetSimpleView().GetComponent<SlotCardView>().SkillCardView.SetHighlight(false);
+            SkillSlot skillSlot = view.Get<SkillSlot>();
+            if (skillSlot == null)
+                return;
+            ((view as DelegatingView).GetDelegatedView() as SlotView).SkillView.SetHighlight(false);
         }
     }
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 
-    private void RemoveMergePreresult(LegacyInteractBehaviour from, PointerEventData d)
+    private void RemoveMergePreresult(InteractBehaviour from, PointerEventData d)
     {
         CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
     }

@@ -1128,7 +1128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76f7180707f4474c93d954f6b0fdf08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 0}
+  _interactBehaviour: {fileID: 0}
   CardImage: {fileID: 1353473269385312328}
   CostText: {fileID: 1286390307570048932}
   CostIcon: {fileID: 6381096876545674375}
@@ -1138,6 +1138,7 @@ MonoBehaviour:
   EffectImage: {fileID: 8512811868993829443}
   MergeTypeText: {fileID: 2470812691037648379}
   ErrorMessage: {fileID: 23911932459379219}
+  CanvasGroup: {fileID: 8434282655491880712}
 --- !u!1 &8404379903441735961
 GameObject:
   m_ObjectHideFlags: 0

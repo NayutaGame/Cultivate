@@ -69,11 +69,11 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         
         _results = new();
 
-        CharacterAnnotation.Awake();
-        SkillAnnotation.Awake();
-        BuffAnnotation.Awake();
-        FormationAnnotation.Awake();
-        RoomAnnotation.Awake();
+        CharacterAnnotation.CheckAwake();
+        SkillAnnotation.CheckAwake();
+        BuffAnnotation.CheckAwake();
+        FormationAnnotation.CheckAwake();
+        RoomAnnotation.CheckAwake();
         
         MergePreresultView.CheckAwake();
         
