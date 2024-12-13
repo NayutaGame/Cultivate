@@ -39,8 +39,10 @@ public class CardPickerPanel : Panel
         ClearSelections();
     }
 
-    private void ClearSelections()
+    public void ClearSelections()
     {
+        if (_selections == null)
+            return;
         _selections.Do(s => s.GetAnimator().SetState(0));
         _selections.Clear();
     }

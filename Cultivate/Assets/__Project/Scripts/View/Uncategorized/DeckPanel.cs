@@ -17,7 +17,7 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform PlayerEntityShowPivot;
     [SerializeField] private RectTransform PlayerEntityHidePivot;
 
-    public ListView HandView;
+    public AnimatedListView HandView;
     [SerializeField] private RectTransform HandTransform;
     [SerializeField] private RectTransform HandShowPivot;
     [SerializeField] private RectTransform HandHidePivot;
@@ -65,7 +65,7 @@ public class DeckPanel : Panel
         UnequipZone._onDrop = Unequip;
 
         SortButton.onClick.RemoveAllListeners();
-        // SortButton.onClick.AddListener(Sort);
+        SortButton.onClick.AddListener(Sort);
     }
 
     private void DraggingEnter(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
@@ -99,7 +99,6 @@ public class DeckPanel : Panel
         base.Refresh();
         CharacterIconView.Refresh();
         PlayerEntity.Refresh();
-        // LegacyHandView.Refresh();
     }
 
     private void OnEnable()
@@ -121,7 +120,6 @@ public class DeckPanel : Panel
 
     private void Sync()
     {
-        // LegacyHandView.Sync();
         PlayerEntity.Sync();
     }
 
@@ -231,26 +229,26 @@ public class DeckPanel : Panel
 
     private void Sort()
     {
-        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        //
-        // _animationHandle?.Kill();
-        //
-        // _animationHandle = DOTween.Sequence()
-        //     .AppendCallback(() =>
-        //     {
-        //         HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 0);
-        //         HandView.RefreshPivots();
-        //     })
-        //     .AppendInterval(0.2f)
-        //     .AppendCallback(() =>
-        //     {
-        //         HandView.Get<SkillInventory>().SortByComparisonId(0);
-        //         CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
-        //         HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 1134);
-        //         HandView.RefreshPivots();
-        //     });
-        //
-        // _animationHandle.SetAutoKill().Restart();
+        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearSelections();
+        
+        _animationHandle?.Kill();
+        
+        _animationHandle = DOTween.Sequence()
+            .AppendCallback(() =>
+            {
+                HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 0);
+                HandView.RefreshPivots();
+            })
+            .AppendInterval(0.2f)
+            .AppendCallback(() =>
+            {
+                HandView.Get<SkillInventory>().SortByComparisonId(0);
+                HandView.Refresh();
+                HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 1134);
+                HandView.RefreshPivots();
+            });
+        
+        _animationHandle.SetAutoKill().Restart();
     }
 
     private void TryShow(PointerEventData eventData) => GetAnimator().SetStateAsync(1);
