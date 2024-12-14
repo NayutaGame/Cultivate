@@ -32,7 +32,7 @@ public class ArbitraryCardPickerPanel : Panel
 
     public void OnDisable()
     {
-        _selections.Do(b => b.GetAnimator().SetState(0));
+        _selections.Do(b => b.SetSelect(false));
         _selections.Clear();
     }
 
@@ -59,7 +59,7 @@ public class ArbitraryCardPickerPanel : Panel
 
         if (isSelected)
         {
-            selectBehaviour.GetAnimator().SetStateAsync(0);
+            selectBehaviour.SetSelectAsync(false);
             _selections.Remove(selectBehaviour);
         }
         else
@@ -75,7 +75,7 @@ public class ArbitraryCardPickerPanel : Panel
                 if (_selections.Count > 0)
                 {
                     SelectBehaviour first = _selections[0];
-                    first.GetAnimator().SetStateAsync(0);
+                    first.SetSelectAsync(false);
                     _selections.Remove(first);
                 }
                 else
@@ -84,7 +84,7 @@ public class ArbitraryCardPickerPanel : Panel
                 }
             }
             
-            selectBehaviour.GetAnimator().SetStateAsync(1);
+            selectBehaviour.SetSelectAsync(true);
             _selections.Add(selectBehaviour);
         }
 

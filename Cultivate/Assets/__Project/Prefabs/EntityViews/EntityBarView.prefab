@@ -222,6 +222,8 @@ GameObject:
   - component: {fileID: 529978078669234200}
   - component: {fileID: 4886093480126312862}
   - component: {fileID: 6422294263586690588}
+  - component: {fileID: 9203051572044680544}
+  - component: {fileID: 4778428653906400107}
   m_Layer: 5
   m_Name: EntityBarView
   m_TagString: Untagged
@@ -277,9 +279,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f2d254ef8932b4d95b7d67f1aa75ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 0}
+  _interactBehaviour: {fileID: 9203051572044680544}
   NameText: {fileID: 328300260318751242}
   JingJieText: {fileID: 330612139291796175}
+--- !u!114 &9203051572044680544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108923873393925487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0533921ce9bac534f89b9ff88b9aadde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4778428653906400107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108923873393925487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc98be7f0e763a4a8988fe689210a07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectionImage: {fileID: 2574591580943650469}
 --- !u!1 &2554135421041422778
 GameObject:
   m_ObjectHideFlags: 0

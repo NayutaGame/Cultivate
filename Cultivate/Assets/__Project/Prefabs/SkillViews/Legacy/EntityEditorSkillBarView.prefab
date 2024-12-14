@@ -163,8 +163,7 @@ GameObject:
   - component: {fileID: 2538387930539334824}
   - component: {fileID: 659533699458876294}
   - component: {fileID: 6343232113136730364}
-  - component: {fileID: 4343541909256888022}
-  - component: {fileID: 7170938377839784045}
+  - component: {fileID: 6945782723421941240}
   m_Layer: 5
   m_Name: EntityEditorSkillBarView
   m_TagString: Untagged
@@ -207,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a38183c8fd8e8444bc94694072a47a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 0}
+  _interactBehaviour: {fileID: 6343232113136730364}
   BackgroundImage: {fileID: 5454085984188536198}
   WuXingImage: {fileID: 167321902613571542}
   NameText: {fileID: 2373024571772819130}
@@ -223,7 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abda429cc10e5b41baefecdcddd2270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4343541909256888022
+--- !u!114 &6945782723421941240
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,21 +231,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4117575424005972447}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4c9e9080b8534c4ba1c856208442f79, type: 3}
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7170938377839784045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4117575424005972447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _ib: {fileID: 6343232113136730364}
   AnnotationAddress: Canvas.SkillAnnotation
   HoverTransform: {fileID: 0}
 --- !u!1 &6862243894135901390

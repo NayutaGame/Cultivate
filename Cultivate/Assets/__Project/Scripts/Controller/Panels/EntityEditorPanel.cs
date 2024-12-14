@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class EntityEditorPanel : Panel
 {
-    [SerializeField] private LegacyListView EntityBrowser;
+    [SerializeField] private ListView EntityBrowser;
     private int? _selectionIndex;
-    private LegacySelectBehaviour _selection;
+    private SelectBehaviour _selection;
 
-    [SerializeField] private LegacyListView SkillBrowser;
+    [SerializeField] private ListView SkillBrowser;
 
     [SerializeField] private EntityEditorEntityView AwayEntityView;
     [SerializeField] private EntityEditorEntityView HomeEntityView;
@@ -35,8 +35,7 @@ public class EntityEditorPanel : Panel
         EntityBrowser.RightClickNeuron.Join(DeselectEntity);
 
         SkillBrowser.SetAddress(new Address("SkillInventory"));
-        // SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-        //     CanvasManager.Instance.FormationAnnotation.PointerExit);
+        SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit, CanvasManager.Instance.FormationAnnotation.PointerExit);
         SkillBrowser.DropNeuron.Join(Unequip);
 
         AwayEntityView.SetAddress(null);
@@ -105,49 +104,49 @@ public class EntityEditorPanel : Panel
         Refresh();
     }
 
-    private void Equip(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData eventData)
+    private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         if (!(from is EntityEditorSkillBarInteractBehaviour))
             return;
 
         // SkillBarView -> EntityEditorSlotView
-        RunSkill skill = from.GetSimpleView().Get<RunSkill>();
-        SkillSlot slot = to.GetSimpleView().Get<SkillSlot>();
+        RunSkill skill = from.Get<RunSkill>();
+        SkillSlot slot = to.Get<SkillSlot>();
 
         slot.Skill = skill;
         Refresh();
     }
 
-    private void Unequip(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData eventData)
+    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         if (!(from is EntityEditorSlotInteractBehaviour))
             return;
 
         // EntityEditorSlotView -> SkillBarView
-        SkillSlot slot = from.GetSimpleView().Get<SkillSlot>();
+        SkillSlot slot = from.Get<SkillSlot>();
 
         slot.Skill = null;
         Refresh();
     }
 
-    private void Swap(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData eventData)
+    private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
         if (!(from is EntityEditorSlotInteractBehaviour))
             return;
 
         // EntityEditorSlotView -> EntityEditorSlotView
-        SkillSlot fromSlot = from.GetSimpleView().Get<SkillSlot>();
-        SkillSlot toSlot = to.GetSimpleView().Get<SkillSlot>();
+        SkillSlot fromSlot = from.Get<SkillSlot>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
 
         (fromSlot.Skill, toSlot.Skill) = (toSlot.Skill, fromSlot.Skill);
         Refresh();
     }
 
-    private void IncreaseJingJie(LegacyInteractBehaviour ib, PointerEventData eventData)
+    private void IncreaseJingJie(InteractBehaviour ib, PointerEventData eventData)
     {
-        SkillSlot slot = ib.GetSimpleView().Get<SkillSlot>();
+        SkillSlot slot = ib.Get<SkillSlot>();
         slot.TryIncreaseJingJie();
-        ib.GetSimpleView().Refresh();
+        ib.GetView().Refresh();
         RefreshOperationBoard();
         // CanvasManager.Instance.SkillAnnotation.Refresh();
     }
@@ -155,28 +154,28 @@ public class EntityEditorPanel : Panel
     // private void SelectEntity(LegacyInteractBehaviour ib, PointerEventData eventData)
     //     => SelectEntity(ib.GetSimpleView().GetSelectBehaviour());
 
-    private void SelectEntity(LegacyInteractBehaviour ib, PointerEventData eventData)
+    private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
+        => SelectEntity(ib.GetView().GetBehaviour<SelectBehaviour>());
+
+    private void DeselectEntity(InteractBehaviour ib, PointerEventData eventData)
         => SelectEntity(null);
 
-    private void DeselectEntity(LegacyInteractBehaviour ib, PointerEventData eventData)
-        => SelectEntity(null);
-
-    private void SelectEntity(LegacySelectBehaviour selectBehaviour)
+    private void SelectEntity(SelectBehaviour selectBehaviour)
     {
         if (_selection != null)
-            _selection.SetSelected(false);
+            _selection.SetSelectAsync(false);
 
         _selection = selectBehaviour;
-        _selectionIndex = EntityBrowser.IndexFromItemBehaviour(_selection == null ? null : _selection.GetSimpleView().GetItemBehaviour());
+        _selectionIndex = EntityBrowser.IndexFromView(_selection == null ? null : _selection.GetView());
 
         // TODO: submit form
         EditorManager.Instance.SetSelectionIndex(_selectionIndex);
 
         if (_selection != null)
         {
-            AwayEntityView.SetAddress(_selection.GetSimpleView().GetAddress());
+            AwayEntityView.SetAddress(_selection.GetAddress());
             AwayEntityView.Refresh();
-            _selection.SetSelected(true);
+            _selection.SetSelectAsync(true);
         }
         
         RefreshOperationBoard();

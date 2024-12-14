@@ -10,9 +10,9 @@ using UnityEngine.UI;
 
 public class ListView : XView
 {
-    public GameObject[] Prefabs;
+    [SerializeField] private RectTransform _container;
     
-    private RectTransform _container;
+    public GameObject[] Prefabs;
 
     protected List<XView> _activePool;
     protected List<XView>[] _inactivePools;
@@ -72,11 +72,6 @@ public class ListView : XView
         CheckNeurons();
     }
 
-    public void ForceRebuildLayout()
-    {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_container);
-    }
-
     #endregion
 
     #region Core
@@ -97,13 +92,13 @@ public class ListView : XView
 
     protected virtual void InitContainer()
     {
-        _container = transform.GetChild(0).GetComponent<RectTransform>();
+        if (_container == null)
+            _container = transform.GetChild(0).GetComponent<RectTransform>();
     }
 
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        CheckAwake();
         Sync();
     }
 

@@ -32,4 +32,14 @@ public class SelectBehaviour : XBehaviour
     
     private Tween EnterSelected()
         => SelectionImage.DOFade(1, 0.15f);
+
+    public async void SetSelectAsync(bool value)
+    {
+        await GetAnimator().SetStateAsync(value ? 1 : 0);
+    }
+
+    public void SetSelect(bool value)
+    {
+        GetAnimator().SetState(value ? 1 : 0);
+    }
 }

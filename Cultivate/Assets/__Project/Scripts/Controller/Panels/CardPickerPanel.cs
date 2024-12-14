@@ -43,7 +43,7 @@ public class CardPickerPanel : Panel
     {
         if (_selections == null)
             return;
-        _selections.Do(s => s.GetAnimator().SetState(0));
+        _selections.Do(s => s.SetSelect(false));
         _selections.Clear();
     }
 
@@ -65,7 +65,7 @@ public class CardPickerPanel : Panel
     
         if (isSelected)
         {
-            selectBehaviour.GetAnimator().SetStateAsync(0);
+            selectBehaviour.SetSelectAsync(false);
             _selections.Remove(selectBehaviour);
         }
         else
@@ -82,7 +82,7 @@ public class CardPickerPanel : Panel
                 if (_selections.Count > 0)
                 {
                     SelectBehaviour first = _selections[0];
-                    first.GetAnimator().SetStateAsync(0);
+                    first.SetSelectAsync(false);
                     _selections.Remove(first);
                 }
                 else
@@ -91,7 +91,7 @@ public class CardPickerPanel : Panel
                 }
             }
 
-            selectBehaviour.GetAnimator().SetStateAsync(1);
+            selectBehaviour.SetSelectAsync(true);
             _selections.Add(selectBehaviour);
         }
         

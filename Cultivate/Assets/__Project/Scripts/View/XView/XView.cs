@@ -75,6 +75,7 @@ public class XView : MonoBehaviour
     public virtual void SetAddress(Address address)
     {
         _address = address;
+        CheckAwake();
     }
 
     public virtual void Refresh()

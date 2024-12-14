@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EntityEditorEntityView : LegacySimpleView
+public class EntityEditorEntityView : XView
 {
     public TMP_Dropdown EntityDropdown;
     public TMP_Dropdown JingJieDropdown;
@@ -20,11 +20,11 @@ public class EntityEditorEntityView : LegacySimpleView
 
     public Toggle InPoolToggle;
 
-    public LegacyListView FieldView;
-    public LegacyListView FormationListView;
+    public ListView FieldView;
+    public ListView FormationListView;
 
-    public LegacyListView SmirkAgainstListView;
-    public LegacyListView AfraidAgainstListView;
+    public ListView SmirkAgainstListView;
+    public ListView AfraidAgainstListView;
 
     public override void SetAddress(Address address)
     {
@@ -91,9 +91,9 @@ public class EntityEditorEntityView : LegacySimpleView
         if (FormationListView != null)
         {
             FormationListView.SetAddress(GetAddress().Append(".ShowingFormations"));
-            FormationListView.PointerEnterNeuron.Join(PointerEnterFormationNeuron);
-            FormationListView.PointerExitNeuron.Join(PointerExitFormationNeuron);
-            FormationListView.PointerMoveNeuron.Join(PointerMoveFormationNeuron);
+            // FormationListView.PointerEnterNeuron.Join(PointerEnterFormationNeuron);
+            // FormationListView.PointerExitNeuron.Join(PointerExitFormationNeuron);
+            // FormationListView.PointerMoveNeuron.Join(PointerMoveFormationNeuron);
         }
 
         if (SmirkAgainstListView != null)
@@ -104,7 +104,7 @@ public class EntityEditorEntityView : LegacySimpleView
             // SmirkAgainstListView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
             //     CanvasManager.Instance.FormationAnnotation.PointerExit);
             // SmirkAgainstListView.RightClickNeuron.Join(RightClickSlotNeuron);
-            SmirkAgainstListView.DropNeuron.Join(DropSmirkAgainstSlotNeuron);
+            // SmirkAgainstListView.DropNeuron.Join(DropSmirkAgainstSlotNeuron);
         }
 
         if (AfraidAgainstListView != null)
@@ -115,7 +115,7 @@ public class EntityEditorEntityView : LegacySimpleView
             // AfraidAgainstListView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
             //     CanvasManager.Instance.FormationAnnotation.PointerExit);
             // AfraidAgainstListView.RightClickNeuron.Join(RightClickSlotNeuron);
-            AfraidAgainstListView.DropNeuron.Join(DropAfraidAgainstSlotNeuron);
+            // AfraidAgainstListView.DropNeuron.Join(DropAfraidAgainstSlotNeuron);
         }
     }
 
@@ -220,12 +220,12 @@ public class EntityEditorEntityView : LegacySimpleView
         Refresh();
     }
 
-    public Neuron<LegacyInteractBehaviour, PointerEventData> BeginDragSlotNeuron = new();
-    public Neuron<LegacyInteractBehaviour, PointerEventData> RightClickSlotNeuron = new();
-    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> DropSlotNeuron = new();
-    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> DropSmirkAgainstSlotNeuron = new();
-    public Neuron<LegacyInteractBehaviour, LegacyInteractBehaviour, PointerEventData> DropAfraidAgainstSlotNeuron = new();
-    public Neuron<LegacyInteractBehaviour, PointerEventData> PointerEnterFormationNeuron = new();
-    public Neuron<LegacyInteractBehaviour, PointerEventData> PointerExitFormationNeuron = new();
-    public Neuron<LegacyInteractBehaviour, PointerEventData> PointerMoveFormationNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> BeginDragSlotNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> RightClickSlotNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropSlotNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropSmirkAgainstSlotNeuron = new();
+    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropAfraidAgainstSlotNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerEnterFormationNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerExitFormationNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerMoveFormationNeuron = new();
 }

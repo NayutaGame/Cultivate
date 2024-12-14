@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class AnimatedListView : ListView
 {
-    private RectTransform _viewContainer;
+    [SerializeField] private RectTransform _viewContainer;
     
     protected override void InitContainer()
     {
         base.InitContainer();
-        _viewContainer = transform.GetChild(1).GetComponent<RectTransform>();
+        if (_viewContainer == null)
+            _viewContainer = transform.GetChild(1).GetComponent<RectTransform>();
     }
 
     public override void InsertItem(int index)

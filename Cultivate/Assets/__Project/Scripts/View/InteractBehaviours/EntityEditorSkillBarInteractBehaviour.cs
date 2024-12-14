@@ -1,2 +1,2 @@
 
-public class EntityEditorSkillBarInteractBehaviour : LegacyInteractBehaviour { }
+public class EntityEditorSkillBarInteractBehaviour : InteractBehaviour { }
