@@ -41,6 +41,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         SetAwayFromSelectionIndex(value);
         EnvironmentChangedNeuron.Invoke();
     }
+    
     private void SetAwayFromSelectionIndex(int? selectionIndex)
     {
         Away = selectionIndex.HasValue

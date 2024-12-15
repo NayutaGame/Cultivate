@@ -213,6 +213,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
             { "SmirkAgainstSlots", () => _smirkAgainstSlots },
             { "AfraidAgainstSlots", () => _afraidAgainstSlots },
         };
+        
         EnvironmentChangedNeuron = new();
         
         _entry = entry ?? Encyclopedia.EntityCategory.DefaultEntry();
@@ -252,6 +253,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
             { "SmirkAgainstSlots", () => _smirkAgainstSlots },
             { "AfraidAgainstSlots", () => _afraidAgainstSlots },
         };
+        
         EnvironmentChangedNeuron = new();
         
         _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.EntityCategory[_entry.GetName()];

@@ -52,7 +52,7 @@ public class Puzzle
         ChangedNeuron.Invoke();
     }
     
-    ~Puzzle() // cyclic referencing may cause puzzle never gets disposed
+    ~Puzzle()
     {
         _home.EnvironmentChangedNeuron.Remove(ChangedNeuron);
         _away.EnvironmentChangedNeuron.Remove(ChangedNeuron);

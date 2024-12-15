@@ -31,7 +31,6 @@ public class StageCanvas : MonoBehaviour
         AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));
 
         TimelineView.Configure();
-        // _address.Append(".Timeline");
     }
 
     public void Refresh()

@@ -22,13 +22,6 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         }
     }
 
-    [SerializeField] [OptionalField(VersionAdded = 4)] private bool _locked;
-    public bool Locked
-    {
-        get => _locked;
-        set => _locked = value;
-    }
-
     [SerializeReference] private RunSkill _skill;
     public RunSkill Skill
     {
@@ -50,6 +43,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         {
             { "Skill",         () => _skill },
         };
+        
         EnvironmentChangedNeuron = new();
 
         _index = index;
@@ -115,6 +109,13 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     
     public enum SkillSlotState { Hidden, Empty, Occupied, }
     [SerializeField] private SkillSlotState _state;
+
+    [SerializeField] [OptionalField(VersionAdded = 4)] private bool _locked;
+    public bool Locked
+    {
+        get => _locked;
+        set => _locked = value;
+    }
     
     #endregion
 }
