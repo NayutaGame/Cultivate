@@ -11,4 +11,6 @@ public class GainFormationDetails : ClosureDetails
         _formation = formation;
         _recursive = recursive;
     }
+
+    public GainFormationDetails Clone() => new(Owner, _formation, _recursive);
 }

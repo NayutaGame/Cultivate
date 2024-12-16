@@ -1,14 +1,26 @@
+
 using DG.Tweening;
 using UnityEngine;
 
 public class BuffTextAnimation : Animation
 {
-    public GainBuffDetails GainBuffDetails;
+    private StageEntity _target;
+    private string _text;
 
-    public BuffTextAnimation(bool isAwait, GainBuffDetails gainBuffDetails) : base(isAwait, gainBuffDetails.Induced)
+    private BuffTextAnimation(bool isAwait, StageEntity target, string text, bool induced) : base(isAwait, induced)
     {
-        GainBuffDetails = gainBuffDetails.Clone();
+        _target = target;
+        _text = text;
     }
+    
+    public static BuffTextAnimation FromGainBuffDetails(bool isAwait, GainBuffDetails d)
+        => new(isAwait, d.Tgt, $"{d._buffEntry.GetName()} +{d._stack}", d.Induced);
+
+    public static BuffTextAnimation FromChangeStack(bool isAwait, StageEntity target, BuffEntry entry, int diff, bool induced)
+        => new(isAwait, target, $"{entry.GetName()} {diff}", induced);
+
+    public static BuffTextAnimation FromLoseBuffDetails(bool isAwait, LoseBuffDetails d)
+        => new(isAwait, d.Tgt, $"{d._buffEntry.GetName()} -{d._stack}", d.Induced);
 
     public override AnimationHandle GetHandle()
     {
@@ -20,10 +32,8 @@ public class BuffTextAnimation : Animation
 
     private void SpawnText()
     {
-        GainBuffDetails d = GainBuffDetails;
-
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, d.Tgt.Model().transform.position,
+        GameObject gao = GameObject.Instantiate(StageManager.Instance.FloatTextVFXPrefab, _target.Model().transform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
-        gao.GetComponent<FloatTextVFX>().Text.text = $"{d._buffEntry.GetName()} +{d._stack}";
+        gao.GetComponent<FloatTextVFX>().Text.text = _text;
     }
 }

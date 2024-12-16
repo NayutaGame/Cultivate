@@ -16,13 +16,12 @@ public class StageEnvironment : Addressable, StageClosureOwner
     //     => await SimpleProcedure(new SimpleDetails(args));
     // public async UniTask SimpleProcedure(SimpleDetails d)
     // {
-    //     await _eventDict.SendEvent(StageEventDict.WIL_SIMPLE, d);
-    //     if (d.Cancel)
-    //         return;
+    //     await _closureDict.SendEvent(StageClosureDict.WIL_SIMPLE, d);
+    //     if (d.Cancel) return;
     //
     //     // actual work
     //
-    //     await _eventDict.SendEvent(StageEventDict.DID_SIMPLE, d);
+    //     await _closureDict.SendEvent(StageClosureDict.DID_SIMPLE, d);
     // }
 
     public async UniTask CoreProcedure()
@@ -45,7 +44,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         Opening();
 
         await MingYuanPenaltyProcedure();
-        await GainFormationProcedure();
+        await FormationProcedure();
         await StartStageProcedure();
 
         _closureDict.Register(this, closures);
@@ -62,7 +61,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         UnregisterConfig();
     }
 
-    private async UniTask GainFormationProcedure()
+    private async UniTask FormationProcedure()
     {
         List<GainFormationDetails> details = new();
 
@@ -81,36 +80,32 @@ public class StageEnvironment : Addressable, StageClosureOwner
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_FORMATION, d);
         if (d.Cancel) return;
-
-        Formation formation = await GainFormation(d);
         
-        // Gain Formation Staging
-        // await TryPlayTween(new BuffTweenDescriptor(d));
-        _result.TryAppend($"    {d._formation.GetName()} is set");
+        Formation formation = new Formation(d.Owner, d._formation);
+        d.Owner.AddFormation(formation);
+        await GainFormationStaging(d, formation);
 
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_FORMATION, d);
     }
 
-    private async UniTask<Formation> GainFormation(GainFormationDetails d)
+    private async UniTask GainFormationStaging(GainFormationDetails d, Formation f)
     {
-        Formation formation = new Formation(d.Owner, d._formation);
-        formation.Register();
-        d.Owner.AddFormation(formation);
-        return formation;
-    }
-
-    private async UniTask LoseFormation(StageEntity owner, Formation formation)
-    {
-        formation.Unregister();
-        owner.RemoveFormation(formation);
+        _result.TryAppend($"    {d._formation.GetName()} is set");
+        
+        if (!_config.Animated)
+            return;
+        
+        await PlayAsync(d.Owner.Model().GetAnimationFromBuffSelf(d.Induced));
+        Play(new FormationVFXAnimation(false, d));
+        Play(new FormationTextAnimation(false, d));
+        
+        // f.PlayPingAnimation();
     }
 
     public async UniTask GainBuffProcedure(GainBuffDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_BUFF, d);
-
         d.Cancel |= d._stack <= 0;
-        
         if (d.Cancel)
             return;
 
@@ -119,7 +114,10 @@ public class StageEnvironment : Addressable, StageClosureOwner
         bool generateNew = buff == null || d._buffEntry.BuffStackRule == BuffStackRule.Individual;
         if (generateNew)
         {
-            buff = await GainBuff(d);
+            buff = new Buff(d.Tgt, d._buffEntry);
+            d.Tgt.AddBuff(buff);
+            buff.SetStack(d._stack);
+            await GainBuffStaging(d, buff);
         }
         else
         {
@@ -143,71 +141,105 @@ public class StageEnvironment : Addressable, StageClosureOwner
                     break;
             }
 
-            await ChangeStack(buff, newStack);
+            buff.SetStack(newStack);
+            await ChangeStackStaging(d.Src, d.Tgt, buff, d._stack, newStack, d.Induced);
         }
 
-        await GainBuffStaging(d, buff);
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_BUFF, d);
-    }
-
-    private async UniTask GainBuffStaging(GainBuffDetails d, Buff buff)
-    {
-        _result.TryAppend($"    {d._buffEntry.GetName()} + {d._stack}");
-        
-        if (!_config.Animated)
-            return;
-        if (d.Src == d.Tgt)
-        {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
-            Play(new BuffVFXAnimation(false, d));
-            Play(new BuffTextAnimation(false, d));
-        }
-        else
-        {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
-            Play(new BuffVFXAnimation(false, d));
-            Play(new BuffTextAnimation(false, d));
-        }
-        buff.PlayPingAnimation();
     }
 
     public async UniTask LoseBuffProcedure(LoseBuffDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_LOSE_BUFF, d);
-
+        d.Cancel |= d._stack <= 0;
         if (d.Cancel)
             return;
 
         Buff b = d.Tgt.FindBuff(d._buffEntry);
-        if (b != null)
-            await ChangeStack(b, Mathf.Max(0, b.Stack - d._stack));
+        if (b == null)
+            return;
+        
+        int newStack = Mathf.Max(0, b.Stack - d._stack);
 
-        // LoseBuffStaging
+        if (newStack > 0)
+        {
+            b.SetStack(newStack);
+            await ChangeStackStaging(d.Src, d.Tgt, b, -d._stack, newStack, d.Induced);
+        }
+        else
+        {
+            b.SetStack(0);
+            b.Owner.RemoveBuff(b);
+            await LoseBuffStaging(d);
+        }
+
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_BUFF, d);
     }
 
-    private async UniTask<Buff> GainBuff(GainBuffDetails d)
-    { 
-        Buff buff = new Buff(d.Tgt, d._buffEntry);
-        buff.Register();
-        await ChangeStack(buff, d._stack);
-        d.Tgt.AddBuff(buff);
-        return buff;
-    }
-
-    private async UniTask LoseBuff(StageEntity owner, Buff buff)
+    private async UniTask GainBuffStaging(GainBuffDetails d, Buff buff)
     {
-        buff.Unregister();
-        owner.RemoveBuff(buff);
-    }
-
-    private async UniTask ChangeStack(Buff buff, int stack)
-    {
-        buff.SetStack(stack);
-        if (stack <= 0)
-            await LoseBuff(buff.Owner, buff);
+        _result.TryAppend($"    {d._buffEntry.GetName()} +{d._stack}");
+        if (!_config.Animated)
+            return;
+        
+        Debug.Log("GainBuffStaging");
+        
+        if (d.Src == d.Tgt)
+        {
+            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+        }
         else
-            buff.StackChangedNeuron.Invoke();
+        {
+            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+        }
+        
+        Play(BuffVFXAnimation.FromGainBuffDetails(false, d));
+        Play(BuffTextAnimation.FromGainBuffDetails(false, d));
+        // buff.PlayPingAnimation();
+    }
+
+    private async UniTask ChangeStackStaging(StageEntity src, StageEntity tgt, Buff buff, int diff, int stack, bool induced)
+    {
+        _result.TryAppend($"    {buff.GetEntry().GetName()} +({diff})");
+        if (!_config.Animated)
+            return;
+
+        Debug.Log("ChangeStackStaging");
+        
+        if (src == tgt)
+        {
+            await PlayAsync(src.Model().GetAnimationFromBuffSelf(induced));
+        }
+        else
+        {
+            await PlayAsync(src.Model().GetAnimationFromBuffSelf(induced));
+        }
+        
+        Play(BuffVFXAnimation.FromChangeStack(false, tgt, buff.GetEntry(), diff, induced));
+        Play(BuffTextAnimation.FromChangeStack(false, tgt, buff.GetEntry(), diff, induced));
+        // buff.PlayPingAnimation();
+    }
+
+    private async UniTask LoseBuffStaging(LoseBuffDetails d)
+    {
+        _result.TryAppend($"    {d._buffEntry.GetName()} +{d._stack}");
+        if (!_config.Animated)
+            return;
+        
+        Debug.Log("LoseBuffStaging");
+        
+        if (d.Src == d.Tgt)
+        {
+            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+        }
+        else
+        {
+            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+        }
+        
+        Play(BuffVFXAnimation.FromLoseBuffDetails(false, d));
+        Play(BuffTextAnimation.FromLoseBuffDetails(false, d));
+        // buff.PlayPingAnimation();
     }
 
     public async UniTask AttackProcedure(AttackDetails attackDetails)

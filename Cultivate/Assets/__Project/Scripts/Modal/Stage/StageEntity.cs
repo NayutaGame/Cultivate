@@ -352,16 +352,6 @@ public class StageEntity : Addressable, StageClosureOwner
     public async UniTask BuffRecorder(StageClosureOwner listener, ClosureDetails closureDetails)
     {
         GainBuffDetails d = (GainBuffDetails)closureDetails;
-        // if (d._buffEntry.GetName() == "锋锐")
-        //     GainedFengRuiRecord += d._stack;
-        // else if (d._buffEntry.GetName() == "格挡")
-        //     GainedGeDangRecord += d._stack;
-        // else if (d._buffEntry.GetName() == "力量")
-        //     GainedLiLiangRecord += d._stack;
-        // else if (d._buffEntry.GetName() == "灼烧")
-        //     GainedZhuoShaoRecord += d._stack;
-        // else if (d._buffEntry.GetName() == "坚毅")
-        //     GainedRouRenRecord += d._stack;
         if (d._buffEntry.GetName() == "滞气")
             HasZhiQiRecord = true;
         else if (d._buffEntry.GetName() == "缠绕")
@@ -385,10 +375,16 @@ public class StageEntity : Addressable, StageClosureOwner
     private ListModel<Formation> _formations;
 
     public void AddFormation(Formation f)
-        => _formations.Add(f);
+    {
+        f.Register();
+        _formations.Add(f);
+    }
 
     public void RemoveFormation(Formation f)
-        => _formations.Remove(f);
+    {
+        f.Unregister();
+        _formations.Remove(f);
+    }
 
     public async UniTask RemoveAllFormations()
     {
@@ -404,10 +400,16 @@ public class StageEntity : Addressable, StageClosureOwner
     public IEnumerable<Buff> Buffs => _buffs.Traversal();
 
     public void AddBuff(Buff b)
-        => _buffs.Add(b);
+    {
+        b.Register();
+        _buffs.Add(b);
+    }
 
     public void RemoveBuff(Buff b)
-        => _buffs.Remove(b);
+    {
+        b.Unregister();
+        _buffs.Remove(b);
+    }
 
     public async UniTask RemoveAllBuffs()
     {
