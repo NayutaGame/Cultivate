@@ -1,7 +1,8 @@
 
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class StageCanvas : MonoBehaviour
@@ -20,6 +21,7 @@ public class StageCanvas : MonoBehaviour
     public void Configure()
     {
         _address = new Address("Stage");
+        // _animationQueue = new();
 
         SpeedSlider.onValueChanged.RemoveAllListeners();
         SpeedSlider.onValueChanged.AddListener(SpeedChanged);
@@ -69,4 +71,33 @@ public class StageCanvas : MonoBehaviour
         SpeedSlider.value = 0;
         Refresh();
     }
+
+    // private AnimationQueue _animationQueue;
+
+    // public void GainBuffStaging()
+    // {
+    //     Sequence seq = DOTween.Sequence();
+    //     _animationQueue.QueueAnimation(seq);
+    //     ListView listView;
+    //     listView.InsertItem(index);
+    //     
+    //     ComposedBuffView buffView;
+    //     buffView.GetAnimator().SetState(0);
+    //     await buffView.GetAnimator().SetStateAsync(1);
+    // }
+    //
+    // public void ChangeStackStaging()
+    // {
+    //     ComposedBuffView buffView;
+    //     await buffView.GetAnimator().SetStateAsync(1);
+    // }
+    //
+    // public void LoseBuffStaging()
+    // {
+    //     ComposedBuffView buffView;
+    //     await buffView.GetAnimator().SetStateAsync(0);
+    //     
+    //     ListView listView;
+    //     listView.RemoveItemAt(index);
+    // }
 }

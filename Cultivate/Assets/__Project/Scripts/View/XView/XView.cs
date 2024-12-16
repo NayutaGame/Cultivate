@@ -59,12 +59,6 @@ public class XView : MonoBehaviour
     protected virtual Animator InitAnimator()
     {
         return null;
-        // 0. inactive
-        // 1. hide
-        // TableSM sm = new(2);
-        // sm[-1, 0] = GoToHide;
-        // sm[-1, 1] = GoToIdle;
-        // return sm;
     }
 
     protected virtual void InitInteractBehaviour(InteractBehaviour ib) { }

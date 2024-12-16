@@ -182,8 +182,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (!_config.Animated)
             return;
         
-        Debug.Log("GainBuffStaging");
-        
         if (d.Src == d.Tgt)
         {
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
@@ -203,8 +201,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
         _result.TryAppend($"    {buff.GetEntry().GetName()} +({diff})");
         if (!_config.Animated)
             return;
-
-        Debug.Log("ChangeStackStaging");
         
         if (src == tgt)
         {
@@ -225,8 +221,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
         _result.TryAppend($"    {d._buffEntry.GetName()} +{d._stack}");
         if (!_config.Animated)
             return;
-        
-        Debug.Log("LoseBuffStaging");
         
         if (d.Src == d.Tgt)
         {
