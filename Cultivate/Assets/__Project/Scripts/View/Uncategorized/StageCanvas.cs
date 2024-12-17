@@ -1,6 +1,4 @@
 
-using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -72,32 +70,19 @@ public class StageCanvas : MonoBehaviour
         Refresh();
     }
 
-    // private AnimationQueue _animationQueue;
-
-    // public void GainBuffStaging()
-    // {
-    //     Sequence seq = DOTween.Sequence();
-    //     _animationQueue.QueueAnimation(seq);
-    //     ListView listView;
-    //     listView.InsertItem(index);
-    //     
-    //     ComposedBuffView buffView;
-    //     buffView.GetAnimator().SetState(0);
-    //     await buffView.GetAnimator().SetStateAsync(1);
-    // }
-    //
-    // public void ChangeStackStaging()
-    // {
-    //     ComposedBuffView buffView;
-    //     await buffView.GetAnimator().SetStateAsync(1);
-    // }
-    //
-    // public void LoseBuffStaging()
-    // {
-    //     ComposedBuffView buffView;
-    //     await buffView.GetAnimator().SetStateAsync(0);
-    //     
-    //     ListView listView;
-    //     listView.RemoveItemAt(index);
-    // }
+    public void GainBuffStaging(bool tgtIsHome)
+    {
+        StageEntityView entityView = tgtIsHome ? HomeStageEntityView : AwayStageEntityView;
+        entityView.Buffs.AddItem();
+        entityView.Buffs.ForceLayoutRebuild();
+        
+        ComposedBuffView composedBuffView = entityView.Buffs.LastView() as ComposedBuffView;
+        composedBuffView.GetDelegatedView().GetRect().position = composedBuffView.GetRect().position;
+    }
+    
+    public void LoseBuffStaging(bool tgtIsHome, int buffIndex)
+    {
+        StageEntityView entityView = tgtIsHome ? HomeStageEntityView : AwayStageEntityView;
+        entityView.Buffs.RemoveItemAt(buffIndex);
+    }
 }

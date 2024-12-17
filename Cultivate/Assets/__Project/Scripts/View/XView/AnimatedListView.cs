@@ -17,13 +17,13 @@ public class AnimatedListView : ListView
     public override void InsertItem(int index)
     {
         base.InsertItem(index);
-        RefreshPivots();
+        RefreshPivotsAsync();
     }
 
     public override void RemoveItemAt(int index)
     {
         base.RemoveItemAt(index);
-        RefreshPivots();
+        RefreshPivotsAsync();
     }
 
     #region Atomic Operations
@@ -89,11 +89,18 @@ public class AnimatedListView : ListView
 
     #endregion
 
-    public void RefreshPivots()
+    public void RefreshPivotsAsync()
         => _activePool.Do(view =>
         {
             DelegatingView delegatingView = view as DelegatingView;
             delegatingView.GetAnimator().SetStateAsync(1);
+        });
+    
+    public void RefreshPivots()
+        => _activePool.Do(view =>
+        {
+            DelegatingView delegatingView = view as DelegatingView;
+            delegatingView.GetAnimator().SetState(1);
         });
 
     public void RecoverDelegatingView(DelegatingView delegatingView)

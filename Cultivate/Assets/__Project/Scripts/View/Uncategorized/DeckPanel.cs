@@ -241,7 +241,7 @@ public class DeckPanel : Panel
             .AppendCallback(() =>
             {
                 HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 0);
-                HandView.RefreshPivots();
+                HandView.RefreshPivotsAsync();
             })
             .AppendInterval(0.2f)
             .AppendCallback(() =>
@@ -249,7 +249,7 @@ public class DeckPanel : Panel
                 HandView.Get<SkillInventory>().SortByComparisonId(0);
                 HandView.Refresh();
                 HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 1134);
-                HandView.RefreshPivots();
+                HandView.RefreshPivotsAsync();
             });
         
         _animationHandle.SetAutoKill().Restart();

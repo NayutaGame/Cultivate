@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class StageEntityView : LegacySimpleView
 {
-    [SerializeField] private ListView Formations;
-    [SerializeField] private ListView Buffs;
+    [SerializeField] public AnimatedListView Formations;
+    [SerializeField] public AnimatedListView Buffs;
     [SerializeField] private ProceduralProgressBar HealthBar;
     [SerializeField] private TMP_Text HealthText;
     [SerializeField] private Image ArmorIcon;

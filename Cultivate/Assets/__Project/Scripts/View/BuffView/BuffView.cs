@@ -19,14 +19,4 @@ public class BuffView : XView
 
         NameText.text = IconImage.sprite == Encyclopedia.SpriteCategory.MissingBuffIcon().Sprite ? b.GetName() : "";
     }
-
-    private void PingAnimation()
-    {
-        // LegacyPivotBehaviour pivotBehaviour = GetComponent<LegacyPivotBehaviour>();
-        // if (pivotBehaviour != null)
-        //     pivotBehaviour.PlayPingAnimation();
-    }
-    
-    // private Tween PingTween()
-    //     => GetDisplayTransform().DOScale(1.5f, 0.075f).SetEase(Ease.OutQuad).SetLoops(2, loopType: LoopType.Yoyo);
 }

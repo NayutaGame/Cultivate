@@ -138,6 +138,17 @@ public class ListView : XView
         CheckNeurons();
     }
 
+    public void ForceLayoutRebuild()
+    {
+        LayoutGroup layoutGroup = _container.GetComponent<GridLayoutGroup>();
+        if (layoutGroup == null)
+            return;
+        layoutGroup.CalculateLayoutInputHorizontal();
+        layoutGroup.CalculateLayoutInputVertical();
+        layoutGroup.SetLayoutHorizontal();
+        layoutGroup.SetLayoutVertical();
+    }
+
     #endregion
 
     #region Atomic Operations

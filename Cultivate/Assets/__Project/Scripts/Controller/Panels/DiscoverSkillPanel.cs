@@ -51,7 +51,7 @@ public class DiscoverSkillPanel : Panel
 
     public void LayoutRebuild()
     {
-        (SkillList as AnimatedListView).RefreshPivots();
+        (SkillList as AnimatedListView).RefreshPivotsAsync();
     }
 
     private Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillEvent = new();

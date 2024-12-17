@@ -398,6 +398,7 @@ public class StageEntity : Addressable, StageClosureOwner
 
     private ListModel<Buff> _buffs;
     public IEnumerable<Buff> Buffs => _buffs.Traversal();
+    public int IndexOfBuff(Buff b) => _buffs.IndexOf(b);
 
     public void AddBuff(Buff b)
     {

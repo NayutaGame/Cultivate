@@ -168,9 +168,11 @@ public class StageEnvironment : Addressable, StageClosureOwner
         }
         else
         {
+            int buffIndex = b.Owner.IndexOfBuff(b);
+            
             b.SetStack(0);
             b.Owner.RemoveBuff(b);
-            await LoseBuffStaging(d);
+            await LoseBuffStaging(d, buffIndex);
         }
 
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_BUFF, d);
@@ -193,7 +195,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
         
         Play(BuffVFXAnimation.FromGainBuffDetails(false, d));
         Play(BuffTextAnimation.FromGainBuffDetails(false, d));
-        // buff.PlayPingAnimation();
+        
+        CanvasManager.Instance.StageCanvas.GainBuffStaging(d.Tgt == _entities[0]);
+        buff.PlayPingAnimation();
     }
 
     private async UniTask ChangeStackStaging(StageEntity src, StageEntity tgt, Buff buff, int diff, int stack, bool induced)
@@ -213,10 +217,10 @@ public class StageEnvironment : Addressable, StageClosureOwner
         
         Play(BuffVFXAnimation.FromChangeStack(false, tgt, buff.GetEntry(), diff, induced));
         Play(BuffTextAnimation.FromChangeStack(false, tgt, buff.GetEntry(), diff, induced));
-        // buff.PlayPingAnimation();
+        buff.PlayPingAnimation();
     }
 
-    private async UniTask LoseBuffStaging(LoseBuffDetails d)
+    private async UniTask LoseBuffStaging(LoseBuffDetails d, int buffIndex)
     {
         _result.TryAppend($"    {d._buffEntry.GetName()} +{d._stack}");
         if (!_config.Animated)
@@ -233,7 +237,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         
         Play(BuffVFXAnimation.FromLoseBuffDetails(false, d));
         Play(BuffTextAnimation.FromLoseBuffDetails(false, d));
-        // buff.PlayPingAnimation();
+        CanvasManager.Instance.StageCanvas.LoseBuffStaging(d.Tgt == _entities[0], buffIndex);
     }
 
     public async UniTask AttackProcedure(AttackDetails attackDetails)

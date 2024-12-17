@@ -10,6 +10,8 @@ public class Buff : StageClosureOwner
     private BuffEntry _entry;
     public BuffEntry GetEntry() => _entry;
 
+    public Neuron PingNeuron;
+
     public string GetName() => _entry.GetName();
     public string GetExplanation() => _entry.GetExplanation();
     public string GetTrivia() => _entry.GetTrivia();
@@ -24,10 +26,13 @@ public class Buff : StageClosureOwner
         _owner = owner;
         _entry = entry;
         _stack = 0;
+
+        PingNeuron = new();
     }
 
-    public async void PlayPingAnimation()
+    public void PlayPingAnimation()
     {
+        PingNeuron.Invoke();
     }
 
     public void Register()
