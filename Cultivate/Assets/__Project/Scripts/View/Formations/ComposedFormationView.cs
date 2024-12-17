@@ -3,13 +3,13 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ComposedBuffView : DelegatingView
+public class ComposedFormationView : DelegatingView
 {
     public override void SetAddress(Address address)
     {
-        Get<Buff>()?.PingNeuron.Remove(SetPing);
+        Get<Formation>()?.PingNeuron.Remove(SetPing);
         base.SetAddress(address);
-        Get<Buff>()?.PingNeuron.Add(SetPing);
+        Get<Formation>()?.PingNeuron.Add(SetPing);
     }
 
     private void OnEnable()
@@ -18,7 +18,7 @@ public class ComposedBuffView : DelegatingView
 
     private void OnDisable()
     {
-        Get<Buff>()?.PingNeuron.Remove(SetPing);
+        Get<Formation>()?.PingNeuron.Remove(SetPing);
     }
 
     private void SetPing()

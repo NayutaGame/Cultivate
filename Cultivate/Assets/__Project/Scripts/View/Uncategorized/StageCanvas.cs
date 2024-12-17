@@ -1,4 +1,5 @@
 
+using CLLibrary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -76,13 +77,30 @@ public class StageCanvas : MonoBehaviour
         entityView.Buffs.AddItem();
         entityView.Buffs.ForceLayoutRebuild();
         
-        ComposedBuffView composedBuffView = entityView.Buffs.LastView() as ComposedBuffView;
-        composedBuffView.GetDelegatedView().GetRect().position = composedBuffView.GetRect().position;
+        (entityView.Buffs.LastView() as DelegatingView).Align();
     }
     
     public void LoseBuffStaging(bool tgtIsHome, int buffIndex)
     {
         StageEntityView entityView = tgtIsHome ? HomeStageEntityView : AwayStageEntityView;
         entityView.Buffs.RemoveItemAt(buffIndex);
+        entityView.Buffs.ForceLayoutRebuild();
+
+        int i = 0;
+        entityView.Buffs.Traversal().Do(v =>
+        {
+            if (i >= buffIndex)
+                (v as DelegatingView).Align();
+            i++;
+        });
+    }
+
+    public void GainFormationStaging(bool ownerIsHome)
+    {
+        StageEntityView entityView = ownerIsHome ? HomeStageEntityView : AwayStageEntityView;
+        entityView.Formations.AddItem();
+        entityView.Formations.ForceLayoutRebuild();
+        
+        (entityView.Formations.LastView() as DelegatingView).Align();
     }
 }

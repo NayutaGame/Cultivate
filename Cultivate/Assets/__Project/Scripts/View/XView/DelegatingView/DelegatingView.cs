@@ -27,4 +27,9 @@ public class DelegatingView : XView
         GetDelegatedView().GetRect().localScale = rect.localScale;
         GetAnimator().SetStateAsync(1);
     }
+
+    public void Align()
+    {
+        GetDelegatedView().GetRect().position = GetRect().position;
+    }
 }

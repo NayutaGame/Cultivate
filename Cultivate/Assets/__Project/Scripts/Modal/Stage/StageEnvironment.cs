@@ -98,8 +98,8 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await PlayAsync(d.Owner.Model().GetAnimationFromBuffSelf(d.Induced));
         Play(new FormationVFXAnimation(false, d));
         Play(new FormationTextAnimation(false, d));
-        
-        // f.PlayPingAnimation();
+        CanvasManager.Instance.StageCanvas.GainFormationStaging(d.Owner == _entities[0]);
+        f.PlayPingAnimation();
     }
 
     public async UniTask GainBuffProcedure(GainBuffDetails d)

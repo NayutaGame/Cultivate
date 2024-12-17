@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 
 /// <summary>
 /// Formation
@@ -14,6 +15,8 @@ public class Formation : StageClosureOwner, IFormationModel, Addressable
 
     public FormationEntry GetEntry() => _runFormation.GetEntry();
 
+    public Neuron PingNeuron;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public Formation(StageEntity owner, RunFormation runFormation)
@@ -25,8 +28,15 @@ public class Formation : StageClosureOwner, IFormationModel, Addressable
 
         _owner = owner;
         _runFormation = runFormation;
+
+        PingNeuron = new();
     }
 
+    public void PlayPingAnimation()
+    {
+        PingNeuron.Invoke();
+    }
+    
     public void Register()
     {
         foreach (StageClosure closure in GetEntry().Closures)

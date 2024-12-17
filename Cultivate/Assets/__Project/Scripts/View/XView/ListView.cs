@@ -140,7 +140,7 @@ public class ListView : XView
 
     public void ForceLayoutRebuild()
     {
-        LayoutGroup layoutGroup = _container.GetComponent<GridLayoutGroup>();
+        LayoutGroup layoutGroup = _container.GetComponent<LayoutGroup>();
         if (layoutGroup == null)
             return;
         layoutGroup.CalculateLayoutInputHorizontal();

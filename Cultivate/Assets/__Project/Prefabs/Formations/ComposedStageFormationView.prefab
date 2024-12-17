@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8086324285004126783}
-  - component: {fileID: 4459574143099563877}
+  - component: {fileID: 6300216397348193820}
   - component: {fileID: 8235508326273155455}
   - component: {fileID: 5737614856277116019}
   m_Layer: 5
@@ -167,7 +167,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 72, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4459574143099563877
+--- !u!114 &6300216397348193820
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8155228337873847611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9276e1c4af3c944b9135906ff2a4761, type: 3}
+  m_Script: {fileID: 11500000, guid: f81d709cf9eaa704db8a73f4348dbb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 3429236827418137952}
@@ -189,7 +189,7 @@ MonoBehaviour:
     LocalScale: {x: 1, y: 1, z: 1}
   HoverConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+    LocalScale: {x: 1.5, y: 1.5, z: 1.5}
 --- !u!114 &8235508326273155455
 MonoBehaviour:
   m_ObjectHideFlags: 0
