@@ -757,7 +757,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
         DifficultyEntry difficultyEntry = _config.RunConfig.DifficultyProfile.GetEntry();
         _closureDict.Register(this, difficultyEntry._stageClosures);
-        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+        foreach (var additionalDifficultyEntry in difficultyEntry.InheritedDifficulties)
             _closureDict.Register(this, additionalDifficultyEntry._stageClosures);
     }
 
@@ -780,7 +780,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
         DifficultyEntry difficultyEntry = _config.RunConfig.DifficultyProfile.GetEntry();
         _closureDict.Unregister(this, difficultyEntry._stageClosures);
-        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+        foreach (var additionalDifficultyEntry in difficultyEntry.InheritedDifficulties)
             _closureDict.Unregister(this, additionalDifficultyEntry._stageClosures);
     }
 

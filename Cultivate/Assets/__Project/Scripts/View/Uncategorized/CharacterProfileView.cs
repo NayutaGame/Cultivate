@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterProfileSimpleView : LegacySimpleView
+public class CharacterProfileView : XView
 {
     [SerializeField] private Image Image;
     [SerializeField] private TMP_Text NameText;

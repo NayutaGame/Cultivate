@@ -15,7 +15,11 @@ public class RunEnvironment : Addressable, RunClosureOwner
         => _memory[key] = value;
 
     public T GetVariable<T>(string key)
-        => (T)_memory[key];
+    {
+        if (_memory.TryGetValue(key, out var value))
+            return (T)value;
+        return default;
+    }
 
     #endregion
 
@@ -133,7 +137,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
         DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
         RegisterList(difficultyEntry._runClosures);
-        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+        foreach (var additionalDifficultyEntry in difficultyEntry.InheritedDifficulties)
             RegisterList(additionalDifficultyEntry._runClosures);
     }
 
@@ -148,7 +152,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
         DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
         UnregisterList(difficultyEntry._runClosures);
-        foreach (var additionalDifficultyEntry in difficultyEntry.AdditionalDifficulties)
+        foreach (var additionalDifficultyEntry in difficultyEntry.InheritedDifficulties)
             UnregisterList(additionalDifficultyEntry._runClosures);
     }
 

@@ -1,8 +1,10 @@
 
+using Cysharp.Threading.Tasks;
 using UnityEngine.UI;
 
 public class TitlePanel : Panel
 {
+    public Button ContinueButton;
     public Button StartRunButton;
     public Button SettingsButton;
     public Button ExitButton;
@@ -20,22 +22,36 @@ public class TitlePanel : Panel
     {
         base.AwakeFunction();
 
+        ContinueButton.onClick.RemoveAllListeners();
         StartRunButton.onClick.RemoveAllListeners();
         SettingsButton.onClick.RemoveAllListeners();
         ExitButton.onClick.RemoveAllListeners();
 
+        ContinueButton.onClick.AddListener(Continue);
         StartRunButton.onClick.AddListener(StartRun);
         SettingsButton.onClick.AddListener(OpenMenu);
         ExitButton.onClick.AddListener(ExitGame);
     }
 
-    private void StartRun()
+    private void FirstTime()
     {
-        // Animator.SetStateAsync(2);
-        // CanvasManager.Instance.AppCanvas.OpenRunConfigPanel();
-
         AppManager.Instance.ProfileManager.RunConfigForm = RunConfigForm.FirstTime();
         AppManager.Push(new RunAppS());
+    }
+
+    private void Continue()
+    {
+    }
+
+    private void StartRun()
+    {
+        OpenRunConfigPanel();
+    }
+
+    private async UniTask OpenRunConfigPanel()
+    {
+        await GetAnimator().SetStateAsync(0);
+        await CanvasManager.Instance.AppCanvas.RunConfigPanel.GetAnimator().SetStateAsync(1);
     }
 
     private void OpenMenu()

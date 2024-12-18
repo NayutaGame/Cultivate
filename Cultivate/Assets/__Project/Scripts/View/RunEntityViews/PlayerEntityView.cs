@@ -33,7 +33,7 @@ public class PlayerEntityView : XView
 
     public void Sync()
     {
-        // SkillList.Sync();
+        FieldView.Refresh();
         FormationList.Sync();
     }
 

@@ -104,7 +104,6 @@ public class DeckPanel : Panel
     private void OnEnable()
     {
         Sync();
-
         RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshField);
     }
 

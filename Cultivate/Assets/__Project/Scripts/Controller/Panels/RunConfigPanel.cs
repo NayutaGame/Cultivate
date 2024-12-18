@@ -1,20 +1,16 @@
 
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class RunConfigPanel : Panel
 {
-    [Header("Character Picker")]
-    [SerializeField] private LegacyListView CharacterListView;
-    // TODO: move select into ListView
-    // private LegacySelectBehaviour _selection;
+    [SerializeField] private ListView CharacterListView;
+    private SelectBehaviour _selection;
     [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
-
-    [Header("Difficulty Picker")]
+    
     [SerializeField] private DifficultyPickerView DifficultyPickerView;
-
-    [Header("Progress")]
     [SerializeField] private Button ReturnButton;
     [SerializeField] private Button StartRunButton;
 
@@ -31,9 +27,9 @@ public class RunConfigPanel : Panel
         StartRunButton.onClick.AddListener(StartRun);
 
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
-        // CharacterListView.LeftClickNeuron.Join(Select);
+        CharacterListView.LeftClickNeuron.Join(Select);
 
-        // Select(0);
+        Select(0);
     }
 
     public override void Refresh()
@@ -46,41 +42,43 @@ public class RunConfigPanel : Panel
 
     private void Return()
     {
-        CanvasManager.Instance.AppCanvas.TitlePanel.GetAnimator().SetStateAsync(1);
+        CloseRunConfigPanel();
+    }
+
+    private async UniTask CloseRunConfigPanel()
+    {
+        await GetAnimator().SetStateAsync(0);
+        await CanvasManager.Instance.AppCanvas.TitlePanel.GetAnimator().SetStateAsync(1);
     }
 
     private void StartRun()
     {
         // this form should contains: selected character, selected difficulty, selected mutators, selected seed
-
         AppManager.Instance.ProfileManager.RunConfigForm = new RunConfigForm(
-            null,
+            _selection.Get<CharacterProfile>(),
             DifficultyPickerView.GetSelection());
-        // AppManager.Instance.ProfileManager.RunConfigForm = new RunConfigForm(
-        //     _selection.GetSimpleView().Get<CharacterProfile>(),
-        //     DifficultyPickerView.GetSelection());
 
         AppManager.Push(new RunAppS());
     }
 
-    // private void Select(int i)
-    //     => Select(CharacterListView.ItemBehaviourFromIndex(i).GetSelectBehaviour());
-    //
-    // private void Select(LegacyInteractBehaviour ib, PointerEventData eventData)
-    //     => Select(ib.GetSimpleView().GetSelectBehaviour());
-    //
-    // private void Select(LegacySelectBehaviour selectBehaviour)
-    // {
-    //     if (_selection != null)
-    //         _selection.SetSelected(false);
-    //
-    //     _selection = selectBehaviour;
-    //
-    //     if (_selection != null)
-    //     {
-    //         DetailedCharacterProfileView.SetAddress(_selection.GetSimpleView().GetAddress());
-    //         DetailedCharacterProfileView.Refresh();
-    //         _selection.SetSelected(true);
-    //     }
-    // }
+    private void Select(int i)
+        => Select(CharacterListView.ViewFromIndex(i).GetBehaviour<SelectBehaviour>());
+    
+    private void Select(InteractBehaviour ib, PointerEventData eventData)
+        => Select(ib.GetView().GetBehaviour<SelectBehaviour>());
+    
+    private void Select(SelectBehaviour selectBehaviour)
+    {
+        if (_selection != null)
+            _selection.SetSelectAsync(false);
+    
+        _selection = selectBehaviour;
+    
+        if (_selection != null)
+        {
+            DetailedCharacterProfileView.SetAddress(_selection.GetAddress());
+            DetailedCharacterProfileView.Refresh();
+            _selection.SetSelectAsync(true);
+        }
+    }
 }

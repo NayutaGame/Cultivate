@@ -7,9 +7,11 @@ public class RunAppS : AppS
     public override async UniTask Enter(NavigateDetails d, Config config)
     {
         await base.Enter(d, config);
-
+        
         RunConfig runConfig = config as RunConfig;
         RunManager.Instance.SetEnvironmentFromConfig(runConfig);
+
+        // RunManager.Instance.SetEnvironmentFromProfile();
         
         RunManager.Instance.SetBackgroundFromJingJie(JingJie.LianQi);
         StageManager.Instance.SetHomeFromCharacterProfile(runConfig.CharacterProfile);
@@ -26,6 +28,7 @@ public class RunAppS : AppS
         CanvasManager.Instance.Curtain.GetAnimator().SetState(1);
         await UniTask.WaitForSeconds(0.1f);
         runCanvas.LayoutRebuild();
+        CanvasManager.Instance.AppCanvas.RunConfigPanel.GetAnimator().SetState(0);
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
         runCanvas.Refresh();
     }
