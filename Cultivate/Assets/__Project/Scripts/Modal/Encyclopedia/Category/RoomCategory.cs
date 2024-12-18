@@ -206,7 +206,7 @@ public class RoomCategory : Category<RoomEntry>
                         },
                         option =>
                         { // 8 -> 百草堂，6张随机牌，5气血上限
-                            env.SetDDHealthProcedure(5);
+                            env.SetDHealthProcedure(5);
                             env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 6));
                             return null;
                         },
@@ -275,7 +275,7 @@ public class RoomCategory : Category<RoomEntry>
                     
                     env.ClearDeck();
                     env.Home.SetSlotCount(3);
-                    env.Home.SetHealthByModifyingDHealth(40);
+                    env.Home.SetHealth(40);
 
                     Func<DialogOption, PanelDescriptor>[] selects = new Func<DialogOption, PanelDescriptor>[5]
                     {
@@ -579,7 +579,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
                     playerTemplate.TraversalCurrentSlots().Do(s =>
@@ -644,7 +644,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("劈砍"), preferredDeckIndex: DeckIndex.FromField(0));
@@ -700,7 +700,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
@@ -757,7 +757,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"), preferredDeckIndex: DeckIndex.FromField(0));
@@ -810,7 +810,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
                     playerTemplate.TraversalCurrentSlots().Do(s =>
@@ -871,7 +871,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
                     playerTemplate.TraversalCurrentSlots().Do(s =>
@@ -937,7 +937,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
                     playerTemplate.TraversalCurrentSlots().Do(s =>
@@ -1001,7 +1001,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealthByModifyingDHealth(playerTemplate.GetFinalHealth());
+                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
                     playerTemplate.TraversalCurrentSlots().Do(s =>
@@ -1940,7 +1940,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetDDHealthProcedure(-RunManager.Instance.Environment.Home.GetFinalHealth() + 100);
+                        RunManager.Instance.Environment.SetDHealthProcedure(-RunManager.Instance.Environment.Home.GetHealth() + 100);
                         RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
                         {
                             RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex);

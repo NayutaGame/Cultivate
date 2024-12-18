@@ -18,14 +18,14 @@ public class CostDetails
     {
         return Gold <= RunManager.Instance.Environment.GetGold().Curr &&
                MingYuan < RunManager.Instance.Environment.GetMingYuan().Curr &&
-               Health < RunManager.Instance.Environment.Home.GetFinalHealth();
+               Health < RunManager.Instance.Environment.Home.GetHealth();
     }
 
     public void Cost()
     {
         RunManager.Instance.Environment.SetDGoldProcedure(-Gold);
         RunManager.Instance.Environment.SetDMingYuanProcedure(-MingYuan);
-        RunManager.Instance.Environment.SetDDHealthProcedure(-Health);
+        RunManager.Instance.Environment.SetDHealthProcedure(-Health);
     }
 
     public string GetDescription()

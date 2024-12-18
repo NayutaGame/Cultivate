@@ -6,10 +6,6 @@ using UnityEngine;
 
 public class RunManager : Singleton<RunManager>, Addressable
 {
-    public static readonly int MaxSlotCount = 12;
-    public static readonly int[] SlotCountFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
-
-    // public RunAnimationController AnimationController;
     [NonSerialized] public RunEnvironment Environment;
     public Arena Arena;
 

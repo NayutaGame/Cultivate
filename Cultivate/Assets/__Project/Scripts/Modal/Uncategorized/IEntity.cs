@@ -10,10 +10,8 @@ public interface IEntity
     int GetSlotCount();
     void SetSlotCount(int slotCount);
 
-    int GetBaseHealth();
-    void SetBaseHealth(int health);
-
-    int GetFinalHealth();
+    int GetHealth();
+    void SetHealth(int health);
 
     int GetLadder();
     void SetLadder(int ladder);

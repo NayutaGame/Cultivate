@@ -618,7 +618,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
     #endregion
 
     private StageConfig _config;
-    public StageConfig Config => _config;
+    public StageConfig GetConfig() => _config;
 
     private StageClosureDict _closureDict;
     public StageClosureDict ClosureDict => _closureDict;

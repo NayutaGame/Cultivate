@@ -82,7 +82,7 @@ public class BattlePanel : Panel
     private void PointerEnterHomeHealth(PointerEventData d)
     {
         if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerEnter(HomeHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Home.GetFinalHealth()}");
+        CanvasManager.Instance.TextHint.PointerEnter(HomeHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Home.GetHealth()}");
     }
 
     private void PointerExitHomeHealth(PointerEventData d)
@@ -94,7 +94,7 @@ public class BattlePanel : Panel
     private void PointerEnterAwayHealth(PointerEventData d)
     {
         if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerEnter(AwayHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Away.GetFinalHealth()}");
+        CanvasManager.Instance.TextHint.PointerEnter(AwayHealthTransform, d, $"开始战斗时气血上限为{RunManager.Instance.Environment.Away.GetHealth()}");
     }
 
     private void PointerExitAwayHealth(PointerEventData d)

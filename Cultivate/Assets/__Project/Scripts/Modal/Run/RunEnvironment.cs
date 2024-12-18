@@ -266,7 +266,8 @@ public class RunEnvironment : Addressable, RunClosureOwner
         _jingJie = d.ToJingJie;
         
         // move to ascension procedure
-        _home.SetBaseHealth(RunEntity.BaseHealthFromJingJie[d.ToJingJie]);
+        int dHealth = RunEntity.HealthFromJingJie[d.ToJingJie] - RunEntity.HealthFromJingJie[d.FromJingJie];
+        SetDHealthProcedure(new SetDHealthDetails(dHealth));
         
         _home.SetJingJie(d.ToJingJie);
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToJingJie));
@@ -631,10 +632,10 @@ public class RunEnvironment : Addressable, RunClosureOwner
             LoseGoldNeuron.Invoke(d.Value);
     }
 
-    public void SetDDHealthProcedure(int value)
-        => SetDDHealthProcedure(new SetDDHealthDetails(value));
+    public void SetDHealthProcedure(int value)
+        => SetDHealthProcedure(new SetDHealthDetails(value));
     
-    private void SetDDHealthProcedure(SetDDHealthDetails d)
+    private void SetDHealthProcedure(SetDHealthDetails d)
     {
         if (d.Value == 0)
             return;
@@ -644,7 +645,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         if (d.Cancel)
             return;
 
-        _home.SetDHealth(_home.GetDHealth() + d.Value);
+        _home.SetDHealth(d.Value);
         _closureDict.SendEvent(RunClosureDict.DID_SET_DDHEALTH, d);
         if (d.Value >= 0)
             GainDHealthNeuron.Invoke(d.Value);

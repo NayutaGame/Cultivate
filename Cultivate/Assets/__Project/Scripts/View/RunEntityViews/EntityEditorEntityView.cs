@@ -166,7 +166,7 @@ public class EntityEditorEntityView : XView
         SetEntry(entity.GetEntry());
         SetJingJie(entity.GetJingJie());
         SetSlotCount(entity.GetSlotCount());
-        SetHealth(entity.GetBaseHealth());
+        SetHealth(entity.GetHealth());
         SetLadder(entity.GetLadder());
         SetInPool(entity.IsInPool());
         FieldView.Refresh();
@@ -202,7 +202,7 @@ public class EntityEditorEntityView : XView
         health = Mathf.Clamp(health, 1, 9999);
 
         IEntity entity = Get<IEntity>();
-        entity.SetBaseHealth(health);
+        entity.SetHealth(health);
         Refresh();
     }
 

@@ -389,10 +389,10 @@ public class BuffCategory : Category<BuffEntry>
                         StageEntity self = b.Owner;
                         StageEntity oppo = b.Owner.Opponent();
 
-                        int selfMaxHp = Mathf.Max(self.MaxHp, self.RunEntity.GetFinalHealth());
-                        int oppoMaxHp = Mathf.Max(oppo.MaxHp, oppo.RunEntity.GetFinalHealth());
-                        self.MaxHp = self.RunEntity.GetFinalHealth();
-                        oppo.MaxHp = oppo.RunEntity.GetFinalHealth();
+                        int selfMaxHp = Mathf.Max(self.MaxHp, self.RunEntity.GetHealth());
+                        int oppoMaxHp = Mathf.Max(oppo.MaxHp, oppo.RunEntity.GetHealth());
+                        self.MaxHp = self.RunEntity.GetHealth();
+                        oppo.MaxHp = oppo.RunEntity.GetHealth();
 
                         int selfHpGap = self.MaxHp - (int)((float)selfMaxHp * b.Stack / 100);
                         int oppoHpGap = oppo.MaxHp - (int)((float)oppoMaxHp * b.Stack / 100);

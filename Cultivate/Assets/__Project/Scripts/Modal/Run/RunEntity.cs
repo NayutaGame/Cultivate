@@ -8,7 +8,9 @@ using UnityEngine;
 [Serializable]
 public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
 {
-    public static readonly int[] BaseHealthFromJingJie = new int[] { 40, 100, 180, 280, 400, 400 };
+    public static readonly int MaxSlotCount = 12;
+    public static readonly int[] SlotCountFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
+    public static readonly int[] HealthFromJingJie = new[] { 40, 100, 180, 280, 400, 400 };
     public static readonly string NORMAL_KEY = "Normal";
     public static readonly string SMIRK_KEY = "Smirk";
     public static readonly string AFRAID_KEY = "Afraid";
@@ -16,8 +18,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     [NonSerialized] public Neuron EnvironmentChangedNeuron;
     [SerializeField] private EntityEntry _entry;
     [SerializeField] private MingYuan _mingYuan;
-    [SerializeField] private int _baseHealth;
-    [SerializeField] [OptionalField(VersionAdded = 2)] private int _dHealth;
+    [SerializeField] [OptionalField(VersionAdded = 4)] private int _health;
     [SerializeField] private int _slotCount;
     [SerializeField] private int _ladder;
     [SerializeField] [OptionalField(VersionAdded = 3)] private bool _inPool;
@@ -32,13 +33,10 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     public EntityEntry GetEntry() => _entry;
     public void SetEntry(EntityEntry entry) => _entry = entry;
     public MingYuan GetMingYuan() => _mingYuan;
-    public int GetBaseHealth() => _baseHealth;
-    public void SetBaseHealth(int health) => _baseHealth = health;
-    public int GetDHealth() => _dHealth;
-    public void SetDHealth(int dHealth) => _dHealth = dHealth;
-    public void SetHealthByModifyingDHealth(int finalHealth) => _dHealth = finalHealth - _baseHealth;
-    public int GetFinalHealth() => _baseHealth + _dHealth;
-    public BoundedInt GetFinalHealthBounded() => new(GetFinalHealth());
+    public int GetHealth() => _health;
+    public void SetHealth(int value) => _health = value;
+    public void SetDHealth(int value) => _health += value;
+    public BoundedInt GetHealthBounded() => new(GetHealth());
     public int GetLadder() => _ladder;
     public void SetLadder(int value) => _ladder = value;
     public bool IsInPool() => _inPool;
@@ -62,7 +60,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     
     public void SetSlotCountFromJingJie(JingJie jingJie)
     {
-        SetSlotCount(RunManager.SlotCountFromJingJie[jingJie]);
+        SetSlotCount(SlotCountFromJingJie[jingJie]);
     }
     
     public string GetReactionKeyFromSkill(RunSkill skill)
@@ -196,9 +194,9 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         _entry = entry ?? Encyclopedia.EntityCategory.DefaultEntry();
         _mingYuan = mingYuan ?? MingYuan.Default;
         _jingJie = jingJie ?? JingJie.LianQi;
-        _baseHealth = baseHealth ?? BaseHealthFromJingJie[_jingJie];
+        _baseHealth = baseHealth ?? HealthFromJingJie[_jingJie];
 
-        _slots = slots == null ? SlotListModel.Default() : slots.Clone();
+        _slots = slots?.Clone() ?? SlotListModel.Default();
         
         _smirkAgainstSlots = smirkAgainstSlots ?? SlotListModel.DefaultWithSize(3);
         _smirkAgainstSlots.Traversal().Do(s => s.Hidden = false);
@@ -267,6 +265,9 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
             f.GetMin() <= f.GetProgress() && _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
         _activeFormations = new(_formations, f => f.IsActivated());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
+
+        if (_health == 0)
+            _health = _baseHealth + _dHealth;
     }
 
     #endregion
@@ -276,6 +277,9 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     [SerializeField] private bool _isNormal;
     [SerializeField] private bool _isElite;
     [SerializeField] private bool _isBoss;
+    
+    [SerializeField] private int _baseHealth;
+    [SerializeField] [OptionalField(VersionAdded = 2)] private int _dHealth;
 
     #endregion
 }

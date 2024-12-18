@@ -26,9 +26,9 @@ public class EntityView : LegacySimpleView
         if (JingJieText != null)
             JingJieText.text = entity.GetJingJie().ToString();
         if (HPText != null)
-            HPText.text = entity.GetFinalHealth().ToString();
+            HPText.text = entity.GetHealth().ToString();
         if (DescriptionText != null)
-            DescriptionText.text = entity.GetEntry()?.Description ?? "这家伙很懒，什么都没有写";
+            DescriptionText.text = entity.GetEntry()?.GetDescription() ?? "这家伙很懒，什么都没有写";
         if (SlotListView != null)
             SlotListView.Refresh();
     }

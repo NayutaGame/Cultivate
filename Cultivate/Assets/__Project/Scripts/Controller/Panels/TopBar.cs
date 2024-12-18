@@ -25,7 +25,7 @@ public class TopBar : MonoBehaviour
             RunManager.Instance.Environment.GetMingYuan().GetMingYuanPenaltyText);
         Gold.Configure(1, RunManager.Instance.Environment.GetGold,
             () => "金钱");
-        Health.Configure(1, RunManager.Instance.Environment.Home.GetFinalHealthBounded,
+        Health.Configure(1, RunManager.Instance.Environment.Home.GetHealthBounded,
             () => "气血上限\n战斗开始的气血");
     }
 

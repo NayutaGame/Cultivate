@@ -129,7 +129,7 @@ public class ConsolePanel : Panel
         RunEnvironment env = RunManager.Instance.Environment;
         MingYuanText.text = env.GetMingYuan().ToString();
         GoldText.text = env.GetGold().Curr.ToString();
-        HealthText.text = env.Home.GetFinalHealth().ToString();
+        HealthText.text = env.Home.GetHealth().ToString();
     }
 
     private void OnEnable()
@@ -167,7 +167,7 @@ public class ConsolePanel : Panel
     private void RefreshDHealth(int value)
     {
         RunEnvironment env = RunManager.Instance.Environment;
-        HealthText.text = env.Home.GetFinalHealth().ToString();
+        HealthText.text = env.Home.GetHealth().ToString();
     }
 
     private void AddMingYuan()
@@ -192,12 +192,12 @@ public class ConsolePanel : Panel
 
     private void AddHealth()
     {
-        RunManager.Instance.Environment.SetDDHealthProcedure(10);
+        RunManager.Instance.Environment.SetDHealthProcedure(10);
     }
 
     private void ReduceHealth()
     {
-        RunManager.Instance.Environment.SetDDHealthProcedure(-10);
+        RunManager.Instance.Environment.SetDHealthProcedure(-10);
     }
 
     private void JingJieChanged(int jingJie)

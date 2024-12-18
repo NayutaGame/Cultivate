@@ -2,7 +2,7 @@
 public class SlotListModel : ListModel<SkillSlot>
 {
     public static SlotListModel Default()
-        => DefaultWithSize(RunManager.MaxSlotCount);
+        => DefaultWithSize(RunEntity.MaxSlotCount);
 
     public static SlotListModel DefaultWithSize(int size)
     {
@@ -34,7 +34,7 @@ public class SlotListModel : ListModel<SkillSlot>
     {
         SlotListModel ret = Default();
 
-        for (int i = 0; i < RunManager.MaxSlotCount; i++)
+        for (int i = 0; i < RunEntity.MaxSlotCount; i++)
         {
             SkillSlot slot = ret[i];
             slot.Skill = this[i].Skill;
