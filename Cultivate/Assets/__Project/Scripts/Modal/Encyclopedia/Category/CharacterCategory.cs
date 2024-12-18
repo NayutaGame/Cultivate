@@ -104,7 +104,7 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         slotToPaste.PlacedSkill = PlacedSkill.FromEntryAndJingJie(slotToCopy.Skill.GetEntry(), slotToCopy.Skill.GetJingJie());
 
-                        RunSkill copiedSkill = slotToCopy.Skill as RunSkill;
+                        RunSkill copiedSkill = slotToCopy.Skill;
 
                         env.SetVariable("CopiedSkill", copiedSkill != null ? SkillEntryDescriptor.FromRunSkill(copiedSkill) : null);
                     }),
@@ -113,7 +113,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         RunEnvironment env = (RunEnvironment)listener;
                         DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
 
-                        SkillEntryDescriptor copiedSkillEntry = env.GetVariable<SkillEntryDescriptor>("CopiedSkill");
+                        SkillEntryDescriptor copiedSkillEntry = env.TryGetVariable<SkillEntryDescriptor>("CopiedSkill", null);
                         if (copiedSkillEntry == null)
                             return;
 

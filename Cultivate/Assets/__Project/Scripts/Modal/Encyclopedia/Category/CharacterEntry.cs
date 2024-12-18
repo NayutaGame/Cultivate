@@ -2,17 +2,18 @@
 using System;
 using UnityEngine;
 
+[Serializable]
 public class CharacterEntry : Entry
 {
     public string GetName() => GetId();
     
-    public string Description;
-    public string AbilityDescription;
+    [NonSerialized] public string Description;
+    [NonSerialized] public string AbilityDescription;
 
-    public RunClosure[] _runClosures;
-    public StageClosure[] _stageClosures;
+    [NonSerialized] public RunClosure[] _runClosures;
+    [NonSerialized] public StageClosure[] _stageClosures;
 
-    private PrefabEntry _stageModel;
+    [NonSerialized] private PrefabEntry _stageModel;
 
     public CharacterEntry(string id, string description = null, string abilityDescription = null,
         RunClosure[] runClosures = null,

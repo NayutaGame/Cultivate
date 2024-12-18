@@ -3,7 +3,6 @@ using System;
 using CLLibrary;
 using UnityEngine;
 
-// TODO, to struct, problem, MingYuan inherits, struct cannot have inheritance
 [Serializable]
 public class BoundedInt
 {

@@ -1,17 +1,16 @@
 
 using System;
 
+[Serializable]
 public class DifficultyEntry : Entry
 {
     public string GetName() => GetId();
     
-    public string Description;
-
-    public RunClosure[] _runClosures;
-    public StageClosure[] _stageClosures;
-
-    private string[] InheritedDifficultyNames;
-    public DifficultyEntry[] InheritedDifficulties;
+    [NonSerialized] public string Description;
+    [NonSerialized] public RunClosure[] _runClosures;
+    [NonSerialized] public StageClosure[] _stageClosures;
+    [NonSerialized] private string[] InheritedDifficultyNames;
+    [NonSerialized] public DifficultyEntry[] InheritedDifficulties;
 
     public DifficultyEntry(string id, string description = null, string[] inheritedDifficultyNames = null,
         RunClosure[] runClosures = null,

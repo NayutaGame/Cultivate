@@ -1,13 +1,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security;
+using UnityEngine;
 
-public class RunConfig : Config, Addressable
+[Serializable]
+public class RunConfig : Config, Addressable, ISerializationCallbackReceiver
 {
-    public CharacterProfile CharacterProfile;
-    public DifficultyProfile DifficultyProfile;
-
-    public MapEntry MapEntry;
+    [SerializeReference] public CharacterProfile CharacterProfile;
+    [SerializeReference] public DifficultyProfile DifficultyProfile;
+    [SerializeField] public MapEntry MapEntry;
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -22,5 +24,16 @@ public class RunConfig : Config, Addressable
         DifficultyProfile = runConfigForm.DifficultyProfile;
 
         MapEntry = "发现";
+    }
+
+    public void OnBeforeSerialize() { }
+
+    public void OnAfterDeserialize()
+    {
+        _accessors = new()
+        {
+            { "CharacterProfile", () => CharacterProfile },
+        };
+        MapEntry = string.IsNullOrEmpty(MapEntry.GetId()) ? null : Encyclopedia.MapCategory[MapEntry.GetId()];
     }
 }

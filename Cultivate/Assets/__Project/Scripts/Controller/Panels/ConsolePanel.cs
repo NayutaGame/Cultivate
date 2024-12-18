@@ -33,6 +33,8 @@ public class ConsolePanel : Panel
     public Button ButtonShowGRResult;
     public Button ButtonDoNotShow;
 
+    public Button PrintJsonButton;
+
     public TMP_Text GRResultText;
 
     public Button ToggleButton;
@@ -96,6 +98,9 @@ public class ConsolePanel : Panel
         ButtonShowGRResult.onClick.AddListener(TurnOnShowGRResult);
         ButtonDoNotShow.onClick.RemoveAllListeners();
         ButtonDoNotShow.onClick.AddListener(TurnOffShow);
+        
+        PrintJsonButton.onClick.RemoveAllListeners();
+        PrintJsonButton.onClick.AddListener(RunManager.Instance.Environment.PrintJson);
     }
 
     private Action _update;

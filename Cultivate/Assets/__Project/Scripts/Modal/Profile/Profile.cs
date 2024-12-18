@@ -15,6 +15,8 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     // EnvironmentProfile, used to reproduce RunEnvironment
     // ResultProfile
 
+    [SerializeField] public RunEnvironment Environment;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     private Profile()

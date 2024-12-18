@@ -8,51 +8,43 @@ using UnityEngine;
 [Serializable]
 public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
 {
-    public Neuron EnvironmentChangedNeuron;
-
     public static readonly int[] BaseHealthFromJingJie = new int[] { 40, 100, 180, 280, 400, 400 };
-    
     public static readonly string NORMAL_KEY = "Normal";
     public static readonly string SMIRK_KEY = "Smirk";
     public static readonly string AFRAID_KEY = "Afraid";
-
+    
+    [NonSerialized] public Neuron EnvironmentChangedNeuron;
+    [SerializeField] private EntityEntry _entry;
     [SerializeField] private MingYuan _mingYuan;
-    public MingYuan MingYuan => _mingYuan;
-
     [SerializeField] private int _baseHealth;
+    [SerializeField] [OptionalField(VersionAdded = 2)] private int _dHealth;
+    [SerializeField] private int _slotCount;
+    [SerializeField] private int _ladder;
+    [SerializeField] [OptionalField(VersionAdded = 3)] private bool _inPool;
+    [SerializeField] private JingJie _jingJie;
+    [SerializeReference] private SlotListModel _smirkAgainstSlots;
+    [SerializeReference] private SlotListModel _afraidAgainstSlots;
+    [SerializeReference] private SlotListModel _slots;
+    [NonSerialized] private FilteredListModel<SkillSlot> _filteredSlots;
+
+    #region Accessors
+    
+    public EntityEntry GetEntry() => _entry;
+    public void SetEntry(EntityEntry entry) => _entry = entry;
+    public MingYuan GetMingYuan() => _mingYuan;
     public int GetBaseHealth() => _baseHealth;
     public void SetBaseHealth(int health) => _baseHealth = health;
-
-    [SerializeField] [OptionalField(VersionAdded = 2)] private int _dHealth;
     public int GetDHealth() => _dHealth;
     public void SetDHealth(int dHealth) => _dHealth = dHealth;
     public void SetHealthByModifyingDHealth(int finalHealth) => _dHealth = finalHealth - _baseHealth;
-
     public int GetFinalHealth() => _baseHealth + _dHealth;
     public BoundedInt GetFinalHealthBounded() => new(GetFinalHealth());
-
-    #region Only For Editable
-
-    [SerializeField] private int _ladder;
     public int GetLadder() => _ladder;
     public void SetLadder(int value) => _ladder = value;
-
-    [SerializeField] [OptionalField(VersionAdded = 3)] private bool _inPool;
     public bool IsInPool() => _inPool;
     public void SetInPool(bool value) => _inPool = value;
-
-    // obsolete
-    [SerializeField] private bool _isNormal;
-    [SerializeField] private bool _isElite;
-    [SerializeField] private bool _isBoss;
-
-    #endregion
-
-    [SerializeField] private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
     public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
-
-    [SerializeField] private int _slotCount;
     public int GetSlotCount() => _slotCount;
     public void SetSlotCount(int slotCount)
     {
@@ -72,9 +64,6 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     {
         SetSlotCount(RunManager.SlotCountFromJingJie[jingJie]);
     }
-
-    [SerializeReference] private SlotListModel _smirkAgainstSlots;
-    [SerializeReference] private SlotListModel _afraidAgainstSlots;
     
     public string GetReactionKeyFromSkill(RunSkill skill)
     {
@@ -88,9 +77,6 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         
         return NORMAL_KEY;
     }
-
-    [SerializeReference] private SlotListModel _slots;
-    [NonSerialized] private FilteredListModel<SkillSlot> _filteredSlots;
 
     public SkillSlot GetSlot(int i)
         => _slots[i];
@@ -117,6 +103,10 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         return true;
     }
 
+    #endregion
+
+    #region Procedures
+
     public void PlacementProcedure()
     {
         PlacementDetails d = new(this);
@@ -126,7 +116,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
             slot.PlacedSkill = null;
         });
 
-        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.WILL_PLACEMENT, d);
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.WILL_PLACEMENT, d);
 
         TraversalCurrentSlots().Do(slot =>
         {
@@ -142,19 +132,21 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
             slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(d.OverridingSkillEntry, d.OverridingJingJie);
         });
 
-        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.DID_PLACEMENT, d);
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.DID_PLACEMENT, d);
     }
 
     public void DepleteProcedure()
     {
         DepleteDetails d = new(this);
 
-        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.WILL_DEPLETE, d);
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.WILL_DEPLETE, d);
 
         _slots.Traversal().Do(slot => slot.TryDeplete(d));
 
-        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.DID_DEPLETE, d);
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.DID_DEPLETE, d);
     }
+
+    #endregion
 
     #region Formation
 
@@ -169,12 +161,12 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
 
         _formations.Clear();
 
-        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.WIL_FORMATION, d);
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.WIL_FORMATION, d);
 
         _formations.AddRange(Encyclopedia.FormationCategory.Traversal
             .Map(e => RunFormation.From(e, e.GetProgress(this, d))));
 
-        RunManager.Instance.Environment.ClosureDict.SendEvent(RunClosureDict.DID_FORMATION, d);
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.DID_FORMATION, d);
 
         _showingFormations.Refresh();
         _activeFormations.Refresh();
@@ -182,23 +174,8 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
 
     #endregion
 
-    [SerializeField] private EntityEntry _entry;
-    public EntityEntry GetEntry() => _entry;
-    public void SetEntry(EntityEntry entry) => _entry = entry;
-
-    public static RunEntity Default()
-        => new();
-    public static RunEntity Trainer()
-        => new(jingJie: JingJie.LianQi, baseHealth: 1000000);
-    public static RunEntity FromJingJieHealth(JingJie jingJie, int health)
-        => new(jingJie: jingJie, baseHealth: health);
-    public static RunEntity FromTemplate(RunEntity template)
-        => new(entry: template._entry, mingYuan: template._mingYuan, jingJie: template._jingJie,
-            baseHealth: template._baseHealth, slotCount: template._slotCount, slots: template._slots, template._smirkAgainstSlots, template._afraidAgainstSlots);
-    public static RunEntity FromHardCoded(JingJie? jingJie = null,
-        int? baseHealth = null, int? slotCount = null, RunSkill[] skills = null)
-        => new(jingJie: jingJie, baseHealth: baseHealth, slotCount: slotCount, slots: skills != null ? SlotListModel.FromSkills(skills) : null);
-
+    #region Core
+    
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     private RunEntity(EntityEntry entry = null, MingYuan mingYuan = null, JingJie? jingJie = null,
@@ -239,6 +216,19 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
 
         Init();
     }
+    
+    public static RunEntity Default()
+        => new();
+    public static RunEntity Trainer()
+        => new(jingJie: JingJie.LianQi, baseHealth: 1000000);
+    public static RunEntity FromJingJieHealth(JingJie jingJie, int health)
+        => new(jingJie: jingJie, baseHealth: health);
+    public static RunEntity FromTemplate(RunEntity template)
+        => new(entry: template._entry, mingYuan: template._mingYuan, jingJie: template._jingJie,
+            baseHealth: template._baseHealth, slotCount: template._slotCount, slots: template._slots, template._smirkAgainstSlots, template._afraidAgainstSlots);
+    public static RunEntity FromHardCoded(JingJie? jingJie = null,
+        int? baseHealth = null, int? slotCount = null, RunSkill[] skills = null)
+        => new(jingJie: jingJie, baseHealth: baseHealth, slotCount: slotCount, slots: skills != null ? SlotListModel.FromSkills(skills) : null);
 
     public void OnBeforeSerialize() { }
 
@@ -278,4 +268,14 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         _activeFormations = new(_formations, f => f.IsActivated());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
     }
+
+    #endregion
+    
+    #region Obsolete
+    
+    [SerializeField] private bool _isNormal;
+    [SerializeField] private bool _isElite;
+    [SerializeField] private bool _isBoss;
+
+    #endregion
 }

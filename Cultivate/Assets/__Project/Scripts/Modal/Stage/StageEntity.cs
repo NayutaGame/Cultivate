@@ -316,7 +316,7 @@ public class StageEntity : Addressable, StageClosureOwner
         
         _env.ClosureDict.Register(this, _closures);
 
-        MingYuan = _runEntity.MingYuan.CloneMingYuan();
+        MingYuan = _runEntity.GetMingYuan().CloneMingYuan();
         MaxHp = _runEntity.GetFinalHealth();
         Hp = _runEntity.GetFinalHealth();
         Armor = 0;

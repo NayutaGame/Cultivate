@@ -5,24 +5,9 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
+[Serializable]
 public class RunEnvironment : Addressable, RunClosureOwner
 {
-    #region Memory
-
-    private Dictionary<string, object> _memory;
-
-    public void SetVariable<T>(string key, T value)
-        => _memory[key] = value;
-
-    public T GetVariable<T>(string key)
-    {
-        if (_memory.TryGetValue(key, out var value))
-            return (T)value;
-        return default;
-    }
-
-    #endregion
-
     #region Neurons
     
     public Neuron<EquipDetails> EquipNeuron = new();
@@ -51,22 +36,22 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     #region Core
     
-    private RunConfig _config;
-    private RunEntity _home; public RunEntity Home => _home;
-    private RunEntity _away; public RunEntity Away => _away;
-    public Map Map { get; private set; }
-    public Pool<SkillEntry> SkillPool;
-    public SkillInventory Hand { get; private set; }
-    private BoundedInt _gold;
-    private JingJie _jingJie;
-    public JingJie JingJie => _jingJie;
-    private RunClosureDict _closureDict;
-    public RunClosureDict ClosureDict => _closureDict;
-
-    public Dirty<StageResult> SimulateResult;
-    public StageResult GetSimulateResult() => SimulateResult.Value;
-    public RunResult Result { get; }
-    private RunResultPanelDescriptor _runResultPanelDescriptor;
+    [NonSerialized] private Memory _memory;
+    [NonSerialized] private RunClosureDict _closureDict;
+    [NonSerialized] private Dirty<StageResult> _simulateResult;
+    
+    [SerializeReference] private RunConfig _config;
+    [SerializeReference] private RunEntity _home;
+    
+    [NonSerialized] private RunEntity _away;
+    
+    [SerializeField] private Map _map;
+    [SerializeField] private Pool<SkillEntry> _skillPool;
+    [SerializeField] private SkillInventory _hand;
+    [SerializeField] private BoundedInt _gold;
+    [SerializeField] private JingJie _jingJie;
+    [SerializeField] private RunResult _result;
+    [SerializeField] private RunResultPanelDescriptor _runResultPanelDescriptor;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -89,15 +74,15 @@ public class RunEnvironment : Addressable, RunClosureOwner
         SetHome(RunEntity.Default());
         SetAway(null);
 
-        Map = new(_config.MapEntry);
-        SkillPool = new();
-        Hand = new();
+        _map = new(_config.MapEntry);
+        _skillPool = new();
+        _hand = new();
         _closureDict = new();
 
-        Result = new RunResult();
-        SimulateResult = new(Simulate);
+        _result = new();
+        _simulateResult = new(Simulate);
 
-        FieldChangedNeuron.Add(SimulateResult.SetDirty);
+        FieldChangedNeuron.Add(_simulateResult.SetDirty);
         DeckChangedNeuron.Add(GuideProcedure);
     }
 
@@ -107,6 +92,16 @@ public class RunEnvironment : Addressable, RunClosureOwner
     #endregion
 
     #region Accessors
+    
+    public Map Map => _map;
+    public RunEntity Home => _home;
+    public RunEntity Away => _away;
+    public JingJie JingJie => _jingJie;
+    public Pool<SkillEntry> SkillPool => _skillPool;
+    public SkillInventory Hand => _hand;
+    public void SendEvent(int eventId, ClosureDetails closureDetails) => _closureDict.SendEvent(eventId, closureDetails);
+    public StageResult GetSimulateResult() => _simulateResult.Value;
+    public RunResult GetResult() => _result;
     
     public PanelDescriptor GetActivePanel()
         => _runResultPanelDescriptor ?? Map.Panel;
@@ -165,7 +160,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         => _gold;
 
     public MingYuan GetMingYuan()
-        => _home.MingYuan;
+        => _home.GetMingYuan();
 
     public RunSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
     {
@@ -228,6 +223,10 @@ public class RunEnvironment : Addressable, RunClosureOwner
         return "有五个境界：\n练气，筑基\n金丹，元婴\n化神";
     }
 
+    public void SetVariable<T>(string key, T value) => _memory.SetVariable(key, value);
+    public T TryGetVariable<T>(string key, T defaultValue) => _memory.TryGetVariable(key, defaultValue);
+    public void PerformOperation<T>(string key, T defaultValue, Func<T, T> operation) => _memory.PerformOperation(key, defaultValue, operation);
+
     #endregion
 
     #region Procedures
@@ -286,11 +285,11 @@ public class RunEnvironment : Addressable, RunClosureOwner
             return Map.Panel;
         
         PanelDescriptor panelDescriptor = Map.Panel.ReceiveSignal(signal);
-        bool runIsUnfinished = Result.State == RunResult.RunResultState.Unfinished;
+        bool runIsUnfinished = _result.State == RunResult.RunResultState.Unfinished;
 
         if (!runIsUnfinished)
         {
-            _runResultPanelDescriptor = new RunResultPanelDescriptor(Result);
+            _runResultPanelDescriptor = new RunResultPanelDescriptor(_result);
             Map.Panel = _runResultPanelDescriptor;
             return _runResultPanelDescriptor;
         }
@@ -329,11 +328,11 @@ public class RunEnvironment : Addressable, RunClosureOwner
             return;
         
         PanelDescriptor panelDescriptor = Map.Panel.ReceiveSignal(signal);
-        bool runIsUnfinished = Result.State == RunResult.RunResultState.Unfinished;
+        bool runIsUnfinished = _result.State == RunResult.RunResultState.Unfinished;
 
         if (!runIsUnfinished)
         {
-            _runResultPanelDescriptor = new RunResultPanelDescriptor(Result);
+            _runResultPanelDescriptor = new RunResultPanelDescriptor(_result);
 
             PanelDescriptor fromPanel = Map.Panel;
             Map.Panel = _runResultPanelDescriptor;
@@ -578,7 +577,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void CommitRunProcedure(RunResult.RunResultState state)
     {
-        Result.State = state;
+        _result.State = state;
     }
 
     public void Combat()
@@ -599,7 +598,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         if (d.Cancel)
             return;
 
-        _home.MingYuan.Curr += d.Value;
+        GetMingYuan().Curr += d.Value;
         _closureDict.SendEvent(RunClosureDict.DID_SET_D_MINGYUAN, d);
         if (d.Value >= 0)
             GainMingYuanNeuron.Invoke(d.Value);
@@ -663,11 +662,11 @@ public class RunEnvironment : Addressable, RunClosureOwner
         if (d.Cancel)
             return;
 
-        int diff = _home.MingYuan.Curr - d.Value;
+        int diff = GetMingYuan().Curr - d.Value;
         if (diff > 0)
             SetDMingYuanProcedure(diff);
 
-        _home.MingYuan.UpperBound = d.Value;
+        GetMingYuan().UpperBound = d.Value;
 
         _closureDict.SendEvent(RunClosureDict.DID_SET_MAX_MINGYUAN, d);
     }
@@ -874,6 +873,26 @@ public class RunEnvironment : Addressable, RunClosureOwner
         // staging
         CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
     }
+
+    #endregion
+
+    #region Profile
+
+    // public void Save()
+    // {
+    // }
+
+    public void PrintJson()
+    {
+        string json = JsonUtility.ToJson(this, true);
+        Debug.Log(json);
+        GUIUtility.systemCopyBuffer = json;
+    }
+    
+    // public static RunEnvironment LoadFromProfile()
+    // {
+    //     
+    // }
 
     #endregion
 }

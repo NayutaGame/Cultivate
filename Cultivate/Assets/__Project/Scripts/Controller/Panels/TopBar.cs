@@ -22,7 +22,7 @@ public class TopBar : MonoBehaviour
         MenuButton.onClick.AddListener(OpenMenu);
         
         MingYuan.Configure(1, RunManager.Instance.Environment.GetMingYuan,
-            RunManager.Instance.Environment.Home.MingYuan.GetMingYuanPenaltyText);
+            RunManager.Instance.Environment.GetMingYuan().GetMingYuanPenaltyText);
         Gold.Configure(1, RunManager.Instance.Environment.GetGold,
             () => "金钱");
         Health.Configure(1, RunManager.Instance.Environment.Home.GetFinalHealthBounded,

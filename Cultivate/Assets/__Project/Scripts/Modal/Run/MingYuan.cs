@@ -6,9 +6,21 @@ using Cysharp.Threading.Tasks;
 [Serializable]
 public class MingYuan : BoundedInt
 {
-    public static MingYuan Default => new(10, 10);
-
-    public MingYuan(int curr, int max) : base(curr, max) { }
+    // To Closure
+    private static Tuple<int, int, int, int>[] MINGYUAN_PENALTY_TABLE = new[]
+    {
+        // hpPenalty, manaPenalty, powerPenalty, speedPenalty
+        new Tuple<int, int, int, int>(50, 0, 0, 0),
+        new Tuple<int, int, int, int>(45, 0, 0, 0),
+        new Tuple<int, int, int, int>(40, 0, 0, 0),
+        new Tuple<int, int, int, int>(35, 0, 0, 0),
+        new Tuple<int, int, int, int>(30, 0, 0, 0),
+        new Tuple<int, int, int, int>(25, 0, 0, 0),
+        new Tuple<int, int, int, int>(20, 0, 0, 0),
+        new Tuple<int, int, int, int>(15, 0, 0, 0),
+        new Tuple<int, int, int, int>(10, 0, 0, 0),
+        new Tuple<int, int, int, int>(5, 0, 0, 0),
+    };
 
     // private static Tuple<int, int, int, int>[] MINGYUAN_PENALTY_TABLE = new[]
     // {
@@ -24,21 +36,9 @@ public class MingYuan : BoundedInt
     //     new Tuple<int, int, int, int>(10, 1, 0, 0),
     //     new Tuple<int, int, int, int>(10, 0, 0, 0),
     // };
-
-    private static Tuple<int, int, int, int>[] MINGYUAN_PENALTY_TABLE = new[]
-    {
-        // hpPenalty, manaPenalty, powerPenalty, speedPenalty
-        new Tuple<int, int, int, int>(50, 0, 0, 0),
-        new Tuple<int, int, int, int>(45, 0, 0, 0),
-        new Tuple<int, int, int, int>(40, 0, 0, 0),
-        new Tuple<int, int, int, int>(35, 0, 0, 0),
-        new Tuple<int, int, int, int>(30, 0, 0, 0),
-        new Tuple<int, int, int, int>(25, 0, 0, 0),
-        new Tuple<int, int, int, int>(20, 0, 0, 0),
-        new Tuple<int, int, int, int>(15, 0, 0, 0),
-        new Tuple<int, int, int, int>(10, 0, 0, 0),
-        new Tuple<int, int, int, int>(5, 0, 0, 0),
-    };
+    
+    public MingYuan(int curr, int max) : base(curr, max) { }
+    public static MingYuan Default => new(10, 10);
 
     public string GetMingYuanPenaltyText()
     {

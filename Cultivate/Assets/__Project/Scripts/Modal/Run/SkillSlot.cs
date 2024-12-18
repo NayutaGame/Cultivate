@@ -43,15 +43,13 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         {
             { "Skill",         () => _skill },
         };
-        
-        EnvironmentChangedNeuron = new();
 
         _index = index;
         _hidden = true;
         _locked = false;
     }
 
-    [NonSerialized] public Neuron EnvironmentChangedNeuron;
+    [NonSerialized] public Neuron EnvironmentChangedNeuron = new();
     [NonSerialized] public PlacedSkill PlacedSkill;
     [NonSerialized] public CastResult CastResult;
     [NonSerialized] public CostResult CostResult;

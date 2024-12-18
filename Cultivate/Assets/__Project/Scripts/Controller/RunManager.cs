@@ -10,7 +10,7 @@ public class RunManager : Singleton<RunManager>, Addressable
     public static readonly int[] SlotCountFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
 
     // public RunAnimationController AnimationController;
-    public RunEnvironment Environment;
+    [NonSerialized] public RunEnvironment Environment;
     public Arena Arena;
 
     public SpriteRenderer BackgroundRenderer;

@@ -5,11 +5,13 @@ using System;
 public class MapEntry : Entry
 {
     public string GetName() => GetId();
-    public JingJie _envJingJie;
-    public int _slotCount;
-    public int _gold;
-    public JingJie _skillJingJie;
-    public int _skillCount;
+    
+    [NonSerialized] public JingJie _envJingJie;
+    [NonSerialized] public int _slotCount;
+    [NonSerialized] public int _gold;
+    [NonSerialized] public JingJie _skillJingJie;
+    [NonSerialized] public int _skillCount;
+    
     private RoomDescriptor[][] _levels;
     public RoomDescriptor[][] Levels => _levels;
 

@@ -43,7 +43,7 @@ public class RunAppS : AppS
         
         runCanvas.LegacySetPanelS(PanelS.FromHide());
         
-        RunResult result = runEnv.Result;
+        RunResult result = runEnv.GetResult();
         RunManager.Instance.SetEnvironmentToNull();
 
         return result;
