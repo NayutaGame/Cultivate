@@ -1,6 +1,7 @@
 
 using System;
 
+[Serializable]
 public class AdventureRoomDescriptor : RoomDescriptor
 {
     public override RoomEntry Draw(Map map, Room room)
@@ -33,6 +34,4 @@ public class AdventureRoomDescriptor : RoomDescriptor
     public AdventureRoomDescriptor(int ladder) : base(ladder)
     {
     }
-    
-    
 }

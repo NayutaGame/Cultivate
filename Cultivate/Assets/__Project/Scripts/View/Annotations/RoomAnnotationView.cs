@@ -15,7 +15,7 @@ public class RoomAnnotationView : XView
         base.Refresh();
 
         Room room = Get<Room>();
-        DescriptionText.text = room.Descriptor.GetDescription();
+        DescriptionText.text = room.GetDescriptor().GetDescription();
         // Debug.Log(characterProfile.GetEntry().GetName());
 
         // Buff buff = Get<Buff>();

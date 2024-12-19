@@ -16,14 +16,9 @@ public class RunAppS : AppS
         RunManager.Instance.SetBackgroundFromJingJie(JingJie.LianQi);
         StageManager.Instance.SetHomeFromCharacterProfile(runConfig.CharacterProfile);
 
-        RunEnvironment runEnv = RunManager.Instance.Environment;
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
-        
-        PanelDescriptor panelDescriptor = runEnv.Map.Panel;
-        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        
         runCanvas.AwakeFunction();
-        runCanvas.LegacySetPanelS(panelS);
+        runCanvas.LegacySetPanelS(PanelS.FromPanelDescriptor(RunManager.Instance.Environment.Map.Panel));
         runCanvas.TopBar.Refresh();
         CanvasManager.Instance.Curtain.GetAnimator().SetState(1);
         await UniTask.WaitForSeconds(0.1f);

@@ -9,7 +9,7 @@ using UnityEngine;
 [Serializable]
 public class ListModel<T> : IListModel
 {
-    [SerializeField] private List<T> _list;
+    [SerializeReference] private List<T> _list;
 
     public T this[int index]
     {

@@ -1,4 +1,8 @@
 
+using System;
+using UnityEngine;
+
+[Serializable]
 public abstract class RoomDescriptor
 {
     public static readonly int[] GoldRewardTable = new int[]
@@ -15,9 +19,11 @@ public abstract class RoomDescriptor
     public abstract SpriteEntry GetSprite();
     public abstract string GetDescription();
 
-    public int Ladder;
+    [SerializeField] private int _ladder;
+    public int Ladder => _ladder;
+    
     public RoomDescriptor(int ladder)
     {
-        Ladder = ladder;
+        _ladder = ladder;
     }
 }

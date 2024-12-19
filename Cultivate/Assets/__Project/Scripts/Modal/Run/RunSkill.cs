@@ -6,36 +6,30 @@ using UnityEngine;
 [Serializable]
 public class RunSkill : ISkill, ISerializationCallbackReceiver
 {
-    [SerializeField] private SkillSlot _skillSlot;
+    [SerializeField] private SkillEntry _entry;
+    [SerializeReference] private SkillSlot _skillSlot;
+    [SerializeField] private JingJie _jingJie;
+    [SerializeField] protected int _runUsedTimes;
+    [SerializeField] protected int _runEquippedTimes;
+    [SerializeField] private bool _borrowed;
+    
+    public SkillEntry GetEntry() => _entry;
     public SkillSlot GetSkillSlot() => _skillSlot;
     public void SetSkillSlot(SkillSlot value) => _skillSlot = value;
-
-    [SerializeField] private SkillEntry _entry;
-    public SkillEntry GetEntry() => _entry;
-
-    [SerializeField] private JingJie _jingJie;
     public JingJie JingJie
     {
         get => _jingJie;
         set => _jingJie = Mathf.Clamp(value, GetEntry().LowestJingJie, GetEntry().HighestJingJie);
     }
-
-    [SerializeField] protected int _runUsedTimes;
     public int GetRunUsedTimes() => _runUsedTimes;
     public void SetRunUsedTimes(int value) => _runEquippedTimes = value;
-
-    [SerializeField] protected int _runEquippedTimes;
     public int GetRunEquippedTimes() => _runEquippedTimes;
     public void SetRunEquippedTimes(int value) => _runEquippedTimes = value;
-    
-    [SerializeField] [OptionalField(VersionAdded = 4)] private bool _borrowed;
-    public bool Borrowed { get => _borrowed; set => _borrowed = value; }
-
-    public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
-        => new(entry, jingJie);
-
-    public static RunSkill FromEntry(SkillEntry entry)
-        => new(entry, entry.LowestJingJie);
+    public bool Borrowed
+    {
+        get => _borrowed;
+        set => _borrowed = value;
+    }
 
     private RunSkill(SkillEntry entry, JingJie jingJie)
     {
@@ -50,6 +44,12 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
         _runUsedTimes = prototype._runUsedTimes;
         _runEquippedTimes = prototype._runEquippedTimes;
     }
+
+    public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
+        => new(entry, jingJie);
+
+    public static RunSkill FromEntry(SkillEntry entry)
+        => new(entry, entry.LowestJingJie);
 
     public RunSkill Clone()
         => new(this);

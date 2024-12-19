@@ -2,23 +2,24 @@
 using System;
 using UnityEngine;
 
+[Serializable]
 public class RoomEntry : Entry
 {
     public virtual string GetName() => GetId();
 
     public Sprite GetSprite() => Encyclopedia.SpriteCategory["摇曳"].Sprite;
     
-    private string _description;
+    [NonSerialized] private string _description;
     public string GetDescription() => _description;
 
-    private CLLibrary.Bound _ladderBound;
+    [NonSerialized] private CLLibrary.Bound _ladderBound;
     public CLLibrary.Bound LadderBound => _ladderBound;
     
-    private bool _withInPool;
+    [NonSerialized] private bool _withInPool;
     public bool WithInPool => _withInPool;
 
-    private Func<Map, Room, bool> _canCreate;
-    private Func<Map, Room, PanelDescriptor> _create;
+    [NonSerialized] private Func<Map, Room, bool> _canCreate;
+    [NonSerialized] private Func<Map, Room, PanelDescriptor> _create;
 
     public RoomEntry(
         string id,

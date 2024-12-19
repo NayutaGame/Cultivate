@@ -8,32 +8,14 @@ using UnityEngine;
 [Serializable]
 public class SkillSlot : Addressable, ISerializationCallbackReceiver
 {
+    [NonSerialized] public Neuron EnvironmentChangedNeuron = new();
+    [NonSerialized] public PlacedSkill PlacedSkill;
+    [NonSerialized] public CastResult CastResult;
+    [NonSerialized] public CostResult CostResult;
+    
     [SerializeField] private int _index;
-    public int Index => _index;
-
     [SerializeField] [OptionalField(VersionAdded = 4)] private bool _hidden;
-    public bool Hidden
-    {
-        get => _hidden;
-        set
-        {
-            _hidden = value;
-            if (_hidden) Skill = null;
-        }
-    }
-
     [SerializeReference] private RunSkill _skill;
-    public RunSkill Skill
-    {
-        get => _skill;
-        set
-        {
-            _skill?.SetSkillSlot(null);
-            _skill = value?.Clone();
-            _skill?.SetSkillSlot(this);
-            EnvironmentChangedNeuron.Invoke();
-        }
-    }
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -46,15 +28,31 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
 
         _index = index;
         _hidden = true;
-        _locked = false;
     }
-
-    [NonSerialized] public Neuron EnvironmentChangedNeuron = new();
-    [NonSerialized] public PlacedSkill PlacedSkill;
-    [NonSerialized] public CastResult CastResult;
-    [NonSerialized] public CostResult CostResult;
     
-    public bool IsOccupied
+    public int GetIndex() => _index;
+    public bool Hidden
+    {
+        get => _hidden;
+        set
+        {
+            _hidden = value;
+            if (_hidden) Skill = null;
+        }
+    }
+    public RunSkill Skill
+    {
+        get => _skill;
+        set
+        {
+            _skill?.SetSkillSlot(null);
+            _skill = value?.Clone();
+            _skill?.SetSkillSlot(this);
+            EnvironmentChangedNeuron.Invoke();
+        }
+    }
+    
+    public bool IsOccupied()
         => !_hidden && _skill != null;
 
     public bool TryIncreaseJingJie(bool loop = true)
@@ -103,17 +101,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     public DeckIndex ToDeckIndex()
         => DeckIndex.FromField(_index);
     
-    #region Deprecated
-    
-    public enum SkillSlotState { Hidden, Empty, Occupied, }
-    [SerializeField] private SkillSlotState _state;
-
-    [SerializeField] [OptionalField(VersionAdded = 4)] private bool _locked;
-    public bool Locked
-    {
-        get => _locked;
-        set => _locked = value;
-    }
+    #region Obsolete
     
     #endregion
 }

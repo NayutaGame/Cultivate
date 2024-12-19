@@ -1,15 +1,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security;
+using UnityEngine;
 
+[Serializable]
 public class Level : Addressable
 {
-    private RoomListModel _rooms;
-
-    public Room GetRoom(int stepIndex)
-        => _rooms[stepIndex];
-    public int GetRoomCount()
-        => _rooms.Count();
+    [SerializeReference] private RoomListModel _rooms;
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -26,4 +24,7 @@ public class Level : Addressable
             _rooms.Add(new Room(stepDescriptors[i]));
         }
     }
+    
+    public Room GetRoom(int stepIndex) => _rooms[stepIndex];
+    public int GetRoomCount() => _rooms.Count();
 }

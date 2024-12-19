@@ -1,6 +1,8 @@
 
+using System;
 using CLLibrary;
 
+[Serializable]
 public class EntityPool : Pool<RunEntity>
 {
     public bool TryDrawEntity(out RunEntity template, EntityDescriptor d)

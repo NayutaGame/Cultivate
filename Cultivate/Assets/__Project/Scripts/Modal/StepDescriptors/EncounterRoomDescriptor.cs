@@ -1,4 +1,7 @@
 
+using System;
+
+[Serializable]
 public class EncounterRoomDescriptor : RoomDescriptor
 {
     public override RoomEntry Draw(Map map, Room room)

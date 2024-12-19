@@ -45,7 +45,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     
     [NonSerialized] private RunEntity _away;
     
-    [SerializeField] private Map _map;
+    [SerializeReference] private Map _map;
     [SerializeField] private Pool<SkillEntry> _skillPool;
     [SerializeField] private SkillInventory _hand;
     [SerializeField] private BoundedInt _gold;
@@ -174,7 +174,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     {
         SkillSlot skillSlot = runSkill.GetSkillSlot();
         if (skillSlot != null)
-            return DeckIndex.FromField(skillSlot.Index);
+            return DeckIndex.FromField(skillSlot.GetIndex());
 
         if (Hand.Contains(runSkill))
             return DeckIndex.FromHand(Hand.IndexOf(runSkill));
@@ -207,7 +207,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     {
         if (!excludingField)
             foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
-                yield return new DeckIndex(true, slot.Index);
+                yield return new DeckIndex(true, slot.GetIndex());
         if (!excludingHand)
             for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
                 yield return new DeckIndex(false, i);
@@ -235,11 +235,11 @@ public class RunEnvironment : Addressable, RunClosureOwner
     {
         InitSkillPool();
         
-        SetJingJieProcedure(Map.Entry._envJingJie);
-        _home.SetSlotCount(Map.Entry._slotCount);
-        SetDGoldProcedure(Map.Entry._gold);
+        SetJingJieProcedure(Map.GetEntry()._envJingJie);
+        _home.SetSlotCount(Map.GetEntry()._slotCount);
+        SetDGoldProcedure(Map.GetEntry()._gold);
         
-        DrawSkillsProcedure(new(jingJie: Map.Entry._skillJingJie, count: Map.Entry._skillCount));
+        DrawSkillsProcedure(new(jingJie: Map.GetEntry()._skillJingJie, count: Map.GetEntry()._skillCount));
 
         Map.Init();
         

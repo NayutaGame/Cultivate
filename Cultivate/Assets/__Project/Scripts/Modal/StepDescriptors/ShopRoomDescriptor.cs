@@ -1,6 +1,8 @@
 
+using System;
 using CLLibrary;
 
+[Serializable]
 public class ShopRoomDescriptor : RoomDescriptor
 {
     public override RoomEntry Draw(Map map, Room room)

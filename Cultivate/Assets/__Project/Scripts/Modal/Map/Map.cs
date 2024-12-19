@@ -2,33 +2,22 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
+using UnityEngine;
 
-public class Map : Addressable
+[Serializable]
+public class Map : Addressable, ISerializationCallbackReceiver
 {
-    private MapEntry _entry;
-    public MapEntry Entry => _entry;
+    [SerializeField] private MapEntry _entry;
     
-    private Level[] _levels;
-    private int _levelIndex;
-    private int _stepIndex;
+    [SerializeReference] private Level[] _levels;
+    [SerializeField] private int _levelIndex;
+    [SerializeField] private int _stepIndex;
+    [SerializeReference] public EntityPool EntityPool;
+    [SerializeReference] public RoomPool RoomPool;
+    [SerializeReference] public RoomPool InsertedRoomPool;
+    [NonSerialized] private PanelDescriptor _panel;
 
-    private PanelDescriptor _panel;
-    public PanelDescriptor Panel
-    {
-        get => _panel;
-        set
-        {
-            if (_panel == value)
-                return;
-            _panel?.Exit();
-            _panel = value;
-            _panel?.Enter();
-        }
-    }
-    
-    public EntityPool EntityPool;
-    public Pool<RoomEntry> RoomPool;
-    public Pool<RoomEntry> InsertedRoomPool;
+    #region Core
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -36,14 +25,11 @@ public class Map : Addressable
     {
         _accessors = new()
         {
-            { "CurrLevel", () => CurrLevel },
+            { "CurrLevel", GetCurrLevel },
         };
 
         _entry = entry;
     }
-
-    public Level CurrLevel => _levels[_levelIndex];
-    public Room CurrRoom => CurrLevel.GetRoom(_stepIndex);
 
     public void Init()
     {
@@ -58,43 +44,8 @@ public class Map : Addressable
         _stepIndex = 0;
         _levelIndex = 0;
         
-        CreatePanel();
-    }
-
-    public void NextLevel()
-    {
-        _levelIndex++;
-        _stepIndex = 0;
-        
-        CreatePanel();
-    }
-
-    public void NextStep()
-    {
-        CurrRoom.SetState(Room.RoomState.Past);
-        _stepIndex++;
-        
-        CreatePanel();
-    }
-
-    public bool IsLastLevelAndLastStep()
-        => _levels.Length - 1 == _levelIndex && IsLastStep();
-
-    public bool IsLastStep()
-        => CurrLevel.GetRoomCount() - 1 == _stepIndex;
-
-    public void CreatePanel()
-    {
-        if (!CurrRoom.HasEntry())
-            CurrRoom.DrawEntry(this);
-        CurrRoom.CreatePanel(this);
-        CurrRoom.SetState(Room.RoomState.Curr);
-    }
-
-    public void InsertRoom(RoomEntry roomEntry)
-    {
-        InsertedRoomPool.Populate(roomEntry);
-        InsertedRoomPool.Shuffle();
+        SetPanelFromCurrRoom();
+        GetCurrRoom().SetState(Room.RoomState.Curr);
     }
 
     private void InitEntityPool()
@@ -109,5 +60,78 @@ public class Map : Addressable
         RoomPool = new();
         RoomPool.Populate(Encyclopedia.RoomCategory.Traversal.FilterObj(e => e.WithInPool));
         RoomPool.Shuffle();
+    }
+
+    public void NextLevel()
+    {
+        GetCurrRoom().SetState(Room.RoomState.Past);
+        
+        _levelIndex++;
+        _stepIndex = 0;
+        
+        SetPanelFromCurrRoom();
+        GetCurrRoom().SetState(Room.RoomState.Curr);
+    }
+
+    public void NextStep()
+    {
+        GetCurrRoom().SetState(Room.RoomState.Past);
+        
+        _stepIndex++;
+
+        SetPanelFromCurrRoom();
+        GetCurrRoom().SetState(Room.RoomState.Curr);
+    }
+
+    public void InsertRoom(RoomEntry roomEntry)
+    {
+        InsertedRoomPool.Populate(roomEntry);
+        InsertedRoomPool.Shuffle();
+    }
+
+    #endregion
+
+    #region Accessors
+    
+    public MapEntry GetEntry() => _entry;
+    public PanelDescriptor Panel
+    {
+        get => _panel;
+        set
+        {
+            if (_panel == value)
+                return;
+            _panel?.Exit();
+            _panel = value;
+            _panel?.Enter();
+        }
+    }
+
+    public void SetPanelFromCurrRoom()
+    {
+        Panel = GetCurrRoom().CreatePanel(this);
+    }
+    
+    public Level GetCurrLevel() => _levels[_levelIndex];
+    public Room GetCurrRoom() => GetCurrLevel().GetRoom(_stepIndex);
+
+    public bool IsLastLevelAndLastStep()
+        => _levels.Length - 1 == _levelIndex && IsLastStep();
+
+    public bool IsLastStep()
+        => GetCurrLevel().GetRoomCount() - 1 == _stepIndex;
+
+    #endregion
+    
+    public void OnBeforeSerialize() { }
+
+    public void OnAfterDeserialize()
+    {
+        _accessors = new()
+        {
+            { "CurrLevel", GetCurrLevel },
+        };
+        
+        _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.MapCategory[_entry.GetName()];
     }
 }

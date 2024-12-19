@@ -1,7 +1,9 @@
 
-using System.Collections.Generic;
+using System;
+using UnityEngine;
 
-public class Room
+[Serializable]
+public class Room : ISerializationCallbackReceiver
 {
     public enum RoomState
     {
@@ -10,36 +12,35 @@ public class Room
         Future,
     }
 
-    private RoomState _state;
-    public RoomState State => _state;
-    public void SetState(RoomState state) => _state = state;
-
-    private RoomDescriptor _descriptor;
-    public RoomDescriptor Descriptor => _descriptor;
-
-    public RoomEntry Entry;
-
-    private Dictionary<string, object> _details;
-    public Dictionary<string, object> Details => _details ??= new();
+    [SerializeField] private RoomState _state;
+    [SerializeReference] private RoomDescriptor _descriptor;
+    [SerializeField] private RoomEntry _entry;
+    [SerializeReference] private RunEntity _predrewRunEntity;
 
     public Room(RoomDescriptor descriptor)
     {
         _descriptor = descriptor;
         _state = RoomState.Future;
     }
+    
+    public RoomState GetState() => _state;
+    public void SetState(RoomState state) => _state = state;
+    public RoomDescriptor GetDescriptor() => _descriptor;
+    public RunEntity GetPredrewRunEntity() => _predrewRunEntity;
+    public void SetPredrewRunEntity(RunEntity runEntity) => _predrewRunEntity = runEntity;
 
     public int Ladder => _descriptor.Ladder;
 
-    public bool HasEntry()
-        => Entry != null;
-
-    public void DrawEntry(Map map)
+    public PanelDescriptor CreatePanel(Map map)
     {
-        Entry = _descriptor.Draw(map, this);
+        _entry ??= _descriptor.Draw(map, this);
+        return _entry.Create(map, this);
     }
+    
+    public void OnBeforeSerialize() { }
 
-    public void CreatePanel(Map map)
+    public void OnAfterDeserialize()
     {
-        map.Panel = Entry.Create(map, this);
+        _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.RoomCategory[_entry.GetName()];
     }
 }

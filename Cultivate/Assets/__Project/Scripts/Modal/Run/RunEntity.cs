@@ -16,17 +16,18 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     public static readonly string AFRAID_KEY = "Afraid";
     
     [NonSerialized] public Neuron EnvironmentChangedNeuron;
+    [NonSerialized] private FilteredListModel<SkillSlot> _filteredSlots;
+    
     [SerializeField] private EntityEntry _entry;
     [SerializeField] private MingYuan _mingYuan;
-    [SerializeField] [OptionalField(VersionAdded = 4)] private int _health;
+    [SerializeField] private int _health;
     [SerializeField] private int _slotCount;
-    [SerializeField] private int _ladder;
-    [SerializeField] [OptionalField(VersionAdded = 3)] private bool _inPool;
     [SerializeField] private JingJie _jingJie;
+    [SerializeReference] private SlotListModel _slots;
+    [SerializeField] private int _ladder;
+    [SerializeField] private bool _inPool;
     [SerializeReference] private SlotListModel _smirkAgainstSlots;
     [SerializeReference] private SlotListModel _afraidAgainstSlots;
-    [SerializeReference] private SlotListModel _slots;
-    [NonSerialized] private FilteredListModel<SkillSlot> _filteredSlots;
 
     #region Accessors
     
@@ -177,7 +178,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     private RunEntity(EntityEntry entry = null, MingYuan mingYuan = null, JingJie? jingJie = null,
-        int? baseHealth = null, int? slotCount = null, SlotListModel slots = null, SlotListModel smirkAgainstSlots = null, SlotListModel afraidAgainstSlots = null)
+        int? health = null, int? slotCount = null, SlotListModel slots = null, SlotListModel smirkAgainstSlots = null, SlotListModel afraidAgainstSlots = null)
     {
         _accessors = new()
         {
@@ -194,7 +195,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         _entry = entry ?? Encyclopedia.EntityCategory.DefaultEntry();
         _mingYuan = mingYuan ?? MingYuan.Default;
         _jingJie = jingJie ?? JingJie.LianQi;
-        _baseHealth = baseHealth ?? HealthFromJingJie[_jingJie];
+        _health = health ?? HealthFromJingJie[_jingJie];
 
         _slots = slots?.Clone() ?? SlotListModel.Default();
         
@@ -218,15 +219,15 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     public static RunEntity Default()
         => new();
     public static RunEntity Trainer()
-        => new(jingJie: JingJie.LianQi, baseHealth: 1000000);
+        => new(jingJie: JingJie.LianQi, health: 1000000);
     public static RunEntity FromJingJieHealth(JingJie jingJie, int health)
-        => new(jingJie: jingJie, baseHealth: health);
+        => new(jingJie: jingJie, health: health);
     public static RunEntity FromTemplate(RunEntity template)
         => new(entry: template._entry, mingYuan: template._mingYuan, jingJie: template._jingJie,
-            baseHealth: template._baseHealth, slotCount: template._slotCount, slots: template._slots, template._smirkAgainstSlots, template._afraidAgainstSlots);
+            health: template._health, slotCount: template._slotCount, slots: template._slots, template._smirkAgainstSlots, template._afraidAgainstSlots);
     public static RunEntity FromHardCoded(JingJie? jingJie = null,
         int? baseHealth = null, int? slotCount = null, RunSkill[] skills = null)
-        => new(jingJie: jingJie, baseHealth: baseHealth, slotCount: slotCount, slots: skills != null ? SlotListModel.FromSkills(skills) : null);
+        => new(jingJie: jingJie, health: baseHealth, slotCount: slotCount, slots: skills != null ? SlotListModel.FromSkills(skills) : null);
 
     public void OnBeforeSerialize() { }
 
@@ -265,21 +266,11 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
             f.GetMin() <= f.GetProgress() && _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
         _activeFormations = new(_formations, f => f.IsActivated());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
-
-        if (_health == 0)
-            _health = _baseHealth + _dHealth;
     }
 
     #endregion
     
     #region Obsolete
-    
-    [SerializeField] private bool _isNormal;
-    [SerializeField] private bool _isElite;
-    [SerializeField] private bool _isBoss;
-    
-    [SerializeField] private int _baseHealth;
-    [SerializeField] [OptionalField(VersionAdded = 2)] private int _dHealth;
 
     #endregion
 }

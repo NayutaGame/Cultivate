@@ -22,7 +22,7 @@ public class SlotView : XView
 
         SkillSlot slot = Get<SkillSlot>();
 
-        bool occupied = slot.IsOccupied;
+        bool occupied = slot.IsOccupied();
         SkillView.gameObject.SetActive(occupied);
         if (!occupied)
             return;

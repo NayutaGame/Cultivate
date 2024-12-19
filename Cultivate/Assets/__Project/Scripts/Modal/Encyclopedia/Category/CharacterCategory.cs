@@ -92,7 +92,7 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         RunEntity oppo = env.Away;
                         SkillSlot slotToPaste = d.Owner.TraversalCurrentSlots()
-                            .FirstObj(slot => slot.Skill == null && oppo.GetSlot(slot.Index).Skill != null);
+                            .FirstObj(slot => slot.Skill == null && oppo.GetSlot(slot.GetIndex()).Skill != null);
 
                         if (slotToPaste == null)
                         {
@@ -100,7 +100,7 @@ public class CharacterCategory : Category<CharacterEntry>
                             return;
                         }
 
-                        SkillSlot slotToCopy = oppo.GetSlot(slotToPaste.Index);
+                        SkillSlot slotToCopy = oppo.GetSlot(slotToPaste.GetIndex());
 
                         slotToPaste.PlacedSkill = PlacedSkill.FromEntryAndJingJie(slotToCopy.Skill.GetEntry(), slotToCopy.Skill.GetJingJie());
 

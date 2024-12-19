@@ -32,11 +32,11 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattleRoomDescriptor roomDescriptor = room.Descriptor as BattleRoomDescriptor;
+                    BattleRoomDescriptor roomDescriptor = room.GetDescriptor() as BattleRoomDescriptor;
                     int baseGoldReward = roomDescriptor._baseGoldReward;
                     int goldValue = Mathf.RoundToInt(baseGoldReward * RandomManager.Range(0.9f, 1.1f));
 
-                    BattlePanelDescriptor A = new(room.Details["Entity"] as RunEntity);
+                    BattlePanelDescriptor A = new(room.GetPredrewRunEntity());
 
                     DiscoverSkillPanelDescriptor B = new(titleText: "胜利");
                     DiscoverSkillPanelDescriptor C = new(titleText: "惜败");
