@@ -1,4 +1,8 @@
 
+using System;
+using UnityEngine;
+
+[Serializable]
 public class RunResult : Result
 {
     public enum RunResultState
@@ -8,10 +12,12 @@ public class RunResult : Result
         Victory,
     }
 
-    public RunResultState State;
+    [SerializeField] private RunResultState _state;
+    public RunResultState GetState() => _state;
+    public void SetState(RunResultState state) => _state = state;
 
     public RunResult()
     {
-        State = RunResultState.Unfinished;
+        _state = RunResultState.Unfinished;
     }
 }

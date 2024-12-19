@@ -6,7 +6,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class RunEnvironment : Addressable, RunClosureOwner
+public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallbackReceiver
 {
     #region Neurons
     
@@ -39,19 +39,18 @@ public class RunEnvironment : Addressable, RunClosureOwner
     [NonSerialized] private Memory _memory;
     [NonSerialized] private RunClosureDict _closureDict;
     [NonSerialized] private Dirty<StageResult> _simulateResult;
+    [NonSerialized] private PanelDescriptor _panel;
+    [NonSerialized] private RunEntity _away;
+    [NonSerialized] private bool _awayIsDummy;
     
     [SerializeReference] private RunConfig _config;
     [SerializeReference] private RunEntity _home;
-    
-    [NonSerialized] private RunEntity _away;
-    
     [SerializeReference] private Map _map;
-    [SerializeField] private Pool<SkillEntry> _skillPool;
-    [SerializeField] private SkillInventory _hand;
+    [SerializeReference] private SkillPool _skillPool;
+    [SerializeReference] private SkillInventory _hand;
     [SerializeField] private BoundedInt _gold;
     [SerializeField] private JingJie _jingJie;
     [SerializeField] private RunResult _result;
-    [SerializeField] private RunResultPanelDescriptor _runResultPanelDescriptor;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -61,8 +60,8 @@ public class RunEnvironment : Addressable, RunClosureOwner
         {
             { "Config",                () => _config },
             { "Home",                  () => _home },
-            { "Map",                   () => Map },
-            { "Hand",                  () => Hand },
+            { "Map",                   () => _map },
+            { "Hand",                  () => _hand },
             { "ActivePanel",           GetActivePanel },
         };
 
@@ -102,9 +101,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
     public void SendEvent(int eventId, ClosureDetails closureDetails) => _closureDict.SendEvent(eventId, closureDetails);
     public StageResult GetSimulateResult() => _simulateResult.Value;
     public RunResult GetResult() => _result;
-    
-    public PanelDescriptor GetActivePanel()
-        => _runResultPanelDescriptor ?? Map.Panel;
+    public PanelDescriptor GetActivePanel() => Panel;
 
     public void SetHome(RunEntity home)
     {
@@ -123,7 +120,6 @@ public class RunEnvironment : Addressable, RunClosureOwner
         _away?.EnvironmentChangedNeuron.Add(FieldChangedNeuron);
     }
 
-    [NonSerialized] private bool _awayIsDummy;
     public bool AwayIsDummy() => _awayIsDummy;
 
     public void Register()
@@ -242,6 +238,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
         DrawSkillsProcedure(new(jingJie: Map.GetEntry()._skillJingJie, count: Map.GetEntry()._skillCount));
 
         Map.Init();
+        InitPanel();
         
         _closureDict.SendEvent(RunClosureDict.START_RUN, d);
     }
@@ -279,102 +276,47 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public PanelDescriptor LegacyReceiveSignalProcedure(Signal signal)
     {
-        Guide guide = Map.Panel.GetGuideDescriptor();
-        guide?.ReceiveSignal(Map.Panel, signal);
+        Guide guide = Panel.GetGuideDescriptor();
+        guide?.ReceiveSignal(Panel, signal);
 
         if (signal is DeckChangedSignal)
-            return Map.Panel;
+            return Panel;
         
-        PanelDescriptor panelDescriptor = Map.Panel.ReceiveSignal(signal);
-        bool runIsUnfinished = _result.State == RunResult.RunResultState.Unfinished;
+        PanelDescriptor panelDescriptor = Panel.ReceiveSignal(signal);
+        bool runIsUnfinished = _result.GetState() == RunResult.RunResultState.Unfinished;
 
         if (!runIsUnfinished)
         {
-            _runResultPanelDescriptor = new RunResultPanelDescriptor(_result);
-            Map.Panel = _runResultPanelDescriptor;
-            return _runResultPanelDescriptor;
+            Panel = new RunResultPanelDescriptor(_result);
+            return Panel;
         }
         
         if (panelDescriptor != null) // descriptor of panel descriptor
         {
-            Map.Panel = panelDescriptor;
-            return Map.Panel;
+            Panel = panelDescriptor;
+            return Panel;
         }
         
-        if (Map.IsLastLevelAndLastStep())
+        if (Map.IsAboutToFinish())
         {
             CommitRunProcedure(RunResult.RunResultState.Victory);
-            return Map.Panel;
+            return Panel;
         }
         
         if (Map.IsLastStep())
         {
             Map.NextLevel();
-            return Map.Panel;
+            return Panel;
         }
         
         Map.NextStep();
-        return Map.Panel;
+        return Panel;
     }
 
     public void GuideProcedure(DeckChangedDetails d)
     {
-        Guide guide = Map.Panel.GetGuideDescriptor();
-        guide?.ReceiveSignal(Map.Panel, new DeckChangedSignal(d.FromIndex, d.ToIndex));
-    }
-    
-    public void ReceiveSignalProcedure(Signal signal)
-    {
-        if (signal is DeckChangedSignal)
-            return;
-        
-        PanelDescriptor panelDescriptor = Map.Panel.ReceiveSignal(signal);
-        bool runIsUnfinished = _result.State == RunResult.RunResultState.Unfinished;
-
-        if (!runIsUnfinished)
-        {
-            _runResultPanelDescriptor = new RunResultPanelDescriptor(_result);
-
-            PanelDescriptor fromPanel = Map.Panel;
-            Map.Panel = _runResultPanelDescriptor;
-            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
-            PanelChangedNeuron.Invoke(panelChangedDetails);
-            return;
-        }
-        
-        if (panelDescriptor != null) // descriptor of panel descriptor
-        {
-            PanelDescriptor fromPanel = Map.Panel;
-            Map.Panel = panelDescriptor;
-            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
-            PanelChangedNeuron.Invoke(panelChangedDetails);
-            return;
-        }
-        
-        if (Map.IsLastLevelAndLastStep())
-        {
-            PanelDescriptor fromPanel = Map.Panel;
-            CommitRunProcedure(RunResult.RunResultState.Victory);
-            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
-            PanelChangedNeuron.Invoke(panelChangedDetails);
-            return;
-        }
-        
-        if (Map.IsLastStep())
-        {
-            PanelDescriptor fromPanel = Map.Panel;
-            Map.NextLevel();
-            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
-            PanelChangedNeuron.Invoke(panelChangedDetails);
-            return;
-        }
-        
-        {
-            PanelDescriptor fromPanel = Map.Panel;
-            Map.NextStep();
-            PanelChangedDetails panelChangedDetails = new(fromPanel, Map.Panel);
-            PanelChangedNeuron.Invoke(panelChangedDetails);
-        }
+        Guide guide = Panel.GetGuideDescriptor();
+        guide?.ReceiveSignal(Panel, new DeckChangedSignal(d.FromIndex, d.ToIndex));
     }
 
     private StageResult Simulate()
@@ -578,7 +520,7 @@ public class RunEnvironment : Addressable, RunClosureOwner
 
     public void CommitRunProcedure(RunResult.RunResultState state)
     {
-        _result.State = state;
+        _result.SetState(state);
     }
 
     public void Combat()
@@ -896,4 +838,86 @@ public class RunEnvironment : Addressable, RunClosureOwner
     // }
 
     #endregion
+
+    #region PanelOperations
+    
+    public PanelDescriptor Panel
+    {
+        get => _panel;
+        set
+        {
+            if (_panel == value)
+                return;
+            _panel?.Exit();
+            _panel = value;
+            _panel?.Enter();
+        }
+    }
+
+    private bool PanelIsFinished(PanelDescriptor panel)
+        => panel == null;
+    
+    public void ReceiveSignalProcedure(Signal signal)
+    {
+        if (signal is DeckChangedSignal)
+            return;
+
+        PanelDescriptor panel = Panel.ReceiveSignal(signal);
+        
+        if (PanelIsFinished(panel))
+        {
+            if (Map.IsAboutToFinish())
+            {
+                CommitRunProcedure(RunResult.RunResultState.Victory);
+                panel = new RunResultPanelDescriptor(_result);
+            }
+            else
+            {
+                Map.Step();
+                panel = Map.CreatePanelFromCurrRoom();
+            }
+        }
+        
+        PanelChangedDetails panelChangedDetails = new(Panel, panel);
+        Panel = panel;
+        PanelChangedNeuron.Invoke(panelChangedDetails);
+    }
+
+    private void InitPanel()
+    {
+        Panel = Map.CreatePanelFromCurrRoom();
+    }
+
+    #endregion
+    
+    public void OnBeforeSerialize() { }
+
+    public void OnAfterDeserialize()
+    {
+        _accessors = new()
+        {
+            { "Config",                () => _config },
+            { "Home",                  () => _home },
+            { "Map",                   () => _map },
+            { "Hand",                  () => _hand },
+            { "ActivePanel",           GetActivePanel },
+        };
+
+        _memory = new();
+        
+        SetHome(RunEntity.Default());
+        SetAway(null);
+        
+        _skillPool = new();
+        _hand = new();
+        _closureDict = new();
+        
+        _result = new();
+        _simulateResult = new(Simulate);
+        
+        FieldChangedNeuron.Add(_simulateResult.SetDirty);
+        DeckChangedNeuron.Add(GuideProcedure);
+        
+        InitPanel();
+    }
 }

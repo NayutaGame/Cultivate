@@ -15,7 +15,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
     [SerializeReference] public EntityPool EntityPool;
     [SerializeReference] public RoomPool RoomPool;
     [SerializeReference] public RoomPool InsertedRoomPool;
-    [NonSerialized] private PanelDescriptor _panel;
 
     #region Core
     
@@ -30,6 +29,8 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
         _entry = entry;
     }
+    
+    public MapEntry GetEntry() => _entry;
 
     public void Init()
     {
@@ -43,9 +44,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
         _stepIndex = 0;
         _levelIndex = 0;
-        
-        SetPanelFromCurrRoom();
-        GetCurrRoom().SetState(Room.RoomState.Curr);
     }
 
     private void InitEntityPool()
@@ -62,15 +60,26 @@ public class Map : Addressable, ISerializationCallbackReceiver
         RoomPool.Shuffle();
     }
 
+    public void Step()
+    {
+        if (IsAboutToFinish())
+            throw new Exception("Shouldn't be here");
+
+        if (IsLastStep())
+        {
+            NextLevel();
+            return;
+        }
+
+        NextStep();
+    }
+
     public void NextLevel()
     {
         GetCurrRoom().SetState(Room.RoomState.Past);
         
         _levelIndex++;
         _stepIndex = 0;
-        
-        SetPanelFromCurrRoom();
-        GetCurrRoom().SetState(Room.RoomState.Curr);
     }
 
     public void NextStep()
@@ -78,9 +87,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
         GetCurrRoom().SetState(Room.RoomState.Past);
         
         _stepIndex++;
-
-        SetPanelFromCurrRoom();
-        GetCurrRoom().SetState(Room.RoomState.Curr);
     }
 
     public void InsertRoom(RoomEntry roomEntry)
@@ -89,33 +95,21 @@ public class Map : Addressable, ISerializationCallbackReceiver
         InsertedRoomPool.Shuffle();
     }
 
+    public PanelDescriptor CreatePanelFromCurrRoom()
+    {
+        var panel = GetCurrRoom().CreatePanel(this);
+        GetCurrRoom().SetState(Room.RoomState.Curr);
+        return panel;
+    }
+
     #endregion
 
     #region Accessors
     
-    public MapEntry GetEntry() => _entry;
-    public PanelDescriptor Panel
-    {
-        get => _panel;
-        set
-        {
-            if (_panel == value)
-                return;
-            _panel?.Exit();
-            _panel = value;
-            _panel?.Enter();
-        }
-    }
-
-    public void SetPanelFromCurrRoom()
-    {
-        Panel = GetCurrRoom().CreatePanel(this);
-    }
-    
     public Level GetCurrLevel() => _levels[_levelIndex];
     public Room GetCurrRoom() => GetCurrLevel().GetRoom(_stepIndex);
 
-    public bool IsLastLevelAndLastStep()
+    public bool IsAboutToFinish()
         => _levels.Length - 1 == _levelIndex && IsLastStep();
 
     public bool IsLastStep()

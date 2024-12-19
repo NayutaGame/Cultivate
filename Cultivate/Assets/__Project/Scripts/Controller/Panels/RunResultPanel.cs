@@ -22,7 +22,7 @@ public class RunResultPanel : Panel
         base.Refresh();
 
         RunResultPanelDescriptor panelDescriptor = RunManager.Instance.Environment.GetActivePanel() as RunResultPanelDescriptor;
-        if (panelDescriptor.RunResult.State == RunResult.RunResultState.Victory)
+        if (panelDescriptor.RunResult.GetState() == RunResult.RunResultState.Victory)
         {
             TitleText.text = "胜利";
         }

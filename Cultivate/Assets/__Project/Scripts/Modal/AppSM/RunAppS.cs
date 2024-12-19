@@ -18,7 +18,7 @@ public class RunAppS : AppS
 
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
         runCanvas.AwakeFunction();
-        runCanvas.LegacySetPanelS(PanelS.FromPanelDescriptor(RunManager.Instance.Environment.Map.Panel));
+        runCanvas.LegacySetPanelS(PanelS.FromPanelDescriptor(RunManager.Instance.Environment.Panel));
         runCanvas.TopBar.Refresh();
         CanvasManager.Instance.Curtain.GetAnimator().SetState(1);
         await UniTask.WaitForSeconds(0.1f);

@@ -1,6 +1,7 @@
 
 using System;
 
+[Serializable]
 public class SkillInventory : ListModel<RunSkill>
 {
     public override void Add(RunSkill item)

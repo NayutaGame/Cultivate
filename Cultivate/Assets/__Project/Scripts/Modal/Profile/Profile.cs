@@ -46,6 +46,6 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public void WriteRunResult(RunResult result)
     {
-        Debug.Log(result.State);
+        Debug.Log(result.GetState());
     }
 }
