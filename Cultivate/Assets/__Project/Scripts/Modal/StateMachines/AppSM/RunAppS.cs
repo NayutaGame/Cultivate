@@ -12,6 +12,7 @@ public class RunAppS : AppS
         RunManager.Instance.SetEnvironmentFromConfig(runConfig);
 
         // RunManager.Instance.SetEnvironmentFromProfile();
+        // StartRunProcedure
         
         RunManager.Instance.SetBackgroundFromJingJie(JingJie.LianQi);
         StageManager.Instance.SetHomeFromCharacterProfile(runConfig.CharacterProfile);

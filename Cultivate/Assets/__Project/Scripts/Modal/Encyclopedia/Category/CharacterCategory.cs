@@ -14,7 +14,7 @@ public class CharacterCategory : Category<CharacterEntry>
                     new(RunClosureDict.START_RUN, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
-                        RunDetails d = (RunDetails)eventDetails;
+                        StartRunDetails d = (StartRunDetails)eventDetails;
                     
                         env.SetMaxMingYuanProcedure(12);
                         env.SetDMingYuanProcedure(2);

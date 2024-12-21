@@ -14,7 +14,7 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     [NonSerialized] public CostResult CostResult;
     
     [SerializeField] private int _index;
-    [SerializeField] [OptionalField(VersionAdded = 4)] private bool _hidden;
+    [SerializeField] private bool _hidden;
     [SerializeReference] private RunSkill _skill;
 
     private Dictionary<string, Func<object>> _accessors;

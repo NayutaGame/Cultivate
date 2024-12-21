@@ -44,12 +44,12 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     [NonSerialized] private bool _awayIsDummy;
     
     [SerializeReference] private RunConfig _config;
-    [SerializeReference] private RunEntity _home;
+    [SerializeField] private JingJie _jingJie;
     [SerializeReference] private Map _map;
     [SerializeReference] private SkillPool _skillPool;
     [SerializeReference] private SkillInventory _hand;
     [SerializeField] private BoundedInt _gold;
-    [SerializeField] private JingJie _jingJie;
+    [SerializeReference] private RunEntity _home;
     [SerializeField] private RunResult _result;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -65,22 +65,20 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
             { "ActivePanel",           GetActivePanel },
         };
 
-        _gold = new(0);
         _config = config;
-
-        _memory = new();
-
-        SetHome(RunEntity.Default());
-        SetAway(null);
-
         _map = new(_config.MapEntry);
         _skillPool = new();
         _hand = new();
-        _closureDict = new();
-
+        _gold = new(0);
         _result = new();
+
+        _memory = new();
+        _closureDict = new();
         _simulateResult = new(Simulate);
 
+        SetHome(RunEntity.Default());
+        SetAway(null);
+        
         FieldChangedNeuron.Add(_simulateResult.SetDirty);
         DeckChangedNeuron.Add(GuideProcedure);
     }
@@ -227,7 +225,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     #region Procedures
 
-    public void StartRunProcedure(RunDetails d)
+    public void StartRunProcedure(StartRunDetails d)
     {
         InitSkillPool();
         
@@ -241,6 +239,13 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         InitPanel();
         
         _closureDict.SendEvent(RunClosureDict.START_RUN, d);
+    }
+
+    public void ContinueRunProcedure(ContinueRunDetails d)
+    {
+        SetJingJieProcedure(_jingJie);
+        
+        InitPanel();
     }
 
     private void InitSkillPool()
@@ -904,20 +909,13 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         };
 
         _memory = new();
+        _closureDict = new();
+        _simulateResult = new(Simulate);
         
         SetHome(RunEntity.Default());
         SetAway(null);
         
-        _skillPool = new();
-        _hand = new();
-        _closureDict = new();
-        
-        _result = new();
-        _simulateResult = new(Simulate);
-        
         FieldChangedNeuron.Add(_simulateResult.SetDirty);
         DeckChangedNeuron.Add(GuideProcedure);
-        
-        InitPanel();
     }
 }

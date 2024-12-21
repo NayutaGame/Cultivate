@@ -31,7 +31,15 @@ public class RunManager : Singleton<RunManager>, Addressable
         Environment?.Unregister();
         Environment = RunEnvironment.FromConfig(config);
         Environment.Register();
-        Environment.StartRunProcedure(new RunDetails());
+        Environment.StartRunProcedure(new StartRunDetails());
+    }
+
+    public void SetEnvironmentFromProfile(RunEnvironment env)
+    {
+        Environment?.Unregister();
+        Environment = env;
+        Environment.Register();
+        Environment.ContinueRunProcedure(new ContinueRunDetails());
     }
 
     public void SetEnvironmentToNull()

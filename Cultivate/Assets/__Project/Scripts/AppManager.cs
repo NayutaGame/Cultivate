@@ -26,7 +26,7 @@ public class AppManager : Singleton<AppManager>, Addressable
     public StageManager StageManager;
 
     public FormationInventory FormationInventory;
-    public SkillInventory SkillInventory;
+    [HideInInspector] public SkillInventory SkillInventory;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
