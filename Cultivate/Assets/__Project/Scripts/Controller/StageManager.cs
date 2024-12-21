@@ -60,7 +60,7 @@ public class StageManager : Singleton<StageManager>, Addressable
     {
         _task = _environment.CoreProcedure();
         await _task;
-        AppManager.Pop();
+        AppManager.Instance.Pop();
     }
 
     public async UniTask Exit()

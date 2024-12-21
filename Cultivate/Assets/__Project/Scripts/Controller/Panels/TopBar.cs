@@ -81,7 +81,7 @@ public class TopBar : MonoBehaviour
 
     private void OpenMenu()
     {
-        AppManager.Push(new MenuAppS());
+        AppManager.Instance.Push(AppStateMachine.MENU);
     }
     
     private void PointerEnterJingJieText(PointerEventData d)

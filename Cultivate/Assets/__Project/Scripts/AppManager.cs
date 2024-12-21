@@ -16,7 +16,7 @@ public class AppManager : Singleton<AppManager>, Addressable
 
     [SerializeField] private AppCanvas AppCanvas;
 
-    private AppSM _sm;
+    private AppStateMachine _appStateMachine;
     public Settings Settings;
 
     private Encyclopedia Encyclopedia;
@@ -76,13 +76,13 @@ public class AppManager : Singleton<AppManager>, Addressable
         RunManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);
-        
-        _sm = new AppSM();
+
+        _appStateMachine = new();
     }
 
     private void Start()
     {
-        Push(new TitleAppS());
+        _appStateMachine.Push(true, AppStateMachine.TITLE, null);
     }
 
     private void Update()
@@ -91,14 +91,12 @@ public class AppManager : Singleton<AppManager>, Addressable
             ExitGame();
     }
 
-    public static void Push(AppS state)
-    {
-        Instance._sm.Push(state);
-    }
+    public void Push(int state, object args = null) => _appStateMachine.Push(true, state, args);
 
-    public static void Pop(int times = 1)
+    public void Pop(int times = 1)
     {
-        Instance._sm.Pop(times);
+        for(int i = 0; i < times; i++)
+            _appStateMachine.Pop(true, null);
     }
 
     public static void ExitGame()

@@ -36,7 +36,7 @@ public class TitlePanel : Panel
     private void FirstTime()
     {
         AppManager.Instance.ProfileManager.RunConfigForm = RunConfigForm.FirstTime();
-        AppManager.Push(new RunAppS());
+        AppManager.Instance.Push(AppStateMachine.RUN);
     }
 
     private void Continue()
@@ -56,7 +56,7 @@ public class TitlePanel : Panel
 
     private void OpenMenu()
     {
-        AppManager.Push(new MenuAppS());
+        AppManager.Instance.Push(AppStateMachine.MENU);
     }
 
     private void ExitGame()

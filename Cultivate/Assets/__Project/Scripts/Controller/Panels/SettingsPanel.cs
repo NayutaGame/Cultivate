@@ -81,12 +81,12 @@ public class SettingsPanel : Panel
 
     private void Resume()
     {
-        AppManager.Pop();
+        AppManager.Instance.Pop();
     }
 
     private void ToTitle()
     {
-        AppManager.Pop(2);
+        AppManager.Instance.Pop(2);
     }
 
     private void ToDesktop()

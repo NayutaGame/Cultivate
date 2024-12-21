@@ -5,7 +5,7 @@ using System.Security;
 using UnityEngine;
 
 [Serializable]
-public class RunConfig : Config, Addressable, ISerializationCallbackReceiver
+public class RunConfig : Addressable, ISerializationCallbackReceiver
 {
     [SerializeReference] public CharacterProfile CharacterProfile;
     [SerializeReference] public DifficultyProfile DifficultyProfile;

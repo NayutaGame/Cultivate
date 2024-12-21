@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class RunResult : Result
+public class RunResult
 {
     public enum RunResultState
     {

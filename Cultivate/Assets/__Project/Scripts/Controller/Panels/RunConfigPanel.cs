@@ -58,7 +58,7 @@ public class RunConfigPanel : Panel
             _selection.Get<CharacterProfile>(),
             DifficultyPickerView.GetSelection());
 
-        AppManager.Push(new RunAppS());
+        AppManager.Instance.Push(AppStateMachine.RUN);
     }
 
     private void Select(int i)

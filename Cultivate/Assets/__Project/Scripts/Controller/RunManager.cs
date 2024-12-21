@@ -50,7 +50,7 @@ public class RunManager : Singleton<RunManager>, Addressable
 
     public void ReturnToTitle()
     {
-        AppManager.Pop();
+        AppManager.Instance.Pop();
     }
 
     public void SetBackgroundFromJingJie(JingJie j)
