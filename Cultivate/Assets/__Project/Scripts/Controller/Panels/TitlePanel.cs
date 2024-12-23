@@ -1,12 +1,13 @@
 
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class TitlePanel : Panel
 {
     public Button ContinueButton;
     public Button StartRunButton;
+    public Button EntityEditorButton;
+    public Button SkillBrowserButton;
     public Button SettingsButton;
     public Button ExitButton;
 
@@ -27,6 +28,10 @@ public class TitlePanel : Panel
         ContinueButton.onClick.AddListener(Continue);
         SettingsButton.onClick.RemoveAllListeners();
         SettingsButton.onClick.AddListener(OpenMenu);
+        EntityEditorButton.onClick.RemoveAllListeners();
+        EntityEditorButton.onClick.AddListener(OpenEntityEditorPanel);
+        SkillBrowserButton.onClick.RemoveAllListeners();
+        SkillBrowserButton.onClick.AddListener(OpenSkillBrowserPanel);
         StartRunButton.onClick.RemoveAllListeners();
         StartRunButton.onClick.AddListener(StartRun);
         ExitButton.onClick.RemoveAllListeners();
@@ -60,6 +65,16 @@ public class TitlePanel : Panel
     {
         await GetAnimator().SetStateAsync(0);
         await CanvasManager.Instance.AppCanvas.RunConfigPanel.GetAnimator().SetStateAsync(1);
+    }
+
+    private void OpenEntityEditorPanel()
+    {
+        CanvasManager.Instance.AppCanvas.EntityEditorPanel.Show();
+    }
+
+    private void OpenSkillBrowserPanel()
+    {
+        CanvasManager.Instance.AppCanvas.SkillBrowserPanel.Show();
     }
 
     private void OpenMenu()

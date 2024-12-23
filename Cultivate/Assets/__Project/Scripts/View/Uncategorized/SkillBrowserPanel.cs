@@ -1,5 +1,6 @@
 
 using CLLibrary;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SkillBrowserPanel : Panel
@@ -8,6 +9,8 @@ public class SkillBrowserPanel : Panel
 
     public ListView SkillInventoryView;
     public Button[] SortButtons;
+
+    [SerializeField] private Button ReturnButton;
 
     public override void AwakeFunction()
     {
@@ -22,6 +25,9 @@ public class SkillBrowserPanel : Panel
             SortButtons[i].onClick.RemoveAllListeners();
             SortButtons[i].onClick.AddListener(() => SortByComparisonId(comparisonId));
         });
+
+        ReturnButton.onClick.RemoveAllListeners();
+        ReturnButton.onClick.AddListener(Hide);
     }
 
     public override void Refresh()
@@ -35,5 +41,15 @@ public class SkillBrowserPanel : Panel
         SkillInventory inventory = _address.Get<SkillInventory>();
         inventory.SortByComparisonId(i);
         Refresh();
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }

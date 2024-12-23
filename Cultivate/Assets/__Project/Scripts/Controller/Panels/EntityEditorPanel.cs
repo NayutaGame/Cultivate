@@ -26,6 +26,8 @@ public class EntityEditorPanel : Panel
     [SerializeField] private Button SaveButton;
     [SerializeField] private Button LoadButton;
 
+    [SerializeField] private Button ReturnButton;
+
     public override void AwakeFunction()
     {
         base.AwakeFunction();
@@ -73,6 +75,9 @@ public class EntityEditorPanel : Panel
 
         LoadButton.onClick.RemoveAllListeners();
         LoadButton.onClick.AddListener(Load);
+        
+        ReturnButton.onClick.RemoveAllListeners();
+        ReturnButton.onClick.AddListener(Hide);
     }
 
     public override void Refresh()
@@ -240,7 +245,17 @@ public class EntityEditorPanel : Panel
     private void Load()
     {
         EditorManager.Instance.Load();
-        AwakeFunction();
+        CheckAwake();
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 
     // private bool TryMerge(IInteractable from, IInteractable to)

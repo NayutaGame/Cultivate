@@ -80,7 +80,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
         
         AppCanvas.Configure();
-        Curtain.AwakeFunction();
+        Curtain.CheckAwake();
     }
 
     public void RefreshGuide()

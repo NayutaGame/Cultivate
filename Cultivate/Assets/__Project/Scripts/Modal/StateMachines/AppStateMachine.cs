@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 
 public class AppStateMachine
 {
-    public static readonly int GENERIC = -1;
+    public static readonly int ANY = -1;
     
     public static readonly int APP = 0;
     public static readonly int TITLE = 1;
@@ -73,10 +73,12 @@ public class AppStateMachine
         this[MENU, RUN] = FromMenuToRun;
         this[RUN, STAGE] = FromRunToStage;
         this[STAGE, RUN] = FromStageToRun;
-        this[GENERIC, TITLE] = FromGenericToTitle;
+        this[ANY, TITLE] = FromAnyToTitle;
+        this[STAGE, TITLE] = FromStageToTitle;
+        this[TITLE, STAGE] = FromTitleToStage;
     }
 
-    private async UniTask FromGenericToTitle(bool isAwait, object args)
+    private async UniTask FromAnyToTitle(bool isAwait, object args)
     {
         CanvasManager.Instance.AppCanvas.TitlePanel.Refresh();
     }
@@ -210,6 +212,47 @@ public class AppStateMachine
         
         CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
         CanvasManager.Instance.RunCanvas.Refresh();
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
+    }
+    
+    private async UniTask FromTitleToStage(bool isAwait, object args)
+    {
+        StageConfig stageConfig = args as StageConfig;
+        
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
+        CanvasManager.Instance.AppCanvas.gameObject.SetActive(false);
+        
+        StageManager.Instance.SetHomeFromCharacterProfile(RunManager.Instance.Environment.GetRunConfig().CharacterProfile);
+        
+        
+        
+        
+
+        AppManager.Instance.StageManager.gameObject.SetActive(true);
+        
+        StageManager.Instance.SetEnvironmentFromConfig(stageConfig);
+        StageManager.Instance.SetAwayFromRunEntity(stageConfig.Away);
+        
+        CanvasManager.Instance.StageCanvas.Configure();
+        CanvasManager.Instance.StageCanvas.gameObject.SetActive(true);
+        CanvasManager.Instance.StageCanvas.InitialSetup();
+        StageManager.Instance.Enter();
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
+    }
+    
+    private async UniTask FromStageToTitle(bool isAwait, object args)
+    {
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
+        CanvasManager.Instance.StageCanvas.gameObject.SetActive(false);
+        AppManager.Instance.StageManager.gameObject.SetActive(false);
+        await StageManager.Instance.Exit();
+        
+        
+        
+        
+        
+        CanvasManager.Instance.AppCanvas.gameObject.SetActive(true);
+        // CanvasManager.Instance.AppCanvas.Refresh();
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
     }
 }

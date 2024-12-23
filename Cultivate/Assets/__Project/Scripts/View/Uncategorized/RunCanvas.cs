@@ -10,7 +10,6 @@ public class RunCanvas : Panel
     public DeckPanel DeckPanel;
     public MapPanel MapPanel;
     public Button MapButton;
-    public ReservedLayer ReservedLayer;
     public TopBar TopBar;
     public ConsolePanel ConsolePanel;
 
@@ -61,10 +60,7 @@ public class RunCanvas : Panel
 
         DeckPanel.CheckAwake();
         MapPanel.CheckAwake();
-
-        ReservedLayer.Configure();
         TopBar.Configure();
-
         ConsolePanel.CheckAwake();
 
         if (!Application.isEditor)
@@ -84,7 +80,6 @@ public class RunCanvas : Panel
 
         DeckPanel.Refresh();
         MapPanel.Refresh();
-        ReservedLayer.Refresh();
         // TopBar.Refresh();
         ConsolePanel.Refresh();
     }

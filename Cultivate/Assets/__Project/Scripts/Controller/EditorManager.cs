@@ -51,6 +51,8 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     [NonSerialized] public StageResult SimulateResult;
 
+    [NonSerialized] private RunConfig _config;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public override void DidAwake()
@@ -73,15 +75,21 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     public void Combat()
     {
-        StageEnvironment.Combat(StageConfig.ForEditor(Home, Away, null));
+        StageEnvironment.Combat(StageConfig.ForEditor(Home, Away, _config));
     }
 
     private void SimulateProcedure()
     {
+        if (RunManager.Instance.Environment == null)
+        {
+            _config = new(RunConfigForm.FirstTime());
+            RunManager.Instance.SetEnvironmentFromConfig(_config);
+        }
+        
         PlacementProcedure();
         FormationProcedure();
         
-        SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(Home, Away, null));
+        SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(Home, Away, _config));
     }
 
     private void PlacementProcedure()
