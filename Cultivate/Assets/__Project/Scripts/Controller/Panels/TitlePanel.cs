@@ -1,5 +1,6 @@
 
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TitlePanel : Panel
@@ -21,26 +22,33 @@ public class TitlePanel : Panel
     public override void AwakeFunction()
     {
         base.AwakeFunction();
-
+        
         ContinueButton.onClick.RemoveAllListeners();
-        StartRunButton.onClick.RemoveAllListeners();
-        SettingsButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.RemoveAllListeners();
-
         ContinueButton.onClick.AddListener(Continue);
-        StartRunButton.onClick.AddListener(StartRun);
+        SettingsButton.onClick.RemoveAllListeners();
         SettingsButton.onClick.AddListener(OpenMenu);
+        StartRunButton.onClick.RemoveAllListeners();
+        StartRunButton.onClick.AddListener(StartRun);
+        ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(ExitGame);
+    }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        Profile currProfile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        ContinueButton.interactable = currProfile.RunEnvironment != null;
     }
 
     private void FirstTime()
     {
-        AppManager.Instance.ProfileManager.RunConfigForm = RunConfigForm.FirstTime();
-        AppManager.Instance.Push(AppStateMachine.RUN);
+        AppManager.Instance.Push(AppStateMachine.RUN, RunConfigForm.FirstTime());
     }
 
     private void Continue()
     {
+        AppManager.Instance.Push(AppStateMachine.RUN, AppManager.Instance.ProfileManager.GetCurrProfile().RunEnvironment);
     }
 
     private void StartRun()

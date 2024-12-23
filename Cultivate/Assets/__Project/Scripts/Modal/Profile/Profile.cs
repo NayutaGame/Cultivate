@@ -12,10 +12,11 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public DifficultyProfileList DifficultyProfileList => _difficultyProfileList;
     
     // LevelProfile, used to track unlocked skills
-    // EnvironmentProfile, used to reproduce RunEnvironment
     // ResultProfile
+    
+    // bool _firstTime;
 
-    [SerializeField] public RunEnvironment Environment;
+    [SerializeField] public RunEnvironment RunEnvironment;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();

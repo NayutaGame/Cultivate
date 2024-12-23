@@ -1,9 +1,10 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
-public class ProfileList : ListModel<Profile>, Addressable
+public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallbackReceiver
 {
     public static readonly string Filename = "/ProfileList.json";
 
@@ -21,5 +22,15 @@ public class ProfileList : ListModel<Profile>, Addressable
 
         Add(Profile.Default());
         CurrentIndex = 0;
+    }
+    
+    public void OnBeforeSerialize() { }
+
+    public void OnAfterDeserialize()
+    {
+        _accessors = new()
+        {
+            { "Current",           GetCurrent },
+        };
     }
 }

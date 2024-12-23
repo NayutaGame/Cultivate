@@ -5,7 +5,7 @@ using System.Security;
 using UnityEngine;
 
 [Serializable]
-public class Level : Addressable
+public class Level : Addressable, ISerializationCallbackReceiver
 {
     [SerializeReference] private RoomListModel _rooms;
     
@@ -27,4 +27,14 @@ public class Level : Addressable
     
     public Room GetRoom(int stepIndex) => _rooms[stepIndex];
     public int GetRoomCount() => _rooms.Count();
+    
+    public void OnBeforeSerialize() { }
+
+    public void OnAfterDeserialize()
+    {
+        _accessors = new()
+        {
+            { "Rooms", () => _rooms },
+        };
+    }
 }

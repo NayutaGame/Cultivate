@@ -1,6 +1,7 @@
 
 public class RunConfigForm
 {
+    // this form should contains: selected character, selected difficulty, selected mutators, selected seed
     public CharacterProfile CharacterProfile;
     public DifficultyProfile DifficultyProfile;
 

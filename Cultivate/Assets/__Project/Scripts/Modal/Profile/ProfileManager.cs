@@ -8,8 +8,6 @@ public class ProfileManager : Addressable
     private ProfileList _profileList;
     public ProfileList ProfileList => _profileList;
 
-    public RunConfigForm RunConfigForm;
-
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public ProfileManager()
@@ -24,6 +22,7 @@ public class ProfileManager : Addressable
 
     public void Save()
     {
+        RunManager.Instance.Environment?.Save();
         FileUtility.WriteToFile(_profileList, ProfileList.Filename);
     }
 
@@ -34,4 +33,7 @@ public class ProfileManager : Addressable
 
     public static void WriteRunResultToCurrent(RunResult result)
         => AppManager.Instance.ProfileManager._profileList.GetCurrent().WriteRunResult(result);
+
+    public Profile GetCurrProfile()
+        => _profileList.GetCurrent();
 }

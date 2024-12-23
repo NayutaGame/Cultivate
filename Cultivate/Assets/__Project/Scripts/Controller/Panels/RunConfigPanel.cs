@@ -53,12 +53,8 @@ public class RunConfigPanel : Panel
 
     private void StartRun()
     {
-        // this form should contains: selected character, selected difficulty, selected mutators, selected seed
-        AppManager.Instance.ProfileManager.RunConfigForm = new RunConfigForm(
-            _selection.Get<CharacterProfile>(),
-            DifficultyPickerView.GetSelection());
-
-        AppManager.Instance.Push(AppStateMachine.RUN);
+        RunConfigForm form = new(_selection.Get<CharacterProfile>(), DifficultyPickerView.GetSelection());
+        AppManager.Instance.Push(AppStateMachine.RUN, form);
     }
 
     private void Select(int i)

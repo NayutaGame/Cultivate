@@ -82,7 +82,7 @@ public class AppManager : Singleton<AppManager>, Addressable
 
     private void Start()
     {
-        _appStateMachine.Push(true, AppStateMachine.TITLE, null);
+        Push(AppStateMachine.TITLE);
     }
 
     private void Update()

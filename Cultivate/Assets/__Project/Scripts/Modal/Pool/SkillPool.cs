@@ -16,7 +16,7 @@ public class SkillPool : Pool<SkillEntry>, ISerializationCallbackReceiver
         for (int i = 0; i < tempRoomList.Length; i++)
         {
             TryPopItem(out SkillEntry popped);
-            tempRoomList[i] = string.IsNullOrEmpty(popped.GetName()) ? null : Encyclopedia.SkillCategory[popped.GetName()];
+            tempRoomList[i] = string.IsNullOrEmpty(popped.GetId()) ? null : Encyclopedia.SkillCategory[popped.GetId()];
         }
 
         Populate(tempRoomList);

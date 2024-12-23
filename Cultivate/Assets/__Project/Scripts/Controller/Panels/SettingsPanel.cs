@@ -86,11 +86,13 @@ public class SettingsPanel : Panel
 
     private void ToTitle()
     {
+        AppManager.Instance.ProfileManager.Save();
         AppManager.Instance.Pop(2);
     }
 
     private void ToDesktop()
     {
+        AppManager.Instance.ProfileManager.Save();
         AppManager.ExitGame();
     }
 

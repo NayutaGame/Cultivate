@@ -6,11 +6,15 @@ using Cysharp.Threading.Tasks;
 
 public class AppStateMachine
 {
+    public static readonly int GENERIC = -1;
+    
     public static readonly int APP = 0;
     public static readonly int TITLE = 1;
     public static readonly int MENU = 2;
     public static readonly int RUN = 3;
     public static readonly int STAGE = 4;
+
+    public static readonly int COUNT = 5;
     
     private Table<Func<bool, object, UniTask>> _table;
     private Stack<int> _stack;
@@ -58,7 +62,7 @@ public class AppStateMachine
         _stack = new();
         _stack.Push(0);
         
-        _table = new(5);
+        _table = new(COUNT);
         this[APP, TITLE] = FromAppToTitle;
         this[TITLE, APP] = FromTitleToApp;
         this[TITLE, MENU] = FromTitleToMenu;
@@ -69,6 +73,12 @@ public class AppStateMachine
         this[MENU, RUN] = FromMenuToRun;
         this[RUN, STAGE] = FromRunToStage;
         this[STAGE, RUN] = FromStageToRun;
+        this[GENERIC, TITLE] = FromGenericToTitle;
+    }
+
+    private async UniTask FromGenericToTitle(bool isAwait, object args)
+    {
+        CanvasManager.Instance.AppCanvas.TitlePanel.Refresh();
     }
 
     private async UniTask FromAppToTitle(bool isAwait, object args)
@@ -99,19 +109,24 @@ public class AppStateMachine
 
     private async UniTask FromTitleToRun(bool isAwait, object args)
     {
-        RunConfigForm form = AppManager.Instance.ProfileManager.RunConfigForm;
         await CanvasManager.Instance.AppCanvas.TitlePanel.GetAnimator().SetStateAsync(0);
-
-
-
-        RunConfig runConfig = new(form);
-        RunManager.Instance.SetEnvironmentFromConfig(runConfig);
-
-        // RunManager.Instance.SetEnvironmentFromProfile();
-        // StartRunProcedure
+        
+        if (args is RunConfigForm form)
+        {
+            RunConfig runConfig = new(form);
+            RunManager.Instance.SetEnvironmentFromConfig(runConfig);
+        }
+        else if (args is RunEnvironment env)
+        {
+            RunManager.Instance.SetEnvironmentFromSaved(env);
+        }
+        else
+        {
+            throw new Exception("Shouldn't be here");
+        }
         
         RunManager.Instance.SetBackgroundFromJingJie(JingJie.LianQi);
-        StageManager.Instance.SetHomeFromCharacterProfile(runConfig.CharacterProfile);
+        StageManager.Instance.SetHomeFromCharacterProfile(RunManager.Instance.Environment.GetRunConfig().CharacterProfile);
 
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
         runCanvas.AwakeFunction();

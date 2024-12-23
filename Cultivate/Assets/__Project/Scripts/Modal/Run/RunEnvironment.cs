@@ -9,28 +9,51 @@ using UnityEngine;
 public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallbackReceiver
 {
     #region Neurons
+
+    private void InitNeurons()
+    {
+        EquipNeuron = new();
+        SwapNeuron = new();
+        UnequipNeuron = new();
+        MergeNeuron = new();
+        GainSkillNeuron = new();
+        PickDiscoveredSkillNeuron = new();
+        GainSkillsNeuron = new();
+        BuySkillNeuron = new();
+        ExchangeSkillNeuron = new();
+        GachaNeuron = new();
+        SelectOptionNeuron = new();
+        PanelChangedNeuron = new();
+        DeckChangedNeuron = new();
+        FieldChangedNeuron = new();
+        GainMingYuanNeuron = new();
+        LoseMingYuanNeuron = new();
+        GainGoldNeuron = new();
+        LoseGoldNeuron = new();
+        GainDHealthNeuron = new();
+        LoseDHealthNeuron = new();
+    }
     
-    public Neuron<EquipDetails> EquipNeuron = new();
-    public Neuron<SwapDetails> SwapNeuron = new();
-    public Neuron<UnequipDetails> UnequipNeuron = new();
-    public Neuron<MergeDetails> MergeNeuron = new();
-    public Neuron<GainSkillDetails> GainSkillNeuron = new();
-    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron = new();
-    public Neuron<GainSkillsDetails> GainSkillsNeuron = new();
-    public Neuron<BuySkillDetails> BuySkillNeuron = new();
-    public Neuron<ExchangeSkillDetails> ExchangeSkillNeuron = new();
-    public Neuron<GachaDetails> GachaNeuron = new();
-    public Neuron<SelectOptionDetails> SelectOptionNeuron = new();
-    public Neuron<PanelChangedDetails> PanelChangedNeuron = new();
-    public Neuron<DeckChangedDetails> DeckChangedNeuron = new();
-    public Neuron FieldChangedNeuron = new();
-    
-    public Neuron<int> GainMingYuanNeuron = new();
-    public Neuron<int> LoseMingYuanNeuron = new();
-    public Neuron<int> GainGoldNeuron = new();
-    public Neuron<int> LoseGoldNeuron = new();
-    public Neuron<int> GainDHealthNeuron = new();
-    public Neuron<int> LoseDHealthNeuron = new();
+    public Neuron<EquipDetails> EquipNeuron;
+    public Neuron<SwapDetails> SwapNeuron;
+    public Neuron<UnequipDetails> UnequipNeuron;
+    public Neuron<MergeDetails> MergeNeuron;
+    public Neuron<GainSkillDetails> GainSkillNeuron;
+    public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron;
+    public Neuron<GainSkillsDetails> GainSkillsNeuron;
+    public Neuron<BuySkillDetails> BuySkillNeuron;
+    public Neuron<ExchangeSkillDetails> ExchangeSkillNeuron;
+    public Neuron<GachaDetails> GachaNeuron;
+    public Neuron<SelectOptionDetails> SelectOptionNeuron;
+    public Neuron<PanelChangedDetails> PanelChangedNeuron;
+    public Neuron<DeckChangedDetails> DeckChangedNeuron;
+    public Neuron FieldChangedNeuron;
+    public Neuron<int> GainMingYuanNeuron;
+    public Neuron<int> LoseMingYuanNeuron;
+    public Neuron<int> GainGoldNeuron;
+    public Neuron<int> LoseGoldNeuron;
+    public Neuron<int> GainDHealthNeuron;
+    public Neuron<int> LoseDHealthNeuron;
     
     #endregion
 
@@ -64,6 +87,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
             { "Hand",                  () => _hand },
             { "ActivePanel",           GetActivePanel },
         };
+        
+        InitNeurons();
 
         _config = config;
         _map = new(_config.MapEntry);
@@ -89,7 +114,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     #endregion
 
     #region Accessors
-    
+
+    public RunConfig GetRunConfig() => _config;
     public Map Map => _map;
     public RunEntity Home => _home;
     public RunEntity Away => _away;
@@ -826,9 +852,10 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     #region Profile
 
-    // public void Save()
-    // {
-    // }
+    public void Save()
+    {
+        AppManager.Instance.ProfileManager.GetCurrProfile().RunEnvironment = this;
+    }
 
     public void PrintJson()
     {
@@ -907,6 +934,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
             { "Hand",                  () => _hand },
             { "ActivePanel",           GetActivePanel },
         };
+        
+        InitNeurons();
 
         _memory = new();
         _closureDict = new();
