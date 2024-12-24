@@ -1,6 +1,8 @@
 
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -21,10 +23,7 @@ public class EntityEditorPanel : Panel
     [SerializeField] private TMP_Text Result;
     [SerializeField] private Button CombatButton;
 
-    [SerializeField] private Button InsertButton;
-    [SerializeField] private Button RemoveButton;
-    [SerializeField] private Button SaveButton;
-    [SerializeField] private Button LoadButton;
+    [SerializeField] private Button[] Buttons;
 
     [SerializeField] private Button ReturnButton;
 
@@ -64,17 +63,13 @@ public class EntityEditorPanel : Panel
         CombatButton.onClick.RemoveAllListeners();
         CombatButton.onClick.AddListener(Combat);
 
-        InsertButton.onClick.RemoveAllListeners();
-        InsertButton.onClick.AddListener(Insert);
+        UnityAction[] actions = new UnityAction[] { Insert, Remove, MoveUp, MoveDown, Copy, Paste, Save, Load };
 
-        RemoveButton.onClick.RemoveAllListeners();
-        RemoveButton.onClick.AddListener(Remove);
-
-        SaveButton.onClick.RemoveAllListeners();
-        SaveButton.onClick.AddListener(Save);
-
-        LoadButton.onClick.RemoveAllListeners();
-        LoadButton.onClick.AddListener(Load);
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            Buttons[i].onClick.RemoveAllListeners();
+            Buttons[i].onClick.AddListener(actions[i]);
+        }
         
         ReturnButton.onClick.RemoveAllListeners();
         ReturnButton.onClick.AddListener(Hide);
@@ -156,14 +151,14 @@ public class EntityEditorPanel : Panel
         // CanvasManager.Instance.SkillAnnotation.Refresh();
     }
 
-    // private void SelectEntity(LegacyInteractBehaviour ib, PointerEventData eventData)
-    //     => SelectEntity(ib.GetSimpleView().GetSelectBehaviour());
-
     private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
         => SelectEntity(ib.GetView().GetBehaviour<SelectBehaviour>());
 
     private void DeselectEntity(InteractBehaviour ib, PointerEventData eventData)
         => SelectEntity(null);
+
+    private void SelectEntityByIndex(int? selectionIndex)
+        => SelectEntity(selectionIndex == null ? null : EntityBrowser.ViewFromIndex(selectionIndex.Value).GetBehaviour<SelectBehaviour>());
 
     private void SelectEntity(SelectBehaviour selectBehaviour)
     {
@@ -218,13 +213,16 @@ public class EntityEditorPanel : Panel
     private void Insert()
     {
         ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
+        
         if (_selectionIndex.HasValue)
         {
-            model.Insert(_selectionIndex.Value, RunEntity.Default());
+            model.Insert(_selectionIndex.Value, RunEntity.FromTemplate(model[_selectionIndex.Value]));
+            EntityBrowser.InsertItem(_selectionIndex.Value);
         }
         else
         {
             model.Add(RunEntity.Default());
+            EntityBrowser.AddItem();
         }
     }
 
@@ -235,6 +233,60 @@ public class EntityEditorPanel : Panel
             return;
 
         model.RemoveAt(_selectionIndex.Value);
+        EntityBrowser.RemoveItemAt(_selectionIndex.Value);
+        Refresh();
+    }
+
+    private void MoveUp()
+    {
+        if (_selectionIndex == null)
+            return;
+        
+        if (_selectionIndex == 0)
+            return;
+        
+        ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
+        model.Swap(_selectionIndex.Value - 1, _selectionIndex.Value);
+        Refresh();
+        EntityBrowser.Modified(_selectionIndex.Value);
+        SelectEntityByIndex(_selectionIndex.Value - 1);
+        EntityBrowser.Modified(_selectionIndex.Value);
+    }
+
+    private void MoveDown()
+    {
+        if (_selectionIndex == null)
+            return;
+        
+        ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
+        
+        if (_selectionIndex == model.Count() - 1)
+            return;
+        
+        model.Swap(_selectionIndex.Value, _selectionIndex.Value + 1);
+        Refresh();
+        EntityBrowser.Modified(_selectionIndex.Value);
+        SelectEntityByIndex(_selectionIndex.Value + 1);
+        EntityBrowser.Modified(_selectionIndex.Value);
+    }
+
+    [NonSerialized] private RunEntity _copied;
+
+    private void Copy()
+    {
+        _copied = RunEntity.FromTemplate(_selection.Get<RunEntity>());
+    }
+
+    private void Paste()
+    {
+        if (_selectionIndex == null)
+            return;
+        
+        ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
+        model.RemoveAt(_selectionIndex.Value);
+        model.Insert(_selectionIndex.Value, RunEntity.FromTemplate(_copied));
+        Refresh();
+        EntityBrowser.Modified(_selectionIndex.Value);
     }
 
     private void Save()
@@ -246,11 +298,14 @@ public class EntityEditorPanel : Panel
     {
         EditorManager.Instance.Load();
         CheckAwake();
+        EntityBrowser.Refresh();
+        Refresh();
     }
 
     public void Show()
     {
         gameObject.SetActive(true);
+        Refresh();
     }
 
     public void Hide()

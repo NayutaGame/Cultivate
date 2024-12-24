@@ -26,6 +26,8 @@ public class EntityEditorEntityView : XView
     public ListView SmirkAgainstListView;
     public ListView AfraidAgainstListView;
 
+    public GameObject Blank;
+
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
@@ -89,12 +91,7 @@ public class EntityEditorEntityView : XView
         }
 
         if (FormationListView != null)
-        {
             FormationListView.SetAddress(GetAddress().Append(".ShowingFormations"));
-            // FormationListView.PointerEnterNeuron.Join(PointerEnterFormationNeuron);
-            // FormationListView.PointerExitNeuron.Join(PointerExitFormationNeuron);
-            // FormationListView.PointerMoveNeuron.Join(PointerMoveFormationNeuron);
-        }
 
         if (SmirkAgainstListView != null)
         {
@@ -159,10 +156,17 @@ public class EntityEditorEntityView : XView
     {
         base.Refresh();
         if (GetAddress() == null)
+        {
+            Blank.SetActive(true);
             return;
+        }
         IEntity entity = Get<IEntity>();
         if (entity == null)
+        {
+            Blank.SetActive(true);
             return;
+        }
+        Blank.SetActive(false);
         SetEntry(entity.GetEntry());
         SetJingJie(entity.GetJingJie());
         SetSlotCount(entity.GetSlotCount());
