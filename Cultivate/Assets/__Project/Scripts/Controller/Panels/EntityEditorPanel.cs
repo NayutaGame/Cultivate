@@ -298,7 +298,7 @@ public class EntityEditorPanel : Panel
     {
         EditorManager.Instance.Load();
         CheckAwake();
-        EntityBrowser.Refresh();
+        EntityBrowser.Sync();
         Refresh();
     }
 

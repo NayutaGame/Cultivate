@@ -173,7 +173,7 @@ public class EntityEditorEntityView : XView
         SetHealth(entity.GetHealth());
         SetLadder(entity.GetLadder());
         SetInPool(entity.IsInPool());
-        FieldView.Refresh();
+        FieldView.Sync();
         FormationListView.Refresh();
         SmirkAgainstListView.Refresh();
         AfraidAgainstListView.Refresh();
