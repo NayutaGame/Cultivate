@@ -27,7 +27,7 @@ public class PlayerEntityView : XView
 
     public void RefreshField()
     {
-        FieldView.Refresh();
+        FieldView.Sync();
         FormationList.Sync();
     }
 

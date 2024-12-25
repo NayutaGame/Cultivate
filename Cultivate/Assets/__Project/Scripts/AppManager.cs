@@ -58,7 +58,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         foreach (var kvp in _accessors)
             Address.AddToRoot(kvp.Key, kvp.Value);
 
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 60;
 
         Settings = new();
         Encyclopedia = new();

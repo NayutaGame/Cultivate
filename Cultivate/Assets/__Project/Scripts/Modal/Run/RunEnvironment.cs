@@ -852,22 +852,12 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     #region Profile
 
-    public void Save()
-    {
-        AppManager.Instance.ProfileManager.GetCurrProfile().RunEnvironment = this;
-    }
-
     public void PrintJson()
     {
         string json = JsonUtility.ToJson(this, true);
         Debug.Log(json);
         GUIUtility.systemCopyBuffer = json;
     }
-    
-    // public static RunEnvironment LoadFromProfile()
-    // {
-    //     
-    // }
 
     #endregion
 
