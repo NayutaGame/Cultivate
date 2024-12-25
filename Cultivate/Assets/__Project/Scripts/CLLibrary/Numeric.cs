@@ -26,5 +26,15 @@ namespace CLLibrary
         {
             return Mathf.Lerp(b0, b1, Mathf.InverseLerp(a0, a1, value));
         }
+
+        public static int[] GetCombination(int n, int k)
+        {
+            Pool<int> pool = new Pool<int>();
+            n.Do(i => pool.Populate(i));
+            pool.Shuffle();
+            int[] popped = new int[k];
+            popped.Length.Do(i => pool.TryPopItem(out popped[i]));
+            return popped;
+        }
     }
 }

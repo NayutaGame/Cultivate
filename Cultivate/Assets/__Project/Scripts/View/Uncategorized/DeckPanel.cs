@@ -103,18 +103,13 @@ public class DeckPanel : Panel
 
     private void OnEnable()
     {
+        RunManager.Instance.Environment.FieldChangedNeuron.Add(Sync);
         Sync();
-        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshField);
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshField);
-    }
-
-    private void RefreshField()
-    {
-        PlayerEntity.RefreshField();
+        RunManager.Instance.Environment.FieldChangedNeuron.Remove(Sync);
     }
 
     private void Sync()

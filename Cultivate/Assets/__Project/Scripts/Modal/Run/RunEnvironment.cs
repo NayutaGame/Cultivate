@@ -673,8 +673,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     
     public SkillEntry InnerDrawSkill(SkillEntryDescriptor descriptor)
     {
-        SkillPool.Shuffle();
         SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
+        SkillPool.Shuffle();
         skillEntry ??= Encyclopedia.SkillCategory[0];
         return skillEntry;
     }
@@ -731,7 +731,6 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     {
         List<SkillEntry> toRet = new();
         
-        SkillPool.Shuffle();
         for (int i = 0; i < d.Count; i++)
         {
             SkillPool.TryPopItem(out SkillEntry item, s =>
@@ -752,6 +751,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         if (!d.Consume)
             SkillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory[0]));
 
+        SkillPool.Shuffle();
         return toRet;
     }
 

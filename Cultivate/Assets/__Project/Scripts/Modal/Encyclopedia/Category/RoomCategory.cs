@@ -228,17 +228,13 @@ public class RoomCategory : Category<RoomEntry>
                             return null;
                         },
                     };
-                    
-                    Pool<int> pool = new Pool<int>();
-                    12.Do(i => pool.Populate(i));
-                    pool.Shuffle();
-                    int[] popped = new int[3];
-                    popped.Length.Do(i => pool.TryPopItem(out popped[i]));
 
-                    DialogOption[] dialogOptions = new DialogOption[popped.Length];
+                    int[] combination = Numeric.GetCombination(12, 3);
+
+                    DialogOption[] dialogOptions = new DialogOption[combination.Length];
                     dialogOptions.Length.Do(i =>
                     {
-                        int index = popped[i];
+                        int index = combination[i];
                         dialogOptions[i] = new DialogOption(titles[index]);
                         dialogOptions[i].SetSelect(selects[index]);
                     });
@@ -315,17 +311,13 @@ public class RoomCategory : Category<RoomEntry>
                             return null;
                         },
                     };
-                    
-                    Pool<int> pool = new Pool<int>();
-                    5.Do(i => pool.Populate(i));
-                    pool.Shuffle();
-                    int[] popped = new int[3];
-                    popped.Length.Do(i => pool.TryPopItem(out popped[i]));
 
-                    DialogOption[] dialogOptions = new DialogOption[popped.Length];
+                    int[] combination = Numeric.GetCombination(5, 3);
+
+                    DialogOption[] dialogOptions = new DialogOption[combination.Length];
                     dialogOptions.Length.Do(i =>
                     {
-                        int index = popped[i];
+                        int index = combination[i];
                         dialogOptions[i] = new DialogOption(titles[index]);
                         dialogOptions[i].SetSelect(selects[index]);
                     });
@@ -437,17 +429,13 @@ public class RoomCategory : Category<RoomEntry>
                                 return null;
                             }),
                     };
-                    
-                    Pool<int> pool = new Pool<int>();
-                    12.Do(i => pool.Populate(i));
-                    pool.Shuffle();
-                    int[] popped = new int[4];
-                    popped.Length.Do(i => pool.TryPopItem(out popped[i]));
 
-                    DialogOption[] dialogOptions = new DialogOption[popped.Length];
+                    int[] combination = Numeric.GetCombination(12, 4);
+
+                    DialogOption[] dialogOptions = new DialogOption[combination.Length];
                     dialogOptions.Length.Do(i =>
                     {
-                        int index = popped[i];
+                        int index = combination[i];
                         dialogOptions[i] = new DialogOption(descriptions[index]);
                         dialogOptions[i].SetSelect(option =>
                         {
@@ -2787,15 +2775,10 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    Pool<WuXing> pool = new Pool<WuXing>();
-                    pool.Populate(WuXing.Traversal);
-                    pool.Shuffle();
-
+                    int[] combination = Numeric.GetCombination(5, 3);
                     WuXing[] options = new WuXing[3];
                     for (int i = 0; i < options.Length; i++)
-                    {
-                        pool.TryPopItem(out options[i]);
-                    }
+                        options[i] = combination[i];
 
                     DialogPanelDescriptor A = new(
                         titleText: "悟道",

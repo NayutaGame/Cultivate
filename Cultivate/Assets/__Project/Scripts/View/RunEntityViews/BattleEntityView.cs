@@ -36,7 +36,7 @@ public class BattleEntityView : LegacySimpleView
         
         SetModel(entity.GetEntry().GetUIEntityModelPrefabEntry());
 
-        FieldView.Refresh();
+        FieldView.Sync();
         FormationList.Sync();
     }
 
