@@ -29,7 +29,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     public CardPickerPanelDescriptor(
         string titleText = null,
         string detailedText = null,
-        Bound bound = null,
+        Bound? bound = null,
         Func<List<DeckIndex>, PanelDescriptor> confirmOperation = null,
         RunSkillDescriptor descriptor = null)
     {

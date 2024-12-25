@@ -1,7 +1,7 @@
 
 namespace CLLibrary
 {
-    public class Bound
+    public struct Bound
     {
         public int Start;
         public int End;

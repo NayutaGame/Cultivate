@@ -31,7 +31,7 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
     public ArbitraryCardPickerPanelDescriptor(
         string titleText = null,
         string detailedText = null,
-        Bound bound = null,
+        Bound? bound = null,
         SkillEntryDescriptor descriptor = null,
         Func<List<SkillEntryDescriptor>, PanelDescriptor> confirmOperation = null)
     {

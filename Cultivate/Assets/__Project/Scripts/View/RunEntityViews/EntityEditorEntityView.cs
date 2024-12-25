@@ -1,6 +1,7 @@
 
 using CLLibrary;
 using TMPro;
+using UIRangeSliderNamespace;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,15 +9,20 @@ using UnityEngine.UI;
 public class EntityEditorEntityView : XView
 {
     public TMP_Dropdown EntityDropdown;
+
+    public Slider LadderSlider;
+    public TMP_Text LadderText;
+
+    public UIRangeSlider AllowedDifficultySlider;
+    public TMP_Text LowValueLabel;
+    public TMP_Text HighValueLabel;
+    
     public TMP_Dropdown JingJieDropdown;
     
     public Slider SlotCountSlider;
     public TMP_Text SlotCountText;
     
     public TMP_InputField HealthInputField;
-
-    public Slider LadderSlider;
-    public TMP_Text LadderText;
 
     public Toggle InPoolToggle;
 
@@ -33,6 +39,7 @@ public class EntityEditorEntityView : XView
         base.SetAddress(address);
 
         EntityDropdown.onValueChanged.RemoveAllListeners();
+        AllowedDifficultySlider.onValuesChanged.RemoveAllListeners();
         JingJieDropdown.onValueChanged.RemoveAllListeners();
         SlotCountSlider.onValueChanged.RemoveAllListeners();
         HealthInputField.onValueChanged.RemoveAllListeners();
@@ -42,6 +49,7 @@ public class EntityEditorEntityView : XView
         bool addressIsNull = address == null;
 
         EntityDropdown.gameObject.SetActive(!addressIsNull);
+        AllowedDifficultySlider.gameObject.SetActive(!addressIsNull);
         JingJieDropdown.gameObject.SetActive(!addressIsNull);
         SlotCountSlider.gameObject.SetActive(!addressIsNull);
         HealthInputField.gameObject.SetActive(!addressIsNull);
@@ -59,6 +67,9 @@ public class EntityEditorEntityView : XView
             Encyclopedia.EntityCategory.Traversal.Do(entityEntry => EntityDropdown.options.Add(new TMP_Dropdown.OptionData(entityEntry.GetName())));
             EntityDropdown.onValueChanged.AddListener(EntryChanged);
         }
+
+        if (AllowedDifficultySlider != null)
+            AllowedDifficultySlider.onValuesChanged.AddListener(AllowedDifficultySliderChanged);
 
         if (JingJieDropdown != null)
         {
@@ -145,6 +156,13 @@ public class EntityEditorEntityView : XView
         LadderText.text = value.ToString();
     }
 
+    private void SetAllowedDifficulty(Bound bound)
+    {
+        AllowedDifficultySlider.SetValueWithoutNotify(bound.Start, bound.End - 1);
+        LowValueLabel.text = bound.Start.ToString();
+        HighValueLabel.text = (bound.End - 1).ToString();
+    }
+
     private void SetInPool(bool inPool)
     {
         InPoolToggle.SetIsOnWithoutNotify(inPool);
@@ -168,6 +186,7 @@ public class EntityEditorEntityView : XView
         }
         Blank.SetActive(false);
         SetEntry(entity.GetEntry());
+        SetAllowedDifficulty(entity.GetAllowedDifficulty());
         SetJingJie(entity.GetJingJie());
         SetSlotCount(entity.GetSlotCount());
         SetHealth(entity.GetHealth());
@@ -214,6 +233,13 @@ public class EntityEditorEntityView : XView
     {
         IEntity entity = Get<IEntity>();
         entity.SetLadder((int)value);
+        Refresh();
+    }
+
+    private void AllowedDifficultySliderChanged(float lowValue, float highValue)
+    {
+        IEntity entity = Get<IEntity>();
+        entity.SetAllowedDifficulty(new Bound((int)lowValue, (int)highValue + 1));
         Refresh();
     }
 

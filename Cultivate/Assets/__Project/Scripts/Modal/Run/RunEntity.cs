@@ -25,6 +25,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     [SerializeField] private JingJie _jingJie;
     [SerializeReference] private SlotListModel _slots;
     [SerializeField] private int _ladder;
+    [OptionalField(VersionAdded = 2)] [SerializeField] private Bound _allowedDifficulty;
     [SerializeField] private bool _inPool;
     [SerializeReference] private SlotListModel _smirkAgainstSlots;
     [SerializeReference] private SlotListModel _afraidAgainstSlots;
@@ -40,6 +41,8 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     public BoundedInt GetHealthBounded() => new(GetHealth());
     public int GetLadder() => _ladder;
     public void SetLadder(int value) => _ladder = value;
+    public Bound GetAllowedDifficulty() => _allowedDifficulty;
+    public void SetAllowedDifficulty(Bound bound) => _allowedDifficulty = bound;
     public bool IsInPool() => _inPool;
     public void SetInPool(bool value) => _inPool = value;
     public JingJie GetJingJie() => _jingJie;

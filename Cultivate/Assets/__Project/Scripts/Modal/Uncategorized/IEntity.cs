@@ -1,4 +1,6 @@
 
+using CLLibrary;
+
 public interface IEntity
 {
     EntityEntry GetEntry();
@@ -15,6 +17,9 @@ public interface IEntity
 
     int GetLadder();
     void SetLadder(int ladder);
+
+    Bound GetAllowedDifficulty();
+    void SetAllowedDifficulty(Bound bound);
 
     bool IsInPool();
     void SetInPool(bool inPool);

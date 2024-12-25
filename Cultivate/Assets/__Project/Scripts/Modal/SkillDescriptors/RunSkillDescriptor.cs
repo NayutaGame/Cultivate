@@ -7,13 +7,13 @@ public class RunSkillDescriptor
     private Predicate<RunSkill> _pred;
     
     private WuXing? _wuXing;
-    private Bound _jingJieBound;
+    private Bound? _jingJieBound;
     private SkillTypeComposite _skillTypeComposite;
 
     public RunSkillDescriptor(
         Predicate<RunSkill> pred = null,
         WuXing? wuXing = null,
-        Bound jingJieBound = null,
+        Bound? jingJieBound = null,
         SkillTypeComposite skillTypeComposite = null)
     {
         _pred = pred;
@@ -30,7 +30,7 @@ public class RunSkillDescriptor
         if (_wuXing != null && runSkill.GetWuXing() != _wuXing)
             return false;
 
-        if (_jingJieBound != null && !_jingJieBound.Contains(runSkill.JingJie))
+        if (_jingJieBound != null && !_jingJieBound.Value.Contains(runSkill.JingJie))
             return false;
 
         if (_skillTypeComposite != null && !runSkill.GetSkillTypeComposite().Contains(_skillTypeComposite))
