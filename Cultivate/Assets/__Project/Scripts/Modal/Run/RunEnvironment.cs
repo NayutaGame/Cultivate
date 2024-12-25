@@ -921,6 +921,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     }
 
     #endregion
+
+    #region Serialization
     
     public void OnBeforeSerialize() { }
 
@@ -941,10 +943,12 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         _closureDict = new();
         _simulateResult = new(Simulate);
         
-        SetHome(RunEntity.Default());
+        SetHome(_home);
         SetAway(null);
         
         FieldChangedNeuron.Add(_simulateResult.SetDirty);
         DeckChangedNeuron.Add(GuideProcedure);
     }
+
+    #endregion
 }
