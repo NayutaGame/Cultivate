@@ -5,6 +5,8 @@ using System;
 public class DifficultyEntry : Entry
 {
     public string GetName() => GetId();
+
+    [NonSerialized] public int _order;
     
     [NonSerialized] public string Description;
     [NonSerialized] public RunClosure[] _runClosures;
@@ -12,10 +14,13 @@ public class DifficultyEntry : Entry
     [NonSerialized] private string[] InheritedDifficultyNames;
     [NonSerialized] public DifficultyEntry[] InheritedDifficulties;
 
-    public DifficultyEntry(string id, string description = null, string[] inheritedDifficultyNames = null,
+    public DifficultyEntry(string id, int order,
+        string description = null, string[] inheritedDifficultyNames = null,
         RunClosure[] runClosures = null,
         StageClosure[] stageClosures = null) : base(id)
     {
+        _order = order;
+        
         Description = description ?? "没有描述";
         InheritedDifficultyNames = inheritedDifficultyNames ?? Array.Empty<string>();
 
@@ -31,4 +36,5 @@ public class DifficultyEntry : Entry
     }
 
     public static implicit operator DifficultyEntry(string id) => Encyclopedia.DifficultyCategory[id];
+    public static implicit operator DifficultyEntry(int index) => Encyclopedia.DifficultyCategory[index];
 }

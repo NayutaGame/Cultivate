@@ -1,10 +1,14 @@
 
+using System;
+using UnityEngine;
+
 namespace CLLibrary
 {
+    [Serializable]
     public struct Bound
     {
-        public int Start;
-        public int End;
+        [SerializeField] public int Start;
+        [SerializeField] public int End;
 
         public Bound(int value) : this(value, value + 1) { }
 

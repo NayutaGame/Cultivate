@@ -49,7 +49,9 @@ public class Map : Addressable, ISerializationCallbackReceiver
     private void InitEntityPool()
     {
         EntityPool = new();
-        EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal().FilterObj(e => e.IsInPool()));
+        int difficulty = RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry()._order;
+        EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal().FilterObj(
+            e => e.IsInPool() && e.GetAllowedDifficulty().Contains(difficulty)));
         EntityPool.Shuffle();
     }
 

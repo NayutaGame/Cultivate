@@ -24,11 +24,11 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     [SerializeField] private int _slotCount;
     [SerializeField] private JingJie _jingJie;
     [SerializeReference] private SlotListModel _slots;
+    [SerializeReference] private SlotListModel _smirkAgainstSlots;
+    [SerializeReference] private SlotListModel _afraidAgainstSlots;
     [SerializeField] private int _ladder;
     [OptionalField(VersionAdded = 2)] [SerializeField] private Bound _allowedDifficulty;
     [SerializeField] private bool _inPool;
-    [SerializeReference] private SlotListModel _smirkAgainstSlots;
-    [SerializeReference] private SlotListModel _afraidAgainstSlots;
 
     #region Accessors
     
@@ -39,12 +39,6 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     public void SetHealth(int value) => _health = value;
     public void SetDHealth(int value) => _health += value;
     public BoundedInt GetHealthBounded() => new(GetHealth());
-    public int GetLadder() => _ladder;
-    public void SetLadder(int value) => _ladder = value;
-    public Bound GetAllowedDifficulty() => _allowedDifficulty;
-    public void SetAllowedDifficulty(Bound bound) => _allowedDifficulty = bound;
-    public bool IsInPool() => _inPool;
-    public void SetInPool(bool value) => _inPool = value;
     public JingJie GetJingJie() => _jingJie;
     public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
     public int GetSlotCount() => _slotCount;
@@ -66,6 +60,12 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     {
         SetSlotCount(SlotCountFromJingJie[jingJie]);
     }
+    public int GetLadder() => _ladder;
+    public void SetLadder(int value) => _ladder = value;
+    public Bound GetAllowedDifficulty() => _allowedDifficulty;
+    public void SetAllowedDifficulty(Bound bound) => _allowedDifficulty = bound;
+    public bool IsInPool() => _inPool;
+    public void SetInPool(bool value) => _inPool = value;
     
     public string GetReactionKeyFromSkill(RunSkill skill)
     {
@@ -180,8 +180,18 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    private RunEntity(EntityEntry entry = null, MingYuan mingYuan = null, JingJie? jingJie = null,
-        int? health = null, int? slotCount = null, SlotListModel slots = null, SlotListModel smirkAgainstSlots = null, SlotListModel afraidAgainstSlots = null)
+    private RunEntity(
+        EntityEntry entry = null,
+        MingYuan mingYuan = null,
+        JingJie? jingJie = null,
+        int? health = null,
+        int? slotCount = null,
+        SlotListModel slots = null,
+        SlotListModel smirkAgainstSlots = null,
+        SlotListModel afraidAgainstSlots = null,
+        int? ladder = null,
+        Bound? allowedDifficulty = null,
+        bool? inPool = null)
     {
         _accessors = new()
         {
@@ -217,6 +227,10 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         }
 
         Init();
+
+        _ladder = ladder ?? default;
+        _allowedDifficulty = allowedDifficulty ?? default;
+        _inPool = inPool ?? default;
     }
     
     public static RunEntity Default()
@@ -227,7 +241,9 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         => new(jingJie: jingJie, health: health);
     public static RunEntity FromTemplate(RunEntity template)
         => new(entry: template._entry, mingYuan: template._mingYuan, jingJie: template._jingJie,
-            health: template._health, slotCount: template._slotCount, slots: template._slots, template._smirkAgainstSlots, template._afraidAgainstSlots);
+            health: template._health, slotCount: template._slotCount, slots: template._slots,
+            smirkAgainstSlots: template._smirkAgainstSlots, afraidAgainstSlots: template._afraidAgainstSlots,
+            ladder: template._ladder, allowedDifficulty: template._allowedDifficulty, inPool: template._inPool);
     public static RunEntity FromHardCoded(JingJie? jingJie = null,
         int? baseHealth = null, int? slotCount = null, RunSkill[] skills = null)
         => new(jingJie: jingJie, health: baseHealth, slotCount: slotCount, slots: skills != null ? SlotListModel.FromSkills(skills) : null);
