@@ -48,6 +48,10 @@ public class StageSkill : StageClosureOwner
 
     public int StageCastedCount { get; private set; }
     public void IncreaseCastedCount() => StageCastedCount += 1;
+    public void SetStageCastedCount(int value)
+    {
+        StageCastedCount = value;
+    }
 
     public static StageSkill FromPlacedSkill(StageEntity owner, int slotIndex, PlacedSkill placedSkill)
         => new(owner, slotIndex, slotIndex, placedSkill.Entry, placedSkill.JingJie);

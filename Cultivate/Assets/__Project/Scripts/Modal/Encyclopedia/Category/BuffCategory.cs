@@ -1423,6 +1423,90 @@ public class BuffCategory : Category<BuffEntry>
             
             new("飞龙在天", $"跳过下[层数]张牌，跳过时成长计数+1", BuffStackRule.Add, true, false),
             new("架势消耗减少", $"架势消耗减少1层", BuffStackRule.One, true, false),
+            
+            new("灵虚步", "成功闪避后，双发+1", BuffStackRule.One, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_EVADE, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        EvadedDetails d = (EvadedDetails)closureDetails;
+                        if (b.Owner != d.Tgt) return;
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("一念无量劫");
+                    }),
+                }),
+            
+            new("恶意", "下1次施加破甲时将会流失生命", BuffStackRule.Add, false, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_LOSE_ARMOR, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        LoseArmorDetails d = (LoseArmorDetails)closureDetails;
+                        if (b.Owner != d.Tgt) return;
+                        b.PlayPingAnimation();
+                        await b.Owner.LoseHealthProcedure(d.Value);
+                    }),
+                }),
+            
+            new("花海", "每回合：力量+1", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_TURN, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        TurnDetails d = (TurnDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("力量", b.Stack);
+                    }),
+                }),
+            
+            new("他心通", "下次敌方获得增益时，自己也获得", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        GainBuffDetails d = (GainBuffDetails)closureDetails;
+                        if (!d._recursive) return;
+                        if (d._buffEntry == (BuffEntry)("他心通")) return;
+                        if (b.Owner.Opponent() != d.Tgt) return;
+                        if (!d._buffEntry.Friendly) return;
+                        b.PlayPingAnimation();
+                        await b.LoseStackProcedure();
+                        await b.Owner.GainBuffProcedure(d._buffEntry, d._stack, recursive: false);
+                    }),
+                }),
+            
+            new("火墙", "若在下次使用前，没有遭受[stack]次伤害，则卡牌激活", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_ATTACK, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        AttackDetails d = (AttackDetails)closureDetails;
+                        if (b.Owner != d.Tgt) return;
+                        b.PlayPingAnimation();
+                        await b.LoseStackProcedure();
+                    }),
+                }),
+            
+            new("仙人抚顶", "使用12次后：将对方生命变为0", BuffStackRule.Add, true, false),
+            
+            new("金刚不坏", "受到伤害时，最多20", BuffStackRule.Min, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        DamageDetails d = (DamageDetails)closureDetails;
+                        if (b.Owner != d.Tgt) return;
+                        b.PlayPingAnimation();
+                        d.Value = d.Value.ClampUpper(b.Stack);
+                    }),
+                }),
         });
     }
 

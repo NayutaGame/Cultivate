@@ -235,6 +235,8 @@ public class StageEntity : Addressable, StageClosureOwner
         => CountSuch(skill => skill.GetSkillType().Contains(SkillType.Attack));
     public int CountSuch(Func<StageSkill, bool> pred)
         => _skills.Count(pred);
+    public int CountSuchBuff(Func<Buff, bool> pred)
+        => _buffs.CountSuch(pred);
 
     public async UniTask<bool> OppoHasFragile(bool useFocus = false)
     {

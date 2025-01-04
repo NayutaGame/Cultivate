@@ -91,6 +91,9 @@ public class ListModel<T> : IListModel
     public List<T> Filter(Predicate<T> filter)
         => _list.FilterObj(filter).ToList();
 
+    public int CountSuch(Func<T, bool> filter)
+        => _list.Count(filter);
+
     public ListModel()
     {
         _list = new();

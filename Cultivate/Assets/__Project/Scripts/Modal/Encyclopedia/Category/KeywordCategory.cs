@@ -34,6 +34,7 @@ public class KeywordCategory : Category<KeywordEntry>
             new("残血", "气血不到上限的25%"),
             new("开局", "在战斗开始前，一张牌都未打出时，触发效果"),
             new("净化", "减少自己负面状态，对大多数负面状态有效"),
+            new("爆能", "消耗额外灵气以激活效果"),
         });
     }
 
