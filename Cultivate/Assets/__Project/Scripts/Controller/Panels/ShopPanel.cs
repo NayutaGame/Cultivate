@@ -31,14 +31,24 @@ public class ShopPanel : Panel
         Illustration.sprite = pd.GetSprite().Sprite;
     }
 
+    private void GainGold(int value)
+        => Refresh();
+
+    private void LoseGold(int value)
+        => Refresh();
+
     private void OnEnable()
     {
         RunManager.Instance.Environment.BuySkillNeuron.Add(CanvasManager.Instance.RunCanvas.BuySkillStaging);
+        RunManager.Instance.Environment.GainGoldNeuron.Add(GainGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Add(LoseGold);
     }
 
     private void OnDisable()
     {
         RunManager.Instance.Environment.BuySkillNeuron.Remove(CanvasManager.Instance.RunCanvas.BuySkillStaging);
+        RunManager.Instance.Environment.GainGoldNeuron.Remove(GainGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Remove(LoseGold);
     }
     
     private void BuySkill(InteractBehaviour ib, PointerEventData eventData)

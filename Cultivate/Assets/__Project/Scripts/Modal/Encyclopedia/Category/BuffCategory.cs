@@ -1444,9 +1444,10 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)owner;
                         LoseArmorDetails d = (LoseArmorDetails)closureDetails;
-                        if (b.Owner != d.Tgt) return;
+                        if (b.Owner.Opponent() != d.Tgt) return;
                         b.PlayPingAnimation();
-                        await b.Owner.LoseHealthProcedure(d.Value);
+                        await b.LoseStackProcedure();
+                        await b.Owner.Opponent().LoseHealthProcedure(d.Value);
                     }),
                 }),
             
