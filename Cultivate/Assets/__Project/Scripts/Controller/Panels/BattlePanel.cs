@@ -59,8 +59,17 @@ public class BattlePanel : Panel
 
     private void RefreshField()
     {
+        RefreshEnemy();
+        RefreshOperationPanel();
+    }
+
+    private void RefreshEnemy()
+    {
         EnemyView.Refresh();
-        
+    }
+
+    private void RefreshOperationPanel()
+    {
         // BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         if (RunManager.Instance.Environment.GetSimulateResult() is { } result)
         {

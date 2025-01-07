@@ -114,6 +114,7 @@ public class DeckPanel : Panel
 
     private void Sync()
     {
+        Debug.Log("Deck Panel is Sync");
         PlayerEntity.Sync();
     }
 

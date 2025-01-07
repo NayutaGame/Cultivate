@@ -12,7 +12,11 @@ public class TopBar : MonoBehaviour
     
     public TMP_Text JingJieText;
     public PropagatePointer PropagateJingJieText;
-    public RectTransform PropagateRT;
+    public RectTransform PropagateJingJieRT;
+
+    public TMP_Text DifficultyText;
+    public PropagatePointer PropagateDifficultyText;
+    public RectTransform PropagateDifficultyRT;
 
     public Button MenuButton;
 
@@ -40,6 +44,9 @@ public class TopBar : MonoBehaviour
 
         PropagateJingJieText._onPointerEnter += PointerEnterJingJieText;
         PropagateJingJieText._onPointerExit += PointerExitJingJieText;
+
+        PropagateDifficultyText._onPointerEnter += PointerEnterDifficultyText;
+        PropagateDifficultyText._onPointerExit += PointerExitDifficultyText;
     }
 
     private void OnDisable()
@@ -53,6 +60,9 @@ public class TopBar : MonoBehaviour
 
         PropagateJingJieText._onPointerEnter -= PointerEnterJingJieText;
         PropagateJingJieText._onPointerExit -= PointerExitJingJieText;
+        
+        PropagateDifficultyText._onPointerEnter -= PointerEnterDifficultyText;
+        PropagateDifficultyText._onPointerExit -= PointerExitDifficultyText;
     }
 
     private void GainMingYuan(int value)
@@ -77,6 +87,7 @@ public class TopBar : MonoBehaviour
         Health.Refresh();
         
         JingJieText.text = $"{RunManager.Instance.Environment.Home.GetJingJie().ToString()}期";
+        DifficultyText.text = $"难度{RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry().GetId()}";
     }
 
     private void OpenMenu()
@@ -87,10 +98,22 @@ public class TopBar : MonoBehaviour
     private void PointerEnterJingJieText(PointerEventData d)
     {
         if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerEnter(PropagateRT, d, RunManager.Instance.Environment.GetJingJieHintText());
+        CanvasManager.Instance.TextHint.PointerEnter(PropagateJingJieRT, d, RunManager.Instance.Environment.GetJingJieHintText());
     }
 
     private void PointerExitJingJieText(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerExit(d);
+    }
+    
+    private void PointerEnterDifficultyText(PointerEventData d)
+    {
+        if (d.dragging) return;
+        CanvasManager.Instance.TextHint.PointerEnter(PropagateDifficultyRT, d, RunManager.Instance.Environment.GetDifficultyHintText());
+    }
+
+    private void PointerExitDifficultyText(PointerEventData d)
     {
         if (d.dragging) return;
         CanvasManager.Instance.TextHint.PointerExit(d);

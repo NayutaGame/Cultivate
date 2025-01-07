@@ -4,7 +4,7 @@ public class SlotView : XView
 {
     [SerializeField] public SkillView SkillView;
 
-    public override void AwakeFunction()
+    protected override void AwakeFunction()
     {
         SkillView.CheckAwake();
         base.AwakeFunction();

@@ -76,7 +76,7 @@ public class ListView : XView
 
     #region Core
 
-    public override void AwakeFunction()
+    protected override void AwakeFunction()
     {
         base.AwakeFunction();
 
@@ -126,6 +126,29 @@ public class ListView : XView
             InsertItem(i);
 
         Refresh();
+    }
+
+    public virtual void AddItem()
+    {
+        InsertItem(_activePool.Count);
+    }
+
+    public virtual void InsertItem(int index)
+    {
+        object item = _model.Get(index);
+        int prefabIndex = GetPrefabIndex(item);
+        int orderInPool = FetchItemBehaviour(prefabIndex);
+        EnableItem(prefabIndex, orderInPool, index);
+    }
+
+    public virtual void RemoveItemAt(int index)
+    {
+        DisableItem(index);
+    }
+
+    public virtual void Modified(int index)
+    {
+        _activePool[index].Refresh();
     }
 
     private void OnEnable()
@@ -272,29 +295,6 @@ public class ListView : XView
         // _model.RemoveAtEvent += RemoveItemAt;
         // _model.ModifiedEvent += Modified;
         // _model.ResyncEvent += Resync;
-    }
-
-    public virtual void AddItem()
-    {
-        InsertItem(_activePool.Count);
-    }
-
-    public virtual void InsertItem(int index)
-    {
-        object item = _model.Get(index);
-        int prefabIndex = GetPrefabIndex(item);
-        int orderInPool = FetchItemBehaviour(prefabIndex);
-        EnableItem(prefabIndex, orderInPool, index);
-    }
-
-    public virtual void RemoveItemAt(int index)
-    {
-        DisableItem(index);
-    }
-
-    public virtual void Modified(int index)
-    {
-        _activePool[index].Refresh();
     }
 
     #endregion

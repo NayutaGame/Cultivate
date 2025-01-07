@@ -38,89 +38,52 @@ public class RoomCategory : Category<RoomEntry>
 
                     BattlePanelDescriptor A = new(room.GetPredrewRunEntity());
 
-                    DiscoverSkillPanelDescriptor B = new(titleText: "胜利");
-                    DiscoverSkillPanelDescriptor C = new(titleText: "惜败");
-                    DialogPanelDescriptor D = new(titleText: "感谢", "按Esc退出游戏，游戏结束，感谢游玩");
+                    DiscoverSkillPanelDescriptor B = new(titleText: "战斗结果");
 
                     bool shouldUpdateSlotCount = roomDescriptor.ShouldUpdateSlotCount;
 
-                    if (!roomDescriptor._isBoss)
+                    bool isFinalBoss = roomDescriptor._isBoss && RunManager.Instance.Environment.IsFinalJingJie();
+
+                    A.SetWinOperation(() =>
                     {
-                        A.SetWinOperation(() =>
+                        if (!isFinalBoss)
                         {
+                            B.SetTitleText("胜利");
                             B.SetDescriptionText($"获得了<style=\"Gold\">{goldValue}金钱</style>\n请选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return B;
-                        });
+                        }
+                        
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Victory);
+                        return null;
+                    });
 
-                        A.SetLoseOperation(() =>
+                    A.SetLoseOperation(() =>
+                    {
+                        if (!isFinalBoss)
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
-                            C.SetDescriptionText($"<style=\"Gray\">你没能击败对手，损失了一些命元</style>" +
-                                       $"\n但获得了<style=\"Gold\">{goldValue}金钱</style>，以及选择<style=\"Red\">一张卡牌</style>作为奖励");
-                            if (shouldUpdateSlotCount)
-                                RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
-                            return C;
-                        });
-                    }
-                    else if (RunManager.Instance.Environment.JingJie != JingJie.HuaShen)
-                    {
-                        A.SetWinOperation(() =>
-                        {
-                            RunManager.Instance.Environment.SetDMingYuanProcedure(3);
-                            B.SetDescriptionText($"跨越境界使得你的命元恢复了3" +
-                                              $"\n获得了{goldValue}金，请选择<style=\"Red\">一张卡牌</style>作为奖励");
+                            
+                            B.SetTitleText("惜败");
+                            B.SetDescriptionText($"<style=\"Gray\">你没能击败对手，损失了一些命元</style>" +
+                                                 $"\n但获得了<style=\"Gold\">{goldValue}金钱</style>，以及选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
                             return B;
-                        });
-
-                        A.SetLoseOperation(() =>
-                        {
-                            C.SetDescriptionText($"<style=\"Gray\">你没能击败对手，幸好跨越境界抵消了你的命元伤害。</style>" +
-                                              $"\n获得了<style=\"Gold\">{goldValue}金钱</style>，请选择<style=\"Red\">一张卡牌</style>作为奖励");
-                            if (shouldUpdateSlotCount)
-                                RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
-                            return C;
-                        });
-                    }
-                    else
-                    {
-                        A.SetWinOperation(() =>
-                        {
-                            D.SetDetailedText($"你击败了强大的对手，取得了最终的胜利！（按Esc退出游戏，游戏结束，感谢游玩）");
-                            return D;
-                        });
-
-                        A.SetLoseOperation(() =>
-                        {
-                            D.SetDetailedText($"你没能击败对手，受到了致死的命元伤害。（按Esc退出游戏，游戏结束，感谢游玩）");
-                            return D;
-                        });
-                    }
+                        }
+                        
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Defeat);
+                        return null;
+                    });
 
                     B._receiveSignal = signal =>
                     {
                         if (signal is PickDiscoveredSkillSignal)
-                        {
                             RunManager.Instance.Environment.SetDGoldProcedure(goldValue);
-                        }
 
                         return B.DefaultReceiveSignal(signal);
                     };
-
-                    C._receiveSignal = signal =>
-                    {
-                        if (signal is PickDiscoveredSkillSignal)
-                        {
-                            RunManager.Instance.Environment.SetDGoldProcedure(goldValue);
-                        }
-
-                        return C.DefaultReceiveSignal(signal);
-                    };
-
-                    D._receiveSignal = signal => D;
 
                     return A;
                 }),

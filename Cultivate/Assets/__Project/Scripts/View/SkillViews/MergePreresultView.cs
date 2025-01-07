@@ -31,7 +31,7 @@ public class MergePreresultView : XView
     // private Material _outlineMaterial;
     // private Material _dissolveMaterial;
     
-    public override void AwakeFunction()
+    protected override void AwakeFunction()
     {
         base.AwakeFunction();
     

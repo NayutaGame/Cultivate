@@ -15,7 +15,7 @@ public class DelegatingView : XView
     public override void SetAddress(Address address) => _delegatedView.SetAddress(address);
     public override void Refresh() => _delegatedView.Refresh();
 
-    public override void AwakeFunction()
+    protected override void AwakeFunction()
     {
         base.AwakeFunction();
         _delegatedView.CheckAwake();

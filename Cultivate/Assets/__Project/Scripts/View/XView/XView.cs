@@ -34,7 +34,7 @@ public class XView : MonoBehaviour
         AwakeFunction();
     }
 
-    public virtual void AwakeFunction()
+    protected virtual void AwakeFunction()
     {
         _rect ??= GetComponent<RectTransform>();
 

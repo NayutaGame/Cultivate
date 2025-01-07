@@ -23,7 +23,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         CharacterProfile = runConfigForm.CharacterProfile;
         DifficultyProfile = runConfigForm.DifficultyProfile;
 
-        MapEntry = "标准";
+        MapEntry = "快速结算";
     }
 
     public void OnBeforeSerialize() { }

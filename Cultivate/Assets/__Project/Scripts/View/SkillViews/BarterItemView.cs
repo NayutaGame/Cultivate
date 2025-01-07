@@ -9,7 +9,7 @@ public class BarterItemView : XView
 
     public Neuron<BarterItem> ExchangeSkillEvent = new();
 
-    public override void AwakeFunction()
+    protected override void AwakeFunction()
     {
         base.AwakeFunction();
         LeftSkillView.CheckAwake();

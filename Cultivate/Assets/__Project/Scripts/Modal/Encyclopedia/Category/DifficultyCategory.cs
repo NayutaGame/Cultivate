@@ -9,8 +9,8 @@ public class DifficultyCategory : Category<DifficultyEntry>
     {
         AddRange(new List<DifficultyEntry>()
         {
-            new("0", order: 0, description: "基础的游戏体验"),
-            new("1", order: 1, description: "可以到达元婴境界",
+            new("0", order: 0, description: "基础的游戏体验", finalJingJie: JingJie.JinDan),
+            new("1", order: 1, description: "可以到达元婴境界", finalJingJie: JingJie.YuanYing,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -19,7 +19,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("2", order: 2, description: "可以开始使用阵法",  inheritedDifficultyNames: new string[] { "1" },
+            new("2", order: 2, description: "可以开始使用阵法", inheritedDifficultyNames: new string[] { "1" }, finalJingJie: JingJie.YuanYing,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -28,7 +28,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("3", order: 3, description: "可以到达化神境界",  inheritedDifficultyNames: new string[] { "2", "1" },
+            new("3", order: 3, description: "可以到达化神境界", inheritedDifficultyNames: new string[] { "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -37,7 +37,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("4", order: 4, description: "解锁流转规则",  inheritedDifficultyNames: new string[] { "3", "2", "1" },
+            new("4", order: 4, description: "解锁流转规则", inheritedDifficultyNames: new string[] { "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -46,7 +46,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("5", order: 5, description: "敌人获得1格挡",  inheritedDifficultyNames: new string[] { "4", "3", "2", "1" },
+            new("5", order: 5, description: "敌人获得1格挡", inheritedDifficultyNames: new string[] { "4", "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -55,7 +55,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("6", order: 6, description: "跨越境界时不再提供升级",  inheritedDifficultyNames: new string[] { "5", "4", "3", "2", "1" },
+            new("6", order: 6, description: "跨越境界时不再提供升级", inheritedDifficultyNames: new string[] { "5", "4", "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -64,7 +64,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("7", order: 7, description: "敌人获得1免疫",  inheritedDifficultyNames: new string[] { "6", "5", "4", "3", "2", "1" },
+            new("7", order: 7, description: "敌人获得1免疫", inheritedDifficultyNames: new string[] { "6", "5", "4", "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -73,7 +73,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("8", order: 8, description: "主角气血上限-10%",  inheritedDifficultyNames: new string[] { "7", "6", "5", "4", "3", "2", "1" },
+            new("8", order: 8, description: "主角气血上限-10%", inheritedDifficultyNames: new string[] { "7", "6", "5", "4", "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>

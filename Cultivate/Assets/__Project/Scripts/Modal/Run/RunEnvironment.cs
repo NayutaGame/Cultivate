@@ -243,9 +243,17 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         return "有五个境界：\n练气，筑基\n金丹，元婴\n化神";
     }
 
+    public string GetDifficultyHintText()
+    {
+        return _config.DifficultyProfile.GetEntry().InheritedDescription;
+    }
+
     public void SetVariable<T>(string key, T value) => _memory.SetVariable(key, value);
     public T TryGetVariable<T>(string key, T defaultValue) => _memory.TryGetVariable(key, defaultValue);
     public void PerformOperation<T>(string key, T defaultValue, Func<T, T> operation) => _memory.PerformOperation(key, defaultValue, operation);
+
+    public bool IsFinalJingJie()
+        => _jingJie == _config.DifficultyProfile.GetEntry().FinalJingJie;
 
     #endregion
 
@@ -547,11 +555,6 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     {
         Hand.Clear();
         Home.TraversalCurrentSlots().Do(s => s.Skill = null);
-    }
-
-    public void CommitRunProcedure(RunResult.RunResultState state)
-    {
-        _result.SetState(state);
     }
 
     public void Combat()
@@ -884,6 +887,9 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         if (signal is DeckChangedSignal)
             return;
 
+        if (RunIsFinished())
+            return;
+
         PanelDescriptor panel = Panel.ReceiveSignal(signal);
         
         if (PanelIsFinished(panel))
@@ -891,11 +897,20 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
             if (Map.IsAboutToFinish())
             {
                 CommitRunProcedure(RunResult.RunResultState.Victory);
-                panel = new RunResultPanelDescriptor(_result);
+                return;
             }
             else
             {
                 Map.Step();
+                
+                bool cond1 = Map.GetCurrRoom().GetDescriptor() is SuccessRoomDescriptor;
+                bool cond2 = Map.GetCurrRoom().GetDescriptor() is AscensionRoomDescriptor && IsFinalJingJie();
+                if (cond1 || cond2)
+                {
+                    CommitRunProcedure(RunResult.RunResultState.Victory);
+                    return;
+                }
+                
                 panel = Map.CreatePanelFromCurrRoom();
             }
         }
@@ -904,6 +919,20 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         Panel = panel;
         PanelChangedNeuron.Invoke(panelChangedDetails);
     }
+
+    public void CommitRunProcedure(RunResult.RunResultState state)
+    {
+        _result.SetState(state);
+        
+        RunResultPanelDescriptor resultPanel = new RunResultPanelDescriptor(_result);
+        
+        PanelChangedDetails panelChangedDetails = new(Panel, resultPanel);
+        Panel = resultPanel;
+        PanelChangedNeuron.Invoke(panelChangedDetails);
+    }
+
+    public bool RunIsFinished()
+        => _result.GetState() != RunResult.RunResultState.Unfinished;
 
     private void InitPanel()
     {
