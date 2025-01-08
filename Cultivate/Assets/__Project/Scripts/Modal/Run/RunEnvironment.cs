@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallbackReceiver
@@ -67,6 +68,10 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     [NonSerialized] private PanelDescriptor _panel;
     [NonSerialized] private RunEntity _away;
     [NonSerialized] private bool _awayIsDummy;
+
+    [NonSerialized] private DateTime _startTime;
+    [SerializeField] private TimeSpan _loadedTime;
+    [SerializeField] private TimeSpan _runFinishedTime;
     
     [SerializeReference] private RunConfig _config;
     [SerializeField] private JingJie _jingJie;
@@ -89,6 +94,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
             { "Hand",                  () => _hand },
             { "ActivePanel",           GetActivePanel },
         };
+        
+        _startTime = DateTime.Now;
         
         InitNeurons();
 
@@ -128,6 +135,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     public StageResult GetSimulateResult() => _simulateResult.Value;
     public RunResult GetResult() => _result;
     public PanelDescriptor GetActivePanel() => Panel;
+    public TimeSpan GetRunfinishedTime() => _runFinishedTime;
 
     public void SetHome(RunEntity home)
     {
@@ -926,6 +934,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     public void CommitRunProcedure(RunResult.RunResultState state)
     {
         _result.SetState(state);
+
+        _runFinishedTime = _loadedTime + (DateTime.Now - _startTime);
         
         RunResultPanelDescriptor resultPanel = new RunResultPanelDescriptor(_result);
         
@@ -945,8 +955,16 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     #endregion
 
     #region Serialization
-    
-    public void OnBeforeSerialize() { }
+
+    public void SaveProcedure()
+    {
+        _loadedTime += DateTime.Now - _startTime;
+        _startTime = DateTime.Now;
+    }
+
+    public void OnBeforeSerialize()
+    {
+    }
 
     public void OnAfterDeserialize()
     {
@@ -958,6 +976,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
             { "Hand",                  () => _hand },
             { "ActivePanel",           GetActivePanel },
         };
+        
+        _startTime = DateTime.Now;
         
         InitNeurons();
 

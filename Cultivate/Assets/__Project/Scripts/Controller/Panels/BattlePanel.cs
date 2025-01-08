@@ -57,12 +57,6 @@ public class BattlePanel : Panel
         CanvasManager.Instance.RefreshGuide();
     }
 
-    private void RefreshField()
-    {
-        RefreshEnemy();
-        RefreshOperationPanel();
-    }
-
     private void RefreshEnemy()
     {
         EnemyView.Refresh();

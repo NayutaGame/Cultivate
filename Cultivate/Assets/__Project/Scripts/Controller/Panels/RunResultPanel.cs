@@ -1,13 +1,15 @@
 
+using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RunResultPanel : Panel
 {
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private Button ReturnButton;
+
+    [SerializeField] private TMP_Text RunFinishedTime;
 
     public override void AwakeFunction()
     {
@@ -30,6 +32,9 @@ public class RunResultPanel : Panel
         {
             TitleText.text = "失败";
         }
+
+        TimeSpan time = RunManager.Instance.Environment.GetRunfinishedTime();
+        RunFinishedTime.text = $"{time.TotalHours:00}:{time.Minutes:00}:{time.Seconds:00}";
     }
 
     private void Return()

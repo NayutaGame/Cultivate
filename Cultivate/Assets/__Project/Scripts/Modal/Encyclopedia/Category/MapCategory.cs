@@ -250,7 +250,7 @@ public class MapCategory : Category<MapEntry>
             
             new(id: "快速结算",
                 envJingJie: JingJie.LianQi,
-                slotCount: 12,
+                slotCount: 4,
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
@@ -258,27 +258,27 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
-                        new BattleRoomDescriptor(1, 12, 12),
+                        new BattleRoomDescriptor(1, 4, 4),
                         new AscensionRoomDescriptor(0),
                     },
                     new RoomDescriptor[]
                     {
-                        new BattleRoomDescriptor(1, 12, 12),
+                        new BattleRoomDescriptor(1, 4, 4),
                         new AscensionRoomDescriptor(4),
                     },
                     new RoomDescriptor[]
                     {
-                        new BattleRoomDescriptor(1, 12, 12),
+                        new BattleRoomDescriptor(1, 4, 4),
                         new AscensionRoomDescriptor(7),
                     },
                     new RoomDescriptor[]
                     {
-                        new BattleRoomDescriptor(1, 12, 12),
+                        new BattleRoomDescriptor(1, 4, 4),
                         new AscensionRoomDescriptor(10),
                     },
                     new RoomDescriptor[]
                     {
-                        new BattleRoomDescriptor(1, 12, 12),
+                        new BattleRoomDescriptor(1, 4, 4),
                         new SuccessRoomDescriptor(13),
                     },
                 }),

@@ -23,6 +23,7 @@ public class ProfileManager : Addressable
     public void Save()
     {
         AppManager.Instance.ProfileManager.GetCurrProfile().RunEnvironment = RunManager.Instance.Environment;
+        RunManager.Instance.Environment.SaveProcedure();
         FileUtility.WriteToFile(_profileList, ProfileList.Filename);
     }
 

@@ -3200,7 +3200,7 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    await d.RemoveArmorProcedure(6 << d.Dj, false);
+                    await d.GainBuffProcedure("锋锐", 1 << (Mathf.Max(d.Dj - 1, 0)));
                 }),
 
             // 6 12 26 52 102
