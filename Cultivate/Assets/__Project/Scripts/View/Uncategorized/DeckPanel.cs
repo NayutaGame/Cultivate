@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class DeckPanel : Panel
 {
@@ -105,6 +106,7 @@ public class DeckPanel : Panel
     {
         RunManager.Instance.Environment.FieldChangedNeuron.Add(Sync);
         Sync();
+        HandView.Sync();
     }
 
     private void OnDisable()
@@ -114,7 +116,6 @@ public class DeckPanel : Panel
 
     private void Sync()
     {
-        Debug.Log("Deck Panel is Sync");
         PlayerEntity.Sync();
     }
 

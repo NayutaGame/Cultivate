@@ -12,6 +12,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     private void InitNeurons()
     {
+        StartRunNeuron = new();
         EquipNeuron = new();
         SwapNeuron = new();
         UnequipNeuron = new();
@@ -33,7 +34,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         GainDHealthNeuron = new();
         LoseDHealthNeuron = new();
     }
-    
+
+    public Neuron StartRunNeuron;
     public Neuron<EquipDetails> EquipNeuron;
     public Neuron<SwapDetails> SwapNeuron;
     public Neuron<UnequipDetails> UnequipNeuron;
@@ -273,6 +275,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         InitPanel();
         
         _closureDict.SendEvent(RunClosureDict.START_RUN, d);
+        StartRunNeuron.Invoke();
     }
 
     public void ContinueRunProcedure(ContinueRunDetails d)
