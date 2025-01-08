@@ -52,8 +52,8 @@ public class BattlePanel : Panel
 
     public override void Refresh()
     {
-        RefreshField();
-        
+        RefreshEnemy();
+        RefreshOperationPanel();
         CanvasManager.Instance.RefreshGuide();
     }
 
@@ -130,8 +130,9 @@ public class BattlePanel : Panel
         HomePropagatePointer._onPointerExit = PointerExitHomeHealth;
         AwayPropagatePointer._onPointerEnter = PointerEnterAwayHealth;
         AwayPropagatePointer._onPointerExit = PointerExitAwayHealth;
-        
-        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshField);
+
+        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshEnemy);
+        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshOperationPanel);
     }
 
     private void OnDisable()
@@ -149,7 +150,8 @@ public class BattlePanel : Panel
         AwayPropagatePointer._onPointerEnter -= PointerEnterAwayHealth;
         AwayPropagatePointer._onPointerExit -= PointerExitAwayHealth;
         
-        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshField);
+        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshEnemy);
+        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshOperationPanel);
     }
 
     private void ReactionFromBeginDrag(LegacyInteractBehaviour ib, PointerEventData d)
