@@ -67,8 +67,7 @@ public class PuzzlePanel : Panel
     private void Callback()
     {
         PuzzlePanelDescriptor d = _address.Get<PuzzlePanelDescriptor>();
-        Signal signal = new PuzzleResultSignal(d.GetResult().Flag);
-        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new PuzzleResultSignal(d.GetResult().Flag));
     }
     
     // public override Tween ShowAnimation()

@@ -1,11 +1,13 @@
 
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine.UI;
 
 public class TitlePanel : Panel
 {
     public Button ContinueButton;
     public Button StartRunButton;
+    public Button StartPrologueButton;
     public Button EntityEditorButton;
     public Button SkillBrowserButton;
     public Button SettingsButton;
@@ -26,14 +28,16 @@ public class TitlePanel : Panel
         
         ContinueButton.onClick.RemoveAllListeners();
         ContinueButton.onClick.AddListener(Continue);
+        StartRunButton.onClick.RemoveAllListeners();
+        StartRunButton.onClick.AddListener(StartRun);
+        StartPrologueButton.onClick.RemoveAllListeners();
+        StartPrologueButton.onClick.AddListener(StartPrologue);
         SettingsButton.onClick.RemoveAllListeners();
         SettingsButton.onClick.AddListener(OpenMenu);
         EntityEditorButton.onClick.RemoveAllListeners();
         EntityEditorButton.onClick.AddListener(OpenEntityEditorPanel);
         SkillBrowserButton.onClick.RemoveAllListeners();
         SkillBrowserButton.onClick.AddListener(OpenSkillBrowserPanel);
-        StartRunButton.onClick.RemoveAllListeners();
-        StartRunButton.onClick.AddListener(StartRun);
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(ExitGame);
     }
@@ -43,10 +47,30 @@ public class TitlePanel : Panel
         base.Refresh();
 
         Profile currProfile = AppManager.Instance.ProfileManager.GetCurrProfile();
-        ContinueButton.interactable = currProfile.RunEnvironment != null;
+        bool firstRun = !currProfile.IsFirstRunFinished();
+        bool hasSave = currProfile.HasSave();
+
+        if (firstRun)
+        {
+            ContinueButton.gameObject.SetActive(false);
+            StartRunButton.gameObject.SetActive(false);
+            StartPrologueButton.gameObject.SetActive(true);
+        }
+        else if (hasSave)
+        {
+            ContinueButton.gameObject.SetActive(true);
+            StartRunButton.gameObject.SetActive(true);
+            StartPrologueButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            ContinueButton.gameObject.SetActive(false);
+            StartRunButton.gameObject.SetActive(true);
+            StartPrologueButton.gameObject.SetActive(true);
+        }
     }
 
-    private void FirstTime()
+    private void FirstRun()
     {
         AppManager.Instance.Push(AppStateMachine.RUN, RunConfig.FirstRun());
     }
@@ -59,6 +83,11 @@ public class TitlePanel : Panel
     private void StartRun()
     {
         OpenRunConfigPanel();
+    }
+
+    private void StartPrologue()
+    {
+        FirstRun();
     }
 
     private async UniTask OpenRunConfigPanel()
@@ -86,4 +115,10 @@ public class TitlePanel : Panel
     {
         AppManager.ExitGame();
     }
+
+    public override Tween EnterIdle()
+        => DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .AppendCallback(Refresh)
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0));
 }

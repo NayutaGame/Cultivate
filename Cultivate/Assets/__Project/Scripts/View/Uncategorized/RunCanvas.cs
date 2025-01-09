@@ -189,67 +189,6 @@ public class RunCanvas : Panel
         }
     }
 
-    public async UniTask LegacySetPanelSAsyncFromSignal(Signal signal)
-    {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.LegacyReceiveSignalProcedure(signal);
-        // if (RunManager.Instance.Environment == null)
-        //     return;
-        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        await LegacySetPanelSAsync(panelS);
-    }
-
-    public async UniTask LegacySetPanelSAsync(PanelS panelS)
-    {
-        await _animationQueue.WaitForQueueToComplete();
-        
-        PanelS oldState = PanelSM.State;
-        PanelS newState = panelS;
-        
-        MapPanel.Refresh();
-
-        if (oldState.Equals(newState))
-        {
-            if (PanelSM.GetCurrPanel() != null)
-                await PanelSM.GetCurrPanel().GetAnimator().SetStateAsync(1);
-            return;
-        }
-
-        if (PanelSM[oldState] != null)
-            await PanelSM[oldState].GetAnimator().SetStateAsync(0);
-        else
-            await GetAnimator().SetStateAsync(1);
-
-        PanelSM.SetState(newState);
-
-        if (PanelSM[newState] != null)
-        {
-            PanelSM[newState].AwakeFunction();
-            PanelSM[newState].Refresh();
-            await PanelSM[newState].GetAnimator().SetStateAsync(1);
-        }
-        else
-            await GetAnimator().SetStateAsync(0);
-
-        PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
-        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor || d is DiscoverSkillPanelDescriptor)
-        {
-            await DeckPanel.GetAnimator().SetStateAsync(2);
-        }
-        else
-        {
-            await DeckPanel.GetAnimator().SetStateAsync(0);
-        }
-    }
-
-    public void LegacySetPanelSFromSignal(Signal signal)
-    {
-        PanelDescriptor panelDescriptor = RunManager.Instance.Environment.LegacyReceiveSignalProcedure(signal);
-        // if (RunManager.Instance.Environment == null)
-        //     return;
-        PanelS panelS = PanelS.FromPanelDescriptor(panelDescriptor);
-        LegacySetPanelS(panelS);
-    }
-
     public void LegacySetPanelS(PanelS panelS)
     {
         _animationQueue.CompleteAnimationQueue();

@@ -6,6 +6,8 @@ using UnityEngine;
 [Serializable]
 public class Profile : Addressable, ISerializationCallbackReceiver
 {
+    [SerializeField] private bool _finishedFirstRun;
+    
     private CharacterProfileList _characterProfileList;
     public CharacterProfileList CharacterProfileList => _characterProfileList;
     private DifficultyProfileList _difficultyProfileList;
@@ -30,10 +32,20 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
         _characterProfileList = CharacterProfileList.Default();
         _difficultyProfileList = DifficultyProfileList.Default();
+        _finishedFirstRun = false;
     }
 
     public static Profile Default()
         => new();
+
+    public bool IsFirstRunFinished()
+        => _finishedFirstRun;
+
+    public void SetFirstRunFinished(bool value)
+        => _finishedFirstRun = value;
+
+    public bool HasSave()
+        => RunEnvironment != null;
 
     public void OnBeforeSerialize()
     {

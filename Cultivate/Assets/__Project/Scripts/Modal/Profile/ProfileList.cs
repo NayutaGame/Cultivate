@@ -9,7 +9,6 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
     public static readonly string Filename = "/ProfileList.json";
 
     [SerializeField] private string _version;
-    [SerializeField] private bool _finishedFirstRun;
 
     [NonSerialized] private int CurrentIndex;
     public Profile GetCurrent() => Get(CurrentIndex) as Profile;
@@ -27,7 +26,6 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
         CurrentIndex = 0;
 
         _version = AppManager.Version;
-        _finishedFirstRun = false;
     }
     
     public void OnBeforeSerialize() { }

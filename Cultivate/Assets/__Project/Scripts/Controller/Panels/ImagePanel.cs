@@ -42,7 +42,7 @@ public class ImagePanel : Panel
 
     private void ClickedSignal()
     {
-        Signal signal = new ClickedSignal();
-        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
+        // ImageButton.onClick.RemoveAllListeners();
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickedSignal());
     }
 }

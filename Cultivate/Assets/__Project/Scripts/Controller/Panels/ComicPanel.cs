@@ -58,8 +58,7 @@ public class ComicPanel : Panel
             return;
         
         ImageButton.onClick.RemoveAllListeners();
-        Signal signal = new FinishedComicSignal();
-        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new FinishedComicSignal());
     }
     
     private void SetPrefabEntry(PrefabEntry targetPrefabEntry)

@@ -1100,6 +1100,8 @@ public class RoomCategory : Category<RoomEntry>
                         new ClickBattleGuide("现在点击开始战斗吧",
                             new Vector2(965f, 913.5f)),
                     });
+
+                    AppManager.Instance.ProfileManager.GetCurrProfile().SetFirstRunFinished(true);
                     
                     A.SetLoseOperation(() => D2);
                     A.SetWinOperation(() => D2);

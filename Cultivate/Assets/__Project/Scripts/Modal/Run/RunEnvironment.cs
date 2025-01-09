@@ -326,49 +326,19 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         CanvasManager.Instance.RunCanvas.TopBar.Refresh();
     }
 
-    public PanelDescriptor LegacyReceiveSignalProcedure(Signal signal)
+    public void GuideProcedure(Signal signal)
     {
         Guide guide = Panel.GetGuideDescriptor();
         guide?.ReceiveSignal(Panel, signal);
-
-        if (signal is DeckChangedSignal)
-            return Panel;
-        
-        PanelDescriptor panelDescriptor = Panel.ReceiveSignal(signal);
-        bool runIsUnfinished = _result.GetState() == RunResult.RunResultState.Unfinished;
-
-        if (!runIsUnfinished)
-        {
-            Panel = new RunResultPanelDescriptor(_result);
-            return Panel;
-        }
-        
-        if (panelDescriptor != null) // descriptor of panel descriptor
-        {
-            Panel = panelDescriptor;
-            return Panel;
-        }
-        
-        if (Map.IsAboutToFinish())
-        {
-            CommitRunProcedure(RunResult.RunResultState.Victory);
-            return Panel;
-        }
-        
-        if (Map.IsLastStep())
-        {
-            Map.NextLevel();
-            return Panel;
-        }
-        
-        Map.NextStep();
-        return Panel;
     }
 
     public void GuideProcedure(DeckChangedDetails d)
     {
         Guide guide = Panel.GetGuideDescriptor();
         guide?.ReceiveSignal(Panel, new DeckChangedSignal(d.FromIndex, d.ToIndex));
+        
+        if (guide != null)
+            CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private StageResult Simulate()

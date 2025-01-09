@@ -214,8 +214,7 @@ public class BattlePanel : Panel
     private void Skip()
     {
         RunEnvironment env = RunManager.Instance.Environment;
-        Signal signal = new SkipCombatSignal(env.GetSimulateResult().Flag == 1);
-        CanvasManager.Instance.RunCanvas.LegacySetPanelSAsyncFromSignal(signal);
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new SkipCombatSignal(env.GetSimulateResult().Flag == 1));
     }
 
     private void SetVictory(bool victory)
