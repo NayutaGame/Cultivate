@@ -205,7 +205,7 @@ public class BattlePanel : Panel
 
     private void Combat(PointerEventData eventData)
     {
-        RunManager.Instance.Environment.LegacyReceiveSignalProcedure(new ClickCombatSignal());
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickCombatSignal());
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat();
         CanvasManager.Instance.RunCanvas.Refresh();

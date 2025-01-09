@@ -83,7 +83,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     {
         if (RunManager.Instance.Environment == null)
         {
-            _config = new(RunConfigForm.FirstTime());
+            _config = RunConfig.FirstRun();
             RunManager.Instance.SetEnvironmentFromConfig(_config);
         }
         

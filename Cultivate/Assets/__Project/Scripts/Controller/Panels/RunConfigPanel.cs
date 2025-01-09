@@ -53,8 +53,8 @@ public class RunConfigPanel : Panel
 
     private void StartRun()
     {
-        RunConfigForm form = new(_selection.Get<CharacterProfile>(), DifficultyPickerView.GetSelection());
-        AppManager.Instance.Push(AppStateMachine.RUN, form);
+        RunConfig runConfig = new(_selection.Get<CharacterProfile>(), DifficultyPickerView.GetSelection());
+        AppManager.Instance.Push(AppStateMachine.RUN, runConfig);
     }
 
     private void Select(int i)

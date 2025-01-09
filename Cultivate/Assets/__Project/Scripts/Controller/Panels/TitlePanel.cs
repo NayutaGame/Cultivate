@@ -48,7 +48,7 @@ public class TitlePanel : Panel
 
     private void FirstTime()
     {
-        AppManager.Instance.Push(AppStateMachine.RUN, RunConfigForm.FirstTime());
+        AppManager.Instance.Push(AppStateMachine.RUN, RunConfig.FirstRun());
     }
 
     private void Continue()

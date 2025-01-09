@@ -70,8 +70,10 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     [NonSerialized] private bool _awayIsDummy;
 
     [NonSerialized] private DateTime _startTime;
-    [SerializeField] private TimeSpan _loadedTime;
-    [SerializeField] private TimeSpan _runFinishedTime;
+    [NonSerialized] private TimeSpan _loadedTime;
+    [NonSerialized] private TimeSpan _runFinishedTime;
+
+    [SerializeField] private double _miliseconds;
     
     [SerializeReference] private RunConfig _config;
     [SerializeField] private JingJie _jingJie;
@@ -956,6 +958,14 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     #region Serialization
 
+    public void PrintTime(string title = "Time")
+    {
+        Debug.Log(title);
+        Debug.Log($"Passed Time = {Util.FormatTime(DateTime.Now - _startTime)}");
+        Debug.Log($"Loaded Time = {Util.FormatTime(_loadedTime)}");
+        Debug.Log($"Run Finished Time = {Util.FormatTime(_runFinishedTime)}");
+    }
+
     public void SaveProcedure()
     {
         _loadedTime += DateTime.Now - _startTime;
@@ -964,6 +974,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     public void OnBeforeSerialize()
     {
+        _miliseconds = _loadedTime.TotalMilliseconds;
     }
 
     public void OnAfterDeserialize()
@@ -978,6 +989,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         };
         
         _startTime = DateTime.Now;
+        _loadedTime = TimeSpan.FromMilliseconds(_miliseconds);
         
         InitNeurons();
 

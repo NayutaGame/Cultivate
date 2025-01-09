@@ -113,9 +113,8 @@ public class AppStateMachine
     {
         await CanvasManager.Instance.AppCanvas.TitlePanel.GetAnimator().SetStateAsync(0);
         
-        if (args is RunConfigForm form)
+        if (args is RunConfig runConfig)
         {
-            RunConfig runConfig = new(form);
             RunManager.Instance.SetEnvironmentFromConfig(runConfig);
         }
         else if (args is RunEnvironment env)

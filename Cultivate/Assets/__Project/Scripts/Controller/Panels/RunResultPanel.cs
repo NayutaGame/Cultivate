@@ -34,7 +34,7 @@ public class RunResultPanel : Panel
         }
 
         TimeSpan time = RunManager.Instance.Environment.GetRunfinishedTime();
-        RunFinishedTime.text = $"{time.TotalHours:00}:{time.Minutes:00}:{time.Seconds:00}";
+        RunFinishedTime.text = CLLibrary.Util.FormatTime(time);
     }
 
     private void Return()

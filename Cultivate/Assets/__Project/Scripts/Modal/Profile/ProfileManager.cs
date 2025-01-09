@@ -30,6 +30,7 @@ public class ProfileManager : Addressable
     public void Load()
     {
         _profileList = FileUtility.ReadFromFile<ProfileList>(ProfileList.Filename);
+        // case存档损坏
     }
 
     public static void WriteRunResultToCurrent(RunResult result)

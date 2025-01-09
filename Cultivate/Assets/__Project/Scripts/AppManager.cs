@@ -11,6 +11,8 @@ using UnityEngine;
 
 public class AppManager : Singleton<AppManager>, Addressable
 {
+    [SerializeField] public static string Version = "20250109";
+    
     private Thread _mainThread;
     public bool IsMainThread() => _mainThread.Equals(Thread.CurrentThread);
 

@@ -8,7 +8,10 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
 {
     public static readonly string Filename = "/ProfileList.json";
 
-    private int CurrentIndex;
+    [SerializeField] private string _version;
+    [SerializeField] private bool _finishedFirstRun;
+
+    [NonSerialized] private int CurrentIndex;
     public Profile GetCurrent() => Get(CurrentIndex) as Profile;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -22,6 +25,9 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
 
         Add(Profile.Default());
         CurrentIndex = 0;
+
+        _version = AppManager.Version;
+        _finishedFirstRun = false;
     }
     
     public void OnBeforeSerialize() { }
@@ -32,5 +38,7 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
         {
             { "Current",           GetCurrent },
         };
+        
+        // version migrating
     }
 }
