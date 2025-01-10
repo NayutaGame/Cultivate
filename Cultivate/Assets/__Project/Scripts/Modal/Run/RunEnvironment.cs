@@ -330,16 +330,12 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     {
         Guide guide = Panel.GetGuideDescriptor();
         guide?.ReceiveSignal(Panel, signal);
+        if (guide != null)
+            CanvasManager.Instance.RefreshGuide();
     }
 
     public void GuideProcedure(DeckChangedDetails d)
-    {
-        Guide guide = Panel.GetGuideDescriptor();
-        guide?.ReceiveSignal(Panel, new DeckChangedSignal(d.FromIndex, d.ToIndex));
-        
-        if (guide != null)
-            CanvasManager.Instance.RunCanvas.Refresh();
-    }
+        => GuideProcedure(new DeckChangedSignal(d.FromIndex, d.ToIndex));
 
     private StageResult Simulate()
     {
@@ -385,8 +381,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         
         _closureDict.SendEvent(RunClosureDict.DID_MERGE, d);
         
-        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
         MergeNeuron.Invoke(d);
+        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
     }
 
     private bool InnerMerge(MergeDetails d)
@@ -492,9 +488,9 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         
         d.SkillSlot.Skill = toEquip;
 
+        EquipNeuron.Invoke(d);
         DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
         FieldChangedNeuron.Invoke();
-        EquipNeuron.Invoke(d);
     }
 
     public void SwapProcedure(SwapDetails d)
@@ -504,9 +500,9 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         d.FromSlot.Skill = d.ToSlot.Skill;
         d.ToSlot.Skill = temp;
 
+        SwapNeuron.Invoke(d);
         DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
         FieldChangedNeuron.Invoke();
-        SwapNeuron.Invoke(d);
     }
 
     public void UnequipProcedure(UnequipDetails d)
@@ -515,9 +511,9 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         Hand.Add(toUnequip);
         d.SkillSlot.Skill = null;
         
+        UnequipNeuron.Invoke(d);
         DeckChangedNeuron.Invoke(new(d.FromDeckIndex, DeckIndex.FromHand(Hand.Count() - 1)));
         FieldChangedNeuron.Invoke();
-        UnequipNeuron.Invoke(d);
     }
 
     public void LegacyUnequipProcedure(SkillSlot slot, object _)

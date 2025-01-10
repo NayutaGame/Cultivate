@@ -168,6 +168,5 @@ public class GuideView : MonoBehaviour
     {
         RunEnvironment env = RunManager.Instance.Environment;
         env.GuideProcedure(new ConfirmGuideSignal());
-        CanvasManager.Instance.RunCanvas.Refresh();
     }
 }
