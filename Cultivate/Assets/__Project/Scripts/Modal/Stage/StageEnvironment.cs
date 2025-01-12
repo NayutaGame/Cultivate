@@ -676,6 +676,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
     public static void Combat(StageConfig config)
     {
         AppManager.Instance.RunManager.Environment.SetGuideToFinish();
+        CanvasManager.Instance.RefreshGuide();
         AppManager.Instance.Push(AppStateMachine.STAGE, config);
     }
 

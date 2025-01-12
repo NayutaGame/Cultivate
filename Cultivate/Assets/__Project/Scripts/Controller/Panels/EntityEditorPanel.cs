@@ -86,14 +86,14 @@ public class EntityEditorPanel : Panel
     private void CopyToTop()
     {
         AppManager.Instance.EditorManager.CopyToTop();
-        AwakeFunction();
+        CheckAwake();
         Refresh();
     }
 
     private void SwapTopAndBottom()
     {
         AppManager.Instance.EditorManager.SwapTopAndBottom();
-        AwakeFunction();
+        CheckAwake();
         Refresh();
     }
 

@@ -50,8 +50,21 @@ public class BattlePanel : Panel
         }
     }
 
+    protected override Animator InitAnimator()
+    {
+        // 0 for hide, 1 for show
+        Animator animator = new(2, "Dialog Panel");
+        animator[0, 1] = EnterIdle;
+        animator[1, 1] = SelfTransitionTween;
+        animator[-1, 0] = EnterHide;
+        
+        animator.SetState(0);
+        return animator;
+    }
+
     public override void Refresh()
     {
+        Debug.Log("battle panel refresh");
         RefreshEnemy();
         RefreshOperationPanel();
         CanvasManager.Instance.RefreshGuide();
@@ -208,7 +221,6 @@ public class BattlePanel : Panel
         RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickCombatSignal());
         BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         d.Combat();
-        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void Skip()
@@ -246,6 +258,10 @@ public class BattlePanel : Panel
             .AppendCallback(PlayBattleBGM)
             .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0))
             .Append(EnemyView.ShowTween());
+
+    public Tween SelfTransitionTween()
+        => DOTween.Sequence()
+            .AppendCallback(Refresh);
 
     public override Tween EnterHide()
     {

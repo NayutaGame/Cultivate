@@ -71,17 +71,17 @@ public class RunCanvas : Panel
     {
         base.Refresh();
 
-        Panel currentPanel = PanelSM.GetCurrPanel();
-        if (currentPanel != null)
-        {
-            currentPanel.AwakeFunction();
-            currentPanel.Refresh();
-        }
+        RefreshPanel();
 
         DeckPanel.Refresh();
         MapPanel.Refresh();
         // TopBar.Refresh();
         ConsolePanel.Refresh();
+    }
+
+    private void RefreshPanel()
+    {
+        ChangePanel(RunManager.Instance.Environment.GetActivePanel());
     }
 
     public void LayoutRebuild()
@@ -139,19 +139,25 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.GainSkillsNeuron.Remove(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuanDamageStaging);
     }
-    
-    public void ChangePanel(PanelChangedDetails d)
+
+    private void ChangePanel(PanelChangedDetails d)
         => ChangePanelAsync(d);
     
-    public async UniTask ChangePanelAsync(PanelChangedDetails panelChangedDetails)
+    private void ChangePanel(PanelDescriptor toPanel)
+        => ChangePanelAsync(toPanel);
+
+    private async UniTask ChangePanelAsync(PanelChangedDetails panelChangedDetails)
+        => await ChangePanelAsync(panelChangedDetails.ToPanel);
+    
+    private async UniTask ChangePanelAsync(PanelDescriptor toPanel)
     {
-        if (panelChangedDetails.ToPanel is not RunResultPanelDescriptor)
+        if (toPanel is not null && toPanel is not RunResultPanelDescriptor)
             AppManager.Instance.ProfileManager.Save();
         
         await _animationQueue.WaitForQueueToComplete();
         
         PanelS oldState = PanelSM.State;
-        PanelS newState = PanelS.FromPanelDescriptor(panelChangedDetails.ToPanel);
+        PanelS newState = PanelS.FromPanelDescriptor(toPanel);
         
         MapPanel.Refresh();
 
@@ -171,7 +177,7 @@ public class RunCanvas : Panel
 
         if (PanelSM[newState] != null)
         {
-            PanelSM[newState].AwakeFunction();
+            PanelSM[newState].CheckAwake();
             PanelSM[newState].Refresh();
             await PanelSM[newState].GetAnimator().SetStateAsync(1);
         }

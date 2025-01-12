@@ -107,7 +107,7 @@ public class LegacyListView : LegacySimpleView
 
     protected virtual void InitItemBehaviour(LegacyItemBehaviour itemBehaviour, int prefabIndex)
     {
-        itemBehaviour.GetComponent<LegacyView>().AwakeFunction();
+        itemBehaviour.GetComponent<LegacyView>().CheckAwake();
         itemBehaviour.gameObject.SetActive(false);
 
         itemBehaviour.PrefabIndex = prefabIndex;

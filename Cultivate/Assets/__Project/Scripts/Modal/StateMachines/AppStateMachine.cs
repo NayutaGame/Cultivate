@@ -130,15 +130,15 @@ public class AppStateMachine
         StageManager.Instance.SetHomeFromCharacterProfile(RunManager.Instance.Environment.GetRunConfig().CharacterProfile);
 
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
-        runCanvas.AwakeFunction();
+        runCanvas.CheckAwake();
         runCanvas.LegacySetPanelS(PanelS.FromPanelDescriptor(RunManager.Instance.Environment.Panel));
         runCanvas.TopBar.Refresh();
         CanvasManager.Instance.Curtain.GetAnimator().SetState(1);
         await UniTask.WaitForSeconds(0.1f);
         runCanvas.LayoutRebuild();
         CanvasManager.Instance.AppCanvas.RunConfigPanel.GetAnimator().SetState(0);
-        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
         runCanvas.Refresh();
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
     }
     
     private async UniTask FromRunToTitle(bool isAwait, object args)
@@ -147,6 +147,9 @@ public class AppStateMachine
         
         RunEnvironment runEnv = RunManager.Instance.Environment;
         RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
+        
+        runEnv.SetGuideToFinish();
+        CanvasManager.Instance.RefreshGuide();
         
         runCanvas.LegacySetPanelS(PanelS.FromHide());
         

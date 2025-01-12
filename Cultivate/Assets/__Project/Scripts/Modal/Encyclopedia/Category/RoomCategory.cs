@@ -528,27 +528,12 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "重试",
                         detailedText: "请重新尝试教学");
                     R[0].SetSelect(option => A);
-                    
-                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
-                    
-                    RunManager.Instance.Environment.ClearDeck();
-                    playerTemplate.TraversalCurrentSlots().Do(s =>
-                    {
-                        SkillEntry entry = s.Skill?.GetEntry();
-                        if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
-                    });
+
+                    RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate);
                     
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.ClearDeck();
-                        playerTemplate.TraversalCurrentSlots().Do(s =>
-                        {
-                            SkillEntry entry = s.Skill?.GetEntry();
-                            if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
-                        });
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate);
                         A.ResetGuideIndex();
                         return R;
                     });

@@ -530,6 +530,19 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         }
     }
 
+    public void SetPlayerEqualPreset(RunEntity template)
+    {
+        Home.SetSlotCount(template.GetSlotCount());
+        Home.SetHealth(template.GetHealth());
+        ClearDeck();
+        template.TraversalCurrentSlots().Do(s =>
+        {
+            SkillEntry entry = s.Skill?.GetEntry();
+            if (entry != null)
+                AddSkillProcedure(entry);
+        });
+    }
+
     public void ClearDeck()
     {
         Hand.Clear();
