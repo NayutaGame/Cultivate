@@ -849,7 +849,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "小松",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
+                skillTypeComposite:         SkillType.Attack | SkillType.ZiZhi,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -874,7 +874,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "潜龙在渊",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack | SkillType.Defend,
+                skillTypeComposite:         SkillType.Attack | SkillType.Defend | SkillType.ZiZhi,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -892,7 +892,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "明神",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Mana,
+                skillTypeComposite:         SkillType.Mana | SkillType.ZiZhi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{1 + dj}".ApplyMana() +
                     $"\n成长：多1",
@@ -943,7 +943,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "见龙在田",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
-                skillTypeComposite:         SkillType.Attack | SkillType.Defend,
+                skillTypeComposite:         SkillType.Attack | SkillType.Defend | SkillType.ZiZhi,
                 cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(4 - skill.Dj - skill.StageCastedCount),
                 costDescription:            CostDescription.ChannelFromDj(dj => 4 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1015,7 +1015,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "飞龙在天",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                skillTypeComposite:         SkillType.Defend,
+                skillTypeComposite:         SkillType.Defend | SkillType.ZiZhi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"闪避+1".ApplyDefend() +
                     $"\n初次：跳过下{2 + 2 * dj}张牌，使其成长".ApplyCond(castResult),
@@ -1201,7 +1201,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "刹那芳华",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.HuaShenOnly,
-                skillTypeComposite:         SkillType.Defend | SkillType.Exhaust,
+                skillTypeComposite:         SkillType.Defend | SkillType.Exhaust | SkillType.ZiZhi,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"升华 力量/" + "闪避".ApplyDefend() + "+1" +
                     $"\n成长：多1",
@@ -1379,6 +1379,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0411",
                 name:                       "燎原",
                 wuXing:                     WuXing.Huo,
+                skillTypeComposite:         SkillType.ZiZhi,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灼烧+{dj}" +
@@ -1450,10 +1451,15 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Exhaust,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"使下{1 + dj}张非攻击卡升华",
+                    $"升华左边的牌" + (j >= JingJie.HuaShen ? "，两次" : ""),
                 cast:                       async d =>
                 {
-                    await d.GainBuffProcedure("观众生", 1 + d.Dj);
+                    int times = d.J >= JingJie.HuaShen ? 2 : 1;
+                    for (int i = 0; i < times; i++)
+                    {
+                        StageSkill skill = d.Skill.Prevs(false).FirstObj(skill => !skill.Exhausted) ?? d.Skill;
+                        await skill.ExhaustProcedure();
+                    }
                 }),
 
             new(id:                         "0416",

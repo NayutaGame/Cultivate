@@ -64,7 +64,6 @@ public class BattlePanel : Panel
 
     public override void Refresh()
     {
-        Debug.Log("battle panel refresh");
         RefreshEnemy();
         RefreshOperationPanel();
         CanvasManager.Instance.RefreshGuide();
@@ -254,6 +253,7 @@ public class BattlePanel : Panel
 
     public override Tween EnterIdle()
         => DOTween.Sequence()
+            .AppendCallback(RefreshEnemy)
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(PlayBattleBGM)
             .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0))

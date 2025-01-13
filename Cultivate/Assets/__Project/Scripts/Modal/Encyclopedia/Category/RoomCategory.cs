@@ -1770,6 +1770,7 @@ public class RoomCategory : Category<RoomEntry>
                         DeckIndex copyingDeckIndex = indices[RandomManager.Range(0, count)];
                         RunSkill copyingSkill = RunManager.Instance.Environment.GetSkillAtDeckIndex(copyingDeckIndex);
                         indices.Do(index => RunManager.Instance.Environment.ReplaceSkillAtDeckIndexProcedure(copyingSkill, index));
+                        CanvasManager.Instance.RunCanvas.DeckPanel.SyncAll();
                         return D;
                     });
 

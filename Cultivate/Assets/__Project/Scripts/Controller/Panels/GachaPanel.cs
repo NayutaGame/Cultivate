@@ -1,4 +1,5 @@
 
+using DG.Tweening;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -34,7 +35,7 @@ public class GachaPanel : Panel
     public override void Refresh()
     {
         base.Refresh();
-        ListView.Refresh();
+        ListView.Sync();
     }
 
     private void OnEnable()
@@ -63,4 +64,9 @@ public class GachaPanel : Panel
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
         => AudioManager.Play("CardHover");
+
+    public override Tween EnterIdle()
+        => DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0));
 }

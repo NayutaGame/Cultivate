@@ -104,19 +104,25 @@ public class DeckPanel : Panel
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.FieldChangedNeuron.Add(Sync);
-        Sync();
+        RunManager.Instance.Environment.FieldChangedNeuron.Add(SyncPlayerEntity);
+        SyncPlayerEntity();
         HandView.Sync();
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.FieldChangedNeuron.Remove(Sync);
+        RunManager.Instance.Environment.FieldChangedNeuron.Remove(SyncPlayerEntity);
     }
 
-    private void Sync()
+    private void SyncPlayerEntity()
     {
         PlayerEntity.Sync();
+    }
+
+    public void SyncAll()
+    {
+        SyncPlayerEntity();
+        HandView.Sync();
     }
 
     // extra views
@@ -256,7 +262,7 @@ public class DeckPanel : Panel
 
     public override Tween EnterIdle()
         => DOTween.Sequence()
-            .AppendCallback(Sync)
+            .AppendCallback(SyncPlayerEntity)
             .AppendCallback(() => OpenZone.gameObject.SetActive(false))
             .AppendCallback(() => CloseZone.gameObject.SetActive(true))
             .Join(SortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
@@ -266,7 +272,7 @@ public class DeckPanel : Panel
 
     private Tween LockTween()
         => DOTween.Sequence()
-            .AppendCallback(Sync)
+            .AppendCallback(SyncPlayerEntity)
             .AppendCallback(() => OpenZone.gameObject.SetActive(false))
             .AppendCallback(() => CloseZone.gameObject.SetActive(false))
             .Join(SortButtonTransform.DOAnchorPos(SortButtonShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad))
