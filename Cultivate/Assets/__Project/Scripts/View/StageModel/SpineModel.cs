@@ -1,6 +1,5 @@
 
 using Spine.Unity;
-using UnityEngine;
 
 public class SpineModel : IStageModel
 {
@@ -27,10 +26,35 @@ public class SpineModel : IStageModel
         return new EvadedTweenAnimation(BaseTransform, Transform, false, induced);
     }
 
-    public override Animation GetAnimationFromAttack(bool induced)
+    public override Animation GetAnimationFromAttack(bool induced, int times)
     {
-        return new AttackTweenAnimation(BaseTransform, Transform, true, induced);
-        // return new SpineAnimation(Skeleton, "attack1", true, true, induced);
+        // return new AttackTweenAnimation(BaseTransform, Transform, true, induced);
+        
+        string animationName;
+        SpineAnimation.IntervalType intervalType;
+        
+        if (times == 1)
+        {
+            animationName = "attack1";
+            intervalType = SpineAnimation.IntervalType.Separator;
+        }
+        else if (times == 2)
+        {
+            animationName = "attack2";
+            intervalType = SpineAnimation.IntervalType.Separator;
+        }
+        else if (times == 3)
+        {
+            animationName = "attack3";
+            intervalType = SpineAnimation.IntervalType.Separator;
+        }
+        else
+        {
+            animationName = "attackn";
+            intervalType = SpineAnimation.IntervalType.StartToEnd;
+        }
+        
+        return new SpineAnimation(Skeleton, animationName, intervalType, times, true, induced);
     }
 
     public override Animation GetAnimationFromDamaged(bool induced)

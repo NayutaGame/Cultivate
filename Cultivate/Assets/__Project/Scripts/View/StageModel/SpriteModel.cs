@@ -19,7 +19,7 @@ public class SpriteModel : IStageModel
         return new EvadedTweenAnimation(BaseTransform, Transform, false, induced);
     }
 
-    public override Animation GetAnimationFromAttack(bool induced)
+    public override Animation GetAnimationFromAttack(bool induced, int times)
     {
         return new AttackTweenAnimation(BaseTransform, Transform, true, induced);
     }

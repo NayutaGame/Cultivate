@@ -63,8 +63,8 @@ public class RunCanvas : Panel
         TopBar.Configure();
         ConsolePanel.CheckAwake();
 
-        if (!Application.isEditor)
-            ConsolePanel.gameObject.SetActive(false);
+        // if (!Application.isEditor)
+        //     ConsolePanel.gameObject.SetActive(false);
     }
 
     public override void Refresh()

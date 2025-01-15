@@ -277,7 +277,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await PlayAsync(attackDetails.Tgt.Model().GetAnimationFromUnguard(attackDetails.Induced));
         }
         
-        await PlayAsync(attackDetails.Src.Model().GetAnimationFromAttack(attackDetails.Induced));
+        await PlayAsync(attackDetails.Src.Model().GetAnimationFromAttack(attackDetails.Induced, attackDetails.Times));
     }
 
     private async UniTask SingleAttackProcedure(AttackDetails d)

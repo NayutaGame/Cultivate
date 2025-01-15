@@ -460,9 +460,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97bd3a99f57cff34b9acd50aa4457de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VFXTransform: {fileID: 0}
   BaseTransform: {fileID: 427517689024503914}
   Transform: {fileID: 5836857200544139962}
+  VFXTransform: {fileID: 0}
   Skeleton: {fileID: 5202095395391773383}
 --- !u!1 &5271458037025126421
 GameObject:
@@ -794,7 +794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97bd3a99f57cff34b9acd50aa4457de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VFXTransform: {fileID: 0}
   BaseTransform: {fileID: 427517689852698381}
   Transform: {fileID: 3905315368000723563}
+  VFXTransform: {fileID: 0}
   Skeleton: {fileID: 7773336900775628987}

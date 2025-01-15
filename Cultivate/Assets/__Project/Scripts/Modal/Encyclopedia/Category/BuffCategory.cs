@@ -878,7 +878,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("观众生", "使用牌前，如果是非攻击牌，使其升华", BuffStackRule.Add, true, false,
+            new("坐忘", "升华下一次使用的牌", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_EXECUTE, 0, async (owner, closureDetails) =>
@@ -888,10 +888,31 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Caster) return;
                         if (d.Skill.Exhausted) return;
-                        if (d.Skill.GetSkillType().Contains(SkillType.Attack)) return;
                         
                         b.PlayPingAnimation();
                         await d.Skill.ExhaustProcedure();
+                        await b.LoseStackProcedure();
+                    }),
+                }),
+            
+            
+            
+            new("不动明王诀", "下一次受伤时，如果致死，则无效", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        DamageDetails d = (DamageDetails)closureDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        
+                        b.PlayPingAnimation();
+                        if (d.Tgt.Hp <= 0)
+                        {
+                            await d.Tgt.HealProcedure(d.Value, induced: true);
+                        }
+                        
                         await b.LoseStackProcedure();
                     }),
                 }),

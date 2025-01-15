@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using CLLibrary;
+using UnityEditor;
 
 public class SkillCategory : Category<SkillEntry>
 {
@@ -1217,10 +1218,10 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"消耗每6灵气，多重+1",
+                    $"消耗每8灵气，多重+1",
                 cast:                       async d =>
                 {
-                    await d.TransferProcedure(6, "灵气", 1, "多重", true, upperBound: 20);
+                    await d.TransferProcedure(8, "灵气", 1, "多重", true, upperBound: 20);
                 },
                 trivia:"在个人量子超算还没普及的时代，凡人只能体验个二十劫意思意思"),
             
@@ -1297,21 +1298,6 @@ public class SkillCategory : Category<SkillEntry>
                     await d.AttackProcedure(7 + d.Dj, times: 3 + 2 * d.Dj);
                 }),
 
-            new(id:                         "0406",
-                name:                       "不动明王诀",
-                wuXing:                     WuXing.Huo,
-                jingJieBound:               JingJie.ZhuJi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"{Fib.ToValue(2 + dj) * 10}攻".ApplyAttack() +
-                    "\n成为残血",
-                withinPool:                 false,
-                cast:                       async d =>
-                {
-                    await d.AttackProcedure(Fib.ToValue(2 + d.Dj) * 10);
-                    await d.BecomeLowHealth();
-                }),
-
             new(id:                         "0407",
                 name:                       "浴火",
                 wuXing:                     WuXing.Huo,
@@ -1338,11 +1324,12 @@ public class SkillCategory : Category<SkillEntry>
                     new HealthCostResult(entity.IsLowHealth ? 0 : 8),
                 costDescription:            CostDescription.HealthFromValue(8),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"灵气+{4 + dj}".ApplyMana() +
+                    $"护甲+{(3 + dj) * (4 + dj)}".ApplyDefend() +
                     $"\n残血：免除消耗",
                 cast:                       async d =>
                 {
-                    await d.GainBuffProcedure("灵气", 4 + d.Dj);
+                    int value = (3 + d.Dj) * (4 + d.Dj);
+                    await d.GainArmorProcedure(value, induced: false);
                 }),
             
             new(id:                         "0409",
@@ -1393,16 +1380,16 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "坐忘",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                skillTypeComposite:         SkillType.Mana | SkillType.Exhaust,
-                cost:                       CostResult.ChannelFromDj(dj => 3 - dj),
-                costDescription:            CostDescription.ChannelFromDj(dj => 3 - dj),
+                skillTypeComposite:         SkillType.Exhaust,
+                cost:                       CostResult.ChannelFromDj(dj => 2 - dj),
+                costDescription:            CostDescription.ChannelFromDj(dj => 2 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"升华" + $" 免费+1".ApplyMana() +
-                    $"\n每1张已升华牌，多1",
+                    $"升华" +
+                    $"\n下一张牌升华",
                 cast:                       async d =>
                 {
                     await d.Skill.ExhaustProcedure();
-                    await d.GainBuffProcedure("免费", 1 + d.Caster.ExhaustedCount);
+                    await d.GainBuffProcedure("坐忘");
                 }),
 
             new(id:                         "0413",
@@ -1515,6 +1502,21 @@ public class SkillCategory : Category<SkillEntry>
 
                     await d.AttackProcedure(1,
                         closures: new [] { closure });
+                }),
+
+            new(id:                         "0406",
+                name:                       "不动明王诀",
+                wuXing:                     WuXing.Huo,
+                jingJieBound:               JingJie.HuaShenOnly,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    "成为残血" +
+                    "\n下一次受伤时，如果致死，则无效",
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    await d.BecomeLowHealth();
+                    await d.GainBuffProcedure("不动明王诀");
                 }),
 
             new(id:                         "0419",
@@ -2249,6 +2251,22 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async d =>
                 {
                     await d.AttackProcedure(40 + 20 * d.Dj);
+                }),
+            
+            new(id:                         "0421",
+                name:                       "多段测试",
+                wuXing:                     WuXing.Huo,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                withinPool:                 true,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"1攻".ApplyAttack() +
+                    $"\n每耗1灵气，多1次".ApplyAttack(),
+                cast:                       async d =>
+                {
+                    int times = d.Caster.GetStackOfBuff("灵气");
+                    await d.LoseBuffProcedure("灵气", times);
+                    await d.AttackProcedure(1, times: times);
                 }),
             
             // new(id:                         "0101",

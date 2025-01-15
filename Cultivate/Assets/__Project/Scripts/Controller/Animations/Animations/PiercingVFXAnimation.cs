@@ -1,6 +1,8 @@
 
 using DG.Tweening;
+using Spine;
 using UnityEngine;
+using Random = System.Random;
 
 public class PiercingVFXAnimation : Animation
 {
@@ -26,9 +28,34 @@ public class PiercingVFXAnimation : Animation
         int value = _attackDetails.Value;
 
         int orient = -(src.Index * 2 - 1);
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.PiercingVFXFromWuXing[wuXing], src.Model().VFXTransform.position + 2 * orient * Vector3.right,
-            Quaternion.Euler(0, src.Index * 180, 0), StageManager.Instance.VFXPool);
-        VFX vfx = gao.GetComponent<VFX>();
+        
+        GameObject vfxGameObject;
+        
+        if (src.Model() is SpineModel spineModel)
+        {
+            Bone bone = spineModel.Skeleton.Skeleton.FindBone("emitterBone");
+            Vector3 pos = new Vector3(bone.WorldX * spineModel.Skeleton.transform.localScale.x, bone.WorldY * spineModel.Skeleton.transform.localScale.y, 0);
+
+            Vector2 randomOffset;
+            if (_attackDetails.Times <= 3)
+            {
+                randomOffset = Vector2.zero;
+            }
+            else
+            {
+                randomOffset = UnityEngine.Random.insideUnitCircle * 0.5f;
+            }
+            
+            vfxGameObject = GameObject.Instantiate(StageManager.Instance.PiercingVFXFromWuXing[wuXing], src.Model().transform.position + pos + (Vector3)randomOffset,
+                Quaternion.Euler(0, src.Index * 180, 0), StageManager.Instance.VFXPool);
+        }
+        else
+        {
+            vfxGameObject = GameObject.Instantiate(StageManager.Instance.PiercingVFXFromWuXing[wuXing], src.Model().VFXTransform.position + 2 * orient * Vector3.right,
+                Quaternion.Euler(0, src.Index * 180, 0), StageManager.Instance.VFXPool);
+        }
+        
+        VFX vfx = vfxGameObject.GetComponent<VFX>();
         vfx.SetIntensity(IntensityFromValue(value));
         vfx.Play();
     }
