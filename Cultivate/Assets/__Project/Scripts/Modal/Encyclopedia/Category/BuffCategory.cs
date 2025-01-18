@@ -1383,18 +1383,19 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("狂焰", "下[层数]次，攻击时，追加12攻", BuffStackRule.Add, true, false,
+            new("狂焰", "下[层数]次，攻击时，多8攻", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_ATTACK, 0, async (owner, closureDetails) =>
+                    new(StageClosureDict.WIL_FULL_ATTACK, 0, async (owner, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
                         AttackDetails d = (AttackDetails)closureDetails;
                         if (b.Owner != d.Src) return;
                         if (!d.Recursive) return;
+                        
                         b.PlayPingAnimation();
+                        d.Value += 8;
                         await b.LoseStackProcedure();
-                        await d.Src.AttackProcedure(12, wuXing: WuXing.Huo, induced: true, recursive: false);
                     }),
                 }),
             
@@ -1529,6 +1530,34 @@ public class BuffCategory : Category<BuffEntry>
                         d.Value = d.Value.ClampUpper(b.Stack);
                     }),
                 }),
+            
+            new("净体", "每轮：净化2", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_ROUND, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        RoundDetails d = (RoundDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        b.PlayPingAnimation();
+                        await b.Owner.DispelProcedure(2);
+                    }),
+                }),
+            
+            new("同心", "燃命时：对方会受到伤害", BuffStackRule.One, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_HEALTH_COST, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        HealthCostResult d = (HealthCostResult)closureDetails;
+                        if (b.Owner != d.Entity) return;
+                        b.PlayPingAnimation();
+                        await b.Owner.Opponent().LoseHealthProcedure(d.Value);
+                    }),
+                }),
+            
+            new("连岳", "最后两张牌都可以触发终结", BuffStackRule.One, true, false),
         });
     }
 

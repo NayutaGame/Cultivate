@@ -418,9 +418,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还" +
-                                                                                    "\n4张：燃命时：获得1灼烧" +
-                                                                                    "\n6张：暂缺" +
+                        rewardDescription:                                          "2张：每轮：净化2" +
+                                                                                    "\n4张：第一次失去护甲时，返还" +
+                                                                                    "\n6张：燃命时：对方也会受到伤害" +
                                                                                     "\n9张：每轮气血恢复至上限",
                         closures: new StageClosure[]
                         {
@@ -430,8 +430,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("最后一张牌升华");
-                                await f.Owner.GainBuffProcedure("淬体");
+                                await f.Owner.GainBuffProcedure("净体");
+                                await f.Owner.GainBuffProcedure("护甲返还");
+                                await f.Owner.GainBuffProcedure("同心");
                                 await f.Owner.GainBuffProcedure("凤凰涅槃");
                             }),
                         }),
@@ -439,9 +440,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还" +
-                        "\n4张：燃命时：获得1灼烧" +
-                        "\n6张：暂缺" +
+                        rewardDescription:                                          "2张：每轮：净化2" +
+                        "\n4张：第一次失去护甲时，返还" +
+                        "\n6张：燃命时：对方也会受到伤害" +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         closures: new StageClosure[]
                         {
@@ -451,17 +452,18 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("最后一张牌升华");
-                                await f.Owner.GainBuffProcedure("淬体");
+                                await f.Owner.GainBuffProcedure("净体");
+                                await f.Owner.GainBuffProcedure("护甲返还");
+                                await f.Owner.GainBuffProcedure("同心");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还" +
-                        "\n4张：燃命时：获得1灼烧" +
-                        "\n6张：暂缺".ApplyInactive() +
+                        rewardDescription:                                          "2张：每轮：净化2" +
+                        "\n4张：第一次失去护甲时，返还" +
+                        "\n6张：燃命时：对方也会受到伤害".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         closures: new StageClosure[]
                         {
@@ -471,17 +473,17 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("最后一张牌升华");
-                                await f.Owner.GainBuffProcedure("淬体");
+                                await f.Owner.GainBuffProcedure("净体");
+                                await f.Owner.GainBuffProcedure("护甲返还");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还" +
-                        "\n4张：燃命时：获得1灼烧".ApplyInactive() +
-                        "\n6张：暂缺".ApplyInactive() +
+                        rewardDescription:                                          "2张：每轮：净化2" +
+                        "\n4张：第一次失去护甲时，返还".ApplyInactive() +
+                        "\n6张：燃命时：对方也会受到伤害".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         closures: new StageClosure[]
                         {
@@ -491,16 +493,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("最后一张牌升华");
+                                await f.Owner.GainBuffProcedure("净体");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用最后一张牌后，暂时移出卡组，战斗结束后返还".ApplyInactive() +
-                        "\n4张：燃命时：获得1灼烧".ApplyInactive() +
-                        "\n6张：暂缺".ApplyInactive() +
+                        rewardDescription:                                          "2张：每轮：净化2".ApplyInactive() +
+                        "\n4张：第一次失去护甲时，返还".ApplyInactive() +
+                        "\n6张：燃命时：对方也会受到伤害".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive()),
                 }),
 
@@ -515,10 +517,10 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一次失去护甲时返还" +
+                        rewardDescription:                                          "2张：第一次造成伤害时，获得护甲" +
                                                                                     "\n4张：开局：获得25护甲" +
-                                                                                    "\n6张：开局准备好架势" +
-                                                                                    "\n9张：暂缺",// 天人合一（未设计）
+                                                                                    "\n6张：最后两张都有终结效果" +
+                                                                                    "\n9张：暂缺",
                         closures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -527,9 +529,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("护甲返还");
+                                await f.Owner.GainBuffProcedure("击伤赋予护甲");
                                 await f.Owner.GainArmorProcedure(25);
-                                await f.Owner.GainBuffProcedure("架势", 2);
+                                await f.Owner.GainBuffProcedure("连岳");
                                 // await f.Owner.GainBuffProcedure("天人合一");
                             }),
                         }),
@@ -537,9 +539,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一次失去护甲时返还" +
+                        rewardDescription:                                          "2张：第一次造成伤害时，获得护甲" +
                         "\n4张：开局：获得25护甲" +
-                        "\n6张：开局准备好架势" +
+                        "\n6张：最后两张都有终结效果" +
                         "\n9张：暂缺".ApplyInactive(),
                         closures: new StageClosure[]
                         {
@@ -549,18 +551,18 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("护甲返还");
+                                await f.Owner.GainBuffProcedure("击伤赋予护甲");
                                 await f.Owner.GainArmorProcedure(25);
-                                await f.Owner.GainBuffProcedure("架势", 2);
+                                await f.Owner.GainBuffProcedure("连岳");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一次失去护甲时返还" +
+                        rewardDescription:                                          "2张：第一次造成伤害时，获得护甲" +
                         "\n4张：开局：获得25护甲" +
-                        "\n6张：开局准备好架势".ApplyInactive() +
+                        "\n6张：最后两张都有终结效果".ApplyInactive() +
                         "\n9张：暂缺".ApplyInactive(),
                         closures: new StageClosure[]
                         {
@@ -570,7 +572,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("护甲返还");
+                                await f.Owner.GainBuffProcedure("击伤赋予护甲");
                                 await f.Owner.GainArmorProcedure(25);
                             }),
                         }),
@@ -578,9 +580,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一次失去护甲时返还" +
+                        rewardDescription:                                          "2张：第一次造成伤害时，获得护甲" +
                         "\n4张：开局：获得25护甲".ApplyInactive() +
-                        "\n6张：开局准备好架势".ApplyInactive() +
+                        "\n6张：最后两张都有终结效果".ApplyInactive() +
                         "\n9张：暂缺".ApplyInactive(),
                         closures: new StageClosure[]
                         {
@@ -590,16 +592,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("护甲返还");
+                                await f.Owner.GainBuffProcedure("击伤赋予护甲");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一次失去护甲时返还".ApplyInactive() +
+                        rewardDescription:                                          "2张：第一次造成伤害时，获得护甲".ApplyInactive() +
                         "\n4张：开局：获得25护甲".ApplyInactive() +
-                        "\n6张：开局准备好架势".ApplyInactive() +
+                        "\n6张：最后两张都有终结效果".ApplyInactive() +
                         "\n9张：暂缺".ApplyInactive()),
                 }),
             

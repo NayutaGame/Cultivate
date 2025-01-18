@@ -1298,6 +1298,26 @@ public class SkillCategory : Category<SkillEntry>
                     await d.AttackProcedure(7 + d.Dj, times: 3 + 2 * d.Dj);
                 }),
 
+            new(id:                         "0422",
+                name:                       "绝境",
+                wuXing:                     WuXing.Huo,
+                jingJieBound:               JingJie.ZhuJi2HuaShen,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    (j >= JingJie.HuaShen ? $"力量+2" : $"力量+1") +
+                    $"\n残血：多{Fib.ToValue(2 + dj)}".ApplyCond(castResult),
+                cast:                       async d =>
+                {
+                    int value = d.J >= JingJie.HuaShen ? 2 : 1;
+                    bool cond = d.Caster.IsLowHealth;
+                    if (cond)
+                    {
+                        value += Fib.ToValue(2 + d.Dj);
+                    }
+                    await d.GainBuffProcedure("力量", value);
+                    
+                    d.CastResult.AppendCond(cond);
+                }),
+
             new(id:                         "0407",
                 name:                       "浴火",
                 wuXing:                     WuXing.Huo,
@@ -1353,6 +1373,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Exhaust | SkillType.Defend,
                 cost:                       CostResult.ChannelFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 2 - dj),
+                withinPool:                 false,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"升华" +
                     $"\n护甲+6".ApplyDefend() +
@@ -1361,6 +1382,29 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     await d.Skill.ExhaustProcedure();
                     await d.GainArmorProcedure(6 * (1 + d.Caster.ExhaustedCount), induced: false);
+                }),
+
+            new(id:                         "0423",
+                name:                       "风中残烛",
+                wuXing:                     WuXing.Huo,
+                jingJieBound:               JingJie.JinDan2HuaShen,
+                skillTypeComposite:         SkillType.Defend,
+                cost:                       CostResult.HealthFromValue(8),
+                costDescription:            CostDescription.HealthFromValue(8),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"锻体+{5 + 5 * dj}" +
+                    $"\n残血：获得2闪避".ApplyCond(castResult),
+                cast:                       async d =>
+                {
+                    bool cond = d.Caster.IsLowHealth;
+
+                    await d.GainBuffProcedure("锻体", 5 + 5 * d.Dj);
+                    
+                    if (cond)
+                    {
+                        await d.GainBuffProcedure("闪避", 2);
+                    }
+                    d.CastResult.AppendCond(cond);
                 }),
 
             new(id:                         "0411",
@@ -1411,25 +1455,23 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"2攻".ApplyAttack() +
-                    $"\n追加12攻".ApplyAttack() + "（未实现）" +
+                    $"\n攻击多8攻".ApplyAttack() +
                     $"\n下{1 + dj}次攻击也触发",
                 cast:                       async d =>
                 {
-                    // StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                    //     async (owner, closureDetails) =>
-                    //     {
-                    //         AttackDetails d = closureDetails as AttackDetails;
-                    //         if (owner != d.SrcSkill) return;
-                    //         await d.Src.AttackProcedure(12, wuXing: d.SrcSkill.Entry.WuXing,
-                    //             srcSkill: d.SrcSkill,
-                    //             castResult: d.CastResult);
-                    //         await d.Src.GainBuffProcedure("狂焰", 1 + d.SrcSkill.Dj);
-                    //     });
-                    //
-                    // await d.AttackProcedure(2,
-                    //     closures: new [] { closure });
-
-                    await d.AttackProcedure(2);
+                    StageClosure closure = new(StageClosureDict.WIL_FULL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.SrcSkill) return;
+                            d.Value += 8;
+                            // await d.Src.GainBuffProcedure("狂焰", 1 + d.SrcSkill.Dj);
+                        });
+                    
+                    await d.AttackProcedure(2,
+                        closures: new [] { closure });
+                    
+                    await d.GainBuffProcedure("狂焰", 1 + d.Dj);
                 }),
 
             new(id:                         "0415",

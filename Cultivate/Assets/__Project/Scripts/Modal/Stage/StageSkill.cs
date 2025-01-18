@@ -102,7 +102,7 @@ public class StageSkill : StageClosureOwner
 
     public async UniTask<bool> IsEnd(bool useFocus = false)
     {
-        bool isEnd = SlotIndex == _owner._skills.Length - 1;
+        bool isEnd = (SlotIndex == _owner._skills.Length - 1) || (SlotIndex == _owner._skills.Length - 2 && _owner.GetStackOfBuff("连岳") > 0);
         if (!isEnd)
             isEnd = useFocus && await _owner.IsFocused();
 
