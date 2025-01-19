@@ -125,12 +125,6 @@ public class CastDetails : ClosureDetails
 
     public async UniTask<bool> JiaShiProcedure()
     {
-        // if (GetStackOfBuff("天人合一") > 0)
-        // {
-        //     TriggeredJiaShiRecord = true;
-        //     return true;
-        // }
-
         if (Caster.GetStackOfBuff("架势") > 0)
         {
             await LoseBuffProcedure("架势");

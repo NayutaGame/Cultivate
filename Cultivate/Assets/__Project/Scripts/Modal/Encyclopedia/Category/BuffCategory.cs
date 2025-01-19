@@ -27,7 +27,6 @@ public class BuffCategory : Category<BuffEntry>
             new("追击",      "持续[层数]次，下次攻击时，次数+1",            BuffStackRule.Add, true, false),
             new("鹤回翔",     "反转出牌顺序",                        BuffStackRule.One, true, false),
             new("永久暴击",    "攻击附带暴击",                        BuffStackRule.One, true, false),
-            new("天人合一",    "激活所有架势",                        BuffStackRule.One, true, false),
             new("跳卡牌",     "行动时跳过下张卡牌",                     BuffStackRule.Add, false, false),
             new("集中",      "下一次使用牌时，条件算作激活",                BuffStackRule.Add, true, false),
             new("永久集中",    "所有牌，条件算作激活",                    BuffStackRule.One, true, false),
@@ -1337,7 +1336,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("素弦", "下[层数]次，攻击时，灵气+2", BuffStackRule.Add, true, false,
+            new("素弦", "下[层数]次，攻击时，灵气+3", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_ATTACK, 0, async (owner, closureDetails) =>
@@ -1348,7 +1347,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (!d.Recursive) return;
                         b.PlayPingAnimation();
                         await b.LoseStackProcedure();
-                        await d.Src.GainBuffProcedure("灵气", 2, induced: true);
+                        await d.Src.GainBuffProcedure("灵气", 3, induced: true);
                     }),
                 }),
             
@@ -1558,6 +1557,21 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("连岳", "最后两张牌都可以触发终结", BuffStackRule.One, true, false),
+            
+            new("贪狼", "下[层数]次，对方获得护甲会转为对自己的减甲", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_GAIN_ARMOR, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        GainArmorDetails d = (GainArmorDetails)closureDetails;
+                        if (b.Owner.Opponent() != d.Tgt) return;
+                        b.PlayPingAnimation();
+                        d.Cancel = true;
+                        await b.LoseStackProcedure(b.Stack);
+                        await b.Owner.LoseArmorProcedure(d.Value);
+                    }),
+                }),
         });
     }
 

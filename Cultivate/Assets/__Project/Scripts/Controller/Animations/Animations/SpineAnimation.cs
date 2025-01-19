@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using Spine;
 using Spine.Unity;
 using UnityEngine.Assertions;
@@ -8,9 +9,18 @@ public class SpineAnimation : Animation
 {
     public enum IntervalType
     {
+        NoInterval,
         Separator,
         StartToEnd,
     }
+
+    public static Dictionary<IntervalType, Func<Spine.Animation, int, float[]>> Operator =
+        new()
+        {
+            { IntervalType.NoInterval, GetDurationForAnimation },
+            { IntervalType.Separator, GetSeparatedIntervalsForAnimation },
+            { IntervalType.StartToEnd, GetContinuousIntervalsForAnimation },
+        };
     
     private SkeletonAnimation _skeleton;
     private string _animationName;
@@ -30,10 +40,7 @@ public class SpineAnimation : Animation
         Spine.Skeleton skeleton = _skeleton.Skeleton;
         Spine.Animation animation = skeleton.Data.FindAnimation(_animationName);
 
-        return new SpineHandle(this,
-            _intervalType == IntervalType.Separator
-                ? GetSeparatedIntervalsForAnimation(animation)
-                : GetContinuousIntervalsForAnimation(animation), _skeleton, PlayAnimation);
+        return new SpineHandle(this, Operator[_intervalType](animation, _attackTimes), _skeleton, PlayAnimation);
     }
 
     public override bool InvolvesCharacterAnimation()
@@ -44,8 +51,13 @@ public class SpineAnimation : Animation
         _skeleton.AnimationState.SetAnimation(0, _animationName, false);
         _skeleton.AnimationState.AddAnimation(0, "idle", true, 0);
     }
+
+    private static float[] GetDurationForAnimation(Spine.Animation animation, int attackTimes)
+    {
+        return new[] { animation?.Duration ?? 0 };
+    }
     
-    private float[] GetSeparatedIntervalsForAnimation(Spine.Animation animation)
+    private static float[] GetSeparatedIntervalsForAnimation(Spine.Animation animation, int attackTimes)
     {
         EventTimeline eventTimeline = animation.Timelines.Find(t => t is EventTimeline) as EventTimeline;
 
@@ -66,26 +78,26 @@ public class SpineAnimation : Animation
         return intervals;
     }
     
-    private float[] GetContinuousIntervalsForAnimation(Spine.Animation animation)
+    private static float[] GetContinuousIntervalsForAnimation(Spine.Animation animation, int attackTimes)
     {
         EventTimeline eventTimeline = animation.Timelines.Find(t => t is EventTimeline) as EventTimeline;
         
         Assert.IsTrue(eventTimeline.Events.Length == 2);
-        Assert.IsTrue(_attackTimes > 3);
+        Assert.IsTrue(attackTimes > 3);
 
-        float[] intervals = new float[_attackTimes + 1];
+        float[] intervals = new float[attackTimes + 1];
 
         float anticipation = eventTimeline.Events[0].Time;
         float midDuration = eventTimeline.Events[1].Time - eventTimeline.Events[0].Time;
         float recover = animation.Duration - eventTimeline.Events[1].Time;
-        float singleDuration = midDuration / (_attackTimes - 1);
+        float singleDuration = midDuration / (attackTimes - 1);
 
         intervals[0] = anticipation;
 
-        for (int i = 1; i < _attackTimes; i++)
+        for (int i = 1; i < attackTimes; i++)
             intervals[i] = singleDuration;
         
-        intervals[_attackTimes] = recover;
+        intervals[attackTimes] = recover;
 
         return intervals;
     }

@@ -532,7 +532,6 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("击伤赋予护甲");
                                 await f.Owner.GainArmorProcedure(25);
                                 await f.Owner.GainBuffProcedure("连岳");
-                                // await f.Owner.GainBuffProcedure("天人合一");
                             }),
                         }),
                     new FormationEntry(

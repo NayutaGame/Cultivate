@@ -283,6 +283,21 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
+            new(id: "多段测试",
+                envJingJie: JingJie.LianQi,
+                slotCount: 12,
+                gold: 0,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDescriptor[][]
+                {
+                    new RoomDescriptor[]
+                    {
+                        new DirectRoomDescriptor(1, "多段测试"),
+                        new AscensionRoomDescriptor(0),
+                    },
+                }),
+            
             new(id: "筑基",
                 envJingJie: JingJie.ZhuJi,
                 slotCount: 5,

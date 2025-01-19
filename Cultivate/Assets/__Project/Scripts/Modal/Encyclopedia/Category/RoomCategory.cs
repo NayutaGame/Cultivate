@@ -496,6 +496,87 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
+            new(id:                                 "多段测试",
+                description:                        "多段测试",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    RunEntity homeA = EditorManager.FindEntity("多段HomeA");
+                    RunEntity awayA = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayA"));
+                    RunEntity homeB = EditorManager.FindEntity("多段HomeB");
+                    RunEntity awayB = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayB"));
+                    RunEntity homeC = EditorManager.FindEntity("多段HomeC");
+                    RunEntity awayC = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayC"));
+                    RunEntity homeD = EditorManager.FindEntity("多段HomeD");
+                    RunEntity awayD = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayD"));
+
+                    DialogPanelDescriptor selecting = new("多段测试", "多段测试", "基础", "护甲的表现", "破甲的表现", "Buff的表现");
+                    
+                    BattlePanelDescriptor optionA = new BattlePanelDescriptor(awayA)
+                        .SetWinOperation(() =>
+                        {
+                            return selecting;
+                        })
+                        .SetLoseOperation(() =>
+                        {
+                            return selecting;
+                        });
+
+                    BattlePanelDescriptor optionB = new BattlePanelDescriptor(awayB)
+                        .SetWinOperation(() =>
+                        {
+                            return selecting;
+                        })
+                        .SetLoseOperation(() =>
+                        {
+                            return selecting;
+                        });
+
+                    BattlePanelDescriptor optionC = new BattlePanelDescriptor(awayC)
+                        .SetWinOperation(() =>
+                        {
+                            return selecting;
+                        })
+                        .SetLoseOperation(() =>
+                        {
+                            return selecting;
+                        });
+
+                    BattlePanelDescriptor optionD = new BattlePanelDescriptor(awayD)
+                        .SetWinOperation(() =>
+                        {
+                            return selecting;
+                        })
+                        .SetLoseOperation(() =>
+                        {
+                            return selecting;
+                        });
+                    
+                    selecting[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeA, toField: true);
+                        return optionA;
+                    });
+                    selecting[1].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeB, toField: true);
+                        return optionB;
+                    });
+                    selecting[2].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeC, toField: true);
+                        return optionC;
+                    });
+                    selecting[3].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeD, toField: true);
+                        return optionD;
+                    });
+                    
+                    return selecting;
+                }),
+
             new(id:                                 "教学1",
                 description:                        "教学1",
                 ladderBound:                        new Bound(0, 15),
@@ -529,11 +610,11 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "请重新尝试教学");
                     R[0].SetSelect(option => A);
 
-                    RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate);
+                    RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false);
                     
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate);
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false);
                         A.ResetGuideIndex();
                         return R;
                     });

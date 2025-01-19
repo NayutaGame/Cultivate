@@ -530,7 +530,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         }
     }
 
-    public void SetPlayerEqualPreset(RunEntity template)
+    public void SetPlayerEqualPreset(RunEntity template, bool toField)
     {
         Home.SetSlotCount(template.GetSlotCount());
         Home.SetHealth(template.GetHealth());
@@ -538,8 +538,17 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         template.TraversalCurrentSlots().Do(s =>
         {
             SkillEntry entry = s.Skill?.GetEntry();
-            if (entry != null)
-                AddSkillProcedure(entry);
+            if (entry == null)
+                return;
+
+            if (toField)
+            {
+                AddSkillProcedure(entry, preferredJingJie: s.Skill.GetJingJie(), preferredDeckIndex: s.ToDeckIndex());
+            }
+            else
+            {
+                AddSkillProcedure(entry, preferredJingJie: s.Skill.GetJingJie());
+            }
         });
     }
 

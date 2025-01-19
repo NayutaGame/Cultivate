@@ -7,12 +7,12 @@ public class SpineModel : IStageModel
 
     public override void Opening()
     {
-        // Skeleton.AnimationState.SetAnimation(0, "idle", true);
+        Skeleton.AnimationState.SetAnimation(0, "idle", true);
     }
 
     public override void SetSpeed(float speed)
     {
-        // Skeleton.timeScale = speed;
+        Skeleton.timeScale = speed;
     }
 
     public override Animation GetAnimationFromBuffSelf(bool induced)
@@ -23,7 +23,8 @@ public class SpineModel : IStageModel
 
     public override Animation GetAnimationFromEvaded(bool induced)
     {
-        return new EvadedTweenAnimation(BaseTransform, Transform, false, induced);
+        // return new EvadedTweenAnimation(BaseTransform, Transform, false, induced);
+        return new SpineAnimation(Skeleton, "evade", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
     }
 
     public override Animation GetAnimationFromAttack(bool induced, int times)
@@ -59,8 +60,8 @@ public class SpineModel : IStageModel
 
     public override Animation GetAnimationFromDamaged(bool induced)
     {
-        return new DamagedTweenAnimation(BaseTransform, Transform, false, induced);
-        // return new SpineAnimation(Skeleton, "hit", false, false, induced);
+        // return new DamagedTweenAnimation(BaseTransform, Transform, false, induced);
+        return new SpineAnimation(Skeleton, "damaged", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
     }
 
     public override Animation GetAnimationFromGainArmor(bool induced)
@@ -77,13 +78,13 @@ public class SpineModel : IStageModel
 
     public override Animation GetAnimationFromGuard(bool induced)
     {
-        return new EmptyTweenAnimation();
-        // return new SpineAnimation(Skeleton, "guard", false, false, induced);
+        // return new EmptyTweenAnimation();
+        return new SpineAnimation(Skeleton, "prepareDefend", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
     }
 
     public override Animation GetAnimationFromUnguard(bool induced)
     {
-        return new EmptyTweenAnimation();
-        // return new SpineAnimation(Skeleton, "unguard", false, false, induced);
+        // return new EmptyTweenAnimation();
+        return new SpineAnimation(Skeleton, "unpreparedB", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
     }
 }

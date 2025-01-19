@@ -52,6 +52,14 @@ public class EntityCategory : Category<EntityEntry>
             new("玩家手牌10", "玩家手牌10"),
             new("玩家手牌11", "玩家手牌11"),
             new("玩家手牌12", "玩家手牌12"),
+            new("多段HomeA", "多段HomeA", modelName: "子非鱼"),
+            new("多段AwayA", "多段AwayA", modelName: "子非鱼"),
+            new("多段HomeB", "多段HomeB", modelName: "子非鱼"),
+            new("多段AwayB", "多段AwayB", modelName: "子非鱼"),
+            new("多段HomeC", "多段HomeC", modelName: "子非鱼"),
+            new("多段AwayC", "多段AwayC", modelName: "子非鱼"),
+            new("多段HomeD", "多段HomeD", modelName: "子非鱼"),
+            new("多段AwayD", "多段AwayD", modelName: "子非鱼"),
         });
     }
 
