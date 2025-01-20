@@ -339,8 +339,8 @@ public class StageEnvironment : Addressable, StageClosureOwner
     }
 
     public async UniTask IndirectProcedure(StageEntity src, StageEntity tgt, int value, StageSkill srcSkill,
-        CastResult castResult, WuXing? wuXing = null, bool recursive = true, bool induced = false)
-        => await IndirectProcedure(new IndirectDetails(src, tgt, value, srcSkill, wuXing, recursive, castResult, induced));
+        CastResult castResult, WuXing? wuXing = null, bool lifesteal = false, bool recursive = true, bool induced = false)
+        => await IndirectProcedure(new IndirectDetails(src, tgt, value, srcSkill, wuXing, lifesteal, recursive, castResult, induced));
 
     public async UniTask IndirectProcedure(IndirectDetails indirectDetails)
     {

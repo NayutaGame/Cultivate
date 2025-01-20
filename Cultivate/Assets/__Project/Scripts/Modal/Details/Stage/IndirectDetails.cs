@@ -14,6 +14,7 @@ public class IndirectDetails : ClosureDetails
 
     public StageSkill SrcSkill;
     public WuXing? WuXing;
+    public bool LifeSteal;
     public bool Recursive;
     public CastResult CastResult;
 
@@ -25,6 +26,7 @@ public class IndirectDetails : ClosureDetails
     /// <param name="value">攻击数值</param>
     /// <param name="srcSkill">技能来源</param>
     /// <param name="wuXing">攻击特效的五行</param>
+    /// <param name="lifeSteal">是否吸血</param>
     /// <param name="recursive">是否会递归</param>
     /// <param name="castResult">结果描述</param>
     /// <param name="induced">是否是间接行为</param>
@@ -34,6 +36,7 @@ public class IndirectDetails : ClosureDetails
         int value,
         StageSkill srcSkill,
         WuXing? wuxing,
+        bool lifeSteal,
         bool recursive,
         CastResult castResult,
         bool induced)
@@ -43,10 +46,11 @@ public class IndirectDetails : ClosureDetails
         Value = value;
         SrcSkill = srcSkill;
         WuXing = wuxing;
+        LifeSteal = lifeSteal;
         Recursive = recursive;
         CastResult = castResult;
         Induced = induced;
     }
 
-    public IndirectDetails Clone() => new(Src, Tgt, _value, SrcSkill, WuXing, Recursive, CastResult, Induced);
+    public IndirectDetails Clone() => new(Src, Tgt, _value, SrcSkill, WuXing, LifeSteal, Recursive, CastResult, Induced);
 }

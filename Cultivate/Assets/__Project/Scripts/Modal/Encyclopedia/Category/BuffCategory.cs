@@ -630,7 +630,9 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
-                        await b.Owner.IndirectProcedure(b.Stack, wuXing: WuXing.Jin);
+
+                        bool lifeSteal = b.Owner.GetStackOfBuff("凛冽") > 0;
+                        await b.Owner.IndirectProcedure(b.Stack, wuXing: WuXing.Jin, lifeSteal: lifeSteal);
                     }),
                 }),
 
@@ -1557,21 +1559,7 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new("连岳", "最后两张牌都可以触发终结", BuffStackRule.One, true, false),
-            
-            new("贪狼", "下[层数]次，对方获得护甲会转为对自己的减甲", BuffStackRule.Add, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.DID_GAIN_ARMOR, 0, async (owner, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        GainArmorDetails d = (GainArmorDetails)closureDetails;
-                        if (b.Owner.Opponent() != d.Tgt) return;
-                        b.PlayPingAnimation();
-                        d.Cancel = true;
-                        await b.LoseStackProcedure(b.Stack);
-                        await b.Owner.LoseArmorProcedure(d.Value);
-                    }),
-                }),
+            new("凛冽", "锋锐具有吸血", BuffStackRule.One, true, false),
         });
     }
 

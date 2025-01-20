@@ -435,7 +435,8 @@ public class StageEntity : Addressable, StageClosureOwner
 
     #region Procedure
     
-    public async UniTask AttackProcedure(int value,
+    public async UniTask AttackProcedure(
+        int value,
         int times = 1,
         StageSkill srcSkill = null,
         WuXing? wuXing = null,
@@ -448,8 +449,15 @@ public class StageEntity : Addressable, StageClosureOwner
         bool induced = false)
         => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, times, srcSkill, wuXing, crit, lifeSteal, penetrate, false, recursive, castResult, closures, induced));
     
-    public async UniTask IndirectProcedure(int value, StageSkill srcSkill = null, CastResult castResult = null, WuXing? wuXing = null, bool recursive = true, bool induced = false)
-        => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, srcSkill, wuXing, recursive, castResult, induced));
+    public async UniTask IndirectProcedure(
+        int value,
+        StageSkill srcSkill = null,
+        WuXing? wuXing = null,
+        bool lifeSteal = false,
+        bool recursive = true,
+        CastResult castResult = null,
+        bool induced = false)
+        => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, srcSkill, wuXing, lifeSteal, recursive, castResult, induced));
     
     public async UniTask DamageSelfProcedure(int value, StageSkill srcSkill = null, CastResult castResult = null, bool recursive = true, bool induced = false)
         => await _env.DamageProcedure(new DamageDetails(this, this, value, srcSkill, crit: false, lifeSteal: false, recursive, castResult, induced));

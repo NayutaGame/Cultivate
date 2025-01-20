@@ -604,135 +604,135 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：暂缺".ApplyInactive()),
                 }),
             
-            // new(id: "攻击阵",
-            //     order: 0,
-            //     contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack),
-            //     progressDescription: "携带越多攻击牌越强大",
-            //     progressEvaluator: (e, d) => d.TypeCounts[SkillType.Attack._index] + d.Proficiency,
-            //     formationEntries: new[]
-            //     {
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.HuaShen,
-            //             requirement:                                                9,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "",
-            //             closures: new StageClosure[]
-            //             {
-            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //                     if (f.Owner != d.Owner) return;
-            //                 }),
-            //             }),
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.YuanYing,
-            //             requirement:                                                6,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "",
-            //             closures: new StageClosure[]
-            //             {
-            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //                     if (f.Owner != d.Owner) return;
-            //                 }),
-            //             }),
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.JinDan,
-            //             requirement:                                                4,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "",
-            //             closures: new StageClosure[]
-            //             {
-            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //                     if (f.Owner != d.Owner) return;
-            //                 }),
-            //             }),
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.ZhuJi,
-            //             requirement:                                                2,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "",
-            //             closures: new StageClosure[]
-            //             {
-            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //                     if (f.Owner != d.Owner) return;
-            //                 }),
-            //             }),
-            //     }),
-            //
-            // new(id: "防御阵",
-            //     order: 0,
-            //     contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend),
-            //     progressDescription: "携带越多防御牌越强大",
-            //     progressEvaluator: (e, d) => d.TypeCounts[SkillType.Defend._index] + d.Proficiency,
-            //     formationEntries: new[]
-            //     {
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.HuaShen,
-            //             requirement:                                                9,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "",
-            //             closures: new StageClosure[]
-            //             {
-            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //                     if (f.Owner != d.Owner) return;
-            //                 }),
-            //             }),
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.YuanYing,
-            //             requirement:                                                6,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "",
-            //             closures: new StageClosure[]
-            //             {
-            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //                     if (f.Owner != d.Owner) return;
-            //                 }),
-            //             }),
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.JinDan,
-            //             requirement:                                                4,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "",
-            //             closures: new StageClosure[]
-            //             {
-            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //                     if (f.Owner != d.Owner) return;
-            //                 }),
-            //             }),
-            //         new FormationEntry(
-            //             jingJie:                                                    JingJie.ZhuJi,
-            //             requirement:                                                2,
-            //             trivia:                                                     null,
-            //             rewardDescription:                                          "",
-            //             closures: new StageClosure[]
-            //             {
-            //                 new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
-            //                 {
-            //                     Formation f = (Formation)listener;
-            //                     StageDetails d = (StageDetails)stageEventDetails;
-            //                     if (f.Owner != d.Owner) return;
-            //                 }),
-            //             }),
-            //     }),
+            new(id: "攻击阵",
+                order: 0,
+                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack),
+                progressDescription: "携带越多攻击牌越强大",
+                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Attack._index] + d.Proficiency,
+                formationEntries: new[]
+                {
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.HuaShen,
+                        requirement:                                                10,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "暂无",
+                        closures: new StageClosure[]
+                        {
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+                                if (f.Owner != d.Owner) return;
+                            }),
+                        }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.YuanYing,
+                        requirement:                                                7,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "暂无",
+                        closures: new StageClosure[]
+                        {
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+                                if (f.Owner != d.Owner) return;
+                            }),
+                        }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.JinDan,
+                        requirement:                                                4,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "暂无",
+                        closures: new StageClosure[]
+                        {
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+                                if (f.Owner != d.Owner) return;
+                            }),
+                        }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                0,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "暂无",
+                        closures: new StageClosure[]
+                        {
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+                                if (f.Owner != d.Owner) return;
+                            }),
+                        }),
+                }),
+            
+            new(id: "防御阵",
+                order: 0,
+                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend),
+                progressDescription: "携带越多防御牌越强大",
+                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Defend._index] + d.Proficiency,
+                formationEntries: new[]
+                {
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.HuaShen,
+                        requirement:                                                10,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "暂无",
+                        closures: new StageClosure[]
+                        {
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+                                if (f.Owner != d.Owner) return;
+                            }),
+                        }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.YuanYing,
+                        requirement:                                                7,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "暂无",
+                        closures: new StageClosure[]
+                        {
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+                                if (f.Owner != d.Owner) return;
+                            }),
+                        }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.JinDan,
+                        requirement:                                                4,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "暂无",
+                        closures: new StageClosure[]
+                        {
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+                                if (f.Owner != d.Owner) return;
+                            }),
+                        }),
+                    new FormationEntry(
+                        jingJie:                                                    JingJie.LianQi,
+                        requirement:                                                0,
+                        trivia:                                                     null,
+                        rewardDescription:                                          "暂无",
+                        closures: new StageClosure[]
+                        {
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            {
+                                Formation f = (Formation)listener;
+                                StageDetails d = (StageDetails)stageEventDetails;
+                                if (f.Owner != d.Owner) return;
+                            }),
+                        }),
+                }),
             
             new(id: "灵气阵",
                 order: 0,

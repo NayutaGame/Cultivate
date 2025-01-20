@@ -35,9 +35,10 @@ public class CastDetails : ClosureDetails
     public async UniTask IndirectProcedure(
         int value,
         WuXing? wuXing = null,
+        bool lifeSteal = false,
         bool recursive = true,
         bool induced = false)
-        => await Env.IndirectProcedure(new IndirectDetails(Caster, Caster.Opponent(), value, Skill, wuXing ?? Skill.Entry.WuXing, recursive, CastResult, induced));
+        => await Env.IndirectProcedure(new IndirectDetails(Caster, Caster.Opponent(), value, Skill, wuXing ?? Skill.Entry.WuXing, lifeSteal, recursive, CastResult, induced));
 
     public async UniTask DamageSelfProcedure(
         int value,

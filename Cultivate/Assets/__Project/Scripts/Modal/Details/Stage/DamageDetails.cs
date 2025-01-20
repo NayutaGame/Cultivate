@@ -50,7 +50,7 @@ public class DamageDetails : ClosureDetails
         => new(d.Src, d.Tgt, d.Value, d.SrcSkill, d.Crit, d.LifeSteal, d.Recursive, d.CastResult, d.Induced);
 
     public static DamageDetails FromIndirectDetails(IndirectDetails d)
-        => new(d.Src, d.Tgt, d.Value, d.SrcSkill, false, false, d.Recursive, d.CastResult, d.Induced);
+        => new(d.Src, d.Tgt, d.Value, d.SrcSkill, false, d.LifeSteal, d.Recursive, d.CastResult, d.Induced);
 
     public static DamageDetails FromAttackDetailsUndamaged(AttackDetails d)
         => new(d.Src, d.Tgt, 0, d.SrcSkill, d.Crit, d.LifeSteal, d.Recursive, d.CastResult, d.Induced);
