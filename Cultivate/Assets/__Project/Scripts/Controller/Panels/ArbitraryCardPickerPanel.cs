@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
@@ -28,6 +29,11 @@ public class ArbitraryCardPickerPanel : Panel
         SkillListView.SetAddress(_address.Append(".Inventory"));
         SkillListView.PointerEnterNeuron.Join(PlayCardHoverSFX);
         SkillListView.LeftClickNeuron.Join(ToggleSkill);
+    }
+
+    private void OnEnable()
+    {
+        SkillListView.Sync();
     }
 
     public void OnDisable()

@@ -31,6 +31,7 @@ public class BarterPanel : Panel
     private void OnEnable()
     {
         RunManager.Instance.Environment.ExchangeSkillNeuron.Add(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
+        BarterItemListView.Sync();
     }
 
     private void OnDisable()

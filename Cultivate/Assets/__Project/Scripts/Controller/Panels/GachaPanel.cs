@@ -34,7 +34,6 @@ public class GachaPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
         ListView.Sync();
     }
 

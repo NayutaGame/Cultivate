@@ -34,7 +34,6 @@ public class RunConfigPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
         DifficultyPickerView.Refresh();
         CharacterListView.Refresh();
         DetailedCharacterProfileView.Refresh();

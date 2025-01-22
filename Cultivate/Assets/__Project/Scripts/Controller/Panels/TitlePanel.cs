@@ -44,8 +44,6 @@ public class TitlePanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
-
         Profile currProfile = AppManager.Instance.ProfileManager.GetCurrProfile();
         bool firstRun = !currProfile.IsFirstRunFinished();
         bool hasSave = currProfile.HasSave();

@@ -18,7 +18,6 @@ public class FormationBrowserPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
         FormationBrowser.Refresh();
     }
 

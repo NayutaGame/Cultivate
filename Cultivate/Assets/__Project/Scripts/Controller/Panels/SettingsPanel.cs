@@ -74,7 +74,6 @@ public class SettingsPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
         TabListView.Refresh();
         WidgetListView.Refresh();
     }

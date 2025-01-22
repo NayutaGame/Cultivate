@@ -21,8 +21,6 @@ public class RunResultPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
-
         RunResultPanelDescriptor panelDescriptor = RunManager.Instance.Environment.GetActivePanel() as RunResultPanelDescriptor;
         if (panelDescriptor.RunResult.GetState() == RunResult.RunResultState.Victory)
         {

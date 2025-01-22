@@ -35,7 +35,6 @@ public class ImagePanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
         ImagePanelDescriptor panelDescriptor = _address.Get<ImagePanelDescriptor>();
         ImageButton.image.sprite = panelDescriptor.GetSprite();
     }

@@ -49,8 +49,6 @@ public class CardPickerPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
-
         CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
         
         TitleText.text = d.GetTitleText();

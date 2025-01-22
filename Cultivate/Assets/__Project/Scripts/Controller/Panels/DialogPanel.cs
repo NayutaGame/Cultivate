@@ -58,8 +58,6 @@ public class DialogPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
-
         DialogPanelDescriptor d = _address.Get<DialogPanelDescriptor>();
 
         TitleText.text = d.GetTitleText();

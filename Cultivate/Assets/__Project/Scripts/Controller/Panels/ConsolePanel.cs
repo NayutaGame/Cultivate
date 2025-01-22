@@ -124,8 +124,6 @@ public class ConsolePanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
-
         RunEnvironment env = RunManager.Instance.Environment;
         MingYuanText.text = env.GetMingYuan().ToString();
         GoldText.text = env.GetGold().Curr.ToString();

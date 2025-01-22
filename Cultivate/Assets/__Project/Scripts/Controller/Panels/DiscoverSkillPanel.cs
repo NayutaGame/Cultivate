@@ -41,8 +41,6 @@ public class DiscoverSkillPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
-
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
         TitleText.text = d.GetTitleText();

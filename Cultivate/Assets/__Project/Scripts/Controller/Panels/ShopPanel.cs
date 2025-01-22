@@ -24,7 +24,6 @@ public class ShopPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
         CommodityListView.Refresh();
 
         ShopPanelDescriptor pd = _address.Get<ShopPanelDescriptor>();
@@ -42,6 +41,7 @@ public class ShopPanel : Panel
         RunManager.Instance.Environment.BuySkillNeuron.Add(CanvasManager.Instance.RunCanvas.BuySkillStaging);
         RunManager.Instance.Environment.GainGoldNeuron.Add(GainGold);
         RunManager.Instance.Environment.LoseGoldNeuron.Add(LoseGold);
+        CommodityListView.Sync();
     }
 
     private void OnDisable()
