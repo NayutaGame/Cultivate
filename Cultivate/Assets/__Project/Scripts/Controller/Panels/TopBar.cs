@@ -41,12 +41,16 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.LoseGoldNeuron.Add(Gold.Lose);
         RunManager.Instance.Environment.GainDHealthNeuron.Add(GainDHealth);
         RunManager.Instance.Environment.LoseDHealthNeuron.Add(Health.Lose);
+        
+        RunManager.Instance.Environment.JingJieChangedNeuron.Add(RefreshJingJieText);
 
         PropagateJingJieText._onPointerEnter += PointerEnterJingJieText;
         PropagateJingJieText._onPointerExit += PointerExitJingJieText;
 
         PropagateDifficultyText._onPointerEnter += PointerEnterDifficultyText;
         PropagateDifficultyText._onPointerExit += PointerExitDifficultyText;
+        
+        Refresh();
     }
 
     private void OnDisable()
@@ -57,6 +61,8 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.LoseGoldNeuron.Remove(Gold.Lose);
         RunManager.Instance.Environment.GainDHealthNeuron.Remove(GainDHealth);
         RunManager.Instance.Environment.LoseDHealthNeuron.Remove(Health.Lose);
+        
+        RunManager.Instance.Environment.JingJieChangedNeuron.Remove(RefreshJingJieText);
 
         PropagateJingJieText._onPointerEnter -= PointerEnterJingJieText;
         PropagateJingJieText._onPointerExit -= PointerExitJingJieText;
@@ -80,13 +86,17 @@ public class TopBar : MonoBehaviour
         Health.Gain(new Vector2(Screen.width / 2, Screen.height / 2), value);
     }
 
+    private void RefreshJingJieText(JingJieChangedDetails d)
+    {
+        JingJieText.text = $"{d.ToJingJie.ToString()}期";
+    }
+
     public void Refresh()
     {
         MingYuan.Refresh();
         Gold.Refresh();
         Health.Refresh();
         
-        JingJieText.text = $"{RunManager.Instance.Environment.Home.GetJingJie().ToString()}期";
         DifficultyText.text = $"难度{RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry().GetId()}";
     }
 

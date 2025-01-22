@@ -112,6 +112,7 @@ public class AppStateMachine
     private async UniTask FromTitleToRun(bool isAwait, object args)
     {
         await CanvasManager.Instance.AppCanvas.TitlePanel.GetAnimator().SetStateAsync(0);
+        CanvasManager.Instance.AppCanvas.RunConfigPanel.GetAnimator().SetState(0);
         
         if (args is RunConfig runConfig)
         {
@@ -129,16 +130,10 @@ public class AppStateMachine
         RunManager.Instance.SetBackgroundFromJingJie(JingJie.LianQi);
         StageManager.Instance.SetHomeFromCharacterProfile(RunManager.Instance.Environment.GetRunConfig().CharacterProfile);
 
-        RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
-        runCanvas.CheckAwake();
-        runCanvas.LegacySetPanelS(PanelS.FromPanelDescriptor(RunManager.Instance.Environment.Panel));
-        runCanvas.TopBar.Refresh();
-        CanvasManager.Instance.Curtain.GetAnimator().SetState(1);
-        await UniTask.WaitForSeconds(0.1f);
-        runCanvas.LayoutRebuild();
-        CanvasManager.Instance.AppCanvas.RunConfigPanel.GetAnimator().SetState(0);
-        runCanvas.Refresh();
-        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
+        CanvasManager.Instance.RunCanvas.CheckAwake();
+        CanvasManager.Instance.RunCanvas.Refresh();
+        
+        // await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
     }
     
     private async UniTask FromRunToTitle(bool isAwait, object args)
@@ -146,12 +141,11 @@ public class AppStateMachine
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
         
         RunEnvironment runEnv = RunManager.Instance.Environment;
-        RunCanvas runCanvas = CanvasManager.Instance.RunCanvas;
         
         runEnv.SetGuideToFinish();
         CanvasManager.Instance.RefreshGuide();
         
-        runCanvas.LegacySetPanelS(PanelS.FromHide());
+        CanvasManager.Instance.RunCanvas.SetPanelToNull();
         
         RunResult result = runEnv.GetResult();
         RunManager.Instance.SetEnvironmentToNull();

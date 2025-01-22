@@ -24,6 +24,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         CharacterProfile = characterProfile;
         DifficultyProfile = difficultyProfile;
         MapEntry = mapEntry ?? "标准";
+        // MapEntry = mapEntry ?? "发现";
         // MapEntry = mapEntry ?? "多段测试";
     }
 

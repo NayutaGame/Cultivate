@@ -25,6 +25,9 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         ExchangeSkillNeuron = new();
         GachaNeuron = new();
         SelectOptionNeuron = new();
+        JingJieChangedNeuron = new();
+        LevelChangedNeuron = new();
+        RoomChangedNeuron = new();
         PanelChangedNeuron = new();
         DeckChangedNeuron = new();
         FieldChangedNeuron = new();
@@ -48,6 +51,9 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     public Neuron<ExchangeSkillDetails> ExchangeSkillNeuron;
     public Neuron<GachaDetails> GachaNeuron;
     public Neuron<SelectOptionDetails> SelectOptionNeuron;
+    public Neuron<JingJieChangedDetails> JingJieChangedNeuron;
+    public Neuron LevelChangedNeuron;
+    public Neuron<RoomChangedDetails> RoomChangedNeuron;
     public Neuron<PanelChangedDetails> PanelChangedNeuron;
     public Neuron<DeckChangedDetails> DeckChangedNeuron;
     public Neuron FieldChangedNeuron;
@@ -304,11 +310,11 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         => SetJingJieProcedure(JingJie + 1);
     
     public void SetJingJieProcedure(JingJie toJingJie)
-        => SetJingJieProcedure(new SetJingJieDetails(JingJie, toJingJie));
+        => SetJingJieProcedure(new JingJieChangedDetails(JingJie, toJingJie));
     
-    private void SetJingJieProcedure(SetJingJieDetails d)
+    private void SetJingJieProcedure(JingJieChangedDetails d)
     {
-        _closureDict.SendEvent(RunClosureDict.WIL_SET_JINGJIE, d);
+        _closureDict.SendEvent(RunClosureDict.WIL_JINGJIE_CHANGE, d);
         if (d.Cancel)
             return;
 
@@ -321,9 +327,9 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         _home.SetJingJie(d.ToJingJie);
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToJingJie));
 
-        _closureDict.SendEvent(RunClosureDict.DID_SET_JINGJIE, d);
+        _closureDict.SendEvent(RunClosureDict.DID_JINGJIE_CHANGE, d);
         
-        CanvasManager.Instance.RunCanvas.TopBar.Refresh();
+        JingJieChangedNeuron.Invoke(d);
     }
 
     public void GuideProcedure(Signal signal)
@@ -902,7 +908,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
             }
             else
             {
-                Map.Step();
+                bool levelChanged = Step();
                 
                 bool cond1 = Map.GetCurrRoom().GetDescriptor() is SuccessRoomDescriptor;
                 bool cond2 = Map.GetCurrRoom().GetDescriptor() is AscensionRoomDescriptor && IsFinalJingJie();
@@ -913,12 +919,30 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
                 }
                 
                 panel = Map.CreatePanelFromCurrRoom();
+                
+                
+                if (levelChanged)
+                    LevelChangedNeuron.Invoke();
+                
+                RoomChangedNeuron.Invoke(new());
             }
         }
         
         PanelChangedDetails panelChangedDetails = new(Panel, panel);
         Panel = panel;
         PanelChangedNeuron.Invoke(panelChangedDetails);
+    }
+
+    private bool Step()
+    {
+        if (Map.IsLastStep())
+        {
+            Map.NextLevel();
+            return true;
+        }
+
+        Map.NextStep();
+        return false;
     }
 
     public void CommitRunProcedure(RunResult.RunResultState state)

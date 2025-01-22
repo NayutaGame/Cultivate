@@ -69,13 +69,9 @@ public class RunCanvas : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
-
         RefreshPanel();
 
         DeckPanel.Refresh();
-        MapPanel.Refresh();
-        // TopBar.Refresh();
         ConsolePanel.Refresh();
     }
 
@@ -86,14 +82,7 @@ public class RunCanvas : Panel
 
     public void LayoutRebuild()
     {
-        Panel currentPanel = PanelSM.GetCurrPanel();
-        if (currentPanel == null)
-            return;
-
-        if (currentPanel is DiscoverSkillPanel p)
-        {
-            p.LayoutRebuild();
-        }
+        DiscoverSkillPanel.LayoutRebuild();
     }
 
     private void OnEnable()
@@ -158,8 +147,6 @@ public class RunCanvas : Panel
         
         PanelS oldState = PanelSM.State;
         PanelS newState = PanelS.FromPanelDescriptor(toPanel);
-        
-        MapPanel.Refresh();
 
         if (oldState.Equals(newState))
         {
@@ -195,47 +182,16 @@ public class RunCanvas : Panel
         }
     }
 
-    public void LegacySetPanelS(PanelS panelS)
+    public void SetPanelToNull()
     {
         _animationQueue.CompleteAnimationQueue();
         
         PanelS oldState = PanelSM.State;
-        PanelS newState = panelS;
+        PanelS newState = PanelS.FromHide();
         
-        MapPanel.Refresh();
-
-        if (oldState.Equals(newState))
-        {
-            if (PanelSM.GetCurrPanel() != null)
-                PanelSM.GetCurrPanel().GetAnimator().SetState(1);
-            return;
-        }
-        
-        if (PanelSM[oldState] != null)
-            PanelSM[oldState].GetAnimator().SetState(0);
-        else
-            GetAnimator().SetState(1);
-
+        PanelSM[oldState].GetAnimator().SetState(0);
         PanelSM.SetState(newState);
-
-        if (PanelSM[newState] != null)
-        {
-            PanelSM[newState].CheckAwake();
-            PanelSM[newState].Refresh();
-            PanelSM[newState].GetAnimator().SetState(1);
-        }
-        else
-            GetAnimator().SetState(0);
-
-        PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
-        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor || d is DiscoverSkillPanelDescriptor)
-        {
-            DeckPanel.GetAnimator().SetState(2);
-        }
-        else
-        {
-            DeckPanel.GetAnimator().SetState(0);
-        }
+        GetAnimator().SetState(0);
     }
 
     public Neuron<EquipDetails> EquipEvent = new();

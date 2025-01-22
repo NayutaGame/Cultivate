@@ -62,20 +62,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
         RoomPool.Shuffle();
     }
 
-    public void Step()
-    {
-        if (IsAboutToFinish())
-            throw new Exception("Shouldn't be here");
-
-        if (IsLastStep())
-        {
-            NextLevel();
-            return;
-        }
-
-        NextStep();
-    }
-
     public void NextLevel()
     {
         GetCurrRoom().SetState(Room.RoomState.Past);

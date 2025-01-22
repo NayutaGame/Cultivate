@@ -35,47 +35,45 @@ public class MapPanel : Panel
         return animator;
     }
 
-    public override void Refresh()
+    private void OnEnable()
     {
-        base.Refresh();
+        RunManager.Instance.Environment.RoomChangedNeuron.Add(RoomChanged);
+        RunManager.Instance.Environment.LevelChangedNeuron.Add(LevelChanged);
         RoomListView.Sync();
         RoomListView.Refresh();
     }
 
-    private void OnEnable()
-    {
-        Sync();
-    }
-
     private void OnDisable()
     {
-        // if (RunManager.Instance != null && RunManager.Instance.Environment != null)
-        //     RunManager.Instance.Environment.MapJingJieChangedEvent -= SyncSlot;
+        RunManager.Instance.Environment.RoomChangedNeuron.Remove(RoomChanged);
+        RunManager.Instance.Environment.LevelChangedNeuron.Remove(LevelChanged);
     }
 
-    private void Sync()
+    private void RoomChanged(RoomChangedDetails d)
     {
+        RoomListView.Refresh();
+    }
+
+    private void LevelChanged()
+    {
+        RoomListView.Sync();
         RoomListView.Refresh();
     }
 
     // private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
     //     => AudioManager.Play("CardHover");
 
-    private Tween _animationHandle;
-
     private void TryShow(PointerEventData eventData) => GetAnimator().SetStateAsync(1);
     private void TryHide(PointerEventData eventData) => GetAnimator().SetStateAsync(0);
 
     public override Tween EnterIdle()
         => DOTween.Sequence()
-            .AppendCallback(Sync)
             .AppendCallback(() => OpenZone.gameObject.SetActive(false))
             .AppendCallback(() => CloseZone.gameObject.SetActive(true))
             .Join(BodyTransform.DOAnchorPos(BodyShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));
 
     private Tween LockTween()
         => DOTween.Sequence()
-            .AppendCallback(Sync)
             .AppendCallback(() => OpenZone.gameObject.SetActive(false))
             .AppendCallback(() => CloseZone.gameObject.SetActive(false))
             .Join(BodyTransform.DOAnchorPos(BodyShowPivot.anchoredPosition, 0.15f).SetEase(Ease.OutQuad));

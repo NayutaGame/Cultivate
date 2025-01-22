@@ -5,26 +5,26 @@ public class RunClosureDict : Dictionary<int, RunClosureList>
 {
     public static readonly int START_RUN             = 100;
     public static readonly int END_RUN               = 101;
-    public static readonly int WIL_SET_JINGJIE       = 104;
-    public static readonly int DID_SET_JINGJIE       = 105;
-    public static readonly int WIL_SET_D_MINGYUAN    = 106;
-    public static readonly int DID_SET_D_MINGYUAN    = 107;
-    public static readonly int WILL_SET_D_GOLD       = 108;
-    public static readonly int DID_SET_D_GOLD        = 109;
-    public static readonly int WILL_SET_DDHEALTH     = 110;
-    public static readonly int DID_SET_DDHEALTH      = 111;
-    public static readonly int WILL_SET_MAX_MINGYUAN = 112;
-    public static readonly int DID_SET_MAX_MINGYUAN  = 113;
-    public static readonly int WILL_PLACEMENT        = 114;
-    public static readonly int DID_PLACEMENT         = 115;
-    public static readonly int WIL_FORMATION         = 116;
-    public static readonly int DID_FORMATION         = 117;
-    public static readonly int WILL_DISCOVER_SKILL   = 118;
-    public static readonly int DID_DISCOVER_SKILL    = 119;
-    public static readonly int WILL_DEPLETE          = 120;
-    public static readonly int DID_DEPLETE           = 121;
-    public static readonly int WIL_MERGE             = 122;
-    public static readonly int DID_MERGE             = 123;
+    public static readonly int WIL_JINGJIE_CHANGE    = 102;
+    public static readonly int DID_JINGJIE_CHANGE    = 103;
+    public static readonly int WIL_SET_D_MINGYUAN    = 104;
+    public static readonly int DID_SET_D_MINGYUAN    = 105;
+    public static readonly int WILL_SET_D_GOLD       = 106;
+    public static readonly int DID_SET_D_GOLD        = 107;
+    public static readonly int WILL_SET_DDHEALTH     = 108;
+    public static readonly int DID_SET_DDHEALTH      = 109;
+    public static readonly int WILL_SET_MAX_MINGYUAN = 110;
+    public static readonly int DID_SET_MAX_MINGYUAN  = 111;
+    public static readonly int WILL_PLACEMENT        = 112;
+    public static readonly int DID_PLACEMENT         = 113;
+    public static readonly int WIL_FORMATION         = 114;
+    public static readonly int DID_FORMATION         = 115;
+    public static readonly int WILL_DISCOVER_SKILL   = 116;
+    public static readonly int DID_DISCOVER_SKILL    = 117;
+    public static readonly int WILL_DEPLETE          = 118;
+    public static readonly int DID_DEPLETE           = 119;
+    public static readonly int WIL_MERGE             = 120;
+    public static readonly int DID_MERGE             = 121;
 
     public void Register(RunClosureOwner listener, RunClosure closure)
     {
