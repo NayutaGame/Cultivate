@@ -131,9 +131,8 @@ public class AppStateMachine
         StageManager.Instance.SetHomeFromCharacterProfile(RunManager.Instance.Environment.GetRunConfig().CharacterProfile);
 
         CanvasManager.Instance.RunCanvas.CheckAwake();
-        CanvasManager.Instance.RunCanvas.Refresh();
-        
-        // await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
+        CanvasManager.Instance.RunCanvas.GetAnimator().SetState(1);
+        await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
     }
     
     private async UniTask FromRunToTitle(bool isAwait, object args)
@@ -176,7 +175,7 @@ public class AppStateMachine
         StageConfig stageConfig = args as StageConfig;
         
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
-        CanvasManager.Instance.RunCanvas.gameObject.SetActive(false);
+        CanvasManager.Instance.RunCanvas.GetAnimator().SetState(0);
         
         
         
@@ -206,8 +205,7 @@ public class AppStateMachine
         
         
         
-        CanvasManager.Instance.RunCanvas.gameObject.SetActive(true);
-        CanvasManager.Instance.RunCanvas.Refresh();
+        CanvasManager.Instance.RunCanvas.GetAnimator().SetState(1);
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
     }
     

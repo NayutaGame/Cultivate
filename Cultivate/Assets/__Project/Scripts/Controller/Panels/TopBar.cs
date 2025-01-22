@@ -20,7 +20,22 @@ public class TopBar : MonoBehaviour
 
     public Button MenuButton;
 
-    public void Configure()
+    private bool _hasAwoken;
+    
+    public virtual void Awake()
+    {
+        CheckAwake();
+    }
+
+    public void CheckAwake()
+    {
+        if (_hasAwoken)
+            return;
+        _hasAwoken = true;
+        AwakeFunction();
+    }
+    
+    public virtual void AwakeFunction()
     {
         MenuButton.onClick.RemoveAllListeners();
         MenuButton.onClick.AddListener(OpenMenu);

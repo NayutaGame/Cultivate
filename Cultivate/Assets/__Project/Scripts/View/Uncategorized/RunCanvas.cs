@@ -60,7 +60,7 @@ public class RunCanvas : Panel
 
         DeckPanel.CheckAwake();
         MapPanel.CheckAwake();
-        TopBar.Configure();
+        TopBar.CheckAwake();
         ConsolePanel.CheckAwake();
 
         // if (!Application.isEditor)
@@ -105,6 +105,8 @@ public class RunCanvas : Panel
         
         RunManager.Instance.Environment.GainSkillsNeuron.Add(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(MingYuanDamageStaging);
+        
+        RefreshPanel();
     }
 
     private void OnDisable()
@@ -160,8 +162,8 @@ public class RunCanvas : Panel
 
         if (PanelSM[oldState] != null)
             await PanelSM[oldState].GetAnimator().SetStateAsync(0);
-        else
-            await GetAnimator().SetStateAsync(1);
+        // else
+        //     await GetAnimator().SetStateAsync(1);
 
         PanelSM.SetState(newState);
 
@@ -171,18 +173,14 @@ public class RunCanvas : Panel
             PanelSM[newState].Refresh();
             await PanelSM[newState].GetAnimator().SetStateAsync(1);
         }
-        else
-            await GetAnimator().SetStateAsync(0);
+        // else
+        //     await GetAnimator().SetStateAsync(0);
 
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
-        if (d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor || d is DiscoverSkillPanelDescriptor)
-        {
-            await DeckPanel.GetAnimator().SetStateAsync(2);
-        }
-        else
-        {
-            await DeckPanel.GetAnimator().SetStateAsync(0);
-        }
+        bool showDeck = d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor ||
+                        d is DiscoverSkillPanelDescriptor;
+        
+        await DeckPanel.GetAnimator().SetStateAsync(showDeck ? 2 : 0);
     }
 
     public void SetPanelToNull()
@@ -203,6 +201,10 @@ public class RunCanvas : Panel
     public Neuron<MergeDetails> MergeEvent = new();
 
     #region Staging
+
+    public override Tween EnterIdle()
+        => DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true));
 
     private void GainSkillStaging(GainSkillDetails d)
     {
