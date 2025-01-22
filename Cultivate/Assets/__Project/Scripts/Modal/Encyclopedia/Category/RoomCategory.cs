@@ -1598,7 +1598,7 @@ public class RoomCategory : Category<RoomEntry>
                         if (indices.Count == 0)
                             return BLose;
 
-                        indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
+                        indices.Do(RunManager.Instance.Environment.RemoveSkillProcedure);
                         return BWin;
                     });
 
@@ -1607,7 +1607,7 @@ public class RoomCategory : Category<RoomEntry>
                         if (indices.Count == 0)
                             return CLose;
 
-                        indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
+                        indices.Do(RunManager.Instance.Environment.RemoveSkillProcedure);
                         return CWin;
                     });
 
@@ -2397,7 +2397,7 @@ public class RoomCategory : Category<RoomEntry>
                         indices.Do(index =>
                         {
                             RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(index);
-                            RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure(index);
+                            RunManager.Instance.Environment.RemoveSkillProcedure(index);
                             RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skill.GetEntry());
                         });
                         
@@ -2704,7 +2704,7 @@ public class RoomCategory : Category<RoomEntry>
                         if (indices.Count == 0)
                             return A;
 
-                        indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
+                        indices.Do(RunManager.Instance.Environment.RemoveSkillProcedure);
 
                         return B;
                     });
@@ -2961,7 +2961,7 @@ public class RoomCategory : Category<RoomEntry>
                         if (indices.Count == 0)
                             return A;
 
-                        indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
+                        indices.Do(RunManager.Instance.Environment.RemoveSkillProcedure);
 
                         RunManager.Instance.Environment.Map.InsertRoom("后羿2");
                         return CWin;

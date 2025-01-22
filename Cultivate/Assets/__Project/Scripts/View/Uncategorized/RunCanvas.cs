@@ -88,6 +88,7 @@ public class RunCanvas : Panel
     private void OnEnable()
     {
         RunManager.Instance.Environment.GainSkillNeuron.Add(GainSkillStaging);
+        RunManager.Instance.Environment.RemoveSkillNeuron.Add(RemoveSkillStaging);
         
         EquipEvent.Add(RunManager.Instance.Environment.EquipProcedure);
         RunManager.Instance.Environment.EquipNeuron.Add(EquipStaging);
@@ -110,6 +111,7 @@ public class RunCanvas : Panel
     private void OnDisable()
     {
         RunManager.Instance.Environment.GainSkillNeuron.Remove(GainSkillStaging);
+        RunManager.Instance.Environment.RemoveSkillNeuron.Remove(RemoveSkillStaging);
         
         EquipEvent.Remove(RunManager.Instance.Environment.EquipProcedure);
         RunManager.Instance.Environment.EquipNeuron.Remove(EquipStaging);
@@ -242,6 +244,49 @@ public class RunCanvas : Panel
             .AppendCallback(() => SetIdle(view));
         
         _animationQueue.QueueAnimation(seq);
+    }
+
+    private void RemoveSkillStaging(RemoveSkillDetails d)
+    {
+        // void SetPosition(DelegatingView view, Vector3 position)
+        // {
+        //     view.GetAnimator().SetState(4);
+        //     view.GetDelegatedView().GetRect().position = position;
+        //     view.GetDelegatedView().GetRect().localScale = Vector3.zero;
+        // }
+        //
+        // void SetShow(DelegatingView view)
+        // {
+        //     view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
+        // }
+        //
+        // void SetIdle(DelegatingView view)
+        // {
+        //     view.GetAnimator().SetStateAsync(1);
+        //     // AudioManager.Play("CardPlacement");
+        // }
+
+        if (d.DeckIndex.InField)
+        {
+            DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
+        }
+        else
+        {
+            DeckPanel.HandView.RemoveItemAt(d.DeckIndex.Index);
+        }
+
+        // DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
+        // Vector3 position = Vector3.zero;
+        //
+        // SetPosition(view, position);
+        //
+        // Sequence seq = DOTween.Sequence()
+        //     .AppendInterval(0.05f)
+        //     .AppendCallback(() => SetShow(view))
+        //     .AppendInterval(0.3f)
+        //     .AppendCallback(() => SetIdle(view));
+        //
+        // _animationQueue.QueueAnimation(seq);
     }
     
     private void GainSkillsStaging(GainSkillsDetails d)

@@ -97,7 +97,6 @@ public class DeckPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
         CharacterIconView.Refresh();
         PlayerEntity.Refresh();
     }

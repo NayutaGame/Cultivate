@@ -81,7 +81,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
             if (indices.Count == 0)
                 return lose;
 
-            indices.Do(RunManager.Instance.Environment.RemoveSkillAtDeckIndexProcedure);
+            indices.Do(RunManager.Instance.Environment.RemoveSkillProcedure);
             return win;
         });
         

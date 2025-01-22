@@ -21,6 +21,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         GainSkillNeuron = new();
         PickDiscoveredSkillNeuron = new();
         GainSkillsNeuron = new();
+        RemoveSkillNeuron = new();
         BuySkillNeuron = new();
         ExchangeSkillNeuron = new();
         GachaNeuron = new();
@@ -47,6 +48,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     public Neuron<GainSkillDetails> GainSkillNeuron;
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron;
     public Neuron<GainSkillsDetails> GainSkillsNeuron;
+    public Neuron<RemoveSkillDetails> RemoveSkillNeuron;
     public Neuron<BuySkillDetails> BuySkillNeuron;
     public Neuron<ExchangeSkillDetails> ExchangeSkillNeuron;
     public Neuron<GachaDetails> GachaNeuron;
@@ -825,15 +827,16 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         ReceiveSignalProcedure(signal);
     }
 
-    public void RemoveSkillAtDeckIndexProcedure(DeckIndex deckIndex)
+    public void RemoveSkillProcedure(DeckIndex deckIndex)
     {
+        RemoveSkillDetails d = new(deckIndex);
+        
         if (deckIndex.InField)
             Home.GetSlot(deckIndex.Index).Skill = null;
         else
             Hand.RemoveAt(deckIndex.Index);
-        
-        // staging
-        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+
+        RemoveSkillNeuron.Invoke(d);
     }
 
     public void SetJingJieAtDeckIndexProcedure(JingJie jingJie, DeckIndex deckIndex)
