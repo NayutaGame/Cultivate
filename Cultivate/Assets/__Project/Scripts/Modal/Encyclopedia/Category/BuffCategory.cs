@@ -1558,6 +1558,20 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
+            new("飞鸿踏雪", "二动时：获得1格挡", BuffStackRule.One, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_ACTION, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        ActionDetails d = (ActionDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        if (d.CurrActionPoint != 2) return;
+                        b.PlayPingAnimation();
+                        await b.Owner.CycleProcedure(WuXing.Shui, gain: 1);
+                    }),
+                }),
+            
             new("连岳", "最后两张牌都可以触发终结", BuffStackRule.One, true, false),
             new("凛冽", "锋锐具有吸血", BuffStackRule.One, true, false),
         });

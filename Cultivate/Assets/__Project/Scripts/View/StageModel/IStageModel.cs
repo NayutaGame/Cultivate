@@ -19,6 +19,7 @@ public abstract class IStageModel : MonoBehaviour
     public abstract Animation GetAnimationFromHeal(bool induced);
     public abstract Animation GetAnimationFromGuard(bool induced);
     public abstract Animation GetAnimationFromUnguard(bool induced);
+    public abstract Animation GetAnimationFromRecover();
 
     // buffSelf
     // buffOppo		buffedByOppo

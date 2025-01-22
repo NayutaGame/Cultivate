@@ -201,7 +201,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1二动" +
+                        rewardDescription:                                          "2张：开局：获得1免费" +
                                                                                     "\n4张：开局及每轮：获得1吸血" +
                                                                                     "\n6张：所有耗蓝-1" +
                                                                                     "\n9张：八动，如果受伤则死亡",
@@ -213,7 +213,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("二动");
+                                await f.Owner.GainBuffProcedure("免费");
                                 await f.Owner.GainBuffProcedure("吸血");
                                 await f.Owner.GainBuffProcedure("轮吸血");
                                 await f.Owner.GainBuffProcedure("心斋");
@@ -235,7 +235,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1二动" +
+                        rewardDescription:                                          "2张：开局：获得1免费" +
                         "\n4张：开局及每轮：获得1吸血" +
                         "\n6张：所有耗蓝-1" +
                         "\n9张：八动，如果受伤则死亡".ApplyInactive(),
@@ -247,7 +247,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("二动");
+                                await f.Owner.GainBuffProcedure("免费");
                                 await f.Owner.GainBuffProcedure("吸血");
                                 await f.Owner.GainBuffProcedure("轮吸血");
                                 await f.Owner.GainBuffProcedure("心斋");
@@ -257,7 +257,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1二动" +
+                        rewardDescription:                                          "2张：开局：获得1免费" +
                         "\n4张：开局及每轮：获得1吸血" +
                         "\n6张：所有耗蓝-1".ApplyInactive() +
                         "\n9张：八动，如果受伤则死亡".ApplyInactive(),
@@ -269,7 +269,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("二动");
+                                await f.Owner.GainBuffProcedure("免费");
                                 await f.Owner.GainBuffProcedure("吸血");
                                 await f.Owner.GainBuffProcedure("轮吸血");
                             }),
@@ -278,7 +278,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1二动" +
+                        rewardDescription:                                          "2张：开局：获得1免费" +
                         "\n4张：开局及每轮：获得1吸血".ApplyInactive() +
                         "\n6张：所有耗蓝-1".ApplyInactive() +
                         "\n9张：八动，如果受伤则死亡".ApplyInactive(),
@@ -290,14 +290,14 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("二动");
+                                await f.Owner.GainBuffProcedure("免费");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1二动".ApplyInactive() +
+                        rewardDescription:                                          "2张：开局：获得1免费".ApplyInactive() +
                         "\n4张：开局及每轮：获得1吸血".ApplyInactive() +
                         "\n6张：所有耗蓝-1".ApplyInactive() +
                         "\n9张：八动，如果受伤则死亡".ApplyInactive()),

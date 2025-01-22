@@ -79,12 +79,17 @@ public class SpineModel : IStageModel
     public override Animation GetAnimationFromGuard(bool induced)
     {
         // return new EmptyTweenAnimation();
-        return new SpineAnimation(Skeleton, "prepareDefend", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
+        return new SpineAnimation(Skeleton, "guard", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
     }
 
     public override Animation GetAnimationFromUnguard(bool induced)
     {
+        return new EmptyTweenAnimation();
+    }
+
+    public override Animation GetAnimationFromRecover()
+    {
         // return new EmptyTweenAnimation();
-        return new SpineAnimation(Skeleton, "unpreparedB", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
+        return new SpineAnimation(Skeleton, "idle", SpineAnimation.IntervalType.NoInterval, 0, false, false);
     }
 }

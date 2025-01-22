@@ -40,7 +40,6 @@ public class BarterPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
         BarterItemListView.Refresh();
     }
 

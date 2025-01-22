@@ -206,16 +206,11 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (!_config.Animated)
             return;
         
-        if (src == tgt)
-        {
-            await PlayAsync(src.Model().GetAnimationFromBuffSelf(induced));
-        }
-        else
-        {
-            await PlayAsync(src.Model().GetAnimationFromBuffSelf(induced));
-        }
+        await PlayAsync(src.Model().GetAnimationFromBuffSelf(induced));
         
-        Play(BuffVFXAnimation.FromChangeStack(false, tgt, buff.GetEntry(), diff, induced));
+        if (src != tgt || diff > 0)
+            Play(BuffVFXAnimation.FromChangeStack(false, tgt, buff.GetEntry(), diff, induced));
+        
         Play(BuffTextAnimation.FromChangeStack(false, tgt, buff.GetEntry(), diff, induced));
         buff.PlayPingAnimation();
     }
@@ -244,6 +239,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
     {
         RegisterAttackClosure(attackDetails);
 
+        if (attackDetails.Times < 1)
+            attackDetails.Times = 1;
+
         await _closureDict.SendEvent(StageClosureDict.WIL_FULL_ATTACK, attackDetails);
         await FullAttackStaging(attackDetails);
 
@@ -257,8 +255,11 @@ public class StageEnvironment : Addressable, StageClosureOwner
         }
 
         await _closureDict.SendEvent(StageClosureDict.DID_FULL_ATTACK, attackDetails);
-
+        
         UnregisterAttackClosure(attackDetails);
+        
+        // check win condition, but do not commit
+        await RecoverStaging(attackDetails);
     }
 
     private async UniTask FullAttackStaging(AttackDetails attackDetails)
@@ -278,6 +279,14 @@ public class StageEnvironment : Addressable, StageClosureOwner
         }
         
         await PlayAsync(attackDetails.Src.Model().GetAnimationFromAttack(attackDetails.Induced, attackDetails.Times));
+    }
+
+    private async UniTask RecoverStaging(AttackDetails attackDetails)
+    {
+        if (!_config.Animated)
+            return;
+        
+        await PlayAsync(attackDetails.Tgt.Model().GetAnimationFromRecover());
     }
 
     private async UniTask SingleAttackProcedure(AttackDetails d)

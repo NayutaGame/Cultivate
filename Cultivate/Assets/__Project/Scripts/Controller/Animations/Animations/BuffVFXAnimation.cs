@@ -13,11 +13,11 @@ public class BuffVFXAnimation : Animation
         _prefab = prefab;
     }
 
-    public static BuffVFXAnimation FromGainBuffDetails(bool isAwait, GainBuffDetails d)
-        => new(isAwait, d.Tgt, GetPrefab(d._buffEntry), d.Induced);
-
     public static BuffVFXAnimation FromChangeStack(bool isAwait, StageEntity target, BuffEntry entry, int diff, bool induced)
-        => new(isAwait, target, diff > 0 ? GetPrefab(entry) : GetPrefabFromLose(entry), induced);
+        => new(isAwait, target, diff > 0 ? GetPrefabFromGain(entry) : GetPrefabFromLose(entry), induced);
+
+    public static BuffVFXAnimation FromGainBuffDetails(bool isAwait, GainBuffDetails d)
+        => new(isAwait, d.Tgt, GetPrefabFromGain(d._buffEntry), d.Induced);
 
     public static BuffVFXAnimation FromLoseBuffDetails(bool isAwait, LoseBuffDetails d)
         => new(isAwait, d.Tgt, GetPrefabFromLose(d._buffEntry), d.Induced);
@@ -39,7 +39,7 @@ public class BuffVFXAnimation : Animation
         vfx.Play();
     }
 
-    private static GameObject GetPrefab(BuffEntry buffEntry)
+    private static GameObject GetPrefabFromGain(BuffEntry buffEntry)
     {
         if (buffEntry.GetName() == "灵气")
             return StageManager.Instance.LingQiVFXPrefab;

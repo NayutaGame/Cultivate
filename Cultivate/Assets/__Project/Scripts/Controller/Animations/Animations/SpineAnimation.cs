@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using FMOD;
 using Spine;
 using Spine.Unity;
 using UnityEngine.Assertions;
@@ -49,7 +50,8 @@ public class SpineAnimation : Animation
     private void PlayAnimation()
     {
         _skeleton.AnimationState.SetAnimation(0, _animationName, false);
-        _skeleton.AnimationState.AddAnimation(0, "idle", true, 0);
+        if (_animationName != "guard")
+            _skeleton.AnimationState.AddAnimation(0, "idle", true, 0);
     }
 
     private static float[] GetDurationForAnimation(Spine.Animation animation, int attackTimes)

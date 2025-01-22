@@ -48,4 +48,9 @@ public class SpriteModel : IStageModel
     {
         return new EmptyTweenAnimation();
     }
+
+    public override Animation GetAnimationFromRecover()
+    {
+        return new EmptyTweenAnimation();
+    }
 }

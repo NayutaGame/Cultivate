@@ -38,15 +38,13 @@ public class ArbitraryCardPickerPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
-
         ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
 
         DetailedText.text = d.GetDetailedText() +
                             $"可选择{d.Bound.Start}~{d.Bound.End - 1}张" +
                             $"已选择 {_selections.Count} 张";
         ConfirmButton.interactable = d.Bound.Contains(_selections.Count);
-
+        
         SkillListView.Refresh();
     }
 
