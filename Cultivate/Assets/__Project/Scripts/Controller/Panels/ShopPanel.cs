@@ -31,10 +31,10 @@ public class ShopPanel : Panel
     }
 
     private void GainGold(int value)
-        => Refresh();
+        => CommodityListView.Refresh();
 
     private void LoseGold(int value)
-        => Refresh();
+        => CommodityListView.Refresh();
 
     private void OnEnable()
     {

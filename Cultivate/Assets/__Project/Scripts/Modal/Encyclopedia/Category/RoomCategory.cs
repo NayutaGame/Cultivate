@@ -388,7 +388,7 @@ public class RoomCategory : Category<RoomEntry>
                             .SetConfirmOperation(indices =>
                             {
                                 foreach (var deckIndex in indices)
-                                    RunManager.Instance.Environment.SetJingJieAtDeckIndexProcedure(nextJingJie, deckIndex);
+                                    RunManager.Instance.Environment.SkillSetJingJieProcedure(nextJingJie, deckIndex);
                                 return null;
                             }),
                     };
@@ -437,7 +437,7 @@ public class RoomCategory : Category<RoomEntry>
                     B.SetConfirmOperation(indices =>
                     {
                         foreach (var deckIndex in indices)
-                            RunManager.Instance.Environment.SetJingJieAtDeckIndexProcedure(nextJingJie, deckIndex);
+                            RunManager.Instance.Environment.SkillSetJingJieProcedure(nextJingJie, deckIndex);
                         return null;
                     });
 
@@ -1850,8 +1850,7 @@ public class RoomCategory : Category<RoomEntry>
 
                         DeckIndex copyingDeckIndex = indices[RandomManager.Range(0, count)];
                         RunSkill copyingSkill = RunManager.Instance.Environment.GetSkillAtDeckIndex(copyingDeckIndex);
-                        indices.Do(index => RunManager.Instance.Environment.ReplaceSkillAtDeckIndexProcedure(copyingSkill, index));
-                        CanvasManager.Instance.RunCanvas.DeckPanel.SyncAll();
+                        indices.Do(index => RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, index));
                         return D;
                     });
 

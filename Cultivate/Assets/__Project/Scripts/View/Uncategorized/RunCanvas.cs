@@ -70,9 +70,6 @@ public class RunCanvas : Panel
     public override void Refresh()
     {
         RefreshPanel();
-
-        DeckPanel.Refresh();
-        ConsolePanel.Refresh();
     }
 
     private void RefreshPanel()
@@ -89,6 +86,8 @@ public class RunCanvas : Panel
     {
         RunManager.Instance.Environment.GainSkillNeuron.Add(GainSkillStaging);
         RunManager.Instance.Environment.RemoveSkillNeuron.Add(RemoveSkillStaging);
+        RunManager.Instance.Environment.SkillSetJingJieNeuron.Add(SkillSetJingJieStaging);
+        RunManager.Instance.Environment.ReplaceSkillNeuron.Add(ReplaceSkillStaging);
         
         EquipEvent.Add(RunManager.Instance.Environment.EquipProcedure);
         RunManager.Instance.Environment.EquipNeuron.Add(EquipStaging);
@@ -112,6 +111,8 @@ public class RunCanvas : Panel
     {
         RunManager.Instance.Environment.GainSkillNeuron.Remove(GainSkillStaging);
         RunManager.Instance.Environment.RemoveSkillNeuron.Remove(RemoveSkillStaging);
+        RunManager.Instance.Environment.SkillSetJingJieNeuron.Remove(SkillSetJingJieStaging);
+        RunManager.Instance.Environment.ReplaceSkillNeuron.Remove(ReplaceSkillStaging);
         
         EquipEvent.Remove(RunManager.Instance.Environment.EquipProcedure);
         RunManager.Instance.Environment.EquipNeuron.Remove(EquipStaging);
@@ -248,24 +249,6 @@ public class RunCanvas : Panel
 
     private void RemoveSkillStaging(RemoveSkillDetails d)
     {
-        // void SetPosition(DelegatingView view, Vector3 position)
-        // {
-        //     view.GetAnimator().SetState(4);
-        //     view.GetDelegatedView().GetRect().position = position;
-        //     view.GetDelegatedView().GetRect().localScale = Vector3.zero;
-        // }
-        //
-        // void SetShow(DelegatingView view)
-        // {
-        //     view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
-        // }
-        //
-        // void SetIdle(DelegatingView view)
-        // {
-        //     view.GetAnimator().SetStateAsync(1);
-        //     // AudioManager.Play("CardPlacement");
-        // }
-
         if (d.DeckIndex.InField)
         {
             DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
@@ -274,19 +257,30 @@ public class RunCanvas : Panel
         {
             DeckPanel.HandView.RemoveItemAt(d.DeckIndex.Index);
         }
+    }
 
-        // DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
-        // Vector3 position = Vector3.zero;
-        //
-        // SetPosition(view, position);
-        //
-        // Sequence seq = DOTween.Sequence()
-        //     .AppendInterval(0.05f)
-        //     .AppendCallback(() => SetShow(view))
-        //     .AppendInterval(0.3f)
-        //     .AppendCallback(() => SetIdle(view));
-        //
-        // _animationQueue.QueueAnimation(seq);
+    private void SkillSetJingJieStaging(SkillSetJingJieDetails d)
+    {
+        if (d.DeckIndex.InField)
+        {
+            DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
+        }
+        else
+        {
+            DeckPanel.HandView.Modified(d.DeckIndex.Index);
+        }
+    }
+
+    private void ReplaceSkillStaging(ReplaceSkillDetails d)
+    {
+        if (d.DeckIndex.InField)
+        {
+            DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
+        }
+        else
+        {
+            DeckPanel.HandView.Modified(d.DeckIndex.Index);
+        }
     }
     
     private void GainSkillsStaging(GainSkillsDetails d)
@@ -371,7 +365,6 @@ public class RunCanvas : Panel
         AudioManager.Play("CardPlacement");
         
         // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        // CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void SwapStaging(SwapDetails d)
@@ -402,7 +395,6 @@ public class RunCanvas : Panel
         AudioManager.Play("CardPlacement");
         
         // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        // CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void UnequipStaging(UnequipDetails d)
@@ -420,9 +412,7 @@ public class RunCanvas : Panel
         
         AudioManager.Play("CardPlacement");
 
-        // PlayerEntity.Refresh();
         // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        // CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void MergeStaging(MergeDetails d)
@@ -444,7 +434,6 @@ public class RunCanvas : Panel
         AudioManager.Play("CardUpgrade");
     
         // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-        // CanvasManager.Instance.RunCanvas.Refresh();
     }
     
     

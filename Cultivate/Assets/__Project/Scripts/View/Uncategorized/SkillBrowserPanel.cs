@@ -32,7 +32,6 @@ public class SkillBrowserPanel : Panel
 
     public override void Refresh()
     {
-        base.Refresh();
         SkillInventoryView.Refresh();
     }
 
@@ -40,7 +39,7 @@ public class SkillBrowserPanel : Panel
     {
         SkillInventory inventory = _address.Get<SkillInventory>();
         inventory.SortByComparisonId(i);
-        Refresh();
+        SkillInventoryView.Refresh();
     }
 
     public void Show()

@@ -22,6 +22,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         PickDiscoveredSkillNeuron = new();
         GainSkillsNeuron = new();
         RemoveSkillNeuron = new();
+        SkillSetJingJieNeuron = new();
+        ReplaceSkillNeuron = new();
         BuySkillNeuron = new();
         ExchangeSkillNeuron = new();
         GachaNeuron = new();
@@ -49,6 +51,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron;
     public Neuron<GainSkillsDetails> GainSkillsNeuron;
     public Neuron<RemoveSkillDetails> RemoveSkillNeuron;
+    public Neuron<SkillSetJingJieDetails> SkillSetJingJieNeuron;
+    public Neuron<ReplaceSkillDetails> ReplaceSkillNeuron;
     public Neuron<BuySkillDetails> BuySkillNeuron;
     public Neuron<ExchangeSkillDetails> ExchangeSkillNeuron;
     public Neuron<GachaDetails> GachaNeuron;
@@ -839,26 +843,28 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         RemoveSkillNeuron.Invoke(d);
     }
 
-    public void SetJingJieAtDeckIndexProcedure(JingJie jingJie, DeckIndex deckIndex)
+    public void SkillSetJingJieProcedure(JingJie jingJie, DeckIndex deckIndex)
     {
+        SkillSetJingJieDetails d = new(jingJie, deckIndex);
+        
         if (deckIndex.InField)
             _home.GetSlot(deckIndex.Index).Skill.JingJie = jingJie;
         else
             Hand[deckIndex.Index].JingJie = jingJie;
-        
-        // staging
-        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+
+        SkillSetJingJieNeuron.Invoke(d);
     }
 
-    public void ReplaceSkillAtDeckIndexProcedure(RunSkill template, DeckIndex deckIndex)
+    public void ReplaceSkillProcedure(RunSkill template, DeckIndex deckIndex)
     {
+        ReplaceSkillDetails d = new(template, deckIndex);
+        
         if (deckIndex.InField)
             Home.GetSlot(deckIndex.Index).Skill = template.Clone();
         else
             Hand.Replace(deckIndex.Index, template.Clone());
-        
-        // staging
-        CanvasManager.Instance.RunCanvas.DeckPanel.Refresh();
+
+        ReplaceSkillNeuron.Invoke(d);
     }
 
     #endregion

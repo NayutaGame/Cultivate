@@ -1,7 +1,6 @@
 
 using System;
 using CLLibrary;
-using Cysharp.Threading.Tasks.Triggers;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -122,7 +121,7 @@ public class ConsolePanel : Panel
         GRResultText.text = CanvasManager.Instance.GetGraphicRaycastResult();
     }
 
-    public override void Refresh()
+    private void RefreshInfo()
     {
         RunEnvironment env = RunManager.Instance.Environment;
         MingYuanText.text = env.GetMingYuan().ToString();
@@ -138,6 +137,7 @@ public class ConsolePanel : Panel
         RunManager.Instance.Environment.LoseGoldNeuron.Add(RefreshGold);
         RunManager.Instance.Environment.GainDHealthNeuron.Add(RefreshDHealth);
         RunManager.Instance.Environment.LoseDHealthNeuron.Add(RefreshDHealth);
+        RefreshInfo();
     }
 
     private void OnDisable()
@@ -202,7 +202,6 @@ public class ConsolePanel : Panel
     {
         IEntity entity = RunManager.Instance.Environment.Home;
         entity.SetJingJie(jingJie);
-        CanvasManager.Instance.RunCanvas.Refresh();
     }
 
     private void DrawSkill()
