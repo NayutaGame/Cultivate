@@ -118,7 +118,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
             slot.PlacedSkill = null;
         });
 
-        RunManager.Instance.Environment.SendEvent(RunClosureDict.WILL_PLACEMENT, d);
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.WIL_PLACEMENT, d);
 
         TraversalCurrentSlots().Do(slot =>
         {
@@ -141,7 +141,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     {
         DepleteDetails d = new(this);
 
-        RunManager.Instance.Environment.SendEvent(RunClosureDict.WILL_DEPLETE, d);
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.WIL_DEPLETE, d);
 
         _slots.Traversal().Do(slot => slot.TryDeplete(d));
 

@@ -39,7 +39,7 @@ public class DiscoverSkillPanel : Panel
         return animator;
     }
 
-    public override void Refresh()
+    private void RefreshInfo()
     {
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
 
@@ -117,7 +117,7 @@ public class DiscoverSkillPanel : Panel
         => DOTween.Sequence()
             .Append(EnterSelected())
             .AppendCallback(SkillList.Refresh)
-            .AppendCallback(Refresh)
+            .AppendCallback(RefreshInfo)
             .Append(TraversalEnterIdle());
 
     public Tween EnterSelected()

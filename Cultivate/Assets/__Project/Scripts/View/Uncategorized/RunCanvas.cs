@@ -67,19 +67,9 @@ public class RunCanvas : Panel
         //     ConsolePanel.gameObject.SetActive(false);
     }
 
-    public override void Refresh()
-    {
-        RefreshPanel();
-    }
-
     private void RefreshPanel()
     {
         ChangePanel(RunManager.Instance.Environment.GetActivePanel());
-    }
-
-    public void LayoutRebuild()
-    {
-        DiscoverSkillPanel.LayoutRebuild();
     }
 
     private void OnEnable()
@@ -162,8 +152,6 @@ public class RunCanvas : Panel
 
         if (PanelSM[oldState] != null)
             await PanelSM[oldState].GetAnimator().SetStateAsync(0);
-        // else
-        //     await GetAnimator().SetStateAsync(1);
 
         PanelSM.SetState(newState);
 
@@ -173,8 +161,6 @@ public class RunCanvas : Panel
             PanelSM[newState].Refresh();
             await PanelSM[newState].GetAnimator().SetStateAsync(1);
         }
-        // else
-        //     await GetAnimator().SetStateAsync(0);
 
         PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
         bool showDeck = d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor ||

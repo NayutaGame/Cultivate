@@ -608,7 +608,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         if (d.Value == 0)
             return;
         
-        _closureDict.SendEvent(RunClosureDict.WILL_SET_D_GOLD, d);
+        _closureDict.SendEvent(RunClosureDict.WIL_SET_D_GOLD, d);
 
         if (d.Cancel)
             return;
@@ -629,7 +629,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         if (d.Value == 0)
             return;
         
-        _closureDict.SendEvent(RunClosureDict.WILL_SET_DDHEALTH, d);
+        _closureDict.SendEvent(RunClosureDict.WIL_SET_DDHEALTH, d);
 
         if (d.Cancel)
             return;
@@ -647,7 +647,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     
     private void SetMaxMingYuanProcedure(SetMaxMingYuanDetails d)
     {
-        _closureDict.SendEvent(RunClosureDict.WILL_SET_MAX_MINGYUAN, d);
+        _closureDict.SendEvent(RunClosureDict.WIL_SET_MAX_MINGYUAN, d);
 
         if (d.Cancel)
             return;
@@ -663,7 +663,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     public void DiscoverSkillProcedure(DiscoverSkillDetails d)
     {
-        _closureDict.SendEvent(RunClosureDict.WILL_DISCOVER_SKILL, d);
+        _closureDict.SendEvent(RunClosureDict.WIL_DISCOVER_SKILL, d);
 
         List<SkillEntry> entries = InnerDrawSkills(d.Descriptor);
         d.Skills.AddRange(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));

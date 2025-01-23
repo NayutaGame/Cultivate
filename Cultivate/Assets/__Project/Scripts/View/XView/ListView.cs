@@ -72,6 +72,8 @@ public class ListView : XView
         CheckNeurons();
     }
 
+    public int GetCount() => _activePool.Count;
+
     #endregion
 
     #region Core

@@ -78,7 +78,7 @@ public class CharacterCategory : Category<CharacterEntry>
                                            "\n如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿的卡",
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.WILL_PLACEMENT, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.WIL_PLACEMENT, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         PlacementDetails d = (PlacementDetails)eventDetails;
@@ -108,7 +108,7 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         env.SetVariable("CopiedSkill", copiedSkill != null ? SkillEntryDescriptor.FromRunSkill(copiedSkill) : null);
                     }),
-                    new(RunClosureDict.WILL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.WIL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
