@@ -18,7 +18,17 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     
     // bool _firstTime;
 
-    [SerializeField] public RunEnvironment RunEnvironment;
+    [SerializeField] private RunEnvironment _runEnvironment;
+
+    public void WriteRunEnvironment(RunEnvironment env)
+    {
+        _runEnvironment = JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(env));
+    }
+
+    public RunEnvironment ReadRunEnvironment()
+    {
+        return JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(_runEnvironment));
+    }
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -45,7 +55,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         => _finishedFirstRun = value;
 
     public bool HasSave()
-        => RunEnvironment != null;
+        => _runEnvironment != null;
 
     public void OnBeforeSerialize()
     {

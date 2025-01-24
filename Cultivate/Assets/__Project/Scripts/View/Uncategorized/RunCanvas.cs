@@ -135,9 +135,6 @@ public class RunCanvas : Panel
     
     private async UniTask ChangePanelAsync(PanelDescriptor toPanel)
     {
-        if (toPanel is not null && toPanel is not RunResultPanelDescriptor)
-            AppManager.Instance.ProfileManager.Save();
-        
         await _animationQueue.WaitForQueueToComplete();
         
         PanelS oldState = PanelSM.State;

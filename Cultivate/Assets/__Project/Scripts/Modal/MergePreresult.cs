@@ -30,16 +30,20 @@ public class MergePreresult
             {
                 new(IsCongruent, FromCongruent),
                 new(IsSameName, FromSameName),
+                new(IsJingJieReplace, FromJingJieReplace),
                 // from formula
                 new(IsSameWuXing, FromSameWuXing),
                 new(IsXiangShengWuXing, FromXiangShengWuXing),
                 new(IsSameJingJie, FromSameJingJie),
+                
+                new(IsSameWuXingHuaShenReroll, FromSameWuXingHuaShenReroll),
+                new(IsXiangShengWuXingHuaShenReroll, FromXiangShengWuXingHuaShenReroll),
                 new(IsHuaShenReroll, FromHuaShenReroll),
             };
 
     public static bool IsCongruent(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
         => lhs.GetEntry() == rhs.GetEntry() && lhs.GetJingJie() == rhs.GetJingJie() &&
-           lhs.GetJingJie() < rhs.GetEntry().HighestJingJie;
+           lhs.GetJingJie() < lhs.GetEntry().HighestJingJie;
 
     public static MergePreresult FromCongruent(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
         => new(
@@ -53,7 +57,7 @@ public class MergePreresult
 
     public static bool IsSameName(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
         => lhs.GetEntry() == rhs.GetEntry() &&
-           Mathf.Max(lhs.GetJingJie(), rhs.GetJingJie()) < rhs.GetEntry().HighestJingJie;
+           Mathf.Max(lhs.GetJingJie(), rhs.GetJingJie()) < lhs.GetEntry().HighestJingJie;
 
     public static MergePreresult FromSameName(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
         => new(
@@ -63,6 +67,19 @@ public class MergePreresult
             resultJingJie:          (Mathf.Max(lhs.GetJingJie(), rhs.GetJingJie()) + 1).ClampUpper(rhs.GetEntry().HighestJingJie),
             resultWuXing:           rhs.GetWuXing(),
             resultEntry:            rhs.GetEntry(),
+            pred:                   null);
+
+    public static bool IsJingJieReplace(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
+        => lhs.GetEntry() != rhs.GetEntry() && lhs.GetJingJie() != rhs.GetJingJie();
+
+    public static MergePreresult FromJingJieReplace(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
+        => new(
+            mergeType:              "境界置换",
+            valid:                  rhs.GetJingJie() <= playerJingJie || lhs.GetJingJie() <= playerJingJie,
+            errorMessage:           "无法合成原因\n玩家境界需要不低于卡牌境界",
+            resultJingJie:          (Mathf.Min(lhs.GetJingJie(), rhs.GetJingJie()) + 1).ClampUpper((lhs.GetJingJie() < rhs.GetJingJie() ? lhs : rhs).GetEntry().HighestJingJie),
+            resultWuXing:           (lhs.GetJingJie() < rhs.GetJingJie() ? lhs : rhs).GetWuXing(),
+            resultEntry:            (lhs.GetJingJie() < rhs.GetJingJie() ? lhs : rhs).GetEntry(),
             pred:                   null);
 
     public static bool IsSameWuXing(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
@@ -107,6 +124,34 @@ public class MergePreresult
             pred:                   skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lhs.GetWuXing() &&
                                                   skillEntry.WuXing != rhs.GetWuXing());
 
+    public static bool IsSameWuXingHuaShenReroll(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
+        => lhs.GetJingJie() == rhs.GetJingJie() && lhs.GetJingJie() == JingJie.HuaShen &&
+           lhs.GetWuXing() == rhs.GetWuXing();
+
+    public static MergePreresult FromSameWuXingHuaShenReroll(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
+        => new(
+            mergeType:              "同五行化神置换",
+            valid:                  rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie,
+            errorMessage:           "无法置换原因\n玩家境界需要不低于卡牌境界",
+            resultJingJie:          rhs.GetJingJie(),
+            resultWuXing:           rhs.GetWuXing(),
+            resultEntry:            null,
+            pred:                   skillEntry => skillEntry != lhs.GetEntry() && skillEntry != rhs.GetEntry());
+
+    public static bool IsXiangShengWuXingHuaShenReroll(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
+        => lhs.GetJingJie() == rhs.GetJingJie() && lhs.GetJingJie() == JingJie.HuaShen &&
+           WuXing.XiangSheng(lhs.GetWuXing(), rhs.GetWuXing());
+
+    public static MergePreresult FromXiangShengWuXingHuaShenReroll(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
+        => new(
+            mergeType:              "相生五行化神置换",
+            valid:                  rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie,
+            errorMessage:           "无法置换原因\n玩家境界需要不低于卡牌境界",
+            resultJingJie:          rhs.GetJingJie(),
+            resultWuXing:           WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()).Value,
+            resultEntry:            null,
+            pred:                   null);
+
     public static bool IsHuaShenReroll(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
         => lhs.GetJingJie() == rhs.GetJingJie() && lhs.GetJingJie() == JingJie.HuaShen;
 
@@ -114,7 +159,7 @@ public class MergePreresult
         => new(
             mergeType:              "化神置换",
             valid:                  rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie,
-            errorMessage:           "无法合成原因\n玩家境界需要不低于卡牌境界",
+            errorMessage:           "无法置换原因\n玩家境界需要不低于卡牌境界",
             resultJingJie:          rhs.GetJingJie(),
             resultWuXing:           null,
             resultEntry:            null,
@@ -124,7 +169,7 @@ public class MergePreresult
         => new(
             mergeType:              "无法合成",
             valid:                  false,
-            errorMessage:           "无法合成原因\n非同名卡合成时需要相同境界",
+            errorMessage:           "无法合成原因\n未知公式",
             resultJingJie:          null,
             resultWuXing:           null,
             resultEntry:            null,

@@ -75,7 +75,7 @@ public class TitlePanel : Panel
 
     private void Continue()
     {
-        AppManager.Instance.Push(AppStateMachine.RUN, AppManager.Instance.ProfileManager.GetCurrProfile().RunEnvironment);
+        AppManager.Instance.Push(AppStateMachine.RUN, AppManager.Instance.ProfileManager.GetCurrProfile().ReadRunEnvironment());
     }
 
     private void StartRun()

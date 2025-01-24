@@ -1231,26 +1231,6 @@ public class SkillCategory : Category<SkillEntry>
                     await d.AttackProcedure(7 + d.Dj, times: 3 + 2 * d.Dj);
                 }),
 
-            new(id:                         "0422",
-                name:                       "绝境",
-                wuXing:                     WuXing.Huo,
-                jingJieBound:               JingJie.ZhuJi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    (j >= JingJie.HuaShen ? $"力量+2" : $"力量+1") +
-                    $"\n残血：多{Fib.ToValue(2 + dj)}".ApplyCond(castResult),
-                cast:                       async d =>
-                {
-                    int value = d.J >= JingJie.HuaShen ? 2 : 1;
-                    bool cond = d.Caster.IsLowHealth;
-                    if (cond)
-                    {
-                        value += Fib.ToValue(2 + d.Dj);
-                    }
-                    await d.GainBuffProcedure("力量", value);
-                    
-                    d.CastResult.AppendCond(cond);
-                }),
-
             new(id:                         "0407",
                 name:                       "浴火",
                 wuXing:                     WuXing.Huo,
@@ -1315,29 +1295,6 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     await d.Skill.ExhaustProcedure();
                     await d.GainArmorProcedure(6 * (1 + d.Caster.ExhaustedCount), induced: false);
-                }),
-
-            new(id:                         "0423",
-                name:                       "风中残烛",
-                wuXing:                     WuXing.Huo,
-                jingJieBound:               JingJie.JinDan2HuaShen,
-                skillTypeComposite:         SkillType.Defend,
-                cost:                       CostResult.HealthFromValue(8),
-                costDescription:            CostDescription.HealthFromValue(8),
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"锻体+{5 + 5 * dj}" +
-                    $"\n残血：获得2闪避".ApplyCond(castResult),
-                cast:                       async d =>
-                {
-                    bool cond = d.Caster.IsLowHealth;
-
-                    await d.GainBuffProcedure("锻体", 5 + 5 * d.Dj);
-                    
-                    if (cond)
-                    {
-                        await d.GainBuffProcedure("闪避", 2);
-                    }
-                    d.CastResult.AppendCond(cond);
                 }),
 
             new(id:                         "0411",
@@ -1458,12 +1415,10 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    "成为残血" +
-                    "\n下一次受伤时，如果致死，则无效",
+                    "成为残血",
                 cast:                       async d =>
                 {
                     await d.BecomeLowHealth();
-                    await d.GainBuffProcedure("不动明王诀");
                 }),
 
             new(id:                         "0419",

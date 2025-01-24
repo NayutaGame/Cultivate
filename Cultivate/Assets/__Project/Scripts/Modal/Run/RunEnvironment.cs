@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [Serializable]
 public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallbackReceiver
@@ -298,6 +297,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         
         _closureDict.SendEvent(RunClosureDict.START_RUN, d);
         StartRunNeuron.Invoke();
+        
+        SaveProcedure();
     }
 
     public void ContinueRunProcedure(ContinueRunDetails d)
@@ -428,8 +429,27 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
             return true;
         }
 
-        bool valid = rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie;
-        if (!valid)
+        bool valid1 = rhs.GetJingJie() <= playerJingJie || lhs.GetJingJie() <= playerJingJie;
+        if (!valid1)
+            return false;
+
+        if (MergePreresult.IsJingJieReplace(lhs, rhs, playerJingJie))
+        {
+            if (lhs.GetJingJie() < rhs.GetJingJie())
+            {
+                rhs.SetEntry(lEntry);
+            }
+            else
+            {
+                rhs.JingJie = rJingJie + 1;
+            }
+            
+            Hand.Remove(d.Lhs);
+            return true;
+        }
+
+        bool valid2 = rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie;
+        if (!valid2)
             return false;
         
         if (MergePreresult.IsSameWuXing(lhs, rhs, playerJingJie))
@@ -927,6 +947,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
                     return;
                 }
                 
+                SaveProcedure();
+                
                 panel = Map.CreatePanelFromCurrRoom();
                 
                 
@@ -991,6 +1013,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     {
         _loadedTime += DateTime.Now - _startTime;
         _startTime = DateTime.Now;
+        AppManager.Instance.ProfileManager.Save(this);
     }
 
     public void OnBeforeSerialize()

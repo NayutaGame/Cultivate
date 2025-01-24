@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
+using UnityEngine;
 
 public class ProfileManager : Addressable
 {
@@ -20,10 +21,9 @@ public class ProfileManager : Addressable
         Load();
     }
 
-    public void Save()
+    public void Save(RunEnvironment env)
     {
-        AppManager.Instance.ProfileManager.GetCurrProfile().RunEnvironment = RunManager.Instance.Environment;
-        RunManager.Instance.Environment.SaveProcedure();
+        AppManager.Instance.ProfileManager.GetCurrProfile().WriteRunEnvironment(env);
         FileUtility.WriteToFile(_profileList, ProfileList.Filename);
     }
 

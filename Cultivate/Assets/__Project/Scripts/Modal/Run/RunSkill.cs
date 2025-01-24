@@ -14,6 +14,7 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     [SerializeField] private bool _borrowed;
     
     public SkillEntry GetEntry() => _entry;
+    public void SetEntry(SkillEntry entry) => _entry = entry;
     public SkillSlot GetSkillSlot() => _skillSlot;
     public void SetSkillSlot(SkillSlot value) => _skillSlot = value;
     public JingJie JingJie

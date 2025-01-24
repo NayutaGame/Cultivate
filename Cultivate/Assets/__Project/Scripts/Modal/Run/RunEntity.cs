@@ -288,8 +288,4 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     }
 
     #endregion
-    
-    #region Obsolete
-
-    #endregion
 }

@@ -17,6 +17,12 @@ public class PlayerEntityView : XView
         FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
     }
 
+    private void OnEnable()
+    {
+        FieldView.Sync();
+        FormationList.Sync();
+    }
+
     public override void Refresh()
     {
         base.Refresh();

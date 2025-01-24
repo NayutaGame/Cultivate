@@ -1965,8 +1965,8 @@ public class RoomCategory : Category<RoomEntry>
                             RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex);
                             if (skill == null)
                                 return;
-
-                            skill.JingJie = skill.GetEntry().HighestJingJie;
+                            
+                            RunManager.Instance.Environment.SkillSetJingJieProcedure(skill.GetEntry().HighestJingJie, deckIndex);
                         });
 
                         return B;
