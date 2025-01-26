@@ -931,6 +931,19 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
+            new("剑心", "每回合：获得[层数]剑意", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_TURN, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        TurnDetails d = (TurnDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("剑意", induced: true);
+                    }),
+                }),
+            
             new("回马枪", "下次受攻击后：[层数]攻 穿透", BuffStackRule.Max, true, false,
                 closures: new StageClosure[]
                 {
