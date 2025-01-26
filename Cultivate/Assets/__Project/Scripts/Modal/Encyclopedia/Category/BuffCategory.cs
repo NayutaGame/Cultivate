@@ -267,6 +267,76 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
+            new(id:                         "禁止护甲",
+                description:                "无法获得护甲",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   false,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_GAIN_ARMOR, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        HealDetails d = (HealDetails)closureDetails;
+
+                        if (b.Owner != d.Tgt) return;
+                        d.Cancel = true;
+                    }),
+                }),
+            
+            new(id:                         "禁止二动",
+                description:                "无法二动",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   false,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_ACTION, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        ActionDetails d = (ActionDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        if (!d.IsSwift) return;
+                        d.Cancel = true;
+                        b.PlayPingAnimation();
+                    }),
+                }),
+            
+            new(id:                         "禁止行动",
+                description:                "无法行动",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   false,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_ACTION, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        ActionDetails d = (ActionDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        d.Cancel = true;
+                        b.PlayPingAnimation();
+                    }),
+                }),
+            
+            new(id:                         "禁止灵气",
+                description:                "无法获得灵气",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   false,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_GAIN_BUFF, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        GainBuffDetails d = (GainBuffDetails)closureDetails;
+                        if (b.Owner != d.Tgt) return;
+                        if (d._buffEntry.GetName() != "灵气") return;
+                        d.Cancel = true;
+                        b.PlayPingAnimation();
+                    }),
+                }),
+            
             new(id:                         "心斋",
                 description:                "所有耗蓝-[层数]",
                 buffStackRule:              BuffStackRule.Add,
@@ -631,8 +701,18 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
 
-                        bool lifeSteal = b.Owner.GetStackOfBuff("凛冽") > 0;
-                        await b.Owner.IndirectProcedure(b.Stack, wuXing: WuXing.Jin, lifeSteal: lifeSteal);
+                        if (b.Owner.GetStackOfBuff("摇曳") > 0)
+                        {
+                            await b.Owner.RemoveArmorProcedure(b.Stack);
+                        }
+                        else if (b.Owner.GetStackOfBuff("凛冽") > 0)
+                        {
+                            await b.Owner.IndirectProcedure(b.Stack, wuXing: WuXing.Jin, lifeSteal: true);
+                        }
+                        else
+                        {
+                            await b.Owner.IndirectProcedure(b.Stack, wuXing: WuXing.Jin);
+                        }
                     }),
                 }),
 
@@ -735,11 +815,23 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)owner;
                         AttackDetails d = (AttackDetails)closureDetails;
                         if (d.Penetrate) return;
+                        if (b.Owner.GetStackOfBuff("瑞雪") > 0) return;
                         if (b.Owner == d.Tgt && d.Src != d.Tgt)
                         {
                             b.PlayPingAnimation();
                             d.Value -= b.Stack;
                         }
+                    }),
+                    new(StageClosureDict.DID_TURN, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        TurnDetails d = (TurnDetails)closureDetails;
+
+                        if (b.Owner != d.Owner) return;
+                        if (b.Owner.GetStackOfBuff("瑞雪") <= 0) return;
+                        
+                        b.PlayPingAnimation();
+                        await b.Owner.HealProcedure(b.Stack);
                     }),
                 }),
 
@@ -804,6 +896,38 @@ public class BuffCategory : Category<BuffEntry>
                             b.PlayPingAnimation();
                             d.Value += b.Stack;
                         }
+                    }),
+                }),
+            
+            new("剑意", "攻击时：多[层数]攻，之后失去所有层数", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_ATTACK, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        AttackDetails d = (AttackDetails)closureDetails;
+                        if (b.Owner == d.Src && d.Src != d.Tgt)
+                        {
+                            b.PlayPingAnimation();
+                            d.Value += b.Stack;
+
+                            string key = "thisTurnAttacked";
+                            b.Owner.Memory.PerformOperation(key, false, attacked => true);
+                        }
+                    }),
+                    new(StageClosureDict.DID_TURN, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        TurnDetails d = (TurnDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        
+                        string key = "thisTurnAttacked";
+                        bool thisTurnAttacked = b.Owner.Memory.TryGetVariable(key, false);
+                        if (!thisTurnAttacked) return;
+                        
+                        b.PlayPingAnimation();
+                        await b.LoseStackProcedure(b.Stack);
+                        b.Owner.Memory.SetVariable(key, false);
                     }),
                 }),
             
@@ -879,7 +1003,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("坐忘", "升华下一次使用的牌", BuffStackRule.Add, true, false,
+            new("登宝塔", "下一张牌具有免费和升华", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_EXECUTE, 0, async (owner, closureDetails) =>
@@ -1500,7 +1624,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new("仙人抚顶", "使用12次后：将对方生命变为0", BuffStackRule.Add, true, false),
             
-            new("金刚不坏", "受到伤害时，最多20", BuffStackRule.Min, true, false,
+            new("伤害上限", "受到伤害时，不超过[层数]点", BuffStackRule.Min, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
@@ -1555,6 +1679,8 @@ public class BuffCategory : Category<BuffEntry>
             
             new("连岳", "最后两张牌都可以触发终结", BuffStackRule.One, true, false),
             new("凛冽", "锋锐具有吸血", BuffStackRule.One, true, false),
+            new("摇曳", "锋锐变为施加破甲", BuffStackRule.One, true, false),
+            new("瑞雪", "格挡变为治疗", BuffStackRule.One, true, false),
         });
     }
 
