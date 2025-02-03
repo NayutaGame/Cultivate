@@ -4,12 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SettingsPanel : Panel
+public class SettingsPanel : PopupPanel
 {
-    [SerializeField] private CanvasGroup CoreCanvasGroup;
-    [SerializeField] private Image DarkCurtainImage;
-    [SerializeField] private Button DarkCurtainButton;
-
     [SerializeField] private LegacyListView WidgetListView;
     [SerializeField] public Transform WidgetsTransform;
     [SerializeField] public CanvasGroup WidgetsCanvasGroup;
@@ -41,10 +37,7 @@ public class SettingsPanel : Panel
         settings.ResetSelectedTab();
 
         ResumeButton.onClick.RemoveAllListeners();
-        ResumeButton.onClick.AddListener(Resume);
-
-        DarkCurtainButton.onClick.RemoveAllListeners();
-        DarkCurtainButton.onClick.AddListener(Resume);
+        ResumeButton.onClick.AddListener(Return);
 
         ToTitleButton.onClick.RemoveAllListeners();
         ToTitleButton.onClick.AddListener(ToTitle);
@@ -78,7 +71,7 @@ public class SettingsPanel : Panel
         WidgetListView.Refresh();
     }
 
-    private void Resume()
+    public override void Return()
     {
         AppManager.Instance.Pop();
     }
@@ -91,24 +84,6 @@ public class SettingsPanel : Panel
     private void ToDesktop()
     {
         AppManager.ExitGame();
-    }
-
-    public override Tween EnterIdle()
-    {
-        return DOTween.Sequence()
-            .AppendCallback(() => gameObject.SetActive(true))
-            .Join(GetRect().DOScale(1f, 0.15f).SetEase(Ease.OutQuad))
-            .Join(CoreCanvasGroup.DOFade(1f, 0.15f))
-            .Join(DarkCurtainImage.DOFade(0.7f, 0.15f));
-    }
-
-    public override Tween EnterHide()
-    {
-        return DOTween.Sequence()
-            .Join(GetRect().DOScale(1.4f, 0.15f).SetEase(Ease.OutQuad))
-            .Join(CoreCanvasGroup.DOFade(0f, 0.15f))
-            .Join(DarkCurtainImage.DOFade(0f, 0.15f))
-            .AppendCallback(() => gameObject.SetActive(false));
     }
 
     private Tween _handle;

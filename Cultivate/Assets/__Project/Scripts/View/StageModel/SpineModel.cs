@@ -5,14 +5,15 @@ public class SpineModel : IStageModel
 {
     public SkeletonAnimation Skeleton;
 
-    public override void Opening()
-    {
-        Skeleton.AnimationState.SetAnimation(0, "idle", true);
-    }
-
     public override void SetSpeed(float speed)
     {
         Skeleton.timeScale = speed;
+    }
+
+    public override Animation GetAnimationFromEntering()
+    {
+        return new SpineAnimation(Skeleton, "idle", SpineAnimation.IntervalType.NoInterval, 0, true, false);
+        return new SpineAnimation(Skeleton, "entering", SpineAnimation.IntervalType.NoInterval, 0, true, false);
     }
 
     public override Animation GetAnimationFromBuffSelf(bool induced)

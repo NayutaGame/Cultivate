@@ -6,11 +6,10 @@ public abstract class IStageModel : MonoBehaviour
     public Transform BaseTransform;
     public Transform Transform;
     public Transform VFXTransform;
-    
-    public abstract void Opening();
 
     public abstract void SetSpeed(float speed);
-    
+
+    public abstract Animation GetAnimationFromEntering();
     public abstract Animation GetAnimationFromBuffSelf(bool induced);
     public abstract Animation GetAnimationFromEvaded(bool induced);
     public abstract Animation GetAnimationFromAttack(bool induced, int times);

@@ -24,6 +24,7 @@ public class AppManager : Singleton<AppManager>, Addressable
     private Encyclopedia Encyclopedia;
     public EditorManager EditorManager;
     public ProfileManager ProfileManager;
+    public ConfigManager ConfigManager;
     public RunManager RunManager;
     public StageManager StageManager;
 
@@ -51,6 +52,7 @@ public class AppManager : Singleton<AppManager>, Addressable
             { "SkillInventory", () => SkillInventory },
 
             { "Profile", () => ProfileManager },
+            { "Config", () => ConfigManager },
             { "Run", () => RunManager.Instance },
             { "Stage", () => StageManager.Instance },
 

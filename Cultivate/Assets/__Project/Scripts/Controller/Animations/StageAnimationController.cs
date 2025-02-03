@@ -21,12 +21,6 @@ public class StageAnimationController
     
     private float _speed = 1;
 
-    public void Opening()
-    {
-        StageManager.Instance.HomeModel.Opening();
-        StageManager.Instance.AwayModel.Opening();
-    }
-
     public async UniTask Play(Animation animation)
     {
         AnimationHandle track = animation.GetHandle();

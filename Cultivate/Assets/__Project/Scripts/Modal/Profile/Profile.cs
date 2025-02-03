@@ -15,8 +15,6 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     
     // LevelProfile, used to track unlocked skills
     // ResultProfile
-    
-    // bool _firstTime;
 
     [SerializeField] private RunEnvironment _runEnvironment;
 

@@ -32,28 +32,22 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
         set => _borrowed = value;
     }
 
-    private RunSkill(SkillEntry entry, JingJie jingJie)
+    private RunSkill(SkillEntry entry, JingJie jingJie, int runUsedTimes, int runEquippedTimes)
     {
         _entry = entry;
-        _jingJie = Mathf.Clamp(jingJie, _entry.LowestJingJie, _entry.HighestJingJie);
-    }
-
-    private RunSkill(RunSkill prototype)
-    {
-        _entry = prototype._entry;
-        _jingJie = prototype._jingJie;
-        _runUsedTimes = prototype._runUsedTimes;
-        _runEquippedTimes = prototype._runEquippedTimes;
+        _jingJie = jingJie;
+        _runUsedTimes = runUsedTimes;
+        _runEquippedTimes = runEquippedTimes;
     }
 
     public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
-        => new(entry, jingJie);
+        => new(entry, Mathf.Clamp(jingJie, entry.LowestJingJie, entry.HighestJingJie), 0, 0);
 
     public static RunSkill FromEntry(SkillEntry entry)
-        => new(entry, entry.LowestJingJie);
+        => FromEntryJingJie(entry, entry.LowestJingJie);
 
     public RunSkill Clone()
-        => new(this);
+        => new(_entry, _jingJie, _runUsedTimes, _runEquippedTimes);
 
     public void OnBeforeSerialize() { }
 

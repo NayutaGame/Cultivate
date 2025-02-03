@@ -5,9 +5,12 @@ public class SpriteModel : IStageModel
 {
     public SpriteRenderer SR;
 
-    public override void Opening() { }
-
     public override void SetSpeed(float speed) { }
+
+    public override Animation GetAnimationFromEntering()
+    {
+        return new EmptyTweenAnimation();
+    }
 
     public override Animation GetAnimationFromBuffSelf(bool induced)
     {

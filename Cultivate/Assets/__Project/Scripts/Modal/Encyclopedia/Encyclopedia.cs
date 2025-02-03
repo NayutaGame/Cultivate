@@ -18,6 +18,8 @@ public class Encyclopedia : Addressable
     public static DifficultyCategory DifficultyCategory;
     public static MapCategory MapCategory;
 
+    public static PackCategory PackCategory;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     public Encyclopedia()
@@ -44,12 +46,14 @@ public class Encyclopedia : Addressable
         CharacterCategory = new();
         DifficultyCategory = new();
         MapCategory = new();
-
+        
         KeywordCategory.Init();
         BuffCategory.Init();
         SkillCategory.Init();
         DifficultyCategory.Init();
         FormationCategory.Init();
+        
+        PackCategory = new();
 
         JingJieToAudio = new()
         {

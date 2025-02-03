@@ -14,9 +14,15 @@ public class RunConfigPanel : Panel
     [SerializeField] private Button ReturnButton;
     [SerializeField] private Button StartRunButton;
 
+    [SerializeField] private Button PackConfigButton;
+
+    [SerializeField] private PackConfigPanel PackConfigPanel;
+
     public override void AwakeFunction()
     {
         base.AwakeFunction();
+        
+        PackConfigPanel.CheckAwake();
 
         DifficultyPickerView.Configure();
 
@@ -25,6 +31,9 @@ public class RunConfigPanel : Panel
 
         StartRunButton.onClick.RemoveAllListeners();
         StartRunButton.onClick.AddListener(StartRun);
+        
+        PackConfigButton.onClick.RemoveAllListeners();
+        PackConfigButton.onClick.AddListener(PackConfig);
 
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
         CharacterListView.LeftClickNeuron.Join(Select);
@@ -42,6 +51,11 @@ public class RunConfigPanel : Panel
     private void Return()
     {
         CloseRunConfigPanel();
+    }
+
+    private void PackConfig()
+    {
+        PackConfigPanel.GetAnimator().SetStateAsync(1);
     }
 
     private async UniTask CloseRunConfigPanel()

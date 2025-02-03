@@ -41,7 +41,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         RegisterConfig();
         RegisterSkillClosures();
 
-        Opening();
+        await EnteringProcedure();
 
         await MingYuanPenaltyProcedure();
         await FormationProcedure();
@@ -689,11 +689,13 @@ public class StageEnvironment : Addressable, StageClosureOwner
         AppManager.Instance.Push(AppStateMachine.STAGE, config);
     }
 
-    public void Opening()
+    public async UniTask EnteringProcedure()
     {
         if (!_config.Animated)
             return;
-        StageManager.Instance.StageAnimationController.Opening();
+        
+        Play(_entities[0].Model().GetAnimationFromEntering());
+        Play(_entities[1].Model().GetAnimationFromEntering());
     }
 
     public void Play(Animation animation)
