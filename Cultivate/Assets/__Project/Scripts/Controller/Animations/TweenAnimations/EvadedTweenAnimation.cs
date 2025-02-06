@@ -1,16 +1,13 @@
 
 using DG.Tweening;
-using UnityEngine;
 
 public class EvadedTweenAnimation : Animation
 {
-    private Transform _baseTransform;
-    private Transform _transform;
+    private IStageModel _model;
 
-    public EvadedTweenAnimation(Transform baseTransform, Transform transform, bool isAwait, bool induced) : base(isAwait, induced)
+    public EvadedTweenAnimation(IStageModel model, bool isAwait, bool induced) : base(isAwait, induced)
     {
-        _baseTransform = baseTransform;
-        _transform = transform;
+        _model = model;
     }
 
     public override AnimationHandle GetHandle()
@@ -25,13 +22,13 @@ public class EvadedTweenAnimation : Animation
 
     private Tween GetDodgeTween()
     {
-        return _transform.DOMove(_baseTransform.position + _baseTransform.right * -0.6f, 0.05f)
+        return _model.Transform.DOMove(_model.BaseTransform.position + _model.BaseTransform.right * -0.6f, 0.05f)
             .SetEase(Ease.OutQuad);
     }
 
     private Tween GetBackTween()
     {
-        return _transform.DOMove(_baseTransform.position, 0.05f)
+        return _model.Transform.DOMove(_model.BaseTransform.position, 0.05f)
             .SetEase(Ease.InQuad);
     }
 }

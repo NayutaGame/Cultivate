@@ -1,16 +1,13 @@
 
 using DG.Tweening;
-using UnityEngine;
 
 public class DamagedTweenAnimation : Animation
 {
-    private Transform _baseTransform;
-    private Transform _transform;
+    private IStageModel _model;
 
-    public DamagedTweenAnimation(Transform baseTransform, Transform transform, bool isAwait, bool induced) : base(isAwait, induced)
+    public DamagedTweenAnimation(IStageModel model, bool isAwait, bool induced) : base(isAwait, induced)
     {
-        _baseTransform = baseTransform;
-        _transform = transform;
+        _model = model;
     }
 
     public override AnimationHandle GetHandle()
@@ -23,8 +20,8 @@ public class DamagedTweenAnimation : Animation
 
     private Tween GetTween()
     {
-        return _transform
-            .DOShakeRotation(0.6f, 10 * _baseTransform.forward, 10, 90, true, ShakeRandomnessMode.Harmonic)
+        return _model.Transform
+            .DOShakeRotation(0.6f, 10 * _model.BaseTransform.forward, 10, 90, true, ShakeRandomnessMode.Harmonic)
             .SetEase(Ease.InQuad);
     }
 }

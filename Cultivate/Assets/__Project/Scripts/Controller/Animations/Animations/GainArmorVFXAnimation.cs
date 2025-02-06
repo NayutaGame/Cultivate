@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class GainArmorVFXAnimation : Animation
 {
+    private IStageModel _model;
     private GainArmorDetails _gainArmorDetails;
 
-    public GainArmorVFXAnimation(bool isAwait, GainArmorDetails gainArmorDetails) : base(isAwait, gainArmorDetails.Induced)
+    public GainArmorVFXAnimation(GainArmorDetails gainArmorDetails, bool isAwait) : base(isAwait, gainArmorDetails.Induced)
     {
+        _model = gainArmorDetails.Tgt.Model();
         _gainArmorDetails = gainArmorDetails.Clone();
     }
 
@@ -20,18 +22,20 @@ public class GainArmorVFXAnimation : Animation
 
     private void SpawnVFX()
     {
-        StageEntity tgt = _gainArmorDetails.Tgt;
-        int value = _gainArmorDetails.Value;
-        
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.GainArmorVFXPrefab, tgt.Model().VFXTransform.position,
+        GameObject gao = GameObject.Instantiate(GetPrefab(), _model.VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
-        vfx.SetIntensity(IntensityFromValue(value));
+        vfx.SetIntensity(IntensityFromValue(_gainArmorDetails.Value));
         vfx.Play();
     }
 
     private float IntensityFromValue(int value)
     {
         return Mathf.InverseLerp(0, 100, value);
+    }
+
+    private GameObject GetPrefab()
+    {
+        return StageManager.Instance.GainArmorVFXPrefab;
     }
 }

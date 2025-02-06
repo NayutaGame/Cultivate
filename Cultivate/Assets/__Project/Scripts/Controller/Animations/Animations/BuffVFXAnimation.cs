@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class BuffVFXAnimation : Animation
 {
-    private StageEntity _target;
+    private IStageModel _model;
     private GameObject _prefab;
 
-    private BuffVFXAnimation(bool isAwait, StageEntity target, GameObject prefab, bool induced) : base(isAwait, induced)
+    private BuffVFXAnimation(IStageModel model, GameObject prefab, bool isAwait, bool induced) : base(isAwait, induced)
     {
-        _target = target;
+        _model = model;
         _prefab = prefab;
     }
 
-    public static BuffVFXAnimation FromChangeStack(bool isAwait, StageEntity target, BuffEntry entry, int diff, bool induced)
-        => new(isAwait, target, diff > 0 ? GetPrefabFromGain(entry) : GetPrefabFromLose(entry), induced);
+    public static BuffVFXAnimation FromChangeStack(IStageModel model, BuffEntry entry, int diff, bool isAwait, bool induced)
+        => new(model, diff > 0 ? GetPrefabFromGain(entry) : GetPrefabFromLose(entry), isAwait, induced);
 
-    public static BuffVFXAnimation FromGainBuffDetails(bool isAwait, GainBuffDetails d)
-        => new(isAwait, d.Tgt, GetPrefabFromGain(d._buffEntry), d.Induced);
+    public static BuffVFXAnimation FromGainBuffDetails(GainBuffDetails d, bool isAwait)
+        => new(d.Tgt.Model(), GetPrefabFromGain(d._buffEntry), isAwait, d.Induced);
 
-    public static BuffVFXAnimation FromLoseBuffDetails(bool isAwait, LoseBuffDetails d)
-        => new(isAwait, d.Tgt, GetPrefabFromLose(d._buffEntry), d.Induced);
+    public static BuffVFXAnimation FromLoseBuffDetails(LoseBuffDetails d, bool isAwait)
+        => new(d.Tgt.Model(), GetPrefabFromLose(d._buffEntry), isAwait, d.Induced);
 
     public override AnimationHandle GetHandle()
     {
@@ -32,7 +32,7 @@ public class BuffVFXAnimation : Animation
 
     private void SpawnBuffVFX()
     {
-        GameObject gao = GameObject.Instantiate(_prefab, _target.Model().VFXTransform.position,
+        GameObject gao = GameObject.Instantiate(_prefab, _model.VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         
         VFX vfx = gao.GetComponent<VFX>();

@@ -1,7 +1,6 @@
 
 using System;
 using System.Collections.Generic;
-using FMOD;
 using Spine;
 using Spine.Unity;
 using UnityEngine.Assertions;
@@ -28,9 +27,9 @@ public class SpineAnimation : Animation
     private IntervalType _intervalType;
     private int _attackTimes;
 
-    public SpineAnimation(SkeletonAnimation skeleton, string animationName, IntervalType intervalType, int attackTimes, bool isAwait, bool induced) : base(isAwait, induced)
+    public SpineAnimation(SpineModel model, string animationName, IntervalType intervalType, int attackTimes, bool isAwait, bool induced) : base(isAwait, induced)
     {
-        _skeleton = skeleton;
+        _skeleton = model.Skeleton;
         _animationName = animationName;
         _intervalType = intervalType;
         _attackTimes = attackTimes;

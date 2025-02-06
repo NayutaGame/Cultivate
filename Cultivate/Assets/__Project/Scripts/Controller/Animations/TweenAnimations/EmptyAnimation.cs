@@ -1,9 +1,9 @@
 
 using DG.Tweening;
 
-public class EmptyTweenAnimation : Animation
+public class EmptyAnimation : Animation
 {
-    public EmptyTweenAnimation() : base(false, true)
+    public EmptyAnimation() : base(false, true)
     {
     }
 

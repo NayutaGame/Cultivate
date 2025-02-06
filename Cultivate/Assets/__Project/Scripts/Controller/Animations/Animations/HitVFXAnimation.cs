@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class HitVFXAnimation : Animation
 {
+    private IStageModel _model;
     private AttackDetails _attackDetails;
 
-    public HitVFXAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait, attackDetails.Induced)
+    public HitVFXAnimation(AttackDetails attackDetails, bool isAwait) : base(isAwait, attackDetails.Induced)
     {
+        _model = attackDetails.Tgt.Model();
         _attackDetails = attackDetails.ShallowClone();
     }
 
@@ -22,12 +24,11 @@ public class HitVFXAnimation : Animation
     private void SpawnVFX()
     {
         StageEntity src = _attackDetails.Src;
-        StageEntity tgt = _attackDetails.Tgt;
         WuXing wuXing = _attackDetails.WuXing ?? WuXing.Jin;
         int value = _attackDetails.Value;
 
         int orient = -(src.Index * 2 - 1);
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.HitVFXFromWuXing[wuXing], tgt.Model().VFXTransform.position + -0.5f * orient * Vector3.right,
+        GameObject gao = GameObject.Instantiate(GetPrefab(wuXing), _model.VFXTransform.position + -0.5f * orient * Vector3.right,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.SetIntensity(IntensityFromValue(value));
@@ -37,5 +38,10 @@ public class HitVFXAnimation : Animation
     private float IntensityFromValue(int value)
     {
         return Mathf.InverseLerp(0, 100, value);
+    }
+
+    private GameObject GetPrefab(WuXing wuXing)
+    {
+        return StageManager.Instance.HitVFXFromWuXing[wuXing];
     }
 }

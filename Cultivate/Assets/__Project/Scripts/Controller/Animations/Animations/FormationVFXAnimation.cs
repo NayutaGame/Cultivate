@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class FormationVFXAnimation : Animation
 {
-    public GainFormationDetails GainFormationDetails;
+    private IStageModel _model;
 
-    public FormationVFXAnimation(bool isAwait, GainFormationDetails gainFormationDetails) : base(isAwait, gainFormationDetails.Induced)
+    public FormationVFXAnimation(GainFormationDetails gainFormationDetails, bool isAwait) : base(isAwait, gainFormationDetails.Induced)
     {
-        GainFormationDetails = gainFormationDetails.Clone();
+        _model = gainFormationDetails.Owner.Model();
     }
 
     public override AnimationHandle GetHandle()
@@ -21,11 +21,7 @@ public class FormationVFXAnimation : Animation
 
     private void SpawnBuffVFX()
     {
-        GainFormationDetails d = GainFormationDetails;
-
-        GameObject prefab = GetPrefab();
-        
-        GameObject gao = GameObject.Instantiate(prefab, d.Owner.Model().VFXTransform.position,
+        GameObject gao = GameObject.Instantiate(GetPrefab(), _model.VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         
         VFX vfx = gao.GetComponent<VFX>();

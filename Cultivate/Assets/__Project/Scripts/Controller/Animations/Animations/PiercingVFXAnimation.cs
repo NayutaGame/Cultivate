@@ -2,14 +2,15 @@
 using DG.Tweening;
 using Spine;
 using UnityEngine;
-using Random = System.Random;
 
 public class PiercingVFXAnimation : Animation
 {
+    private IStageModel _model;
     private AttackDetails _attackDetails;
 
-    public PiercingVFXAnimation(bool isAwait, AttackDetails attackDetails) : base(isAwait, attackDetails.Induced)
+    public PiercingVFXAnimation(AttackDetails attackDetails, bool isAwait) : base(isAwait, attackDetails.Induced)
     {
+        _model = attackDetails.Src.Model();
         _attackDetails = attackDetails.ShallowClone();
     }
 
@@ -31,7 +32,7 @@ public class PiercingVFXAnimation : Animation
         
         GameObject vfxGameObject;
         
-        if (src.Model() is SpineModel spineModel)
+        if (_model is SpineModel spineModel)
         {
             Bone bone = spineModel.Skeleton.Skeleton.FindBone("emitterBone");
             Vector3 pos = new Vector3(bone.WorldX * spineModel.Skeleton.transform.localScale.x, bone.WorldY * spineModel.Skeleton.transform.localScale.y, 0);
@@ -46,12 +47,12 @@ public class PiercingVFXAnimation : Animation
                 randomOffset = UnityEngine.Random.insideUnitCircle * 0.5f;
             }
             
-            vfxGameObject = GameObject.Instantiate(StageManager.Instance.PiercingVFXFromWuXing[wuXing], src.Model().transform.position + pos + (Vector3)randomOffset,
+            vfxGameObject = GameObject.Instantiate(GetPrefab(wuXing), _model.transform.position + pos + (Vector3)randomOffset,
                 Quaternion.Euler(0, src.Index * 180, 0), StageManager.Instance.VFXPool);
         }
         else
         {
-            vfxGameObject = GameObject.Instantiate(StageManager.Instance.PiercingVFXFromWuXing[wuXing], src.Model().VFXTransform.position + 2 * orient * Vector3.right,
+            vfxGameObject = GameObject.Instantiate(GetPrefab(wuXing), _model.VFXTransform.position + 2 * orient * Vector3.right,
                 Quaternion.Euler(0, src.Index * 180, 0), StageManager.Instance.VFXPool);
         }
         
@@ -60,21 +61,13 @@ public class PiercingVFXAnimation : Animation
         vfx.Play();
     }
 
-    // private Tween GetAttackedTween()
-    // {
-    //     StageEntity src = _attackDetails.Src;
-    //     StageEntity tgt = _attackDetails.Tgt;
-    //
-    //     Transform entityTransform = tgt.Slot().EntityTransform;
-    //     int orient = -(src.Index * 2 - 1);
-    //
-    //     return entityTransform
-    //         .DOShakeRotation(0.6f, 10 * orient * Vector3.back, 10, 90, true, ShakeRandomnessMode.Harmonic)
-    //         .SetEase(Ease.InQuad);
-    // }
-
     private float IntensityFromValue(int value)
     {
         return Mathf.InverseLerp(0, 100, value);
+    }
+
+    private GameObject GetPrefab(WuXing wuXing)
+    {
+        return StageManager.Instance.PiercingVFXFromWuXing[wuXing];
     }
 }

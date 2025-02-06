@@ -142,4 +142,69 @@ public class StageManager : Singleton<StageManager>, Addressable
         
         AwayModel.BaseTransform = AwayAnchor;
     }
+    
+    
+    
+    
+    
+    
+    private Dictionary<GameObject, Queue<GameObject>> _objectPool = new();
+    
+    /// <summary>
+    /// 从对象池获取对象
+    /// </summary>
+    /// <param name="prefab">需要获取的预制体</param>
+    /// <returns>可用的游戏对象</returns>
+    public GameObject FetchObject(GameObject prefab)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError("尝试获取空预制体对象");
+            return null;
+        }
+
+        if (!_objectPool.ContainsKey(prefab))
+        {
+            _objectPool[prefab] = new Queue<GameObject>();
+        }
+
+        var poolQueue = _objectPool[prefab];
+        GameObject obj;
+
+        if (poolQueue.Count > 0)
+        {
+            obj = poolQueue.Dequeue();
+            obj.SetActive(true);
+        }
+        else
+        {
+            obj = Instantiate(prefab, VFXPool);
+        }
+
+        return obj;
+    }
+
+    /// <summary>
+    /// 归还对象到对象池
+    /// </summary>
+    /// <param name="prefab">原始预制体</param>
+    /// <param name="obj">需要归还的对象</param>
+    public void ReturnObject(GameObject prefab, GameObject obj)
+    {
+        if (prefab == null || obj == null)
+        {
+            Debug.LogError("尝试归还空对象");
+            return;
+        }
+
+        if (!_objectPool.ContainsKey(prefab))
+        {
+            _objectPool[prefab] = new Queue<GameObject>();
+        }
+
+        obj.transform.SetParent(VFXPool);
+        obj.SetActive(false);
+
+        _objectPool[prefab].Enqueue(obj);
+    }
 }

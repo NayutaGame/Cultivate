@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class GuardedVFXAnimation : Animation
 {
-    private GuardedDetails _guardedDetails;
+    private IStageModel _model;
 
-    public GuardedVFXAnimation(bool isAwait, GuardedDetails guardedDetails) : base(isAwait, guardedDetails.Induced)
+    public GuardedVFXAnimation(GuardedDetails guardedDetails, bool isAwait) : base(isAwait, guardedDetails.Induced)
     {
-        _guardedDetails = guardedDetails.Clone();
+        _model = guardedDetails.Tgt.Model();
     }
 
     public override AnimationHandle GetHandle()
@@ -20,11 +20,14 @@ public class GuardedVFXAnimation : Animation
 
     private void SpawnVFX()
     {
-        StageEntity tgt = _guardedDetails.Tgt;
-
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.GuardedVFXPrefab, tgt.Model().VFXTransform.position,
+        GameObject gao = GameObject.Instantiate(GetPrefab(), _model.VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.Play();
+    }
+
+    private GameObject GetPrefab()
+    {
+        return StageManager.Instance.GuardedVFXPrefab;
     }
 }

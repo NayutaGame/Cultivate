@@ -9,51 +9,51 @@ public class SpriteModel : IStageModel
 
     public override Animation GetAnimationFromEntering()
     {
-        return new EmptyTweenAnimation();
+        return new EmptyAnimation();
     }
 
     public override Animation GetAnimationFromBuffSelf(bool induced)
     {
-        return new BuffSelfTweenAnimation(BaseTransform, Transform, true, induced);
+        return new BuffSelfTweenAnimation(this, true, induced);
     }
 
     public override Animation GetAnimationFromEvaded(bool induced)
     {
-        return new EvadedTweenAnimation(BaseTransform, Transform, false, induced);
+        return new EvadedTweenAnimation(this, false, induced);
     }
 
     public override Animation GetAnimationFromAttack(bool induced, int times)
     {
-        return new AttackTweenAnimation(BaseTransform, Transform, true, induced);
+        return new AttackTweenAnimation(this, true, induced);
     }
 
     public override Animation GetAnimationFromDamaged(bool induced)
     {
-        return new DamagedTweenAnimation(BaseTransform, Transform, false, induced);
+        return new DamagedTweenAnimation(this, false, induced);
     }
 
     public override Animation GetAnimationFromGainArmor(bool induced)
     {
-        return new GainArmorTweenAnimation(BaseTransform, Transform, true, induced);
+        return new GainArmorTweenAnimation(this, true, induced);
     }
 
     public override Animation GetAnimationFromHeal(bool induced)
     {
-        return new HealTweenAnimation(BaseTransform, Transform, true, induced);
+        return new HealTweenAnimation(this, true, induced);
     }
 
     public override Animation GetAnimationFromGuard(bool induced)
     {
-        return new EmptyTweenAnimation();
+        return new EmptyAnimation();
     }
 
     public override Animation GetAnimationFromUnguard(bool induced)
     {
-        return new EmptyTweenAnimation();
+        return new EmptyAnimation();
     }
 
     public override Animation GetAnimationFromRecover()
     {
-        return new EmptyTweenAnimation();
+        return new EmptyAnimation();
     }
 }

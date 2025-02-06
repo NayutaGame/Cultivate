@@ -12,20 +12,20 @@ public class SpineModel : IStageModel
 
     public override Animation GetAnimationFromEntering()
     {
-        return new SpineAnimation(Skeleton, "idle", SpineAnimation.IntervalType.NoInterval, 0, true, false);
-        return new SpineAnimation(Skeleton, "entering", SpineAnimation.IntervalType.NoInterval, 0, true, false);
+        return new SpineAnimation(this, "idle", SpineAnimation.IntervalType.NoInterval, 0, true, false);
+        // return new SpineAnimation(Skeleton, "entering", SpineAnimation.IntervalType.NoInterval, 0, true, false);
     }
 
     public override Animation GetAnimationFromBuffSelf(bool induced)
     {
-        return new BuffSelfTweenAnimation(BaseTransform, Transform, true, induced);
+        return new BuffSelfTweenAnimation(this, true, induced);
         // return new SpineAnimation(Skeleton, "hail", true, true, induced);
     }
 
     public override Animation GetAnimationFromEvaded(bool induced)
     {
         // return new EvadedTweenAnimation(BaseTransform, Transform, false, induced);
-        return new SpineAnimation(Skeleton, "evade", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
+        return new SpineAnimation(this, "evade", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
     }
 
     public override Animation GetAnimationFromAttack(bool induced, int times)
@@ -56,41 +56,41 @@ public class SpineModel : IStageModel
             intervalType = SpineAnimation.IntervalType.StartToEnd;
         }
         
-        return new SpineAnimation(Skeleton, animationName, intervalType, times, true, induced);
+        return new SpineAnimation(this, animationName, intervalType, times, true, induced);
     }
 
     public override Animation GetAnimationFromDamaged(bool induced)
     {
         // return new DamagedTweenAnimation(BaseTransform, Transform, false, induced);
-        return new SpineAnimation(Skeleton, "damaged", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
+        return new SpineAnimation(this, "damaged", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
     }
 
     public override Animation GetAnimationFromGainArmor(bool induced)
     {
-        return new GainArmorTweenAnimation(BaseTransform, Transform, true, induced);
+        return new GainArmorTweenAnimation(this, true, induced);
         // return new SpineAnimation(Skeleton, "hail", true, true, induced);
     }
 
     public override Animation GetAnimationFromHeal(bool induced)
     {
-        return new HealTweenAnimation(BaseTransform, Transform, true, induced);
+        return new HealTweenAnimation(this, true, induced);
         // return new SpineAnimation(Skeleton, "hail", true, true, induced);
     }
 
     public override Animation GetAnimationFromGuard(bool induced)
     {
         // return new EmptyTweenAnimation();
-        return new SpineAnimation(Skeleton, "guard", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
+        return new SpineAnimation(this, "guard", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
     }
 
     public override Animation GetAnimationFromUnguard(bool induced)
     {
-        return new EmptyTweenAnimation();
+        return new EmptyAnimation();
     }
 
     public override Animation GetAnimationFromRecover()
     {
         // return new EmptyTweenAnimation();
-        return new SpineAnimation(Skeleton, "idle", SpineAnimation.IntervalType.NoInterval, 0, false, false);
+        return new SpineAnimation(this, "idle", SpineAnimation.IntervalType.NoInterval, 0, false, false);
     }
 }

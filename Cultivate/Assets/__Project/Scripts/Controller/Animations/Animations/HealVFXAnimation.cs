@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class HealVFXAnimation : Animation
 {
+    private IStageModel _model;
     private HealDetails _healDetails;
 
-    public HealVFXAnimation(bool isAwait, HealDetails healDetails) : base(isAwait, healDetails.Induced)
+    public HealVFXAnimation(HealDetails healDetails, bool isAwait) : base(isAwait, healDetails.Induced)
     {
+        _model = healDetails.Tgt.Model();
         _healDetails = healDetails.Clone();
     }
 
@@ -21,18 +23,20 @@ public class HealVFXAnimation : Animation
 
     private void SpawnVFX()
     {
-        StageEntity tgt = _healDetails.Tgt;
-        int value = _healDetails.Value;
-
-        GameObject gao = GameObject.Instantiate(StageManager.Instance.HealVFXPrefab, tgt.Model().VFXTransform.position,
+        GameObject gao = GameObject.Instantiate(GetPrefab(), _model.VFXTransform.position,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
-        vfx.SetIntensity(IntensityFromValue(value));
+        vfx.SetIntensity(IntensityFromValue(_healDetails.Value));
         vfx.Play();
     }
 
     private float IntensityFromValue(int value)
     {
         return Mathf.InverseLerp(0, 100, value);
+    }
+
+    private GameObject GetPrefab()
+    {
+        return StageManager.Instance.HealVFXPrefab;
     }
 }
