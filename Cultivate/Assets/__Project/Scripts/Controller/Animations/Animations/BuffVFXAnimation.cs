@@ -13,9 +13,6 @@ public class BuffVFXAnimation : Animation
         _prefab = prefab;
     }
 
-    public static BuffVFXAnimation FromChangeStack(IStageModel model, BuffEntry entry, int diff, bool isAwait, bool induced)
-        => new(model, diff > 0 ? GetPrefabFromGain(entry) : GetPrefabFromLose(entry), isAwait, induced);
-
     public static BuffVFXAnimation FromGainBuffDetails(GainBuffDetails d, bool isAwait)
         => new(d.Tgt.Model(), GetPrefabFromGain(d._buffEntry), isAwait, d.Induced);
 

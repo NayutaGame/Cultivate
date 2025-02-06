@@ -236,7 +236,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
-        Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
+        // Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
         Play(TextAnimation.FromLoseBuffDetails(d));
         CanvasManager.Instance.StageCanvas.LoseBuffStaging(d.Tgt == _entities[0], buffIndex);
     }
@@ -256,7 +256,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
-        Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
+        // Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
         Play(TextAnimation.FromLoseBuffDetails(d));
     }
 
