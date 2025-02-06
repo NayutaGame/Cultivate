@@ -7,6 +7,8 @@ public abstract class IStageModel : MonoBehaviour
     public Transform Transform;
     public Transform VFXTransform;
 
+    public Vector3 GetOrient() => Transform.right;
+
     public abstract void SetSpeed(float speed);
 
     public abstract Animation GetAnimationFromEntering();

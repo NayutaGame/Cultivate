@@ -35,7 +35,7 @@ public class TextAnimation : Animation
     
     private void SpawnText(TextEffectType type, string content)
     {
-        var spawnPos = _model.transform.position + 
+        var spawnPos = _model.VFXTransform.position + 
                        new Vector3(Random.Range(-0.5f, 0.5f), 0, 0);
     
         GameObject gao = StageManager.Instance.FetchObject(GetPrefab(type));
@@ -46,62 +46,123 @@ public class TextAnimation : Animation
 
         text.text = content;
         text.alpha = 1;
+    
+        gao.transform.localScale = Vector3.zero;
+        text.transform.localScale = Vector3.one;
+        text.transform.localPosition = Vector3.zero;
+        text.transform.localRotation = Quaternion.identity;
 
         switch (type)
         {
             case TextEffectType.Buff:
                 text.color = new Color(0.9f, 0.8f, 0.1f);
-                text.outlineColor = new Color(0.5f, 0.4f, 0.1f);
                 break;
             case TextEffectType.Debuff:
                 text.color = new Color(0.9f, 0.2f, 0.8f);
-                text.outlineColor = new Color(0.5f, 0.1f, 0.4f);
                 break;
             case TextEffectType.Mana:
-                text.color = new Color(0.3f, 0.6f, 1f);
-                text.outlineColor = new Color(0.1f, 0.3f, 0.6f);
+                text.color = new Color(0.65f, 0.8f, 1f);
                 break;
             case TextEffectType.LoseBuff:
                 text.color = new Color(0.8f, 0.8f, 0.8f);
-                text.outlineColor = new Color(0.2f, 0.2f, 0.2f);
-                break;
+        
+                DOTween.Sequence()
+                    .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
+                    .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
+                    .SetAutoKill().Restart();
+        
+                DOTween.Sequence()
+                    .Append(gao.transform.DOMoveY(spawnPos.y - 2, 1f).From(spawnPos.y + 1))
+                    .SetAutoKill().Restart();
+
+                DOTween.Sequence()
+                    .Append(text.DOFade(0, 0.5f).SetDelay(0.5f))
+                    .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(type), gao))
+                    .SetAutoKill().Restart();
+                return;
             case TextEffectType.NoDamage:
                 text.color = new Color(0.8f, 0.8f, 0.8f);
-                text.outlineColor = new Color(0.2f, 0.2f, 0.2f);
                 break;
             case TextEffectType.Damage:
                 text.color = new Color(0.9f, 0.2f, 0.1f);
-                text.outlineColor = new Color(0.4f, 0.1f, 0.05f);
-                // config.enableShake = true;
-                break;
+                
+                DOTween.Sequence()
+                    .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
+                    .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
+                    .SetAutoKill().Restart();
+                
+                DOTween.Sequence()
+                    .Append(gao.transform.DOMoveY(spawnPos.y + 3 + Random.Range(-0.5f, 0.5f), 1f).SetEase(Ease.OutCubic))
+                    .Join(gao.transform.DOMoveX(spawnPos.x + Random.Range(-1f, 1f), 1f))
+                    .SetAutoKill().Restart();
+                
+                DOTween.Sequence()
+                    .Append(text.DOFade(0, 0.5f).SetDelay(0.5f))
+                    .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(type), gao))
+                    .SetAutoKill().Restart();
+                return;
             case TextEffectType.HighDamage:
                 text.color = new Color(0.9f, 0.2f, 0.1f);
-                text.outlineColor = new Color(0.4f, 0.1f, 0.05f);
-                // config.enableShake = true;
-                break;
+                
+                DOTween.Sequence()
+                    .Append(text.transform.DOShakeScale(1.5f, strength: 2f, vibrato: 20))
+                    .Join(text.transform.DOShakePosition(1, 0.1f))
+                    .Join(text.transform.DOShakeRotation(0.5f, 3f))
+                    .SetAutoKill().Restart();
+                
+                DOTween.Sequence()
+                    .Append(gao.transform.DOScale(4, 0.3f))
+                    .Append(gao.transform.DOScale(3, 1.7f))
+                    .SetAutoKill().Restart();
+                
+                DOTween.Sequence()
+                    .Append(text.DOFade(0, 1.5f).SetDelay(0.5f))
+                    .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(type), gao))
+                    .SetAutoKill().Restart();
+                return;
             case TextEffectType.LoseArmor:
                 text.color = new Color(0.6f, 0.3f, 1f);
-                text.outlineColor = new Color(0.3f, 0.1f, 0.6f);
-                break;
+        
+                DOTween.Sequence()
+                    .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
+                    .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
+                    .SetAutoKill().Restart();
+        
+                DOTween.Sequence()
+                    .Append(gao.transform.DOMoveY(spawnPos.y - 2, 1f).From(spawnPos.y + 1))
+                    .SetAutoKill().Restart();
+
+                DOTween.Sequence()
+                    .Append(text.DOFade(0, 0.5f).SetDelay(0.5f))
+                    .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(type), gao))
+                    .SetAutoKill().Restart();
+                return;
             case TextEffectType.GainArmor:
-                text.color = new Color(1f, 0.5f, 0f);
-                text.outlineColor = new Color(0.5f, 0.2f, 0f);
+                text.color = new Color(0.9f, 0.8f, 0.1f);
                 break;
             case TextEffectType.Heal:
                 text.color = new Color(0.2f, 0.9f, 0.3f);
-                text.outlineColor = new Color(0.1f, 0.4f, 0.1f);
                 break;
             case TextEffectType.Guarded:
                 text.color = new Color(0.9f, 0.8f, 0.1f);
-                text.outlineColor = new Color(0.5f, 0.4f, 0.1f);
-                break;
+                
+                text.alpha = 0;
+                gao.transform.localScale = Vector3.one * 2.5f;
+        
+                DOTween.Sequence()
+                    .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.InCubic))
+                    .SetAutoKill().Restart();
+
+                DOTween.Sequence()
+                    .Append(text.DOFade(1, 0.7f)).SetEase(Ease.InCubic)
+                    .Append(text.DOFade(0, 0.1f)).SetDelay(0.2f).SetEase(Ease.OutCubic)
+                    .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(type), gao))
+                    .SetAutoKill().Restart();
+                return;
             case TextEffectType.Formation:
                 text.color = new Color(0.9f, 0.8f, 0.1f);
-                text.outlineColor = new Color(0.5f, 0.4f, 0.1f);
                 break;
         }
-    
-        gao.transform.localScale = Vector3.zero;
         
         DOTween.Sequence()
             .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
