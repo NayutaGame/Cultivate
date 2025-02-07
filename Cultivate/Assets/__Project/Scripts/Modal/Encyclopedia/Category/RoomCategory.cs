@@ -2527,36 +2527,32 @@ public class RoomCategory : Category<RoomEntry>
                             RunSkill.FromEntry("0609"),
                             RunSkill.FromEntry("0609"),
                         }),
-                        kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+                        kernel: new StageKernel(async d =>
                         {
-                            CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
 
-                            await env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-
-                            if (forced)
+                            if (d.Forced)
                             {
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
                             else
                             {
                                 if (d.Cancel)
                                     return 0;
 
-                                if (turn < 6)
+                                if (d.Turn < 6)
                                     return 0;
 
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
 
-                            await env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
 
                             if (d.Flag == 0)
                                 return d.Flag;
-
-                            env.Result.Flag = d.Flag;
-                            env.Result.HomeLeftHp = env.Entities[0].Hp;
-                            env.Result.AwayLeftHp = env.Entities[1].Hp;
-                            env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+                            
+                            d.Env.RecordResult(d.Flag);
+                            
                             return d.Flag;
                         })
                     );
@@ -2576,36 +2572,32 @@ public class RoomCategory : Category<RoomEntry>
                             RunSkill.FromEntry("0609"),
                             RunSkill.FromEntry("0609"),
                         }),
-                        kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+                        kernel: new StageKernel(async d =>
                         {
-                            CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
 
-                            await env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-
-                            if (forced)
+                            if (d.Forced)
                             {
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
                             else
                             {
                                 if (d.Cancel)
                                     return 0;
 
-                                if (turn < 6)
+                                if (d.Turn < 6)
                                     return 0;
 
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
 
-                            await env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
 
                             if (d.Flag == 0)
                                 return d.Flag;
-
-                            env.Result.Flag = d.Flag;
-                            env.Result.HomeLeftHp = env.Entities[0].Hp;
-                            env.Result.AwayLeftHp = env.Entities[1].Hp;
-                            env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+                            
+                            d.Env.RecordResult(d.Flag);
+                            
                             return d.Flag;
                         })
                     );
@@ -2883,36 +2875,32 @@ public class RoomCategory : Category<RoomEntry>
                             RunSkill.FromEntry("0609"),
                             RunSkill.FromEntry("0609"),
                         }),
-                        kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+                        kernel: new StageKernel(async d =>
                         {
-                            CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
 
-                            await env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-
-                            if (forced)
+                            if (d.Forced)
                             {
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
                             else
                             {
                                 if (d.Cancel)
                                     return 0;
 
-                                if (turn < 6)
+                                if (d.Turn < 6)
                                     return 0;
 
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
 
-                            await env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
 
                             if (d.Flag == 0)
                                 return d.Flag;
-
-                            env.Result.Flag = d.Flag;
-                            env.Result.HomeLeftHp = env.Entities[0].Hp;
-                            env.Result.AwayLeftHp = env.Entities[1].Hp;
-                            env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+                            
+                            d.Env.RecordResult(d.Flag);
+                            
                             return d.Flag;
                         })
                     );
@@ -2989,36 +2977,32 @@ public class RoomCategory : Category<RoomEntry>
                             RunSkill.FromEntry("0609"),
                             RunSkill.FromEntry("0609"),
                         }),
-                        kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+                        kernel: new StageKernel(async d =>
                         {
-                            CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
 
-                            await env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-
-                            if (forced)
+                            if (d.Forced)
                             {
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
                             else
                             {
                                 if (d.Cancel)
                                     return 0;
 
-                                if (turn < 6)
+                                if (d.Turn < 6)
                                     return 0;
 
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
 
-                            await env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
 
                             if (d.Flag == 0)
                                 return d.Flag;
-
-                            env.Result.Flag = d.Flag;
-                            env.Result.HomeLeftHp = env.Entities[0].Hp;
-                            env.Result.AwayLeftHp = env.Entities[1].Hp;
-                            env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+                            
+                            d.Env.RecordResult(d.Flag);
+                            
                             return d.Flag;
                         })
                     );
@@ -3103,36 +3087,32 @@ public class RoomCategory : Category<RoomEntry>
                             RunSkill.FromEntry("0609"),
                             RunSkill.FromEntry("0609"),
                         }),
-                        kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+                        kernel: new StageKernel(async d =>
                         {
-                            CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
             
-                            await env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-            
-                            if (forced)
+                            if (d.Forced)
                             {
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
                             else
                             {
                                 if (d.Cancel)
                                     return 0;
             
-                                if (turn < 6)
+                                if (d.Turn < 6)
                                     return 0;
             
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
             
-                            await env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
             
                             if (d.Flag == 0)
                                 return d.Flag;
-            
-                            env.Result.Flag = d.Flag;
-                            env.Result.HomeLeftHp = env.Entities[0].Hp;
-                            env.Result.AwayLeftHp = env.Entities[1].Hp;
-                            env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+                            
+                            d.Env.RecordResult(d.Flag);
+                            
                             return d.Flag;
                         })
                     );
@@ -3192,36 +3172,32 @@ public class RoomCategory : Category<RoomEntry>
                             RunSkill.FromEntry("0609"),
                             RunSkill.FromEntry("0609"),
                         }),
-                        kernel: new StageKernel(async (env, turn, whosTurn, forced) =>
+                        kernel: new StageKernel(async d =>
                         {
-                            CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
             
-                            await env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-            
-                            if (forced)
+                            if (d.Forced)
                             {
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
                             else
                             {
                                 if (d.Cancel)
                                     return 0;
             
-                                if (turn < 6)
+                                if (d.Turn < 6)
                                     return 0;
             
-                                d.Flag = env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
             
-                            await env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
             
                             if (d.Flag == 0)
                                 return d.Flag;
-            
-                            env.Result.Flag = d.Flag;
-                            env.Result.HomeLeftHp = env.Entities[0].Hp;
-                            env.Result.AwayLeftHp = env.Entities[1].Hp;
-                            env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+                            
+                            d.Env.RecordResult(d.Flag);
+                            
                             return d.Flag;
                         })
                     );

@@ -22,6 +22,10 @@ public abstract class IStageModel : MonoBehaviour
     public abstract Animation GetAnimationFromUnguard(bool induced);
     public abstract Animation GetAnimationFromRecover();
 
+    public abstract Animation GetAnimationFromWin();
+    public abstract Animation GetAnimationFromLose();
+    public abstract Animation GetAnimationFromDefeat();
+
     // buffSelf
     // buffOppo		buffedByOppo
     // debuffSelf

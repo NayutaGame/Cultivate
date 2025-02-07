@@ -7,6 +7,7 @@ public class DamageDetails : ClosureDetails
     public StageSkill SrcSkill;
     public bool Crit;
     public bool LifeSteal;
+    public bool CausedByAttack;
     public bool Recursive;
     public CastResult CastResult;
 
@@ -19,6 +20,7 @@ public class DamageDetails : ClosureDetails
     /// <param name="srcSkill">技能来源</param>
     /// <param name="crit">是否暴击</param>
     /// <param name="lifeSteal">是否吸血</param>
+    /// <param name="causedByAttack">由攻击造成的伤害</param>
     /// <param name="recursive">是否会递归</param>
     /// <param name="castResult">结果描述</param>
     /// <param name="induced">是否是间接行为</param>
@@ -29,6 +31,7 @@ public class DamageDetails : ClosureDetails
         StageSkill srcSkill,
         bool crit,
         bool lifeSteal,
+        bool causedByAttack,
         bool recursive,
         CastResult castResult,
         bool induced)
@@ -39,19 +42,18 @@ public class DamageDetails : ClosureDetails
         SrcSkill = srcSkill;
         Crit = crit;
         LifeSteal = lifeSteal;
+        CausedByAttack = causedByAttack;
         Recursive = recursive;
         CastResult = castResult;
         Induced = induced;
     }
 
-    public DamageDetails ShallowClone() => new(Src, Tgt, Value, SrcSkill, Crit, LifeSteal, Recursive, CastResult, Induced);
-
     public static DamageDetails FromAttackDetails(AttackDetails d)
-        => new(d.Src, d.Tgt, d.Value, d.SrcSkill, d.Crit, d.LifeSteal, d.Recursive, d.CastResult, d.Induced);
+        => new(d.Src, d.Tgt, d.Value, d.SrcSkill, d.Crit, d.LifeSteal, true, d.Recursive, d.CastResult, d.Induced);
 
     public static DamageDetails FromIndirectDetails(IndirectDetails d)
-        => new(d.Src, d.Tgt, d.Value, d.SrcSkill, false, d.LifeSteal, d.Recursive, d.CastResult, d.Induced);
+        => new(d.Src, d.Tgt, d.Value, d.SrcSkill, false, d.LifeSteal, false, d.Recursive, d.CastResult, d.Induced);
 
     public static DamageDetails FromAttackDetailsUndamaged(AttackDetails d)
-        => new(d.Src, d.Tgt, 0, d.SrcSkill, d.Crit, d.LifeSteal, d.Recursive, d.CastResult, d.Induced);
+        => new(d.Src, d.Tgt, 0, d.SrcSkill, d.Crit, d.LifeSteal, true, d.Recursive, d.CastResult, d.Induced);
 }

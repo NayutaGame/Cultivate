@@ -56,4 +56,19 @@ public class SpriteModel : IStageModel
     {
         return new EmptyAnimation();
     }
+
+    public override Animation GetAnimationFromWin()
+    {
+        return new EmptyAnimation();
+    }
+
+    public override Animation GetAnimationFromLose()
+    {
+        return new EmptyAnimation();
+    }
+
+    public override Animation GetAnimationFromDefeat()
+    {
+        return new EmptyAnimation();
+    }
 }

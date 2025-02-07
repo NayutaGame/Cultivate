@@ -44,15 +44,15 @@ public class CastDetails : ClosureDetails
         int value,
         bool recursive = true,
         bool induced = false)
-        => await Env.DamageProcedure(new DamageDetails(Caster, Caster, value, Skill, crit: false, lifeSteal: false, recursive, CastResult, induced));
+        => await Env.DamageProcedure(new DamageDetails(Caster, Caster, value, Skill, crit: false, lifeSteal: false, false, recursive, CastResult, induced));
 
     public async UniTask DamageOppoProcedure(int value,
         bool recursive = true,
         bool induced = false)
-        => await Env.DamageProcedure(new DamageDetails(Caster, Caster.Opponent(), value, Skill, crit: false, lifeSteal: false, recursive, CastResult, induced));
+        => await Env.DamageProcedure(new DamageDetails(Caster, Caster.Opponent(), value, Skill, crit: false, lifeSteal: false, false, recursive, CastResult, induced));
 
-    public async UniTask LoseHealthProcedure(int value, bool induced)
-        => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster, value, induced));
+    public async UniTask LoseHealthProcedure(int value, bool causedByAttack, bool induced)
+        => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster, value, causedByAttack, induced));
 
     public async UniTask HealProcedure(int value, bool induced)
         => await Env.HealProcedure(new HealDetails(Caster, Caster, value, false, induced));
@@ -147,6 +147,6 @@ public class CastDetails : ClosureDetails
     {
         int gap = Caster.Hp - Caster.GetLowHealthThreshold();
         if (gap > 0)
-            await LoseHealthProcedure(gap, induced);
+            await LoseHealthProcedure(gap, false, induced);
     }
 }

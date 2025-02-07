@@ -4,55 +4,48 @@ using Cysharp.Threading.Tasks;
 
 public class StageKernel
 {
-    private async UniTask<int> DefaultCommitProcedure(StageEnvironment env, int turn, int whosTurn, bool forced)
+    private async UniTask<int> DefaultCommitProcedure(StageCommitDetails d)
     {
-        CommitDetails d = new CommitDetails(env.Entities[whosTurn]);
-        
-        await env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
+        await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
 
-        if (forced)
+        if (d.Forced)
         {
-            d.Flag = env.Entities[0].Hp >= env.Entities[1].Hp ? 1 : 2;
+            d.Flag = (d.Env.Home.Hp >= d.Env.Away.Hp) ? 1 : 2;
         }
         else
         {
             if (d.Cancel)
                 return 0;
-        
-            if (whosTurn == 0)
+
+            bool homeDead = d.Env.Home.Hp <= 0;
+            bool awayDead = d.Env.Away.Hp <= 0;
+            
+            if (awayDead)
             {
-                if (env.Entities[whosTurn].Hp <= 0)
-                    d.Flag = 2;
-                if (env.Entities[1 - whosTurn].Hp <= 0)
-                    d.Flag = 1;
+                d.Flag = 1;
             }
-            else
+            else if (homeDead)
             {
-                if (env.Entities[whosTurn].Hp <= 0)
-                    d.Flag = 1;
-                if (env.Entities[1 - whosTurn].Hp <= 0)
-                    d.Flag = 2;
+                d.Flag = 2;
             }
         }
         
-        await env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+        await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
 
         if (d.Flag == 0)
             return d.Flag;
         
-        env.Result.Flag = d.Flag;
-        env.Result.HomeLeftHp = env.Entities[0].Hp;
-        env.Result.AwayLeftHp = env.Entities[1].Hp;
-        env.Result.TryAppend(env.Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
+        d.Env.RecordResult(d.Flag);
+        
         return d.Flag;
     }
 
-    private Func<StageEnvironment, int, int, bool, UniTask<int>> _commitProcedure;
+    private Func<StageCommitDetails, UniTask<int>> _commitProcedure;
 
     public async UniTask<int> CommitProcedure(StageEnvironment env, int turn, int whosTurn, bool forced)
-        => await _commitProcedure(env, turn, whosTurn, forced);
+        => await _commitProcedure(new(env, turn, whosTurn, forced));
     
-    public StageKernel(Func<StageEnvironment, int, int, bool, UniTask<int>> commitProcedure = null)
+    public StageKernel(Func<StageCommitDetails, UniTask<int>> commitProcedure = null)
     {
         _commitProcedure = commitProcedure ?? DefaultCommitProcedure;
     }

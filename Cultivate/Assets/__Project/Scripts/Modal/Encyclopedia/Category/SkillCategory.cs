@@ -952,7 +952,7 @@ public class SkillCategory : Category<SkillEntry>
                     int manaConsume = d.Caster.GetStackOfBuff("灵气");
 
                     if (healthConsume > 0)
-                        await d.LoseHealthProcedure(healthConsume, induced: true);
+                        await d.LoseHealthProcedure(healthConsume, causedByAttack: false, induced: true);
                     if (manaConsume > 0)
                         await d.LoseBuffProcedure("灵气", manaConsume);
 

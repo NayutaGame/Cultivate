@@ -259,6 +259,8 @@ public class StageEntity : Addressable, StageClosureOwner
     public bool TriggeredEndRecord;
     public bool TriggeredFirstTimeRecord;
 
+    public bool DeathCauseIsAttack;
+
     private int _index;
     public int Index => _index;
 
@@ -302,6 +304,8 @@ public class StageEntity : Addressable, StageClosureOwner
         TriggeredJiaShiRecord = false;
         TriggeredEndRecord = false;
         TriggeredFirstTimeRecord = false;
+
+        DeathCauseIsAttack = false;
 
         _env = env;
         _runEntity = runEntity;
@@ -460,13 +464,13 @@ public class StageEntity : Addressable, StageClosureOwner
         => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, srcSkill, wuXing, lifeSteal, recursive, castResult, induced));
     
     public async UniTask DamageSelfProcedure(int value, StageSkill srcSkill = null, CastResult castResult = null, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(this, this, value, srcSkill, crit: false, lifeSteal: false, recursive, castResult, induced));
+        => await _env.DamageProcedure(new DamageDetails(this, this, value, srcSkill, crit: false, lifeSteal: false, false, recursive, castResult, induced));
     
     public async UniTask DamageOppoProcedure(int value, StageSkill srcSkill, CastResult castResult, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, srcSkill, crit: false, lifeSteal: false, recursive, castResult, induced));
+        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, srcSkill, crit: false, lifeSteal: false, false, recursive, castResult, induced));
     
-    public async UniTask LoseHealthProcedure(int value, bool induced = false)
-        => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value, induced));
+    public async UniTask LoseHealthProcedure(int value, bool causedByAttack, bool induced = false)
+        => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value, causedByAttack, induced));
     
     public async UniTask HealProcedure(int value, bool induced = false)
         => await _env.HealProcedure(new HealDetails(this, this, value, false, induced));
@@ -561,7 +565,7 @@ public class StageEntity : Addressable, StageClosureOwner
     {
         int gap = Hp - GetLowHealthThreshold();
         if (gap > 0)
-            await LoseHealthProcedure(gap);
+            await LoseHealthProcedure(gap, false);
     }
 
     #endregion

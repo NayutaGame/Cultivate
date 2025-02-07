@@ -55,10 +55,20 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
         await EndStageProcedure();
 
-        await _kernel.CommitProcedure(this, MAX_TURN_COUNT, 0, true);
+        await ForcedCommitProcedure();
 
         UnregisterSkillClosures();
         UnregisterConfig();
+
+        await AnimationToFinishProcedure();
+    }
+
+    private async UniTask AnimationToFinishProcedure()
+    {
+        if (!_config.Animated)
+            return;
+        
+        await UniTask.WaitForSeconds(3);
     }
 
     private async UniTask FormationProcedure()
@@ -95,9 +105,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (!_config.Animated)
             return;
         
-        await PlayAsync(d.Owner.Model().GetAnimationFromBuffSelf(d.Induced));
         Play(new FormationVFXAnimation(d, false));
         Play(TextAnimation.FromGainFormationDetails(d));
+        await PlayAsync(d.Owner.Model().GetAnimationFromBuffSelf(d.Induced));
         CanvasManager.Instance.StageCanvas.GainFormationStaging(d.Owner == _entities[0]);
         f.PlayPingAnimation();
     }
@@ -184,6 +194,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (!_config.Animated)
             return;
         
+        Play(BuffVFXAnimation.FromGainBuffDetails(d, false));
+        Play(TextAnimation.FromGainBuffDetails(d));
+        
         if (d.Src == d.Tgt)
         {
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
@@ -192,9 +205,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
         {
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
-        
-        Play(BuffVFXAnimation.FromGainBuffDetails(d, false));
-        Play(TextAnimation.FromGainBuffDetails(d));
         
         CanvasManager.Instance.StageCanvas.GainBuffStaging(d.Tgt == _entities[0]);
         buff.PlayPingAnimation();
@@ -206,6 +216,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (!_config.Animated)
             return;
         
+        Play(BuffVFXAnimation.FromGainBuffDetails(d, false));
+        Play(TextAnimation.FromGainBuffDetails(d));
+        
         if (d.Src == d.Tgt)
         {
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
@@ -214,9 +227,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
         {
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
-        
-        Play(BuffVFXAnimation.FromGainBuffDetails(d, false));
-        Play(TextAnimation.FromGainBuffDetails(d));
         
         buff.PlayPingAnimation();
     }
@@ -227,6 +237,8 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (!_config.Animated)
             return;
         
+        // Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
+        Play(TextAnimation.FromLoseBuffDetails(d));
         if (d.Src == d.Tgt)
         {
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
@@ -236,8 +248,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
-        // Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
-        Play(TextAnimation.FromLoseBuffDetails(d));
         CanvasManager.Instance.StageCanvas.LoseBuffStaging(d.Tgt == _entities[0], buffIndex);
     }
 
@@ -247,6 +257,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (!_config.Animated)
             return;
         
+        // Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
+        Play(TextAnimation.FromLoseBuffDetails(d));
+        
         if (d.Src == d.Tgt)
         {
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
@@ -255,9 +268,6 @@ public class StageEnvironment : Addressable, StageClosureOwner
         {
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
-        
-        // Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
-        Play(TextAnimation.FromLoseBuffDetails(d));
     }
 
     public async UniTask AttackProcedure(AttackDetails attackDetails)
@@ -435,7 +445,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await PlayAsync(d.Tgt.Model().GetAnimationFromDamaged(d.Induced));
             await PlayAsync(TextAnimation.FromDamageDetails(d));
         }
-        await LoseHealthProcedure(d.Tgt, d.Value, d.Induced);
+        await LoseHealthProcedure(d.Tgt, d.Value, d.CausedByAttack, d.Induced);
 
         await _closureDict.SendEvent(StageClosureDict.DID_DAMAGE, d);
 
@@ -443,8 +453,8 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await HealProcedure(d.Src, d.Src, d.Value, false, true);
     }
 
-    public async UniTask LoseHealthProcedure(StageEntity owner, int value, bool induced)
-        => await LoseHealthProcedure(new LoseHealthDetails(owner, value, induced));
+    public async UniTask LoseHealthProcedure(StageEntity owner, int value, bool causedByAttack, bool induced)
+        => await LoseHealthProcedure(new LoseHealthDetails(owner, value, causedByAttack, induced));
 
     public async UniTask LoseHealthProcedure(LoseHealthDetails d)
     {
@@ -453,6 +463,8 @@ public class StageEnvironment : Addressable, StageClosureOwner
             return;
 
         d.Owner.Hp -= d.Value;
+        if (d.Owner.Hp <= 0 && d.CausedByAttack)
+            d.Owner.DeathCauseIsAttack = true;
 
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_HEALTH, d);
     }
@@ -643,7 +655,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
                 _result.TryAppend("\n");
             });
 
-            if (await _kernel.CommitProcedure(this, turnCount, whosTurn, false) != 0)
+            if (0 != await CommitProcedure(turnCount, whosTurn))
                 return;
 
             whosTurn = 1 - whosTurn;
@@ -656,6 +668,57 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(_entities[0]));
     }
 
+    private async UniTask<int> CommitProcedure(int turn, int whosTurn)
+    {
+        int flag = await _kernel.CommitProcedure(this, turn, whosTurn, false);
+        
+        if (!_config.Animated)
+            return flag;
+
+        if (flag == 1)
+        {
+            UniTask t1 = PlayAsync(Home.Model().GetAnimationFromWin());
+            UniTask t2 = PlayAsync(Away.DeathCauseIsAttack ? Away.Model().GetAnimationFromDefeat() : Away.Model().GetAnimationFromLose());
+            await UniTask.WhenAll(t1, t2);
+        }
+        else if (flag == 2)
+        {
+            UniTask t1 = PlayAsync(Home.DeathCauseIsAttack ? Home.Model().GetAnimationFromDefeat() : Home.Model().GetAnimationFromLose());
+            UniTask t2 = PlayAsync(Away.Model().GetAnimationFromWin());
+            await UniTask.WhenAll(t1, t2);
+        }
+        
+        // await StartBulletTimeEffect();
+
+        return flag;
+    }
+
+    private async UniTask<int> ForcedCommitProcedure()
+    {
+        if (Result.Flag != 0)
+            return Result.Flag;
+        
+        int flag = await _kernel.CommitProcedure(this, MAX_TURN_COUNT, 0, true);
+        
+        if (!_config.Animated)
+            return flag;
+
+        if (flag == 1)
+        {
+            UniTask t1 = PlayAsync(_entities[0].Model().GetAnimationFromWin());
+            UniTask t2 = PlayAsync(_entities[1].Model().GetAnimationFromLose());
+            await UniTask.WhenAll(t1, t2);
+        }
+        else if (flag == 2)
+        {
+            UniTask t1 = PlayAsync(_entities[0].Model().GetAnimationFromLose());
+            UniTask t2 = PlayAsync(_entities[1].Model().GetAnimationFromWin());
+            await UniTask.WhenAll(t1, t2);
+        }
+        
+        return flag;
+    }
+
     #endregion
 
     private StageConfig _config;
@@ -666,6 +729,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
     private StageEntity[] _entities;
     public StageEntity[] Entities => _entities;
+
+    public StageEntity Home => _entities[0];
+    public StageEntity Away => _entities[1];
 
     private StageKernel _kernel;
 
@@ -726,8 +792,10 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (!_config.Animated)
             return;
         
-        Play(_entities[0].Model().GetAnimationFromEntering());
-        Play(_entities[1].Model().GetAnimationFromEntering());
+        UniTask t1 = PlayAsync(_entities[0].Model().GetAnimationFromEntering());
+        UniTask t2 = PlayAsync(_entities[1].Model().GetAnimationFromEntering());
+
+        await UniTask.WhenAll(t1, t2);
     }
 
     public void Play(Animation animation)
@@ -761,6 +829,14 @@ public class StageEnvironment : Addressable, StageClosureOwner
             return;
 
         await StageManager.Instance.StageAnimationController.NextKey();
+    }
+
+    public void RecordResult(int flag)
+    {
+        Result.Flag = flag;
+        Result.HomeLeftHp = Home.Hp;
+        Result.AwayLeftHp = Away.Hp;
+        Result.TryAppend(Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
     }
 
     public void WriteResult()

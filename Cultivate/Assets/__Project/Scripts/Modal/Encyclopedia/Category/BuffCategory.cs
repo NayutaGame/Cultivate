@@ -409,7 +409,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner.Hp > 0)
                         {
                             b.PlayPingAnimation();
-                            await b.Owner.LoseHealthProcedure(b.Owner.Hp);
+                            await b.Owner.LoseHealthProcedure(b.Owner.Hp, d.CausedByAttack);
                         }
                     }),
                 }),
@@ -593,7 +593,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.PlayPingAnimation();
                         await b.LoseStackProcedure();
                         if (b.Owner.GetStackOfBuff("永动机") == 0)
-                            await b.Owner.LoseHealthProcedure(b.Owner.Hp);
+                            await b.Owner.LoseHealthProcedure(b.Owner.Hp, false);
                     }),
                 }),
 
@@ -1124,7 +1124,7 @@ public class BuffCategory : Category<BuffEntry>
                     new(StageClosureDict.WIL_COMMIT, 0, async (owner, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
-                        CommitDetails d = (CommitDetails)closureDetails;
+                        StageCommitDetails d = (StageCommitDetails)closureDetails;
 
                         d.Cancel = true;
                     }),
@@ -1160,7 +1160,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner.Hp > 0)
                         {
                             b.PlayPingAnimation();
-                            await b.Owner.LoseHealthProcedure(b.Owner.Hp);
+                            await b.Owner.LoseHealthProcedure(b.Owner.Hp, d.CausedByAttack);
                         }
                     }),
                 }),
@@ -1588,7 +1588,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner.Opponent() != d.Tgt) return;
                         b.PlayPingAnimation();
                         await b.LoseStackProcedure();
-                        await b.Owner.Opponent().LoseHealthProcedure(d.Value);
+                        await b.Owner.Opponent().LoseHealthProcedure(d.Value, false);
                     }),
                 }),
             
@@ -1672,7 +1672,7 @@ public class BuffCategory : Category<BuffEntry>
                         HealthCostResult d = (HealthCostResult)closureDetails;
                         if (b.Owner != d.Entity) return;
                         b.PlayPingAnimation();
-                        await b.Owner.Opponent().LoseHealthProcedure(d.Value);
+                        await b.Owner.Opponent().LoseHealthProcedure(d.Value, false);
                     }),
                 }),
             
