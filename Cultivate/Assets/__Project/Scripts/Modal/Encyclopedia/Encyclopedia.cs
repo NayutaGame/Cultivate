@@ -11,14 +11,15 @@ public class Encyclopedia : Addressable
     public static KeywordCategory KeywordCategory;
     public static BuffCategory BuffCategory;
     public static SkillCategory SkillCategory;
+    
+    public static PackCategory PackCategory;
+
     public static EntityCategory EntityCategory;
     public static RoomCategory RoomCategory;
     public static FormationCategory FormationCategory;
     public static CharacterCategory CharacterCategory;
     public static DifficultyCategory DifficultyCategory;
     public static MapCategory MapCategory;
-
-    public static PackCategory PackCategory;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -40,6 +41,9 @@ public class Encyclopedia : Addressable
         KeywordCategory = new();
         BuffCategory = new();
         SkillCategory = new();
+
+        PackCategory = new();
+
         EntityCategory = new();
         RoomCategory = new();
         FormationCategory = new();
@@ -52,8 +56,6 @@ public class Encyclopedia : Addressable
         SkillCategory.Init();
         DifficultyCategory.Init();
         FormationCategory.Init();
-        
-        PackCategory = new();
 
         JingJieToAudio = new()
         {

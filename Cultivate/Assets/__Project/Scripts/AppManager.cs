@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using CLLibrary;
-using SpriteShadersUltimate.Demo;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -77,6 +76,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         EditorManager.gameObject.SetActive(true);
 
         ProfileManager = new();
+        ConfigManager = new();
         RunManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);

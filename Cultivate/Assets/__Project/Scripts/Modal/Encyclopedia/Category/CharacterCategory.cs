@@ -9,6 +9,15 @@ public class CharacterCategory : Category<CharacterEntry>
         AddRange(new List<CharacterEntry>()
         {
             new("徐福", abilityDescription: "命元上限+2",
+                packPreset: new PackPreset(new List<PackEntry> {
+                    Encyclopedia.PackCategory["0001"],
+                    Encyclopedia.PackCategory["0003"],
+                    Encyclopedia.PackCategory["0005"],
+                    Encyclopedia.PackCategory["0007"],
+                    Encyclopedia.PackCategory["0009"],
+                    Encyclopedia.PackCategory["0008"],
+                    Encyclopedia.PackCategory["0010"],
+                }),
                 runClosures: new RunClosure[]
                 {
                     new(RunClosureDict.START_RUN, 0, (listener, eventDetails) =>

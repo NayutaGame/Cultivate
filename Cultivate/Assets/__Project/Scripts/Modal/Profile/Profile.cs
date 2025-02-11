@@ -12,6 +12,9 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public CharacterProfileList CharacterProfileList => _characterProfileList;
     private DifficultyProfileList _difficultyProfileList;
     public DifficultyProfileList DifficultyProfileList => _difficultyProfileList;
+    private PackProfileList _packProfileList;
+    public PackProfileList PackProfileList => _packProfileList;
+
     
     // LevelProfile, used to track unlocked skills
     // ResultProfile
@@ -36,10 +39,12 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         {
             { "CharacterProfileList", () => _characterProfileList },
             { "DifficultyProfileList", () => _difficultyProfileList },
+            { "PackProfileList", () => _packProfileList },
         };
 
         _characterProfileList = CharacterProfileList.Default();
         _difficultyProfileList = DifficultyProfileList.Default();
+        _packProfileList = PackProfileList.Default();
         _finishedFirstRun = false;
     }
 
@@ -68,5 +73,10 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public void WriteRunResult(RunResult result)
     {
         Debug.Log(result.GetState());
+    }
+
+    public CharacterProfile FirstCharacterProfile()
+    {
+        return _characterProfileList[0];
     }
 }

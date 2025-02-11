@@ -421,7 +421,10 @@ public class RunCanvas : Panel
         // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
     }
     
-    
+    private void PackSelectionClickedStaging(PackSelectionClickedDetails d)
+    {
+
+    }
     
     
     

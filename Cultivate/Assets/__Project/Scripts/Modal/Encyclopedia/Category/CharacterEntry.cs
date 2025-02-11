@@ -15,12 +15,17 @@ public class CharacterEntry : Entry
 
     [NonSerialized] private PrefabEntry _stageModel;
 
+    [NonSerialized] public PackPreset _packPreset;
+
     public CharacterEntry(string id, string description = null, string abilityDescription = null,
+        PackPreset packPreset = null,
         RunClosure[] runClosures = null,
         StageClosure[] stageClosures = null) : base(id)
     {
         Description = description ?? "没有描述";
         AbilityDescription = abilityDescription ?? "没有技能描述";
+
+        _packPreset = packPreset ?? PackPreset.Default;
 
         _runClosures = runClosures ?? Array.Empty<RunClosure>();
         _stageClosures = stageClosures ?? Array.Empty<StageClosure>();

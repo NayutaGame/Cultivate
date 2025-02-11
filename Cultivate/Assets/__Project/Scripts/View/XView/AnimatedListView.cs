@@ -57,7 +57,25 @@ public class AnimatedListView : ListView
         return item;
     }
 
+    private bool CheckLayoutIsApplied()
+    {
+        // 检测DelegatingView是否受到了Layout的影响
+        foreach (var view in _activePool)
+        {
+            DelegatingView delegatingView = view as DelegatingView;
+            RectTransform delegatingRect = delegatingView.GetRect();
+            Vector2 anchoredPosition = delegatingRect.anchoredPosition;
+            
+            // 如果DelegatingView的位置不为0，说明受到了Layout的影响
+            if (anchoredPosition != Vector2.zero)
+                return false;
+        }
+
+        return true;
+    }
+
     protected override XView DisableItem(int index)
+
     {
         XView item = base.DisableItem(index);
         

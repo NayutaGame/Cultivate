@@ -18,4 +18,7 @@ public class PackEntry : Entry, IPack
         Cards = cards;
         Trivia = trivia;
     }
+
+    public string GetName()
+        => Name;
 }

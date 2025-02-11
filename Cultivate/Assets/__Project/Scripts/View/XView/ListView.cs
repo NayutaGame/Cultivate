@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
@@ -155,12 +156,12 @@ public class ListView : XView
 
     private void OnEnable()
     {
-        CheckNeurons();
+        // CheckNeurons();
     }
 
     private void OnDisable()
     {
-        CheckNeurons();
+        // CheckNeurons();
     }
 
     public void ForceLayoutRebuild()

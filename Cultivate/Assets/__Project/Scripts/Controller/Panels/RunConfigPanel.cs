@@ -82,6 +82,7 @@ public class RunConfigPanel : Panel
             _selection.SetSelectAsync(false);
     
         _selection = selectBehaviour;
+        AppManager.Instance.ConfigManager.SelectCharacterProcedure(new CharacterSelectDetails(_selection.Get<CharacterProfile>()));
     
         if (_selection != null)
         {
