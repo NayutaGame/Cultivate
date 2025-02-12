@@ -6,10 +6,10 @@ public class PackProfile : ISerializationCallbackReceiver
     [SerializeField] private PackEntry _entry;
     [SerializeField] private bool _unlocked;
 
-    public PackProfile(PackEntry entry, bool unlocked = false)
+    public PackProfile(PackEntry entry, bool isDeveloper = false)
     {
         _entry = entry;
-        _unlocked = unlocked;
+        _unlocked = isDeveloper;
     }
     
     public PackEntry GetEntry() => _entry;

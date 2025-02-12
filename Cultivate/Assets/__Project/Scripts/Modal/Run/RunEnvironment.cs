@@ -95,6 +95,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     [SerializeReference] private RunEntity _home;
     [SerializeField] private RunResult _result;
 
+    [SerializeField] public bool IsLegit = true;
+
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
     private RunEnvironment(RunConfig config)
@@ -1023,6 +1025,9 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     public void OnAfterDeserialize()
     {
+        if (!IsLegit)
+            return;
+
         _accessors = new()
         {
             { "Config",                () => _config },

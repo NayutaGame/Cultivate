@@ -22,12 +22,23 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
             { "Current",           GetCurrent },
         };
 
-        Add(Profile.Default());
+        if (AppManager.Instance.IsDeveloperMode)
+        {
+            Add(Profile.Developer());
+        }
+        else
+        {
+            Add(Profile.Default());
+        }
+
         CurrentIndex = 0;
 
         _version = AppManager.Version;
     }
-    
+
+    public static ProfileList Default()
+        => new();
+
     public void OnBeforeSerialize() { }
 
     public void OnAfterDeserialize()

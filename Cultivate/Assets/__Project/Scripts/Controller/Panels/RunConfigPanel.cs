@@ -1,4 +1,5 @@
 
+using CLLibrary;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,7 +8,6 @@ using UnityEngine.UI;
 public class RunConfigPanel : Panel
 {
     [SerializeField] private ListView CharacterListView;
-    private SelectBehaviour _selection;
     [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
     
     [SerializeField] private DifficultyPickerView DifficultyPickerView;
@@ -37,15 +37,19 @@ public class RunConfigPanel : Panel
 
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
         CharacterListView.LeftClickNeuron.Join(Select);
-
-        Select(0);
     }
 
     public override void Refresh()
     {
         DifficultyPickerView.Refresh();
         CharacterListView.Refresh();
+        RefreshAllSelection();
         DetailedCharacterProfileView.Refresh();
+    }
+
+    private void OnEnable()
+    {
+        Refresh();
     }
 
     private void Return()
@@ -66,29 +70,51 @@ public class RunConfigPanel : Panel
 
     private void StartRun()
     {
-        RunConfig runConfig = new(_selection.Get<CharacterProfile>(), DifficultyPickerView.GetSelection());
+        CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
+        RunConfig runConfig = new(characterProfile, DifficultyPickerView.GetSelection());
         AppManager.Instance.Push(AppStateMachine.RUN, runConfig);
     }
-
-    private void Select(int i)
-        => Select(CharacterListView.ViewFromIndex(i).GetBehaviour<SelectBehaviour>());
     
     private void Select(InteractBehaviour ib, PointerEventData eventData)
         => Select(ib.GetView().GetBehaviour<SelectBehaviour>());
     
     private void Select(SelectBehaviour selectBehaviour)
     {
-        if (_selection != null)
-            _selection.SetSelectAsync(false);
+        SelectBehaviour currentCharacterSelectBehaviour = GetCurrentCharacterSelectBehaviour();
+        if (currentCharacterSelectBehaviour != null)
+            currentCharacterSelectBehaviour.SetSelectAsync(false);
+
+        currentCharacterSelectBehaviour = selectBehaviour;
+        AppManager.Instance.ConfigManager.SelectCharacterProcedure(new CharacterSelectDetails(currentCharacterSelectBehaviour.Get<CharacterProfile>()));
     
-        _selection = selectBehaviour;
-        AppManager.Instance.ConfigManager.SelectCharacterProcedure(new CharacterSelectDetails(_selection.Get<CharacterProfile>()));
-    
-        if (_selection != null)
+        if (currentCharacterSelectBehaviour != null)
         {
-            DetailedCharacterProfileView.SetAddress(_selection.GetAddress());
+            DetailedCharacterProfileView.SetAddress(currentCharacterSelectBehaviour.GetAddress());
             DetailedCharacterProfileView.Refresh();
-            _selection.SetSelectAsync(true);
+            currentCharacterSelectBehaviour.SetSelectAsync(true);
         }
+    }
+
+    private SelectBehaviour GetCurrentCharacterSelectBehaviour()
+    {
+        // 从model中获取当前选中的character
+        CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
+        int? index = CharacterListView.Traversal().FirstIdx(v => v.Get<CharacterProfile>() == characterProfile);
+        if (index == null)
+            return null;
+        return CharacterListView.ViewFromIndex(index.Value).GetBehaviour<SelectBehaviour>();
+    }
+
+    private void RefreshAllSelection()
+    {
+        SelectBehaviour currentCharacterSelectBehaviour = GetCurrentCharacterSelectBehaviour();
+        foreach (var view in CharacterListView.Traversal())
+        {
+            SelectBehaviour s = view.GetBehaviour<SelectBehaviour>();
+            s.SetSelect(s == currentCharacterSelectBehaviour);
+        }
+
+        DetailedCharacterProfileView.SetAddress(currentCharacterSelectBehaviour.GetAddress());
+        DetailedCharacterProfileView.Refresh();
     }
 }

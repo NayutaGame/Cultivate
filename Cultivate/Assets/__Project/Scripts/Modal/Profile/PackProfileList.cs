@@ -6,12 +6,9 @@ using UnityEngine;
 [Serializable]
 public class PackProfileList : ListModel<PackProfile>, ISerializationCallbackReceiver
 {
-    private PackProfileList()
+    private PackProfileList(bool isDeveloper = false)
     {
-        Encyclopedia.PackCategory.Traversal.Do(entry => Add(new PackProfile(entry, true)));
-
-        // Encyclopedia.CharacterCategory.Traversal.Do(entry => Add(new CharacterProfile(entry)));
-        // Find("徐福").SetUnlocked(true);
+        Encyclopedia.PackCategory.Traversal.Do(entry => Add(new PackProfile(entry, isDeveloper)));
     }
 
     private PackProfile Find(PackEntry entry)
@@ -19,6 +16,12 @@ public class PackProfileList : ListModel<PackProfile>, ISerializationCallbackRec
 
     public static PackProfileList Default()
         => new();
+
+    public static PackProfileList Developer()
+        => new(true);
+
+    public bool IsUnlocked(PackEntry entry)
+        => Find(entry).IsUnlocked();
 
     public void OnBeforeSerialize()
     {

@@ -28,6 +28,12 @@ public class PackConfigPanel : PopupPanel
         CancelButton.onClick.AddListener(Cancel);
     }
 
+    public override void Refresh()
+    {
+        ConstraintListView.Refresh();
+        SelectionListView.Refresh();
+    }
+
     public Neuron<PackSelectionClickedDetails> PackSelectionClickedEvent = new();
     public Neuron<PackConstraintClickedDetails> PackConstraintClickedEvent = new();
 
@@ -49,6 +55,7 @@ public class PackConfigPanel : PopupPanel
         PackConstraintClickedEvent.Add(AppManager.Instance.ConfigManager.PackConstraintClickedProcedure);
         AppManager.Instance.ConfigManager.EquipPackNeuron.Add(EquipPackStaging);
         AppManager.Instance.ConfigManager.UnequipPackNeuron.Add(UnequipPackStaging);
+        Refresh();
     }
 
     private void OnDisable()

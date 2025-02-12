@@ -1,11 +1,20 @@
 
 using System.IO;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace CLLibrary
 {
     public static class FileUtility
     {
+        public static bool IsFileExists(string filename)
+        {
+            string fullFilePath = Application.streamingAssetsPath + filename;
+            return File.Exists(fullFilePath);
+        }
+
         public static T ReadFromFile<T>(string filename) where T : new()
         {
             // string fullFilePath = Application.persistentDataPath + filename;
@@ -34,6 +43,10 @@ namespace CLLibrary
             string txt = TxtFromJson(json);
 
             SaveFile(fullFilePath, txt);
+
+            #if UNITY_EDITOR
+            AssetDatabase.Refresh();
+            #endif
         }
 
         public static void DeleteFile(string filename)

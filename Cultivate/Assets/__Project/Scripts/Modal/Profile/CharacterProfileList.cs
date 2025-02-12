@@ -6,12 +6,12 @@ using UnityEngine;
 [Serializable]
 public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationCallbackReceiver
 {
-    private CharacterProfileList()
+    private CharacterProfileList(bool isDeveloper = false)
     {
-        Encyclopedia.CharacterCategory.Traversal.Do(entry => Add(new CharacterProfile(entry, true)));
+        Encyclopedia.CharacterCategory.Traversal.Do(entry => Add(
+            new CharacterProfile(entry, isDeveloper)));
 
-        // Encyclopedia.CharacterCategory.Traversal.Do(entry => Add(new CharacterProfile(entry)));
-        // Find("徐福").SetUnlocked(true);
+        Find("徐福").SetUnlocked(true);
     }
 
     private CharacterProfile Find(CharacterEntry entry)
@@ -19,6 +19,15 @@ public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationC
 
     public static CharacterProfileList Default()
         => new();
+
+    public static CharacterProfileList Developer()
+        => new(true);
+
+    public bool IsUnlocked(CharacterEntry entry)
+        => Find(entry).IsUnlocked();
+
+    public bool SlotIsUnlocked(CharacterEntry entry, int slotIndex)
+        => Find(entry).SlotIsUnlocked(slotIndex);
 
     public void OnBeforeSerialize()
     {

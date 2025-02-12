@@ -18,12 +18,27 @@ public class ProfileManager : Addressable
             { "ProfileList",           () => _profileList },
         };
 
-        Load();
+        if (!FileUtility.IsFileExists(ProfileList.Filename))
+        {
+            // 如果存档不存在，则创建一个默认存档，并保存
+            _profileList = ProfileList.Default();
+            Save();
+        }
+        else
+        {
+            // 如果存档存在，则加载存档
+            Load();
+        }
     }
 
     public void Save(RunEnvironment env)
     {
         AppManager.Instance.ProfileManager.GetCurrProfile().WriteRunEnvironment(env);
+        FileUtility.WriteToFile(_profileList, ProfileList.Filename);
+    }
+
+    public void Save()
+    {
         FileUtility.WriteToFile(_profileList, ProfileList.Filename);
     }
 

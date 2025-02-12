@@ -6,12 +6,13 @@ public class PackConstraint : Addressable
 {
     public PackDescriptor Descriptor;
     public ConfigPack Pack;
+    public int SlotIndex;
 
     public bool IsEmpty => Pack == null;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public PackConstraint(PackDescriptor descriptor)
+    public PackConstraint(PackDescriptor descriptor, int slotIndex)
     {
         _accessors = new()
         {
@@ -20,5 +21,6 @@ public class PackConstraint : Addressable
 
         Descriptor = descriptor;
         Pack = null;
+        SlotIndex = slotIndex;
     }
 }

@@ -7,19 +7,22 @@ using UnityEngine;
 public class Profile : Addressable, ISerializationCallbackReceiver
 {
     [SerializeField] private bool _finishedFirstRun;
-    
-    private CharacterProfileList _characterProfileList;
+
+    [SerializeField] private LevelProfile _levelProfile;
+    public LevelProfile LevelProfile => _levelProfile;
+    [SerializeField] private CharacterProfileList _characterProfileList;
     public CharacterProfileList CharacterProfileList => _characterProfileList;
-    private DifficultyProfileList _difficultyProfileList;
+    [SerializeField] private DifficultyProfileList _difficultyProfileList;
     public DifficultyProfileList DifficultyProfileList => _difficultyProfileList;
-    private PackProfileList _packProfileList;
+    [SerializeField] private PackProfileList _packProfileList;
     public PackProfileList PackProfileList => _packProfileList;
 
-    
-    // LevelProfile, used to track unlocked skills
+    // private AchievementProfileList _achievementProfileList;
+
     // ResultProfile
 
     [SerializeField] private RunEnvironment _runEnvironment;
+    public RunEnvironment RunEnvironment => _runEnvironment;
 
     public void WriteRunEnvironment(RunEnvironment env)
     {
@@ -33,23 +36,39 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    private Profile()
+    private Profile(
+        LevelProfile levelProfile = null,
+        CharacterProfileList characterProfileList = null,
+        DifficultyProfileList difficultyProfileList = null,
+        PackProfileList packProfileList = null,
+        bool finishedFirstRun = false)
     {
         _accessors = new()
         {
+            { "LevelProfile", () => _levelProfile },
             { "CharacterProfileList", () => _characterProfileList },
             { "DifficultyProfileList", () => _difficultyProfileList },
             { "PackProfileList", () => _packProfileList },
         };
 
-        _characterProfileList = CharacterProfileList.Default();
-        _difficultyProfileList = DifficultyProfileList.Default();
-        _packProfileList = PackProfileList.Default();
-        _finishedFirstRun = false;
+        _levelProfile = levelProfile ?? LevelProfile.Default();
+        _characterProfileList = characterProfileList ?? CharacterProfileList.Default();
+        _difficultyProfileList = difficultyProfileList ?? DifficultyProfileList.Default();
+        _packProfileList = packProfileList ?? PackProfileList.Default();
+
+        _finishedFirstRun = finishedFirstRun;
     }
 
     public static Profile Default()
         => new();
+
+    public static Profile Developer()
+        => new(
+            LevelProfile.Developer(),
+            CharacterProfileList.Developer(),
+            DifficultyProfileList.Developer(),
+            PackProfileList.Developer(),
+            true);
 
     public bool IsFirstRunFinished()
         => _finishedFirstRun;
@@ -58,7 +77,16 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         => _finishedFirstRun = value;
 
     public bool HasSave()
-        => _runEnvironment != null;
+        => _runEnvironment != null && _runEnvironment.IsLegit;
+
+    public bool PackIsUnlocked(PackEntry entry)
+        => _packProfileList.IsUnlocked(entry);
+
+    public bool CharacterIsUnlocked(CharacterEntry entry)
+        => _characterProfileList.IsUnlocked(entry);
+
+    public bool SlotIsUnlocked(CharacterEntry entry, int slotIndex)
+        => _characterProfileList.SlotIsUnlocked(entry, slotIndex);
 
     public void OnBeforeSerialize()
     {
@@ -66,6 +94,14 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
+        _accessors = new()
+        {
+            { "LevelProfile", () => _levelProfile },
+            { "CharacterProfileList", () => _characterProfileList },
+            { "DifficultyProfileList", () => _difficultyProfileList },
+            { "PackProfileList", () => _packProfileList },
+        };
+        
         // when new entry is added, order will be corrupted
         // needs to fix order according to encyclopedia before using
     }

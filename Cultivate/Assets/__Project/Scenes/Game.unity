@@ -1569,10 +1569,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9942fc50061f6a945870c8aea151180a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isDeveloperMode: 0
   AppCanvas: {fileID: 1627659553}
   EditorManager: {fileID: 1604468907}
   RunManager: {fileID: 1977029710}
   StageManager: {fileID: 402125080}
+  SkillInventory:
+    _list: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!4 &387419141
 Transform:
   m_ObjectHideFlags: 0
@@ -3223,7 +3229,7 @@ SpriteRenderer:
   m_Size: {x: 19.2, y: 10.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1182676731

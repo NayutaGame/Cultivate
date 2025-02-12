@@ -15,6 +15,19 @@ public class AppManager : Singleton<AppManager>, Addressable
     private Thread _mainThread;
     public bool IsMainThread() => _mainThread.Equals(Thread.CurrentThread);
 
+    [SerializeField] private bool _isDeveloperMode;
+    public bool IsDeveloperMode
+    {
+        get
+        {
+            #if UNITY_EDITOR
+            return _isDeveloperMode;
+            #else
+            return false;  // 发布版本始终返回false
+            #endif
+        }
+    }
+
     [SerializeField] private AppCanvas AppCanvas;
 
     private AppStateMachine _appStateMachine;
