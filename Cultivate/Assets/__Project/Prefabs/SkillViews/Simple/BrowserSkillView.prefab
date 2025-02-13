@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 7603237101063767340}
   - component: {fileID: 7916572736792348376}
   - component: {fileID: 4314547528632558551}
+  - component: {fileID: 5450849875459779180}
   m_Layer: 5
   m_Name: BrowserSkillView
   m_TagString: Untagged
@@ -292,7 +293,6 @@ MonoBehaviour:
   NameText: {fileID: 1543386079984827108}
   DescriptionText: {fileID: 3474554790091730152}
   JingJieImage: {fileID: 750374815608862319}
-  EffectImage: {fileID: 5576562334568838583}
 --- !u!114 &7603237101063767340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,6 +334,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ib: {fileID: 7603237101063767340}
   _skillView: {fileID: 3635341427418532394}
+--- !u!114 &5450849875459779180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185833340277898451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad34762e5e9af345b72489ba531dd24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EffectImage: {fileID: 5576562334568838583}
 --- !u!1 &2485106884428637875
 GameObject:
   m_ObjectHideFlags: 0

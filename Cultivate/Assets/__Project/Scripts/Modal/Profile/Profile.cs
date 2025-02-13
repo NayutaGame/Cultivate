@@ -79,6 +79,30 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public bool HasSave()
         => _runEnvironment != null && _runEnvironment.IsLegit;
 
+    public bool PackIsGenerallyUnlocked(CharacterEntry character, PackEntry entry)
+    {
+        if (_packProfileList.IsUnlocked(entry))
+            return true;
+
+        for (int i = 0; i < character._packPreset.PackEntries.Count; i++)
+        {
+            // 卡包未解锁，但是槽位解锁，并且当前角色的初始Preset的这个槽位的卡包是当前卡包
+            if (SlotIsUnlocked(character, i) && character._packPreset.PackEntries[i] == entry)
+                return true;
+        }
+
+        return false;
+    }
+        
+    public bool PackIsGenerallyUnlocked(CharacterEntry character, PackEntry pack, int slotIndex)
+    {
+        if (_packProfileList.IsUnlocked(pack))
+            return true;
+        
+        return SlotIsUnlocked(character, slotIndex) && 
+               character._packPreset.PackEntries[slotIndex] == pack;
+    }
+
     public bool PackIsUnlocked(PackEntry entry)
         => _packProfileList.IsUnlocked(entry);
 

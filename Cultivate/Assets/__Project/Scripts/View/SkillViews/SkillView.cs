@@ -1,5 +1,4 @@
 
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +6,6 @@ using UnityEngine.UI;
 public class SkillView : XView
 {
     private JingJie _showingJingJie;
-    private bool _highlight;
     
     [SerializeField] private Image Illustration;
     [SerializeField] private TMP_Text CostText;
@@ -15,21 +13,22 @@ public class SkillView : XView
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private Image JingJieImage;
-    [SerializeField] private Image EffectImage;
 
-    private Material _outlineMaterial;
-    // private Material _dissolveMaterial;
-
+    private HighlightBehaviour _highlightBehaviour;
+    
     protected override void AwakeFunction()
     {
         base.AwakeFunction();
-
-        if (EffectImage != null)
-        {
-            EffectImage.material = Instantiate(EffectImage.material);
-            _outlineMaterial = EffectImage.materialForRendering;
-        }
+        _highlightBehaviour = GetBehaviour<HighlightBehaviour>();
     }
+    
+    public void SetHighlight(bool highlight)
+    {
+        if (_highlightBehaviour != null)
+            _highlightBehaviour.SetHighlight(highlight);
+    }
+
+    // private Material _dissolveMaterial;
 
     public override void Refresh()
     {
@@ -54,21 +53,6 @@ public class SkillView : XView
         SetSkillTypeComposite(skill.GetSkillTypeComposite());
         SetJingJieSprite(skill.GetJingJieSprite(_showingJingJie));
     }
-
-    private Tween _highlightHandle;
-    private static readonly int OuterOutlineFade = Shader.PropertyToID("_OuterOutlineFade");
-
-    public void SetHighlight(bool highlight)
-    {
-        _highlight = highlight;
-        
-        _highlightHandle?.Kill();
-        _highlightHandle = DOTween.To(GetOutlineFade, SetOutlineFade, _highlight ? 1 : 0, 0.3f).SetEase(Ease.InOutQuad);
-        _highlightHandle.SetAutoKill().Restart();
-    }
-
-    private float GetOutlineFade() => _outlineMaterial.GetFloat(OuterOutlineFade);
-    private void SetOutlineFade(float value) => _outlineMaterial.SetFloat(OuterOutlineFade, value);
 
     protected virtual void SetSprite(Sprite sprite)
     {

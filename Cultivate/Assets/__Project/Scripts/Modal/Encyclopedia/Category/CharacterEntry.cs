@@ -9,6 +9,9 @@ public class CharacterEntry : Entry
     
     [NonSerialized] public string Description;
     [NonSerialized] public string AbilityDescription;
+    
+    // [NonSerialized] public string UnlockCondition;
+    [NonSerialized] public string UnlockConditionDescription;
 
     [NonSerialized] public RunClosure[] _runClosures;
     [NonSerialized] public StageClosure[] _stageClosures;
@@ -17,14 +20,16 @@ public class CharacterEntry : Entry
 
     [NonSerialized] public PackPreset _packPreset;
 
-    public CharacterEntry(string id, string description = null, string abilityDescription = null,
+    public CharacterEntry(string id, string description = null,
+        string abilityDescription = null,
+        string unlockConditionDescription = null,
         PackPreset packPreset = null,
         RunClosure[] runClosures = null,
         StageClosure[] stageClosures = null) : base(id)
     {
         Description = description ?? "没有描述";
         AbilityDescription = abilityDescription ?? "没有技能描述";
-
+        UnlockConditionDescription = unlockConditionDescription ?? "没有解锁条件描述";
         _packPreset = packPreset ?? PackPreset.Default;
 
         _runClosures = runClosures ?? Array.Empty<RunClosure>();

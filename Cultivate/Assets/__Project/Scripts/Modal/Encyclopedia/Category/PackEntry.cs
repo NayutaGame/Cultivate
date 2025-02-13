@@ -1,4 +1,7 @@
 
+using System;
+
+[Serializable]
 public class PackEntry : Entry, IPack
 {
     public string Name;

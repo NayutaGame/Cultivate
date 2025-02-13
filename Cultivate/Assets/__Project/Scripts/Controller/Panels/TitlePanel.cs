@@ -1,6 +1,7 @@
 
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TitlePanel : Panel

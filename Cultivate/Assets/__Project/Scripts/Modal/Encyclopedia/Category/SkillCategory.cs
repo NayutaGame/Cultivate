@@ -600,7 +600,7 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.ManaFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"10攻".ApplyAttack() +
-                    $"灵气+3".ApplyMana(),
+                    $"\n灵气+3".ApplyMana(),
                 cast:                       async d =>
                 {
                     await d.AttackProcedure(10);

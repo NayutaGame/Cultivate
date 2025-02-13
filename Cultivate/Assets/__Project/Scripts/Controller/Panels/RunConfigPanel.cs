@@ -33,7 +33,7 @@ public class RunConfigPanel : Panel
         StartRunButton.onClick.AddListener(StartRun);
         
         PackConfigButton.onClick.RemoveAllListeners();
-        PackConfigButton.onClick.AddListener(PackConfig);
+        PackConfigButton.onClick.AddListener(EnterPackConfig);
 
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
         CharacterListView.LeftClickNeuron.Join(Select);
@@ -57,8 +57,9 @@ public class RunConfigPanel : Panel
         CloseRunConfigPanel();
     }
 
-    private void PackConfig()
+    private void EnterPackConfig()
     {
+        PackConfigPanel.SetUnmodifiedPackPreset(AppManager.Instance.ConfigManager.WriteCurrentIntoPackPreset());
         PackConfigPanel.GetAnimator().SetStateAsync(1);
     }
 
@@ -93,6 +94,8 @@ public class RunConfigPanel : Panel
             DetailedCharacterProfileView.Refresh();
             currentCharacterSelectBehaviour.SetSelectAsync(true);
         }
+
+        RefreshStartRunButton();
     }
 
     private SelectBehaviour GetCurrentCharacterSelectBehaviour()
@@ -116,5 +119,11 @@ public class RunConfigPanel : Panel
 
         DetailedCharacterProfileView.SetAddress(currentCharacterSelectBehaviour.GetAddress());
         DetailedCharacterProfileView.Refresh();
+    }
+
+    private void RefreshStartRunButton()
+    {
+        CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
+        StartRunButton.interactable = characterProfile.IsUnlocked();
     }
 }

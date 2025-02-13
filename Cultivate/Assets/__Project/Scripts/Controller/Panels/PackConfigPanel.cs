@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,6 +11,12 @@ public class PackConfigPanel : PopupPanel
     [SerializeField] private AnimatedListView SelectionListView;
     [SerializeField] private Button ConfirmButton;
     [SerializeField] private Button CancelButton;
+
+    private PackPreset _unmodifiedPackPreset;
+    public void SetUnmodifiedPackPreset(PackPreset preset)
+    {
+        _unmodifiedPackPreset = preset;
+    }
     
     public override void AwakeFunction()
     {
@@ -17,9 +24,13 @@ public class PackConfigPanel : PopupPanel
         
         ConstraintListView.SetAddress(new Address("Config.PackConstraints"));
         ConstraintListView.LeftClickNeuron.Join(PackConstraintClicked);
+        ConstraintListView.PointerEnterNeuron.Join(HoverConstraint);
+        ConstraintListView.PointerExitNeuron.Join(UnhoverConstraint);
 
         SelectionListView.SetAddress(new Address("Config.PackSelections"));
         SelectionListView.LeftClickNeuron.Join(PackSelectionClicked);
+        SelectionListView.PointerEnterNeuron.Join(HoverSelection);
+        SelectionListView.PointerExitNeuron.Join(UnhoverSelection);
         
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(Confirm);
@@ -32,6 +43,7 @@ public class PackConfigPanel : PopupPanel
     {
         ConstraintListView.Refresh();
         SelectionListView.Refresh();
+        RefreshConfirmButton();
     }
 
     public Neuron<PackSelectionClickedDetails> PackSelectionClickedEvent = new();
@@ -70,23 +82,33 @@ public class PackConfigPanel : PopupPanel
     {
         SelectionListView.Refresh();
         ConstraintListView.Refresh();
+        RefreshConfirmButton();
     }
 
     private void UnequipPackStaging(PackUnequipDetails d)
     {
         SelectionListView.Refresh();
         ConstraintListView.Refresh();
+        RefreshConfirmButton();
+    }
+
+    private void RefreshConfirmButton()
+    {
+        ConfirmButton.interactable = AppManager.Instance.ConfigManager.IsConfigurationValid();
     }
 
     private async void Confirm()
     {
         // 保存选择的卡包
+        _unmodifiedPackPreset = null;
         await GetAnimator().SetStateAsync(0);
     }
     
     private async void Cancel()
     {
         // 取消选择
+        AppManager.Instance.ConfigManager.LoadPackPreset(_unmodifiedPackPreset);
+        _unmodifiedPackPreset = null;
         await GetAnimator().SetStateAsync(0);
     }
     
@@ -98,6 +120,81 @@ public class PackConfigPanel : PopupPanel
     public override void Return()
     {
         base.Return();
-        GetAnimator().SetStateAsync(0);
+        Cancel();
+    }
+
+    private void HoverSelection(InteractBehaviour ib, PointerEventData d)
+    {
+        Debug.Log("HoverSelection");
+        ConfigPack pack = ib.Get<ConfigPack>();
+        ConfigManager configManager = AppManager.Instance.ConfigManager;
+
+        PackConstraint firstValidSlot = configManager.GetFirstValidUnlockedSlot(pack);
+        if (firstValidSlot == null)
+            return;
+
+        ConstraintListView.TraversalActive().Do(Highlight);
+        
+        void Highlight(XView view)
+        {
+            if (view.Get<PackConstraint>() == firstValidSlot)
+            {
+                view.GetBehaviour<HighlightBehaviour>().SetHighlight(true);
+            }
+        }
+    }
+
+    private void UnhoverSelection(InteractBehaviour ib, PointerEventData d)
+    {
+        ConstraintListView.TraversalActive().Do(Unhighlight);
+        
+        void Unhighlight(XView view)
+        {
+            view.GetBehaviour<HighlightBehaviour>().SetHighlight(false);
+        }
+    }
+
+    private void HoverConstraint(InteractBehaviour ib, PointerEventData d)
+    {
+        PackConstraint constraint = ib.Get<PackConstraint>();
+        ConfigManager configManager = AppManager.Instance.ConfigManager;
+
+        List<ConfigPack> validPacks = new();
+        
+        if (constraint.Pack != null)
+        {
+            // 存在已装备的卡牌
+            // 高亮已装备的卡牌
+            validPacks.Add(constraint.Pack);
+        }
+        else
+        {
+            // 不存在已装备的卡牌
+            // 高亮所有合法选择
+            configManager.PackSelections.Traversal()
+                .FilterObj(pack => configManager.IsCompatible(pack, constraint))
+                .Do(pack => validPacks.Add(pack));
+        }
+
+        SelectionListView.TraversalActive().Do(Highlight);
+
+        void Highlight(XView view)
+        {
+            ConfigPack pack = view.Get<ConfigPack>();
+            if (validPacks.Contains(pack))
+            {
+                view.GetBehaviour<HighlightBehaviour>().SetHighlight(true);
+            }
+        }
+    }
+
+    private void UnhoverConstraint(InteractBehaviour ib, PointerEventData d)
+    {
+        SelectionListView.TraversalActive().Do(Unhighlight);
+        
+        void Unhighlight(XView view)
+        {
+            view.GetBehaviour<HighlightBehaviour>().SetHighlight(false);
+        }
     }
 }

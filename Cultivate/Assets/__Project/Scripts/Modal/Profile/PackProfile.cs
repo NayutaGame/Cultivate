@@ -1,6 +1,8 @@
 
+using System;
 using UnityEngine;
 
+[Serializable]
 public class PackProfile : ISerializationCallbackReceiver
 {
     [SerializeField] private PackEntry _entry;

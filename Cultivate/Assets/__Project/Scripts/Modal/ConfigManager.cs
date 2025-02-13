@@ -10,6 +10,7 @@ public class ConfigManager : Addressable
 
     private ListModel<PackConstraint> _packConstraints;
     private ListModel<ConfigPack> _packSelections;
+    public ListModel<ConfigPack> PackSelections => _packSelections;
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -57,7 +58,18 @@ public class ConfigManager : Addressable
     private void LoadPackPresetFromCharacter(CharacterProfile character)
     {
         PackPreset preset = character.GetEntry()._packPreset;
+        LoadPackPreset(preset);
+    }
 
+    public PackPreset WriteCurrentIntoPackPreset()
+    {
+        List<PackEntry> packEntries = new();
+        _packConstraints.Traversal().Do(c => packEntries.Add(c.Pack.Entry));
+        return new PackPreset(packEntries);
+    }
+
+    public void LoadPackPreset(PackPreset preset)
+    {
         _packConstraints.Traversal().Do(c => c.Pack = null);
         _packSelections.Traversal().Do(p => p.IsEquipped = false);
 
@@ -101,29 +113,13 @@ public class ConfigManager : Addressable
     public void TryEquipPack(PackSelectionClickedDetails d)
     {
         ConfigPack pack = d.Pack;
-        // 检查是否已装备
         if (pack.IsEquipped)
         {
             Debug.Log($"卡包 {pack.Entry.Name} 已经被装备");
             return;
         }
         
-        // 检查pack是否解锁
-        bool packIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().PackIsUnlocked(pack.Entry);
-        if (!packIsUnlocked)
-        {
-            Debug.Log($"卡包 {pack.Entry.Name} 未解锁");
-            return;
-        }
-        
-        // 尝试寻找第一个合法的空槽位
-        // 同时检查slot是否解锁
-        PackConstraint firstMatch = _packConstraints.First(c => 
-        {
-            bool slotIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), c.SlotIndex);
-            return c.IsEmpty && c.Descriptor.Contains(pack.Entry) && slotIsUnlocked;
-        });
-        
+        PackConstraint firstMatch = GetFirstValidUnlockedSlot(pack);
         if (firstMatch == null)
         {
             Debug.Log("没有合适的空槽位");
@@ -147,18 +143,10 @@ public class ConfigManager : Addressable
         }
 
         // 检查pack是否解锁
-        bool packIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().PackIsUnlocked(pack.Entry);
+        bool packIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), pack.Entry);
         if (!packIsUnlocked)
         {
             Debug.Log($"卡包 {pack.Entry.Name} 未解锁");
-            return;
-        }
-
-        // 检查slot是否解锁
-        bool slotIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), d.Constraint.SlotIndex);
-        if (!slotIsUnlocked)
-        {
-            Debug.Log($"槽位 {d.Constraint.SlotIndex} 未解锁");
             return;
         }
         
@@ -167,6 +155,14 @@ public class ConfigManager : Addressable
         if (constraint == null)
         {
             Debug.Log("未找到装备该卡包的槽位");
+            return;
+        }
+
+        // 检查slot是否解锁
+        bool slotIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), constraint.SlotIndex);
+        if (!slotIsUnlocked)
+        {
+            Debug.Log($"槽位 {constraint.SlotIndex} 未解锁");
             return;
         }
 
@@ -187,7 +183,7 @@ public class ConfigManager : Addressable
         }
 
         // 检查pack是否解锁
-        bool packIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().PackIsUnlocked(constraint.Pack.Entry);
+        bool packIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), constraint.Pack.Entry);
         if (!packIsUnlocked)
         {
             Debug.Log($"卡包 {constraint.Pack.Entry.Name} 未解锁");
@@ -208,13 +204,23 @@ public class ConfigManager : Addressable
         UnequipPackNeuron.Invoke(new PackUnequipDetails(constraint, constraint.Pack));
     }
 
-    // 获取已装备的卡包列表
-    public IEnumerable<ConfigPack> GetEquippedPacks()
-        => _packConstraints.Traversal().FilterObj(c => !c.IsEmpty).Map(c => c.Pack);
+    public PackConstraint GetFirstValidUnlockedSlot(ConfigPack pack)
+    {
+        return _packConstraints.First(constraint => 
+            IsCompatible(pack, constraint) && 
+            constraint.IsEmpty);
+    }
+
+    public bool IsCompatible(ConfigPack pack, PackConstraint constraint)
+    {
+        var profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        return constraint.Descriptor.Contains(pack.Entry) && 
+               profile.PackIsGenerallyUnlocked(_character.GetEntry(), pack.Entry, constraint.SlotIndex);
+    }
 
     public bool IsConfigurationValid()
     {
-        PackConstraint firstInvalid = _packConstraints.First(c => !c.IsEmpty && !c.Descriptor.Contains(c.Pack.Entry));
+        PackConstraint firstInvalid = _packConstraints.First(constraint => constraint.IsEmpty || !constraint.Descriptor.Contains(constraint.Pack.Entry));
         return firstInvalid == null;
     }
 

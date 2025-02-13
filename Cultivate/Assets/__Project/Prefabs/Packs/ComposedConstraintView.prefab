@@ -136,6 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8086324285004126783}
   - component: {fileID: 5742922262591282243}
+  - component: {fileID: 8412637781026560194}
   m_Layer: 5
   m_Name: ComposedConstraintView
   m_TagString: Untagged
@@ -191,6 +192,19 @@ MonoBehaviour:
   FollowConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
     LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+--- !u!114 &8412637781026560194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8155228337873847611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad34762e5e9af345b72489ba531dd24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EffectImage: {fileID: 8351198138896740412}
 --- !u!1001 &5486516715079875605
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -304,3 +318,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8838977114607417665, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
   m_PrefabInstance: {fileID: 5486516715079875605}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8351198138896740412 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4594075792534916137, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
+  m_PrefabInstance: {fileID: 5486516715079875605}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
