@@ -40,8 +40,9 @@ public class AppManager : Singleton<AppManager>, Addressable
     public RunManager RunManager;
     public StageManager StageManager;
 
-    public FormationInventory FormationInventory;
-    [HideInInspector] public SkillInventory SkillInventory;
+    [NonSerialized] public FormationInventory FormationInventory;
+    [NonSerialized] public SkillInventory SkillInventory;
+    [NonSerialized] public InventoryFromExpandedPack InventoryFromExpandedPack;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -54,21 +55,22 @@ public class AppManager : Singleton<AppManager>, Addressable
         _accessors = new Dictionary<string, Func<object>>()
         {
             { "App", () => Instance },
-            { "Settings", () => Settings },
 
+            { "Settings", () => Settings },
+            // Designer
             { "Encyclopedia", () => Encyclopedia },
             { "Editor", () => EditorManager.Instance },
-            // Designer
-
-            { "FormationInventory", () => FormationInventory },
-            { "SkillInventory", () => SkillInventory },
-
             { "Profile", () => ProfileManager },
             { "Config", () => ConfigManager },
             { "Run", () => RunManager.Instance },
             { "Stage", () => StageManager.Instance },
 
             { "Canvas", () => CanvasManager.Instance },
+
+            // Browser
+            { "FormationInventory", () => FormationInventory },
+            { "SkillInventory", () => SkillInventory },
+            { "InventoryFromExpandedPack", () => InventoryFromExpandedPack },
         };
 
         foreach (var kvp in _accessors)
@@ -78,6 +80,9 @@ public class AppManager : Singleton<AppManager>, Addressable
 
         Settings = new();
         Encyclopedia = new();
+        EditorManager.gameObject.SetActive(true);
+        ProfileManager = new();
+        ConfigManager = new();
 
         FormationInventory = new();
         Encyclopedia.FormationCategory.Traversal.Do(e => FormationInventory.Add(e));
@@ -85,16 +90,28 @@ public class AppManager : Singleton<AppManager>, Addressable
         SkillInventory = new();
         Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.FromEntryJingJie(e, e.LowestJingJie)).Do(s => SkillInventory.Add(s));
 
-        AppCanvas.gameObject.SetActive(true);
-        EditorManager.gameObject.SetActive(true);
+        InventoryFromExpandedPack = new();
 
-        ProfileManager = new();
-        ConfigManager = new();
+        AppCanvas.gameObject.SetActive(true);
+
         RunManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(true);
         StageManager.gameObject.SetActive(false);
 
         _appStateMachine = new();
+    }
+
+    public void SetExpandedPack(PackEntry entry)
+    {
+        InventoryFromExpandedPack.Clear();
+        
+        if (entry != null)
+        {
+            entry.Cards.Do(skillEntry =>
+            {
+                InventoryFromExpandedPack.Add(skillEntry);
+            });
+        }
     }
 
     private void Start()

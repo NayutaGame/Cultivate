@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -36,6 +37,11 @@ public class CharacterEntry : Entry
         _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
 
         _stageModel = $"StageModel{GetName()}";
+    }
+
+    public List<PackEntry> GetDefaultPacks()
+    {
+        return _packPreset.PackEntries;
     }
 
     public static implicit operator CharacterEntry(string id) => Encyclopedia.CharacterCategory[id];

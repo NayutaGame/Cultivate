@@ -312,7 +312,12 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     private void InitSkillPool()
     {
-        4.Do(_ => SkillPool.Populate(Encyclopedia.SkillCategory.Traversal.FilterObj(e => e.WithinPool)));
+        6.Do(_ => _config.PacksToStartWith.Do(pack =>
+        {
+            SkillPool.Populate(pack.Cards);
+        }));
+
+        SkillPool.Shuffle();
     }
 
     public void NextJingJieProcedure()

@@ -33,6 +33,7 @@ public class CharacterProfile : ISerializationCallbackReceiver
     public void SetUnlocked(bool value) => _unlocked = value;
 
     public bool SlotIsUnlocked(int slotIndex) => _packSlotIsLocked[slotIndex];
+    public void SetSlotUnlocked(int slotIndex, bool value) => _packSlotIsLocked[slotIndex] = value;
 
     public void OnBeforeSerialize() { }
 

@@ -12,6 +12,8 @@ public class PackConfigPanel : PopupPanel
     [SerializeField] private Button ConfirmButton;
     [SerializeField] private Button CancelButton;
 
+    [SerializeField] private AnimatedListView SkillListView;
+
     private PackPreset _unmodifiedPackPreset;
     public void SetUnmodifiedPackPreset(PackPreset preset)
     {
@@ -26,11 +28,13 @@ public class PackConfigPanel : PopupPanel
         ConstraintListView.LeftClickNeuron.Join(PackConstraintClicked);
         ConstraintListView.PointerEnterNeuron.Join(HoverConstraint);
         ConstraintListView.PointerExitNeuron.Join(UnhoverConstraint);
+        ConstraintListView.RightClickNeuron.Join(ExpandPackFromConstraint);
 
         SelectionListView.SetAddress(new Address("Config.PackSelections"));
         SelectionListView.LeftClickNeuron.Join(PackSelectionClicked);
         SelectionListView.PointerEnterNeuron.Join(HoverSelection);
         SelectionListView.PointerExitNeuron.Join(UnhoverSelection);
+        SelectionListView.RightClickNeuron.Join(ExpandPackFromSelection);
         
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(Confirm);
@@ -59,6 +63,26 @@ public class PackConfigPanel : PopupPanel
     {
         PackConstraintClickedDetails packConstraintClickedDetails = new(ib.Get<PackConstraint>());
         PackConstraintClickedEvent.Invoke(packConstraintClickedDetails);
+    }
+
+    private void ExpandPackFromConstraint(InteractBehaviour ib, PointerEventData data)
+    {
+        PackConstraint constraint = ib.Get<PackConstraint>();
+
+        AppManager.Instance.SetExpandedPack(constraint.Pack.Entry);
+
+        SkillListView.SetAddress("InventoryFromExpandedPack");
+        SkillListView.Refresh();
+    }
+
+    private void ExpandPackFromSelection(InteractBehaviour ib, PointerEventData data)
+    {
+        ConfigPack pack = ib.Get<ConfigPack>();
+
+        AppManager.Instance.SetExpandedPack(pack.Entry);
+        
+        SkillListView.SetAddress("InventoryFromExpandedPack");
+        SkillListView.Refresh();
     }
 
     private void OnEnable()
@@ -125,22 +149,34 @@ public class PackConfigPanel : PopupPanel
 
     private void HoverSelection(InteractBehaviour ib, PointerEventData d)
     {
-        Debug.Log("HoverSelection");
         ConfigPack pack = ib.Get<ConfigPack>();
         ConfigManager configManager = AppManager.Instance.ConfigManager;
 
-        PackConstraint firstValidSlot = configManager.GetFirstValidUnlockedSlot(pack);
-        if (firstValidSlot == null)
-            return;
-
-        ConstraintListView.TraversalActive().Do(Highlight);
-        
-        void Highlight(XView view)
+        if (pack.IsEquipped)
         {
-            if (view.Get<PackConstraint>() == firstValidSlot)
+            // 如果卡包已装备，高亮其当前所在槽位
+            ConstraintListView.TraversalActive().Do(view =>
             {
-                view.GetBehaviour<HighlightBehaviour>().SetHighlight(true);
-            }
+                PackConstraint constraint = view.Get<PackConstraint>();
+                if (constraint.Pack == pack)
+                {
+                    view.GetBehaviour<HighlightBehaviour>()?.SetHighlight(true);
+                }
+            });
+        }
+        else
+        {
+            // 未装备时保持原有逻辑：高亮第一个可用槽位
+            PackConstraint firstValidSlot = configManager.GetFirstValidUnlockedSlot(pack);
+            if (firstValidSlot == null) return;
+
+            ConstraintListView.TraversalActive().Do(view =>
+            {
+                if (view.Get<PackConstraint>() == firstValidSlot)
+                {
+                    view.GetBehaviour<HighlightBehaviour>()?.SetHighlight(true);
+                }
+            });
         }
     }
 
@@ -172,7 +208,9 @@ public class PackConfigPanel : PopupPanel
             // 不存在已装备的卡牌
             // 高亮所有合法选择
             configManager.PackSelections.Traversal()
-                .FilterObj(pack => configManager.IsCompatible(pack, constraint))
+            .FilterObj(pack => 
+                configManager.IsCompatible(pack, constraint) && 
+                !pack.IsEquipped)
                 .Do(pack => validPacks.Add(pack));
         }
 

@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -72,7 +73,8 @@ public class RunConfigPanel : Panel
     private void StartRun()
     {
         CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
-        RunConfig runConfig = new(characterProfile, DifficultyPickerView.GetSelection());
+        List<PackEntry> packEntries = AppManager.Instance.ConfigManager.GetEquippedPacks();
+        RunConfig runConfig = new(characterProfile, DifficultyPickerView.GetSelection(), packEntries);
         AppManager.Instance.Push(AppStateMachine.RUN, runConfig);
     }
     

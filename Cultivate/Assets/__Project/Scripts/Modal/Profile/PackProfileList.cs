@@ -23,6 +23,9 @@ public class PackProfileList : ListModel<PackProfile>, ISerializationCallbackRec
     public bool IsUnlocked(PackEntry entry)
         => Find(entry).IsUnlocked();
 
+    public void SetUnlocked(PackEntry entry, bool unlocked)
+        => Find(entry).SetUnlocked(unlocked);
+
     public void OnBeforeSerialize()
     {
     }

@@ -103,14 +103,20 @@ public class Profile : Addressable, ISerializationCallbackReceiver
                character._packPreset.PackEntries[slotIndex] == pack;
     }
 
-    public bool PackIsUnlocked(PackEntry entry)
-        => _packProfileList.IsUnlocked(entry);
-
     public bool CharacterIsUnlocked(CharacterEntry entry)
         => _characterProfileList.IsUnlocked(entry);
 
+    public bool PackIsUnlocked(PackEntry entry)
+        => _packProfileList.IsUnlocked(entry);
+
+    public void SetPackUnlocked(PackEntry entry, bool unlocked)
+        => _packProfileList.SetUnlocked(entry, unlocked);
+
     public bool SlotIsUnlocked(CharacterEntry entry, int slotIndex)
         => _characterProfileList.SlotIsUnlocked(entry, slotIndex);
+
+    public void SetSlotUnlocked(CharacterEntry entry, int slotIndex, bool unlocked)
+        => _characterProfileList.SetSlotUnlocked(entry, slotIndex, unlocked);
 
     public void OnBeforeSerialize()
     {

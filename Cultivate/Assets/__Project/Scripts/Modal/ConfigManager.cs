@@ -1,8 +1,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ConfigManager : Addressable
 {
@@ -218,10 +220,24 @@ public class ConfigManager : Addressable
                profile.PackIsGenerallyUnlocked(_character.GetEntry(), pack.Entry, constraint.SlotIndex);
     }
 
+    public List<PackEntry> GetEquippedPacks()
+    {
+        Assert.IsTrue(_packConstraints.Traversal().All(c => c.Pack != null));
+        return _packConstraints.Traversal().Map(c => c.Pack.Entry).ToList();
+    }
+
     public bool IsConfigurationValid()
     {
         PackConstraint firstInvalid = _packConstraints.First(constraint => constraint.IsEmpty || !constraint.Descriptor.Contains(constraint.Pack.Entry));
         return firstInvalid == null;
+    }
+
+    #endregion
+
+    #region MyRegion
+
+    public void Notify()
+    {
     }
 
     #endregion

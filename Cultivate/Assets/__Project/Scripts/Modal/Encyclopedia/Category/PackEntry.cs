@@ -1,24 +1,27 @@
 
 using System;
+using System.Linq;
+using CLLibrary;
+using UnityEngine;
 
 [Serializable]
 public class PackEntry : Entry, IPack
 {
-    public string Name;
-    public WuXing? WuXing;
-    public SkillEntry[] Cards;
-    public string Trivia;
+    [NonSerialized] public string Name;
+    [NonSerialized] public WuXing? WuXing;
+    [NonSerialized] public SkillEntry[] Cards;
+    [NonSerialized] public string Trivia;
     
     public PackEntry(string id,
         string name,
         WuXing? wuXing,
-        SkillEntry[] cards,
+        string[] cardNames,
         string trivia = null
     ) : base(id)
     {
         Name = name;
         WuXing = wuXing;
-        Cards = cards;
+        Cards = cardNames.Map(SkillEntry.FromName).ToArray();
         Trivia = trivia;
     }
 
