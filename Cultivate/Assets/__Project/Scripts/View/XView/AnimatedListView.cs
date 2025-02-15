@@ -107,14 +107,14 @@ public class AnimatedListView : ListView
 
     #endregion
 
-    public void RefreshPivotsAsync()
+    public virtual void RefreshPivotsAsync()
         => _activePool.Do(view =>
         {
             DelegatingView delegatingView = view as DelegatingView;
             delegatingView.GetAnimator().SetStateAsync(1);
         });
     
-    public void RefreshPivots()
+    public virtual void RefreshPivots()
         => _activePool.Do(view =>
         {
             DelegatingView delegatingView = view as DelegatingView;
