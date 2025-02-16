@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
+using System.Linq;
 
 [Serializable]
 public class Profile : Addressable, ISerializationCallbackReceiver
@@ -25,6 +26,8 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     [SerializeField] private RunEnvironment _runEnvironment;
     public RunEnvironment RunEnvironment => _runEnvironment;
+    
+    [NonSerialized] private Dirty<Dictionary<LockIndex, AchievementProfile>> _achievementCache;
 
     public void WriteRunEnvironment(RunEnvironment env)
     {
@@ -60,8 +63,10 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         _difficultyProfileList = difficultyProfileList ?? DifficultyProfileList.Default();
         _packProfileList = packProfileList ?? PackProfileList.Default();
         _achievementProfileList = achievementProfileList ?? AchievementProfileList.Default();
-
+        
         _finishedFirstRun = finishedFirstRun;
+        
+        _achievementCache = new Dirty<Dictionary<LockIndex, AchievementProfile>>(BuildAchievementCache);
     }
 
     public static Profile Default()
@@ -84,10 +89,25 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public bool HasSave()
         => _runEnvironment != null && _runEnvironment.IsLegit;
+    
+    private Dictionary<LockIndex, AchievementProfile> BuildAchievementCache()
+    {
+        var cache = new Dictionary<LockIndex, AchievementProfile>();
+        
+        foreach (AchievementProfile achievementProfile in _achievementProfileList.Traversal())
+        {
+            LockIndex? lockIndex = achievementProfile.GetEntry().GetLockIndex();
+            if (lockIndex == null)
+                continue;
+
+            cache[lockIndex.Value] = achievementProfile;
+        }
+        return cache;
+    }
 
     public bool PackIsGenerallyUnlocked(CharacterEntry character, PackEntry entry)
     {
-        if (_packProfileList.IsUnlocked(entry))
+        if (PackIsUnlocked(entry))
             return true;
 
         for (int i = 0; i < character._packPreset.PackEntries.Count; i++)
@@ -102,27 +122,32 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         
     public bool PackIsGenerallyUnlocked(CharacterEntry character, PackEntry pack, int slotIndex)
     {
-        if (_packProfileList.IsUnlocked(pack))
+        if (PackIsUnlocked(pack))
             return true;
         
-        return SlotIsUnlocked(character, slotIndex) && 
-               character._packPreset.PackEntries[slotIndex] == pack;
+        return SlotIsUnlocked(character, slotIndex) && character._packPreset.PackEntries[slotIndex] == pack;
     }
 
     public bool CharacterIsUnlocked(CharacterEntry entry)
-        => _characterProfileList.IsUnlocked(entry);
+        => _characterProfileList.Find(entry).IsUnlocked();
 
     public bool PackIsUnlocked(PackEntry entry)
-        => _packProfileList.IsUnlocked(entry);
-
-    public void SetPackUnlocked(PackEntry entry, bool unlocked)
-        => _packProfileList.SetUnlocked(entry, unlocked);
+        => _packProfileList.Find(entry).IsUnlocked();
 
     public bool SlotIsUnlocked(CharacterEntry entry, int slotIndex)
-        => _characterProfileList.SlotIsUnlocked(entry, slotIndex);
+        => _characterProfileList.Find(entry).SlotIsUnlocked(slotIndex);
 
-    public void SetSlotUnlocked(CharacterEntry entry, int slotIndex, bool unlocked)
-        => _characterProfileList.SetSlotUnlocked(entry, slotIndex, unlocked);
+    public void SetCharacterUnlockedQuietly(CharacterEntry entry, bool value)
+        => _characterProfileList.Find(entry).SetUnlockedQuietly(value);
+
+    public void SetPackUnlockedQuietly(PackEntry entry, bool value)
+        => _packProfileList.Find(entry).SetUnlockedQuietly(value);
+
+    public void SetSlotUnlockedQuietly(CharacterEntry entry, int slotIndex, bool value)
+        => _characterProfileList.Find(entry).SetSlotUnlockedQuietly(slotIndex, value);
+
+    public AchievementProfile GetAchievementProfileFromLockIndex(LockIndex lockIndex)
+        => _achievementCache.Value.TryGetValue(lockIndex, out var profile) ? profile : null;
 
     public void OnBeforeSerialize()
     {
@@ -138,9 +163,29 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             { "PackProfileList", () => _packProfileList },
             { "AchievementProfileList", () => _achievementProfileList },
         };
+
+        // 更新成就列表
+        UpdateAchievementProfiles();
         
-        // when new entry is added, order will be corrupted
-        // needs to fix order according to encyclopedia before using
+        _achievementCache = new Dirty<Dictionary<LockIndex, AchievementProfile>>(BuildAchievementCache);
+    }
+
+    private void UpdateAchievementProfiles()
+    {
+        // 获取所有已有成就的ID
+        var existingIds = new HashSet<string>(_achievementProfileList.Traversal()
+            .Select(p => p.GetEntry().GetId()));
+
+        // 遍历Encyclopedia中的所有成就
+        foreach (var achievementEntry in Encyclopedia.AchievementCategory.Traversal)
+        {
+            // 如果是新成就，添加对应的Profile
+            if (!existingIds.Contains(achievementEntry.GetId()))
+            {
+                Debug.Log($"新添加的成就: {achievementEntry.GetId()}");
+                _achievementProfileList.Add(new AchievementProfile(achievementEntry));
+            }
+        }
     }
 
     public void WriteRunResult(RunResult result)

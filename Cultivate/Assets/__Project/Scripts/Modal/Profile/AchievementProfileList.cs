@@ -22,9 +22,6 @@ public class AchievementProfileList : ListModel<AchievementProfile>, ISerializat
 
     public bool IsUnlocked(AchievementEntry entry)
         => Find(entry).IsUnlocked();
-
-    public void SetUnlocked(AchievementEntry entry, bool unlocked)
-        => Find(entry).SetUnlocked(unlocked);
         
     // public int GetProgress(AchievementEntry entry)
     //     => Find(entry).GetProgress();

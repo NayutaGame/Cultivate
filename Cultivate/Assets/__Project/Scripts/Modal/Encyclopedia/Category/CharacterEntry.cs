@@ -1,7 +1,6 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 [Serializable]
 public class CharacterEntry : Entry
@@ -10,9 +9,6 @@ public class CharacterEntry : Entry
     
     [NonSerialized] public string Description;
     [NonSerialized] public string AbilityDescription;
-    
-    // [NonSerialized] public string UnlockCondition;
-    [NonSerialized] public string UnlockConditionDescription;
 
     [NonSerialized] public RunClosure[] _runClosures;
     [NonSerialized] public StageClosure[] _stageClosures;
@@ -30,7 +26,6 @@ public class CharacterEntry : Entry
     {
         Description = description ?? "没有描述";
         AbilityDescription = abilityDescription ?? "没有技能描述";
-        UnlockConditionDescription = unlockConditionDescription ?? "没有解锁条件描述";
         _packPreset = packPreset ?? PackPreset.Default;
 
         _runClosures = runClosures ?? Array.Empty<RunClosure>();
@@ -45,6 +40,12 @@ public class CharacterEntry : Entry
     }
 
     public static implicit operator CharacterEntry(string id) => Encyclopedia.CharacterCategory[id];
+
+    // public static CharacterEntry FromName(string name)
+    //     => Encyclopedia.CharacterCategory.Traversal.FirstObj(e => e.GetName() == name);
+
+    public static CharacterEntry FromName(string name)
+        => name;
     
     public PrefabEntry GetStagePrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
 }

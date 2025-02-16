@@ -11,7 +11,7 @@ public class PackProfileList : ListModel<PackProfile>, ISerializationCallbackRec
         Encyclopedia.PackCategory.Traversal.Do(entry => Add(new PackProfile(entry, isDeveloper)));
     }
 
-    private PackProfile Find(PackEntry entry)
+    public PackProfile Find(PackEntry entry)
         => First(packProfile => packProfile.GetEntry() == entry);
 
     public static PackProfileList Default()
@@ -19,12 +19,6 @@ public class PackProfileList : ListModel<PackProfile>, ISerializationCallbackRec
 
     public static PackProfileList Developer()
         => new(true);
-
-    public bool IsUnlocked(PackEntry entry)
-        => Find(entry).IsUnlocked();
-
-    public void SetUnlocked(PackEntry entry, bool unlocked)
-        => Find(entry).SetUnlocked(unlocked);
 
     public void OnBeforeSerialize()
     {

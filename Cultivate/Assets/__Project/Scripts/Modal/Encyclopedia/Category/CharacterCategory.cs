@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using CLLibrary;
 
@@ -7,8 +8,7 @@ public class CharacterCategory : Category<CharacterEntry>
     {
         AddRange(new List<CharacterEntry>()
         {
-            new("徐福", 
-                unlockConditionDescription: "初始解锁",
+            new("徐福",
                 abilityDescription: "命元上限+2",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
@@ -30,8 +30,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         env.SetDMingYuanProcedure(2);
                     }),
                 }),
-            new("子非鱼", 
-                unlockConditionDescription: "存档等级达到2级",
+            new("子非鱼",
                 abilityDescription: "使用五行卡牌后，发生对应的流转",
                 stageClosures: new StageClosure[]
                 {
@@ -47,8 +46,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         await d.Owner.GainBuffProcedure("五行亲和");
                     }),
                 }),
-            new("子非燕", 
-                unlockConditionDescription: "存档等级达到3级",
+            new("子非燕",
                 abilityDescription: "流转步数为2",
                 stageClosures: new StageClosure[]
                 {
@@ -64,8 +62,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         await d.Owner.GainBuffProcedure("相克流转");
                     }),
                 }),
-            new("风雨晴", 
-                unlockConditionDescription: "存档等级达到5级",
+            new("风雨晴",
                 abilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
                 runClosures: new RunClosure[]
                 {
@@ -90,8 +87,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         d.Proficiency = 2;
                     }),
                 }),
-            new("彼此卿", 
-                unlockConditionDescription: "存档等级达到7级",
+            new("彼此卿",
                 abilityDescription: "卡组中第一张空位将模仿对方对位的牌" +
                                    "\n如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿的卡",
                 runClosures: new RunClosure[]
@@ -139,8 +135,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         env.SetVariable<SkillEntryDescriptor>("CopiedSkill", null);
                     }),
                 }),
-            new("梦乃遥", 
-                unlockConditionDescription: "存档等级达到10级",
+            new("梦乃遥",
                 abilityDescription: "梦乃遥的能力",
                 runClosures: new RunClosure[]
                 {

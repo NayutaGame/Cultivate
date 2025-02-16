@@ -1,5 +1,4 @@
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +12,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH001",
                 name: "测试成就",
-                description: "累计获得100金钱",
                 conditionDescription: "累计获得100金钱",
+                rewardDescription: "解锁累计获得100金钱成就",
                 runClosure: new(RunClosureDict.DID_SET_D_GOLD, 0, async (owner, details) => {
                     AchievementProfile p = (AchievementProfile)owner;
                     SetDGoldDetails d = (SetDGoldDetails)details;
@@ -36,6 +35,72 @@ public class AchievementCategory : Category<AchievementEntry>
 
                     Debug.Log("解锁累计获得100金钱成就");
                     p.Unlock();
+                })),
+            
+            new(id: "ACH002",
+                name: "解锁子非鱼",
+                conditionDescription: "存档等级达到2级",
+                rewardDescription: "可以使用子非鱼角色",
+                lockIndex: LockIndex.FromCharacter("子非鱼"),
+                runClosure: new(RunClosureDict.END_RUN, 0, async (owner, details) => {
+                    // 需要一个新的Event，在游戏结算分数还有其他内容之后触发
+
+                    // AchievementProfile p = (AchievementProfile)owner;
+                    // EndRunDetails d = (EndRunDetails)details;
+
+                    // if (p.IsUnlocked()) return;
+                    // if (d.Value <= 0) return;
+
+                    // const string TOTAL_GOLD_KEY = "total_gold";
+                    // int totalGold = p.Memory.PerformOperation(
+                    //     TOTAL_GOLD_KEY, 
+                    //     0, 
+                    //     value => value + d.Value
+                    // );
+
+                    // Debug.Log($"累计获得金钱: {totalGold}");
+
+                    // if (totalGold < 100)
+                    //     return;
+
+                    // Debug.Log("解锁累计获得100金钱成就");
+                    // p.Unlock();
+                })),
+            
+            new(id: "ACH003",
+                name: "解锁子非燕",
+                conditionDescription: "存档等级达到3级",
+                rewardDescription: "可以使用子非燕角色",
+                lockIndex: LockIndex.FromCharacter("子非燕"),
+                runClosure: new(RunClosureDict.END_RUN, 0, async (owner, details) => {
+                    // 需要一个新的Event，在游戏结算分数还有其他内容之后触发
+                })),
+            
+            new(id: "ACH004",
+                name: "解锁风雨晴",
+                conditionDescription: "存档等级达到5级",
+                rewardDescription: "可以使用风雨晴角色",
+                lockIndex: LockIndex.FromCharacter("风雨晴"),
+                runClosure: new(RunClosureDict.END_RUN, 0, async (owner, details) => {
+                    // 需要一个新的Event，在游戏结算分数还有其他内容之后触发
+                })),
+            
+            new(id: "ACH005",
+                name: "解锁彼此卿",
+                conditionDescription: "存档等级达到7级",
+                rewardDescription: "可以使用彼此卿角色",
+                lockIndex: LockIndex.FromCharacter("彼此卿"),
+                runClosure: new(RunClosureDict.END_RUN, 0, async (owner, details) => {
+                    // 需要一个新的Event，在游戏结算分数还有其他内容之后触发
+                })),
+            
+            new(id: "ACH006",
+                name: "解锁梦乃遥",
+                conditionDescription: "存档等级达到10级",
+                rewardDescription: "可以使用梦乃遥角色",
+                lockIndex: LockIndex.FromCharacter("梦乃遥"),
+                runClosure: new(RunClosureDict.END_RUN, 0, async (owner, details) => {
+                    // 需要一个新的Event，在游戏结算分数还有其他内容之后触发
                 })),
             
             // new(id: "ACH001",

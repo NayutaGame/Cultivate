@@ -25,6 +25,16 @@ public class DetailedCharacterProfileView : LegacySimpleView
         AbilityDescriptionText.text = p.GetEntry().AbilityDescription;
 
         UnlockConditionText.gameObject.SetActive(!p.IsUnlocked());
-        UnlockConditionText.text = p.GetEntry().UnlockConditionDescription;
+
+        var lockIndex = p.ToCharacterLockIndex();
+        var achievementProfile = AppManager.Instance.ProfileManager.GetCurrProfile().GetAchievementProfileFromLockIndex(lockIndex);
+        if (achievementProfile != null)
+        {
+            UnlockConditionText.text = achievementProfile.GetEntry().GetConditionDescription();
+        }
+        else
+        {
+            UnlockConditionText.text = "没有对应的解锁方法";
+        }
     }
 }

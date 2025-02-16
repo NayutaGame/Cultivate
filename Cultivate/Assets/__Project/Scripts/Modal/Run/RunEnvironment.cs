@@ -95,6 +95,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     [SerializeReference] private RunEntity _home;
     [SerializeField] private RunResult _result;
 
+    [SerializeReference] private List<AchievementEntry> _newlyUnlockedAchievements;
+
     [SerializeField] public bool IsLegit = true;
 
     private Dictionary<string, Func<object>> _accessors;
@@ -120,6 +122,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         _hand = new();
         _gold = new(0);
         _result = new();
+        _newlyUnlockedAchievements = new();
 
         _memory = new();
         _closureDict = new();
@@ -284,6 +287,18 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     public bool IsFinalJingJie()
         => _jingJie == _config.DifficultyProfile.GetEntry().FinalJingJie;
 
+    public void RecordNewlyUnlockedAchievement(AchievementEntry achievementEntry)
+    {
+        _newlyUnlockedAchievements.Add(achievementEntry);
+        AppManager.Instance.ProfileManager.SaveProcedureForAchievements(achievementEntry);
+    }
+
+    public IEnumerable<AchievementProfile> GetNewlyUnlockedAchievements()
+    {
+        Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        return _newlyUnlockedAchievements.Map(entry => profile.GetAchievementProfileFromLockIndex(entry.GetLockIndex().Value));
+    }
+
     #endregion
 
     #region Procedures
@@ -304,7 +319,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         _closureDict.SendEvent(RunClosureDict.START_RUN, d);
         StartRunNeuron.Invoke();
         
-        SaveProcedure();
+        AppManager.Instance.ProfileManager.SaveProcedure(this);
     }
 
     public void ContinueRunProcedure(ContinueRunDetails d)
@@ -958,7 +973,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
                     return;
                 }
                 
-                SaveProcedure();
+                AppManager.Instance.ProfileManager.SaveProcedure(this);
                 
                 panel = Map.CreatePanelFromCurrRoom();
                 
@@ -1020,11 +1035,10 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         Debug.Log($"Run Finished Time = {Util.FormatTime(_runFinishedTime)}");
     }
 
-    public void SaveProcedure()
+    public void WriteTime()
     {
         _loadedTime += DateTime.Now - _startTime;
         _startTime = DateTime.Now;
-        AppManager.Instance.ProfileManager.Save(this);
     }
 
     public void OnBeforeSerialize()
@@ -1050,6 +1064,11 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         _loadedTime = TimeSpan.FromMilliseconds(_miliseconds);
         
         InitNeurons();
+
+        _newlyUnlockedAchievements.Traversal().Do(e =>
+        {
+            e = string.IsNullOrEmpty(e.GetName()) ? null : Encyclopedia.AchievementCategory[e.GetName()];
+        });
 
         _memory = new();
         _closureDict = new();

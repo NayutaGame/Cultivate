@@ -6,17 +6,33 @@ using UnityEngine;
 public class PackProfile : ISerializationCallbackReceiver
 {
     [SerializeField] private PackEntry _entry;
-    [SerializeField] private bool _unlocked;
 
     public PackProfile(PackEntry entry, bool isDeveloper = false)
     {
         _entry = entry;
-        _unlocked = isDeveloper;
     }
     
     public PackEntry GetEntry() => _entry;
-    public bool IsUnlocked() => _unlocked;
-    public void SetUnlocked(bool value) => _unlocked = value;
+
+    public bool IsUnlocked()
+    {
+        var profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        var achievementProfile = profile.GetAchievementProfileFromLockIndex(ToLockIndex());
+        if (achievementProfile == null)
+            return true;
+        return achievementProfile.IsUnlocked();
+    }
+
+    public void SetUnlockedQuietly(bool value)
+    {
+        var profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        var achievementProfile = profile.GetAchievementProfileFromLockIndex(ToLockIndex());
+        if (achievementProfile == null)
+            return;
+        achievementProfile.SetUnlockedQuietly(value);
+    }
+
+    public LockIndex ToLockIndex() => LockIndex.FromPack(_entry.GetId());
 
     public void OnBeforeSerialize() { }
 

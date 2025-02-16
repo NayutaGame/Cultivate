@@ -32,4 +32,9 @@ public class PackEntry : Entry, IPack
     public WuXing? GetWuXing() => WuXing;
     public string GetDescription() => Description;
     public string GetTrivia() => Trivia;
+
+    public static implicit operator PackEntry(string id) => Encyclopedia.PackCategory[id];
+
+    public static PackEntry FromName(string name)
+        => Encyclopedia.PackCategory.Traversal.FirstObj(e => e.GetName() == name);
 }
