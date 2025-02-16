@@ -24,6 +24,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("Annotations")] public AnnotationView BuffAnnotation;
     [TabGroup("Annotations")] public AnnotationView FormationAnnotation;
     [TabGroup("Annotations")] public AnnotationView RoomAnnotation;
+    [TabGroup("Annotations")] public AnnotationView PackAnnotation;
     [TabGroup("Annotations")] public TextHint TextHint;
     
     [TabGroup("Others")]public PinAnchor PinAnchor;
@@ -63,6 +64,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "BuffAnnotation", () => BuffAnnotation },
             { "FormationAnnotation", () => FormationAnnotation },
             { "RoomAnnotation", () => RoomAnnotation },
+            { "PackAnnotation", () => PackAnnotation },
         };
 
         _volume.profile.TryGet(out _vignette);
@@ -74,7 +76,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         BuffAnnotation.CheckAwake();
         FormationAnnotation.CheckAwake();
         RoomAnnotation.CheckAwake();
-        
+        PackAnnotation.CheckAwake();
         MergePreresultView.CheckAwake();
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));

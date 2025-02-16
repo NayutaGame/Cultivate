@@ -13,6 +13,7 @@ public class Encyclopedia : Addressable
     public static SkillCategory SkillCategory;
     
     public static PackCategory PackCategory;
+    public static AchievementCategory AchievementCategory;
 
     public static EntityCategory EntityCategory;
     public static RoomCategory RoomCategory;
@@ -43,7 +44,8 @@ public class Encyclopedia : Addressable
         SkillCategory = new();
 
         PackCategory = new();
-
+        AchievementCategory = new();
+        
         EntityCategory = new();
         RoomCategory = new();
         FormationCategory = new();

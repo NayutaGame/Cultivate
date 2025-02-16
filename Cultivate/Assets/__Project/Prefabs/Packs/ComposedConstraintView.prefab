@@ -216,6 +216,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ConstraintView
       objectReference: {fileID: 0}
+    - target: {fileID: 6540194452546205950, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
+      propertyPath: _ib
+      value: 
+      objectReference: {fileID: 2405321879005697485}
+    - target: {fileID: 6540194452546205950, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
+      propertyPath: HoverTransform
+      value: 
+      objectReference: {fileID: 2389559373453481017}
     - target: {fileID: 8838977114607417665, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

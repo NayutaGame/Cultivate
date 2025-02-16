@@ -179,6 +179,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         RegisterList(difficultyEntry._runClosures);
         foreach (var additionalDifficultyEntry in difficultyEntry.InheritedDifficulties)
             RegisterList(additionalDifficultyEntry._runClosures);
+
+        AppManager.Instance.ProfileManager.GetCurrProfile().RegisterRunClosures(_closureDict);
     }
 
     private void RegisterList(RunClosure[] list)
@@ -194,6 +196,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         UnregisterList(difficultyEntry._runClosures);
         foreach (var additionalDifficultyEntry in difficultyEntry.InheritedDifficulties)
             UnregisterList(additionalDifficultyEntry._runClosures);
+
+        AppManager.Instance.ProfileManager.GetCurrProfile().UnregisterRunClosures(_closureDict);
     }
 
     private void UnregisterList(RunClosure[] list)

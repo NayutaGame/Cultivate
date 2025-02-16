@@ -12,4 +12,13 @@ public class ConfigPack : IPack
 
     public string GetName()
         => Entry.Name;
+
+    public WuXing? GetWuXing()
+        => Entry.WuXing;
+
+    public string GetDescription()
+        => Entry.Description;
+
+    public string GetTrivia()
+        => Entry.Trivia;
 }

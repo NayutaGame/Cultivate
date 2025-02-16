@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
 [Serializable]
@@ -16,10 +17,11 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public DifficultyProfileList DifficultyProfileList => _difficultyProfileList;
     [SerializeField] private PackProfileList _packProfileList;
     public PackProfileList PackProfileList => _packProfileList;
+    [SerializeField] private AchievementProfileList _achievementProfileList;
+    public AchievementProfileList AchievementProfileList => _achievementProfileList;
 
-    // private AchievementProfileList _achievementProfileList;
-
-    // ResultProfile
+    // [SerializeField] private ResultProfileList _resultProfileList;
+    // public ResultProfileList ResultProfileList => _resultProfileList;
 
     [SerializeField] private RunEnvironment _runEnvironment;
     public RunEnvironment RunEnvironment => _runEnvironment;
@@ -41,6 +43,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         CharacterProfileList characterProfileList = null,
         DifficultyProfileList difficultyProfileList = null,
         PackProfileList packProfileList = null,
+        AchievementProfileList achievementProfileList = null,
         bool finishedFirstRun = false)
     {
         _accessors = new()
@@ -49,12 +52,14 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             { "CharacterProfileList", () => _characterProfileList },
             { "DifficultyProfileList", () => _difficultyProfileList },
             { "PackProfileList", () => _packProfileList },
+            { "AchievementProfileList", () => _achievementProfileList },
         };
 
         _levelProfile = levelProfile ?? LevelProfile.Default();
         _characterProfileList = characterProfileList ?? CharacterProfileList.Default();
         _difficultyProfileList = difficultyProfileList ?? DifficultyProfileList.Default();
         _packProfileList = packProfileList ?? PackProfileList.Default();
+        _achievementProfileList = achievementProfileList ?? AchievementProfileList.Default();
 
         _finishedFirstRun = finishedFirstRun;
     }
@@ -68,6 +73,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             CharacterProfileList.Developer(),
             DifficultyProfileList.Developer(),
             PackProfileList.Developer(),
+            AchievementProfileList.Developer(),
             true);
 
     public bool IsFirstRunFinished()
@@ -130,6 +136,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             { "CharacterProfileList", () => _characterProfileList },
             { "DifficultyProfileList", () => _difficultyProfileList },
             { "PackProfileList", () => _packProfileList },
+            { "AchievementProfileList", () => _achievementProfileList },
         };
         
         // when new entry is added, order will be corrupted
@@ -144,5 +151,57 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public CharacterProfile FirstCharacterProfile()
     {
         return _characterProfileList[0];
+    }
+
+    public void RegisterRunClosures(RunClosureDict runClosureDict)
+    {
+        _achievementProfileList.Traversal().Do(achievementProfile =>
+        {
+            RunClosureOwner owner = achievementProfile;
+            RunClosure runClosure = achievementProfile.GetEntry().GetRunClosure();
+            if (runClosure == null)
+                return;
+
+            runClosureDict.Register(owner, runClosure);
+        });
+    }
+
+    public void UnregisterRunClosures(RunClosureDict runClosureDict)
+    {
+        _achievementProfileList.Traversal().Do(achievementProfile =>
+        {
+            RunClosureOwner owner = achievementProfile;
+            RunClosure runClosure = achievementProfile.GetEntry().GetRunClosure();
+            if (runClosure == null)
+                return;
+
+            runClosureDict.Unregister(owner, runClosure);
+        });
+    }
+
+    public void RegisterStageClosures(StageClosureDict stageClosureDict)
+    {
+        _achievementProfileList.Traversal().Do(achievementProfile =>
+        {
+            StageClosureOwner owner = achievementProfile;
+            StageClosure stageClosure = achievementProfile.GetEntry().GetStageClosure();
+            if (stageClosure == null)
+                return;
+
+            stageClosureDict.Register(owner, stageClosure);
+        });
+    }
+
+    public void UnregisterStageClosures(StageClosureDict stageClosureDict)
+    {
+        _achievementProfileList.Traversal().Do(achievementProfile =>
+        {
+            StageClosureOwner owner = achievementProfile;
+            StageClosure stageClosure = achievementProfile.GetEntry().GetStageClosure();
+            if (stageClosure == null)
+                return;
+
+            stageClosureDict.Unregister(owner, stageClosure);
+        });
     }
 }

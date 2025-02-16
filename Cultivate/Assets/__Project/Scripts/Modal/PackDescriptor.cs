@@ -1,7 +1,7 @@
 
 using System;
 
-public class PackDescriptor : IPack
+public class PackDescriptor
 {
     private Predicate<PackEntry> _pred;
     private PackEntry _entry;
@@ -66,6 +66,5 @@ public class PackDescriptor : IPack
 
         // 如果没有任何条件，则返回"任意"
         return "任意";
-
     }
 }

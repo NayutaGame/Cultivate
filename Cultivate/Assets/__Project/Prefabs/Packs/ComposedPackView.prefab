@@ -209,6 +209,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8086324285004126783}
     m_Modifications:
+    - target: {fileID: 7022722011180276520, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
+      propertyPath: _ib
+      value: 
+      objectReference: {fileID: 4113891524565381955}
+    - target: {fileID: 7022722011180276520, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
+      propertyPath: HoverTransform
+      value: 
+      objectReference: {fileID: 9108489489931938011}
     - target: {fileID: 7379725429805364584, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

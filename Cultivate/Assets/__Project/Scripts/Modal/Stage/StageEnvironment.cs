@@ -39,6 +39,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         ClearResults();
 
         RegisterConfig();
+        AppManager.Instance.ProfileManager.GetCurrProfile().RegisterStageClosures(_closureDict);
         RegisterSkillClosures();
 
         await EnteringProcedure();
@@ -58,6 +59,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await ForcedCommitProcedure();
 
         UnregisterSkillClosures();
+        AppManager.Instance.ProfileManager.GetCurrProfile().UnregisterStageClosures(_closureDict);
         UnregisterConfig();
 
         await AnimationToFinishProcedure();
@@ -68,6 +70,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (!_config.Animated)
             return;
         
+        // 当主场客场都没有退场动画时，等待3秒看起来像卡了
         await UniTask.WaitForSeconds(3);
     }
 

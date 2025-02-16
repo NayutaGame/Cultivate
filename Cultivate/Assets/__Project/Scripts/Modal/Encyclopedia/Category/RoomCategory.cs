@@ -2306,6 +2306,40 @@ public class RoomCategory : Category<RoomEntry>
 
                     return A;
                 }),
+                
+            // new(id:                                 "卖剑",
+            //     description:                        "卖剑",
+            //     ladderBound:                        new Bound(0, 15),
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
+            //         DialogPanelDescriptor A = new(
+            //             titleText: "剑客",
+            //             detailedText: "你遇到一位老剑客，他说自己有一把祖传宝剑要卖。" +
+            //                         "\n\n"此剑削铁如泥，百炼精钢，是把难得的好剑。"老剑客说道，"只是我年事已高，已无力挥剑，不如转让有缘人。"" +
+            //                         "\n\n你仔细一看，发现这把剑确实工艺精湛，但似乎并非他所说的宝剑。",
+            //             "买下这把剑", "指出这把剑是赝品");
+
+            //         DialogPanelDescriptor B = new DialogPanelDescriptor(
+            //                 titleText: "剑客",
+            //                 detailedText: $"你买下了这把剑。老剑客感慨道："能遇到懂剑之人，此剑不枉此生。"" +
+            //                             "\n\n临走前，他教了你一招剑法。这招剑法看似普通，实则暗含玄机。" +
+            //                             $"\n\n获得{baseGoldReward}气血上限")
+            //             .SetReward(Reward.FromHealth(baseGoldReward));
+
+            //         DialogPanelDescriptor C = new DialogPanelDescriptor(
+            //                 titleText: "剑客",
+            //                 detailedText: "老剑客大笑："年轻人好眼力！这确实不是什么宝剑，而是我年轻时随身佩剑。" +
+            //                             "\n\n"我一生行走江湖，最大的领悟就是：剑在人在，剑亡人亡。重要的从来不是剑的品质，而是持剑之人的心境。"" +
+            //                             $"\n\n老剑客赠你一些盘缠。获得{baseGoldReward}金")
+            //             .SetReward(Reward.FromGold(baseGoldReward));
+                    
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+
+            //         return A;
+            //     }),
 
             new(id:                                 "守株待兔",
                 description:                        "守株待兔",
