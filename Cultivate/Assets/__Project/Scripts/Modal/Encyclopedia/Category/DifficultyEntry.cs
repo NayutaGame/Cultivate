@@ -54,4 +54,9 @@ public class DifficultyEntry : Entry
 
     public static implicit operator DifficultyEntry(string id) => Encyclopedia.DifficultyCategory[id];
     public static implicit operator DifficultyEntry(int index) => Encyclopedia.DifficultyCategory[index];
+
+    public float GetExperienceMultiplier()
+    {
+        return 1 + _order * 0.2f;
+    }
 }

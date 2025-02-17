@@ -55,7 +55,7 @@ public class RoomCategory : Category<RoomEntry>
                             return B;
                         }
                         
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Victory);
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
                         return null;
                     });
 
@@ -73,7 +73,7 @@ public class RoomCategory : Category<RoomEntry>
                             return B;
                         }
                         
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Defeat);
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
                         return null;
                     });
 
@@ -472,7 +472,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Victory);
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
                         return null;
                     });
 
@@ -3302,13 +3302,13 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Victory);
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
                         return null;
                     });
 
                     A[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunResultState.Defeat);
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
                         return null;
                     });
 

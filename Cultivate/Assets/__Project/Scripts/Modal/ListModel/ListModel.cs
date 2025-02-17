@@ -132,13 +132,3 @@ public class ListModel<T> : IListModel
     public int IndexOf(T item)
         => _list.IndexOf(item);
 }
-
-public interface IListModel
-{
-    event Func<int, object, UniTask> InsertEvent;
-    event Func<int, UniTask> RemoveAtEvent;
-    event Func<int, UniTask> ModifiedEvent;
-    event Func<UniTask> ResyncEvent;
-    int Count();
-    object Get(int index);
-}

@@ -22,4 +22,26 @@ public class LevelProfile
     
     public static LevelProfile Developer()
         => new(10, 1000);
+
+    public void GainExperience(int experienceGain)
+    {
+        _experience += experienceGain;
+
+        const int EXPERIENCE_PER_LEVEL = 1000;
+
+        int levelUpCount = _experience / EXPERIENCE_PER_LEVEL;
+        _experience = _experience % EXPERIENCE_PER_LEVEL;
+
+        _level += levelUpCount;
+    }
+
+    public (int, int) GainExperienceDryRun(int experienceGain)
+    {
+        const int EXPERIENCE_PER_LEVEL = 1000;
+
+        int finalExperience = (_experience + experienceGain) % EXPERIENCE_PER_LEVEL;
+        int finalLevel = _level + (_experience + experienceGain) / EXPERIENCE_PER_LEVEL;
+
+        return (finalExperience, finalLevel);
+    }
 }

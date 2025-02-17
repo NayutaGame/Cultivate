@@ -257,28 +257,7 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
-                        new BattleRoomDescriptor(1, 4, 4),
-                        new AscensionRoomDescriptor(0),
-                    },
-                    new RoomDescriptor[]
-                    {
-                        new BattleRoomDescriptor(1, 4, 4),
-                        new AscensionRoomDescriptor(4),
-                    },
-                    new RoomDescriptor[]
-                    {
-                        new BattleRoomDescriptor(1, 4, 4),
-                        new AscensionRoomDescriptor(7),
-                    },
-                    new RoomDescriptor[]
-                    {
-                        new BattleRoomDescriptor(1, 4, 4),
-                        new AscensionRoomDescriptor(10),
-                    },
-                    new RoomDescriptor[]
-                    {
-                        new BattleRoomDescriptor(1, 4, 4),
-                        new SuccessRoomDescriptor(13),
+                        new DirectRoomDescriptor(0, "快速结算"),
                     },
                 }),
             

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 [Serializable]
 public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallbackReceiver
@@ -293,7 +294,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         AppManager.Instance.ProfileManager.SaveProcedureForAchievements(achievementEntry);
     }
 
-    public IEnumerable<AchievementProfile> GetNewlyUnlockedAchievements()
+    public IEnumerable<AchievementProfile> TraversalNewlyUnlockedAchievements()
     {
         Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
         return _newlyUnlockedAchievements.Map(entry => profile.GetAchievementProfileFromLockIndex(entry.GetLockIndex().Value));
@@ -364,17 +365,6 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         
         JingJieChangedNeuron.Invoke(d);
     }
-
-    public void GuideProcedure(Signal signal)
-    {
-        Guide guide = Panel.GetGuideDescriptor();
-        guide?.ReceiveSignal(Panel, signal);
-        if (guide != null)
-            CanvasManager.Instance.RefreshGuide();
-    }
-
-    public void GuideProcedure(DeckChangedDetails d)
-        => GuideProcedure(new DeckChangedSignal(d.FromIndex, d.ToIndex));
 
     private StageResult Simulate()
     {
@@ -643,7 +633,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
         // register this as a defeat check
         if (GetMingYuan().Curr <= 0)
-            CommitRunProcedure(RunResult.RunResultState.Defeat);
+            CommitRunProcedure(RunResult.RunOutcome.Defeated);
     }
 
     public void SetDGoldProcedure(int value)
@@ -725,8 +715,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     public void SelectOptionProcedure(SelectOptionDetails d)
     {
         SelectOptionNeuron.Invoke(d);
-        Signal signal = new SelectedOptionSignal(d.SelectedIndex);
-        ReceiveSignalProcedure(signal);
+        ReceiveSignalProcedure(new SelectedOptionSignal(d.SelectedIndex));
     }
     
     #endregion
@@ -867,14 +856,12 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     
     public void ConfirmSelectionsProcedure(List<SkillEntryDescriptor> descriptors)
     {
-        Signal signal = new ConfirmSkillsSignal(descriptors);
-        ReceiveSignalProcedure(signal);
+        ReceiveSignalProcedure(new ConfirmSkillsSignal(descriptors));
     }
 
     public void ConfirmDeckSelectionsProcedure(List<DeckIndex> indices)
     {
-        Signal signal = new ConfirmDeckSignal(indices);
-        ReceiveSignalProcedure(signal);
+        ReceiveSignalProcedure(new ConfirmDeckSignal(indices));
     }
 
     public void RemoveSkillProcedure(DeckIndex deckIndex)
@@ -946,9 +933,6 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     
     public void ReceiveSignalProcedure(Signal signal)
     {
-        if (signal is DeckChangedSignal)
-            return;
-
         if (RunIsFinished())
             return;
 
@@ -958,7 +942,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         {
             if (Map.IsAboutToFinish())
             {
-                CommitRunProcedure(RunResult.RunResultState.Victory);
+                CommitRunProcedure(RunResult.RunOutcome.Victorious);
                 return;
             }
             else
@@ -969,7 +953,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
                 bool cond2 = Map.GetCurrRoom().GetDescriptor() is AscensionRoomDescriptor && IsFinalJingJie();
                 if (cond1 || cond2)
                 {
-                    CommitRunProcedure(RunResult.RunResultState.Victory);
+                    CommitRunProcedure(RunResult.RunOutcome.Victorious);
                     return;
                 }
                 
@@ -990,6 +974,17 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         PanelChangedNeuron.Invoke(panelChangedDetails);
     }
 
+    public void GuideProcedure(DeckChangedDetails d)
+        => GuideProcedure(new DeckChangedSignal(d.FromIndex, d.ToIndex));
+
+    public void GuideProcedure(Signal signal)
+    {
+        Guide guide = Panel.GetGuideDescriptor();
+        guide?.ReceiveSignal(Panel, signal);
+        if (guide != null)
+            CanvasManager.Instance.RefreshGuide();
+    }
+
     private bool Step()
     {
         if (Map.IsLastStep())
@@ -1002,13 +997,14 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         return false;
     }
 
-    public void CommitRunProcedure(RunResult.RunResultState state)
+    public void CommitRunProcedure(RunResult.RunOutcome state)
     {
-        _result.SetState(state);
+        Assert.IsFalse(RunIsFinished(), "尝试结算一个已经结束的 Run");
 
+        _result.SetOutcome(state);
         _runFinishedTime = _loadedTime + (DateTime.Now - _startTime);
         
-        RunResultPanelDescriptor resultPanel = new RunResultPanelDescriptor(_result);
+        RunResultPanelDescriptor resultPanel = new RunResultPanelDescriptor(this);
         
         PanelChangedDetails panelChangedDetails = new(Panel, resultPanel);
         Panel = resultPanel;
@@ -1016,7 +1012,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     }
 
     public bool RunIsFinished()
-        => _result.GetState() != RunResult.RunResultState.Unfinished;
+        => _result.GetOutcome() != RunResult.RunOutcome.InProgress;
 
     private void InitPanel()
     {

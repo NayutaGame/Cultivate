@@ -190,7 +190,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public void WriteRunResult(RunResult result)
     {
-        Debug.Log(result.GetState());
+        Debug.Log(result.GetOutcome());
     }
 
     public CharacterProfile FirstCharacterProfile()
@@ -249,4 +249,16 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             stageClosureDict.Unregister(owner, stageClosure);
         });
     }
+
+    public int GetExperience()
+        => _levelProfile.Experience;
+
+    public int GetLevel()
+        => _levelProfile.Level;
+
+    public void GainExperience(int experienceGain)
+        => _levelProfile.GainExperience(experienceGain);
+
+    public (int, int) GainExperienceDryRun(int experienceGain)
+        => _levelProfile.GainExperienceDryRun(experienceGain);
 }

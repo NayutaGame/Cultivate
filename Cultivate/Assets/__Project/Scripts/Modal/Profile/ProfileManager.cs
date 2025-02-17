@@ -66,8 +66,8 @@ public class ProfileManager : Addressable
         // case存档损坏
     }
 
-    public static void WriteRunResultToCurrent(RunResult result)
-        => AppManager.Instance.ProfileManager._profileList.GetCurrent().WriteRunResult(result);
+    public void WriteRunResultToCurrent(RunResult result)
+        => GetCurrProfile().WriteRunResult(result);
 
     public Profile GetCurrProfile()
         => _profileList.GetCurrent();
