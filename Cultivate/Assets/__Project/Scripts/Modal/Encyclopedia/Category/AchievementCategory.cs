@@ -1,6 +1,5 @@
 
 using System.Collections.Generic;
-using UnityEngine;
 
 public class AchievementCategory : Category<AchievementEntry>
 {
@@ -43,11 +42,11 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromCharacter("子非鱼"),
                 runClosure: new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
                     AchievementProfile p = (AchievementProfile)owner;
-                    CommitRunDetails d = (CommitRunDetails)details;
+                    RunCommitDetails d = (RunCommitDetails)details;
 
                     if (p.IsUnlocked()) return;
-                    if (AppManager.Instance.ProfileManager.GetCurrProfile().levelProfile.Level < 2) return;
-                    if (!d.Env.IsWin) return;
+                    if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 2) return;
+                    if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
 
                     p.Unlock();
                 })),
@@ -59,11 +58,11 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromCharacter("子非燕"),
                 runClosure: new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
                     AchievementProfile p = (AchievementProfile)owner;
-                    CommitRunDetails d = (CommitRunDetails)details;
+                    RunCommitDetails d = (RunCommitDetails)details;
 
                     if (p.IsUnlocked()) return;
-                    if (AppManager.Instance.ProfileManager.GetCurrProfile().levelProfile.Level < 3) return;
-                    if (!d.Env.IsWin) return;
+                    if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 3) return;
+                    if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
 
                     p.Unlock();
                 })),
@@ -75,11 +74,11 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromCharacter("风雨晴"),
                 runClosure: new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
                     AchievementProfile p = (AchievementProfile)owner;
-                    CommitRunDetails d = (CommitRunDetails)details;
+                    RunCommitDetails d = (RunCommitDetails)details;
 
                     if (p.IsUnlocked()) return;
-                    if (AppManager.Instance.ProfileManager.GetCurrProfile().levelProfile.Level < 5) return;
-                    if (!d.Env.IsWin) return;
+                    if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 5) return;
+                    if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
 
                     p.Unlock();
                 })),
@@ -91,11 +90,11 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromCharacter("彼此卿"),
                 runClosure: new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
                     AchievementProfile p = (AchievementProfile)owner;
-                    CommitRunDetails d = (CommitRunDetails)details;
+                    RunCommitDetails d = (RunCommitDetails)details;
 
                     if (p.IsUnlocked()) return;
-                    if (AppManager.Instance.ProfileManager.GetCurrProfile().levelProfile.Level < 7) return;
-                    if (!d.Env.IsWin) return;
+                    if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 7) return;
+                    if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
 
                     p.Unlock();
                 })),
@@ -107,11 +106,11 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromCharacter("梦乃遥"),
                 runClosure: new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
                     AchievementProfile p = (AchievementProfile)owner;
-                    CommitRunDetails d = (CommitRunDetails)details;
+                    RunCommitDetails d = (RunCommitDetails)details;
 
                     if (p.IsUnlocked()) return;
-                    if (AppManager.Instance.ProfileManager.GetCurrProfile().levelProfile.Level < 10) return;
-                    if (!d.Env.IsWin) return;
+                    if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 10) return;
+                    if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
 
                     p.Unlock();
                 })),
@@ -121,20 +120,20 @@ public class AchievementCategory : Category<AchievementEntry>
                 name: "解锁徐福的卡槽1",
                 conditionDescription: "以徐福取得难度8的胜利",
                 rewardDescription: "可以使用徐福的卡槽1",
-                lockIndex: LockIndex.FromSlot(1),
+                lockIndex: LockIndex.FromSlot("徐福", 0),
                 runClosure: new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
                     AchievementProfile p = (AchievementProfile)owner;
-                    CommitRunDetails d = (CommitRunDetails)details;
+                    RunCommitDetails d = (RunCommitDetails)details;
 
                     if (p.IsUnlocked()) return;
-                    if (AppManager.Instance.ProfileManager.GetCurrProfile().difficultyProfile.GetEntry().Order < 8) return;
-                    if (d.Env.RunConfig.characterProfile.GetEntry().GetName() != "徐福") return;
-                    if (!d.Env.IsWin) return;
+                    if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 10) return;
+                    if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
+                    if (d.RunEnvironment.GetRunConfig().CharacterProfile.GetEntry().GetName() != "徐福") return;
 
                     p.Unlock();
                 })),
         });
     }
 
-    public virtual AchievementEntry DefaultEntry() => this["ACH001"];
+    // public virtual AchievementEntry DefaultEntry() => this["ACH001"];
 }

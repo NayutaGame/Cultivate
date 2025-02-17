@@ -1008,6 +1008,9 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         
         PanelChangedDetails panelChangedDetails = new(Panel, resultPanel);
         Panel = resultPanel;
+
+        _closureDict.SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
+
         PanelChangedNeuron.Invoke(panelChangedDetails);
     }
 

@@ -25,6 +25,7 @@ public class RunClosureDict : Dictionary<int, RunClosureList>
     public static readonly int DID_DEPLETE           = 119;
     public static readonly int WIL_MERGE             = 120;
     public static readonly int DID_MERGE             = 121;
+    public static readonly int DID_COMMIT_RUN        = 122;
 
     public void Register(RunClosureOwner listener, RunClosure closure)
     {
