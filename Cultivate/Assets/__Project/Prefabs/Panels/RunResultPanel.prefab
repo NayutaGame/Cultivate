@@ -2690,7 +2690,7 @@ MonoBehaviour:
   PlayTimeText: {fileID: 3034176731356070473}
   AchievementEntryList: {fileID: 0}
   ExperienceSlider: {fileID: 1421089997790360877}
-  ExperienceGainText: {fileID: 2835607576386139802}
+  ExperienceGainText: {fileID: 4987799152581131511}
   LevelText: {fileID: 6366687107141980776}
   UnlockList: {fileID: 0}
 --- !u!1 &6277480520984988659

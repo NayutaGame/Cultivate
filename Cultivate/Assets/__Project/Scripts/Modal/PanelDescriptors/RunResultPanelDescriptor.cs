@@ -44,9 +44,6 @@ public class RunResultPanelDescriptor : PanelDescriptor
         _initialLevel = _profile.GetLevel();
 
         (_finalExperience, _finalLevel) = _profile.GainExperienceDryRun(_experienceGain);
-        
-        // 删除存档中的Env
-        // AppManager.Instance.ProfileManager.DeleteEnv();
     }
 
     public override void DefaultEnter(PanelDescriptor panelDescriptor)

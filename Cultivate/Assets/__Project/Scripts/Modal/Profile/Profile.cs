@@ -25,8 +25,12 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     // public ResultProfileList ResultProfileList => _resultProfileList;
 
     [SerializeField] private RunEnvironment _runEnvironment;
-    public RunEnvironment RunEnvironment => _runEnvironment;
-    
+    public RunEnvironment RunEnvironment
+    {
+        get => _runEnvironment;
+        set => _runEnvironment = value;
+    }
+
     [NonSerialized] private Dirty<Dictionary<LockIndex, AchievementProfile>> _achievementCache;
 
     public void WriteRunEnvironment(RunEnvironment env)

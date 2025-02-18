@@ -1,4 +1,6 @@
 
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using System.Linq;
 using UnityEngine;
@@ -8,7 +10,8 @@ public class ConsoleEditorWindow : EditorWindow
     private enum Tab
     {
         UnlockContent,  // 角色/槽位/卡包
-        Achievements    // 成就列表
+        Achievements,   // 成就列表
+        Analytics      // 数据分析
     }
     
     private Vector2 _scrollPosition;
@@ -100,7 +103,98 @@ public class ConsoleEditorWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
         }
     }
+
+    private SkillDistributionKey? _selectedKey = null;  // 当前选中的分组
     
+    private void DrawAnalyticsTab()
+    {
+        EditorGUILayout.LabelField("分布", EditorStyles.boldLabel);
+        
+        var skills = Encyclopedia.SkillCategory.Traversal
+            .Where(s => s.WithinPool)
+            .Where(s => s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Mana);
+
+        var distribution = skills
+            .GroupBy(s => new SkillDistributionKey(
+                s.LowestJingJie,
+                s.GetWuXing()
+            ))
+            .ToDictionary(
+                g => g.Key,
+                g => g.ToList()  // 保存整个列表而不是仅计数
+            );
+
+        // 绘制表格
+        EditorGUILayout.BeginVertical("box");
+        DrawAnalyticsTableHeader();
+        
+        foreach (var jingJie in JingJie.Traversal)
+        {
+            DrawAnalyticsTableRow(jingJie, distribution);
+        }
+        
+        EditorGUILayout.EndVertical();
+
+        // 显示选中分组的详细信息
+        if (_selectedKey.HasValue && distribution.ContainsKey(_selectedKey.Value))
+        {
+            EditorGUILayout.Space(10);
+            EditorGUILayout.BeginVertical("box");
+            
+            var selectedSkills = distribution[_selectedKey.Value];
+            EditorGUILayout.LabelField(
+                $"境界：{_selectedKey.Value.JingJie} 五行：{_selectedKey.Value.WuXing} " +
+                $"(共{selectedSkills.Count}个)",
+                EditorStyles.boldLabel
+            );
+
+            foreach (var skill in selectedSkills)
+            {
+                EditorGUILayout.LabelField(skill.GetName());
+            }
+            
+            EditorGUILayout.EndVertical();
+        }
+    }
+
+    private void DrawAnalyticsTableHeader()
+    {
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("境界/五行", GUILayout.Width(100));
+        foreach (WuXing wuxing in WuXing.Traversal)
+        {
+            GUILayout.Label(wuxing.ToString(), GUILayout.Width(50));
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private void DrawAnalyticsTableRow(JingJie jingJie, Dictionary<SkillDistributionKey, List<SkillEntry>> distribution)
+    {
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label(jingJie.ToString(), GUILayout.Width(100));
+        
+        foreach (WuXing wuxing in WuXing.Traversal)
+        {
+            var key = new SkillDistributionKey(jingJie, wuxing);
+            int count = distribution.GetValueOrDefault(key)?.Count ?? 0;
+            
+            var originalColor = GUI.backgroundColor;
+            GUI.backgroundColor = count == 0 ? Color.gray : 
+                                count < 3 ? Color.yellow : 
+                                Color.green;
+            
+            // 使用按钮替代标签
+            if (GUILayout.Button(count.ToString(), GUILayout.Width(50)))
+            {
+                _selectedKey = count > 0 ? key : null;  // 只有有技能时才选中
+            }
+            
+            GUI.backgroundColor = originalColor;
+        }
+        
+        EditorGUILayout.EndHorizontal();
+    }
+
     private void OnGUI()
     {
         if (!Application.isPlaying)
@@ -115,13 +209,14 @@ public class ConsoleEditorWindow : EditorWindow
             _currentTab = Tab.UnlockContent;
         if (GUILayout.Toggle(_currentTab == Tab.Achievements, "成就列表", EditorStyles.toolbarButton))
             _currentTab = Tab.Achievements;
+        if (GUILayout.Toggle(_currentTab == Tab.Analytics, "数据分析", EditorStyles.toolbarButton))
+            _currentTab = Tab.Analytics;
         EditorGUILayout.EndHorizontal();
         
         EditorGUILayout.Space(10);
         
         _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
         
-        // 根据当前Tab绘制不同内容
         switch (_currentTab)
         {
             case Tab.UnlockContent:
@@ -129,6 +224,9 @@ public class ConsoleEditorWindow : EditorWindow
                 break;
             case Tab.Achievements:
                 DrawAchievementsTab();
+                break;
+            case Tab.Analytics:
+                DrawAnalyticsTab();
                 break;
         }
         
@@ -177,6 +275,31 @@ public class ConsoleEditorWindow : EditorWindow
             
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space(5);
+        }
+    }
+
+    private struct SkillDistributionKey
+    {
+        public JingJie JingJie;
+        public WuXing? WuXing;
+
+        public SkillDistributionKey(JingJie jingJie, WuXing? wuXing)
+        {
+            JingJie = jingJie;
+            WuXing = wuXing;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is SkillDistributionKey other))
+                return false;
+            
+            return JingJie == other.JingJie && WuXing == other.WuXing;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(JingJie, WuXing);
         }
     }
 }

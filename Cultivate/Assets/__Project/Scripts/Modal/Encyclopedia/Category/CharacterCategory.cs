@@ -32,6 +32,15 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
             new("子非鱼",
                 abilityDescription: "使用五行卡牌后，发生对应的流转",
+                packPreset: new PackPreset(new List<PackEntry> {
+                    Encyclopedia.PackCategory["0001"],
+                    Encyclopedia.PackCategory["0004"],
+                    Encyclopedia.PackCategory["0005"],
+                    Encyclopedia.PackCategory["0007"],
+                    Encyclopedia.PackCategory["0009"],
+                    Encyclopedia.PackCategory["0008"],
+                    Encyclopedia.PackCategory["0010"],
+                }),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -48,6 +57,15 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
             new("子非燕",
                 abilityDescription: "流转步数为2",
+                packPreset: new PackPreset(new List<PackEntry> {
+                    Encyclopedia.PackCategory["0002"],
+                    Encyclopedia.PackCategory["0003"],
+                    Encyclopedia.PackCategory["0005"],
+                    Encyclopedia.PackCategory["0008"],
+                    Encyclopedia.PackCategory["0010"],
+                    Encyclopedia.PackCategory["0008"],
+                    Encyclopedia.PackCategory["0010"],
+                }),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -64,6 +82,15 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
             new("风雨晴",
                 abilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
+                packPreset: new PackPreset(new List<PackEntry> {
+                    Encyclopedia.PackCategory["0001"],
+                    Encyclopedia.PackCategory["0003"],
+                    Encyclopedia.PackCategory["0006"],
+                    Encyclopedia.PackCategory["0007"],
+                    Encyclopedia.PackCategory["0009"],
+                    Encyclopedia.PackCategory["0008"],
+                    Encyclopedia.PackCategory["0010"],
+                }),
                 runClosures: new RunClosure[]
                 {
                     new(RunClosureDict.WIL_FORMATION, 0, (listener, eventDetails) =>
@@ -90,6 +117,15 @@ public class CharacterCategory : Category<CharacterEntry>
             new("彼此卿",
                 abilityDescription: "卡组中第一张空位将模仿对方对位的牌" +
                                    "\n如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿的卡",
+                packPreset: new PackPreset(new List<PackEntry> {
+                    Encyclopedia.PackCategory["0001"],
+                    Encyclopedia.PackCategory["0004"],
+                    Encyclopedia.PackCategory["0006"],
+                    Encyclopedia.PackCategory["0008"],
+                    Encyclopedia.PackCategory["0009"],
+                    Encyclopedia.PackCategory["0008"],
+                    Encyclopedia.PackCategory["0010"],
+                }),
                 runClosures: new RunClosure[]
                 {
                     new(RunClosureDict.WIL_PLACEMENT, 0, (listener, eventDetails) =>

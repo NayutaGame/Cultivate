@@ -36,6 +36,12 @@ public class ProfileManager : Addressable
         FileUtility.WriteToFile(_profileList, ProfileList.Filename);
     }
 
+    public void SaveProcedureRemovingRunEnvironment()
+    {
+        GetCurrProfile().RunEnvironment = null;
+        FileUtility.WriteToFile(_profileList, ProfileList.Filename);
+    }
+
     public void SaveProcedure(RunEnvironment env)
     {
         env.WriteTime();
@@ -67,7 +73,10 @@ public class ProfileManager : Addressable
     }
 
     public void WriteRunResultToCurrent(RunResult result)
-        => GetCurrProfile().WriteRunResult(result);
+    {
+        GetCurrProfile().WriteRunResult(result);
+        SaveProcedureRemovingRunEnvironment();
+    }
 
     public Profile GetCurrProfile()
         => _profileList.GetCurrent();
