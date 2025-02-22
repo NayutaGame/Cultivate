@@ -16,7 +16,7 @@ public class PackPreset
         Encyclopedia.PackCategory["0005"],
         Encyclopedia.PackCategory["0007"],
         Encyclopedia.PackCategory["0009"],
-        Encyclopedia.PackCategory["0008"],
-        Encyclopedia.PackCategory["0010"],
+        Encyclopedia.PackCategory["0011"],
+        Encyclopedia.PackCategory["0012"],
     });
 }

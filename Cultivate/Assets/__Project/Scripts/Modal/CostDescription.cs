@@ -40,6 +40,11 @@ public struct CostDescription
             costResult?.ToCostDescription() ??
             new CostDescription(CostType.Armor, CostResult.CostState.Normal, value);
     
+    public static Func<JingJie, int, CostResult, CostDescription> ArmorFromJ(Func<int, int> jFunc)
+        => (j, dj, costResult) =>
+            costResult?.ToCostDescription() ??
+            new CostDescription(CostType.Armor, CostResult.CostState.Normal, jFunc(j));
+    
     public static Func<JingJie, int, CostResult, CostDescription> ArmorFromDj(Func<int, int> djFunc)
         => (j, dj, costResult) =>
             costResult?.ToCostDescription() ??
@@ -49,6 +54,11 @@ public struct CostDescription
         => (j, dj, costResult) =>
             costResult?.ToCostDescription() ??
             new CostDescription(CostType.Channel, CostResult.CostState.Normal, value);
+
+    public static Func<JingJie, int, CostResult, CostDescription> ChannelFromJ(Func<int, int> jFunc)
+        => (j, dj, costResult) =>
+            costResult?.ToCostDescription() ??
+            new CostDescription(CostType.Channel, CostResult.CostState.Normal, jFunc(j));
     
     public static Func<JingJie, int, CostResult, CostDescription> ChannelFromDj(Func<int, int> djFunc)
         => (j, dj, costResult) =>
@@ -59,6 +69,11 @@ public struct CostDescription
         => (j, dj, costResult) =>
             costResult?.ToCostDescription() ??
             new CostDescription(CostType.Health, CostResult.CostState.Normal, value);
+
+    public static Func<JingJie, int, CostResult, CostDescription> HealthFromJ(Func<int, int> jFunc)
+        => (j, dj, costResult) =>
+            costResult?.ToCostDescription() ??
+            new CostDescription(CostType.Health, CostResult.CostState.Normal, jFunc(j));
     
     public static Func<JingJie, int, CostResult, CostDescription> HealthFromDj(Func<int, int> djFunc)
         => (j, dj, costResult) =>
@@ -69,6 +84,11 @@ public struct CostDescription
         => (j, dj, costResult) =>
             costResult?.ToCostDescription() ??
             new CostDescription(CostType.Mana, CostResult.CostState.Normal, value);
+
+    public static Func<JingJie, int, CostResult, CostDescription> ManaFromJ(Func<int, int> jFunc)
+        => (j, dj, costResult) =>
+            costResult?.ToCostDescription() ??
+            new CostDescription(CostType.Mana, CostResult.CostState.Normal, jFunc(j));
     
     public static Func<JingJie, int, CostResult, CostDescription> ManaFromDj(Func<int, int> djFunc)
         => (j, dj, costResult) =>

@@ -23,7 +23,8 @@ public class AppManager : Singleton<AppManager>, Addressable
             #if UNITY_EDITOR
             return _isDeveloperMode;
             #else
-            return false;  // 发布版本始终返回false
+            return _isDeveloperMode;
+            // return false;
             #endif
         }
     }

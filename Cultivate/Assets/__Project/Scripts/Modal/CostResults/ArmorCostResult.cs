@@ -26,6 +26,7 @@ public class ArmorCostResult : CostResult
         await Entity.LoseArmorProcedure(total, false);
         
         Env.Result.TryAppend($"{Entity.GetName()}消耗了{Value}护甲，不足的部分变成了三倍的减甲，以使用{Skill.Entry.GetName()}\n");
+        // suspicious
         await Env.LoseHealthProcedure(Entity, Value, false, induced: true);
     }
 

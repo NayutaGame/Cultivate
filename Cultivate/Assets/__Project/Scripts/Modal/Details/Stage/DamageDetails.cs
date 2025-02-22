@@ -56,4 +56,7 @@ public class DamageDetails : ClosureDetails
 
     public static DamageDetails FromAttackDetailsUndamaged(AttackDetails d)
         => new(d.Src, d.Tgt, 0, d.SrcSkill, d.Crit, d.LifeSteal, true, d.Recursive, d.CastResult, d.Induced);
+
+    public static DamageDetails FromCostHealth(StageEntity src, int value, bool induced)
+        => new(src, src, value, null, false, false, false, true, null, induced);
 }

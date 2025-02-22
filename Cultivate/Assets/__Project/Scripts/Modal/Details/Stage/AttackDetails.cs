@@ -19,6 +19,8 @@ public class AttackDetails : ClosureDetails
     public bool Crit;
     public bool LifeSteal;
     public bool Penetrate;
+    public bool PreserveJianYi;
+    public bool Shatter;
     public bool Evade;
     public bool Recursive;
     public CastResult CastResult;
@@ -37,6 +39,8 @@ public class AttackDetails : ClosureDetails
     /// <param name="crit">是否吸血</param>
     /// <param name="lifeSteal">是否吸血</param>
     /// <param name="penetrate">是否穿透</param>
+    /// <param name="preserveJianYi">是否保存剑意</param>
+    /// <param name="shatter">是否碎防</param>
     /// <param name="evade">是否闪避</param>
     /// <param name="closures">额外行为</param>
     /// <param name="recursive">是否会递归</param>
@@ -51,6 +55,8 @@ public class AttackDetails : ClosureDetails
         bool crit,
         bool lifeSteal,
         bool penetrate,
+        bool preserveJianYi,
+        bool shatter,
         bool evade,
         bool recursive,
         CastResult castResult,
@@ -66,6 +72,8 @@ public class AttackDetails : ClosureDetails
         Crit = crit;
         LifeSteal = lifeSteal;
         Penetrate = penetrate;
+        PreserveJianYi = preserveJianYi;
+        Shatter = shatter;
         Evade = evade;
         Recursive = recursive;
         CastResult = castResult;
@@ -83,6 +91,8 @@ public class AttackDetails : ClosureDetails
         Crit,
         LifeSteal,
         Penetrate,
+        PreserveJianYi,
+        Shatter,
         Evade,
         Recursive,
         CastResult,

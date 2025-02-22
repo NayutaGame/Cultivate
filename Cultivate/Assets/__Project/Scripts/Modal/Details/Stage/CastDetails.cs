@@ -30,7 +30,7 @@ public class CastDetails : ClosureDetails
         StageClosure[] closures = null,
         bool induced = false)
         => await Env.AttackProcedure(new AttackDetails(src: Caster, tgt: Caster.Opponent(), value, times, Skill, wuxing: wuXing ?? Skill.Entry.WuXing,
-            crit: false, lifeSteal: false, penetrate: false, evade: false, recursive: recursive, castResult: CastResult, closures: closures, induced: induced));
+            crit: false, lifeSteal: false, penetrate: false, preserveJianYi: false, shatter: false, evade: false, recursive: recursive, castResult: CastResult, closures: closures, induced: induced));
 
     public async UniTask IndirectProcedure(
         int value,
@@ -53,6 +53,9 @@ public class CastDetails : ClosureDetails
 
     public async UniTask LoseHealthProcedure(int value, bool causedByAttack, bool induced)
         => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster, value, causedByAttack, induced));
+
+    public async UniTask RemoveHealthProcedure(int value, bool induced)
+        => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster.Opponent(), value, false, induced));
 
     public async UniTask HealProcedure(int value, bool induced)
         => await Env.HealProcedure(new HealDetails(Caster, Caster, value, false, induced));
@@ -147,6 +150,6 @@ public class CastDetails : ClosureDetails
     {
         int gap = Caster.Hp - Caster.GetLowHealthThreshold();
         if (gap > 0)
-            await LoseHealthProcedure(gap, false, induced);
+            await Env.DamageProcedure(DamageDetails.FromCostHealth(Caster, gap, induced));
     }
 }

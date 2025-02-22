@@ -267,6 +267,8 @@ public class StageEntity : Addressable, StageClosureOwner
     private RunEntity _runEntity;
     public RunEntity RunEntity => _runEntity;
 
+    public JingJie GetJingJie() => _runEntity.GetJingJie();
+
     public IEnumerable<RunFormation> RunFormations() => _runEntity.TraversalFormations;
 
     private StageEnvironment _env;
@@ -447,11 +449,13 @@ public class StageEntity : Addressable, StageClosureOwner
         bool crit = false,
         bool lifeSteal = false,
         bool penetrate = false,
+        bool preserveJianYi = false,
+        bool shatter = false,
         bool recursive = true,
         CastResult castResult = null,
         StageClosure[] closures = null,
         bool induced = false)
-        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, times, srcSkill, wuXing, crit, lifeSteal, penetrate, false, recursive, castResult, closures, induced));
+        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, times, srcSkill, wuXing, crit, lifeSteal, penetrate, preserveJianYi, shatter, false, recursive, castResult, closures, induced));
     
     public async UniTask IndirectProcedure(
         int value,

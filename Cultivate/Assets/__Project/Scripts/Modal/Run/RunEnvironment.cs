@@ -317,7 +317,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         Map.Init();
         InitPanel();
         
-        _closureDict.SendEvent(RunClosureDict.START_RUN, d);
+        SendEvent(RunClosureDict.START_RUN, d);
         StartRunNeuron.Invoke();
         
         AppManager.Instance.ProfileManager.SaveProcedure(this);
@@ -340,6 +340,44 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         SkillPool.Shuffle();
     }
 
+    public void DepleteProcedure()
+    {
+        DepleteDetails d = new(_home);
+
+        SendEvent(RunClosureDict.WIL_DEPLETE, d);
+
+        if (d.Cancel)
+            return;
+
+        int count = _home.GetSlotCount();
+        int preservedCount = d.PreserveFirstDeplete ? 1 : 0;
+        for (int i = 0; i < count; i++)
+        {
+            SkillSlot slot = _home.GetSlot(i);
+            RunSkill skill = slot.Skill;
+            
+            if (skill == null)
+                continue;
+            
+            bool depleted = skill.GetEntry().GetSkillTypeComposite().Contains(SkillType.Deplete);
+            if (!depleted)
+                continue;
+
+            if (preservedCount > 0)
+            {
+                preservedCount--;
+                continue;
+            }
+
+            Debug.Log($"Depleting skill: {skill.GetEntry().GetName()}");
+
+            d.DepletedSkills.Add(skill);
+            slot.Skill = null;
+        }
+
+        SendEvent(RunClosureDict.DID_DEPLETE, d);
+    }
+
     public void NextJingJieProcedure()
         => SetJingJieProcedure(JingJie + 1);
     
@@ -348,7 +386,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     
     private void SetJingJieProcedure(JingJieChangedDetails d)
     {
-        _closureDict.SendEvent(RunClosureDict.WIL_JINGJIE_CHANGE, d);
+        SendEvent(RunClosureDict.WIL_JINGJIE_CHANGE, d);
         if (d.Cancel)
             return;
 
@@ -361,7 +399,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         _home.SetJingJie(d.ToJingJie);
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToJingJie));
 
-        _closureDict.SendEvent(RunClosureDict.DID_JINGJIE_CHANGE, d);
+        SendEvent(RunClosureDict.DID_JINGJIE_CHANGE, d);
         
         JingJieChangedNeuron.Invoke(d);
     }
@@ -399,7 +437,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
     public void MergeProcedure(MergeDetails d)
     {
-        _closureDict.SendEvent(RunClosureDict.WIL_MERGE, d);
+        SendEvent(RunClosureDict.WIL_MERGE, d);
 
         if (d.Cancel)
             return;
@@ -408,7 +446,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         if (!success)
             return;
         
-        _closureDict.SendEvent(RunClosureDict.DID_MERGE, d);
+        SendEvent(RunClosureDict.DID_MERGE, d);
         
         MergeNeuron.Invoke(d);
         DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
@@ -619,13 +657,13 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         if (d.Value == 0)
             return;
         
-        _closureDict.SendEvent(RunClosureDict.WIL_SET_D_MINGYUAN, d);
+        SendEvent(RunClosureDict.WIL_SET_D_MINGYUAN, d);
 
         if (d.Cancel)
             return;
 
         GetMingYuan().Curr += d.Value;
-        _closureDict.SendEvent(RunClosureDict.DID_SET_D_MINGYUAN, d);
+        SendEvent(RunClosureDict.DID_SET_D_MINGYUAN, d);
         if (d.Value >= 0)
             GainMingYuanNeuron.Invoke(d.Value);
         else
@@ -644,13 +682,13 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         if (d.Value == 0)
             return;
         
-        _closureDict.SendEvent(RunClosureDict.WIL_SET_D_GOLD, d);
+        SendEvent(RunClosureDict.WIL_SET_D_GOLD, d);
 
         if (d.Cancel)
             return;
 
         _gold.Curr += d.Value;
-        _closureDict.SendEvent(RunClosureDict.DID_SET_D_GOLD, d);
+        SendEvent(RunClosureDict.DID_SET_D_GOLD, d);
         if (d.Value >= 0)
             GainGoldNeuron.Invoke(d.Value);
         else
@@ -665,13 +703,13 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         if (d.Value == 0)
             return;
         
-        _closureDict.SendEvent(RunClosureDict.WIL_SET_DDHEALTH, d);
+        SendEvent(RunClosureDict.WIL_SET_DDHEALTH, d);
 
         if (d.Cancel)
             return;
 
         _home.SetDHealth(d.Value);
-        _closureDict.SendEvent(RunClosureDict.DID_SET_DDHEALTH, d);
+        SendEvent(RunClosureDict.DID_SET_DDHEALTH, d);
         if (d.Value >= 0)
             GainDHealthNeuron.Invoke(d.Value);
         else
@@ -683,7 +721,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     
     private void SetMaxMingYuanProcedure(SetMaxMingYuanDetails d)
     {
-        _closureDict.SendEvent(RunClosureDict.WIL_SET_MAX_MINGYUAN, d);
+        SendEvent(RunClosureDict.WIL_SET_MAX_MINGYUAN, d);
 
         if (d.Cancel)
             return;
@@ -694,17 +732,17 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
 
         GetMingYuan().UpperBound = d.Value;
 
-        _closureDict.SendEvent(RunClosureDict.DID_SET_MAX_MINGYUAN, d);
+        SendEvent(RunClosureDict.DID_SET_MAX_MINGYUAN, d);
     }
 
     public void DiscoverSkillProcedure(DiscoverSkillDetails d)
     {
-        _closureDict.SendEvent(RunClosureDict.WIL_DISCOVER_SKILL, d);
+        SendEvent(RunClosureDict.WIL_DISCOVER_SKILL, d);
 
         List<SkillEntry> entries = InnerDrawSkills(d.Descriptor);
         d.Skills.AddRange(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
 
-        _closureDict.SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
+        SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
     }
 
     public void ExitShopProcedure()
@@ -1009,7 +1047,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         PanelChangedDetails panelChangedDetails = new(Panel, resultPanel);
         Panel = resultPanel;
 
-        _closureDict.SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
+        SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
 
         PanelChangedNeuron.Invoke(panelChangedDetails);
     }

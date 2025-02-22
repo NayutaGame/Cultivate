@@ -137,17 +137,6 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         RunManager.Instance.Environment.SendEvent(RunClosureDict.DID_PLACEMENT, d);
     }
 
-    public void DepleteProcedure()
-    {
-        DepleteDetails d = new(this);
-
-        RunManager.Instance.Environment.SendEvent(RunClosureDict.WIL_DEPLETE, d);
-
-        _slots.Traversal().Do(slot => slot.TryDeplete(d));
-
-        RunManager.Instance.Environment.SendEvent(RunClosureDict.DID_DEPLETE, d);
-    }
-
     #endregion
 
     #region Formation

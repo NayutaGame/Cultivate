@@ -177,7 +177,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         if (newStack > 0)
         {
             b.SetStack(newStack);
-            await LoseBuffStackStaging(d);
+            await LoseBuffStackStaging(d, b);
         }
         else
         {
@@ -254,9 +254,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
         CanvasManager.Instance.StageCanvas.LoseBuffStaging(d.Tgt == _entities[0], buffIndex);
     }
 
-    private async UniTask LoseBuffStackStaging(LoseBuffDetails d)
+    private async UniTask LoseBuffStackStaging(LoseBuffDetails d, Buff buff)
     {
-        _result.TryAppend($"    {d._buffEntry.GetName()} +{d._stack}");
+        _result.TryAppend($"    {d._buffEntry.GetName()} -{d._stack}");
         if (!_config.Animated)
             return;
         
@@ -271,14 +271,16 @@ public class StageEnvironment : Addressable, StageClosureOwner
         {
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
+        
+        buff.PlayPingAnimation();
     }
 
     public async UniTask AttackProcedure(AttackDetails attackDetails)
     {
         RegisterAttackClosure(attackDetails);
 
-        if (attackDetails.Times < 1)
-            attackDetails.Times = 1;
+        attackDetails.Value = Mathf.Max(1, attackDetails.Value);
+        attackDetails.Times = Mathf.Max(1, attackDetails.Times);
 
         await _closureDict.SendEvent(StageClosureDict.WIL_FULL_ATTACK, attackDetails);
         await FullAttackStaging(attackDetails);
@@ -341,8 +343,9 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
         if (!d.Penetrate && d.Tgt.Armor >= 0)
         {
-            int negate = Mathf.Min(d.Value, d.Tgt.Armor);
-            d.Value -= negate;
+            int ratio = d.Shatter ? 2 : 1;
+            int negate = Mathf.Min(ratio * d.Value, d.Tgt.Armor);
+            d.Value -= negate / ratio;
             await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.Induced));
         }
 
@@ -845,7 +848,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
     public void WriteResult()
     {
         _entities[0].WriteResult();
-        _config.Home.DepleteProcedure();
+        RunManager.Instance.Environment.DepleteProcedure();
     }
 
     private async UniTask WriteShortage(StageClosureOwner listener, ClosureDetails stageClosureDetails)

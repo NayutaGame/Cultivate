@@ -6,13 +6,13 @@ public class Category<T> where T : Entry
     private List<T> _list;
     protected List<T> List => _list;
 
+    private Dictionary<string, T> _dict;
+
     public void AddRange(IEnumerable<T> collection)
     {
         List.AddRange(collection);
         RefreshDict();
     }
-
-    private Dictionary<string, T> _dict;
 
     public Category()
     {

@@ -15,7 +15,7 @@ public class SkillType : SuperEnum<SkillType>
             new(3, 1 << 3, "气血"),
             new(4, 1 << 4, "二动"),
             new(5, 1 << 5, "升华"),
-            new(6, 1 << 6, "枯竭"),
+            new(6, 1 << 6, "一次性"),
             new(7, 1 << 7, "自指"),
         };
     }

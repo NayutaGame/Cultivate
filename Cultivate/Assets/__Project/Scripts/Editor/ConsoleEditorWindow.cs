@@ -26,6 +26,21 @@ public class ConsoleEditorWindow : EditorWindow
     {
         GetWindow<ConsoleEditorWindow>("ConsoleEditorWindow");
     }
+    
+    public ConsoleEditorWindow()
+    {
+        _filterTabs = new[]
+        {
+            new FilterTab("法力消耗", s => 
+                s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Mana),
+            new FilterTab("生命消耗", s => 
+                s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Health),
+            new FilterTab("引导消耗", s => 
+                s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Channel),
+            new FilterTab("灵气牌", s => 
+                s.GetSkillTypeComposite().Contains(SkillType.Mana)),
+        };
+    }
 
     private void OnEnable()
     {
@@ -105,14 +120,42 @@ public class ConsoleEditorWindow : EditorWindow
     }
 
     private SkillDistributionKey? _selectedKey = null;  // 当前选中的分组
+
+    private class FilterTab
+    {
+        public string Label { get; }
+        public Func<SkillEntry, bool> Predicate { get; }
+
+        public FilterTab(string label, Func<SkillEntry, bool> predicate)
+        {
+            Label = label;
+            Predicate = predicate;
+        }
+    }
+
+    private readonly FilterTab[] _filterTabs;
+    private int _currentFilterTab = 0;
     
     private void DrawAnalyticsTab()
     {
         EditorGUILayout.LabelField("分布", EditorStyles.boldLabel);
+        EditorGUILayout.Space(5);
+    
+        // 绘制过滤器Tab组
+        EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+        for (int i = 0; i < _filterTabs.Length; i++)
+        {
+            if (GUILayout.Toggle(_currentFilterTab == i, _filterTabs[i].Label, EditorStyles.toolbarButton))
+                _currentFilterTab = i;
+        }
+        EditorGUILayout.EndHorizontal();
         
+        EditorGUILayout.Space(5);
+        
+        // 使用当前选中的过滤器
         var skills = Encyclopedia.SkillCategory.Traversal
             .Where(s => s.WithinPool)
-            .Where(s => s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Mana);
+            .Where(_filterTabs[_currentFilterTab].Predicate);
 
         var distribution = skills
             .GroupBy(s => new SkillDistributionKey(
@@ -121,7 +164,7 @@ public class ConsoleEditorWindow : EditorWindow
             ))
             .ToDictionary(
                 g => g.Key,
-                g => g.ToList()  // 保存整个列表而不是仅计数
+                g => g.ToList()
             );
 
         // 绘制表格
@@ -167,7 +210,7 @@ public class ConsoleEditorWindow : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
     }
-
+    
     private void DrawAnalyticsTableRow(JingJie jingJie, Dictionary<SkillDistributionKey, List<SkillEntry>> distribution)
     {
         EditorGUILayout.BeginHorizontal();
@@ -179,14 +222,11 @@ public class ConsoleEditorWindow : EditorWindow
             int count = distribution.GetValueOrDefault(key)?.Count ?? 0;
             
             var originalColor = GUI.backgroundColor;
-            GUI.backgroundColor = count == 0 ? Color.gray : 
-                                count < 3 ? Color.yellow : 
-                                Color.green;
+            GUI.backgroundColor = count == 0 ? Color.gray : Color.white;
             
-            // 使用按钮替代标签
             if (GUILayout.Button(count.ToString(), GUILayout.Width(50)))
             {
-                _selectedKey = count > 0 ? key : null;  // 只有有技能时才选中
+                _selectedKey = count > 0 ? key : null;
             }
             
             GUI.backgroundColor = originalColor;
@@ -275,31 +315,6 @@ public class ConsoleEditorWindow : EditorWindow
             
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space(5);
-        }
-    }
-
-    private struct SkillDistributionKey
-    {
-        public JingJie JingJie;
-        public WuXing? WuXing;
-
-        public SkillDistributionKey(JingJie jingJie, WuXing? wuXing)
-        {
-            JingJie = jingJie;
-            WuXing = wuXing;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is SkillDistributionKey other))
-                return false;
-            
-            return JingJie == other.JingJie && WuXing == other.WuXing;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(JingJie, WuXing);
         }
     }
 }

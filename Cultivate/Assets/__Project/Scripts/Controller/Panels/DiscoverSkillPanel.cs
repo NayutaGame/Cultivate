@@ -106,7 +106,7 @@ public class DiscoverSkillPanel : Panel
     public override Tween EnterIdle()
         => DOTween.Sequence()
             .AppendCallback(TraversalSetHide)
-            .AppendCallback(SkillList.Refresh)
+            .AppendCallback(SkillList.Sync)
             .AppendCallback(() => gameObject.SetActive(true))
             .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0)) // move to pair with show curtain
             .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
@@ -116,7 +116,7 @@ public class DiscoverSkillPanel : Panel
     public Tween SelfTransitionTween()
         => DOTween.Sequence()
             .Append(EnterSelected())
-            .AppendCallback(SkillList.Refresh)
+            .AppendCallback(SkillList.Sync)
             .AppendCallback(RefreshInfo)
             .Append(TraversalEnterIdle());
 

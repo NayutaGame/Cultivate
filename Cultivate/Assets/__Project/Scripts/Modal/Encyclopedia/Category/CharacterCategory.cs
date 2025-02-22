@@ -9,15 +9,15 @@ public class CharacterCategory : Category<CharacterEntry>
         AddRange(new List<CharacterEntry>()
         {
             new("徐福",
-                abilityDescription: "命元上限+2",
+                abilityDescription: "命元上限+2，战斗中使用的最左边的一次性牌，战斗后返还",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0003"],
                     Encyclopedia.PackCategory["0005"],
                     Encyclopedia.PackCategory["0007"],
                     Encyclopedia.PackCategory["0009"],
-                    Encyclopedia.PackCategory["0008"],
-                    Encyclopedia.PackCategory["0010"],
+                    Encyclopedia.PackCategory["0011"],
+                    Encyclopedia.PackCategory["0012"],
                 }),
                 runClosures: new RunClosure[]
                 {
@@ -29,17 +29,24 @@ public class CharacterCategory : Category<CharacterEntry>
                         env.SetMaxMingYuanProcedure(12);
                         env.SetDMingYuanProcedure(2);
                     }),
+                    new(RunClosureDict.WIL_DEPLETE, 0, (listener, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        DepleteDetails d = (DepleteDetails)eventDetails;
+                        d.PreserveFirstDeplete = true;
+                    }),
                 }),
+
             new("子非鱼",
-                abilityDescription: "使用五行卡牌后，发生对应的流转",
+                abilityDescription: "第一次获得五行Buff时，根据境界额外获得2/4/6/8/10点",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0004"],
                     Encyclopedia.PackCategory["0005"],
                     Encyclopedia.PackCategory["0007"],
                     Encyclopedia.PackCategory["0009"],
-                    Encyclopedia.PackCategory["0008"],
-                    Encyclopedia.PackCategory["0010"],
+                    Encyclopedia.PackCategory["0011"],
+                    Encyclopedia.PackCategory["0012"],
                 }),
                 stageClosures: new StageClosure[]
                 {
@@ -52,34 +59,12 @@ public class CharacterCategory : Category<CharacterEntry>
                         if (!ownerIsHome)
                             return;
 
-                        await d.Owner.GainBuffProcedure("五行亲和");
+                        int stack = d.Owner.GetJingJie() * 2;
+
+                        await d.Owner.GainBuffProcedure("空明", stack);
                     }),
                 }),
-            new("子非燕",
-                abilityDescription: "流转步数为2",
-                packPreset: new PackPreset(new List<PackEntry> {
-                    Encyclopedia.PackCategory["0002"],
-                    Encyclopedia.PackCategory["0003"],
-                    Encyclopedia.PackCategory["0005"],
-                    Encyclopedia.PackCategory["0008"],
-                    Encyclopedia.PackCategory["0010"],
-                    Encyclopedia.PackCategory["0008"],
-                    Encyclopedia.PackCategory["0010"],
-                }),
-                stageClosures: new StageClosure[]
-                {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
-                    {
-                        StageEnvironment env = (StageEnvironment)listener;
-                        StageDetails d = (StageDetails)eventDetails;
-
-                        bool ownerIsHome = env.Entities[0] == d.Owner;
-                        if (!ownerIsHome)
-                            return;
-
-                        await d.Owner.GainBuffProcedure("相克流转");
-                    }),
-                }),
+            
             new("风雨晴",
                 abilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
                 packPreset: new PackPreset(new List<PackEntry> {
@@ -88,8 +73,8 @@ public class CharacterCategory : Category<CharacterEntry>
                     Encyclopedia.PackCategory["0006"],
                     Encyclopedia.PackCategory["0007"],
                     Encyclopedia.PackCategory["0009"],
-                    Encyclopedia.PackCategory["0008"],
-                    Encyclopedia.PackCategory["0010"],
+                    Encyclopedia.PackCategory["0011"],
+                    Encyclopedia.PackCategory["0012"],
                 }),
                 runClosures: new RunClosure[]
                 {
@@ -114,24 +99,34 @@ public class CharacterCategory : Category<CharacterEntry>
                         d.Proficiency = 2;
                     }),
                 }),
+            
             new("彼此卿",
-                abilityDescription: "卡组中第一张空位将模仿对方对位的牌" +
-                                   "\n如果战斗中使用了模仿，并且模仿的牌不是机关，战后奖励时可选择模仿的卡",
+                abilityDescription: "可以模仿一张对手的卡牌" +
+                                   "\n如果战斗中使用了模仿，战后奖励时可选择模仿的卡牌",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0004"],
                     Encyclopedia.PackCategory["0006"],
                     Encyclopedia.PackCategory["0008"],
                     Encyclopedia.PackCategory["0009"],
-                    Encyclopedia.PackCategory["0008"],
-                    Encyclopedia.PackCategory["0010"],
+                    Encyclopedia.PackCategory["0011"],
+                    Encyclopedia.PackCategory["0012"],
                 }),
                 runClosures: new RunClosure[]
                 {
+                    new(RunClosureDict.START_RUN, 0, (listener, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        StartRunDetails d = (StartRunDetails)eventDetails;
+                        
+                        env.AddSkillProcedure(SkillEntry.FromName("幻化"));
+                    }),
+
                     new(RunClosureDict.WIL_PLACEMENT, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         PlacementDetails d = (PlacementDetails)eventDetails;
+                        string key = "MimickedSkill";
 
                         bool ownerIsHome = env.Home == d.Owner;
                         if (!ownerIsHome)
@@ -141,83 +136,78 @@ public class CharacterCategory : Category<CharacterEntry>
                             return;
 
                         RunEntity oppo = env.Away;
-                        SkillSlot slotToPaste = d.Owner.TraversalCurrentSlots()
-                            .FirstObj(slot => slot.Skill == null && oppo.GetSlot(slot.GetIndex()).Skill != null);
-
-                        if (slotToPaste == null)
+                        
+                        // 清空之前模仿的记录
+                        env.SetVariable<SkillEntryDescriptor>(key, null);
+                        
+                        // 遍历所有槽位，找到幻化牌
+                        d.Owner.TraversalCurrentSlots().Do(slot => 
                         {
-                            env.SetVariable<RunSkill>("CopiedSkill", null);
-                            return;
-                        }
-
-                        SkillSlot slotToCopy = oppo.GetSlot(slotToPaste.GetIndex());
-
-                        slotToPaste.PlacedSkill = PlacedSkill.FromEntryAndJingJie(slotToCopy.Skill.GetEntry(), slotToCopy.Skill.GetJingJie());
-
-                        RunSkill copiedSkill = slotToCopy.Skill;
-
-                        env.SetVariable("CopiedSkill", copiedSkill != null ? SkillEntryDescriptor.FromRunSkill(copiedSkill) : null);
+                            if (slot.Skill == null || slot.Skill.GetEntry().GetName() != "幻化") return;
+                            
+                            // 获取对手对应位置的技能
+                            SkillSlot oppoSlot = oppo.GetSlot(slot.GetIndex());
+                            if (oppoSlot.Skill == null) return;
+                            
+                            // 设置模仿的技能
+                            slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(
+                                oppoSlot.Skill.GetEntry(), 
+                                oppoSlot.Skill.GetJingJie()
+                            );
+                            
+                            // 记录第一个模仿的技能，用于后续奖励
+                            env.PerformOperation<SkillEntryDescriptor>(key, null, skill => skill ?? SkillEntryDescriptor.FromRunSkill(oppoSlot.Skill));
+                        });
                     }),
                     new(RunClosureDict.WIL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
 
-                        SkillEntryDescriptor copiedSkillEntry = env.TryGetVariable<SkillEntryDescriptor>("CopiedSkill", null);
+                        string key = "MimickedSkill";
+
+                        SkillEntryDescriptor copiedSkillEntry = env.TryGetVariable<SkillEntryDescriptor>(key, null);
                         if (copiedSkillEntry == null)
                             return;
 
                         d.Skills.Add(copiedSkillEntry);
-                        env.SetVariable<SkillEntryDescriptor>("CopiedSkill", null);
+                        env.SetVariable<SkillEntryDescriptor>(key, null);
                     }),
                 }),
-            new("梦乃遥",
-                abilityDescription: "梦乃遥的能力",
-                runClosures: new RunClosure[]
-                {
-                    // new(RunClosureDict.WILL_PLACEMENT, 0, (listener, eventDetails) =>
-                    // {
-                    //     RunEnvironment env = (RunEnvironment)listener;
-                    //     PlacementDetails d = (PlacementDetails)eventDetails;
-                    //
-                    //     bool ownerIsHome = env.Home == d.Owner;
-                    //     if (!ownerIsHome)
-                    //         return;
-                    //
-                    //     if (env.AwayIsDummy())
-                    //         return;
-                    //
-                    //     RunEntity oppo = env.Away;
-                    //     SkillSlot slotToPaste = d.Owner.TraversalCurrentSlots()
-                    //         .FirstObj(slot => slot.Skill == null && oppo.GetSlot(slot.Index).Skill != null);
-                    //
-                    //     if (slotToPaste == null)
-                    //     {
-                    //         env.SetVariable<RunSkill>("CopiedSkill", null);
-                    //         return;
-                    //     }
-                    //
-                    //     SkillSlot slotToCopy = oppo.GetSlot(slotToPaste.Index);
-                    //
-                    //     slotToPaste.PlacedSkill = PlacedSkill.FromEntryAndJingJie(slotToCopy.Skill.GetEntry(), slotToCopy.Skill.GetJingJie());
-                    //
-                    //     RunSkill copiedSkill = slotToCopy.Skill as RunSkill;
-                    //
-                    //     env.SetVariable("CopiedSkill", copiedSkill != null ? SkillEntryDescriptor.FromRunSkill(copiedSkill) : null);
-                    // }),
-                    // new(RunClosureDict.WILL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
-                    // {
-                    //     RunEnvironment env = (RunEnvironment)listener;
-                    //     DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
-                    //
-                    //     SkillEntryDescriptor copiedSkillEntry = env.GetVariable<SkillEntryDescriptor>("CopiedSkill");
-                    //     if (copiedSkillEntry == null)
-                    //         return;
-                    //
-                    //     d.Skills.Add(copiedSkillEntry);
-                    //     env.SetVariable<SkillEntryDescriptor>("CopiedSkill", null);
-                    // }),
+
+            // new("斩心鬼", abilityDescription: "拥有一把奇怪的剑，此剑吞噬其他卡牌之后威力变得更强"),
+
+            new("子非燕",
+                abilityDescription: "流转步数为2",
+                packPreset: new PackPreset(new List<PackEntry> {
+                    Encyclopedia.PackCategory["0002"],
+                    Encyclopedia.PackCategory["0003"],
+                    Encyclopedia.PackCategory["0005"],
+                    Encyclopedia.PackCategory["0008"],
+                    Encyclopedia.PackCategory["0010"],
+                    Encyclopedia.PackCategory["0011"],
+                    Encyclopedia.PackCategory["0012"],
                 }),
+                stageClosures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    {
+                        StageEnvironment env = (StageEnvironment)listener;
+                        StageDetails d = (StageDetails)eventDetails;
+
+                        bool ownerIsHome = env.Entities[0] == d.Owner;
+                        if (!ownerIsHome)
+                            return;
+
+                        await d.Owner.GainBuffProcedure("相克流转");
+                    }),
+                }),
+            
+            // new("梦乃遥",
+            //     abilityDescription: "梦乃遥的能力",
+            //     runClosures: new RunClosure[]
+            //     {
+            //     }),
             // new("浮千舟", abilityDescription: "失去灵气时获得1点",
             //     stageClosures: new StageClosure[]
             //     {
@@ -269,8 +259,6 @@ public class CharacterCategory : Category<CharacterEntry>
             //             }
             //         }),
             //     }),
-            // new("心斩心鬼", abilityDescription: "剑类卡牌获得集中\n" +
-            //                                 "卡池中塞入剑阵系类套牌：素弦，苦寒，弱昙，狂焰，孤山，周天，图南，尘缘，泪颜"),
             // new("墨虚雪", abilityDescription: "游戏开始时以及境界提升时，获得一张机关牌\n" +
             //                                "战斗后，可返还至多一张被使用的机关牌",
             //     runEventDescriptors: new RunEventDescriptor[]

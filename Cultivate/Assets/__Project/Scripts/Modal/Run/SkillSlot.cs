@@ -68,19 +68,6 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
         return true;
     }
 
-    public bool TryDeplete(DepleteDetails d)
-    {
-        if (Skill == null)
-            return false;
-        bool depleted = Skill.GetEntry().GetSkillTypeComposite().Contains(SkillType.Deplete);
-        if (!depleted)
-            return false;
-
-        d.DepletedSkills.Add(Skill);
-        Skill = null;
-        return true;
-    }
-
     public void ClearResults()
     {
         CastResult = null;

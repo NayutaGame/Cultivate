@@ -55,6 +55,9 @@ public abstract class CostResult : ClosureDetails
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ArmorFromValue(int value)
         => async (env, entity, skill, recursive) => new ArmorCostResult(value);
+
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ArmorFromJ(Func<int, int> j)
+        => async (env, entity, skill, recursive) => new ArmorCostResult(j(skill.GetJingJie()));
     
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ArmorFromDj(Func<int, int> dj)
         => async (env, entity, skill, recursive) => new ArmorCostResult(dj(skill.Dj));
@@ -68,6 +71,9 @@ public abstract class CostResult : ClosureDetails
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ChannelFromValue(int value)
         => async (env, entity, skill, recursive) => new ChannelCostResult(value);
+
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ChannelFromJ(Func<int, int> j)
+        => async (env, entity, skill, recursive) => new ChannelCostResult(j(skill.GetJingJie()));
     
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ChannelFromDj(Func<int, int> dj)
         => async (env, entity, skill, recursive) => new ChannelCostResult(dj(skill.Dj));
@@ -81,6 +87,9 @@ public abstract class CostResult : ClosureDetails
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> HealthFromValue(int value)
         => async (env, entity, skill, recursive) => new HealthCostResult(value);
+
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> HealthFromJ(Func<int, int> j)
+        => async (env, entity, skill, recursive) => new HealthCostResult(j(skill.GetJingJie()));
     
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> HealthFromDj(Func<int, int> dj)
         => async (env, entity, skill, recursive) => new HealthCostResult(dj(skill.Dj));
@@ -94,6 +103,9 @@ public abstract class CostResult : ClosureDetails
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ManaFromValue(int value)
         => async (env, entity, skill, recursive) => new ManaCostResult(value);
+
+    public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ManaFromJ(Func<int, int> j)
+        => async (env, entity, skill, recursive) => new ManaCostResult(j(skill.GetJingJie()));
     
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ManaFromDj(Func<int, int> dj)
         => async (env, entity, skill, recursive) => new ManaCostResult(dj(skill.Dj));

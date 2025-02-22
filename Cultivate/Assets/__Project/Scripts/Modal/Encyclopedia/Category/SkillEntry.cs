@@ -77,8 +77,8 @@ public class SkillEntry : Entry, IAnnotation, ISkill
 
     public SkillEntry(string id,
         string name,
-        WuXing? wuXing,
         CLLibrary.Bound jingJieBound,
+        WuXing? wuXing = null,
         SkillTypeComposite skillTypeComposite = null,
         
         StageClosure[] closures = null,
@@ -95,8 +95,8 @@ public class SkillEntry : Entry, IAnnotation, ISkill
         ) : base(id)
     {
         _name = name;
-        _wuXing = wuXing;
         _jingJieBound = jingJieBound;
+        _wuXing = wuXing;
         _skillTypeComposite = skillTypeComposite ?? 0;
 
         Closures = closures ?? Array.Empty<StageClosure>();

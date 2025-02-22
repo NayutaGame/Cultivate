@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
@@ -906,6 +907,9 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)owner;
                         AttackDetails d = (AttackDetails)closureDetails;
+
+                        if (d.PreserveJianYi) return;
+
                         if (b.Owner == d.Src && d.Src != d.Tgt)
                         {
                             b.PlayPingAnimation();
@@ -961,7 +965,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("天衣无缝", "每回合：[层数]攻", BuffStackRule.Max, true, false,
+            new("天衣无缝", "每回合：[层数]攻，不消耗剑意", BuffStackRule.Max, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_TURN, 0, async (owner, closureDetails) =>
@@ -970,7 +974,20 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)closureDetails;
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
-                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo);
+
+                        StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0, async (owner, closureDetails) =>
+                        {
+                            Buff b = (Buff)owner;
+                            AttackDetails d = (AttackDetails)closureDetails;
+                            
+                            if (d.SrcSkill == null) return;  // 非技能来源的攻击不处理
+                            if (b.Owner != d.Src) return;    // 不是buff持有者的攻击不处理
+                            
+                            d.PreserveJianYi = true;         // 设置保存剑意标记
+                        });
+
+                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo,
+                            closures: new[] { closure });
                     }),
                     new(StageClosureDict.WIL_CAST, 0, async (owner, closureDetails) =>
                     {
@@ -1015,26 +1032,6 @@ public class BuffCategory : Category<BuffEntry>
                         await b.Owner.GainBuffProcedure("灼烧", b.Stack);
                     }),
                 }),
-            
-            new("登宝塔", "下一张牌具有免费和升华", BuffStackRule.Add, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.WIL_EXECUTE, 0, async (owner, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        ExecuteDetails d = (ExecuteDetails)closureDetails;
-
-                        if (b.Owner != d.Caster) return;
-                        if (d.Skill.Exhausted) return;
-                        
-                        b.PlayPingAnimation();
-                        await d.Skill.ExhaustProcedure();
-                        await b.LoseStackProcedure();
-                    }),
-                }),
-            
-            
-            
 
             new("盛开", "受到治疗时：力量+[层数]", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
@@ -1331,27 +1328,6 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Owner) return;
                         StageSkill skill = d.Owner._skills[d.P];
-                        
-                        b.PlayPingAnimation();
-                        await skill.ExhaustProcedure();
-                        
-                        await b.LoseStackProcedure();
-                    }),
-                }),
-            
-            new("最后一张牌升华", "卡组最后一张牌在使用后，暂时移出卡组，战斗结束返还", BuffStackRule.Add, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.WIL_STEP, 0, async (owner, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        StartStepDetails d = (StartStepDetails)closureDetails;
-                        
-                        if (b.Owner != d.Owner) return;
-                        StageSkill skill = d.Owner._skills[d.P];
-                        bool isEnd = skill.SlotIndex == skill.Owner._skills.Length - 1;
-                        if (!isEnd)
-                            return;
                         
                         b.PlayPingAnimation();
                         await skill.ExhaustProcedure();
@@ -1694,6 +1670,56 @@ public class BuffCategory : Category<BuffEntry>
             new("凛冽", "锋锐具有吸血", BuffStackRule.One, true, false),
             new("摇曳", "锋锐变为施加破甲", BuffStackRule.One, true, false),
             new("瑞雪", "格挡变为治疗", BuffStackRule.One, true, false),
+            
+            new("磐石", "吟唱时：坚毅+1", BuffStackRule.Max, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_CHANNEL, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        ChannelDetails d = (ChannelDetails)closureDetails;
+                        if (b.Owner != d.Caster) return;
+                        
+                        b.PlayPingAnimation();
+                        await b.Owner.GainBuffProcedure("坚毅", 1, induced: true);
+                    }),
+                }),
+            
+            new("同心蛊", "下[层数]次受治疗时，对敌方造成等量伤害", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_HEAL, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        HealDetails d = (HealDetails)closureDetails;
+                        if (b.Owner != d.Tgt) return;  // 不是buff持有者受到的治疗则不处理
+                        
+                        b.PlayPingAnimation();
+                        await b.LoseStackProcedure();  // 消耗一层
+                        await b.Owner.Opponent().IndirectProcedure(d.Value, induced: true);  // 对敌方造成等量伤害
+                    }),
+                }),
+                
+            new("空明", "下一次获得五行Buff时，额外[层数]点", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_GAIN_BUFF, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        GainBuffDetails d = (GainBuffDetails)closureDetails;
+                        
+                        if (b.Owner != d.Tgt) return;  // 不是buff持有者获得的buff则不处理
+                        
+                        // 检查是否是五行buff之一
+                        BuffEntry[] wuXingBuffs = { "锋锐", "格挡", "力量", "灼烧", "坚毅" };
+                        if (!wuXingBuffs.Contains(d._buffEntry.GetName()))
+                            return;
+                        
+                        b.PlayPingAnimation();
+                        d._stack += b.Stack;
+                        await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);  // 消耗空明
+                    }),
+                }),
         });
     }
 

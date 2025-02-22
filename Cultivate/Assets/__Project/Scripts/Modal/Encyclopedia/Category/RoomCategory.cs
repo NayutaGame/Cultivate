@@ -1685,7 +1685,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "解梦师",
                 description:                        "解梦师",
                 ladderBound:                        new Bound(5, 15),
-                withInPool:                         true,
+                withInPool:                         false,
                 create:                             (map, room) =>
                 {
                     DialogPanelDescriptor A = new(
