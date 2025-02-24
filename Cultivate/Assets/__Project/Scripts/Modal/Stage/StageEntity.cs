@@ -15,6 +15,12 @@ public class StageEntity : Addressable, StageClosureOwner
         TurnDetails d = new TurnDetails(this, turnCount);
         ResetActionPoint();
 
+        string thisTurnAttackedKey = "thisTurnAttacked";
+        string thisTurnPreserveJianYiKey = "thisTurnPreserveJianYi";
+
+        Memory.SetVariable(thisTurnAttackedKey, false);
+        Memory.SetVariable(thisTurnPreserveJianYiKey, false);
+
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_TURN, d);
         if (!d.Cancel)
             for (int i = 0; i < GetActionPoint(); i++)
@@ -444,28 +450,28 @@ public class StageEntity : Addressable, StageClosureOwner
     public async UniTask AttackProcedure(
         int value,
         int times = 1,
-        StageSkill srcSkill = null,
+        StageClosureOwner initiator = null,
         WuXing? wuXing = null,
         bool crit = false,
         bool lifeSteal = false,
         bool penetrate = false,
-        bool preserveJianYi = false,
+        bool doesntConsumeJianYi = false,
         bool shatter = false,
         bool recursive = true,
         CastResult castResult = null,
         StageClosure[] closures = null,
         bool induced = false)
-        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, times, srcSkill, wuXing, crit, lifeSteal, penetrate, preserveJianYi, shatter, false, recursive, castResult, closures, induced));
+        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, times, initiator, wuXing, crit, lifeSteal, penetrate, doesntConsumeJianYi, shatter, false, recursive, castResult, closures, induced));
     
     public async UniTask IndirectProcedure(
         int value,
-        StageSkill srcSkill = null,
+        StageSkill initiator = null,
         WuXing? wuXing = null,
         bool lifeSteal = false,
         bool recursive = true,
         CastResult castResult = null,
         bool induced = false)
-        => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, srcSkill, wuXing, lifeSteal, recursive, castResult, induced));
+        => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, initiator, wuXing, lifeSteal, recursive, castResult, induced));
     
     public async UniTask DamageSelfProcedure(int value, StageSkill srcSkill = null, CastResult castResult = null, bool recursive = true, bool induced = false)
         => await _env.DamageProcedure(new DamageDetails(this, this, value, srcSkill, crit: false, lifeSteal: false, false, recursive, castResult, induced));

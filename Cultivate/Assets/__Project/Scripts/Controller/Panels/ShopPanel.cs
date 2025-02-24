@@ -19,7 +19,7 @@ public class ShopPanel : Panel
         CommodityListView.LeftClickNeuron.Join(BuySkill);
 
         ExitButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.AddListener(RunManager.Instance.Environment.ExitShopProcedure);
+        ExitButton.onClick.AddListener(ExitShop);
     }
 
     public override void Refresh()
@@ -60,6 +60,11 @@ public class ShopPanel : Panel
         int commodityIndex = CommodityListView.IndexFromView(ib.GetView()).Value;
         BuySkillDetails details = new(commodity, commodityIndex);
         shopPanelDescriptor.BuySkillProcedure(details);
+    }
+
+    private void ExitShop()
+    {
+        RunManager.Instance.Environment.ExitShopProcedure();
     }
 
     public XView CommodityItemFromIndex(int commodityIndex)

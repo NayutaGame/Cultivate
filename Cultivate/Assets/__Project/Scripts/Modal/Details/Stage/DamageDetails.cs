@@ -4,7 +4,7 @@ public class DamageDetails : ClosureDetails
     public StageEntity Src;
     public StageEntity Tgt;
     public int Value;
-    public StageSkill SrcSkill;
+    public StageClosureOwner Initiator;
     public bool Crit;
     public bool LifeSteal;
     public bool CausedByAttack;
@@ -17,7 +17,7 @@ public class DamageDetails : ClosureDetails
     /// <param name="src">伤害者</param>
     /// <param name="tgt">受伤害者</param>
     /// <param name="value">伤害数值</param>
-    /// <param name="srcSkill">技能来源</param>
+    /// <param name="initiator">技能来源</param>
     /// <param name="crit">是否暴击</param>
     /// <param name="lifeSteal">是否吸血</param>
     /// <param name="causedByAttack">由攻击造成的伤害</param>
@@ -28,7 +28,7 @@ public class DamageDetails : ClosureDetails
         StageEntity src,
         StageEntity tgt,
         int value,
-        StageSkill srcSkill,
+        StageClosureOwner initiator,
         bool crit,
         bool lifeSteal,
         bool causedByAttack,
@@ -39,7 +39,7 @@ public class DamageDetails : ClosureDetails
         Src = src;
         Tgt = tgt;
         Value = value;
-        SrcSkill = srcSkill;
+        Initiator = initiator;
         Crit = crit;
         LifeSteal = lifeSteal;
         CausedByAttack = causedByAttack;
@@ -49,13 +49,13 @@ public class DamageDetails : ClosureDetails
     }
 
     public static DamageDetails FromAttackDetails(AttackDetails d)
-        => new(d.Src, d.Tgt, d.Value, d.SrcSkill, d.Crit, d.LifeSteal, true, d.Recursive, d.CastResult, d.Induced);
+        => new(d.Src, d.Tgt, d.Value, d.Initiator, d.Crit, d.LifeSteal, true, d.Recursive, d.CastResult, d.Induced);
 
     public static DamageDetails FromIndirectDetails(IndirectDetails d)
         => new(d.Src, d.Tgt, d.Value, d.SrcSkill, false, d.LifeSteal, false, d.Recursive, d.CastResult, d.Induced);
 
     public static DamageDetails FromAttackDetailsUndamaged(AttackDetails d)
-        => new(d.Src, d.Tgt, 0, d.SrcSkill, d.Crit, d.LifeSteal, true, d.Recursive, d.CastResult, d.Induced);
+        => new(d.Src, d.Tgt, 0, d.Initiator, d.Crit, d.LifeSteal, true, d.Recursive, d.CastResult, d.Induced);
 
     public static DamageDetails FromCostHealth(StageEntity src, int value, bool induced)
         => new(src, src, value, null, false, false, false, true, null, induced);

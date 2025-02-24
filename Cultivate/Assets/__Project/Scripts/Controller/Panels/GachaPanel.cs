@@ -20,21 +20,20 @@ public class GachaPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         ListView.SetAddress(_address.Append(".Items"));
         
-        GachaPanelDescriptor d = _address.Get<GachaPanelDescriptor>();
-        PriceTag.text = $"每抽 {d.GetPrice()} 金";
-        
         BuyButton.onClick.RemoveAllListeners();
         BuyButton.onClick.AddListener(Gacha);
-        
-        BuyButton.interactable = !d.ItemsIsEmpty;
 
         ExitButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.AddListener(RunManager.Instance.Environment.ExitShopProcedure);
+        ExitButton.onClick.AddListener(ExitShop);
     }
 
     public override void Refresh()
     {
         ListView.Sync();
+        
+        GachaPanelDescriptor d = _address.Get<GachaPanelDescriptor>();
+        PriceTag.text = $"每抽 {d.GetPrice()} 金";
+        BuyButton.interactable = !d.ItemsIsEmpty;
     }
 
     private void OnEnable()
@@ -54,6 +53,11 @@ public class GachaPanel : Panel
         GachaPanelDescriptor gachaPanelDescriptor = _address.Get<GachaPanelDescriptor>();
         gachaPanelDescriptor.GachaProcedure();
         BuyButton.interactable = !gachaPanelDescriptor.ItemsIsEmpty;
+    }
+
+    private void ExitShop()
+    {
+        RunManager.Instance.Environment.ExitShopProcedure();
     }
 
     public XView GachaItemFromIndex(int gachaIndex)

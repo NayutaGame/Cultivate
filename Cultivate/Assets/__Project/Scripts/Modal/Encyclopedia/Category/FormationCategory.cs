@@ -432,7 +432,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("剑心");
                                 await f.Owner.GainBuffProcedure("净体");
-                                await f.Owner.GainBuffProcedure("同心");
+                                await f.Owner.GainBuffProcedure("共劫");
                                 await f.Owner.GainBuffProcedure("凤凰涅槃");
                             }),
                         }),
@@ -454,7 +454,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("剑心");
                                 await f.Owner.GainBuffProcedure("净体");
-                                await f.Owner.GainBuffProcedure("同心");
+                                await f.Owner.GainBuffProcedure("共劫");
                             }),
                         }),
                     new FormationEntry(

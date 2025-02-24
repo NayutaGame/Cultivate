@@ -326,10 +326,10 @@ public class RoomCategory : Category<RoomEntry>
                         $"桃花宫，选择1张{nextJingJie}木牌",
                         $"长明殿，选择1张{nextJingJie}火牌",
                         $"环岳岭，选择1张{nextJingJie}土牌",
-                        $"易宝斋，得到{2 * RoomDescriptor.GoldRewardTable[room.Ladder]}金钱，访问一次商店",
+                        $"易宝斋，得到{2 * RoomDescriptor.GetGoldRewardFromLadder(room.Ladder)}金钱，访问一次商店",
                         $"剑池，获得2张{currJingJie}攻击牌",
                         $"风雨楼，获得2张{currJingJie}防御牌",
-                        $"百草堂，得到{4 * RoomDescriptor.GoldRewardTable[room.Ladder]}气血上限",
+                        $"百草堂，得到{4 * RoomDescriptor.GetGoldRewardFromLadder(room.Ladder)}气血上限",
                         $"星宫，获得2张{currJingJie}灵气牌",
                         $"天机阁，从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌",
                         $"散修，选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
@@ -353,17 +353,13 @@ public class RoomCategory : Category<RoomEntry>
                             descriptor: new(wuXing: WuXing.Tu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
                             preferredJingJie: nextJingJie),
                         // 易宝斋，得到2/4/8/16金钱，访问一次商店
-                        new ShopPanelDescriptor(nextJingJie, "收藏家").SetEnter(panelDescriptor =>
-                            {
-                                panelDescriptor.DefaultEnter(panelDescriptor);
-                                env.SetDGoldProcedure(2 * RoomDescriptor.GoldRewardTable[room.Ladder]);
-                            }),
+                        ShopPanelDescriptor.FromYiBaoZhai(room.Ladder + 3),
                         new DialogPanelDescriptor("剑池", $"获得2张{currJingJie}攻击牌")
                             .SetReward(new DrawSkillReward($"2张{currJingJie}攻击牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Attack, count: 2))),
                         new DialogPanelDescriptor("风雨楼", $"获得2张{currJingJie}防御牌")
                             .SetReward(new DrawSkillReward($"2张{currJingJie}防御牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Defend, count: 2))),
-                        new DialogPanelDescriptor($"百草堂", $"得到{4 * RoomDescriptor.GoldRewardTable[room.Ladder]}气血上限")
-                            .SetReward(new ResourceReward(health: 4 * RoomDescriptor.GoldRewardTable[room.Ladder])),
+                        new DialogPanelDescriptor($"百草堂", $"得到{4 * RoomDescriptor.GetGoldRewardFromLadder(room.Ladder)}气血上限")
+                            .SetReward(new ResourceReward(health: 4 * RoomDescriptor.GetGoldRewardFromLadder(room.Ladder))),
                         new DialogPanelDescriptor("星宫", $"获得2张{currJingJie}灵气牌")
                             .SetReward(new DrawSkillReward($"2张{currJingJie}灵气牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Mana, count: 2))),
                         new DialogPanelDescriptor("天机阁", $"从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌")
@@ -441,7 +437,7 @@ public class RoomCategory : Category<RoomEntry>
                         return null;
                     });
 
-                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
+                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
                     DialogPanelDescriptor C = new DialogPanelDescriptor(
                             titleText: "愉悦",
                             detailedText: $"泡了温泉之后感到了心情畅快，获得了{baseGoldReward}点气血上限")
@@ -1263,7 +1259,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
+                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
                     DialogPanelDescriptor A = new DialogPanelDescriptor(
                             titleText: "存钱",
                             detailedText: $"获得了{baseGoldReward}金钱")
@@ -1277,33 +1273,12 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
-                    
                     DialogPanelDescriptor A = new(
                         titleText: "黑市",
                         detailedText: "你发现了一个黑市，这里有少量高境界卡牌。",
                         options: "进去看一看");
                     
-                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie, "黑市");
-                    B.SetEnter(panelDescriptor =>
-                    {
-                        CommodityListModel commodities = new CommodityListModel();
-
-                        List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
-                            pred: e => e.LowestJingJie - RunManager.Instance.Environment.JingJie >= 2,
-                            count: 2,
-                            consume: false));
-
-                        foreach (SkillEntry e in entries)
-                        {
-                            int price = Mathf.RoundToInt((baseGoldReward << (e.LowestJingJie - RunManager.Instance.Environment.JingJie)) * RandomManager.Range(0.8f, 1.2f));
-                            float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-                            commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie), price,
-                                discount));
-                        }
-
-                        B.SetCommodities(commodities);
-                    });
+                    ShopPanelDescriptor B = ShopPanelDescriptor.FromHeiShi(room.Ladder);
 
                     A[0].SetSelect(option => B);
                     
@@ -1320,7 +1295,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "收藏家",
                         detailedText: "你遇到了一位收藏家，他邀请你去看看他的藏品");
                     
-                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie, "收藏家");
+                    ShopPanelDescriptor B = ShopPanelDescriptor.FromShouCangJia(room.Ladder);
 
                     A[0].SetSelect(option => B);
                     
@@ -1354,26 +1329,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "毕业季",
                         detailedText: "一阵噪音惊扰了你的休息，原来是灵韵宗的毕业季到了，学子们完成了学业后，纷纷将不要的技能打折卖出。");
                     
-                    ShopPanelDescriptor B = new(RunManager.Instance.Environment.JingJie, "毕业季");
-                    B.SetEnter(panelDescriptor =>
-                    {
-                        CommodityListModel commodities = new CommodityListModel();
-
-                        List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
-                            pred: e => e.LowestJingJie <= JingJie.ZhuJi,
-                            count: 4,
-                            consume: false));
-
-                        foreach (SkillEntry e in entries)
-                        {
-                            int price = Mathf.RoundToInt((1 << e.LowestJingJie));
-                            float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-                            commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie), price,
-                                discount));
-                        }
-
-                        B.SetCommodities(commodities);
-                    });
+                    ShopPanelDescriptor B = ShopPanelDescriptor.FromBiYeJi(room.Ladder);
                     
                     A[0].SetSelect(option => B);
                     
@@ -2070,7 +2026,7 @@ public class RoomCategory : Category<RoomEntry>
                     int trial = 0;
                     int rage = RandomManager.Range(0, 7);
 
-                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
+                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
                     
                     DialogPanelDescriptor A = new(
                         titleText: "生气",
@@ -2145,7 +2101,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
-                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
+                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
 
                     DialogPanelDescriptor A = new(
                         titleText: "管家",
@@ -2197,7 +2153,7 @@ public class RoomCategory : Category<RoomEntry>
                     bool yellNoLie = false;
                     bool expert = RandomManager.value < 0.5f;
                     
-                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
+                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
 
                     DialogPanelDescriptor A = new(
                         titleText: "市集",
@@ -2281,7 +2237,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
-                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
+                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
                     DialogPanelDescriptor A = new(
                         titleText: "季节",
                         detailedText: "你要过一个桥，桥上站了一人，问你，什么时候河会变得可以行走。你说在冬季的时候。他说你是胡说八道：“一年只有三个季节，春夏秋，哪里来的冬季？”",
@@ -2347,7 +2303,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
-                    int baseGoldReward = RoomDescriptor.GoldRewardTable[room.Ladder];
+                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
                     DialogPanelDescriptor A = new(
                         titleText: "守株待兔",
                         detailedText: "你见到一个人坐在树桩旁，问他在干什么，他说有兔子会撞上这个树桩，自己在等兔子撞死。",

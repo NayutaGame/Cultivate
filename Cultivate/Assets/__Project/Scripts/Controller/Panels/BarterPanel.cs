@@ -18,6 +18,7 @@ public class BarterPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         BarterItemListView.SetAddress(_address.Append(".Inventory"));
 
+        // suspicious
         BarterItemListView.Traversal().Do(v =>
         {
             BarterItemView barterItemView = (v as DelegatingView).GetDelegatedView() as BarterItemView;
@@ -25,7 +26,7 @@ public class BarterPanel : Panel
         });
 
         ExitButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.AddListener(RunManager.Instance.Environment.ExitShopProcedure);
+        ExitButton.onClick.AddListener(ExitShop);
     }
 
     private void OnEnable()
@@ -55,6 +56,11 @@ public class BarterPanel : Panel
         ExchangeSkillDetails details = new(barterItem);
         barterPanelDescriptor.ExchangeSkillProcedure(details);
         // AudioManager.Instance.Play("钱币");
+    }
+
+    private void ExitShop()
+    {
+        RunManager.Instance.Environment.ExitShopProcedure();
     }
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)

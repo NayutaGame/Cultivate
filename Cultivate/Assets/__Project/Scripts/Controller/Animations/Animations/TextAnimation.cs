@@ -35,8 +35,7 @@ public class TextAnimation : Animation
     
     private void SpawnText(TextEffectType type, string content)
     {
-        var spawnPos = _model.VFXTransform.position + 
-                       new Vector3(Random.Range(-0.5f, 0.5f), 0, 0);
+        Vector3 spawnPos = _model.VFXTransform.position + new Vector3(Random.Range(-0.5f, 0.5f), 0, 0);
     
         GameObject gao = StageManager.Instance.FetchObject(GetPrefab(type));
         gao.transform.SetPositionAndRotation(spawnPos, Quaternion.identity);
@@ -56,7 +55,22 @@ public class TextAnimation : Animation
         {
             case TextEffectType.Buff:
                 text.color = new Color(0.9f, 0.8f, 0.1f);
-                break;
+                
+                DOTween.Sequence()
+                    .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
+                    .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
+                    .SetAutoKill().Restart();
+                
+                DOTween.Sequence()
+                    .Append(gao.transform.DOMoveY(spawnPos.y + 3 + Random.Range(-0.5f, 0.5f), 1f).SetEase(Ease.OutCubic))
+                    .Join(gao.transform.DOMoveX(spawnPos.x + Random.Range(-1f, 1f), 1f))
+                    .SetAutoKill().Restart();
+                
+                DOTween.Sequence()
+                    .Append(text.DOFade(0, 0.5f).SetDelay(0.5f))
+                    .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(type), gao))
+                    .SetAutoKill().Restart();
+                return;
             case TextEffectType.Debuff:
                 text.color = new Color(0.9f, 0.2f, 0.8f);
                 break;

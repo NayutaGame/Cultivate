@@ -35,7 +35,7 @@ public class BattleRoomDescriptor : RoomDescriptor, ISerializationCallbackReceiv
         _slotCountBefore = slotCountBefore;
         _slotCountAfter = slotCountAfter;
         
-        _baseGoldReward = GoldRewardTable[ladder];
+        _baseGoldReward = GetGoldRewardFromLadder(ladder);
         _isBoss = IsBossTable[ladder];
         _spriteEntry = SpriteTable[ladder];
     }
@@ -60,7 +60,7 @@ public class BattleRoomDescriptor : RoomDescriptor, ISerializationCallbackReceiv
 
     public void OnAfterDeserialize()
     {
-        _baseGoldReward = GoldRewardTable[Ladder];
+        _baseGoldReward = GetGoldRewardFromLadder(Ladder);
         _isBoss = IsBossTable[Ladder];
         _spriteEntry = SpriteTable[Ladder];
     }

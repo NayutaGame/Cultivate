@@ -30,7 +30,7 @@ public class CastDetails : ClosureDetails
         StageClosure[] closures = null,
         bool induced = false)
         => await Env.AttackProcedure(new AttackDetails(src: Caster, tgt: Caster.Opponent(), value, times, Skill, wuxing: wuXing ?? Skill.Entry.WuXing,
-            crit: false, lifeSteal: false, penetrate: false, preserveJianYi: false, shatter: false, evade: false, recursive: recursive, castResult: CastResult, closures: closures, induced: induced));
+            crit: false, lifeSteal: false, penetrate: false, doesntConsumeJianYi: false, shatter: false, evade: false, recursive: recursive, castResult: CastResult, closures: closures, induced: induced));
 
     public async UniTask IndirectProcedure(
         int value,

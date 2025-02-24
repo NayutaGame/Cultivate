@@ -285,6 +285,12 @@ public class StageEnvironment : Addressable, StageClosureOwner
         await _closureDict.SendEvent(StageClosureDict.WIL_FULL_ATTACK, attackDetails);
         await FullAttackStaging(attackDetails);
 
+        if (!attackDetails.DoesntConsumeJianYi)
+        {
+            string thisTurnAttackedKey = "thisTurnAttacked";
+            attackDetails.Src.Memory.SetVariable(thisTurnAttackedKey, true);
+        }
+
         for (int i = 0; i < attackDetails.Times; i++)
         {
             AttackDetails d = attackDetails.ShallowClone();
@@ -894,7 +900,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
     private void RegisterAttackClosure(AttackDetails attackDetails)
     {
-        _closureDict.Register(attackDetails.SrcSkill, attackDetails.Closures);
+        _closureDict.Register(attackDetails.Initiator, attackDetails.Closures);
     }
 
     private void UnregisterConfig()
@@ -917,7 +923,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
 
     private void UnregisterAttackClosure(AttackDetails attackDetails)
     {
-        _closureDict.Unregister(attackDetails.SrcSkill, attackDetails.Closures);
+        _closureDict.Unregister(attackDetails.Initiator, attackDetails.Closures);
     }
     
     private void ClearResults()

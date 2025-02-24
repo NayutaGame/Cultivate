@@ -14,12 +14,12 @@ public class AttackDetails : ClosureDetails
     }
 
     public int Times;
-    public StageSkill SrcSkill;
+    public StageClosureOwner Initiator;
     public WuXing? WuXing;
     public bool Crit;
     public bool LifeSteal;
     public bool Penetrate;
-    public bool PreserveJianYi;
+    public bool DoesntConsumeJianYi;
     public bool Shatter;
     public bool Evade;
     public bool Recursive;
@@ -33,13 +33,13 @@ public class AttackDetails : ClosureDetails
     /// <param name="tgt">受攻击者</param>
     /// <param name="value">攻击数值</param>
     /// <param name="times">攻击次数</param>
-    /// <param name="srcSkill">技能来源</param>
+    /// <param name="initiator">技能来源</param>
     /// <param name="castResult">结果描述</param>
     /// <param name="wuXing">攻击特效的五行</param>
     /// <param name="crit">是否吸血</param>
     /// <param name="lifeSteal">是否吸血</param>
     /// <param name="penetrate">是否穿透</param>
-    /// <param name="preserveJianYi">是否保存剑意</param>
+    /// <param name="doesntConsumeJianYi">是否保存剑意</param>
     /// <param name="shatter">是否碎防</param>
     /// <param name="evade">是否闪避</param>
     /// <param name="closures">额外行为</param>
@@ -50,12 +50,12 @@ public class AttackDetails : ClosureDetails
         StageEntity tgt,
         int value,
         int times,
-        StageSkill srcSkill,
+        StageClosureOwner initiator,
         WuXing? wuxing,
         bool crit,
         bool lifeSteal,
         bool penetrate,
-        bool preserveJianYi,
+        bool doesntConsumeJianYi,
         bool shatter,
         bool evade,
         bool recursive,
@@ -67,12 +67,12 @@ public class AttackDetails : ClosureDetails
         Tgt = tgt;
         Value = value;
         Times = times;
-        SrcSkill = srcSkill;
+        Initiator = initiator;
         WuXing = wuxing;
         Crit = crit;
         LifeSteal = lifeSteal;
         Penetrate = penetrate;
-        PreserveJianYi = preserveJianYi;
+        DoesntConsumeJianYi = doesntConsumeJianYi;
         Shatter = shatter;
         Evade = evade;
         Recursive = recursive;
@@ -86,12 +86,12 @@ public class AttackDetails : ClosureDetails
         Tgt,
         Value,
         Times,
-        SrcSkill,
+        Initiator,
         WuXing,
         Crit,
         LifeSteal,
         Penetrate,
-        PreserveJianYi,
+        DoesntConsumeJianYi,
         Shatter,
         Evade,
         Recursive,

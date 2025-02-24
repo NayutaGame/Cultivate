@@ -26,8 +26,8 @@ public class ComposedBuffView : DelegatingView
     
     private Tween EnterPing()
         => DOTween.Sequence()
-            .Append(GetDelegatedView().GetRect().DOScale(1.5f, 0.075f).SetEase(Ease.OutQuad))
             .AppendCallback(Refresh)
+            .Append(GetDelegatedView().GetRect().DOScale(1.5f, 0.075f).SetEase(Ease.OutQuad))
             .Append(GetDelegatedView().GetRect().DOScale(1f, 0.075f).SetEase(Ease.InQuad));
     
     

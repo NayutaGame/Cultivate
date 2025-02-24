@@ -657,7 +657,7 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
-                        await b.Owner.AttackProcedure(b.Stack);
+                        await b.Owner.AttackProcedure(b.Stack, initiator: owner);
                         await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                     }),
                 }),
@@ -908,15 +908,10 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)owner;
                         AttackDetails d = (AttackDetails)closureDetails;
 
-                        if (d.PreserveJianYi) return;
-
                         if (b.Owner == d.Src && d.Src != d.Tgt)
                         {
                             b.PlayPingAnimation();
                             d.Value += b.Stack;
-
-                            string key = "thisTurnAttacked";
-                            b.Owner.Memory.PerformOperation(key, false, attacked => true);
                         }
                     }),
                     new(StageClosureDict.DID_TURN, 0, async (owner, closureDetails) =>
@@ -924,14 +919,17 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)owner;
                         TurnDetails d = (TurnDetails)closureDetails;
                         if (b.Owner != d.Owner) return;
-                        
-                        string key = "thisTurnAttacked";
-                        bool thisTurnAttacked = b.Owner.Memory.TryGetVariable(key, false);
-                        if (!thisTurnAttacked) return;
-                        
+
+                        string thisTurnAttackedKey = "thisTurnAttacked";
+                        string thisTurnPreserveJianYiKey = "thisTurnPreserveJianYi";
+                        bool thisTurnAttacked = d.Owner.Memory.TryGetVariable(thisTurnAttackedKey, false);
+                        bool thisTurnPreserveJianYi = d.Owner.Memory.TryGetVariable(thisTurnPreserveJianYiKey, false);
+
+                        bool preserveJianYi = !thisTurnAttacked || thisTurnPreserveJianYi;
+                        if (preserveJianYi) return;
+
                         b.PlayPingAnimation();
                         await b.LoseStackProcedure(b.Stack);
-                        b.Owner.Memory.SetVariable(key, false);
                     }),
                 }),
             
@@ -959,7 +957,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner == d.Tgt && d.Src != d.Tgt)
                         {
                             b.PlayPingAnimation();
-                            await b.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Mu, recursive: false, induced: true);
+                            await b.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Mu, initiator: owner, recursive: false, induced: true);
                             await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                         }
                     }),
@@ -975,18 +973,17 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         b.PlayPingAnimation();
 
-                        StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0, async (owner, closureDetails) =>
+                        StageClosure closure = new(StageClosureDict.WIL_FULL_ATTACK, 0, async (owner, closureDetails) =>
                         {
-                            Buff b = (Buff)owner;
+                            Buff buff = owner as Buff;
                             AttackDetails d = (AttackDetails)closureDetails;
                             
-                            if (d.SrcSkill == null) return;  // 非技能来源的攻击不处理
-                            if (b.Owner != d.Src) return;    // 不是buff持有者的攻击不处理
+                            if (buff.Owner != d.Src) return;      // 不是buff持有者的攻击不处理
                             
-                            d.PreserveJianYi = true;         // 设置保存剑意标记
+                            d.DoesntConsumeJianYi = true;         // 设置保存剑意标记
                         });
 
-                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo,
+                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo, initiator: owner,
                             closures: new[] { closure });
                     }),
                     new(StageClosureDict.WIL_CAST, 0, async (owner, closureDetails) =>
@@ -1639,7 +1636,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("同心", "燃命时：对方会受到伤害", BuffStackRule.One, true, false,
+            new("共劫", "燃命时：对方会受到伤害", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_HEALTH_COST, 0, async (owner, closureDetails) =>
