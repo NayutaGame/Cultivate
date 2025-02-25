@@ -269,8 +269,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
+  _container: {fileID: 0}
   Prefabs:
   - {fileID: 8155228337873847611, guid: 1c2fb439e33e1ec43b4c0b47edd3532e, type: 3}
+  _viewContainer: {fileID: 0}
 --- !u!1 &3519378214915574742
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +625,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -768,8 +770,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.5, y: 345}
-  m_SizeDelta: {x: 180, y: 80}
+  m_AnchoredPosition: {x: -0.9, y: 350.7}
+  m_SizeDelta: {x: 365.4282, y: 125.2075}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5174014537368237941
 CanvasRenderer:
@@ -801,8 +803,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u60DC\u8D25"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f0113768963ead4428e00127ab541017, type: 2}
-  m_sharedMaterial: {fileID: 8476571589117263006, guid: f0113768963ead4428e00127ab541017, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0637ea3f191edfe4683b0bb26afeaebf, type: 2}
+  m_sharedMaterial: {fileID: -8480002131176977219, guid: 0637ea3f191edfe4683b0bb26afeaebf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 
-public class Buff : StageClosureOwner
+public class Buff : StageClosureOwner, IEmphasizable
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -10,7 +10,9 @@ public class Buff : StageClosureOwner
     private BuffEntry _entry;
     public BuffEntry GetEntry() => _entry;
 
-    public Neuron PingNeuron;
+    private Neuron _emphasisNeuron;
+    public Neuron GetEmphasisNeuron()
+        => _emphasisNeuron;
 
     public string GetName() => _entry.GetName();
     public string GetExplanation() => _entry.GetExplanation();
@@ -27,13 +29,11 @@ public class Buff : StageClosureOwner
         _entry = entry;
         _stack = 0;
 
-        PingNeuron = new();
+        _emphasisNeuron = new();
     }
 
-    public void PlayPingAnimation()
-    {
-        PingNeuron.Invoke();
-    }
+    public void Emphasize()
+        => _emphasisNeuron.Invoke();
 
     public void Register()
     {

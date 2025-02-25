@@ -107,6 +107,7 @@ public class DiscoverSkillPanel : Panel
         => DOTween.Sequence()
             .AppendCallback(TraversalSetHide)
             .AppendCallback(SkillList.Sync)
+            .AppendCallback(RefreshInfo)
             .AppendCallback(() => gameObject.SetActive(true))
             .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0)) // move to pair with show curtain
             .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))

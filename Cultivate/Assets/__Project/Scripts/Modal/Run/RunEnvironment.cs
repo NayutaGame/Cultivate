@@ -307,12 +307,16 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     public void StartRunProcedure(StartRunDetails d)
     {
         InitSkillPool();
+
+        MapEntry mapEntry = Map.GetEntry();
         
-        SetJingJieProcedure(Map.GetEntry()._envJingJie);
-        _home.SetSlotCount(Map.GetEntry()._slotCount);
-        SetDGoldProcedure(Map.GetEntry()._gold);
+        SetJingJieProcedure(mapEntry._envJingJie);
+        _home.SetSlotCount(mapEntry._slotCount);
+        SetDGoldProcedure(mapEntry._gold);
         
-        DrawSkillsProcedure(new(jingJie: Map.GetEntry()._skillJingJie, count: Map.GetEntry()._skillCount));
+        DrawSkillsProcedure(new(jingJie: mapEntry._skillJingJie, count: mapEntry._skillCount));
+        
+        mapEntry.OnStartRun(this);
 
         Map.Init();
         InitPanel();
@@ -764,7 +768,7 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     {
         SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
         SkillPool.Shuffle();
-        skillEntry ??= Encyclopedia.SkillCategory[0];
+        skillEntry ??= Encyclopedia.SkillCategory.DefaultEntry();
         return skillEntry;
     }
     
@@ -833,12 +837,12 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
                 return true;
             });
 
-            item ??= Encyclopedia.SkillCategory[0];
+            item ??= Encyclopedia.SkillCategory.DefaultEntry();
             toRet.Add(item);
         }
 
         if (!d.Consume)
-            SkillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory[0]));
+            SkillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory.DefaultEntry()));
 
         SkillPool.Shuffle();
         return toRet;

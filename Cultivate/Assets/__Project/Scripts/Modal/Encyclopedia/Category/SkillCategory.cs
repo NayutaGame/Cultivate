@@ -6,6 +6,30 @@ using CLLibrary;
 
 public class SkillCategory : Category<SkillEntry>
 {
+    private static readonly StageClosure Crit = new(StageClosureDict.WIL_ATTACK, -1,
+                                                    async (owner, closureDetails) =>
+                                                    {
+                                                        AttackDetails d = closureDetails as AttackDetails;
+                                                        if (owner != d.Initiator) return;
+                                                        d.Crit = true;
+                                                    });
+
+    private static readonly StageClosure LifeSteal = new(StageClosureDict.WIL_ATTACK, -1,
+                                                    async (owner, closureDetails) =>
+                                                    {
+                                                        AttackDetails d = closureDetails as AttackDetails;
+                                                        if (owner != d.Initiator) return;
+                                                        d.LifeSteal = true;
+                                                    });
+
+    private static readonly StageClosure Penetrate = new(StageClosureDict.WIL_ATTACK, -1,
+                                                    async (owner, closureDetails) =>
+                                                    {
+                                                        AttackDetails d = closureDetails as AttackDetails;
+                                                        if (owner != d.Initiator) return;
+                                                        d.Penetrate = true;
+                                                    });
+
     public SkillCategory()
     {
         AddRange(new List<SkillEntry>()
@@ -95,16 +119,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n暴击",
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.Initiator) return;
-                            await d.Src.GainBuffProcedure("暴击", induced: false);
-                        });
-
                     await d.AttackProcedure(Fib.ToValue(5 + d.Dj),
-                        closures: new [] { closure });
+                        closures: new [] { Crit });
                 }),
 
             new(id:                         "0109",
@@ -318,16 +334,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n暴击",
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.Initiator) return;
-                            await d.Src.GainBuffProcedure("暴击");
-                        });
-
                     await d.AttackProcedure(6, times: 2 + d.Dj,
-                        closures: new[] { closure });
+                        closures: new[] { Crit });
                 }),
 
             new(id:                         "0116",
@@ -440,16 +448,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"{Fib.ToValue(3 + dj) * 2}攻".ApplyAttack() + " 吸血".ApplyHeal(),
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.Initiator) return;
-                            d.LifeSteal = true;
-                        });
-                    
                     await d.AttackProcedure(Fib.ToValue(3 + d.Dj) * 2,
-                        closures: new [] { closure });
+                        closures: new [] { LifeSteal });
                 }),
 
             new(id:                         "0204",
@@ -564,16 +564,8 @@ public class SkillCategory : Category<SkillEntry>
 
                     if (cond)
                     {
-                        StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                            async (owner, closureDetails) =>
-                            {
-                                AttackDetails d = closureDetails as AttackDetails;
-                                if (owner != d.Initiator) return;
-                                d.LifeSteal = true;
-                            });
-                    
                         await d.AttackProcedure(20 + 10 * d.Dj,
-                            closures: new [] { closure });
+                            closures: new [] { LifeSteal });
                     }
 
                     d.CastResult.AppendCond(cond);
@@ -888,16 +880,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n穿透",
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.Initiator) return;
-                            d.Penetrate = true;
-                        });
-                    
                     await d.AttackProcedure(6 + 4 * d.Dj,
-                        closures: new [] { closure });
+                        closures: new [] { Penetrate });
                 }),
 
             new(id:                         "0307",
@@ -1370,12 +1354,15 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.HealthFromValue(8),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+{2 + dj}".ApplyMana() +
-                    $"锻体+5" +
-                    $"\n残血：免除消耗",
+                    $"\n锻体+5" +
+                    $"\n残血：免除消耗".ApplyCond(castResult),
                 cast:                       async d =>
                 {
                     await d.GainBuffProcedure("灵气", 2 + d.Dj);
                     await d.GainBuffProcedure("锻体", 5);
+
+                    bool cond = d.Caster.IsLowHealth;
+                    d.CastResult.AppendCond(cond);
                 }),
             
             new(id:                         "0409",
@@ -1383,6 +1370,8 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
+                cost:                       CostResult.ChannelFromValue(1),
+                costDescription:            CostDescription.ChannelFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"护甲+2".ApplyDefend() +
                     $"\n直到使用攻击牌：" + $"每回合{1 + 4 * dj}攻".ApplyAttack() +
@@ -1459,12 +1448,14 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
+                cost:                       CostResult.ChannelFromValue(5),
+                costDescription:            CostDescription.ChannelFromValue(5),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{9 + 3 * dj}攻x{9 + 3 * dj}".ApplyAttack() +
-                    $"禁止行动",
+                    $"{9 + 2 * dj}攻x{9 + 2 * dj}".ApplyAttack() +
+                    $"\n禁止行动".ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    await d.AttackProcedure(9 + 3 * d.Dj, times: 9 + 3 * d.Dj);
+                    await d.AttackProcedure(9 + 2 * d.Dj, times: 9 + 2 * d.Dj);
                     await d.GainBuffProcedure("禁止行动");
                 }),
 
@@ -2151,47 +2142,7 @@ public class SkillCategory : Category<SkillEntry>
                         await d.GainArmorProcedure(maxStacks, induced: true);
                     }
                 }),
-
-            // new(id:                         "0107",
-            //     name:                       "追击",
-            //     wuXing:                     WuXing.Jin,
-            //     jingJieBound:               JingJie.ZhuJi2HuaShen,
-            //     skillTypeComposite:         SkillType.Attack,
-            //     cost:                       CostResult.ManaFromDj(dj => 2 - ((dj + 1) / 2)),
-            //     costDescription:            CostDescription.ManaFromDj(dj => 2 - ((dj + 1) / 2)),
-            //     castDescription:            (j, dj, costResult, castResult) =>
-            //         $"{3 + dj}攻 每携带1金：多{3 + dj}",
-            //     cast:                       async d =>
-            //     {
-            //         int count = caster.CountSuch(s => s.Entry.WuXing == WuXing.Jin);
-            //         await caster.AttackProcedure(count * (3 + d.Dj), wuXing: skill.Entry.WuXing, srcSkill: skill,
-            //             castResult: castResult);
-            //         return null;
-            //     }),
-            //
-            // new(id:                         "0105",
-            //     name:                       "杀意",
-            //     wuXing:                     WuXing.Jin,
-            //     jingJieBound:               JingJie.ZhuJi2HuaShen,
-            //     skillTypeComposite:         SkillType.Attack,
-            //     castDescription:            (j, dj, costResult, castResult) =>
-            //         $"{6 + 3 * dj}攻".ApplyAttack() +
-            //         $"\n暴击+1",
-            //     withinPool:                 false,
-            //     cast:                       async d =>
-            //     {
-            //         StageClosure closure = new(StageClosureDict.DID_FULL_ATTACK, 0,
-            //             async (owner, closureDetails) =>
-            //             {
-            //                 AttackDetails d = closureDetails as AttackDetails;
-            //                 if (owner != d.SrcSkill) return;
-            //                 await d.Src.GainBuffProcedure("暴击", induced: true);
-            //             });
-            //
-            //         await d.AttackProcedure(6 + 3 * d.Dj,
-            //             closures: new [] { closure });
-            //     }),
-            //
+            
             // new(id:                         "0121",
             //     name:                       "贪狼",
             //     wuXing:                     WuXing.Jin,
@@ -2250,20 +2201,20 @@ public class SkillCategory : Category<SkillEntry>
             //         d.CastResult.AppendCond(cond);
             //     }),
 
-            // new(id:                         "0226",
-            //     name:                       "玄武吐息法",
-            //     wuXing:                     WuXing.Shui,
-            //     jingJieBound:               JingJie.HuaShenOnly,
-            //     skillTypeComposite:         SkillType.Health,
-            //     castDescription:            (j, dj, costResult, castResult) =>
-            //         $"升华\n气血回复至上限",
-            //     withinPool:                 false,
-            //     cast:                       async d =>
-            //     {
-            //         int gap = d.Caster.MaxHp - d.Caster.Hp;
-            //         await d.Caster.HealProcedure(gap);
-            //         await d.Skill.ExhaustProcedure();
-            //     }),
+            new(id:                         "0226",
+                name:                       "玄武吐息法",
+                wuXing:                     WuXing.Shui,
+                jingJieBound:               JingJie.HuaShenOnly,
+                skillTypeComposite:         SkillType.Health,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"升华\n气血回复至上限",
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    int gap = d.Caster.MaxHp - d.Caster.Hp;
+                    await d.Caster.HealProcedure(gap);
+                    await d.Skill.ExhaustProcedure();
+                }),
             
             // new(id:                         "0210",
             //     name:                       "无念无想",
@@ -2620,6 +2571,19 @@ public class SkillCategory : Category<SkillEntry>
                 castDescription:            (j, dj, costResult, castResult) =>
                     "模仿对手对位的牌",
                 withinPool:                 false),
+
+            new(id:                         "0004",
+                name:                       "作弊",
+                wuXing:                     null,
+                jingJieBound:               JingJie.HuaShenOnly,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    "对手生命变成0",
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    int value = d.Caster.Opponent().Hp;
+                    await d.Caster.Opponent().LoseHealthProcedure(value, causedByAttack: false);
+                }),
 
             #endregion
 
@@ -4034,15 +3998,8 @@ public class SkillCategory : Category<SkillEntry>
                     
                     if (cond)
                     {
-                        StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                            async (owner, closureDetails) =>
-                            {
-                                AttackDetails d = closureDetails as AttackDetails;
-                                if (owner != d.Initiator) return;
-                                d.LifeSteal = true;
-                            });
                         await d.AttackProcedure(4 + 4 + 2 * d.Dj, 1 + 1 + d.Dj,
-                            closures: new[] { closure });
+                            closures: new[] { LifeSteal });
                     }
                     else
                     {
@@ -4126,16 +4083,8 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     bool cond = d.Skill.StageCastedCount != 0;
                     d.CastResult.AppendCond(cond);
-                    
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.Initiator) return;
-                            d.LifeSteal = true;
-                        });
                     await d.AttackProcedure(30,
-                        closures: new[] { closure });
+                        closures: new[] { LifeSteal });
                 }),
 
             // 6 12 26 52 102
@@ -4178,16 +4127,8 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.Initiator) return;
-                            d.Penetrate = true;
-                        });
-
                     await d.AttackProcedure(10 + 10 * d.Dj,
-                        closures: new [] { closure });
+                        closures: new [] { Penetrate });
                 }),
 
             // 6 12 26 52 102

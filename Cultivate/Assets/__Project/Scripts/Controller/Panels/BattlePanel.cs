@@ -4,6 +4,7 @@ using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -53,7 +54,7 @@ public class BattlePanel : Panel
     protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for show
-        Animator animator = new(2, "Dialog Panel");
+        Animator animator = new(2, "Battle Panel");
         animator[0, 1] = EnterIdle;
         animator[1, 1] = SelfTransitionTween;
         animator[-1, 0] = EnterHide;
@@ -188,8 +189,8 @@ public class BattlePanel : Panel
             ReactionView.BeginDrag(reactionSprite, IntensityFromMousePosition(d.position));
             return;
         }
-        
-        Debug.Log($"Error: BeginDrag, {obj}");
+
+        Assert.IsTrue(false, $"BeginDrag, {obj}");
     }
 
     private void ReactionFromEndDrag(LegacyInteractBehaviour ib, PointerEventData d)

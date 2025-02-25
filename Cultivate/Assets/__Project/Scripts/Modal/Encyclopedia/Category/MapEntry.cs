@@ -11,6 +11,7 @@ public class MapEntry : Entry
     [NonSerialized] public int _gold;
     [NonSerialized] public JingJie _skillJingJie;
     [NonSerialized] public int _skillCount;
+    [NonSerialized] public Action<RunEnvironment> _onStartRun;
     
     private RoomDescriptor[][] _levels;
     public RoomDescriptor[][] Levels => _levels;
@@ -22,7 +23,8 @@ public class MapEntry : Entry
         int gold,
         JingJie skillJingJie,
         int skillCount,
-        RoomDescriptor[][] levels) : base(id)
+        RoomDescriptor[][] levels,
+        Action<RunEnvironment> onStartRun = null) : base(id)
     {
         _envJingJie = envJingJie;
         _slotCount = slotCount;
@@ -30,10 +32,13 @@ public class MapEntry : Entry
         _skillJingJie = skillJingJie;
         _skillCount = skillCount;
         _levels = levels;
+        _onStartRun = onStartRun;
     }
 
     public static implicit operator MapEntry(string id) => Encyclopedia.MapCategory[id];
 
     public RoomDescriptor GetStepDescriptorFromLevelAndStep(int levelIndex, int stepIndex)
         => _levels[levelIndex][stepIndex];
+
+    public void OnStartRun(RunEnvironment env) => _onStartRun?.Invoke(env);
 }

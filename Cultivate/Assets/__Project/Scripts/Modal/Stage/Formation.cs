@@ -6,7 +6,7 @@ using CLLibrary;
 /// <summary>
 /// Formation
 /// </summary>
-public class Formation : StageClosureOwner, IFormationModel, Addressable
+public class Formation : StageClosureOwner, IFormationModel, Addressable, IEmphasizable
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -15,7 +15,9 @@ public class Formation : StageClosureOwner, IFormationModel, Addressable
 
     public FormationEntry GetEntry() => _runFormation.GetEntry();
 
-    public Neuron PingNeuron;
+    private Neuron _emphasisNeuron;
+    public Neuron GetEmphasisNeuron()
+        => _emphasisNeuron;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -29,13 +31,11 @@ public class Formation : StageClosureOwner, IFormationModel, Addressable
         _owner = owner;
         _runFormation = runFormation;
 
-        PingNeuron = new();
+        _emphasisNeuron = new();
     }
 
-    public void PlayPingAnimation()
-    {
-        PingNeuron.Invoke();
-    }
+    public void Emphasize()
+        => _emphasisNeuron.Invoke();
     
     public void Register()
     {

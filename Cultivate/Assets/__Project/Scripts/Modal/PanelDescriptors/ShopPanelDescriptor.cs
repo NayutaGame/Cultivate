@@ -8,6 +8,9 @@ public class ShopPanelDescriptor : PanelDescriptor
     private int _ladder;
     private float _priceMultiplier;
 
+    private string _title;
+    public string GetTitle() => _title;
+    
     private CommodityListModel _commodities;
     public CommodityListModel GetCommodities() => _commodities;
     public void SetCommodities(CommodityListModel commodities) => _commodities = commodities;
@@ -15,7 +18,7 @@ public class ShopPanelDescriptor : PanelDescriptor
     private SpriteEntry _spriteEntry;
     public SpriteEntry GetSprite() => _spriteEntry;
 
-    private ShopPanelDescriptor(int ladder, float priceMultiplier = 1, SpriteEntry spriteEntry = null)
+    private ShopPanelDescriptor(int ladder, float priceMultiplier = 1, string title = null, SpriteEntry spriteEntry = null)
     {
         _accessors = new()
         {
@@ -25,6 +28,7 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         _ladder = ladder;
         _priceMultiplier = priceMultiplier;
+        _title = title ?? "商店";
         _spriteEntry = spriteEntry ?? "收藏家";
     }
 
@@ -80,13 +84,13 @@ public class ShopPanelDescriptor : PanelDescriptor
         => FromShouCangJia(ladder);
 
     public static ShopPanelDescriptor FromShouCangJia(int ladder)
-        => new(ladder, priceMultiplier: 2, "收藏家");
+        => new(ladder, priceMultiplier: 2, "收藏家", "收藏家");
 
     public static ShopPanelDescriptor FromYiBaoZhai(int ladder)
     {
         int goldReward = RoomDescriptor.GetGoldRewardFromLadder(ladder);
 
-        ShopPanelDescriptor B = new ShopPanelDescriptor(ladder, 2, "收藏家");
+        ShopPanelDescriptor B = new ShopPanelDescriptor(ladder, 2, "易宝斋", "收藏家");
         B.SetEnter(panelDescriptor =>
         {
             panelDescriptor.DefaultEnter(panelDescriptor);
@@ -100,9 +104,9 @@ public class ShopPanelDescriptor : PanelDescriptor
         int priceMultiplier = 2;
         JingJie jingJieFromLadder = RoomDescriptor.GetJingJieFromLadder(ladder);
         Bound baseJingJieBound = new Bound((jingJieFromLadder + 2).ClampUpper(JingJie.HuaShen),
-            (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen));
+            (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen) + 1);
 
-        ShopPanelDescriptor B = new(ladder, priceMultiplier, "黑市");
+        ShopPanelDescriptor B = new(ladder, priceMultiplier, "黑市", "黑市");
         B.SetEnter(panelDescriptor =>
         {
             CommodityListModel commodities = new CommodityListModel();
@@ -134,9 +138,9 @@ public class ShopPanelDescriptor : PanelDescriptor
         int priceMultiplier = 2;
         JingJie jingJieFromLadder = RoomDescriptor.GetJingJieFromLadder(ladder);
         Bound baseJingJieBound = new Bound(JingJie.LianQi,
-            (jingJieFromLadder - 2).ClampLower(JingJie.LianQi));
+            (jingJieFromLadder - 2).ClampLower(JingJie.LianQi) + 1);
 
-        ShopPanelDescriptor B = new(ladder, 0.5f, "毕业季");
+        ShopPanelDescriptor B = new(ladder, 0.5f, "毕业季", "毕业季");
         B.SetEnter(panelDescriptor =>
         {
             CommodityListModel commodities = new CommodityListModel();

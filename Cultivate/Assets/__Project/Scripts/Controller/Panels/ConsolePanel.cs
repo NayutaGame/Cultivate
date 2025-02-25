@@ -21,6 +21,7 @@ public class ConsolePanel : Panel
     
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
+    public Button CheatButton;
 
     public Button Button1;
     public Button Button5;
@@ -75,6 +76,9 @@ public class ConsolePanel : Panel
 
         DrawSkillButton.onClick.RemoveAllListeners();
         DrawSkillButton.onClick.AddListener(DrawSkill);
+
+        CheatButton.onClick.RemoveAllListeners();
+        CheatButton.onClick.AddListener(Cheat);
 
         ToggleButton.onClick.RemoveAllListeners();
         ToggleButton.onClick.AddListener(() => ToggleShowing());
@@ -208,5 +212,10 @@ public class ConsolePanel : Panel
     {
         RunManager.Instance.Environment.DrawSkillProcedure(SkillEntryDescriptor.FromJingJie(RunManager.Instance.Environment.JingJie));
         // RunManager.Instance.Environment.DrawSkillsProcedure(new SkillEntryCollectionDescriptor(jingJie: RunManager.Instance.Environment.JingJie, count: 5));
+    }
+
+    private void Cheat()
+    {
+        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("作弊"));
     }
 }

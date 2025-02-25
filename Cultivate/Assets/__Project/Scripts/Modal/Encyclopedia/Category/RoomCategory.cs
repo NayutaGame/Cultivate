@@ -38,7 +38,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     BattlePanelDescriptor A = new(room.GetPredrewRunEntity());
 
-                    DiscoverSkillPanelDescriptor B = new(titleText: "战斗结果");
+                    DiscoverSkillPanelDescriptor B = DiscoverSkillPanelDescriptor.FromDefault(room.Ladder);
 
                     bool shouldUpdateSlotCount = roomDescriptor.ShouldUpdateSlotCount;
 
@@ -299,9 +299,6 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    // 突破时奖励，将一张卡升级到下一境界
-                    // 发现一张下一境界卡牌，带描述
-                    
                     // 0 -> 凌云峰，选择1张下一境界的金牌
                     // 1 -> 逍遥海，选择1张下一境界的水牌
                     // 2 -> 桃花宫，选择1张下一境界的木牌
@@ -313,7 +310,7 @@ public class RoomCategory : Category<RoomEntry>
                     // 8 -> 百草堂，得到4/8/16/32气血上限
                     // 9 -> 星宫，选择2张当前境界的灵气牌
                     // 10 -> 天机阁，卡池中，当前及以下境界的牌，被移除一半
-                    // 11 -> 散修，选择一张牌提升至下一境界
+                    // 11 -> 散修，选择1基础境界是下一境界的牌
                     
                     RunEnvironment env = RunManager.Instance.Environment;
                     JingJie currJingJie = env.JingJie;
@@ -332,26 +329,18 @@ public class RoomCategory : Category<RoomEntry>
                         $"百草堂，得到{4 * RoomDescriptor.GetGoldRewardFromLadder(room.Ladder)}气血上限",
                         $"星宫，获得2张{currJingJie}灵气牌",
                         $"天机阁，从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌",
-                        $"散修，选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
+                        $"散修，选择1基础境界是{nextJingJie}期的牌",
                     };
+
+                    Bound jingJieBound = new(JingJie.LianQi, nextJingJie + 1);
 
                     PanelDescriptor[] panels = new PanelDescriptor[12]
                     {
-                        new DiscoverSkillPanelDescriptor(descriptionText: $"凌云峰，选择1张{nextJingJie}金牌",
-                            descriptor: new(wuXing: WuXing.Jin, pred: e => e.LowestJingJie == nextJingJie, count: 3),
-                            preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor(descriptionText: $"逍遥海，选择1张{nextJingJie}水牌",
-                            descriptor: new(wuXing: WuXing.Shui, pred: e => e.LowestJingJie == nextJingJie, count: 3),
-                            preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor(descriptionText: $"桃花宫，选择1张{nextJingJie}木牌",
-                            descriptor: new(wuXing: WuXing.Mu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
-                            preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor(descriptionText: $"长明殿，选择1张{nextJingJie}火牌",
-                            descriptor: new(wuXing: WuXing.Huo, pred: e => e.LowestJingJie == nextJingJie, count: 3),
-                            preferredJingJie: nextJingJie),
-                        new DiscoverSkillPanelDescriptor(descriptionText: $"环岳岭，选择1张{nextJingJie}土牌",
-                            descriptor: new(wuXing: WuXing.Tu, pred: e => e.LowestJingJie == nextJingJie, count: 3),
-                            preferredJingJie: nextJingJie),
+                        DiscoverSkillPanelDescriptor.FromLingYunFeng(room.Ladder + 3),
+                        DiscoverSkillPanelDescriptor.FromXiaoYaoHai(room.Ladder + 3),
+                        DiscoverSkillPanelDescriptor.FromTaohuaGong(room.Ladder + 3),
+                        DiscoverSkillPanelDescriptor.FromChangMingDian(room.Ladder + 3),
+                        DiscoverSkillPanelDescriptor.FromHuanYueLing(room.Ladder + 3),
                         // 易宝斋，得到2/4/8/16金钱，访问一次商店
                         ShopPanelDescriptor.FromYiBaoZhai(room.Ladder + 3),
                         new DialogPanelDescriptor("剑池", $"获得2张{currJingJie}攻击牌")
@@ -376,20 +365,19 @@ public class RoomCategory : Category<RoomEntry>
                                 
                                 env.SkillPool.Shuffle();
                             }),
-                        new CardPickerPanelDescriptor(
-                                titleText: "提升",
-                                detailedText: $"选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
-                                bound: new Bound(0, 2),
-                                descriptor: RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie))
-                            .SetConfirmOperation(indices =>
-                            {
-                                foreach (var deckIndex in indices)
-                                    RunManager.Instance.Environment.SkillSetJingJieProcedure(nextJingJie, deckIndex);
-                                return null;
-                            }),
+                        DiscoverSkillPanelDescriptor.FromSanXiu(room.Ladder + 3),
                     };
 
-                    int[] combination = Numeric.GetCombination(12, 4);
+
+                    int[] combination;
+                    if (currJingJie == JingJie.LianQi)
+                    {
+                        combination = Numeric.GetCombination(11, 4);
+                    }
+                    else
+                    {
+                        combination = Numeric.GetCombination(12, 4);
+                    }
 
                     DialogOption[] dialogOptions = new DialogOption[combination.Length];
                     dialogOptions.Length.Do(i =>
@@ -3293,11 +3281,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    DiscoverSkillPanelDescriptor A = new(
-                        titleText: "灵感",
-                        descriptionText: "请选择一张卡作为奖励");
-
-                    return A;
+                    return DiscoverSkillPanelDescriptor.FromDefault(room.Ladder);
                 }),
 
             #endregion

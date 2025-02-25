@@ -1,9 +1,11 @@
 
+using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ShopPanel : Panel
 {
+    public TMP_Text TitleText;
     public ListView CommodityListView;
     public Image Illustration;
     public Button ExitButton;
@@ -24,10 +26,11 @@ public class ShopPanel : Panel
 
     public override void Refresh()
     {
-        CommodityListView.Refresh();
-
         ShopPanelDescriptor pd = _address.Get<ShopPanelDescriptor>();
+        TitleText.text = pd.GetTitle();
         Illustration.sprite = pd.GetSprite().Sprite;
+
+        CommodityListView.Refresh();
     }
 
     private void GainGold(int value)

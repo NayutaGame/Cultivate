@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 
-public class RunFormation : IFormationModel, Addressable
+public class RunFormation : IFormationModel, Addressable, IEmphasizable
 {
     private FormationGroupEntry _entry;
     private int _progress;
@@ -13,6 +13,10 @@ public class RunFormation : IFormationModel, Addressable
     public FormationEntry GetEntry() => _formationEntry;
     public int GetProgress() => _progress;
     public bool IsActivated() => _activated;
+
+    private Neuron _emphasisNeuron;
+    public Neuron GetEmphasisNeuron()
+        => _emphasisNeuron;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -27,7 +31,12 @@ public class RunFormation : IFormationModel, Addressable
         _progress = progress;
         _activated = activated;
         _formationEntry = formationEntry;
+
+        _emphasisNeuron = new();
     }
+
+    public void Emphasize()
+        => _emphasisNeuron.Invoke();
 
     public static RunFormation From(FormationGroupEntry entry, int progress)
     {

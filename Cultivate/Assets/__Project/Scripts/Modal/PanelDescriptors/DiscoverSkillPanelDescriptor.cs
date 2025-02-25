@@ -1,4 +1,6 @@
 
+using CLLibrary;
+
 public class DiscoverSkillPanelDescriptor : PanelDescriptor
 {
     private string _titleText;
@@ -18,7 +20,11 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
     private SkillEntryCollectionDescriptor _descriptor;
     private JingJie _preferredJingJie;
 
-    public DiscoverSkillPanelDescriptor(string titleText = null, string descriptionText = null, SkillEntryCollectionDescriptor descriptor = null, JingJie? preferredJingJie = null)
+    private DiscoverSkillPanelDescriptor(
+        string titleText = null,
+        string descriptionText = null,
+        SkillEntryCollectionDescriptor descriptor = null,
+        JingJie? preferredJingJie = null)
     {
         _accessors = new()
         {
@@ -56,5 +62,100 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
         }
 
         return this;
+    }
+
+    public static DiscoverSkillPanelDescriptor FromDefault(int ladder)
+    {
+        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+
+        return new(
+            titleText: "灵感",
+            descriptionText: "请选择一张卡作为奖励",
+            descriptor: new(jingJie: currJingJie, count: 3),
+            preferredJingJie: currJingJie
+        );
+    }
+
+    public static DiscoverSkillPanelDescriptor FromLingYunFeng(int ladder)
+    {
+        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
+
+        DiscoverSkillPanelDescriptor d = new(
+            titleText: $"凌云峰",
+            descriptionText: $"选择1张{currJingJie}金牌",
+            descriptor: new(wuXing: WuXing.Jin, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            preferredJingJie: currJingJie
+        );
+        return d;
+    }
+
+    public static DiscoverSkillPanelDescriptor FromXiaoYaoHai(int ladder)
+    {
+        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
+
+        DiscoverSkillPanelDescriptor d = new(
+            titleText: $"逍遥海",
+            descriptionText: $"选择1张{currJingJie}水牌",
+            descriptor: new(wuXing: WuXing.Shui, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            preferredJingJie: currJingJie
+        );
+        return d;
+    }
+
+    public static DiscoverSkillPanelDescriptor FromTaohuaGong(int ladder)
+    {
+        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
+        
+        DiscoverSkillPanelDescriptor d = new(
+            titleText: $"桃花宫",
+            descriptionText: $"选择1张{currJingJie}木牌",
+            descriptor: new(wuXing: WuXing.Mu, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            preferredJingJie: currJingJie
+        );
+        return d;
+    }
+
+    public static DiscoverSkillPanelDescriptor FromChangMingDian(int ladder)
+    {
+        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
+        
+        DiscoverSkillPanelDescriptor d = new(
+            titleText: $"长明殿",
+            descriptionText: $"选择1张{currJingJie}火牌",
+            descriptor: new(wuXing: WuXing.Huo, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            preferredJingJie: currJingJie
+        );
+        return d;
+    }
+
+    public static DiscoverSkillPanelDescriptor FromHuanYueLing(int ladder)
+    {
+        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
+        
+        DiscoverSkillPanelDescriptor d = new(
+            titleText: $"环岳岭",
+            descriptionText: $"选择1张{currJingJie}土牌",
+            descriptor: new(wuXing: WuXing.Tu, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            preferredJingJie: currJingJie
+        );
+        return d;
+    }
+
+    public static DiscoverSkillPanelDescriptor FromSanXiu(int ladder)
+    {
+        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+
+        DiscoverSkillPanelDescriptor d = new(
+            titleText: $"散修",
+            descriptionText: $"选择1张基础境界是{currJingJie}期的牌",
+            descriptor: new(pred: e => e.LowestJingJie == currJingJie, count: 3),
+            preferredJingJie: currJingJie
+        );
+        return d;
     }
 }

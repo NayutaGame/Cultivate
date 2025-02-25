@@ -117,7 +117,7 @@ public class SkillEntry : Entry, IAnnotation, ISkill
     public static implicit operator SkillEntry(string id) => Encyclopedia.SkillCategory[id];
 
     public static SkillEntry FromName(string name)
-        => Encyclopedia.SkillCategory.Traversal.FirstObj(e => e._name == name);
+        => Encyclopedia.SkillCategory.Traversal.FirstObj(e => e._name == name) ?? Encyclopedia.SkillCategory.DefaultEntry();
 
     public int GetCurrCounter() => 0;
     public int GetMaxCounter() => 0;

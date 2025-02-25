@@ -112,7 +112,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         Play(TextAnimation.FromGainFormationDetails(d));
         await PlayAsync(d.Owner.Model().GetAnimationFromBuffSelf(d.Induced));
         CanvasManager.Instance.StageCanvas.GainFormationStaging(d.Owner == _entities[0]);
-        f.PlayPingAnimation();
+        f.Emphasize();
     }
 
     public async UniTask GainBuffProcedure(GainBuffDetails d)
@@ -210,7 +210,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
         }
         
         CanvasManager.Instance.StageCanvas.GainBuffStaging(d.Tgt == _entities[0]);
-        buff.PlayPingAnimation();
+        buff.Emphasize();
     }
 
     private async UniTask GainBuffStackStaging(GainBuffDetails d, Buff buff)
@@ -231,7 +231,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
-        buff.PlayPingAnimation();
+        buff.Emphasize();
     }
 
     private async UniTask LoseBuffStaging(LoseBuffDetails d, int buffIndex)
@@ -272,7 +272,7 @@ public class StageEnvironment : Addressable, StageClosureOwner
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
-        buff.PlayPingAnimation();
+        buff.Emphasize();
     }
 
     public async UniTask AttackProcedure(AttackDetails attackDetails)

@@ -14,6 +14,7 @@ public class BuffView : XView
         base.Refresh();
 
         Buff b = Get<Buff>();
+
         StackText.text = b.Stack.ToString();
         IconImage.sprite = b.GetEntry().GetSprite();
 

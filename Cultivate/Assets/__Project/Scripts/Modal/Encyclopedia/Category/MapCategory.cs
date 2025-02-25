@@ -22,7 +22,7 @@ public class MapCategory : Category<MapEntry>
                         new AdventureRoomDescriptor(0),
                         // new RestRoomDescriptor(0),
                         new BattleRoomDescriptor(1, 4, 5),
-                        new AscensionRoomDescriptor(0),
+                        new AscensionRoomDescriptor(1),
                     },
                     new RoomDescriptor[]
                     {
@@ -497,12 +497,11 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDescriptor[]
                     {
-                        new DirectRoomDescriptor(12, "黑市"),
-                        new DirectRoomDescriptor(12, "收藏家"),
-                        new DirectRoomDescriptor(12, "以物易物"),
-                        new DirectRoomDescriptor(12, "毕业季"),
-                        new DirectRoomDescriptor(12, "盲盒"),
-                        new DirectRoomDescriptor(12, "黑市"),
+                        new AscensionRoomDescriptor(1),
+                        new AscensionRoomDescriptor(4),
+                        new AscensionRoomDescriptor(7),
+                        new AscensionRoomDescriptor(10),
+                        new AdventureRoomDescriptor(12),
                     },
                 }),
         });

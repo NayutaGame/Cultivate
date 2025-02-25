@@ -22,5 +22,8 @@ namespace CLLibrary
             => Start <= value && value < End;
 
         public static implicit operator Bound(int i) => new(i);
+
+        public override string ToString()
+            => $"[{Start}, {End})";
     }
 }
