@@ -30,6 +30,14 @@ public class SkillCategory : Category<SkillEntry>
                                                         d.Penetrate = true;
                                                     });
 
+    private static readonly StageClosure Shatter = new(StageClosureDict.WIL_ATTACK, -1,
+                                                    async (owner, closureDetails) =>
+                                                    {
+                                                        AttackDetails d = closureDetails as AttackDetails;
+                                                        if (owner != d.Initiator) return;
+                                                        d.Shatter = true;
+                                                    });
+
     public SkillCategory()
     {
         AddRange(new List<SkillEntry>()
@@ -498,7 +506,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async d =>
                 {
                     await d.AttackProcedure(10 + 4 * d.Dj);
-                    await d.GainBuffProcedure("灵气", 3 + d.Dj);
+                    await d.GainBuffProcedure("灵气", 3 + d.Dj, induced: true);
                 }),
             
             new(id:                         "0205",
@@ -979,7 +987,7 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n成长：多{Fib.ToValue(2 + dj)}",
                 cast:                       async d =>
                 {
-                    await d.GainBuffProcedure("生命", 2 + 4 * d.Dj + d.Cc * (2 + d.Dj));
+                    await d.HealProcedure(2 + 4 * d.Dj + d.Cc * (2 + d.Dj), induced: false);
                 }),
 
             new(id:                         "0306",
@@ -1015,7 +1023,7 @@ public class SkillCategory : Category<SkillEntry>
                             AttackDetails d = closureDetails as AttackDetails;
                             if (owner != d.Initiator) return;
                             StageSkill initiator = d.Initiator as StageSkill;
-                            int power = d.Src.GetStackOfBuff("力量");
+                            int power = d.Src.GetStackOfBuff("力量") + d.Src.GetStackOfBuff("剑意");
                             d.Value += (2 + initiator.Dj - 1) * power;
                         });
 
@@ -1378,7 +1386,7 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n不消耗剑意",
                 cast:                       async d =>
                 {
-                    await d.GainArmorProcedure(2, false);
+                    await d.GainArmorProcedure(2, induced: true);
                     await d.GainBuffProcedure("天衣无缝", 1 + 4 * d.Dj);
                 }),
 
@@ -1884,16 +1892,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n一次性",
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, -1,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.Initiator) return;
-                            d.Shatter = true;
-                        });
-                        
                     await d.AttackProcedure(Fib.ToValue(5 + d.Dj),
-                        closures: new [] { closure });
+                        closures: new [] { Shatter });
                 }),
 
             new(id:                         "SKILL_DB_003",
@@ -2750,9 +2750,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "0612",
                 name:                       "观棋烂柯",
                 wuXing:                     WuXing.Shui,
-                jingJieBound:               JingJie.YuanYing2HuaShen,
-                cost:                       CostResult.ManaFromDj(dj => 1 - dj),
-                costDescription:            CostDescription.ManaFromDj(dj => 1 - dj),
+                jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"施加1跳行动",
                 withinPool:                 false,

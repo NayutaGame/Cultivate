@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 [Serializable]
-public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallbackReceiver
+public class RunEnvironment : Addressable, RunClosureListener, ISerializationCallbackReceiver
 {
     #region Neurons
 
@@ -192,6 +192,11 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
         list.Do(e => _closureDict.Register(this, e));
     }
 
+    public void RegisterList(RunClosure[] list, RunClosureListener listener)
+    {
+        list.Do(e => _closureDict.Register(listener, e));
+    }
+
     public void Unregister()
     {
         UnregisterList(_config.CharacterProfile.GetEntry()._runClosures);
@@ -207,6 +212,11 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     private void UnregisterList(RunClosure[] list)
     {
         list.Do(e => _closureDict.Unregister(this, e));
+    }
+
+    public void UnregisterList(RunClosure[] list, RunClosureListener listener)
+    {
+        list.Do(e => _closureDict.Unregister(listener, e));
     }
 
     public BoundedInt GetGold()
@@ -412,6 +422,8 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     {
         PlacementProcedure();
         FormationProcedure();
+        Debug.Log("SecondPlacementProcedure");
+        SecondPlacementProcedure();
 
         return StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(_home, _away, _config));
     }
@@ -426,6 +438,12 @@ public class RunEnvironment : Addressable, RunClosureOwner, ISerializationCallba
     {
         _home.FormationProcedure();
         _away.FormationProcedure();
+    }
+
+    private void SecondPlacementProcedure()
+    {
+        _home.SecondPlacementProcedure();
+        _away.SecondPlacementProcedure();
     }
 
     public MergePreresult GetMergePreresult(RunSkill lhs, RunSkill rhs)

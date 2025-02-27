@@ -12,6 +12,23 @@ public class RunFormation : IFormationModel, Addressable, IEmphasizable
 
     public FormationEntry GetEntry() => _formationEntry;
     public int GetProgress() => _progress;
+    public void SetProgress(int progress)
+    {
+        _progress = progress;
+
+        FormationEntry firstActivated = _entry.FirstActivatedFormation(_progress);
+        if (firstActivated == null || firstActivated.GetJingJie() <= JingJie.LianQi)
+        {
+            _activated = false;
+            _formationEntry = _entry.FormationWithLowestJingJie();
+        }
+        else
+        {
+            _activated = true;
+            _formationEntry = firstActivated;
+        }
+    }
+
     public bool IsActivated() => _activated;
 
     private Neuron _emphasisNeuron;

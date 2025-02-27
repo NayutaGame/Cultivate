@@ -32,8 +32,8 @@ public class FormationEntry : IFormationModel, Addressable
     private int _requirement;
     public int GetRequirement() => _requirement;
 
-    [NonSerialized]
-    public readonly StageClosure[] Closures;
+    [NonSerialized] public readonly RunClosure[] RunClosures;
+    [NonSerialized] public readonly StageClosure[] StageClosures;
 
     public ListModel<MarkModel> GetMarks() => _formationGroupEntry.GetMarks();
 
@@ -45,9 +45,11 @@ public class FormationEntry : IFormationModel, Addressable
     /// <param name="jingJie">境界</param>
     /// <param name="conditionDescription">条件的描述</param>
     /// <param name="rewardDescription">奖励的描述</param>
-    /// <param name="closures">事件捕获</param>
+    /// <param name="runClosures">事件捕获</param>
+    /// <param name="stageClosures">事件捕获</param>
     public FormationEntry(JingJie jingJie, string rewardDescription, string trivia, int requirement,
-        params StageClosure[] closures
+        RunClosure[] runClosures = null,
+        params StageClosure[] stageClosures
     )
     {
         _accessors = new Dictionary<string, Func<object>>()
@@ -60,7 +62,8 @@ public class FormationEntry : IFormationModel, Addressable
         _trivia = trivia;
         _requirement = requirement;
         // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
-        Closures = closures;
+        RunClosures = runClosures ?? Array.Empty<RunClosure>();
+        StageClosures = stageClosures ?? Array.Empty<StageClosure>();
     }
 
     #region IFormationModel

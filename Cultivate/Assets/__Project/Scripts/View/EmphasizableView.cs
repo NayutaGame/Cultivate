@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class EmphasizableView : DelegatingView
 {
+    [Header("Emphasis Animation")]
+    [SerializeField] private float _emphasizedScale = 1.5f;  // 强调时的缩放
+    [SerializeField] private float _emphasisDuration = 0.075f;  // 强调动画时长
+
     public override void SetAddress(Address address)
     {
         Get<IEmphasizable>()?.GetEmphasisNeuron().Remove(SetPing);
@@ -36,8 +40,8 @@ public class EmphasizableView : DelegatingView
     private Tween EnterPing()
         => DOTween.Sequence()
             .AppendCallback(Refresh)
-            .Append(GetDelegatedView().GetRect().DOScale(1.5f, 0.075f).SetEase(Ease.OutQuad))
-            .Append(GetDelegatedView().GetRect().DOScale(1f, 0.075f).SetEase(Ease.InQuad));
+            .Append(GetDelegatedView().GetRect().DOScale(_emphasizedScale, _emphasisDuration).SetEase(Ease.OutQuad))
+            .Append(GetDelegatedView().GetRect().DOScale(1f, _emphasisDuration).SetEase(Ease.InQuad));
     
     protected override Animator InitAnimator()
     {

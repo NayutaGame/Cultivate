@@ -37,6 +37,12 @@ public class PlayerEntityView : XView
         FormationList.Sync();
     }
 
+    public void OnFieldChange()
+    {
+        FieldView.Sync();
+        FormationList.Refresh();
+    }
+
     #region IInteractable
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)

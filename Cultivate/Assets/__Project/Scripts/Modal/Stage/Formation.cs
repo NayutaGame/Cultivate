@@ -6,7 +6,7 @@ using CLLibrary;
 /// <summary>
 /// Formation
 /// </summary>
-public class Formation : StageClosureOwner, IFormationModel, Addressable, IEmphasizable
+public class Formation : StageClosureListener, IFormationModel, Addressable, IEmphasizable
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -39,13 +39,13 @@ public class Formation : StageClosureOwner, IFormationModel, Addressable, IEmpha
     
     public void Register()
     {
-        foreach (StageClosure closure in GetEntry().Closures)
+        foreach (StageClosure closure in GetEntry().StageClosures)
             _owner.Env.ClosureDict.Register(this, closure);
     }
 
     public void Unregister()
     {
-        foreach (StageClosure closure in GetEntry().Closures)
+        foreach (StageClosure closure in GetEntry().StageClosures)
             _owner.Env.ClosureDict.Unregister(this, closure);
     }
 

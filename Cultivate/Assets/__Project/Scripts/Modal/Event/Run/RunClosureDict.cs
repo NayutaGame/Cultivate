@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class RunClosureDict : Dictionary<int, RunClosureList>
+public class RunClosureDict : Dictionary<int, RunClosureRow>
 {
     public static readonly int START_RUN             = 100;
     public static readonly int END_RUN               = 101;
@@ -19,15 +19,17 @@ public class RunClosureDict : Dictionary<int, RunClosureList>
     public static readonly int DID_PLACEMENT         = 113;
     public static readonly int WIL_FORMATION         = 114;
     public static readonly int DID_FORMATION         = 115;
-    public static readonly int WIL_DISCOVER_SKILL    = 116;
-    public static readonly int DID_DISCOVER_SKILL    = 117;
-    public static readonly int WIL_DEPLETE           = 118;
-    public static readonly int DID_DEPLETE           = 119;
-    public static readonly int WIL_MERGE             = 120;
-    public static readonly int DID_MERGE             = 121;
-    public static readonly int DID_COMMIT_RUN        = 122;
+    public static readonly int WIL_SECOND_PLACEMENT  = 116;
+    public static readonly int DID_SECOND_PLACEMENT  = 117;
+    public static readonly int WIL_DISCOVER_SKILL    = 118;
+    public static readonly int DID_DISCOVER_SKILL    = 119;
+    public static readonly int WIL_DEPLETE           = 120;
+    public static readonly int DID_DEPLETE           = 121;
+    public static readonly int WIL_MERGE             = 122;
+    public static readonly int DID_MERGE             = 123;
+    public static readonly int DID_COMMIT_RUN        = 124;
 
-    public void Register(RunClosureOwner listener, RunClosure closure)
+    public void Register(RunClosureListener listener, RunClosure closure)
     {
         int eventId = closure.EventId;
         if (!ContainsKey(eventId))
@@ -36,7 +38,7 @@ public class RunClosureDict : Dictionary<int, RunClosureList>
         this[eventId].Add(listener, closure);
     }
 
-    public void Unregister(RunClosureOwner listener, RunClosure closure)
+    public void Unregister(RunClosureListener listener, RunClosure closure)
     {
         int eventId = closure.EventId;
         this[eventId].Remove(listener);
@@ -46,8 +48,8 @@ public class RunClosureDict : Dictionary<int, RunClosureList>
     {
         if (!ContainsKey(eventId))
             return;
-        RunClosureList closureList = this[eventId];
-        foreach (Tuple<RunClosureOwner, RunClosure> tuple in closureList.Traversal())
+        RunClosureRow closureRow = this[eventId];
+        foreach (Tuple<RunClosureListener, RunClosure> tuple in closureRow.Traversal())
         {
             if (closureDetails.Cancel) return;
             tuple.Item2.Invoke(tuple.Item1, closureDetails);

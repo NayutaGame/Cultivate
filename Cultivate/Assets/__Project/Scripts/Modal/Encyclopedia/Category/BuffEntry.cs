@@ -10,18 +10,19 @@ public class BuffEntry : Entry, IAnnotation
     private string _description;
     public string GetDescription() => _description;
 
-    private string _trivia;
-    public string GetTrivia() => _trivia;
-
-    private SpriteEntry _spriteEntry;
-    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingBuffIcon().Sprite;
-
     public readonly BuffStackRule BuffStackRule;
     public readonly bool Friendly;
     public readonly bool Dispellable;
+    public readonly bool IsForbiddenDebuff;
+
+    private string _trivia;
+    public string GetTrivia() => _trivia;
 
     [NonSerialized]
     public readonly StageClosure[] Closures;
+
+    private SpriteEntry _spriteEntry;
+    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingBuffIcon().Sprite;
 
     /// <summary>
     /// 定义一个Buff
@@ -31,18 +32,28 @@ public class BuffEntry : Entry, IAnnotation
     /// <param name="buffStackRule">堆叠规则</param>
     /// <param name="friendly">是否有益</param>
     /// <param name="dispellable">是否可驱散</param>
+    /// <param name="isForbiddenDebuff">是禁忌带来的debuff</param>
     /// <param name="trivia">趣闻</param>
     /// <param name="closures">事件捕获</param>
-    public BuffEntry(string id, string description, BuffStackRule buffStackRule, bool friendly, bool dispellable, string trivia = null,
+    public BuffEntry(
+        string id,
+        string description,
+        BuffStackRule buffStackRule,
+        bool friendly,
+        bool dispellable,
+        bool isForbiddenDebuff = false,
+        string trivia = null,
         params StageClosure[] closures
     ) : base(id)
     {
         _description = description;
-        _trivia = trivia;
         BuffStackRule = buffStackRule;
         Friendly = friendly;
         Dispellable = dispellable;
+        IsForbiddenDebuff = isForbiddenDebuff;
+        _trivia = trivia;
         Closures = closures ?? Array.Empty<StageClosure>();
+
         _spriteEntry = $"Buff{GetName()}";
     }
     

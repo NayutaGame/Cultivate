@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using CLLibrary;
 
-public class StageEntity : Addressable, StageClosureOwner
+public class StageEntity : Addressable, StageClosureListener
 {
     public Memory Memory;
     
@@ -363,7 +363,7 @@ public class StageEntity : Addressable, StageClosureOwner
         // }
     }
 
-    public async UniTask BuffRecorder(StageClosureOwner listener, ClosureDetails closureDetails)
+    public async UniTask BuffRecorder(StageClosureListener listener, ClosureDetails closureDetails)
     {
         GainBuffDetails d = (GainBuffDetails)closureDetails;
         if (d._buffEntry.GetName() == "滞气")
@@ -378,7 +378,7 @@ public class StageEntity : Addressable, StageClosureOwner
             HasFuXiuRecord = true;
     }
 
-    public async UniTask ChannelRecorder(StageClosureOwner owner, ClosureDetails closureDetails)
+    public async UniTask ChannelRecorder(StageClosureListener listener, ClosureDetails closureDetails)
     {
         ChannelDetails d = (ChannelDetails)closureDetails;
         HasChannelRecord = true;
@@ -450,7 +450,7 @@ public class StageEntity : Addressable, StageClosureOwner
     public async UniTask AttackProcedure(
         int value,
         int times = 1,
-        StageClosureOwner initiator = null,
+        StageClosureListener initiator = null,
         WuXing? wuXing = null,
         bool crit = false,
         bool lifeSteal = false,

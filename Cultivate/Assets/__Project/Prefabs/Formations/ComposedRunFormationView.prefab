@@ -181,6 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 3429236827418137952}
   _delegatedView: {fileID: 7115968838685201069}
+  _emphasizedScale: 1.2
+  _emphasisDuration: 0.1
   HideConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
     LocalScale: {x: 0, y: 0, z: 0}

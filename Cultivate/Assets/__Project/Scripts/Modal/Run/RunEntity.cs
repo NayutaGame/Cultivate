@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 [Serializable]
-public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
+public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, RunClosureListener
 {
     public static readonly int MaxSlotCount = 12;
     public static readonly int[] SlotCountFromJingJie = new[] { 3, 6, 8, 10, 12, 12 };
@@ -137,6 +138,35 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
         RunManager.Instance.Environment.SendEvent(RunClosureDict.DID_PLACEMENT, d);
     }
 
+    public void SecondPlacementProcedure()
+    {
+        RegisterSecondPlacementProcedure();
+
+        SecondPlacementDetails d = new(this, _slots);
+
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.WIL_SECOND_PLACEMENT, d);
+
+        RunManager.Instance.Environment.SendEvent(RunClosureDict.DID_SECOND_PLACEMENT, d);
+
+        UnregisterSecondPlacementProcedure();
+    }
+
+    public void RegisterSecondPlacementProcedure()
+    {
+        _formations.Traversal().Do(f =>
+        {
+            RunManager.Instance.Environment.RegisterList(f.GetEntry().RunClosures, this);
+        });
+    }
+
+    public void UnregisterSecondPlacementProcedure()
+    {
+        _formations.Traversal().Do(f =>
+        {
+            RunManager.Instance.Environment.UnregisterList(f.GetEntry().RunClosures, this);
+        });
+    }
+
     #endregion
 
     #region Formation
@@ -146,21 +176,48 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     [NonSerialized] private FilteredListModel<RunFormation> _showingFormations;
     [NonSerialized] private FilteredListModel<RunFormation> _activeFormations;
 
+    public void InitFormations()
+    {
+        _formations = new();
+
+        for(int i = 0; i < Encyclopedia.FormationCategory.GetCount(); i++)
+        {
+            // FormationGroupEntry
+            _formations.Add(RunFormation.From(Encyclopedia.FormationCategory[i], 0));
+        }
+    }
+
     public void FormationProcedure()
     {
         RunFormationDetails d = new(this);
-
-        _formations.Clear();
+        List<RunFormation> toEmphasize = new();
 
         RunManager.Instance.Environment.SendEvent(RunClosureDict.WIL_FORMATION, d);
 
-        _formations.AddRange(Encyclopedia.FormationCategory.Traversal
-            .Map(e => RunFormation.From(e, e.GetProgress(this, d))));
+        for(int i = 0; i < Encyclopedia.FormationCategory.GetCount(); i++)
+        {
+            // FormationGroupEntry
+            Assert.IsTrue(_formations[i].GetEntry().GetFormationGroupEntry() == Encyclopedia.FormationCategory[i]);
+
+            int oldProgress = _formations[i].GetProgress();
+            int newProgress = Encyclopedia.FormationCategory[i].GetProgress(this, d);
+
+            if (oldProgress == newProgress)
+                continue;
+
+            _formations[i].SetProgress(newProgress);
+            
+            if (newProgress >= 1)
+                toEmphasize.Add(_formations[i]);
+        }
 
         RunManager.Instance.Environment.SendEvent(RunClosureDict.DID_FORMATION, d);
 
+        // set dirty
         _showingFormations.Refresh();
         _activeFormations.Refresh();
+
+        toEmphasize.Do(f => f.Emphasize());
     }
 
     #endregion
@@ -269,7 +326,8 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver
     {
         _filteredSlots = new FilteredListModel<SkillSlot>(_slots, skillSlot => !skillSlot.Hidden);
 
-        _formations = new();
+        InitFormations();
+
         _showingFormations = new(_formations, f =>
             f.GetMin() <= f.GetProgress() && _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
         _activeFormations = new(_formations, f => f.IsActivated());

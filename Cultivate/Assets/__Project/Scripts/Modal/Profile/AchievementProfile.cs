@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class AchievementProfile : ISerializationCallbackReceiver, RunClosureOwner, StageClosureOwner
+public class AchievementProfile : ISerializationCallbackReceiver, RunClosureListener, StageClosureListener
 {
     [SerializeField] private AchievementEntry _entry;
     [SerializeField] private bool _unlocked;

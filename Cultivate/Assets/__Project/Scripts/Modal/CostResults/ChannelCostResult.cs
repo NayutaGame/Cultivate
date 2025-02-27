@@ -1,5 +1,6 @@
 
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public class ChannelCostResult : CostResult
 {
@@ -20,7 +21,7 @@ public class ChannelCostResult : CostResult
     
     public override async UniTask ApplyCost()
     {
-        ChannelDetails d = new ChannelDetails(Entity, Skill, _counter, Value);
+        ChannelDetails d = new ChannelDetails(Entity, Skill, _counter, Value, 1);
         await Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANNEL, d);
 
         Blocking = _counter > 0;
@@ -28,8 +29,9 @@ public class ChannelCostResult : CostResult
         {
             await Env.PlayAsync(new ShiftAnimation());
             Env.Result.TryAppendChannelNote(Entity.Index, Skill, _counter, Value);
-            Env.Result.TryAppend($"{Entity.GetName()}吟唱了{Skill.Entry.GetName()} 进度: {_counter}//{Value}\n");
-            _counter -= 1;
+            Env.Result.TryAppend($"{Entity.GetName()}正在吟唱{Skill.Entry.GetName()} 进度: {_counter}//{Value} 将推进：{d.ProgressGain}\n");
+            _counter -= d.ProgressGain;
+            _counter = Mathf.Max(0, _counter);
         }
         
         await Env.ClosureDict.SendEvent(StageClosureDict.DID_CHANNEL, d);

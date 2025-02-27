@@ -89,6 +89,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         
         PlacementProcedure();
         FormationProcedure();
+        SecondPlacementProcedure();
         
         SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(Home, Away, _config));
     }
@@ -103,6 +104,12 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     {
         Home.FormationProcedure();
         Away.FormationProcedure();
+    }
+
+    private void SecondPlacementProcedure()
+    {
+        Home.SecondPlacementProcedure();
+        Away.SecondPlacementProcedure();
     }
 
     public void CopyToTop()

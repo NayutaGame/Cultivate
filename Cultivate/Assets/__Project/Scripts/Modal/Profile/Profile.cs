@@ -207,12 +207,12 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     {
         _achievementProfileList.Traversal().Do(achievementProfile =>
         {
-            RunClosureOwner owner = achievementProfile;
+            RunClosureListener listener = achievementProfile;
             RunClosure runClosure = achievementProfile.GetEntry().GetRunClosure();
             if (runClosure == null)
                 return;
 
-            runClosureDict.Register(owner, runClosure);
+            runClosureDict.Register(listener, runClosure);
         });
     }
 
@@ -220,12 +220,12 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     {
         _achievementProfileList.Traversal().Do(achievementProfile =>
         {
-            RunClosureOwner owner = achievementProfile;
+            RunClosureListener listener = achievementProfile;
             RunClosure runClosure = achievementProfile.GetEntry().GetRunClosure();
             if (runClosure == null)
                 return;
 
-            runClosureDict.Unregister(owner, runClosure);
+            runClosureDict.Unregister(listener, runClosure);
         });
     }
 
@@ -233,12 +233,12 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     {
         _achievementProfileList.Traversal().Do(achievementProfile =>
         {
-            StageClosureOwner owner = achievementProfile;
+            StageClosureListener listener = achievementProfile;
             StageClosure stageClosure = achievementProfile.GetEntry().GetStageClosure();
             if (stageClosure == null)
                 return;
 
-            stageClosureDict.Register(owner, stageClosure);
+            stageClosureDict.Register(listener, stageClosure);
         });
     }
 
@@ -246,12 +246,12 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     {
         _achievementProfileList.Traversal().Do(achievementProfile =>
         {
-            StageClosureOwner owner = achievementProfile;
+            StageClosureListener listener = achievementProfile;
             StageClosure stageClosure = achievementProfile.GetEntry().GetStageClosure();
             if (stageClosure == null)
                 return;
 
-            stageClosureDict.Unregister(owner, stageClosure);
+            stageClosureDict.Unregister(listener, stageClosure);
         });
     }
 

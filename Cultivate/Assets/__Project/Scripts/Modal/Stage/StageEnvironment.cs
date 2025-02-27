@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using CLLibrary;
 using UnityEngine;
 
-public class StageEnvironment : Addressable, StageClosureOwner
+public class StageEnvironment : Addressable, StageClosureListener
 {
     private static readonly int MAX_TURN_COUNT = 120;
 
@@ -857,13 +857,13 @@ public class StageEnvironment : Addressable, StageClosureOwner
         RunManager.Instance.Environment.DepleteProcedure();
     }
 
-    private async UniTask WriteShortage(StageClosureOwner listener, ClosureDetails stageClosureDetails)
+    private async UniTask WriteShortage(StageClosureListener listener, ClosureDetails stageClosureDetails)
     {
         CostResult d = (CostResult)stageClosureDetails;
         d.State = CostResult.CostState.Shortage;
     }
 
-    private async UniTask WriteCost(StageClosureOwner listener, ClosureDetails stageClosureDetails)
+    private async UniTask WriteCost(StageClosureListener listener, ClosureDetails stageClosureDetails)
     {
         CostResult d = (CostResult)stageClosureDetails;
         if (d.State == CostResult.CostState.Shortage)

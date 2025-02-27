@@ -4,7 +4,7 @@ public class DamageDetails : ClosureDetails
     public StageEntity Src;
     public StageEntity Tgt;
     public int Value;
-    public StageClosureOwner Initiator;
+    public StageClosureListener Initiator;
     public bool Crit;
     public bool LifeSteal;
     public bool CausedByAttack;
@@ -28,7 +28,7 @@ public class DamageDetails : ClosureDetails
         StageEntity src,
         StageEntity tgt,
         int value,
-        StageClosureOwner initiator,
+        StageClosureListener initiator,
         bool crit,
         bool lifeSteal,
         bool causedByAttack,

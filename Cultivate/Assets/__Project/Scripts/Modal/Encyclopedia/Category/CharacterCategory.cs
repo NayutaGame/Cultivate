@@ -38,7 +38,7 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
 
             new("子非鱼",
-                abilityDescription: "第一次获得五行Buff时，根据境界额外获得2/4/6/8/10点",
+                abilityDescription: "第一次获得五行Buff时，根据境界额外获得1/2/3/4/5点",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0004"],
@@ -59,7 +59,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         if (!ownerIsHome)
                             return;
 
-                        int stack = d.Owner.GetJingJie() * 2;
+                        int stack = 1 + d.Owner.GetJingJie();
 
                         await d.Owner.GainBuffProcedure("空明", stack);
                     }),

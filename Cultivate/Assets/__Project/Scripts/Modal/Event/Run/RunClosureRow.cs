@@ -2,18 +2,18 @@
 using System;
 using System.Collections.Generic;
 
-public class RunClosureList
+public class RunClosureRow
 {
-    private List<Tuple<RunClosureOwner, RunClosure>> _list;
+    private List<Tuple<RunClosureListener, RunClosure>> _list;
 
-    public RunClosureList()
+    public RunClosureRow()
     {
-        _list = new List<Tuple<RunClosureOwner, RunClosure>>();
+        _list = new List<Tuple<RunClosureListener, RunClosure>>();
     }
 
-    public void Add(RunClosureOwner listener, RunClosure closure)
+    public void Add(RunClosureListener listener, RunClosure closure)
         => Add(new(listener, closure));
-    public void Add(Tuple<RunClosureOwner, RunClosure> tuple)
+    public void Add(Tuple<RunClosureListener, RunClosure> tuple)
     {
         for (int i = 0; i < _list.Count; i++)
         {
@@ -27,12 +27,12 @@ public class RunClosureList
         _list.Add(tuple);
     }
 
-    public void Remove(RunClosureOwner listener)
+    public void Remove(RunClosureListener listener)
         => _list.RemoveAll(tuple => tuple.Item1 == listener);
 
-    public IEnumerable<Tuple<RunClosureOwner, RunClosure>> Traversal()
+    public IEnumerable<Tuple<RunClosureListener, RunClosure>> Traversal()
     {
-        Tuple<RunClosureOwner, RunClosure>[] list = new Tuple<RunClosureOwner, RunClosure>[_list.Count];
+        Tuple<RunClosureListener, RunClosure>[] list = new Tuple<RunClosureListener, RunClosure>[_list.Count];
         for (int i = 0; i < list.Length; i++) list[i] = _list[i];
         foreach (var tuple in list) yield return tuple;
     }

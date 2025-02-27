@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 
-public class StageClosureDict : Dictionary<int, StageClosureList>
+public class StageClosureDict : Dictionary<int, StageClosureRow>
 {
     public static readonly int WIL_STAGE                = 0;
     public static readonly int DID_STAGE                = 1;
@@ -69,37 +69,37 @@ public class StageClosureDict : Dictionary<int, StageClosureList>
     public static readonly int WIL_COMMIT               = 60;
     public static readonly int DID_COMMIT               = 61;
 
-    public void Register(StageClosureOwner owner, StageClosure[] closures)
+    public void Register(StageClosureListener listener, StageClosure[] closures)
     {
-        closures.Do(e => Register(owner, e));
+        closures.Do(e => Register(listener, e));
     }
 
-    public void Register(StageClosureOwner owner, StageClosure closure)
+    public void Register(StageClosureListener listener, StageClosure closure)
     {
         int eventId = closure.EventId;
         if (!ContainsKey(eventId))
             this[eventId] = new();
 
-        this[eventId].Add(owner, closure);
+        this[eventId].Add(listener, closure);
     }
 
-    public void Unregister(StageClosureOwner owner, StageClosure[] closures)
+    public void Unregister(StageClosureListener listener, StageClosure[] closures)
     {
-        closures.Do(e => Unregister(owner, e));
+        closures.Do(e => Unregister(listener, e));
     }
 
-    public void Unregister(StageClosureOwner owner, StageClosure closure)
+    public void Unregister(StageClosureListener listener, StageClosure closure)
     {
         int eventId = closure.EventId;
-        this[eventId].Remove(owner);
+        this[eventId].Remove(listener);
     }
 
     public async UniTask SendEvent(int eventId, ClosureDetails closureDetails)
     {
         if (!ContainsKey(eventId))
             return;
-        StageClosureList closureList = this[eventId];
-        foreach (Tuple<StageClosureOwner, StageClosure> tuple in closureList.Traversal())
+        StageClosureRow closureRow = this[eventId];
+        foreach (Tuple<StageClosureListener, StageClosure> tuple in closureRow.Traversal())
         {
             if (closureDetails.Cancel) return;
             await tuple.Item2.Invoke(tuple.Item1, closureDetails);

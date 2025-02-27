@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 
-public class StageSkill : StageClosureOwner
+public class StageSkill : StageClosureListener
 {
     private readonly StageEntity _owner;
     public StageEntity Owner => _owner;

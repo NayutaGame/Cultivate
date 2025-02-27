@@ -244,6 +244,7 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   false,
                 dispellable:                false,
+                isForbiddenDebuff:          true,
                 closures:                   new StageClosure[]
                 {
                     new(StageClosureDict.WIL_HEAL, -3, async (owner, closureDetails) =>
@@ -261,6 +262,7 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   false,
                 dispellable:                false,
+                isForbiddenDebuff:          true,
                 closures:                   new StageClosure[]
                 {
                     new(StageClosureDict.WIL_GAIN_ARMOR, 0, async (owner, closureDetails) =>
@@ -278,6 +280,7 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   false,
                 dispellable:                false,
+                isForbiddenDebuff:          true,
                 closures:                   new StageClosure[]
                 {
                     new(StageClosureDict.WIL_ACTION, 0, async (owner, closureDetails) =>
@@ -296,6 +299,7 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   false,
                 dispellable:                false,
+                isForbiddenDebuff:          true,
                 closures:                   new StageClosure[]
                 {
                     new(StageClosureDict.WIL_ACTION, 0, async (owner, closureDetails) =>
@@ -313,6 +317,7 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   false,
                 dispellable:                false,
+                isForbiddenDebuff:          true,
                 closures:                   new StageClosure[]
                 {
                     new(StageClosureDict.WIL_GAIN_BUFF, 0, async (owner, closureDetails) =>
@@ -388,6 +393,7 @@ public class BuffCategory : Category<BuffEntry>
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
+                isForbiddenDebuff:          true,
                 closures:                   new StageClosure[]
                 {
                     new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
@@ -413,6 +419,35 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Src || b.Owner == d.Tgt || d.Crit) return;
                         
                         d.Crit = true;
+                        b.Emphasize();
+                        await b.LoseStackProcedure();
+                    }),
+                }),
+            
+            new("高速吟唱", "吟唱时，额外推进[层数]进度", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_CHANNEL, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        ChannelDetails d = (ChannelDetails)closureDetails;
+                        if (b.Owner != d.Caster) return;
+
+                        d.ProgressGain += b.Stack;
+                        b.Emphasize();
+                    }),
+                }),
+            
+            new("碎防", "下一次攻击时，1点伤害抵消2点护甲", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_ATTACK, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        AttackDetails d = (AttackDetails)closureDetails;
+                        if (b.Owner != d.Src || b.Owner == d.Tgt || d.Shatter) return;
+                        
+                        d.Shatter = true;
                         b.Emphasize();
                         await b.LoseStackProcedure();
                     }),
@@ -972,7 +1007,7 @@ public class BuffCategory : Category<BuffEntry>
                         });
 
                         await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo, initiator: owner,
-                            closures: new[] { closure });
+                            closures: new[] { closure }, induced: false);
                     }),
                     new(StageClosureDict.WIL_CAST, 0, async (owner, closureDetails) =>
                     {
@@ -1109,41 +1144,6 @@ public class BuffCategory : Category<BuffEntry>
                         StageCommitDetails d = (StageCommitDetails)closureDetails;
 
                         d.Cancel = true;
-                    }),
-                }),
-            
-            new("摩诃钵特摩", "八动，如果受伤则死亡", BuffStackRule.One, true, false,
-                closures: new StageClosure[]
-                {
-                    // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.BUFF_APPEAR, 0, async (lowner, stageEventDetails) =>
-                    // {
-                    //     Buff b = (Buff)listener;
-                    //     BuffAppearDetails d = (BuffAppearDetails)stageEventDetails;
-                    //
-                    //     if (b.Owner != d.Owner) return;
-                    //     b.PlayPingAnimation();
-                    //     d.Owner.SetActionPoint(d.Owner.GetActionPoint() + 8);
-                    // }),
-                    // new(StageEventDict.STAGE_ENVIRONMENT, StageEventDict.DID_TURN, 0, async (lowner, stageEventDetails) =>
-                    // {
-                    //     Buff b = (Buff)listener;
-                    //     TurnDetails d = (TurnDetails)stageEventDetails;
-                    //
-                    //     if (b.Owner != d.Owner) return;
-                    //     b.PlayPingAnimation();
-                    //     await b.Owner.LoseHealthProcedure(b.Owner.Hp);
-                    // }),
-                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        DamageDetails d = (DamageDetails)closureDetails;
-                        if (b.Owner != d.Tgt) return;
-                        if (d.Value == 0) return;
-                        if (b.Owner.Hp > 0)
-                        {
-                            b.Emphasize();
-                            await b.Owner.LoseHealthProcedure(b.Owner.Hp, d.CausedByAttack);
-                        }
                     }),
                 }),
 
@@ -1696,6 +1696,8 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
+            new("摩诃钵特摩", "已经触发过摩诃钵特摩",                   BuffStackRule.One, true, false),
+            new("天人合一", "已经触发过天人合一",                       BuffStackRule.One, true, false),
             new("连岳", "最后两张牌都可以触发终结",                     BuffStackRule.One, true, false),
             new("凛冽", "锋锐具有吸血",                                 BuffStackRule.One, true, false),
             new("摇曳", "锋锐变为施加破甲",                             BuffStackRule.One, true, false),
@@ -1708,7 +1710,7 @@ public class BuffCategory : Category<BuffEntry>
             new("集中",      "下一次使用牌时，条件算作激活",            BuffStackRule.Add, true, false),
             new("浮空艇",     "回合被跳过时：气血及上线无法下降",       BuffStackRule.Add, true, false),
             new("架势",     "消耗架势激活效果，没有架势时获得架势",     BuffStackRule.Add, true, false),
-            new("锻体",     "残血所需的阈值提升",                       BuffStackRule.Add, true, false),
+            new("锻体",     "残血所需的阈值提升，满血所需的阈值降低",   BuffStackRule.Add, true, false),
         });
     }
 

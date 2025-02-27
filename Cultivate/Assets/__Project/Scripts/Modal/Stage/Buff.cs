@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 
-public class Buff : StageClosureOwner, IEmphasizable
+public class Buff : StageClosureListener, IEmphasizable
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;

@@ -97,7 +97,7 @@ public class DeckPanel : Panel
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.FieldChangedNeuron.Add(PlayerEntity.Sync);
+        RunManager.Instance.Environment.FieldChangedNeuron.Add(PlayerEntity.OnFieldChange);
         PlayerEntity.Sync();
         HandView.Sync();
         CharacterIconView.Refresh();
@@ -105,7 +105,7 @@ public class DeckPanel : Panel
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.FieldChangedNeuron.Remove(PlayerEntity.Sync);
+        RunManager.Instance.Environment.FieldChangedNeuron.Remove(PlayerEntity.OnFieldChange);
     }
 
     // extra views

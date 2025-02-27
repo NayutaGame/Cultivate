@@ -14,7 +14,7 @@ public class AttackDetails : ClosureDetails
     }
 
     public int Times;
-    public StageClosureOwner Initiator;
+    public StageClosureListener Initiator;
     public WuXing? WuXing;
     public bool Crit;
     public bool LifeSteal;
@@ -50,7 +50,7 @@ public class AttackDetails : ClosureDetails
         StageEntity tgt,
         int value,
         int times,
-        StageClosureOwner initiator,
+        StageClosureListener initiator,
         WuXing? wuxing,
         bool crit,
         bool lifeSteal,
