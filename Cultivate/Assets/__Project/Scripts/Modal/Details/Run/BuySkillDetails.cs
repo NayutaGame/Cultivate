@@ -1,5 +1,5 @@
 
-public class BuySkillDetails : ClosureDetails
+public class BuySkillDetails : RunClosureDetails
 {
     public Commodity Commodity;
     public int CommodityIndex;

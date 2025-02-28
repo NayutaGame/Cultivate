@@ -1,5 +1,5 @@
 
-public class UnequipDetails : ClosureDetails
+public class UnequipDetails : RunClosureDetails
 {
     public DeckIndex FromDeckIndex;
     public SkillSlot SkillSlot;

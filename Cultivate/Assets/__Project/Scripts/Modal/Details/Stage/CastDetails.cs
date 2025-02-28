@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 
-public class CastDetails : ClosureDetails
+public class CastDetails : StageClosureDetails
 {
     public StageEnvironment Env;
     public StageEntity Caster;

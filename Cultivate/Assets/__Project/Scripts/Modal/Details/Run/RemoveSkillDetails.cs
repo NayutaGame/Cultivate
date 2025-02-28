@@ -1,5 +1,5 @@
 
-public class RemoveSkillDetails : ClosureDetails
+public class RemoveSkillDetails : RunClosureDetails
 {
     public DeckIndex DeckIndex;
     

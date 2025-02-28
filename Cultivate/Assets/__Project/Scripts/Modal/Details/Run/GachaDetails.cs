@@ -1,5 +1,5 @@
 
-public class GachaDetails : ClosureDetails
+public class GachaDetails : RunClosureDetails
 {
     public SkillEntryDescriptor SkillEntryDescriptor;
     public int GachaIndex;

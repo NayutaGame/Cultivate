@@ -1,5 +1,5 @@
 
-public class ExchangeSkillDetails : ClosureDetails
+public class ExchangeSkillDetails : RunClosureDetails
 {
     public BarterItem BarterItem;
 

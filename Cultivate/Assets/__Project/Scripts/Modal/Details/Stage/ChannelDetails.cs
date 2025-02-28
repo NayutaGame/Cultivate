@@ -1,5 +1,5 @@
 
-public class ChannelDetails : ClosureDetails
+public class ChannelDetails : StageClosureDetails
 {
     public StageEntity Caster;
     public StageSkill Skill;

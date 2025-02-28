@@ -1,5 +1,5 @@
 
-public class CharacterSelectDetails : ClosureDetails
+public class CharacterSelectDetails
 {
     public CharacterProfile Character;
 

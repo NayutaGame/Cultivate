@@ -1,5 +1,5 @@
 
-public class PackConstraintClickedDetails : ClosureDetails
+public class PackConstraintClickedDetails
 {
     public PackConstraint Constraint;
     

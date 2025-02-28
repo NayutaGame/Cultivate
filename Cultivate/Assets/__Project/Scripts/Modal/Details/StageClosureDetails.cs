@@ -1,11 +1,4 @@
 
-public class StageClosureDetails
+public class StageClosureDetails : ClosureDetails
 {
-    public StageClosureListener Listener;
-    public bool Cancel;
-
-    protected StageClosureDetails()
-    {
-        Cancel = false;
-    }
 }

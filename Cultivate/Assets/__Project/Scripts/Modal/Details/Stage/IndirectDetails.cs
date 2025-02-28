@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class IndirectDetails : ClosureDetails
+public class IndirectDetails : StageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

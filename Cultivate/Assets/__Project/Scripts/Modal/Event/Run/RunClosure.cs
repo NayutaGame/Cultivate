@@ -6,10 +6,10 @@ public class RunClosure
     public readonly int EventId;
     public readonly int Order;
 
-    private Action<RunClosureListener, ClosureDetails> _func;
-    public void Invoke(RunClosureListener listener, ClosureDetails closureDetails) => _func(listener, closureDetails);
+    private Action<RunClosureListener, RunClosureDetails> _func;
+    public void Invoke(RunClosureListener listener, RunClosureDetails closureDetails) => _func(listener, closureDetails);
 
-    public RunClosure(int eventId, int order, Action<RunClosureListener, ClosureDetails> func)
+    public RunClosure(int eventId, int order, Action<RunClosureListener, RunClosureDetails> func)
     {
         EventId = eventId;
         Order = order;

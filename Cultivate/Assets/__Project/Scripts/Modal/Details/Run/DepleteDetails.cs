@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-public class DepleteDetails : ClosureDetails
+public class DepleteDetails : RunClosureDetails
 {
     public RunEntity Owner;
     public bool PreserveFirstDeplete;

@@ -44,7 +44,7 @@ public class RunClosureDict : Dictionary<int, RunClosureRow>
         this[eventId].Remove(listener);
     }
 
-    public void SendEvent(int eventId, ClosureDetails closureDetails)
+    public void SendEvent(int eventId, RunClosureDetails closureDetails)
     {
         if (!ContainsKey(eventId))
             return;

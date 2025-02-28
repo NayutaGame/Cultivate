@@ -987,7 +987,7 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n成长：多{Fib.ToValue(2 + dj)}",
                 cast:                       async d =>
                 {
-                    await d.HealProcedure(2 + 4 * d.Dj + d.Cc * (2 + d.Dj), induced: false);
+                    await d.HealProcedure(2 + 4 * d.Dj + d.Cc * Fib.ToValue(2 + d.Dj), induced: false);
                 }),
 
             new(id:                         "0306",
@@ -1650,10 +1650,10 @@ public class SkillCategory : Category<SkillEntry>
                     ($"\n消耗每1护甲，多1"),
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
                         async (owner, closureDetails) =>
                         {
-                            DamageDetails d = closureDetails as DamageDetails;
+                            AttackDetails d = closureDetails as AttackDetails;
                             if (owner != d.Initiator) return;
 
                             int toConsume = Mathf.Max(0, d.Src.Armor);
@@ -1868,6 +1868,205 @@ public class SkillCategory : Category<SkillEntry>
                     await d.GainArmorProcedure(30, induced: false);
                 }),
 
+            new(id:                         "SKILL_DTSZ_001",
+                name:                       "固元",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Health,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"合成时：气血上限增加{Fib.ToValue(3 + dj)}"
+                ),
+
+            new(id:                         "SKILL_DTSZ_002",
+                name:                       "锻骨",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Health,
+                castDescription:            (j, dj, costResult, castResult) =>
+                {
+                    return (int)j switch
+                    {
+                        0 => "锻体+3",
+                        1 => "锻体+3\n" + "满血：多3".ApplyStyle(castResult, "0"),
+                        2 => "锻体+4\n" + "满血：多4".ApplyStyle(castResult, "0"),
+                        3 => "锻体+4\n" + "满血".ApplyStyle(castResult, "0") + "/" + "残血".ApplyStyle(castResult, "1") + "：多4",
+                        _ => "锻体+5\n" + "满血".ApplyStyle(castResult, "0") + "/" + "残血".ApplyStyle(castResult, "1") + "：多5"
+                    };
+                },
+                cast:                       async d =>
+                {
+                    bool cond0 = d.Caster.IsFullHealth;
+                    bool cond1 = d.Caster.IsLowHealth;
+                    int value = d.J switch {
+                        0 => 3,
+                        1 => 3 + (cond0 ? 3 : 0),
+                        2 => 4 + (cond0 ? 4 : 0),
+                        3 => 4 + (cond0 ? 4 : 0) + (cond1 ? 4 : 0),
+                        _ => 5 + (cond0 ? 5 : 0) + (cond1 ? 5 : 0)
+                    };
+                    await d.GainBuffProcedure("锻体", value);
+                    d.CastResult.AppendBools(cond0, cond1);
+                }),
+
+            new(id:                         "SKILL_DTSZ_003",
+                name:                       "守势",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Defend,
+                cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(entity.IsLowHealth ? 0 : 1),
+                costDescription:            CostDescription.ChannelFromValue(1),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"护甲+{Fib.ToValue(6 + dj)}" +
+                    $"\n残血：免除吟唱".ApplyCond(castResult),
+                cast:                       async d =>
+                {
+                    await d.GainArmorProcedure(Fib.ToValue(6 + d.Dj), induced: false);
+
+                    bool cond = d.Caster.IsLowHealth;
+                    d.CastResult.AppendCond(cond);
+                }),
+
+            new(id:                         "SKILL_DTSZ_004",
+                name:                       "隼击",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{4 + 4 * dj}攻" +
+                    $"\n满血：翻倍".ApplyCond(castResult),
+                cast:                       async d =>
+                {
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.Initiator) return;
+                            StageSkill initiator = d.Initiator as StageSkill;
+                            if (!d.Src.IsFullHealth) return;
+                            d.Value += 4 + 4 * initiator.Dj;
+                            
+                            d.CastResult.AppendCond(true);
+                        });
+
+                    d.CastResult.AppendCond(false);
+                    await d.AttackProcedure(4 + 4 * d.Dj,
+                        closures: new [] { closure });
+                }),
+
+            new(id:                         "SKILL_DTSZ_005",
+                name:                       "锻髓",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.JinDan2HuaShen,
+                skillTypeComposite:         SkillType.Attack | SkillType.Health,
+                cost:                       CostResult.HealthFromValue(20),
+                costDescription:            CostDescription.HealthFromValue(20),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{8 + 4 * dj}攻" +
+                    $"\n击伤：锻体+{Fib.ToValue(4 + dj)}".ApplyCond(castResult),
+                cast:                       async d =>
+                {
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.Initiator) return;
+                            StageSkill initiator = d.Initiator as StageSkill;
+                            await d.Src.GainBuffProcedure("锻体", Fib.ToValue(4 + initiator.Dj), induced: true);
+                            
+                            d.CastResult.AppendCond(true);
+                        });
+
+                    d.CastResult.AppendCond(false);
+                    await d.AttackProcedure(8 + 4 * d.Dj,
+                        closures: new [] { closure });
+                }),
+
+            new(id:                         "SKILL_DTSZ_006",
+                name:                       "天人形态",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.JinDan2HuaShen,
+                skillTypeComposite:         SkillType.Health,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"锻体+{Fib.ToValue(3 + dj)}" +
+                    $"\n消耗50锻体：化身天人形态".ApplyCond(castResult),
+                cast:                       async d =>
+                {
+                    await d.GainBuffProcedure("锻体", Fib.ToValue(3 + d.Dj));
+
+                    bool cond = d.Caster.GetStackOfBuff("锻体") >= 50;
+                    if (cond)
+                    {
+                        await d.Caster.LoseBuffProcedure("锻体", 50, induced: false);
+                        await d.Caster.GainBuffProcedure("天人形态", 1, induced: false);
+                    }
+
+                    d.CastResult.AppendCond(cond);
+                }),
+
+            new(id:                         "SKILL_DTSZ_007",
+                name:                       "天人五衰",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
+                castDescription:            (j, dj, costResult, castResult) =>
+                {
+                    BuffEntry[] debuffs = new BuffEntry[] { "滞气", "缠绕", "软弱", "腐朽", "内伤", "脆弱" };
+
+                    int slotIndex = costResult?.Skill.SlotIndex ?? 0;
+                    slotIndex = slotIndex % debuffs.Length;
+                    BuffEntry debuff = debuffs[slotIndex];
+                    return $"幻影：遭受{3 + 2 * dj}{debuff.GetName().ApplyDebuff()}" +
+                           $"\n每1{debuff.GetName()}，锻体+1";
+                },
+                cast:                       async d =>
+                {
+                    BuffEntry[] debuffs = new BuffEntry[] { "滞气", "缠绕", "软弱", "腐朽", "内伤", "脆弱" };
+                    
+                    int slotIndex = d.Skill.SlotIndex % debuffs.Length;
+                    BuffEntry debuff = debuffs[slotIndex];
+
+                    await d.Caster.GainBuffProcedure(debuff, 3 + 2 * d.Dj);
+                    int value = d.Caster.GetStackOfBuff(debuff);
+                    await d.Caster.GainBuffProcedure("锻体", value);
+                }),
+
+            new(id:                         "SKILL_DTSZ_008",
+                name:                       "养生",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"回复{10 + 10 * dj}气血" +
+                    $"\n满血：二动".ApplyStyle(castResult, "0") +
+                    $"\n残血：翻倍".ApplyStyle(castResult, "1"),
+                cast:                       async d =>
+                {
+                    bool cond0 = d.Caster.IsFullHealth;
+                    bool cond1 = d.Caster.IsLowHealth;
+                    
+                    await d.HealProcedure((10 + 10 * d.Dj) << (cond1 ? 1 : 0), induced: false);
+                    
+                    if (cond0)
+                        d.Caster.SetActionPoint(2);
+
+                    d.CastResult.AppendBools(cond0, cond1);
+                }),
+
+            new(id:                         "SKILL_DTSZ_009",
+                name:                       "阿修罗",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.HuaShenOnly,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"二动" +
+                    $"\n天人形态：施加禁止治疗".ApplyCond(castResult),
+                cast:                       async d =>
+                {
+                    d.Caster.SetActionPoint(2);
+                    bool cond = d.Caster.GetStackOfBuff("天人形态") > 0;
+                    if (cond)
+                        await d.GiveBuffProcedure("禁止治疗", induced: false);
+
+                    d.CastResult.AppendCond(cond);
+                }),
+
             new(id:                         "SKILL_DB_001",
                 name:                       "硬化蛊",
                 jingJieBound:               JingJie.LianQi2HuaShen,
@@ -2053,7 +2252,7 @@ public class SkillCategory : Category<SkillEntry>
                     $"\n失去所有护甲",
                 cast:                       async d =>
                 {
-                    await d.GainBuffProcedure("坚毅", 2);
+                    await d.CycleProcedure(WuXing.Tu, gain: 2);
                     int value = d.Caster.Armor;
                     if (value > 0)
                         await d.LoseArmorProcedure(value, induced: false);

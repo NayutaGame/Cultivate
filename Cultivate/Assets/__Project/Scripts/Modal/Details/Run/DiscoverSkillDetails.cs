@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-public class DiscoverSkillDetails : ClosureDetails
+public class DiscoverSkillDetails : RunClosureDetails
 {
     public List<SkillEntryDescriptor> Skills;
     public SkillEntryCollectionDescriptor Descriptor;

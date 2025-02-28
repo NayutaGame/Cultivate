@@ -150,7 +150,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public JingJie JingJie => _jingJie;
     public Pool<SkillEntry> SkillPool => _skillPool;
     public SkillInventory Hand => _hand;
-    public void SendEvent(int eventId, ClosureDetails closureDetails) => _closureDict.SendEvent(eventId, closureDetails);
+    public void SendEvent(int eventId, RunClosureDetails closureDetails) => _closureDict.SendEvent(eventId, closureDetails);
     public StageResult GetSimulateResult() => _simulateResult.Value;
     public RunResult GetResult() => _result;
     public PanelDescriptor GetActivePanel() => Panel;
@@ -422,7 +422,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         PlacementProcedure();
         FormationProcedure();
-        Debug.Log("SecondPlacementProcedure");
         SecondPlacementProcedure();
 
         return StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(_home, _away, _config));

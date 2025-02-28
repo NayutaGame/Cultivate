@@ -1,13 +1,4 @@
 
-public class RunClosureDetails
+public class RunClosureDetails : ClosureDetails
 {
-    public RunClosureListener Listener;
-    public bool Cancel;
-    public bool Induced;
-
-    protected RunClosureDetails()
-    {
-        Cancel = false;
-        Induced = false;
-    }
 }

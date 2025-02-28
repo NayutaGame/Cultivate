@@ -3,7 +3,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public abstract class CostResult : ClosureDetails
+public abstract class CostResult : StageClosureDetails
 {
     public enum CostState
     {

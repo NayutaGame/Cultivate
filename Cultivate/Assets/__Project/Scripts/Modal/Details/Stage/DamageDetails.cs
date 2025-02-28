@@ -1,9 +1,16 @@
 
-public class DamageDetails : ClosureDetails
+using UnityEngine;
+
+public class DamageDetails : StageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
-    public int Value;
+    private int _value;
+    public int Value
+    {
+        get => _value;
+        set => _value = Mathf.Max(0, value);
+    }
     public StageClosureListener Initiator;
     public bool Crit;
     public bool LifeSteal;

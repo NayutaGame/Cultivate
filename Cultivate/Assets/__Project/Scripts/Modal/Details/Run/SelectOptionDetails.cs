@@ -1,5 +1,5 @@
 
-public class SelectOptionDetails : ClosureDetails
+public class SelectOptionDetails
 {
     public int SelectedIndex;
     

@@ -1,5 +1,5 @@
 
-public class RoomChangedDetails : ClosureDetails
+public class RoomChangedDetails : RunClosureDetails
 {
     
 }

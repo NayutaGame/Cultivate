@@ -1,5 +1,5 @@
 
-public class TurnDetails : ClosureDetails
+public class TurnDetails : StageClosureDetails
 {
     public StageEntity Owner;
     public int TurnCount;

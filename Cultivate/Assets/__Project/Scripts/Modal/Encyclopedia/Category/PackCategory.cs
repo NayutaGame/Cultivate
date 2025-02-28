@@ -85,7 +85,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Tu,
                 description:         "以刚猛的力道摧毁一切。修炼者需苦练筋骨，方能发挥此功真正威力。",
                 trivia:              "四则：炼筋、锻骨、淬体、养气。此功重在基础，却也最难练至大成。",
-                cardNames:           new string[] { "出其不意", "勤练", "一力降十会", "一力降十会", "顺势斩", "龟息", "金刚不坏" }
+                cardNames:           new string[] { "SKILL_DTSZ_001", "SKILL_DTSZ_002", "SKILL_DTSZ_003", "SKILL_DTSZ_004", "SKILL_DTSZ_005", "SKILL_DTSZ_006", "SKILL_DTSZ_007", "SKILL_DTSZ_008", "SKILL_DTSZ_009" }
                 ),
             
             new(id:                  "0011",

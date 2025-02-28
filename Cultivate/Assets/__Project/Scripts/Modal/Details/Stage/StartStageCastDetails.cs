@@ -1,5 +1,5 @@
 
-public class StartStageCastDetails : ClosureDetails
+public class StartStageCastDetails : StageClosureDetails
 {
     public StageEnvironment Env;
     public StageEntity Caster;

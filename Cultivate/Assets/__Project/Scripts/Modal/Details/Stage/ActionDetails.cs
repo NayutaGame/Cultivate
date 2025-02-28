@@ -1,5 +1,5 @@
 
-public class ActionDetails : ClosureDetails
+public class ActionDetails : StageClosureDetails
 {
     public StageEntity Owner;
     public int CurrActionPoint;
@@ -10,5 +10,5 @@ public class ActionDetails : ClosureDetails
         CurrActionPoint = currActionPoint;
     }
     
-    public bool IsSwift => CurrActionPoint > 1;
+    public bool IsSwift => CurrActionPoint > 0;
 }

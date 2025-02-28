@@ -226,13 +226,15 @@ public class StageEntity : Addressable, StageClosureListener
     public void ResetActionPoint() => _actionPoint = 1;
     private CostResult _costResult;
 
+    public int GetFullHealthThreshold()
+        => Mathf.RoundToInt((100 - GetStackOfBuff("锻体")) * 0.01f * MaxHp).Clamp(0, MaxHp);
     public int GetLowHealthThreshold()
         => Mathf.RoundToInt((25 + GetStackOfBuff("锻体")) * 0.01f * MaxHp).Clamp(0, MaxHp);
 
+    public bool IsFullHealth
+        => Hp >= GetFullHealthThreshold();
     public bool IsLowHealth
         => Hp <= GetLowHealthThreshold();
-    public bool IsOverpower
-        => Hp >= Opponent().Hp;
     public bool Forward
         => GetStackOfBuff("鹤回翔") == 0;
     public int ExhaustedCount

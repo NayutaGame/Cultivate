@@ -1,5 +1,5 @@
 
-public class SecondPlacementDetails : ClosureDetails
+public class SecondPlacementDetails : RunClosureDetails
 {
     public RunEntity Owner;
     public SlotListModel Slots;

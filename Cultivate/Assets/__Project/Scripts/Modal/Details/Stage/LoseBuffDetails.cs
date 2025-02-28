@@ -1,5 +1,5 @@
 
-public class LoseBuffDetails : ClosureDetails
+public class LoseBuffDetails : StageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

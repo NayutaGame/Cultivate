@@ -7,10 +7,10 @@ public class StageClosure
     public readonly int EventId;
     public readonly int Order;
 
-    private Func<StageClosureListener, ClosureDetails, UniTask> _func;
-    public async UniTask Invoke(StageClosureListener listener, ClosureDetails closureDetails) => await _func(listener, closureDetails);
+    private Func<StageClosureListener, StageClosureDetails, UniTask> _func;
+    public async UniTask Invoke(StageClosureListener listener, StageClosureDetails closureDetails) => await _func(listener, closureDetails);
 
-    public StageClosure(int eventId, int order, Func<StageClosureListener, ClosureDetails, UniTask> func)
+    public StageClosure(int eventId, int order, Func<StageClosureListener, StageClosureDetails, UniTask> func)
     {
         EventId = eventId;
         Order = order;

@@ -1,6 +1,7 @@
+
 using UnityEngine;
 
-public class GuardedDetails : ClosureDetails
+public class GuardedDetails : StageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

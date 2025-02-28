@@ -1,5 +1,5 @@
 
-public class GainSkillDetails : ClosureDetails
+public class GainSkillDetails : RunClosureDetails
 {
     public DeckIndex DeckIndex;
     public RunSkill RunSkill;

@@ -1,8 +1,5 @@
 
-using System.Text;
-using UnityEngine;
-
-public class RunFormationDetails : ClosureDetails
+public class RunFormationDetails : RunClosureDetails
 {
     public RunEntity Owner;
 

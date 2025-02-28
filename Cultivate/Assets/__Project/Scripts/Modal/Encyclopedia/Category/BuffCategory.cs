@@ -149,6 +149,33 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
+            new(id:                         "脆弱",
+                description:                "受攻击时：多[层数]攻\n回合结束/受攻击时：-1层",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   false,
+                dispellable:                true,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_ATTACK, 1, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        AttackDetails d = (AttackDetails)closureDetails;
+                        bool cond = b.Owner == d.Tgt && b.Owner.Opponent() == d.Src;
+                        if (!cond) return;
+                        d.Value += b.Stack;
+                        b.Emphasize();
+                        await b.LoseStackProcedure();
+                    }),
+                    new(StageClosureDict.DID_TURN, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        TurnDetails d = (TurnDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        b.Emphasize();
+                        await b.LoseStackProcedure();
+                    }),
+                }),
+            
             new(id:                         "无法攻击",
                 description:                "无法攻击",
                 buffStackRule:              BuffStackRule.Add,
@@ -723,6 +750,7 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)closureDetails;
 
                         if (b.Owner != d.Owner) return;
+                        
                         b.Emphasize();
 
                         if (b.Owner.GetStackOfBuff("摇曳") > 0)
@@ -1693,6 +1721,33 @@ public class BuffCategory : Category<BuffEntry>
                         b.Emphasize();
                         d._stack += b.Stack;
                         await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);  // 消耗空明
+                    }),
+                }),
+            
+            new(id:                         "天人形态",
+                description:                "造成伤害翻倍，受伤减半",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        DamageDetails d = (DamageDetails)closureDetails;
+                        bool cond = b.Owner == d.Src && b.Owner.Opponent() == d.Tgt;
+                        if (!cond) return;
+                        b.Emphasize();
+                        d.Value = d.Value << b.Stack;
+                    }),
+                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        DamageDetails d = (DamageDetails)closureDetails;
+                        bool cond = b.Owner == d.Tgt;
+                        if (!cond) return;
+                        b.Emphasize();
+                        d.Value = d.Value >> b.Stack;
                     }),
                 }),
 

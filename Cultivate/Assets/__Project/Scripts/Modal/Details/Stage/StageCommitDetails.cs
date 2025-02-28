@@ -1,5 +1,5 @@
 
-public class StageCommitDetails : ClosureDetails
+public class StageCommitDetails : StageClosureDetails
 {
     public StageEnvironment Env;
     public int Turn;

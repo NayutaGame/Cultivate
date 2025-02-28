@@ -154,12 +154,12 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("轮吸血");
                                 await f.Owner.GainBuffProcedure("心斋");
                             }),
-                            new(StageClosureDict.WIL_ACTION, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_ACTION, 1, async (listener, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 ActionDetails d = (ActionDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
-                                if (d.CurrActionPoint < 2) return;
+                                if (!d.IsSwift) return;
                                 if (f.Owner.GetStackOfBuff("摩诃钵特摩") > 0) return;
                                 
                                 await f.Owner.GainBuffProcedure("摩诃钵特摩");

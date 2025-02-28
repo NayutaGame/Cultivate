@@ -1,5 +1,5 @@
 
-public class SetDHealthDetails : ClosureDetails
+public class SetDHealthDetails : RunClosureDetails
 {
     public int Value;
 

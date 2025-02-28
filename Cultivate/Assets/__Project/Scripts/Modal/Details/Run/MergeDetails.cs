@@ -1,5 +1,5 @@
 
-public class MergeDetails : ClosureDetails
+public class MergeDetails : RunClosureDetails
 {
     public RunSkill Lhs;
     public RunSkill Rhs;

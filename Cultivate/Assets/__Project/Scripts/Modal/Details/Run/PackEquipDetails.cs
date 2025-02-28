@@ -1,7 +1,5 @@
 
-using UnityEngine;
-
-public class PackEquipDetails : ClosureDetails
+public class PackEquipDetails
 {
     public ConfigPack Pack;
     public PackConstraint Constraint;

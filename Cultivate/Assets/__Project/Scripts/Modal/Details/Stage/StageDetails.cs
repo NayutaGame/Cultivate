@@ -1,5 +1,5 @@
 
-public class StageDetails : ClosureDetails
+public class StageDetails : StageClosureDetails
 {
     public StageEntity Owner;
 

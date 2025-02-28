@@ -1,5 +1,5 @@
 
-public class ReplaceSkillDetails : ClosureDetails
+public class ReplaceSkillDetails : RunClosureDetails
 {
     public RunSkill Template;
     public DeckIndex DeckIndex;

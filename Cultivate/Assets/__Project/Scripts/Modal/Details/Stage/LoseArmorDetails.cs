@@ -1,5 +1,5 @@
 
-public class LoseArmorDetails : ClosureDetails
+public class LoseArmorDetails : StageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

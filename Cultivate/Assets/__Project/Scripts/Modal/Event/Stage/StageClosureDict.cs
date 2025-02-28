@@ -94,7 +94,7 @@ public class StageClosureDict : Dictionary<int, StageClosureRow>
         this[eventId].Remove(listener);
     }
 
-    public async UniTask SendEvent(int eventId, ClosureDetails closureDetails)
+    public async UniTask SendEvent(int eventId, StageClosureDetails closureDetails)
     {
         if (!ContainsKey(eventId))
             return;

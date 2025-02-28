@@ -1,5 +1,5 @@
 
-public class SetDMingYuanDetails : ClosureDetails
+public class SetDMingYuanDetails : RunClosureDetails
 {
     public int Value;
 

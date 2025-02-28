@@ -1,5 +1,5 @@
 
-public class EndStepDetails : ClosureDetails
+public class EndStepDetails : StageClosureDetails
 {
     public StageEntity Owner;
     public int P;

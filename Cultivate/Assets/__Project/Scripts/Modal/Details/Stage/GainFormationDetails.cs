@@ -1,5 +1,5 @@
 
-public class GainFormationDetails : ClosureDetails
+public class GainFormationDetails : StageClosureDetails
 {
     public StageEntity Owner;
     public RunFormation _formation;

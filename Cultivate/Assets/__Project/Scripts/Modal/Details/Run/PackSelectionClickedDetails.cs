@@ -1,5 +1,5 @@
 
-public class PackSelectionClickedDetails : ClosureDetails
+public class PackSelectionClickedDetails
 {
     public ConfigPack Pack;
 

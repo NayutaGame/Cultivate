@@ -1,5 +1,5 @@
 
-public class GainArmorDetails : ClosureDetails
+public class GainArmorDetails : StageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

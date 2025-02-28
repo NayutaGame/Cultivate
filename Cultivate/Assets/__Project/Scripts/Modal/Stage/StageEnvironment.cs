@@ -202,11 +202,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         
         if (d.Src == d.Tgt)
         {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         else
         {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
         CanvasManager.Instance.StageCanvas.GainBuffStaging(d.Tgt == _entities[0]);
@@ -224,11 +224,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         
         if (d.Src == d.Tgt)
         {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         else
         {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
         buff.Emphasize();
@@ -236,7 +236,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask LoseBuffStaging(LoseBuffDetails d, int buffIndex)
     {
-        _result.TryAppend($"    {d._buffEntry.GetName()} +{d._stack}");
+        _result.TryAppend($"    {d._buffEntry.GetName()} losing:{d._stack}");
         if (!_config.Animated)
             return;
         
@@ -244,11 +244,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         Play(TextAnimation.FromLoseBuffDetails(d));
         if (d.Src == d.Tgt)
         {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         else
         {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
         CanvasManager.Instance.StageCanvas.LoseBuffStaging(d.Tgt == _entities[0], buffIndex);
@@ -256,7 +256,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask LoseBuffStackStaging(LoseBuffDetails d, Buff buff)
     {
-        _result.TryAppend($"    {d._buffEntry.GetName()} -{d._stack}");
+        _result.TryAppend($"    {d._buffEntry.GetName()} losing:{d._stack}");
         if (!_config.Animated)
             return;
         
@@ -265,11 +265,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         
         if (d.Src == d.Tgt)
         {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         else
         {
-            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
         buff.Emphasize();

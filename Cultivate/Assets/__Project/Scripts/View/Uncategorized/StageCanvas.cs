@@ -93,6 +93,9 @@ public class StageCanvas : MonoBehaviour
                 (v as DelegatingView).Align();
             i++;
         });
+        
+        // 应急处理，因为动画的延迟，emphasize会导致desync，emphasize做成过程，将当时的状态发给view层才是正确做法
+        entityView.Buffs.Refresh();
     }
 
     public void GainFormationStaging(bool ownerIsHome)

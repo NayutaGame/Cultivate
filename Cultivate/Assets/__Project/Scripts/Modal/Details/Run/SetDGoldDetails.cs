@@ -1,5 +1,5 @@
 
-public class SetDGoldDetails : ClosureDetails
+public class SetDGoldDetails : RunClosureDetails
 {
     public int Value;
 

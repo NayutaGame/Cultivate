@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class RoundDetails : ClosureDetails
+public class RoundDetails : StageClosureDetails
 {
     public StageEntity Owner;
 

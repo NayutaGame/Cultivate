@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class EvadedDetails : ClosureDetails
+public class EvadedDetails : StageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;

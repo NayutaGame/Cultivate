@@ -1,5 +1,5 @@
 
-public class ContinueRunDetails : ClosureDetails
+public class ContinueRunDetails
 {
 
 }

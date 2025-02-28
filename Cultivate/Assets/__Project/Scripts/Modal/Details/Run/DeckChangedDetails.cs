@@ -1,5 +1,5 @@
 
-public class DeckChangedDetails : ClosureDetails
+public class DeckChangedDetails : RunClosureDetails
 {
     public DeckIndex FromIndex;
     public DeckIndex ToIndex;

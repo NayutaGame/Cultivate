@@ -1,5 +1,5 @@
 
-public class StartRunDetails : ClosureDetails
+public class StartRunDetails : RunClosureDetails
 {
 
 }

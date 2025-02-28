@@ -1,5 +1,5 @@
 
-public class EquipDetails : ClosureDetails
+public class EquipDetails : RunClosureDetails
 {
     public DeckIndex FromDeckIndex;
     public DeckIndex ToDeckIndex;

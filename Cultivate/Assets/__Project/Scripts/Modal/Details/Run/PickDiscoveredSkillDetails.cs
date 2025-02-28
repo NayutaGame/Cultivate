@@ -1,5 +1,5 @@
 
-public class PickDiscoveredSkillDetails : ClosureDetails
+public class PickDiscoveredSkillDetails : RunClosureDetails
 {
     public SkillEntryDescriptor Skill;
     public int PickedIndex;

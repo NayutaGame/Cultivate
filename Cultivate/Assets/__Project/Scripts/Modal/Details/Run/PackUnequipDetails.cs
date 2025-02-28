@@ -1,5 +1,5 @@
 
-public class PackUnequipDetails : ClosureDetails
+public class PackUnequipDetails
 {
     public PackConstraint Constraint;
     public ConfigPack Pack;

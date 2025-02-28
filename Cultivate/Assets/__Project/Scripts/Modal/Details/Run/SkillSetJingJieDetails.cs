@@ -1,5 +1,5 @@
 
-public class SkillSetJingJieDetails : ClosureDetails
+public class SkillSetJingJieDetails : RunClosureDetails
 {
     public JingJie JingJie;
     public DeckIndex DeckIndex;

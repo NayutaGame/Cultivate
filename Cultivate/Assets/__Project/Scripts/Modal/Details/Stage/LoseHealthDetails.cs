@@ -1,5 +1,5 @@
 
-public class LoseHealthDetails : ClosureDetails
+public class LoseHealthDetails : StageClosureDetails
 {
     public StageEntity Owner;
     public int Value;

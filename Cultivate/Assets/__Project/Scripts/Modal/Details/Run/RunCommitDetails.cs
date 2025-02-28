@@ -1,5 +1,5 @@
 
-public class RunCommitDetails : ClosureDetails
+public class RunCommitDetails : RunClosureDetails
 {
     public RunEnvironment RunEnvironment { get; }
 

@@ -2,10 +2,11 @@
 using System;
 using UnityEngine;
 
-public class AttackDetails : ClosureDetails
+public class AttackDetails : StageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
+    
     private int _value;
     public int Value
     {
@@ -13,7 +14,13 @@ public class AttackDetails : ClosureDetails
         set => _value = Mathf.Max(0, value);
     }
 
-    public int Times;
+    private int _times;
+    public int Times
+    {
+        get => _times;
+        set => _times = Mathf.Max(1, value);
+    }
+
     public StageClosureListener Initiator;
     public WuXing? WuXing;
     public bool Crit;
