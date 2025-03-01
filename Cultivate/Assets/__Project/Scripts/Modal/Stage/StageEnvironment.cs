@@ -40,6 +40,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         RegisterConfig();
         AppManager.Instance.ProfileManager.GetCurrProfile().RegisterStageClosures(_closureDict);
+        RegisterEntityClosures();
         RegisterSkillClosures();
 
         await EnteringProcedure();
@@ -59,6 +60,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         await ForcedCommitProcedure();
 
         UnregisterSkillClosures();
+        UnregisterEntityClosures();
         AppManager.Instance.ProfileManager.GetCurrProfile().UnregisterStageClosures(_closureDict);
         UnregisterConfig();
 
@@ -893,6 +895,11 @@ public class StageEnvironment : Addressable, StageClosureListener
             _closureDict.Register(this, additionalDifficultyEntry._stageClosures);
     }
 
+    private void RegisterEntityClosures()
+    {
+        _entities.Do(e => e.RegisterEntityClosures());
+    }
+
     private void RegisterSkillClosures()
     {
         _entities.Do(e => e._skills.Traversal().Do(s => _closureDict.Register(s, s.Entry.Closures)));
@@ -914,6 +921,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         _closureDict.Unregister(this, difficultyEntry._stageClosures);
         foreach (var additionalDifficultyEntry in difficultyEntry.InheritedDifficulties)
             _closureDict.Unregister(this, additionalDifficultyEntry._stageClosures);
+    }
+
+    private void UnregisterEntityClosures()
+    {
+        _entities.Do(e => e.UnregisterEntityClosures());
     }
 
     private void UnregisterSkillClosures()

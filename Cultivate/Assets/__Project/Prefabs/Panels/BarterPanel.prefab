@@ -52,8 +52,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
+  _container: {fileID: 0}
   Prefabs:
   - {fileID: 8155228337873847611, guid: 96ff142ea939cc148bee2df863e5bbb8, type: 3}
+  _viewContainer: {fileID: 0}
 --- !u!1 &19899188441447671
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,7 +483,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 889.5, y: -32.5}
+  m_AnchoredPosition: {x: 885.6, y: -30.3}
   m_SizeDelta: {x: 84, y: 228}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2609809136143787948
@@ -514,8 +516,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u4EA4\u6613\u4F1A"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fcc93a68d3e0bf040b10172f8de955b4, type: 2}
-  m_sharedMaterial: {fileID: -9028806488334220246, guid: fcc93a68d3e0bf040b10172f8de955b4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0637ea3f191edfe4683b0bb26afeaebf, type: 2}
+  m_sharedMaterial: {fileID: -8480002131176977219, guid: 0637ea3f191edfe4683b0bb26afeaebf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -551,7 +553,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -28.18
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

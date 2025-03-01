@@ -232,9 +232,9 @@ public class StageEntity : Addressable, StageClosureListener
         => Mathf.RoundToInt((25 + GetStackOfBuff("锻体")) * 0.01f * MaxHp).Clamp(0, MaxHp);
 
     public bool IsFullHealth
-        => Hp >= GetFullHealthThreshold();
+        => Hp >= GetFullHealthThreshold() || GetStackOfBuff("天人形态") > 0;
     public bool IsLowHealth
-        => Hp <= GetLowHealthThreshold();
+        => Hp <= GetLowHealthThreshold() || GetStackOfBuff("天人形态") > 0;
     public bool Forward
         => GetStackOfBuff("鹤回翔") == 0;
     public int ExhaustedCount
@@ -581,4 +581,24 @@ public class StageEntity : Addressable, StageClosureListener
     }
 
     #endregion
+
+    public void RegisterEntityClosures()
+    {
+        _env.ClosureDict.Register(this, RecordActualHeal);
+    }
+
+    public void UnregisterEntityClosures()
+    {
+        _env.ClosureDict.Unregister(this, RecordActualHeal);
+    }
+    
+    private static StageClosure RecordActualHeal = new(StageClosureDict.DID_HEAL, 1, async (listener, closureDetails) =>
+    {
+        StageEntity entity = listener as StageEntity;
+        HealDetails d = (HealDetails)closureDetails;
+        
+        if (entity != d.Tgt) return;
+        string key = "healRecord";
+        entity.Memory.PerformOperation(key, 0, record => record + d.Value);
+    });
 }

@@ -774,24 +774,13 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                closures:                   new StageClosure[]
-                {
-                    new(StageClosureDict.DID_HEAL, 1, async (owner, closureDetails) =>
-                    {
-                        StageSkill s = owner as StageSkill;
-                        HealDetails d = (HealDetails)closureDetails;
-                        
-                        if (s.Owner != d.Src) return;
-                        string key = "healRecord";
-                        s.Owner.Memory.PerformOperation(key, 0, record => record += d.Value);
-                    }),
-                },
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"1攻\n每{5 - dj}累计治疗，多1攻".ApplyAttack(),
+                    $"1攻".ApplyAttack() +
+                    $"\n每{5 - dj}累计治疗，多1攻",
                 cast:                       async d =>
                 {
 
-                    StageClosure closure = new(StageClosureDict.DID_ATTACK, 0,
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
                         async (owner, closureDetails) =>
                         {
                             AttackDetails d = closureDetails as AttackDetails;
@@ -1945,7 +1934,8 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻" +
-                    $"\n满血：翻倍".ApplyCond(castResult),
+                    $"\n满血：翻倍".ApplyCond(castResult) +
+                    (j >= JingJie.HuaShen ? $"\n天人形态：施加禁止治疗" : ""),
                 cast:                       async d =>
                 {
                     StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
@@ -1963,6 +1953,13 @@ public class SkillCategory : Category<SkillEntry>
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(4 + 4 * d.Dj,
                         closures: new [] { closure });
+
+                    if (d.J >= JingJie.HuaShen)
+                    {
+                        bool cond = d.Caster.GetStackOfBuff("天人形态") > 0;
+                        if (cond)
+                            await d.GiveBuffProcedure("禁止治疗", induced: true);
+                    }
                 }),
 
             new(id:                         "SKILL_DTSZ_005",
@@ -1970,8 +1967,8 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
-                cost:                       CostResult.HealthFromValue(20),
-                costDescription:            CostDescription.HealthFromValue(20),
+                cost:                       CostResult.HealthFromDj(dj => 4 + 2 * dj),
+                costDescription:            CostDescription.HealthFromDj(dj => 4 + 2 * dj),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{8 + 4 * dj}攻" +
                     $"\n击伤：锻体+{Fib.ToValue(4 + dj)}".ApplyCond(castResult),
@@ -1994,25 +1991,17 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "SKILL_DTSZ_006",
-                name:                       "天人形态",
+                name:                       "塑魂",
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Health,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"锻体+{Fib.ToValue(3 + dj)}" +
-                    $"\n消耗50锻体：化身天人形态".ApplyCond(castResult),
+                    $"锻体+{Fib.ToValue(4 + dj)}" +
+                    $"\n持续：灵气不足时，可消耗3锻体代替1灵气",
                 cast:                       async d =>
                 {
-                    await d.GainBuffProcedure("锻体", Fib.ToValue(3 + d.Dj));
-
-                    bool cond = d.Caster.GetStackOfBuff("锻体") >= 50;
-                    if (cond)
-                    {
-                        await d.Caster.LoseBuffProcedure("锻体", 50, induced: false);
-                        await d.Caster.GainBuffProcedure("天人形态", 1, induced: false);
-                    }
-
-                    d.CastResult.AppendCond(cond);
+                    await d.GainBuffProcedure("锻体", Fib.ToValue(4 + d.Dj));
+                    await d.GainBuffProcedure("塑魂", 3, induced: true);
                 }),
 
             new(id:                         "SKILL_DTSZ_007",
@@ -2068,14 +2057,11 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"二动" +
-                    $"\n天人形态：施加禁止治疗".ApplyCond(castResult),
+                    $"\n天人形态：三动".ApplyCond(castResult),
                 cast:                       async d =>
                 {
-                    d.Caster.SetActionPoint(2);
                     bool cond = d.Caster.GetStackOfBuff("天人形态") > 0;
-                    if (cond)
-                        await d.GiveBuffProcedure("禁止治疗", induced: false);
-
+                    d.Caster.SetActionPoint(cond ? 3 : 2);
                     d.CastResult.AppendCond(cond);
                 }),
 
@@ -2321,7 +2307,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async d =>
                 {
                     int mul = d.J < JingJie.HuaShen ? 1 : 2;
-                    await d.GainBuffProcedure("灼烧", 1 + d.Dj + (d.Cc * mul));
+                    await d.CycleProcedure(WuXing.Huo, gain: 1 + d.Dj + (d.Cc * mul));
                 }),
             
             new(id:                         "0119",

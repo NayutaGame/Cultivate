@@ -1334,17 +1334,16 @@ public class BuffCategory : Category<BuffEntry>
             new("升华", "下一张牌在使用后，暂时移出卡组，战斗结束返还", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STEP, 0, async (owner, closureDetails) =>
+                    new(StageClosureDict.DID_CAST, 0, async (owner, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
-                        StartStepDetails d = (StartStepDetails)closureDetails;
+                        CastDetails d = (CastDetails)closureDetails;
 
-                        if (b.Owner != d.Owner) return;
-                        StageSkill skill = d.Owner._skills[d.P];
+                        if (b.Owner != d.Caster) return;
+                        if (d.Skill.Exhausted) return;
                         
                         b.Emphasize();
-                        await skill.ExhaustProcedure();
-                        
+                        await d.Skill.ExhaustProcedure();
                         await b.LoseStackProcedure();
                     }),
                 }),
@@ -1725,13 +1724,13 @@ public class BuffCategory : Category<BuffEntry>
                 }),
             
             new(id:                         "天人形态",
-                description:                "造成伤害翻倍，受伤减半",
+                description:                "造成伤害翻倍，受伤减半，触发满血/残血",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
                 closures:                   new StageClosure[]
                 {
-                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
+                    new(StageClosureDict.WIL_DAMAGE, 0, async (owner, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
                         DamageDetails d = (DamageDetails)closureDetails;
@@ -1740,7 +1739,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.Emphasize();
                         d.Value = d.Value << b.Stack;
                     }),
-                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
+                    new(StageClosureDict.WIL_DAMAGE, 0, async (owner, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
                         DamageDetails d = (DamageDetails)closureDetails;
@@ -1750,6 +1749,34 @@ public class BuffCategory : Category<BuffEntry>
                         d.Value = d.Value >> b.Stack;
                     }),
                 }),
+            
+            new(id:                         "锻体",
+                description:                "残血所需的阈值提升，满血所需的阈值降低，50层之后，可化身天人形态",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        GainBuffDetails d = (GainBuffDetails)closureDetails;
+                        if (b.Owner != d.Tgt) return;
+
+                        int duanTiStack = b.Stack;
+                        int tianRenGain = duanTiStack / 50;
+                        if (tianRenGain <= 0) return;
+                        int consumption = tianRenGain * 50;
+                        await b.Owner.LoseBuffProcedure(b.GetEntry(), consumption);
+                        await b.Owner.GainBuffProcedure("天人形态", tianRenGain, induced: true);
+                    }),
+                }),
+            
+            new(id:                         "塑魂",
+                description:                "灵气不足时，可消耗[层数]锻体代替1灵气",
+                buffStackRule:              BuffStackRule.Min,
+                friendly:                   true,
+                dispellable:                false),
 
             new("摩诃钵特摩", "已经触发过摩诃钵特摩",                   BuffStackRule.One, true, false),
             new("天人合一", "已经触发过天人合一",                       BuffStackRule.One, true, false),
@@ -1765,7 +1792,6 @@ public class BuffCategory : Category<BuffEntry>
             new("集中",      "下一次使用牌时，条件算作激活",            BuffStackRule.Add, true, false),
             new("浮空艇",     "回合被跳过时：气血及上线无法下降",       BuffStackRule.Add, true, false),
             new("架势",     "消耗架势激活效果，没有架势时获得架势",     BuffStackRule.Add, true, false),
-            new("锻体",     "残血所需的阈值提升，满血所需的阈值降低",   BuffStackRule.Add, true, false),
         });
     }
 
