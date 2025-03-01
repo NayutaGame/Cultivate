@@ -81,15 +81,16 @@ public class AppManager : Singleton<AppManager>, Addressable
 
         Settings = new();
         Encyclopedia = new();
+
+        SkillInventory = new();
+        Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.FromEntryJingJie(e, e.LowestJingJie)).Do(s => SkillInventory.Add(s));
+
         EditorManager.gameObject.SetActive(true);
         ProfileManager = new();
         ConfigManager = new();
 
         FormationInventory = new();
         Encyclopedia.FormationCategory.Traversal.Do(e => FormationInventory.Add(e));
-
-        SkillInventory = new();
-        Encyclopedia.SkillCategory.Traversal.Map(e => RunSkill.FromEntryJingJie(e, e.LowestJingJie)).Do(s => SkillInventory.Add(s));
 
         InventoryFromExpandedPack = new();
 

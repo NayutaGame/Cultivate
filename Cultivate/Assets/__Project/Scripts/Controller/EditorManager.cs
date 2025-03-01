@@ -50,6 +50,16 @@ public class EditorManager : Singleton<EditorManager>, Addressable
             : RunEntity.Trainer();
     }
 
+    [NonSerialized] private string _skillSearchText;
+    public string GetSkillSearchText() => _skillSearchText;
+    public void SetSkillSearchText(string value)
+    {
+        _skillSearchText = value;
+        FilteredSkillInventory.Refresh();
+    }
+
+    [NonSerialized] public FilteredListModel<RunSkill> FilteredSkillInventory;
+
     [NonSerialized] public StageResult SimulateResult;
 
     [NonSerialized] private RunConfig _config;
@@ -63,7 +73,8 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         _accessors = new()
         {
             { "EntityEditableList", () => EntityEditableList },
-            { "Home", () => Home }
+            { "Home", () => Home },
+            { "FilteredSkillInventory", () => FilteredSkillInventory },
         };
         EnvironmentChangedNeuron = new();
 
@@ -72,6 +83,9 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         Home = RunEntity.Default();
         Away = RunEntity.Trainer();
         EnvironmentChangedNeuron.Add(SimulateProcedure);
+
+        FilteredSkillInventory = new(AppManager.Instance.SkillInventory, s => s.GetEntry().MatchSearchText(GetSkillSearchText()));
+        SetSkillSearchText("");
     }
 
     public void Combat()

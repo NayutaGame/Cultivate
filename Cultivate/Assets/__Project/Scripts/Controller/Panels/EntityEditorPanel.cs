@@ -12,6 +12,7 @@ public class EntityEditorPanel : Panel
     private int? _selectionIndex;
     private SelectBehaviour _selection;
 
+    [SerializeField] private TMP_InputField SearchBar;
     [SerializeField] private ListView SkillBrowser;
 
     [SerializeField] private EntityEditorEntityView AwayEntityView;
@@ -35,7 +36,10 @@ public class EntityEditorPanel : Panel
         EntityBrowser.LeftClickNeuron.Join(SelectEntity);
         EntityBrowser.RightClickNeuron.Join(DeselectEntity);
 
-        SkillBrowser.SetAddress(new Address("SkillInventory"));
+        SearchBar.onEndEdit.RemoveAllListeners();
+        SearchBar.onEndEdit.AddListener(OnSearchBarValueChanged);
+
+        SkillBrowser.SetAddress(new Address("Editor.FilteredSkillInventory"));
         SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit, CanvasManager.Instance.FormationAnnotation.PointerExit);
         SkillBrowser.DropNeuron.Join(Unequip);
 
@@ -310,6 +314,12 @@ public class EntityEditorPanel : Panel
     public void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    private void OnSearchBarValueChanged(string value)
+    {
+        EditorManager.Instance.SetSkillSearchText(value);
+        SkillBrowser.Sync();
     }
 
     // private bool TryMerge(IInteractable from, IInteractable to)

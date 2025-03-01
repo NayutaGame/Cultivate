@@ -1,5 +1,6 @@
 
 using System;
+using System.Linq;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -149,5 +150,55 @@ public class SkillEntry : Entry, IAnnotation, ISkill
             return next;
 
         return LowestJingJie;
+    }
+    
+    public bool MatchSearchText(string searchText)
+    {
+        if (string.IsNullOrWhiteSpace(searchText))
+            return true;
+            
+        searchText = searchText.ToLower().Trim();
+        
+        // 1. 直接匹配
+        if (_name.ToLower().Contains(searchText) || 
+            GetId().ToLower().Contains(searchText))
+            return true;
+            
+        // 2. 五行匹配
+        if (_wuXing.HasValue)
+        {
+            string wuXingName = _wuXing.Value.ToString().ToLower();
+            if (wuXingName.Contains(searchText))
+                return true;
+        }
+        
+        // 3. 境界匹配
+        string jingJieRange = $"{LowestJingJie}到{HighestJingJie}".ToLower();
+        if (jingJieRange.Contains(searchText))
+            return true;
+            
+        // 4. 技能类型匹配
+        if (_skillTypeComposite.ToString().ToLower().Contains(searchText))
+            return true;
+            
+        // 5. 描述文本匹配
+        string description = GetDescription().ToLower();
+        if (description.Contains(searchText))
+            return true;
+            
+        // 6. 背景故事匹配
+        if (!string.IsNullOrEmpty(_trivia) && 
+            _trivia.ToLower().Contains(searchText))
+            return true;
+            
+        // 7. 多关键词匹配（用空格分割）
+        string[] keywords = searchText.Split(new[] { ' ' }, 
+            StringSplitOptions.RemoveEmptyEntries);
+        if (keywords.Length > 1)
+        {
+            return keywords.All(MatchSearchText);
+        }
+        
+        return false;
     }
 }
