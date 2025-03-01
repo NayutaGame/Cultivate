@@ -25,8 +25,7 @@ public class PackEntry : Entry, IPack
         WuXing = wuXing;
         Description = description ?? "没有描述";
         Trivia = trivia ?? "没有趣闻";
-        Cards = cardNames?.Map(skillNameOrId => SkillEntry.FromName(skillNameOrId) ?? Encyclopedia.SkillCategory[skillNameOrId]).ToArray()
-            ?? Array.Empty<SkillEntry>();
+        Cards = cardNames?.Map(SkillEntry.FromNameOrId).ToArray() ?? Array.Empty<SkillEntry>();
     }
 
     public string GetName() => Name;

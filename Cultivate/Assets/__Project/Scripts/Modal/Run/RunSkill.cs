@@ -22,6 +22,8 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
         get => _jingJie;
         set => _jingJie = Mathf.Clamp(value, GetEntry().LowestJingJie, GetEntry().HighestJingJie);
     }
+    public int Dj
+        => GetJingJie() - _entry.LowestJingJie;
     public int GetRunUsedTimes() => _runUsedTimes;
     public void SetRunUsedTimes(int value) => _runEquippedTimes = value;
     public int GetRunEquippedTimes() => _runEquippedTimes;

@@ -73,6 +73,9 @@ public class SkillEntry : Entry, IAnnotation, ISkill
     private bool _withinPool;
     public bool WithinPool => _withinPool;
 
+    private MergeRule _overridingMergeRule;
+    public MergeRule OverridingMergeRule => _overridingMergeRule;
+
     private SpriteEntry _spriteEntry;
 
     public SkillEntry(string id,
@@ -91,7 +94,8 @@ public class SkillEntry : Entry, IAnnotation, ISkill
         Func<StartStageCastDetails, UniTask> startStageCast = null,
         
         string trivia = null,
-        bool withinPool = true
+        bool withinPool = true,
+        MergeRule overridingMergeRule = null
         ) : base(id)
     {
         _name = name;
@@ -111,6 +115,8 @@ public class SkillEntry : Entry, IAnnotation, ISkill
         _trivia = trivia;
         _withinPool = withinPool;
 
+        _overridingMergeRule = overridingMergeRule ?? MergeRule.Trivial;
+
         _spriteEntry = $"Skill{GetName()}";
     }
 
@@ -118,6 +124,9 @@ public class SkillEntry : Entry, IAnnotation, ISkill
 
     public static SkillEntry FromName(string name)
         => Encyclopedia.SkillCategory.Traversal.FirstObj(e => e._name == name) ?? Encyclopedia.SkillCategory.DefaultEntry();
+    
+    public static SkillEntry FromNameOrId(string nameOrId)
+        => Encyclopedia.SkillCategory.Traversal.FirstObj(e => e._name == nameOrId) ?? Encyclopedia.SkillCategory[nameOrId] ?? Encyclopedia.SkillCategory.DefaultEntry();
 
     public int GetCurrCounter() => 0;
     public int GetMaxCounter() => 0;

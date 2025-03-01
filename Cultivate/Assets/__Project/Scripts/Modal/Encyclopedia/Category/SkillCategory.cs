@@ -1874,8 +1874,20 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Health,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"合成时：气血上限增加{Fib.ToValue(3 + dj)}"
-                ),
+                    $"合成时：气血上限增加{Fib.ToValue(3 + dj)}",
+                overridingMergeRule:        new MergeRule(
+                    name:                       "固元",
+                    errorMessage:               null,
+                    order:                      -101,
+                    processMerge:               d =>
+                    {
+                        int value = Fib.ToValue(3 + d.Src.Dj);
+                        d.AddSideEffect(() =>
+                        {
+                            RunManager.Instance.Environment.SetDHealthProcedure(value);
+                        });
+                        d.State = MergeDetails.MergeState.Continue;
+                    })),
 
             new(id:                         "SKILL_DTSZ_002",
                 name:                       "锻骨",
@@ -2193,10 +2205,50 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "补天丹",
                 jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"合成时，使目标变为化神（没有实现）",
-                cast:                       async d =>
-                {
-                }),
+                    $"合成时，使目标变为化神",
+                overridingMergeRule:        new MergeRule(
+                    name:                       "补天丹",
+                    errorMessage:               "补天丹不可作用于已经处于最高境界的卡牌",
+                    order:                      -1,
+                    processMerge:               d =>
+                    {
+                        RunSkill lhs = d.Lhs;
+                        RunSkill rhs = d.Rhs;
+                        RunSkill src = d.Src;
+                        RunSkill tgt = d.Tgt;
+
+                        bool cond = tgt.GetJingJie() != tgt.GetEntry().HighestJingJie;
+                        if (!cond)
+                        {
+                            d.MergeTarget = new(
+                                mergeType:              "补天丹",
+                                valid:                  false,
+                                errorMessage:           "补天丹不可作用于已经处于最高境界的卡牌",
+                                resultEntry:            null,
+                                resultJingJie:          null,
+                                resultWuXing:           null,
+                                pred:                   null);
+                            d.State = MergeDetails.MergeState.Cancel;
+                            return;
+                        }
+
+                        d.MergeTarget = new(
+                            mergeType:              "补天丹",
+                            valid:                  true,
+                            errorMessage:           null,
+                            resultEntry:            tgt.GetEntry(),
+                            resultJingJie:          tgt.GetEntry().HighestJingJie,
+                            resultWuXing:           tgt.GetWuXing(),
+                            pred:                   null);
+                        d.State = MergeDetails.MergeState.Success;
+                    })),
+
+
+
+
+
+                    
+
 
             new(id:                         "SKILL_HZ_001",
                 name:                       "缭乱",

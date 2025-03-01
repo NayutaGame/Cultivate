@@ -448,24 +448,39 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public MergePreresult GetMergePreresult(RunSkill lhs, RunSkill rhs)
     {
         JingJie playerJingJie = _home.GetJingJie();
-        
-        var tuple = MergePreresult.MergeRules.FirstObj(tuple => tuple.Item1(lhs, rhs, playerJingJie));
-        if (tuple != null)
-            return tuple.Item2(lhs, rhs, playerJingJie);
 
-        return MergePreresult.FromDefault(lhs, rhs, playerJingJie);
+        MergeDetails d = new(lhs, rhs);
+        d.PlayerJingJie = _home.GetJingJie();
+        d.IsDryRun = true;
+        InnerMerge(d);
+
+        return d.MergeTarget;
     }
 
     public void MergeProcedure(MergeDetails d)
     {
+        d.PlayerJingJie = _home.GetJingJie();
+        d.IsDryRun = false;
+        
+        // buggy behaviour, event is stateful
         SendEvent(RunClosureDict.WIL_MERGE, d);
 
         if (d.Cancel)
             return;
 
-        bool success = InnerMerge(d);
-        if (!success)
+        if (d.Lhs.Borrowed || d.Rhs.Borrowed)
             return;
+        
+        InnerMerge(d);
+        Assert.IsTrue(d.State != MergeDetails.MergeState.Continue);
+
+        if (d.State == MergeDetails.MergeState.Cancel)
+            return;
+
+        if (d.IsDryRun)
+            return;
+
+        ExecuteMergeResult(d);
         
         SendEvent(RunClosureDict.DID_MERGE, d);
         
@@ -473,108 +488,76 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
     }
 
-    private bool InnerMerge(MergeDetails d)
+    private void InnerMerge(MergeDetails d)
     {
-        RunSkill lhs = d.Lhs;
-        RunSkill rhs = d.Rhs;
-        
-        if (lhs.Borrowed || rhs.Borrowed)
-            return false;
-        
-        SkillEntry lEntry = lhs.GetEntry();
-        SkillEntry rEntry = rhs.GetEntry();
-        JingJie lJingJie = lhs.GetJingJie();
-        JingJie rJingJie = rhs.GetJingJie();
-        WuXing? lWuXing = lEntry.WuXing;
-        WuXing? rWuXing = rEntry.WuXing;
-        JingJie playerJingJie = _home.GetJingJie();
-        DeckIndex rhsDeckIndex = rhs.ToDeckIndex();
-        
-        if (MergePreresult.IsCongruent(lhs, rhs, playerJingJie))
-        {
-            rhs.JingJie = (rJingJie + 2).ClampUpper(rEntry.HighestJingJie);
-            Hand.Remove(d.Lhs);
-            return true;
-        }
-        
-        if (MergePreresult.IsSameName(lhs, rhs, playerJingJie))
-        {
-            rhs.JingJie = (Mathf.Max(lJingJie, rJingJie) + 1).ClampUpper(rEntry.HighestJingJie);
-            Hand.Remove(d.Lhs);
-            return true;
-        }
+        ProcessOverridingRules(d);
+        if (d.State != MergeDetails.MergeState.Continue)
+            return;
 
-        bool valid1 = rhs.GetJingJie() <= playerJingJie || lhs.GetJingJie() <= playerJingJie;
-        if (!valid1)
-            return false;
+        ProcessDefaultRules(d);
+    }
 
-        if (MergePreresult.IsJingJieReplace(lhs, rhs, playerJingJie))
-        {
-            if (lhs.GetJingJie() < rhs.GetJingJie())
-            {
-                rhs.SetEntry(lEntry);
-            }
-            else
-            {
-                rhs.JingJie = rJingJie + 1;
-            }
-            
-            Hand.Remove(d.Lhs);
-            return true;
-        }
+    private void ProcessOverridingRules(MergeDetails d)
+    {
+        MergeRule lhsRule = d.Lhs.GetEntry().OverridingMergeRule;
+        MergeRule rhsRule = d.Rhs.GetEntry().OverridingMergeRule;
 
-        bool valid2 = rhs.GetJingJie() <= playerJingJie && lhs.GetJingJie() <= playerJingJie;
-        if (!valid2)
-            return false;
-        
-        if (MergePreresult.IsSameWuXing(lhs, rhs, playerJingJie))
+        if (lhsRule.Order <= rhsRule.Order)
         {
-            DeckIndex? refDeckIndex = rhsDeckIndex;
+            d.Src = d.Lhs;
+            d.Tgt = d.Rhs;
+            lhsRule.ProcessMerge(d);
+            if (d.State != MergeDetails.MergeState.Continue)
+                return;
+                
+            d.Src = d.Rhs;
+            d.Tgt = d.Lhs;
+            rhsRule.ProcessMerge(d);
+        }
+        else
+        {
+            d.Src = d.Rhs;
+            d.Tgt = d.Lhs;
+            rhsRule.ProcessMerge(d);
+            if (d.State != MergeDetails.MergeState.Continue)
+                return;
+                
+            d.Src = d.Lhs;
+            d.Tgt = d.Rhs;
+            lhsRule.ProcessMerge(d);
+        }
+    }
+
+    private void ProcessDefaultRules(MergeDetails d)
+    {
+        foreach (MergeRule mergeRule in MergeRule.DefaultMergeRules)
+        {
+            if (d.State != MergeDetails.MergeState.Continue)
+                break;
+            mergeRule.ProcessMerge(d);
+        }
+    }
+
+    private void ExecuteMergeResult(MergeDetails d)
+    {
+        d.ExecuteSideEffects();
+
+        if (d.MergeTarget.ResultEntry != null)
+        {
+            d.Rhs.SetEntry(d.MergeTarget.ResultEntry);
+            d.Rhs.JingJie = d.MergeTarget.ResultJingJie.Value;
+            Hand.Remove(d.Lhs);
+        }
+        else
+        {
+            DeckIndex? refDeckIndex = d.Rhs.ToDeckIndex();
             SkillEntryDescriptor skillEntryDescriptor = new(
-                pred: skillEntry => skillEntry != lEntry && skillEntry != rEntry,
-                wuXing: rWuXing,
-                jingJie: rJingJie + 1);
+                pred: d.MergeTarget.Pred,
+                wuXing: d.MergeTarget.ResultWuXing,
+                jingJie: d.MergeTarget.ResultJingJie);
             InnerDrawCreateAdd(skillEntryDescriptor, ref refDeckIndex);
             Hand.Remove(d.Lhs);
-            return true;
         }
-        
-        if (MergePreresult.IsXiangShengWuXing(lhs, rhs, playerJingJie))
-        {
-            DeckIndex? refDeckIndex = rhsDeckIndex;
-            SkillEntryDescriptor skillEntryDescriptor = new(
-                wuXing: WuXing.XiangShengNext(lWuXing, rWuXing).Value,
-                jingJie: rJingJie + 1);
-            InnerDrawCreateAdd(skillEntryDescriptor, ref refDeckIndex);
-            Hand.Remove(d.Lhs);
-            return true;
-        }
-        
-        if (MergePreresult.IsSameJingJie(lhs, rhs, playerJingJie))
-        {
-            DeckIndex? refDeckIndex = rhsDeckIndex;
-            SkillEntryDescriptor skillEntryDescriptor = new(
-                pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
-                                    skillEntry.WuXing != rWuXing,
-                jingJie: rJingJie + 1);
-            InnerDrawCreateAdd(skillEntryDescriptor, ref refDeckIndex);
-            Hand.Remove(d.Lhs);
-            return true;
-        }
-        
-        if (MergePreresult.IsHuaShenReroll(lhs, rhs, playerJingJie))
-        {
-            DeckIndex? refDeckIndex = rhsDeckIndex;
-            SkillEntryDescriptor skillEntryDescriptor = new(
-                pred: skillEntry => skillEntry.WuXing.HasValue && skillEntry.WuXing != lWuXing &&
-                                    skillEntry.WuXing != rWuXing,
-                jingJie: rJingJie);
-            InnerDrawCreateAdd(skillEntryDescriptor, ref refDeckIndex);
-            Hand.Remove(d.Lhs);
-            return true;
-        }
-        
-        return false;
     }
 
     public void EquipProcedure(EquipDetails d)

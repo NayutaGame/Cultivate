@@ -1,0 +1,244 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using CLLibrary;
+using UnityEngine;
+using UnityEngine.Assertions;
+
+public class ConfigManager : Addressable
+{
+    private CharacterProfile _character;
+
+    private ListModel<PackConstraint> _packConstraints;
+    private ListModel<ConfigPack> _packSelections;
+    public ListModel<ConfigPack> PackSelections => _packSelections;
+    
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
+    public ConfigManager()
+    {
+        _accessors = new Dictionary<string, Func<object>>()
+        {
+            { "PackConstraints", () => _packConstraints },
+            { "PackSelections", () => _packSelections },
+        };
+
+        InitPack();
+
+        SelectCharacterProcedure(new CharacterSelectDetails(AppManager.Instance.ProfileManager.GetCurrProfile().FirstCharacterProfile()));
+    }
+
+    private void InitPack()
+    {
+        _packConstraints = new();
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Jin), 0));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Shui), 1));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Mu), 2));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Huo), 3));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Tu), 4));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), 5));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), 6));
+
+        _packSelections = new();
+        Encyclopedia.PackCategory.Traversal.Do(pack => _packSelections.Add(new ConfigPack(pack)));
+    }
+
+    #region 角色配置
+
+    public Neuron<CharacterSelectDetails> CharacterSelectNeuron = new();
+
+    public CharacterProfile SelectedCharacter => _character;
+
+    public void SelectCharacterProcedure(CharacterSelectDetails d)
+    {
+        _character = d.Character;
+
+        LoadPackPresetFromCharacter(_character);
+    }
+
+    private void LoadPackPresetFromCharacter(CharacterProfile character)
+    {
+        PackPreset preset = character.GetEntry()._packPreset;
+        LoadPackPreset(preset);
+    }
+
+    public PackPreset WriteCurrentIntoPackPreset()
+    {
+        List<PackEntry> packEntries = new();
+        _packConstraints.Traversal().Do(c => packEntries.Add(c.Pack.Entry));
+        return new PackPreset(packEntries);
+    }
+
+    public void LoadPackPreset(PackPreset preset)
+    {
+        _packConstraints.Traversal().Do(c => c.Pack = null);
+        _packSelections.Traversal().Do(p => p.IsEquipped = false);
+
+        for(int i = 0; i < preset.PackEntries.Count; i++)
+        {
+            PackEntry pack = preset.PackEntries[i];
+            ConfigPack configPack = _packSelections.First(p => p.Entry == pack);
+            configPack.IsEquipped = true;
+
+            _packConstraints[i].Pack = configPack;
+        }
+    }
+
+    #endregion
+
+    #region 卡包配置
+
+    public Neuron<PackEquipDetails> EquipPackNeuron = new();
+    public Neuron<PackUnequipDetails> UnequipPackNeuron = new();
+
+    public void PackSelectionClickedProcedure(PackSelectionClickedDetails d)
+    {
+        if (d.Pack.IsEquipped)
+        {
+            UnequipPack(d);
+        }
+        else
+        {
+            TryEquipPack(d);
+        }
+    }
+
+    public void PackConstraintClickedProcedure(PackConstraintClickedDetails d)
+    {
+        if (d.Constraint.Pack != null)
+        {
+            UnequipPack(d);
+        }
+    }
+
+    public void TryEquipPack(PackSelectionClickedDetails d)
+    {
+        ConfigPack pack = d.Pack;
+        if (pack.IsEquipped)
+        {
+            Debug.Log($"卡包 {pack.Entry.Name} 已经被装备");
+            return;
+        }
+        
+        PackConstraint firstMatch = GetFirstValidUnlockedSlot(pack);
+        if (firstMatch == null)
+        {
+            Debug.Log("没有合适的空槽位");
+            return;
+        }
+
+        pack.IsEquipped = true;
+        firstMatch.Pack = pack;
+
+        EquipPackNeuron.Invoke(new PackEquipDetails(pack, firstMatch));
+    }
+
+    public void UnequipPack(PackSelectionClickedDetails d)
+    {
+        ConfigPack pack = d.Pack;
+        // 检查卡包是否已装备
+        if (!pack.IsEquipped)
+        {
+            Debug.Log($"卡包 {pack.Entry.Name} 未被装备");
+            return;
+        }
+
+        // 检查pack是否解锁
+        bool packIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), pack.Entry);
+        if (!packIsUnlocked)
+        {
+            Debug.Log($"卡包 {pack.Entry.Name} 未解锁");
+            return;
+        }
+        
+        // 寻找装备该卡包的槽位
+        PackConstraint constraint = _packConstraints.First(c => c.Pack == pack);
+        if (constraint == null)
+        {
+            Debug.Log("未找到装备该卡包的槽位");
+            return;
+        }
+
+        // 检查slot是否解锁
+        bool slotIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), constraint.SlotIndex);
+        if (!slotIsUnlocked)
+        {
+            Debug.Log($"槽位 {constraint.SlotIndex} 未解锁");
+            return;
+        }
+
+        pack.IsEquipped = false;
+        constraint.Pack = null;
+        
+        UnequipPackNeuron.Invoke(new PackUnequipDetails(constraint, pack));
+    }
+
+    public void UnequipPack(PackConstraintClickedDetails d)
+    {
+        PackConstraint constraint = d.Constraint;
+        // 检查槽位是否有装备
+        if (constraint.IsEmpty)
+        {
+            Debug.Log("此槽位没有装备卡包");
+            return;
+        }
+
+        // 检查pack是否解锁
+        bool packIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), constraint.Pack.Entry);
+        if (!packIsUnlocked)
+        {
+            Debug.Log($"卡包 {constraint.Pack.Entry.Name} 未解锁");
+            return;
+        }
+
+        // 检查slot是否解锁
+        bool slotIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), constraint.SlotIndex);
+        if (!slotIsUnlocked)
+        {
+            Debug.Log($"槽位 {constraint.SlotIndex} 未解锁");
+            return;
+        }
+
+        constraint.Pack.IsEquipped = false;
+        constraint.Pack = null;
+
+        UnequipPackNeuron.Invoke(new PackUnequipDetails(constraint, constraint.Pack));
+    }
+
+    public PackConstraint GetFirstValidUnlockedSlot(ConfigPack pack)
+    {
+        return _packConstraints.First(constraint => 
+            IsCompatible(pack, constraint) && 
+            constraint.IsEmpty);
+    }
+
+    public bool IsCompatible(ConfigPack pack, PackConstraint constraint)
+    {
+        var profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        return constraint.Descriptor.Contains(pack.Entry) && 
+               profile.PackIsGenerallyUnlocked(_character.GetEntry(), pack.Entry, constraint.SlotIndex);
+    }
+
+    public List<PackEntry> GetEquippedPacks()
+    {
+        Assert.IsTrue(_packConstraints.Traversal().All(c => c.Pack != null));
+        return _packConstraints.Traversal().Map(c => c.Pack.Entry).ToList();
+    }
+
+    public bool IsConfigurationValid()
+    {
+        PackConstraint firstInvalid = _packConstraints.First(constraint => constraint.IsEmpty || !constraint.Descriptor.Contains(constraint.Pack.Entry));
+        return firstInvalid == null;
+    }
+
+    #endregion
+
+    #region MyRegion
+
+    public void Notify()
+    {
+    }
+
+    #endregion
+}
