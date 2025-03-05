@@ -504,6 +504,89 @@ public class MapCategory : Category<MapEntry>
                         new AdventureRoomDescriptor(12),
                     },
                 }),
+            
+            new(id: "排局1",
+                envJingJie: JingJie.LianQi,
+                slotCount: 3,
+                gold: 3,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDescriptor[][]
+                {
+                    new RoomDescriptor[]
+                    {
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new DirectRoomDescriptor(0, "排局1"),
+                        new AscensionRoomDescriptor(4),
+                        new AscensionRoomDescriptor(7),
+                        new AscensionRoomDescriptor(10),
+                        new AdventureRoomDescriptor(12),
+                    },
+                }),
+            
+            new(id: "排局2",
+                envJingJie: JingJie.ZhuJi,
+                slotCount: 5,
+                gold: 12,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDescriptor[][]
+                {
+                    new RoomDescriptor[]
+                    {
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new DirectRoomDescriptor(0, "排局2"),
+                        new AscensionRoomDescriptor(4),
+                        new AscensionRoomDescriptor(7),
+                        new AscensionRoomDescriptor(10),
+                        new AdventureRoomDescriptor(12),
+                    },
+                }),
+            
+            new(id: "排局3",
+                envJingJie: JingJie.YuanYing,
+                slotCount: 8,
+                gold: 53,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDescriptor[][]
+                {
+                    new RoomDescriptor[]
+                    {
+                        new DirectRoomDescriptor(0, "排局3抽牌"),
+                        new DirectRoomDescriptor(0, "排局3"),
+                        new DirectRoomDescriptor(0, "排局3"),
+                        new DirectRoomDescriptor(0, "排局3"),
+                        new DirectRoomDescriptor(0, "排局3"),
+                        new DirectRoomDescriptor(0, "排局3"),
+                        new DirectRoomDescriptor(0, "排局3"),
+                        new DirectRoomDescriptor(0, "排局3"),
+                        new DirectRoomDescriptor(0, "排局3"),
+                        new DirectRoomDescriptor(0, "排局3"),
+                        new AscensionRoomDescriptor(4),
+                        new AscensionRoomDescriptor(7),
+                        new AscensionRoomDescriptor(10),
+                        new AdventureRoomDescriptor(12),
+                    },
+                }),
         });
     }
 

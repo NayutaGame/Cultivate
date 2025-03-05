@@ -142,7 +142,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     {
         RegisterSecondPlacementProcedure();
 
-        SecondPlacementDetails d = new(this, _slots);
+        SecondPlacementDetails d = new(this);
 
         RunManager.Instance.Environment.SendEvent(RunClosureDict.WIL_SECOND_PLACEMENT, d);
 

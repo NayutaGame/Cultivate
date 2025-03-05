@@ -1,7 +1,6 @@
 
 using System.Collections.Generic;
 using CLLibrary;
-using UnityEngine;
 
 public class FormationCategory : Category<FormationGroupEntry>
 {
@@ -658,7 +657,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 SecondPlacementDetails d = (SecondPlacementDetails)runEventDetails;
                                 if (runEntity != d.Owner) return;
 
-                                SkillSlot firstEmptySlot = d.Slots.First(slot => slot.PlacedSkill.Entry.GetName() == "聚气术");
+                                SkillSlot firstEmptySlot = d.Owner.TraversalCurrentSlots()
+                                    .FirstObj(slot => slot.PlacedSkill.Entry.GetName() == "聚气术");
                                 if (firstEmptySlot == null) return;
 
                                 firstEmptySlot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(SkillEntry.FromName("观棋烂柯"), JingJie.HuaShen);

@@ -3284,6 +3284,73 @@ public class RoomCategory : Category<RoomEntry>
                     return DiscoverSkillPanelDescriptor.FromDefault(room.Ladder);
                 }),
 
+            new(id:                                 "排局1",
+                description:                        "排局1",
+                ladderBound:                        new Bound(8, 11),
+                withInPool:                         true,
+                create:                             (map, room) =>
+                {
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredJingJie: JingJie.ZhuJi);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"), preferredJingJie: JingJie.LianQi);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"), preferredJingJie: JingJie.LianQi);
+                    
+                    RunEntity template = EditorManager.Instance.EntityEditableList.Traversal().FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局1");
+                    BattlePanelDescriptor A = new(template);
+                    A.SetWinOperation(() => null);
+                    A.SetLoseOperation(() => null);
+
+                    return A;
+                }),
+
+            new(id:                                 "排局2",
+                description:                        "排局2",
+                ladderBound:                        new Bound(8, 11),
+                withInPool:                         true,
+                create:                             (map, room) =>
+                {
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"), preferredJingJie: JingJie.LianQi);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"), preferredJingJie: JingJie.LianQi);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"), preferredJingJie: JingJie.LianQi);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"), preferredJingJie: JingJie.LianQi);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredJingJie: JingJie.ZhuJi);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("止水"), preferredJingJie: JingJie.ZhuJi);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("回春"), preferredJingJie: JingJie.ZhuJi);
+                    
+                    RunEntity template = EditorManager.Instance.EntityEditableList.Traversal().FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局2");
+                    BattlePanelDescriptor A = new(template);
+                    A.SetWinOperation(() => null);
+                    A.SetLoseOperation(() => null);
+
+                    return A;
+                }),
+
+            new(id:                                 "排局3抽牌",
+                description:                        "排局3抽牌",
+                ladderBound:                        new Bound(8, 11),
+                withInPool:                         true,
+                create:                             (map, room) =>
+                {
+                    RunManager.Instance.Environment.DrawSkillsProcedure(new SkillEntryCollectionDescriptor(count: 30, jingJie: JingJie.LianQi, distinct: false));
+
+                    DialogPanelDescriptor A = new("排局3抽牌", "排局3抽牌");
+
+                    return A;
+                }),
+
+            new(id:                                 "排局3",
+                description:                        "排局3",
+                ladderBound:                        new Bound(8, 11),
+                withInPool:                         true,
+                create:                             (map, room) =>
+                {
+                    RunEntity template = EditorManager.Instance.EntityEditableList.Traversal().FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局3");
+                    BattlePanelDescriptor A = new(template);
+                    A.SetWinOperation(() => null);
+                    A.SetLoseOperation(() => null);
+
+                    return A;
+                }),
+
             #endregion
         });
     }

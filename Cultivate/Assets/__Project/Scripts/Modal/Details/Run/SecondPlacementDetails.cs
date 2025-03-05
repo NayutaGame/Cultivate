@@ -2,11 +2,9 @@
 public class SecondPlacementDetails : RunClosureDetails
 {
     public RunEntity Owner;
-    public SlotListModel Slots;
 
-    public SecondPlacementDetails(RunEntity owner, SlotListModel slots)
+    public SecondPlacementDetails(RunEntity owner)
     {
         Owner = owner;
-        Slots = slots;
     }
 }

@@ -216,6 +216,9 @@ public class ConsolePanel : Panel
 
     private void Cheat()
     {
-        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("作弊"));
+        // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("作弊"));
+        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("玄武吐息法"));
+        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吞天"));
+        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("童趣"));
     }
 }

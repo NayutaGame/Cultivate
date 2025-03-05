@@ -32,6 +32,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         // MapEntry = mapEntry ?? "发现";
         // MapEntry = mapEntry ?? "多段测试";
         // MapEntry = mapEntry ?? "快速结算";
+        // MapEntry = mapEntry ?? "排局3";
     }
 
     public void OnBeforeSerialize() { }

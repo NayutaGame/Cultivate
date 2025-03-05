@@ -60,6 +60,9 @@ public class EntityCategory : Category<EntityEntry>
             new("多段AwayC", "多段AwayC", modelName: "子非鱼"),
             new("多段HomeD", "多段HomeD", modelName: "子非鱼"),
             new("多段AwayD", "多段AwayD", modelName: "子非鱼"),
+            new("排局1", "排局1", modelName: "噬金甲"),
+            new("排局2", "排局2", modelName: "噬金甲"),
+            new("排局3", "排局3", modelName: "噬金甲"),
         });
     }
 
