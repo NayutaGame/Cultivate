@@ -20,11 +20,21 @@ public class DialogOption
         return this;
     }
 
-    public DialogOption(string text)
+    private DialogOption(string text, Func<DialogOption, PanelDescriptor> select)
     {
         Text = text;
         _costDetails = CostDetails.Default;
-        _select = DefaultSelect;
+        _select = select ?? DefaultSelect;
+    }
+
+    public static DialogOption FromTextAndSelect(string text, Func<DialogOption, PanelDescriptor> select)
+    {
+        return new(text, select);
+    }
+
+    public static DialogOption FromText(string text)
+    {
+        return new(text, null);
     }
 
     public bool CanSelect()
@@ -44,5 +54,5 @@ public class DialogOption
         return null;
     }
 
-    public static implicit operator DialogOption(string text) => new(text);
+    public static implicit operator DialogOption(string text) => new(text, null);
 }

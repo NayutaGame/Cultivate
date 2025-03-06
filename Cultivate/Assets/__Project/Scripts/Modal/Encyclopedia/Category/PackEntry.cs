@@ -12,13 +12,15 @@ public class PackEntry : Entry, IPack
     [NonSerialized] public string Description;
     [NonSerialized] public string Trivia;
     [NonSerialized] public SkillEntry[] Cards;
+    [NonSerialized] public SkillEntry[] StartCards;
     
     public PackEntry(string id,
         string name,
         WuXing? wuXing,
         string description = null,
         string trivia = null,
-        string[] cardNames = null
+        string[] cardNames = null,
+        string[] startCardNames = null
     ) : base(id)
     {
         Name = name;
@@ -26,6 +28,7 @@ public class PackEntry : Entry, IPack
         Description = description ?? "没有描述";
         Trivia = trivia ?? "没有趣闻";
         Cards = cardNames?.Map(SkillEntry.FromNameOrId).ToArray() ?? Array.Empty<SkillEntry>();
+        StartCards = startCardNames?.Map(SkillEntry.FromNameOrId).ToArray() ?? Array.Empty<SkillEntry>();
     }
 
     public string GetName() => Name;

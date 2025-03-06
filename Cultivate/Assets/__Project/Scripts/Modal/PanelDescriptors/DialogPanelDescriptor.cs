@@ -30,7 +30,7 @@ public class DialogPanelDescriptor : PanelDescriptor
 
         _titleText = titleText;
         _detailedText = detailedText;
-        _options = options.Length > 0 ? options : new DialogOption[] { "确认" };
+        _options = options.Length > 0 ? options : new DialogOption[] { DialogOption.FromText("确认") };
     }
 
     public override void DefaultEnter(PanelDescriptor panelDescriptor)

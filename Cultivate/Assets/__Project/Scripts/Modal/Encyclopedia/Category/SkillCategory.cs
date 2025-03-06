@@ -89,21 +89,6 @@ public class SkillCategory : Category<SkillEntry>
                     await d.Caster.GainBuffProcedure("灵气", 1 + d.Skill.Dj, induced: false);
                 }),
 
-            new(id:                         "0109",
-                name:                       "流云",
-                wuXing:                     WuXing.Jin,
-                jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"{3 + 3 * dj}攻".ApplyAttack() +
-                    $"\n下回合{3 + 3 * dj}攻",
-                cast:                       async d =>
-                {
-                    int value = 3 + 3 * d.Dj;
-                    await d.AttackProcedure(value);
-                    await d.GainBuffProcedure("延迟攻", value, induced: true);
-                }),
-
             new(id:                         "0118",
                 name:                       "敛息",
                 wuXing:                     WuXing.Jin,
@@ -130,9 +115,24 @@ public class SkillCategory : Category<SkillEntry>
                     await d.AttackProcedure(6 + 4 * d.Dj,
                         closures: new [] { closure });
                 }),
+
+            new(id:                         "0109",
+                name:                       "流云",
+                wuXing:                     WuXing.Jin,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{3 + 3 * dj}攻".ApplyAttack() +
+                    $"\n下回合{3 + 3 * dj}攻",
+                cast:                       async d =>
+                {
+                    int value = 3 + 3 * d.Dj;
+                    await d.AttackProcedure(value);
+                    await d.GainBuffProcedure("延迟攻", value, induced: true);
+                }),
             
             new(id:                         "0125",
-                name:                       "匕首雨",
+                name:                       "刃雨",
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -210,55 +210,20 @@ public class SkillCategory : Category<SkillEntry>
                     await d.CycleProcedure(WuXing.Jin, gain);
                 }),
 
-            new(id:                         "0122",
-                name:                       "闪击",
+            new(id:                         "0113",
+                name:                       "无妄",
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
+                cost:                       CostResult.ManaFromValue(1),
+                costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"1攻".ApplyAttack() +
-                    $"\n破甲将补齐至攻击前的数值",
+                    $"6攻x3".ApplyAttack() +
+                    $"\n暴击",
                 cast:                       async d =>
                 {
-                    StageClosure closure0 = new(StageClosureDict.WIL_FULL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            DamageDetails d = closureDetails as DamageDetails;
-                            if (owner != d.Initiator) return;
-                            
-                            StageSkill initiator = d.Initiator as StageSkill;
-
-                            int oppoFragileBeforeAttack = initiator.Owner.Opponent().Armor;
-                            if (oppoFragileBeforeAttack < 0)
-                                initiator.Owner.Memory.SetVariable("OppoFragileBeforeAttack", oppoFragileBeforeAttack);
-                        });
-                    
-                    StageClosure closure1 = new(StageClosureDict.DID_FULL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            DamageDetails d = closureDetails as DamageDetails;
-                            if (owner != d.Initiator) return;
-                            
-                            StageSkill initiator = d.Initiator as StageSkill;
-
-                            int oppoFragileBeforeAttack =
-                                initiator.Owner.Memory.TryGetVariable("OppoFragileBeforeAttack", 0);
-
-                            int gap = initiator.Owner.Opponent().Armor - oppoFragileBeforeAttack;
-                            if (oppoFragileBeforeAttack < 0 && gap > 0)
-                            {
-                                await initiator.Owner.Opponent().LoseArmorProcedure(gap, induced: true);
-                            }
-                            
-                            initiator.Owner.Memory.SetVariable("OppoFragileBeforeAttack", 0);
-                        });
-
-                    await d.AttackProcedure(1,
-                        closures: new [] { closure0, closure1 });
-                },
-                startStageCast:             async d =>
-                {
-                    await d.Caster.GiveBuffProcedure("跳回合", induced: false);
+                    await d.AttackProcedure(6, times: 3,
+                        closures: new[] { Crit });
                 }),
 
             new(id:                         "0102",
@@ -285,22 +250,6 @@ public class SkillCategory : Category<SkillEntry>
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(2,
                         closures: new [] { closure });
-                }),
-
-            new(id:                         "0123",
-                name:                       "醉意",
-                wuXing:                     WuXing.Jin,
-                jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
-                cost:                       CostResult.ManaFromValue(2),
-                costDescription:            CostDescription.ManaFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"{5 + 4 * dj}攻".ApplyAttack() +
-                    $"\n暴击",
-                cast:                       async d =>
-                {
-                    await d.AttackProcedure(Fib.ToValue(5 + d.Dj),
-                        closures: new [] { Crit });
                 }),
 
             new(id:                         "0124",
@@ -351,6 +300,22 @@ public class SkillCategory : Category<SkillEntry>
                     int value = Fib.ToValue(4 + d.Skill.Dj);
                     await d.Caster.RemoveArmorProcedure(value, false);
                 }),
+
+            new(id:                         "0123",
+                name:                       "醉意",
+                wuXing:                     WuXing.Jin,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                cost:                       CostResult.ManaFromValue(1),
+                costDescription:            CostDescription.ManaFromValue(1),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{5 + 4 * dj}攻".ApplyAttack() +
+                    $"\n碎防",
+                cast:                       async d =>
+                {
+                    await d.AttackProcedure(Fib.ToValue(5 + d.Dj),
+                        closures: new [] { Shatter });
+                }),
             
             new(id:                         "0127",
                 name:                       "摇曳",
@@ -380,22 +345,6 @@ public class SkillCategory : Category<SkillEntry>
                     d.Caster.SetActionPoint(2);
 
                     await d.GainBuffProcedure("滞气", 4 - d.Dj);
-                }),
-
-            new(id:                         "0113",
-                name:                       "无妄",
-                wuXing:                     WuXing.Jin,
-                jingJieBound:               JingJie.YuanYing2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
-                cost:                       CostResult.ManaFromValue(1),
-                costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"6攻x{2 + dj}".ApplyAttack() +
-                    $"\n暴击",
-                cast:                       async d =>
-                {
-                    await d.AttackProcedure(6, times: 2 + d.Dj,
-                        closures: new[] { Crit });
                 }),
 
             new(id:                         "0116",
@@ -445,6 +394,57 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     await d.Caster.GiveBuffProcedure("跳行动", induced: false);
                 }),
+
+            new(id:                         "0122",
+                name:                       "闪击",
+                wuXing:                     WuXing.Jin,
+                jingJieBound:               JingJie.HuaShenOnly,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"1攻".ApplyAttack() +
+                    $"\n破甲将补齐至攻击前的数值",
+                cast:                       async d =>
+                {
+                    StageClosure closure0 = new(StageClosureDict.WIL_FULL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.Initiator) return;
+                            
+                            StageSkill initiator = d.Initiator as StageSkill;
+
+                            int oppoFragileBeforeAttack = initiator.Owner.Opponent().Armor;
+                            if (oppoFragileBeforeAttack < 0)
+                                initiator.Owner.Memory.SetVariable("OppoFragileBeforeAttack", oppoFragileBeforeAttack);
+                        });
+                    
+                    StageClosure closure1 = new(StageClosureDict.DID_FULL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            DamageDetails d = closureDetails as DamageDetails;
+                            if (owner != d.Initiator) return;
+                            
+                            StageSkill initiator = d.Initiator as StageSkill;
+
+                            int oppoFragileBeforeAttack =
+                                initiator.Owner.Memory.TryGetVariable("OppoFragileBeforeAttack", 0);
+
+                            int gap = initiator.Owner.Opponent().Armor - oppoFragileBeforeAttack;
+                            if (oppoFragileBeforeAttack < 0 && gap > 0)
+                            {
+                                await initiator.Owner.Opponent().LoseArmorProcedure(gap, induced: true);
+                            }
+                            
+                            initiator.Owner.Memory.SetVariable("OppoFragileBeforeAttack", 0);
+                        });
+
+                    await d.AttackProcedure(1,
+                        closures: new [] { closure0, closure1 });
+                },
+                startStageCast:             async d =>
+                {
+                    await d.Caster.GiveBuffProcedure("跳回合", induced: false);
+                }),
             
             new(id:                         "0201",
                 name:                       "恋花",
@@ -488,7 +488,7 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻".ApplyAttack() +
-                    $"\n未击伤：生命+{4 + 4 * dj}".ApplyCond(castResult),
+                    $"\n未击伤：气血+{4 + 4 * dj}".ApplyCond(castResult),
                 cast:                       async d =>
                 {
                     StageClosure closure = new(StageClosureDict.UNDAMAGED, 0,
@@ -642,11 +642,11 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       async (env, entity, skill, recursive) => new ManaCostResult(3 + skill.Dj - entity.CountSuch(s => s.Entry.WuXing == WuXing.Shui)),
                 costDescription:            CostDescription.ManaFromDj(dj => 3 + dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{8 + 6 * dj}攻".ApplyAttack() +
+                    $"{6 + 6 * dj}攻".ApplyAttack() +
                     $"\n每携带1水：消耗-1",
                 cast:                       async d =>
                 {
-                    await d.AttackProcedure(8 + 6 * d.Dj);
+                    await d.AttackProcedure(6 + 6 * d.Dj);
                 }),
             
             new(id:                         "0222",
@@ -657,11 +657,11 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ManaFromDj(dj => 3 + dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 3 + dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{10 + 4 * dj}攻".ApplyAttack() +
+                    $"{8 + 4 * dj}攻".ApplyAttack() +
                     $"\n灵气+{3 + 1 * dj}".ApplyMana(),
                 cast:                       async d =>
                 {
-                    await d.AttackProcedure(10 + 4 * d.Dj);
+                    await d.AttackProcedure(8 + 4 * d.Dj);
                     await d.GainBuffProcedure("灵气", 3 + d.Dj, induced: true);
                 }),
             
@@ -868,41 +868,6 @@ public class SkillCategory : Category<SkillEntry>
                         await d.GainBuffProcedure("灵气", manaGain);
                 }),
             
-            new(id:                         "0308",
-                name:                       "若竹",
-                wuXing:                     WuXing.Mu,
-                jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
-                cost:                       CostResult.ManaFromValue(1),
-                costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"{6 + 4 * dj}攻".ApplyAttack() +
-                    $"\n穿透",
-                cast:                       async d =>
-                {
-                    await d.AttackProcedure(6 + 4 * d.Dj,
-                        closures: new [] { Penetrate });
-                }),
-
-            new(id:                         "0307",
-                name:                       "回春",
-                wuXing:                     WuXing.Mu,
-                jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Defend | SkillType.Health,
-                cost:                       CostResult.ManaFromValue(1),
-                costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"双方护甲+{6 + 4 * dj}".ApplyDefend() +
-                    $"\n双方气血+{6 + 4 * dj}".ApplyHeal(),
-                cast:                       async d =>
-                {
-                    int value = 6 + 4 * d.Dj;
-                    await d.GainArmorProcedure(value, induced: false);
-                    await d.GiveArmorProcedure(value, induced: true);
-                    await d.HealProcedure(value, induced: false);
-                    await d.HealOppoProcedure(value, induced: true);
-                }),
-            
             new(id:                         "0301",
                 name:                       "小松",
                 wuXing:                     WuXing.Mu,
@@ -927,18 +892,60 @@ public class SkillCategory : Category<SkillEntry>
                     await d.AttackProcedure(Fib.ToValue(4 + d.Dj),
                         closures: new [] { closure });
                 }),
-            
-            new(id:                         "0321",
-                name:                       "清泉",
+
+            new(id:                         "0309",
+                name:                       "入木三分",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Health,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"生命+{2 + 4 * dj}".ApplyHeal() +
-                    $"\n成长：多{Fib.ToValue(2 + dj)}",
+                    $"{4 + 4 * dj}攻".ApplyAttack() +
+                    $"\n对方每有2护甲，多1",
                 cast:                       async d =>
                 {
-                    await d.HealProcedure(2 + 4 * d.Dj + d.Cc * Fib.ToValue(2 + d.Dj), induced: false);
+                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
+                        async (owner, closureDetails) =>
+                        {
+                            AttackDetails d = closureDetails as AttackDetails;
+                            if (owner != d.Initiator) return;
+                            StageSkill initiator = d.Initiator as StageSkill;
+                            d.Value += d.Src.Opponent().Armor / 2;
+                        });
+
+                    await d.AttackProcedure(4 + 4 * d.Dj,
+                        closures: new [] { closure });
+                }),
+            
+            new(id:                         "0304",
+                name:                       "明神",
+                wuXing:                     WuXing.Mu,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Mana | SkillType.ZiZhi,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"灵气+{1 + dj}".ApplyMana() +
+                    $"\n成长：多{(j >= JingJie.HuaShen ? 2 : 1)}",
+                cast:                       async d =>
+                {
+                    int mul = d.J >= JingJie.HuaShen ? 2 : 1;
+                    await d.GainBuffProcedure("灵气", 1 + d.Dj + d.Cc * mul);
+                }),
+
+            new(id:                         "0307",
+                name:                       "回春",
+                wuXing:                     WuXing.Mu,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Defend | SkillType.Health,
+                cost:                       CostResult.ManaFromValue(1),
+                costDescription:            CostDescription.ManaFromValue(1),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"双方护甲+{6 + 4 * dj}".ApplyDefend() +
+                    $"\n双方气血+{6 + 4 * dj}".ApplyHeal(),
+                cast:                       async d =>
+                {
+                    int value = 6 + 4 * d.Dj;
+                    await d.GainArmorProcedure(value, induced: false);
+                    await d.GiveArmorProcedure(value, induced: true);
+                    await d.HealProcedure(value, induced: false);
+                    await d.HealOppoProcedure(value, induced: true);
                 }),
 
             new(id:                         "0315",
@@ -965,13 +972,14 @@ public class SkillCategory : Category<SkillEntry>
                     await d.GainBuffProcedure("钟声", 1 + d.Dj);
                 }),
 
-            new(id:                         "0309",
-                name:                       "入木三分",
+            new(id:                         "0324",
+                name:                       "一心一剑",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"1攻".ApplyAttack() +
-                    $"\n对方每有{3 - dj}护甲，多1",
+                    $"{4 + 4 * dj}攻".ApplyAttack() +
+                    $"\n力量具有{5 + dj}倍效果",
                 cast:                       async d =>
                 {
                     StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
@@ -980,10 +988,11 @@ public class SkillCategory : Category<SkillEntry>
                             AttackDetails d = closureDetails as AttackDetails;
                             if (owner != d.Initiator) return;
                             StageSkill initiator = d.Initiator as StageSkill;
-                            d.Value += d.Src.Opponent().Armor / (3 - initiator.Dj);
+                            int power = d.Src.GetStackOfBuff("力量") + d.Src.GetStackOfBuff("剑意");
+                            d.Value += (5 + initiator.Dj - 1) * power;
                         });
 
-                    await d.AttackProcedure(1,
+                    await d.AttackProcedure(4 + 4 * d.Dj,
                         closures: new [] { closure });
                 }),
             
@@ -1054,37 +1063,23 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{2 + 4 * dj}攻".ApplyAttack() +
-                    $"\n击伤：闪避+{(j >= JingJie.HuaShen ? 2 : 1)}".ApplyCond(castResult),
+                    ($"成长{2 + dj}次后：" + ($"{(4 + 2 * dj) * (4 + 2 * dj)}攻".ApplyAttack())).ApplyCond(castResult) +
+                    $"\n闪避+1".ApplyDefend(),
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            DamageDetails d = closureDetails as DamageDetails;
-                            if (owner != d.Initiator) return;
-                            StageSkill initiator = d.Initiator as StageSkill;
-                            await d.Src.GainBuffProcedure("闪避", stack: initiator.GetJingJie() == JingJie.HuaShen ? 2 : 1, induced: true);
-                            d.CastResult.AppendCond(true);
-                        });
+                    bool cond = d.Cc >= 2 + d.Dj;
 
-                    d.CastResult.AppendCond(false);
-                    await d.AttackProcedure(2 + 4 * d.Dj,
-                        closures: new [] { closure });
-                }),
-            
-            new(id:                         "0304",
-                name:                       "明神",
-                wuXing:                     WuXing.Mu,
-                jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Mana | SkillType.ZiZhi,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"灵气+{1 + dj}".ApplyMana() +
-                    $"\n成长：多{(j >= JingJie.HuaShen ? 2 : 1)}",
-                cast:                       async d =>
-                {
-                    int mul = d.J >= JingJie.HuaShen ? 2 : 1;
-                    await d.GainBuffProcedure("灵气", 1 + d.Dj + d.Cc * mul);
+                    if (cond)
+                    {
+                        await d.AttackProcedure((4 + 2 * d.Dj) * (4 + 2 * d.Dj));
+                        await d.GainBuffProcedure("闪避", induced: true);
+                    }
+                    else
+                    {
+                        await d.GainBuffProcedure("闪避", induced: false);
+                    }
+                    
+                    d.CastResult.AppendCond(cond);
                 }),
 
             new(id:                         "0306",
@@ -1102,31 +1097,33 @@ public class SkillCategory : Category<SkillEntry>
                     await d.AttackProcedure(10);
                     await d.GainBuffProcedure("闪避", 2);
                 }),
-
-            new(id:                         "0324",
-                name:                       "一心一剑",
+            
+            new(id:                         "0321",
+                name:                       "生机",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack | SkillType.Defend | SkillType.ZiZhi,
-                cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(4 - skill.Dj - skill.StageCastedCount),
-                costDescription:            CostDescription.ChannelFromDj(dj => 4 - dj),
+                skillTypeComposite:         SkillType.Health,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"4攻".ApplyAttack() +
-                    $"\n力量具有{2 + dj}倍效果",
+                    $"气血+{2 + 4 * dj}".ApplyHeal() +
+                    $"\n成长：多{Fib.ToValue(2 + dj)}",
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            AttackDetails d = closureDetails as AttackDetails;
-                            if (owner != d.Initiator) return;
-                            StageSkill initiator = d.Initiator as StageSkill;
-                            int power = d.Src.GetStackOfBuff("力量") + d.Src.GetStackOfBuff("剑意");
-                            d.Value += (2 + initiator.Dj - 1) * power;
-                        });
-
-                    await d.AttackProcedure(4,
-                        closures: new [] { closure });
+                    await d.HealProcedure(2 + 4 * d.Dj + d.Cc * Fib.ToValue(2 + d.Dj), induced: false);
+                }),
+            
+            new(id:                         "0308",
+                name:                       "清泉",
+                wuXing:                     WuXing.Mu,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(await skill.IsFirstTime() ? 3 : 0),
+                costDescription:            CostDescription.ChannelFromValue(3),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"灵气+{4 + 2 * dj}".ApplyMana() +
+                    $"\n非初次：无需吟唱",
+                cast:                       async d =>
+                {
+                    await d.GainBuffProcedure("灵气", 4 + 2 * d.Dj);
                 }),
 
             new(id:                         "0310",
@@ -1150,8 +1147,8 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "回响",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                cost:                       CostResult.ChannelFromJ(j => (j <= JingJie.JinDan ? 1 : 0)),
-                costDescription:            CostDescription.ChannelFromJ(j => (j <= JingJie.JinDan ? 1 : 0)),
+                cost:                       CostResult.ManaFromJ(j => (j <= JingJie.JinDan ? 2 : 0)),
+                costDescription:            CostDescription.ManaFromJ(j => (j <= JingJie.JinDan ? 2 : 0)),
                 castDescription:            (j, dj, costResult, castResult) =>
                     (j < JingJie.HuaShen ? $"使用第一张牌\n已升华的牌无效" : $"使用前两张牌\n已升华的牌无效"),
                 cast:                       async d =>
@@ -1172,13 +1169,15 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"力量/" + "闪避".ApplyDefend() + $"+{2 + dj}" +
+                    $"{2 + dj}攻x{2 + dj}".ApplyAttack() +
+                    $"\n力量/" + "闪避".ApplyDefend() + $"+{2 + dj}" +
                     $"\n遭受不堪一击".ApplyDebuff(),
                 cast:                       async d =>
                 {
                     int value = 2 + d.Dj;
-                    await d.GainBuffProcedure("力量", value, induced: false);
+                    await d.GainBuffProcedure("力量", value, induced: true);
                     await d.GainBuffProcedure("闪避", value, induced: true);
+                    await d.AttackProcedure(value, times: value);
                     await d.GainBuffProcedure("不堪一击", induced: true);
                 }),
     
@@ -1385,7 +1384,7 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.HealthFromValue(4),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{8 + 4 * dj}攻".ApplyAttack() +
-                    "\n残血：翻倍".ApplyCond(castResult),
+                    $"\n残血：多{4 + 2 * dj}".ApplyCond(castResult),
                 cast:                       async d =>
                 {
                     StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
@@ -1394,13 +1393,29 @@ public class SkillCategory : Category<SkillEntry>
                             DamageDetails d = closureDetails as DamageDetails;
                             StageSkill s = d.Initiator as StageSkill;
                             if (owner != d.Initiator) return;
-                            d.Value += 8 + 4 * s.Dj;
+                            d.Value += 4 + 2 * s.Dj;
                             d.CastResult.AppendCond(true);
                         });
 
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(8 + 4 * d.Dj,
                         closures: new [] { closure });
+                }),
+            
+            new(id:                         "0424",
+                name:                       "怒瞳",
+                wuXing:                     WuXing.Huo,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                skillTypeComposite:         SkillType.Attack,
+                cost:                       async (env, entity, skill, recursive) =>
+                    new ChannelCostResult(3 + skill.Dj - entity.Memory.TryGetVariable("burnTimes", 0)),
+                costDescription:            CostDescription.ChannelFromDj(dj => 3 + dj),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{10 + 10 * dj}攻".ApplyAttack() +
+                    $"\n每燃命1次，吟唱-1",
+                cast:                       async d =>
+                {
+                    await d.AttackProcedure(10 + 10 * d.Dj);
                 }),
 
             new(id:                         "0422",
@@ -1417,20 +1432,6 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     await d.GainArmorProcedure(12 + 4 * d.Dj, induced: false);
                     await d.GainBuffProcedure("锻体", 5);
-                }),
-
-            new(id:                         "0406",
-                name:                       "不动明王诀",
-                wuXing:                     WuXing.Huo,
-                jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    "成为残血" +
-                    $"\n{10 + 10 * dj}攻",
-                cast:                       async d =>
-                {
-                    await d.BecomeLowHealth();
-                    await d.AttackProcedure(10 + 10 * d.Dj);
                 }),
             
             new(id:                         "0408",
@@ -1453,33 +1454,19 @@ public class SkillCategory : Category<SkillEntry>
                     bool cond = d.Caster.IsLowHealth;
                     d.CastResult.AppendCond(cond);
                 }),
-            
-            new(id:                         "0424",
-                name:                       "怒瞳",
+
+            new(id:                         "0406",
+                name:                       "不动明王诀",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                cost:                       async (env, entity, skill, recursive) =>
-                    new ChannelCostResult(4 - entity.Memory.TryGetVariable("BurnTimes", 0)),
-                costDescription:            CostDescription.ChannelFromDj(dj => 4 - dj),
-                closures:                   new StageClosure[]
-                {
-                    new(StageClosureDict.DID_HEALTH_COST, -1, async (owner, closureDetails) =>
-                    {
-                        StageSkill s = owner as StageSkill;
-                        HealthCostResult d = (HealthCostResult)closureDetails;
-
-                        if (s.Owner != d.Entity) return;
-
-                        string key = "BurnTimes";
-                        s.Owner.Memory.PerformOperation(key, 0, record => record += 1);
-                    }),
-                },
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"10攻".ApplyAttack(),
+                    $"{30 + 10 * dj}攻".ApplyAttack() +
+                    "\n成为残血",
                 cast:                       async d =>
                 {
-                    await d.AttackProcedure(10);
+                    await d.AttackProcedure(30 + 10 * d.Dj);
+                    await d.BecomeLowHealth();
                 }),
 
             new(id:                         "0407",
@@ -1789,7 +1776,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(entity.IsLowHealth ? 0 : 1),
                 costDescription:            CostDescription.ChannelFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"护甲+{Fib.ToValue(6 + dj)}" +
+                    $"护甲+{Fib.ToValue(6 + dj)}".ApplyDefend() +
                     $"\n残血：免除吟唱".ApplyCond(castResult),
                 cast:                       async d =>
                 {
@@ -1805,7 +1792,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{4 + 4 * dj}攻" +
+                    $"{4 + 4 * dj}攻".ApplyAttack() +
                     $"\n满血：翻倍".ApplyCond(castResult) +
                     (j >= JingJie.HuaShen ? $"\n天人形态：施加禁止治疗" : ""),
                 cast:                       async d =>
@@ -1842,7 +1829,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.HealthFromDj(dj => 4 + 2 * dj),
                 costDescription:            CostDescription.HealthFromDj(dj => 4 + 2 * dj),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{8 + 4 * dj}攻" +
+                    $"{8 + 4 * dj}攻".ApplyAttack() +
                     $"\n击伤：锻体+{Fib.ToValue(4 + dj)}".ApplyCond(castResult),
                 cast:                       async d =>
                 {
@@ -1866,7 +1853,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "塑魂",
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                skillTypeComposite:         SkillType.Health,
+                skillTypeComposite:         SkillType.Health | SkillType.Mana,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"锻体+{Fib.ToValue(4 + dj)}" +
                     $"\n持续：灵气不足时，可消耗3锻体代替1灵气",
@@ -1905,6 +1892,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "SKILL_DTSZ_008",
                 name:                       "养生",
                 wuXing:                     WuXing.Tu,
+                skillTypeComposite:         SkillType.Health,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"回复{10 + 10 * dj}气血" +
@@ -1942,7 +1930,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Deplete,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"对手失去{10 + 4 * dj}生命" +
+                    $"对手失去{10 + 4 * dj}气血" +
                     $"\n给予10护甲" +
                     $"\n一次性",
                 cast:                       async d =>
@@ -2046,8 +2034,8 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Deplete,
                 castDescription:            (j, dj, costResult, castResult) =>
                     j <= JingJie.YuanYing ? 
-                        "开局：双方失去1/4生命\n一次性" : 
-                        "开局：双方失去1/3生命\n一次性",
+                        "开局：双方失去1/4气血\n一次性" : 
+                        "开局：双方失去1/3气血\n一次性",
                 startStageCast:             async d =>
                 {
                     float ratio = d.Skill.GetJingJie() <= JingJie.YuanYing ? 0.25f : 0.333f;
@@ -2148,14 +2136,14 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "SKILL_HZ_004",
                 name:                       "蜕变",
                 wuXing:                     WuXing.Tu,
-                jingJieBound:               JingJie.ZhuJi2HuaShen,
+                jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"坚毅+2" +
+                    $"坚毅+{1 + dj}" +
                     $"\n失去所有护甲",
                 cast:                       async d =>
                 {
-                    await d.CycleProcedure(WuXing.Tu, gain: 2);
+                    await d.CycleProcedure(WuXing.Tu, gain: 1 + d.Dj);
                     int value = d.Caster.Armor;
                     if (value > 0)
                         await d.LoseArmorProcedure(value, induced: false);
@@ -2173,6 +2161,28 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     int mul = d.J < JingJie.HuaShen ? 1 : 2;
                     await d.CycleProcedure(WuXing.Huo, gain: 1 + d.Dj + (d.Cc * mul));
+                }),
+
+            new(id:                         "0602",
+                name:                       "百草集",
+                wuXing:                     null,
+                jingJieBound:               JingJie.JinDan2HuaShen,
+                cost:                       CostResult.ChannelFromValue(1),
+                costDescription:            CostDescription.ChannelFromValue(1),
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"每个存在的五行Buff，层数+{1 + dj}" +
+                    $"\n不发生流转",
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    BuffEntry[] buffEntries = new BuffEntry[] { "锋锐", "格挡", "力量", "灼烧", "坚毅" };
+
+                    foreach (BuffEntry buffEntry in buffEntries)
+                    {
+                        Buff b = d.Caster.FindBuff(buffEntry);
+                        if (b != null)
+                            await d.GainBuffProcedure(b.GetEntry(), 1 + d.Dj);
+                    }
                 }),
             
             new(id:                         "0119",
@@ -2200,8 +2210,7 @@ public class SkillCategory : Category<SkillEntry>
                         "流转时：造成伤害\n流转最高五行Buff\n并且多2层",
                 cast:                       async d =>
                 {
-                    // Buff实现
-                    await d.GainBuffProcedure("常仪", 1);
+                    await d.GainBuffProcedure("常仪");
 
                     BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "力量", "灼烧", "坚毅" };
                     WuXing[] wuXings = new[] { WuXing.Jin, WuXing.Shui, WuXing.Mu, WuXing.Huo, WuXing.Tu };
@@ -2232,7 +2241,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Health | SkillType.Defend,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    "基于最高五行Buff的层数\n获得生命和护甲",
+                    "基于最高五行Buff的层数\n获得气血和护甲",
                 cast:                       async d =>
                 {
                     BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "力量", "灼烧", "坚毅" };
@@ -2268,8 +2277,8 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Health,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"生命+4".ApplyHeal() +
-                    $"\n开局：生命及上限+{8 << (1 + dj)}",
+                    $"气血+4".ApplyHeal() +
+                    $"\n开局：气血及上限+{8 << (1 + dj)}",
                 startStageCast:             async d =>
                 {
                     int value = 8 << (1 + d.Skill.Dj);
@@ -2362,7 +2371,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Health,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"生命+40".ApplyHeal() +
+                    $"气血+40".ApplyHeal() +
                     $"\n至多受到40伤害" +
                     $"\n无法获得护甲",
                 cast:                       async d =>
@@ -2807,7 +2816,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    "对手生命变成0",
+                    "对手气血变成0",
                 withinPool:                 false,
                 cast:                       async d =>
                 {
@@ -2928,28 +2937,6 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async d =>
                 {
                     await d.HealProcedure(24 + d.Dj * 6, induced: false);
-                }),
-
-            new(id:                         "0602",
-                name:                       "百草集",
-                wuXing:                     null,
-                jingJieBound:               JingJie.YuanYing2HuaShen,
-                cost:                       CostResult.ChannelFromValue(3),
-                costDescription:            CostDescription.ChannelFromValue(3),
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"如果存在锋锐，格挡，力量，闪避，灼烧，层数+{1 + dj}",
-                withinPool:                 false,
-                cast:                       async d =>
-                {
-                    BuffEntry[] buffEntries = new BuffEntry[] { "锋锐", "格挡", "力量", "闪避", "灼烧", };
-
-                    foreach (BuffEntry buffEntry in buffEntries)
-                    {
-                        Buff b = d.Caster.FindBuff(buffEntry);
-                        if (b != null)
-                            await d.GainBuffProcedure(b.GetEntry(), 1 + d.Dj);
-                    }
-
                 }),
 
             new(id:                         "0605",

@@ -46,7 +46,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("5", order: 5, description: "敌人获得1格挡", inheritedDifficultyNames: new string[] { "4", "3", "2", "1" },
+            new("5", order: 5, description: "敌人也可以使用阵法", inheritedDifficultyNames: new string[] { "4", "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>

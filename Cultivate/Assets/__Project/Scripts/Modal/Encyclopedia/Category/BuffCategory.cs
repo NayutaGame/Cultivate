@@ -1563,7 +1563,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("恶意", "下1次施加破甲时将会流失生命", BuffStackRule.Add, false, false,
+            new("恶意", "下1次施加破甲时将会流失气血", BuffStackRule.Add, false, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_LOSE_ARMOR, 0, async (owner, closureDetails) =>
@@ -1772,6 +1772,24 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
+            new(id:                         "常仪",
+                description:                "流转时：造成伤害",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.DID_CYCLE, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        CycleDetails d = (CycleDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+
+                        int stack = d.Owner.GetStackOfBuff(d.WuXing._elementaryBuff);
+                        await d.Owner.IndirectProcedure(stack, induced: true);
+                    }),
+                }),
+            
             new(id:                         "塑魂",
                 description:                "灵气不足时，可消耗[层数]锻体代替1灵气",
                 buffStackRule:              BuffStackRule.Min,
@@ -1784,7 +1802,7 @@ public class BuffCategory : Category<BuffEntry>
             new("凛冽", "锋锐具有吸血",                                 BuffStackRule.One, true, false),
             new("摇曳", "锋锐变为施加破甲",                             BuffStackRule.One, true, false),
             new("瑞雪", "格挡变为治疗",                                 BuffStackRule.One, true, false),
-            new("仙人抚顶", "使用12次后：将对方生命变为0",              BuffStackRule.Add, true, false),
+            new("仙人抚顶", "使用12次后：将对方气血变为0",              BuffStackRule.Add, true, false),
             new("飞龙在天", $"跳过下[层数]张牌，跳过时成长计数+1",      BuffStackRule.Add, true, false),
             new("齐物论",     "奇偶同时激活两个效果",                   BuffStackRule.One, true, false),
             new("鹤回翔",     "反转出牌顺序",                           BuffStackRule.One, true, false),

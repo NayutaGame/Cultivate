@@ -585,11 +585,13 @@ public class StageEntity : Addressable, StageClosureListener
     public void RegisterEntityClosures()
     {
         _env.ClosureDict.Register(this, RecordActualHeal);
+        _env.ClosureDict.Register(this, RecordBurnTimes);
     }
 
     public void UnregisterEntityClosures()
     {
         _env.ClosureDict.Unregister(this, RecordActualHeal);
+        _env.ClosureDict.Unregister(this, RecordBurnTimes);
     }
     
     private static StageClosure RecordActualHeal = new(StageClosureDict.DID_HEAL, 1, async (listener, closureDetails) =>
@@ -601,4 +603,17 @@ public class StageEntity : Addressable, StageClosureListener
         string key = "healRecord";
         entity.Memory.PerformOperation(key, 0, record => record + d.Value);
     });
+    
+    private static StageClosure RecordBurnTimes = new(StageClosureDict.DID_HEALTH_COST, -1, async (listener, closureDetails) =>
+    {
+        StageEntity entity = listener as StageEntity;
+        HealthCostResult d = (HealthCostResult)closureDetails;
+
+        if (entity != d.Entity) return;
+
+        string key = "burnTimes";
+        entity.Memory.PerformOperation(key, 0, record => record + 1);
+    });
+    
+    
 }

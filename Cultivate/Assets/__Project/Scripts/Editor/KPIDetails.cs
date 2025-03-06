@@ -36,7 +36,7 @@ public class KPIDetails
     );
 
     public static readonly KPIDetails HealthCost = new(
-        name: "生命消耗",
+        name: "气血消耗",
         predicate: s => s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Health,
         targetTable: new Dictionary<WuXing, (int Min, int Max)>
         {

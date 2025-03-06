@@ -33,7 +33,7 @@ public class ConsoleEditorWindow : EditorWindow
         {
             new FilterTab("法力消耗", s => 
                 s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Mana),
-            new FilterTab("生命消耗", s => 
+            new FilterTab("气血消耗", s => 
                 s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Health),
             new FilterTab("引导消耗", s => 
                 s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Channel),

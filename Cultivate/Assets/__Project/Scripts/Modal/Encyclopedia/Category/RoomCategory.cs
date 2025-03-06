@@ -94,117 +94,134 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    // 0 -> 凌云峰，5张金牌
-                    // 1 -> 逍遥海，5张水牌
-                    // 2 -> 桃花宫，5张木牌
-                    // 3 -> 长明殿，5张火牌
-                    // 4 -> 环岳岭，5张土牌
-                    // 5 -> 易宝斋，6张随机牌，5金钱
-                    // 6 -> 剑池，6张攻击牌
-                    // 7 -> 风雨楼，6张防御牌
-                    // 8 -> 百草堂，6张随机牌，5气血上限
-                    // 9 -> 星宫，3张灵气牌，2张随机牌
-                    // 10 -> 天机阁，2张筑基牌，3张随机牌
-                    // 11 -> 散修，8张随机牌
-                    string[] titles = new string[12]
-                    {
-                        "凌云峰，5张金牌",
-                        "逍遥海，5张水牌",
-                        "桃花宫，5张木牌",
-                        "长明殿，5张火牌",
-                        "环岳岭，5张土牌",
-                        "易宝斋，6张随机牌，5金钱",
-                        "剑池，6张攻击牌",
-                        "风雨楼，6张防御牌",
-                        "百草堂，6张随机牌，5气血上限",
-                        "星宫，3张灵气牌，2张随机牌",
-                        "天机阁，2张筑基牌，3张随机牌",
-                        "散修，8张随机牌",
-                    };
-                    
                     RunEnvironment env = RunManager.Instance.Environment;
 
-                    Func<DialogOption, PanelDescriptor>[] selects = new Func<DialogOption, PanelDescriptor>[12]
+                    Dictionary<PackEntry, DialogOption> optionDict = new Dictionary<PackEntry, DialogOption>()
                     {
-                        option =>
-                        { // 0 -> 凌云峰，5张金牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Jin, count: 5));
-                            return null;
+                        {
+                            PackEntry.FromName("无常路引"), 
+                            DialogOption.FromTextAndSelect("无常路引，金系，擅长暗器，攻击人的弱点",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("无常路引");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 1 -> 逍遥海，5张水牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Shui, count: 5));
-                            return null;
+                        {
+                            PackEntry.FromName("大音希声"),
+                            DialogOption.FromTextAndSelect("大音希声，金系，擅长蓄势而发，一击致命",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("大音希声");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 2 -> 桃花宫，5张木牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Mu, count: 5));
-                            return null;
+                        {
+                            PackEntry.FromName("天河引气录"),
+                            DialogOption.FromTextAndSelect("天河引气录，水系，擅长驾驭灵气，驱使强大的法术",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("天河引气录");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 3 -> 长明殿，5张火牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Huo, count: 5));
-                            return null;
+                        {
+                            PackEntry.FromName("御虚诀"),
+                            DialogOption.FromTextAndSelect("御虚诀，水系，虚虚实实，让敌人不清楚自己是否被打中了",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("御虚诀");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 4 -> 环岳岭，5张土牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, wuXing: WuXing.Tu, count: 5));
-                            return null;
+                        {
+                            PackEntry.FromName("大椿功"),
+                            DialogOption.FromTextAndSelect("大椿功，木系，擅长会成长的法术，法术每次使用后会逐渐变强",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("大椿功");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 5 -> 易宝斋，6张随机牌，5金钱
-                            env.SetDGoldProcedure(5);
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 6));
-                            return null;
+                        {
+                            PackEntry.FromName("游龙遁"),
+                            DialogOption.FromTextAndSelect("游龙遁，木系，可以闪避敌人的攻击",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("游龙遁");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 6 -> 剑池，6张攻击牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack), count: 6));
-                            return null;
+                        {
+                            PackEntry.FromName("归鸿十二步"),
+                            DialogOption.FromTextAndSelect("归鸿十二步，火系，攻守兼备的剑舞，攻击如雨点般前赴后继",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("归鸿十二步");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 7 -> 风雨楼，6张防御牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend), count: 6));
-                            return null;
+                        {
+                            PackEntry.FromName("大焚天秘乘"),
+                            DialogOption.FromTextAndSelect("大焚天秘乘，火系，消耗生命以施展技能，和敌人以命换命",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("大焚天秘乘");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 8 -> 百草堂，6张随机牌，5气血上限
-                            env.SetDHealthProcedure(5);
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 6));
-                            return null;
+                        {
+                            PackEntry.FromName("须弥妙法"),
+                            DialogOption.FromTextAndSelect("须弥妙法，土系，防御力强大，待准备好之后，一击制敌",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("须弥妙法");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 9 -> 星宫，3张灵气牌，2张随机牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, pred: s => s.GetSkillTypeComposite().Contains(SkillType.Mana), count: 3));
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 2));
-                            return null;
-                        },
-                        option =>
-                        { // 10 -> 天机阁，2张筑基牌，3张随机牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.ZhuJi, count: 2));
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 3));
-                            return null;
-                        },
-                        option =>
-                        { // 11 -> 散修，8张随机牌
-                            env.DrawSkillsProcedure(new(distinct: false, jingJie: JingJie.LianQi, count: 8));
-                            return null;
+                        {
+                            PackEntry.FromName("锻体四则"),
+                            DialogOption.FromTextAndSelect("锻体四则，土系，平时勤于修炼，气血高于同期修士，战斗中可化为天人之体以制敌",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("锻体四则");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
                     };
 
-                    int[] combination = Numeric.GetCombination(12, 3);
+                    int[] combination = Numeric.GetCombination(5, 3);
 
                     DialogOption[] dialogOptions = new DialogOption[combination.Length];
                     dialogOptions.Length.Do(i =>
                     {
                         int index = combination[i];
-                        dialogOptions[i] = new DialogOption(titles[index]);
-                        dialogOptions[i].SetSelect(selects[index]);
+                        PackEntry mappedPackEntry = env.GetRunConfig().PacksToStartWith[index];
+                        dialogOptions[i] = optionDict[mappedPackEntry];
                     });
                     
                     DialogPanelDescriptor A = new(
                         titleText: "出发",
-                        detailedText: "请问想以哪一个门派出发？",
+                        detailedText: "出发之前，回想起了哪一本秘籍曾经修炼过？",
                         options: dialogOptions);
 
                     return A;
@@ -216,62 +233,122 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    // 0 -> 凌云峰，金刃，寻猎，起势
-                    // 1 -> 逍遥海，吐纳，恋花，流霰
-                    // 2 -> 桃花宫，明神，小松，潜龙
-                    // 3 -> 长明殿，正念，轰天，云袖
-                    // 4 -> 环岳岭，寸劲，八极拳，点穴
-                    string[] titles = new string[5]
-                    {
-                        "凌云峰，金系，擅长暗器，攻击人的弱点",
-                        "逍遥海，水系，擅长驾驭灵气，驱使强大的法术",
-                        "桃花宫，木系，擅长会成长的法术，法术每次使用后会逐渐变强",
-                        "长明殿，火系，擅长以命搏命，招式刚劲",
-                        "环岳岭，土系，威力强劲，往往一击就能造成致命的伤害",
-                    };
-                    
                     RunEnvironment env = RunManager.Instance.Environment;
                     
                     env.ClearDeck();
                     env.Home.SetSlotCount(3);
                     env.Home.SetHealth(40);
 
-                    Func<DialogOption, PanelDescriptor>[] selects = new Func<DialogOption, PanelDescriptor>[5]
+                    Dictionary<PackEntry, DialogOption> optionDict = new Dictionary<PackEntry, DialogOption>()
                     {
-                        option =>
-                        { // 0 -> 凌云峰，5张金牌
-                            env.AddSkillProcedure(SkillEntry.FromName("金刃"));
-                            env.AddSkillProcedure(SkillEntry.FromName("寻猎"));
-                            env.AddSkillProcedure(SkillEntry.FromName("起势"));
-                            return null;
+                        {
+                            PackEntry.FromName("无常路引"), 
+                            DialogOption.FromTextAndSelect("无常路引，金系，擅长暗器，攻击人的弱点",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("无常路引");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 1 -> 逍遥海，5张水牌
-                            env.AddSkillProcedure(SkillEntry.FromName("吐纳"));
-                            env.AddSkillProcedure(SkillEntry.FromName("恋花"));
-                            env.AddSkillProcedure(SkillEntry.FromName("空幻"));
-                            return null;
+                        {
+                            PackEntry.FromName("大音希声"),
+                            DialogOption.FromTextAndSelect("大音希声，金系，擅长蓄势而发，一击致命",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("大音希声");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 2 -> 桃花宫，5张木牌
-                            env.AddSkillProcedure(SkillEntry.FromName("明神"));
-                            env.AddSkillProcedure(SkillEntry.FromName("小松"));
-                            env.AddSkillProcedure(SkillEntry.FromName("潜龙在渊"));
-                            return null;
+                        {
+                            PackEntry.FromName("天河引气录"),
+                            DialogOption.FromTextAndSelect("天河引气录，水系，擅长驾驭灵气，驱使强大的法术",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("天河引气录");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 3 -> 长明殿，5张火牌
-                            env.AddSkillProcedure(SkillEntry.FromName("拂晓"));
-                            env.AddSkillProcedure(SkillEntry.FromName("轰天"));
-                            env.AddSkillProcedure(SkillEntry.FromName("云袖"));
-                            return null;
+                        {
+                            PackEntry.FromName("御虚诀"),
+                            DialogOption.FromTextAndSelect("御虚诀，水系，虚虚实实，让敌人不清楚自己是否被打中了",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("御虚诀");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
-                        option =>
-                        { // 4 -> 环岳岭，5张土牌
-                            env.AddSkillProcedure(SkillEntry.FromName("寸劲"));
-                            env.AddSkillProcedure(SkillEntry.FromName("八极拳"));
-                            env.AddSkillProcedure(SkillEntry.FromName("点穴"));
-                            return null;
+                        {
+                            PackEntry.FromName("大椿功"),
+                            DialogOption.FromTextAndSelect("大椿功，木系，擅长会成长的法术，法术每次使用后会逐渐变强",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("大椿功");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
+                        },
+                        {
+                            PackEntry.FromName("游龙遁"),
+                            DialogOption.FromTextAndSelect("游龙遁，木系，可以闪避敌人的攻击",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("游龙遁");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
+                        },
+                        {
+                            PackEntry.FromName("归鸿十二步"),
+                            DialogOption.FromTextAndSelect("归鸿十二步，火系，攻守兼备的剑舞，攻击如雨点般前赴后继",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("归鸿十二步");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
+                        },
+                        {
+                            PackEntry.FromName("大焚天秘乘"),
+                            DialogOption.FromTextAndSelect("大焚天秘乘，火系，消耗生命以施展技能，和敌人以命换命",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("大焚天秘乘");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    return null;
+                                })
+                        },
+                        {
+                            PackEntry.FromName("须弥妙法"),
+                            DialogOption.FromTextAndSelect("须弥妙法，土系，防御力强大，待准备好之后，一击制敌",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("须弥妙法");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
+                        },
+                        {
+                            PackEntry.FromName("锻体四则"),
+                            DialogOption.FromTextAndSelect("锻体四则，土系，平时勤于修炼，气血高于同期修士，战斗中可化为天人之体以制敌",
+                                option =>
+                                {
+                                    PackEntry packEntry = PackEntry.FromName("锻体四则");
+                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    return null;
+                                })
                         },
                     };
 
@@ -281,13 +358,13 @@ public class RoomCategory : Category<RoomEntry>
                     dialogOptions.Length.Do(i =>
                     {
                         int index = combination[i];
-                        dialogOptions[i] = new DialogOption(titles[index]);
-                        dialogOptions[i].SetSelect(selects[index]);
+                        PackEntry mappedPackEntry = env.GetRunConfig().PacksToStartWith[index];
+                        dialogOptions[i] = optionDict[mappedPackEntry];
                     });
                     
                     DialogPanelDescriptor A = new(
                         titleText: "出发",
-                        detailedText: "请问想以哪一个门派出发？",
+                        detailedText: "出发之前，回想起了哪一本秘籍曾经修炼过？",
                         options: dialogOptions);
 
                     return A;
@@ -383,8 +460,7 @@ public class RoomCategory : Category<RoomEntry>
                     dialogOptions.Length.Do(i =>
                     {
                         int index = combination[i];
-                        dialogOptions[i] = new DialogOption(descriptions[index]);
-                        dialogOptions[i].SetSelect(option =>
+                        dialogOptions[i] = DialogOption.FromTextAndSelect(descriptions[index], option =>
                         {
                             env.NextJingJieProcedure();
                             return panels[index];
@@ -3221,10 +3297,13 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
+                    // DialogPanelDescriptor A = new DialogPanelDescriptor(
+                    //         titleText: "神农",
+                    //         detailedText: "故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
+                    //     .SetReward(new AddSkillReward(SkillEntry.FromNameOrId("百草集"), JingJie.YuanYing));
                     DialogPanelDescriptor A = new DialogPanelDescriptor(
                             titleText: "神农",
-                            detailedText: "故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
-                        .SetReward(new AddSkillReward("0602", JingJie.YuanYing));
+                            detailedText: "故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。(未实现)");
             
                     return A;
                 }),
