@@ -55,7 +55,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("6", order: 6, description: "跨越境界时不再提供升级", inheritedDifficultyNames: new string[] { "5", "4", "3", "2", "1" },
+            new("6", order: 6, description: "难度6", inheritedDifficultyNames: new string[] { "5", "4", "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -64,7 +64,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("7", order: 7, description: "敌人获得1免疫", inheritedDifficultyNames: new string[] { "6", "5", "4", "3", "2", "1" },
+            new("7", order: 7, description: "难度7", inheritedDifficultyNames: new string[] { "6", "5", "4", "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -73,7 +73,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("8", order: 8, description: "主角气血上限-10%", inheritedDifficultyNames: new string[] { "7", "6", "5", "4", "3", "2", "1" },
+            new("8", order: 8, description: "敌人获得先手", inheritedDifficultyNames: new string[] { "7", "6", "5", "4", "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
@@ -82,7 +82,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("9", order: 9, description: "敌人获得先手", inheritedDifficultyNames: new string[] { "8", "7", "6", "5", "4", "3", "2", "1" },
+            new("9", order: 9, description: "最终Boss需要击败两次", inheritedDifficultyNames: new string[] { "8", "7", "6", "5", "4", "3", "2", "1" },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>

@@ -844,7 +844,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("吐纳", "治疗可以穿上限", BuffStackRule.One, true, false,
+            new("玄武吐息法", "治疗可以穿上限", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_HEAL, 0, async (owner, closureDetails) =>
