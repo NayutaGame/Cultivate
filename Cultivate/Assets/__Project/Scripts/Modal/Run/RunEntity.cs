@@ -175,6 +175,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     public IEnumerable<RunFormation> TraversalFormations => _formations.Traversal();
     [NonSerialized] private FilteredListModel<RunFormation> _showingFormations;
     [NonSerialized] private FilteredListModel<RunFormation> _activeFormations;
+    [NonSerialized] private bool _allowFormation;
 
     public void InitFormations()
     {
@@ -182,13 +183,14 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
         for(int i = 0; i < Encyclopedia.FormationCategory.GetCount(); i++)
         {
-            // FormationGroupEntry
             _formations.Add(RunFormation.From(Encyclopedia.FormationCategory[i], 0));
         }
     }
 
     public void FormationProcedure()
     {
+        _allowFormation = true;
+        
         RunFormationDetails d = new(this);
         List<RunFormation> toEmphasize = new();
 
@@ -196,7 +198,6 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
         for(int i = 0; i < Encyclopedia.FormationCategory.GetCount(); i++)
         {
-            // FormationGroupEntry
             Assert.IsTrue(_formations[i].GetEntry().GetFormationGroupEntry() == Encyclopedia.FormationCategory[i]);
 
             int oldProgress = _formations[i].GetProgress();
@@ -218,6 +219,22 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
         _activeFormations.Refresh();
 
         toEmphasize.Do(f => f.Emphasize());
+    }
+
+    public void ClearFormationProcedure()
+    {
+        _allowFormation = false;
+        
+        for(int i = 0; i < Encyclopedia.FormationCategory.GetCount(); i++)
+        {
+            Assert.IsTrue(_formations[i].GetEntry().GetFormationGroupEntry() == Encyclopedia.FormationCategory[i]);
+            
+            _formations[i].SetProgress(0);
+        }
+
+        // set dirty
+        _showingFormations.Refresh();
+        _activeFormations.Refresh();
     }
 
     #endregion
@@ -329,7 +346,9 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
         InitFormations();
 
         _showingFormations = new(_formations, f =>
-            f.GetMin() <= f.GetProgress() && _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
+            _allowFormation &&
+            f.GetMin() <= f.GetProgress() &&
+            _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
         _activeFormations = new(_formations, f => f.IsActivated());
         _slots.Traversal().Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
     }

@@ -34,6 +34,7 @@ public class ConsolePanel : Panel
     public Button ButtonDoNotShow;
 
     public Button PrintJsonButton;
+    public Button WriteIntoEditable;
 
     public TMP_Text GRResultText;
 
@@ -104,6 +105,9 @@ public class ConsolePanel : Panel
         
         PrintJsonButton.onClick.RemoveAllListeners();
         PrintJsonButton.onClick.AddListener(RunManager.Instance.Environment.PrintJson);
+        
+        WriteIntoEditable.onClick.RemoveAllListeners();
+        WriteIntoEditable.onClick.AddListener(RunManager.Instance.Environment.WriteIntoEditable);
     }
 
     private Action _update;
@@ -216,9 +220,9 @@ public class ConsolePanel : Panel
 
     private void Cheat()
     {
-        // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("作弊"));
-        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("玄武吐息法"));
-        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吞天"));
-        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("童趣"));
+        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("作弊"));
+        // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("玄武吐息法"));
+        // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吞天"));
+        // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("童趣"));
     }
 }

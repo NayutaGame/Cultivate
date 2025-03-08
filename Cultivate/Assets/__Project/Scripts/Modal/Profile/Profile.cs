@@ -193,9 +193,15 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         }
     }
 
-    public void WriteRunResult(RunResult result)
+    public void WriteRunResult(RunEnvironment env, RunResult result, int experienceGain)
     {
-        Debug.Log(result.GetOutcome());
+        // 存档经验
+        _levelProfile.GainExperience(experienceGain);
+        
+        // 尝试解锁下一难度
+        _difficultyProfileList.TryUnlockNextDifficulty(env, result);
+
+        Debug.Log($"写入RunResult: {result.GetOutcome()}");
     }
 
     public CharacterProfile FirstCharacterProfile()
@@ -260,9 +266,6 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public int GetLevel()
         => _levelProfile.Level;
-
-    public void GainExperience(int experienceGain)
-        => _levelProfile.GainExperience(experienceGain);
 
     public (int, int) GainExperienceDryRun(int experienceGain)
         => _levelProfile.GainExperienceDryRun(experienceGain);

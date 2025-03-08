@@ -43,16 +43,14 @@ public class RunResultPanelDescriptor : PanelDescriptor
         _initialExperience = _profile.GetExperience();
         _initialLevel = _profile.GetLevel();
 
-        (_finalExperience, _finalLevel) = _profile.GainExperienceDryRun(_experienceGain);
+        (_finalLevel, _finalExperience) = _profile.GainExperienceDryRun(_experienceGain);
     }
 
     public override void DefaultEnter(PanelDescriptor panelDescriptor)
     {
         base.DefaultEnter(panelDescriptor);
 
-        _profile.GainExperience(_experienceGain);
-
-        AppManager.Instance.ProfileManager.WriteRunResultToCurrent(_result);
+        AppManager.Instance.ProfileManager.WriteRunResultToCurrent(RunManager.Instance.Environment, _result, _experienceGain);
     }
 
     public override PanelDescriptor DefaultReceiveSignal(Signal signal)

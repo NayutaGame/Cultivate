@@ -435,8 +435,17 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     private void FormationProcedure()
     {
-        _home.FormationProcedure();
-        _away.FormationProcedure();
+        bool homeAllowFormation = _config.DifficultyProfile.GetEntry().HomeAllowFormation;
+        if (homeAllowFormation)
+            _home.FormationProcedure();
+        else
+            _home.ClearFormationProcedure();
+
+        bool awayAllowFormation = _config.DifficultyProfile.GetEntry().AwayAllowFormation;
+        if (awayAllowFormation)
+            _away.FormationProcedure();
+        else
+            _away.ClearFormationProcedure();
     }
 
     private void SecondPlacementProcedure()
@@ -944,17 +953,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #endregion
 
-    #region Profile
-
-    public void PrintJson()
-    {
-        string json = JsonUtility.ToJson(this, true);
-        Debug.Log(json);
-        GUIUtility.systemCopyBuffer = json;
-    }
-
-    #endregion
-
     #region PanelOperations
     
     public PanelDescriptor Panel
@@ -1002,7 +1000,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
                 AppManager.Instance.ProfileManager.SaveProcedure(this);
                 
                 panel = Map.CreatePanelFromCurrRoom();
-                
                 
                 if (levelChanged)
                     LevelChangedNeuron.Invoke();
@@ -1120,6 +1117,25 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         FieldChangedNeuron.Add(_simulateResult.SetDirty);
         DeckChangedNeuron.Add(GuideProcedure);
+    }
+
+    #endregion
+
+    #region ForTest
+
+    public void PrintJson()
+    {
+        string json = JsonUtility.ToJson(this, true);
+        Debug.Log(json);
+        GUIUtility.systemCopyBuffer = json;
+    }
+
+    public void WriteIntoEditable()
+    {
+        EditorManager.Instance.Add(_home);
+        int ladder = Map.GetCurrRoom().Ladder;
+        _home.SetLadder(ladder);
+        EditorManager.Instance.Save();
     }
 
     #endregion

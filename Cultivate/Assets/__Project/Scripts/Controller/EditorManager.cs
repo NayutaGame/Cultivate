@@ -199,4 +199,16 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     //     EnvironmentChanged();
     //     return false;
     // }
+
+    public void InsertAt(int index, RunEntity template = null)
+    {
+        RunEntity toInsert = template ?? RunEntity.FromTemplate(EntityEditableList[index]);
+        EntityEditableList.Insert(index, toInsert);
+    }
+
+    public void Add(RunEntity template = null)
+    {
+        RunEntity toInsert = template ?? RunEntity.Default();
+        EntityEditableList.Add(toInsert);
+    }
 }

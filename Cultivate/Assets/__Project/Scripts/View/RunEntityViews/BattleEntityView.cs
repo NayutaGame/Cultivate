@@ -32,6 +32,9 @@ public class BattleEntityView : LegacySimpleView
         
         IEntity entity = Get<IEntity>();
 
+        if (entity == null)
+            return;
+
         NameText.text = $"{entity.GetJingJie()} {entity.GetEntry().GetName()}";
         
         SetModel(entity.GetEntry().GetUIEntityModelPrefabEntry());

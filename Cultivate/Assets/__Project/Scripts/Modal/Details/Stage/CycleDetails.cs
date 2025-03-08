@@ -2,14 +2,16 @@
 public class CycleDetails : StageClosureDetails
 {
     public StageEntity Owner;
+    public bool Rotate;
     public WuXing WuXing;
     public int Step;
     public int Gain;
     public int Recover;
 
-    public CycleDetails(StageEntity owner, WuXing wuXing, int gain, int recover, bool induced)
+    public CycleDetails(StageEntity owner, bool rotate, WuXing wuXing, int gain, int recover, bool induced)
     {
         Owner = owner;
+        Rotate = rotate;
         WuXing = wuXing;
         Step = 1;
         Gain = gain;
@@ -17,5 +19,5 @@ public class CycleDetails : StageClosureDetails
         Induced = induced;
     }
 
-    public CycleDetails Clone() => new(Owner, WuXing, Gain, Recover, Induced);
+    public CycleDetails Clone() => new(Owner, Rotate, WuXing, Gain, Recover, Induced);
 }

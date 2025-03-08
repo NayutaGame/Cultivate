@@ -33,8 +33,6 @@ public class LevelProfile
         _experience = _experience % EXPERIENCE_PER_LEVEL;
 
         _level += levelUpCount;
-
-        Debug.Log($"gain: {experienceGain}, current level: {_level}, current experience: {_experience}");
     }
 
     public (int, int) GainExperienceDryRun(int experienceGain)
@@ -44,6 +42,11 @@ public class LevelProfile
         int finalExperience = (_experience + experienceGain) % EXPERIENCE_PER_LEVEL;
         int finalLevel = _level + (_experience + experienceGain) / EXPERIENCE_PER_LEVEL;
 
-        return (finalExperience, finalLevel);
+        return (finalLevel, finalExperience);
+    }
+
+    public override string ToString()
+    {
+        return $"Level: {_level}, Experience: {_experience}";
     }
 }

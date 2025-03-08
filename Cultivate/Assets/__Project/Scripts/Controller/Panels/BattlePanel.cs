@@ -22,7 +22,6 @@ public class BattlePanel : Panel
     [SerializeField] private RectTransform AwayHealthTransform;
     
     [SerializeField] public CombatButton CombatButton;
-    [SerializeField] private Button SkipButton;
     [SerializeField] private GameObject VictoryStamp;
 
     private static readonly float WinBaseScale = 1f;
@@ -42,13 +41,8 @@ public class BattlePanel : Panel
         EnemyView.SetAddress(_address.Append(".Enemy"));
 
         CombatButton.Configure();
-        CombatButton.ClickNeuron.Join(Combat);
-        
-        if (SkipButton != null)
-        {
-            SkipButton.onClick.RemoveAllListeners();
-            SkipButton.onClick.AddListener(Skip);
-        }
+        CombatButton.LeftClickNeuron.Join(Combat);
+        CombatButton.RightClickNeuron.Join(Skip);
     }
 
     protected override Animator InitAnimator()
@@ -223,7 +217,7 @@ public class BattlePanel : Panel
         d.Combat();
     }
 
-    private void Skip()
+    private void Skip(PointerEventData eventData)
     {
         RunEnvironment env = RunManager.Instance.Environment;
         RunManager.Instance.Environment.ReceiveSignalProcedure(new SkipCombatSignal(env.GetSimulateResult().Flag == 1));

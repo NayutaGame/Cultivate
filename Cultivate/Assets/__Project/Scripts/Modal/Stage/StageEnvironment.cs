@@ -601,22 +601,31 @@ public class StageEnvironment : Addressable, StageClosureListener
     
     public async UniTask CycleProcedure(CycleDetails d)
     {
+        d.Rotate &= _config.RunConfig.DifficultyProfile.GetEntry().AllowRotate;
+        
         await _closureDict.SendEvent(StageClosureDict.WIL_CYCLE, d);
 
         if (d.Cancel)
             return;
 
-        WuXing fromWuXing = d.WuXing;
-        for (int i = 0; i < d.Step; i++)
-            fromWuXing = fromWuXing.Prev;
+        if (d.Rotate)
+        {
+            WuXing fromWuXing = d.WuXing;
+            for (int i = 0; i < d.Step; i++)
+                fromWuXing = fromWuXing.Prev;
 
-        int flow = d.Owner.GetStackOfBuff(fromWuXing._elementaryBuff);
+            int flow = d.Owner.GetStackOfBuff(fromWuXing._elementaryBuff);
 
-        int consume = flow - Mathf.Min(flow, d.Recover);
-        await d.Owner.TryConsumeProcedure(fromWuXing._elementaryBuff, consume);
+            int consume = flow - Mathf.Min(flow, d.Recover);
+            await d.Owner.TryConsumeProcedure(fromWuXing._elementaryBuff, consume);
 
-        int gain = flow + d.Gain;
-        await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, gain, induced: d.Induced);
+            int gain = flow + d.Gain;
+            await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, gain, induced: d.Induced);
+        }
+        else
+        {
+            await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, d.Gain, induced: d.Induced);
+        }
 
         await _closureDict.SendEvent(StageClosureDict.DID_CYCLE, d);
     }

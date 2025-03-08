@@ -72,9 +72,9 @@ public class ProfileManager : Addressable
         // case存档损坏
     }
 
-    public void WriteRunResultToCurrent(RunResult result)
+    public void WriteRunResultToCurrent(RunEnvironment env, RunResult result, int experienceGain)
     {
-        GetCurrProfile().WriteRunResult(result);
+        GetCurrProfile().WriteRunResult(env, result, experienceGain);
         SaveProcedureRemovingRunEnvironment();
     }
 

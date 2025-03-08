@@ -87,8 +87,8 @@ public class CastDetails : StageClosureDetails
     public async UniTask RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await Env.LoseBuffProcedure(new LoseBuffDetails(Caster, Caster.Opponent(), buffEntry, stack, recursive, induced));
 
-    public async UniTask CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0, bool induced = false)
-        => await Env.CycleProcedure(new CycleDetails(Caster, wuXing, gain, recover, induced));
+    public async UniTask CycleProcedure(WuXing wuXing, bool rotate = true, int gain = 0, int recover = 0, bool induced = false)
+        => await Env.CycleProcedure(new CycleDetails(Caster, rotate, wuXing, gain, recover, induced));
     
     public async UniTask DispelProcedure(int stack, bool induced = false)
         => await Env.DispelProcedure(new DispelDetails(Caster, stack, induced));

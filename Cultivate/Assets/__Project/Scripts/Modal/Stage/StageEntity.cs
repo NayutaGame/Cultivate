@@ -514,8 +514,8 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await _env.LoseBuffProcedure(new LoseBuffDetails(this, Opponent(), buffEntry, stack, recursive, induced));
     
-    public async UniTask CycleProcedure(WuXing wuXing, int gain = 0, int recover = 0, bool induced = false)
-        => await _env.CycleProcedure(new CycleDetails(this, wuXing, gain, recover, induced));
+    public async UniTask CycleProcedure(WuXing wuXing, bool rotate = true, int gain = 0, int recover = 0, bool induced = false)
+        => await _env.CycleProcedure(new CycleDetails(this, rotate, wuXing, gain, recover, induced));
     
     public async UniTask DispelProcedure(int stack, bool induced = false)
         => await _env.DispelProcedure(new DispelDetails(this, stack, induced));

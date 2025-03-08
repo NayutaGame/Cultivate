@@ -79,6 +79,12 @@ public class EntityEditorPanel : Panel
         ReturnButton.onClick.AddListener(Hide);
     }
 
+    private void OnEnable()
+    {
+        EntityBrowser.Sync();
+        SkillBrowser.Sync();
+    }
+
     public override void Refresh()
     {
         AwayEntityView.Refresh();
@@ -215,16 +221,14 @@ public class EntityEditorPanel : Panel
 
     private void Insert()
     {
-        ListModel<RunEntity> model = EntityBrowser.Get<ListModel<RunEntity>>();
-        
         if (_selectionIndex.HasValue)
         {
-            model.Insert(_selectionIndex.Value, RunEntity.FromTemplate(model[_selectionIndex.Value]));
+            EditorManager.Instance.InsertAt(_selectionIndex.Value);
             EntityBrowser.InsertItem(_selectionIndex.Value);
         }
         else
         {
-            model.Add(RunEntity.Default());
+            EditorManager.Instance.Add();
             EntityBrowser.AddItem();
         }
     }

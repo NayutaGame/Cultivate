@@ -12,7 +12,9 @@ public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private Animator _animator;
     private Tween _handle;
 
-    [HideInInspector] public Neuron<PointerEventData> ClickNeuron = new();
+    [HideInInspector] public Neuron<PointerEventData> LeftClickNeuron = new();
+    [HideInInspector] public Neuron<PointerEventData> RightClickNeuron = new();
+    
     private bool _isAttractive;
     public void SetAttractive(bool value)
     {
@@ -28,7 +30,7 @@ public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         _animator ??= InitAnimator();
         
-        ClickNeuron.Join(ClickVFX);
+        LeftClickNeuron.Join(ClickVFX);
     }
 
     protected virtual Animator InitAnimator()
@@ -55,7 +57,13 @@ public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         => _animator.SetStateAsync(!_isAttractive ? 1 : 2);
 
     public void OnPointerClick(PointerEventData eventData)
-        => ClickNeuron.Invoke(eventData);
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) {
+            LeftClickNeuron.Invoke(eventData);
+        } else if (eventData.button == PointerEventData.InputButton.Right) {
+            RightClickNeuron.Invoke(eventData);
+        }
+    }
 
     private Tween IdleTween()
         => TweenAnimation.Jump(_target);

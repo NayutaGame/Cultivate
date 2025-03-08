@@ -1184,8 +1184,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
+  _container: {fileID: 0}
   Prefabs:
   - {fileID: 8155228337873847611, guid: d4ae9498703700045a60bde897d0bbbd, type: 3}
+  _viewContainer: {fileID: 0}
 --- !u!225 &6547364006145505617
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1711,8 +1713,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
+  _container: {fileID: 0}
   Prefabs:
   - {fileID: 8155228337873847611, guid: dd6cd8a043d68804aa7dffd1ca4eb6cf, type: 3}
+  _viewContainer: {fileID: 0}
 --- !u!1 &8365127893089501140
 GameObject:
   m_ObjectHideFlags: 0
@@ -2816,6 +2820,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6048932769161969677}
     m_Modifications:
+    - target: {fileID: 3997433330738583828, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3997433330738583828, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3997433330738583828, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9176695831387659955, guid: a6288479c55ec6346b647b0348a5db6a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
