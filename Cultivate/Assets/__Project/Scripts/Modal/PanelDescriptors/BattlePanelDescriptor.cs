@@ -55,11 +55,13 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         if (signal is BattleResultSignal battleResultSignal)
         {
+            RunManager.Instance.Environment.CommitBattleNeuron.Invoke(battleResultSignal.Win);
             return (battleResultSignal.Win ? _winOperation : _loseOperation).Invoke();
         }
 
         if (signal is SkipCombatSignal skipCombatSignal)
         {
+            RunManager.Instance.Environment.CommitBattleNeuron.Invoke(skipCombatSignal.Win);
             return (skipCombatSignal.Win ? _winOperation : _loseOperation).Invoke();
         }
 

@@ -311,6 +311,9 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
         int? baseHealth = null, int? slotCount = null, RunSkill[] skills = null)
         => new(jingJie: jingJie, health: baseHealth, slotCount: slotCount, slots: skills != null ? SlotListModel.FromSkills(skills) : null);
 
+    public RunEntity Clone()
+        => FromTemplate(this);
+
     public void OnBeforeSerialize() { }
 
     public void OnAfterDeserialize()

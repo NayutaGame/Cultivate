@@ -26,6 +26,7 @@ public class Room : ISerializationCallbackReceiver
     public RoomState GetState() => _state;
     public void SetState(RoomState state) => _state = state;
     public RoomDescriptor GetDescriptor() => _descriptor;
+    public RoomEntry GetEntry() => _entry;
     public RunEntity GetPredrewRunEntity() => _predrewRunEntity;
     public void SetPredrewRunEntity(RunEntity runEntity) => _predrewRunEntity = runEntity;
 

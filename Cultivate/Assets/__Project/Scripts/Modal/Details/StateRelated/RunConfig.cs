@@ -9,7 +9,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
     // this form should contains: selected character, selected difficulty, selected mutators, selected seed
     [SerializeReference] public CharacterProfile CharacterProfile;
     [SerializeReference] public DifficultyProfile DifficultyProfile;
-    [NonSerialized] public List<PackEntry> PacksToStartWith;
+    [SerializeReference] public List<PackEntry> PacksToStartWith;
     [SerializeField] public MapEntry MapEntry;
     
     private Dictionary<string, Func<object>> _accessors;
@@ -45,6 +45,12 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         };
         
         MapEntry = string.IsNullOrEmpty(MapEntry.GetId()) ? null : Encyclopedia.MapCategory[MapEntry.GetId()];
+
+        for (int i = 0; i < PacksToStartWith.Count; i++)
+        {
+            PackEntry entry = PacksToStartWith[i];
+            PacksToStartWith[i] = string.IsNullOrEmpty(entry.GetId()) ? null : Encyclopedia.PackCategory[entry.GetId()];
+        }
     }
 
     public static RunConfig FirstRun()

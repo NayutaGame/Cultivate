@@ -87,8 +87,4 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     
     public DeckIndex ToDeckIndex()
         => DeckIndex.FromField(_index);
-    
-    #region Obsolete
-    
-    #endregion
 }

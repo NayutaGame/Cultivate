@@ -40,6 +40,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         LoseGoldNeuron = new();
         GainDHealthNeuron = new();
         LoseDHealthNeuron = new();
+        EngageEnemyNeuron = new();
+        AppendReportNeuron = new();
+        CommitBattleNeuron = new();
     }
 
     public Neuron StartRunNeuron;
@@ -69,6 +72,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<int> LoseGoldNeuron;
     public Neuron<int> GainDHealthNeuron;
     public Neuron<int> LoseDHealthNeuron;
+    public Neuron<EngageEnemyDetails> EngageEnemyNeuron;
+    public Neuron AppendReportNeuron;
+    public Neuron<bool> CommitBattleNeuron;
     
     #endregion
 
@@ -84,6 +90,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [NonSerialized] private DateTime _startTime;
     [NonSerialized] private TimeSpan _loadedTime;
     [NonSerialized] private TimeSpan _runFinishedTime;
+    [NonSerialized] private RunReport _runReport;
 
     [SerializeField] private double _miliseconds;
     
@@ -125,15 +132,38 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _result = new();
         _newlyUnlockedAchievements = new();
 
+        InitializeCommonState();
+    }
+
+    private void InitializeCommonState()
+    {
         _memory = new();
         _closureDict = new();
         _simulateResult = new(Simulate);
-
-        SetHome(RunEntity.Default());
+        
+        SetHome(_home ?? RunEntity.Default());
         SetAway(null);
         
         FieldChangedNeuron.Add(_simulateResult.SetDirty);
         DeckChangedNeuron.Add(GuideProcedure);
+
+        _runReport = new RunReport(this);
+        
+        RoomChangedNeuron.Add(AppendRoomReport);
+        EngageEnemyNeuron.Add(AppendBattleReport);
+        PanelChangedNeuron.Add(AppendPickDiscoveredSkillReport);
+    }
+
+    private void Deinit()
+    {
+        TestReport lastReport = _runReport.GetCurrReport();
+        lastReport?.OnExit(this);
+        
+        _runReport = null;
+        
+        RoomChangedNeuron.Remove(AppendRoomReport);
+        EngageEnemyNeuron.Remove(AppendBattleReport);
+        PanelChangedNeuron.Remove(AppendPickDiscoveredSkillReport);
     }
 
     public static RunEnvironment FromConfig(RunConfig config)
@@ -155,6 +185,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public RunResult GetResult() => _result;
     public PanelDescriptor GetActivePanel() => Panel;
     public TimeSpan GetRunfinishedTime() => _runFinishedTime;
+    public TimeSpan GetPassedTime() => _loadedTime + (DateTime.Now - _startTime);
+    public RunReport GetRunReport() => _runReport;
 
     public void SetHome(RunEntity home)
     {
@@ -171,6 +203,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _away?.EnvironmentChangedNeuron.Remove(FieldChangedNeuron);
         _away = away;
         _away?.EnvironmentChangedNeuron.Add(FieldChangedNeuron);
+
+        EngageEnemyDetails d = new(_awayIsDummy, _away);
+        EngageEnemyNeuron.Invoke(d);
     }
 
     public bool AwayIsDummy() => _awayIsDummy;
@@ -880,6 +915,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         RunSkill skill = InnerCreateSkill(d.Skill.Entry, d.Skill.JingJie);
         Hand.Add(skill);
+        d.CreatedSkill = skill.Clone();
         PickDiscoveredSkillNeuron.Invoke(d);
         ReceiveSignalProcedure(new PickDiscoveredSkillSignal(d.PickedIndex));
     }
@@ -987,6 +1023,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             }
             else
             {
+                Room oldRoom = Map.GetCurrRoom();
                 bool levelChanged = Step();
                 
                 bool cond1 = Map.GetCurrRoom().GetDescriptor() is SuccessRoomDescriptor;
@@ -1003,8 +1040,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
                 
                 if (levelChanged)
                     LevelChangedNeuron.Invoke();
-                
-                RoomChangedNeuron.Invoke(new());
+
+                Room newRoom = Map.GetCurrRoom();
+                RoomChangedNeuron.Invoke(new(oldRoom, newRoom));
             }
         }
         
@@ -1041,7 +1079,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         Assert.IsFalse(RunIsFinished(), "尝试结算一个已经结束的 Run");
 
         _result.SetOutcome(state);
-        _runFinishedTime = _loadedTime + (DateTime.Now - _startTime);
+        _runFinishedTime = GetPassedTime();
         
         RunResultPanelDescriptor resultPanel = new RunResultPanelDescriptor(this);
         
@@ -1059,6 +1097,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     private void InitPanel()
     {
         Panel = Map.CreatePanelFromCurrRoom();
+        Room newRoom = Map.GetCurrRoom();
+        RoomChangedNeuron.Invoke(new(null, newRoom));
     }
 
     #endregion
@@ -1108,20 +1148,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             e = string.IsNullOrEmpty(e.GetName()) ? null : Encyclopedia.AchievementCategory[e.GetName()];
         });
 
-        _memory = new();
-        _closureDict = new();
-        _simulateResult = new(Simulate);
-        
-        SetHome(_home);
-        SetAway(null);
-        
-        FieldChangedNeuron.Add(_simulateResult.SetDirty);
-        DeckChangedNeuron.Add(GuideProcedure);
+        InitializeCommonState();
     }
 
     #endregion
 
-    #region ForTest
+    #region ForTestAndReport
 
     public void PrintJson()
     {
@@ -1136,6 +1168,58 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         int ladder = Map.GetCurrRoom().Ladder;
         _home.SetLadder(ladder);
         EditorManager.Instance.Save();
+    }
+    
+    private void AppendRoomReport(RoomChangedDetails d)
+    {
+        TestReport oldReport = _runReport.GetCurrReport();
+        oldReport?.OnExit(this);
+        
+        RoomReport newReport = RoomReport.FromEnvironment(this, d.ToRoom);
+        
+        _runReport.AppendReport(newReport);
+        newReport.OnEnter(this);
+        
+        _runReport.CopyRunReportToClipboard();
+
+        AppendReportNeuron.Invoke();
+    }
+    
+    private void AppendBattleReport(EngageEnemyDetails d)
+    {
+        if (d.IsDummy)
+            return;
+        
+        TestReport oldReport = _runReport.GetCurrReport();
+        oldReport?.OnExit(this);
+        
+        BattleReport newReport = BattleReport.FromEnvironment(this, _away);
+        
+        _runReport.AppendReport(newReport);
+        newReport.OnEnter(this);
+        
+        _runReport.CopyRunReportToClipboard();
+
+        AppendReportNeuron.Invoke();
+    }
+
+    private void AppendPickDiscoveredSkillReport(PanelChangedDetails d)
+    {
+        DiscoverSkillPanelDescriptor panelDescriptor = d.ToPanel as DiscoverSkillPanelDescriptor;
+        if (panelDescriptor == null)
+            return;
+        
+        TestReport oldReport = _runReport.GetCurrReport();
+        oldReport?.OnExit(this);
+        
+        PickDiscoveredSkillReport newReport = PickDiscoveredSkillReport.FromEnvironment(this);
+        
+        _runReport.AppendReport(newReport);
+        newReport.OnEnter(this);
+        
+        _runReport.CopyRunReportToClipboard();
+    
+        AppendReportNeuron.Invoke();
     }
 
     #endregion

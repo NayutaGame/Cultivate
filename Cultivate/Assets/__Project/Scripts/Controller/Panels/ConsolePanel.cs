@@ -40,6 +40,11 @@ public class ConsolePanel : Panel
 
     public Button ToggleButton;
 
+    public TMP_InputField TesterNoteInputField;
+    public Button QuickUpvoteButton;
+    public Button QuickDownvoteButton;
+    public Button CopyReportButton;
+
     private void Update() => _update?.Invoke();
 
     public override Tween EnterIdle()
@@ -108,6 +113,18 @@ public class ConsolePanel : Panel
         
         WriteIntoEditable.onClick.RemoveAllListeners();
         WriteIntoEditable.onClick.AddListener(RunManager.Instance.Environment.WriteIntoEditable);
+        
+        TesterNoteInputField.onEndEdit.RemoveAllListeners();
+        TesterNoteInputField.onEndEdit.AddListener(OnTesterNoteInputFieldEndEdit);
+        
+        QuickUpvoteButton.onClick.RemoveAllListeners();
+        QuickUpvoteButton.onClick.AddListener(QuickUpvote);
+        
+        QuickDownvoteButton.onClick.RemoveAllListeners();
+        QuickDownvoteButton.onClick.AddListener(QuickDownvote);
+        
+        CopyReportButton.onClick.RemoveAllListeners();
+        CopyReportButton.onClick.AddListener(CopyReport);
     }
 
     private Action _update;
@@ -145,6 +162,7 @@ public class ConsolePanel : Panel
         RunManager.Instance.Environment.LoseGoldNeuron.Add(RefreshGold);
         RunManager.Instance.Environment.GainDHealthNeuron.Add(RefreshDHealth);
         RunManager.Instance.Environment.LoseDHealthNeuron.Add(RefreshDHealth);
+        RunManager.Instance.Environment.AppendReportNeuron.Add(OnAppendReport);
         RefreshInfo();
     }
 
@@ -156,6 +174,7 @@ public class ConsolePanel : Panel
         RunManager.Instance.Environment.LoseGoldNeuron.Remove(RefreshGold);
         RunManager.Instance.Environment.GainDHealthNeuron.Remove(RefreshDHealth);
         RunManager.Instance.Environment.LoseDHealthNeuron.Remove(RefreshDHealth);
+        RunManager.Instance.Environment.AppendReportNeuron.Remove(OnAppendReport);
     }
 
     private void RefreshMingYuan(int value)
@@ -224,5 +243,34 @@ public class ConsolePanel : Panel
         // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("玄武吐息法"));
         // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吞天"));
         // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("童趣"));
+    }
+
+    private void OnTesterNoteInputFieldEndEdit(string value)
+    {
+        RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote = value;
+    }
+
+    private void QuickUpvote()
+    {
+        string newNote = RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote + ", 赞";
+        TesterNoteInputField.text = newNote;
+        RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote = newNote;
+    }
+
+    private void QuickDownvote()
+    {
+        string newNote = RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote + ", 踩";
+        TesterNoteInputField.text = newNote;
+        RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote = newNote;
+    }
+
+    private void CopyReport()
+    {
+        RunManager.Instance.Environment.GetRunReport().CopyRunReportToClipboard();
+    }
+
+    private void OnAppendReport()
+    {
+        TesterNoteInputField.text = null;
     }
 }

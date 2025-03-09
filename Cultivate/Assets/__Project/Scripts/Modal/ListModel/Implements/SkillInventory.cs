@@ -66,4 +66,11 @@ public class SkillInventory : ListModel<RunSkill>
     {
         Sort(Comparisons[i]);
     }
+
+    public SkillInventory Clone()
+    {
+        SkillInventory cloned = new();
+        cloned.AddRange(Traversal());
+        return cloned;
+    }
 }

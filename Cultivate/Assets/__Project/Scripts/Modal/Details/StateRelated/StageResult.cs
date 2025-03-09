@@ -14,6 +14,7 @@ public class StageResult : Addressable
     public int HomeLeftHp;
     public int AwayLeftHp;
 
+    // 0 正在打， 1 主场胜利， 2 客场胜利
     public int Flag;
 
     private Dictionary<string, Func<object>> _accessors;
