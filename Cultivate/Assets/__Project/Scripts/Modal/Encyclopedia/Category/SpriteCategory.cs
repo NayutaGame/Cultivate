@@ -263,6 +263,28 @@ public class SpriteCategory : Category<SpriteEntry>
             // ArmorIcons
             new("ArmorIcon", "Images/ArmorIcons/ArmorIcon"),
             new("FragileIcon", "Images/ArmorIcons/FragileIcon"),
+            
+            // Packs
+            new("Pack丹兵道", "Images/PackIllustrations/丹兵道"),
+            new("Pack化哉", "Images/PackIllustrations/化哉"),
+            new("Pack大椿功", "Images/PackIllustrations/大椿功"),
+            new("Pack大焚天秘乘", "Images/PackIllustrations/大焚天秘乘"),
+            new("Pack大音希声", "Images/PackIllustrations/大音希声"),
+            new("Pack天河引气录", "Images/PackIllustrations/天河引气录"),
+            new("Pack归鸿十二步", "Images/PackIllustrations/归鸿十二步"),
+            new("Pack御虚诀", "Images/PackIllustrations/御虚诀"),
+            new("Pack无常路引", "Images/PackIllustrations/无常路引"),
+            new("Pack游龙遁", "Images/PackIllustrations/游龙遁"),
+            new("Pack锻体四则", "Images/PackIllustrations/锻体四则"),
+            new("Pack须弥妙法", "Images/PackIllustrations/须弥妙法"),
+            
+            // PackConstraints
+            new("PackConstraints金", "Images/PackConstraintIllustrations/Jin"),
+            new("PackConstraints水", "Images/PackConstraintIllustrations/Shui"),
+            new("PackConstraints木", "Images/PackConstraintIllustrations/Mu"),
+            new("PackConstraints火", "Images/PackConstraintIllustrations/Huo"),
+            new("PackConstraints土", "Images/PackConstraintIllustrations/Tu"),
+            new("PackConstraints任意", "Images/PackConstraintIllustrations/Any"),
         });
     }
 

@@ -114,6 +114,9 @@ public class AppManager : Singleton<AppManager>, Addressable
                 InventoryFromExpandedPack.Add(skillEntry);
             });
         }
+        
+        CanvasManager.Instance.PackPreview.Sync();
+        CanvasManager.Instance.PackPreview.gameObject.SetActive(true);
     }
 
     private void Start()

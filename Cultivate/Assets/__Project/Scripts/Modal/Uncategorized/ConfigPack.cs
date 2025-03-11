@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class ConfigPack : IPack
 {
     public PackEntry Entry;
@@ -21,4 +23,16 @@ public class ConfigPack : IPack
 
     public string GetTrivia()
         => Entry.Trivia;
+
+    public Sprite GetSprite()
+        => Entry.GetSprite();
+
+    public bool Equipped()
+        => IsEquipped;
+
+    public bool IsUnlocked()
+        => AppManager.Instance.ConfigManager.PackIsGenerallyUnlocked(Entry);
+
+    public string GetUnlockCondition()
+        => AppManager.Instance.ConfigManager.GetPackUnlockCondition(Entry);
 }

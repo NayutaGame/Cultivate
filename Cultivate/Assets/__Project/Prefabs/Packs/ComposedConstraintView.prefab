@@ -34,7 +34,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 120, y: 180}
+  m_SizeDelta: {x: 237.6, y: 339.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5822712034224908152
 GameObject:
@@ -74,7 +74,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 150}
+  m_SizeDelta: {x: 198, y: 283}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8451619000142963623
 CanvasRenderer:
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 469431bfd19097a43bd4043e1cf246d8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0551bd201b7d13041bb534d0fcdfea36, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -164,7 +164,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 150}
+  m_SizeDelta: {x: 198, y: 283}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5742922262591282243
 MonoBehaviour:
@@ -185,13 +185,13 @@ MonoBehaviour:
     LocalScale: {x: 0, y: 0, z: 0}
   IdleConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1, y: 1, z: 1}
+    LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   HoverConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+    LocalScale: {x: 1.02, y: 1.02, z: 1.02}
   FollowConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+    LocalScale: {x: 1.02, y: 1.02, z: 1.02}
 --- !u!114 &8412637781026560194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +216,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ConstraintView
       objectReference: {fileID: 0}
+    - target: {fileID: 1267362520892108290, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6540194452546205950, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
       propertyPath: _ib
       value: 
@@ -224,6 +228,10 @@ PrefabInstance:
       propertyPath: HoverTransform
       value: 
       objectReference: {fileID: 2389559373453481017}
+    - target: {fileID: 6685752124195398051, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
+      propertyPath: SlotImage
+      value: 
+      objectReference: {fileID: 2260193962904907248}
     - target: {fileID: 8838977114607417665, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -254,11 +262,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8838977114607417665, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 233
       objectReference: {fileID: 0}
     - target: {fileID: 8838977114607417665, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 333
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838977114607417665, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838977114607417665, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838977114607417665, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 8838977114607417665, guid: 1ed5c56fdd6bd024b9f6b522adadf39e, type: 3}
       propertyPath: m_LocalPosition.x

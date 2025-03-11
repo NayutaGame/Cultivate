@@ -62,9 +62,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: FormationProgress
   m_EditorClassIdentifier: 
-  hashCode: 1489535808
+  hashCode: -1134083818
   material: {fileID: 6214740972003656616}
-  materialHashCode: 1938674528
+  materialHashCode: -1602593034
   m_Version: 1.1.0
   m_SourceFontFileGUID: d625dad1919c72b4cbb990aa79e37bc8
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: d625dad1919c72b4cbb990aa79e37bc8, type: 3}

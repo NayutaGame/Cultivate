@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 150}
+  m_SizeDelta: {x: 233, y: 333}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &981941239966407486
 CanvasGroup:
@@ -66,6 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
   PackView: {fileID: 4627302894044970559}
+  SlotImage: {fileID: 0}
 --- !u!1 &6390064752640713597
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +79,7 @@ GameObject:
   - component: {fileID: 3641841492572146093}
   - component: {fileID: 4594075792534916137}
   m_Layer: 5
-  m_Name: Effect (1)
+  m_Name: Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,7 +103,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 150}
+  m_SizeDelta: {x: 333, y: 433}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3641841492572146093
 CanvasRenderer:
@@ -132,7 +133,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9c1906304f793cf419f39f6f877edc20, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 384f589bfe074bd4ba37035079ea929e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -179,11 +180,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7379725429805364584, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 233
       objectReference: {fileID: 0}
     - target: {fileID: 7379725429805364584, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 333
       objectReference: {fileID: 0}
     - target: {fileID: 7379725429805364584, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -236,6 +237,18 @@ PrefabInstance:
     - target: {fileID: 7379725429805364585, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
       propertyPath: m_Name
       value: SimplePackView
+      objectReference: {fileID: 0}
+    - target: {fileID: 7379725429805364585, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899591379461037545, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
+      propertyPath: IgnoreEquipped
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899591379461037545, guid: def959e6e119c6343a1c9711825ba67b, type: 3}
+      propertyPath: ParentedByConstraint
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: def959e6e119c6343a1c9711825ba67b, type: 3}

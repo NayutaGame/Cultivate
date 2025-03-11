@@ -13,6 +13,8 @@ public class PackEntry : Entry, IPack
     [NonSerialized] public string Trivia;
     [NonSerialized] public SkillEntry[] Cards;
     [NonSerialized] public SkillEntry[] StartCards;
+
+    [NonSerialized] private SpriteEntry _spriteEntry;
     
     public PackEntry(string id,
         string name,
@@ -29,12 +31,19 @@ public class PackEntry : Entry, IPack
         Trivia = trivia ?? "没有趣闻";
         Cards = cardNames?.Map(SkillEntry.FromNameOrId).ToArray() ?? Array.Empty<SkillEntry>();
         StartCards = startCardNames?.Map(SkillEntry.FromNameOrId).ToArray() ?? Array.Empty<SkillEntry>();
+        
+        _spriteEntry = $"Pack{GetName()}";
     }
-
+    
     public string GetName() => Name;
     public WuXing? GetWuXing() => WuXing;
     public string GetDescription() => Description;
     public string GetTrivia() => Trivia;
+    
+    public Sprite GetSprite() => _spriteEntry?.Sprite;
+    public bool Equipped() => false;
+    public bool IsUnlocked() => false;
+    public string GetUnlockCondition() => null;
 
     public static implicit operator PackEntry(string id) => Encyclopedia.PackCategory[id];
 

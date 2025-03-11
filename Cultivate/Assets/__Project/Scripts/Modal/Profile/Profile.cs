@@ -110,19 +110,13 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         return cache;
     }
 
-    public bool PackIsGenerallyUnlocked(CharacterEntry character, PackEntry entry)
+    public bool PackIsGenerallyUnlocked(CharacterEntry character, PackEntry pack)
     {
-        if (PackIsUnlocked(entry))
-            return true;
-
-        for (int i = 0; i < character._packPreset.PackEntries.Count; i++)
-        {
-            // 卡包未解锁，但是槽位解锁，并且当前角色的初始Preset的这个槽位的卡包是当前卡包
-            if (SlotIsUnlocked(character, i) && character._packPreset.PackEntries[i] == entry)
-                return true;
-        }
-
-        return false;
+        int? slotIndex = character._packPreset.PackEntries.FirstIdx(packEntry => packEntry == pack);
+        if (!slotIndex.HasValue)
+            return PackIsUnlocked(pack);
+        
+        return PackIsGenerallyUnlocked(character, pack, slotIndex.Value);
     }
         
     public bool PackIsGenerallyUnlocked(CharacterEntry character, PackEntry pack, int slotIndex)
@@ -130,7 +124,22 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         if (PackIsUnlocked(pack))
             return true;
         
+        // 卡包未解锁，但是槽位解锁，并且当前角色的初始Preset的这个槽位的卡包是当前卡包
         return SlotIsUnlocked(character, slotIndex) && character._packPreset.PackEntries[slotIndex] == pack;
+    }
+
+    public string GetPackUnlockCondition(CharacterEntry character, PackEntry pack)
+    {
+        LockIndex lockIndex = LockIndex.FromPack(pack.GetId());
+        AchievementProfile achievementProfile = GetAchievementProfileFromLockIndex(lockIndex);
+        return achievementProfile.GetEntry().GetConditionDescription();
+    }
+
+    public string GetConstraintUnlockCondition(CharacterEntry character, int slotIndex)
+    {
+        LockIndex lockIndex = LockIndex.FromSlot(character.GetId(), slotIndex);
+        AchievementProfile achievementProfile = GetAchievementProfileFromLockIndex(lockIndex);
+        return achievementProfile.GetEntry().GetConditionDescription();
     }
 
     public bool CharacterIsUnlocked(CharacterEntry entry)

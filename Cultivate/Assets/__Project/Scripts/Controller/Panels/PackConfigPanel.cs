@@ -12,8 +12,6 @@ public class PackConfigPanel : PopupPanel
     [SerializeField] private Button ConfirmButton;
     [SerializeField] private Button CancelButton;
 
-    [SerializeField] private AnimatedListView SkillListView;
-
     private PackPreset _unmodifiedPackPreset;
     public void SetUnmodifiedPackPreset(PackPreset preset)
     {
@@ -70,9 +68,6 @@ public class PackConfigPanel : PopupPanel
         PackConstraint constraint = ib.Get<PackConstraint>();
 
         AppManager.Instance.SetExpandedPack(constraint.Pack.Entry);
-
-        SkillListView.SetAddress("InventoryFromExpandedPack");
-        SkillListView.Refresh();
     }
 
     private void ExpandPackFromSelection(InteractBehaviour ib, PointerEventData data)
@@ -80,9 +75,6 @@ public class PackConfigPanel : PopupPanel
         ConfigPack pack = ib.Get<ConfigPack>();
 
         AppManager.Instance.SetExpandedPack(pack.Entry);
-        
-        SkillListView.SetAddress("InventoryFromExpandedPack");
-        SkillListView.Refresh();
     }
 
     private void OnEnable()

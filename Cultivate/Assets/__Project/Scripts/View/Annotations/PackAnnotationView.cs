@@ -7,7 +7,6 @@ public class PackAnnotationView : XView
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text WuXingText;
     [SerializeField] private TMP_Text DescriptionText;
-    [SerializeField] private GameObject LowerSeparator;
     [SerializeField] private TMP_Text TriviaText;
 
     public override void Refresh()
@@ -16,12 +15,31 @@ public class PackAnnotationView : XView
 
         IPack pack = Get<IPack>();
 
-        if (pack == null)
+        if (pack != null)
         {
-            gameObject.SetActive(false);
+            ConfigAsPack(pack);
+            gameObject.SetActive(true);
             return;
         }
 
+        PackConstraint packConstraint = Get<PackConstraint>();
+
+        if (packConstraint != null)
+        {
+            pack = packConstraint.Pack;
+            if (pack != null)
+            {
+                ConfigAsPack(pack);
+                gameObject.SetActive(true);
+                return;
+            }
+        }
+        
+        gameObject.SetActive(false);
+    }
+
+    private void ConfigAsPack(IPack pack)
+    {
         NameText.text = pack.GetName();
         SetWuXing(pack.GetWuXing());
         DescriptionText.text = pack.GetDescription();
@@ -32,7 +50,6 @@ public class PackAnnotationView : XView
     {
         bool hasTrivia = trivia != null;
 
-        LowerSeparator.SetActive(hasTrivia);
         TriviaText.gameObject.SetActive(hasTrivia);
 
         if (hasTrivia)

@@ -32,13 +32,13 @@ public class ConfigManager : Addressable
     private void InitPack()
     {
         _packConstraints = new();
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Jin), 0));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Shui), 1));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Mu), 2));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Huo), 3));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Tu), 4));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), 5));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), 6));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Jin), "PackConstraints金", 0));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Shui), "PackConstraints水", 1));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Mu), "PackConstraints木", 2));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Huo), "PackConstraints火", 3));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Tu), "PackConstraints土", 4));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), "PackConstraints任意", 5));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), "PackConstraints任意", 6));
 
         _packSelections = new();
         Encyclopedia.PackCategory.Traversal.Do(pack => _packSelections.Add(new ConfigPack(pack)));
@@ -145,7 +145,7 @@ public class ConfigManager : Addressable
         }
 
         // 检查pack是否解锁
-        bool packIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), pack.Entry);
+        bool packIsUnlocked = PackIsGenerallyUnlocked(pack.Entry);
         if (!packIsUnlocked)
         {
             Debug.Log($"卡包 {pack.Entry.Name} 未解锁");
@@ -161,7 +161,7 @@ public class ConfigManager : Addressable
         }
 
         // 检查slot是否解锁
-        bool slotIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), constraint.SlotIndex);
+        bool slotIsUnlocked = ConstraintIsUnlocked(constraint);
         if (!slotIsUnlocked)
         {
             Debug.Log($"槽位 {constraint.SlotIndex} 未解锁");
@@ -185,7 +185,7 @@ public class ConfigManager : Addressable
         }
 
         // 检查pack是否解锁
-        bool packIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), constraint.Pack.Entry);
+        bool packIsUnlocked = PackIsGenerallyUnlocked(constraint.Pack.Entry);
         if (!packIsUnlocked)
         {
             Debug.Log($"卡包 {constraint.Pack.Entry.Name} 未解锁");
@@ -193,7 +193,7 @@ public class ConfigManager : Addressable
         }
 
         // 检查slot是否解锁
-        bool slotIsUnlocked = AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), constraint.SlotIndex);
+        bool slotIsUnlocked = ConstraintIsUnlocked(constraint);
         if (!slotIsUnlocked)
         {
             Debug.Log($"槽位 {constraint.SlotIndex} 未解锁");
@@ -218,6 +218,26 @@ public class ConfigManager : Addressable
         var profile = AppManager.Instance.ProfileManager.GetCurrProfile();
         return constraint.Descriptor.Contains(pack.Entry) && 
                profile.PackIsGenerallyUnlocked(_character.GetEntry(), pack.Entry, constraint.SlotIndex);
+    }
+
+    public bool PackIsGenerallyUnlocked(PackEntry pack)
+    {
+        return AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), pack);
+    }
+
+    public string GetPackUnlockCondition(PackEntry pack)
+    {
+        return AppManager.Instance.ProfileManager.GetCurrProfile().GetPackUnlockCondition(_character.GetEntry(), pack);
+    }
+
+    public bool ConstraintIsUnlocked(PackConstraint constraint)
+    {
+        return AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), constraint.SlotIndex);
+    }
+
+    public string GetConstraintUnlockCondition(PackConstraint constraint)
+    {
+        return AppManager.Instance.ProfileManager.GetCurrProfile().GetConstraintUnlockCondition(_character.GetEntry(), constraint.SlotIndex);
     }
 
     public List<PackEntry> GetEquippedPacks()

@@ -1,9 +1,11 @@
 
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ConstraintView : XView
 {
     [SerializeField] public PackView PackView;
+    [SerializeField] public Image SlotImage;
 
     protected override void AwakeFunction()
     {
@@ -22,12 +24,16 @@ public class ConstraintView : XView
         base.Refresh();
 
         PackConstraint constraint = Get<PackConstraint>();
+
+        if (SlotImage != null)
+            SlotImage.sprite = constraint.GetConstraintSprite();
         
         bool occupied = !constraint.IsEmpty;
         PackView.gameObject.SetActive(occupied);
         if (!occupied)
             return;
-
+        
         PackView.Refresh();
+        PackView.RefreshFromParentedConstraint(constraint);
     }
 }

@@ -1,19 +1,17 @@
 
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterProfileView : XView
 {
-    [SerializeField] private Image Image;
-    [SerializeField] private TMP_Text NameText;
+    [SerializeField] private Image CharacterIcon;
 
     public override void Refresh()
     {
         base.Refresh();
 
         CharacterProfile p = Get<CharacterProfile>();
-        Image.color = p.IsUnlocked() ? Color.white : Color.gray;
-        NameText.text = p.GetEntry().GetName();
+        // CharacterIcon.sprite = p.GetEntry().GetSprite().Sprite;
+        CharacterIcon.color = p.IsUnlocked() ? Color.white : Color.gray;
     }
 }

@@ -26,6 +26,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("Annotations")] public AnnotationView RoomAnnotation;
     [TabGroup("Annotations")] public AnnotationView PackAnnotation;
     [TabGroup("Annotations")] public TextHint TextHint;
+    [TabGroup("Annotations")] public PackPreview PackPreview;
     
     [TabGroup("Others")]public PinAnchor PinAnchor;
     [TabGroup("Others")]public MergePreresultView MergePreresultView;
@@ -77,6 +78,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         FormationAnnotation.CheckAwake();
         RoomAnnotation.CheckAwake();
         PackAnnotation.CheckAwake();
+        PackPreview.CheckAwake();
         MergePreresultView.CheckAwake();
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
