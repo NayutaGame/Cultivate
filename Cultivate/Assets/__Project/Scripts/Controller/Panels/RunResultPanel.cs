@@ -7,17 +7,18 @@ using UnityEngine.UI;
 public class RunResultPanel : Panel
 {
     [SerializeField] private Button ReturnButton;
-    
     [SerializeField] private TMP_Text OutcomeText;
+    [SerializeField] private Image ResultIllustration;
+    
     [SerializeField] private TMP_Text CharacterNameText;
     [SerializeField] private TMP_Text DifficultyText;
     [SerializeField] private TMP_Text PlayTimeText;
 
-    [SerializeField] private ListView AchievementEntryList;
-
-    [SerializeField] private Slider ExperienceSlider;
-    [SerializeField] private TMP_Text ExperienceGainText;
+    [SerializeField] private ListView MilestoneList;
+    
     [SerializeField] private TMP_Text LevelText;
+    [SerializeField] private TMP_Text ExperienceText;
+    [SerializeField] private TMP_Text ExperienceGainText;
 
     [SerializeField] private ListView UnlockList;
 
@@ -39,10 +40,14 @@ public class RunResultPanel : Panel
         if (panelDescriptor.GetRunOutcome() == RunResult.RunOutcome.Victorious)
         {
             OutcomeText.text = "胜利";
+            SpriteEntry winIllustration = "RunResultIllustrationWin";
+            ResultIllustration.sprite = winIllustration.Sprite;
         }
         else
         {
             OutcomeText.text = "失败";
+            SpriteEntry loseIllustration = "RunResultIllustrationLose";
+            ResultIllustration.sprite = loseIllustration.Sprite;
         }
         
         CharacterNameText.text = panelDescriptor.GetCharacterName();
@@ -53,7 +58,7 @@ public class RunResultPanel : Panel
 
         _details = new(panelDescriptor.GetInitialExperience(), panelDescriptor.GetInitialLevel(), panelDescriptor.GetExperienceGain());
 
-        ExperienceSlider.value = _details.InitialExperience;
+        // ExperienceSlider.value = _details.InitialExperience;
         ExperienceGainText.text = $"+0";
         LevelText.text = $"{_details.InitialLevel}";
 
@@ -95,7 +100,7 @@ public class RunResultPanel : Panel
             LevelText.text = $"{_details.InitialLevel + _levelProgress}";
         }
 
-        ExperienceSlider.value = currValue;
+        // ExperienceSlider.value = currValue;
         ExperienceGainText.text = $"+{_experienceProgress}";
     }
 

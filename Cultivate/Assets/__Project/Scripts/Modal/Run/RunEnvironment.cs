@@ -1076,7 +1076,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void CommitRunProcedure(RunResult.RunOutcome state)
     {
-        Assert.IsFalse(RunIsFinished(), "尝试结算一个已经结束的 Run");
+        if (RunIsFinished())
+            return;
 
         _result.SetOutcome(state);
         _runFinishedTime = GetPassedTime();

@@ -54,11 +54,27 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Buff禁止聚灵", "Images/BuffIcons/禁止聚灵"),
             new("Buff吸血", "Images/BuffIcons/吸血"),
             new("Buff心斋", "Images/BuffIcons/心斋"),
-            new("Buff延时攻", "Images/BuffIcons/延时攻"),
-            new("Buff延时护甲", "Images/BuffIcons/延时护甲"),
+            new("Buff延迟攻", "Images/BuffIcons/延迟攻"),
+            new("Buff延迟护甲", "Images/BuffIcons/延迟护甲"),
             new("Buff滞气", "Images/BuffIcons/滞气"),
             new("Buff钟声", "Images/BuffIcons/钟声"),
             new("Buff灼烧", "Images/BuffIcons/灼烧"),
+            
+            new("Buff淬体", "Images/BuffIcons/淬体"),
+            new("Buff锻体", "Images/BuffIcons/锻体"),
+            new("Buff飞龙在天", "Images/BuffIcons/飞龙在天"),
+            new("Buff凤凰涅槃", "Images/BuffIcons/凤凰涅槃"),
+            new("Buff护甲返还", "Images/BuffIcons/护甲返还"),
+            new("Buff击伤赋予护甲", "Images/BuffIcons/击伤赋予护甲"),
+            new("Buff摩诃钵特摩", "Images/BuffIcons/摩诃钵特摩"),
+            new("Buff人间无戈", "Images/BuffIcons/人间无戈"),
+            new("Buff盛开", "Images/BuffIcons/盛开"),
+            new("Buff天人合一", "Images/BuffIcons/天人合一"),
+            new("Buff天衣无缝", "Images/BuffIcons/天衣无缝"),
+            new("Buff通透世界", "Images/BuffIcons/通透世界"),
+            new("Buff玄武吐息法", "Images/BuffIcons/玄武吐息法"),
+            new("Buff一梦如是", "Images/BuffIcons/一梦如是"),
+            new("Buff诸行无常", "Images/BuffIcons/诸行无常"),
             
             // NodeIcons
             new("奇遇", "Images/NodeIcons/Adventure"),
@@ -285,6 +301,11 @@ public class SpriteCategory : Category<SpriteEntry>
             new("PackConstraints火", "Images/PackConstraintIllustrations/Huo"),
             new("PackConstraints土", "Images/PackConstraintIllustrations/Tu"),
             new("PackConstraints任意", "Images/PackConstraintIllustrations/Any"),
+            
+            // RunResultIllustrations
+            new("RunResultIllustrationWin", "Images/RunResultIllustrations/Win"),
+            new("RunResultIllustrationLose", "Images/RunResultIllustrations/Lose"),
+            
         });
     }
 
