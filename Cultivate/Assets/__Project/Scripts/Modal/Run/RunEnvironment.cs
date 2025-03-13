@@ -184,6 +184,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public StageResult GetSimulateResult() => _simulateResult.Value;
     public RunResult GetResult() => _result;
     public PanelDescriptor GetActivePanel() => Panel;
+    public Sprite GetCurrEventIllustration() => _map.GetCurrEventIllustration();
     public TimeSpan GetRunfinishedTime() => _runFinishedTime;
     public TimeSpan GetPassedTime() => _loadedTime + (DateTime.Now - _startTime);
     public RunReport GetRunReport() => _runReport;

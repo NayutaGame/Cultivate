@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class DialogPanel : Panel
 {
     [SerializeField] private CanvasGroup CanvasGroup;
+
+    [SerializeField] private Image Illustration;
     
     [SerializeField] private RectTransform TitleIdlePivot;
     [SerializeField] private CanvasGroup TitleCanvasGroup;
@@ -59,6 +61,8 @@ public class DialogPanel : Panel
     public override void Refresh()
     {
         DialogPanelDescriptor d = _address.Get<DialogPanelDescriptor>();
+
+        Illustration.sprite = RunManager.Instance.Environment.GetCurrEventIllustration();
 
         TitleText.text = d.GetTitleText();
 

@@ -6,8 +6,6 @@ using UnityEngine;
 public class RoomEntry : Entry
 {
     public virtual string GetName() => GetId();
-
-    public Sprite GetSprite() => Encyclopedia.SpriteCategory["摇曳"].Sprite;
     
     [NonSerialized] private string _description;
     public string GetDescription() => _description;
@@ -20,6 +18,8 @@ public class RoomEntry : Entry
 
     [NonSerialized] private Func<Map, Room, bool> _canCreate;
     [NonSerialized] private Func<Map, Room, PanelDescriptor> _create;
+
+    [NonSerialized] private SpriteEntry _spriteEntry;
 
     public RoomEntry(
         string id,
@@ -35,10 +35,14 @@ public class RoomEntry : Entry
         _withInPool = withInPool;
         _create = create;
         _canCreate = canCreate ?? ((map, room) => _ladderBound.Contains(room.Ladder));
+
+        _spriteEntry = ((SpriteEntry)($"Event{description}")) ?? Encyclopedia.SpriteCategory.MissingEventIllustration();
     }
 
     public bool CanCreate(Map map, Room room) => _canCreate(map, room);
     public PanelDescriptor Create(Map map, Room room) => _create(map, room);
 
     public static implicit operator RoomEntry(string id) => Encyclopedia.RoomCategory[id];
+    
+    public Sprite GetSprite() => _spriteEntry.Sprite;
 }

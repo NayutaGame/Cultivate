@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasGroup: {fileID: 6014535319903441510}
+  Illustration: {fileID: 7080340883478879349}
   TitleIdlePivot: {fileID: 871595107099218529}
   TitleCanvasGroup: {fileID: 5808511377847832492}
   TitleTransform: {fileID: 2659074997193145720}
@@ -1059,7 +1060,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -561.5, y: -22}
-  m_SizeDelta: {x: 724, y: 1000}
+  m_SizeDelta: {x: 680, y: 968}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8476749380421098879
 CanvasRenderer:
@@ -1089,7 +1090,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c18c7732e3df57f44b72e033be54dcfc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6baff7e1ad1d9da4691620e34e2b2d97, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

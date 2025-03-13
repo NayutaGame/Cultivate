@@ -97,6 +97,12 @@ public class Map : Addressable, ISerializationCallbackReceiver
     public Level GetCurrLevel() => _levels[_levelIndex];
     public Room GetCurrRoom() => GetCurrLevel().GetRoom(_stepIndex);
 
+    public Sprite GetCurrEventIllustration()
+    {
+        Room room = GetCurrRoom();
+        return room?.GetEntry().GetSprite() ?? Encyclopedia.SpriteCategory.MissingEventIllustration().Sprite;
+    }
+
     public bool IsAboutToFinish()
         => _levels.Length - 1 == _levelIndex && IsLastStep();
 

@@ -1,10 +1,8 @@
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class RoomCategory : Category<RoomEntry>
 {
@@ -228,7 +226,7 @@ public class RoomCategory : Category<RoomEntry>
                 }),
             
             new(id:                                 "序章出门",
-                description:                        "序章出门",
+                description:                        "出门",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, room) =>
@@ -2207,8 +2205,8 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
-            new(id:                                 "酿造仙岛玉液酒",
-                description:                        "酿造仙岛玉液酒",
+            new(id:                                 "仙岛玉液酒",
+                description:                        "仙岛玉液酒",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         true,
                 create:                             (map, room) =>

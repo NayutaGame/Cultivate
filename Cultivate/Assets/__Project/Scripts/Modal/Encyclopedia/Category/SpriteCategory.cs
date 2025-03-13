@@ -9,9 +9,6 @@ public class SpriteCategory : Category<SpriteEntry>
         {
             new("缺失卡面插画", "Images/MissingSprite"),
             
-            // Event Illustrations
-            new("Event缺失插画", "Images/EventIllustrations/缺失插画"),
-            
             // BuffIcons
             new("Buff不存在", "Images/BuffIcons/不存在"),
             new("Buff缺失插画", "Images/BuffIcons/缺失插画"),
@@ -306,6 +303,35 @@ public class SpriteCategory : Category<SpriteEntry>
             new("RunResultIllustrationWin", "Images/RunResultIllustrations/Win"),
             new("RunResultIllustrationLose", "Images/RunResultIllustrations/Lose"),
             
+            // Event
+            new("Event缺失插画", "Images/EventIllustrations/缺失插画"),
+            new("Event不存在的事件", "Images/EventIllustrations/不存在的事件"),
+            new("Event丢尺子", "Images/EventIllustrations/丢尺子"),
+            new("Event仙人下棋", "Images/EventIllustrations/仙人下棋"),
+            new("Event仙岛玉液酒", "Images/EventIllustrations/仙岛玉液酒"),
+            new("Event全等合成", "Images/EventIllustrations/全等合成"),
+            new("Event出门", "Images/EventIllustrations/出门"),
+            new("Event分子打印机", "Images/EventIllustrations/分子打印机"),
+            new("Event境界突破", "Images/EventIllustrations/境界突破"),
+            new("Event夏虫语冰", "Images/EventIllustrations/夏虫语冰"),
+            new("Event天机阁", "Images/EventIllustrations/天机阁"),
+            new("Event天津四", "Images/EventIllustrations/天津四"),
+            new("Event天界树", "Images/EventIllustrations/天界树"),
+            new("Event守株待兔", "Images/EventIllustrations/守株待兔"),
+            new("Event山木", "Images/EventIllustrations/山木"),
+            new("Event愿望单", "Images/EventIllustrations/愿望单"),
+            new("Event我已膨胀", "Images/EventIllustrations/我已膨胀"),
+            new("Event曹操三笑", "Images/EventIllustrations/曹操三笑"),
+            new("Event检测仪", "Images/EventIllustrations/检测仪"),
+            new("Event神灯精灵", "Images/EventIllustrations/神灯精灵"),
+            new("Event解梦师", "Images/EventIllustrations/解梦师"),
+            new("Event论无穷", "Images/EventIllustrations/论无穷"),
+            new("Event连抽五张", "Images/EventIllustrations/连抽五张"),
+            new("Event重新尝试教学", "Images/EventIllustrations/重新尝试教学"),
+            new("Event鸡肉面", "Images/EventIllustrations/鸡肉面"),
+            // 目前以下两个没有用到
+            // 全等合成
+            // 重新尝试教学
         });
     }
 
