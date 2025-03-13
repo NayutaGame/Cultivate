@@ -100,7 +100,6 @@ MonoBehaviour:
   SelectionListView: {fileID: 6300092684212926093}
   ConfirmButton: {fileID: 3827914709841015928}
   CancelButton: {fileID: 1394424871815548709}
-  SkillListView: {fileID: 0}
 --- !u!1 &2248033271685956244
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using CLLibrary;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -96,15 +97,61 @@ public class PackConfigPanel : PopupPanel
 
     private void EquipPackStaging(PackEquipDetails d)
     {
-        SelectionListView.Refresh();
-        ConstraintListView.Refresh();
+        void SetPosition(DelegatingView view, XView otherView)
+        {
+            view.GetAnimator().SetState(4);
+            view.GetDelegatedView().GetRect().position = otherView.GetRect().position;
+            view.GetDelegatedView().GetRect().localScale = otherView.GetRect().localScale;
+        }
+
+        void SetIdle(DelegatingView view)
+        {
+            view.GetAnimator().SetStateAsync(1);
+            // AudioManager.Play("CardPlacement");
+        }
+        
+        // ConstraintListView 设定动画
+        DelegatingView constraintView = ConstraintListView.ViewFromIndex(d.ConstraintIndex) as DelegatingView;
+        DelegatingView selectionView = SelectionListView.ViewFromIndex(d.SelectionIndex) as DelegatingView;
+        
+        constraintView.Refresh();
+        selectionView.Refresh();
+        
+        SetPosition(constraintView, selectionView.GetDelegatedView());
+        constraintView.GetAnimator().SetStateAsync(1);
+        selectionView.GetAnimator().SetState(1);
+        
+        // SelectionListView 归零 变暗
+        
         RefreshConfirmButton();
     }
 
     private void UnequipPackStaging(PackUnequipDetails d)
     {
-        SelectionListView.Refresh();
-        ConstraintListView.Refresh();
+        void SetPosition(DelegatingView view, XView otherView)
+        {
+            view.GetAnimator().SetState(4);
+            view.GetDelegatedView().GetRect().position = otherView.GetRect().position;
+            view.GetDelegatedView().GetRect().localScale = otherView.GetRect().localScale;
+        }
+
+        void SetIdle(DelegatingView view)
+        {
+            view.GetAnimator().SetStateAsync(1);
+            // AudioManager.Play("CardPlacement");
+        }
+        
+        // ConstraintListView 设定动画
+        DelegatingView constraintView = ConstraintListView.ViewFromIndex(d.ConstraintIndex) as DelegatingView;
+        DelegatingView selectionView = SelectionListView.ViewFromIndex(d.SelectionIndex) as DelegatingView;
+        
+        constraintView.Refresh();
+        selectionView.Refresh();
+        
+        SetPosition(selectionView, constraintView.GetDelegatedView());
+        selectionView.GetAnimator().SetStateAsync(1);
+        constraintView.GetAnimator().SetState(1);
+        
         RefreshConfirmButton();
     }
 

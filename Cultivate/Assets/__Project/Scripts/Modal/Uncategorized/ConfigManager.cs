@@ -130,8 +130,10 @@ public class ConfigManager : Addressable
 
         pack.IsEquipped = true;
         firstMatch.Pack = pack;
-
-        EquipPackNeuron.Invoke(new PackEquipDetails(pack, firstMatch));
+        
+        int selectionIndex = _packSelections.IndexOf(pack);
+        int constraintIndex = _packConstraints.IndexOf(firstMatch);
+        EquipPackNeuron.Invoke(new PackEquipDetails(pack, firstMatch, selectionIndex, constraintIndex));
     }
 
     public void UnequipPack(PackSelectionClickedDetails d)
@@ -171,7 +173,9 @@ public class ConfigManager : Addressable
         pack.IsEquipped = false;
         constraint.Pack = null;
         
-        UnequipPackNeuron.Invoke(new PackUnequipDetails(constraint, pack));
+        int constraintIndex = _packConstraints.IndexOf(constraint);
+        int selectionIndex = _packSelections.IndexOf(pack);
+        UnequipPackNeuron.Invoke(new PackUnequipDetails(constraint, pack, constraintIndex, selectionIndex));
     }
 
     public void UnequipPack(PackConstraintClickedDetails d)
@@ -200,10 +204,14 @@ public class ConfigManager : Addressable
             return;
         }
 
+        ConfigPack pack = constraint.Pack;
         constraint.Pack.IsEquipped = false;
         constraint.Pack = null;
-
-        UnequipPackNeuron.Invoke(new PackUnequipDetails(constraint, constraint.Pack));
+        
+        
+        int constraintIndex = _packConstraints.IndexOf(constraint);
+        int selectionIndex = _packSelections.IndexOf(pack);
+        UnequipPackNeuron.Invoke(new PackUnequipDetails(constraint, pack, constraintIndex, selectionIndex));
     }
 
     public PackConstraint GetFirstValidUnlockedSlot(ConfigPack pack)
