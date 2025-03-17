@@ -3228,7 +3228,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       async d =>
                 {
                     int times = d.Caster.GetStackOfBuff("灵气").ClampLower(1);
-                    await d.LoseBuffProcedure("灵气", times);
+                    await d.LoseBuffProcedure("灵气", times, induced: true);
                     await d.AttackProcedure(1, times: times);
                 }),
             

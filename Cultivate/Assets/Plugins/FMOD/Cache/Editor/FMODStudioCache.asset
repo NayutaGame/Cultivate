@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 638355086803490738
+  lastModified: 638355086800000000
   FileSizes:
   - Name: Desktop
     Value: 8287904
@@ -298,7 +298,7 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638355086803510684
+  lastModified: 638355086800000000
   FileSizes:
   - Name: Desktop
     Value: 1340
@@ -554,7 +554,7 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638355086805791853
+  lastModified: 638355086800000000
   FileSizes:
   - Name: Desktop
     Value: 278208
@@ -609,7 +609,7 @@ MonoBehaviour:
   - {fileID: -2899455908672976487}
   StringsBanks:
   - {fileID: 9008885310477251204}
-  cacheTime: 638355086805791853
+  cacheTime: 638355086800000000
   cacheVersion: 131608
 --- !u!114 &144236829208154482
 MonoBehaviour:
@@ -1314,7 +1314,7 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638355086803530637
+  lastModified: 638355086800000000
   FileSizes:
   - Name: Desktop
     Value: 1998
