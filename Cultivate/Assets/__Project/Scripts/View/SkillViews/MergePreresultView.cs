@@ -98,7 +98,7 @@ public class MergePreresultView : XView
             .Append(CanvasGroup.DOFade(1, 0.3f))
             .Join(DOTween.Sequence()
                 .Append(GetRect().DOScale(1f, 0.3f)))
-                .Append(GetRect().DOScale(0.9f, 1f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo));
+                .Append(GetRect().DOScale(0.9f, 1f).SetEase(Ease.OutQuad).SetLoops(99999, LoopType.Yoyo));
 
     public Tween HideTween()
         => DOTween.Sequence()

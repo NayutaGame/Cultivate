@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using CLLibrary;
+using DG.Tweening;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -52,6 +53,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         base.DidAwake();
 
         _mainThread = Thread.CurrentThread;
+        DOTween.SetTweensCapacity(500, 500);
 
         _accessors = new Dictionary<string, Func<object>>()
         {

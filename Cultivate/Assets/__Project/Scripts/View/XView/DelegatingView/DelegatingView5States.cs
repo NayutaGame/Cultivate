@@ -20,8 +20,6 @@ public class DelegatingView5States : DelegatingView
         animator[-1, 4] = EnterFree;
         animator[4, -1] = ExitFree;
         return animator;
-        
-        // animator[-1, 4] = PingTween;
     }
 
     protected override void InitInteractBehaviour(InteractBehaviour ib)
@@ -110,68 +108,9 @@ public class DelegatingView5States : DelegatingView
         }
     }
     
-    // public void Dropping(InteractBehaviour ib, PointerEventData d)
-    // {
-    //     ib.GetCLView().SetIdle(ib, d);
-    //     gameObject.SetActive(false);
-    // }
-    
     private void Drag(InteractBehaviour ib, PointerEventData eventData)
     {
         Vector3 position = CanvasManager.Instance.UI2World(eventData.position);
         CanvasManager.Instance.GetPinAnchorRect().position = position;
     }
-
-
-
-    // public void PlayAppearAnimation()
-    // {
-    //     GetAnimator().SetState(0);
-    //     GetAnimator().SetStateAsync(1);
-    // }
-    //
-    // public void PlayDisappearAnimation()
-    // {
-    //     GetAnimator().SetStateAsync(0);
-    // }
-    //
-    // public void Disappear()
-    // {
-    //     GetAnimator().SetState(0);
-    // }
-    //
-    // public void RefreshPivots()
-    //     => GetAnimator().SetStateAsync(1);
-    //
-    // private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
-    // {
-    //     // if (_animator.State != 0)
-    //     //     _animator.SetStateAsync(1);
-    // }
-    //
-    // public void PlayPingAnimation()
-    //     => GetAnimator().SetStateAsync(4);
-    //
-    // private Tween HideTween()
-    //     => DOTween.Sequence()
-    //         .AppendCallback(() => GetInteractBehaviour().SetInteractable(false))
-    //         .Append(GetDelegatedView().GetRect().DOScale(0, 0.15f).SetEase(Ease.OutQuad));
-    //
-    // private Tween IdleTween()
-    //     => DOTween.Sequence()
-    //         .Append(new FollowAnimation(GetDelegatedView().GetRect(), IdleTransform).GetHandle());
-    //         // .AppendCallback(() => CLView.GetInteractBehaviour().SetInteractable(true))
-    //
-    // private Tween SetInteractable()
-    //     => DOTween.Sequence()
-    //         .AppendCallback(() => GetInteractBehaviour().SetInteractable(true));
-    //
-    // private Tween HoverTween()
-    //     => new FollowAnimation(GetDelegatedView().GetRect(), HoverTransform).GetHandle();
-    //
-    // private Tween FollowTween()
-    //     => new FollowAnimation(GetDelegatedView().GetRect(), FollowTransform).GetHandle();
-    //
-    // private Tween PingTween()
-    //     => GetDelegatedView().GetRect().DOScale(1.5f, 0.075f).SetEase(Ease.OutQuad).SetLoops(2, loopType: LoopType.Yoyo);
 }

@@ -71,7 +71,7 @@ public class GuideView : MonoBehaviour
             _handle = DOTween.Sequence()
                 .Append(anim.GetHandle())
                 .AppendInterval(0.4f)
-                .SetLoops(-1, loopType: LoopType.Restart);
+                .SetLoops(99999, loopType: LoopType.Restart);
             _handle.SetAutoKill().Restart();
         }
         else if (guide is UnequipGuide unequipGuide)
@@ -96,7 +96,7 @@ public class GuideView : MonoBehaviour
             _handle = DOTween.Sequence()
                 .Append(anim.GetHandle())
                 .AppendInterval(0.4f)
-                .SetLoops(-1, loopType: LoopType.Restart);
+                .SetLoops(99999, loopType: LoopType.Restart);
             _handle.SetAutoKill().Restart();
         }
         else if (guide is MergeGuide mergeGuide)
@@ -121,7 +121,7 @@ public class GuideView : MonoBehaviour
             _handle = DOTween.Sequence()
                 .Append(anim.GetHandle())
                 .AppendInterval(0.4f)
-                .SetLoops(-1, loopType: LoopType.Restart);
+                .SetLoops(99999, loopType: LoopType.Restart);
             _handle.SetAutoKill().Restart();
         }
         else if (guide is ClickBattleGuide clickBattleGuide)

@@ -49,8 +49,8 @@ public static class TweenAnimation
             .Append(target.DOScale(1.25f, 0.1f).SetEase(Ease.Linear))
             .Append(target.DOScale(1f, 0.2f).SetEase(Ease.OutQuad))
             .AppendInterval(0.6f)
-            .SetLoops(-1, loopType: LoopType.Restart);
+            .SetLoops(99999, loopType: LoopType.Restart);
 
     public static Tween Jump(RectTransform target)
-        => target.DOScale(Vector3.one, 0.85f).From(1.1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InQuad);
+        => target.DOScale(Vector3.one, 0.85f).From(1.1f).SetLoops(99999, LoopType.Yoyo).SetEase(Ease.InQuad);
 }

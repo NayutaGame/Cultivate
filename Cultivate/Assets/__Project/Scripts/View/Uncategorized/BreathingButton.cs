@@ -40,7 +40,7 @@ public class BreathingButton : MonoBehaviour,
 
         _handle?.Kill();
         _handle = _rectTransform.DOScale(Vector3.one, 0.7f).From(1.2f)
-            .SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InQuad).SetAutoKill();
+            .SetLoops(99999, LoopType.Yoyo).SetEase(Ease.InQuad).SetAutoKill();
         _handle.Restart();
     }
 
@@ -62,7 +62,7 @@ public class BreathingButton : MonoBehaviour,
         if (_breathing)
         {
             _handle = _rectTransform.DOScale(Vector3.one, 0.7f).From(1.2f)
-                .SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InQuad).SetAutoKill();
+                .SetLoops(99999, LoopType.Yoyo).SetEase(Ease.InQuad).SetAutoKill();
         }
         else
         {
