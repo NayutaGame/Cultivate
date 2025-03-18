@@ -123,7 +123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5822712034224908152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0533921ce9bac534f89b9ff88b9aadde, type: 3}
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8155228337873847611
@@ -294,20 +294,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4961411691995726218, guid: f00172c11bdd30a40aff47ece12c3946, type: 3}
   m_PrefabInstance: {fileID: 5984462886594015716}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5379062462618611691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1717961545395335278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637b7bb92a0d96240a4ccaa132416877, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ib: {fileID: 7536779396942873148}
-  _skillView: {fileID: 3877830227938690711}
 --- !u!114 &3828348146133271958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +309,20 @@ MonoBehaviour:
   _ib: {fileID: 7536779396942873148}
   AnnotationAddress: Canvas.SkillAnnotation
   HoverTransform: {fileID: 2389559373453481017}
+--- !u!114 &5379062462618611691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717961545395335278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637b7bb92a0d96240a4ccaa132416877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 7536779396942873148}
+  _skillView: {fileID: 3877830227938690711}
 --- !u!224 &3001455169898186917 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8838977114607417665, guid: f00172c11bdd30a40aff47ece12c3946, type: 3}

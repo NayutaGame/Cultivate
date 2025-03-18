@@ -4,11 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InteractBehaviour : MonoBehaviour,
-    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler,
-    IBeginDragHandler, IEndDragHandler, IDragHandler,
-    IDropHandler,
-    IPointerClickHandler
+public class InteractBehaviour : MonoBehaviour
 {
     private XView _view;
     public XView GetView() => _view;

@@ -123,7 +123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5822712034224908152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0533921ce9bac534f89b9ff88b9aadde, type: 3}
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8155228337873847611
@@ -181,6 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 3429236827418137952}
   _delegatedView: {fileID: 9192038210444253278}
+  _emphasizedScale: 1.5
+  _emphasisDuration: 0.075
   HideConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
     LocalScale: {x: 0, y: 0, z: 0}
