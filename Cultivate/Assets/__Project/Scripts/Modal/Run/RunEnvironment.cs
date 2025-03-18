@@ -1182,7 +1182,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _runReport.AppendReport(newReport);
         newReport.OnEnter(this);
         
-        _runReport.CopyRunReportToClipboard();
+        // _runReport.CopyRunReportToClipboard();
 
         AppendReportNeuron.Invoke();
     }
@@ -1200,7 +1200,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _runReport.AppendReport(newReport);
         newReport.OnEnter(this);
         
-        _runReport.CopyRunReportToClipboard();
+        // _runReport.CopyRunReportToClipboard();
 
         AppendReportNeuron.Invoke();
     }
@@ -1219,7 +1219,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _runReport.AppendReport(newReport);
         newReport.OnEnter(this);
         
-        _runReport.CopyRunReportToClipboard();
+        // _runReport.CopyRunReportToClipboard();
     
         AppendReportNeuron.Invoke();
     }

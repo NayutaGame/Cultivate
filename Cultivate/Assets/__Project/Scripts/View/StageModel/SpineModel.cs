@@ -72,8 +72,8 @@ public class SpineModel : IStageModel
 
     public override Animation GetAnimationFromHeal(bool induced)
     {
-        return new HealTweenAnimation(this, true, induced);
-        // return new SpineAnimation(Skeleton, "hail", true, true, induced);
+        // return new HealTweenAnimation(this, true, induced);
+        return new SpineAnimation(this, "hail", "idle", SpineAnimation.IntervalType.NoInterval, 0, true, induced);
     }
 
     public override Animation GetAnimationFromGuard(bool induced)
