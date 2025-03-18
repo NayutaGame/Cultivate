@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CanvasManager : Singleton<CanvasManager>, Addressable
@@ -28,7 +29,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("Annotations")] public TextHint TextHint;
     [TabGroup("Annotations")] public PackPreview PackPreview;
     
-    [TabGroup("Others")]public PinAnchor PinAnchor;
+    [TabGroup("Others")]public Grabber Grabber;
     [TabGroup("Others")]public MergePreresultView MergePreresultView;
     [TabGroup("Others")]public GuideView GuideView;
     [TabGroup("Others")]public Curtain Curtain;
@@ -49,8 +50,8 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         return WuXingColors[wuXing.Value._index];
     }
 
-    public RectTransform GetPinAnchorRect()
-        => PinAnchor.GetRect();
+    public Grabber GetGrabber()
+        => Grabber;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();

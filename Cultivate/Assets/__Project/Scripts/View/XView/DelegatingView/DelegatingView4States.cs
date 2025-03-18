@@ -33,17 +33,17 @@ public class DelegatingView4States : DelegatingView
 
     private Tween EnterHide()
         => DOTween.Sequence()
-            .AppendCallback(RecoverReparent)
+            .AppendCallback(GrabberRelease)
             .Append(GoToConfiguration(HideConfiguration));
 
     private Tween EnterIdle()
         => DOTween.Sequence()
-            .AppendCallback(RecoverReparent)
+            .AppendCallback(GrabberRelease)
             .Append(GoToConfiguration(IdleConfiguration));
 
     private Tween EnterHover()
         => DOTween.Sequence()
-            .AppendCallback(ReparentToAnchor)
+            .AppendCallback(GrabberSetHover)
             .Append(GoToConfiguration(HoverConfiguration));
     
     private Tween EnterFree()
@@ -74,21 +74,13 @@ public class DelegatingView4States : DelegatingView
         GetAnimator().SetStateAsync(1);
     }
 
-    private void ReparentToAnchor()
+    private void GrabberSetHover()
     {
-        GetDelegatedView().GetRect().SetParent(CanvasManager.Instance.GetPinAnchorRect());
+        CanvasManager.Instance.GetGrabber().SetHover(this);
     }
 
-    private void RecoverReparent()
+    private void GrabberRelease()
     {
-        AnimatedListView parent = GetParentListView();
-        if (parent != null)
-        {
-            parent.RecoverDelegatingView(this);
-        }
-        else
-        {
-            GetDelegatedView().GetRect().SetParent(GetRect());
-        }
+        CanvasManager.Instance.GetGrabber().Release(this);
     }
 }

@@ -247,7 +247,7 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
-            new(id: "快速结算",
+            new(id: "结算测试",
                 envJingJie: JingJie.LianQi,
                 slotCount: 4,
                 gold: 0,
@@ -502,7 +502,7 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
-            new(id: "测试",
+            new(id: "境界测试",
                 envJingJie: JingJie.LianQi,
                 slotCount: 3,
                 gold: 3,

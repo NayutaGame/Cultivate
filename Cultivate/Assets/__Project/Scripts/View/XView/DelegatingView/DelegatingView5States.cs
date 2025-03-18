@@ -1,5 +1,6 @@
 
 using DG.Tweening;
+using FMOD;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -39,23 +40,23 @@ public class DelegatingView5States : DelegatingView
 
     private Tween EnterHide()
         => DOTween.Sequence()
-            .AppendCallback(RecoverReparent)
+            .AppendCallback(GrabberRelease)
             .Append(GoToConfiguration(HideConfiguration));
 
     private Tween EnterIdle()
         => DOTween.Sequence()
-            .AppendCallback(RecoverReparent)
+            .AppendCallback(GrabberRelease)
             .Append(GoToConfiguration(IdleConfiguration));
 
     private Tween EnterHover()
         => DOTween.Sequence()
-            .AppendCallback(ReparentToAnchor)
+            .AppendCallback(GrabberSetHover)
             .Append(GoToConfiguration(HoverConfiguration));
 
     private Tween EnterFollow()
         => DOTween.Sequence()
-            .AppendCallback(ReparentToAnchor)
-            .Append(new FollowAnimation(GetDelegatedView().GetRect(), CanvasManager.Instance.GetPinAnchorRect()).GetHandle());
+            .AppendCallback(GrabberSetDrag)
+            .Append(new FollowAnimation(GetDelegatedView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
 
     private Tween EnterFree()
         => DOTween.Sequence()
@@ -90,27 +91,23 @@ public class DelegatingView5States : DelegatingView
         GetAnimator().SetStateAsync(1);
     }
 
-    public void ReparentToAnchor()
+    public void GrabberSetHover()
     {
-        GetDelegatedView().GetRect().SetParent(CanvasManager.Instance.GetPinAnchorRect());
+        CanvasManager.Instance.GetGrabber().SetHover(this);
     }
 
-    public void RecoverReparent()
+    public void GrabberSetDrag()
     {
-        AnimatedListView parent = GetParentListView();
-        if (parent != null)
-        {
-            parent.RecoverDelegatingView(this);
-        }
-        else
-        {
-            GetDelegatedView().GetRect().SetParent(GetRect());
-        }
+        CanvasManager.Instance.GetGrabber().SetDrag(this);
+    }
+
+    public void GrabberRelease()
+    {
+        CanvasManager.Instance.GetGrabber().Release(this);
     }
     
     private void Drag(InteractBehaviour ib, PointerEventData eventData)
     {
-        Vector3 position = CanvasManager.Instance.UI2World(eventData.position);
-        CanvasManager.Instance.GetPinAnchorRect().position = position;
+        CanvasManager.Instance.GetGrabber().SetPosition(eventData);
     }
 }
