@@ -15,16 +15,6 @@ public class DelegatingView3States : DelegatingView
         animator[-1, 1] = EnterIdle;
         animator[-1, 2] = EnterHover;
         return animator;
-        
-        // // 0 for hide, 1 for idle, 2 for hover, 3 for follow, 4 for ping
-        // Animator animator = new(5, View.name);
-        // animator[-1, 0] = HideTween;
-        // animator[0, -1] = SetInteractable;
-        // animator[-1, 1] = IdleTween;
-        // animator[-1, 2] = HoverTween;
-        // animator[-1, 3] = FollowTween;
-        // animator[-1, 4] = PingTween;
-        // return animator;
     }
 
     protected override void InitInteractBehaviour(InteractBehaviour ib)

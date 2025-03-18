@@ -90,6 +90,16 @@ public class DelegatingView5States : DelegatingView
     {
         GetAnimator().SetStateAsync(1);
     }
+    
+    private void Drag(InteractBehaviour ib, PointerEventData eventData)
+    {
+        CanvasManager.Instance.GetGrabber().SetPosition(eventData);
+    }
+
+    // private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    // {
+    //     GetAnimator().SetStateAsync(1);
+    // }
 
     public void GrabberSetHover()
     {
@@ -104,10 +114,5 @@ public class DelegatingView5States : DelegatingView
     public void GrabberRelease()
     {
         CanvasManager.Instance.GetGrabber().Release(this);
-    }
-    
-    private void Drag(InteractBehaviour ib, PointerEventData eventData)
-    {
-        CanvasManager.Instance.GetGrabber().SetPosition(eventData);
     }
 }

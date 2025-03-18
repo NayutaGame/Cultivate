@@ -124,7 +124,10 @@ public class AnimatedListView : ListView
     public void RecoverDelegatingView(DelegatingView delegatingView)
     {
         delegatingView.GetDelegatedView().GetRect().SetParent(_viewContainer);
-        int siblingIndex = IndexFromView(delegatingView).Value;
+        int? index = IndexFromView(delegatingView);
+        if (!index.HasValue)
+            return;
+        int siblingIndex = index.Value;
         delegatingView.GetDelegatedView().GetRect().SetSiblingIndex(siblingIndex);
     }
 }

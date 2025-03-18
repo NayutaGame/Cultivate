@@ -40,9 +40,13 @@ public class Grabber : MonoBehaviour
     {
         if (_state == GrabState.Drag)
             return;
-        
+
         if (_state == GrabState.Hover)
+        {
+            if (_view != view)
+                _view.GetAnimator().SetStateAsync(1);
             Release(_view);
+        }
         
         _state = GrabState.Drag;
         _view = view;
