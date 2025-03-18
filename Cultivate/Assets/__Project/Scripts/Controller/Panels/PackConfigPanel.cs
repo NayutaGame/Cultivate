@@ -99,7 +99,7 @@ public class PackConfigPanel : PopupPanel
     {
         void SetPosition(DelegatingView view, XView otherView)
         {
-            view.GetAnimator().SetState(4);
+            view.GetAnimator().SetState(3);
             view.GetDelegatedView().GetRect().position = otherView.GetRect().position;
             view.GetDelegatedView().GetRect().localScale = otherView.GetRect().localScale;
         }
@@ -130,7 +130,7 @@ public class PackConfigPanel : PopupPanel
     {
         void SetPosition(DelegatingView view, XView otherView)
         {
-            view.GetAnimator().SetState(4);
+            view.GetAnimator().SetState(3);
             view.GetDelegatedView().GetRect().position = otherView.GetRect().position;
             view.GetDelegatedView().GetRect().localScale = otherView.GetRect().localScale;
         }
