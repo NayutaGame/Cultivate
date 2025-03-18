@@ -33,6 +33,7 @@ public class Grabber : MonoBehaviour
         
         _state = GrabState.Hover;
         _view = view;
+        _view.GetDelegatedView().GetRect().SetParent(GetRect());
     }
 
     public void SetDrag(DelegatingView view)
@@ -45,6 +46,7 @@ public class Grabber : MonoBehaviour
         
         _state = GrabState.Drag;
         _view = view;
+        _view.GetDelegatedView().GetRect().SetParent(GetRect());
     }
 
     public void Release(DelegatingView view)
