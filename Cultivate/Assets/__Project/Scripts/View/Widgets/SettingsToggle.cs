@@ -13,38 +13,34 @@ public class SettingsToggle : LegacySimpleView
     [SerializeField] private Transform OnTransform;
     [SerializeField] private Transform OffTransform;
 
-    private ToggleModel _model;
-
     public override void AwakeFunction()
     {
         base.AwakeFunction();
         
-        if (_model == null)
-            SetAddress(null);
+        FillRect.onClick.RemoveAllListeners();
+        FillRect.onClick.AddListener(Toggle);
     }
 
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        _model = GetAddress() == null ? ToggleModel.Default : Get<ToggleModel>();
-
-        if (LabelText != null)
-            LabelText.text = _model.Name;
-
-        bool on = _model.Value;
-        FillRectTransform.position = on ? OnTransform.position : OffTransform.position;
         
-        FillRect.onClick.RemoveAllListeners();
-        FillRect.onClick.AddListener(Toggle);
+        ToggleModel model = Get<ToggleModel>();
+        
+        LabelText.text = model.Name;
+
+        bool on = model.IsOn;
+        FillRectTransform.position = on ? OnTransform.position : OffTransform.position;
     }
 
     private Tween _handle;
 
     private void Toggle()
     {
-        _model.Toggle();
+        ToggleModel model = Get<ToggleModel>();
+        model.Toggle();
 
-        bool on = _model.Value;
+        bool on = model.IsOn;
 
         _handle?.Kill();
         _handle = FillRectTransform.DOMove(on ? OnTransform.position : OffTransform.position, 0.15f).SetEase(Ease.InOutQuad);

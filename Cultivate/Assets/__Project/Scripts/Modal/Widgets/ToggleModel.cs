@@ -1,15 +1,37 @@
 
+using System;
+
 public class ToggleModel : WidgetModel
 {
-    public bool Value;
+    public Action<int> _setFunc;
+    public int DefaultValue;
+    
+    public int Value
+    {
+        get => Settings.GetData()[Name];
+        set
+        {
+            Settings.GetData()[Name] = value;
+            _setFunc?.Invoke(value);
+        }
+    }
 
-    public ToggleModel(string name) : base(name) { }
+    public bool IsOn
+        => Value > 0;
+
+    public ToggleModel(
+        string name,
+        Settings settings,
+        Action<int> setFunc,
+        int defaultValue
+        ) : base(name, settings)
+    {
+        _setFunc = setFunc;
+        DefaultValue = defaultValue;
+    }
 
     public void Toggle()
     {
-        Value = !Value;
+        Value = 1 - Value;
     }
-
-    public static ToggleModel Default
-        => new("默认Toggle");
 }

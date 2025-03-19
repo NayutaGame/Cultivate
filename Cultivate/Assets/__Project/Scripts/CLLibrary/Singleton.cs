@@ -10,6 +10,21 @@ namespace CLLibrary
 
         public void Awake()
         {
+            CheckAwake();
+        }
+
+        private bool _hasAwoken;
+
+        public void CheckAwake()
+        {
+            if (_hasAwoken)
+                return;
+            _hasAwoken = true;
+            AwakeFunction();
+        }
+
+        protected virtual void AwakeFunction()
+        {
             if (_instance != null)
             {
                 Destroy(gameObject);
@@ -17,11 +32,6 @@ namespace CLLibrary
             }
 
             _instance = this as T;
-            DidAwake();
-        }
-
-        public virtual void DidAwake()
-        {
         }
 
         private void OnDestroy()

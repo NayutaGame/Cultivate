@@ -10,16 +10,13 @@ public class AudioManager : Singleton<AudioManager>
     private Bus MusicBus;
     private Bus SFXBus;
 
-    public override void DidAwake()
+    protected override void AwakeFunction()
     {
-        base.DidAwake();
-
+        base.AwakeFunction();
+        
         MasterBus = RuntimeManager.GetBus("bus:/");
         MusicBus = RuntimeManager.GetBus("bus:/Music");
         SFXBus = RuntimeManager.GetBus("bus:/SFX");
-
-        // read from save actually
-        SetPreferredVolume();
     }
 
     private AudioEntry PlayingEntry;
@@ -65,9 +62,9 @@ public class AudioManager : Singleton<AudioManager>
         return volume * 100;
     }
 
-    public static void SetMasterVolume(float value)
+    public static void SetMasterVolume(int value)
     {
-        Instance.MasterBus.setVolume(value / 100);
+        Instance.MasterBus.setVolume((float)value / 100);
     }
 
     public static float GetMusicVolume()
@@ -76,9 +73,9 @@ public class AudioManager : Singleton<AudioManager>
         return volume * 100;
     }
 
-    public static void SetMusicVolume(float value)
+    public static void SetMusicVolume(int value)
     {
-        Instance.MusicBus.setVolume(value / 100);
+        Instance.MusicBus.setVolume((float)value / 100);
     }
 
     public static float GetSFXVolume()
@@ -87,9 +84,9 @@ public class AudioManager : Singleton<AudioManager>
         return volume * 100;
     }
 
-    public static void SetSFXVolume(float value)
+    public static void SetSFXVolume(int value)
     {
-        Instance.SFXBus.setVolume(value / 100);
+        Instance.SFXBus.setVolume((float)value / 100);
     }
 
     public static void SetPreferredVolume()

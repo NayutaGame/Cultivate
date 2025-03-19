@@ -1,30 +1,46 @@
 
+using System;
 using System.Collections.Generic;
 
 public class SwitchModel : WidgetModel
 {
     public List<string> Options;
-    public int Index;
+    public Action<int> _setFunc;
+    public int DefaultValue;
+    
+    public int Value
+    {
+        get => Settings.GetData()[Name];
+        set
+        {
+            Settings.GetData()[Name] = value;
+            _setFunc?.Invoke(value);
+        }
+    }
 
-    public SwitchModel(string name, List<string> options, int index = 0) : base(name)
+    public SwitchModel(
+        string name,
+        Settings settings,
+        List<string> options,
+        Action<int> setFunc,
+        int defaultValue
+        ) : base(name, settings)
     {
         Options = options;
-        Index = index;
+        _setFunc = setFunc;
+        DefaultValue = defaultValue;
     }
 
     public string GetContentText()
-        => Options[Index];
+        => Options[Value];
 
     public void Prev()
     {
-        Index = (Index + Options.Count - 1) % Options.Count;
+        Value = (Value + Options.Count - 1) % Options.Count;
     }
 
     public void Next()
     {
-        Index = (Index + 1) % Options.Count;
+        Value = (Value + 1) % Options.Count;
     }
-
-    public static SwitchModel Default
-        => new("默认Switch", new List<string>() { "苹果", "香蕉", "橙子" }, 0);
 }

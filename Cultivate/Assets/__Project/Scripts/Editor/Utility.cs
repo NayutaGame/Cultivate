@@ -44,4 +44,11 @@ public class Utility : MonoBehaviour
         FileUtility.DeleteFile(ProfileList.Filename);
         AssetDatabase.Refresh();
     }
+
+    [MenuItem("Utility/Delete SettingsData", false, 0)]
+    static void DeleteSettingsData(MenuCommand menuCommand)
+    {
+        FileUtility.DeleteFile(SettingsData.Filename);
+        AssetDatabase.Refresh();
+    }
 }

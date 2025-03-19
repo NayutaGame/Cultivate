@@ -10,25 +10,9 @@ public class SettingsSwitch : LegacySimpleView
     [SerializeField] private Button PrevButton;
     [SerializeField] private Button NextButton;
 
-    private SwitchModel _model;
-
     public override void AwakeFunction()
     {
         base.AwakeFunction();
-        
-        if (_model == null)
-            SetAddress(null);
-    }
-
-    public override void SetAddress(Address address)
-    {
-        base.SetAddress(address);
-        _model = GetAddress() == null ? SwitchModel.Default : Get<SwitchModel>();
-
-        if (LabelText != null)
-            LabelText.text = _model.Name;
-        
-        ContentText.text = _model.GetContentText();
 
         PrevButton.onClick.RemoveAllListeners();
         PrevButton.onClick.AddListener(Prev);
@@ -39,18 +23,25 @@ public class SettingsSwitch : LegacySimpleView
     public override void Refresh()
     {
         base.Refresh();
-        ContentText.text = _model.GetContentText();
+        
+        SwitchModel model = Get<SwitchModel>();
+
+        LabelText.text = model.Name;
+        
+        ContentText.text = model.GetContentText();
     }
 
     private void Prev()
     {
-        _model.Prev();
-        ContentText.text = _model.GetContentText();
+        SwitchModel model = Get<SwitchModel>();
+        model.Prev();
+        ContentText.text = model.GetContentText();
     }
 
     private void Next()
     {
-        _model.Next();
-        ContentText.text = _model.GetContentText();;
+        SwitchModel model = Get<SwitchModel>();
+        model.Next();
+        ContentText.text = model.GetContentText();
     }
 }

@@ -1979,6 +1979,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isDeveloperMode: 1
   AppCanvas: {fileID: 1627659553}
+  AudioManager: {fileID: 2059320725}
   EditorManager: {fileID: 1604468907}
   RunManager: {fileID: 1977029710}
   StageManager: {fileID: 402125080}
@@ -1994,11 +1995,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2059320726}
   - {fileID: 1604468908}
   - {fileID: 1977029711}
   - {fileID: 402125081}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &402125080 stripped
 MonoBehaviour:
@@ -3834,7 +3836,7 @@ RectTransform:
   - {fileID: 1056660503}
   - {fileID: 763998920}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4682,7 +4684,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 387419141}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1622202371
 PrefabInstance:
@@ -5055,7 +5057,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 427517688239916290, guid: 22ac613e18b25564eb21878d84aaec1f, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 427517688239916290, guid: 22ac613e18b25564eb21878d84aaec1f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6997,7 +6999,7 @@ Transform:
   m_Children:
   - {fileID: 1182676731}
   m_Father: {fileID: 387419141}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1978353136
 GameObject:
@@ -7446,13 +7448,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2059320724}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 387419141}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1981921450119099222 stripped
 RectTransform:

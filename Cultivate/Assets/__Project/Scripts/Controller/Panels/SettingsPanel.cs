@@ -73,16 +73,19 @@ public class SettingsPanel : PopupPanel
 
     public override void Return()
     {
+        AppManager.Instance.Settings.SaveProcedure();
         AppManager.Instance.Pop();
     }
 
     private void ToTitle()
     {
+        AppManager.Instance.Settings.SaveProcedure();
         AppManager.Instance.Pop(2);
     }
 
     private void ToDesktop()
     {
+        AppManager.Instance.Settings.SaveProcedure();
         AppManager.ExitGame();
     }
 

@@ -13,10 +13,10 @@ public class RunManager : Singleton<RunManager>, Addressable
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public override void DidAwake()
+    protected override void AwakeFunction()
     {
-        base.DidAwake();
-
+        base.AwakeFunction();
+        
         _accessors = new()
         {
             { "Environment",           () => Environment },

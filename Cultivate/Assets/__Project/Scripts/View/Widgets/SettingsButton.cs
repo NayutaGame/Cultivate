@@ -8,30 +8,24 @@ public class SettingsButton : LegacySimpleView
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private Button Button;
 
-    private ButtonModel _model;
-
     public override void AwakeFunction()
     {
         base.AwakeFunction();
         
-        if (_model == null)
-            SetAddress(null);
+        Button.onClick.RemoveAllListeners();
+        Button.onClick.AddListener(Click);
     }
 
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        _model = GetAddress() == null ? ButtonModel.Default : Get<ButtonModel>();
-
-        if (LabelText != null)
-            LabelText.text = _model.Name;
-
-        Button.onClick.RemoveAllListeners();
-        Button.onClick.AddListener(Click);
+        ButtonModel model = Get<ButtonModel>();
+        LabelText.text = model.Name;
     }
 
     public void Click()
     {
-        _model.Click();
+        ButtonModel model = Get<ButtonModel>();
+        model.Click();
     }
 }

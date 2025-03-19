@@ -3,33 +3,40 @@ using System;
 
 public class SliderModel : WidgetModel
 {
-    private float _value;
+    public int MinValue;
+    public int MaxValue;
     
-    private Func<float> _getFunc;
-    private Action<float> _setFunc;
-    public float Value
+    public Action<int> _setFunc;
+    public int DefaultValue;
+    
+    public int Value
     {
-        get => _getFunc?.Invoke() ?? _value;
+        get => Settings.GetData()[Name];
         set
         {
-            _value = value;
-            _setFunc?.Invoke(_value);
+            Settings.GetData()[Name] = value;
+            _setFunc?.Invoke(value);
         }
     }
 
-    public float MinValue;
-    public float MaxValue;
-    public bool WholeNumbers;
-
-    public SliderModel(string name, Func<float> getFunc = null, Action<float> setFunc = null, int minValue = 0, int maxValue = 100, bool wholeNumbers = true) : base(name)
+    public SliderModel(
+        string name,
+        Settings settings,
+        int minValue,
+        int maxValue,
+        Action<int> setFunc,
+        int defaultValue) : base(name, settings)
     {
-        _getFunc = getFunc;
-        _setFunc = setFunc;
         MinValue = minValue;
         MaxValue = maxValue;
-        WholeNumbers = wholeNumbers;
+        _setFunc = setFunc;
+        DefaultValue = defaultValue;
     }
 
-    public static SliderModel Default
-        => new("默认Slider");
+    public static SliderModel CreateWithDefaultRange(
+        string name,
+        Settings settings,
+        Action<int> setFunc,
+        int defaultValue)
+        => new(name, settings, 0, 100, setFunc, defaultValue);
 }

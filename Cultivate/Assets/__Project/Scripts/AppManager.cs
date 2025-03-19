@@ -36,6 +36,7 @@ public class AppManager : Singleton<AppManager>, Addressable
     public Settings Settings;
 
     private Encyclopedia Encyclopedia;
+    public AudioManager AudioManager;
     public EditorManager EditorManager;
     public ProfileManager ProfileManager;
     public ConfigManager ConfigManager;
@@ -48,9 +49,10 @@ public class AppManager : Singleton<AppManager>, Addressable
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public override void DidAwake()
+
+    protected override void AwakeFunction()
     {
-        base.DidAwake();
+        base.AwakeFunction();
 
         _mainThread = Thread.CurrentThread;
         DOTween.SetTweensCapacity(500, 500);
@@ -80,6 +82,8 @@ public class AppManager : Singleton<AppManager>, Addressable
             Address.AddToRoot(kvp.Key, kvp.Value);
 
         Application.targetFrameRate = 60;
+        
+        AudioManager.CheckAwake();
 
         Settings = new();
         Encyclopedia = new();
