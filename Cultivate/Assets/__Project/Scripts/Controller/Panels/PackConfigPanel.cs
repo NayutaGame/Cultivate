@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class PackConfigPanel : PopupPanel
 {
+    [SerializeField] private GameObject BlockingCurtain;
+    
     [SerializeField] private AnimatedListView ConstraintListView;
     [SerializeField] private AnimatedListView SelectionListView;
     [SerializeField] private Button ConfirmButton;
@@ -274,4 +276,14 @@ public class PackConfigPanel : PopupPanel
             view.GetBehaviour<HighlightBehaviour>().SetHighlight(false);
         }
     }
+
+    public override Tween EnterIdle()
+        => DOTween.Sequence()
+            .Append(base.EnterIdle())
+            .AppendCallback(() => BlockingCurtain.SetActive(false));
+
+    public override Tween EnterHide()
+        => DOTween.Sequence()
+            .AppendCallback(() => BlockingCurtain.SetActive(true))
+            .Append(base.EnterHide());
 }

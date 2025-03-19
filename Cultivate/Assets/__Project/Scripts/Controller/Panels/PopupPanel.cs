@@ -12,6 +12,8 @@ public class PopupPanel : Panel
     public override void AwakeFunction()
     {
         base.AwakeFunction();
+        
+        GetAnimator().SetState(0);
 
         DarkCurtainButton.onClick.RemoveAllListeners();
         DarkCurtainButton.onClick.AddListener(Return);
