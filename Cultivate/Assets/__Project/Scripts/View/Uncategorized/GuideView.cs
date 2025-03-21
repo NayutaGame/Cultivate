@@ -9,11 +9,11 @@ public class GuideView : MonoBehaviour
 {
     [SerializeField] private TMP_Text _comment;
     [SerializeField] private RectTransform _dragCursor;
+    [SerializeField] private RectTransform _combatCursor;
     [SerializeField] private RectTransform _clickCursor;
     [SerializeField] private Button _button;
     [SerializeField] private RectTransform ConfirmAnchor;
     [SerializeField] private RectTransform BattleButtonAnchor;
-    [SerializeField] private GameObject _clickHint;
 
     private Tween _handle;
     
@@ -41,6 +41,7 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(false);
+            _combatCursor.gameObject.SetActive(false);
             _clickCursor.gameObject.SetActive(true);
             _clickCursor.position = ConfirmAnchor.position;
             SetCanClick(true);
@@ -53,6 +54,7 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(true);
+            _combatCursor.gameObject.SetActive(false);
             _clickCursor.gameObject.SetActive(false);
             SetCanClick(false);
 
@@ -78,6 +80,7 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(true);
+            _combatCursor.gameObject.SetActive(false);
             _clickCursor.gameObject.SetActive(false);
             SetCanClick(false);
             
@@ -103,6 +106,7 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(true);
+            _combatCursor.gameObject.SetActive(false);
             _clickCursor.gameObject.SetActive(false);
             SetCanClick(false);
 
@@ -128,8 +132,9 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(false);
-            _clickCursor.gameObject.SetActive(true);
-            _clickCursor.position = BattleButtonAnchor.position;
+            _combatCursor.gameObject.SetActive(true);
+            _clickCursor.gameObject.SetActive(false);
+            _combatCursor.position = BattleButtonAnchor.position;
             SetCanClick(false);
             
             // Vector2? position = clickBattleGuide.GetPosition();
@@ -147,7 +152,7 @@ public class GuideView : MonoBehaviour
             // _clickCursor.position = CanvasManager.Instance.RunCanvas.BattlePanel.CombatButton._rectTransform.position;
             
             _handle?.Kill();
-            _handle = TweenAnimation.Beats(_clickCursor);
+            _handle = TweenAnimation.Beats(_combatCursor);
             _handle.SetAutoKill().Restart();
         }
         else
@@ -159,7 +164,6 @@ public class GuideView : MonoBehaviour
     private void SetCanClick(bool canClick)
     {
         _button.onClick.RemoveAllListeners();
-        _clickHint.SetActive(canClick);
         if (canClick)
             _button.onClick.AddListener(ButtonClick);
     }

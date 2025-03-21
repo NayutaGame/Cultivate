@@ -7,13 +7,13 @@ public class MapCategory : Category<MapEntry>
     {
         AddRange(new List<MapEntry>()
         {
-            new(id: "标准",
+            new(id: "标准无教程",
                 envJingJie: JingJie.LianQi,
                 slotCount: 3,
                 gold: 3,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -83,13 +83,13 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
-            new(id: "序章",
+            new(id: "标准",
                 envJingJie: JingJie.LianQi,
                 slotCount: 1,
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -99,17 +99,10 @@ public class MapCategory : Category<MapEntry>
                         new DirectRoomDescriptor(0, "教学3"),
                         new DirectRoomDescriptor(0, "教学4"),
                         new DirectRoomDescriptor(0, "教学5"),
-                        new DirectRoomDescriptor(0, "教学6"),
-                        new DirectRoomDescriptor(0, "教学7"),
-                        new DirectRoomDescriptor(0, "教学8"),
-                        new DirectRoomDescriptor(0, "序章出门"),
-                        new BattleRoomDescriptor(0, 3, 3),
-                        new DirectRoomDescriptor(0, "教学9"),
-                        new DirectRoomDescriptor(0, "教学10"),
-                        new DirectRoomDescriptor(0, "教学11"),
                     },
                     new RoomDescriptor[]
                     {
+                        new DirectRoomDescriptor(0, "序章出门"),
                         // new DirectRoomDescriptor(0, "出门"),
                         new BattleRoomDescriptor(0, 3, 4),
                         new AdventureRoomDescriptor(0),
@@ -188,7 +181,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -247,13 +240,36 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
+            new(id: "教程测试",
+                envJingJie: JingJie.LianQi,
+                slotCount: 3,
+                gold: 0,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levelsLayout: new RoomDescriptor[][]
+                {
+                    new RoomDescriptor[]
+                    {
+                        null,
+                        new DirectRoomDescriptor(0, "教学1"),
+                        null,
+                        new DirectRoomDescriptor(0, "教学2"),
+                        new DirectRoomDescriptor(0, "教学3"),
+                        new DirectRoomDescriptor(0, "教学4"),
+                        new DirectRoomDescriptor(0, "教学5"),
+                        new DirectRoomDescriptor(0, "教学6"),
+                        new DirectRoomDescriptor(0, "教学8"),
+                        new DirectRoomDescriptor(0, "教学10"),
+                    },
+                }),
+            
             new(id: "结算测试",
                 envJingJie: JingJie.LianQi,
                 slotCount: 4,
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -267,7 +283,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -282,7 +298,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 40,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -297,7 +313,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 5,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 7,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -364,7 +380,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 17,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 13,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -420,7 +436,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 49,
                 skillJingJie: JingJie.ZhuJi,
                 skillCount: 15,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -463,7 +479,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 129,
                 skillJingJie: JingJie.JinDan,
                 skillCount: 17,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -491,7 +507,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 289,
                 skillJingJie: JingJie.JinDan,
                 skillCount: 41,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -508,7 +524,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 3,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -526,7 +542,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 3,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -554,7 +570,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 12,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {
@@ -582,7 +598,7 @@ public class MapCategory : Category<MapEntry>
                 gold: 53,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levels: new RoomDescriptor[][]
+                levelsLayout: new RoomDescriptor[][]
                 {
                     new RoomDescriptor[]
                     {

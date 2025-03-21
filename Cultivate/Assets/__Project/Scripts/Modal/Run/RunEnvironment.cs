@@ -665,11 +665,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         }
     }
 
-    public void SetPlayerEqualPreset(RunEntity template, bool toField)
+    public void SetPlayerEqualPreset(RunEntity template, bool toField, bool overwrite)
     {
-        Home.SetSlotCount(template.GetSlotCount());
-        Home.SetHealth(template.GetHealth());
-        ClearDeck();
+        if (overwrite)
+        {
+            Home.SetSlotCount(template.GetSlotCount());
+            Home.SetHealth(template.GetHealth());
+            ClearDeck();
+        }
+        
         template.TraversalCurrentSlots().Do(s =>
         {
             SkillEntry entry = s.Skill?.GetEntry();

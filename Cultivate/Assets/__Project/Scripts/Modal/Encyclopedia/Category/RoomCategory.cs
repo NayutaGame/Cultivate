@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
+using Sirenix.OdinInspector.Editor.Drawers;
 using UnityEngine;
 
 public class RoomCategory : Category<RoomEntry>
@@ -31,7 +32,7 @@ public class RoomCategory : Category<RoomEntry>
                 create:                             (map, room) =>
                 {
                     BattleRoomDescriptor roomDescriptor = room.GetDescriptor() as BattleRoomDescriptor;
-                    int baseGoldReward = roomDescriptor._baseGoldReward;
+                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
                     int goldValue = Mathf.RoundToInt(baseGoldReward * RandomManager.Range(0.9f, 1.1f));
 
                     BattlePanelDescriptor A = new(room.GetPredrewRunEntity());
@@ -536,7 +537,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     return A;
                 }),
-
+            
             #endregion
 
             #region Tutorial
@@ -613,22 +614,22 @@ public class RoomCategory : Category<RoomEntry>
                     
                     selecting[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeA, toField: true);
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeA, toField: true, overwrite: true);
                         return optionA;
                     });
                     selecting[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeB, toField: true);
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeB, toField: true, overwrite: true);
                         return optionB;
                     });
                     selecting[2].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeC, toField: true);
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeC, toField: true, overwrite: true);
                         return optionC;
                     });
                     selecting[3].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeD, toField: true);
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeD, toField: true, overwrite: true);
                         return optionD;
                     });
                     
@@ -670,11 +671,11 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "请重新尝试教学");
                     R[0].SetSelect(option => A);
 
-                    RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false);
+                    RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false, overwrite: true);
                     
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false);
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false, overwrite: true);
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -702,16 +703,11 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         new ConfirmGuide("战斗结束后，气血将会完全回复" +
                                          "\n现在徐福面临着下一个对手"),
-                        new EquipGuide("现在将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromName("恋花"), DeckIndex.FromField(1)),
-                        new ConfirmGuide("此时未能胜利是因为对方初始血量高于我们" +
-                                         "\n我们注意到恋花左上角的消耗标志，表示恋花需要消耗一点灵气"),
-                        new ConfirmGuide("缺少灵气时，角色会消耗一回合用于聚集灵气"),
-                        new UnequipGuide("战斗区放空时，角色也会聚集一点灵气" +
-                                         "\n所以我们可以将劈砍卸下",
-                            SkillEntryDescriptor.FromName("劈砍")),
-                        new ClickBattleGuide("此时虽然我们卡牌更少，但是不会缺少灵气，使得我们出牌更快" +
-                                             "\n请点击对决以查看结算",
+                        new ConfirmGuide("冰弹的左上角的消耗标志，表示冰弹需要两点灵气。"),
+                        new EquipGuide("来将吐纳置入",
+                            SkillEntryDescriptor.FromName("吐纳"), DeckIndex.FromField(0)),
+                        new ConfirmGuide("灵气不足时，显示的是红色的，变成白色是因为徐福此时灵气足够释放了"),
+                        new ClickBattleGuide("请点击对决以查看结算",
                             new Vector2(965f, 913.5f)),
                     });
                     
@@ -724,14 +720,14 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("劈砍"), preferredDeckIndex: DeckIndex.FromField(0));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"));
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冰弹"), preferredDeckIndex: DeckIndex.FromField(1));
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("劈砍"), preferredDeckIndex: DeckIndex.FromField(0));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"));
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冰弹"), preferredDeckIndex: DeckIndex.FromField(1));
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -757,16 +753,12 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
-                        new ConfirmGuide("恋花可以吸血，刚才的战斗，因为双方互相吸血" +
-                                         "\n使得战斗进行了很长的时间，所幸最终还是赢了"),
-                        new ConfirmGuide("现在双方都使用恋花战斗，而且都没有缺少灵气" +
-                                         "\n伤害和吸血互相抵消，都打不死对方" +
-                                         "\n这种情况战斗会在120回合之后强制结束"),
-                        new ConfirmGuide("结束时，双方都存活，但是因为对方气血值是15高于徐福，因此还是对方胜利"),
-                        new EquipGuide("这次选择置入寻猎" +
-                                       "\n虽然使用恋花的时候缺少灵气，但是寻猎可以赋予对方5破甲",
-                            SkillEntryDescriptor.FromName("寻猎"), DeckIndex.FromField(0)),
-                        new ConfirmGuide("寻猎之后恋花造成的伤害由4变成了9，可以由吸血回复9气血，效果更强了"),
+                        new ConfirmGuide("现在徐福和对方手牌一样，并且是徐福先手"),
+                        new ConfirmGuide("没能胜利的原因是对方初始气血高于徐福。鼠标放在气血上可以查看战斗开始时的气血"),
+                        new UnequipGuide("可以将冲撞卸下来",
+                            SkillEntryDescriptor.FromName("冲撞")),
+                        new ConfirmGuide("空白的位置相当于一张回复一点灵气。应急的时候可以使用"),
+                        new ConfirmGuide("此时对方的恋花还是缺少一点灵气。对方需要额外等待一回合以聚集灵气"),
                         new ClickBattleGuide("请开始战斗",
                             new Vector2(965f, 913.5f)),
                     });
@@ -780,14 +772,14 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"), preferredDeckIndex: DeckIndex.FromField(0));
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"), preferredDeckIndex: DeckIndex.FromField(0));
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -806,28 +798,40 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
+                    DialogPanelDescriptor Dialog = new DialogPanelDescriptor(
+                        titleText: "合成",
+                        detailedText: "突然对在之前战斗中使用的牌有些想法。");
+                    
                     RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物4"));
                     RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌4");
                     
                     BattlePanelDescriptor A = new(enemyEntity);
                     
+                    DeckIndex firstDeckIndex = DeckIndex.FromField(1);
+                    SkillEntryDescriptor descriptor = new SkillEntryDescriptor(skill => skill.GetName() == "恋花");
+                    
                     A.SetGuideDescriptors(new Guide[]
                     {
-                        new EquipGuide("现在对方拿着寻猎和恋花，徐福手中只有流沙，先摆上去试试",
-                            SkillEntryDescriptor.FromName("流沙"), DeckIndex.FromField(1)),
-                        new ConfirmGuide("战斗结果没有改变" +
-                                         "\n徐福观察到了，对方的寻猎赋予破甲要求击伤才能触发" +
-                                         "\n而寻猎的基础攻击只有2"),
-                        new EquipGuide("流沙提供了护甲" +
-                                       "\n把流沙换到前面试试",
-                            SkillEntryDescriptor.FromName("流沙"), DeckIndex.FromField(0)),
-                        new ConfirmGuide("徐福先手使用了流沙" +
-                                         "\n流沙赋予的护甲阻止了击伤效果" +
-                                         "\n此时，寻猎上的击伤描述已经变成了灰色，代表效果不会触发"),
-                        new ClickBattleGuide("点击开始战斗吧",
+                        new ConfirmGuide("这张牌，已经有了一张诶" +
+                                         "\n对了，试试合成"),
+                        new EquipGuide("将两张牌叠起来",
+                            descriptor, firstDeckIndex),
+                        new ConfirmGuide("卡牌没有合成" +
+                                         "\n好像有个步骤是先将待合成的两张牌卸下至手牌区来着"),
+                        new UnequipGuide("将牌卸下到手牌区试试",
+                            descriptor),
+                        new MergeGuide("现在应该没问题了",
+                            descriptor, descriptor),
+                        new ConfirmGuide("合成后的牌卡框边缘从灰色变成了蓝色，代表境界更高了"),
+                        new ConfirmGuide("卡牌的境界对应的颜色依次是灰，绿，蓝，紫，黄，如果合成之前想查看卡牌不同境界的效果，可以右键卡牌浏览"),
+                        new EquipGuide("将合成后的牌置入战斗区",
+                            SkillEntryDescriptor.FromEntryJingJie(descriptor.Entry, JingJie.JinDan), firstDeckIndex),
+                        new ClickBattleGuide("战斗中虽然说是观察对手的招数，找出应对之策" +
+                                             "\n但是在绝对的实力面前，克制关系也不过尔尔" +
+                                             "\n点击开始战斗吧",
                             new Vector2(965f, 913.5f)),
                     });
-
+                    
                     DialogPanelDescriptor R = new(
                         titleText: "重试",
                         detailedText: "请重新尝试教学");
@@ -837,14 +841,16 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeck();
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"), preferredDeckIndex: DeckIndex.FromField(0));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("流沙"));
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"));
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeck();
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"), preferredDeckIndex: DeckIndex.FromField(0));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("流沙"));
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"));
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -853,8 +859,10 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         return null;
                     });
+
+                    Dialog[0].SetSelect(option => A);
                     
-                    return A;
+                    return Dialog;
                 }),
 
             new(id:                                 "教学5",
@@ -864,354 +872,12 @@ public class RoomCategory : Category<RoomEntry>
                 create:                             (map, room) =>
                 {
                     RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物5"));
-                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌5");
-                    
-                    BattlePanelDescriptor A = new(enemyEntity);
-                    
-                    A.SetGuideDescriptors(new Guide[]
-                    {
-                        new ConfirmGuide("护甲可以对抗破甲" +
-                                         "\n而穿透可以忽视对方的护甲"),
-                        new EquipGuide("将小松置入战斗区" +
-                                       "\n这样就不怕对方流沙带来的护甲了",
-                            SkillEntryDescriptor.FromName("小松"), DeckIndex.FromField(1)),
-                        new ClickBattleGuide("而且小松还有一个效果是成长" +
-                                             "\n每使用一次效果都会变强" +
-                                             "\n点击开始战斗吧",
-                            new Vector2(965f, 913.5f)),
-                    });
-
-                    DialogPanelDescriptor R = new(
-                        titleText: "重试",
-                        detailedText: "请重新尝试教学");
-                    R[0].SetSelect(option => A);
-                    
-                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
-                    
-                    RunManager.Instance.Environment.ClearDeck();
-                    playerTemplate.TraversalCurrentSlots().Do(s =>
-                    {
-                        SkillEntry entry = s.Skill?.GetEntry();
-                        if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
-                    });
-                    
-                    A.SetLoseOperation(() =>
-                    {
-                        RunManager.Instance.Environment.ClearDeck();
-                        playerTemplate.TraversalCurrentSlots().Do(s =>
-                        {
-                            SkillEntry entry = s.Skill?.GetEntry();
-                            if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
-                        });
-                        A.ResetGuideIndex();
-                        return R;
-                    });
-                    
-                    A.SetWinOperation(() =>
-                    {
-                        return null;
-                    });
-                    
-                    return A;
-                }),
-
-            new(id:                                 "教学6",
-                description:                        "教学6",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物6"));
-                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌6");
-                    
-                    BattlePanelDescriptor A = new(enemyEntity);
-                    
-                    A.SetGuideDescriptors(new Guide[]
-                    {
-                        new ConfirmGuide("对方来势凶凶" +
-                                         "\n徐福现在手中只有一张潜龙在渊"),
-                        new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromName("潜龙在渊"), DeckIndex.FromField(1)),
-                        new ConfirmGuide("潜龙在渊可以提供一次闪避" +
-                                         "\n使敌方下次攻击无效" +
-                                         "\n成长类的卡牌随着每次使用会越来越强，可以搭配防御牌将回合拖到成长牌变得强力的时候"),
-                        new ClickBattleGuide("点击开始战斗吧",
-                            new Vector2(965f, 913.5f)),
-                    });
-
-                    DialogPanelDescriptor R = new(
-                        titleText: "重试",
-                        detailedText: "请重新尝试教学");
-                    R[0].SetSelect(option => A);
-                    
-                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
-                    
-                    RunManager.Instance.Environment.ClearDeck();
-                    playerTemplate.TraversalCurrentSlots().Do(s =>
-                    {
-                        SkillEntry entry = s.Skill?.GetEntry();
-                        if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
-                    });
-                    
-                    A.SetLoseOperation(() =>
-                    {
-                        RunManager.Instance.Environment.ClearDeck();
-                        playerTemplate.TraversalCurrentSlots().Do(s =>
-                        {
-                            SkillEntry entry = s.Skill?.GetEntry();
-                            if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
-                        });
-                        A.ResetGuideIndex();
-                        return R;
-                    });
-                    
-                    A.SetWinOperation(() =>
-                    {
-                        return null;
-                    });
-                    
-                    return A;
-                }),
-
-            new(id:                                 "教学7",
-                description:                        "教学7",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物7"));
-                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌7");
-                    
-                    BattlePanelDescriptor A = new(enemyEntity);
-                    
-                    A.SetGuideDescriptors(new Guide[]
-                    {
-                        new ConfirmGuide("这次对方尝试使用闪避加成长的打法" +
-                                         "\n闪避虽然可以很好的避免单次的伤害" +
-                                         "\n但是如果有多次攻击机会，就可以很快的将闪避消耗掉"),
-                        new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromName("劈砍"), DeckIndex.FromField(0)),
-                        new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromName("云袖"), DeckIndex.FromField(1)),
-                        new ConfirmGuide("失误了，徐福打出云袖，对方打出潜龙在渊" +
-                                         "\n徐福到下一回合打出的劈砍不巧被闪避掉了"),
-                        new EquipGuide("试试交换顺序",
-                            SkillEntryDescriptor.FromName("云袖"), DeckIndex.FromField(0)),
-                        new ClickBattleGuide("现在劈砍可以正好击中对手" +
-                                             "\n点击开始战斗吧",
-                            new Vector2(965f, 913.5f)),
-                    });
-
-                    DialogPanelDescriptor R = new(
-                        titleText: "重试",
-                        detailedText: "请重新尝试教学");
-                    R[0].SetSelect(option => A);
-                    
-                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
-                    
-                    RunManager.Instance.Environment.ClearDeck();
-                    playerTemplate.TraversalCurrentSlots().Do(s =>
-                    {
-                        SkillEntry entry = s.Skill?.GetEntry();
-                        if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
-                    });
-                    
-                    A.SetLoseOperation(() =>
-                    {
-                        RunManager.Instance.Environment.ClearDeck();
-                        playerTemplate.TraversalCurrentSlots().Do(s =>
-                        {
-                            SkillEntry entry = s.Skill?.GetEntry();
-                            if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
-                        });
-                        A.ResetGuideIndex();
-                        return R;
-                    });
-                    
-                    A.SetWinOperation(() =>
-                    {
-                        return null;
-                    });
-                    
-                    return A;
-                }),
-
-            new(id:                                 "教学8",
-                description:                        "教学8",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物8"));
-                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌8");
-                    
-                    BattlePanelDescriptor A = new(enemyEntity);
-                    
-                    A.SetGuideDescriptors(new Guide[]
-                    {
-                        new ConfirmGuide("多段伤害也存在应对的方法" +
-                                         "\n格挡可以降低所有受到的攻击伤害，可以有效克制多段"),
-                        new EquipGuide("将卡牌置入吧",
-                            SkillEntryDescriptor.FromName("冰弹"), DeckIndex.FromField(1)),
-                        new EquipGuide("效果强大的卡牌也伴随着需要更多灵气的消耗" +
-                                       "\n正好徐福准备了专门回复灵气的卡牌",
-                            SkillEntryDescriptor.FromName("吐纳"), DeckIndex.FromField(0)),
-                        new ConfirmGuide("传说中，有个仙人，曾经面对多段的敌人，单依靠格挡和回血手段" +
-                                         "\n最后格挡高到能够完全免除对方的伤害"),
-                        new ClickBattleGuide("在一次也不攻击的情况下击败了对方，也不知道是不是真的" +
-                                             "\n点击开始战斗吧",
-                            new Vector2(965f, 913.5f)),
-                    });
-
-                    DialogPanelDescriptor R = new(
-                        titleText: "重试",
-                        detailedText: "请重新尝试教学");
-                    R[0].SetSelect(option => A);
-                    
-                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
-                    
-                    RunManager.Instance.Environment.ClearDeck();
-                    playerTemplate.TraversalCurrentSlots().Do(s =>
-                    {
-                        SkillEntry entry = s.Skill?.GetEntry();
-                        if (entry != null)
-                            RunManager.Instance.Environment.AddSkillProcedure(entry);
-                    });
-                    
-                    A.SetLoseOperation(() =>
-                    {
-                        RunManager.Instance.Environment.ClearDeck();
-                        playerTemplate.TraversalCurrentSlots().Do(s =>
-                        {
-                            SkillEntry entry = s.Skill?.GetEntry();
-                            if (entry != null)
-                                RunManager.Instance.Environment.AddSkillProcedure(entry);
-                        });
-                        A.ResetGuideIndex();
-                        return R;
-                    });
-                    
-                    A.SetWinOperation(() =>
-                    {
-                        return null;
-                    });
-                    
-                    return A;
-                }),
-
-            new(id:                                 "教学9",
-                description:                        "教学9",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物9"));
-                    
-                    RunEnvironment env = RunManager.Instance.Environment;
-                    SkillEntryDescriptor[] descriptors = new[]
-                    {
-                        SkillEntryDescriptor.FromNameJingJie("金刃", JingJie.LianQi),
-                        SkillEntryDescriptor.FromNameJingJie("恋花", JingJie.LianQi),
-                        SkillEntryDescriptor.FromNameJingJie("小松", JingJie.LianQi),
-                        SkillEntryDescriptor.FromNameJingJie("轰天", JingJie.LianQi),
-                        SkillEntryDescriptor.FromNameJingJie("寸劲", JingJie.LianQi),
-                        SkillEntryDescriptor.AnySkill(),
-                    };
-                    
-                    DeckIndex firstDeckIndex = DeckIndex.FromField(0);
-                    int firstIdx = descriptors.FirstIdx(pred: descriptor =>
-                    {
-                        return env.FindDeckIndex(out firstDeckIndex, descriptor) && firstDeckIndex.InField;
-                    }) ?? (descriptors.Length - 1);
-
-                    DialogPanelDescriptor A = new DialogPanelDescriptor(
-                            titleText: "合成",
-                            detailedText: "突然对在之前战斗中使用的牌有些想法。");
-                    
-                    BattlePanelDescriptor B = new(enemyEntity);
-                    
-                    B.SetGuideDescriptors(new Guide[]
-                    {
-                        new ConfirmGuide("这张牌，已经有了一张诶" +
-                                         "\n对了，试试合成"),
-                        new EquipGuide("将两张牌叠起来",
-                            descriptors[firstIdx], firstDeckIndex),
-                        new ConfirmGuide("卡牌没有合成" +
-                                         "\n好像有个步骤是先将待合成的两张牌卸下至手牌区来着"),
-                        new UnequipGuide("将牌卸下到手牌区试试",
-                            descriptors[firstIdx]),
-                        new MergeGuide("现在应该没问题了",
-                            descriptors[firstIdx], descriptors[firstIdx]),
-                        new ConfirmGuide("合成后的牌卡框边缘从灰色变成了蓝色，代表境界更高了，卡牌的境界对应的颜色依次是灰，绿，蓝，紫，黄，如果合成之前想查看卡牌不同境界的效果，可以右键卡牌浏览"),
-                        new EquipGuide("将合成后的牌置入战斗区",
-                            SkillEntryDescriptor.FromEntryJingJie(descriptors[firstIdx].Entry, JingJie.JinDan), firstDeckIndex),
-                        new ClickBattleGuide("战斗中虽然说是观察对手的招数，找出应对之策" +
-                                             "\n但是在绝对的实力面前，克制关系也不过尔尔" +
-                                             "\n点击开始战斗吧",
-                            new Vector2(965f, 913.5f)),
-                    });
-                    
-                    A[0].SetSelect(option =>
-                    {
-                        env.AddSkillProcedure(descriptors[firstIdx].Entry, descriptors[firstIdx].JingJie);
-                        return B;
-                    });
-                    B.SetWinOperation(() => null);
-                    B.SetLoseOperation(() => null);
-                    
-                    return A;
-                }),
-
-            new(id:                                 "教学10",
-                description:                        "教学10",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物10"));
-                    
-                    BattlePanelDescriptor A = new(enemyEntity);
-                    
-                    A.SetGuideDescriptors(new Guide[]
-                    {
-                        new ConfirmGuide("对手的卡组有些本末倒置了，看得出来是了解一些阵法知识，但是在具体的运用上还欠了一点火候。"),
-                        new ConfirmGuide("阵法，使用带有相同属性的牌就可以激活阵法。" +
-                                         "\n己方阵法和敌方阵法分别在上面和下面可以看到。" +
-                                         "\n对方携带了2张火属性的牌，会激活火灵阵，效果是使用最后一张牌暂时移除掉。"),
-                        new ConfirmGuide("对面手中的正念也具有升华，即，会在使用后移除掉，打到后面卡组中就只剩1张牌了，这样每次使用的都是那张牌。"),
-                        new ConfirmGuide("只不过，对手将高质量的八极拳放在了最后，被升华掉了，最后剩的牌就剩云袖了。"),
-                        new ConfirmGuide("尝试用现有卡牌击败对手吧。"),
-                    });
-                    
-                    A.SetLoseOperation(() => null);
-                    A.SetWinOperation(() => null);
-                    
-                    return A;
-                }),
-
-            new(id:                                 "教学11",
-                description:                        "教学11",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物11"));
                     
                     BattlePanelDescriptor A = new(enemyEntity);
 
                     DialogPanelDescriptor D1 = new(
                         titleText: "耍赖",
-                        detailedText: "对手竟然说自己还在练习阵法，刚才的不作数，要和徐福再比试一场。让对面知道再来几次都是一样的。");
+                        detailedText: "对手竟然说自己还在练习新招式，刚才的不作数，要和徐福再比试一场。让对面知道再来几次都是一样的。");
                     DialogPanelDescriptor D2 = new(
                         titleText: "耍赖",
                         detailedText: "对手只是想吓唬徐福一下，心满意足的走了，没有真的想要命元。");
@@ -1220,8 +886,9 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
-                        new ConfirmGuide("。。。。对面卡牌竟然全是化神牌，可能化神大佬闲了也喜欢找人消遣。"),
-                        new ConfirmGuide("这个实力差距，怎么调整牌都过不去了，好在偶尔的一两次失败并不会导致游戏的失败。除非是生死决战，战败时只需要给予对手一些命元，对手就会放徐福一马。"),
+                        new ConfirmGuide("。。。。对面卡牌竟然已经是散发着金光的化神牌，可能化神大佬闲了也喜欢找人消遣。"),
+                        new ConfirmGuide("这个差距，怎么调整牌都过不去了，好在偶尔的一两次失败并不会导致游戏的失败"),
+                        new ConfirmGuide("除非是生死决战，战败时只需要给予对手一些命元，对手就会放徐福一马"),
                         new ConfirmGuide("命元在最左上角查看，命元归零游戏才会失败。"),
                         new ClickBattleGuide("现在点击开始战斗吧",
                             new Vector2(965f, 913.5f)),
@@ -1235,22 +902,19 @@ public class RoomCategory : Category<RoomEntry>
                     return D1;
                 }),
 
-            new(id:                                 "教学12",
-                description:                        "教学12",
+            new(id:                                 "教学6",
+                description:                        "教学6",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEnvironment env = RunManager.Instance.Environment;
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物6"));
                     
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物12"));
-                    BattlePanelDescriptor B = new(enemyEntity);
+                    BattlePanelDescriptor A = new(enemyEntity);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("云袖"), preferredJingJie: JingJie.LianQi);
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("云袖"), preferredJingJie: JingJie.ZhuJi);
                     
-                    DialogPanelDescriptor A = new DialogPanelDescriptor(
-                            titleText: "同名合成",
-                            detailedText: "回想起来一些以前修行时的法术。对之前合成的规则有些疑问，正好可以试验一下。");
-                    
-                    B.SetGuideDescriptors(new Guide[]
+                    A.SetGuideDescriptors(new Guide[]
                     {
                         new ConfirmGuide("之前尝试的合成是名字相同，境界也相同。这次的两张牌，名字相同，但是境界不同" +
                                          "但是理论上来说，也有合成的可能性"),
@@ -1262,53 +926,124 @@ public class RoomCategory : Category<RoomEntry>
                         new ConfirmGuide("用现有的牌击败对手吧"),
                     });
                     
-                    A[0].SetSelect(option =>
-                    {
-                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("云袖"), JingJie.LianQi);
-                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("云袖"), JingJie.ZhuJi);
-                        return B;
-                    });
-                    B.SetWinOperation(() => null);
-                    B.SetLoseOperation(() => null);
+                    DialogPanelDescriptor Dialog = new DialogPanelDescriptor(
+                            titleText: "同名合成",
+                            detailedText: "回想起来一些以前修行时的法术。对之前合成的规则有些疑问，正好可以试验一下。");
                     
-                    return A;
+                    Dialog[0].SetSelect(option => A);
+                    
+                    return Dialog;
                 }),
 
-            new(id:                                 "教学13",
-                description:                        "教学13",
+            new(id:                                 "教学8",
+                description:                        "教学8",
                 ladderBound:                        new Bound(0, 15),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEnvironment env = RunManager.Instance.Environment;
+                    DialogPanelDescriptor Dialog = new DialogPanelDescriptor(
+                        titleText: "阵法",
+                        detailedText: "逐渐感觉修炼的得心应手起来了，最近隐约能够感到卡牌之间存在某种共鸣。");
                     
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物13"));
-                    BattlePanelDescriptor B = new(enemyEntity);
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物8"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌8");
                     
-                    DialogPanelDescriptor A = new DialogPanelDescriptor(
-                        titleText: "同境界合成",
-                        detailedText: "又回想起来一些以前修行时的法术。掌握的法术有点多了啊，之前一直不敢尝试的合成今天感觉有机会了。");
+                    BattlePanelDescriptor A = new(enemyEntity);
                     
-                    B.SetGuideDescriptors(new Guide[]
+                    A.SetGuideDescriptors(new Guide[]
                     {
-                        new ConfirmGuide("之前是同名不同境界的合成。" +
-                                         "但是理论上来说，不限同名，只要是同境界的牌之间还是有合成的可能性"),
-                        new MergeGuide("让我来试试",
-                            SkillEntryDescriptor.FromNameJingJie("流沙", JingJie.LianQi), SkillEntryDescriptor.FromNameJingJie("拂晓", JingJie.LianQi)),
-                        new ConfirmGuide("真的合成了诶。徐福又找到了规律，同名的卡合成出来都是同名的，但是同境界会合成出随机牌"),
-                        new ConfirmGuide("用现有的牌击败对手吧"),
+                        new ConfirmGuide("这张牌，已经有了一张诶" +
+                                         "\n对了，试试合成"),
+                        new ClickBattleGuide("战斗中虽然说是观察对手的招数，找出应对之策" +
+                                             "\n但是在绝对的实力面前，克制关系也不过尔尔" +
+                                             "\n点击开始战斗吧",
+                            new Vector2(965f, 913.5f)),
                     });
                     
-                    A[0].SetSelect(option =>
-                    {
-                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("流沙"), JingJie.LianQi);
-                        env.AddSkillProcedure(skillEntry: SkillEntry.FromName("拂晓"), JingJie.LianQi);
-                        return B;
-                    });
-                    B.SetWinOperation(() => null);
-                    B.SetLoseOperation(() => null);
+                    DialogPanelDescriptor R = new(
+                        titleText: "重试",
+                        detailedText: "请重新尝试教学");
+                    R[0].SetSelect(option => A);
                     
-                    return A;
+                    RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
+                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
+                    
+                    RunManager.Instance.Environment.ClearDeck();
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("金刃"), preferredDeckIndex: DeckIndex.FromField(0));
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"));
+                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("激流"), preferredDeckIndex: DeckIndex.FromField(1));
+                    
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.ClearDeck();
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("金刃"), preferredDeckIndex: DeckIndex.FromField(0));
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"));
+                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("激流"), preferredDeckIndex: DeckIndex.FromField(1));
+                        A.ResetGuideIndex();
+                        return R;
+                    });
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+
+                    Dialog[0].SetSelect(option => A);
+                    
+                    return Dialog;
+                }),
+
+            new(id:                                 "教学10",
+                description:                        "教学10",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogPanelDescriptor Dialog = new DialogPanelDescriptor(
+                        titleText: "流转",
+                        detailedText: "金系擅长锋锐，水系擅长格挡。每种五行的增益数量叠起来了都很厉害，就是太难做起来了，带着遗憾你进入了梦乡。");
+
+                    DialogPanelDescriptor Dialog2 = new DialogPanelDescriptor(
+                        titleText: "流转",
+                        detailedText: "梦中，一棵大树出现在你面前。你叫不上来这棵树的名字，但是感觉非常熟悉。你注意到了树周围发生的奇观。" +
+                                      "金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。" +
+                                      "你还没来得及思考这其中的意义，便遭遇了怪物。"
+                    );
+                    
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物10"));
+                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌10");
+                    
+                    BattlePanelDescriptor A = new(enemyEntity);
+                    
+                    // A.SetGuideDescriptors(new Guide[]
+                    // {
+                    //     new ConfirmGuide("这张牌，已经有了一张诶" +
+                    //                      "\n对了，试试合成"),
+                    //     new ClickBattleGuide("战斗中虽然说是观察对手的招数，找出应对之策" +
+                    //                          "\n但是在绝对的实力面前，克制关系也不过尔尔" +
+                    //                          "\n点击开始战斗吧",
+                    //         new Vector2(965f, 913.5f)),
+                    // });
+                    
+                    DialogPanelDescriptor R = new(
+                        titleText: "重试",
+                        detailedText: "请重新尝试教学");
+                    R[0].SetSelect(option => A);
+                    
+                    RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false, overwrite: true);
+                    
+                    
+                    A.SetWinOperation(() =>
+                    {
+                        return null;
+                    });
+
+                    Dialog[0].SetSelect(option => Dialog2);
+                    Dialog2[0].SetSelect(option => A);
+                    
+                    return Dialog;
                 }),
 
             #endregion

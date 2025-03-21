@@ -10,7 +10,6 @@ public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] public RectTransform _target;
 
     private Animator _animator;
-    private Tween _handle;
 
     [HideInInspector] public Neuron<PointerEventData> LeftClickNeuron = new();
     [HideInInspector] public Neuron<PointerEventData> RightClickNeuron = new();
@@ -22,8 +21,19 @@ public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             return;
         
         _isAttractive = value;
-        if (_animator.State != 3)
-            _animator.SetStateAsync(!_isAttractive ? 1 : 2);
+        if (_animator.State == 3)
+            return;
+
+        if (!_isAttractive)
+        {
+            if (_animator.State != 1)
+                _animator.SetStateAsync(1);
+        }
+        else
+        {
+            if (_animator.State != 2)
+                _animator.SetStateAsync(2);
+        }
     }
 
     public void Configure()

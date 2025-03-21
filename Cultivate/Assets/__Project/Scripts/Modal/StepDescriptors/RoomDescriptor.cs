@@ -43,7 +43,7 @@ public abstract class RoomDescriptor
     public abstract SpriteEntry GetSprite();
     public abstract string GetDescription();
 
-    [SerializeField] private int _ladder;
+    [SerializeField] private readonly int _ladder;
     public int Ladder => _ladder;
     
     public RoomDescriptor(int ladder)

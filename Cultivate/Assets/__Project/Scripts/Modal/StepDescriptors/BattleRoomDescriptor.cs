@@ -23,10 +23,9 @@ public class BattleRoomDescriptor : RoomDescriptor, ISerializationCallbackReceiv
         "UnderlingRoomIcon", "EliteRoomIcon", "BossRoomIcon",
     };
     
-    [SerializeField] public int _slotCountBefore;
-    [SerializeField] public int _slotCountAfter;
+    [SerializeField] public readonly int _slotCountBefore;
+    [SerializeField] public readonly int _slotCountAfter;
     
-    [NonSerialized] public int _baseGoldReward;
     [NonSerialized] public bool _isBoss;
     [NonSerialized] private SpriteEntry _spriteEntry;
 
@@ -35,7 +34,6 @@ public class BattleRoomDescriptor : RoomDescriptor, ISerializationCallbackReceiv
         _slotCountBefore = slotCountBefore;
         _slotCountAfter = slotCountAfter;
         
-        _baseGoldReward = GetGoldRewardFromLadder(ladder);
         _isBoss = IsBossTable[ladder];
         _spriteEntry = SpriteTable[ladder];
     }
@@ -60,7 +58,6 @@ public class BattleRoomDescriptor : RoomDescriptor, ISerializationCallbackReceiv
 
     public void OnAfterDeserialize()
     {
-        _baseGoldReward = GetGoldRewardFromLadder(Ladder);
         _isBoss = IsBossTable[Ladder];
         _spriteEntry = SpriteTable[Ladder];
     }

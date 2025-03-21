@@ -3029,13 +3029,24 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"{8 + dj}攻".ApplyAttack() +
-                    $"\n格挡+1",
+                    $"{8 + dj}攻".ApplyAttack(),
                 withinPool:                 false,
                 cast:                       async d =>
                 {
                     await d.AttackProcedure(8 + d.Dj);
-                    await d.GainBuffProcedure("格挡");
+                }),
+            
+            new(id:                         "0704",
+                name:                       "不演了",
+                wuXing:                     null,
+                jingJieBound:               JingJie.HuaShenOnly,
+                skillTypeComposite:         SkillType.Attack,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    $"{100}攻".ApplyAttack(),
+                withinPool:                 false,
+                cast:                       async d =>
+                {
+                    await d.AttackProcedure(100);
                 }),
 
             #endregion

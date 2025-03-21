@@ -36,6 +36,7 @@ public class AppManager : Singleton<AppManager>, Addressable
     public Settings Settings;
 
     private Encyclopedia Encyclopedia;
+    public RandomManager RandomManager;
     public AudioManager AudioManager;
     public EditorManager EditorManager;
     public ProfileManager ProfileManager;
@@ -83,6 +84,7 @@ public class AppManager : Singleton<AppManager>, Addressable
 
         Application.targetFrameRate = 60;
         
+        RandomManager.CheckAwake();
         AudioManager.CheckAwake();
 
         Settings = new();
