@@ -7,19 +7,16 @@ public class AchievementProfile : ISerializationCallbackReceiver, RunClosureList
 {
     [SerializeField] private AchievementEntry _entry;
     [SerializeField] private bool _unlocked;
-    // [SerializeField] private int _progress;
 
-    // @TODO serialize
-    [NonSerialized] private Memory _memory;
+    [SerializeField] private SerializableDictionary _memory;
 
     public AchievementEntry Entry => _entry;
-    public Memory Memory => _memory;
+    public SerializableDictionary Memory => _memory;
 
     public AchievementProfile(AchievementEntry entry, bool isDeveloper = false)
     {
         _entry = entry;
         _unlocked = isDeveloper;
-        // _progress = 0;
 
         _memory = new();
     }
@@ -50,8 +47,6 @@ public class AchievementProfile : ISerializationCallbackReceiver, RunClosureList
     public void OnAfterDeserialize()
     {
         _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.AchievementCategory[_entry.GetId()];
-
-        _memory = new();
     }
 
     public override string ToString()

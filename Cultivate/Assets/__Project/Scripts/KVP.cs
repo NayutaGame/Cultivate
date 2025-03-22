@@ -1,11 +1,12 @@
 
 using System;
+using UnityEngine;
 
 [Serializable]
 public class KVP
 {
-    public string Key;
-    public int Value;
+    [SerializeField] public string Key;
+    [SerializeField] public int Value;
 
     public KVP(string key, int value)
     {
