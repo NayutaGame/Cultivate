@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class BattleRoomDescriptor : RoomDescriptor, ISerializationCallbackReceiver
+public class BattleRoomDefinition : RoomDefinition, ISerializationCallbackReceiver
 {
     private static readonly bool[] IsBossTable = new bool[]
     {
@@ -29,7 +29,7 @@ public class BattleRoomDescriptor : RoomDescriptor, ISerializationCallbackReceiv
     [NonSerialized] public bool _isBoss;
     [NonSerialized] private SpriteEntry _spriteEntry;
 
-    public BattleRoomDescriptor(int ladder, int slotCountBefore, int slotCountAfter) : base(ladder)
+    public BattleRoomDefinition(int ladder, int slotCountBefore, int slotCountAfter, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)
     {
         _slotCountBefore = slotCountBefore;
         _slotCountAfter = slotCountAfter;

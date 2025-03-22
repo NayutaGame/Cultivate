@@ -10,7 +10,7 @@ public class Level : Addressable, ISerializationCallbackReceiver
     
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    public Level(RoomDescriptor[] stepDescriptors)
+    public Level(RoomDefinition[] stepDescriptors)
     {
         _accessors = new()
         {

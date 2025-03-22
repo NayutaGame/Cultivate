@@ -244,14 +244,14 @@ public class StageEnvironment : Addressable, StageClosureListener
         
         // Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
         Play(TextAnimation.FromLoseBuffDetails(d));
-        if (d.Src == d.Tgt)
-        {
-            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
-        }
-        else
-        {
-            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
-        }
+        // if (d.Src == d.Tgt)
+        // {
+        //     await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
+        // }
+        // else
+        // {
+        //     await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
+        // }
         
         CanvasManager.Instance.StageCanvas.LoseBuffStaging(d.Tgt == _entities[0], buffIndex);
     }
@@ -265,14 +265,14 @@ public class StageEnvironment : Addressable, StageClosureListener
         // Play(BuffVFXAnimation.FromLoseBuffDetails(d, false));
         Play(TextAnimation.FromLoseBuffDetails(d));
         
-        if (d.Src == d.Tgt)
-        {
-            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
-        }
-        else
-        {
-            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
-        }
+        // if (d.Src == d.Tgt)
+        // {
+        //     await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
+        // }
+        // else
+        // {
+        //     await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
+        // }
         
         buff.Emphasize();
     }

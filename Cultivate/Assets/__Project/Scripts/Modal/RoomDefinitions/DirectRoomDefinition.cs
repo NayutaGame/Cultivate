@@ -3,11 +3,11 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class DirectRoomDescriptor : RoomDescriptor, ISerializationCallbackReceiver
+public class DirectRoomDefinition : RoomDefinition, ISerializationCallbackReceiver
 {
     [SerializeField] private RoomEntry _roomEntry;
 
-    public DirectRoomDescriptor(int ladder, RoomEntry roomEntry) : base(ladder)
+    public DirectRoomDefinition(int ladder, RoomEntry roomEntry, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)
     {
         _roomEntry = roomEntry;
     }

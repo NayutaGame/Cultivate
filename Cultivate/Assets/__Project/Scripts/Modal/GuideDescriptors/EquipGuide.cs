@@ -20,12 +20,12 @@ public class EquipGuide : Guide
     {
         result = new DeckIndex[2];
         result[1] = _to;
-        return RunManager.Instance.Environment.FindDeckIndex(out result[0], _from, omit: new[] { _to });
+        return RunManager.Instance.Environment.DeckIndexFromDescriptor(out result[0], _from, omit: new[] { _to });
     }
 
     public bool CheckComplete(DeckChangedSignal deckChangedSignal)
     {
-        RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(_to);
+        RunSkill skill = RunManager.Instance.Environment.SkillFromDeckIndex(_to);
         if (skill == null)
             return true;
         return _from.Contains(skill);

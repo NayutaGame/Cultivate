@@ -13,165 +13,181 @@ public class MapCategory : Category<MapEntry>
                 gold: 3,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(0, "出门"),
-                        new BattleRoomDescriptor(0, 3, 4),
-                        new AdventureRoomDescriptor(0),
+                        new DirectRoomDefinition(0, "出门"),
+                        new BattleRoomDefinition(0, 3, 4),
+                        new AdventureRoomDefinition(0),
                         // new RestRoomDescriptor(0),
-                        new BattleRoomDescriptor(1, 4, 5),
-                        new AscensionRoomDescriptor(1),
+                        new BattleRoomDefinition(1, 4, 5),
+                        new AscensionRoomDefinition(1),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(2, 5, 6),
-                        new AdventureRoomDescriptor(2),
-                        new ShopRoomDescriptor(2),
-                        new BattleRoomDescriptor(3, 6, 7),
-                        new AdventureRoomDescriptor(3),
+                        new BattleRoomDefinition(2, 5, 6),
+                        new AdventureRoomDefinition(2),
+                        new ShopRoomDefinition(2),
+                        new BattleRoomDefinition(3, 6, 7),
+                        new AdventureRoomDefinition(3),
                         // new RestRoomDescriptor(3),
-                        new BattleRoomDescriptor(4, 7, 8),
-                        new AscensionRoomDescriptor(4),
+                        new BattleRoomDefinition(4, 7, 8),
+                        new AscensionRoomDefinition(4),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(5, 8, 8),
-                        new AdventureRoomDescriptor(5),
-                        new ShopRoomDescriptor(5),
-                        new BattleRoomDescriptor(5, 8, 9),
-                        new AdventureRoomDescriptor(5),
-                        new BattleRoomDescriptor(6, 9, 9),
-                        new AdventureRoomDescriptor(6),
+                        new BattleRoomDefinition(5, 8, 8),
+                        new AdventureRoomDefinition(5),
+                        new ShopRoomDefinition(5),
+                        new BattleRoomDefinition(5, 8, 9),
+                        new AdventureRoomDefinition(5),
+                        new BattleRoomDefinition(6, 9, 9),
+                        new AdventureRoomDefinition(6),
                         // new RestRoomDescriptor(6),
-                        new BattleRoomDescriptor(7, 9, 10),
-                        new AscensionRoomDescriptor(7),
+                        new BattleRoomDefinition(7, 9, 10),
+                        new AscensionRoomDefinition(7),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(8, 10, 10),
-                        new AdventureRoomDescriptor(8),
-                        new BattleRoomDescriptor(8, 10, 11),
-                        new AdventureRoomDescriptor(8),
-                        new ShopRoomDescriptor(8),
-                        new BattleRoomDescriptor(9, 11, 11),
-                        new AdventureRoomDescriptor(9),
-                        new BattleRoomDescriptor(9, 11, 12),
-                        new AdventureRoomDescriptor(9),
+                        new BattleRoomDefinition(8, 10, 10),
+                        new AdventureRoomDefinition(8),
+                        new BattleRoomDefinition(8, 10, 11),
+                        new AdventureRoomDefinition(8),
+                        new ShopRoomDefinition(8),
+                        new BattleRoomDefinition(9, 11, 11),
+                        new AdventureRoomDefinition(9),
+                        new BattleRoomDefinition(9, 11, 12),
+                        new AdventureRoomDefinition(9),
                         // new RestRoomDescriptor(9),
-                        new BattleRoomDescriptor(10, 12, 12),
-                        new AscensionRoomDescriptor(10),
+                        new BattleRoomDefinition(10, 12, 12),
+                        new AscensionRoomDefinition(10),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
                         // new RestRoomDescriptor(11),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
                         // new RestRoomDescriptor(12),
-                        new ShopRoomDescriptor(12),
-                        new BattleRoomDescriptor(13, 12, 12),
-                        new SuccessRoomDescriptor(13),
+                        new ShopRoomDefinition(12),
+                        new BattleRoomDefinition(13, 12, 12),
+                        new SuccessRoomDefinition(13),
                     },
                 }),
             
             new(id: "标准",
                 envJingJie: JingJie.LianQi,
-                slotCount: 1,
-                gold: 0,
+                slotCount: 3,
+                gold: 3,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(0, "漫画"),
-                        new DirectRoomDescriptor(0, "教学1"),
-                        new DirectRoomDescriptor(0, "教学2"),
-                        new DirectRoomDescriptor(0, "教学3"),
-                        new DirectRoomDescriptor(0, "教学4"),
-                        new DirectRoomDescriptor(0, "教学5"),
-                    },
-                    new RoomDescriptor[]
-                    {
-                        new DirectRoomDescriptor(0, "序章出门"),
-                        // new DirectRoomDescriptor(0, "出门"),
-                        new BattleRoomDescriptor(0, 3, 4),
-                        new AdventureRoomDescriptor(0),
-                        // new RestRoomDescriptor(0),
-                        new BattleRoomDescriptor(1, 4, 5),
-                        new AscensionRoomDescriptor(0),
-                    },
-                    new RoomDescriptor[]
-                    {
-                        // 教学12 同名合成
-                        new DirectRoomDescriptor(2, "教学12"),
+                        new DirectRoomDefinition(0, "漫画", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                        new DirectRoomDefinition(0, "教学1", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                        new DirectRoomDefinition(0, "教学2", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                        new DirectRoomDefinition(0, "教学3", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                        new DirectRoomDefinition(0, "教学4", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                        new DirectRoomDefinition(0, "教学5", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
                         
-                        new BattleRoomDescriptor(2, 5, 6),
-                        new AdventureRoomDescriptor(2),
-                        new ShopRoomDescriptor(2),
-                        new BattleRoomDescriptor(3, 6, 7),
-                        new AdventureRoomDescriptor(3),
-                        // new RestRoomDescriptor(3),
-                        new BattleRoomDescriptor(4, 7, 8),
-                        new AscensionRoomDescriptor(4),
+                        new DirectRoomDefinition(0, "教学8", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("3").IsUnlocked()
+                            && env.GetRunConfig().DifficultyProfile.GetEntry()._order == 2),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(0, "出门", pred: (profile, env) =>
+                            profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                        new DirectRoomDefinition(0, "序章出门", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                        
+                        new BattleRoomDefinition(0, 3, 4),
+                        new AdventureRoomDefinition(0),
+                        // new RestRoomDescriptor(0),
+                        new BattleRoomDefinition(1, 4, 5),
+                        new AscensionRoomDefinition(0),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(2, "教学6", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                        
+                        new DirectRoomDefinition(2, "教学10", pred: (profile, env) =>
+                            !profile.DifficultyProfileList.Find("5").IsUnlocked()
+                            && env.GetRunConfig().DifficultyProfile.GetEntry()._order == 4),
+                        
+                        new BattleRoomDefinition(2, 5, 6),
+                        new AdventureRoomDefinition(2),
+                        new ShopRoomDefinition(2),
+                        new BattleRoomDefinition(3, 6, 7),
+                        new AdventureRoomDefinition(3),
+                        // new RestRoomDescriptor(3),
+                        new BattleRoomDefinition(4, 7, 8),
+                        new AscensionRoomDefinition(4),
+                    },
+                    new RoomDefinition[]
                     {
                         // 教学13 同境界合成
-                        new DirectRoomDescriptor(5, "教学13"),
                         
-                        new BattleRoomDescriptor(5, 8, 8),
-                        new AdventureRoomDescriptor(5),
-                        new ShopRoomDescriptor(5),
-                        new BattleRoomDescriptor(5, 8, 9),
-                        new AdventureRoomDescriptor(5),
-                        new BattleRoomDescriptor(6, 9, 9),
-                        new AdventureRoomDescriptor(6),
+                        new BattleRoomDefinition(5, 8, 8),
+                        new AdventureRoomDefinition(5),
+                        new ShopRoomDefinition(5),
+                        new BattleRoomDefinition(5, 8, 9),
+                        new AdventureRoomDefinition(5),
+                        new BattleRoomDefinition(6, 9, 9),
+                        new AdventureRoomDefinition(6),
                         // new RestRoomDescriptor(6),
-                        new BattleRoomDescriptor(7, 9, 10),
-                        new AscensionRoomDescriptor(7),
+                        new BattleRoomDefinition(7, 9, 10),
+                        new AscensionRoomDefinition(7),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(8, 10, 10),
-                        new AdventureRoomDescriptor(8),
-                        new BattleRoomDescriptor(8, 10, 11),
-                        new AdventureRoomDescriptor(8),
-                        new ShopRoomDescriptor(8),
-                        new BattleRoomDescriptor(9, 11, 11),
-                        new AdventureRoomDescriptor(9),
-                        new BattleRoomDescriptor(9, 11, 12),
-                        new AdventureRoomDescriptor(9),
+                        new BattleRoomDefinition(8, 10, 10),
+                        new AdventureRoomDefinition(8),
+                        new BattleRoomDefinition(8, 10, 11),
+                        new AdventureRoomDefinition(8),
+                        new ShopRoomDefinition(8),
+                        new BattleRoomDefinition(9, 11, 11),
+                        new AdventureRoomDefinition(9),
+                        new BattleRoomDefinition(9, 11, 12),
+                        new AdventureRoomDefinition(9),
                         // new RestRoomDescriptor(9),
-                        new BattleRoomDescriptor(10, 12, 12),
-                        new AscensionRoomDescriptor(10),
+                        new BattleRoomDefinition(10, 12, 12),
+                        new AscensionRoomDefinition(10),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
                         // new RestRoomDescriptor(11),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
                         // new RestRoomDescriptor(12),
-                        new ShopRoomDescriptor(12),
-                        new BattleRoomDescriptor(13, 12, 12),
-                        new SuccessRoomDescriptor(13),
+                        new ShopRoomDefinition(12),
+                        new BattleRoomDefinition(13, 12, 12),
+                        new SuccessRoomDefinition(13),
                     },
                 }),
             
@@ -181,85 +197,83 @@ public class MapCategory : Category<MapEntry>
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(0, "发现一张牌"),
-                        new DirectRoomDescriptor(0, "发现一张牌"),
-                        new DirectRoomDescriptor(0, "发现一张牌"),
-                        new DirectRoomDescriptor(0, "发现一张牌"),
-                        new DirectRoomDescriptor(0, "发现一张牌"),
-                        new DirectRoomDescriptor(0, "发现一张牌"),
-                        new DirectRoomDescriptor(0, "发现一张牌"),
-                        new AscensionRoomDescriptor(0),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new AscensionRoomDefinition(0),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(4, "发现一张牌"),
-                        new DirectRoomDescriptor(4, "发现一张牌"),
-                        new DirectRoomDescriptor(4, "发现一张牌"),
-                        new DirectRoomDescriptor(4, "发现一张牌"),
-                        new DirectRoomDescriptor(4, "发现一张牌"),
-                        new DirectRoomDescriptor(4, "发现一张牌"),
-                        new DirectRoomDescriptor(4, "发现一张牌"),
-                        new AscensionRoomDescriptor(4),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new AscensionRoomDefinition(4),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(7, "发现一张牌"),
-                        new DirectRoomDescriptor(7, "发现一张牌"),
-                        new DirectRoomDescriptor(7, "发现一张牌"),
-                        new DirectRoomDescriptor(7, "发现一张牌"),
-                        new DirectRoomDescriptor(7, "发现一张牌"),
-                        new DirectRoomDescriptor(7, "发现一张牌"),
-                        new DirectRoomDescriptor(7, "发现一张牌"),
-                        new AscensionRoomDescriptor(7),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new AscensionRoomDefinition(7),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(10, "发现一张牌"),
-                        new DirectRoomDescriptor(10, "发现一张牌"),
-                        new DirectRoomDescriptor(10, "发现一张牌"),
-                        new DirectRoomDescriptor(10, "发现一张牌"),
-                        new DirectRoomDescriptor(10, "发现一张牌"),
-                        new DirectRoomDescriptor(10, "发现一张牌"),
-                        new DirectRoomDescriptor(10, "发现一张牌"),
-                        new AscensionRoomDescriptor(10),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new AscensionRoomDefinition(10),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(13, "发现一张牌"),
-                        new DirectRoomDescriptor(13, "发现一张牌"),
-                        new DirectRoomDescriptor(13, "发现一张牌"),
-                        new DirectRoomDescriptor(13, "发现一张牌"),
-                        new DirectRoomDescriptor(13, "发现一张牌"),
-                        new DirectRoomDescriptor(13, "发现一张牌"),
-                        new DirectRoomDescriptor(13, "发现一张牌"),
-                        new SuccessRoomDescriptor(13),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new SuccessRoomDefinition(13),
                     },
                 }),
             
             new(id: "教程测试",
-                envJingJie: JingJie.LianQi,
-                slotCount: 3,
+                envJingJie: JingJie.ZhuJi,
+                slotCount: 5,
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        null,
-                        new DirectRoomDescriptor(0, "教学1"),
-                        null,
-                        new DirectRoomDescriptor(0, "教学2"),
-                        new DirectRoomDescriptor(0, "教学3"),
-                        new DirectRoomDescriptor(0, "教学4"),
-                        new DirectRoomDescriptor(0, "教学5"),
-                        new DirectRoomDescriptor(0, "教学6"),
-                        new DirectRoomDescriptor(0, "教学8"),
-                        new DirectRoomDescriptor(0, "教学10"),
+                        // new DirectRoomDefinition(0, "教学1"),
+                        // new DirectRoomDefinition(0, "教学2"),
+                        // new DirectRoomDefinition(0, "教学3"),
+                        // new DirectRoomDefinition(0, "教学4"),
+                        // new DirectRoomDefinition(0, "教学5"),
+                        // new DirectRoomDefinition(0, "教学6"),
+                        // new DirectRoomDefinition(0, "教学8"),
+                        new DirectRoomDefinition(0, "教学10"),
                     },
                 }),
             
@@ -269,11 +283,11 @@ public class MapCategory : Category<MapEntry>
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(0, "快速结算"),
+                        new DirectRoomDefinition(0, "快速结算"),
                     },
                 }),
             
@@ -283,12 +297,12 @@ public class MapCategory : Category<MapEntry>
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(1, "多段测试"),
-                        new AscensionRoomDescriptor(0),
+                        new DirectRoomDefinition(1, "多段测试"),
+                        new AscensionRoomDefinition(0),
                     },
                 }),
             
@@ -298,12 +312,12 @@ public class MapCategory : Category<MapEntry>
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 40,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(1, 12, 12),
-                        new AscensionRoomDescriptor(0),
+                        new BattleRoomDefinition(1, 12, 12),
+                        new AscensionRoomDefinition(0),
                     },
                 }),
             
@@ -313,64 +327,64 @@ public class MapCategory : Category<MapEntry>
                 gold: 5,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 7,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(2, 5, 6),
-                        new AdventureRoomDescriptor(2),
-                        new ShopRoomDescriptor(2),
-                        new BattleRoomDescriptor(3, 6, 7),
-                        new AdventureRoomDescriptor(3),
-                        new RestRoomDescriptor(3),
-                        new BattleRoomDescriptor(4, 7, 8),
-                        new AscensionRoomDescriptor(4),
+                        new BattleRoomDefinition(2, 5, 6),
+                        new AdventureRoomDefinition(2),
+                        new ShopRoomDefinition(2),
+                        new BattleRoomDefinition(3, 6, 7),
+                        new AdventureRoomDefinition(3),
+                        new RestRoomDefinition(3),
+                        new BattleRoomDefinition(4, 7, 8),
+                        new AscensionRoomDefinition(4),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(5, 8, 8),
-                        new AdventureRoomDescriptor(5),
-                        new ShopRoomDescriptor(5),
-                        new BattleRoomDescriptor(5, 8, 9),
-                        new AdventureRoomDescriptor(5),
-                        new BattleRoomDescriptor(6, 9, 9),
-                        new AdventureRoomDescriptor(6),
-                        new RestRoomDescriptor(6),
-                        new BattleRoomDescriptor(7, 9, 10),
-                        new AscensionRoomDescriptor(7),
+                        new BattleRoomDefinition(5, 8, 8),
+                        new AdventureRoomDefinition(5),
+                        new ShopRoomDefinition(5),
+                        new BattleRoomDefinition(5, 8, 9),
+                        new AdventureRoomDefinition(5),
+                        new BattleRoomDefinition(6, 9, 9),
+                        new AdventureRoomDefinition(6),
+                        new RestRoomDefinition(6),
+                        new BattleRoomDefinition(7, 9, 10),
+                        new AscensionRoomDefinition(7),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(8, 10, 10),
-                        new AdventureRoomDescriptor(8),
-                        new BattleRoomDescriptor(8, 10, 11),
-                        new AdventureRoomDescriptor(8),
-                        new ShopRoomDescriptor(8),
-                        new BattleRoomDescriptor(9, 11, 11),
-                        new AdventureRoomDescriptor(9),
-                        new BattleRoomDescriptor(9, 11, 12),
-                        new AdventureRoomDescriptor(9),
-                        new RestRoomDescriptor(9),
-                        new BattleRoomDescriptor(10, 12, 12),
-                        new AscensionRoomDescriptor(10),
+                        new BattleRoomDefinition(8, 10, 10),
+                        new AdventureRoomDefinition(8),
+                        new BattleRoomDefinition(8, 10, 11),
+                        new AdventureRoomDefinition(8),
+                        new ShopRoomDefinition(8),
+                        new BattleRoomDefinition(9, 11, 11),
+                        new AdventureRoomDefinition(9),
+                        new BattleRoomDefinition(9, 11, 12),
+                        new AdventureRoomDefinition(9),
+                        new RestRoomDefinition(9),
+                        new BattleRoomDefinition(10, 12, 12),
+                        new AscensionRoomDefinition(10),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new RestRoomDescriptor(11),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new RestRoomDescriptor(12),
-                        new ShopRoomDescriptor(12),
-                        new BattleRoomDescriptor(13, 12, 12),
-                        new SuccessRoomDescriptor(13),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new RestRoomDefinition(11),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new RestRoomDefinition(12),
+                        new ShopRoomDefinition(12),
+                        new BattleRoomDefinition(13, 12, 12),
+                        new SuccessRoomDefinition(13),
                     },
                 }),
             
@@ -380,53 +394,53 @@ public class MapCategory : Category<MapEntry>
                 gold: 17,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 13,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(5, 8, 8),
-                        new AdventureRoomDescriptor(5),
-                        new ShopRoomDescriptor(5),
-                        new BattleRoomDescriptor(5, 8, 9),
-                        new AdventureRoomDescriptor(5),
-                        new BattleRoomDescriptor(6, 9, 9),
-                        new AdventureRoomDescriptor(6),
-                        new RestRoomDescriptor(6),
-                        new BattleRoomDescriptor(7, 9, 10),
-                        new AscensionRoomDescriptor(7),
+                        new BattleRoomDefinition(5, 8, 8),
+                        new AdventureRoomDefinition(5),
+                        new ShopRoomDefinition(5),
+                        new BattleRoomDefinition(5, 8, 9),
+                        new AdventureRoomDefinition(5),
+                        new BattleRoomDefinition(6, 9, 9),
+                        new AdventureRoomDefinition(6),
+                        new RestRoomDefinition(6),
+                        new BattleRoomDefinition(7, 9, 10),
+                        new AscensionRoomDefinition(7),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(8, 10, 10),
-                        new AdventureRoomDescriptor(8),
-                        new BattleRoomDescriptor(8, 10, 11),
-                        new AdventureRoomDescriptor(8),
-                        new ShopRoomDescriptor(8),
-                        new BattleRoomDescriptor(9, 11, 11),
-                        new AdventureRoomDescriptor(9),
-                        new BattleRoomDescriptor(9, 11, 12),
-                        new AdventureRoomDescriptor(9),
-                        new RestRoomDescriptor(9),
-                        new BattleRoomDescriptor(10, 12, 12),
-                        new AscensionRoomDescriptor(10),
+                        new BattleRoomDefinition(8, 10, 10),
+                        new AdventureRoomDefinition(8),
+                        new BattleRoomDefinition(8, 10, 11),
+                        new AdventureRoomDefinition(8),
+                        new ShopRoomDefinition(8),
+                        new BattleRoomDefinition(9, 11, 11),
+                        new AdventureRoomDefinition(9),
+                        new BattleRoomDefinition(9, 11, 12),
+                        new AdventureRoomDefinition(9),
+                        new RestRoomDefinition(9),
+                        new BattleRoomDefinition(10, 12, 12),
+                        new AscensionRoomDefinition(10),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new RestRoomDescriptor(11),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new RestRoomDescriptor(12),
-                        new ShopRoomDescriptor(12),
-                        new BattleRoomDescriptor(13, 12, 12),
-                        new SuccessRoomDescriptor(13),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new RestRoomDefinition(11),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new RestRoomDefinition(12),
+                        new ShopRoomDefinition(12),
+                        new BattleRoomDefinition(13, 12, 12),
+                        new SuccessRoomDefinition(13),
                     },
                 }),
             
@@ -436,40 +450,40 @@ public class MapCategory : Category<MapEntry>
                 gold: 49,
                 skillJingJie: JingJie.ZhuJi,
                 skillCount: 15,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(8, 10, 10),
-                        new AdventureRoomDescriptor(8),
-                        new BattleRoomDescriptor(8, 10, 11),
-                        new AdventureRoomDescriptor(8),
-                        new ShopRoomDescriptor(8),
-                        new BattleRoomDescriptor(9, 11, 11),
-                        new AdventureRoomDescriptor(9),
-                        new BattleRoomDescriptor(9, 11, 12),
-                        new AdventureRoomDescriptor(9),
-                        new RestRoomDescriptor(9),
-                        new BattleRoomDescriptor(10, 12, 12),
-                        new AscensionRoomDescriptor(10),
+                        new BattleRoomDefinition(8, 10, 10),
+                        new AdventureRoomDefinition(8),
+                        new BattleRoomDefinition(8, 10, 11),
+                        new AdventureRoomDefinition(8),
+                        new ShopRoomDefinition(8),
+                        new BattleRoomDefinition(9, 11, 11),
+                        new AdventureRoomDefinition(9),
+                        new BattleRoomDefinition(9, 11, 12),
+                        new AdventureRoomDefinition(9),
+                        new RestRoomDefinition(9),
+                        new BattleRoomDefinition(10, 12, 12),
+                        new AscensionRoomDefinition(10),
                     },
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new RestRoomDescriptor(11),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new RestRoomDescriptor(12),
-                        new ShopRoomDescriptor(12),
-                        new BattleRoomDescriptor(13, 12, 12),
-                        new SuccessRoomDescriptor(13),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new RestRoomDefinition(11),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new RestRoomDefinition(12),
+                        new ShopRoomDefinition(12),
+                        new BattleRoomDefinition(13, 12, 12),
+                        new SuccessRoomDefinition(13),
                     },
                 }),
             
@@ -479,25 +493,25 @@ public class MapCategory : Category<MapEntry>
                 gold: 129,
                 skillJingJie: JingJie.JinDan,
                 skillCount: 17,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new AdventureRoomDescriptor(11),
-                        new BattleRoomDescriptor(11, 12, 12),
-                        new RestRoomDescriptor(11),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new AdventureRoomDescriptor(12),
-                        new BattleRoomDescriptor(12, 12, 12),
-                        new RestRoomDescriptor(12),
-                        new ShopRoomDescriptor(12),
-                        new BattleRoomDescriptor(13, 12, 12),
-                        new SuccessRoomDescriptor(13),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new RestRoomDefinition(11),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new RestRoomDefinition(12),
+                        new ShopRoomDefinition(12),
+                        new BattleRoomDefinition(13, 12, 12),
+                        new SuccessRoomDefinition(13),
                     },
                 }),
             
@@ -507,14 +521,14 @@ public class MapCategory : Category<MapEntry>
                 gold: 289,
                 skillJingJie: JingJie.JinDan,
                 skillCount: 41,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new RestRoomDescriptor(12),
-                        new ShopRoomDescriptor(12),
-                        new BattleRoomDescriptor(13, 12, 12),
-                        new SuccessRoomDescriptor(13),
+                        new RestRoomDefinition(12),
+                        new ShopRoomDefinition(12),
+                        new BattleRoomDefinition(13, 12, 12),
+                        new SuccessRoomDefinition(13),
                     },
                 }),
             
@@ -524,15 +538,15 @@ public class MapCategory : Category<MapEntry>
                 gold: 3,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new AscensionRoomDescriptor(1),
-                        new AscensionRoomDescriptor(4),
-                        new AscensionRoomDescriptor(7),
-                        new AscensionRoomDescriptor(10),
-                        new AdventureRoomDescriptor(12),
+                        new AscensionRoomDefinition(1),
+                        new AscensionRoomDefinition(4),
+                        new AscensionRoomDefinition(7),
+                        new AscensionRoomDefinition(10),
+                        new AdventureRoomDefinition(12),
                     },
                 }),
             
@@ -542,25 +556,25 @@ public class MapCategory : Category<MapEntry>
                 gold: 3,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new DirectRoomDescriptor(0, "排局1"),
-                        new AscensionRoomDescriptor(4),
-                        new AscensionRoomDescriptor(7),
-                        new AscensionRoomDescriptor(10),
-                        new AdventureRoomDescriptor(12),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new DirectRoomDefinition(0, "排局1"),
+                        new AscensionRoomDefinition(4),
+                        new AscensionRoomDefinition(7),
+                        new AscensionRoomDefinition(10),
+                        new AdventureRoomDefinition(12),
                     },
                 }),
             
@@ -570,25 +584,25 @@ public class MapCategory : Category<MapEntry>
                 gold: 12,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new DirectRoomDescriptor(0, "排局2"),
-                        new AscensionRoomDescriptor(4),
-                        new AscensionRoomDescriptor(7),
-                        new AscensionRoomDescriptor(10),
-                        new AdventureRoomDescriptor(12),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new DirectRoomDefinition(0, "排局2"),
+                        new AscensionRoomDefinition(4),
+                        new AscensionRoomDefinition(7),
+                        new AscensionRoomDefinition(10),
+                        new AdventureRoomDefinition(12),
                     },
                 }),
             
@@ -598,24 +612,24 @@ public class MapCategory : Category<MapEntry>
                 gold: 53,
                 skillJingJie: JingJie.LianQi,
                 skillCount: 0,
-                levelsLayout: new RoomDescriptor[][]
+                levels: new RoomDefinition[][]
                 {
-                    new RoomDescriptor[]
+                    new RoomDefinition[]
                     {
-                        new DirectRoomDescriptor(0, "排局3抽牌"),
-                        new DirectRoomDescriptor(0, "排局3"),
-                        new DirectRoomDescriptor(0, "排局3"),
-                        new DirectRoomDescriptor(0, "排局3"),
-                        new DirectRoomDescriptor(0, "排局3"),
-                        new DirectRoomDescriptor(0, "排局3"),
-                        new DirectRoomDescriptor(0, "排局3"),
-                        new DirectRoomDescriptor(0, "排局3"),
-                        new DirectRoomDescriptor(0, "排局3"),
-                        new DirectRoomDescriptor(0, "排局3"),
-                        new AscensionRoomDescriptor(4),
-                        new AscensionRoomDescriptor(7),
-                        new AscensionRoomDescriptor(10),
-                        new AdventureRoomDescriptor(12),
+                        new DirectRoomDefinition(0, "排局3抽牌"),
+                        new DirectRoomDefinition(0, "排局3"),
+                        new DirectRoomDefinition(0, "排局3"),
+                        new DirectRoomDefinition(0, "排局3"),
+                        new DirectRoomDefinition(0, "排局3"),
+                        new DirectRoomDefinition(0, "排局3"),
+                        new DirectRoomDefinition(0, "排局3"),
+                        new DirectRoomDefinition(0, "排局3"),
+                        new DirectRoomDefinition(0, "排局3"),
+                        new DirectRoomDefinition(0, "排局3"),
+                        new AscensionRoomDefinition(4),
+                        new AscensionRoomDefinition(7),
+                        new AscensionRoomDefinition(10),
+                        new AdventureRoomDefinition(12),
                     },
                 }),
         });

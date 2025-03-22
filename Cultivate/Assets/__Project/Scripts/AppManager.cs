@@ -63,7 +63,6 @@ public class AppManager : Singleton<AppManager>, Addressable
             { "App", () => Instance },
 
             { "Settings", () => Settings },
-            // Designer
             { "Encyclopedia", () => Encyclopedia },
             { "Editor", () => EditorManager.Instance },
             { "Profile", () => ProfileManager },

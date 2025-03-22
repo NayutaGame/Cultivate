@@ -1,13 +1,18 @@
 
 public class UnequipDetails : RunClosureDetails
 {
-    public DeckIndex FromDeckIndex;
+    public DeckIndex DeckIndex;
     public SkillSlot SkillSlot;
-    
-    public UnequipDetails(SkillSlot skillSlot)
+
+    private UnequipDetails(SkillSlot skillSlot, DeckIndex deckIndex)
     {
         SkillSlot = skillSlot;
-
-        FromDeckIndex = SkillSlot.ToDeckIndex();
+        DeckIndex = deckIndex;
     }
+
+    public static UnequipDetails FromSlot(SkillSlot slot)
+        => new(slot, slot.ToDeckIndex());
+
+    public static UnequipDetails FromDeckIndex(DeckIndex deckIndex)
+        => new(RunManager.Instance.Environment.SlotFromDeckIndex(deckIndex), deckIndex);
 }

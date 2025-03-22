@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
@@ -32,18 +33,28 @@ public class Map : Addressable, ISerializationCallbackReceiver
     
     public MapEntry GetEntry() => _entry;
 
-    public void Init()
+    public void Init(Profile profile, RunEnvironment env)
     {
         InitEntityPool();
         InitAdventurePool();
         InsertedRoomPool = new();
 
-        _levels = new Level[_entry.Levels.Length];
-        for (int i = 0; i < _entry.Levels.Length; i++)
-            _levels[i] = new Level(_entry.Levels[i]);
+        CompileLevels(_entry.Levels, profile, env);
 
         _stepIndex = 0;
         _levelIndex = 0;
+    }
+    
+    private void CompileLevels(RoomDefinition[][] levels, Profile profile, RunEnvironment env)
+    {
+        _levels = levels
+            .Select(levelRooms => 
+                levelRooms.Where(room => room != null && (room.Pred == null || room.Pred(profile, env)))
+                        .ToArray()
+            )
+            .Where(compiledLevel => compiledLevel.Length > 0) // 筛掉空层
+            .Select(compiledLevel => new Level(compiledLevel))
+            .ToArray();
     }
 
     private void InitEntityPool()

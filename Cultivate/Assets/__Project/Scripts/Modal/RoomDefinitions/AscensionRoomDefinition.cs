@@ -2,14 +2,14 @@
 using System;
 
 [Serializable]
-public class AscensionRoomDescriptor : RoomDescriptor
+public class AscensionRoomDefinition : RoomDefinition
 {
     public override RoomEntry Draw(Map map, Room room)
     {
         return "突破境界";
     }
 
-    public AscensionRoomDescriptor(int ladder) : base(ladder)
+    public AscensionRoomDefinition(int ladder, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)
     {
     }
 

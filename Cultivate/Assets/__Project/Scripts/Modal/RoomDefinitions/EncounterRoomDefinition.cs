@@ -2,7 +2,7 @@
 using System;
 
 [Serializable]
-public class EncounterRoomDescriptor : RoomDescriptor
+public class EncounterRoomDefinition : RoomDefinition
 {
     public override RoomEntry Draw(Map map, Room room)
     {
@@ -10,7 +10,7 @@ public class EncounterRoomDescriptor : RoomDescriptor
         return entry;
     }
 
-    public EncounterRoomDescriptor(int ladder) : base(ladder)
+    public EncounterRoomDefinition(int ladder, Func<Profile, RunEnvironment, bool> pred) : base(ladder, pred)
     {
     }
 

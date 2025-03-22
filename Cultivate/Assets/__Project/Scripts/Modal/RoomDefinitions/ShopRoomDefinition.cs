@@ -3,7 +3,7 @@ using System;
 using CLLibrary;
 
 [Serializable]
-public class ShopRoomDescriptor : RoomDescriptor
+public class ShopRoomDefinition : RoomDefinition
 {
     public override RoomEntry Draw(Map map, Room room)
     {
@@ -29,7 +29,7 @@ public class ShopRoomDescriptor : RoomDescriptor
     public override string GetDescription()
         => "可以购买东西";
 
-    public ShopRoomDescriptor(int ladder) : base(ladder)
+    public ShopRoomDefinition(int ladder, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)
     {
     }
 }

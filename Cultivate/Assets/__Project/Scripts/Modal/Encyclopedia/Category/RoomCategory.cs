@@ -31,17 +31,17 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    BattleRoomDescriptor roomDescriptor = room.GetDescriptor() as BattleRoomDescriptor;
-                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
+                    BattleRoomDefinition roomDefinition = room.GetDescriptor() as BattleRoomDefinition;
+                    int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
                     int goldValue = Mathf.RoundToInt(baseGoldReward * RandomManager.Range(0.9f, 1.1f));
 
                     BattlePanelDescriptor A = new(room.GetPredrewRunEntity());
 
                     DiscoverSkillPanelDescriptor B = DiscoverSkillPanelDescriptor.FromDefault(room.Ladder);
 
-                    bool shouldUpdateSlotCount = roomDescriptor.ShouldUpdateSlotCount;
+                    bool shouldUpdateSlotCount = roomDefinition.ShouldUpdateSlotCount;
 
-                    bool isFinalBoss = roomDescriptor._isBoss && RunManager.Instance.Environment.IsFinalJingJie();
+                    bool isFinalBoss = roomDefinition._isBoss && RunManager.Instance.Environment.IsFinalJingJie();
 
                     A.SetWinOperation(() =>
                     {
@@ -50,7 +50,7 @@ public class RoomCategory : Category<RoomEntry>
                             B.SetTitleText("胜利");
                             B.SetDescriptionText($"获得了<style=\"Gold\">{goldValue}金钱</style>\n请选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
-                                RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
+                                RunManager.Instance.Environment.Home.SetSlotCount(roomDefinition._slotCountAfter);
                             return B;
                         }
                         
@@ -68,7 +68,7 @@ public class RoomCategory : Category<RoomEntry>
                             B.SetDescriptionText($"<style=\"Gray\">你没能击败对手，损失了一些命元</style>" +
                                                  $"\n但获得了<style=\"Gold\">{goldValue}金钱</style>，以及选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
-                                RunManager.Instance.Environment.Home.SetSlotCount(roomDescriptor._slotCountAfter);
+                                RunManager.Instance.Environment.Home.SetSlotCount(roomDefinition._slotCountAfter);
                             return B;
                         }
                         
@@ -234,7 +234,7 @@ public class RoomCategory : Category<RoomEntry>
                 {
                     RunEnvironment env = RunManager.Instance.Environment;
                     
-                    env.ClearDeck();
+                    env.ClearDeckProcedure();
                     env.Home.SetSlotCount(3);
                     env.Home.SetHealth(40);
 
@@ -399,10 +399,10 @@ public class RoomCategory : Category<RoomEntry>
                         $"桃花宫，选择1张{nextJingJie}木牌",
                         $"长明殿，选择1张{nextJingJie}火牌",
                         $"环岳岭，选择1张{nextJingJie}土牌",
-                        $"易宝斋，得到{2 * RoomDescriptor.GetGoldRewardFromLadder(room.Ladder)}金钱，访问一次商店",
+                        $"易宝斋，得到{2 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}金钱，访问一次商店",
                         $"剑池，获得2张{currJingJie}攻击牌",
                         $"风雨楼，获得2张{currJingJie}防御牌",
-                        $"百草堂，得到{4 * RoomDescriptor.GetGoldRewardFromLadder(room.Ladder)}气血上限",
+                        $"百草堂，得到{4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}气血上限",
                         $"星宫，获得2张{currJingJie}灵气牌",
                         $"天机阁，从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌",
                         $"散修，选择1基础境界是{nextJingJie}期的牌",
@@ -423,8 +423,8 @@ public class RoomCategory : Category<RoomEntry>
                             .SetReward(new DrawSkillReward($"2张{currJingJie}攻击牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Attack, count: 2))),
                         new DialogPanelDescriptor("风雨楼", $"获得2张{currJingJie}防御牌")
                             .SetReward(new DrawSkillReward($"2张{currJingJie}防御牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Defend, count: 2))),
-                        new DialogPanelDescriptor($"百草堂", $"得到{4 * RoomDescriptor.GetGoldRewardFromLadder(room.Ladder)}气血上限")
-                            .SetReward(new ResourceReward(health: 4 * RoomDescriptor.GetGoldRewardFromLadder(room.Ladder))),
+                        new DialogPanelDescriptor($"百草堂", $"得到{4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}气血上限")
+                            .SetReward(new ResourceReward(health: 4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder))),
                         new DialogPanelDescriptor("星宫", $"获得2张{currJingJie}灵气牌")
                             .SetReward(new DrawSkillReward($"2张{currJingJie}灵气牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Mana, count: 2))),
                         new DialogPanelDescriptor("天机阁", $"从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌")
@@ -500,7 +500,7 @@ public class RoomCategory : Category<RoomEntry>
                         return null;
                     });
 
-                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
+                    int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
                     DialogPanelDescriptor C = new DialogPanelDescriptor(
                             titleText: "愉悦",
                             detailedText: $"泡了温泉之后感到了心情畅快，获得了{baseGoldReward}点气血上限")
@@ -553,87 +553,6 @@ public class RoomCategory : Category<RoomEntry>
                     A.Next = B;
                     B.Next = null;
                     return A;
-                }),
-
-            new(id:                                 "多段测试",
-                description:                        "多段测试",
-                ladderBound:                        new Bound(0, 15),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    RunEntity homeA = EditorManager.FindEntity("多段HomeA");
-                    RunEntity awayA = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayA"));
-                    RunEntity homeB = EditorManager.FindEntity("多段HomeB");
-                    RunEntity awayB = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayB"));
-                    RunEntity homeC = EditorManager.FindEntity("多段HomeC");
-                    RunEntity awayC = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayC"));
-                    RunEntity homeD = EditorManager.FindEntity("多段HomeD");
-                    RunEntity awayD = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayD"));
-
-                    DialogPanelDescriptor selecting = new("多段测试", "多段测试", "基础", "护甲的表现", "破甲的表现", "Buff的表现");
-                    
-                    BattlePanelDescriptor optionA = new BattlePanelDescriptor(awayA)
-                        .SetWinOperation(() =>
-                        {
-                            return selecting;
-                        })
-                        .SetLoseOperation(() =>
-                        {
-                            return selecting;
-                        });
-
-                    BattlePanelDescriptor optionB = new BattlePanelDescriptor(awayB)
-                        .SetWinOperation(() =>
-                        {
-                            return selecting;
-                        })
-                        .SetLoseOperation(() =>
-                        {
-                            return selecting;
-                        });
-
-                    BattlePanelDescriptor optionC = new BattlePanelDescriptor(awayC)
-                        .SetWinOperation(() =>
-                        {
-                            return selecting;
-                        })
-                        .SetLoseOperation(() =>
-                        {
-                            return selecting;
-                        });
-
-                    BattlePanelDescriptor optionD = new BattlePanelDescriptor(awayD)
-                        .SetWinOperation(() =>
-                        {
-                            return selecting;
-                        })
-                        .SetLoseOperation(() =>
-                        {
-                            return selecting;
-                        });
-                    
-                    selecting[0].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeA, toField: true, overwrite: true);
-                        return optionA;
-                    });
-                    selecting[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeB, toField: true, overwrite: true);
-                        return optionB;
-                    });
-                    selecting[2].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeC, toField: true, overwrite: true);
-                        return optionC;
-                    });
-                    selecting[3].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeD, toField: true, overwrite: true);
-                        return optionD;
-                    });
-                    
-                    return selecting;
                 }),
 
             new(id:                                 "教学1",
@@ -719,13 +638,13 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
                     RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
-                    RunManager.Instance.Environment.ClearDeck();
+                    RunManager.Instance.Environment.ClearDeckProcedure();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"));
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冰弹"), preferredDeckIndex: DeckIndex.FromField(1));
                     
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.ClearDeck();
+                        RunManager.Instance.Environment.ClearDeckProcedure();
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"));
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冰弹"), preferredDeckIndex: DeckIndex.FromField(1));
                         A.ResetGuideIndex();
@@ -771,13 +690,13 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
                     RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
-                    RunManager.Instance.Environment.ClearDeck();
+                    RunManager.Instance.Environment.ClearDeckProcedure();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"), preferredDeckIndex: DeckIndex.FromField(0));
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
                     
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.ClearDeck();
+                        RunManager.Instance.Environment.ClearDeckProcedure();
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"), preferredDeckIndex: DeckIndex.FromField(0));
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
                         A.ResetGuideIndex();
@@ -840,14 +759,14 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
                     RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
-                    RunManager.Instance.Environment.ClearDeck();
+                    RunManager.Instance.Environment.ClearDeckProcedure();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"));
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
                     
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.ClearDeck();
+                        RunManager.Instance.Environment.ClearDeckProcedure();
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"));
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
@@ -952,10 +871,15 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
-                        new ConfirmGuide("这张牌，已经有了一张诶" +
-                                         "\n对了，试试合成"),
-                        new ClickBattleGuide("战斗中虽然说是观察对手的招数，找出应对之策" +
-                                             "\n但是在绝对的实力面前，克制关系也不过尔尔" +
+                        new ConfirmGuide("同属性的牌同时处于战斗区就会激活阵法效果"),
+                        new EquipGuide("金刃和寻猎都是金属性的牌，装备寻猎",
+                            SkillEntryDescriptor.FromName("寻猎"), DeckIndex.FromField(1)),
+                        new ConfirmGuide("金属性的牌达到了两张，金灵阵激活了，鼠标瞄到头像上方的阵法图标可查看具体效果"),
+                        new EquipGuide("另外两张牌都是水属性的，装备激流试试",
+                            SkillEntryDescriptor.FromName("激流"), DeckIndex.FromField(0)),
+                        new EquipGuide("然后是空幻",
+                            SkillEntryDescriptor.FromName("空幻"), DeckIndex.FromField(1)),
+                        new ClickBattleGuide("虽然刚才的金灵阵效果没了，但是两张水系卡牌可以激活水系阵法" +
                                              "\n点击开始战斗吧",
                             new Vector2(965f, 913.5f)),
                     });
@@ -968,7 +892,7 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
                     RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
                     
-                    RunManager.Instance.Environment.ClearDeck();
+                    RunManager.Instance.Environment.ClearDeckProcedure();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("金刃"), preferredDeckIndex: DeckIndex.FromField(0));
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"));
@@ -976,7 +900,7 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.ClearDeck();
+                        RunManager.Instance.Environment.ClearDeckProcedure();
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("金刃"), preferredDeckIndex: DeckIndex.FromField(0));
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
                         RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"));
@@ -987,6 +911,7 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetWinOperation(() =>
                     {
+                        RunManager.Instance.Environment.ClearDeckProcedure();
                         return null;
                     });
 
@@ -1017,26 +942,60 @@ public class RoomCategory : Category<RoomEntry>
                     
                     BattlePanelDescriptor A = new(enemyEntity);
                     
-                    // A.SetGuideDescriptors(new Guide[]
-                    // {
-                    //     new ConfirmGuide("这张牌，已经有了一张诶" +
-                    //                      "\n对了，试试合成"),
-                    //     new ClickBattleGuide("战斗中虽然说是观察对手的招数，找出应对之策" +
-                    //                          "\n但是在绝对的实力面前，克制关系也不过尔尔" +
-                    //                          "\n点击开始战斗吧",
-                    //         new Vector2(965f, 913.5f)),
-                    // });
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new ConfirmGuide("在梦中手中突然多出了5张牌"),
+                        new EquipGuide("对面明显是一个多段攻击的角色，徐福如果能有很高的灼烧的话。。",
+                            SkillEntryDescriptor.FromEntry("0709"), DeckIndex.FromField(4)),
+                        new EquipGuide("明显单一张灼烧叠的太慢了，五行中说是木生火，如果我们获得灼烧之前有力量的话。" +
+                                       "这些力量就可以一并流转成为灼烧" +
+                                       "\n哈哈，这场对决，是徐福的胜利了！",
+                            SkillEntryDescriptor.FromEntry("0708"), DeckIndex.FromField(3)),
+                        new EquipGuide("果然不太够么。虽说流转一次已经叠层效率翻倍了，但是如果获得力量之前就有格挡的话？" +
+                                       "水生木，格挡会一起变成力量，最终都会成为灼烧哒！",
+                            SkillEntryDescriptor.FromEntry("0707"), DeckIndex.FromField(2)),
+                        new EquipGuide("对方生命减少了，明显起到了效果，继续置入一张凝水。利用金生水的规则，将锋锐流转成格挡",
+                            SkillEntryDescriptor.FromEntry("0706"), DeckIndex.FromField(1)),
+                        new EquipGuide("最后放一张土属性的牌，提供坚毅，之后可以流转成锋锐",
+                            SkillEntryDescriptor.FromEntry("0705"), DeckIndex.FromField(0)),
+                        new ClickBattleGuide("成了，巧用流转的规则，可以快速叠层本不富裕的增益" +
+                                             "\n开始战斗吧",
+                            new Vector2(965f, 913.5f)),
+                    });
                     
                     DialogPanelDescriptor R = new(
                         titleText: "重试",
                         detailedText: "请重新尝试教学");
                     R[0].SetSelect(option => A);
-                    
-                    RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false, overwrite: true);
+
+                    Dialog2._exit = descriptor =>
+                    {
+                        RunManager.Instance.Environment.UnequipProcedure(UnequipDetails.FromDeckIndex(DeckIndex.FromField(0)));
+                        RunManager.Instance.Environment.UnequipProcedure(UnequipDetails.FromDeckIndex(DeckIndex.FromField(1)));
+                        RunManager.Instance.Environment.UnequipProcedure(UnequipDetails.FromDeckIndex(DeckIndex.FromField(2)));
+                        RunManager.Instance.Environment.UnequipProcedure(UnequipDetails.FromDeckIndex(DeckIndex.FromField(3)));
+                        RunManager.Instance.Environment.UnequipProcedure(UnequipDetails.FromDeckIndex(DeckIndex.FromField(4)));
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false, overwrite: false);
+                    };
                     
                     
                     A.SetWinOperation(() =>
                     {
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0705");
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0706");
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0707");
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0708");
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0709");
+                        return null;
+                    });
+
+                    A.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0705");
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0706");
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0707");
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0708");
+                        RunManager.Instance.Environment.RemoveSkillProcedure("0709");
                         return null;
                     });
 
@@ -1056,7 +1015,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
+                    int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
                     DialogPanelDescriptor A = new DialogPanelDescriptor(
                             titleText: "存钱",
                             detailedText: $"获得了{baseGoldReward}金钱")
@@ -1604,7 +1563,7 @@ public class RoomCategory : Category<RoomEntry>
                             return C;
 
                         DeckIndex copyingDeckIndex = indices[RandomManager.Range(0, count)];
-                        RunSkill copyingSkill = RunManager.Instance.Environment.GetSkillAtDeckIndex(copyingDeckIndex);
+                        RunSkill copyingSkill = RunManager.Instance.Environment.SkillFromDeckIndex(copyingDeckIndex);
                         indices.Do(index => RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, index));
                         return D;
                     });
@@ -1717,7 +1676,7 @@ public class RoomCategory : Category<RoomEntry>
                         RunManager.Instance.Environment.SetDHealthProcedure(-RunManager.Instance.Environment.Home.GetHealth() + 100);
                         RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
                         {
-                            RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex);
+                            RunSkill skill = RunManager.Instance.Environment.SkillFromDeckIndex(deckIndex);
                             if (skill == null)
                                 return;
                             
@@ -1823,7 +1782,7 @@ public class RoomCategory : Category<RoomEntry>
                     int trial = 0;
                     int rage = RandomManager.Range(0, 7);
 
-                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
+                    int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
                     
                     DialogPanelDescriptor A = new(
                         titleText: "生气",
@@ -1898,7 +1857,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
-                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
+                    int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
 
                     DialogPanelDescriptor A = new(
                         titleText: "管家",
@@ -1950,7 +1909,7 @@ public class RoomCategory : Category<RoomEntry>
                     bool yellNoLie = false;
                     bool expert = RandomManager.value < 0.5f;
                     
-                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
+                    int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
 
                     DialogPanelDescriptor A = new(
                         titleText: "市集",
@@ -2034,7 +1993,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
-                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
+                    int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
                     DialogPanelDescriptor A = new(
                         titleText: "季节",
                         detailedText: "你要过一个桥，桥上站了一人，问你，什么时候河会变得可以行走。你说在冬季的时候。他说你是胡说八道：“一年只有三个季节，春夏秋，哪里来的冬季？”",
@@ -2100,7 +2059,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
-                    int baseGoldReward = RoomDescriptor.GetGoldRewardFromLadder(room.Ladder);
+                    int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
                     DialogPanelDescriptor A = new(
                         titleText: "守株待兔",
                         detailedText: "你见到一个人坐在树桩旁，问他在干什么，他说有兔子会撞上这个树桩，自己在等兔子撞死。",
@@ -2184,7 +2143,7 @@ public class RoomCategory : Category<RoomEntry>
 
                         indices.Do(index =>
                         {
-                            RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(index);
+                            RunSkill skill = RunManager.Instance.Environment.SkillFromDeckIndex(index);
                             RunManager.Instance.Environment.RemoveSkillProcedure(index);
                             RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skill.GetEntry());
                         });
@@ -3044,6 +3003,87 @@ public class RoomCategory : Category<RoomEntry>
             #endregion
 
             #region ForTesting
+
+            new(id:                                 "多段测试",
+                description:                        "多段测试",
+                ladderBound:                        new Bound(0, 15),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    RunEntity homeA = EditorManager.FindEntity("多段HomeA");
+                    RunEntity awayA = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayA"));
+                    RunEntity homeB = EditorManager.FindEntity("多段HomeB");
+                    RunEntity awayB = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayB"));
+                    RunEntity homeC = EditorManager.FindEntity("多段HomeC");
+                    RunEntity awayC = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayC"));
+                    RunEntity homeD = EditorManager.FindEntity("多段HomeD");
+                    RunEntity awayD = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayD"));
+
+                    DialogPanelDescriptor selecting = new("多段测试", "多段测试", "基础", "护甲的表现", "破甲的表现", "Buff的表现");
+                    
+                    BattlePanelDescriptor optionA = new BattlePanelDescriptor(awayA)
+                        .SetWinOperation(() =>
+                        {
+                            return selecting;
+                        })
+                        .SetLoseOperation(() =>
+                        {
+                            return selecting;
+                        });
+
+                    BattlePanelDescriptor optionB = new BattlePanelDescriptor(awayB)
+                        .SetWinOperation(() =>
+                        {
+                            return selecting;
+                        })
+                        .SetLoseOperation(() =>
+                        {
+                            return selecting;
+                        });
+
+                    BattlePanelDescriptor optionC = new BattlePanelDescriptor(awayC)
+                        .SetWinOperation(() =>
+                        {
+                            return selecting;
+                        })
+                        .SetLoseOperation(() =>
+                        {
+                            return selecting;
+                        });
+
+                    BattlePanelDescriptor optionD = new BattlePanelDescriptor(awayD)
+                        .SetWinOperation(() =>
+                        {
+                            return selecting;
+                        })
+                        .SetLoseOperation(() =>
+                        {
+                            return selecting;
+                        });
+                    
+                    selecting[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeA, toField: true, overwrite: true);
+                        return optionA;
+                    });
+                    selecting[1].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeB, toField: true, overwrite: true);
+                        return optionB;
+                    });
+                    selecting[2].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeC, toField: true, overwrite: true);
+                        return optionC;
+                    });
+                    selecting[3].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeD, toField: true, overwrite: true);
+                        return optionD;
+                    });
+                    
+                    return selecting;
+                }),
 
             new(id:                                 "快速结算",
                 description:                        "快速结算",

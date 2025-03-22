@@ -20,5 +20,5 @@ public class UnequipGuide : Guide
     }
 
     public bool CheckComplete(out DeckIndex from)
-        => !RunManager.Instance.Environment.FindDeckIndex(out from, _from, excludingHand: true);
+        => !RunManager.Instance.Environment.DeckIndexFromDescriptor(out from, _from, excludingHand: true);
 }

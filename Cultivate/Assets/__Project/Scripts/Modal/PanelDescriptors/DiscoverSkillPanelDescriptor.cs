@@ -66,7 +66,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public static DiscoverSkillPanelDescriptor FromDefault(int ladder)
     {
-        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
 
         return new(
             titleText: "灵感",
@@ -78,7 +78,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public static DiscoverSkillPanelDescriptor FromLingYunFeng(int ladder)
     {
-        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
 
         DiscoverSkillPanelDescriptor d = new(
@@ -92,7 +92,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public static DiscoverSkillPanelDescriptor FromXiaoYaoHai(int ladder)
     {
-        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
 
         DiscoverSkillPanelDescriptor d = new(
@@ -106,7 +106,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public static DiscoverSkillPanelDescriptor FromTaohuaGong(int ladder)
     {
-        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
         
         DiscoverSkillPanelDescriptor d = new(
@@ -120,7 +120,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public static DiscoverSkillPanelDescriptor FromChangMingDian(int ladder)
     {
-        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
         
         DiscoverSkillPanelDescriptor d = new(
@@ -134,7 +134,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public static DiscoverSkillPanelDescriptor FromHuanYueLing(int ladder)
     {
-        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
         
         DiscoverSkillPanelDescriptor d = new(
@@ -148,7 +148,7 @@ public class DiscoverSkillPanelDescriptor : PanelDescriptor
 
     public static DiscoverSkillPanelDescriptor FromSanXiu(int ladder)
     {
-        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(ladder);
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
 
         DiscoverSkillPanelDescriptor d = new(
             titleText: $"散修",

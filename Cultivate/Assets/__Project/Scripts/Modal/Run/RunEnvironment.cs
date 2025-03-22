@@ -261,7 +261,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public MingYuan GetMingYuan()
         => _home.GetMingYuan();
 
-    public RunSkill GetSkillAtDeckIndex(DeckIndex deckIndex)
+    public RunSkill SkillFromDeckIndex(DeckIndex deckIndex)
     {
         if (deckIndex.InField)
             return Home.GetSlot(deckIndex.Index).Skill;
@@ -269,7 +269,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             return Hand[deckIndex.Index];
     }
 
-    public DeckIndex? GetDeckIndexOfSkill(RunSkill runSkill)
+    public SkillSlot SlotFromDeckIndex(DeckIndex deckIndex)
+    {
+        if (deckIndex.InField)
+            return Home.GetSlot(deckIndex.Index);
+        else
+            return null;
+    }
+
+    public DeckIndex? DeckIndexFromSkill(RunSkill runSkill)
     {
         SkillSlot skillSlot = runSkill.GetSkillSlot();
         if (skillSlot != null)
@@ -281,7 +289,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         return null;
     }
 
-    public bool FindDeckIndex(out DeckIndex result, SkillEntryDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
+    public bool DeckIndexFromDescriptor(out DeckIndex result, SkillEntryDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
     {
         omit ??= Array.Empty<DeckIndex>();
         
@@ -291,7 +299,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         {
             if (omit.Contains(deckIndex))
                 continue;
-            RunSkill skill = GetSkillAtDeckIndex(deckIndex);
+            RunSkill skill = SkillFromDeckIndex(deckIndex);
             if (skill != null && descriptor.Contains(skill))
             {
                 result = deckIndex;
@@ -364,7 +372,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         mapEntry.OnStartRun(this);
 
-        Map.Init();
+        Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        Map.Init(profile, this);
         InitPanel();
         
         SendEvent(RunClosureDict.START_RUN, d);
@@ -643,11 +652,13 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void UnequipProcedure(UnequipDetails d)
     {
         RunSkill toUnequip = d.SkillSlot.Skill;
+        if (toUnequip == null)
+            return;
         Hand.Add(toUnequip);
         d.SkillSlot.Skill = null;
         
         UnequipNeuron.Invoke(d);
-        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, DeckIndex.FromHand(Hand.Count() - 1)));
+        DeckChangedNeuron.Invoke(new(d.DeckIndex, DeckIndex.FromHand(Hand.Count() - 1)));
         FieldChangedNeuron.Invoke();
     }
 
@@ -671,7 +682,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         {
             Home.SetSlotCount(template.GetSlotCount());
             Home.SetHealth(template.GetHealth());
-            ClearDeck();
+            ClearDeckProcedure();
         }
         
         template.TraversalCurrentSlots().Do(s =>
@@ -691,10 +702,22 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         });
     }
 
-    public void ClearDeck()
+    public void ClearDeckProcedure()
     {
-        Hand.Clear();
-        Home.TraversalCurrentSlots().Do(s => s.Skill = null);
+        for (int i = _hand.Count() - 1; i >= 0; i--)
+        {
+            DeckIndex deckIndex = DeckIndex.FromHand(i);
+            RemoveSkillProcedure(deckIndex);
+        }
+
+        for (int i = 0; i < _home.GetSlotCount() - 1; i--)
+        {
+            SkillSlot slot = _home.GetSlot(i);
+            if (slot.Skill == null)
+                return;
+            DeckIndex deckIndex = DeckIndex.FromField(i);
+            RemoveSkillProcedure(deckIndex);
+        }
     }
 
     public void Combat()
@@ -956,6 +979,13 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         ReceiveSignalProcedure(new ConfirmDeckSignal(indices));
     }
 
+    public void RemoveSkillProcedure(SkillEntryDescriptor descriptor)
+    {
+        bool isFound = DeckIndexFromDescriptor(out DeckIndex deckIndex, descriptor);
+        if (isFound)
+            RemoveSkillProcedure(deckIndex);
+    }
+
     public void RemoveSkillProcedure(DeckIndex deckIndex)
     {
         RemoveSkillDetails d = new(deckIndex);
@@ -1031,8 +1061,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
                 Room oldRoom = Map.GetCurrRoom();
                 bool levelChanged = Step();
                 
-                bool cond1 = Map.GetCurrRoom().GetDescriptor() is SuccessRoomDescriptor;
-                bool cond2 = Map.GetCurrRoom().GetDescriptor() is AscensionRoomDescriptor && IsFinalJingJie();
+                bool cond1 = Map.GetCurrRoom().GetDescriptor() is SuccessRoomDefinition;
+                bool cond2 = Map.GetCurrRoom().GetDescriptor() is AscensionRoomDefinition && IsFinalJingJie();
                 if (cond1 || cond2)
                 {
                     CommitRunProcedure(RunResult.RunOutcome.Victorious);

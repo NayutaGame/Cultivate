@@ -25,11 +25,11 @@ public class MergeGuide : Guide
     {
         result = new DeckIndex[2];
 
-        bool hasFrom = RunManager.Instance.Environment.FindDeckIndex(out result[0], _from, excludingField: true);
+        bool hasFrom = RunManager.Instance.Environment.DeckIndexFromDescriptor(out result[0], _from, excludingField: true);
         if (!hasFrom)
             return true;
 
-        return !RunManager.Instance.Environment.FindDeckIndex(out result[1], _to, excludingField: true,
+        return !RunManager.Instance.Environment.DeckIndexFromDescriptor(out result[1], _to, excludingField: true,
             omit: new[] { result[0] });
     }
 }

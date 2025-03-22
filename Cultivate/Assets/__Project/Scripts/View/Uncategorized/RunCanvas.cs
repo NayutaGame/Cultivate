@@ -386,10 +386,10 @@ public class RunCanvas : Panel
     {
         DeckPanel.HandView.AddItem();
         
-        DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
+        DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
         DelegatingView to = DeckPanel.LatestSkillItem() as DelegatingView;
         
-        DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
+        DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
         
         to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
         

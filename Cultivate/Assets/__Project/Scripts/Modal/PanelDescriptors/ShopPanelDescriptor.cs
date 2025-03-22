@@ -38,7 +38,7 @@ public class ShopPanelDescriptor : PanelDescriptor
 
         _commodities = new CommodityListModel();
         
-        JingJie currJingJie = RoomDescriptor.GetJingJieFromLadder(_ladder);
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(_ladder);
 
         List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
             jingJie: currJingJie,
@@ -47,7 +47,7 @@ public class ShopPanelDescriptor : PanelDescriptor
         
         foreach (SkillEntry e in entries)
         {
-            int basePrice = RoomDescriptor.GetCardBasePriceFromJingJie(currJingJie);
+            int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(currJingJie);
             int price = Mathf.RoundToInt(basePrice * _priceMultiplier * RandomManager.Range(0.8f, 1.2f));
             price = price.ClampLower(1);
             float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
@@ -88,7 +88,7 @@ public class ShopPanelDescriptor : PanelDescriptor
 
     public static ShopPanelDescriptor FromYiBaoZhai(int ladder)
     {
-        int goldReward = RoomDescriptor.GetGoldRewardFromLadder(ladder);
+        int goldReward = RoomDefinition.GetGoldRewardFromLadder(ladder);
 
         ShopPanelDescriptor B = new ShopPanelDescriptor(ladder, 2, "易宝斋", "收藏家");
         B.SetEnter(panelDescriptor =>
@@ -102,7 +102,7 @@ public class ShopPanelDescriptor : PanelDescriptor
     public static ShopPanelDescriptor FromHeiShi(int ladder)
     {
         int priceMultiplier = 2;
-        JingJie jingJieFromLadder = RoomDescriptor.GetJingJieFromLadder(ladder);
+        JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound baseJingJieBound = new Bound((jingJieFromLadder + 2).ClampUpper(JingJie.HuaShen),
             (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen) + 1);
 
@@ -119,7 +119,7 @@ public class ShopPanelDescriptor : PanelDescriptor
             foreach (SkillEntry e in entries)
             {
                 int cardJingJie = e.LowestJingJie;
-                int basePrice = RoomDescriptor.GetCardBasePriceFromJingJie(cardJingJie);
+                int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(cardJingJie);
                 int price = Mathf.RoundToInt(basePrice * priceMultiplier * RandomManager.Range(0.8f, 1.2f));
                 price = price.ClampLower(1);
                 float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
@@ -136,7 +136,7 @@ public class ShopPanelDescriptor : PanelDescriptor
     public static ShopPanelDescriptor FromBiYeJi(int ladder)
     {
         int priceMultiplier = 2;
-        JingJie jingJieFromLadder = RoomDescriptor.GetJingJieFromLadder(ladder);
+        JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound baseJingJieBound = new Bound(JingJie.LianQi,
             (jingJieFromLadder - 2).ClampLower(JingJie.LianQi) + 1);
 
@@ -153,7 +153,7 @@ public class ShopPanelDescriptor : PanelDescriptor
             foreach (SkillEntry e in entries)
             {
                 int cardJingJie = e.LowestJingJie;
-                int basePrice = RoomDescriptor.GetCardBasePriceFromJingJie(cardJingJie);
+                int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(cardJingJie);
                 int price = Mathf.RoundToInt(basePrice * priceMultiplier * RandomManager.Range(0.8f, 1.2f));
                 price = price.ClampLower(1);
                 float discount = RandomManager.value < 0.2f ? 0.5f : 1f;

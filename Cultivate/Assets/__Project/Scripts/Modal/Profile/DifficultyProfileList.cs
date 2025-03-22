@@ -13,7 +13,7 @@ public class DifficultyProfileList : ListModel<DifficultyProfile>, ISerializatio
         Find("0").SetUnlocked(true);
     }
 
-    private DifficultyProfile Find(DifficultyEntry entry)
+    public DifficultyProfile Find(DifficultyEntry entry)
         => First(difficultyProfile => difficultyProfile.GetEntry() == entry);
 
     public static DifficultyProfileList Default()

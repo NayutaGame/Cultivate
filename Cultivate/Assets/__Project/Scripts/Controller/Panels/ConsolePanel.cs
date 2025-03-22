@@ -22,6 +22,8 @@ public class ConsolePanel : Panel
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
     public Button CheatButton;
+    public Button WinButton;
+    public Button LoseButton;
 
     public Button Button1;
     public Button Button5;
@@ -85,6 +87,12 @@ public class ConsolePanel : Panel
 
         CheatButton.onClick.RemoveAllListeners();
         CheatButton.onClick.AddListener(Cheat);
+
+        WinButton.onClick.RemoveAllListeners();
+        WinButton.onClick.AddListener(Win);
+
+        LoseButton.onClick.RemoveAllListeners();
+        LoseButton.onClick.AddListener(Lose);
 
         ToggleButton.onClick.RemoveAllListeners();
         ToggleButton.onClick.AddListener(() => ToggleShowing());
@@ -243,6 +251,16 @@ public class ConsolePanel : Panel
         // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("玄武吐息法"));
         // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吞天"));
         // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("童趣"));
+    }
+
+    private void Win()
+    {
+        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+    }
+
+    private void Lose()
+    {
+        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
     }
 
     private void OnTesterNoteInputFieldEndEdit(string value)

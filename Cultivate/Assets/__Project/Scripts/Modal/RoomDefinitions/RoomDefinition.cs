@@ -4,7 +4,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public abstract class RoomDescriptor
+public abstract class RoomDefinition
 {
     private static readonly int[] GoldRewardFromLadder = new int[]
     {
@@ -45,9 +45,12 @@ public abstract class RoomDescriptor
 
     [SerializeField] private readonly int _ladder;
     public int Ladder => _ladder;
+
+    [NonSerialized] public Func<Profile, RunEnvironment, bool> Pred;
     
-    public RoomDescriptor(int ladder)
+    public RoomDefinition(int ladder, Func<Profile, RunEnvironment, bool> pred)
     {
         _ladder = ladder;
+        Pred = pred;
     }
 }

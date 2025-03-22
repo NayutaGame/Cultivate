@@ -187,8 +187,8 @@ public class DeckPanel : Panel
         SkillSlot skillSlot = from.Get<SkillSlot>();
         if (skillSlot.Skill == null)
             return;
-        
-        UnequipDetails unequipDetails = new(skillSlot);
+
+        UnequipDetails unequipDetails = UnequipDetails.FromSlot(skillSlot);
         CanvasManager.Instance.RunCanvas.UnequipEvent.Invoke(unequipDetails);
     }
 

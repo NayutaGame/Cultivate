@@ -1,6 +1,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class Room : ISerializationCallbackReceiver
@@ -13,28 +14,28 @@ public class Room : ISerializationCallbackReceiver
     }
 
     [SerializeField] private RoomState _state;
-    [SerializeReference] private RoomDescriptor _descriptor;
+    [SerializeReference] private RoomDefinition _roomDefinition;
     [SerializeField] private RoomEntry _entry;
     [SerializeReference] private RunEntity _predrewRunEntity;
 
-    public Room(RoomDescriptor descriptor)
+    public Room(RoomDefinition roomDefinition)
     {
-        _descriptor = descriptor;
+        _roomDefinition = roomDefinition;
         _state = RoomState.Future;
     }
     
     public RoomState GetState() => _state;
     public void SetState(RoomState state) => _state = state;
-    public RoomDescriptor GetDescriptor() => _descriptor;
+    public RoomDefinition GetDescriptor() => _roomDefinition;
     public RoomEntry GetEntry() => _entry;
     public RunEntity GetPredrewRunEntity() => _predrewRunEntity;
     public void SetPredrewRunEntity(RunEntity runEntity) => _predrewRunEntity = runEntity;
 
-    public int Ladder => _descriptor.Ladder;
+    public int Ladder => _roomDefinition.Ladder;
 
     public PanelDescriptor CreatePanel(Map map)
     {
-        _entry ??= _descriptor.Draw(map, this);
+        _entry ??= _roomDefinition.Draw(map, this);
         return _entry.Create(map, this);
     }
     

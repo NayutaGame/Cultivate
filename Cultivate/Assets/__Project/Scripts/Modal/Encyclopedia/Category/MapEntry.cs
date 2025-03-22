@@ -1,6 +1,5 @@
 
 using System;
-using System.Linq;
 
 [Serializable]
 public class MapEntry : Entry
@@ -14,8 +13,8 @@ public class MapEntry : Entry
     [NonSerialized] public int _skillCount;
     [NonSerialized] public Action<RunEnvironment> _onStartRun;
     
-    private RoomDescriptor[][] _levels;
-    public RoomDescriptor[][] Levels => _levels;
+    private RoomDefinition[][] _levels;
+    public RoomDefinition[][] Levels => _levels;
 
     public MapEntry(
         string id,
@@ -24,7 +23,7 @@ public class MapEntry : Entry
         int gold,
         JingJie skillJingJie,
         int skillCount,
-        RoomDescriptor[][] levelsLayout,
+        RoomDefinition[][] levels,
         Action<RunEnvironment> onStartRun = null) : base(id)
     {
         _envJingJie = envJingJie;
@@ -32,20 +31,13 @@ public class MapEntry : Entry
         _gold = gold;
         _skillJingJie = skillJingJie;
         _skillCount = skillCount;
-        _levels = CompileLevels(levelsLayout);
+        _levels = levels;
         _onStartRun = onStartRun;
-    }
-
-    private RoomDescriptor[][] CompileLevels(RoomDescriptor[][] levelsLayout)
-    {
-        return levelsLayout
-            .Select(level => level.Where(room => room != null).ToArray())
-            .ToArray();
     }
 
     public static implicit operator MapEntry(string id) => Encyclopedia.MapCategory[id];
 
-    public RoomDescriptor GetStepDescriptorFromLevelAndStep(int levelIndex, int stepIndex)
+    public RoomDefinition GetStepDescriptorFromLevelAndStep(int levelIndex, int stepIndex)
         => _levels[levelIndex][stepIndex];
 
     public void OnStartRun(RunEnvironment env) => _onStartRun?.Invoke(env);

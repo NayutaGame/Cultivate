@@ -25,7 +25,7 @@ public class BarterPanelDescriptor : PanelDescriptor
 
         Pool<SkillEntryDescriptor> pool = new Pool<SkillEntryDescriptor>();
         pool.Populate(env.TraversalDeckIndices()
-            .Map(env.GetSkillAtDeckIndex)
+            .Map(env.SkillFromDeckIndex)
             .FilterObj(skill => skill != null)
             .Map(SkillEntryDescriptor.FromRunSkill));
         pool.Shuffle();
@@ -62,7 +62,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         if (!_inventory.Contains(barterItem))
             return;
         
-        bool success = RunManager.Instance.Environment.FindDeckIndex(out DeckIndex deckIndex, barterItem.FromSkill);
+        bool success = RunManager.Instance.Environment.DeckIndexFromDescriptor(out DeckIndex deckIndex, barterItem.FromSkill);
         if (!success)
             return;
 

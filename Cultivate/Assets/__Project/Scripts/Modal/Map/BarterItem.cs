@@ -21,5 +21,5 @@ public class BarterItem : Addressable
     }
 
     public bool Affordable()
-        => RunManager.Instance.Environment.FindDeckIndex(out DeckIndex _, FromSkill);
+        => RunManager.Instance.Environment.DeckIndexFromDescriptor(out DeckIndex _, FromSkill);
 }

@@ -2,7 +2,7 @@
 using System;
 
 [Serializable]
-public class AdventureRoomDescriptor : RoomDescriptor
+public class AdventureRoomDefinition : RoomDefinition
 {
     public override RoomEntry Draw(Map map, Room room)
     {
@@ -31,7 +31,7 @@ public class AdventureRoomDescriptor : RoomDescriptor
     public override string GetDescription()
         => "将会遭遇事件";
 
-    public AdventureRoomDescriptor(int ladder) : base(ladder)
+    public AdventureRoomDefinition(int ladder, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)
     {
     }
 }

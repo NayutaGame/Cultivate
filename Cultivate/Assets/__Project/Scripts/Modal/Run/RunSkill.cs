@@ -119,5 +119,5 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
         => $"[{GetJingJie()}]{GetEntry().GetName()}";
 
     public DeckIndex ToDeckIndex()
-        => RunManager.Instance.Environment.GetDeckIndexOfSkill(this).Value;
+        => RunManager.Instance.Environment.DeckIndexFromSkill(this).Value;
 }
