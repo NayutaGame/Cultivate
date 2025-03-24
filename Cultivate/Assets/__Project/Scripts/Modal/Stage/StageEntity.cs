@@ -211,8 +211,6 @@ public class StageEntity : Addressable, StageClosureListener
         }
     }
 
-    public StageSkill[] _skills;
-
     // public abstract GameObject GetPrefab();
     public string GetName() => _index == 0 ? "主场" : "客场";
     public StageEntity Opponent() => _env.Entities[1 - _index];
@@ -238,13 +236,9 @@ public class StageEntity : Addressable, StageClosureListener
     public bool Forward
         => GetStackOfBuff("鹤回翔") == 0;
     public int ExhaustedCount
-        => CountSuch(skill => skill.Exhausted);
+        => TraversalSkills().Count(skill => skill.Exhausted);
     public int AttackCount
-        => CountSuch(skill => skill.GetSkillType().Contains(SkillType.Attack));
-    public int CountSuch(Func<StageSkill, bool> pred)
-        => _skills.Count(pred);
-    public int CountSuchBuff(Func<Buff, bool> pred)
-        => _buffs.CountSuch(pred);
+        => TraversalSkills().Count(skill => skill.GetSkillType().Contains(SkillType.Attack));
 
     public async UniTask<bool> OppoHasFragile(bool useFocus = false)
     {
@@ -386,9 +380,19 @@ public class StageEntity : Addressable, StageClosureListener
         HasChannelRecord = true;
     }
 
+    #region Skill
+    
+    public StageSkill[] _skills;
+    public IEnumerable<StageSkill> TraversalSkills()
+        => _skills.Traversal();
+
+    #endregion
+
     #region Formation
 
     private ListModel<Formation> _formations;
+    public IEnumerable<Formation> TraversalFormations()
+        => _formations.Traversal();
 
     public void AddFormation(Formation f)
     {
@@ -413,7 +417,8 @@ public class StageEntity : Addressable, StageClosureListener
     #region Buff
 
     private ListModel<Buff> _buffs;
-    public IEnumerable<Buff> Buffs => _buffs.Traversal();
+    public IEnumerable<Buff> TraversalBuffs()
+        => _buffs.Traversal();
     public int IndexOfBuff(Buff b) => _buffs.IndexOf(b);
 
     public void AddBuff(Buff b)
@@ -434,7 +439,7 @@ public class StageEntity : Addressable, StageClosureListener
         _buffs.Clear();
     }
 
-    public Buff FindBuff(BuffEntry buffEntry) => Buffs.FirstObj(b => b.GetEntry() == buffEntry);
+    public Buff FindBuff(BuffEntry buffEntry) => TraversalBuffs().FirstObj(b => b.GetEntry() == buffEntry);
 
     public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
 
@@ -586,34 +591,51 @@ public class StageEntity : Addressable, StageClosureListener
     {
         _env.ClosureDict.Register(this, RecordActualHeal);
         _env.ClosureDict.Register(this, RecordBurnTimes);
+        _env.ClosureDict.Register(this, RecordHighestMana);
     }
 
     public void UnregisterEntityClosures()
     {
         _env.ClosureDict.Unregister(this, RecordActualHeal);
         _env.ClosureDict.Unregister(this, RecordBurnTimes);
+        _env.ClosureDict.Unregister(this, RecordHighestMana);
     }
-    
-    private static StageClosure RecordActualHeal = new(StageClosureDict.DID_HEAL, 1, async (listener, closureDetails) =>
-    {
-        StageEntity entity = listener as StageEntity;
-        HealDetails d = (HealDetails)closureDetails;
-        
-        if (entity != d.Tgt) return;
-        string key = "healRecord";
-        entity.Memory.PerformOperation(key, 0, record => record + d.Value);
-    });
-    
-    private static StageClosure RecordBurnTimes = new(StageClosureDict.DID_HEALTH_COST, -1, async (listener, closureDetails) =>
-    {
-        StageEntity entity = listener as StageEntity;
-        HealthCostResult d = (HealthCostResult)closureDetails;
 
-        if (entity != d.Entity) return;
+    public static string ActualHealKey = "ActualHeal";
+    private static StageClosure RecordActualHeal =
+        new(StageClosureDict.DID_HEAL, 1, async (listener, closureDetails) =>
+        {
+            StageEntity entity = listener as StageEntity;
+            HealDetails d = (HealDetails)closureDetails;
 
-        string key = "burnTimes";
-        entity.Memory.PerformOperation(key, 0, record => record + 1);
-    });
-    
-    
+            if (entity != d.Tgt) return;
+            entity.Memory.PerformOperation(ActualHealKey, 0, record => record + d.Value);
+        });
+
+    public static string BurnTimesKey = "BurnTimes";
+    private static StageClosure RecordBurnTimes =
+        new(StageClosureDict.DID_HEALTH_COST, -1, async (listener, closureDetails) =>
+        {
+            StageEntity entity = listener as StageEntity;
+            HealthCostResult d = (HealthCostResult)closureDetails;
+
+            if (entity != d.Entity) return;
+
+            entity.Memory.PerformOperation(BurnTimesKey, 0, record => record + 1);
+        });
+
+    public static string HighestManaKey = "HighestMana";
+    private static StageClosure RecordHighestMana =
+        new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closureDetails) =>
+        {
+            StageSkill s = owner as StageSkill;
+            GainBuffDetails d = (GainBuffDetails)closureDetails;
+
+            if (s.Owner != d.Tgt) return;
+            if (d._buffEntry.GetName() != "灵气") return;
+            
+            s.Owner.Memory.PerformOperation(HighestManaKey, 0, record => Mathf.Max(record, s.Owner.GetStackOfBuff("灵气")));
+        });
+
+
 }

@@ -658,7 +658,8 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
-                cost:                       async (env, entity, skill, recursive) => new ManaCostResult(3 + skill.Dj - entity.CountSuch(s => s.Entry.WuXing == WuXing.Shui)),
+                cost:                       async (env, entity, skill, recursive) =>
+                    new ManaCostResult(3 + skill.Dj - entity.TraversalSkills().Count(s => s.Entry.WuXing == WuXing.Shui)),
                 costDescription:            CostDescription.ManaFromDj(dj => 3 + dj),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{6 + 6 * dj}攻".ApplyAttack() +
@@ -789,28 +790,12 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Mana,
-                closures:                   new StageClosure[]
-                {
-                    new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closureDetails) =>
-                    {
-                        StageSkill s = owner as StageSkill;
-                        GainBuffDetails d = (GainBuffDetails)closureDetails;
-
-                        if (s.Owner != d.Tgt) return;
-                        if (d._buffEntry.GetName() != "灵气") return;
-
-                        string key = "HighestManaRecord";
-                        s.Owner.Memory.PerformOperation(key, 0, record => Mathf.Max(record, s.Owner.GetStackOfBuff("灵气")));
-                    }),
-                },
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气补至本局最高+{1 + dj}".ApplyMana(),
                 cast:                       async d =>
                 {
-                    string key = "HighestManaRecord";
-
-                    int highestManaRecord = d.Caster.Memory.TryGetVariable(key, 0);
-                    int space = highestManaRecord - d.Caster.GetStackOfBuff("灵气") + 1 + d.Dj;
+                    int highestMana = d.Caster.Memory.TryGetVariable(StageEntity.HighestManaKey, 0);
+                    int space = highestMana - d.Caster.GetStackOfBuff("灵气") + 1 + d.Dj;
                     await d.GainBuffProcedure("灵气", space);
                 }),
             
@@ -831,9 +816,8 @@ public class SkillCategory : Category<SkillEntry>
                             AttackDetails d = closureDetails as AttackDetails;
                             if (owner != d.Initiator) return;
                             StageSkill initiator = d.Initiator as StageSkill;
-                            string key = "healRecord";
 
-                            int healed = d.Src.Memory.TryGetVariable(key, 0);
+                            int healed = d.Src.Memory.TryGetVariable(StageEntity.ActualHealKey, 0);
                             int gain = healed / (5 - initiator.Dj);
                             d.Value += gain;
                         });
@@ -1425,7 +1409,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       async (env, entity, skill, recursive) =>
-                    new ChannelCostResult(3 + skill.Dj - entity.Memory.TryGetVariable("burnTimes", 0)),
+                    new ChannelCostResult(3 + skill.Dj - entity.Memory.TryGetVariable(StageEntity.BurnTimesKey, 0)),
                 costDescription:            CostDescription.ChannelFromDj(dj => 3 + dj),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{10 + 10 * dj}攻".ApplyAttack() +
@@ -4782,7 +4766,7 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    int value = d.Caster.CountSuch(s => s.Entry.WuXing == WuXing.Huo);
+                    int value = d.Caster.TraversalSkills().Count(s => s.Entry.WuXing == WuXing.Huo);
                     await d.AttackProcedure(3 + d.Dj, times: 1 + value);
                 }),
             
@@ -5015,7 +4999,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cost:                       async (env, entity, skill, recursive) =>
-                    new ChannelCostResult(4 - entity.Opponent().CountSuchBuff(b => !b.GetEntry().Friendly)),
+                    new ChannelCostResult(4 - entity.Opponent().TraversalBuffs().Count(b => !b.GetEntry().Friendly)),
                 costDescription:            CostDescription.ChannelFromValue(4),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{40 + 40 * dj}攻" +

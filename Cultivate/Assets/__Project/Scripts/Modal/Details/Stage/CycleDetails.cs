@@ -8,6 +8,8 @@ public class CycleDetails : StageClosureDetails
     public int Gain;
     public int Recover;
 
+    public int Flow;
+
     public CycleDetails(StageEntity owner, bool rotate, WuXing wuXing, int gain, int recover, bool induced)
     {
         Owner = owner;

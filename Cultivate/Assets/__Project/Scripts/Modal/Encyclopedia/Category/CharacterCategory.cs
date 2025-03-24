@@ -138,7 +138,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         RunEntity oppo = env.Away;
                         
                         // 清空之前模仿的记录
-                        env.SetVariable<SkillEntryDescriptor>(key, null);
+                        env.Memory.SetVariable<SkillEntryDescriptor>(key, null);
                         
                         // 遍历所有槽位，找到幻化牌
                         d.Owner.TraversalCurrentSlots().Do(slot => 
@@ -156,7 +156,7 @@ public class CharacterCategory : Category<CharacterEntry>
                             );
                             
                             // 记录第一个模仿的技能，用于后续奖励
-                            env.PerformOperation<SkillEntryDescriptor>(key, null, skill => skill ?? SkillEntryDescriptor.FromRunSkill(oppoSlot.Skill));
+                            env.Memory.PerformOperation<SkillEntryDescriptor>(key, null, skill => skill ?? SkillEntryDescriptor.FromRunSkill(oppoSlot.Skill));
                         });
                     }),
                     new(RunClosureDict.WIL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
@@ -166,12 +166,13 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         string key = "MimickedSkill";
 
-                        SkillEntryDescriptor copiedSkillEntry = env.TryGetVariable<SkillEntryDescriptor>(key, null);
+                        SkillEntryDescriptor copiedSkillEntry = env.Memory.TryGetVariable<SkillEntryDescriptor>(key, null);
                         if (copiedSkillEntry == null)
                             return;
 
+                        d.MimicIndex = d.Skills.Count;
                         d.Skills.Add(copiedSkillEntry);
-                        env.SetVariable<SkillEntryDescriptor>(key, null);
+                        env.Memory.SetVariable<SkillEntryDescriptor>(key, null);
                     }),
                 }),
 

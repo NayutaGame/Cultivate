@@ -25,6 +25,15 @@ public class SerializableDictionary : ISerializationCallbackReceiver
         return value;
     }
 
+    public int PerformAggregate(string key, int value)
+        => PerformOperation(key, 0, n => n + value);
+
+    public int PerformAddOne(string key)
+        => PerformOperation(key, 0, n => n + 1);
+
+    public int PerformMax(string key, int value)
+        => PerformOperation(key, 0, n => Mathf.Max(n, value));
+
     public SerializableDictionary()
     {
         _dict = new();

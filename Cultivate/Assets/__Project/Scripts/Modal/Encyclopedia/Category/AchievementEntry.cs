@@ -11,16 +11,16 @@ public class AchievementEntry : Entry
     [NonSerialized] private string _rewardDescription;
     // 奖励图标
     [NonSerialized] private int _experienceGain;
-    [NonSerialized] private RunClosure _runClosure;
-    [NonSerialized] private StageClosure _stageClosure;
+    [NonSerialized] private RunClosure[] _runClosures;
+    [NonSerialized] private StageClosure[] _stageClosures;
     [NonSerialized] private LockIndex? _lockIndex;
 
     public string GetName() => _name;
     public string GetConditionDescription() => _conditionDescription;
     public string GetRewardDescription() => _rewardDescription;
     public int GetExperienceGain() => _experienceGain;
-    public RunClosure GetRunClosure() => _runClosure;
-    public StageClosure GetStageClosure() => _stageClosure;
+    public RunClosure[] GetRunClosures() => _runClosures;
+    public StageClosure[] GetStageClosures() => _stageClosures;
     public LockIndex? GetLockIndex() => _lockIndex;
 
     public AchievementEntry(
@@ -30,8 +30,8 @@ public class AchievementEntry : Entry
         string rewardDescription,
         int experienceGain = 100,
         LockIndex? lockIndex = null,
-        RunClosure runClosure = null,
-        StageClosure stageClosure = null
+        RunClosure[] runClosures = null,
+        StageClosure[] stageClosures = null
         ) : base(id)
     {
         _name = name;
@@ -39,8 +39,8 @@ public class AchievementEntry : Entry
         _rewardDescription = rewardDescription;
         _experienceGain = experienceGain;
         _lockIndex = lockIndex;
-        _runClosure = runClosure;
-        _stageClosure = stageClosure;
+        _runClosures = runClosures ?? Array.Empty<RunClosure>();
+        _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
     }
 
     public static implicit operator AchievementEntry(string id) 

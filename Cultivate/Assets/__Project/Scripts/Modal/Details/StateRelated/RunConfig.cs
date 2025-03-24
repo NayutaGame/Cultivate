@@ -6,7 +6,6 @@ using UnityEngine;
 [Serializable]
 public class RunConfig : Addressable, ISerializationCallbackReceiver
 {
-    // this form should contains: selected character, selected difficulty, selected mutators, selected seed
     [SerializeReference] public CharacterProfile CharacterProfile;
     [SerializeReference] public DifficultyProfile DifficultyProfile;
     [SerializeReference] public List<PackEntry> PacksToStartWith;
@@ -26,7 +25,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         
         CharacterProfile = characterProfile;
         DifficultyProfile = difficultyProfile;
-        PacksToStartWith = packsToStartWith ?? CharacterProfile.GetEntry().GetDefaultPacks();
+        PacksToStartWith = packsToStartWith ?? GetCharacter().GetDefaultPacks();
         // MapEntry = mapEntry ?? "标准无教程";
         MapEntry = mapEntry ?? "标准";
         // MapEntry = mapEntry ?? "发现";
@@ -62,4 +61,10 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         Profile profile = AppManager.Instance.ProfileManager.ProfileList[0];
         return new(profile.CharacterProfileList[0], profile.DifficultyProfileList[0], null, "序章");
     }
+
+    public CharacterEntry GetCharacter()
+        => CharacterProfile.GetEntry();
+
+    public int GetDifficulty()
+        => DifficultyProfile.GetEntry()._order;
 }

@@ -108,7 +108,7 @@ public class MapCategory : Category<MapEntry>
                         
                         new DirectRoomDefinition(0, "教学8", pred: (profile, env) =>
                             !profile.DifficultyProfileList.Find("3").IsUnlocked()
-                            && env.GetRunConfig().DifficultyProfile.GetEntry()._order == 2),
+                            && env.GetRunConfig().GetDifficulty() == 2),
                     },
                     new RoomDefinition[]
                     {
@@ -130,7 +130,7 @@ public class MapCategory : Category<MapEntry>
                         
                         new DirectRoomDefinition(2, "教学10", pred: (profile, env) =>
                             !profile.DifficultyProfileList.Find("5").IsUnlocked()
-                            && env.GetRunConfig().DifficultyProfile.GetEntry()._order == 4),
+                            && env.GetRunConfig().GetDifficulty() == 4),
                         
                         new BattleRoomDefinition(2, 5, 6),
                         new AdventureRoomDefinition(2),

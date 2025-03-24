@@ -69,4 +69,15 @@ public class BuffEntry : Entry, IAnnotation
         => _annotationArray.GetExplanation();
 
     public static implicit operator BuffEntry(string id) => Encyclopedia.BuffCategory[id];
+
+    public WuXing? GetCorrespondingWuXing()
+    {
+        foreach (WuXing wuXing in WuXing.Traversal)
+        {
+            if (wuXing._elementaryBuff == GetName())
+                return wuXing;
+        }
+
+        return null;
+    }
 }

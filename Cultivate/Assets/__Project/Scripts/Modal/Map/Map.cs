@@ -60,7 +60,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
     private void InitEntityPool()
     {
         EntityPool = new();
-        int difficulty = RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry()._order;
+        int difficulty = RunManager.Instance.Environment.GetRunConfig().GetDifficulty();
         EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal().FilterObj(
             e => e.IsInPool() && e.GetAllowedDifficulty().Contains(difficulty)));
         EntityPool.Shuffle();

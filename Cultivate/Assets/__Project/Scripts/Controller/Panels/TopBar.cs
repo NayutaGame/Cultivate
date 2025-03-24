@@ -40,12 +40,9 @@ public class TopBar : MonoBehaviour
         MenuButton.onClick.RemoveAllListeners();
         MenuButton.onClick.AddListener(OpenMenu);
         
-        MingYuan.Configure(1, RunManager.Instance.Environment.GetMingYuan,
-            RunManager.Instance.Environment.GetMingYuan().GetMingYuanPenaltyText);
-        Gold.Configure(1, RunManager.Instance.Environment.GetGold,
-            () => "金钱");
-        Health.Configure(1, RunManager.Instance.Environment.Home.GetHealthBounded,
-            () => "气血上限\n战斗开始的气血");
+        MingYuan.Configure(1, RunManager.Instance.Environment.GetMingYuan, RunManager.Instance.Environment.GetMingYuan().GetMingYuanPenaltyText);
+        Gold.Configure(1, RunManager.Instance.Environment.GetGold, () => "金钱");
+        Health.Configure(1, RunManager.Instance.Environment.Home.GetHealthBounded, () => "气血上限\n战斗开始的气血");
     }
 
     private void OnEnable()
@@ -112,7 +109,7 @@ public class TopBar : MonoBehaviour
         Gold.Refresh();
         Health.Refresh();
         
-        DifficultyText.text = $"难度{RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry().GetId()}";
+        DifficultyText.text = $"难度{RunManager.Instance.Environment.GetRunConfig().GetDifficulty()}";
     }
 
     private void OpenMenu()

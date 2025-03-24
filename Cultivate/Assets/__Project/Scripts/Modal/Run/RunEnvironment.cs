@@ -93,7 +93,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [NonSerialized] private RunReport _runReport;
 
     [SerializeField] private double _miliseconds;
-    
+
+    [SerializeReference] private SerializableDictionary _intMemory;
     [SerializeReference] private RunConfig _config;
     [SerializeField] private JingJie _jingJie;
     [SerializeReference] private Map _map;
@@ -124,6 +125,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         InitNeurons();
 
+        _intMemory = new();
         _config = config;
         _map = new(_config.MapEntry);
         _skillPool = new();
@@ -173,6 +175,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #region Accessors
 
+    public Memory Memory => _memory;
+    public SerializableDictionary IntMemory => _intMemory;
     public RunConfig GetRunConfig() => _config;
     public Map Map => _map;
     public RunEntity Home => _home;
@@ -213,7 +217,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void Register()
     {
-        RegisterList(_config.CharacterProfile.GetEntry()._runClosures);
+        RegisterList(_config.GetCharacter()._runClosures);
 
         DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
         RegisterList(difficultyEntry._runClosures);
@@ -235,7 +239,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void Unregister()
     {
-        UnregisterList(_config.CharacterProfile.GetEntry()._runClosures);
+        UnregisterList(_config.GetCharacter()._runClosures);
 
         DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
         UnregisterList(difficultyEntry._runClosures);
@@ -320,6 +324,16 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
                 yield return new DeckIndex(false, i);
     }
 
+    public IEnumerable<RunSkill> TraversalSkills(bool excludingField = false, bool excludingHand = false)
+    {
+        if (!excludingField)
+            foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
+                yield return slot.Skill;
+        if (!excludingHand)
+            for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
+                yield return _hand[i];
+    }
+
     public void SetGuideToFinish()
     {
         GetActivePanel().SetGuideToFinish();
@@ -334,10 +348,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         return _config.DifficultyProfile.GetEntry().InheritedDescription;
     }
-
-    public void SetVariable<T>(string key, T value) => _memory.SetVariable(key, value);
-    public T TryGetVariable<T>(string key, T defaultValue) => _memory.TryGetVariable(key, defaultValue);
-    public void PerformOperation<T>(string key, T defaultValue, Func<T, T> operation) => _memory.PerformOperation(key, defaultValue, operation);
 
     public bool IsFinalJingJie()
         => _jingJie == _config.DifficultyProfile.GetEntry().FinalJingJie;
@@ -453,7 +463,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         // move to ascension procedure
         int dHealth = RunEntity.HealthFromJingJie[d.ToJingJie] - RunEntity.HealthFromJingJie[d.FromJingJie];
-        SetDHealthProcedure(new SetDHealthDetails(dHealth));
+        SetDHealthProcedure(new SetDHealthDetails(dHealth, isFromIncreaseJingJie: true));
         
         _home.SetJingJie(d.ToJingJie);
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToJingJie));
@@ -772,20 +782,20 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     }
 
     public void SetDHealthProcedure(int value)
-        => SetDHealthProcedure(new SetDHealthDetails(value));
+        => SetDHealthProcedure(new SetDHealthDetails(value, isFromIncreaseJingJie: false));
     
     private void SetDHealthProcedure(SetDHealthDetails d)
     {
         if (d.Value == 0)
             return;
         
-        SendEvent(RunClosureDict.WIL_SET_DDHEALTH, d);
+        SendEvent(RunClosureDict.WIL_SET_D_HEALTH, d);
 
         if (d.Cancel)
             return;
 
         _home.SetDHealth(d.Value);
-        SendEvent(RunClosureDict.DID_SET_DDHEALTH, d);
+        SendEvent(RunClosureDict.DID_SET_D_HEALTH, d);
         if (d.Value >= 0)
             GainDHealthNeuron.Invoke(d.Value);
         else
@@ -1124,6 +1134,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
 
+        SendEvent(RunClosureDict.WIL_CHANGE_PANEL, panelChangedDetails);
         PanelChangedNeuron.Invoke(panelChangedDetails);
     }
 

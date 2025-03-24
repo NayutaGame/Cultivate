@@ -615,6 +615,7 @@ public class StageEnvironment : Addressable, StageClosureListener
                 fromWuXing = fromWuXing.Prev;
 
             int flow = d.Owner.GetStackOfBuff(fromWuXing._elementaryBuff);
+            d.Flow = flow;
 
             int consume = flow - Mathf.Min(flow, d.Recover);
             await d.Owner.TryConsumeProcedure(fromWuXing._elementaryBuff, consume);
@@ -637,7 +638,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (d.Cancel)
             return;
 
-        List<Buff> buffs = d.Owner.Buffs.FilterObj(b => !b.GetEntry().Friendly && b.GetEntry().Dispellable).ToList();
+        List<Buff> buffs = d.Owner.TraversalBuffs().FilterObj(b => !b.GetEntry().Friendly && b.GetEntry().Dispellable).ToList();
 
         foreach (Buff b in buffs)
             await d.Owner.LoseBuffProcedure(b.GetEntry(), d.Stack);
@@ -673,7 +674,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             _entities.Do(e =>
             {
                 _result.TryAppend($"{e.GetName()} {e.Hp}[{e.Armor}] Buff:");
-                foreach (Buff b in e.Buffs)
+                foreach (Buff b in e.TraversalBuffs())
                     _result.TryAppend($"  {b.GetName()}*{b.Stack}");
                 _result.TryAppend("\n");
             });
@@ -896,7 +897,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (_config.RunConfig == null)
             return;
 
-        _closureDict.Register(this, _config.RunConfig.CharacterProfile.GetEntry()._stageClosures);
+        _closureDict.Register(this, _config.RunConfig.GetCharacter()._stageClosures);
 
         DifficultyEntry difficultyEntry = _config.RunConfig.DifficultyProfile.GetEntry();
         _closureDict.Register(this, difficultyEntry._stageClosures);
@@ -924,7 +925,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (_config.RunConfig == null)
             return;
 
-        _closureDict.Unregister(this, _config.RunConfig.CharacterProfile.GetEntry()._stageClosures);
+        _closureDict.Unregister(this, _config.RunConfig.GetCharacter()._stageClosures);
 
         DifficultyEntry difficultyEntry = _config.RunConfig.DifficultyProfile.GetEntry();
         _closureDict.Unregister(this, difficultyEntry._stageClosures);

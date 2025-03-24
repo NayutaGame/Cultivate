@@ -7,6 +7,8 @@ public class DiscoverSkillDetails : RunClosureDetails
     public SkillEntryCollectionDescriptor Descriptor;
     public JingJie PreferredJingJie;
 
+    public int? MimicIndex;
+
     public DiscoverSkillDetails(SkillEntryCollectionDescriptor descriptor, JingJie preferredJingJie)
     {
         Skills = new();

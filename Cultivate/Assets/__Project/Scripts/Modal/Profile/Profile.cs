@@ -221,53 +221,29 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public void RegisterRunClosures(RunClosureDict runClosureDict)
     {
         _achievementProfileList.Traversal().Do(achievementProfile =>
-        {
-            RunClosureListener listener = achievementProfile;
-            RunClosure runClosure = achievementProfile.GetEntry().GetRunClosure();
-            if (runClosure == null)
-                return;
-
-            runClosureDict.Register(listener, runClosure);
-        });
+            achievementProfile.GetEntry().GetRunClosures().Do(runClosure =>
+                runClosureDict.Register(achievementProfile, runClosure)));
     }
 
     public void UnregisterRunClosures(RunClosureDict runClosureDict)
     {
         _achievementProfileList.Traversal().Do(achievementProfile =>
-        {
-            RunClosureListener listener = achievementProfile;
-            RunClosure runClosure = achievementProfile.GetEntry().GetRunClosure();
-            if (runClosure == null)
-                return;
-
-            runClosureDict.Unregister(listener, runClosure);
-        });
+            achievementProfile.GetEntry().GetRunClosures().Do(runClosure =>
+                runClosureDict.Unregister(achievementProfile, runClosure)));
     }
 
     public void RegisterStageClosures(StageClosureDict stageClosureDict)
     {
         _achievementProfileList.Traversal().Do(achievementProfile =>
-        {
-            StageClosureListener listener = achievementProfile;
-            StageClosure stageClosure = achievementProfile.GetEntry().GetStageClosure();
-            if (stageClosure == null)
-                return;
-
-            stageClosureDict.Register(listener, stageClosure);
-        });
+            achievementProfile.GetEntry().GetStageClosures().Do(stageClosure =>
+                stageClosureDict.Register(achievementProfile, stageClosure)));
     }
 
     public void UnregisterStageClosures(StageClosureDict stageClosureDict)
     {
         _achievementProfileList.Traversal().Do(achievementProfile =>
-        {
-            StageClosureListener listener = achievementProfile;
-            StageClosure stageClosure = achievementProfile.GetEntry().GetStageClosure();
-            if (stageClosure == null)
-                return;
-
-            stageClosureDict.Unregister(listener, stageClosure);
-        });
+            achievementProfile.GetEntry().GetStageClosures().Do(stageClosure =>
+                stageClosureDict.Unregister(achievementProfile, stageClosure)));
     }
 
     public int GetExperience()

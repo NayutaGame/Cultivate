@@ -49,6 +49,9 @@ public class Formation : StageClosureListener, IFormationModel, Addressable, IEm
             _owner.Env.ClosureDict.Unregister(this, closure);
     }
 
+    public bool IsActivated()
+        => _runFormation.IsActivated();
+
     #region IFormationModel
 
     public string GetName() => _runFormation.GetName();

@@ -1,5 +1,5 @@
 
-public class PanelChangedDetails
+public class PanelChangedDetails : RunClosureDetails
 {
     public PanelDescriptor FromPanel;
     public PanelDescriptor ToPanel;
