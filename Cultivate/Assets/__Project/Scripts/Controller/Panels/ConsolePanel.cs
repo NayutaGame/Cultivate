@@ -168,8 +168,8 @@ public class ConsolePanel : Panel
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(RefreshMingYuan);
         RunManager.Instance.Environment.GainGoldNeuron.Add(RefreshGold);
         RunManager.Instance.Environment.LoseGoldNeuron.Add(RefreshGold);
-        RunManager.Instance.Environment.GainDHealthNeuron.Add(RefreshDHealth);
-        RunManager.Instance.Environment.LoseDHealthNeuron.Add(RefreshDHealth);
+        RunManager.Instance.Environment.GainHealthNeuron.Add(RefreshDHealth);
+        RunManager.Instance.Environment.LoseHealthNeuron.Add(RefreshDHealth);
         RunManager.Instance.Environment.AppendReportNeuron.Add(OnAppendReport);
         RefreshInfo();
     }
@@ -180,8 +180,8 @@ public class ConsolePanel : Panel
         RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(RefreshMingYuan);
         RunManager.Instance.Environment.GainGoldNeuron.Remove(RefreshGold);
         RunManager.Instance.Environment.LoseGoldNeuron.Remove(RefreshGold);
-        RunManager.Instance.Environment.GainDHealthNeuron.Remove(RefreshDHealth);
-        RunManager.Instance.Environment.LoseDHealthNeuron.Remove(RefreshDHealth);
+        RunManager.Instance.Environment.GainHealthNeuron.Remove(RefreshDHealth);
+        RunManager.Instance.Environment.LoseHealthNeuron.Remove(RefreshDHealth);
         RunManager.Instance.Environment.AppendReportNeuron.Remove(OnAppendReport);
     }
 
@@ -225,12 +225,12 @@ public class ConsolePanel : Panel
 
     private void AddHealth()
     {
-        RunManager.Instance.Environment.SetDHealthProcedure(10);
+        RunManager.Instance.Environment.GainHealthProcedure(10);
     }
 
     private void ReduceHealth()
     {
-        RunManager.Instance.Environment.SetDHealthProcedure(-10);
+        RunManager.Instance.Environment.LoseHealthProcedure(10);
     }
 
     private void JingJieChanged(int jingJie)

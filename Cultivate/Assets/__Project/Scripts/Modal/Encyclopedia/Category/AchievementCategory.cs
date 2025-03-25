@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using CLLibrary;
-using Sirenix.Utilities.Editor;
 using UnityEngine;
 
 public class AchievementCategory : Category<AchievementEntry>
@@ -696,16 +693,16 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("彼此卿", 5),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_SET_D_HEALTH, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_SET_HEALTH, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
-                        SetDHealthDetails d = (SetDHealthDetails)details;
+                        SetHealthDetails d = (SetHealthDetails)details;
 
                         if (p.IsUnlocked()) return;
                         if (d.IsFromIncreaseJingJie) return;
-                        if (d.Value <= 0) return;
+                        if (d.Diff <= 0) return;
 
                         const string TOTAL_EXTRA_HP_KEY = "TotalExtraHP";
-                        int totalExtraHP = p.Memory.PerformAggregate(TOTAL_EXTRA_HP_KEY, d.Value);
+                        int totalExtraHP = p.Memory.PerformAggregate(TOTAL_EXTRA_HP_KEY, d.Diff);
                         if (totalExtraHP < 100) return;
 
                         p.Unlock();

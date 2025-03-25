@@ -101,14 +101,14 @@ public class ShopPanelDescriptor : PanelDescriptor
 
     public static ShopPanelDescriptor FromHeiShi(int ladder)
     {
-        int priceMultiplier = 2;
         JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound baseJingJieBound = new Bound((jingJieFromLadder + 2).ClampUpper(JingJie.HuaShen),
             (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen) + 1);
 
-        ShopPanelDescriptor B = new(ladder, priceMultiplier, "黑市", "黑市");
+        ShopPanelDescriptor B = new(ladder, 2, "黑市", "黑市");
         B.SetEnter(panelDescriptor =>
         {
+            ShopPanelDescriptor shop = (ShopPanelDescriptor)panelDescriptor;
             CommodityListModel commodities = new CommodityListModel();
 
             List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
@@ -120,7 +120,7 @@ public class ShopPanelDescriptor : PanelDescriptor
             {
                 int cardJingJie = e.LowestJingJie;
                 int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(cardJingJie);
-                int price = Mathf.RoundToInt(basePrice * priceMultiplier * RandomManager.Range(0.8f, 1.2f));
+                int price = Mathf.RoundToInt(basePrice * shop._priceMultiplier * RandomManager.Range(0.8f, 1.2f));
                 price = price.ClampLower(1);
                 float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
                 commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, cardJingJie), price,
@@ -135,7 +135,6 @@ public class ShopPanelDescriptor : PanelDescriptor
 
     public static ShopPanelDescriptor FromBiYeJi(int ladder)
     {
-        int priceMultiplier = 2;
         JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound baseJingJieBound = new Bound(JingJie.LianQi,
             (jingJieFromLadder - 2).ClampLower(JingJie.LianQi) + 1);
@@ -143,6 +142,7 @@ public class ShopPanelDescriptor : PanelDescriptor
         ShopPanelDescriptor B = new(ladder, 0.5f, "毕业季", "毕业季");
         B.SetEnter(panelDescriptor =>
         {
+            ShopPanelDescriptor shop = (ShopPanelDescriptor)panelDescriptor;
             CommodityListModel commodities = new CommodityListModel();
 
             List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
@@ -154,7 +154,7 @@ public class ShopPanelDescriptor : PanelDescriptor
             {
                 int cardJingJie = e.LowestJingJie;
                 int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(cardJingJie);
-                int price = Mathf.RoundToInt(basePrice * priceMultiplier * RandomManager.Range(0.8f, 1.2f));
+                int price = Mathf.RoundToInt(basePrice * shop._priceMultiplier * RandomManager.Range(0.8f, 1.2f));
                 price = price.ClampLower(1);
                 float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
                 commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie), price,

@@ -20,8 +20,10 @@ public class ResourceView : MonoBehaviour
 
     private int _unit;
     private BoundedInt _value;
+    public BoundedInt Value => _value;
 
     private Func<BoundedInt> _getFunc;
+    public Func<BoundedInt> GetFunc() => _getFunc;
     private Func<string> _hintDelegate;
 
     private void OnEnable()

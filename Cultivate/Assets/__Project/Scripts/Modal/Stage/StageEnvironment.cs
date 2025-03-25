@@ -38,8 +38,8 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         ClearResults();
 
-        RegisterConfig();
-        AppManager.Instance.ProfileManager.GetCurrProfile().RegisterStageClosures(_closureDict);
+        RegisterConfigClosures();
+        RegisterAchievementClosures();
         RegisterEntityClosures();
         RegisterSkillClosures();
 
@@ -61,8 +61,8 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         UnregisterSkillClosures();
         UnregisterEntityClosures();
-        AppManager.Instance.ProfileManager.GetCurrProfile().UnregisterStageClosures(_closureDict);
-        UnregisterConfig();
+        UnregisterAchievementClosures();
+        UnregisterConfigClosures();
 
         await AnimationToFinishProcedure();
     }
@@ -279,7 +279,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask AttackProcedure(AttackDetails attackDetails)
     {
-        RegisterAttackClosure(attackDetails);
+        RegisterAttackClosures(attackDetails);
 
         attackDetails.Value = Mathf.Max(1, attackDetails.Value);
         attackDetails.Times = Mathf.Max(1, attackDetails.Times);
@@ -304,7 +304,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         await _closureDict.SendEvent(StageClosureDict.DID_FULL_ATTACK, attackDetails);
         
-        UnregisterAttackClosure(attackDetails);
+        UnregisterAttackClosures(attackDetails);
         
         // check win condition, but do not commit
         await RecoverStaging(attackDetails);
@@ -892,7 +892,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         d.State = state;
     }
 
-    private void RegisterConfig()
+    private void RegisterConfigClosures()
     {
         if (_config.RunConfig == null)
             return;
@@ -915,12 +915,26 @@ public class StageEnvironment : Addressable, StageClosureListener
         _entities.Do(e => e._skills.Traversal().Do(s => _closureDict.Register(s, s.Entry.Closures)));
     }
 
-    private void RegisterAttackClosure(AttackDetails attackDetails)
+    private void RegisterAttackClosures(AttackDetails attackDetails)
     {
         _closureDict.Register(attackDetails.Initiator, attackDetails.Closures);
     }
 
-    private void UnregisterConfig()
+    private void RegisterAchievementClosures()
+    {
+        if (!_config.EffectAchievements)
+            return;
+        // AppManager.Instance.ProfileManager.GetCurrProfile().RegisterStageClosures(_closureDict);
+    }
+
+    private void UnregisterAchievementClosures()
+    {
+        if (!_config.EffectAchievements)
+            return;
+        // AppManager.Instance.ProfileManager.GetCurrProfile().UnregisterStageClosures(_closureDict);
+    }
+
+    private void UnregisterConfigClosures()
     {
         if (_config.RunConfig == null)
             return;
@@ -943,7 +957,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         _entities.Do(e => e._skills.Traversal().Do(s => _closureDict.Unregister(s, s.Entry.Closures)));
     }
 
-    private void UnregisterAttackClosure(AttackDetails attackDetails)
+    private void UnregisterAttackClosures(AttackDetails attackDetails)
     {
         _closureDict.Unregister(attackDetails.Initiator, attackDetails.Closures);
     }

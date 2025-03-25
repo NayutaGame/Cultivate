@@ -256,24 +256,18 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
-            new(id: "教程测试",
+            new(id: "测试",
                 envJingJie: JingJie.ZhuJi,
                 slotCount: 5,
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
-                skillCount: 0,
+                skillCount: 5,
                 levels: new RoomDefinition[][]
                 {
                     new RoomDefinition[]
                     {
-                        // new DirectRoomDefinition(0, "教学1"),
-                        // new DirectRoomDefinition(0, "教学2"),
-                        // new DirectRoomDefinition(0, "教学3"),
-                        // new DirectRoomDefinition(0, "教学4"),
-                        // new DirectRoomDefinition(0, "教学5"),
-                        // new DirectRoomDefinition(0, "教学6"),
-                        // new DirectRoomDefinition(0, "教学8"),
-                        new DirectRoomDefinition(0, "教学10"),
+                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(0, "以物易物"),
                     },
                 }),
             
@@ -318,6 +312,24 @@ public class MapCategory : Category<MapEntry>
                     {
                         new BattleRoomDefinition(1, 12, 12),
                         new AscensionRoomDefinition(0),
+                    },
+                }),
+            
+            new(id: "境界测试",
+                envJingJie: JingJie.LianQi,
+                slotCount: 3,
+                gold: 3,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDefinition[][]
+                {
+                    new RoomDefinition[]
+                    {
+                        new AscensionRoomDefinition(1),
+                        new AscensionRoomDefinition(4),
+                        new AscensionRoomDefinition(7),
+                        new AscensionRoomDefinition(10),
+                        new AdventureRoomDefinition(12),
                     },
                 }),
             
@@ -529,24 +541,6 @@ public class MapCategory : Category<MapEntry>
                         new ShopRoomDefinition(12),
                         new BattleRoomDefinition(13, 12, 12),
                         new SuccessRoomDefinition(13),
-                    },
-                }),
-            
-            new(id: "境界测试",
-                envJingJie: JingJie.LianQi,
-                slotCount: 3,
-                gold: 3,
-                skillJingJie: JingJie.LianQi,
-                skillCount: 0,
-                levels: new RoomDefinition[][]
-                {
-                    new RoomDefinition[]
-                    {
-                        new AscensionRoomDefinition(1),
-                        new AscensionRoomDefinition(4),
-                        new AscensionRoomDefinition(7),
-                        new AscensionRoomDefinition(10),
-                        new AdventureRoomDefinition(12),
                     },
                 }),
             

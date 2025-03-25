@@ -18,7 +18,7 @@ public class ResourceReward : Reward
     {
         RunManager.Instance.Environment.SetDGoldProcedure(_gold);
         RunManager.Instance.Environment.SetDMingYuanProcedure(_mingYuan);
-        RunManager.Instance.Environment.SetDHealthProcedure(_health);
+        RunManager.Instance.Environment.GainHealthProcedure(_health);
     }
 
     public override string GetDescription()

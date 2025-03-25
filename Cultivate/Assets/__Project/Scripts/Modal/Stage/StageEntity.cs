@@ -628,13 +628,13 @@ public class StageEntity : Addressable, StageClosureListener
     private static StageClosure RecordHighestMana =
         new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closureDetails) =>
         {
-            StageSkill s = owner as StageSkill;
+            StageEntity entity = owner as StageEntity;
             GainBuffDetails d = (GainBuffDetails)closureDetails;
 
-            if (s.Owner != d.Tgt) return;
+            if (entity != d.Tgt) return;
             if (d._buffEntry.GetName() != "灵气") return;
             
-            s.Owner.Memory.PerformOperation(HighestManaKey, 0, record => Mathf.Max(record, s.Owner.GetStackOfBuff("灵气")));
+            entity.Memory.PerformOperation(HighestManaKey, 0, record => Mathf.Max(record, entity.GetStackOfBuff("灵气")));
         });
 
 

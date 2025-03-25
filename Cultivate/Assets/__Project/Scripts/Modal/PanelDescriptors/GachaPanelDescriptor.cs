@@ -10,13 +10,17 @@ public class GachaPanelDescriptor : PanelDescriptor
     private int _price;
     public int GetPrice() => _price;
 
-    public GachaPanelDescriptor()
+    private float _priceMultiplier;
+
+    public GachaPanelDescriptor(float priceMultiplier)
     {
         _accessors = new()
         {
             { "Guide",                    GetGuideDescriptor },
             { "Items",                    GetItems },
         };
+
+        _priceMultiplier = priceMultiplier;
     }
 
     public bool ItemsIsEmpty
@@ -57,7 +61,7 @@ public class GachaPanelDescriptor : PanelDescriptor
         foreach (var item in _items.Traversal())
             _price += (1 << item.JingJie.Value);
 
-        _price /= 10;
+        _price = (int) (_price * _priceMultiplier / _items.Count());
     }
 
     public void GachaProcedure()

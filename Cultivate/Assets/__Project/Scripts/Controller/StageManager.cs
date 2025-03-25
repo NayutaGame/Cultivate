@@ -32,8 +32,7 @@ public class StageManager : Singleton<StageManager>, Addressable
 
     public StageAnimationController StageAnimationController;
     private StageEnvironment _environment;
-    public StageEnvironment Environment
-        => _environment;
+    public StageEnvironment Environment => _environment;
     public StageTimeline Timeline;
     private UniTask _task;
 

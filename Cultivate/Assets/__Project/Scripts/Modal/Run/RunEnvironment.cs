@@ -38,8 +38,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         LoseMingYuanNeuron = new();
         GainGoldNeuron = new();
         LoseGoldNeuron = new();
-        GainDHealthNeuron = new();
-        LoseDHealthNeuron = new();
+        GainHealthNeuron = new();
+        LoseHealthNeuron = new();
         EngageEnemyNeuron = new();
         AppendReportNeuron = new();
         CommitBattleNeuron = new();
@@ -70,8 +70,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<int> LoseMingYuanNeuron;
     public Neuron<int> GainGoldNeuron;
     public Neuron<int> LoseGoldNeuron;
-    public Neuron<int> GainDHealthNeuron;
-    public Neuron<int> LoseDHealthNeuron;
+    public Neuron<int> GainHealthNeuron;
+    public Neuron<int> LoseHealthNeuron;
     public Neuron<EngageEnemyDetails> EngageEnemyNeuron;
     public Neuron AppendReportNeuron;
     public Neuron<bool> CommitBattleNeuron;
@@ -328,7 +328,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         if (!excludingField)
             foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
-                yield return slot.Skill;
+                if (slot.Skill != null)
+                    yield return slot.Skill;
         if (!excludingHand)
             for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
                 yield return _hand[i];
@@ -462,8 +463,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _jingJie = d.ToJingJie;
         
         // move to ascension procedure
-        int dHealth = RunEntity.HealthFromJingJie[d.ToJingJie] - RunEntity.HealthFromJingJie[d.FromJingJie];
-        SetDHealthProcedure(new SetDHealthDetails(dHealth, isFromIncreaseJingJie: true));
+        SetHealthDetails setHealthDetails = SetHealthDetails.FromJingJieChange(d.FromJingJie, d.ToJingJie);
+        SetHealthProcedure(setHealthDetails);
         
         _home.SetJingJie(d.ToJingJie);
         AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToJingJie));
@@ -691,7 +692,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (overwrite)
         {
             Home.SetSlotCount(template.GetSlotCount());
-            Home.SetHealth(template.GetHealth());
+            SetHealthProcedure(template.GetHealth());
             ClearDeckProcedure();
         }
         
@@ -720,13 +721,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             RemoveSkillProcedure(deckIndex);
         }
 
-        for (int i = 0; i < _home.GetSlotCount() - 1; i--)
+        foreach (SkillSlot slot in _home.TraversalCurrentSlots())
         {
-            SkillSlot slot = _home.GetSlot(i);
             if (slot.Skill == null)
                 return;
-            DeckIndex deckIndex = DeckIndex.FromField(i);
-            RemoveSkillProcedure(deckIndex);
+            RemoveSkillProcedure(slot.ToDeckIndex());
         }
     }
 
@@ -780,26 +779,41 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         else
             LoseGoldNeuron.Invoke(d.Value);
     }
-
-    public void SetDHealthProcedure(int value)
-        => SetDHealthProcedure(new SetDHealthDetails(value, isFromIncreaseJingJie: false));
     
-    private void SetDHealthProcedure(SetDHealthDetails d)
+    public void GainHealthProcedure(int gain)
     {
-        if (d.Value == 0)
+        if (gain <= 0) return;
+        SetHealthProcedure(SetHealthDetails.FromGain(gain));
+    }
+
+    public void LoseHealthProcedure(int lose)
+    {
+        if (lose <= 0) return;
+        SetHealthProcedure(SetHealthDetails.FromLose(lose));
+    }
+
+    public void SetHealthProcedure(int value)
+    {
+        SetHealthProcedure(SetHealthDetails.FromDirect(value));
+    }
+
+    private void SetHealthProcedure(SetHealthDetails d)
+    {
+        if (d.Value == _home.GetHealth())
             return;
         
-        SendEvent(RunClosureDict.WIL_SET_D_HEALTH, d);
+        SendEvent(RunClosureDict.WIL_SET_HEALTH, d);
 
         if (d.Cancel)
             return;
 
-        _home.SetDHealth(d.Value);
-        SendEvent(RunClosureDict.DID_SET_D_HEALTH, d);
-        if (d.Value >= 0)
-            GainDHealthNeuron.Invoke(d.Value);
+        _home.SetHealth(d.Value);
+        
+        SendEvent(RunClosureDict.DID_SET_HEALTH, d);
+        if (d.Diff >= 0)
+            GainHealthNeuron.Invoke(d.Diff);
         else
-            LoseDHealthNeuron.Invoke(d.Value);
+            LoseHealthNeuron.Invoke(d.Diff);
     }
 
     public void SetMaxMingYuanProcedure(int value)

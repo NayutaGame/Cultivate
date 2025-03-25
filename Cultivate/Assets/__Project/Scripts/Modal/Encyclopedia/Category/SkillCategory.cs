@@ -1733,7 +1733,7 @@ public class SkillCategory : Category<SkillEntry>
                         int value = Fib.ToValue(3 + d.Src.Dj);
                         d.AddSideEffect(() =>
                         {
-                            RunManager.Instance.Environment.SetDHealthProcedure(value);
+                            RunManager.Instance.Environment.GainHealthProcedure(value);
                         });
                         d.State = MergeDetails.MergeState.Continue;
                     })),

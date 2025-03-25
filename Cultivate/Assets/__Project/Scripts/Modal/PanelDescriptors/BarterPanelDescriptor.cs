@@ -72,6 +72,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         d.BarterItemIndex = _inventory.IndexOf(barterItem);
         _inventory.Remove(barterItem);
 
+        d.DeckIndex = deckIndex;
         RunManager.Instance.Environment.ExchangeSkillProcedure(d);
     }
 

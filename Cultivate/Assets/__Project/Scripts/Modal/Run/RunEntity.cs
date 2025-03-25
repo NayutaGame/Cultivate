@@ -38,7 +38,6 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     public MingYuan GetMingYuan() => _mingYuan;
     public int GetHealth() => _health;
     public void SetHealth(int value) => _health = value;
-    public void SetDHealth(int value) => _health += value;
     public BoundedInt GetHealthBounded() => new(GetHealth());
     public JingJie GetJingJie() => _jingJie;
     public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;

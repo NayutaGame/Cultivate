@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
-using Sirenix.OdinInspector.Editor.Drawers;
 using UnityEngine;
 
 public class RoomCategory : Category<RoomEntry>
@@ -236,7 +235,7 @@ public class RoomCategory : Category<RoomEntry>
                     
                     env.ClearDeckProcedure();
                     env.Home.SetSlotCount(3);
-                    env.Home.SetHealth(40);
+                    env.SetHealthProcedure(40);
 
                     Dictionary<PackEntry, DialogOption> optionDict = new Dictionary<PackEntry, DialogOption>()
                     {
@@ -636,7 +635,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
+                    RunManager.Instance.Environment.SetHealthProcedure(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"));
@@ -688,7 +687,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
+                    RunManager.Instance.Environment.SetHealthProcedure(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"), preferredDeckIndex: DeckIndex.FromField(0));
@@ -757,7 +756,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
+                    RunManager.Instance.Environment.SetHealthProcedure(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"));
@@ -890,7 +889,7 @@ public class RoomCategory : Category<RoomEntry>
                     R[0].SetSelect(option => A);
                     
                     RunManager.Instance.Environment.Home.SetSlotCount(playerTemplate.GetSlotCount());
-                    RunManager.Instance.Environment.Home.SetHealth(playerTemplate.GetHealth());
+                    RunManager.Instance.Environment.SetHealthProcedure(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("金刃"), preferredDeckIndex: DeckIndex.FromField(0));
@@ -1102,7 +1101,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "盲盒",
                         detailedText: "前面有一个盲盒商店，你想去看看这期会出什么");
                     
-                    GachaPanelDescriptor B = new();
+                    GachaPanelDescriptor B = new(priceMultiplier: 2);
 
                     A[0].SetSelect(option => B);
                     
@@ -1673,7 +1672,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetDHealthProcedure(-RunManager.Instance.Environment.Home.GetHealth() + 100);
+                        RunManager.Instance.Environment.SetHealthProcedure(100);
                         RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
                         {
                             RunSkill skill = RunManager.Instance.Environment.SkillFromDeckIndex(deckIndex);

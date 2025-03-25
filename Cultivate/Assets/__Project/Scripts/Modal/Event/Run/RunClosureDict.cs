@@ -12,8 +12,8 @@ public class RunClosureDict : Dictionary<int, RunClosureRow>
     public static readonly int DID_SET_D_MINGYUAN    = 105;
     public static readonly int WIL_SET_D_GOLD        = 106;
     public static readonly int DID_SET_D_GOLD        = 107;
-    public static readonly int WIL_SET_D_HEALTH      = 108;
-    public static readonly int DID_SET_D_HEALTH      = 109;
+    public static readonly int WIL_SET_HEALTH        = 108;
+    public static readonly int DID_SET_HEALTH        = 109;
     public static readonly int WIL_SET_MAX_MINGYUAN  = 110;
     public static readonly int DID_SET_MAX_MINGYUAN  = 111;
     public static readonly int WIL_PLACEMENT         = 112;
