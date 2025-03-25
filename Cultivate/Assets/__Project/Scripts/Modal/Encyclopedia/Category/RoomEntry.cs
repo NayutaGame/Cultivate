@@ -1,5 +1,6 @@
 
 using System;
+using CLLibrary;
 using UnityEngine;
 
 [Serializable]
@@ -10,8 +11,11 @@ public class RoomEntry : Entry
     [NonSerialized] private string _description;
     public string GetDescription() => _description;
 
-    [NonSerialized] private CLLibrary.Bound _ladderBound;
-    public CLLibrary.Bound LadderBound => _ladderBound;
+    [NonSerialized] private Bound _ladderBound;
+    public Bound LadderBound => _ladderBound;
+
+    [NonSerialized] private Bound _difficultyBound;
+    public Bound DifficultyBound => _difficultyBound;
     
     [NonSerialized] private bool _withInPool;
     public bool WithInPool => _withInPool;
@@ -24,7 +28,8 @@ public class RoomEntry : Entry
     public RoomEntry(
         string id,
         string description,
-        CLLibrary.Bound ladderBound,
+        Bound ladderBound,
+        Bound difficultyBound,
         bool withInPool,
         Func<Map, Room, PanelDescriptor> create,
         Func<Map, Room, bool> canCreate = null
@@ -32,6 +37,7 @@ public class RoomEntry : Entry
     {
         _description = description;
         _ladderBound = ladderBound;
+        _difficultyBound = difficultyBound;
         _withInPool = withInPool;
         _create = create;
         _canCreate = canCreate ?? ((map, room) => _ladderBound.Contains(room.Ladder));

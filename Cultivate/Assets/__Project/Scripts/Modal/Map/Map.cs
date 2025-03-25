@@ -36,7 +36,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
     public void Init(Profile profile, RunEnvironment env)
     {
         InitEntityPool();
-        InitAdventurePool();
+        InitAdventurePool(env);
         InsertedRoomPool = new();
 
         CompileLevels(_entry.Levels, profile, env);
@@ -66,10 +66,11 @@ public class Map : Addressable, ISerializationCallbackReceiver
         EntityPool.Shuffle();
     }
 
-    private void InitAdventurePool()
+    private void InitAdventurePool(RunEnvironment env)
     {
         RoomPool = new();
-        RoomPool.Populate(Encyclopedia.RoomCategory.Traversal.FilterObj(e => e.WithInPool));
+        int difficulty = env.GetRunConfig().GetDifficulty();
+        RoomPool.Populate(Encyclopedia.RoomCategory.Traversal.FilterObj(e => e.WithInPool && e.DifficultyBound.Contains(difficulty)));
         RoomPool.Shuffle();
     }
 

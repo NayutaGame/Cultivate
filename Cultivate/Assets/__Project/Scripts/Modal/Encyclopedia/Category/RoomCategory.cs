@@ -15,6 +15,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "不存在的事件",
                 description:                        "不存在的事件",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -27,6 +28,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "战斗",
                 description:                        "战斗",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -89,6 +91,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "出门",
                 description:                        "出门",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -228,6 +231,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "序章出门",
                 description:                        "出门",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -371,6 +375,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "突破境界",
                 description:                        "突破境界",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -476,6 +481,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "休息",
                 description:                        "休息",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -520,6 +526,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "胜利",
                 description:                        "胜利",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -544,6 +551,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "漫画",
                 description:                        "漫画",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -557,6 +565,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "教学1",
                 description:                        "教学1",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -609,6 +618,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "教学2",
                 description:                        "教学2",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -661,6 +671,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "教学3",
                 description:                        "教学3",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -713,6 +724,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "教学4",
                 description:                        "教学4",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -786,6 +798,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "教学5",
                 description:                        "教学5",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -823,6 +836,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "教学6",
                 description:                        "教学6",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -856,6 +870,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "教学8",
                 description:                        "教学8",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -922,6 +937,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "教学10",
                 description:                        "教学10",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1011,6 +1027,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "存钱",
                 description:                        "存钱",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1025,6 +1042,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "黑市",
                 description:                        "黑市",
                 ladderBound:                        new Bound(0, 8),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1043,6 +1061,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "收藏家",
                 description:                        "收藏家",
                 ladderBound:                        new Bound(2, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1060,6 +1079,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "以物易物",
                 description:                        "以物易物",
                 ladderBound:                        new Bound(2, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1077,6 +1097,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "毕业季",
                 description:                        "毕业季",
                 ladderBound:                        new Bound(5, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1094,6 +1115,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "盲盒",
                 description:                        "盲盒",
                 ladderBound:                        new Bound(8, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1115,6 +1137,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "天津四",
                 description:                        "天津四",
                 ladderBound:                        new Bound(0, 2),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1152,6 +1175,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "琴仙",
                 description:                        "琴仙",
                 ladderBound:                        new Bound(2, 5),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1183,6 +1207,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "赤壁赋",
                 description:                        "赤壁赋",
                 ladderBound:                        new Bound(5, 8),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1216,6 +1241,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "二子学弈",
                 description:                        "二子学弈",
                 ladderBound:                        new Bound(8, 11),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1248,6 +1274,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "仙人下棋",
                 description:                        "仙人下棋",
                 ladderBound:                        new Bound(11, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1335,6 +1362,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "检测仪",
                 description:                        "检测仪",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1396,6 +1424,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "解梦师",
                 description:                        "解梦师",
                 ladderBound:                        new Bound(5, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1461,6 +1490,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "天机阁",
                 description:                        "天机阁",
                 ladderBound:                        new Bound(2, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1490,6 +1520,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "论无穷",
                 description:                        "论无穷",
                 ladderBound:                        new Bound(11, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1536,6 +1567,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "分子打印机",
                 description:                        "分子打印机",
                 ladderBound:                        new Bound(5, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1576,6 +1608,7 @@ public class RoomCategory : Category<RoomEntry>
             // new(id:                                 "天界树",
             //     description:                        "天界树",
             //     ladderBound:                        new Bound(11, 15),
+            //     difficultyBound:                    new Bound(2, 11),
             //     withInPool:                         true,
             //     create:                             (map, room) =>
             //     {
@@ -1625,6 +1658,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "连抽五张",
                 description:                        "连抽五张",
                 ladderBound:                        new Bound(5, 8),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1652,6 +1686,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "我已膨胀",
                 description:                        "我已膨胀",
                 ladderBound:                        new Bound(11, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1692,6 +1727,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "曹操三笑",
                 description:                        "曹操三笑",
                 ladderBound:                        new Bound(2, 5),
+                difficultyBound:                    new Bound(2, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1732,6 +1768,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "神灯精灵",
                 description:                        "神灯精灵",
                 ladderBound:                        new Bound(8, 11),
+                difficultyBound:                    new Bound(2, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1775,6 +1812,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "山木",
                 description:                        "山木",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1853,6 +1891,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "丢尺子",
                 description:                        "丢尺子",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1901,6 +1940,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "仙岛玉液酒",
                 description:                        "仙岛玉液酒",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1989,6 +2029,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "夏虫语冰",
                 description:                        "夏虫语冰",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2021,6 +2062,7 @@ public class RoomCategory : Category<RoomEntry>
             // new(id:                                 "卖剑",
             //     description:                        "卖剑",
             //     ladderBound:                        new Bound(0, 15),
+            //     difficultyBound:                    new Bound(0, 11),
             //     withInPool:                         true,
             //     create:                             (map, room) =>
             //     {
@@ -2055,6 +2097,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "守株待兔",
                 description:                        "守株待兔",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2085,6 +2128,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "鸡肉面",
                 description:                        "鸡肉面",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2115,6 +2159,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "忘忧堂",
                 description:                        "忘忧堂",
                 ladderBound:                        new Bound(5, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2159,6 +2204,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "人间世",
                 description:                        "人间世",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2220,6 +2266,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "照相机",
                 description:                        "照相机",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2256,6 +2303,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "矛与盾",
                 description:                        "矛与盾",
                 ladderBound:                        new Bound(0, 2),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2381,6 +2429,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "郑人买履",
                 description:                        "郑人买履",
                 ladderBound:                        new Bound(2, 5),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2408,6 +2457,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "鬼兵",
                 description:                        "鬼兵",
                 ladderBound:                        new Bound(2, 5),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2461,6 +2511,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "刻舟求剑",
                 description:                        "刻舟求剑",
                 ladderBound:                        new Bound(5, 8),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2486,6 +2537,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "物质还原仪",
                 description:                        "物质还原仪",
                 ladderBound:                        new Bound(8, 11),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2542,6 +2594,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "悟道",
                 description:                        "悟道",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2572,6 +2625,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "愿望单",
                 description:                        "愿望单",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2605,6 +2659,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "后羿1",
                 description:                        "后羿1",
                 ladderBound:                        new Bound(0, 5),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2707,6 +2762,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "后羿2",
                 description:                        "后羿2",
                 ladderBound:                        new Bound(5, 11),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2801,6 +2857,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "后羿3",
                 description:                        "后羿3",
                 ladderBound:                        new Bound(11, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2815,6 +2872,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "神农氏1",
                 description:                        "神农氏1",
                 ladderBound:                        new Bound(0, 5),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2900,6 +2958,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "神农氏2",
                 description:                        "神农氏2",
                 ladderBound:                        new Bound(5, 11),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2985,6 +3044,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "神农氏3",
                 description:                        "神农氏3",
                 ladderBound:                        new Bound(11, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3006,6 +3066,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "多段测试",
                 description:                        "多段测试",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3087,6 +3148,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "快速结算",
                 description:                        "快速结算",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3113,6 +3175,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "循环",
                 description:                        "循环",
                 ladderBound:                        new Bound(0, 5),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3129,6 +3192,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "发现一张牌",
                 description:                        "发现一张牌",
                 ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3138,6 +3202,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "排局1",
                 description:                        "排局1",
                 ladderBound:                        new Bound(8, 11),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3156,6 +3221,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "排局2",
                 description:                        "排局2",
                 ladderBound:                        new Bound(8, 11),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3178,6 +3244,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "排局3抽牌",
                 description:                        "排局3抽牌",
                 ladderBound:                        new Bound(8, 11),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3191,6 +3258,7 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "排局3",
                 description:                        "排局3",
                 ladderBound:                        new Bound(8, 11),
+                difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
