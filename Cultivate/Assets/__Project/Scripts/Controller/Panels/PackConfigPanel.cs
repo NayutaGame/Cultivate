@@ -87,6 +87,9 @@ public class PackConfigPanel : PopupPanel
         AppManager.Instance.ConfigManager.EquipPackNeuron.Add(EquipPackStaging);
         AppManager.Instance.ConfigManager.UnequipPackNeuron.Add(UnequipPackStaging);
         Refresh();
+        
+        ConstraintListView.ForceLayoutRebuild();
+        ConstraintListView.RefreshPivots();
     }
 
     private void OnDisable()

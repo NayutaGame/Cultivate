@@ -17,13 +17,19 @@ public class AnimatedListView : ListView
     public override void InsertItem(int index)
     {
         base.InsertItem(index);
-        RefreshPivotsAsync();
+        if (gameObject.activeInHierarchy)
+        {
+            RefreshPivotsAsync();
+        }
     }
 
     public override void RemoveItemAt(int index)
     {
         base.RemoveItemAt(index);
-        RefreshPivotsAsync();
+        if (gameObject.activeInHierarchy)
+        {
+            RefreshPivotsAsync();
+        }
     }
 
     #region Atomic Operations
@@ -55,23 +61,6 @@ public class AnimatedListView : ListView
         rect.gameObject.SetActive(true);
 
         return item;
-    }
-
-    private bool CheckLayoutIsApplied()
-    {
-        // 检测DelegatingView是否受到了Layout的影响
-        foreach (var view in _activePool)
-        {
-            DelegatingView delegatingView = view as DelegatingView;
-            RectTransform delegatingRect = delegatingView.GetRect();
-            Vector2 anchoredPosition = delegatingRect.anchoredPosition;
-            
-            // 如果DelegatingView的位置不为0，说明受到了Layout的影响
-            if (anchoredPosition != Vector2.zero)
-                return false;
-        }
-
-        return true;
     }
 
     protected override XView DisableItem(int index)
@@ -107,19 +96,25 @@ public class AnimatedListView : ListView
 
     #endregion
 
+    // public virtual void RefreshPivotsAsync()
+    //     => _activePool.Do(view =>
+    //     {
+    //         DelegatingView delegatingView = view as DelegatingView;
+    //         delegatingView.GetAnimator().SetStateAsync(1);
+    //     });
+    //
+    // public virtual void RefreshPivots()
+    //     => _activePool.Do(view =>
+    //     {
+    //         DelegatingView delegatingView = view as DelegatingView;
+    //         delegatingView.GetAnimator().SetState(1);
+    //     });
+
     public virtual void RefreshPivotsAsync()
-        => _activePool.Do(view =>
-        {
-            DelegatingView delegatingView = view as DelegatingView;
-            delegatingView.GetAnimator().SetStateAsync(1);
-        });
-    
+        => _activePool.Do(view => view.GetAnimator().SetStateAsync(1));
+
     public virtual void RefreshPivots()
-        => _activePool.Do(view =>
-        {
-            DelegatingView delegatingView = view as DelegatingView;
-            delegatingView.GetAnimator().SetState(1);
-        });
+        => _activePool.Do(view => view.GetAnimator().SetState(1));
 
     public void RecoverDelegatingView(DelegatingView delegatingView)
     {

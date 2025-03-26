@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class ListView : XView
 {
     [SerializeField] private RectTransform _container;
+    [SerializeField] private LayoutGroup _layoutGroup;
     
     public GameObject[] Prefabs;
 
@@ -96,7 +97,10 @@ public class ListView : XView
     protected virtual void InitContainer()
     {
         if (_container == null)
+        {
             _container = transform.GetChild(0).GetComponent<RectTransform>();
+            _layoutGroup = _container.GetComponent<LayoutGroup>();
+        }
     }
 
     public override void SetAddress(Address address)
@@ -166,14 +170,28 @@ public class ListView : XView
 
     public void ForceLayoutRebuild()
     {
-        LayoutGroup layoutGroup = _container.GetComponent<LayoutGroup>();
-        if (layoutGroup == null)
+        if (_layoutGroup == null)
             return;
-        layoutGroup.CalculateLayoutInputHorizontal();
-        layoutGroup.CalculateLayoutInputVertical();
-        layoutGroup.SetLayoutHorizontal();
-        layoutGroup.SetLayoutVertical();
+        _layoutGroup.CalculateLayoutInputHorizontal();
+        _layoutGroup.CalculateLayoutInputVertical();
+        _layoutGroup.SetLayoutHorizontal();
+        _layoutGroup.SetLayoutVertical();
     }
+
+    // public bool CheckLayoutIsApplied()
+    // {
+    //     foreach (var view in _activePool)
+    //     {
+    //         DelegatingView delegatingView = view as DelegatingView;
+    //         RectTransform delegatingRect = delegatingView.GetRect();
+    //         Vector2 anchoredPosition = delegatingRect.anchoredPosition;
+    //         
+    //         if (anchoredPosition != Vector2.zero)
+    //             return false;
+    //     }
+    //
+    //     return true;
+    // }
 
     #endregion
 
