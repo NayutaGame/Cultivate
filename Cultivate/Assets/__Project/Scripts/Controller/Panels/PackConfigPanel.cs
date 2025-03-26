@@ -90,6 +90,8 @@ public class PackConfigPanel : PopupPanel
         
         ConstraintListView.ForceLayoutRebuild();
         ConstraintListView.RefreshPivots();
+        
+        SelectionListView.RefreshPivots();
     }
 
     private void OnDisable()

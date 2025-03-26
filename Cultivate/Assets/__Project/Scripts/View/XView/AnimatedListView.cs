@@ -17,19 +17,13 @@ public class AnimatedListView : ListView
     public override void InsertItem(int index)
     {
         base.InsertItem(index);
-        if (gameObject.activeInHierarchy)
-        {
-            RefreshPivotsAsync();
-        }
+        RefreshPivotsAsync();
     }
 
     public override void RemoveItemAt(int index)
     {
         base.RemoveItemAt(index);
-        if (gameObject.activeInHierarchy)
-        {
-            RefreshPivotsAsync();
-        }
+        RefreshPivotsAsync();
     }
 
     #region Atomic Operations

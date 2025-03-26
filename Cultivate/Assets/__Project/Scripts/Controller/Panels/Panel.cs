@@ -31,13 +31,16 @@ public abstract class Panel : MonoBehaviour
         _rect ??= GetComponent<RectTransform>();
         _animator ??= InitAnimator();
     }
+    
+    public static readonly int DEFAULT = -1;
+    public static readonly int HIDE = 0;
+    public static readonly int IDLE = 1;
 
     protected virtual Animator InitAnimator()
     {
-        // 0 for hide, 1 for show
         Animator animator = new(2, "Panel");
-        animator[0, 1] = EnterIdle;
-        animator[-1, 0] = EnterHide;
+        animator[HIDE, IDLE] = EnterIdle;
+        animator[DEFAULT, HIDE] = EnterHide;
         return animator;
     }
 
@@ -49,13 +52,13 @@ public abstract class Panel : MonoBehaviour
     public virtual Tween EnterIdle()
         => DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
-            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0));
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(HIDE));
 
     public virtual Tween EnterHide()
         => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(false));
 
     public virtual Tween HideTweenWithCurtain()
         => DOTween.Sequence()
-            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(1))
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(IDLE))
             .AppendCallback(() => gameObject.SetActive(false));
 }

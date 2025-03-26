@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class BattlePanel : Panel
 {
@@ -44,16 +43,21 @@ public class BattlePanel : Panel
         CombatButton.LeftClickNeuron.Join(Combat);
         CombatButton.RightClickNeuron.Join(Skip);
     }
+    
+    public static readonly int DEFAULT = -1;
+    public static readonly int HIDE = 0;
+    public static readonly int IDLE = 1;
+    public static readonly int HOVER = 2;
 
     protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for show
         Animator animator = new(2, "Battle Panel");
-        animator[0, 1] = EnterIdle;
-        animator[1, 1] = SelfTransitionTween;
-        animator[-1, 0] = EnterHide;
+        animator[HIDE, IDLE] = EnterIdle;
+        animator[IDLE, IDLE] = SelfTransitionTween;
+        animator[DEFAULT, HIDE] = EnterHide;
         
-        animator.SetState(0);
+        animator.SetState(HIDE);
         return animator;
     }
 
@@ -251,7 +255,7 @@ public class BattlePanel : Panel
             .AppendCallback(RefreshEnemy)
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(PlayBattleBGM)
-            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0))
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(Panel.HIDE))
             .Append(EnemyView.ShowTween());
 
     public Tween SelfTransitionTween()

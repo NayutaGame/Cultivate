@@ -6,20 +6,22 @@ using UnityEngine.EventSystems;
 
 public class DelegatingView5States : DelegatingView
 {
+    public static readonly int DEFAULT = -1;
+    public static readonly int HIDE = 0;
+    public static readonly int IDLE = 1;
+    public static readonly int HOVER = 2;
+    public static readonly int FOLLOW = 3;
+    public static readonly int FREE = 4;
+    
     protected override Animator InitAnimator()
     {
-        // 0. hide
-        // 1. idle
-        // 2. hover
-        // 3. follow
-        // 4. free
         Animator animator = new(5, name);
-        animator[-1, 0] = EnterHide;
-        animator[-1, 1] = EnterIdle;
-        animator[-1, 2] = EnterHover;
-        animator[-1, 3] = EnterFollow;
-        animator[-1, 4] = EnterFree;
-        animator[4, -1] = ExitFree;
+        animator[DEFAULT, HIDE] = EnterHide;
+        animator[DEFAULT, IDLE] = EnterIdle;
+        animator[DEFAULT, HOVER] = EnterHover;
+        animator[DEFAULT, FOLLOW] = EnterFollow;
+        animator[DEFAULT, FREE] = EnterFree;
+        animator[FREE, DEFAULT] = ExitFree;
         return animator;
     }
 
@@ -73,22 +75,22 @@ public class DelegatingView5States : DelegatingView
     
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
     {
-        GetAnimator().SetStateAsync(2);
+        GetAnimator().SetStateAsync(HOVER);
     }
     
     private void PointerExit(InteractBehaviour ib, PointerEventData d)
     {
-        GetAnimator().SetStateAsync(1);
+        GetAnimator().SetStateAsync(IDLE);
     }
     
     private void BeginDrag(InteractBehaviour ib, PointerEventData d)
     {
-        GetAnimator().SetStateAsync(3);
+        GetAnimator().SetStateAsync(FOLLOW);
     }
     
     public void EndDrag(InteractBehaviour ib, PointerEventData d)
     {
-        GetAnimator().SetStateAsync(1);
+        GetAnimator().SetStateAsync(IDLE);
     }
     
     private void Drag(InteractBehaviour ib, PointerEventData eventData)

@@ -5,15 +5,17 @@ using UnityEngine.EventSystems;
 
 public class DelegatingView3States : DelegatingView
 {
+    public static readonly int DEFAULT = -1;
+    public static readonly int HIDE = 0;
+    public static readonly int IDLE = 1;
+    public static readonly int HOVER = 2;
+    
     protected override Animator InitAnimator()
     {
-        // 0. hide
-        // 1. idle
-        // 2. hover
         Animator animator = new(3);
-        animator[-1, 0] = EnterHide;
-        animator[-1, 1] = EnterIdle;
-        animator[-1, 2] = EnterHover;
+        animator[DEFAULT, HIDE] = EnterHide;
+        animator[DEFAULT, IDLE] = EnterIdle;
+        animator[DEFAULT, HOVER] = EnterHover;
         return animator;
     }
 
@@ -50,17 +52,17 @@ public class DelegatingView3States : DelegatingView
     
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
     {
-        GetAnimator().SetStateAsync(2);
+        GetAnimator().SetStateAsync(HOVER);
     }
     
     private void PointerExit(InteractBehaviour ib, PointerEventData d)
     {
-        GetAnimator().SetStateAsync(1);
+        GetAnimator().SetStateAsync(IDLE);
     }
 
     private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        GetAnimator().SetStateAsync(1);
+        GetAnimator().SetStateAsync(IDLE);
     }
 
     private void GrabberSetHover()

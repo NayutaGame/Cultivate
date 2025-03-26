@@ -5,8 +5,11 @@ using CLLibrary;
 using DG.Tweening;
 using Sequence = DG.Tweening.Sequence;
 
-public class Animator : StateMachine<int>
+public class Animator
 {
+    private int _state;
+    public int State => _state;
+    
     private Table<Func<Tween>> _table;
     public Func<Tween> this[int from, int to]
     {
@@ -26,14 +29,13 @@ public class Animator : StateMachine<int>
     public Tween TweenFromSetState(int state)
     {
         Sequence seq = DOTween.Sequence();
-        if (this[State, -1] is { } first)
+        if (this[_state, -1] is { } first)
             seq.Append(first());
 
-        if (this[State, state] is { } second)
+        if (this[_state, state] is { } second)
             seq.Append(second());
         
-        // Debug.Log($"{_id}: {State} => {state}");
-        seq.AppendCallback(() => base.SetState(state));
+        seq.AppendCallback(() => _state = state);
 
         if (this[-1, state] is { } third)
             seq.Append(third());
@@ -41,19 +43,7 @@ public class Animator : StateMachine<int>
         return seq;
     }
 
-    public async UniTask DelayedSetState(int state)
-    {
-        await UniTask.WaitForSeconds(0.05f);
-        SetTween(TweenFromSetState(state));
-    }
-
-    public async UniTask SetStateDelayed(int state)
-    {
-        SetTween(TweenFromSetState(state));
-        await UniTask.WaitForSeconds(0.05f);
-    }
-
-    public override void SetState(int state)
+    public void SetState(int state)
         => SetTween(TweenFromSetState(state));
 
     public async UniTask SetStateAsync(int state)
