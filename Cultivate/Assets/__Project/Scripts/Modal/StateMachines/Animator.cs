@@ -3,6 +3,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 using DG.Tweening;
+using UnityEngine;
 using Sequence = DG.Tweening.Sequence;
 
 public class Animator
@@ -19,11 +20,13 @@ public class Animator
 
     private string _id;
     private Tween _handle;
+    private bool _printStateChange;
 
-    public Animator(int size, string id = null)
+    public Animator(int size, string id = null, bool printStateChange = false)
     {
         _table = new(size);
         _id = id ?? "Anonymous";
+        _printStateChange = printStateChange;
     }
 
     public Tween TweenFromSetState(int state)
@@ -35,6 +38,8 @@ public class Animator
         if (this[_state, state] is { } second)
             seq.Append(second());
         
+        if (_printStateChange)
+            Debug.Log($"{_state} -> {state}");
         seq.AppendCallback(() => _state = state);
 
         if (this[-1, state] is { } third)

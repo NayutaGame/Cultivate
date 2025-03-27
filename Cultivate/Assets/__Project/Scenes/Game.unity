@@ -2456,8 +2456,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
   _container: {fileID: 0}
+  _layoutGroup: {fileID: 0}
   Prefabs:
   - {fileID: 8155228337873847611, guid: 93c79bb26f7a4aa4b957d0d7662988ff, type: 3}
+  AutoUpdateLayout: 1
   _viewContainer: {fileID: 0}
 --- !u!1001 &581571930
 PrefabInstance:

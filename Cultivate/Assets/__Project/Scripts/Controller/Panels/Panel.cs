@@ -32,7 +32,7 @@ public abstract class Panel : MonoBehaviour
         _animator ??= InitAnimator();
     }
     
-    public static readonly int DEFAULT = -1;
+    public static readonly int ANY = -1;
     public static readonly int HIDE = 0;
     public static readonly int IDLE = 1;
 
@@ -40,7 +40,7 @@ public abstract class Panel : MonoBehaviour
     {
         Animator animator = new(2, "Panel");
         animator[HIDE, IDLE] = EnterIdle;
-        animator[DEFAULT, HIDE] = EnterHide;
+        animator[ANY, HIDE] = EnterHide;
         return animator;
     }
 

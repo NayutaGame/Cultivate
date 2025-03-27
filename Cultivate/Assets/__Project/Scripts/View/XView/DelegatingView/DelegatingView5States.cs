@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class DelegatingView5States : DelegatingView
 {
-    public static readonly int DEFAULT = -1;
+    public static readonly int ANY = -1;
     public static readonly int HIDE = 0;
     public static readonly int IDLE = 1;
     public static readonly int HOVER = 2;
@@ -16,12 +16,12 @@ public class DelegatingView5States : DelegatingView
     protected override Animator InitAnimator()
     {
         Animator animator = new(5, name);
-        animator[DEFAULT, HIDE] = EnterHide;
-        animator[DEFAULT, IDLE] = EnterIdle;
-        animator[DEFAULT, HOVER] = EnterHover;
-        animator[DEFAULT, FOLLOW] = EnterFollow;
-        animator[DEFAULT, FREE] = EnterFree;
-        animator[FREE, DEFAULT] = ExitFree;
+        animator[ANY, HIDE] = EnterHide;
+        animator[ANY, IDLE] = EnterIdle;
+        animator[ANY, HOVER] = EnterHover;
+        animator[ANY, FOLLOW] = EnterFollow;
+        animator[ANY, FREE] = EnterFree;
+        animator[FREE, ANY] = ExitFree;
         return animator;
     }
 

@@ -26,19 +26,6 @@ public class DiscoverSkillPanel : Panel
         base.AwakeFunction();
     }
 
-    protected override Animator InitAnimator()
-    {
-        // 0 for hide, 1 for idle, 2 for selected
-        Animator animator = new(3, "Discover Panel");
-        animator[-1, 0] = EnterHide;
-        animator[0, 1] = EnterIdle;
-        animator[1, 1] = SelfTransitionTween;
-        animator[2, 1] = SelfTransitionTween;
-        animator[-1, 2] = EnterSelected;
-        animator.SetState(0);
-        return animator;
-    }
-
     private void RefreshInfo()
     {
         DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
@@ -99,46 +86,63 @@ public class DiscoverSkillPanel : Panel
 
     public override Tween EnterHide()
         => DOTween.Sequence()
+            .AppendCallback(TraversalSetHide)
             .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
             .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
             .AppendCallback(() => gameObject.SetActive(false));
 
     public override Tween EnterIdle()
         => DOTween.Sequence()
-            .AppendCallback(TraversalSetHide)
-            .AppendCallback(SkillList.Sync)
-            .AppendCallback(RefreshInfo)
-            .AppendCallback(() => gameObject.SetActive(true))
-            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0)) // move to pair with show curtain
+            // .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0)) // move to pair with show curtain
             .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
             .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
-            .Append(TraversalEnterIdle());
+            .Append(EnterIdlePrepare())
+            .AppendCallback(SkillList.EnableAutoUpdateLayout);
 
-    public Tween SelfTransitionTween()
-        => DOTween.Sequence()
-            .Append(EnterSelected())
-            .AppendCallback(SkillList.Sync)
-            .AppendCallback(RefreshInfo)
-            .Append(TraversalEnterIdle());
+    public Tween EnterIdlePrepare()
+    {
+        SkillList.DisableAutoUpdateLayout();
+        SkillList.Sync();
+        RefreshInfo();
+        gameObject.SetActive(true);
+        SkillList.ForceLayoutRebuild();
+        TraversalSetHide();
+        Sequence seq = DOTween.Sequence();
+        SkillList.TraversalActive().Do(item =>
+        {
+            seq.Append(item.GetAnimator().TweenFromSetState(DelegatingView3States.IDLE));
+            seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(true));
+        });
+        return seq;
+    }
 
-    public Tween EnterSelected()
+    public Tween Idle2Selected()
         // dissolve of skills
         => DOTween.Sequence().Append(TraversalEnterHide());
+
+    public Tween Selected2Idle()
+        => DOTween.Sequence()
+            // .Append(TraversalEnterHide())
+            .Append(TraversalEnterIdle())
+            .AppendCallback(SkillList.EnableAutoUpdateLayout);
 
     public void TraversalSetHide()
     {
         SkillList.TraversalActive().Do(item =>
         {
-            item.GetAnimator().SetState(0);
+            item.GetAnimator().SetState(DelegatingView3States.HIDE);
         });
     }
 
     public Tween TraversalEnterIdle()
     {
+        SkillList.DisableAutoUpdateLayout();
+        SkillList.Sync();
+        RefreshInfo();
         Sequence seq = DOTween.Sequence();
         SkillList.TraversalActive().Do(item =>
         {
-            seq.Append(item.GetAnimator().TweenFromSetState(1));
+            seq.Append(item.GetAnimator().TweenFromSetState(DelegatingView3States.IDLE));
             seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(true));
         });
         return seq;
@@ -156,5 +160,33 @@ public class DiscoverSkillPanel : Panel
             seq.Join(item.GetAnimator().TweenFromSetState(0));
         });
         return seq;
+    }
+    
+    public static readonly int ANY = -1;
+    public static readonly int HIDE = 0;
+    public static readonly int IDLE = 1;
+    public static readonly int SELECTED = 2;
+    
+    // atomic
+    // hide -> idle             显示面板和技能
+    // idle -> selected         选择技能，其他技能消失
+    // selected -> hide         面板淡出
+    // selected -> idle         显示新技能
+    
+    // composed
+    // hide -> idle
+    // idle -> selected -> hide
+    // idle -> selected -> idle
+
+    protected override Animator InitAnimator()
+    {
+        // 0 for hide, 1 for idle, 2 for selected
+        Animator animator = new(3, "Discover Panel");
+        animator[ANY, HIDE] = EnterHide;
+        animator[HIDE, IDLE] = EnterIdle;
+        animator[IDLE, SELECTED] = Idle2Selected;
+        animator[SELECTED, IDLE] = Selected2Idle;
+        animator.SetState(HIDE);
+        return animator;
     }
 }

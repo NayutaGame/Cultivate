@@ -20,6 +20,7 @@ public class ListView : XView
     protected List<XView>[] _inactivePools;
 
     private bool _autoSync;
+    public bool AutoUpdateLayout = true;
 
     #region Accessors
 
@@ -74,6 +75,9 @@ public class ListView : XView
         CheckNeurons();
     }
 
+    public void EnableAutoUpdateLayout() => AutoUpdateLayout = true;
+    public void DisableAutoUpdateLayout() => AutoUpdateLayout = false;
+
     public int GetCount() => _activePool.Count;
 
     #endregion
@@ -99,8 +103,8 @@ public class ListView : XView
         if (_container == null)
         {
             _container = transform.GetChild(0).GetComponent<RectTransform>();
-            _layoutGroup = _container.GetComponent<LayoutGroup>();
         }
+        _layoutGroup = _container.GetComponent<LayoutGroup>();
     }
 
     public override void SetAddress(Address address)

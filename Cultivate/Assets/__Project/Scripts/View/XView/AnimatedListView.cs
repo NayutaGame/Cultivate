@@ -17,13 +17,15 @@ public class AnimatedListView : ListView
     public override void InsertItem(int index)
     {
         base.InsertItem(index);
-        RefreshPivotsAsync();
+        if (AutoUpdateLayout)
+            RefreshPivotsAsync();
     }
 
     public override void RemoveItemAt(int index)
     {
         base.RemoveItemAt(index);
-        RefreshPivotsAsync();
+        if (AutoUpdateLayout)
+            RefreshPivotsAsync();
     }
 
     #region Atomic Operations
@@ -90,25 +92,19 @@ public class AnimatedListView : ListView
 
     #endregion
 
-    // public virtual void RefreshPivotsAsync()
-    //     => _activePool.Do(view =>
-    //     {
-    //         DelegatingView delegatingView = view as DelegatingView;
-    //         delegatingView.GetAnimator().SetStateAsync(1);
-    //     });
-    //
-    // public virtual void RefreshPivots()
-    //     => _activePool.Do(view =>
-    //     {
-    //         DelegatingView delegatingView = view as DelegatingView;
-    //         delegatingView.GetAnimator().SetState(1);
-    //     });
-
     public virtual void RefreshPivotsAsync()
-        => _activePool.Do(view => view.GetAnimator().SetStateAsync(1));
-
+        => _activePool.Do(view =>
+        {
+            DelegatingView delegatingView = view as DelegatingView;
+            delegatingView.GetAnimator().SetStateAsync(1);
+        });
+    
     public virtual void RefreshPivots()
-        => _activePool.Do(view => view.GetAnimator().SetState(1));
+        => _activePool.Do(view =>
+        {
+            DelegatingView delegatingView = view as DelegatingView;
+            delegatingView.GetAnimator().SetState(1);
+        });
 
     public void RecoverDelegatingView(DelegatingView delegatingView)
     {

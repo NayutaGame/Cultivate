@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class DelegatingView4States : DelegatingView
 {
-    public static readonly int DEFAULT = -1;
+    public static readonly int ANY = -1;
     public static readonly int HIDE = 0;
     public static readonly int IDLE = 1;
     public static readonly int HOVER = 2;
@@ -14,11 +14,11 @@ public class DelegatingView4States : DelegatingView
     protected override Animator InitAnimator()
     {
         Animator animator = new(4);
-        animator[DEFAULT, HIDE] = EnterHide;
-        animator[DEFAULT, IDLE] = EnterIdle;
-        animator[DEFAULT, HOVER] = EnterHover;
-        animator[DEFAULT, FREE] = EnterFree;
-        animator[FREE, DEFAULT] = ExitFree;
+        animator[ANY, HIDE] = EnterHide;
+        animator[ANY, IDLE] = EnterIdle;
+        animator[ANY, HOVER] = EnterHover;
+        animator[ANY, FREE] = EnterFree;
+        animator[FREE, ANY] = ExitFree;
         return animator;
     }
 
