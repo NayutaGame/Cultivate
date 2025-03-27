@@ -816,6 +816,8 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (!_config.Animated)
             return;
         
+        PlayAsync(_entities[0].Model().GetAnimationFromTrack0());
+        PlayAsync(_entities[1].Model().GetAnimationFromTrack0());
         UniTask t1 = PlayAsync(_entities[0].Model().GetAnimationFromEntering());
         UniTask t2 = PlayAsync(_entities[1].Model().GetAnimationFromEntering());
 

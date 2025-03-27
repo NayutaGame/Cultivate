@@ -23,14 +23,24 @@ public class SpineAnimation : Animation
         };
     
     private SkeletonAnimation _skeleton;
+    private int _trackIndex;
     private string _nextAnimation;
     private string _animationName;
     private IntervalType _intervalType;
     private int _attackTimes;
 
-    public SpineAnimation(SpineModel model, string animationName, string nextAnimation, IntervalType intervalType, int attackTimes, bool isAwait, bool induced) : base(isAwait, induced)
+    public SpineAnimation(
+        SpineModel model,
+        int trackIndex,
+        string animationName,
+        string nextAnimation,
+        IntervalType intervalType,
+        int attackTimes,
+        bool isAwait,
+        bool induced) : base(isAwait, induced)
     {
         _skeleton = model.Skeleton;
+        _trackIndex = trackIndex;
         _animationName = animationName;
         _nextAnimation = nextAnimation;
         _intervalType = intervalType;
@@ -50,9 +60,9 @@ public class SpineAnimation : Animation
 
     private void PlayAnimation()
     {
-        _skeleton.AnimationState.SetAnimation(0, _animationName, false);
+        _skeleton.AnimationState.SetAnimation(_trackIndex, _animationName, false);
         if (_nextAnimation != null)
-            _skeleton.AnimationState.AddAnimation(0, _nextAnimation, true, 0);
+            _skeleton.AnimationState.AddAnimation(_trackIndex, _nextAnimation, true, 0);
     }
 
     private static float[] GetDurationForAnimation(Spine.Animation animation, int attackTimes)

@@ -7,6 +7,11 @@ public class SpriteModel : IStageModel
 
     public override void SetSpeed(float speed) { }
 
+    public override Animation GetAnimationFromTrack0()
+    {
+        return new EmptyAnimation();
+    }
+
     public override Animation GetAnimationFromEntering()
     {
         return new EmptyAnimation();

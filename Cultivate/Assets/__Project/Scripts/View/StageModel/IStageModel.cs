@@ -11,6 +11,7 @@ public abstract class IStageModel : MonoBehaviour
 
     public abstract void SetSpeed(float speed);
 
+    public abstract Animation GetAnimationFromTrack0();
     public abstract Animation GetAnimationFromEntering();
     public abstract Animation GetAnimationFromBuffSelf(bool induced);
     public abstract Animation GetAnimationFromEvaded(bool induced);
