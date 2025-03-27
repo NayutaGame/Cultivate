@@ -16,7 +16,11 @@ public class AddSkillReward : Reward
 
     public override void Claim()
     {
-        RunManager.Instance.Environment.AddSkillProcedure(_entry, _jingJie);
+        GainSkillBuilder b = new();
+        b.Pick(_entry);
+        b.Create(_jingJie);
+        b.Add();
+        b.Invoke();
     }
 
     public override string GetDescription() => _description;

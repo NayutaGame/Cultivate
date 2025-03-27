@@ -105,8 +105,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("无常路引");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -116,8 +122,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("大音希声");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -127,8 +139,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("天河引气录");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -138,8 +156,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("御虚诀");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -149,8 +173,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("大椿功");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -160,8 +190,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("游龙遁");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -171,8 +207,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("归鸿十二步");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -182,7 +224,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("大焚天秘乘");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -192,8 +241,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("须弥妙法");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -203,8 +258,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("锻体四则");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -249,8 +310,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("无常路引");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -260,8 +327,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("大音希声");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -271,8 +344,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("天河引气录");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -282,8 +361,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("御虚诀");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -293,8 +378,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("大椿功");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -304,8 +395,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("游龙遁");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -315,8 +412,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("归鸿十二步");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -326,7 +429,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("大焚天秘乘");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -336,8 +446,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("须弥妙法");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -347,8 +463,14 @@ public class RoomCategory : Category<RoomEntry>
                                 option =>
                                 {
                                     PackEntry packEntry = PackEntry.FromName("锻体四则");
-                                    packEntry.StartCards.Do(skillEntry => env.AddSkillProcedure(skillEntry));
-                                    env.DrawSkillsProcedure(new(jingJie: JingJie.LianQi, count: 2));
+                                    
+                                    GainSkillBuilder b = new();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
+                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
+                                    b.Draw(descriptor);
+                                    b.Create(JingJie.LianQi);
+                                    b.Add();
+                                    b.Invoke();
                                     return null;
                                 })
                         },
@@ -648,14 +770,26 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.SetHealthProcedure(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冰弹"), preferredDeckIndex: DeckIndex.FromField(1));
+                    GainSkillBuilder b = new();
+                    b.Pick(SkillEntry.FromName("吐纳"));
+                    b.Pick(SkillEntry.FromName("冰弹"));
+                    b.Create();
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.RecordDeckIndex(DeckIndex.FromField(1));
+                    b.Add();
+                    b.Invoke();
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冰弹"), preferredDeckIndex: DeckIndex.FromField(1));
+                        GainSkillBuilder b = new();
+                        b.Pick(SkillEntry.FromName("吐纳"));
+                        b.Pick(SkillEntry.FromName("冰弹"));
+                        b.Create();
+                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                        b.RecordDeckIndex(DeckIndex.FromField(1));
+                        b.Add();
+                        b.Invoke();
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -701,14 +835,26 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.SetHealthProcedure(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"), preferredDeckIndex: DeckIndex.FromField(0));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
+                    GainSkillBuilder b = new();
+                    b.Pick(SkillEntry.FromName("冲撞"));
+                    b.Pick(SkillEntry.FromName("恋花"));
+                    b.Create();
+                    b.RecordDeckIndex(DeckIndex.FromField(0));
+                    b.RecordDeckIndex(DeckIndex.FromField(1));
+                    b.Add();
+                    b.Invoke();
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"), preferredDeckIndex: DeckIndex.FromField(0));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
+                        GainSkillBuilder b = new();
+                        b.Pick(SkillEntry.FromName("冲撞"));
+                        b.Pick(SkillEntry.FromName("恋花"));
+                        b.Create();
+                        b.RecordDeckIndex(DeckIndex.FromField(0));
+                        b.RecordDeckIndex(DeckIndex.FromField(1));
+                        b.Add();
+                        b.Invoke();
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -771,16 +917,30 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.SetHealthProcedure(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
+                    GainSkillBuilder b = new();
+                    b.Pick(SkillEntry.FromName("冲撞"));
+                    b.Pick(SkillEntry.FromName("恋花"));
+                    b.Pick(SkillEntry.FromName("恋花"));
+                    b.Create();
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.RecordDeckIndex(DeckIndex.FromField(1));
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.Add();
+                    b.Invoke();
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("冲撞"));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredDeckIndex: DeckIndex.FromField(1));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"));
+                        GainSkillBuilder b = new();
+                        b.Pick(SkillEntry.FromName("冲撞"));
+                        b.Pick(SkillEntry.FromName("恋花"));
+                        b.Pick(SkillEntry.FromName("恋花"));
+                        b.Create();
+                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                        b.RecordDeckIndex(DeckIndex.FromField(1));
+                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                        b.Add();
+                        b.Invoke();
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -843,8 +1003,15 @@ public class RoomCategory : Category<RoomEntry>
                     RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物6"));
                     
                     BattlePanelDescriptor A = new(enemyEntity);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("云袖"), preferredJingJie: JingJie.LianQi);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("云袖"), preferredJingJie: JingJie.ZhuJi);
+                    GainSkillBuilder b = new();
+                    b.Pick(SkillEntry.FromName("云袖"));
+                    b.Pick(SkillEntry.FromName("云袖"));
+                    b.SingleCreate(JingJie.LianQi);
+                    b.SingleCreate(JingJie.ZhuJi);
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.Add();
+                    b.Invoke();
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
@@ -907,18 +1074,34 @@ public class RoomCategory : Category<RoomEntry>
                     RunManager.Instance.Environment.SetHealthProcedure(playerTemplate.GetHealth());
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("金刃"), preferredDeckIndex: DeckIndex.FromField(0));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"));
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("激流"), preferredDeckIndex: DeckIndex.FromField(1));
+                    GainSkillBuilder b = new();
+                    b.Pick(SkillEntry.FromName("金刃"));
+                    b.Pick(SkillEntry.FromName("寻猎"));
+                    b.Pick(SkillEntry.FromName("空幻"));
+                    b.Pick(SkillEntry.FromName("激流"));
+                    b.Create();
+                    b.RecordDeckIndex(DeckIndex.FromField(0));
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.RecordDeckIndex(DeckIndex.FromField(1));
+                    b.Add();
+                    b.Invoke();
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("金刃"), preferredDeckIndex: DeckIndex.FromField(0));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("寻猎"));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"));
-                        RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("激流"), preferredDeckIndex: DeckIndex.FromField(1));
+                        GainSkillBuilder b = new();
+                        b.Pick(SkillEntry.FromName("金刃"));
+                        b.Pick(SkillEntry.FromName("寻猎"));
+                        b.Pick(SkillEntry.FromName("空幻"));
+                        b.Pick(SkillEntry.FromName("激流"));
+                        b.Create();
+                        b.RecordDeckIndex(DeckIndex.FromField(0));
+                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                        b.RecordDeckIndex(DeckIndex.FromField(1));
+                        b.Add();
+                        b.Invoke();
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -1444,43 +1627,60 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         Bound manaCost = 0;
 
-                        List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
-                            pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie).ByType(CostDescription.CostType.Mana)),
+                        SkillEntryCollectionDescriptor descriptor = new(
+                            pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie)
+                                .ByType(CostDescription.CostType.Mana)),
                             jingJie: RunManager.Instance.Environment.JingJie,
                             count: 3,
                             distinct: true,
-                            consume: false));
-                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
+                            consume: false);
+
+                        GainSkillBuilder b = new();
+                        b.Draw(descriptor);
+                        
+                        B.PopulateInventory(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
                         return B;
                     });
                     A[1].SetSelect(option =>
                     {
                         Bound manaCost = new Bound(1, 10);
 
-                        List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
-                            pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie).ByType(CostDescription.CostType.Mana)),
+                        SkillEntryCollectionDescriptor descriptor = new(
+                            pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie)
+                                .ByType(CostDescription.CostType.Mana)),
                             jingJie: RunManager.Instance.Environment.JingJie,
                             count: 3,
                             distinct: true,
-                            consume: false));
-                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
+                            consume: false);
+
+                        GainSkillBuilder b = new();
+                        b.Draw(descriptor);
+
+                        B.PopulateInventory(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
                         return B;
                     });
                     A[2].SetSelect(option =>
                     {
-                        List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
+                        SkillEntryCollectionDescriptor descriptor = new(
                             jingJie: RunManager.Instance.Environment.JingJie,
                             skillTypeComposite: SkillType.Mana,
                             count: 3,
                             distinct: true,
-                            consume: false));
-                        B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
+                            consume: false);
+
+                        GainSkillBuilder b = new();
+                        b.Draw(descriptor);
+                        B.PopulateInventory(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
                         return B;
                     });
 
                     B.SetConfirmOperation(skills =>
                     {
-                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
+                        GainSkillBuilder b = new();
+                        skills.Do(item => b.Pick(item.Entry));
+                        skills.Do(item => b.SingleCreate(item.JingJie));
+                        b.Add();
+                        b.Invoke();
                         return C;
                     });
 
@@ -1504,11 +1704,18 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "天机阁",
                         detailedText: "刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
 
-                    List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(jingJie: RunManager.Instance.Environment.JingJie, count: 10, consume: false));
-                    B.PopulateInventory(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
+                    SkillEntryCollectionDescriptor descriptor = new(jingJie: RunManager.Instance.Environment.JingJie,
+                        count: 10, consume: false);
+                    GainSkillBuilder b = new();
+                    b.Draw(descriptor);
+                    B.PopulateInventory(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
                     B.SetConfirmOperation(skills =>
                     {
-                        skills.Do(item => RunManager.Instance.Environment.AddSkillProcedure(item.Entry, item.JingJie));
+                        GainSkillBuilder b = new();
+                        skills.Do(item => b.Pick(item.Entry));
+                        skills.Do(item => b.SingleCreate(item.JingJie));
+                        b.Add();
+                        b.Invoke();
                         return C;
                     });
                     
@@ -3206,9 +3413,15 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredJingJie: JingJie.ZhuJi);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"), preferredJingJie: JingJie.LianQi);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"), preferredJingJie: JingJie.LianQi);
+                    GainSkillBuilder b = new();
+                    b.Pick(SkillEntry.FromName("恋花"));
+                    b.Pick(SkillEntry.FromName("空幻"));
+                    b.Pick(SkillEntry.FromName("吐纳"));
+                    b.SingleCreate(JingJie.ZhuJi);
+                    b.SingleCreate(JingJie.LianQi);
+                    b.SingleCreate(JingJie.LianQi);
+                    b.Add();
+                    b.Invoke();
                     
                     RunEntity template = EditorManager.Instance.EntityEditableList.Traversal().FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局1");
                     BattlePanelDescriptor A = new(template);
@@ -3225,13 +3438,23 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"), preferredJingJie: JingJie.LianQi);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吐纳"), preferredJingJie: JingJie.LianQi);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"), preferredJingJie: JingJie.LianQi);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("空幻"), preferredJingJie: JingJie.LianQi);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("恋花"), preferredJingJie: JingJie.ZhuJi);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("止水"), preferredJingJie: JingJie.ZhuJi);
-                    RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("回春"), preferredJingJie: JingJie.ZhuJi);
+                    GainSkillBuilder b = new();
+                    b.Pick(SkillEntry.FromName("吐纳"));
+                    b.Pick(SkillEntry.FromName("吐纳"));
+                    b.Pick(SkillEntry.FromName("空幻"));
+                    b.Pick(SkillEntry.FromName("空幻"));
+                    b.Pick(SkillEntry.FromName("恋花"));
+                    b.Pick(SkillEntry.FromName("止水"));
+                    b.Pick(SkillEntry.FromName("回春"));
+                    b.SingleCreate(JingJie.LianQi);
+                    b.SingleCreate(JingJie.LianQi);
+                    b.SingleCreate(JingJie.LianQi);
+                    b.SingleCreate(JingJie.LianQi);
+                    b.SingleCreate(JingJie.ZhuJi);
+                    b.SingleCreate(JingJie.ZhuJi);
+                    b.SingleCreate(JingJie.ZhuJi);
+                    b.Add();
+                    b.Invoke();
                     
                     RunEntity template = EditorManager.Instance.EntityEditableList.Traversal().FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局2");
                     BattlePanelDescriptor A = new(template);
@@ -3248,7 +3471,13 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunManager.Instance.Environment.DrawSkillsProcedure(new SkillEntryCollectionDescriptor(count: 30, jingJie: JingJie.LianQi, distinct: false));
+                    SkillEntryCollectionDescriptor descriptor =
+                        new SkillEntryCollectionDescriptor(count: 30, jingJie: JingJie.LianQi, distinct: false);
+                    GainSkillBuilder b = new();
+                    b.Draw(descriptor);
+                    b.Create(JingJie.LianQi);
+                    b.Add();
+                    b.Invoke();
 
                     DialogPanelDescriptor A = new("排局3抽牌", "排局3抽牌");
 

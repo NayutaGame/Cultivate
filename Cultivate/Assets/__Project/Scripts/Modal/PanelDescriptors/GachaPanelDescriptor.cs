@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using CLLibrary;
 
 public class GachaPanelDescriptor : PanelDescriptor
 {
@@ -31,30 +32,29 @@ public class GachaPanelDescriptor : PanelDescriptor
         base.DefaultEnter(panelDescriptor);
 
         _items = new();
-        
-        List<SkillEntry> entries1 = RunManager.Instance.Environment.InnerDrawSkills(new(
-            pred: e => e.LowestJingJie <= JingJie.ZhuJi,
-            count: 7,
-            consume: false));
-        
-        List<SkillEntry> entries2 = RunManager.Instance.Environment.InnerDrawSkills(new(
-            pred: e => JingJie.JinDan <= e.LowestJingJie && e.LowestJingJie <= JingJie.YuanYing,
-            count: 2,
-            consume: false));
-        
-        List<SkillEntry> entries3 = RunManager.Instance.Environment.InnerDrawSkills(new(
-            pred: e => JingJie.HuaShen <= e.LowestJingJie,
-            count: 1,
-            consume: false));
 
-        foreach (SkillEntry e in entries1)
-            _items.Add(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie));
+        SkillEntryCollectionDescriptor[] descriptors = new[]
+        {
+            new SkillEntryCollectionDescriptor(
+                pred: e => e.LowestJingJie <= JingJie.ZhuJi,
+                count: 7,
+                consume: false),
+            new(
+                pred: e => JingJie.JinDan <= e.LowestJingJie && e.LowestJingJie <= JingJie.YuanYing,
+                count: 2,
+                consume: false),
+            new(
+                pred: e => JingJie.HuaShen <= e.LowestJingJie,
+                count: 1,
+                consume: false),
+        };
 
-        foreach (SkillEntry e in entries2)
-            _items.Add(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie));
-
-        foreach (SkillEntry e in entries3)
-            _items.Add(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie));
+        GainSkillBuilder b = new();
+        foreach(SkillEntryCollectionDescriptor descriptor in descriptors)
+            b.Draw(descriptor);
+        
+        foreach(SkillEntry skillEntry in b.DrawnSkillEntries)
+            _items.Add(SkillEntryDescriptor.FromEntryJingJie(skillEntry, skillEntry.LowestJingJie));
 
         _price = 0;
 

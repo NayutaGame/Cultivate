@@ -20,7 +20,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         MergeNeuron = new();
         GainSkillNeuron = new();
         PickDiscoveredSkillNeuron = new();
-        GainSkillsNeuron = new();
         RemoveSkillNeuron = new();
         SkillSetJingJieNeuron = new();
         ReplaceSkillNeuron = new();
@@ -50,9 +49,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<SwapDetails> SwapNeuron;
     public Neuron<UnequipDetails> UnequipNeuron;
     public Neuron<MergeDetails> MergeNeuron;
-    public Neuron<GainSkillDetails> GainSkillNeuron;
+    public Neuron<GainSkillBuilder> GainSkillNeuron;
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron;
-    public Neuron<GainSkillsDetails> GainSkillsNeuron;
     public Neuron<RemoveSkillDetails> RemoveSkillNeuron;
     public Neuron<SkillSetJingJieDetails> SkillSetJingJieNeuron;
     public Neuron<ReplaceSkillDetails> ReplaceSkillNeuron;
@@ -182,7 +180,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public RunEntity Home => _home;
     public RunEntity Away => _away;
     public JingJie JingJie => _jingJie;
-    public Pool<SkillEntry> SkillPool => _skillPool;
+    public SkillPool SkillPool => _skillPool;
     public SkillInventory Hand => _hand;
     public void SendEvent(int eventId, RunClosureDetails closureDetails) => _closureDict.SendEvent(eventId, closureDetails);
     public StageResult GetSimulateResult() => _simulateResult.Value;
@@ -615,12 +613,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         }
         else
         {
-            DeckIndex? refDeckIndex = d.Rhs.ToDeckIndex();
             SkillEntryDescriptor skillEntryDescriptor = new(
                 pred: d.MergeTarget.Pred,
                 wuXing: d.MergeTarget.ResultWuXing,
                 jingJie: d.MergeTarget.ResultJingJie);
-            InnerDrawCreateAdd(skillEntryDescriptor, ref refDeckIndex);
+            GainSkillBuilder b = new();
+            b.Draw(skillEntryDescriptor);
+            b.Create(skillEntryDescriptor.JingJie);
+            b.RecordDeckIndex(d.Rhs.ToDeckIndex());
+            b.Add();
             Hand.Remove(d.Lhs);
         }
     }
@@ -695,6 +696,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             SetHealthProcedure(template.GetHealth());
             ClearDeckProcedure();
         }
+
+        GainSkillBuilder b = new();
         
         template.TraversalCurrentSlots().Do(s =>
         {
@@ -704,13 +707,20 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
             if (toField)
             {
-                AddSkillProcedure(entry, preferredJingJie: s.Skill.GetJingJie(), preferredDeckIndex: s.ToDeckIndex());
+                b.Pick(entry);
+                b.SingleCreate(s.Skill.GetJingJie());
+                b.RecordDeckIndex(s.ToDeckIndex());
             }
             else
             {
-                AddSkillProcedure(entry, preferredJingJie: s.Skill.GetJingJie());
+                b.Pick(entry);
+                b.SingleCreate(s.Skill.GetJingJie());
+                b.RecordDeckIndex(new NextHandDeckIndexDefinition());
             }
         });
+        
+        b.Add();
+        b.Invoke();
     }
 
     public void ClearDeckProcedure()
@@ -839,8 +849,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         SendEvent(RunClosureDict.WIL_DISCOVER_SKILL, d);
 
-        List<SkillEntry> entries = InnerDrawSkills(d.Descriptor);
-        d.Skills.AddRange(entries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
+        GainSkillBuilder b = new();
+        b.Draw(d.Descriptor);
+        
+        d.Skills.AddRange(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
 
         SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
     }
@@ -860,123 +872,55 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #region SkillRelatedProcedures
     
-    public SkillEntry InnerDrawSkill(SkillEntryDescriptor descriptor)
+    public void PickSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
     {
-        SkillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
-        SkillPool.Shuffle();
-        skillEntry ??= Encyclopedia.SkillCategory.DefaultEntry();
-        return skillEntry;
-    }
-    
-    private RunSkill InnerCreateSkill(SkillEntry skillEntry, JingJie? preferredJingJie = null)
-    {
-        JingJie jingJie = Mathf.Clamp(preferredJingJie ?? JingJie.LianQi, skillEntry.LowestJingJie, skillEntry.HighestJingJie);
-        return RunSkill.FromEntryJingJie(skillEntry, jingJie);
-    }
-
-    private void InnerAddSkill(RunSkill skill, ref DeckIndex? preferredDeckIndex)
-    {
-        if (!preferredDeckIndex.HasValue)
-        {
-            Hand.Add(skill);
-            preferredDeckIndex = DeckIndex.FromHand(Hand.Count() - 1);
-            return;
-        }
-        
-        DeckIndex deckIndex = preferredDeckIndex.Value;
-        if (deckIndex.InField)
-        {
-            Home.GetSlot(deckIndex.Index).Skill = skill;
-            return;
-        }
-        
-        Hand.Replace(deckIndex.Index, skill);
-    }
-    
-    private void InnerCreateAdd(SkillEntry skillEntry, JingJie? preferredJingJie, ref DeckIndex? preferredDeckIndex)
-        => InnerAddSkill(InnerCreateSkill(skillEntry, preferredJingJie), ref preferredDeckIndex);
-    
-    public void InnerDrawCreateAdd(SkillEntryDescriptor descriptor, ref DeckIndex? preferredDeckIndex)
-        => InnerAddSkill(InnerCreateSkill(InnerDrawSkill(descriptor), descriptor.JingJie), ref preferredDeckIndex);
-    
-    public void AddSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
-    {
-        RunSkill skill = InnerCreateSkill(skillEntry, preferredJingJie);
-        DeckIndex? refDeckIndex = preferredDeckIndex;
-        InnerAddSkill(skill, ref refDeckIndex);
-        GainSkillNeuron.Invoke(new GainSkillDetails(refDeckIndex.Value, skill));
+        GainSkillBuilder b = new();
+        b.Pick(skillEntry);
+        b.Create(preferredJingJie);
+        b.RecordDeckIndex(preferredDeckIndex);
+        b.Add();
+        b.Invoke();
     }
     
     public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
     {
-        SkillEntry skillEntry = InnerDrawSkill(descriptor);
-        RunSkill skill = InnerCreateSkill(skillEntry, descriptor.JingJie);
-        DeckIndex? refDeckIndex = preferredDeckIndex;
-        InnerAddSkill(skill, ref refDeckIndex);
-        GainSkillNeuron.Invoke(new GainSkillDetails(refDeckIndex.Value, skill));
-    }
-    
-    public List<SkillEntry> InnerDrawSkills(SkillEntryCollectionDescriptor d)
-    {
-        List<SkillEntry> toRet = new();
-        
-        for (int i = 0; i < d.Count; i++)
-        {
-            SkillPool.TryPopItem(out SkillEntry item, s =>
-            {
-                if (!d.Pred(s))
-                    return false;
-
-                if (d.Distinct && toRet.Contains(s))
-                    return false;
-
-                return true;
-            });
-
-            item ??= Encyclopedia.SkillCategory.DefaultEntry();
-            toRet.Add(item);
-        }
-
-        if (!d.Consume)
-            SkillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory.DefaultEntry()));
-
-        SkillPool.Shuffle();
-        return toRet;
+        GainSkillBuilder b = new();
+        b.Draw(descriptor);
+        b.Create(descriptor.JingJie);
+        b.RecordDeckIndex(preferredDeckIndex);
+        b.Add();
+        b.Invoke();
     }
 
     public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
     {
-        List<SkillEntry> entries = InnerDrawSkills(descriptor);
-        
-        int start = Hand.Count();
-        DeckIndex[] indices = new DeckIndex[descriptor.Count];
-        for (int i = 0; i < descriptor.Count; i++)
-        {
-            SkillEntry e = entries[i];
-            
-            RunSkill skill = InnerCreateSkill(e, descriptor.JingJie);
-            Hand.Add(skill);
-
-            indices[i] = DeckIndex.FromHand(start + i);
-        }
-        
-        GainSkillsNeuron.Invoke(new GainSkillsDetails(indices));
+        GainSkillBuilder b = new();
+        b.Draw(descriptor);
+        b.Create(descriptor.JingJie);
+        b.Add();
+        b.Invoke();
     }
     
     public void PickDiscoveredSkillProcedure(PickDiscoveredSkillDetails d)
     {
-        RunSkill skill = InnerCreateSkill(d.Skill.Entry, d.Skill.JingJie);
-        Hand.Add(skill);
-        d.CreatedSkill = skill.Clone();
+        GainSkillBuilder b = new();
+        b.Pick(d.Skill.Entry);
+        b.Create(d.Skill.JingJie);
+        b.Add();
+        
+        d.CreatedSkill = b.CreatedSkills[0].Clone();
         PickDiscoveredSkillNeuron.Invoke(d);
         ReceiveSignalProcedure(new PickDiscoveredSkillSignal(d.PickedIndex));
     }
 
     public void BuySkillProcedure(BuySkillDetails d)
     {
-        RunSkill skill = InnerCreateSkill(d.Commodity.Skill.Entry, d.Commodity.Skill.JingJie);
-        Hand.Add(skill);
-        d.DeckIndex = DeckIndex.FromHand(Hand.Count() - 1);
+        GainSkillBuilder b = new();
+        b.Pick(d.Commodity.Skill.Entry);
+        b.Create(d.Commodity.Skill.JingJie);
+        b.Add();
+
+        d.DeckIndex = b.PreferredDeckIndices[0].Reify();
         BuySkillNeuron.Invoke(d);
     }
 
@@ -987,9 +931,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void GachaProcedure(GachaDetails d)
     {
-        RunSkill skill = InnerCreateSkill(d.SkillEntryDescriptor.Entry, d.SkillEntryDescriptor.JingJie);
-        Hand.Add(skill);
-        d.DeckIndex = DeckIndex.FromHand(Hand.Count() - 1);
+        GainSkillBuilder b = new();
+        b.Pick(d.SkillEntryDescriptor.Entry);
+        b.Create(d.SkillEntryDescriptor.JingJie);
+        b.Add();
+
+        d.DeckIndex = b.PreferredDeckIndices[0].Reify();
         GachaNeuron.Invoke(d);
     }
     

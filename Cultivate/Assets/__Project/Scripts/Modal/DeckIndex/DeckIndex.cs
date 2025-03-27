@@ -1,7 +1,7 @@
 
 using System;
 
-public struct DeckIndex : IEquatable<DeckIndex>
+public struct DeckIndex : IDeckIndex, IEquatable<DeckIndex>
 {
     private bool _inField;
     public bool InField => _inField;
@@ -39,4 +39,7 @@ public struct DeckIndex : IEquatable<DeckIndex>
     
     public static DeckIndex FromHand(int index = 0)
         => new(false, index);
+
+    public DeckIndex Reify()
+        => this;
 }

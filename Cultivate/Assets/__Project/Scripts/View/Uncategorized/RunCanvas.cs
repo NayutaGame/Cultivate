@@ -93,7 +93,6 @@ public class RunCanvas : Panel
         
         RunManager.Instance.Environment.PanelChangedNeuron.Add(ChangePanel);
         
-        RunManager.Instance.Environment.GainSkillsNeuron.Add(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(MingYuanDamageStaging);
         
         RefreshPanel();
@@ -120,7 +119,6 @@ public class RunCanvas : Panel
         
         RunManager.Instance.Environment.PanelChangedNeuron.Remove(ChangePanel);
         
-        RunManager.Instance.Environment.GainSkillsNeuron.Remove(GainSkillsStaging);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuanDamageStaging);
     }
 
@@ -189,7 +187,50 @@ public class RunCanvas : Panel
         => DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true));
 
-    private void GainSkillStaging(GainSkillDetails d)
+    private void GainSingleSkillStaging(GainSkillBuilder b)
+    {
+        // void SetPosition(DelegatingView view, Vector3 position)
+        // {
+        //     view.GetAnimator().SetState(DelegatingView5States.FREE);
+        //     view.GetDelegatedView().GetRect().position = position;
+        //     view.GetDelegatedView().GetRect().localScale = Vector3.zero;
+        // }
+        //
+        // void SetShow(DelegatingView view)
+        // {
+        //     view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
+        // }
+        //
+        // void SetIdle(DelegatingView view)
+        // {
+        //     view.GetAnimator().SetStateAsync(1);
+        //     // AudioManager.Play("CardPlacement");
+        // }
+        //
+        // if (b.DeckIndex.InField)
+        // {
+        //     DeckPanel.PlayerEntity.FieldView.Modified(b.DeckIndex.Index);
+        // }
+        // else
+        // {
+        //     DeckPanel.HandView.InsertItem(b.DeckIndex.Index);
+        // }
+        //
+        // DelegatingView view = DeckPanel.SkillItemFromDeckIndex(b.DeckIndex) as DelegatingView;
+        // Vector3 position = Vector3.zero;
+        //
+        // SetPosition(view, position);
+        //
+        // Sequence seq = DOTween.Sequence()
+        //     .AppendInterval(0.05f)
+        //     .AppendCallback(() => SetShow(view))
+        //     .AppendInterval(0.3f)
+        //     .AppendCallback(() => SetIdle(view));
+        //
+        // _animationQueue.QueueAnimation(seq);
+    }
+    
+    private void GainSkillStaging(GainSkillBuilder b)
     {
         void SetPosition(DelegatingView view, Vector3 position)
         {
@@ -197,37 +238,48 @@ public class RunCanvas : Panel
             view.GetDelegatedView().GetRect().position = position;
             view.GetDelegatedView().GetRect().localScale = Vector3.zero;
         }
-
+        
         void SetShow(DelegatingView view)
         {
             view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
         }
-
+        
         void SetIdle(DelegatingView view)
         {
             view.GetAnimator().SetStateAsync(1);
             // AudioManager.Play("CardPlacement");
         }
-
-        if (d.DeckIndex.InField)
-        {
-            DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
-        }
-        else
-        {
-            DeckPanel.HandView.InsertItem(d.DeckIndex.Index);
-        }
-
-        DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
-        Vector3 position = Vector3.zero;
         
-        SetPosition(view, position);
-
-        Sequence seq = DOTween.Sequence()
-            .AppendInterval(0.05f)
-            .AppendCallback(() => SetShow(view))
-            .AppendInterval(0.3f)
-            .AppendCallback(() => SetIdle(view));
+        b.PreferredDeckIndices.Count.Do(i => DeckPanel.HandView.AddItem());
+        
+        Vector3 position = Vector3.zero;
+        int offset = 1;
+        
+        for (int i = 0; i < b.PreferredDeckIndices.Count; i++)
+        {
+            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(b.PreferredDeckIndices[i].Reify()) as DelegatingView;
+            Vector3 showPosition = position + i * offset * Vector3.left;
+            SetPosition(view, showPosition);
+        }
+        
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(0.05f);
+        
+        foreach (DeckIndex deckIndex in b.PreferredDeckIndices)
+        {
+            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as DelegatingView;
+            seq.AppendCallback(() => SetShow(view))
+                .AppendInterval(0.1f);
+        }
+        
+        seq.AppendInterval(0.2f);
+        
+        foreach (DeckIndex deckIndex in b.PreferredDeckIndices)
+        {
+            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as DelegatingView;
+            seq.AppendCallback(() => SetIdle(view))
+                .AppendInterval(0.1f);
+        }
         
         _animationQueue.QueueAnimation(seq);
     }
@@ -266,60 +318,6 @@ public class RunCanvas : Panel
         {
             DeckPanel.HandView.Modified(d.DeckIndex.Index);
         }
-    }
-    
-    private void GainSkillsStaging(GainSkillsDetails d)
-    {
-        void SetPosition(DelegatingView view, Vector3 position)
-        {
-            view.GetAnimator().SetState(4);
-            view.GetDelegatedView().GetRect().position = position;
-            view.GetDelegatedView().GetRect().localScale = Vector3.zero;
-        }
-        
-        void SetShow(DelegatingView view)
-        {
-            view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
-        }
-        
-        void SetIdle(DelegatingView view)
-        {
-            view.GetAnimator().SetStateAsync(1);
-            // AudioManager.Play("CardPlacement");
-        }
-        
-        d.DeckIndices.Length.Do(i => DeckPanel.HandView.AddItem());
-        
-        Vector3 position = Vector3.zero;
-        int offset = 1;
-
-        for (int i = 0; i < d.DeckIndices.Length; i++)
-        {
-            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndices[i]) as DelegatingView;
-            Vector3 showPosition = position + i * offset * Vector3.left;
-            SetPosition(view, showPosition);
-        }
-        
-        Sequence seq = DOTween.Sequence();
-        seq.AppendInterval(0.05f);
-
-        foreach (DeckIndex deckIndex in d.DeckIndices)
-        {
-            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as DelegatingView;
-            seq.AppendCallback(() => SetShow(view))
-                .AppendInterval(0.1f);
-        }
-        
-        seq.AppendInterval(0.2f);
-
-        foreach (DeckIndex deckIndex in d.DeckIndices)
-        {
-            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as DelegatingView;
-            seq.AppendCallback(() => SetIdle(view))
-                .AppendInterval(0.1f);
-        }
-
-        _animationQueue.QueueAnimation(seq);
     }
 
     private void EquipStaging(EquipDetails d)

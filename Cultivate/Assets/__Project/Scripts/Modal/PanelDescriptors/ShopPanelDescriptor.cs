@@ -40,12 +40,15 @@ public class ShopPanelDescriptor : PanelDescriptor
         
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(_ladder);
 
-        List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
+        SkillEntryCollectionDescriptor descriptor = new(
             jingJie: currJingJie,
             count: 8,
-            consume: false));
+            consume: false);
+
+        GainSkillBuilder b = new();
+        b.Draw(descriptor);
         
-        foreach (SkillEntry e in entries)
+        foreach (SkillEntry e in b.DrawnSkillEntries)
         {
             int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(currJingJie);
             int price = Mathf.RoundToInt(basePrice * _priceMultiplier * RandomManager.Range(0.8f, 1.2f));
@@ -111,12 +114,15 @@ public class ShopPanelDescriptor : PanelDescriptor
             ShopPanelDescriptor shop = (ShopPanelDescriptor)panelDescriptor;
             CommodityListModel commodities = new CommodityListModel();
 
-            List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
+            SkillEntryCollectionDescriptor descriptor = new(
                 pred: e => baseJingJieBound.Contains(e.LowestJingJie),
                 count: 2,
-                consume: false));
+                consume: false);
 
-            foreach (SkillEntry e in entries)
+            GainSkillBuilder b = new();
+            b.Draw(descriptor);
+
+            foreach (SkillEntry e in b.DrawnSkillEntries)
             {
                 int cardJingJie = e.LowestJingJie;
                 int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(cardJingJie);
@@ -145,12 +151,15 @@ public class ShopPanelDescriptor : PanelDescriptor
             ShopPanelDescriptor shop = (ShopPanelDescriptor)panelDescriptor;
             CommodityListModel commodities = new CommodityListModel();
 
-            List<SkillEntry> entries = RunManager.Instance.Environment.InnerDrawSkills(new(
+            SkillEntryCollectionDescriptor descriptor = new(
                 pred: e => baseJingJieBound.Contains(e.LowestJingJie),
                 count: 4,
-                consume: false));
+                consume: false);
 
-            foreach (SkillEntry e in entries)
+            GainSkillBuilder b = new();
+            b.Draw(descriptor);
+
+            foreach (SkillEntry e in b.DrawnSkillEntries)
             {
                 int cardJingJie = e.LowestJingJie;
                 int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(cardJingJie);

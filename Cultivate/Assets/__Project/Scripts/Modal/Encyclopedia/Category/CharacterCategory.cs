@@ -118,8 +118,12 @@ public class CharacterCategory : Category<CharacterEntry>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         StartRunDetails d = (StartRunDetails)eventDetails;
-                        
-                        env.AddSkillProcedure(SkillEntry.FromName("幻化"));
+
+                        GainSkillBuilder b = new();
+                        b.Pick(SkillEntry.FromName("幻化"));
+                        b.Create();
+                        b.Add();
+                        b.Invoke();
                     }),
 
                     new(RunClosureDict.WIL_PLACEMENT, 0, (listener, eventDetails) =>
