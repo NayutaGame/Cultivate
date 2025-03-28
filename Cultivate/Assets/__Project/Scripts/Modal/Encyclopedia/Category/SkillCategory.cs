@@ -657,7 +657,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "空幻",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack | SkillType.Health,
+                skillTypeComposite:         SkillType.Attack,
                 cost:                       async (env, entity, skill, recursive) =>
                     new ManaCostResult(3 + skill.Dj - entity.TraversalSkills().Count(s => s.Entry.WuXing == WuXing.Shui)),
                 costDescription:            CostDescription.ManaFromDj(dj => 3 + dj),
@@ -673,7 +673,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "激流",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack | SkillType.Health,
+                skillTypeComposite:         SkillType.Attack | SkillType.Mana,
                 cost:                       CostResult.ManaFromDj(dj => 3 + dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 3 + dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1116,7 +1116,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "清泉",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
+                skillTypeComposite:         SkillType.Mana,
                 cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(await skill.IsFirstTime() ? 3 : 0),
                 costDescription:            CostDescription.ChannelFromValue(3),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1239,7 +1239,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "正念",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Defend,
+                skillTypeComposite:         SkillType.Defend | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromDj(dj => 5 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
@@ -1322,7 +1322,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "0405",
-                name:                       "九射",
+                name:                       "炎爆",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
@@ -1335,7 +1335,8 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     await d.AttackProcedure(9 + 2 * d.Dj, times: 9 + 2 * d.Dj);
                     await d.GainBuffProcedure("禁止行动");
-                }),
+                },
+                trivia: "用完之后就会体力耗尽动弹不得"),
 
             new(id:                         "0412",
                 name:                       "登宝塔",
@@ -1723,7 +1724,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Health,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"合成时：气血上限增加{Fib.ToValue(3 + dj)}",
+                    $"合成：气血上限增加{Fib.ToValue(3 + dj)}",
                 overridingMergeRule:        new MergeRule(
                     name:                       "固元",
                     errorMessage:               null,
@@ -2052,7 +2053,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "补天丹",
                 jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"合成时，使目标变为化神",
+                    $"合成：另外一张牌变成化神",
                 overridingMergeRule:        new MergeRule(
                     name:                       "补天丹",
                     errorMessage:               "补天丹不可作用于已经处于最高境界的卡牌",

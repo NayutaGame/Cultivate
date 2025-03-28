@@ -1828,7 +1828,7 @@ public class RoomCategory : Category<RoomEntry>
             //         DialogPanelDescriptor C = new("你感受到了天界树的记忆。活，死，活，活，死，死，活，活，死死死死死死死。。。。。。活？" +
             //                                       "所有的生命都逐渐凋零，所有的死者彷佛又有了生命。你感觉如果继续感悟下去，现在手中所有的卡牌都即将不属于自己，要继续感悟么？",
             //             "停止感悟，吃树上的果子",
-            //             "继续感悟");
+            //             "继续感悟（高风险）");
             //         DialogPanelDescriptor D = new("金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。" +
             //                                       "到最后，你已经不知道你是树，还是树是你了。" +
             //                                       "感悟了五行相生，所有五行牌都被相生的元素替换了。");
@@ -1900,7 +1900,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor A = new(
                         titleText: "膨胀",
                         detailedText: "你打坐着，元神又来到了名为太虚的空间，传说达到了这个境界就会遭到天道的追杀，引来雷劫。",
-                        "我已膨胀", "浅尝则止");
+                        "我已膨胀（高风险）", "浅尝则止");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor(
                         titleText: "膨胀",
@@ -1942,7 +1942,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "护送",
                         detailedText: "有个商人要去其他国家，听闻中间有一个险道，常常有山贼出没，托你保护他和一些货物的安全。一路上没有什么障碍，赶了几天的路之后，终于快要到目的地了。" +
                                       "面前是一处山谷。这时候，他突然大笑起来：“哈哈哈哈哈哈哈哈。。。”",
-                        "询问他何故突然大笑？", "赶紧捂住他的嘴。");
+                        "询问他何故突然大笑？（高风险）", "赶紧捂住他的嘴。");
 
                     DialogPanelDescriptor B = new(
                         titleText: "护送",
@@ -1982,7 +1982,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor A = new(
                         titleText: "许愿",
                         detailedText: "你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
-                        "健康的体魄", "钱币的富裕", "这个愿望不被实现");
+                        "健康的体魄", "钱币的富裕", "这个愿望不被实现（高风险）");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor(
                             titleText: "许愿",

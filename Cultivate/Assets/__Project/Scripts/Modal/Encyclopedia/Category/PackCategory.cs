@@ -67,7 +67,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 description:         "集攻防于一体的剑舞。每一式都蕴含多重变化，可攻可守，令敌人难以应对。",
                 trivia:              "剑法灵感来自归鸿展翅，十二式浑然一体，如同天成。",
-                cardNames:           new string[] { "云袖", "正念", "剑王行", "战意", "天衣无缝", "窑土", "九射", "登宝塔", "净天地" },
+                cardNames:           new string[] { "云袖", "正念", "剑王行", "战意", "天衣无缝", "窑土", "炎爆", "登宝塔", "净天地" },
                 startCardNames:      new string[] { "云袖", "正念", "战意" }
                 ),
             

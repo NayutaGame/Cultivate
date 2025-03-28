@@ -176,7 +176,7 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Skill轰天",                                "Images/CardIllustrations/轰天"),
             new("Skill正念",                                "Images/CardIllustrations/正念"),
             new("Skill拂晓",                                "Images/CardIllustrations/拂晓"),
-            new("Skill九射",                                "Images/CardIllustrations/九射"),
+            new("Skill炎爆",                                "Images/CardIllustrations/炎爆"),
             new("Skill不动明王诀",                                 "Images/CardIllustrations/不动明王诀"),
             new("Skill浴火",                                "Images/CardIllustrations/浴火"),
             new("Skill舍生",                                "Images/CardIllustrations/舍生"),
