@@ -105,13 +105,13 @@ public class GainSkillBuilder
             if (deckIndex.InField)
             {
                 _env.Home.GetSlot(deckIndex.Index).Skill = _createdSkills[i];
-                return;
+                continue;
             }
 
             if (deckIndex.Index < _env.Hand.Count())
             {
                 _env.Hand.Replace(deckIndex.Index, _createdSkills[i]);
-                return;
+                continue;
             }
             
             _env.Hand.Add(_createdSkills[i]);

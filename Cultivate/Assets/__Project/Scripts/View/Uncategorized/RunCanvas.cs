@@ -249,8 +249,18 @@ public class RunCanvas : Panel
             view.GetAnimator().SetStateAsync(1);
             // AudioManager.Play("CardPlacement");
         }
-        
-        b.PreferredDeckIndices.Count.Do(i => DeckPanel.HandView.AddItem());
+
+        b.PreferredDeckIndices.Do(deckIndex =>
+        {
+            if (deckIndex.InField)
+            {
+                DeckPanel.PlayerEntity.FieldView.Modified(deckIndex.Index);
+            }
+            else
+            {
+                DeckPanel.HandView.InsertItem(deckIndex.Index);
+            }
+        });
         
         Vector3 position = Vector3.zero;
         int offset = 1;

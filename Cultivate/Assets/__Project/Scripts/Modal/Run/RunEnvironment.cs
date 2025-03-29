@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -1168,6 +1169,26 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         string json = JsonUtility.ToJson(this, true);
         Debug.Log(json);
         GUIUtility.systemCopyBuffer = json;
+    }
+
+    public void PrintDeck()
+    {
+        StringBuilder b = new();
+        b.Append($"准备区：\n");
+        foreach (SkillSlot slot in Home.TraversalCurrentSlots())
+        {
+            if (slot.Skill == null)
+                b.Append("【空白】\t");
+            else
+                b.Append($"【{slot.Skill.GetEntry().GetName()}】\t");
+        }
+
+        b.Append("\n手牌区：\n");
+        foreach (RunSkill skill in Hand.Traversal())
+        {
+            b.Append($"【{skill.GetEntry().GetName()}】");
+        }
+        Debug.Log(b.ToString());
     }
 
     public void WriteIntoEditable()
