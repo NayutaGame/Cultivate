@@ -45,8 +45,8 @@ public class BattlePanel : Panel
     }
     
     public static readonly int DEFAULT = -1;
-    public static readonly int HIDE = 0;
-    public static readonly int IDLE = 1;
+    public new static readonly int HIDE = 0;
+    public new static readonly int IDLE = 1;
     public static readonly int HOVER = 2;
 
     protected override Animator InitAnimator()

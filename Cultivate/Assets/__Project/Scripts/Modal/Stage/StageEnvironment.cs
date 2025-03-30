@@ -72,8 +72,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (!_config.Animated)
             return;
         
-        // 当主场客场都没有退场动画时，等待3秒看起来像卡了
-        await UniTask.WaitForSeconds(3);
+        await PlayAsync(new WaitAnimation(3));
     }
 
     private async UniTask FormationProcedure()

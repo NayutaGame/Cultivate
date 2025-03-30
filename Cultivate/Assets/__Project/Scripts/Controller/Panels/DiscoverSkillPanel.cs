@@ -162,9 +162,9 @@ public class DiscoverSkillPanel : Panel
         return seq;
     }
     
-    public static readonly int ANY = -1;
-    public static readonly int HIDE = 0;
-    public static readonly int IDLE = 1;
+    public new static readonly int ANY = -1;
+    public new static readonly int HIDE = 0;
+    public new static readonly int IDLE = 1;
     public static readonly int SELECTED = 2;
     
     // atomic

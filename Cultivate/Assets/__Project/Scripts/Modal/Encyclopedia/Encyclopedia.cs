@@ -67,6 +67,8 @@ public class Encyclopedia : Addressable
             { JingJie.YuanYing, "BGMYuanYing" },
             { JingJie.HuaShen, "BGMHuaShen" },
         };
+        
+        SpriteCategory.RefreshDict();
     }
 
     private static Dictionary<JingJie, AudioEntry> JingJieToAudio;

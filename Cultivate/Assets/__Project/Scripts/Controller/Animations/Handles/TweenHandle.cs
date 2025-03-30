@@ -1,6 +1,7 @@
 
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine;
 
 public class TweenHandle : AnimationHandle
 {
@@ -20,6 +21,8 @@ public class TweenHandle : AnimationHandle
     {
         if (!_animation.IsAwait)
             return;
+        // if (!_handle.IsActive())
+        //     return;
         await _handle.AsyncWaitForCompletion();
     }
 

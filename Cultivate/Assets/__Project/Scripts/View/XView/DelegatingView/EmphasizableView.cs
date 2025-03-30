@@ -24,6 +24,7 @@ public class EmphasizableView : DelegatingView
     {
         // TODO: 이거 왜 오류나는지 모르겠음
         // Get<IEmphasizable>()?.GetEmphasisNeuron().Remove(SetPing);
+        GrabberRelease();
     }
 
     // private void SetPing()

@@ -117,8 +117,6 @@ public class SkillEntry : Entry, IAnnotation, ISkill
         _withinPool = withinPool;
 
         _overridingMergeRule = overridingMergeRule ?? MergeRule.Trivial;
-
-        _spriteEntry = $"Skill{GetName()}";
     }
 
     public static implicit operator SkillEntry(string id) => Encyclopedia.SkillCategory[id];
@@ -131,6 +129,20 @@ public class SkillEntry : Entry, IAnnotation, ISkill
 
     public int GetCurrCounter() => 0;
     public int GetMaxCounter() => 0;
+
+    public void CreateSprite()
+    {
+        string key = $"Skill{GetName()}";
+        if (Encyclopedia.SpriteCategory.ContainsKey(key))
+        {
+            _spriteEntry = key;
+        }
+        else
+        {
+            _spriteEntry = new(key, $"Images/CardIllustrations/{GetName()}");
+            Encyclopedia.SpriteCategory.Add(_spriteEntry);
+        }
+    }
 
     public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
     public WuXing? GetWuXing() => WuXing;

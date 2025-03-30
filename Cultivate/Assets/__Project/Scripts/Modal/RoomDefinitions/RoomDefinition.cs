@@ -43,7 +43,7 @@ public abstract class RoomDefinition
     public abstract SpriteEntry GetSprite();
     public abstract string GetDescription();
 
-    [SerializeField] private readonly int _ladder;
+    [SerializeField] private int _ladder;
     public int Ladder => _ladder;
 
     [NonSerialized] public Func<Profile, RunEnvironment, bool> Pred;

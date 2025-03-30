@@ -35,7 +35,7 @@ public class RoomCategory : Category<RoomEntry>
                     BattleRoomDefinition roomDefinition = room.GetDescriptor() as BattleRoomDefinition;
                     int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
                     int goldValue = Mathf.RoundToInt(baseGoldReward * RandomManager.Range(0.9f, 1.1f));
-
+                    
                     BattlePanelDescriptor A = new(room.GetPredrewRunEntity());
 
                     DiscoverSkillPanelDescriptor B = DiscoverSkillPanelDescriptor.FromDefault(room.Ladder);

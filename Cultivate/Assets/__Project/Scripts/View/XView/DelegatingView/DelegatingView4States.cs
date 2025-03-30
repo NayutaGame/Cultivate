@@ -85,4 +85,9 @@ public class DelegatingView4States : DelegatingView
     {
         CanvasManager.Instance.GetGrabber().Release(this);
     }
+    
+    private void OnDisable()
+    {
+        GrabberRelease();
+    }
 }

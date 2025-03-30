@@ -1707,11 +1707,11 @@ public class SkillCategory : Category<SkillEntry>
                     $"护甲+30".ApplyDefend() +
                     $"\n开局：" +
                     $"护甲+100".ApplyDefend() +
-                    $"\n遭受3跳回合".ApplyDebuff(),
+                    $"\n遭受3跳行动".ApplyDebuff(),
                 startStageCast:             async d =>
                 {
                     await d.Caster.GainArmorProcedure(100, induced: false);
-                    await d.Caster.GainBuffProcedure("跳回合", 3,induced: false);
+                    await d.Caster.GainBuffProcedure("跳行动", 3, induced: false);
                 },
                 cast:                       async d =>
                 {
@@ -5032,7 +5032,11 @@ public class SkillCategory : Category<SkillEntry>
 
     public void Init()
     {
-        List.Do(entry => entry.GenerateAnnotations());
+        List.Do(entry =>
+        {
+            entry.GenerateAnnotations();
+            entry.CreateSprite();
+        });
     }
 
     public override SkillEntry DefaultEntry() => this["0000"];

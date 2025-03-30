@@ -14,13 +14,18 @@ public class Category<T> where T : Entry
         RefreshDict();
     }
 
+    public void Add(T item)
+    {
+        List.Add(item);
+    }
+
     public Category()
     {
         _list = new();
         _dict = new();
     }
 
-    private void RefreshDict()
+    public void RefreshDict()
     {
         _dict.Clear();
 
@@ -51,6 +56,9 @@ public class Category<T> where T : Entry
                 return DefaultEntry();
         }
     }
+
+    public bool ContainsKey(string key)
+        => _dict.ContainsKey(key);
 
     public virtual T DefaultEntry() => null;
 

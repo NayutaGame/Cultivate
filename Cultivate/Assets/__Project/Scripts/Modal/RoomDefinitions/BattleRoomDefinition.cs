@@ -23,8 +23,8 @@ public class BattleRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
         "UnderlingRoomIcon", "EliteRoomIcon", "BossRoomIcon",
     };
     
-    [SerializeField] public readonly int _slotCountBefore;
-    [SerializeField] public readonly int _slotCountAfter;
+    [SerializeField] public int _slotCountBefore;
+    [SerializeField] public int _slotCountAfter;
     
     [NonSerialized] public bool _isBoss;
     [NonSerialized] private SpriteEntry _spriteEntry;

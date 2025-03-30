@@ -241,6 +241,7 @@ public class ListView : XView
         XView item = _activePool[index];
 
         item.gameObject.SetActive(false);
+        // grabber
         item.transform.SetAsLastSibling();
 
         _activePool.RemoveAt(index);
