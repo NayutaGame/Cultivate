@@ -250,8 +250,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一张牌使用两次" +
-                                                                                    "\n4张：开局及每轮：获得1穿透" +
+                        rewardDescription:                                          "2张：开局及每轮：获得1穿透" +
+                                                                                    "\n4张：第一张牌使用两次" +
                                                                                     "\n6张：所有牌算作使用过一次" +
                                                                                     "\n9张：永久穿透和集中",
                         stageClosures: new StageClosure[]
@@ -262,9 +262,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("多重");
                                 await f.Owner.GainBuffProcedure("穿透");
                                 await f.Owner.GainBuffProcedure("轮穿透");
+                                await f.Owner.GainBuffProcedure("多重");
                                 foreach (var s in f.Owner._skills)
                                     s.IncreaseCastedCount();
                                 await f.Owner.GainBuffProcedure("通透世界");
@@ -274,8 +274,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一张牌使用两次" +
-                        "\n4张：开局及每轮：获得1穿透" +
+                        rewardDescription:                                          "2张：开局及每轮：获得1穿透" +
+                        "\n4张：第一张牌使用两次" +
                         "\n6张：所有牌算作使用过一次" +
                         "\n9张：永久穿透和集中".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -286,9 +286,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("多重");
                                 await f.Owner.GainBuffProcedure("穿透");
                                 await f.Owner.GainBuffProcedure("轮穿透");
+                                await f.Owner.GainBuffProcedure("多重");
                                 foreach (var s in f.Owner._skills)
                                     s.IncreaseCastedCount();
                             }),
@@ -297,8 +297,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一张牌使用两次" +
-                        "\n4张：开局及每轮：获得1穿透" +
+                        rewardDescription:                                          "2张：开局及每轮：获得1穿透" +
+                        "\n4张：第一张牌使用两次" +
                         "\n6张：所有牌算作使用过一次".ApplyInactive() +
                         "\n9张：永久穿透和集中".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -309,17 +309,17 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
                                 
-                                await f.Owner.GainBuffProcedure("多重");
                                 await f.Owner.GainBuffProcedure("穿透");
                                 await f.Owner.GainBuffProcedure("轮穿透");
+                                await f.Owner.GainBuffProcedure("多重");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一张牌使用两次" +
-                        "\n4张：开局及每轮：获得1穿透".ApplyInactive() +
+                        rewardDescription:                                          "2张：开局及每轮：获得1穿透" +
+                        "\n4张：第一张牌使用两次".ApplyInactive() +
                         "\n6张：所有牌算作使用过一次".ApplyInactive() +
                         "\n9张：永久穿透和集中".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -330,15 +330,16 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
                                 
-                                await f.Owner.GainBuffProcedure("多重");
+                                await f.Owner.GainBuffProcedure("穿透");
+                                await f.Owner.GainBuffProcedure("轮穿透");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：第一张牌使用两次".ApplyInactive() +
-                        "\n4张：开局及每轮：获得1穿透".ApplyInactive() +
+                        rewardDescription:                                          "2张：开局及每轮：获得1穿透".ApplyInactive() +
+                        "\n4张：第一张牌使用两次".ApplyInactive() +
                         "\n6张：所有牌算作使用过一次".ApplyInactive() +
                         "\n9张：永久穿透和集中".ApplyInactive()),
                 }),

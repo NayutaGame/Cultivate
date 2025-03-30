@@ -390,7 +390,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() + " 暴击释放" +
-                    $"\n开局：施加1跳回合",
+                    $"\n开局：施加1跳行动",
                 cast:                       async d =>
                 {
                     StageClosure closure = new(StageClosureDict.WIL_DAMAGE, 0,
@@ -425,7 +425,7 @@ public class SkillCategory : Category<SkillEntry>
                     StageClosure closure0 = new(StageClosureDict.WIL_FULL_ATTACK, 0,
                         async (owner, closureDetails) =>
                         {
-                            DamageDetails d = closureDetails as DamageDetails;
+                            AttackDetails d = closureDetails as AttackDetails;
                             if (owner != d.Initiator) return;
                             
                             StageSkill initiator = d.Initiator as StageSkill;
@@ -438,7 +438,7 @@ public class SkillCategory : Category<SkillEntry>
                     StageClosure closure1 = new(StageClosureDict.DID_FULL_ATTACK, 0,
                         async (owner, closureDetails) =>
                         {
-                            DamageDetails d = closureDetails as DamageDetails;
+                            AttackDetails d = closureDetails as AttackDetails;
                             if (owner != d.Initiator) return;
                             
                             StageSkill initiator = d.Initiator as StageSkill;
@@ -457,10 +457,6 @@ public class SkillCategory : Category<SkillEntry>
 
                     await d.AttackProcedure(1,
                         closures: new [] { closure0, closure1 });
-                },
-                startStageCast:             async d =>
-                {
-                    await d.Caster.GiveBuffProcedure("跳回合", induced: false);
                 }),
             
             new(id:                         "0201",
@@ -1029,6 +1025,7 @@ public class SkillCategory : Category<SkillEntry>
                         if (s.Owner != d.Src) return;
                         if (d.Initiator == s) return;
                         StageSkill initiator = d.Initiator as StageSkill;
+                        if (initiator == null) return;
 
                         string key = "UsedClosureDict";
                         s.Owner.Memory.PerformOperation(key, new Dictionary<StageSkill, StageClosure[]>(), record =>
