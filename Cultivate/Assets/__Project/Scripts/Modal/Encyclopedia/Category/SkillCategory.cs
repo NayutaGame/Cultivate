@@ -38,6 +38,23 @@ public class SkillCategory : Category<SkillEntry>
                                                         d.Shatter = true;
                                                     });
 
+    private static readonly MergeRule NoMerge = new(
+        name: "无法合成",
+        errorMessage: "特殊卡牌不可参与合成",
+        order: -1,
+        processMerge: d =>
+        {
+            d.MergeTarget = new(
+                mergeType: "无法合成",
+                valid: false,
+                errorMessage: "特殊卡牌不可参与合成",
+                resultEntry: null,
+                resultJingJie: null,
+                resultWuXing: null,
+                pred: null);
+            d.State = MergeDetails.MergeState.Cancel;
+        });
+
     private static readonly MergeRule DreamCard = new(
         name: "梦中卡牌",
         errorMessage: "梦中卡牌不可参与合成",
@@ -885,7 +902,7 @@ public class SkillCategory : Category<SkillEntry>
                             AttackDetails d = closureDetails as AttackDetails;
                             if (owner != d.Initiator) return;
                             StageSkill initiator = d.Initiator as StageSkill;
-                            d.Value += Fib.ToValue(3 + initiator.Dj) * initiator.StageCastedCount;
+                            d.Value += Fib.ToValue(3 + initiator.Dj) * initiator.TotalStageCastedCount;
                         });
 
                     await d.AttackProcedure(Fib.ToValue(4 + d.Dj),
@@ -979,7 +996,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻".ApplyAttack() +
-                    $"\n力量具有{5 + dj}倍效果",
+                    $"\n力量/剑意具有{5 + dj}倍效果",
                 cast:                       async d =>
                 {
                     StageClosure closure = new(StageClosureDict.WIL_ATTACK, 0,
@@ -1085,7 +1102,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend | SkillType.ZiZhi,
-                cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(5 - skill.Dj - skill.StageCastedCount),
+                cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(5 - skill.Dj - skill.TotalStageCastedCount),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - dj),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"10攻".ApplyAttack() + " 闪避+2".ApplyDefend() +
@@ -2823,7 +2840,8 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.HuaShenOnly,
                 castDescription:            (j, dj, costResult, castResult) =>
                     "模仿对手对位的牌",
-                withinPool:                 false),
+                withinPool:                 false,
+                overridingMergeRule:        NoMerge),
 
             new(id:                         "0004",
                 name:                       "作弊",
@@ -4533,7 +4551,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "幻雾",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(4 * (1 - skill.StageCastedCount.Clamp(0, 1))),
+                cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(4 * (1 - skill.TotalStageCastedCount.Clamp(0, 1))),
                 costDescription:            CostDescription.ChannelFromValue(4),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"30攻 吸血" +
@@ -4541,7 +4559,7 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    bool cond = d.Skill.StageCastedCount != 0;
+                    bool cond = d.Skill.TotalStageCastedCount != 0;
                     d.CastResult.AppendCond(cond);
                     await d.AttackProcedure(30,
                         closures: new[] { LifeSteal });
@@ -4644,7 +4662,7 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    await d.AttackProcedure(1, times: 1 + d.Skill.StageCastedCount);
+                    await d.AttackProcedure(1, times: 1 + d.Skill.TotalStageCastedCount);
                 }),
 
             // 8 24 52 105 204
@@ -4662,8 +4680,8 @@ public class SkillCategory : Category<SkillEntry>
                     if (leftSkill == null || rightSkill == null)
                         return;
 
-                    rightSkill.SetStageCastedCount(leftSkill.StageCastedCount + rightSkill.StageCastedCount);
-                    leftSkill.SetStageCastedCount(0);
+                    rightSkill.SetRealStageCastedCount(leftSkill.TotalStageCastedCount + rightSkill.TotalStageCastedCount);
+                    leftSkill.SetRealStageCastedCount(0);
                     // animation
                 }),
             

@@ -123,7 +123,7 @@ public class StageEntity : Addressable, StageClosureListener
         
 
         if (this == skill.Owner)
-            skill.IncreaseCastedCount();
+            skill.IncreaseRealCastedCount();
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_CAST, d);
 
         return castResult;
@@ -154,7 +154,7 @@ public class StageEntity : Addressable, StageClosureListener
 
             if (await TryConsumeProcedure("飞龙在天"))
             {
-                _skills[_p].IncreaseCastedCount();
+                _skills[_p].IncreaseBonusCastedCount();
                 continue;
             }
 

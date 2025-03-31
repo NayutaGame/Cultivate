@@ -499,8 +499,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
+  _container: {fileID: 0}
+  _layoutGroup: {fileID: 0}
   Prefabs:
   - {fileID: 8155228337873847611, guid: dd6cd8a043d68804aa7dffd1ca4eb6cf, type: 3}
+  AutoUpdateLayout: 1
+  _viewContainer: {fileID: 0}
 --- !u!1 &3841565544173113579
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,8 +593,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
+  _container: {fileID: 0}
+  _layoutGroup: {fileID: 0}
   Prefabs:
   - {fileID: 8155228337873847611, guid: 0fe41872bdd306640a6e5113f57b2ad4, type: 3}
+  AutoUpdateLayout: 1
+  _viewContainer: {fileID: 0}
 --- !u!1 &4244958253025569533
 GameObject:
   m_ObjectHideFlags: 0

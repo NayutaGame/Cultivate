@@ -1043,7 +1043,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         StageEntity home = StageManager.Instance.Environment.Home;
-                        int count = home.TraversalSkills().Count(s => s.StageCastedCount > 6);
+                        int count = home.TraversalSkills().Count(s => s.TotalStageCastedCount > 6);
                         if (count < 1) return;
                         p.Unlock();
                     })

@@ -21,7 +21,7 @@ public class CastDetails : StageClosureDetails
 
     public int J => Skill.GetJingJie();
     public int Dj => Skill.Dj;
-    public int Cc => Skill.StageCastedCount;
+    public int Cc => Skill.TotalStageCastedCount;
 
     public async UniTask AttackProcedure(int value,
         int times = 1,

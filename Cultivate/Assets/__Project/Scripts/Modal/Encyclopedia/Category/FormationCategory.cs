@@ -266,7 +266,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("轮穿透");
                                 await f.Owner.GainBuffProcedure("多重");
                                 foreach (var s in f.Owner._skills)
-                                    s.IncreaseCastedCount();
+                                    s.IncreaseBonusCastedCount();
                                 await f.Owner.GainBuffProcedure("通透世界");
                             }),
                         }),
@@ -290,7 +290,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("轮穿透");
                                 await f.Owner.GainBuffProcedure("多重");
                                 foreach (var s in f.Owner._skills)
-                                    s.IncreaseCastedCount();
+                                    s.IncreaseBonusCastedCount();
                             }),
                         }),
                     new FormationEntry(
@@ -568,7 +568,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
                                                                                     "\n7张：开局：力量+2" +
-                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻",
+                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻（未实现）",
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -587,7 +587,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
                                                                                     "\n7张：开局：力量+2" +
-                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻".ApplyInactive(),
+                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻（未实现）".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -606,7 +606,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
                                                                                     "\n7张：开局：力量+2".ApplyInactive() +
-                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻".ApplyInactive(),
+                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻（未实现）".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -624,7 +624,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲".ApplyInactive() +
                                                                                     "\n7张：开局：力量+2".ApplyInactive() +
-                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻".ApplyInactive(),
+                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻（未实现）".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>

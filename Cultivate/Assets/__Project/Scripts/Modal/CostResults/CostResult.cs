@@ -66,7 +66,7 @@ public abstract class CostResult : StageClosureDetails
         => async (env, entity, skill, recursive) => new ArmorCostResult(jiaShi(await entity.JiaShiProcedure()));
     
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ArmorFromCastedCount(Func<int, int> cc)
-        => async (env, entity, skill, recursive) => new ArmorCostResult(cc(skill.StageCastedCount));
+        => async (env, entity, skill, recursive) => new ArmorCostResult(cc(skill.TotalStageCastedCount));
     
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ChannelFromValue(int value)
@@ -82,7 +82,7 @@ public abstract class CostResult : StageClosureDetails
         => async (env, entity, skill, recursive) => new ChannelCostResult(jiaShi(await entity.JiaShiProcedure()));
     
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ChannelFromCastedCount(Func<int, int> cc)
-        => async (env, entity, skill, recursive) => new ChannelCostResult(cc(skill.StageCastedCount));
+        => async (env, entity, skill, recursive) => new ChannelCostResult(cc(skill.TotalStageCastedCount));
     
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> HealthFromValue(int value)
@@ -98,7 +98,7 @@ public abstract class CostResult : StageClosureDetails
         => async (env, entity, skill, recursive) => new HealthCostResult(jiaShi(await entity.JiaShiProcedure()));
     
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> HealthFromCastedCount(Func<int, int> cc)
-        => async (env, entity, skill, recursive) => new HealthCostResult(cc(skill.StageCastedCount));
+        => async (env, entity, skill, recursive) => new HealthCostResult(cc(skill.TotalStageCastedCount));
     
 
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ManaFromValue(int value)
@@ -114,5 +114,5 @@ public abstract class CostResult : StageClosureDetails
         => async (env, entity, skill, recursive) => new ManaCostResult(jiaShi(await entity.JiaShiProcedure()));
     
     public static Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> ManaFromCastedCount(Func<int, int> cc)
-        => async (env, entity, skill, recursive) => new ManaCostResult(cc(skill.StageCastedCount));
+        => async (env, entity, skill, recursive) => new ManaCostResult(cc(skill.TotalStageCastedCount));
 }

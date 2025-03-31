@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using CLLibrary;
 using Cysharp.Threading.Tasks;
 
 public class StageSkill : StageClosureListener
@@ -46,12 +47,14 @@ public class StageSkill : StageClosureListener
     public async UniTask ExhaustProcedure()
         => await _owner.Env.ExhaustProcedure(_owner, this);
 
-    public int StageCastedCount { get; private set; }
-    public void IncreaseCastedCount() => StageCastedCount += 1;
-    public void SetStageCastedCount(int value)
-    {
-        StageCastedCount = value;
-    }
+    private int _realStageCastedCount;
+    public void SetRealStageCastedCount(int value) => _realStageCastedCount = value;
+    public void IncreaseRealCastedCount() => _realStageCastedCount += 1;
+    private int _bonusStageCastedCount;
+    public void SetBonusStageCastedCount(int value) => _bonusStageCastedCount = value;
+    public void IncreaseBonusCastedCount() => _bonusStageCastedCount += 1;
+
+    public int TotalStageCastedCount => _realStageCastedCount + _bonusStageCastedCount;
 
     public static StageSkill FromPlacedSkill(StageEntity owner, int slotIndex, PlacedSkill placedSkill)
         => new(owner, slotIndex, slotIndex, placedSkill.Entry, placedSkill.JingJie);
@@ -60,7 +63,7 @@ public class StageSkill : StageClosureListener
         => new(owner, slotIndex, slotIndex, skillEntry, jingJie ?? skillEntry.LowestJingJie);
 
     public StageSkill Clone()
-        => new(_owner, _slotIndex, _runSlotIndex, _entry, _jingJie, _exhausted, StageCastedCount);
+        => new(_owner, _slotIndex, _runSlotIndex, _entry, _jingJie, _exhausted, _realStageCastedCount, _bonusStageCastedCount);
 
     private StageSkill(
         StageEntity owner,
@@ -69,7 +72,8 @@ public class StageSkill : StageClosureListener
         SkillEntry skillEntry,
         JingJie jingJie,
         bool exhausted = false,
-        int stageCastedCount = 0)
+        int realStageCastedCount = 0,
+        int bonusStageCastedCount = 0)
     {
         _owner = owner;
         _slotIndex = slotIndex;
@@ -77,7 +81,8 @@ public class StageSkill : StageClosureListener
         _entry = skillEntry;
         _jingJie = jingJie;
         _exhausted = exhausted;
-        StageCastedCount = stageCastedCount;
+        _realStageCastedCount = realStageCastedCount;
+        _bonusStageCastedCount = bonusStageCastedCount;
     }
 
     public SkillTypeComposite GetSkillType()
@@ -91,7 +96,7 @@ public class StageSkill : StageClosureListener
 
     public async UniTask<bool> IsFirstTime(bool useFocus = false)
     {
-        bool isFirstTime = StageCastedCount == 0;
+        bool isFirstTime = _realStageCastedCount == 0;
         if (!isFirstTime)
             isFirstTime = useFocus && await _owner.IsFocused();
 

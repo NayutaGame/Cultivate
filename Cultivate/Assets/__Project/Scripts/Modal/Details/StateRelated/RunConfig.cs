@@ -59,7 +59,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
     public static RunConfig FirstRun()
     {
         Profile profile = AppManager.Instance.ProfileManager.ProfileList[0];
-        return new(profile.CharacterProfileList[0], profile.DifficultyProfileList[0], null, "序章");
+        return new(profile.CharacterProfileList[0], profile.DifficultyProfileList[0], null, "标准");
     }
 
     public CharacterEntry GetCharacter()
