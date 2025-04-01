@@ -10,7 +10,7 @@ public class EntityEntry : Entry
     [NonSerialized] private string _description;
     [NonSerialized] private SpriteEntry _spriteEntry;
     [NonSerialized] private PrefabEntry _stageModel;
-    [NonSerialized] private PrefabEntry _uiEntityModel;
+    [NonSerialized] private PrefabEntry _runModel;
 
     public EntityEntry(string id, string description, string modelName = null) : base(id)
     {
@@ -19,7 +19,7 @@ public class EntityEntry : Entry
         _spriteEntry = GetName();
 
         _stageModel = $"StageModel{modelName ?? GetName()}";
-        _uiEntityModel = $"UIEntityModel{modelName ?? GetName()}";
+        _runModel = $"RunModel{modelName ?? GetName()}";
     }
     
     public string GetDescription() => _description;
@@ -28,5 +28,5 @@ public class EntityEntry : Entry
     
     // public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingCharacterPortrait().Sprite;
     public PrefabEntry GetStageModelPrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
-    public PrefabEntry GetUIEntityModelPrefabEntry() => _uiEntityModel ?? Encyclopedia.PrefabCategory.MissingUIEntityModel();
+    public PrefabEntry GetRunModelPrefabEntry() => _runModel ?? Encyclopedia.PrefabCategory.MissingRunModel();
 }

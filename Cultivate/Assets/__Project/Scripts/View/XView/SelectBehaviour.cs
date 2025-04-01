@@ -13,6 +13,11 @@ public class SelectBehaviour : XBehaviour
         _animator = InitAnimator();
     }
 
+    public void SetSelectionSprite(Sprite sprite)
+    {
+        SelectionImage.sprite = sprite;
+    }
+
     private Animator _animator;
     public Animator GetAnimator()
         => _animator;

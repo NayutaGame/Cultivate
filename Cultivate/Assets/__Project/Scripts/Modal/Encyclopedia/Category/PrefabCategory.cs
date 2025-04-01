@@ -7,25 +7,30 @@ public class PrefabCategory : Category<PrefabEntry>
     {
         AddRange(new List<PrefabEntry>()
         {
-            // UI Entity Models
-            new("UIEntityModel缺失模型", "Prefabs/UIEntityModels/缺失模型"),
-            new("UIEntityModel徐福", "Prefabs/UIEntityModels/徐福"),
-            new("UIEntityModel子非鱼", "Prefabs/UIEntityModels/子非鱼"),
-            new("UIEntityModel子非燕", "Prefabs/UIEntityModels/子非燕"),
-            new("UIEntityModel风雨晴", "Prefabs/UIEntityModels/风雨晴"),
-            new("UIEntityModel梦乃遥", "Prefabs/UIEntityModels/梦乃遥"),
-            new("UIEntityModel噬金甲", "Prefabs/UIEntityModels/噬金甲"),
-            new("UIEntityModel墨蛟", "Prefabs/UIEntityModels/墨蛟"),
-            new("UIEntityModel渊虾", "Prefabs/UIEntityModels/渊虾"),
-            new("UIEntityModel九尾狐", "Prefabs/UIEntityModels/九尾狐"),
-            new("UIEntityModel推山兽", "Prefabs/UIEntityModels/推山兽"),
-            new("UIEntityModel白泽", "Prefabs/UIEntityModels/白泽"),
-            new("UIEntityModel鲲", "Prefabs/UIEntityModels/鲲"),
-            new("UIEntityModel毕方", "Prefabs/UIEntityModels/毕方"),
-            new("UIEntityModel火蟾", "Prefabs/UIEntityModels/火蟾"),
-            new("UIEntityModel麒麟", "Prefabs/UIEntityModels/麒麟"),
-            new("UIEntityModel鹤仙人", "Prefabs/UIEntityModels/鹤仙人"),
-            new("UIEntityModel鹿仙人", "Prefabs/UIEntityModels/鹿仙人"),
+            // Config Models
+            new("ConfigModel缺失模型", "Prefabs/ConfigModels/缺失模型"),
+            new("ConfigModel徐福", "Prefabs/ConfigModels/徐福"),
+            new("ConfigModel子非鱼", "Prefabs/ConfigModels/子非鱼"),
+            
+            // Run Models
+            new("RunModel缺失模型", "Prefabs/RunModels/缺失模型"),
+            new("RunModel徐福", "Prefabs/RunModels/徐福"),
+            new("RunModel子非鱼", "Prefabs/RunModels/子非鱼"),
+            new("RunModel子非燕", "Prefabs/RunModels/子非燕"),
+            new("RunModel风雨晴", "Prefabs/RunModels/风雨晴"),
+            new("RunModel梦乃遥", "Prefabs/RunModels/梦乃遥"),
+            new("RunModel噬金甲", "Prefabs/RunModels/噬金甲"),
+            new("RunModel墨蛟", "Prefabs/RunModels/墨蛟"),
+            new("RunModel渊虾", "Prefabs/RunModels/渊虾"),
+            new("RunModel九尾狐", "Prefabs/RunModels/九尾狐"),
+            new("RunModel推山兽", "Prefabs/RunModels/推山兽"),
+            new("RunModel白泽", "Prefabs/RunModels/白泽"),
+            new("RunModel鲲", "Prefabs/RunModels/鲲"),
+            new("RunModel毕方", "Prefabs/RunModels/毕方"),
+            new("RunModel火蟾", "Prefabs/RunModels/火蟾"),
+            new("RunModel麒麟", "Prefabs/RunModels/麒麟"),
+            new("RunModel鹤仙人", "Prefabs/RunModels/鹤仙人"),
+            new("RunModel鹿仙人", "Prefabs/RunModels/鹿仙人"),
             
             // Stage Models
             new("StageModel缺失模型", "Prefabs/StageModels/缺失模型"),
@@ -54,6 +59,7 @@ public class PrefabCategory : Category<PrefabEntry>
         });
     }
 
+    public PrefabEntry MissingConfigModel() => this["ConfigModel缺失模型"];
     public PrefabEntry MissingStageModel() => this["StageModel缺失模型"];
-    public PrefabEntry MissingUIEntityModel() => this["UIEntityModel缺失模型"];
+    public PrefabEntry MissingRunModel() => this["RunModel缺失模型"];
 }

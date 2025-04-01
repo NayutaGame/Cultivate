@@ -96,6 +96,18 @@ public class SpriteCategory : Category<SpriteEntry>
             new("风雨晴", "Images/Characters/04"),
             new("梦乃遥", "Images/Characters/05"),
             
+            // CharacterIcons
+            new($"CharacterIcon徐福", "Images/CharacterIcons/徐福"),
+            new($"CharacterIconSelect徐福", "Images/CharacterIcons/徐福Select"),
+            new($"CharacterIcon子非鱼", "Images/CharacterIcons/子非鱼"),
+            new($"CharacterIconSelect子非鱼", "Images/CharacterIcons/子非鱼Select"),
+            new($"CharacterIcon子非燕", "Images/CharacterIcons/子非燕"),
+            new($"CharacterIconSelect子非燕", "Images/CharacterIcons/子非燕Select"),
+            new($"CharacterIcon彼此卿", "Images/CharacterIcons/彼此卿"),
+            new($"CharacterIconSelect彼此卿", "Images/CharacterIcons/彼此卿Select"),
+            new($"CharacterIcon风雨晴", "Images/CharacterIcons/风雨晴"),
+            new($"CharacterIconSelect风雨晴", "Images/CharacterIcons/风雨晴Select"),
+            
             // Entities
             new("噬金甲", "Images/Monsters/01"),
             new("墨蛟", "Images/Monsters/02"),

@@ -37,7 +37,7 @@ public class BattleEntityView : LegacySimpleView
 
         NameText.text = $"{entity.GetJingJie()} {entity.GetEntry().GetName()}";
         
-        SetModel(entity.GetEntry().GetUIEntityModelPrefabEntry());
+        SetModel(entity.GetEntry().GetRunModelPrefabEntry());
 
         FieldView.Sync();
         FormationList.Sync();

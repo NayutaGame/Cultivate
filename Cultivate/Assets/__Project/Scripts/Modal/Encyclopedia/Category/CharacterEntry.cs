@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public class CharacterEntry : Entry
@@ -13,6 +14,9 @@ public class CharacterEntry : Entry
     [NonSerialized] public RunClosure[] _runClosures;
     [NonSerialized] public StageClosure[] _stageClosures;
 
+    [NonSerialized] private SpriteEntry _characterIconSprite;
+    [NonSerialized] private SpriteEntry _characterIconSelectSprite;
+    [NonSerialized] private PrefabEntry _configModel;
     [NonSerialized] private PrefabEntry _stageModel;
 
     [NonSerialized] public PackPreset _packPreset;
@@ -31,6 +35,9 @@ public class CharacterEntry : Entry
         _runClosures = runClosures ?? Array.Empty<RunClosure>();
         _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
 
+        _characterIconSprite = $"CharacterIcon{GetName()}";
+        _characterIconSelectSprite = $"CharacterIconSelect{GetName()}";
+        _configModel = $"ConfigModel{GetName()}";
         _stageModel = $"StageModel{GetName()}";
     }
 
@@ -46,6 +53,9 @@ public class CharacterEntry : Entry
 
     public static CharacterEntry FromName(string name)
         => name;
-    
+
+    public PrefabEntry GetConfigPrefabEntry() => _configModel ?? Encyclopedia.PrefabCategory.MissingConfigModel();
     public PrefabEntry GetStagePrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
+    public Sprite GetCharacterIconSprite() => _characterIconSprite.Sprite;
+    public Sprite GetCharacterIconSelectSprite() => _characterIconSelectSprite.Sprite;
 }
