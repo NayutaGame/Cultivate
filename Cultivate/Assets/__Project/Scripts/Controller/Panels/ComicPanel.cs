@@ -19,11 +19,6 @@ public class ComicPanel : Panel
         base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
-        ImageButton.onClick.RemoveAllListeners();
-        ImageButton.onClick.AddListener(ClickedSignal);
-        ComicPanelDescriptor panelDescriptor = _address.Get<ComicPanelDescriptor>();
-        SetPrefabEntry(panelDescriptor._prefabEntry);
-        ComicView.Init();
     }
 
     protected override Animator InitAnimator()
@@ -37,19 +32,15 @@ public class ComicPanel : Panel
         animator.SetState(0);
         return animator;
     }
+    
+    public override Tween EnterIdle()
+        => DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .AppendCallback(SetPrefabEntry)
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(HIDE));
 
     private Tween SelfTransitionTween()
-        => DOTween.Sequence().AppendCallback(SelfTransition);
-
-    private void SelfTransition()
-    {
-        _address = new Address("Run.Environment.ActivePanel");
-        ImageButton.onClick.RemoveAllListeners();
-        ImageButton.onClick.AddListener(ClickedSignal);
-        ComicPanelDescriptor panelDescriptor = _address.Get<ComicPanelDescriptor>();
-        SetPrefabEntry(panelDescriptor._prefabEntry);
-        ComicView.Init();
-    }
+        => DOTween.Sequence().AppendCallback(SetPrefabEntry);
 
     private void ClickedSignal()
     {
@@ -59,6 +50,14 @@ public class ComicPanel : Panel
         
         ImageButton.onClick.RemoveAllListeners();
         RunManager.Instance.Environment.ReceiveSignalProcedure(new FinishedComicSignal());
+    }
+
+    private void SetPrefabEntry()
+    {
+        ImageButton.onClick.RemoveAllListeners();
+        ImageButton.onClick.AddListener(ClickedSignal);
+        ComicPanelDescriptor panelDescriptor = _address.Get<ComicPanelDescriptor>();
+        SetPrefabEntry(panelDescriptor._prefabEntry);
     }
     
     private void SetPrefabEntry(PrefabEntry targetPrefabEntry)
@@ -72,5 +71,6 @@ public class ComicPanel : Panel
         PrefabEntry = targetPrefabEntry;
         ComicGameObject = Instantiate(PrefabEntry.Prefab, Anchor);
         ComicView = ComicGameObject.GetComponent<ComicView>();
+        ComicView.Init();
     }
 }
