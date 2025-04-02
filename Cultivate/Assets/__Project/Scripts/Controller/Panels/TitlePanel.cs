@@ -14,6 +14,8 @@ public class TitlePanel : Panel
     public Button SettingsButton;
     public Button ExitButton;
 
+    public GameObject TitleModel;
+
     protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for title
@@ -118,6 +120,13 @@ public class TitlePanel : Panel
     public override Tween EnterIdle()
         => DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true))
+            .AppendCallback(() => TitleModel.SetActive(true))
             .AppendCallback(Refresh)
             .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0));
+
+    public override Tween HideTweenWithCurtain()
+        => DOTween.Sequence()
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(IDLE))
+            .AppendCallback(() => TitleModel.SetActive(false))
+            .AppendCallback(() => gameObject.SetActive(false));
 }
