@@ -22,7 +22,7 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
             { "Current",           GetCurrent },
         };
 
-        if (AppManager.Instance.IsDeveloperMode)
+        if (AppManager.Instance.AudienceIsDeveloper())
         {
             Add(Profile.Developer());
         }

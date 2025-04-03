@@ -15,20 +15,19 @@ public class AppManager : Singleton<AppManager>, Addressable
     
     private Thread _mainThread;
     public bool IsMainThread() => _mainThread.Equals(Thread.CurrentThread);
-
-    [SerializeField] private bool _isDeveloperMode;
-    public bool IsDeveloperMode
+    
+    public enum TargetAudience
     {
-        get
-        {
-            #if UNITY_EDITOR
-            return _isDeveloperMode;
-            #else
-            return _isDeveloperMode;
-            // return false;
-            #endif
-        }
+        Developer,
+        Tester,
+        Player,
     }
+
+    [SerializeField] private TargetAudience _target;
+    public TargetAudience Target => _target;
+    public bool AudienceIsDeveloper() => _target == TargetAudience.Developer;
+    public bool AudienceIsTester() => _target == TargetAudience.Tester;
+    public bool AudienceIsPlayer() => _target == TargetAudience.Player;
 
     [SerializeField] private AppCanvas AppCanvas;
 

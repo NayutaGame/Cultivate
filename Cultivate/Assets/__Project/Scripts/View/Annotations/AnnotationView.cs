@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(XView))]
 public class AnnotationView : MonoBehaviour
 {
     private XView _view;

@@ -26,6 +26,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("Annotations")] public AnnotationView FormationAnnotation;
     [TabGroup("Annotations")] public AnnotationView RoomAnnotation;
     [TabGroup("Annotations")] public AnnotationView PackAnnotation;
+    [TabGroup("Annotations")] public AnnotationView CycleAnnotation;
     [TabGroup("Annotations")] public TextHint TextHint;
     [TabGroup("Annotations")] public PackPreview PackPreview;
     
@@ -67,6 +68,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
             { "FormationAnnotation", () => FormationAnnotation },
             { "RoomAnnotation", () => RoomAnnotation },
             { "PackAnnotation", () => PackAnnotation },
+            { "CycleAnnotation", () => CycleAnnotation },
         };
 
         _volume.profile.TryGet(out _vignette);
@@ -79,6 +81,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         FormationAnnotation.CheckAwake();
         RoomAnnotation.CheckAwake();
         PackAnnotation.CheckAwake();
+        CycleAnnotation.CheckAwake();
         PackPreview.CheckAwake();
         MergePreresultView.CheckAwake();
         

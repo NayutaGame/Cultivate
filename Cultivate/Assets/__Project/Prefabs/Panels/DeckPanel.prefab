@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2287683260123687058}
   - component: {fileID: 3453078354024671584}
   - component: {fileID: 2719685553521851524}
-  - component: {fileID: 8398864141387163263}
+  - component: {fileID: 541821687342522619}
   m_Layer: 0
   m_Name: "\u8FB9\u6846"
   m_TagString: Untagged
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8398864141387163263
+--- !u!114 &541821687342522619
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 218526532468698788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40f6da9f69ce008419b87518673f5111, type: 3}
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &334776178896299307
@@ -149,13 +149,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d5654a539f34148428a624879745d0c8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 03789e638c14cb040b08b4cfe698d1a1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -866,7 +866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1378721603750656602}
   - component: {fileID: 1008933113826067431}
-  - component: {fileID: 2296149928219642540}
+  - component: {fileID: 7888494086746388555}
   m_Layer: 5
   m_Name: CharacterIconView
   m_TagString: Untagged
@@ -909,9 +909,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6366abd63faa0de46bede71dc79d0a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 8398864141387163263}
+  _interactBehaviour: {fileID: 541821687342522619}
   Icon: {fileID: 4571898669279891825}
---- !u!114 &2296149928219642540
+--- !u!114 &7888494086746388555
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -920,9 +920,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5810006934214191017}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0689c924e4568b54dbadd14643945361, type: 3}
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ib: {fileID: 541821687342522619}
   AnnotationAddress: Canvas.CharacterAnnotation
   HoverTransform: {fileID: 0}
 --- !u!1 &6448448966188746111
@@ -985,7 +986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
