@@ -275,11 +275,13 @@ public class ConsolePanel : Panel
 
     private void OnTesterNoteInputFieldEndEdit(string value)
     {
+        if (!AppManager.Instance.AudienceIsTester()) return;
         RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote = value;
     }
 
     private void QuickUpvote()
     {
+        if (!AppManager.Instance.AudienceIsTester()) return;
         string newNote = RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote + ", 赞";
         TesterNoteInputField.text = newNote;
         RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote = newNote;
@@ -287,6 +289,7 @@ public class ConsolePanel : Panel
 
     private void QuickDownvote()
     {
+        if (!AppManager.Instance.AudienceIsTester()) return;
         string newNote = RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote + ", 踩";
         TesterNoteInputField.text = newNote;
         RunManager.Instance.Environment.GetRunReport().GetCurrReport().TesterNote = newNote;
@@ -294,6 +297,7 @@ public class ConsolePanel : Panel
 
     private void CopyReport()
     {
+        if (!AppManager.Instance.AudienceIsTester()) return;
         RunManager.Instance.Environment.GetRunReport().CopyRunReportToClipboard();
     }
 

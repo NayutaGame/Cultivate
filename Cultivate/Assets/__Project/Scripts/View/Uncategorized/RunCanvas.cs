@@ -62,9 +62,8 @@ public class RunCanvas : Panel
         MapPanel.CheckAwake();
         TopBar.CheckAwake();
         ConsolePanel.CheckAwake();
-
-        // if (!Application.isEditor)
-        //     ConsolePanel.gameObject.SetActive(false);
+        
+        ConsolePanel.gameObject.SetActive(!AppManager.Instance.AudienceIsPlayer());
     }
 
     private void RefreshPanel()

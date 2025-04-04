@@ -291,28 +291,14 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                closures:                   new StageClosure[]
-                {
-                    new(StageClosureDict.DID_LOSE_ARMOR, -1, async (owner, closureDetails) =>
-                    {
-                        StageSkill s = owner as StageSkill;
-                        LoseArmorDetails d = (LoseArmorDetails)closureDetails;
-
-                        if (s.Owner != d.Tgt) return;
-
-                        string key = "loseArmorTimes";
-                        s.Owner.Memory.PerformOperation(key, 0, record => record += 1);
-                    }),
-                },
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻".ApplyAttack() +
                     $"\n对手护甲每降低过1次，多{1 + dj}攻",
                 cast:                       async d =>
                 {
-                    string key = "loseArmorTimes";
-                    int mul = d.Caster.Memory.TryGetVariable(key, 0);
+                    int mul = d.Caster.Memory.TryGetVariable(StageEntity.OppoLoseArmorTimesKey, 0);
                     
-                    await d.AttackProcedure(4 + 4 * d.Dj + d.Dj * mul);
+                    await d.AttackProcedure(4 + 4 * d.Dj + (1 + d.Dj) * mul);
                 }),
 
             new(id:                         "0110",
@@ -369,7 +355,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "刺穴",
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                skillTypeComposite:         SkillType.Mana,
+                skillTypeComposite:         SkillType.Mana | SkillType.Swift,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灵气+4".ApplyMana() + " 二动" +
                     $"\n遭受{4 - dj}滞气".ApplyDebuff(),
@@ -2348,7 +2334,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "玄武吐息法",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.HuaShenOnly,
-                skillTypeComposite:         SkillType.Health,
+                skillTypeComposite:         SkillType.Health | SkillType.Exhaust,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"升华" +
                     $"\n气血回复至上限" +

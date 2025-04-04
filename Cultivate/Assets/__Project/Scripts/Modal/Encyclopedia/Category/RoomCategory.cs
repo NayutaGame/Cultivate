@@ -691,8 +691,6 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    AppManager.Instance.ProfileManager.GetCurrProfile().SetFirstRunFinished(true);
-                    
                     RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物1"));
                     RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌1");
                     

@@ -69,6 +69,11 @@ public class TitlePanel : Panel
             StartRunButton.gameObject.SetActive(true);
             StartPrologueButton.gameObject.SetActive(true);
         }
+
+        bool audienceIsPlayer = AppManager.Instance.AudienceIsPlayer();
+        
+        EntityEditorButton.gameObject.SetActive(!audienceIsPlayer);
+        SkillBrowserButton.gameObject.SetActive(!audienceIsPlayer);
     }
 
     private void FirstRun()

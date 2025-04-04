@@ -51,8 +51,8 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         DifficultyProfileList difficultyProfileList = null,
         PackProfileList packProfileList = null,
         AchievementProfileList achievementProfileList = null,
-        bool finishedFirstRun = true)
-        // bool finishedFirstRun = false)
+        // bool finishedFirstRun = true)
+        bool finishedFirstRun = false)
     {
         _accessors = new()
         {

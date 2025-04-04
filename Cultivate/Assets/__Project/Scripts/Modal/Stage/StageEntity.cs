@@ -592,6 +592,7 @@ public class StageEntity : Addressable, StageClosureListener
         _env.ClosureDict.Register(this, RecordActualHeal);
         _env.ClosureDict.Register(this, RecordBurnTimes);
         _env.ClosureDict.Register(this, RecordHighestMana);
+        _env.ClosureDict.Register(this, OppoLoseArmorTimes);
     }
 
     public void UnregisterEntityClosures()
@@ -599,6 +600,7 @@ public class StageEntity : Addressable, StageClosureListener
         _env.ClosureDict.Unregister(this, RecordActualHeal);
         _env.ClosureDict.Unregister(this, RecordBurnTimes);
         _env.ClosureDict.Unregister(this, RecordHighestMana);
+        _env.ClosureDict.Unregister(this, OppoLoseArmorTimes);
     }
 
     public static string ActualHealKey = "ActualHeal";
@@ -635,6 +637,19 @@ public class StageEntity : Addressable, StageClosureListener
             if (d._buffEntry.GetName() != "灵气") return;
             
             entity.Memory.PerformOperation(HighestManaKey, 0, record => Mathf.Max(record, entity.GetStackOfBuff("灵气")));
+        });
+
+    public static string OppoLoseArmorTimesKey = "OppoLoseArmorTimes";
+    private static StageClosure OppoLoseArmorTimes =
+        new(StageClosureDict.DID_LOSE_ARMOR, -1, async (owner, closureDetails) =>
+        {
+            StageEntity entity = owner as StageEntity;
+            LoseArmorDetails d = (LoseArmorDetails)closureDetails;
+
+            if (entity.Opponent() != d.Tgt) return;
+            if (entity.Opponent().Armor >= 0) return;
+
+            entity.Memory.PerformOperation(OppoLoseArmorTimesKey, 0, record => record += 1);
         });
 
 

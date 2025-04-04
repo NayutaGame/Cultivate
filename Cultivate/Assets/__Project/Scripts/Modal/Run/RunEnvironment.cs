@@ -148,23 +148,29 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         FieldChangedNeuron.Add(_simulateResult.SetDirty);
         DeckChangedNeuron.Add(GuideProcedure);
 
-        _runReport = new RunReport(this);
+        if (AppManager.Instance.AudienceIsTester())
+        {
+            _runReport = new RunReport(this);
         
-        RoomChangedNeuron.Add(AppendRoomReport);
-        EngageEnemyNeuron.Add(AppendBattleReport);
-        PanelChangedNeuron.Add(AppendPickDiscoveredSkillReport);
+            RoomChangedNeuron.Add(AppendRoomReport);
+            EngageEnemyNeuron.Add(AppendBattleReport);
+            PanelChangedNeuron.Add(AppendPickDiscoveredSkillReport);
+        }
     }
 
     private void Deinit()
     {
-        TestReport lastReport = _runReport.GetCurrReport();
-        lastReport?.OnExit(this);
+        if (AppManager.Instance.AudienceIsTester())
+        {
+            TestReport lastReport = _runReport.GetCurrReport();
+            lastReport?.OnExit(this);
         
-        _runReport = null;
+            _runReport = null;
         
-        RoomChangedNeuron.Remove(AppendRoomReport);
-        EngageEnemyNeuron.Remove(AppendBattleReport);
-        PanelChangedNeuron.Remove(AppendPickDiscoveredSkillReport);
+            RoomChangedNeuron.Remove(AppendRoomReport);
+            EngageEnemyNeuron.Remove(AppendBattleReport);
+            PanelChangedNeuron.Remove(AppendPickDiscoveredSkillReport);
+        }
     }
 
     public static RunEnvironment FromConfig(RunConfig config)
