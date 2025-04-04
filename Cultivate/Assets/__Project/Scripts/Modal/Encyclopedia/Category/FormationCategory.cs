@@ -357,7 +357,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "2张：每轮：净化2" +
                                                                                     "\n4张：每回合：剑意+1" +
-                                                                                    "\n6张：燃命时：对方也会受到伤害" +
+                                                                                    "\n6张：燃命时：灼烧+1" +
                                                                                     "\n9张：每轮气血恢复至上限",
                         stageClosures: new StageClosure[]
                         {
@@ -369,7 +369,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("净体");
                                 await f.Owner.GainBuffProcedure("剑心");
-                                await f.Owner.GainBuffProcedure("共劫");
+                                await f.Owner.GainBuffProcedure("吞炎");
                                 await f.Owner.GainBuffProcedure("凤凰涅槃");
                             }),
                         }),
@@ -379,7 +379,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "2张：每轮：净化2" +
                         "\n4张：每回合：剑意+1" +
-                        "\n6张：燃命时：对方也会受到伤害" +
+                        "\n6张：燃命时：灼烧+1" +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
@@ -391,7 +391,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("净体");
                                 await f.Owner.GainBuffProcedure("剑心");
-                                await f.Owner.GainBuffProcedure("共劫");
+                                await f.Owner.GainBuffProcedure("吞炎");
                             }),
                         }),
                     new FormationEntry(
@@ -400,7 +400,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "2张：每轮：净化2" +
                         "\n4张：每回合：剑意+1" +
-                        "\n6张：燃命时：对方也会受到伤害".ApplyInactive() +
+                        "\n6张：燃命时：灼烧+1".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
@@ -420,7 +420,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "2张：每轮：净化2" +
                         "\n4张：每回合：剑意+1".ApplyInactive() +
-                        "\n6张：燃命时：对方也会受到伤害".ApplyInactive() +
+                        "\n6张：燃命时：灼烧+1".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
@@ -439,7 +439,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rewardDescription:                                          "2张：每轮：净化2".ApplyInactive() +
                         "\n4张：每回合：剑意+1".ApplyInactive() +
-                        "\n6张：燃命时：对方也会受到伤害".ApplyInactive() +
+                        "\n6张：燃命时：灼烧+1".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive()),
                 }),
 

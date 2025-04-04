@@ -519,6 +519,22 @@ public class StageEnvironment : Addressable, StageClosureListener
         await _closureDict.SendEvent(StageClosureDict.DID_HEAL, d);
     }
 
+    public async UniTask BurnProcedure(StageEntity owner, int value, bool induced)
+        => await BurnProcedure(new BurnDetails(owner, value, induced));
+
+    public async UniTask BurnProcedure(BurnDetails d)
+    {
+        await _closureDict.SendEvent(StageClosureDict.WIL_BURN, d);
+
+        d.Cancel |= d.Value <= 0;
+        if (d.Cancel)
+            return;
+
+        await DamageProcedure(DamageDetails.FromBurn(d));
+
+        await _closureDict.SendEvent(StageClosureDict.DID_BURN, d);
+    }
+
     public async UniTask GainArmorProcedure(GainArmorDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_ARMOR, d);

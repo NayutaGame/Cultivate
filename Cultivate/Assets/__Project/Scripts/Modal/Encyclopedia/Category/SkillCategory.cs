@@ -4730,7 +4730,7 @@ public class SkillCategory : Category<SkillEntry>
             
             // 6 12 26 52 102
             new(id:                         "1401",
-                name:                       "吞炎",
+                name:                       "吞炎技能",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>

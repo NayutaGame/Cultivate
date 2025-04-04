@@ -150,6 +150,6 @@ public class CastDetails : StageClosureDetails
     {
         int gap = Caster.Hp - Caster.GetLowHealthThreshold();
         if (gap > 0)
-            await Env.DamageProcedure(DamageDetails.FromCostHealth(Caster, gap, induced));
+            await Env.BurnProcedure(Caster, gap, induced);
     }
 }

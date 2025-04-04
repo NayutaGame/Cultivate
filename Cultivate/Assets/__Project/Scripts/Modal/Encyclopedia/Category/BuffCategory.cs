@@ -1081,18 +1081,17 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("盛开", "受到治疗时：力量+[层数]", BuffStackRule.Add, true, false,
+            new("盛开", "受到治疗时：获得[层数]力量（不会引起流转）", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_HEAL, 0, async (owner, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
                         HealDetails d = (HealDetails)closureDetails;
-                        if (b.Owner == d.Tgt)
-                        {
-                            b.Emphasize();
-                            await b.Owner.GainBuffProcedure("力量", b.Stack);
-                        }
+                        if (b.Owner != d.Tgt) return;
+                        
+                        b.Emphasize();
+                        await b.Owner.GainBuffProcedure("力量", b.Stack);
                     }),
                 }),
 
@@ -1646,16 +1645,16 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("共劫", "燃命时：对方会受到伤害", BuffStackRule.One, true, false,
+            new("吞炎", "燃命时：获得[层数]灼烧（不会引起流转）", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_HEALTH_COST, 0, async (owner, closureDetails) =>
+                    new(StageClosureDict.DID_BURN, 0, async (owner, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
-                        HealthCostResult d = (HealthCostResult)closureDetails;
-                        if (b.Owner != d.Entity) return;
+                        BurnDetails d = (BurnDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
                         b.Emphasize();
-                        await b.Owner.Opponent().LoseHealthProcedure(d.Value, false);
+                        await b.Owner.GainBuffProcedure("灼烧", b.Stack);
                     }),
                 }),
             

@@ -63,7 +63,7 @@ public class DamageDetails : StageClosureDetails
 
     public static DamageDetails FromAttackDetailsUndamaged(AttackDetails d)
         => new(d.Src, d.Tgt, 0, d.Initiator, d.Crit, d.LifeSteal, true, d.Recursive, d.CastResult, d.Induced);
-
-    public static DamageDetails FromCostHealth(StageEntity src, int value, bool induced)
-        => new(src, src, value, null, false, false, false, true, null, induced);
+    
+    public static DamageDetails FromBurn(BurnDetails d)
+        => new(d.Owner, d.Owner, d.Value, null, false, false, false, true, null, d.Induced);
 }

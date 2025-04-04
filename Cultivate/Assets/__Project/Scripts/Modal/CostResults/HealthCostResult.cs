@@ -18,7 +18,7 @@ public class HealthCostResult : CostResult
     public override async UniTask ApplyCost()
     {
         Env.Result.TryAppend($"{Entity.GetName()}消耗了{Value}气血，以使用{Skill.Entry.GetName()}\n");
-        await Env.DamageProcedure(DamageDetails.FromCostHealth(Entity, Value, true));
+        await Env.BurnProcedure(Entity, Value, true);
     }
 
     public override async UniTask DidCostEvent()

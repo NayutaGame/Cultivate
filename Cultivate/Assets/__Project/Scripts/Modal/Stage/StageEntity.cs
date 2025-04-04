@@ -651,6 +651,4 @@ public class StageEntity : Addressable, StageClosureListener
 
             entity.Memory.PerformOperation(OppoLoseArmorTimesKey, 0, record => record += 1);
         });
-
-
 }

@@ -1164,14 +1164,13 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack("大焚天秘乘"),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_BURN, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
-                        DamageDetails d = (DamageDetails)details;
+                        BurnDetails d = (BurnDetails)details;
 
                         if (p.IsUnlocked()) return;
                         StageEntity home = StageManager.Instance.Environment.Home;
-                        if (d.Tgt != home) return;
-                        if (d.Src != home) return;
+                        if (d.Owner != home) return;
 
                         // 累计燃命伤害
                         const string TOTAL_BURN_DAMAGE_KEY = "TotalBurnDamage";
