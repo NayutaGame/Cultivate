@@ -266,9 +266,9 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDefinition[]
                     {
-                        new DirectRoomDefinition(0, "收藏家"),
-                        new DirectRoomDefinition(0, "收藏家"),
-                        new DirectRoomDefinition(0, "收藏家"),
+                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(0, "以物易物"),
                     },
                 }),
             

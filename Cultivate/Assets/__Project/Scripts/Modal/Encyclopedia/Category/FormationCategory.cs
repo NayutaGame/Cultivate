@@ -369,7 +369,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("净体");
                                 await f.Owner.GainBuffProcedure("剑心");
-                                await f.Owner.GainBuffProcedure("吞炎");
+                                await f.Owner.GainBuffProcedure("淬体");
                                 await f.Owner.GainBuffProcedure("凤凰涅槃");
                             }),
                         }),
@@ -391,7 +391,7 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("净体");
                                 await f.Owner.GainBuffProcedure("剑心");
-                                await f.Owner.GainBuffProcedure("吞炎");
+                                await f.Owner.GainBuffProcedure("淬体");
                             }),
                         }),
                     new FormationEntry(
@@ -564,11 +564,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                 {
                     new FormationEntry(
                         jingJie:                                                    JingJie.HuaShen,
-                        requirement:                                                10,
+                        requirement:                                                8,
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
-                                                                                    "\n7张：开局：力量+2" +
-                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻（未实现）",
+                                                                                    "\n6张：开局：力量+2" +
+                                                                                    "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌",
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -579,15 +579,16 @@ public class FormationCategory : Category<FormationGroupEntry>
 
                                 await f.Owner.GainBuffProcedure("碎防");
                                 await f.Owner.GainBuffProcedure("力量", 2);
+                                await f.Owner.GainBuffProcedure("万剑归宗");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.YuanYing,
-                        requirement:                                                7,
+                        requirement:                                                6,
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
-                                                                                    "\n7张：开局：力量+2" +
-                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻（未实现）".ApplyInactive(),
+                                                                                    "\n6张：开局：力量+2" +
+                                                                                    "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -605,8 +606,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                4,
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
-                                                                                    "\n7张：开局：力量+2".ApplyInactive() +
-                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻（未实现）".ApplyInactive(),
+                                                                                    "\n6张：开局：力量+2".ApplyInactive() +
+                                                                                    "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -623,8 +624,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                0,
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲".ApplyInactive() +
-                                                                                    "\n7张：开局：力量+2".ApplyInactive() +
-                                                                                    "\n10张：攻击将护甲清除时将获得延迟攻（未实现）".ApplyInactive(),
+                                                                                    "\n6张：开局：力量+2".ApplyInactive() +
+                                                                                    "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -645,11 +646,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                 {
                     new FormationEntry(
                         jingJie:                                                    JingJie.HuaShen,
-                        requirement:                                                10,
+                        requirement:                                                8,
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次失去护甲时，返还" +
-                                                                                    "\n7张：吟唱时，一次取得2点进度" +
-                                                                                    "\n10张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动",
+                                                                                    "\n6张：吟唱时，一次取得2点进度" +
+                                                                                    "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动",
                         runClosures: new RunClosure[]
                         {
                             new(RunClosureDict.WIL_SECOND_PLACEMENT, 0, (listener, runEventDetails) =>
@@ -679,11 +680,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.YuanYing,
-                        requirement:                                                7,
+                        requirement:                                                6,
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次失去护甲时，返还" +
-                                                                                    "\n7张：吟唱时，一次取得2点进度" +
-                                                                                    "\n10张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive(),
+                                                                                    "\n6张：吟唱时，一次取得2点进度" +
+                                                                                    "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -701,8 +702,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                4,
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次失去护甲时，返还" +
-                                                                                    "\n7张：吟唱时，一次取得2点进度".ApplyInactive() +
-                                                                                    "\n10张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive(),
+                                                                                    "\n6张：吟唱时，一次取得2点进度".ApplyInactive() +
+                                                                                    "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
@@ -719,8 +720,8 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                0,
                         trivia:                                                     null,
                         rewardDescription:                                          "4张：第一次失去护甲时，返还".ApplyInactive() +
-                                                                                    "\n7张：吟唱时，一次取得2点进度".ApplyInactive() +
-                                                                                    "\n10张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive()),
+                                                                                    "\n6张：吟唱时，一次取得2点进度".ApplyInactive() +
+                                                                                    "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive()),
                 }),
             
             new(id: "灵气阵",

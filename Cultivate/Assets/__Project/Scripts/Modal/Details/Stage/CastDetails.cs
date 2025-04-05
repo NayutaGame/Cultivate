@@ -8,14 +8,16 @@ public class CastDetails : StageClosureDetails
     public StageEntity Caster;
     public StageSkill Skill;
     public bool Recursive;
+    public bool FromWanJian;
     public CastResult CastResult;
 
-    public CastDetails(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive, CastResult castResult)
+    public CastDetails(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive, bool fromWanJian, CastResult castResult)
     {
         Env = env;
         Caster = caster;
         Skill = skill;
         Recursive = recursive;
+        FromWanJian = fromWanJian;
         CastResult = castResult;
     }
 

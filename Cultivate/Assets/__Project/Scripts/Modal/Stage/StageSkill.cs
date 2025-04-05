@@ -94,22 +94,22 @@ public class StageSkill : StageClosureListener
     public bool IsEven
         => SlotIndex % 2 == 1 || _owner.GetStackOfBuff("森罗万象") > 0;
 
-    public async UniTask<bool> IsFirstTime(bool useFocus = false)
+    public async UniTask<bool> IsFirstTime(bool allowFocus = false)
     {
         bool isFirstTime = _realStageCastedCount == 0;
         if (!isFirstTime)
-            isFirstTime = useFocus && await _owner.IsFocused();
+            isFirstTime = allowFocus && await _owner.IsFocused();
 
         if (isFirstTime)
             _owner.TriggeredFirstTimeRecord = true;
         return isFirstTime;
     }
 
-    public async UniTask<bool> IsEnd(bool useFocus = false)
+    public async UniTask<bool> IsEnd(bool allowFocus = false)
     {
         bool isEnd = (SlotIndex == _owner._skills.Length - 1) || (SlotIndex == _owner._skills.Length - 2 && _owner.GetStackOfBuff("连岳") > 0);
         if (!isEnd)
-            isEnd = useFocus && await _owner.IsFocused();
+            isEnd = allowFocus && await _owner.IsFocused();
 
         if (isEnd)
             _owner.TriggeredEndRecord = true;

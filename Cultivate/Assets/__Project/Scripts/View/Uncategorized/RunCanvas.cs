@@ -477,6 +477,7 @@ public class RunCanvas : Panel
         
         DeckPanel.HandView.Modified(d.DeckIndex.Index);
         BarterPanel.BarterItemListView.RemoveItemAt(d.BarterItemIndex);
+        BarterPanel.BarterItemListView.Sync();
         
         SetPosition(view, barterItemView.GetRect().position, barterItemView.GetRect().localScale);
         SetIdle(view);

@@ -97,7 +97,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     {
         if (RunManager.Instance.Environment == null)
         {
-            _config = RunConfig.FirstRun();
+            _config = RunConfig.LastDifficulty();
             RunManager.Instance.SetEnvironmentFromConfig(_config);
         }
         

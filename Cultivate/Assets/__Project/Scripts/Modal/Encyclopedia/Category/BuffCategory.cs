@@ -1065,21 +1065,6 @@ public class BuffCategory : Category<BuffEntry>
                         }
                     }),
                 }),
-            
-            new("淬体", "燃命时：灼烧+[层数]", BuffStackRule.Add, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        DamageDetails d = (DamageDetails)closureDetails;
-                        if (b.Owner != d.Tgt) return;
-                        if (d.Src != d.Tgt) return;
-                        
-                        b.Emphasize();
-                        await b.Owner.GainBuffProcedure("灼烧", b.Stack);
-                    }),
-                }),
 
             new("盛开", "受到治疗时：获得[层数]力量（不会引起流转）", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
@@ -1645,7 +1630,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("吞炎", "燃命时：获得[层数]灼烧（不会引起流转）", BuffStackRule.One, true, false,
+            new("淬体", "燃命时：获得[层数]灼烧（不会引起流转）", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_BURN, 0, async (owner, closureDetails) =>
@@ -1655,6 +1640,21 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         b.Emphasize();
                         await b.Owner.GainBuffProcedure("灼烧", b.Stack);
+                    }),
+                }),
+            
+            new("浴火", "燃命时：根据灼烧造成伤害", BuffStackRule.One, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_BURN, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        BurnDetails d = (BurnDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        int stack = b.Owner.GetStackOfBuff("灼烧");
+                            
+                        b.Emphasize();
+                        await b.Owner.IndirectProcedure(stack, wuXing: WuXing.Huo);
                     }),
                 }),
             
@@ -1789,11 +1789,91 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
+            new(id:                         "羲和",
+                description:                "使用牌时：流转对应五行",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.DID_CAST, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        CastDetails d = (CastDetails)closureDetails;
+                        if (b.Owner != d.Caster) return;
+
+                        WuXing? wuXing = d.Skill.Entry.GetWuXing();
+                        if (!wuXing.HasValue) return;
+
+                        await d.Caster.CycleProcedure(wuXing.Value);
+                    }),
+                }),
+            
             new(id:                         "塑魂",
                 description:                "灵气不足时，可消耗[层数]锻体代替1灵气",
                 buffStackRule:              BuffStackRule.Min,
                 friendly:                   true,
                 dispellable:                false),
+            
+            new(id:                         "不屈",
+                description:                "持续[层数]回合，气血无法降低至0",
+                buffStackRule:              BuffStackRule.Max,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_LOSE_HEALTH, 1, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        LoseHealthDetails d = (LoseHealthDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+
+                        int upperBound = b.Owner.Hp - 1;
+                        d.Value = d.Value.ClampUpper(upperBound);
+                        b.Emphasize();
+                    }),
+                    new(StageClosureDict.WIL_TURN, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        TurnDetails d = (TurnDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        
+                        await b.LoseStackProcedure();
+                    }),
+                }),
+            
+            new(id:                         "万剑归宗",
+                description:                "无法使用攻击牌，每轮：使用所有攻击牌",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_CAST, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        CastDetails d = (CastDetails)closureDetails;
+                        if (b.Owner != d.Caster) return;
+                        if (d.FromWanJian) return;
+
+                        if (!d.Skill.GetSkillType().Contains(SkillType.Attack)) return;
+                        d.Skill = d.Caster.EmptyAction;
+                        b.Emphasize();
+                    }),
+                    new(StageClosureDict.WIL_ROUND, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        RoundDetails d = (RoundDetails)closureDetails;
+                        if (b.Owner != d.Owner) return;
+                        
+                        b.Emphasize();
+                        foreach (StageSkill skill in d.Owner.TraversalSkills())
+                        {
+                            if (!skill.GetSkillType().Contains(SkillType.Attack)) continue;
+                            await b.Owner.CastProcedure(skill, fromWanJian: true);
+                        }
+                    }),
+                }),
 
             new("摩诃钵特摩", "已经触发过摩诃钵特摩",                   BuffStackRule.One, true, false),
             new("天人合一", "已经触发过天人合一",                       BuffStackRule.One, true, false),

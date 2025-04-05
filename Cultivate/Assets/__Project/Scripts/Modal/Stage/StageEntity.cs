@@ -93,37 +93,37 @@ public class StageEntity : Addressable, StageClosureListener
         for (int i = 0; i < d.Times; i++)
         {
             await _env.PlayAsync(new ShiftAnimation());
-            _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}的开局效果");
+            _env.Result.TryAppend($"{GetName()}使用了{d.Skill.Entry.GetName()}的开局效果");
 
-            await skill.Entry.StartStageCast(d);
-            _env.Result.TryAppendNote(Index, skill, _costResult, null);
+            await d.Skill.Entry.StartStageCast(d);
+            _env.Result.TryAppendNote(Index, d.Skill, _costResult, null);
             _env.Result.TryAppend($"\n");
         }
         
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_START_STAGE_CAST, d);
     }
 
-    public async UniTask<CastResult> CastProcedure(StageSkill skill, bool recursive = true)
+    public async UniTask<CastResult> CastProcedure(StageSkill skill, bool recursive = true, bool fromWanJian = false)
     {
         CastResult castResult = new();
-        CastDetails d = new CastDetails(_env, this, skill, recursive, castResult);
+        CastDetails d = new CastDetails(_env, this, skill, recursive, fromWanJian, castResult);
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_CAST, d);
         
         
         // will cast report
         await _env.PlayAsync(new ShiftAnimation());
-        _env.Result.TryAppend($"{GetName()}使用了{skill.Entry.GetName()}");
+        _env.Result.TryAppend($"{GetName()}使用了{d.Skill.Entry.GetName()}");
         
-        await skill.Entry.Cast(d);
-        _env.Result.TryAppendNote(Index, skill, _costResult, castResult);
+        await d.Skill.Entry.Cast(d);
+        _env.Result.TryAppendNote(Index, d.Skill, _costResult, castResult);
         
         
         _env.Result.TryAppend($"\n");
         // did cast report
         
 
-        if (this == skill.Owner)
-            skill.IncreaseRealCastedCount();
+        if (this == d.Skill.Owner)
+            d.Skill.IncreaseRealCastedCount();
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_CAST, d);
 
         return castResult;
@@ -278,6 +278,9 @@ public class StageEntity : Addressable, StageClosureListener
 
     private StageClosure[] _closures;
 
+    private StageSkill _emptyAction;
+    public StageSkill EmptyAction => _emptyAction;
+
     private StageSkill _manaShortageAction;
     public StageSkill ManaShortageAction => _manaShortageAction;
 
@@ -338,7 +341,8 @@ public class StageEntity : Addressable, StageClosureListener
             _skills[i] = StageSkill.FromPlacedSkill(this, i, slot.PlacedSkill);
         }
 
-        _manaShortageAction = StageSkill.FromSkillEntry(this, "0002");
+        _emptyAction = StageSkill.FromSkillEntry(this, SkillEntry.FromName("发呆"));
+        _manaShortageAction = StageSkill.FromSkillEntry(this, SkillEntry.FromName("灵气匮乏"));
 
         _p = 0;
     }
@@ -442,6 +446,23 @@ public class StageEntity : Addressable, StageClosureListener
     public Buff FindBuff(BuffEntry buffEntry) => TraversalBuffs().FirstObj(b => b.GetEntry() == buffEntry);
 
     public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
+
+    public Buff GetHighestWuXingBuff()
+    {
+        Buff highestBuff = WuXing.Traversal
+            .Map(wuXing => FindBuff(wuXing._elementaryBuff))
+            .MinObj(b => -b.Stack);
+
+        return highestBuff;
+    }
+
+    public WuXing? GetHighestWuXing()
+    {
+        WuXing highestWuXing = WuXing.Traversal.MinObj(wuXing => -GetStackOfBuff(wuXing._elementaryBuff));
+        if (GetStackOfBuff(highestWuXing._elementaryBuff) == 0)
+            return null;
+        return highestWuXing;
+    }
 
     public async UniTask<bool> IsFocused()
     {
@@ -616,12 +637,12 @@ public class StageEntity : Addressable, StageClosureListener
 
     public static string BurnTimesKey = "BurnTimes";
     private static StageClosure RecordBurnTimes =
-        new(StageClosureDict.DID_HEALTH_COST, -1, async (listener, closureDetails) =>
+        new(StageClosureDict.DID_BURN, -1, async (listener, closureDetails) =>
         {
             StageEntity entity = listener as StageEntity;
-            HealthCostResult d = (HealthCostResult)closureDetails;
+            BurnDetails d = (BurnDetails)closureDetails;
 
-            if (entity != d.Entity) return;
+            if (entity != d.Owner) return;
 
             entity.Memory.PerformOperation(BurnTimesKey, 0, record => record + 1);
         });

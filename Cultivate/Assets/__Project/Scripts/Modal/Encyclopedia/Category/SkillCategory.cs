@@ -1464,11 +1464,18 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"{30 + 10 * dj}攻".ApplyAttack() +
-                    "\n成为残血",
+                    " 成为残血" +
+                    "\n初次：3回合，气血无法降低至0".ApplyCond(castResult),
                 cast:                       async d =>
                 {
                     await d.AttackProcedure(30 + 10 * d.Dj);
                     await d.BecomeLowHealth();
+                    bool cond = await d.Skill.IsFirstTime();
+
+                    if (cond)
+                        await d.GainBuffProcedure("不屈", 3, induced: true);
+                    
+                    d.CastResult.AppendCond(cond);
                 }),
 
             new(id:                         "0407",
@@ -1480,14 +1487,30 @@ public class SkillCategory : Category<SkillEntry>
                 costDescription:            CostDescription.HealthFromValue(8),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"灼烧+{1 + dj}" +
-                    $"\n每1灼烧，净化1",
+                    $"\n燃命时：根据灼烧造成伤害",
                 cast:                       async d =>
                 {
-                    await d.GainBuffProcedure("灼烧", 1 + d.Dj);
-                    await d.CycleProcedure(WuXing.Huo);
-                    int stack = d.Caster.GetStackOfBuff("灼烧");
-                    await d.DispelProcedure(stack);
+                    await d.CycleProcedure(WuXing.Huo, gain: 1 + d.Dj);
+                    await d.GainBuffProcedure("浴火");
                 }),
+
+            // new(id:                         "0407",
+            //     name:                       "浴火",
+            //     wuXing:                     WuXing.Huo,
+            //     jingJieBound:               JingJie.JinDan2HuaShen,
+            //     skillTypeComposite:         SkillType.Health,
+            //     cost:                       CostResult.HealthFromValue(8),
+            //     costDescription:            CostDescription.HealthFromValue(8),
+            //     castDescription:            (j, dj, costResult, castResult) =>
+            //         $"灼烧+{1 + dj}" +
+            //         $"\n每1灼烧，净化1",
+            //     cast:                       async d =>
+            //     {
+            //         await d.GainBuffProcedure("灼烧", 1 + d.Dj);
+            //         await d.CycleProcedure(WuXing.Huo);
+            //         int stack = d.Caster.GetStackOfBuff("灼烧");
+            //         await d.DispelProcedure(stack);
+            //     }),
 
             new(id:                         "0416",
                 name:                       "晚霞",
@@ -1614,14 +1637,17 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
                 cost:                       async (env, entity, skill, recursive) =>
-                    new ChannelCostResult(await skill.IsEnd() ? 0 : 1),
+                    new ChannelCostResult(await skill.IsEnd(false) ? 0 : 1),
                 costDescription:            CostDescription.ChannelFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
                     $"护甲+{Fib.ToValue(5 + dj)}".ApplyDefend() +
-                    $"\n终结：无需吟唱",
+                    $"\n终结：无需吟唱".ApplyCond(castResult),
                 cast:                       async d =>
                 {
+                    // 注意这里不能使用focus，如果这里使用了focus，上面cost也使用了focus，则一次消耗了2点focus
                     await d.GainArmorProcedure(Fib.ToValue(5 + d.Dj), induced: false);
+                    bool cond = await d.Skill.IsEnd(false);
+                    d.CastResult.AppendCond(cond);
                 }),
 
             new(id:                         "0513",
@@ -2181,22 +2207,15 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "百草集",
                 wuXing:                     null,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                cost:                       CostResult.ChannelFromValue(1),
-                costDescription:            CostDescription.ChannelFromValue(1),
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"每个存在的五行Buff，层数+{1 + dj}" +
-                    $"\n不发生流转",
+                    $"流转最高五行" +
+                    $"\n额外获得{1 + dj}层",
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    BuffEntry[] buffEntries = new BuffEntry[] { "锋锐", "格挡", "力量", "灼烧", "坚毅" };
-
-                    foreach (BuffEntry buffEntry in buffEntries)
-                    {
-                        Buff b = d.Caster.FindBuff(buffEntry);
-                        if (b != null)
-                            await d.GainBuffProcedure(b.GetEntry(), 1 + d.Dj);
-                    }
+                    WuXing? highestWuXing = d.Caster.GetHighestWuXing();
+                    if (highestWuXing.HasValue)
+                        await d.Caster.CycleProcedure(highestWuXing.Value.Next, gain: 1 + d.Dj);
                 }),
             
             new(id:                         "0119",
@@ -2218,21 +2237,23 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "SKILL_HZ_007",
                 name:                       "常仪",
                 jingJieBound:               JingJie.YuanYing2HuaShen,
+                skillTypeComposite:         SkillType.Swift,
                 castDescription:            (j, dj, costResult, castResult) =>
                     j <= JingJie.YuanYing ?
-                        "流转时：造成伤害\n流转最高五行Buff" :
-                        "流转时：造成伤害\n流转最高五行Buff\n并且多2层",
+                        "流转时：造成伤害\n流转最高五行" :
+                        "流转时：造成伤害\n流转最高五行\n二动",
                 cast:                       async d =>
                 {
                     await d.GainBuffProcedure("常仪");
+                    
+                    WuXing? highestWuXing = d.Caster.GetHighestWuXing();
+                    if (highestWuXing.HasValue)
+                        await d.Caster.CycleProcedure(highestWuXing.Value.Next);
 
-                    BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "力量", "灼烧", "坚毅" };
-                    WuXing[] wuXings = new[] { WuXing.Jin, WuXing.Shui, WuXing.Mu, WuXing.Huo, WuXing.Tu };
-
-                    int index = buffs.MinIdx(b => -d.Caster.GetStackOfBuff(b)) ?? 0;
-                    WuXing wuXing = wuXings[index].Next;
-
-                    await d.CycleProcedure(wuXing, gain: d.J <= JingJie.YuanYing ? 0 : 2);
+                    if (d.J <= JingJie.YuanYing)
+                        ;
+                    else
+                        d.Caster.SetActionPoint(2);
                 }),
 
             new(id:                         "0112",
@@ -2255,17 +2276,15 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Health | SkillType.Defend,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    "基于最高五行Buff的层数\n获得气血和护甲",
+                    "流转最高五行\n使用牌时：流转对应五行",
                 cast:                       async d =>
                 {
-                    BuffEntry[] buffs = new BuffEntry[] { "锋锐", "格挡", "力量", "灼烧", "坚毅" };
-                    int maxStacks = buffs.Max(b => d.Caster.GetStackOfBuff(b));
                     
-                    if (maxStacks > 0)
-                    {
-                        await d.HealProcedure(maxStacks, induced: false);
-                        await d.GainArmorProcedure(maxStacks, induced: true);
-                    }
+                    WuXing? highestWuXing = d.Caster.GetHighestWuXing();
+                    if (highestWuXing.HasValue)
+                        await d.Caster.CycleProcedure(highestWuXing.Value.Next);
+
+                    await d.GainBuffProcedure("羲和");
                 }),
 
             new(id:                         "0505",
@@ -2841,6 +2860,14 @@ public class SkillCategory : Category<SkillEntry>
                     int value = d.Caster.Opponent().Hp;
                     await d.Caster.Opponent().LoseHealthProcedure(value, causedByAttack: false);
                 }),
+
+            new(id:                         "0005",
+                name:                       "发呆",
+                wuXing:                     null,
+                jingJieBound:               JingJie.LianQiOnly,
+                castDescription:            (j, dj, costResult, castResult) =>
+                    "就真的只是发呆",
+                withinPool:                 false),
 
             #endregion
 
@@ -4730,7 +4757,7 @@ public class SkillCategory : Category<SkillEntry>
             
             // 6 12 26 52 102
             new(id:                         "1401",
-                name:                       "吞炎技能",
+                name:                       "吞炎",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
