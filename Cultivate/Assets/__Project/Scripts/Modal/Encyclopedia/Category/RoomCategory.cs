@@ -1735,7 +1735,7 @@ public class RoomCategory : Category<RoomEntry>
                                       "\n我每天跑步，只要一只能跑下去，跑的路程就是无穷的" +
                                       "\n有一种蛇，每天吃自己的尾巴，又长出来新的蛇身，永远吃不完，此谓无穷。" +
                                       "\n有个木桩，每天砍一半，过一万年也砍不完，这个叫做无穷。",
-                        "用第一种", "用第二种", "用第三种");
+                        "看一眼蓝色服装考官", "看一眼绿色服装考官", "看一眼红色服装考官");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor(
                             titleText: "无穷",

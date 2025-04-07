@@ -611,13 +611,14 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Defend | SkillType.Swift,
                 castDescription:            (j, dj, costResult, castResult) =>
                     j >= JingJie.HuaShen
-                        ? ($"二动时：获得1格挡" + $"\n二动")
-                        : ("格挡+1" + $"\n二动"),
+                        ? ("格挡+1\n二动\n二动时：获得1格挡")
+                        : ("格挡+1\n二动"),
                 cast:                       async d =>
                 {
                     if (d.J >= JingJie.HuaShen)
                     {
                         await d.GainBuffProcedure("飞鸿踏雪", induced: false);
+                        await d.CycleProcedure(WuXing.Shui, gain: 1);
                         d.Caster.SetActionPoint(2);
                     }
                     else
@@ -2890,11 +2891,10 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 castDescription:            (j, dj, costResult, castResult) =>
-                    $"获得{2 + dj}集中",
+                    $"",
                 withinPool:                 false,
                 cast:                       async d =>
                 {
-                    await d.GainBuffProcedure("集中", 2 + d.Dj, false);
                 }),
 
             new(id:                         "0606",

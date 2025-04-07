@@ -1666,9 +1666,9 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)owner;
                         ActionDetails d = (ActionDetails)closureDetails;
                         if (b.Owner != d.Owner) return;
-                        if (d.CurrActionPoint != 2) return;
+                        if (!d.IsSwift) return;
                         b.Emphasize();
-                        await b.Owner.CycleProcedure(WuXing.Shui, gain: 1);
+                        await b.Owner.CycleProcedure(WuXing.Shui, gain: 1, induced: true);
                     }),
                 }),
             
@@ -1693,11 +1693,11 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)owner;
                         HealDetails d = (HealDetails)closureDetails;
-                        if (b.Owner != d.Tgt) return;  // 不是buff持有者受到的治疗则不处理
+                        if (b.Owner != d.Tgt) return;
                         
                         b.Emphasize();
-                        await b.LoseStackProcedure();  // 消耗一层
-                        await b.Owner.Opponent().IndirectProcedure(d.Value, induced: true);  // 对敌方造成等量伤害
+                        await b.LoseStackProcedure();
+                        await b.Owner.Opponent().IndirectProcedure(d.Value, induced: true);
                     }),
                 }),
                 
