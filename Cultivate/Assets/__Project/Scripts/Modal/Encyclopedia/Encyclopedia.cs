@@ -13,7 +13,6 @@ public class Encyclopedia : Addressable
     public static SkillCategory SkillCategory;
     
     public static PackCategory PackCategory;
-    public static AchievementCategory AchievementCategory;
 
     public static EntityCategory EntityCategory;
     public static RoomCategory RoomCategory;
@@ -21,6 +20,8 @@ public class Encyclopedia : Addressable
     public static CharacterCategory CharacterCategory;
     public static DifficultyCategory DifficultyCategory;
     public static MapCategory MapCategory;
+    
+    public static AchievementCategory AchievementCategory;
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
@@ -44,7 +45,6 @@ public class Encyclopedia : Addressable
         SkillCategory = new();
 
         PackCategory = new();
-        AchievementCategory = new();
         
         EntityCategory = new();
         RoomCategory = new();
@@ -52,6 +52,8 @@ public class Encyclopedia : Addressable
         CharacterCategory = new();
         DifficultyCategory = new();
         MapCategory = new();
+        
+        AchievementCategory = new();
         
         KeywordCategory.Init();
         BuffCategory.Init();

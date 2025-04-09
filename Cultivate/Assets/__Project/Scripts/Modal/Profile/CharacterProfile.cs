@@ -20,8 +20,8 @@ public class CharacterProfile : ISerializationCallbackReceiver
     
     public CharacterEntry GetEntry() => _entry;
 
-    public LockIndex ToCharacterLockIndex() => LockIndex.FromCharacter(_entry.GetId());
-    public LockIndex ToSlotLockIndex(int slotIndex) => LockIndex.FromSlot(_entry.GetId(), slotIndex);
+    public LockIndex ToCharacterLockIndex() => LockIndex.FromCharacter(_entry);
+    public LockIndex ToSlotLockIndex(int slotIndex) => LockIndex.FromSlot(_entry, slotIndex);
 
     public bool IsUnlocked()
     {

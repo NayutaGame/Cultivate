@@ -32,7 +32,7 @@ public class PackProfile : ISerializationCallbackReceiver
         achievementProfile.SetUnlockedQuietly(value);
     }
 
-    public LockIndex ToLockIndex() => LockIndex.FromPack(_entry.GetId());
+    public LockIndex ToLockIndex() => LockIndex.FromPack(_entry);
 
     public void OnBeforeSerialize() { }
 

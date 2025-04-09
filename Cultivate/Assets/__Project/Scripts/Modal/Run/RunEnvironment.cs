@@ -367,7 +367,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public IEnumerable<AchievementProfile> TraversalNewlyUnlockedAchievements()
     {
         Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
-        return _newlyUnlockedAchievements.Map(entry => profile.GetAchievementProfileFromLockIndex(entry.GetLockIndex().Value));
+        return _newlyUnlockedAchievements.Map(entry =>
+        {
+            LockIndex lockIndex = entry.GetLockIndex().Value;
+            return profile.GetAchievementProfileFromLockIndex(lockIndex);
+        });
     }
 
     #endregion

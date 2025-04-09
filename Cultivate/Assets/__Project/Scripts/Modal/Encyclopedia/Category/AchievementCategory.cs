@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CLLibrary;
 using UnityEngine;
 
 public class AchievementCategory : Category<AchievementEntry>
@@ -32,12 +33,12 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH002",
                 name: "剑心通明",
-                conditionDescription: "一场战斗中，置入5张攻击牌，并取得胜利",
+                conditionDescription: "置入5张攻击牌，并取胜",
                 rewardDescription: "徐福可以修改第二个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 1),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -52,7 +53,7 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH003",
                 name: "五彩缤纷",
-                conditionDescription: "一场战斗中，拥有10种不同的Buff，并取得胜利",
+                conditionDescription: "拥有10种不同的Buff，并取胜",
                 rewardDescription: "徐福可以修改第三个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 2),
                 stageClosures: new StageClosure[]
@@ -75,7 +76,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         string key = "MaxBuffCount";
                         p.Memory.PerformOperation(key, 0, c => Mathf.Max(c, count));
                     }),
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -94,12 +95,12 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH004",
                 name: "灵气灌顶",
-                conditionDescription: "一场战斗中，灵气达到20，并取得胜利",
+                conditionDescription: "灵气达到20，并取胜",
                 rewardDescription: "徐福可以修改第四个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 3),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -166,12 +167,12 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH007",
                 name: "丹火正旺",
-                conditionDescription: "在一场战斗中，携带了至少2种丹药牌，并取得胜利",
+                conditionDescription: "携带了至少2种丹药牌，并取胜",
                 rewardDescription: "徐福可以修改第七个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 6),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -213,12 +214,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH009",
                 name: "风驰电掣",
-                conditionDescription: "一场战斗中，置入3张开局牌，并取得胜利",
+                conditionDescription: "置入3张开局牌，并取胜",
                 rewardDescription: "子非鱼可以修改第二个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 1),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -238,12 +239,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH010",
                 name: "五行化生",
-                conditionDescription: "一场战斗中，置入5种不同五行的牌，并取得胜利",
+                conditionDescription: "置入5种不同五行的牌，并取胜",
                 rewardDescription: "子非鱼可以修改第三个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 2),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -264,12 +265,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH011",
                 name: "国士无双",
-                conditionDescription: "一场战斗中，激活5种五行的阵法，并取得胜利",
+                conditionDescription: "激活5种五行的阵法，并取胜",
                 rewardDescription: "子非鱼可以修改第四个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 3),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -346,7 +347,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非鱼", 5),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -466,7 +467,7 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH019",
                 name: "乾坤大挪移",
-                conditionDescription: "一场战斗中，任一五行buff大于20，并取得胜利",
+                conditionDescription: "任一五行buff大于20，并取胜",
                 rewardDescription: "子非燕可以修改第五个卡包",
                 lockIndex: LockIndex.FromSlot("子非燕", 4),
                 stageClosures: new StageClosure[]
@@ -489,15 +490,18 @@ public class AchievementCategory : Category<AchievementEntry>
                         StageEntity home = StageManager.Instance.Environment.Home;
                         if (d.Tgt != home) return;
 
-                        int maxWuXingBuffStacks = d.Tgt.TraversalBuffs()
-                            .Where(buff => buff.GetEntry().GetCorrespondingWuXing() != null)
-                            .Max(buff => buff.Stack);
+                        Buff maxWuXingBuff = d.Tgt.TraversalBuffs()
+                            .FilterObj(buff => buff.GetEntry().GetCorrespondingWuXing() != null)
+                            .MinObj(buff => buff.Stack);
+                        if (maxWuXingBuff == null)
+                            return;
+                        int maxWuXingBuffStacks = maxWuXingBuff.Stack;
 
                         const string MAX_WUXING_BUFF_KEY = "MaxWuXingBuffStacks";
                         home.Memory.PerformOperation(MAX_WUXING_BUFF_KEY, 0, current => Math.Max(current, maxWuXingBuffStacks));
                     }),
 
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -538,12 +542,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH021",
                 name: "九莲宝灯",
-                conditionDescription: "一场战斗中，激活一个化神阵法，并取得胜利",
+                conditionDescription: "激活一个化神阵法，并取胜",
                 rewardDescription: "子非燕可以修改第七个卡包",
                 lockIndex: LockIndex.FromSlot("子非燕", 6),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -582,7 +586,7 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH023",
                 name: "雷劫余韵",
-                conditionDescription: "在一次攻击中，受到了超过100点伤害，并取得胜利",
+                conditionDescription: "受到了超过100点伤害的一击，并取胜",
                 rewardDescription: "彼此卿可以修改第二个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 1),
                 stageClosures: new StageClosure[]
@@ -608,7 +612,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.PerformOperation(MAX_DAMAGE_KEY, 0, currentMax => Math.Max(currentMax, d.Value));
                     }),
 
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -648,12 +652,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH025",
                 name: "精打细算",
-                conditionDescription: "在一场战斗中，以1点气血结束战斗，并取得胜利",
+                conditionDescription: "以1点气血结束战斗，并取胜",
                 rewardDescription: "彼此卿可以修改第四个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 3),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -711,7 +715,7 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH028",
                 name: "斗转星移",
-                conditionDescription: "在一场战斗中，使用复制的牌击败对手",
+                conditionDescription: "使用复制的牌击败对手",
                 rewardDescription: "彼此卿可以修改第七个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 6),
                 stageClosures: new StageClosure[]
@@ -728,7 +732,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         const string LAST_CASTED_SKILL_INDEX = "LastCastedSkillIndex";
                         home.Memory.SetVariable(LAST_CASTED_SKILL_INDEX, d.Skill.SlotIndex);
                     }),
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -770,12 +774,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH030",
                 name: "逆天改命",
-                conditionDescription: "一场战斗中，生命低于0，并取得胜利",
+                conditionDescription: "生命低于0，并取胜",
                 rewardDescription: "风雨晴可以修改第二个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 1),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -814,12 +818,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH032",
                 name: "真元澎湃",
-                conditionDescription: "一场战斗中，置入3张灵气消耗大于3的牌，并取得胜利",
+                conditionDescription: "置入3张灵气消耗大于3的牌，并取胜",
                 rewardDescription: "风雨晴可以修改第四个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 3),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -840,12 +844,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH033",
                 name: "逍遥游",
-                conditionDescription: "一场战斗中，没有置入任何攻击牌，并取得胜利",
+                conditionDescription: "没有置入任何攻击牌，并取胜",
                 rewardDescription: "风雨晴可以修改第五个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 4),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) =>
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) =>
                     {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
@@ -862,12 +866,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH034",
                 name: "金碧辉煌",
-                conditionDescription: "一场战斗中，置入12张化神牌，并取得胜利",
+                conditionDescription: "置入12张化神牌，并取胜",
                 rewardDescription: "风雨晴可以修改第六个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 5),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -883,12 +887,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH035",
                 name: "七星连珠",
-                conditionDescription: "一场战斗中，激活7个阵法，并取得胜利",
+                conditionDescription: "激活7个阵法，并取胜",
                 rewardDescription: "风雨晴可以修改第七个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 6),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -906,7 +910,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 name: "百炼成钢",
                 conditionDescription: "累计在战斗中攻击1000次",
                 rewardDescription: "可以使用无常路引卡包",
-                lockIndex: LockIndex.FromPack("无常路引"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("无常路引")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_FULL_ATTACK, 0, async (owner, details) => {
@@ -927,9 +931,9 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH102",
                 name: "剑气冲霄",
-                conditionDescription: "在一次攻击中，造成100伤害，并取得了该场战斗的胜利",
+                conditionDescription: "一击造成100伤害，并取胜",
                 rewardDescription: "可以使用大音希声卡包",
-                lockIndex: LockIndex.FromPack("大音希声"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("大音希声")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
@@ -953,7 +957,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.PerformOperation(MAX_DAMAGE_KEY, 0, currentMax => Math.Max(currentMax, d.Value));
                     }),
 
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -975,7 +979,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 name: "气贯长虹",
                 conditionDescription: "累计在战斗中获得300灵气",
                 rewardDescription: "可以使用天河引气录卡包",
-                lockIndex: LockIndex.FromPack("天河引气录"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("天河引气录")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, details) => {
@@ -997,9 +1001,9 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH104",
                 name: "生生不息",
-                conditionDescription: "一场战斗中，结束时气血高于初始，并取得胜利",
+                conditionDescription: "结束时气血高于初始，并取胜",
                 rewardDescription: "可以使用御虚诀卡包",
-                lockIndex: LockIndex.FromPack("御虚诀"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("御虚诀")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
@@ -1011,7 +1015,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(INITIAL_HP_KEY, home.Hp);
                     }),
 
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1030,12 +1034,12 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH105",
                 name: "融会贯通",
-                conditionDescription: "一场战斗中，有一张牌使用多于6次，并取得胜利",
+                conditionDescription: "有一张牌使用多于6次，并取胜",
                 rewardDescription: "可以使用大椿功卡包",
-                lockIndex: LockIndex.FromPack("大椿功"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("大椿功")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1051,9 +1055,9 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH106",
                 name: "凌波微步",
-                conditionDescription: "一场战斗中，没有任何护甲并且没有受到伤害，并取得胜利",
+                conditionDescription: "没有任何护甲并且没有受到伤害，并取胜",
                 rewardDescription: "可以使用游龙遁卡包",
-                lockIndex: LockIndex.FromPack("游龙遁"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("游龙遁")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
@@ -1090,7 +1094,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(CANNOT_UNLOCK_YOU_LONG_DUN_KEY, 1);
                     }),
 
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1109,7 +1113,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 name: "倾国倾城",
                 conditionDescription: "一场战斗中，战意层数大于20，并取得胜利",
                 rewardDescription: "可以使用归鸿十二步卡包",
-                lockIndex: LockIndex.FromPack("归鸿十二步"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("归鸿十二步")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
@@ -1140,7 +1144,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         );
                     }),
 
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1161,7 +1165,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 name: "无欲则刚",
                 conditionDescription: "累计通过燃命受到2000伤害",
                 rewardDescription: "可以使用大焚天秘乘卡包",
-                lockIndex: LockIndex.FromPack("大焚天秘乘"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("大焚天秘乘")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_BURN, 0, async (owner, details) => {
@@ -1183,9 +1187,9 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH109",
                 name: "巍然矗立",
-                conditionDescription: "一场战斗中，护甲超过300，并取得胜利",
+                conditionDescription: "护甲超过300，并取胜",
                 rewardDescription: "可以使用须弥妙法卡包",
-                lockIndex: LockIndex.FromPack("须弥妙法"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("须弥妙法")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
@@ -1214,7 +1218,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         );
                     }),
 
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1231,9 +1235,9 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH110",
                 name: "一锤定音",
-                conditionDescription: "一场战斗中，置入正好一张攻击牌，并由该攻击牌击败对方胜利",
+                conditionDescription: "置入正好一张攻击牌，并用其取胜",
                 rewardDescription: "可以使用锻体四则卡包",
-                lockIndex: LockIndex.FromPack("锻体四则"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("锻体四则")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.DID_CAST, 0, async (owner, details) => {
@@ -1248,7 +1252,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         const string LAST_CASTED_SKILL_INDEX = "LastCastedSkillIndex";
                         home.Memory.SetVariable(LAST_CASTED_SKILL_INDEX, d.Skill.SlotIndex);
                     }),
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1276,10 +1280,10 @@ public class AchievementCategory : Category<AchievementEntry>
                 name: "腾云驾雾",
                 conditionDescription: "累计携带过50丹药牌",
                 rewardDescription: "可以使用丹兵道卡包",
-                lockIndex: LockIndex.FromPack("丹兵道"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("丹兵道")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1300,9 +1304,9 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH112",
                 name: "流转达人",
-                conditionDescription: "一场战斗中，流转超过10次，并取得胜利",
+                conditionDescription: "流转超过10次，并取胜",
                 rewardDescription: "可以使用化哉卡包",
-                lockIndex: LockIndex.FromPack("化哉"),
+                lockIndex: LockIndex.FromPack(PackEntry.FromName("化哉")),
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
@@ -1326,7 +1330,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.PerformOperation(WUXING_CYCLE_COUNT_KEY, 0, v => v + 1);
                     }),
 
-                    new(StageClosureDict.WIL_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1419,24 +1423,24 @@ public class AchievementCategory : Category<AchievementEntry>
                     })
                 }),
             
-            new(id: "ACH205",
-                name: "登峰造极",
-                conditionDescription: "存档等级达到10级",
-                rewardDescription: "可以使用梦乃遥角色",
-                lockIndex: LockIndex.FromCharacter("梦乃遥"),
-                runClosures: new RunClosure[]
-                {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
-                        AchievementProfile p = (AchievementProfile)owner;
-                        RunCommitDetails d = (RunCommitDetails)details;
-
-                        if (p.IsUnlocked()) return;
-                        if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 10) return;
-                        if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
-
-                        p.Unlock();
-                    })
-                }),
+            // new(id: "ACH205",
+            //     name: "登峰造极",
+            //     conditionDescription: "存档等级达到10级",
+            //     rewardDescription: "可以使用梦乃遥角色",
+            //     lockIndex: LockIndex.FromCharacter("梦乃遥"),
+            //     runClosures: new RunClosure[]
+            //     {
+            //         new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+            //             AchievementProfile p = (AchievementProfile)owner;
+            //             RunCommitDetails d = (RunCommitDetails)details;
+            //
+            //             if (p.IsUnlocked()) return;
+            //             if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 10) return;
+            //             if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
+            //
+            //             p.Unlock();
+            //         })
+            //     }),
         });
     }
 

@@ -941,14 +941,14 @@ public class StageEnvironment : Addressable, StageClosureListener
     {
         if (!_config.EffectAchievements)
             return;
-        // AppManager.Instance.ProfileManager.GetCurrProfile().RegisterStageClosures(_closureDict);
+        AppManager.Instance.ProfileManager.GetCurrProfile().RegisterStageClosures(_closureDict);
     }
 
     private void UnregisterAchievementClosures()
     {
         if (!_config.EffectAchievements)
             return;
-        // AppManager.Instance.ProfileManager.GetCurrProfile().UnregisterStageClosures(_closureDict);
+        AppManager.Instance.ProfileManager.GetCurrProfile().UnregisterStageClosures(_closureDict);
     }
 
     private void UnregisterConfigClosures()

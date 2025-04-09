@@ -17,7 +17,7 @@ public class PackView : XView
     {
         base.Refresh();
 
-        IPack pack = Get<IPack>();
+        ConfigPack pack = Get<ConfigPack>();
         SetName(pack.GetName());
         Image.sprite = pack.GetSprite();
 
