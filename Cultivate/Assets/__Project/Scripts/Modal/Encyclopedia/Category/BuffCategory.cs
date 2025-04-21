@@ -1013,6 +1013,23 @@ public class BuffCategory : Category<BuffEntry>
                         }
                     }),
                 }),
+            
+            new("长明", "下1次攻击不会消耗剑意", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_FULL_ATTACK, 0, async (owner, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        AttackDetails d = (AttackDetails)closureDetails;
+                        if (!d.Recursive) return;
+                        if (b.Owner != d.Src) return;
+                        if (b.Owner == d.Tgt) return;
+                        if (d.DoesntConsumeJianYi) return;
+                        
+                        b.Emphasize();
+                        d.DoesntConsumeJianYi = true;
+                    }),
+                }),
 
             new("天衣无缝", "每回合：[层数]攻，不消耗剑意", BuffStackRule.Max, true, false,
                 closures: new StageClosure[]
@@ -1029,9 +1046,8 @@ public class BuffCategory : Category<BuffEntry>
                             Buff buff = owner as Buff;
                             AttackDetails d = (AttackDetails)closureDetails;
                             
-                            if (buff.Owner != d.Src) return;      // 不是buff持有者的攻击不处理
-                            
-                            d.DoesntConsumeJianYi = true;         // 设置保存剑意标记
+                            if (buff.Owner != d.Src) return;
+                            d.DoesntConsumeJianYi = true;
                         });
 
                         await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo, initiator: owner,

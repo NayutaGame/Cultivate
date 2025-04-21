@@ -67,7 +67,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 description:         "集攻防于一体的剑舞。每一式都蕴含多重变化，可攻可守，令敌人难以应对。",
                 trivia:              "剑法灵感来自归鸿展翅，十二式浑然一体，如同天成。",
-                cardNames:           new string[] { "云袖", "正念", "剑王行", "战意", "天衣无缝", "窑土", "炎爆", "登宝塔", "净天地" },
+                cardNames:           new string[] { "云袖", "正念", "剑王行", "战意", "天衣无缝", "拂晓", "长明", "登宝塔", "一舞惊鸿" },
                 startCardNames:      new string[] { "云袖", "正念", "战意" }
                 ),
             
@@ -76,8 +76,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 description:         "以燃烧气血为代价，爆发出惊人的威力。使用者与敌人同归于尽的觉悟越强，威力越大。",
                 trivia:              "此功原是佛门明王法，后流落江湖，习者多有走火入魔之危。",
-                cardNames:           new string[] { "轰天", "怒瞳", "明镜", "舍生", "不动明王诀", "浴火", "晚霞", "观众生", "常夏" },
-                startCardNames:      new string[] { "轰天", "怒瞳", "明镜" }
+                cardNames:           new string[] { "轰天", "明镜", "怒瞳", "舍生", "不动明王诀", "浴火", "晚霞", "观众生", "常夏" },
+                startCardNames:      new string[] { "轰天", "明镜", "怒瞳" }
                 ),
             
             new(id:                  "0009",

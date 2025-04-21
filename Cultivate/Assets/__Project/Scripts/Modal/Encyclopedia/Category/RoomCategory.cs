@@ -2546,10 +2546,10 @@ public class RoomCategory : Category<RoomEntry>
                                 d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
 
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-
                             if (d.Flag == 0)
                                 return d.Flag;
+
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
                             
                             d.Env.RecordResult(d.Flag);
                             
@@ -2591,10 +2591,10 @@ public class RoomCategory : Category<RoomEntry>
                                 d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
 
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-
                             if (d.Flag == 0)
                                 return d.Flag;
+
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
                             
                             d.Env.RecordResult(d.Flag);
                             
@@ -2901,10 +2901,10 @@ public class RoomCategory : Category<RoomEntry>
                                 d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
 
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-
                             if (d.Flag == 0)
                                 return d.Flag;
+
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
                             
                             d.Env.RecordResult(d.Flag);
                             
@@ -3004,10 +3004,10 @@ public class RoomCategory : Category<RoomEntry>
                                 d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
 
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-
                             if (d.Flag == 0)
                                 return d.Flag;
+
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
                             
                             d.Env.RecordResult(d.Flag);
                             
@@ -3116,10 +3116,10 @@ public class RoomCategory : Category<RoomEntry>
                                 d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
             
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-            
                             if (d.Flag == 0)
                                 return d.Flag;
+            
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
                             
                             d.Env.RecordResult(d.Flag);
                             
@@ -3202,10 +3202,10 @@ public class RoomCategory : Category<RoomEntry>
                                 d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
                             }
             
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-            
                             if (d.Flag == 0)
                                 return d.Flag;
+            
+                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
                             
                             d.Env.RecordResult(d.Flag);
                             

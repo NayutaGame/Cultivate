@@ -746,7 +746,9 @@ public class AchievementCategory : Category<AchievementEntry>
                         int lastCastedSkillIndex = home.Memory.TryGetVariable(LAST_CASTED_SKILL_INDEX, -1);
                         if (lastCastedSkillIndex == -1) return;
 
-                        if (home.RunEntity.GetSlot(lastCastedSkillIndex).Skill.GetEntry() != (SkillEntry)"幻化") return;
+                        RunSkill skill = home.RunEntity.GetSlot(lastCastedSkillIndex).Skill;
+                        if (skill == null) return;
+                        if (skill.GetEntry() != (SkillEntry)"幻化") return;
 
                         p.Unlock();
                     })
