@@ -3268,8 +3268,8 @@ public class RoomCategory : Category<RoomEntry>
 
             #region ForTesting
 
-            new(id:                                 "多段测试",
-                description:                        "多段测试",
+            new(id:                                 "动画测试",
+                description:                        "动画测试",
                 ladderBound:                        new Bound(0, 15),
                 difficultyBound:                    new Bound(0, 11),
                 withInPool:                         false,
@@ -3284,7 +3284,11 @@ public class RoomCategory : Category<RoomEntry>
                     RunEntity homeD = EditorManager.FindEntity("多段HomeD");
                     RunEntity awayD = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayD"));
 
-                    DialogPanelDescriptor selecting = new("多段测试", "多段测试", "基础", "护甲的表现", "破甲的表现", "Buff的表现");
+                    DialogPanelDescriptor selecting = new("动画测试", "动画测试", 
+                        "攻击表现",
+                        "闪避表现",
+                        "破甲表现",
+                        "护甲表现");
                     
                     BattlePanelDescriptor optionA = new BattlePanelDescriptor(awayA)
                         .SetWinOperation(() =>

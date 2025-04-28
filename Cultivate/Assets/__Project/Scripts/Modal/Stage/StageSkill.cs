@@ -105,15 +105,16 @@ public class StageSkill : StageClosureListener
         return isFirstTime;
     }
 
-    public async UniTask<bool> IsEnd(bool allowFocus = false)
+    public bool IsEnd
     {
-        bool isEnd = (SlotIndex == _owner._skills.Length - 1) || (SlotIndex == _owner._skills.Length - 2 && _owner.GetStackOfBuff("连岳") > 0);
-        if (!isEnd)
-            isEnd = allowFocus && await _owner.IsFocused();
+        get
+        {
+            bool isEnd = (SlotIndex == _owner._skills.Length - 1) || (SlotIndex == _owner._skills.Length - 2 && _owner.GetStackOfBuff("连岳") > 0);
 
-        if (isEnd)
-            _owner.TriggeredEndRecord = true;
-        return isEnd;
+            if (isEnd)
+                _owner.TriggeredEndRecord = true;
+            return isEnd;
+        }
     }
     
     public bool NoOtherAttack

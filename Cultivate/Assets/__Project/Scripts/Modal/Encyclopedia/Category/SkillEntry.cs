@@ -52,7 +52,7 @@ public class SkillEntry : Entry, IAnnotation, ISkill
 
     private Func<JingJie, int, CostResult, CastResult, string> _castDescription;
     public string GetDescription(JingJie j, CostResult costResult = null, CastResult castResult = null)
-        => _castDescription(j, j - LowestJingJie, costResult, castResult);
+        => _castDescription(j, j - LowestJingJie, costResult, castResult ?? CastResult.Default);
     public string GetDescription() => GetDescription(LowestJingJie);
 
     private AnnotationArray _annotationArray;

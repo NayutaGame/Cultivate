@@ -1891,6 +1891,8 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
+            new("终结", "激活下一个终结效果",                         BuffStackRule.Add, true, false),
+            new("大终结", "激活下一个终结效果的大终结版本",             BuffStackRule.Add, true, false),
             new("摩诃钵特摩", "已经触发过摩诃钵特摩",                   BuffStackRule.One, true, false),
             new("天人合一", "已经触发过天人合一",                       BuffStackRule.One, true, false),
             new("连岳", "最后两张牌都可以触发终结",                     BuffStackRule.One, true, false),

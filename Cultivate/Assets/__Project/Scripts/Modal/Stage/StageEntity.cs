@@ -257,7 +257,6 @@ public class StageEntity : Addressable, StageClosureListener
     public bool HasNeiShangRecord;
     public bool HasFuXiuRecord;
 
-    public bool TriggeredJiaShiRecord;
     public bool TriggeredEndRecord;
     public bool TriggeredFirstTimeRecord;
 
@@ -308,7 +307,6 @@ public class StageEntity : Addressable, StageClosureListener
         HasNeiShangRecord = false;
         HasFuXiuRecord = false;
         
-        TriggeredJiaShiRecord = false;
         TriggeredEndRecord = false;
         TriggeredFirstTimeRecord = false;
 
@@ -578,25 +576,6 @@ public class StageEntity : Addressable, StageClosureListener
             await LoseBuffProcedure(fromBuff, flow * fromStack);
     
         await GainBuffProcedure(toBuff, flow * toStack);
-    }
-    
-    public async UniTask<bool> JiaShiProcedure()
-    {
-        if (GetStackOfBuff("架势") > 0)
-        {
-            await LoseBuffProcedure("架势");
-            TriggeredJiaShiRecord = true;
-            return true;
-        }
-    
-        // if (await IsFocused())
-        // {
-        //     TriggeredJiaShiRecord = true;
-        //     return true;
-        // }
-    
-        await GainBuffProcedure("架势");
-        return false;
     }
     
     public async UniTask BecomeLowHealth()

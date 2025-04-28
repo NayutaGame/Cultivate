@@ -11,6 +11,7 @@ public class PrefabCategory : Category<PrefabEntry>
             new("ConfigModel缺失模型", "Prefabs/ConfigModels/缺失模型"),
             new("ConfigModel徐福", "Prefabs/ConfigModels/徐福"),
             new("ConfigModel子非鱼", "Prefabs/ConfigModels/子非鱼"),
+            new("ConfigModel子非燕", "Prefabs/ConfigModels/子非燕"),
             
             // Run Models
             new("RunModel缺失模型", "Prefabs/RunModels/缺失模型"),

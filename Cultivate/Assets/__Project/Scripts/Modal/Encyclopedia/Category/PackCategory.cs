@@ -85,8 +85,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Tu,
                 description:         "以厚重的护体真气抵御伤害。越是危险的处境，防御越是坚不可摧。",
                 trivia:              "须弥山不动，此功亦如是。传说创功之人曾以此功硬接天雷而不伤。",
-                cardNames:           new string[] { "寸劲", "滑步", "八极拳", "活步", "震脚", "箭疾步", "崩山掌", "磐石", "须弥结界" },
-                startCardNames:      new string[] { "寸劲", "滑步", "八极拳" }
+                cardNames:           new string[] { "寸劲", "八极拳", "活步", "滑步", "震脚", "无畏", "崩山掌", "架势", "须弥结界" },
+                startCardNames:      new string[] { "寸劲", "八极拳", "活步" }
                 ),
             
             new(id:                  "0010",
@@ -94,8 +94,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Tu,
                 description:         "以刚猛的力道摧毁一切。修炼者需苦练筋骨，方能发挥此功真正威力。",
                 trivia:              "四则：炼筋、锻骨、淬体、养气。此功重在基础，却也最难练至大成。",
-                cardNames:           new string[] { "固元", "锻骨", "守势", "隼击", "锻髓", "塑魂", "天人五衰", "养生", "阿修罗" },
-                startCardNames:      new string[] { "固元", "守势", "隼击" }
+                cardNames:           new string[] { "固元", "守势", "一力降十会", "守势", "顺势斩", "磐石", "锻髓", "养生", "疯魔" },
+                startCardNames:      new string[] { "固元", "守势", "一力降十会" }
                 ),
             
             new(id:                  "0011",

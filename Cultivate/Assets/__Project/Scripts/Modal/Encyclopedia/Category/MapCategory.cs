@@ -286,7 +286,7 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
-            new(id: "多段测试",
+            new(id: "动画测试",
                 envJingJie: JingJie.LianQi,
                 slotCount: 12,
                 gold: 0,
@@ -296,7 +296,7 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDefinition[]
                     {
-                        new DirectRoomDefinition(1, "多段测试"),
+                        new DirectRoomDefinition(1, "动画测试"),
                         new AscensionRoomDefinition(0),
                     },
                 }),

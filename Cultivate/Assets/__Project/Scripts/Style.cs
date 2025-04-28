@@ -1,4 +1,6 @@
 
+using System;
+
 public static class Style
 {
     public static string ApplyStyle(this string s, CastResult castResult, string styleName)
@@ -12,6 +14,9 @@ public static class Style
         string style = castResult[styleName];
         if (string.IsNullOrEmpty(style))
             return s;
+
+        if (style == "Hide")
+            return "";
         
         return $"<style=\"{style}\">{s}</style>";
     }
@@ -33,6 +38,12 @@ public static class Style
     
     public static string ApplyInactive(this string s)
         => $"<style=\"Inactive\">{s}</style>";
+
+    public static string ApplyEnd(this string s, CastResult castResult)
+        => s.ApplyStyle(castResult, "end");
+    
+    public static string ApplyDoubleEnd(this string s, CastResult castResult)
+        => s.ApplyStyle(castResult, "doubleEnd");
     
     public static string ApplyCond(this string s, CastResult castResult)
         => s.ApplyStyle(castResult, "cond");
@@ -62,5 +73,17 @@ public static class Style
     public static void AppendBool(this CastResult castResult, int n, bool value)
     {
         castResult.Append(n.ToString(), value);
+    }
+
+    public static void AppendEndTuple(this CastResult castResult, Tuple<bool, bool> endTuple)
+    {
+        if (endTuple.Item2)
+        {
+            castResult["end"] = "Hide";
+            return;
+        }
+        
+        castResult.Append("end", endTuple.Item1);
+        castResult["doubleEnd"] = "Hide";
     }
 }

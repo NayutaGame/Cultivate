@@ -1,4 +1,5 @@
 
+using System;
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 
@@ -129,29 +130,30 @@ public class CastDetails : StageClosureDetails
         await GainBuffProcedure(toBuff, flow * toStack);
     }
 
-    public async UniTask<bool> JiaShiProcedure()
-    {
-        if (Caster.GetStackOfBuff("架势") > 0)
-        {
-            await LoseBuffProcedure("架势");
-            Caster.TriggeredJiaShiRecord = true;
-            return true;
-        }
-
-        // if (await IsFocused())
-        // {
-        //     TriggeredJiaShiRecord = true;
-        //     return true;
-        // }
-
-        await GainBuffProcedure("架势");
-        return false;
-    }
-
     public async UniTask BecomeLowHealth(bool induced = false)
     {
         int gap = Caster.Hp - Caster.GetLowHealthThreshold();
         if (gap > 0)
             await Env.BurnProcedure(Caster, gap, induced);
+    }
+
+    public async UniTask<Tuple<bool, bool>> IsEnd(bool allowDoubleEnd)
+    {
+        if (allowDoubleEnd)
+        {
+            if (Skill.IsEnd && await Caster.TryConsumeProcedure("终结"))
+                return new(true, true);
+
+            if (await Caster.TryConsumeProcedure("大终结"))
+                return new(true, true);
+        }
+        
+        if (Skill.IsEnd)
+            return new(true, false);
+
+        if (await Caster.TryConsumeProcedure("终结"))
+            return new(true, false);
+
+        return new Tuple<bool, bool>(false, false);
     }
 }

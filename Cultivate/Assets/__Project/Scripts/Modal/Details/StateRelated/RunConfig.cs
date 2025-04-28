@@ -31,6 +31,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         // MapEntry = mapEntry ?? "发现";
         
         // MapEntry = mapEntry ?? "测试";
+        // MapEntry = mapEntry ?? "动画测试";
         // MapEntry = mapEntry ?? "境界测试";
         // MapEntry = mapEntry ?? "多段测试";
         // MapEntry = mapEntry ?? "拖拽测试";
